@@ -42,7 +42,7 @@ public class GetPatientsByNameAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientService patientService;
@@ -68,7 +68,7 @@ public class GetPatientsByNameAction
     {
         this.fullName = fullName;
     }
-    
+
     public List<Patient> getPatients()
     {
         return patients;
@@ -80,8 +80,8 @@ public class GetPatientsByNameAction
 
     public String execute()
     {
-fullName = fullName.trim();
-        
+        fullName = fullName.trim();
+
         int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
 
@@ -103,7 +103,7 @@ fullName = fullName.trim();
                 lastName = fullName.substring( endIndex + 1, fullName.length() );
             }
         }
-       
+
         patients = new ArrayList<Patient>( patientService.getPatients( firstName + " " + middleName + " " + lastName ) );
 
         return SUCCESS;

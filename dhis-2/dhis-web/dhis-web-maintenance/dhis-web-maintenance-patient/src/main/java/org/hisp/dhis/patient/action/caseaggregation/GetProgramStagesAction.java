@@ -39,7 +39,7 @@ public class GetProgramStagesAction implements Action
 {
 
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramService programService;

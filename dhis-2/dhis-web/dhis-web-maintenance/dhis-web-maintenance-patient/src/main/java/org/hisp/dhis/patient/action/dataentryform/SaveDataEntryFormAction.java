@@ -27,9 +27,6 @@ package org.hisp.dhis.patient.action.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -107,7 +104,7 @@ public class SaveDataEntryFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Execute
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
@@ -138,15 +135,14 @@ public class SaveDataEntryFormAction
 
         if ( dataEntryForm == null )
         {
-            dataEntryForm = new DataEntryForm( name, prepareDataEntryFormCode( designTextarea ) );
+            dataEntryForm = new DataEntryForm( name, dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
             programStage.setDataEntryForm( dataEntryForm );
             programStageService.updateProgramStage( programStage );
         }
         else
         {
             dataEntryForm.setName( name );
-            dataEntryForm.setHtmlCode( prepareDataEntryFormCode( designTextarea ) );
-            //dataEntryFormService.updateDataEntryForm( dataEntryForm );
+            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
             
             programStage.setDataEntryForm( dataEntryForm );
             programStageService.updateProgramStage( programStage );
@@ -155,91 +151,4 @@ public class SaveDataEntryFormAction
         return SUCCESS;
     }
     
-    // -------------------------------------------------------------------------
-    // Support methods
-    // -------------------------------------------------------------------------
-    
-    private String prepareDataEntryFormCode( String dataEntryFormCode )
-    {
-        String preparedCode = dataEntryFormCode;
-
-        preparedCode = prepareDataEntryFormInputs( preparedCode );
-
-        return preparedCode;
-    }
-
-    private String prepareDataEntryFormInputs( String preparedCode )
-    {
-        // ---------------------------------------------------------------------
-        // Buffer to contain the final result.
-        // ---------------------------------------------------------------------
-
-        StringBuffer sb = new StringBuffer();
-
-        // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code.
-        // ---------------------------------------------------------------------
-        // logger.info("preparedCore = "+preparedCode);
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>" );
-        Matcher matDataElement = patDataElement.matcher( preparedCode );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
-        // ---------------------------------------------------------------------
-
-        boolean result = matDataElement.find();
-
-        while ( result )
-        {
-            // -----------------------------------------------------------------
-            // Get input HTML code (HTML input field code).
-            // -----------------------------------------------------------------
-
-            String dataElementCode = matDataElement.group( 1 );
-            // logger.info("dataElementCode = "+dataElementCode);
-            // -----------------------------------------------------------------
-            // Pattern to extract data element name from data element field
-            // -----------------------------------------------------------------
-
-            Pattern patDataElementName = Pattern.compile( "value=\"\\[ (.*) \\]\"" );
-            Matcher matDataElementName = patDataElementName.matcher( dataElementCode );
-
-            Pattern patTitle = Pattern.compile( "title=\"-- (.*) --\"" );
-            Matcher matTitle = patTitle.matcher( dataElementCode );
-
-            if ( matDataElementName.find() && matDataElementName.groupCount() > 0 )
-            {
-                String temp = "[ " + matDataElementName.group( 1 ) + " ]";
-                dataElementCode = dataElementCode.replace( temp, "" );
-
-                if ( matTitle.find() && matTitle.groupCount() > 0 )
-                {
-                    temp = "-- " + matTitle.group( 1 ) + " --";
-                    dataElementCode = dataElementCode.replace( temp, "" );
-                }
-
-                // -------------------------------------------------------------
-                // Appends dataElementCode
-                // -------------------------------------------------------------
-
-                String appendCode = dataElementCode;
-                appendCode += "/>";
-                matDataElement.appendReplacement( sb, appendCode );
-            }
-
-            // -----------------------------------------------------------------
-            // Go to next data entry field
-            // -----------------------------------------------------------------
-
-            result = matDataElement.find();
-        }
-
-        // ---------------------------------------------------------------------
-        // Add remaining code (after the last match), and return formatted code.
-        // ---------------------------------------------------------------------
-
-        matDataElement.appendTail( sb );
-
-        return sb.toString();
-    }
 }

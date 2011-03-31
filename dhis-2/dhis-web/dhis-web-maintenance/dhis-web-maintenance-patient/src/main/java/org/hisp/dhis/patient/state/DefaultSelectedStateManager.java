@@ -47,15 +47,12 @@ import com.opensymphony.xwork2.ActionContext;
 public class DefaultSelectedStateManager
     implements SelectedStateManager
 {
-
     public static final String SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID = "selected_searching_attribute_id";
 
     public static final String SESSION_KEY_SPECIFIED_SEARCH_TEXT = "specified_search_text";
 
     public static final String SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID = "selected_sort_attribute_id";
 
-    
-    
     public static final String SESSION_KEY_SELECTED_PATIENT_ID = "selected_patient_id";
 
     public static final String SESSION_KEY_SELECTED_PROGRAM_ID = "selected_program_id";
@@ -199,15 +196,6 @@ public class DefaultSelectedStateManager
     }
 
     // -------------------------------------------------------------------------
-    // Support methods
-    // -------------------------------------------------------------------------
-
-    private static final Map getSession()
-    {
-        return ActionContext.getContext().getSession();
-    }
-
-    // -------------------------------------------------------------------------
     // Search patients by patient-attribute
     // -------------------------------------------------------------------------
 
@@ -246,7 +234,7 @@ public class DefaultSelectedStateManager
     // -------------------------------------------------------------------------
     // Sort by patient-attribute
     // -------------------------------------------------------------------------
-    
+
     @SuppressWarnings( "unchecked" )
     public void setSortingAttributeId( int sortAttributeId )
     {
@@ -257,9 +245,19 @@ public class DefaultSelectedStateManager
     {
         return (Integer) getSession().get( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID );
     }
-    
+
     public void clearSortingAttributeId()
     {
         getSession().remove( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supporting methods
+    // -------------------------------------------------------------------------
+
+    @SuppressWarnings("unchecked")
+    private static final Map getSession()
+    {
+        return ActionContext.getContext().getSession();
     }
 }

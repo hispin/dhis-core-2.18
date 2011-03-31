@@ -43,7 +43,7 @@ public class GetPatientAttributeListAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientAttributeService patientAttributeService;

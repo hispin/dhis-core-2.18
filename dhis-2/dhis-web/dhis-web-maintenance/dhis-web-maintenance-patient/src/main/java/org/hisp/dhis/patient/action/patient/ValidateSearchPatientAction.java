@@ -40,7 +40,7 @@ public class ValidateSearchPatientAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private OrganisationUnitSelectionManager selectionManager;

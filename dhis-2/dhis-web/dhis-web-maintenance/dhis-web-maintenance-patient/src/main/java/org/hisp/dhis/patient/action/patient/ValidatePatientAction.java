@@ -123,7 +123,6 @@ public class ValidatePatientAction
 
     public String execute()
     {
-
         Date dateOfBirth;
 
         if ( selectionManager.getSelectedOrganisationUnit() == null )
@@ -140,7 +139,7 @@ public class ValidatePatientAction
             return INPUT;
         }
 
-        if ( dobType != null && (dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED ) )
+        if ( dobType != null && (dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED) )
         {
             birthDate = birthDate.trim();
 
@@ -155,18 +154,18 @@ public class ValidatePatientAction
         }
 
         fullName = fullName.trim();
-        
+
         // ---------------------------------------------------------------------
-        // Check duplicate by FirstName, MiddleName, LastName, Birthday, Gender
+        // Check duplicated patients
         // ---------------------------------------------------------------------
 
         int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
-        
-        String firstName = fullName.toString();        
+
+        String firstName = fullName.toString();
         String middleName = "";
         String lastName = "";
-        
+
         if ( fullName.indexOf( ' ' ) != -1 )
         {
             firstName = fullName.substring( 0, startIndex );
@@ -181,10 +180,9 @@ public class ValidatePatientAction
                 lastName = fullName.substring( endIndex + 1, fullName.length() );
             }
         }
-        
+
         if ( !checkedDuplicate )
         {
-            // Check duplication name, birthdate, gender
             patients = patientService.getPatient( firstName, middleName, lastName, format.parseDate( birthDate ),
                 gender );
 
@@ -214,7 +212,9 @@ public class ValidatePatientAction
             }
         }
 
+        // ---------------------------------------------------------------------
         // Check Under age information
+        // ---------------------------------------------------------------------
 
         if ( underAge )
         {
@@ -230,7 +230,6 @@ public class ValidatePatientAction
             }
         }
 
-        // Check ID duplicate
         Patient p = new Patient();
 
         if ( birthDate != null )
@@ -252,7 +251,7 @@ public class ValidatePatientAction
         {
             String value = null;
             String idDuplicate = "";
-            
+
             for ( PatientIdentifierType idType : identifiers )
             {
                 if ( !underAge || (underAge && !idType.isRelated()) )
@@ -287,9 +286,9 @@ public class ValidatePatientAction
         return SUCCESS;
     }
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter/Setter
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public Collection<Patient> getPatients()
     {

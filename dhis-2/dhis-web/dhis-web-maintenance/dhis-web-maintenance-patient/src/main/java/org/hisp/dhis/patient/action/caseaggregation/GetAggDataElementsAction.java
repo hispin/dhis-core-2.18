@@ -43,7 +43,7 @@ public class GetAggDataElementsAction
 {
 
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private DataElementService dataElementService;
@@ -84,7 +84,7 @@ public class GetAggDataElementsAction
     {
         return dataElementList;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -97,18 +97,19 @@ public class GetAggDataElementsAction
 
         dataElementList = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId )
             .getMembers() );
-        
+
         Iterator<DataElement> deIterator = dataElementList.iterator();
 
         while ( deIterator.hasNext() )
         {
             DataElement dataElement = deIterator.next();
+
             if ( dataElement.getDomainType().equalsIgnoreCase( DataElement.DOMAIN_TYPE_PATIENT )
                 || !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
             {
                 deIterator.remove();
             }
-            
+
         }
 
         if ( dataElementList != null && !dataElementList.isEmpty() )
@@ -132,11 +133,11 @@ public class GetAggDataElementsAction
 
                     optionComboIds.add( de.getId() + "." + decoc.getId() );
 
-                    optionComboNames.add( de.getName() + " (" + decoc.getName() + ")");
+                    optionComboNames.add( de.getName() + " " + decoc.getName() );
                 }
             }
         }
-        
+
         return SUCCESS;
     }
 }

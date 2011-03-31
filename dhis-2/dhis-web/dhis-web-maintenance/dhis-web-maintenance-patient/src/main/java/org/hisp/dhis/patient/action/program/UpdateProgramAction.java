@@ -40,7 +40,7 @@ public class UpdateProgramAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramService programService;
@@ -74,7 +74,7 @@ public class UpdateProgramAction
     {
         this.description = description;
     }
-    
+
     private Integer version;
 
     public Integer getVersion()
@@ -87,10 +87,6 @@ public class UpdateProgramAction
         this.version = version;
     }
 
-    /**
-     * Description of Date of Enrollment This description is differ from each
-     * program
-     */
     private String dateOfEnrollmentDescription;
 
     public void setDateOfEnrollmentDescription( String dateOfEnrollmentDescription )
@@ -98,10 +94,6 @@ public class UpdateProgramAction
         this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
     }
 
-    /**
-     * Description of Date of Incident This description is differ from each
-     * program
-     */
     private String dateOfIncidentDescription;
 
     public void setDateOfIncidentDescription( String dateOfIncidentDescription )
@@ -133,12 +125,12 @@ public class UpdateProgramAction
         Program program = programService.getProgram( id );
         program.setName( name );
         program.setDescription( description );
-        program.setVersion(version);
+        program.setVersion( version );
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setMinDaysAllowedInputData( minDaysAllowedInputData );
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
-        
+
         programService.updateProgram( program );
 
         return SUCCESS;

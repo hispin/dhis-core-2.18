@@ -42,11 +42,9 @@ import com.opensymphony.xwork2.Action;
  */
 public class GetPatientAttributesWithdoutGroupAction 
     implements Action
-{
-    //TODO typo in class name
-    
+{   
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientAttributeService patientAttributeService;
@@ -67,7 +65,6 @@ public class GetPatientAttributesWithdoutGroupAction
         return patientAttributes;
     }
 
-   
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

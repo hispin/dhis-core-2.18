@@ -91,7 +91,7 @@ public class DelDataEntryFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

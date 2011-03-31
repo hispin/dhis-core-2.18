@@ -77,7 +77,7 @@ public class DefineProgramAssociationsAction
     }
 
     // -------------------------------------------------------------------------
-    // Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
@@ -108,7 +108,7 @@ public class DefineProgramAssociationsAction
     }
 
     // -------------------------------------------------------------------------
-    // Supportive methods
+    // Supporting methods
     // -------------------------------------------------------------------------
 
     private Set<OrganisationUnit> convert( Collection<OrganisationUnit> organisationUnits )

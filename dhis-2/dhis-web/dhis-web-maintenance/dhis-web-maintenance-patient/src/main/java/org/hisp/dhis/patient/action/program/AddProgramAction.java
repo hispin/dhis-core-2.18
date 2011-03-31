@@ -40,7 +40,7 @@ public class AddProgramAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramService programService;
@@ -68,10 +68,6 @@ public class AddProgramAction
         this.description = description;
     }
 
-    /**
-     * Description of Date of Enrollment This description is differ from each
-     * program
-     */
     private String dateOfEnrollmentDescription;
 
     public void setDateOfEnrollmentDescription( String dateOfEnrollmentDescription )
@@ -79,10 +75,6 @@ public class AddProgramAction
         this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
     }
 
-    /**
-     * Description of Date of Incident This description is differ from each
-     * program
-     */
     private String dateOfIncidentDescription;
 
     public void setDateOfIncidentDescription( String dateOfIncidentDescription )

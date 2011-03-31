@@ -160,10 +160,8 @@ public class RemoveEnrollmentAction
 
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
-        // Get selected patient from programInstance
         patient = programInstance.getPatient();
 
-        // Get selected program from programInstance
         Program program = programInstance.getProgram();
 
         // ---------------------------------------------------------------------
@@ -188,7 +186,10 @@ public class RemoveEnrollmentAction
 
         Set<ProgramAttribute> programAttributes = new HashSet<ProgramAttribute>();
 
+        // ---------------------------------------------------------------------
         // End-user inputs attribute value for DEAD-attribute
+        // ---------------------------------------------------------------------
+        
         boolean flag = false;
 
         if ( attributes != null && attributes.size() > 0 )
@@ -207,7 +208,6 @@ public class RemoveEnrollmentAction
                     ProgramAttributeValue attributeValue = programAttributeValueService.getProgramAttributeValue(
                         programInstance, attribute );
 
-                    // attributeValue is not exist
                     if ( attributeValue == null )
                     {
                         attributeValue = new ProgramAttributeValue();
@@ -246,11 +246,8 @@ public class RemoveEnrollmentAction
                             patientService.updatePatient( patient );
                         }
 
-                        // save values
                         programAttributeValueService.saveProgramAttributeValue( attributeValue );
-
                     }
-                    // attributeValue is exist
                     else
                     {
                         if ( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
@@ -269,12 +266,11 @@ public class RemoveEnrollmentAction
                         }
                     }
 
-                    // update values
                     programAttributeValueService.updateProgramAttributeValue( attributeValue );
                 }
             }
         }
-        
+
         programInstance.setAttributes( programAttributes );
 
         programInstanceService.updateProgramInstance( programInstance );

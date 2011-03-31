@@ -44,7 +44,6 @@ import com.opensymphony.xwork2.Action;
 public class DefineProgramListForValidationCriteriaAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------

@@ -121,7 +121,7 @@ public class SelectDataElementAction
     }
 
     // -------------------------------------------------------------------------
-    // Execute
+    // Action implementation
     // -------------------------------------------------------------------------
     
     public String execute()

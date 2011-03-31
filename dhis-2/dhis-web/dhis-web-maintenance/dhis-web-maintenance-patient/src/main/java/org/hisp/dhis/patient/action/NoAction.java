@@ -28,19 +28,16 @@ package org.hisp.dhis.patient.action;
 
 import com.opensymphony.xwork2.Action;
 
-
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
 public class NoAction
-	implements Action
+    implements Action
 {
-	public String execute()
-		throws Exception
-	{
-	
-		return SUCCESS;
-		
-	}
+    public String execute()
+        throws Exception
+    {
+        return SUCCESS;
+    }
 }

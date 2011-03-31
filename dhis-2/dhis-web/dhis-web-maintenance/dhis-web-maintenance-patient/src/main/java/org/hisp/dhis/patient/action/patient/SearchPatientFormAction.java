@@ -64,7 +64,7 @@ public class SearchPatientFormAction
     }
 
     private ProgramService programService;
-    
+
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
@@ -89,29 +89,25 @@ public class SearchPatientFormAction
     }
 
     private Collection<Program> programs;
-    
+
     public Collection<Program> getPrograms()
     {
         return programs;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
-
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
 
         programs = programService.getPrograms( organisationUnit );
-        
+
         return SUCCESS;
     }
 }

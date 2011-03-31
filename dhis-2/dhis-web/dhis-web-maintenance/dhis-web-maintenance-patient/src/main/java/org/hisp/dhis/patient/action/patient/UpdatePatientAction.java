@@ -82,35 +82,18 @@ public class UpdatePatientAction
     private PatientAttributeOptionService patientAttributeOptionService;
 
     // -------------------------------------------------------------------------
-    // Input - Id
+    // Input
     // -------------------------------------------------------------------------
+
     private Integer id;
 
-    // -------------------------------------------------------------------------
-    // Input - name
-    // -------------------------------------------------------------------------
-
     private String fullName;
-
-    // -------------------------------------------------------------------------
-    // Input - demographics
-    // -------------------------------------------------------------------------
 
     private String birthDate;
 
     private boolean isDead;
 
     private String deathDate;
-
-    public void setDead( boolean isDead )
-    {
-        this.isDead = isDead;
-    }
-
-    public void setDeathDate( String deathDate )
-    {
-        this.deathDate = deathDate;
-    }
 
     private Integer age;
 
@@ -127,8 +110,7 @@ public class UpdatePatientAction
     private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
-    // Output - making the patient available so that its attributes can be
-    // edited
+    // Output
     // -------------------------------------------------------------------------
 
     private Patient patient;
@@ -140,12 +122,7 @@ public class UpdatePatientAction
     public String execute()
         throws Exception
     {
-
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
-        // ---------------------------------------------------------------------
-        // Get patient by Id
-        // ---------------------------------------------------------------------
 
         patient = patientService.getPatient( id );
 
@@ -160,7 +137,7 @@ public class UpdatePatientAction
         String middleName = "";
         String lastName = "";
 
-        if( fullName.indexOf( ' ' ) != -1 )
+        if ( fullName.indexOf( ' ' ) != -1 )
         {
             firstName = fullName.substring( 0, startIndex );
             if ( startIndex == endIndex )
@@ -174,17 +151,17 @@ public class UpdatePatientAction
                 lastName = fullName.substring( endIndex + 1, fullName.length() );
             }
         }
-        
+
         patient.setFirstName( firstName );
         patient.setMiddleName( middleName );
         patient.setLastName( lastName );
-        
+
         // ---------------------------------------------------------------------
         // Set Other information for patient
         // ---------------------------------------------------------------------
 
         patient.setGender( gender );
-       
+
         patient.setIsDead( isDead );
         if ( deathDate != null )
         {
@@ -209,6 +186,7 @@ public class UpdatePatientAction
         // -------------------------------------------------------------------------------------
         // Save PatientIdentifier
         // -------------------------------------------------------------------------------------
+
         HttpServletRequest request = ServletActionContext.getRequest();
 
         String value = null;
@@ -275,8 +253,6 @@ public class UpdatePatientAction
         {
             patient.getAttributes().clear();
             valuesForDelete = patientAttributeValueService.getPatientAttributeValues( patient );
-
-            // Save other attributes
 
             for ( PatientAttribute attribute : attributes )
             {
@@ -391,6 +367,16 @@ public class UpdatePatientAction
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    public void setDead( boolean isDead )
+    {
+        this.isDead = isDead;
+    }
+
+    public void setDeathDate( String deathDate )
+    {
+        this.deathDate = deathDate;
     }
 
     public void setFullName( String fullName )

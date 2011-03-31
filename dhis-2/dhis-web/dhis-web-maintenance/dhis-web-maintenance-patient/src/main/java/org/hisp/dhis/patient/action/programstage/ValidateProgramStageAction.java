@@ -42,9 +42,8 @@ import com.opensymphony.xwork2.Action;
 public class ValidateProgramStageAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramStageService programStageService;
@@ -71,7 +70,7 @@ public class ValidateProgramStageAction
     {
         this.name = name;
     }
-   
+
     private String message;
 
     public String getMessage()
@@ -93,7 +92,6 @@ public class ValidateProgramStageAction
     public String execute()
         throws Exception
     {
-
         ProgramStage match = programStageService.getProgramStageByName( name );
 
         if ( match != null && (id == null || match.getId() != id) )

@@ -49,14 +49,15 @@ public class GetProgramAttributeListAction
     private ProgramAttributeService programAttributeService;
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Output
     // -------------------------------------------------------------------------
 
     private Collection<ProgramAttribute> programAttributes;
 
     // -------------------------------------------------------------------------
-    // Getter
+    // Getter && Setter
     // -------------------------------------------------------------------------
+    
     public void setProgramAttributeService( ProgramAttributeService programAttributeService )
     {
         this.programAttributeService = programAttributeService;
@@ -68,7 +69,7 @@ public class GetProgramAttributeListAction
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override

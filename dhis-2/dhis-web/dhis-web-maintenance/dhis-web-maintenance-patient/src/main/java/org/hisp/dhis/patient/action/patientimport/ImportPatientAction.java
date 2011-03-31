@@ -95,7 +95,6 @@ import com.opensymphony.xwork2.Action;
 public class ImportPatientAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -133,14 +132,10 @@ public class ImportPatientAction
     private I18n i18n;
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private File output;
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
 
     private HashMap<Integer, Patient> errPatients = new HashMap<Integer, Patient>();
 
@@ -273,7 +268,7 @@ public class ImportPatientAction
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override
@@ -387,13 +382,10 @@ public class ImportPatientAction
                         patientAttributeValueService.savePatientAttributeValue( attributeValue );
                     }
 
-                    // patientService.updatePatient( patient );
-
-                    // save program-instance
                     programInstanceService.addProgramInstance( programInstance );
-                    // update Patient
+
                     patientService.updatePatient( patient );
-                    // save programStageInstances
+
                     for ( ProgramStageInstance programStageInstance : programStageInstances )
                     {
                         programStageInstanceService.addProgramStageInstance( programStageInstance );
@@ -404,7 +396,7 @@ public class ImportPatientAction
                     // -------------------------------------------------------------
 
                     patientDataValues = getPatientDataValue( orgunit, programInstance, programStageInstances, row, wb );
-                    
+
                     for ( PatientDataValue patientDataValue : patientDataValues )
                     {
                         patientDataValueService.savePatientDataValue( patientDataValue );
@@ -422,11 +414,7 @@ public class ImportPatientAction
     }
 
     // -------------------------------------------------------------------------
-    // Support methods
-    // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
-    // Get data from Excel file
+    // Supporting methods
     // -------------------------------------------------------------------------
 
     private Patient getPatient( int row, OrganisationUnit orgunit, HSSFWorkbook wb )
@@ -440,9 +428,9 @@ public class ImportPatientAction
         patient.setRegistrationDate( new Date() );
         patient.setUnderAge( false );
 
-        // ---------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Create Patient
-        // ---------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         for ( XMLItem xmlItem : itemProperty )
         {
@@ -450,9 +438,9 @@ public class ImportPatientAction
 
             String value = readValue( row, xmlItem.getColumn(), sheet );
 
-            // ---------------------------------------------------------
+            // -----------------------------------------------------------------
             // Import identifier values
-            // ---------------------------------------------------------
+            // -----------------------------------------------------------------
 
             if ( xmlItem.isType( XMLItem.IDENTIFIER_TYPE ) )
             {
@@ -492,8 +480,8 @@ public class ImportPatientAction
         // PatientIdentifierType will be null
         // -------------------------------------------------------------
 
-        String systemIdentifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(),
-            patient.getGender() );
+        String systemIdentifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient
+            .getGender() );
 
         PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
         while ( systemGenerateIdentifier != null )
@@ -548,29 +536,24 @@ public class ImportPatientAction
             if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
             {
                 // value is the id of the option
-                PatientAttributeOption option = patientAttributeOptionService
-                    .get( Integer.parseInt( value.split( ":" )[1] ) );
+                PatientAttributeOption option = patientAttributeOptionService.get( Integer
+                    .parseInt( value.split( ":" )[1] ) );
 
                 if ( option != null )
                 {
                     attributeValue.setPatientAttributeOption( option );
                     attributeValue.setValue( option.getName() );
                 }
-            }// end Attribute is combo-type
+            }
             else
             {
                 attributeValue.setValue( value.trim() );
             }
 
             attributeValues.add( attributeValue );
-
-            // patientAttributeValueService.savePatientAttributeValue(
-            // attributeValue );
-
         }
 
         patient.setAttributes( attributes );
-        // patientService.updatePatient( patient );
 
         return attributeValues;
     }
@@ -584,13 +567,7 @@ public class ImportPatientAction
         for ( XMLItem xmlItem : itemEnrollProgram )
         {
             HSSFSheet sheet = wb.getSheetAt( xmlItem.getSheet() );
-
-            // Get value into Excel-file
             String value = readValue( row, xmlItem.getColumn(), sheet );
-
-            // ---------------------------------------------------------
-            // Create programInstance
-            // ---------------------------------------------------------
 
             Date date = format.parseDate( value );
 
@@ -607,10 +584,7 @@ public class ImportPatientAction
         programInstance.setPatient( patient );
         programInstance.setCompleted( false );
 
-        // programInstanceService.addProgramInstance( programInstance );
-
         patient.getPrograms().add( program );
-        // patientService.updatePatient( patient );
 
         return programInstance;
     }
@@ -630,14 +604,12 @@ public class ImportPatientAction
             programStageInstance.setProgramStage( programStage );
             programStageInstance.setStageInProgram( programStage.getStageInProgram() );
 
-            Date dueDate = DateUtils.getDateAfterAddition( programInstance.getDateOfIncident(),
-                programStage.getMinDaysFromStart() );
+            Date dueDate = DateUtils.getDateAfterAddition( programInstance.getDateOfIncident(), programStage
+                .getMinDaysFromStart() );
 
             programStageInstance.setDueDate( dueDate );
 
             programStageInstances.add( programStageInstance );
-            // programStageInstanceService.addProgramStageInstance(
-            // programStageInstance );
         }
 
         return programStageInstances;
@@ -646,19 +618,16 @@ public class ImportPatientAction
     private Collection<PatientDataValue> getPatientDataValue( OrganisationUnit orgunit,
         ProgramInstance programInstance, List<ProgramStageInstance> stageInstances, int row, HSSFWorkbook wb )
     {
-
         Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
 
         for ( XMLItem xmlItem : itemProgramStage )
         {
             HSSFSheet sheet = wb.getSheetAt( xmlItem.getSheet() );
-
-            // Get value into Excel-file
             String value = readValue( row, xmlItem.getColumn(), sheet );
 
-            // ---------------------------------------------------------
+            // -----------------------------------------------------------------
             // Create PatientDataValue
-            // ---------------------------------------------------------
+            // -----------------------------------------------------------------
 
             String[] infor = xmlItem.getValue().split( "\\." );
 
@@ -712,17 +681,6 @@ public class ImportPatientAction
                 dataValue.setValue( value );
 
                 dataValues.add( dataValue );
-
-                // patientDataValueService.savePatientDataValue( dataValue
-                // );
-
-                // else
-                // {
-                // dataValue.setTimestamp( new Date() );
-                // dataValue.setValue( value );
-                //
-                // patientDataValueService.updatePatientDataValue( dataValue );
-                // }
             }
 
         }
@@ -754,7 +712,10 @@ public class ImportPatientAction
             return false;
         }
 
-        // Check duplication name, birthdate, gender
+        // ---------------------------------------------------------------------
+        // Check duplicated patient
+        // ---------------------------------------------------------------------
+
         Collection<Patient> patients = patientService.getPatient( patient.getFirstName(), patient.getMiddleName(),
             patient.getLastName(), patient.getBirthDate(), patient.getGender() );
 

@@ -56,7 +56,7 @@ public class UpdateProgramAttributeAction
     public static final String PREFIX_ATTRIBUTE_OPTION = "attrOption";
 
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private ProgramAttributeService programAttributeService;
@@ -117,7 +117,7 @@ public class UpdateProgramAttributeAction
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override

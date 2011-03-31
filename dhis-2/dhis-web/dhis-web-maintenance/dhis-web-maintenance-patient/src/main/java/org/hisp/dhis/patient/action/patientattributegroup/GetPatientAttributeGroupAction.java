@@ -55,14 +55,10 @@ public class GetPatientAttributeGroupAction
     private PatientAttributeService patientAttributeService;
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private int id;
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
 
     private List<PatientAttribute> patientAttributes;
 
@@ -98,7 +94,7 @@ public class GetPatientAttributeGroupAction
     }
 
     // -------------------------------------------------------------------------
-    // Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

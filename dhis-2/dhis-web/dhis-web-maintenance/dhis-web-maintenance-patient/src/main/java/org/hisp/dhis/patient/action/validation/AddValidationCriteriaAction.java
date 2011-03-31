@@ -128,7 +128,7 @@ public class AddValidationCriteriaAction
     }
 
     // -------------------------------------------------------------------------
-    // Support method
+    // Supporting method
     // -------------------------------------------------------------------------
 
     private Object getObject()

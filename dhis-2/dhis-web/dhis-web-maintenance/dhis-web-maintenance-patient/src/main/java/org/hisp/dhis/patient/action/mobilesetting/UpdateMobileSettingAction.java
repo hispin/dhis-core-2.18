@@ -108,6 +108,10 @@ public class UpdateMobileSettingAction
         this.registrationdate = registrationdate;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception
@@ -175,6 +179,10 @@ public class UpdateMobileSettingAction
         }
         return SUCCESS;
     }
+
+    // -------------------------------------------------------------------------
+    // Supporting methods
+    // -------------------------------------------------------------------------
 
     private void fillValues( List<PatientAttribute> attributes )
     {

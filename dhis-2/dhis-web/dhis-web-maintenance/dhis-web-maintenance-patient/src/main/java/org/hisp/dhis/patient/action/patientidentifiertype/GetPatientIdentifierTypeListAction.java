@@ -38,7 +38,7 @@ import org.hisp.dhis.patient.comparator.PatientIdentifierTypeComparator;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Viet 
+ * @author Viet
  * @version $Id$
  */
 public class GetPatientIdentifierTypeListAction
@@ -49,13 +49,26 @@ public class GetPatientIdentifierTypeListAction
     // -------------------------------------------------------------------------
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
     private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
-    
+
+    // -------------------------------------------------------------------------
+    // Getter && Setter
+    // -------------------------------------------------------------------------
+
+    public List<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
+    }
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -72,18 +85,4 @@ public class GetPatientIdentifierTypeListAction
         return SUCCESS;
     }
 
-    // -------------------------------------------------------------------------
-    // Getter && Setter
-    // -------------------------------------------------------------------------
-    
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
-    
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }    
-   
 }

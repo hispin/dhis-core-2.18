@@ -44,7 +44,7 @@ public class SaveProgramStageSortOrderAction
 {
 
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramStageService programStageService;
@@ -55,7 +55,7 @@ public class SaveProgramStageSortOrderAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private List<Integer> programStageList;

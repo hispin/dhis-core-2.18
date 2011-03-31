@@ -42,7 +42,7 @@ public class RemovePatientIdentifierTypeAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
@@ -58,7 +58,31 @@ public class RemovePatientIdentifierTypeAction
     private I18n i18n;
 
     // -------------------------------------------------------------------------
-    // Action
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
@@ -98,27 +122,4 @@ public class RemovePatientIdentifierTypeAction
         return ERROR;
     }
 
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
 }

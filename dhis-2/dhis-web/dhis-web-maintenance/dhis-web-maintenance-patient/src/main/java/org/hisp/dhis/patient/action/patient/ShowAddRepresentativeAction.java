@@ -70,7 +70,9 @@ public class ShowAddRepresentativeAction
     public String execute()
     {
         relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
+        
         identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        
         attributes = patientAttributeService.getAllPatientAttributes();
 
         return SUCCESS;

@@ -42,9 +42,8 @@ import com.opensymphony.xwork2.Action;
 public class ValidateProgramAttributeAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramAttributeService programAttributeService;

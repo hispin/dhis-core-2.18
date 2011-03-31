@@ -40,38 +40,22 @@ public class GetPatientIdentifierTypeAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private Integer id;
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
     private PatientIdentifierType patientIdentifierType;
 
     // -------------------------------------------------------------------------
-    // Action
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
-        return SUCCESS;
-    }
-    
-    // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-    
 
     public PatientIdentifierType getPatientIdentifierType()
     {
@@ -91,5 +75,17 @@ public class GetPatientIdentifierTypeAction
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
+    {
+        patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
+
+        return SUCCESS;
     }
 }

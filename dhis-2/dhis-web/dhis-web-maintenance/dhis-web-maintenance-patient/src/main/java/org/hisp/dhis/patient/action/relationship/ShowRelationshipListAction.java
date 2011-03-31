@@ -85,11 +85,6 @@ public class ShowRelationshipListAction
     public String execute()
         throws Exception
     {
-
-        // ---------------------------------------------------------------------
-        // Validate selected Patient
-        // ---------------------------------------------------------------------
-
         if ( id != null )
         {
             patient = patientService.getPatient( id );

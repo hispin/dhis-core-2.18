@@ -46,6 +46,7 @@ public class ShowMobileSettingFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
     private PatientAttributeService patientAttributeService;
 
     public PatientAttributeService getPatientAttributeService()
@@ -85,7 +86,7 @@ public class ShowMobileSettingFormAction
     {
         this.patientAtts = patientAtts;
     }
-    
+
     private Collection<PatientAttribute> attributes;
 
     public Collection<PatientAttribute> getAttributes()
@@ -97,7 +98,7 @@ public class ShowMobileSettingFormAction
     {
         this.attributes = attributes;
     }
-    
+
     private PatientMobileSetting setting;
 
     public PatientMobileSetting getSetting()
@@ -110,23 +111,27 @@ public class ShowMobileSettingFormAction
         this.setting = setting;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception
     {
         attributes = patientAttributeService.getAllPatientAttributes();
-        
-        Collection<PatientMobileSetting> paSettings = new HashSet<PatientMobileSetting>(
-            patientMobileSettingService.getCurrentSetting() );
-        
+
+        Collection<PatientMobileSetting> paSettings = new HashSet<PatientMobileSetting>( patientMobileSettingService
+            .getCurrentSetting() );
+
         if ( paSettings != null )
         {
             Iterator<PatientMobileSetting> settingsIt = paSettings.iterator();
-            
+
             if ( settingsIt.hasNext() )
             {
-                setting = settingsIt.next(); 
-                
+                setting = settingsIt.next();
+
                 patientAtts = setting.getPatientAttributes();
 
                 for ( PatientAttribute attribute : patientAtts )
@@ -142,7 +147,7 @@ public class ShowMobileSettingFormAction
                 patientAtts = new ArrayList<PatientAttribute>();
             }
         }
-        
+
         return SUCCESS;
     }
 

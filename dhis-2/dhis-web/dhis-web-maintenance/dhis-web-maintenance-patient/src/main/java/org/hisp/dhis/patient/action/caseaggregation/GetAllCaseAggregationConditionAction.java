@@ -69,7 +69,7 @@ public class GetAllCaseAggregationConditionAction
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override

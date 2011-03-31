@@ -45,7 +45,7 @@ public class UpdateCaseAggregationConditionAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private CaseAggregationConditionService aggregationConditionService;
@@ -113,7 +113,7 @@ public class UpdateCaseAggregationConditionAction
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override

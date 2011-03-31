@@ -41,7 +41,7 @@ public class ValidateValidationCriteriaAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private ValidationCriteriaService validationCriteriaService;

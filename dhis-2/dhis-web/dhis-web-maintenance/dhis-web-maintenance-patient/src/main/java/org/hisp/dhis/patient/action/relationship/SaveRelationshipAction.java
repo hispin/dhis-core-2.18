@@ -44,7 +44,6 @@ import com.opensymphony.xwork2.Action;
 public class SaveRelationshipAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -155,25 +154,25 @@ public class SaveRelationshipAction
         // ---------------------------------------------------------------------
 
         relationship = new Relationship();
-        
+
         if ( relationshipType.getaIsToB().equalsIgnoreCase( relationshipName ) )
         {
             relationship.setPatientA( partner );
             relationship.setPatientB( patient );
-            
+
             relationship.setRelationshipType( relationshipType );
             relationshipService.saveRelationship( relationship );
-            
-        }        
+
+        }
         else if ( relationshipType.getbIsToA().equalsIgnoreCase( relationshipName ) )
         {
             relationship.setPatientA( patient );
             relationship.setPatientB( partner );
-            
+
             relationship.setRelationshipType( relationshipType );
             relationshipService.saveRelationship( relationship );
         }
-        
+
         return SUCCESS;
     }
 }

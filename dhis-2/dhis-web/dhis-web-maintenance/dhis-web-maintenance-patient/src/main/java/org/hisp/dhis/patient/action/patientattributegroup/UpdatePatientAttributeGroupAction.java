@@ -45,7 +45,7 @@ public class UpdatePatientAttributeGroupAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private PatientAttributeGroupService patientAttributeGroupService;

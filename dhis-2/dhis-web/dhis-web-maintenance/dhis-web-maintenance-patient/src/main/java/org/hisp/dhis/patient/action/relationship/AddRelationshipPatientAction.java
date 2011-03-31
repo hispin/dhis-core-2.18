@@ -66,14 +66,10 @@ public class AddRelationshipPatientAction
     private RelationshipTypeService relationshipTypeService;
 
     // -------------------------------------------------------------------------
-    // Input - name
+    // Input
     // -------------------------------------------------------------------------
 
     private String fullName;
-
-    // -------------------------------------------------------------------------
-    // Input - demographics
-    // -------------------------------------------------------------------------
 
     private String birthDate;
 
@@ -87,10 +83,6 @@ public class AddRelationshipPatientAction
 
     private String bloodGroup;
 
-    // -------------------------------------------------------------------------
-    // Input - others
-    // -------------------------------------------------------------------------
-
     private boolean underAge;
 
     private Integer relationshipId;
@@ -98,8 +90,7 @@ public class AddRelationshipPatientAction
     private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
-    // Output - making the patient available so that its attributes can be
-    // edited
+    // Output
     // -------------------------------------------------------------------------
 
     private Patient patient;
@@ -115,24 +106,16 @@ public class AddRelationshipPatientAction
 
     public String execute()
     {
-        // ---------------------------------------------------------------------
-        // Prepare values
-        // ---------------------------------------------------------------------
-
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patient = new Patient();
-        
-        // ---------------------------------------------------------------------
-        // Set FirstName, MiddleName, LastName by FullName
-        // ---------------------------------------------------------------------
 
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
-        
+
         fullName = fullName.trim();
-        
+
         int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
 
@@ -140,7 +123,7 @@ public class AddRelationshipPatientAction
         String middleName = "";
         String lastName = "";
 
-        if( fullName.indexOf( ' ' ) != -1 )
+        if ( fullName.indexOf( ' ' ) != -1 )
         {
             firstName = fullName.substring( 0, startIndex );
             if ( startIndex == endIndex )
@@ -158,7 +141,7 @@ public class AddRelationshipPatientAction
         patient.setFirstName( firstName );
         patient.setMiddleName( middleName );
         patient.setLastName( lastName );
-        
+
         // ---------------------------------------------------------------------
         // Set Other information for patient
         // ---------------------------------------------------------------------
@@ -266,6 +249,7 @@ public class AddRelationshipPatientAction
         // -----------------------------------------------------------------------------
         // Save Patient Attributes
         // -----------------------------------------------------------------------------
+       
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
 
         PatientAttributeValue attributeValue = null;

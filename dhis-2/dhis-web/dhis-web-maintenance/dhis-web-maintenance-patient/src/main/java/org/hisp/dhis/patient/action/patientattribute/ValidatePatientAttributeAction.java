@@ -43,7 +43,7 @@ public class ValidatePatientAttributeAction
 {
 
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientAttributeService patientAttributeService;

@@ -27,9 +27,6 @@
 
 package org.hisp.dhis.patient.action.program;
 
-import java.util.Date;
-
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramAttribute;
 import org.hisp.dhis.program.ProgramAttributeService;
 
@@ -71,21 +68,21 @@ public class GetProgramAttributeAction
         this.id = id;
     }
 
-    // -------------------------------------------------------------------------
-    // Implementation Action
-    // -------------------------------------------------------------------------
-
     public ProgramAttribute getProgramAttribute()
     {
         return programAttribute;
     }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
         throws Exception
     {
         programAttribute = programAttributeService.getProgramAttribute( id );
-        
+
         return SUCCESS;
     }
 }

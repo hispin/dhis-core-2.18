@@ -109,7 +109,6 @@ public class GetProgramListAction
     public String execute()
         throws Exception
     {
-
         programs = programService.getAllPrograms();
 
         associations = programStageService.getAllProgramStages();

@@ -42,9 +42,8 @@ import com.opensymphony.xwork2.Action;
 public class ShowAddProgramFormAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramStageService programStageService;
@@ -55,7 +54,7 @@ public class ShowAddProgramFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Output
     // -------------------------------------------------------------------------
 
     private Collection<ProgramStage> programStages;
@@ -71,7 +70,6 @@ public class ShowAddProgramFormAction
 
     public String execute()
     {
-
         programStages = new ArrayList<ProgramStage>( programStageService.getAllProgramStages() );
 
         return SUCCESS;
