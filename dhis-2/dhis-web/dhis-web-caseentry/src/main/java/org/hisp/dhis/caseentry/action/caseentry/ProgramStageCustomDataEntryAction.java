@@ -215,7 +215,7 @@ public class ProgramStageCustomDataEntryAction implements Action
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
@@ -269,12 +269,10 @@ public class ProgramStageCustomDataEntryAction implements Action
 
         boolean cdeFormExists = (dataEntryForm != null);
 
-        // --------------------------------------------------------------
         String disabled = "";
         Map<CalculatedDataElement, Integer> calculatedValueMap = dataEntryScreenManager
             .populateValuesForCalculatedDataElements( organisationUnit, programStage, programStageInstance );
 
-        // -----------------------------------------------------------
         if ( cdeFormExists )
         {
             customDataEntryFormExists = true;

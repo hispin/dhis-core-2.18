@@ -83,7 +83,6 @@ function responseListPeriodForEndReceived( json )
 		addOption('eDateLB', item.name , i );
 	});
 }
-
 	
 function validationCaseAggregation( )
 {
@@ -129,4 +128,4 @@ function viewResultDetails( orgunitId, periodId, aggregationConditionId )
 		width: 800,
         height: 400
     });
-}
+

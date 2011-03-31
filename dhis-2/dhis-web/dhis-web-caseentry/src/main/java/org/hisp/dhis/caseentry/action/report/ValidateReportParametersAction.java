@@ -103,7 +103,6 @@ public class ValidateReportParametersAction
     public String execute()
         throws Exception
     {
-
         if ( selectedStateManager.getSelectedOrganisationUnit() == null )
         {
             message = i18n.getString( "please_select_a_reporting_unit" );

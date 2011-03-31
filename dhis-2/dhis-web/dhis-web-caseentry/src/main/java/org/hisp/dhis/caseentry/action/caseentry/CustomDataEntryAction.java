@@ -148,24 +148,6 @@ public class CustomDataEntryAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private String customDataEntryFormCode = null;
-
-    public String getCustomDataEntryFormCode()
-    {
-        return this.customDataEntryFormCode;
-    }
-
-    private Collection<ProgramStageDataElement> programStageDataElements;
-
-    public Collection<ProgramStageDataElement> getProgramStageDataElements()
-    {
-        return programStageDataElements;
-    }
-
-    // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
 
@@ -307,16 +289,30 @@ public class CustomDataEntryAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String customDataEntryFormCode = null;
+
+    public String getCustomDataEntryFormCode()
+    {
+        return this.customDataEntryFormCode;
+    }
+
+    private Collection<ProgramStageDataElement> programStageDataElements;
+
+    public Collection<ProgramStageDataElement> getProgramStageDataElements()
+    {
+        return programStageDataElements;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Get the min/max values
-        // ---------------------------------------------------------------------
-
         Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
             organisationUnit, dataElements );
 
@@ -370,22 +366,18 @@ public class CustomDataEntryAction
 
         boolean cdeFormExists = (dataEntryForm != null);
 
-        // --------------------------------------------------------------
         String disabled = "";
         Map<CalculatedDataElement, Integer> calculatedValueMap = dataEntryScreenManager
             .populateValuesForCalculatedDataElements( organisationUnit, programStage, programStageInstance );
 
-        // -----------------------------------------------------------
         if ( cdeFormExists )
         {
             customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
-                dataEntryForm.getHtmlCode(), patientDataValues, calculatedValueMap, minMaxMap, disabled,
-                i18n, programStage, programStageInstance, organisationUnit );
-
-            //programStageDataElements = dataEntryScreenManager.getProgramStageDataElements( dataEntryForm.getHtmlCode() );
+                dataEntryForm.getHtmlCode(), patientDataValues, calculatedValueMap, minMaxMap, disabled, i18n,
+                programStage, programStageInstance, organisationUnit );
         }
-        return SUCCESS;
 
+        return SUCCESS;
     }
 
 }

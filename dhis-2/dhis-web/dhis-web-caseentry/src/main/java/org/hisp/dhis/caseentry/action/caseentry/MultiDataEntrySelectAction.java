@@ -12,7 +12,8 @@ import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
-public class MultiDataEntrySelectAction implements Action
+public class MultiDataEntrySelectAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -40,7 +41,7 @@ public class MultiDataEntrySelectAction implements Action
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private OrganisationUnit organisationUnit;
@@ -68,26 +69,23 @@ public class MultiDataEntrySelectAction implements Action
     {
         return programs;
     }
-    
+
     private Collection<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
-    
+
     public Collection<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
     }
-    
+
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Patient Attribute Service
-        // ---------------------------------------------------------------------
         patientAttributes = patientAttributeService.getAllPatientAttributes();
-        
+
         // ---------------------------------------------------------------------
         // Validate selected OrganisationUnit
         // ---------------------------------------------------------------------
@@ -127,7 +125,7 @@ public class MultiDataEntrySelectAction implements Action
         if ( selectedProgram != null && programs.contains( selectedProgram ) )
         {
             programId = selectedProgram.getId();
-            
+
             selectedStateManager.setSelectedProgram( selectedProgram );
         }
         else
@@ -138,9 +136,8 @@ public class MultiDataEntrySelectAction implements Action
 
             return SUCCESS;
         }
-        
+
         return SUCCESS;
     }
-
 
 }

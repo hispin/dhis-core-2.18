@@ -21,7 +21,8 @@ import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetPatientDetailsAction implements Action
+public class GetPatientDetailsAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -66,7 +67,7 @@ public class GetPatientDetailsAction implements Action
     private String childContactName;
 
     private String childContactType;
-    
+
     private String systemIdentifier;
 
     private String benicode;
@@ -84,7 +85,6 @@ public class GetPatientDetailsAction implements Action
     public String execute()
         throws Exception
     {
-
         patient = patientService.getPatient( id );
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
@@ -96,38 +96,41 @@ public class GetPatientDetailsAction implements Action
         PatientIdentifierType idType = null;
         Patient representative = patient.getRepresentative();
 
-        if( patient.isUnderAge() && representative != null )
+        if ( patient.isUnderAge() && representative != null )
         {
-            for( PatientIdentifier representativeIdentifier : representative.getIdentifiers() )
+            for ( PatientIdentifier representativeIdentifier : representative.getIdentifiers() )
             {
-               if( representativeIdentifier.getIdentifierType() != null && representativeIdentifier.getIdentifierType().isRelated() ) 
+                if ( representativeIdentifier.getIdentifierType() != null
+                    && representativeIdentifier.getIdentifierType().isRelated() )
                 {
-                    identiferMap.put( representativeIdentifier.getIdentifierType().getId(), representativeIdentifier.getIdentifier() );
-                    //System.out.println( "if patient uderage "+representativeIdentifier.getIdentifierType().getId()+ representativeIdentifier.getIdentifier() );
+                    identiferMap.put( representativeIdentifier.getIdentifierType().getId(), representativeIdentifier
+                        .getIdentifier() );
                 }
             }
         }
-        
+
         for ( PatientIdentifier identifier : patient.getIdentifiers() )
         {
             idType = identifier.getIdentifierType();
             if ( idType != null )
             {
                 identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
-                //System.out.println( "if type is not null "+identifier.getIdentifierType().getId()+ identifier.getIdentifier()  );
-                if(idType.getFormat().equals("State Format"))
+
+                if ( idType.getFormat().equals( "State Format" ) )
                 {
-                     String iden = identifier.getIdentifier();
-                     benicode = iden.substring( 12,16 );//abcdefghi1121111
-                     yearcode = iden.substring( 10, 12 );
-                     progcode = iden.substring( 9, 10 );
-                     orgunitcode = iden.substring( 0, 9);
+                    String iden = identifier.getIdentifier();
+                    benicode = iden.substring( 12, 16 );// abcdefghi1121111
+                    yearcode = iden.substring( 10, 12 );
+                    progcode = iden.substring( 9, 10 );
+                    orgunitcode = iden.substring( 0, 9 );
                 }
             }
-            else 
+            else
+            {
                 systemIdentifier = identifier.getIdentifier();
+            }
         }
-        
+
         for ( PatientAttribute patientAttribute : patient.getAttributes() )
         {
             patientAttributeValueMap.put( patientAttribute.getId(), PatientAttributeValue.UNKNOWN );
@@ -138,14 +141,17 @@ public class GetPatientDetailsAction implements Action
 
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
-           if( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute().getValueType()  ) )
-           {
-               patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
-                   .getPatientAttributeOption().getName() );
-           }else{
-               patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
-                   .getValue() );
-           }
+            if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute()
+                .getValueType() ) )
+            {
+                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                    patientAttributeValue.getPatientAttributeOption().getName() );
+            }
+            else
+            {
+                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                    patientAttributeValue.getValue() );
+            }
         }
 
         programs = programService.getAllPrograms();
@@ -257,7 +263,8 @@ public class GetPatientDetailsAction implements Action
         return systemIdentifier;
     }
 
-    public String getBenicode() {
+    public String getBenicode()
+    {
         return benicode;
     }
 
@@ -275,5 +282,5 @@ public class GetPatientDetailsAction implements Action
     {
         return yearcode;
     }
- 
+
 }

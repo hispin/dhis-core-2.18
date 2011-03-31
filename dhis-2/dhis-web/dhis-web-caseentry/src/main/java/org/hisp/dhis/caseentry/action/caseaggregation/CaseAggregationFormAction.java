@@ -64,7 +64,7 @@ public class CaseAggregationFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()

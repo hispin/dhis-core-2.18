@@ -72,7 +72,7 @@ public class SaveProvidingFacilityAction
     {
         this.programInstanceService = programInstanceService;
     }
-    
+
     private ProgramStageInstanceService programStageInstanceService;
 
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
@@ -92,18 +92,18 @@ public class SaveProvidingFacilityAction
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
-    }    
+    }
 
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    
+
     private boolean providedByAnotherFacility;
 
     public void setProvidedByAnotherFacility( boolean providedByAnotherFacility )
     {
         this.providedByAnotherFacility = providedByAnotherFacility;
-    }    
+    }
 
     private int dataElementId;
 
@@ -125,47 +125,42 @@ public class SaveProvidingFacilityAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-        
-        
+
         Patient patient = selectedStateManager.getSelectedPatient();
 
-        
         Program program = selectedStateManager.getSelectedProgram();
-        
 
         ProgramStage programStage = selectedStateManager.getSelectedProgramStage();
-        
 
-        Collection<ProgramInstance> progamInstances = programInstanceService
-            .getProgramInstances( patient, program, false );
+        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program,
+            false );
 
         ProgramInstance programInstance = progamInstances.iterator().next();
-        
-        
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
-        
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );    
+
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
+            programInstance, programStage );
+
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
             dataElement, organisationUnit );
-        
+
         if ( patientDataValue != null )
         {
             LOG.debug( "Updating PatientDataValue, value added/changed" );
-            
+
             patientDataValue.setProvidedByAnotherFacility( providedByAnotherFacility );
-            
+
             patientDataValueService.updatePatientDataValue( patientDataValue );
-        }       
-        
+        }
+
         return SUCCESS;
     }
 }

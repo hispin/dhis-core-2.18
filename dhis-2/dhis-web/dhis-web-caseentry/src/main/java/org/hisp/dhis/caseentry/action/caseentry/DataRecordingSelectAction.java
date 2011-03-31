@@ -216,7 +216,7 @@ public class DataRecordingSelectAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()

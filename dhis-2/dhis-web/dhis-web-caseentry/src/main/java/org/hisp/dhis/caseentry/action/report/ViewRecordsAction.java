@@ -49,7 +49,6 @@ import com.opensymphony.xwork2.Action;
 public class ViewRecordsAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -121,7 +120,6 @@ public class ViewRecordsAction
     public String execute()
         throws Exception
     {
-
         programStageInstance = programStageInstanceService.getProgramStageInstance( id );
 
         patient = programStageInstance.getProgramInstance().getPatient();

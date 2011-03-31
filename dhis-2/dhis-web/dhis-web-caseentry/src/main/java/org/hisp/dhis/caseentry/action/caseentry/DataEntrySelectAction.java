@@ -64,16 +64,12 @@ public class DataEntrySelectAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
-
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         if ( organisationUnit == null )

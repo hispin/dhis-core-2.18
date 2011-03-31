@@ -48,12 +48,10 @@ import com.opensymphony.xwork2.ActionContext;
 public class DefaultPeriodGenericManager
     implements PeriodGenericManager
 {
-
     private static final Log log = LogFactory.getLog( DefaultPeriodGenericManager.class );
 
-
     public static final String SESSION_KEY_SELECTED_PERIOD_TYPE = "SESSION_KEY_SELECTED_PERIOD_TYPE";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -64,12 +62,11 @@ public class DefaultPeriodGenericManager
     {
         this.periodService = periodService;
     }
-  
 
     // -------------------------------------------------------------------------
-    // Period
+    // Implementation methodss
     // -------------------------------------------------------------------------
-    
+
     public void setSelectedPeriodIndex( String key, Integer index )
     {
         getSession().put( key, index );
@@ -108,7 +105,7 @@ public class DefaultPeriodGenericManager
     public List<Period> getPeriodList( String key, String baseKey )
     {
         Period basePeriod = getBasePeriod( baseKey );
-        
+
         CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
         List<Period> periods = periodType.generatePeriods( basePeriod );
@@ -116,7 +113,7 @@ public class DefaultPeriodGenericManager
         Date now = new Date();
 
         Iterator<Period> iterator = periods.iterator();
-        
+
         while ( iterator.hasNext() )
         {
             if ( iterator.next().getStartDate().after( now ) )
@@ -124,10 +121,10 @@ public class DefaultPeriodGenericManager
                 iterator.remove();
             }
         }
-        
+
         return periods;
     }
-    
+
     public void nextPeriodSpan( String key, String baseKey )
     {
         List<Period> periods = getPeriodList( key, baseKey );
@@ -136,7 +133,9 @@ public class DefaultPeriodGenericManager
         Period basePeriod = periods.get( periods.size() - 1 );
         Period newBasePeriod = periodType.getNextPeriod( basePeriod );
 
-        if ( newBasePeriod.getStartDate().before( new Date() ) ) // Future periods not allowed
+        if ( newBasePeriod.getStartDate().before( new Date() ) ) // Future
+                                                                 // periods not
+                                                                 // allowed
         {
             getSession().put( baseKey, newBasePeriod );
         }
@@ -144,7 +143,7 @@ public class DefaultPeriodGenericManager
 
     public void previousPeriodSpan( String key, String baseKey )
     {
-        List<Period> periods = getPeriodList(key, baseKey);
+        List<Period> periods = getPeriodList( key, baseKey );
         CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
         Period basePeriod = periods.get( 0 );
@@ -154,7 +153,7 @@ public class DefaultPeriodGenericManager
     }
 
     // -------------------------------------------------------------------------
-    // Support methods
+    // Supporting methods
     // -------------------------------------------------------------------------
 
     private PeriodType getPeriodType()
@@ -165,7 +164,7 @@ public class DefaultPeriodGenericManager
     private Period getBasePeriod( String baseKey )
     {
         Period basePeriod = (Period) getSession().get( baseKey );
-        
+
         PeriodType periodType = getPeriodType();
 
         if ( basePeriod == null )
@@ -196,8 +195,8 @@ public class DefaultPeriodGenericManager
     {
         getSession().put( SESSION_KEY_SELECTED_PERIOD_TYPE, periodService.getPeriodTypeByName( periodTypeName ) );
     }
-    
-    public void clearBasePeriod( )
+
+    public void clearBasePeriod()
     {
         getSession().remove( SESSION_KEY_BASE_PERIOD_START );
         getSession().remove( SESSION_KEY_BASE_PERIOD_END );

@@ -181,14 +181,14 @@ public class GenerateReportAction
         // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
-  System.out.println("\n\n =============== \n 1.. ");      
+
         int total = programInstanceService.countProgramInstances( program, organisationUnit );
-System.out.println("\n total 2 : " + total);     
+
         this.paging = createPaging( total );
-System.out.println("\n 3.. ");       
+
         Collection<ProgramInstance> selectedProgramInstances = programInstanceService.getProgramInstances( program,
-            organisationUnit, paging.getStartPos(), paging.getPageSize());
-System.out.println("\n 4 selectedProgramInstances : " + selectedProgramInstances );
+            organisationUnit, paging.getStartPos(), paging.getPageSize() );
+
         Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
         for ( ProgramInstance programInstance : selectedProgramInstances )

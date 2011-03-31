@@ -145,16 +145,12 @@ public class SearchPatientAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
-
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
@@ -206,7 +202,7 @@ public class SearchPatientAction
         }
 
         listAll = selectedStateManager.getListAll();
-        
+
         if ( listAll )
         {
             patients = patientService.getPatients( organisationUnit );
@@ -216,13 +212,13 @@ public class SearchPatientAction
             return SUCCESS;
 
         }
-        
+
         searchingAttributeId = selectedStateManager.getSearchingAttributeId();
         searchText = selectedStateManager.getSearchText();
-        
+
         if ( searchingAttributeId != null && searchText != null )
         {
-            
+
             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
 
             Collection<PatientAttributeValue> matching = patientAttributeValueService.searchPatientAttributeValue(
@@ -235,9 +231,9 @@ public class SearchPatientAction
 
             return SUCCESS;
         }
-        
-        patients = patientService.getPatients( searchText ); 
-        
+
+        patients = patientService.getPatients( searchText );
+
         return SUCCESS;
 
     }

@@ -87,7 +87,7 @@ public class DefaultSelectedStateManager
     }
 
     // -------------------------------------------------------------------------
-    // SelectedStateManager implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public OrganisationUnit getSelectedOrganisationUnit()

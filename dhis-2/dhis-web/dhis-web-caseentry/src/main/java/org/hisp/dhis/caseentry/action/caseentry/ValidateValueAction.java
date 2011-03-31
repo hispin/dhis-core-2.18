@@ -58,7 +58,6 @@ import com.opensymphony.xwork2.Action;
 public class ValidateValueAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -233,13 +232,11 @@ public class ValidateValueAction
             return INPUT;
         }
 
-        // end Check validation for dataElement into the Stage
-
         return SUCCESS;
     }
 
     // -------------------------------------------------------------------------
-    // Support metho
+    // Support methods
     // -------------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
@@ -334,7 +331,6 @@ public class ValidateValueAction
         }
         
         return value;
-        
     }
 
 }

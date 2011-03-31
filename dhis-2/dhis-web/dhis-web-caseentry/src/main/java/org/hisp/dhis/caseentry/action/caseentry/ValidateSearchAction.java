@@ -80,13 +80,12 @@ public class ValidateSearchAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-
         if ( selectionManager.getSelectedOrganisationUnit() == null )
         {
             message = i18n.getString( "please_select_a_registering_unit" );

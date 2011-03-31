@@ -43,25 +43,25 @@ import org.hisp.dhis.program.ProgramStageInstance;
  * @author Abyot Asalefew
  * @version $Id$
  */
-public interface DataEntryScreenManager 
+public interface DataEntryScreenManager
 {
-    String getScreenType(ProgramStage programStage);
+    String getScreenType( ProgramStage programStage );
 
-    boolean hasMixOfDimensions(ProgramStage programStage);
+    boolean hasMixOfDimensions( ProgramStage programStage );
 
-    boolean hasMultiDimensionalDataElement(ProgramStage programStage);
+    boolean hasMultiDimensionalDataElement( ProgramStage programStage );
 
-    Collection<Integer> getAllCalculatedDataElements(ProgramStage programStage);
+    Collection<Integer> getAllCalculatedDataElements( ProgramStage programStage );
 
-    Map<CalculatedDataElement, Map<DataElement, Double>> getNonSavedCalculatedDataElements(ProgramStage programStage);
+    Map<CalculatedDataElement, Map<DataElement, Double>> getNonSavedCalculatedDataElements( ProgramStage programStage );
 
-    Map<CalculatedDataElement, Integer> populateValuesForCalculatedDataElements(OrganisationUnit organisationUnit,
-        ProgramStage programStage, ProgramStageInstance programStageInstance);
+    Map<CalculatedDataElement, Integer> populateValuesForCalculatedDataElements( OrganisationUnit organisationUnit,
+        ProgramStage programStage, ProgramStageInstance programStageInstance );
 
-    String populateCustomDataEntryScreenForMultiDimensional(String dataEntryFormCode, Collection<PatientDataValue> dataValues,
-        Map<CalculatedDataElement, Integer> calculatedValueMap, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, 
-        I18n i18n,  ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit);
-    
-    
+    String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode,
+        Collection<PatientDataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
+        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
+        ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit );
+
     Collection<ProgramStageDataElement> getProgramStageDataElements( String htmlCode );
 }

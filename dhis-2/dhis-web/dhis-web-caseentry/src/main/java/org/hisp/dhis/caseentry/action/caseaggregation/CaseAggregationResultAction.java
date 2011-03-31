@@ -60,7 +60,6 @@ import com.opensymphony.xwork2.Action;
 public class CaseAggregationResultAction
     implements Action
 {
-
     Log log = LogFactory.getLog( getClass() );
 
     // -------------------------------------------------------------------------
@@ -124,7 +123,7 @@ public class CaseAggregationResultAction
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output Parameters
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private String facilityLB;
@@ -147,7 +146,7 @@ public class CaseAggregationResultAction
     {
         return mapDataValues;
     }
-    
+
     private Map<DataValue, CaseAggregationCondition> mapCaseAggCondition;
 
     public Map<DataValue, CaseAggregationCondition> getMapCaseAggCondition()
@@ -164,7 +163,7 @@ public class CaseAggregationResultAction
     {
         mapDataValues = new HashMap<DataValue, String>();
         mapCaseAggCondition = new HashMap<DataValue, CaseAggregationCondition>();
-        
+
         String storedBy = currentUserService.getCurrentUsername() + "_CAE";
 
         // ---------------------------------------------------------------------
@@ -177,7 +176,7 @@ public class CaseAggregationResultAction
         {
             return SUCCESS;
         }
-        
+
         List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
         if ( facilityLB.equals( "children" ) )
         {
@@ -245,7 +244,7 @@ public class CaseAggregationResultAction
                         double resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
 
                         DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
-                        
+
                         if ( resultValue != 0 )
                         {
                             if ( dataValue == null )
@@ -266,7 +265,7 @@ public class CaseAggregationResultAction
 
                                 mapDataValues.put( dataValue, i18n.getString( "updated" ) + " " + message );
                             }
-                            
+
                             mapCaseAggCondition.put( dataValue, condition );
 
                         }
@@ -281,12 +280,12 @@ public class CaseAggregationResultAction
                             mapDataValues.put( dvalue, i18n.getString( "deleted" ) + " " + message );
                         }
 
-                    }// PeriodList end
+                    }
 
-                }// OptionComboList end
-            }// DataElementList end
+                }
+            }
 
-        }// Orgunit for loop end
+        }
 
         return SUCCESS;
     }

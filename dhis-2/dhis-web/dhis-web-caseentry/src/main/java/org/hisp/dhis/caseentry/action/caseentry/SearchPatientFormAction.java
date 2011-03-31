@@ -80,16 +80,12 @@ public class SearchPatientFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
-
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
