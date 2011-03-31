@@ -42,6 +42,7 @@ import static junit.framework.Assert.*;
 public class MessageServiceTest
     extends DhisSpringTest
 {
+    private User sender;
     private User userA;
     private User userB;
 
@@ -63,14 +64,16 @@ public class MessageServiceTest
         userService = (UserService) getBean( UserService.ID );
         messageService = (MessageService) getBean( MessageService.ID );
         
+        sender = createUser( 'S');
         userA = createUser( 'A' );
         userB = createUser( 'B' );
-        
+
+        userService.addUser( sender );
         userService.addUser( userA );
         userService.addUser( userB );
 
-        messageA = new Message( "TitleA", "TextA" );
-        messageB = new Message( "TitleB", "TextB" );
+        messageA = new Message( "SubjectA", "TextA", sender );
+        messageB = new Message( "SubjectB", "TextB", sender );
         
         userMessageA = new UserMessage( userA, messageA );
         userMessageB = new UserMessage( userB, messageA );
@@ -91,7 +94,7 @@ public class MessageServiceTest
         messageA = messageService.getMessage( idA );
         
         assertNotNull( messageA );
-        assertEquals( "TitleA", messageA.getTitle() );
+        assertEquals( "SubjectA", messageA.getSubject() );
         assertEquals( "TextA", messageA.getText() );
         assertEquals( 2, messageA.getUserMessages().size() );
         assertTrue( messageA.getUserMessages().contains( userMessageA ) );
