@@ -27,17 +27,23 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.message.UserMessage;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetMessagesAction
+public class SendMessageAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -51,25 +57,69 @@ public class GetMessagesAction
         this.messageService = messageService;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+    private SelectionTreeManager selectionTreeManager;
 
-    private List<UserMessage> messages;
-
-    public List<UserMessage> getMessages()
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        return messages;
+        this.selectionTreeManager = selectionTreeManager;
+    }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private String subject;
+    
+    public void setSubject( String subject )
+    {
+        this.subject = subject;
+    }
+
+    private String text;
+
+    public void setText( String text )
+    {
+        this.text = text;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        messages = messageService.getUserMessages( 1, 1000 );
+        User sender = currentUserService.getCurrentUser();
+
+        Message message = new Message( subject, text, sender );
+        
+        Set<UserMessage> userMessages = getUserMessages( message );
+        
+        message.setUserMessages( userMessages );
+        
+        messageService.saveMessage( message );
         
         return SUCCESS;
+    }
+    
+    private Set<UserMessage> getUserMessages( Message message )
+    {
+        Set<UserMessage> userMessages = new HashSet<UserMessage>();
+        
+        for ( OrganisationUnit unit : selectionTreeManager.getSelectedOrganisationUnits() )
+        {
+            for ( User user : unit.getUsers() )
+            {
+                userMessages.add( new UserMessage( user, message ) );
+            }
+        }
+        
+        return userMessages;
     }
 }
