@@ -1,8 +1,14 @@
 <script type="text/javascript" src="javascript/viewDataEntryForm.js"></script>
 <script type="text/javascript">
-    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "dataentryform_confirm_delete" ) , "'" )';
-	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
-	var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
+	jQuery(document).ready(function() {
+		if('$autoSave' == 'true'){
+			if (!timer_is_on)
+			  {
+				  timer_is_on=1;
+				  timedCount();
+			  }
+		}
+	});
 
     var stat = ('$!dataEntryForm') ? "EDIT" : "ADD";
     var dataEntryFormId = -1;
@@ -13,15 +19,11 @@
 
     #if($!dataEntryForm)
         dataEntryFormId = $dataEntryForm.id;
-    #end    
-  
-	if('$autoSave' == 'true'){
-		if (!timer_is_on)
-		  {
-			  timer_is_on=1;
-			  timedCount();
-		  }
-	}
+    #end
+
+    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "dataentryform_confirm_delete" ) , "'" )';
+	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
+	var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
 </script>
 
 <style type="text/css">
