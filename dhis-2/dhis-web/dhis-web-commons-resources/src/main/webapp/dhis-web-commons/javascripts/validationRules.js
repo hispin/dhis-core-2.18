@@ -157,5 +157,15 @@ var validationRules = {
 		"name" : {
 			"rangelength" : [ 2, 160 ]
 		}
+	},
+	"dataElementGroup" : {
+		"name" : {
+			"rangelength" : [ 3, 150 ]
+		}
+	},
+	"dataElementGroupSet" : {
+		"name" : {
+			"rangelength" : [ 2, 230 ]
+		}
 	}
 }

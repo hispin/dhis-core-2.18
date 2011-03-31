@@ -1,9 +1,4 @@
-<script type="text/javascript">
-	jQuery(document).ready(	function(){
-		validation( 'updateDataElementGroupForm', function( form ){ form.submit()}, beforeSubmit );	
-		checkValueIsExist( "name", "validateDataElementGroup.action", {id: getFieldValue( 'id' )});		
-	});
-</script>
+<script type="text/javascript" src="javascript/updateDataElementGroupForm.js"></script>
 
 <h3>$i18n.getString( "edit_data_element_group" )</h3>
 
@@ -19,7 +14,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementGroup.name )" style="width:20em" class="{validate:{required:true,rangelength:[3,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/>	
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementGroup.name )" style="width:20em"/>	
 		</td>
 	</tr>
 	<tr>
