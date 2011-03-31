@@ -819,9 +819,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataEntryFormService">
 			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		</property>
-		<property name="dataEntryManager">
-			<ref bean="org.hisp.dhis.patient.screen.DataEntryManager" />
-		</property>
 	</bean>
 
 	<bean
@@ -834,22 +831,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageService">
 			<ref bean="org.hisp.dhis.program.ProgramStageService" />
 		</property>
-		<property name="dataEntryManager">
-			<ref bean="org.hisp.dhis.patient.screen.DataEntryManager" />
-		</property>
 		<property name="editorManager" ref="editorManager" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.screen.DataEntryManager" class="org.hisp.dhis.patient.screen.DefaultDataEntryManager"
-		scope="prototype">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>
-		<property name="categoryService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		</property>
 	</bean>
 
 	<bean

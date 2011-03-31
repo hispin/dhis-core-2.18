@@ -36,7 +36,6 @@ import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.editor.EditorManager;
-import org.hisp.dhis.patient.screen.DataEntryManager;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -69,13 +68,6 @@ public class ViewDataEntryFormAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
-    }
-
-    private DataEntryManager dataEntryManager;
-
-    public void setDataEntryManager( DataEntryManager dataEntryManager )
-    {
-        this.dataEntryManager = dataEntryManager;
     }
 
     private EditorManager editorManager;
@@ -144,7 +136,7 @@ public class ViewDataEntryFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Execute
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
@@ -158,7 +150,7 @@ public class ViewDataEntryFormAction
 
         dataEntryForm = programStage.getDataEntryForm();
         
-        editorManager.setValue( dataEntryForm == null ? "" : dataEntryManager.prepareDataEntryFormCode( dataEntryForm
+        editorManager.setValue( dataEntryForm == null ? "" : dataEntryFormService.prepareDataEntryFormCode( dataEntryForm
             .getHtmlCode() ) );
         
         // ---------------------------------------------------------------------
