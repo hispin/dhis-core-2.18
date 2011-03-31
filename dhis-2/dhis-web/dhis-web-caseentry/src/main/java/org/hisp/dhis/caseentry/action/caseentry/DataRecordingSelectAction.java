@@ -355,8 +355,7 @@ public class DataRecordingSelectAction
         {
             customDataEntryFormExists = true;
         }
-System.out.println("\n\n ++++++++++ \n customDataEntryFormExists : " + customDataEntryFormExists );
-System.out.println("\n\n useDefaultForm : " + useDefaultForm );
+
         if ( customDataEntryFormExists && useDefaultForm == null )
         {
             return CUSTOM_DATAENTRY_FORM;
