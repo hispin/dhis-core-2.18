@@ -84,13 +84,6 @@ public class CustomDataEntryAction
         this.patientService = patientService;
     }
 
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
     private ProgramInstanceService programInstanceService;
 
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
@@ -161,18 +154,6 @@ public class CustomDataEntryAction
     public Integer getId()
     {
         return id;
-    }
-
-    private Integer programId;
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
-    public Integer getProgramId()
-    {
-        return programId;
     }
 
     private Integer programStageId;
@@ -328,8 +309,8 @@ public class CustomDataEntryAction
         patient = patientService.getPatient( id );
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
-
-        program = programService.getProgram( programId );
+        
+        program = selectedStateManager.getSelectedProgram( );
 
         programStage = programStageService.getProgramStage( programStageId );
 
