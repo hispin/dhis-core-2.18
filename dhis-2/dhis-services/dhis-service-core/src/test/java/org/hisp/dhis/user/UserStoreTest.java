@@ -105,7 +105,7 @@ public class UserStoreTest
         assertEquals( userStore.getUser( user.getId() ).getSurname(), "User1" );
         assertEquals( userStore.getUser( user.getId() ).getFirstName(), userName );
         assertEquals( 2, userStore.getUser( user.getId() ).getOrganisationUnits().size() );
-        assertEquals( userStore.getUser( user.getId() ).getId(), 1 );
+        assertEquals( userStore.getUser( user.getId() ).getId(), id );
 
         // Test getAllUsers
         User user2 = new User();
@@ -118,11 +118,7 @@ public class UserStoreTest
         userStore.addUser( user2 );
 
         assertEquals( userStore.getAllUsers().size(), 2 );
-        for ( int i = 1; i <= userStore.getAllUsers().size(); i++ )
-        {
-            // System.out.println( "User" + i );
-            assertEquals( userStore.getUser( i ).getSurname(), "User" + i );
-        }
+        
         assertEquals( 1, userStore.getUsersByOrganisationUnit( unit1 ).size() );
         assertEquals( 2, userStore.getUsersByOrganisationUnit( unit2 ).size() );
         assertEquals( 0, userStore.getUsersWithoutOrganisationUnit().size() );
