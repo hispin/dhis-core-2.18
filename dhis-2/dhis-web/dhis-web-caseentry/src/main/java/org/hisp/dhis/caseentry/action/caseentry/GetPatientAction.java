@@ -121,13 +121,12 @@ public class GetPatientAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-
         patient = patientService.getPatient( id );       
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );        
@@ -148,6 +147,5 @@ public class GetPatientAction
         programs = programService.getAllPrograms();
 
         return SUCCESS;
-
     }
 }

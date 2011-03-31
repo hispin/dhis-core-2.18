@@ -46,7 +46,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version CaseAggregationResultDetailsAction.java Mar 23, 2011 10:42:51 AM $
  */
 public class CaseAggregationResultDetailsAction
@@ -65,7 +64,7 @@ public class CaseAggregationResultDetailsAction
     private PatientDataValueService patientDataValueService;
 
     // -------------------------------------------------------------------------
-    // Input and Output
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private Integer orgunitId;
@@ -77,7 +76,7 @@ public class CaseAggregationResultDetailsAction
     private Map<Patient, Collection<PatientDataValue>> mapPatients;
 
     // -------------------------------------------------------------------------
-    // Getters && Setters
+    // Getter/Setter
     // -------------------------------------------------------------------------
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -121,7 +120,7 @@ public class CaseAggregationResultDetailsAction
     }
 
     // -------------------------------------------------------------------------
-    // Action Implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     @Override
@@ -129,9 +128,9 @@ public class CaseAggregationResultDetailsAction
         throws Exception
     {
         mapPatients = new HashMap<Patient, Collection<PatientDataValue>>();
-        
+
         OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitId );
-        
+
         Period period = periodService.getPeriod( periodId );
 
         CaseAggregationCondition aggCondition = aggregationConditionService
@@ -146,9 +145,10 @@ public class CaseAggregationResultDetailsAction
 
             Collection<PatientDataValue> dataValues = patientDataValueService.getPatientDataValues( patient,
                 dataElements, period.getStartDate(), period.getEndDate() );
-            
+
             mapPatients.put( patient, dataValues );
         }
+        
         return SUCCESS;
     }
 

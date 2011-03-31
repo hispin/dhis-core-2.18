@@ -77,7 +77,7 @@ public class NextPeriodsAction
     {
         this.index = index;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -98,11 +98,11 @@ public class NextPeriodsAction
             selectedPeriodKey = PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_END;
             basePeriodKey = PeriodGenericManager.SESSION_KEY_BASE_PERIOD_END;
         }
-        
-        periodGenericManager.setSelectedPeriodIndex( selectedPeriodKey, index );
-        periodGenericManager.nextPeriodSpan(selectedPeriodKey, basePeriodKey);
 
-        periods = periodGenericManager.getPeriodList(selectedPeriodKey, basePeriodKey);
+        periodGenericManager.setSelectedPeriodIndex( selectedPeriodKey, index );
+        periodGenericManager.nextPeriodSpan( selectedPeriodKey, basePeriodKey );
+
+        periods = periodGenericManager.getPeriodList( selectedPeriodKey, basePeriodKey );
 
         return SUCCESS;
     }

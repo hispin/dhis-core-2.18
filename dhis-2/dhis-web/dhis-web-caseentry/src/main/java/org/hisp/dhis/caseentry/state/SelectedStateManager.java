@@ -38,41 +38,41 @@ import org.hisp.dhis.program.ProgramStage;
  */
 public interface SelectedStateManager
 {
-    OrganisationUnit getSelectedOrganisationUnit(); 
-    
+    OrganisationUnit getSelectedOrganisationUnit();
+
     void setSelectedPatient( Patient patient );
 
     Patient getSelectedPatient();
 
     void clearSelectedPatient();
-    
+
     void setSelectedProgram( Program program );
 
     Program getSelectedProgram();
 
     void clearSelectedProgram();
-    
-    void setSelectedProgramStage( ProgramStage programStage );      
 
-    ProgramStage getSelectedProgramStage();   
+    void setSelectedProgramStage( ProgramStage programStage );
+
+    ProgramStage getSelectedProgramStage();
 
     void clearSelectedProgramStage();
-    
+
     void setListAll( boolean listAll );
-    
+
     boolean getListAll();
-    
+
     void clearListAll();
-    
+
     void setSearchingAttributeId( int searchingAttributeId );
-    
+
     Integer getSearchingAttributeId();
-    
+
     void clearSearchingAttributeId();
-    
+
     void setSearchText( String searchText );
-    
+
     String getSearchText();
-    
-    void clearSearchTest();    
+
+    void clearSearchTest();
 }

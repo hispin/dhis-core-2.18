@@ -234,13 +234,12 @@ public class DataEntryAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         patient = selectedStateManager.getSelectedPatient();

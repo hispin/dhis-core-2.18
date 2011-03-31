@@ -115,7 +115,7 @@ public class CompleteDataEntryAction
     }
     
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()

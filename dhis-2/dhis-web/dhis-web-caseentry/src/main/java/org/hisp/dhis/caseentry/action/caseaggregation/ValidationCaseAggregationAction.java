@@ -37,7 +37,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version ValidationCaseAggregationAction.java Mar 21, 2011 8:50:06 PM $
  */
 public class ValidationCaseAggregationAction
@@ -54,7 +53,7 @@ public class ValidationCaseAggregationAction
     private I18n i18n;
 
     // -------------------------------------------------------------------------
-    // Input / Output
+    // Input/Output
     // -------------------------------------------------------------------------
     
     private String message;
@@ -64,7 +63,7 @@ public class ValidationCaseAggregationAction
     private int eDateLB;
     
     // -------------------------------------------------------------------------
-    // Getters && Setters
+    // Getters/Setters
     // -------------------------------------------------------------------------
 
     public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
@@ -98,7 +97,7 @@ public class ValidationCaseAggregationAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     public String execute()

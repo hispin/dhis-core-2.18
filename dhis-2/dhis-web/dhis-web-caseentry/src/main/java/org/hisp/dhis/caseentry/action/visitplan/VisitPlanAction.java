@@ -29,11 +29,13 @@ package org.hisp.dhis.caseentry.action.visitplan;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 
+import org.hisp.dhis.activityplan.Activity;
+import org.hisp.dhis.activityplan.ActivityPlanService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
@@ -43,8 +45,6 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.activityplan.Activity;
-import org.hisp.dhis.activityplan.ActivityPlanService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -71,7 +71,7 @@ public class VisitPlanAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
-    }    
+    }
 
     private PatientAttributeValueService patientAttributeValueService;
 
@@ -86,7 +86,7 @@ public class VisitPlanAction
     {
         this.patientAttributeService = patientAttributeService;
     }
-    
+
     private ActivityPlanService activityPlanService;
 
     public void setActivityPlanService( ActivityPlanService activityPlanService )
@@ -171,7 +171,7 @@ public class VisitPlanAction
         // ---------------------------------------------------------------------
 
         attributes = patientAttributeService.getAllPatientAttributes();
-        
+
         // ---------------------------------------------------------------------
         // Get the facility planning to do a visit
         // ---------------------------------------------------------------------

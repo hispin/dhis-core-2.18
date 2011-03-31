@@ -36,31 +36,32 @@ import org.hisp.dhis.period.Period;
  * @version $Id$
  */
 public interface PeriodGenericManager
-{        
-
+{
     public static final String SESSION_KEY_BASE_PERIOD_START = "SESSION_KEY_BASE_PERIOD_START";
+
     public static final String SESSION_KEY_BASE_PERIOD_END = "SESSION_KEY_BASE_PERIOD_END";
 
     public static final String SESSION_KEY_SELECTED_PERIOD_INDEX_START = "SESSION_KEY_SELECTED_PERIOD_INDEX_START";
-    public static final String SESSION_KEY_SELECTED_PERIOD_INDEX_END = "SESSION_KEY_SELECTED_PERIOD_INDEX_END";
-    
 
+    public static final String SESSION_KEY_SELECTED_PERIOD_INDEX_END = "SESSION_KEY_SELECTED_PERIOD_INDEX_END";
+
+   
     public void setSelectedPeriodIndex( String key, Integer index );
 
     public Integer getSelectedPeriodIndex( String key );
-    
-    public Period getSelectedPeriod( String key, String baseKey  );
-    
+
+    public Period getSelectedPeriod( String key, String baseKey );
+
     public void setPeriodType( String periodTypeName );
 
-    public void clearSelectedPeriod( );
-    
-    public void clearBasePeriod( );
+    public void clearSelectedPeriod();
+
+    public void clearBasePeriod();
 
     public List<Period> getPeriodList( String key, String baseKey );
 
     public void nextPeriodSpan( String key, String baseKey );
 
     public void previousPeriodSpan( String key, String baseKey );
-    
+
 }

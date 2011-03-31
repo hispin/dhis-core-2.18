@@ -64,6 +64,7 @@ public class SaveValueAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -112,7 +113,7 @@ public class SaveValueAction
     {
         this.format = format;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -163,12 +164,12 @@ public class SaveValueAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
-
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         Patient patient = selectedStateManager.getSelectedPatient();
@@ -186,7 +187,7 @@ public class SaveValueAction
             programInstance, programStage );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
-        
+
         if ( value != null && value.trim().length() == 0 )
         {
             value = null;
@@ -196,7 +197,7 @@ public class SaveValueAction
         {
             value = value.trim();
         }
-        
+
         if ( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_DATE ) && value != null )
         {
             Date dateValue = format.parseDate( value );
@@ -218,7 +219,7 @@ public class SaveValueAction
         else
         {
             Set<DataElementCategoryOptionCombo> options = dataElement.getCategoryCombo().getOptionCombos();
-            if ( options != null)
+            if ( options != null )
             {
                 for ( DataElementCategoryOptionCombo tmpOption : options )
                 {
@@ -244,7 +245,7 @@ public class SaveValueAction
         }
 
         if ( patientDataValue == null )
-        {            
+        {
 
             LOG.debug( "Adding PatientDataValue, value added" );
 
@@ -275,7 +276,6 @@ public class SaveValueAction
             patientDataValue.setTimestamp( new Date() );
 
             patientDataValueService.updatePatientDataValue( patientDataValue );
-            
         }
 
         return SUCCESS;
