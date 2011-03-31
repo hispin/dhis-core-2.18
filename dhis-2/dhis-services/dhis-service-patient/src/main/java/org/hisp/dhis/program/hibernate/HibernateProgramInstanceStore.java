@@ -105,24 +105,23 @@ public class HibernateProgramInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit )
     {
-        return getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) ).createAlias( "patient", "patient" )
-            .add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) ).list();
+        return getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) ).createAlias(
+            "patient", "patient" ).add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, int min, int max )
     {
-        return getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) )
-            .add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) )
-            .createAlias( "patient", "patient" ).addOrder( Order.asc( "patient.id" ) )
-            .setFirstResult( min ).setMaxResults( max ).list();
+        return getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) ).add(
+            Restrictions.eq( "patient.organisationUnit", organisationUnit ) ).createAlias( "patient", "patient" )
+            .addOrder( Order.asc( "patient.id" ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
-    public int count(Program program, OrganisationUnit organisationUnit )
+    public int count( Program program, OrganisationUnit organisationUnit )
     {
-        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) ).createAlias( "patient", "patient" )
-        .add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) )
-        .setProjection( Projections.rowCount() ).uniqueResult();
+        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) )
+            .createAlias( "patient", "patient" ).add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) )
+            .setProjection( Projections.rowCount() ).uniqueResult();
         return rs != null ? rs.intValue() : 0;
     }
 }

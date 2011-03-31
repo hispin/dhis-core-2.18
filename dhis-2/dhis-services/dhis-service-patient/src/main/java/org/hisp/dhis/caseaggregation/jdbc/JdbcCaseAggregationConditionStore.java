@@ -66,7 +66,7 @@ public class JdbcCaseAggregationConditionStore
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Method
+    // Implementation Methods
     // -------------------------------------------------------------------------
 
     @Override

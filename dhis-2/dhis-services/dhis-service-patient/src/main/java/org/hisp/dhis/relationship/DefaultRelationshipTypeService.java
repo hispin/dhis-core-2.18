@@ -38,7 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultRelationshipTypeService
     implements RelationshipTypeService
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -51,7 +50,7 @@ public class DefaultRelationshipTypeService
     }
 
     // -------------------------------------------------------------------------
-    // RelationshipType Implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public void deleteRelationshipType( RelationshipType relationshipType )

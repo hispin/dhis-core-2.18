@@ -36,14 +36,13 @@ import org.hisp.dhis.program.ProgramAttributeStore;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version HibernateProgramAttributeStore.java Oct 30, 2010 11:41:58 PM
  */
 public class HibernateProgramAttributeStore
     extends HibernateGenericStore<ProgramAttribute>
     implements ProgramAttributeStore
 {
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<ProgramAttribute> getByValueType( String valueType )
     {
         return getCriteria( Restrictions.eq( "valueType", valueType ) ).list();

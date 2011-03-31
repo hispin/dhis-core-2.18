@@ -57,7 +57,7 @@ public class DefaultPatientDataValueService
     }
 
     // -------------------------------------------------------------------------
-    // PatientDataValue
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public void savePatientDataValue( PatientDataValue patientDataValue )

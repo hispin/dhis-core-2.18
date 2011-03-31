@@ -57,18 +57,19 @@ public class HibernatePatientAttributeStore
     @SuppressWarnings( "unchecked" )
     public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
     {
-        return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).add(
-            Restrictions.eq( "mandatory", false ) ).list();
+        return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) )
+            .add( Restrictions.eq( "mandatory", false ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<PatientAttribute> getPatientAttributesNotGroup()
     {
         return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).list();
     }
-    
-    public PatientAttribute getByGroupBy( boolean groupBy ){
-        return (PatientAttribute)getCriteria( Restrictions.eq( "groupBy", groupBy ) ).uniqueResult();
+
+    public PatientAttribute getByGroupBy( boolean groupBy )
+    {
+        return (PatientAttribute) getCriteria( Restrictions.eq( "groupBy", groupBy ) ).uniqueResult();
     }
-    
+
 }

@@ -37,7 +37,6 @@ import org.hisp.dhis.validation.ValidationCriteria;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version ProgramDeleteHandler.java Sep 30, 2010 1:39:15 PM
  */
 public class ProgramDeletionHandler
@@ -62,7 +61,6 @@ public class ProgramDeletionHandler
     }
 
     // -------------------------------------------------------------------------
-
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
 

@@ -40,7 +40,6 @@ public class HibernateRelationshipTypeStore
     extends HibernateGenericStore<RelationshipType>
     implements RelationshipTypeStore
 {
-
     public RelationshipType getRelationshipType( String aIsToB, String bIsToA )
     {
         return (RelationshipType) getCriteria( Restrictions.eq( "aIsToB", aIsToB ), Restrictions.eq( "bIsToA", bIsToA ) )

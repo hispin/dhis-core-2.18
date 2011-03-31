@@ -35,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version DefaultProgramAttributeValue.java Oct 31, 2010 6:09:03 PM
  */
 

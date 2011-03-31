@@ -33,14 +33,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Viet Nguyen
- *
+ * 
  * @version $Id$
  */
 @Transactional
-public class DefaultProgramStageDataElementService 
+public class DefaultProgramStageDataElementService
     implements ProgramStageDataElementService
 {
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -51,14 +50,14 @@ public class DefaultProgramStageDataElementService
     {
         this.programStageDataElementStore = programStageDataElementStore;
     }
-    
+
     // -------------------------------------------------------------------------
-    // ProgramInstance implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public void addProgramStageDataElement( ProgramStageDataElement programStageDataElement )
     {
-        programStageDataElementStore.saveOrUpdate( programStageDataElement);
+        programStageDataElementStore.saveOrUpdate( programStageDataElement );
     }
 
     public void deleteProgramStageDataElement( ProgramStageDataElement programStageDataElement )
@@ -70,8 +69,8 @@ public class DefaultProgramStageDataElementService
     {
         return programStageDataElementStore.getAll();
     }
-    
-    public Collection<ProgramStageDataElement> get( ProgramStage programStage)
+
+    public Collection<ProgramStageDataElement> get( ProgramStage programStage )
     {
         return programStageDataElementStore.get( programStage );
     }
@@ -90,6 +89,5 @@ public class DefaultProgramStageDataElementService
     {
         return programStageDataElementStore.getListDataElement( programStage );
     }
-    
-    
+
 }

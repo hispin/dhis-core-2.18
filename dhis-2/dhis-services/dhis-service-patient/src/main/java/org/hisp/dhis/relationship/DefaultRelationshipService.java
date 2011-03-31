@@ -39,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultRelationshipService
     implements RelationshipService
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -52,7 +51,7 @@ public class DefaultRelationshipService
     }
 
     // -------------------------------------------------------------------------
-    // Relationship Implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public void deleteRelationship( Relationship relationship )
@@ -98,5 +97,5 @@ public class DefaultRelationshipService
     public Relationship getRelationship( Patient patientA, Patient patientB, RelationshipType relationshipType )
     {
         return relationshipStore.get( patientA, patientB, relationshipType );
-    }    
+    }
 }

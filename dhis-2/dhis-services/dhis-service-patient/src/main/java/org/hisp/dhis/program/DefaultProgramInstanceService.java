@@ -52,7 +52,7 @@ public class DefaultProgramInstanceService
     }
 
     // -------------------------------------------------------------------------
-    // ProgramInstance implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public int addProgramInstance( ProgramInstance programInstance )
@@ -129,13 +129,14 @@ public class DefaultProgramInstanceService
     {
         return programInstanceStore.get( program, organisationUnit );
     }
-    
-    public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit, int min, int max )
+
+    public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit,
+        int min, int max )
     {
-        return programInstanceStore.get( program, organisationUnit,  min, max );
+        return programInstanceStore.get( program, organisationUnit, min, max );
     }
-    
-    public int countProgramInstances(Program program, OrganisationUnit organisationUnit )
+
+    public int countProgramInstances( Program program, OrganisationUnit organisationUnit )
     {
         return programInstanceStore.count( program, organisationUnit );
     }

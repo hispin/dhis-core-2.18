@@ -48,7 +48,6 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 public class DefaultNextVisitGenerator
     implements NextVisitGenerator
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -68,7 +67,7 @@ public class DefaultNextVisitGenerator
     }
 
     // -------------------------------------------------------------------------
-    // Next visits implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public Map<Patient, Set<ProgramStageInstance>> getNextVisits( Collection<ProgramInstance> programInstances )

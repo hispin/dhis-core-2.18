@@ -43,5 +43,4 @@ public interface NextVisitGenerator
     String ID = NextVisitGenerator.class.getName();
 
     Map<Patient, Set<ProgramStageInstance>> getNextVisits( Collection<ProgramInstance> programInstances );
-
 }

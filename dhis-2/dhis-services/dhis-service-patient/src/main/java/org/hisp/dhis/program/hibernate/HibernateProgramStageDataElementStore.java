@@ -39,37 +39,37 @@ import org.hisp.dhis.program.ProgramStageDataElementStore;
 
 /**
  * @author Viet Nguyen
- *
  * @version $Id$
  */
-public class HibernateProgramStageDataElementStore 
-    extends HibernateGenericStore<ProgramStageDataElement> implements ProgramStageDataElementStore 
+public class HibernateProgramStageDataElementStore
+    extends HibernateGenericStore<ProgramStageDataElement>
+    implements ProgramStageDataElementStore
 {
-    
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageDataElement> get( ProgramStage programStage )
     {
-        return getCriteria( Restrictions.eq( "programStage", programStage) ).list();
+        return getCriteria( Restrictions.eq( "programStage", programStage ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageDataElement> get( ProgramStage programStage, boolean compulsory )
     {
-        return getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.eq( "compulsory", compulsory ) ).list();
+        return getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.eq( "compulsory", compulsory ) )
+            .list();
     }
-    
+
     public ProgramStageDataElement get( ProgramStage programStage, DataElement dataElement )
     {
-        return (ProgramStageDataElement) getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.eq( "dataElement", dataElement ) ).uniqueResult();
+        return (ProgramStageDataElement) getCriteria( Restrictions.eq( "programStage", programStage ),
+            Restrictions.eq( "dataElement", dataElement ) ).uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getListDataElement( ProgramStage programStage )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( getClazz() );
-        
-        criteria.add(  Restrictions.eq( "programStage", programStage) );
-        criteria.setProjection( Projections.property( "dataElement" ));
+        criteria.add( Restrictions.eq( "programStage", programStage ) );
+        criteria.setProjection( Projections.property( "dataElement" ) );
         return criteria.list();
     }
 }

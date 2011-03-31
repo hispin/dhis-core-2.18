@@ -47,7 +47,6 @@ public class HibernatePatientAttributeValueStore
     extends HibernateGenericStore<PatientAttributeValue>
     implements PatientAttributeValueStore
 {
-
     public void saveVoid( PatientAttributeValue patientAttributeValue )
     {
         sessionFactory.getCurrentSession().save( patientAttributeValue );
@@ -107,46 +106,49 @@ public class HibernatePatientAttributeValueStore
 
     public int countByPatientAttributeoption( PatientAttributeOption attributeOption )
     {
-        Number rs =  (Number) getCriteria( Restrictions.eq( "patientAttributeOption", attributeOption ) )
-                .setProjection(Projections.rowCount() ).uniqueResult();
+        Number rs = (Number) getCriteria( Restrictions.eq( "patientAttributeOption", attributeOption ) ).setProjection(
+            Projections.rowCount() ).uniqueResult();
         return rs != null ? rs.intValue() : 0;
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatient( PatientAttribute attribute, String value )
     {
-        return getCriteria( Restrictions.and( Restrictions.eq( "patientAttribute", attribute ), Restrictions.eq( "value", value ) ))
+        return getCriteria(
+            Restrictions.and( Restrictions.eq( "patientAttribute", attribute ), Restrictions.eq( "value", value ) ) )
             .setProjection( Projections.property( "patient" ) ).list();
     }
 
     public int countSearchPatientAttributeValue( PatientAttribute patientAttribute, String searchText )
     {
-        Number rs =  (Number) getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
-            Restrictions.ilike( "value", "%" + searchText + "%" ) ).setProjection( Projections.rowCount() ).uniqueResult();
-        
+        Number rs = (Number) getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
+            Restrictions.ilike( "value", "%" + searchText + "%" ) ).setProjection( Projections.rowCount() )
+            .uniqueResult();
+
         return rs != null ? rs.intValue() : 0;
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> searchPatients( PatientAttribute patientAttribute,
-        String searchText, int min, int max )
+    public Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText, int min, int max )
     {
-        String hql = "select pav.patient from PatientAttributeValue pav where pav.patientAttribute = :patientAttribute and pav.value like '%" + searchText + "%'";
-        
+        String hql = "select pav.patient from PatientAttributeValue pav where pav.patientAttribute = :patientAttribute and pav.value like '%"
+            + searchText + "%'";
+
         Query query = getQuery( hql );
         query.setEntity( "patientAttribute", patientAttribute );
-        
+
         return query.setFirstResult( min ).setMaxResults( max ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText )
     {
-        String hql = "select pav.patient from PatientAttributeValue pav where pav.patientAttribute = :patientAttribute and pav.value like '%" + searchText + "%'";
-        
+        String hql = "select pav.patient from PatientAttributeValue pav where pav.patientAttribute = :patientAttribute and pav.value like '%"
+            + searchText + "%'";
+
         Query query = getQuery( hql );
         query.setEntity( "patientAttribute", patientAttribute );
-        
+
         return query.list();
     }
 }

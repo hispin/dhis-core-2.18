@@ -50,7 +50,7 @@ public class DefaultPatientIdentifierTypeService
     }
 
     // -------------------------------------------------------------------------
-    // PatientIdentifierType implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType )

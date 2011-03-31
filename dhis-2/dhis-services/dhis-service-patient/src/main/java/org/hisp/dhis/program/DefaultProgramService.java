@@ -56,7 +56,7 @@ public class DefaultProgramService
     }
 
     // -------------------------------------------------------------------------
-    // Program
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public int saveProgram( Program program )
@@ -107,7 +107,7 @@ public class DefaultProgramService
     public Collection<Program> getPrograms( ValidationCriteria validationCriteria )
     {
         Set<Program> programs = new HashSet<Program>();
-        
+
         for ( Program program : getAllPrograms() )
         {
             if ( program.getPatientValidationCriteria().contains( validationCriteria ) )

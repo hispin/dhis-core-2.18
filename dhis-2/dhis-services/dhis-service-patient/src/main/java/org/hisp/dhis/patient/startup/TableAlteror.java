@@ -60,7 +60,7 @@ public class TableAlteror
     }
 
     // -------------------------------------------------------------------------
-    // Execute
+    // Action Implementation
     // -------------------------------------------------------------------------
 
     @Transactional
@@ -83,15 +83,19 @@ public class TableAlteror
         executeSql( "UPDATE program SET minDaysAllowedInputData=0 WHERE minDaysAllowedInputData IS NULL" );
 
         executeSql( "UPDATE program SET maxDaysAllowedInputData=0 WHERE maxDaysAllowedInputData IS NULL" );
-        
+
         executeSql( "UPDATE patient SET isdead=false WHERE isdead IS NULL" );
 
         executeSql( "UPDATE patient SET hasPatients=false WHERE hasPatients IS NULL" );
     }
 
+    // -------------------------------------------------------------------------
+    // Supporting methods
+    // -------------------------------------------------------------------------
+
     private void updatePatientOrgunitAssociation()
     {
-    	StatementHolder holder = statementManager.getHolder();
+        StatementHolder holder = statementManager.getHolder();
 
         try
         {
@@ -115,7 +119,7 @@ public class TableAlteror
         }
         catch ( Exception ex )
         {
-        	ex.printStackTrace();
+            ex.printStackTrace();
             log.error( ex );
         }
         finally
