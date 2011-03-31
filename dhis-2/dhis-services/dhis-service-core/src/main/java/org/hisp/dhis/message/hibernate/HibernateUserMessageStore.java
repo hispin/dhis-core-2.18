@@ -52,6 +52,7 @@ public class HibernateUserMessageStore
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
         criteria.addOrder( Order.desc( "messageDate" ) );
+        //TODO eager-fetch message
         
         return criteria.list();
     }

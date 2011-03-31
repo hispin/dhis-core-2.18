@@ -13,8 +13,11 @@
     </id>
 
 	<property name="key" column="key" not-null="true"/>
-    <property name="title" column="title" not-null="true"/>
+    <property name="subject" column="subject" not-null="true"/>
     <property name="text" column="text"/>
+        
+    <many-to-one name="sender" class="org.hisp.dhis.user.User" 
+      column="userid" foreign-key="fk_message_user" not-null="true"/>
     
     <set name="userMessages" table="message_usermessages" cascade="save-update">
       <key column="messageid"/>

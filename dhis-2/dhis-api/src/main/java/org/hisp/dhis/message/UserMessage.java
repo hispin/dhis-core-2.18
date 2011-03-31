@@ -45,9 +45,10 @@ public class UserMessage
     private boolean read;
 
     private Date messageDate;
-    
+
     public UserMessage()
     {
+        this.messageDate = new Date();
     }
     
     public UserMessage( User user, Message message )
@@ -97,7 +98,7 @@ public class UserMessage
     {
         this.read = read;
     }
-    
+
     public Date getMessageDate()
     {
         return messageDate;
@@ -147,6 +148,6 @@ public class UserMessage
     @Override
     public String toString()
     {
-        return "[User: " + user + ", message: " + message + ", read: " + read + ", date: " + messageDate + "]";
+        return "[User: " + user + ", message: " + message + ", read: " + read + "]";
     }
 }

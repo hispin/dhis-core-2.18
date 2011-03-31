@@ -1,0 +1,21 @@
+
+<h3>$i18n.getString( "messages" )</h3>
+
+<div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )"></div>
+
+<table class="listTable" style="width:75%">
+	<tr>
+		<th>$i18n.getString( "sender" )</th>
+		<th>$i18n.getString( "date" )</th>
+		<th>$i18n.getString( "subject" )</th>
+		<th></th>
+	</tr>
+	#foreach( $message in $messages )
+	<tr>
+		<td>$encoder.htmlEncode( $message.message.sender )</td>
+		<td>$encoder.htmlEncode( $message.message.messageDate )</td>
+		<td>$encoder.htmlEncode( $message.message.subject )</td>
+		<td><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/>
+	</tr>
+	#end
+</table>

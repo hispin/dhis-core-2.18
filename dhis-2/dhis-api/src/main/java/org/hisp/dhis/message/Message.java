@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.hisp.dhis.user.User;
+
 /**
  * @author Lars Helge Overland
  */
@@ -40,9 +42,11 @@ public class Message
     
     private String key;
     
-    private String title;
+    private String subject;
     
     private String text;
+
+    private User sender;
     
     private Set<UserMessage> userMessages = new HashSet<UserMessage>();
     
@@ -51,11 +55,12 @@ public class Message
         this.key = UUID.randomUUID().toString();
     }
     
-    public Message( String title, String text )
+    public Message( String subject, String text, User sender )
     {
         this.key = UUID.randomUUID().toString();
-        this.title = title;
+        this.subject = subject;
         this.text = text;
+        this.sender = sender;
     }
 
     public int getId()
@@ -78,14 +83,14 @@ public class Message
         this.key = key;
     }
 
-    public String getTitle()
+    public String getSubject()
     {
-        return title;
+        return subject;
     }
 
-    public void setTitle( String title )
+    public void setSubject( String subject )
     {
-        this.title = title;
+        this.subject = subject;
     }
 
     public String getText()
@@ -96,6 +101,16 @@ public class Message
     public void setText( String text )
     {
         this.text = text;
+    }
+
+    public User getSender()
+    {
+        return sender;
+    }
+
+    public void setSender( User sender )
+    {
+        this.sender = sender;
     }
 
     public Set<UserMessage> getUserMessages()
@@ -140,6 +155,6 @@ public class Message
     @Override
     public String toString()
     {
-        return "[Title: " + title + ", text: " + text + "]";
+        return "[Subject: " + subject + ", text: " + text + "]";
     }
 }
