@@ -106,4 +106,14 @@ public class DefaultMessageService
     {
         return userMessageStore.getUserMessages( user, first, max );
     }
+    
+    public long getUnreadMessageCount()
+    {
+        return userMessageStore.getUnreadUserMessageCount( currentUserService.getCurrentUser() );
+    }
+    
+    public long getUnreadMessageCount( User user )
+    {
+        return userMessageStore.getUnreadUserMessageCount( user );
+    }
 }

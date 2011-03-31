@@ -39,4 +39,6 @@ public interface UserMessageStore
     extends GenericStore<UserMessage>
 {
     List<UserMessage> getUserMessages( User user, int first, int max );
+    
+    long getUnreadUserMessageCount( User user );
 }

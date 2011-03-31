@@ -150,4 +150,23 @@ public class MessageServiceTest
 
         assertEquals( 0, messageA.getUserMessages().size() );
     }
+    
+    @Test
+    public void testGetUserMessagesCount()
+    {
+        messageService.saveMessage( messageA );
+        messageService.saveMessage( messageB );
+     
+        long count = messageService.getUnreadMessageCount( userA );
+        
+        assertEquals( 2, count );
+        
+        userMessageA.setRead( true );
+        
+        messageService.updateUserMessage( userMessageA );
+        
+        count = messageService.getUnreadMessageCount( userA );
+        
+        assertEquals( 1, count );
+    }
 }
