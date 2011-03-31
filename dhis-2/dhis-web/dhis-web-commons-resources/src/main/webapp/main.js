@@ -33,36 +33,7 @@ function pageInit()
     {
         $( this ).attr( "src", "../images/hide.png" );
     } );
-    
-    // Resize UI in case of 800 x 600 screen
-
-    if( $( window ).width() <= 800 ) 
-    {
-        $( 'img#menuSeparator1').css('left','400px' );
-        $( 'img#menuSeparator2').css('left','490px' );
-        $( 'img#menuSeparator3').css('left','580px' );
-        $( 'img#menuSeparator4').css('left','670px' );
-        $( 'img#menuSeparator5').css('left','750px' );
-        $( 'div#menuLink1').css('left','398px' );
-        $( 'div#menuLink2').css('left','485px' );
-        $( 'div#menuLink3').css('left','580px' );
-        $( 'div#menuLink4').css('left','665px' );
-        $( 'div#menuDropDown1').css('left','400px' );
-        $( 'div#menuDropDown2').css('left','490px' );
-        $( 'div#menuDropDown3').css('left','580px' );
-
-        $( '#leftBar').css('width','175px' );
-        $( '#leftBarContents h2').css('margin-right','10px' );
-        $( '#leftBarContents h2').css('margin-left','10px' );
-        $( '#leftBarContents ul').css('margin-left','30px' );
-        $( '#leftBarContents img').css('margin-left','10px' );
-
-        $( '#orgUnitTree').css('width','172px' );
-
-        $( '#mainPage').css('margin-left','200px' );
-        $( 'div#orgUnitTree ul').css('margin-left','10px' );
-    }
-    
+        
     // Set dynamic back URLs for about page links
         
 	var currentPath = '../dhis-web-commons-about/';
