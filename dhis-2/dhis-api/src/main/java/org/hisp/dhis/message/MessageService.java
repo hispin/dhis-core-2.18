@@ -51,4 +51,8 @@ public interface MessageService
     List<UserMessage> getUserMessages( int first, int max );
     
     List<UserMessage> getUserMessages( User user, int first, int max );
+    
+    long getUnreadMessageCount();
+    
+    long getUnreadMessageCount( User user );
 }

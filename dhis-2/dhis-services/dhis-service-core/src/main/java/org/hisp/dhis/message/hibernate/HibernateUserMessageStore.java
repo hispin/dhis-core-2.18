@@ -30,6 +30,7 @@ package org.hisp.dhis.message.hibernate;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -46,13 +47,23 @@ public class HibernateUserMessageStore
     @SuppressWarnings("unchecked")
     public List<UserMessage> getUserMessages( User user, int first, int max )
     {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserMessage.class );
+        Criteria criteria = getCriteria( Restrictions.eq( "user", user ) );
         
-        criteria.add( Restrictions.eq( "user", user ) );
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
         criteria.addOrder( Order.desc( "messageDate" ) );
         
         return criteria.list();
+    }
+    
+    public long getUnreadUserMessageCount( User user )
+    {
+        String hql = "select count(*) from UserMessage where user = :user and read = false";
+        
+        Query query = getQuery( hql );
+        query.setEntity( "user", user );
+        query.setCacheable( true );
+        
+        return (Long) query.uniqueResult();
     }
 }
