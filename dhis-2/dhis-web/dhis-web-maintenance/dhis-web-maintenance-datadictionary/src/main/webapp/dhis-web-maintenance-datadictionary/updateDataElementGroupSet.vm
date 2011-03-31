@@ -1,13 +1,4 @@
-<script type="text/javascript">
-	jQuery(document).ready(	function(){
-		validation( 'updateDataElementGroupSet', function( form ){ form.submit()}, beforeSubmit );	
-		checkValueIsExist( "name", "validateDataElementGroupSet.action", {id: getFieldValue('id')});	
-
-		var nameField = document.getElementById( 'name' );
-		nameField.select();
-		nameField.focus();
-	});
-</script>
+<script type="text/javascript" src="javascript/updateDataElementGroupSet.js"></script>
 
 <h3>$i18n.getString( "update_dataelementgroupset" ) : $dataElementGroupSet.name</h3>
 
@@ -19,7 +10,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementGroupSet.name )" maxlength="230" class="{validate:{required:true,minlength:2}}"/></td>
+		<td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementGroupSet.name )"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
