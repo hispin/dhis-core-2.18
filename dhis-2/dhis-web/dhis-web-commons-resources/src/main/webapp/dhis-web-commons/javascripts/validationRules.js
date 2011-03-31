@@ -167,5 +167,42 @@ var validationRules = {
 		"name" : {
 			"rangelength" : [ 2, 230 ]
 		}
+	},
+	"indicator" : {
+		"name" : {
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+		},
+		"shortName" : {
+			"rangelength" : [ 2, 20 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+		},
+		"alternativeName" : {
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+		},
+		"code" : {
+			"rangelength" : [ 3, 25 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"notOnlyDigits" : true
+		},
+		"description" : {
+			"rangelength" : [ 3, 250 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+		},
+		"url" : {
+			"rangelength" : [ 0, 255 ]
+		}
+	},
+	"indicatorGroup" : {
+		"name" : {
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+		}
 	}
 }
