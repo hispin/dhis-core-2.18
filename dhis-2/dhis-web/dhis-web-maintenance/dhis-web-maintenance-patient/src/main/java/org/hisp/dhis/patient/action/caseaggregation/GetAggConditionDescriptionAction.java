@@ -72,7 +72,7 @@ public class GetAggConditionDescriptionAction
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override

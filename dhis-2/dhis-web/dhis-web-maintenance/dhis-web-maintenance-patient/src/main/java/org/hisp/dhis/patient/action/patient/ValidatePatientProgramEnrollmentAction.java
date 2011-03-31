@@ -108,7 +108,6 @@ public class ValidatePatientProgramEnrollmentAction
 
         ValidationCriteria criteria = program.isValid( patient );
 
-        // Check validation criteria
         if ( criteria != null )
         {
             message = i18n.getString( "program_is_invalid" ) + " " + criteria.getName();
@@ -174,10 +173,10 @@ public class ValidatePatientProgramEnrollmentAction
 
                     return INPUT;
                 }
-                
+
                 Date DateOfEnrollment = format.parseDate( enrollmentDate );
 
-                if ( DateOfEnrollment.before( DateOfIncident))
+                if ( DateOfEnrollment.before( DateOfIncident ) )
                 {
                     message = i18n.getString( "date_of_incident_invalid" );
 

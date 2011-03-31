@@ -46,7 +46,7 @@ public class AddProgramStageDEValidationAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private ProgramStageDataElementValidationService validationService;
@@ -137,11 +137,11 @@ public class AddProgramStageDEValidationAction
     {
         ProgramStageDataElementValidation validation = new ProgramStageDataElementValidation();
 
-        // Description
-
         validation.setDescription( description );
 
+        // ---------------------------------------------------------------------
         // leftProgramStageDataElement
+        // ---------------------------------------------------------------------
 
         ProgramStage programStage = programStageService.getProgramStage( leftProgramStageId );
 
@@ -157,7 +157,9 @@ public class AddProgramStageDEValidationAction
 
         validation.setLeftProgramStageDataElement( leftProgramStageDataElement );
 
+        // ---------------------------------------------------------------------
         // rightProgramStageDataElement
+        // ---------------------------------------------------------------------
 
         programStage = programStageService.getProgramStage( rightProgramStageId );
 
@@ -173,8 +175,10 @@ public class AddProgramStageDEValidationAction
 
         validation.setRightProgramStageDataElement( rightProgramStageDataElement );
 
-        // operator
-
+        // ---------------------------------------------------------------------
+        // Operator
+        // ---------------------------------------------------------------------
+        
         validation.setOperator( operator );
 
         validationService.saveProgramStageDataElementValidation( validation );

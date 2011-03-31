@@ -42,7 +42,7 @@ public class ValidatePatientAttributeGroupAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientAttributeGroupService patientAttributeGroupService;
@@ -65,7 +65,7 @@ public class ValidatePatientAttributeGroupAction
     private I18n i18n;
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Getter && Setter
     // -------------------------------------------------------------------------
 
     public void setI18n( I18n i18n )

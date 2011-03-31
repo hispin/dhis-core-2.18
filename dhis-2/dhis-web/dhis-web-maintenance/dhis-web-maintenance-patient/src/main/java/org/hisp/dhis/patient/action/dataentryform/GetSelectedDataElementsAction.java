@@ -98,7 +98,7 @@ public class GetSelectedDataElementsAction
     }
 
     // -------------------------------------------------------------------------
-    // Execute
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

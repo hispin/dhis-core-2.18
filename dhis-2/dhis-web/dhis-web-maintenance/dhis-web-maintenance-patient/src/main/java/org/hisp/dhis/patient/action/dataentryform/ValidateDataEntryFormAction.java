@@ -41,7 +41,7 @@ public class ValidateDataEntryFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private DataEntryFormService dataEntryFormService;
@@ -88,13 +88,12 @@ public class ValidateDataEntryFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Execution
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-
         DataEntryForm match = dataEntryFormService.getDataEntryFormByName( name );
 
         if ( match != null && (dataEntryFormId == null || match.getId() != dataEntryFormId) )

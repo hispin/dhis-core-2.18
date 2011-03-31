@@ -135,7 +135,7 @@ public class UpdateValidationCriteriaAction
     }
 
     // -------------------------------------------------------------------------
-    // Support method
+    // Supporting method
     // -------------------------------------------------------------------------
 
     private Object getObject()

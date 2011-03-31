@@ -40,7 +40,7 @@ public class GetPatientAttributeAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientAttributeService patientAttributeService;
@@ -69,7 +69,7 @@ public class GetPatientAttributeAction
     }
 
     // -------------------------------------------------------------------------
-    // Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

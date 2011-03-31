@@ -69,7 +69,7 @@ public class GetRelationshipTypeAction
     }
 
     // -------------------------------------------------------------------------
-    // Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

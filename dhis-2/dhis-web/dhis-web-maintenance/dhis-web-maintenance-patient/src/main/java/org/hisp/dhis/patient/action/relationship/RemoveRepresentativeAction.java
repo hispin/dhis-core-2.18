@@ -39,7 +39,6 @@ import com.opensymphony.xwork2.Action;
 public class RemoveRepresentativeAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -76,7 +75,6 @@ public class RemoveRepresentativeAction
     public String execute()
         throws Exception
     {
-
         patient = selectedStateManager.getSelectedPatient();
 
         patient.setRepresentative( null );

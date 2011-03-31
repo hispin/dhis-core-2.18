@@ -45,7 +45,6 @@ import com.opensymphony.xwork2.Action;
 public class ShowAddProgramStageFormAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

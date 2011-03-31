@@ -41,9 +41,8 @@ import com.opensymphony.xwork2.Action;
 public class ValidatePatientIdentifierTypeAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
@@ -59,6 +58,35 @@ public class ValidatePatientIdentifierTypeAction
     private I18n i18n;
 
     private Integer id;
+
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -79,34 +107,5 @@ public class ValidatePatientIdentifierTypeAction
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-    
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
     }
 }

@@ -53,14 +53,42 @@ public class RemovePatientAttributeOptionAction
 
     private int id;
 
+    private String message;
+
+    private I18n i18n;
+
+    // -------------------------------------------------------------------------
+    // Getter && Setter
+    // -------------------------------------------------------------------------
+
+    public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
+    {
+        this.patientAttributeOptionService = patientAttributeOptionService;
+    }
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
+
     public void setId( int id )
     {
         this.id = id;
     }
 
-    private String message;
+    public String getMessage()
+    {
+        return message;
+    }
 
-    private I18n i18n;
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
@@ -90,23 +118,4 @@ public class RemovePatientAttributeOptionAction
 
     }
 
-    public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
-    {
-        this.patientAttributeOptionService = patientAttributeOptionService;
-    }
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
 }

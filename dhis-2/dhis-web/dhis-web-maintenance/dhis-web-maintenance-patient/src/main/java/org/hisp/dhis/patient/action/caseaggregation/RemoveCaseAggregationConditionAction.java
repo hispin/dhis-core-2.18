@@ -67,7 +67,7 @@ public class RemoveCaseAggregationConditionAction
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override

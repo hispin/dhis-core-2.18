@@ -49,7 +49,6 @@ import com.opensymphony.xwork2.Action;
 public class GetPartnerAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -85,15 +84,15 @@ public class GetPartnerAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    
+
     private boolean partnerIsRepresentative = false;
-    
+
     public boolean isPartnerIsRepresentative()
     {
         return partnerIsRepresentative;
     }
 
-    private int patientId;    
+    private int patientId;
 
     public int getPatientId()
     {
@@ -104,7 +103,7 @@ public class GetPartnerAction
     {
         this.patientId = patientId;
     }
-    
+
     private int partnerId;
 
     public int getPartnerId()
@@ -152,18 +151,17 @@ public class GetPartnerAction
     public String execute()
         throws Exception
     {
-
         Patient patient = patientService.getPatient( patientId );
-        
+
         partner = patientService.getPatient( partnerId );
-        
-        if( patient.getRepresentative() != null )
+
+        if ( patient.getRepresentative() != null )
         {
-            if( patient.getRepresentative() == partner )
+            if ( patient.getRepresentative() == partner )
             {
                 partnerIsRepresentative = true;
             }
-        }       
+        }
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( partner );
 
@@ -179,11 +177,10 @@ public class GetPartnerAction
         {
             patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
                 .getValue() );
-        }       
-        
+        }
+
         programs = programService.getAllPrograms();
 
         return SUCCESS;
-
     }
 }

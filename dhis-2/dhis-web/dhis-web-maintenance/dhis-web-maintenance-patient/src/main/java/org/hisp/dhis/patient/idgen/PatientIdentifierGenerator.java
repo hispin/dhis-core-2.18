@@ -39,17 +39,18 @@ public class PatientIdentifierGenerator
     /**
      * Creates a new Patient Identifier: (BirthDate)(Gender)(XXXXXX)(checkdigit) <br>
      * <strong>BirthDate</strong> = YYYYMMDD <br>
-     * <strong>Gender</strong>    = Male : 1 | Female : 0<br>
-     * <strong>XXXXXX</strong>    = random digits e.g. from 0 - 999999 <br>
+     * <strong>Gender</strong> = Male : 1 | Female : 0<br>
+     * <strong>XXXXXX</strong> = random digits e.g. from 0 - 999999 <br>
      * <strong>checkdigit</strong>= using the Lunh Algorithm
+     * 
      * @param birthDate
      * @param gender
      * @return
      */
     public static String getNewIdentifier( Date birthDate, String gender )
     {
-        String noCheck = formatDate(birthDate) + formatGender(gender)
-                        + getFixLengthOfNumber(new Random().nextInt( 100000 ),6);
+        String noCheck = formatDate( birthDate ) + formatGender( gender )
+            + getFixLengthOfNumber( new Random().nextInt( 100000 ), 6 );
         return noCheck + getCheckdigit( noCheck );
     }
 
@@ -66,7 +67,7 @@ public class PatientIdentifierGenerator
         for ( int i = 0; i < idWithoutCheckdigit.length(); i++ )
         {
             char ch = idWithoutCheckdigit.charAt( idWithoutCheckdigit.length() - i - 1 );
-            
+
             int digit = (int) ch - 48;
             int weight;
             if ( i % 2 == 0 )
@@ -107,15 +108,15 @@ public class PatientIdentifierGenerator
         DecimalFormat df = new DecimalFormat( pattern );
         return df.format( number );
     }
-    
-    private static String formatDate(Date birthDate)
+
+    private static String formatDate( Date birthDate )
     {
-        SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat formater = new SimpleDateFormat( "yyyyMMdd" );
         String bd = formater.format( birthDate );
         return bd;
     }
-    
-    private static String formatGender(String gender)
+
+    private static String formatGender( String gender )
     {
         return gender.equalsIgnoreCase( "f" ) ? "0" : "1";
     }

@@ -41,7 +41,7 @@ public class RemovePatientAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientService patientService;

@@ -62,7 +62,7 @@ public class DefinePatientOrgnunitRegistrationAction
     }
 
     // -------------------------------------------------------------------------
-    // Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

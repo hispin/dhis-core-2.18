@@ -33,7 +33,7 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Viet 
+ * @author Viet
  * @version $Id$
  */
 public class AddPatientIdentifierTypeAction
@@ -44,7 +44,7 @@ public class AddPatientIdentifierTypeAction
     // -------------------------------------------------------------------------
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -52,38 +52,17 @@ public class AddPatientIdentifierTypeAction
     private String name;
 
     private String formater;
-    
+
     private String description;
-    
+
     private Boolean mandatory;
-    
+
     private Boolean related;
-    
+
     private Integer noChars;
 
     private String type;
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        PatientIdentifierType patientIdentifierType = new PatientIdentifierType();
-        patientIdentifierType.setName( name );
-        patientIdentifierType.setDescription( description );
-        patientIdentifierType.setFormat( formater == null ? "" : formater );
-        patientIdentifierType.setRelated( related.booleanValue() );
-        patientIdentifierType.setMandatory( mandatory.booleanValue() );
-        patientIdentifierType.setNoChars( noChars );
-        patientIdentifierType.setType( type );
-        
-        patientIdentifierTypeService.savePatientIdentifierType( patientIdentifierType );
-
-        return SUCCESS;
-    }
-    
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -102,7 +81,7 @@ public class AddPatientIdentifierTypeAction
     {
         this.noChars = noChars;
     }
-    
+
     public void setType( String type )
     {
         this.type = type;
@@ -120,11 +99,33 @@ public class AddPatientIdentifierTypeAction
 
     public void setMandatory( Boolean mandatory )
     {
-        this.mandatory = mandatory; 
+        this.mandatory = mandatory;
     }
 
     public void setRelated( Boolean related )
     {
         this.related = related;
     }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
+    {
+        PatientIdentifierType patientIdentifierType = new PatientIdentifierType();
+        patientIdentifierType.setName( name );
+        patientIdentifierType.setDescription( description );
+        patientIdentifierType.setFormat( formater == null ? "" : formater );
+        patientIdentifierType.setRelated( related.booleanValue() );
+        patientIdentifierType.setMandatory( mandatory.booleanValue() );
+        patientIdentifierType.setNoChars( noChars );
+        patientIdentifierType.setType( type );
+
+        patientIdentifierTypeService.savePatientIdentifierType( patientIdentifierType );
+
+        return SUCCESS;
+    }
+
 }

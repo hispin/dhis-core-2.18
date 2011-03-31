@@ -43,9 +43,8 @@ import com.opensymphony.xwork2.Action;
 public class ShowSortProgramStageFormAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramService programService;

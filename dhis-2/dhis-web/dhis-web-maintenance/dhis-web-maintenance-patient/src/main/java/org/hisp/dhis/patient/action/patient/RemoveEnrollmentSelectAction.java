@@ -48,7 +48,7 @@ public class RemoveEnrollmentSelectAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private ProgramAttributeService programAttributeService;
@@ -76,7 +76,7 @@ public class RemoveEnrollmentSelectAction
     private Patient patient;
 
     // -------------------------------------------------------------------------
-    // Getter
+    // Setter && Getter
     // -------------------------------------------------------------------------
 
     public void setProgramAttributeService( ProgramAttributeService programAttributeService )
@@ -130,7 +130,7 @@ public class RemoveEnrollmentSelectAction
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override

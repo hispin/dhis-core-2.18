@@ -88,14 +88,10 @@ public class AddPatientAction
     private PatientAttributeOptionService patientAttributeOptionService;
 
     // -------------------------------------------------------------------------
-    // Input - name
+    // Input
     // -------------------------------------------------------------------------
 
     private String fullName;
-
-    // -------------------------------------------------------------------------
-    // Input - demographics
-    // -------------------------------------------------------------------------
 
     private String birthDate;
 
@@ -109,6 +105,12 @@ public class AddPatientAction
 
     private String bloodGroup;
 
+    private boolean underAge;
+
+    private Integer representativeId;
+
+    private Integer relationshipTypeId;
+
     // -------------------------------------------------------------------------
     // OutPut
     // -------------------------------------------------------------------------
@@ -119,21 +121,6 @@ public class AddPatientAction
     {
         return id;
     }
-
-    // -------------------------------------------------------------------------
-    // Input - others
-    // -------------------------------------------------------------------------
-
-    private boolean underAge;
-
-    private Integer representativeId;
-
-    private Integer relationshipTypeId;
-
-    // -------------------------------------------------------------------------
-    // Output - making the patient available so that its attributes can be
-    // edited
-    // -------------------------------------------------------------------------
 
     private Patient patient;
 
@@ -159,9 +146,9 @@ public class AddPatientAction
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
-        
+
         fullName = fullName.trim();
-        
+
         int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
 
@@ -187,7 +174,7 @@ public class AddPatientAction
         patient.setFirstName( firstName );
         patient.setMiddleName( middleName );
         patient.setLastName( lastName );
-       
+
         // ---------------------------------------------------------------------
         // Set Other information for patient
         // ---------------------------------------------------------------------
@@ -230,8 +217,8 @@ public class AddPatientAction
             {
                 if ( identifierType.getFormat() != null && identifierType.getFormat().equals( "State Format" ) )
                 {
-                    value = organisationUnit.getCode() + request.getParameter( "progcode" ) + request.getParameter( "yearcode" )
-                        + request.getParameter( "benicode" );
+                    value = organisationUnit.getCode() + request.getParameter( "progcode" )
+                        + request.getParameter( "yearcode" ) + request.getParameter( "benicode" );
                 }
                 else
                 {
@@ -327,7 +314,7 @@ public class AddPatientAction
         // -------------------------------------------------------------------------
 
         id = patientService.createPatient( patient, representativeId, relationshipTypeId, patientAttributeValues );
-        
+
         return SUCCESS;
     }
 

@@ -38,7 +38,6 @@ import org.hisp.dhis.program.ProgramStage;
  */
 public interface SelectedStateManager
 {
-
     OrganisationUnit getSelectedOrganisationUnit();
 
     // -------------------------------------------------------------------------

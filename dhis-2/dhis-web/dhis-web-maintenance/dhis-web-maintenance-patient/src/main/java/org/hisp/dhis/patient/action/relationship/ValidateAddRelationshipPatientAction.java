@@ -134,7 +134,7 @@ public class ValidateAddRelationshipPatientAction
         }
         
         // ---------------------------------------------------------------------
-        // Check duplicate by FirstName, MiddleName, LastName, Birthday, Gender
+        // Check duplicated patient
         // ---------------------------------------------------------------------
 
         int startIndex = fullName.indexOf( ' ' );

@@ -54,7 +54,7 @@ public class GetRelationshipTypeListAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private Collection<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();

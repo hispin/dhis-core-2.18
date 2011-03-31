@@ -46,7 +46,7 @@ public class SelectProgramStageDataElementAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramStageService programStageService;
@@ -82,7 +82,7 @@ public class SelectProgramStageDataElementAction
     }
     
     // -------------------------------------------------------------------------
-    // Execute
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

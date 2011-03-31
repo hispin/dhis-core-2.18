@@ -399,7 +399,7 @@ public class SearchPatientAction
     }
 
     // -------------------------------------------------------------------------
-    // Support methods
+    // Supporting methods
     // -------------------------------------------------------------------------
 
     private void getParamsToSearch()
@@ -425,12 +425,9 @@ public class SearchPatientAction
 
     private void listAllPatient( OrganisationUnit organisationUnit, PatientAttribute sortingPatientAttribute )
     {
-        // Get patients by the selected organisation - unit
-
         total = patientService.countGetPatientsByOrgUnit( organisationUnit );
-
         this.paging = createPaging( total );
-
+        
         patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(), paging
             .getPageSize() ) );
 
@@ -440,7 +437,6 @@ public class SearchPatientAction
             {
                 mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
 
-                // Get patient-attribute-values
                 if ( sortingPatientAttribute != null )
                 {
                     PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue(
@@ -469,7 +465,6 @@ public class SearchPatientAction
             {
                 mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
 
-                // Get patient-attribute-values
                 if ( sortingPatientAttribute != null )
                 {
                     PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue(
@@ -528,8 +523,8 @@ public class SearchPatientAction
     private void searchPatientByAttribute( String searchText, PatientAttribute sortingPatientAttribute )
     {
         total = patientService.countGetPatients( searchText );
-
         this.paging = createPaging( total );
+        
         patients = patientService.getPatients( searchText, paging.getStartPos(), paging.getPageSize() );
 
         if ( patients != null && patients.size() > 0 )

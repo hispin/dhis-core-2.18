@@ -40,7 +40,7 @@ public class RemoveProgramAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramService programService;
@@ -51,7 +51,7 @@ public class RemoveProgramAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input
     // -------------------------------------------------------------------------
 
     private int id;
@@ -60,6 +60,10 @@ public class RemoveProgramAction
     {
         this.id = id;
     }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception

@@ -42,7 +42,7 @@ public class RemovePatientAttributeAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientAttributeService patientAttributeService;
@@ -77,7 +77,7 @@ public class RemovePatientAttributeAction
     }
     
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

@@ -117,7 +117,7 @@ public class GetPSDataElementsAction
                     optionComboIds.add( "[" + CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT + ":" + psId
                         + "." + de.getId() + "." + decoc.getId() + "]" );
 
-                    optionComboNames.add( de.getName() + " (" + decoc.getName() + ")");
+                    optionComboNames.add( de.getName() + " " + decoc.getName() );
 
                     if ( de.isMultiDimensional() )
                         optionComboType.add( "1:" + de.getType() );

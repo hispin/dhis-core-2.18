@@ -44,49 +44,27 @@ public class UpdatePatientIdentifierTypeAction
     // -------------------------------------------------------------------------
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
     private Integer id;
-    
+
     private String name;
 
     private String description;
 
     private String formater;
-    
+
     private Boolean mandatory;
-    
+
     private Boolean related;
-    
+
     private Integer noChars;
 
     private String type;
-    
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-    public String execute()
-        throws Exception
-    {
-        PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
-        if( identifierType != null )
-        {
-            identifierType.setName( name );
-            identifierType.setDescription( description );
-            identifierType.setFormat( formater == null ? "" : formater );
-            identifierType.setMandatory( mandatory.booleanValue() );
-            identifierType.setRelated( related.booleanValue() );
-            identifierType.setNoChars( noChars );
-            identifierType.setType( type );
-            patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
-        }
-        
-        return SUCCESS;
-    }
-    
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -110,7 +88,7 @@ public class UpdatePatientIdentifierTypeAction
     {
         this.name = name;
     }
-    
+
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
@@ -135,4 +113,28 @@ public class UpdatePatientIdentifierTypeAction
     {
         this.related = related;
     }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
+    {
+        PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
+        if ( identifierType != null )
+        {
+            identifierType.setName( name );
+            identifierType.setDescription( description );
+            identifierType.setFormat( formater == null ? "" : formater );
+            identifierType.setMandatory( mandatory.booleanValue() );
+            identifierType.setRelated( related.booleanValue() );
+            identifierType.setNoChars( noChars );
+            identifierType.setType( type );
+            patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
+        }
+
+        return SUCCESS;
+    }
+
 }

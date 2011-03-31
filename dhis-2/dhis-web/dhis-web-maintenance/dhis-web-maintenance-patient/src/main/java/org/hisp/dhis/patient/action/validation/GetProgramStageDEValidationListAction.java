@@ -48,7 +48,7 @@ public class GetProgramStageDEValidationListAction
     private ProgramStageDataElementValidationService programStageDataElementValidationService;
 
     // -------------------------------------------------------------------------
-    // Out put
+    // Output
     // -------------------------------------------------------------------------
 
     private Collection<ProgramStageDataElementValidation> validations;

@@ -40,7 +40,7 @@ public class GetPatientExcelItemplateFileAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private SystemSettingManager systemSettingManager;

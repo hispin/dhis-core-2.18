@@ -45,7 +45,7 @@ public class AddCaseAggregationConditionAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private CaseAggregationConditionService aggregationConditionService;
@@ -89,7 +89,7 @@ public class AddCaseAggregationConditionAction
     {
         this.aggregationDataElementId = aggregationDataElementId;
     }
-    
+
     public void setOperator( String operator )
     {
         this.operator = operator;
@@ -106,7 +106,7 @@ public class AddCaseAggregationConditionAction
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override
@@ -114,16 +114,17 @@ public class AddCaseAggregationConditionAction
         throws Exception
     {
         String[] ids = aggregationDataElementId.split( "\\." );
-        
+
         DataElement aggregationDataElement = dataElementService.getDataElement( Integer.parseInt( ids[0] ) );
+
         DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
             .getDataElementCategoryOptionCombo( Integer.parseInt( ids[1] ) );
-        
-        CaseAggregationCondition condition = new CaseAggregationCondition( description, operator, aggregationCondition, 
+
+        CaseAggregationCondition condition = new CaseAggregationCondition( description, operator, aggregationCondition,
             aggregationDataElement, optionCombo );
-        
+
         aggregationConditionService.addCaseAggregationCondition( condition );
-        
+
         return SUCCESS;
     }
 }

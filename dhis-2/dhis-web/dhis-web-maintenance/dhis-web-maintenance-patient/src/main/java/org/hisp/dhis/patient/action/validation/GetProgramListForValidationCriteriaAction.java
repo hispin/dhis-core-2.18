@@ -44,7 +44,7 @@ public class GetProgramListForValidationCriteriaAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private ValidationCriteriaService validationCriteriaService;

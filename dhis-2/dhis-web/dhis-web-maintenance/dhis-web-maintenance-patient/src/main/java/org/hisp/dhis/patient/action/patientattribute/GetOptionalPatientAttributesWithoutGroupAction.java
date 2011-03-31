@@ -43,7 +43,7 @@ public class GetOptionalPatientAttributesWithoutGroupAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private PatientAttributeService patientAttributeService;

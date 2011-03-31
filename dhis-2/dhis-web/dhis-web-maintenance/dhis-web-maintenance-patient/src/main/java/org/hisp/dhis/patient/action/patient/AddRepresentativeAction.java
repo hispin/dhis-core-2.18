@@ -66,14 +66,10 @@ public class AddRepresentativeAction
     private OrganisationUnitSelectionManager selectionManager;
 
     // -------------------------------------------------------------------------
-    // Input - name
+    // Input
     // -------------------------------------------------------------------------
 
     private String fullName;
-
-    // -------------------------------------------------------------------------
-    // Input - demographics
-    // -------------------------------------------------------------------------
 
     private String birthDate;
 
@@ -109,10 +105,6 @@ public class AddRepresentativeAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patient = new Patient();
-
-        // ---------------------------------------------------------------------
-        // Get FirstName, MiddleName, LastName by FullName
-        // ---------------------------------------------------------------------
 
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
