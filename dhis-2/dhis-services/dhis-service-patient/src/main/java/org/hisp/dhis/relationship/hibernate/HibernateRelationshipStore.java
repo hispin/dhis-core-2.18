@@ -43,7 +43,6 @@ public class HibernateRelationshipStore
     extends HibernateGenericStore<Relationship>
     implements RelationshipStore
 {
-
     @SuppressWarnings( "unchecked" )
     public Collection<Relationship> getForPatient( Patient patient )
     {

@@ -77,11 +77,10 @@ public class HibernatePatientStore
     {
         this.statementManager = statementManager;
     }
-    
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-
 
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> get( Boolean isDead )
@@ -117,7 +116,7 @@ public class HibernatePatientStore
 
             while ( resultSet.next() )
             {
-                Patient p = get( resultSet.getInt( 1 ) ) ;
+                Patient p = get( resultSet.getInt( 1 ) );
                 patients.add( p );
             }
         }
@@ -131,10 +130,6 @@ public class HibernatePatientStore
         }
 
         return patients;
-        
-//         return getCriteria(
-//            Restrictions.disjunction().add( Restrictions.ilike( "fullName", "%" + name + "%") ) ).addOrder(
-//            Order.asc( "firstName" ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -202,7 +197,7 @@ public class HibernatePatientStore
     {
         String sql = statementBuilder.countPatientsByFullName( name );
         StatementHolder holder = statementManager.getHolder();
-        
+
         try
         {
             Statement statement = holder.getStatement();

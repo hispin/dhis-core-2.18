@@ -37,14 +37,12 @@ import org.hisp.dhis.program.ProgramAttributeOptionStore;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version HibernateProgramAttributeOptionStore.java Nov 1, 2010 3:07:17 PM
  */
 public class HibernateProgramAttributeOptionStore
     extends HibernateGenericStore<ProgramAttributeOption>
     implements ProgramAttributeOptionStore
 {
-
     public ProgramAttributeOption get( ProgramAttribute programAttribute, String name )
     {
         return (ProgramAttributeOption) getCriteria( Restrictions.eq( "name", name ),

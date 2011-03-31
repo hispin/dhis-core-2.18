@@ -52,7 +52,7 @@ public class DefaultPatientAttributeGroupService
     }
 
     // -------------------------------------------------------------------------
-    // PatientAttribute implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public int savePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )

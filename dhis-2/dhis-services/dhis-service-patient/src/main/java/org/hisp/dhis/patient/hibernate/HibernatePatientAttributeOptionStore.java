@@ -36,25 +36,23 @@ import org.hisp.dhis.patient.PatientAttributeOptionStore;
 
 /**
  * @author Viet
- *
+ * 
  * @version $Id$
  */
 public class HibernatePatientAttributeOptionStore
     extends HibernateGenericStore<PatientAttributeOption>
     implements PatientAttributeOptionStore
 {
-
     public PatientAttributeOption get( PatientAttribute patientAttribute, String name )
     {
-        return (PatientAttributeOption) getCriteria(
-            Restrictions.eq( "name", name ),
-            Restrictions.eq( "patientAttribute" , patientAttribute ) ).uniqueResult();
+        return (PatientAttributeOption) getCriteria( Restrictions.eq( "name", name ),
+            Restrictions.eq( "patientAttribute", patientAttribute ) ).uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<PatientAttributeOption> get( PatientAttribute patientAttribute )
     {
-        return getCriteria( Restrictions.eq( "patientAttribute" , patientAttribute ) ).list();
+        return getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ) ).list();
     }
 
 }

@@ -60,7 +60,7 @@ public class DefaultPatientAttributeValueService
     }
 
     // -------------------------------------------------------------------------
-    // PatientAttributeValue
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public void deletePatientAttributeValue( PatientAttributeValue patientAttributeValue )
@@ -100,9 +100,9 @@ public class DefaultPatientAttributeValueService
 
     public Collection<PatientAttributeValue> getPatientAttributeValues( Collection<Patient> patients )
     {
-       if( patients != null && patients.size() > 0 )
-           return patientAttributeValueStore.get( patients );
-       return null;
+        if ( patients != null && patients.size() > 0 )
+            return patientAttributeValueStore.get( patients );
+        return null;
     }
 
     public void savePatientAttributeValue( PatientAttributeValue patientAttributeValue )
@@ -122,7 +122,7 @@ public class DefaultPatientAttributeValueService
         else
         {
             patientAttributeValueStore.update( patientAttributeValue );
-        }        
+        }
     }
 
     public Map<Integer, Collection<PatientAttributeValue>> getPatientAttributeValueMapForPatients(
@@ -151,7 +151,7 @@ public class DefaultPatientAttributeValueService
         for ( Entry<Integer, Set<PatientAttributeValue>> entry : attributeValueMap.entrySet() )
         {
             SortedMap<String, PatientAttributeValue> sortedByAttribute = new TreeMap<String, PatientAttributeValue>();
-            
+
             for ( PatientAttributeValue patientAttributeValue : entry.getValue() )
             {
                 sortedByAttribute.put( patientAttributeValue.getPatientAttribute().getName(), patientAttributeValue );
@@ -182,7 +182,7 @@ public class DefaultPatientAttributeValueService
             savePatientAttributeValue( attributeValue );
         }
     }
-    
+
     public int countByPatientAttributeoption( PatientAttributeOption attributeOption )
     {
         return patientAttributeValueStore.countByPatientAttributeoption( attributeOption );
@@ -198,8 +198,7 @@ public class DefaultPatientAttributeValueService
         return patientAttributeValueStore.countSearchPatientAttributeValue( patientAttribute, searchText );
     }
 
-    public Collection<Patient> searchPatients( PatientAttribute patientAttribute,
-        String searchText, int min, int max )
+    public Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText, int min, int max )
     {
         return patientAttributeValueStore.searchPatients( patientAttribute, searchText, min, max );
     }

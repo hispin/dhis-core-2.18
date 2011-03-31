@@ -47,7 +47,6 @@ public class HibernateProgramStageInstanceStore
     extends HibernateGenericStore<ProgramStageInstance>
     implements ProgramStageInstanceStore
 {
-
     public ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage )
     {
         return (ProgramStageInstance) getCriteria( Restrictions.eq( "programInstance", programInstance ),
@@ -63,9 +62,7 @@ public class HibernateProgramStageInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances )
     {
-
         return getCriteria( Restrictions.in( "programInstance", programInstances ) ).list();
-
     }
 
     @SuppressWarnings( "unchecked" )
@@ -83,41 +80,38 @@ public class HibernateProgramStageInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate )
     {
-
         return (getCriteria( Restrictions.ge( "dueDate", startDate ), Restrictions.le( "dueDate", endDate ) )).list();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed )
     {
-
         return (getCriteria( Restrictions.ge( "dueDate", startDate ), Restrictions.le( "dueDate", endDate ),
             Restrictions.eq( "completed", completed ) )).list();
     }
 
-    
     @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> get(OrganisationUnit unit, Date after, Date before, Boolean completed) {
-
+    public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed )
+    {
         String hql = "from ProgramStageInstance where programInstance.patient.organisationUnit = :unit";
-        
-        if (after != null)
+
+        if ( after != null )
             hql += " and dueDate >= :after";
-        if (before != null) 
+        if ( before != null )
             hql += " and dueDate <= :before";
-        if (completed != null)
+        if ( completed != null )
             hql += " and completed = :completed";
-        
+
         Query q = getQuery( hql ).setEntity( "unit", unit );
 
-        if (after != null)
+        if ( after != null )
             q.setDate( "after", after );
-        if (before != null)
+        if ( before != null )
             q.setDate( "before", before );
-        if (completed != null)
+        if ( completed != null )
             q.setBoolean( "completed", completed );
 
         return q.list();
     }
-    
+
 }

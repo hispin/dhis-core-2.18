@@ -35,6 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultPatientMobileSettingService
     implements PatientMobileSettingService
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
     private PatientMobileSettingStore patientMobileSettingStore;
 
@@ -42,6 +45,10 @@ public class DefaultPatientMobileSettingService
     {
         this.patientMobileSettingStore = patientMobileSettingStore;
     }
+
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
 
     @Override
     public int savePatientMobileSetting( PatientMobileSetting setting )

@@ -43,6 +43,7 @@ public class ProgramStageDataElementDeletionHandler
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
     ProgramStageDataElementService programStageDEService;
 
     public void setProgramStageDEService( ProgramStageDataElementService programStageDEService )
@@ -59,7 +60,7 @@ public class ProgramStageDataElementDeletionHandler
     }
 
     // -------------------------------------------------------------------------
-    // DeletionHandler implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     @Override
@@ -129,7 +130,6 @@ public class ProgramStageDataElementDeletionHandler
             {
                 programStageDEService.deleteProgramStageDataElement( dataElement );
             }
-
         }
 
     }

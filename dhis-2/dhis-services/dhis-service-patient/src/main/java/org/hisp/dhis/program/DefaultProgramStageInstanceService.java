@@ -44,7 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultProgramStageInstanceService
     implements ProgramStageInstanceService
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -57,7 +56,7 @@ public class DefaultProgramStageInstanceService
     }
 
     // -------------------------------------------------------------------------
-    // ProgramStageInstance implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public int addProgramStageInstance( ProgramStageInstance programStageInstance )
@@ -137,32 +136,31 @@ public class DefaultProgramStageInstanceService
 
     public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances )
     {
-
         return programStageInstanceStore.getProgramStageInstances( programInstances );
-
     }
 
     public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate )
     {
         return programStageInstanceStore.getProgramStageInstances( dueDate );
-    }    
-    
+    }
+
     public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed )
     {
         return programStageInstanceStore.getProgramStageInstances( dueDate, completed );
     }
-    
+
     public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate )
     {
         return programStageInstanceStore.getProgramStageInstances( startDate, endDate );
     }
-    
+
     public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed )
     {
         return programStageInstanceStore.getProgramStageInstances( startDate, endDate, completed );
     }
 
-    public List<ProgramStageInstance> get(OrganisationUnit unit, Date after, Date before, Boolean completed) {
+    public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed )
+    {
         return programStageInstanceStore.get( unit, after, before, completed );
     }
 }

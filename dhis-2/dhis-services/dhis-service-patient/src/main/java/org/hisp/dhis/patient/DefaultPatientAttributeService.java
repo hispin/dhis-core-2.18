@@ -50,7 +50,7 @@ public class DefaultPatientAttributeService
     }
 
     // -------------------------------------------------------------------------
-    // PatientAttribute implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public void deletePatientAttribute( PatientAttribute patientAttribute )

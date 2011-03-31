@@ -62,7 +62,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version DefaultPatientAggregationExpressionService.java Nov 17, 2010
  *          11:16:37 AM
  */
@@ -118,7 +117,7 @@ public class DefaultCaseAggregationConditionService
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Method
+    // Implementation Methods
     // -------------------------------------------------------------------------
 
     @Override
@@ -174,7 +173,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = createSQL( aggregationCondition, orgunit, period );
-        
+
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         return calValue( patientIds, aggregationCondition.getOperator() );
@@ -212,7 +211,7 @@ public class DefaultCaseAggregationConditionService
         Collection<Patient> result = new HashSet<Patient>();
 
         String sql = createSQL( aggregationCondition, orgunit, period );
-        
+
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         for ( Integer patientId : patientIds )
@@ -442,19 +441,35 @@ public class DefaultCaseAggregationConditionService
         int orgunitId, String startDate, String endDate )
     {
         return "SELECT distinct(pi.patientid) FROM programstageinstance as psi "
-                + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
-                + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
-                + "LEFT OUTER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
-                + "WHERE psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
-                + "AND pd.value IS NULL AND pi.patientid NOT IN  ( "
-                    + "SELECT distinct(pi.patientid) FROM programstageinstance as psi "
-                    + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
-                    + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
-                    + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
-                    + "WHERE pd.organisationunitid = " + orgunitId + " AND ps.programstageid = " + programStageId + " "
-                    + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
-                    + "AND pd.dataelementid = " + dataElementId + " " + "AND pd.categoryoptioncomboid = " + optionComboId
-                + "  ) ";
+            + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
+            + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
+            + "LEFT OUTER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
+            + "WHERE psi.executionDate >= '"
+            + startDate
+            + "' AND psi.executionDate <= '"
+            + endDate
+            + "' "
+            + "AND pd.value IS NULL AND pi.patientid NOT IN  ( "
+            + "SELECT distinct(pi.patientid) FROM programstageinstance as psi "
+            + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
+            + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
+            + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
+            + "WHERE pd.organisationunitid = "
+            + orgunitId
+            + " AND ps.programstageid = "
+            + programStageId
+            + " "
+            + "AND psi.executionDate >= '"
+            + startDate
+            + "' AND psi.executionDate <= '"
+            + endDate
+            + "' "
+            + "AND pd.dataelementid = "
+            + dataElementId
+            + " "
+            + "AND pd.categoryoptioncomboid = "
+            + optionComboId
+            + "  ) ";
 
     }
 
@@ -534,12 +549,9 @@ public class DefaultCaseAggregationConditionService
     public double calValue( Collection<Integer> patientIds, String operator )
     {
         if ( patientIds == null )
+        {
             return 0.0;
-
-        // if ( operator.equalsIgnoreCase( AGGRERATION_SUM ) )
-        // {
-        // double value = 0.0;
-        // }
+        }
 
         return patientIds.size();
     }

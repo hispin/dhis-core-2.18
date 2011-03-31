@@ -47,11 +47,6 @@ public class HibernateProgramStageDataElementValidationStore
     extends HibernateGenericStore<ProgramStageDataElementValidation>
     implements ProgramStageDataElementValidationStore
 {
-
-    // -------------------------------------------------------------------------
-    // Implementation
-    // -------------------------------------------------------------------------
-
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( Program program )
     {

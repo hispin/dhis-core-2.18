@@ -55,16 +55,16 @@ public class PatientAttributeValueDeletionHandler
 
     private PatientService patientService;
 
-    public void setPatientService( PatientService patientService ) {
-		this.patientService = patientService;
-	}
-    
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
+
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
-
-	@Override
+    @Override
     public String getClassName()
     {
         return PatientAttributeValue.class.getSimpleName();
@@ -91,10 +91,10 @@ public class PatientAttributeValueDeletionHandler
         {
             for ( PatientAttributeValue attributeValue : attributeValues )
             {
-            	Patient patient = attributeValue.getPatient();
+                Patient patient = attributeValue.getPatient();
                 patientAttributeValueService.deletePatientAttributeValue( attributeValue );
-                
-                patient.getAttributes().remove(patientAttribute);
+
+                patient.getAttributes().remove( patientAttribute );
                 patientService.updatePatient( patient );
             }
         }

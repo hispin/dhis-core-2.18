@@ -50,7 +50,7 @@ public class DefaultPatientAttributeOptionService
     }
 
     // -------------------------------------------------------------------------
-    // PatientAttribute implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public void addPatientAttributeOption( PatientAttributeOption option )

@@ -42,7 +42,7 @@ public class DefaultProgramStageDataElementValidationService
     implements ProgramStageDataElementValidationService
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private ProgramStageDataElementValidationStore validationStore;
@@ -53,7 +53,7 @@ public class DefaultProgramStageDataElementValidationService
     }
 
     // -------------------------------------------------------------------------
-    // ProgramStageDataElementValidation implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public int saveProgramStageDataElementValidation( ProgramStageDataElementValidation validation )

@@ -4,8 +4,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
-public class PatientDeletionHandler extends DeletionHandler
-{ 
+public class PatientDeletionHandler
+    extends DeletionHandler
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -26,12 +27,11 @@ public class PatientDeletionHandler extends DeletionHandler
     {
         return Patient.class.getSimpleName();
     }
-    
+
     @Override
     public void deleteSource( Source source )
     {
-        for ( Patient patient : patientService
-            .getPatients( (OrganisationUnit) source ) )
+        for ( Patient patient : patientService.getPatients( (OrganisationUnit) source ) )
         {
             patientService.deletePatient( patient );
         }

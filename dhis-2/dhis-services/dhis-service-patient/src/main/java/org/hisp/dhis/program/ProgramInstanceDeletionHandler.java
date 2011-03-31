@@ -78,7 +78,7 @@ public class ProgramInstanceDeletionHandler
     }
     
     // -------------------------------------------------------------------------
-    // DeletionHandler implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     @Override

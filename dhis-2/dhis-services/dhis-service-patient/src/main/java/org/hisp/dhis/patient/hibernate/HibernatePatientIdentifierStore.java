@@ -45,25 +45,25 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 public class HibernatePatientIdentifierStore
     extends HibernateGenericStore<PatientIdentifier>
     implements PatientIdentifierStore
-{   
+{
     public PatientIdentifier get( Patient patient )
     {
         return (PatientIdentifier) getCriteria( Restrictions.eq( "patient", patient ),
             Restrictions.eq( "preferred", true ) ).uniqueResult();
     }
-    
+
     public PatientIdentifier get( String identifier, OrganisationUnit organisationUnit )
     {
         return (PatientIdentifier) getCriteria( Restrictions.eq( "identifier", identifier ),
             Restrictions.eq( "organisationUnit", organisationUnit ) ).uniqueResult();
     }
-    
+
     public PatientIdentifier get( PatientIdentifierType type, String identifier )
     {
         return (PatientIdentifier) getCriteria( Restrictions.eq( "identifierType", type ),
             Restrictions.eq( "identifier", identifier ) ).uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<PatientIdentifier> getByIdentifier( String identifier )
     {
@@ -81,36 +81,38 @@ public class HibernatePatientIdentifierStore
         return (PatientIdentifier) getCriteria( Restrictions.eq( "identifier", identifier ),
             Restrictions.eq( "patient", patient ) ).uniqueResult();
     }
-    
+
     public PatientIdentifier getPatientIdentifier( PatientIdentifierType identifierType, Patient patient )
     {
         return (PatientIdentifier) getCriteria( Restrictions.eq( "identifierType.id", identifierType.getId() ),
             Restrictions.eq( "patient", patient ) ).uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<PatientIdentifier> getPatientIdentifiers( Patient patient )
     {
         return (Collection<PatientIdentifier>) getCriteria( Restrictions.eq( "patient", patient ) ).list();
     }
-    
+
     public Patient getPatient( PatientIdentifierType idenType, String value )
     {
-        return (Patient) getCriteria( Restrictions.and( Restrictions.eq( "identifierType", idenType ),
-            Restrictions.eq( "identifier", value ) ) )
+        return (Patient) getCriteria(
+            Restrictions.and( Restrictions.eq( "identifierType", idenType ), Restrictions.eq( "identifier", value ) ) )
             .setProjection( Projections.property( "patient" ) ).uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max )
     {
-        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
+        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection(
+            Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
     public int countGetPatientsByIdentifier( String identifier )
     {
-    	 Number rs =   (Number)getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection( Projections.rowCount() ).uniqueResult();
-         return rs != null ? rs.intValue() : 0;
+        Number rs = (Number) getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection(
+            Projections.rowCount() ).uniqueResult();
+        return rs != null ? rs.intValue() : 0;
     }
 
 }

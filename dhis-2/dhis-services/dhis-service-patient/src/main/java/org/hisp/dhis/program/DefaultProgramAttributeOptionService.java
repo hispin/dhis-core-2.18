@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version DefaultProgramAttributeOptionService.java Nov 1, 2010 3:04:33 PM
  */
 
@@ -53,7 +52,7 @@ public class DefaultProgramAttributeOptionService
     }
 
     // -------------------------------------------------------------------------
-    // ProgramAttribute implementation
+    // Implementation methods
     // -------------------------------------------------------------------------
 
     public int addProgramAttributeOption( ProgramAttributeOption option )
