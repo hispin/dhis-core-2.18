@@ -25,6 +25,6 @@
       <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" 
         column="organisationunitid" foreign-key="fk_userinfo_organisationunitid"/>
     </set>
-		  
+	
   </class>
 </hibernate-mapping>

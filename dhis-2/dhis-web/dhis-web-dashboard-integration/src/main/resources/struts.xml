@@ -63,5 +63,9 @@
       <param name="menu">/dhis-web-commons/about/menu.vm</param>
     </action>
     
+    <action name="sendMessage" class="org.hisp.dhis.dashboard.message.action.SendMessageAction">
+      <result name="success" type="redirect">message.action</result>
+    </action>
+    
   </package>
 </struts>

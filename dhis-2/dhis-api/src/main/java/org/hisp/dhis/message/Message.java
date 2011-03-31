@@ -62,7 +62,7 @@ public class Message
         this.text = text;
         this.sender = sender;
     }
-
+    
     public int getId()
     {
         return id;

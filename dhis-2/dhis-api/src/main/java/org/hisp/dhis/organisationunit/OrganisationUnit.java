@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Kristian Nordal
@@ -78,6 +79,8 @@ public class OrganisationUnit
     private Date lastUpdated;
 
     private Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
+    
+    private Set<User> users = new HashSet<User>();
     
     private String contactPerson;
     
@@ -510,6 +513,16 @@ public class OrganisationUnit
     public void setGroups( Set<OrganisationUnitGroup> groups )
     {
         this.groups = groups;
+    }
+
+    public Set<User> getUsers()
+    {
+        return users;
+    }
+
+    public void setUsers( Set<User> users )
+    {
+        this.users = users;
     }
 
     public String getContactPerson()

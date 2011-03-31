@@ -56,6 +56,11 @@
       <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid"/>
     </set>
 	
+    <set name="users" table="usermembership" inverse="true">
+      <key column="organisationunitid"/>
+      <many-to-many class="org.hisp.dhis.user.User" column="userinfoid"/>
+    </set>
+	
 	<!-- Contact info -->
 	
 	<property name="contactPerson" length="255"/>
