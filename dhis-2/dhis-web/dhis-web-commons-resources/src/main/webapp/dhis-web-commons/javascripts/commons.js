@@ -13,7 +13,7 @@ var headerMessageTimeout = -1;
  */
 function referrerBack( defaultUrl ) {
 	if(document.referrer !== undefined && document.referrer != "") {
-		location.href = referrer;
+		location.href = document.referrer;
 	} else {
 		location.href = defaultUrl;
 	}
