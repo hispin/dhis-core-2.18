@@ -29,6 +29,7 @@ package org.hisp.dhis.user.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -166,7 +167,7 @@ public class UpdateUserAction
         user.setFirstName( firstName );
         user.setEmail( email );
         user.setPhoneNumber( phoneNumber );
-        user.setOrganisationUnits( units );
+        user.setOrganisationUnits( new HashSet<OrganisationUnit>( units ) );
 
         UserCredentials userCredentials = userService.getUserCredentials( user );
         
