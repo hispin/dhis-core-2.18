@@ -1,5 +1,7 @@
 package org.hisp.dhis.common;
 
+import java.io.Serializable;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -32,6 +34,7 @@ package org.hisp.dhis.common;
  * @version $Id$
  */
 public interface ImportableObject
+    extends Serializable
 {
     String getName();
 }

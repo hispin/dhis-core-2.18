@@ -30,7 +30,7 @@ package org.hisp.dhis.validation;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.period.PeriodType;
@@ -40,7 +40,7 @@ import org.hisp.dhis.period.PeriodType;
  * @version $Id: ValidationRule.java 5434 2008-06-18 18:57:59Z larshelg $
  */
 public class ValidationRule
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     public static final String TYPE_STATISTICAL = "statistical";
     public static final String TYPE_ABSOLUTE = "absolute";

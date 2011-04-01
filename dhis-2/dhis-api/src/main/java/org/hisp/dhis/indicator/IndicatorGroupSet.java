@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,
@@ -41,7 +41,7 @@ import org.hisp.dhis.common.IdentifiableObject;
  * @author Lars Helge Overland
  */
 public class IndicatorGroupSet
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     private List<IndicatorGroup> members = new ArrayList<IndicatorGroup>();
 

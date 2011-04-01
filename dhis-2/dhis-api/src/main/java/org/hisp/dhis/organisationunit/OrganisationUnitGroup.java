@@ -30,7 +30,7 @@ package org.hisp.dhis.organisationunit;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author Kristian Nordal
@@ -38,7 +38,7 @@ import org.hisp.dhis.common.IdentifiableObject;
  */
 
 public class OrganisationUnitGroup
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
     

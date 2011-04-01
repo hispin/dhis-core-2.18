@@ -43,7 +43,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.DhisTest;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -202,16 +203,16 @@ public class ReportTableTest
         i18nFormat = new MockI18nFormat();
     }
     
-    private static List<IdentifiableObject> getList( IdentifiableObject... objects )
+    private static List<NameableObject> getList( NameableObject... objects )
     {
         return Arrays.asList( objects );
     }
 
-    private static List<String> getColumnNames( List<List<IdentifiableObject>> cols )
+    private static List<String> getColumnNames( List<List<NameableObject>> cols )
     {
         List<String> columns = new ArrayList<String>();
         
-        for ( List<IdentifiableObject> column : cols )
+        for ( List<NameableObject> column : cols )
         {
             columns.add( getColumnName( column ) );
         }
@@ -226,11 +227,11 @@ public class ReportTableTest
     @Test
     public void testGetIdentifierA()
     {
-        List<IdentifiableObject> a1 = getList( unitA, periodA );
-        List<IdentifiableObject> a2 = getList( indicatorA );
+        List<NameableObject> a1 = getList( unitA, periodA );
+        List<NameableObject> a2 = getList( indicatorA );
         
-        List<IdentifiableObject> b1 = getList( periodA );
-        List<IdentifiableObject> b2 = getList( indicatorA, unitA );
+        List<NameableObject> b1 = getList( periodA );
+        List<NameableObject> b2 = getList( indicatorA, unitA );
         
         assertNotNull( getIdentifier( a1, a2 ) );
         assertNotNull( getIdentifier( b1, b2 ) );
@@ -268,8 +269,8 @@ public class ReportTableTest
     @Test
     public void testGetIdentifierC()
     {
-        List<IdentifiableObject> a1 = getList( dataElementA, periodA, categoryOptionComboA );
-        List<IdentifiableObject> a2 = getList( unitA );
+        List<NameableObject> a1 = getList( dataElementA, periodA, categoryOptionComboA );
+        List<NameableObject> a2 = getList( unitA );
         
         String b1 = getIdentifier( DataElement.class,'A' );
         String b2 = getIdentifier( Period.class, 'A' );
@@ -285,12 +286,12 @@ public class ReportTableTest
     @Test
     public void testGetColumnName()
     {
-        List<IdentifiableObject> a1 = getList( unitA, periodC );
+        List<NameableObject> a1 = getList( unitA, periodC );
         
         assertNotNull( getColumnName( a1 ) );
         assertEquals( "organisationunitshorta_reporting_month", getColumnName( a1 ) );
         
-        List<IdentifiableObject> a2 = getList( unitB, periodD );
+        List<NameableObject> a2 = getList( unitB, periodD );
 
         assertNotNull( getColumnName( a2 ) );
         assertEquals( "organisationunitshortb_year", getColumnName( a2 ) );        
@@ -317,12 +318,12 @@ public class ReportTableTest
         assertEquals( 1, indexNameColumns.size() );
         assertTrue( indexNameColumns.contains( ReportTable.ORGANISATIONUNIT_NAME ) );
         
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
 
         assertNotNull( columns ); 
         assertEquals( 8, columns.size() );
         
-        Iterator<List<IdentifiableObject>> iterator = columns.iterator();
+        Iterator<List<NameableObject>> iterator = columns.iterator();
         
         assertEquals( getList( indicatorA, periodA ), iterator.next() );
         assertEquals( getList( indicatorA, periodB ), iterator.next() );
@@ -343,7 +344,7 @@ public class ReportTableTest
         assertTrue( columnNames.contains( "indicatorshortb_reporting_month" ) );
         assertTrue( columnNames.contains( "indicatorshortb_year" ) );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 2, rows.size() );
@@ -377,12 +378,12 @@ public class ReportTableTest
         assertTrue( indexNameColumns.contains( ReportTable.INDICATOR_NAME ) );
         assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );        
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 2, columns.size() );
 
-        Iterator<List<IdentifiableObject>> iterator = columns.iterator();
+        Iterator<List<NameableObject>> iterator = columns.iterator();
         
         assertEquals( getList( unitA ), iterator.next() );
         assertEquals( getList( unitB ), iterator.next() );
@@ -395,7 +396,7 @@ public class ReportTableTest
         assertTrue( columnNames.contains( "organisationunitshorta" ) );
         assertTrue( columnNames.contains( "organisationunitshortb" ) );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 8, rows.size() );
@@ -433,12 +434,12 @@ public class ReportTableTest
         assertEquals( 1, indexNameColumns.size() );
         assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 4, columns.size() );
 
-        Iterator<List<IdentifiableObject>> iterator = columns.iterator();
+        Iterator<List<NameableObject>> iterator = columns.iterator();
         
         assertEquals( getList( indicatorA, unitA ), iterator.next() );
         assertEquals( getList( indicatorA, unitB ), iterator.next() );
@@ -455,7 +456,7 @@ public class ReportTableTest
         assertTrue( columnNames.contains( "indicatorshortb_organisationunitshorta" ) );
         assertTrue( columnNames.contains( "indicatorshortb_organisationunitshortb" ) );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 4, rows.size() );
@@ -487,12 +488,12 @@ public class ReportTableTest
         assertNotNull( indexNameColumns );
         assertEquals( 0, indexNameColumns.size() );
         
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 16, columns.size() );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
 
         assertNotNull( rows );
         assertEquals( 1, rows.size() );
@@ -517,12 +518,12 @@ public class ReportTableTest
         assertNotNull( indexNameColumns );
         assertEquals( 3, indexNameColumns.size() );
         
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 1, columns.size() );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
 
         assertNotNull( rows );
         assertEquals( 16, rows.size() );
@@ -549,7 +550,7 @@ public class ReportTableTest
         assertEquals( 1, indexNameColumns.size() );
         assertTrue( indexNameColumns.contains( ReportTable.ORGANISATIONUNIT_NAME ) );
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 8, columns.size() );
@@ -564,7 +565,7 @@ public class ReportTableTest
         assertTrue( columnNames.contains( "dataelementshortb_year" ) );
         assertTrue( columnNames.contains( "dataelementshortb_reporting_month" ) );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 2, rows.size() );
@@ -593,7 +594,7 @@ public class ReportTableTest
         assertTrue( indexNameColumns.contains( ReportTable.INDICATOR_NAME ) );
         assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 2, columns.size() );
@@ -606,7 +607,7 @@ public class ReportTableTest
         assertTrue( columnNames.contains( "organisationunitshorta" ) );
         assertTrue( columnNames.contains( "organisationunitshortb" ) );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 8, rows.size() );        
@@ -633,7 +634,7 @@ public class ReportTableTest
         assertEquals( 1, indexNameColumns.size() );
         assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 4, columns.size() );
@@ -648,7 +649,7 @@ public class ReportTableTest
         assertTrue( columnNames.contains( "dataelementshortb_organisationunitshorta" ) );
         assertTrue( columnNames.contains( "dataelementshortb_organisationunitshortb" ) );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 4, rows.size() );
@@ -675,12 +676,12 @@ public class ReportTableTest
         assertEquals( 1, indexNameColumns.size() );
         assertTrue( indexNameColumns.contains( ReportTable.ORGANISATIONUNIT_NAME ) );
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 16, columns.size() );
         
-        Iterator<List<IdentifiableObject>> iterator = columns.iterator();
+        Iterator<List<NameableObject>> iterator = columns.iterator();
         
         assertEquals( getList( dataElementA, periodA, categoryOptionComboA ), iterator.next() );
         assertEquals( getList( dataElementA, periodA, categoryOptionComboB ), iterator.next() );
@@ -704,7 +705,7 @@ public class ReportTableTest
         assertNotNull( columnNames );
         assertEquals( 16, columnNames.size() );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 2, rows.size() );
@@ -738,12 +739,12 @@ public class ReportTableTest
         assertTrue( indexNameColumns.contains( ReportTable.INDICATOR_NAME ) );
         assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
 
         assertNotNull( columns );
         assertEquals( 4, columns.size() );
 
-        Iterator<List<IdentifiableObject>> iterator = columns.iterator();
+        Iterator<List<NameableObject>> iterator = columns.iterator();
         
         assertEquals( getList( unitA, categoryOptionComboA ), iterator.next() );
         assertEquals( getList( unitA, categoryOptionComboB ), iterator.next() );
@@ -755,7 +756,7 @@ public class ReportTableTest
         assertNotNull( columnNames );
         assertEquals( 4, columnNames.size() );
 
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 8, rows.size() );
@@ -793,12 +794,12 @@ public class ReportTableTest
         assertEquals( 1, indexNameColumns.size() );
         assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 8, columns.size() );
         
-        Iterator<List<IdentifiableObject>> iterator = columns.iterator();
+        Iterator<List<NameableObject>> iterator = columns.iterator();
         
         assertEquals( getList( dataElementA, unitA, categoryOptionComboA ), iterator.next() );
         assertEquals( getList( dataElementA, unitA, categoryOptionComboB ), iterator.next() );
@@ -814,7 +815,7 @@ public class ReportTableTest
         assertNotNull( columnNames );
         assertEquals( 8, columnNames.size() );
 
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 4, rows.size() );
@@ -848,7 +849,7 @@ public class ReportTableTest
         assertEquals( 1, indexNameColumns.size() );
         assertTrue( indexNameColumns.contains( ReportTable.ORGANISATIONUNIT_NAME ) );
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 8, columns.size() );
@@ -863,7 +864,7 @@ public class ReportTableTest
         assertTrue( columnNames.contains( "datasetshortb_year" ) );
         assertTrue( columnNames.contains( "datasetshortb_reporting_month" ) );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 2, rows.size() );
@@ -892,7 +893,7 @@ public class ReportTableTest
         assertTrue( indexNameColumns.contains( ReportTable.INDICATOR_NAME ) );
         assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );        
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 2, columns.size() );
@@ -905,7 +906,7 @@ public class ReportTableTest
         assertTrue( columnNames.contains( "organisationunitshorta" ) );
         assertTrue( columnNames.contains( "organisationunitshortb" ) );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 8, rows.size() );
@@ -932,7 +933,7 @@ public class ReportTableTest
         assertEquals( 1, indexNameColumns.size() );
         assertTrue( indexNameColumns.contains( ReportTable.PERIOD_NAME ) );
 
-        List<List<IdentifiableObject>> columns = reportTable.getColumns();
+        List<List<NameableObject>> columns = reportTable.getColumns();
         
         assertNotNull( columns );
         assertEquals( 4, columns.size() );
@@ -947,7 +948,7 @@ public class ReportTableTest
         assertTrue( columnNames.contains( "datasetshortb_organisationunitshorta" ) );
         assertTrue( columnNames.contains( "datasetshortb_organisationunitshortb" ) );
         
-        List<List<IdentifiableObject>> rows = reportTable.getRows();
+        List<List<NameableObject>> rows = reportTable.getRows();
         
         assertNotNull( rows );
         assertEquals( 4, rows.size() );

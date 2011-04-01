@@ -33,14 +33,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author Kristian Nordal
  * @version $Id: OrganisationUnitGroupSet.java 1905 2006-09-23 14:34:55Z torgeilo $
  */
 public class OrganisationUnitGroupSet
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     private String description;
 

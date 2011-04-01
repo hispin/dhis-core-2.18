@@ -35,14 +35,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractNameableObject;
 
 /**
  * @author Abyot Aselefew
  * @version $Id$
  */
 public class DataElementCategoryOptionCombo
-    extends IdentifiableObject
+    extends AbstractNameableObject
 {
     public static final String DEFAULT_NAME = "default";
 

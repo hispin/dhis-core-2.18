@@ -31,14 +31,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractNameableObject;
 
 /**
  * @author Kristian Nordal
  * @version $Id: Period.java 5277 2008-05-27 15:48:42Z larshelg $
  */
 public class Period
-    extends IdentifiableObject
+    extends AbstractNameableObject
 {
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 

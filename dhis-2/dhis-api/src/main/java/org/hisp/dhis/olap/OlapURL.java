@@ -23,14 +23,14 @@ package org.hisp.dhis.olap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class OlapURL
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     private String url;
 

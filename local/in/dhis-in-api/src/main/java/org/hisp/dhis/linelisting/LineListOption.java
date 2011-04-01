@@ -29,11 +29,11 @@ package org.hisp.dhis.linelisting;
 
 import java.io.Serializable;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 @SuppressWarnings("serial")
 public class LineListOption 
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
     implements Serializable
 {
     /**

@@ -30,14 +30,14 @@ package org.hisp.dhis.validation;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ValidationRuleGroup
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     private String description;
     

@@ -231,13 +231,7 @@ public class GridUtils
     {
         final StringWriter writer = new StringWriter();
         
-        final VelocityEngine velocity = getVelocityEngine();
-        
-        final VelocityContext context = new VelocityContext();
-        
-        context.put( KEY_GRID, grid );
-        
-        velocity.getTemplate( TEMPLATE ).merge( context, writer );
+        render( grid, writer );
         
         String report = writer.toString();
 
@@ -254,19 +248,13 @@ public class GridUtils
     public static void toJrxml( Grid grid, Writer writer )
         throws Exception
     {
-        final VelocityEngine velocity = getVelocityEngine();
-        
-        final VelocityContext context = new VelocityContext();
-        
-        context.put( KEY_GRID, grid );
-        
-        velocity.getTemplate( TEMPLATE ).merge( context, writer );
+        render(grid, writer);
     }
     
     /**
-     * Creates a VelocityEngine instance.
+     * Render using velocity
      */
-    private static VelocityEngine getVelocityEngine()
+    private static void render(Grid grid, Writer writer)
         throws Exception
     {
         final VelocityEngine velocity = new VelocityEngine();
@@ -275,6 +263,12 @@ public class GridUtils
         velocity.setProperty( RESOURCE_LOADER_NAME + ".resource.loader.class", ClasspathResourceLoader.class.getName() );
         velocity.init();
         
-        return velocity;
+        final VelocityContext context = new VelocityContext();
+        
+        context.put( KEY_GRID, grid );
+        
+        velocity.getTemplate( TEMPLATE ).merge( context, writer );
+        
+
     }
 }

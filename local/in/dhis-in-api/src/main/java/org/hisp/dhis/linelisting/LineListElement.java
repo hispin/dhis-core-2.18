@@ -31,11 +31,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 @SuppressWarnings("serial")
 public class LineListElement
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
     implements Serializable
 {
     public static final String TYPE_STRING = "string";

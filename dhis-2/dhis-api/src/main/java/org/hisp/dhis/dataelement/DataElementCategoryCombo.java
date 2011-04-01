@@ -32,14 +32,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author Abyot Aselefew
  * @version $Id$
  */
 public class DataElementCategoryCombo
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     public static final String DEFAULT_CATEGORY_COMBO_NAME = "default";
 

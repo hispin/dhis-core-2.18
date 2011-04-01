@@ -30,7 +30,7 @@ package org.hisp.dhis.datadictionary;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
 
@@ -39,7 +39,7 @@ import org.hisp.dhis.indicator.Indicator;
  * @version $Id$
  */
 public class DataDictionary
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     private String description;
     

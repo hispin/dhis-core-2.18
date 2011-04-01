@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 import org.hisp.dhis.importexport.dxf2.model.Link;
 
 public class LinkBuilderImpl implements LinkBuilder
 {
-    public List<Link> getLinks( Collection<? extends IdentifiableObject> targets  )
+    public List<Link> getLinks( Collection<? extends AbstractIdentifiableObject> targets  )
     {
         List<Link> links = new ArrayList<Link>();
 
-        for ( IdentifiableObject target : targets )
+        for ( AbstractIdentifiableObject target : targets )
         {
             links.add( get( target ) );
         }
         return links;
     }
 
-    public Link get( IdentifiableObject target )
+    public Link get( AbstractIdentifiableObject target )
     {
         Link link = new Link();
 

@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.displayproperty;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,18 +27,80 @@ package org.hisp.dhis.options.displayproperty;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.common.AbstractNameableObject;
-import org.hisp.dhis.common.NameableObject;
 
 /**
- * @author Lars Helge Overland
- * @version $Id: DisplayPropertyHandler.java 6256 2008-11-10 17:10:30Z larshelg $
+ * @author Bob Jolliffe
+ * @version $Id$
  */
-public interface DisplayPropertyHandler
+public abstract class AbstractIdentifiableObject
+    implements IdentifiableObject
 {
-    List<? extends NameableObject> handle( List<? extends AbstractNameableObject> list );
-    
-    NameableObject handle( AbstractNameableObject object );
+    /**
+     * The database internal identifier for this Object.
+     */
+    protected int id;
+
+    /**
+     * The Universally Unique Identifer for this Object.
+     */
+    protected String uuid;
+
+    /**
+     * The name of this Object. Required and unique.
+     */
+    protected String name;
+
+    public AbstractIdentifiableObject()
+    {
+    }
+
+    public AbstractIdentifiableObject( int id, String uuid, String name )
+    {
+        this.id = id;
+        this.uuid = uuid;
+        this.name = name;
+    }
+
+    /* (non-Javadoc)
+     * @see org.hisp.dhis.common.IdentifiableObject#getId()
+     */
+    @Override
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
+
+    /* (non-Javadoc)
+     * @see org.hisp.dhis.common.IdentifiableObject#getUuid()
+     */
+    @Override
+    public String getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid( String uuid )
+    {
+        this.uuid = uuid;
+    }
+
+    /* (non-Javadoc)
+     * @see org.hisp.dhis.common.IdentifiableObject#getName()
+     */
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
 }

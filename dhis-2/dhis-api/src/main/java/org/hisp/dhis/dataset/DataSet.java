@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractNameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -47,7 +47,7 @@ import org.hisp.dhis.source.Source;
  * @version $Id: DataSet.java 6255 2008-11-10 16:01:24Z larshelg $
  */
 public class DataSet
-    extends IdentifiableObject
+    extends AbstractNameableObject
 {
     /**
      * The PeriodType indicating the frequency that this DataSet should be used

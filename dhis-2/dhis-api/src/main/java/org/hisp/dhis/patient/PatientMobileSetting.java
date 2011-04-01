@@ -29,9 +29,9 @@ package org.hisp.dhis.patient;
 
 import java.util.List;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
-public class PatientMobileSetting extends IdentifiableObject
+public class PatientMobileSetting extends AbstractIdentifiableObject
 {
     private Boolean gender, dobtype, birthdate, bloodgroup, registrationdate;
     

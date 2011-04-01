@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractNameableObject;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
@@ -57,7 +57,7 @@ import org.hisp.dhis.period.YearlyPeriodType;
  * @version $Id: DataElement.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class DataElement
-    extends IdentifiableObject
+    extends AbstractNameableObject
 {
     public static final String VALUE_TYPE_STRING = "string";
     
