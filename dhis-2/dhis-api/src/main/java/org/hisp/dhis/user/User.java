@@ -104,6 +104,12 @@ public class User
         return surname.equals( other.getSurname() )
             && firstName.equals( other.getFirstName() );
     }
+    
+    @Override
+    public String toString()
+    {
+        return "[" + surname + " " + firstName + "]";
+    }
 
     // -------------------------------------------------------------------------
     // Logic

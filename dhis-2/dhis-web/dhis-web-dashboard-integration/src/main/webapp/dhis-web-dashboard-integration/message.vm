@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "messages" )</h3>
 
-<div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )" onclick="window.location.href='message.action'"></div>
+<div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )" onclick="window.location.href='showSendMessage.action'"></div>
 
 <table class="listTable" style="width:75%">
 	<tr>
@@ -12,10 +12,10 @@
 	</tr>
 	#foreach( $message in $messages )
 	<tr>
-		<td>$encoder.htmlEncode( $message.message.sender )</td>
-		<td>$encoder.htmlEncode( $message.message.messageDate )</td>
-		<td>$encoder.htmlEncode( $message.message.subject )</td>
-		<td><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/>
+		<td style="width:28%">$encoder.htmlEncode( $message.message.sender )</td>
+		<td style="width:10%">$format.formatDate( $message.messageDate )</td>
+		<td style="width:70%">$encoder.htmlEncode( $message.message.subject )</td>
+		<td style="width:2%"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/>
 	</tr>
 	#end
 </table>
