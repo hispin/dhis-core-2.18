@@ -320,9 +320,14 @@
       <result name="success" type="velocity">/dhis-web-maintenance-dataset/htmlGrid.vm</result>
     </action>
 	
-	<action name="definedAssociationsEditor"	
-	  class="org.hisp.dhis.dataset.action.editor.DefinedAssociationsEditorAction">
+	<action name="definedAssociationEditor"	
+	  class="org.hisp.dhis.dataset.action.editor.DefinedAssociationEditorAction">
       <result name="success" type="velocity">/dhis-web-maintenance-dataset/loadIcon.vm</result>
+    </action>
+	
+	<action name="definedMultiAssociationsEditor"	
+	  class="org.hisp.dhis.dataset.action.editor.DefinedMultiAssociationsEditorAction">
+      <result name="success" type="velocity">/dhis-web-maintenance-dataset/loadIcons.vm</result>
     </action>
 	
   </package>
