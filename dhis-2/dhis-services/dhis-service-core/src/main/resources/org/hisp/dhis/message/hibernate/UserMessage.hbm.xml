@@ -15,7 +15,7 @@
     <many-to-one name="user" class="org.hisp.dhis.user.User" 
       column="userid" foreign-key="fk_usermessage_user" not-null="true"/>
     
-    <property name="read" column="read" not-null="true"/>    
+    <property name="read" column="canread" not-null="true"/>    
     <property name="messageDate" column="messageDate" not-null="true"/>
     
     <join table="message_usermessages" inverse="true">
