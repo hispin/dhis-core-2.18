@@ -27,7 +27,7 @@
 	<tbody>
 	#foreach( $meta in $!MetaValues )
 		#set( $list = $!MetaValueMaps.get( $meta.id ) )
-		<tr>
+		<tr id="tr$meta.id">
 			<td><input type="checkbox" onchange="assignAll( this, $meta.id )"/></td>
 			<td>$meta</td>
 		#foreach( $item in $list )
@@ -58,5 +58,5 @@
 			arrayIds.push( '$encoder.jsEscape( $id, "'" )' );	
 		#end
 	}
-
+	
 </script>
