@@ -33,26 +33,37 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEG
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.comparator.DataElementCategoryOptionComboNameComparator;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.system.util.MathUtils;
 
 /**
  * @author Abyot Asalefew
@@ -65,6 +76,7 @@ public class DefaultDataSetReportService
     private static final Pattern OPERAND_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
     private static final String NULL_REPLACEMENT = "";
     private static final String SEPARATOR = ":";
+    private static final String DEFAULT_HEADER = "Value";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -201,5 +213,86 @@ public class DefaultDataSetReportService
         matDataElement.appendTail( buffer );
         
         return buffer.toString();
+    }
+    
+    public Grid getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, boolean selectedUnitOnly, I18nFormat format, I18n i18n )
+    {
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+
+        Collections.sort( dataElements, new DataElementNameComparator() );
+        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
+
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
+            DEFAULT_AGGREGATION_STRATEGY );
+
+        // ---------------------------------------------------------------------
+        // Get the category-option-combos
+        // ---------------------------------------------------------------------
+
+        Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+
+        for ( DataElement dataElement : dataElements )
+        {
+            optionCombos.addAll( dataElement.getCategoryCombo().getOptionCombos() );
+        }
+
+        List<DataElementCategoryOptionCombo> orderedOptionCombos = new ArrayList<DataElementCategoryOptionCombo>(
+            optionCombos );
+
+        Collections.sort( orderedOptionCombos, new DataElementCategoryOptionComboNameComparator() );
+
+        // ---------------------------------------------------------------------
+        // Create a GRID
+        // ---------------------------------------------------------------------
+
+        Grid grid = new ListGrid().setTitle( dataSet.getName() );
+        grid.setSubtitle( format.formatPeriod( period ) );
+
+        // ---------------------------------------------------------------------
+        // Headers for GRID
+        // ---------------------------------------------------------------------
+
+        grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) );
+         
+        for ( DataElementCategoryOptionCombo optionCombo : orderedOptionCombos )
+        {
+            grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(), false, false ) );
+        }
+
+        // ---------------------------------------------------------------------
+        // Values for GRID
+        // ---------------------------------------------------------------------
+
+        for ( DataElement dataElement : dataElements )
+        {
+            grid.addRow();
+
+            grid.addValue( dataElement.getName() );
+
+            for ( DataElementCategoryOptionCombo optionCombo : orderedOptionCombos )
+            {
+                String value = "";
+
+                if ( selectedUnitOnly )
+                {
+                    DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
+                    value = (dataValue != null) ? dataValue.getValue() : null;
+                }
+                else
+                {
+                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
+                        .getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(), period.getEndDate(), unit )
+                        : aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, unit );
+
+                    value = (aggregatedValue != null) ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) )
+                        : null;
+                }
+
+                grid.addValue( value );
+
+            }
+        }
+        
+        return grid;
     }
 }

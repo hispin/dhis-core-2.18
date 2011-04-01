@@ -44,7 +44,6 @@ import java.util.List;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;

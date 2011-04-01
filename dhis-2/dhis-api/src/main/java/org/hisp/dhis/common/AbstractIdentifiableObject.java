@@ -27,10 +27,8 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 /**
  * @author Bob Jolliffe
- * @version $Id$
  */
 public abstract class AbstractIdentifiableObject
     implements IdentifiableObject
@@ -61,9 +59,6 @@ public abstract class AbstractIdentifiableObject
         this.name = name;
     }
 
-    /* (non-Javadoc)
-     * @see org.hisp.dhis.common.IdentifiableObject#getId()
-     */
     @Override
     public int getId()
     {
@@ -75,9 +70,6 @@ public abstract class AbstractIdentifiableObject
         this.id = id;
     }
 
-    /* (non-Javadoc)
-     * @see org.hisp.dhis.common.IdentifiableObject#getUuid()
-     */
     @Override
     public String getUuid()
     {
@@ -89,9 +81,6 @@ public abstract class AbstractIdentifiableObject
         this.uuid = uuid;
     }
 
-    /* (non-Javadoc)
-     * @see org.hisp.dhis.common.IdentifiableObject#getName()
-     */
     @Override
     public String getName()
     {
@@ -102,5 +91,4 @@ public abstract class AbstractIdentifiableObject
     {
         this.name = name;
     }
-
 }
