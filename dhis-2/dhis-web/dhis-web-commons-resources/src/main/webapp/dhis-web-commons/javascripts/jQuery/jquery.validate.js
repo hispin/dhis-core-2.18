@@ -11,6 +11,10 @@
  *   http://www.gnu.org/licenses/gpl.html
  */
 
+/*
+ * Modified for v1.8 by mortenoh, based on custom code from Viet Nguyen
+ */
+
 (function($) {
 
 $.extend($.fn, {
@@ -52,14 +56,13 @@ $.extend($.fn, {
 					// prevent form submit to be able to see console output
 					event.preventDefault();
 
-				// This was readded for jquery.validation 1.8 by mortenoh
-				// original code by Viet Nguyen
-				// TODO this should be either removed completely (big job), or maybe added somewhere else..
+				/* -- Custom code by mortenoh -- */
 				if(validator.settings.beforeValidateHandler)
 				{
 					validator.settings.beforeValidateHandler.call();	
 				}
-				
+				/* -- end -- */
+
 				function handle() {
 					if ( validator.settings.submitHandler ) {
 						if (validator.submitButton) {
@@ -259,11 +262,13 @@ $.extend($.validator, {
 		$.extend( $.validator.defaults, settings );
 	},
 
+	/* -- Custom code by mortenoh -- */
 	setMessages : function( messages ) {
 		this.messages = messages;
 	},
 	
 	messages: {},
+	/* -- end -- */
 
 	autoCreateRanges: false,
 
@@ -938,7 +943,12 @@ $.extend($.validator, {
 				data: data,
 				success: function(response) {
 					validator.settings.messages[element.name].remote = previous.originalMessage;
-					var valid = response === true;
+					
+					/* -- Custom code by mortenoh -- */
+					//var valid = response === true; // OLD
+					var valid = response.response === 'success';
+					/* -- end -- */
+
 					if ( valid ) {
 						var submitted = validator.formSubmitted;
 						validator.prepareElement(element);
@@ -947,7 +957,11 @@ $.extend($.validator, {
 						validator.showErrors();
 					} else {
 						var errors = {};
-						var message = response || validator.defaultMessage( element, "remote" );
+						/* -- Custom code by mortenoh -- */
+						//var message = response || validator.defaultMessage( element, "remote" ); // OLD
+						var message = (previous.message = response.message || validator.defaultMessage( element, "remote" ));
+						/* -- end -- */
+
 						errors[element.name] = previous.message = $.isFunction(message) ? message(value) : message;
 						validator.showErrors(errors);
 					}
