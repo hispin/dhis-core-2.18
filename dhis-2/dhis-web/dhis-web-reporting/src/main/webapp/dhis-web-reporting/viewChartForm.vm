@@ -26,8 +26,8 @@
 			</table>
             <table class="listTable" id="listTable">
                 <col>
-                <col width="110px">              
-                <thead>              
+                <col width="115px">
+                <thead>  
                 <tr>
                     <th>$i18n.getString( "title" )</th>
                     <th class="{sorter: false}">$i18n.getString( "operations" )</th>
