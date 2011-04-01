@@ -81,10 +81,28 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.dashboard.message.action.SendMessageAction"
     class="org.hisp.dhis.dashboard.message.action.SendMessageAction"
-    scope="prototype">    
+    scope="prototype">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dashboard.message.action.ReadMessageAction"
+    class="org.hisp.dhis.dashboard.message.action.ReadMessageAction"
+    scope="prototype">
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>    
+  </bean>
+  
+  <bean id="org.hisp.dhis.dashboard.message.action.UnreadMessageAction"
+    class="org.hisp.dhis.dashboard.message.action.UnreadMessageAction"
+    scope="prototype">
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>    
+  </bean>
+  
+  <bean id="org.hisp.dhis.dashboard.message.action.RemoveMessageAction"
+    class="org.hisp.dhis.dashboard.message.action.RemoveMessageAction"
+    scope="prototype">
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>    
   </bean>
   
 </beans>
