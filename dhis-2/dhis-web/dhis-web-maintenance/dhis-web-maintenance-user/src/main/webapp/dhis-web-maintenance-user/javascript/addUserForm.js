@@ -59,7 +59,7 @@ jQuery( document ).ready( function()
 	jQuery( "#phoneNumber" ).attr( "maxlength", r.user.phone.rangelength[1] );
 
 	/* remote validation */
-	checkValueIsExist( "username", "validateUser.action" );
+	/* checkValueIsExist( "username", "validateUser.action" ); */
 
 	jQuery("#cancel").click(function() {
 		referrerBack( "alluser.action" );
