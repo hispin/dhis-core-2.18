@@ -30,7 +30,7 @@ package org.hisp.dhis.dataelement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 import org.hisp.dhis.concept.Concept;
 
 /**
@@ -43,7 +43,7 @@ import org.hisp.dhis.concept.Concept;
  * @version $Id DataElementCategory.java Aug 25, 2010 duyhieu$
  */
 public class DataElementCategory
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     public static final String DEFAULT_NAME = "default";
 

@@ -1,7 +1,7 @@
-package org.hisp.dhis.options.displayproperty;
+package org.hisp.dhis.common;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,18 +27,13 @@ package org.hisp.dhis.options.displayproperty;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.common.AbstractNameableObject;
-import org.hisp.dhis.common.NameableObject;
-
-/**
- * @author Lars Helge Overland
- * @version $Id: DisplayPropertyHandler.java 6256 2008-11-10 17:10:30Z larshelg $
- */
-public interface DisplayPropertyHandler
+public interface NameableObject extends IdentifiableObject
 {
-    List<? extends NameableObject> handle( List<? extends AbstractNameableObject> list );
-    
-    NameableObject handle( AbstractNameableObject object );
+    public String getAlternativeName();
+
+    public String getShortName();
+
+    public String getCode();
+
+    public String getDescription();
 }

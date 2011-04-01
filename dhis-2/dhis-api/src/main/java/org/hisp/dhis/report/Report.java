@@ -27,7 +27,7 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -35,7 +35,7 @@ import org.hisp.dhis.reporttable.ReportTable;
  * @version $Id$
  */
 public class Report
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     public static final String TEMPLATE_DIR = "templates";
     

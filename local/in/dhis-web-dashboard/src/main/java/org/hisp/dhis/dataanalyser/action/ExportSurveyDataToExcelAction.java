@@ -271,10 +271,8 @@ public class ExportSurveyDataToExcelAction implements Action
         System.out.println( data2.length );
         */
         
-        selectedOrgUnit = new OrganisationUnit();
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( selectedOrgUnitId );
         
-        selectedIndicator = new Indicator();
         selectedIndicator = indicatorService.getIndicator( selctedIndicatorId );
         
         

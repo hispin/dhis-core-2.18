@@ -30,7 +30,7 @@ package org.hisp.dhis.source;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractNameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 
@@ -39,7 +39,7 @@ import org.hisp.dhis.dataset.DataSet;
  * @version $Id: Source.java 5277 2008-05-27 15:48:42Z larshelg $
  */
 public abstract class Source
-    extends IdentifiableObject
+    extends AbstractNameableObject
 {
     protected Set<DataSet> dataSets = new HashSet<DataSet>();
 

@@ -27,14 +27,14 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: IndicatorType.java 5296 2008-05-29 16:06:14Z larshelg $
  */
 public class IndicatorType
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     private int factor;
 

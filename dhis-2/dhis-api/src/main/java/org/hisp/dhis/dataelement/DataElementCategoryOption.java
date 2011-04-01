@@ -30,21 +30,21 @@ package org.hisp.dhis.dataelement;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractNameableObject;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
 public class DataElementCategoryOption
-    extends IdentifiableObject
+    extends AbstractNameableObject
 {
     public static final String DEFAULT_NAME = "default";
-    
+
     private DataElementCategory category;
-    
+
     private Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -52,13 +52,10 @@ public class DataElementCategoryOption
     public DataElementCategoryOption()
     {
     }
-    
-    /**
-     * @param name the name.
-     */
+
     public DataElementCategoryOption( String name )
     {
-    	this.name = name;
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
@@ -69,7 +66,7 @@ public class DataElementCategoryOption
     {
         return name.equals( DEFAULT_NAME );
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -87,17 +84,17 @@ public class DataElementCategoryOption
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
-        if ( !( object instanceof DataElementCategoryOption ) )
+
+        if ( !(object instanceof DataElementCategoryOption) )
         {
             return false;
         }
-        
+
         final DataElementCategoryOption other = (DataElementCategoryOption) object;
 
         return name.equals( other.getName() );
@@ -118,7 +115,7 @@ public class DataElementCategoryOption
     {
         return name;
     }
-    
+
     public DataElementCategory getCategory()
     {
         return category;

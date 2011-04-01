@@ -37,7 +37,7 @@ import java.util.List;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.AggregatedValue;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -61,7 +61,7 @@ import org.hisp.dhis.system.util.ConversionUtils;
 public class DefaultPivotTableService
     implements PivotTableService
 {
-    private static final Comparator<IdentifiableObject> INDICATOR_COMPARATOR = new IdentifiableObjectNameComparator();
+    private static final Comparator<AbstractIdentifiableObject> INDICATOR_COMPARATOR = new IdentifiableObjectNameComparator();
     private static final Comparator<OrganisationUnit> ORGUNIT_COMPARATOR = new OrganisationUnitNameComparator();
     private static final Comparator<Period> PERIOD_COMPARATOR = new AscendingPeriodComparator();
     
@@ -118,7 +118,7 @@ public class DefaultPivotTableService
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( 
             organisationUnitService.getOrganisationUnit( organisationUnitId ).getChildren() );
          
-        List<? extends IdentifiableObject> indicators = null;
+        List<? extends AbstractIdentifiableObject> indicators = null;
         Collection<? extends AggregatedValue> aggregatedValues = null;
         
         if ( dataType == DATA_TYPE_INDICATOR )
@@ -153,7 +153,7 @@ public class DefaultPivotTableService
             }
             else
             {
-                indicators = new ArrayList<IdentifiableObject>( dataElementService.getDataElementGroup( groupId ).getMembers() );
+                indicators = new ArrayList<AbstractIdentifiableObject>( dataElementService.getDataElementGroup( groupId ).getMembers() );
                 
                 aggregatedValues = aggregatedDataValueService.getAggregatedDataValues(
                     ConversionUtils.getIdentifiers( Indicator.class, indicators ),

@@ -30,14 +30,14 @@ package org.hisp.dhis.indicator;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: IndicatorGroup.java 5296 2008-05-29 16:06:14Z larshelg $
  */
 public class IndicatorGroup
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     private Set<Indicator> members = new HashSet<Indicator>();
 

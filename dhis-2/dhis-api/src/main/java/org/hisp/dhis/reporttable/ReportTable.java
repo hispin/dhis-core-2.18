@@ -35,8 +35,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.common.AbstractNameableObject;
 import org.hisp.dhis.common.CombinationGenerator;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -57,7 +59,7 @@ import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
  * @version $Id$
  */
 public class ReportTable
-    extends IdentifiableObject
+    extends AbstractNameableObject
 {
     public static final String DATAELEMENT_ID = "dataelementid";
     public static final String DATAELEMENT_NAME = "dataelementname";
@@ -105,7 +107,7 @@ public class ReportTable
         put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
     } };
     
-    public static final Map<Class<? extends IdentifiableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends IdentifiableObject>, String>() { {
+    public static final Map<Class<? extends NameableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends NameableObject>, String>() { {
         put( Indicator.class, INDICATOR_ID );
         put( DataElement.class, DATAELEMENT_ID );
         put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );
@@ -116,7 +118,7 @@ public class ReportTable
     } };
 
     private static final String EMPTY = "";
-    private static final IdentifiableObject[] IRT = new IdentifiableObject[0];
+    private static final NameableObject[] IRT = new NameableObject[0];
     private static final String[] SRT = new String[0];    
     private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"'<>.]";
     
@@ -221,17 +223,17 @@ public class ReportTable
     /**
      * All Indicatrs, including DateElements, Indicators and DataSets.
      */
-    private List<IdentifiableObject> allIndicators = new ArrayList<IdentifiableObject>();
+    private List<NameableObject> allIndicators = new ArrayList<NameableObject>();
 
     /**
      * All crosstabulated columns.
      */
-    private List<List<IdentifiableObject>> columns = new ArrayList<List<IdentifiableObject>>();
+    private List<List<NameableObject>> columns = new ArrayList<List<NameableObject>>();
     
     /**
      * All rows.
      */
-    private List<List<IdentifiableObject>> rows = new ArrayList<List<IdentifiableObject>>();
+    private List<List<NameableObject>> rows = new ArrayList<List<NameableObject>>();
     
     /**
      * Names of the columns used to query the datavalue table and as index columns
@@ -375,8 +377,8 @@ public class ReportTable
         allUnits.addAll( relativeUnits );
         allUnits = removeDuplicates( allUnits );
 
-        columns = new CombinationGenerator<IdentifiableObject>( getArrays( true ) ).getCombinations();
-        rows = new CombinationGenerator<IdentifiableObject>( getArrays( false ) ).getCombinations();
+        columns = new CombinationGenerator<NameableObject>( getArrays( true ) ).getCombinations();
+        rows = new CombinationGenerator<NameableObject>( getArrays( false ) ).getCombinations();
         
         addIfEmpty( columns ); // Allow for all or none crosstab dimensions
         addIfEmpty( rows );
@@ -423,11 +425,11 @@ public class ReportTable
      * Generates a pretty column name based on short-names of the argument objects. 
      * Null arguments are ignored in the name.
      */
-    public static String getPrettyColumnName( List<IdentifiableObject> objects )
+    public static String getPrettyColumnName( List<NameableObject> objects )
     {
         StringBuffer buffer = new StringBuffer();
         
-        for ( IdentifiableObject object : objects )
+        for ( NameableObject object : objects )
         {
             buffer.append( object != null ? ( object.getShortName() + SPACE ) : EMPTY );
         }
@@ -439,11 +441,11 @@ public class ReportTable
      * Generates a column name based on short-names of the argument objects. Null 
      * arguments are ignored in the name.
      */
-    public static String getColumnName( List<IdentifiableObject> objects )
+    public static String getColumnName( List<NameableObject> objects )
     {
         StringBuffer buffer = new StringBuffer();
         
-        for ( IdentifiableObject object : objects )
+        for ( NameableObject object : objects )
         {
             if ( object != null && object instanceof Period )
             {
@@ -464,25 +466,25 @@ public class ReportTable
      * Generates a grid identifier based on the internal identifiers of the
      * argument objects.
      */
-    public static String getIdentifier( List<IdentifiableObject> objects )
+    public static String getIdentifier( List<NameableObject> objects )
     {
-        return getIdentifier( objects, new ArrayList<IdentifiableObject>() );
+        return getIdentifier( objects, new ArrayList<NameableObject>() );
     }
     
     /**
      * Generates a grid identifier based on the internal identifiers of the
      * argument objects.
      */
-    public static String getIdentifier( List<IdentifiableObject> objects1, List<IdentifiableObject> objects2 )
+    public static String getIdentifier( List<? extends NameableObject> objects1, List<? extends NameableObject> objects2 )
     {
         List<String> identifiers = new ArrayList<String>();
         
-        for ( IdentifiableObject object : objects1 )
+        for ( NameableObject object : objects1 )
         {
             identifiers.add( getIdentifier( object.getClass(), object.getId() ) );
         }
         
-        for ( IdentifiableObject object : objects2 )
+        for ( NameableObject object : objects2 )
         {
             identifiers.add( getIdentifier( object.getClass(), object.getId() ) );
         }
@@ -493,11 +495,11 @@ public class ReportTable
     /**
      * Generates a grid column identifier based on the argument identifiers.
      */
-    public static String getIdentifier( List<IdentifiableObject> objects, Class<? extends IdentifiableObject> clazz, int id )
+    public static String getIdentifier( List<NameableObject> objects, Class<? extends NameableObject> clazz, int id )
     {
         List<String> identifiers = new ArrayList<String>();
         
-        for ( IdentifiableObject object : objects )
+        for ( NameableObject object : objects )
         {
             identifiers.add( getIdentifier( object.getClass(), object.getId() ) );
         }
@@ -522,7 +524,7 @@ public class ReportTable
     /**
      * Returns a grid identifier based on the argument class and id.
      */
-    public static String getIdentifier( Class<? extends IdentifiableObject> clazz, int id )
+    public static String getIdentifier( Class<? extends NameableObject> clazz, int id )
     {
         return CLASS_ID_MAP.get( clazz ) + id;
     }
@@ -588,9 +590,9 @@ public class ReportTable
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private IdentifiableObject[][] getArrays( boolean crosstab )
+    private NameableObject[][] getArrays( boolean crosstab )
     {
-        List<IdentifiableObject[]> arrays = new ArrayList<IdentifiableObject[]>();
+        List<NameableObject[]> arrays = new ArrayList<NameableObject[]>();
         
         if ( ( doIndicators && crosstab ) || ( !doIndicators && !crosstab ) )
         {
@@ -612,17 +614,17 @@ public class ReportTable
             arrays.add( categoryOptionCombos.toArray( IRT ) );
         }
         
-        return arrays.toArray( new IdentifiableObject[0][] );
+        return arrays.toArray( new NameableObject[0][] );
     }
 
     /**
-     * Adds an empty list of IdentifiableObjects to the given list if empty.
+     * Adds an empty list of NameableObjects to the given list if empty.
      */
-    private void addIfEmpty( List<List<IdentifiableObject>> list )
+    private void addIfEmpty( List<List<NameableObject>> list )
     {
         if ( list != null && list.size() == 0 )
         {
-            list.add( Arrays.asList( new IdentifiableObject[0] ) );
+            list.add( Arrays.asList( new NameableObject[0] ) );
         }
     }
     
@@ -958,12 +960,12 @@ public class ReportTable
         this.organisationUnitName = organisationUnitName;
     }
 
-    public List<List<IdentifiableObject>> getColumns()
+    public List<List<NameableObject>> getColumns()
     {
         return columns;
     }
 
-    public List<List<IdentifiableObject>> getRows()
+    public List<List<NameableObject>> getRows()
     {
         return rows;
     }

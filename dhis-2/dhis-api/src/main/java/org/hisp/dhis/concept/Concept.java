@@ -27,7 +27,7 @@ package org.hisp.dhis.concept;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * A Concept Name is a short name which is used as an attribute name
@@ -40,7 +40,7 @@ import org.hisp.dhis.common.IdentifiableObject;
  * @version $Id Concept.java Aug 25, 2010$
  */
 public class Concept
-    extends IdentifiableObject
+    extends AbstractIdentifiableObject
 {
     public static String DEFAULT_CONCEPT_NAME = "default";
     

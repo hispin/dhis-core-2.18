@@ -33,14 +33,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractNameableObject;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class Indicator
-    extends IdentifiableObject
+    extends AbstractNameableObject
 {
     private Boolean annualized;
 
@@ -71,33 +71,6 @@ public class Indicator
     private Set<IndicatorGroup> groups =  new HashSet<IndicatorGroup>();
     
     private List<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>();
-    
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public Indicator()
-    {
-    }
-
-    public Indicator( String name, String alternativeName, String shortName, String code, String description, Boolean annualized, 
-        IndicatorType indicatorType, String numerator, String numeratorDescription, String numeratorAggregationOperator, String denominator,
-        String denominatorDescription, String denominatorAggregationOperator )
-    {
-        this.name = name;
-        this.alternativeName = alternativeName;
-        this.shortName = shortName;
-        this.code = code;
-        this.description = description;
-        this.annualized = annualized;
-        this.indicatorType = indicatorType;
-        this.numerator = numerator;
-        this.numeratorDescription = numeratorDescription;
-        this.numeratorAggregationOperator = numeratorAggregationOperator;
-        this.denominator = denominator;
-        this.denominatorDescription = denominatorDescription;
-        this.denominatorAggregationOperator = denominatorAggregationOperator;
-    }
     
     // -------------------------------------------------------------------------
     // Logic
