@@ -12,9 +12,7 @@ var headerMessageTimeout = -1;
  *            if there is not document.referrer, use this url
  */
 function referrerBack( defaultUrl ) {
-	if(document.referrer != "") {
-/*		var splitReferrer = document.referrer.split("\/");
-		var referrer = splitReferrer[splitReferrer.length-1]; */
+	if(document.referrer !== undefined && document.referrer != "") {
 		location.href = referrer;
 	} else {
 		location.href = defaultUrl;
