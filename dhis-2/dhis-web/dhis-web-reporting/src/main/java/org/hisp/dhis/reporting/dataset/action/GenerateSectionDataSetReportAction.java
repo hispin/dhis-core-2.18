@@ -27,36 +27,16 @@ package org.hisp.dhis.reporting.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.GridHeader;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.Section;
-import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
-import org.hisp.dhis.system.grid.ListGrid;
-import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -65,22 +45,13 @@ import com.opensymphony.xwork2.Action;
  */
 public class GenerateSectionDataSetReportAction
     implements Action
-{
-    private static final String DEFAULT_HEADER = "Value";
-    private static final String TOTAL_HEADER = "Total";
-    
+{    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataValueService dataValueService;
-
-    private SystemSettingManager systemSettingManager;
-
-    private AggregatedDataValueService aggregatedDataValueService;
-
-    private AggregationService aggregationService;
-
+    private DataSetReportService dataSetReportService;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -108,23 +79,12 @@ public class GenerateSectionDataSetReportAction
     private String reportingPeriod;
 
     // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public void setAggregationService( AggregationService aggregationService )
+    public void setDataSetReportService( DataSetReportService dataSetReportService )
     {
-        this.aggregationService = aggregationService;
+        this.dataSetReportService = dataSetReportService;
     }
 
     public String getReportingUnit()
@@ -152,16 +112,6 @@ public class GenerateSectionDataSetReportAction
         this.format = format;
     }
 
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
-    {
-        this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     public void setSelectedOrgunit( OrganisationUnit selectedOrgunit )
     {
         this.selectedOrgunit = selectedOrgunit;
@@ -176,11 +126,6 @@ public class GenerateSectionDataSetReportAction
     {
         this.selectedPeriod = selectedPeriod;
     }
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
     
     public void setSelectedUnitOnly( boolean selectedUnitOnly )
     {
@@ -194,103 +139,8 @@ public class GenerateSectionDataSetReportAction
     public String execute()
         throws Exception
     {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
-        boolean realTime = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME );
+        grids = dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
         
-        List<Section> sections = new ArrayList<Section>( selectedDataSet.getSections() );
-        Collections.sort( sections, new SectionOrderComparator() );
-
-        // ---------------------------------------------------------------------
-        // Create a grid for each section
-        // ---------------------------------------------------------------------
-
-        for ( Section section : sections )
-        {
-            Grid grid = new ListGrid().setTitle( section.getName() );
-
-            DataElementCategoryCombo categoryCombo = section.getCategoryCombo();
-            
-            // -----------------------------------------------------------------
-            // Grid headers
-            // -----------------------------------------------------------------
-
-            grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) ); // Data element header
-
-            for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() ) // Value headers
-            {
-                grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(), false, false ) );
-            }
-
-            if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total headers
-            {
-                for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
-                {
-                    grid.addHeader( new GridHeader( categoryOption.getName(), false, false ) );
-                }
-            }
-            
-            if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total header
-            {
-                grid.addHeader( new GridHeader( TOTAL_HEADER, false, false ) );
-            }
-            
-            // -----------------------------------------------------------------
-            // Grid values
-            // -----------------------------------------------------------------
-
-            List<DataElement> dataElements = new ArrayList<DataElement>( section.getDataElements() );
-            Collections.sort( dataElements, dataElementComparator );
-            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-
-            for ( DataElement dataElement : dataElements )
-            {
-                grid.addRow();
-                grid.addValue( dataElement.getName() ); // Data element name
-
-                for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() ) // Values
-                {
-                    Double value = null;
-
-                    if ( selectedUnitOnly )
-                    {
-                        DataValue dataValue = dataValueService.getDataValue( selectedOrgunit, dataElement, selectedPeriod, optionCombo );
-                        value = dataValue != null && dataValue.getValue() != null ? Double.parseDouble( dataValue.getValue() ) : null;
-                    }
-                    else
-                    {
-                        value = realTime ? 
-                            aggregationService.getAggregatedDataValue( dataElement, optionCombo, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit ) : 
-                            aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, selectedPeriod, selectedOrgunit );
-                    }
-                    
-                    grid.addValue( value );
-                }
-                
-                if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total values
-                {
-                    for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
-                    {
-                        Double value = realTime ? 
-                            aggregationService.getAggregatedDataValue( dataElement, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit, categoryOption ) : 
-                            aggregatedDataValueService.getAggregatedValue( dataElement, categoryOption, selectedPeriod, selectedOrgunit );
-
-                        grid.addValue( value );
-                    }
-                }
-                
-                if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total value
-                {
-                    Double value = realTime ?
-                        aggregationService.getAggregatedDataValue( dataElement, null, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit ) :
-                        aggregatedDataValueService.getAggregatedValue( dataElement, selectedPeriod, selectedOrgunit );
-                        
-                    grid.addValue( value );
-                }
-            }
-
-            grids.add( grid );
-        }
-
         reportingUnit = selectedOrgunit.getName();
         reportingPeriod = format.formatPeriod( selectedPeriod );
 

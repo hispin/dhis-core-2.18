@@ -61,7 +61,6 @@ public class DataElement
 {
     public static final String VALUE_TYPE_STRING = "string";
     
-
     public static final String VALUE_TYPE_INT = "int";
 
     public static final String VALUE_TYPE_NUMBER = "number";
