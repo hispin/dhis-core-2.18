@@ -32,7 +32,9 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.user.User;
@@ -87,6 +89,25 @@ public class MessageServiceTest
         messageA.getUserMessages().add( userMessageB );
         messageB.getUserMessages().add( userMessageC );
         messageB.getUserMessages().add( userMessageD );
+    }
+    
+    @Test
+    public void testSendMessage()
+    {
+        messageA = new Message( "SubjectA", "TextA", sender );
+        
+        Set<User> users = new HashSet<User>();
+        users.add( userA );
+        users.add( userB );
+        
+        int idA = messageService.sendMessage( messageA, users );
+
+        messageA = messageService.getMessage( idA );
+        
+        assertNotNull( messageA );
+        assertEquals( "SubjectA", messageA.getSubject() );
+        assertEquals( "TextA", messageA.getText() );
+        assertEquals( 2, messageA.getUserMessages().size() );        
     }
     
     @Test

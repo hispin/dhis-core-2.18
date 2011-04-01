@@ -104,7 +104,7 @@ public class SendMessageAction
         {
             users.addAll( unit.getUsers() );
         }
-                
+        
         messageService.sendMessage( message, users );
         
         return SUCCESS;

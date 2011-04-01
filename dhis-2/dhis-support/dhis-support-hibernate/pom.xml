@@ -79,14 +79,6 @@
       <artifactId>commons-logging</artifactId>
     </dependency> 
     
-    <!-- Monitoring -->
-    <!--
-    <dependency>
-      <groupId>com.elvyx</groupId>
-      <artifactId>elvyx</artifactId>
-      <version>1.0.24</version>
-    </dependency> -->
-    
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

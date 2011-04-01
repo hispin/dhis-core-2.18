@@ -38,7 +38,6 @@ import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.AbstractNameableObject;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;

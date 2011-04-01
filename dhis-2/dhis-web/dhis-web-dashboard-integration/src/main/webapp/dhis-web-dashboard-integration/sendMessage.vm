@@ -12,7 +12,7 @@
 <tr>
 <td style="min-width:80px">$i18n.getString( "recipient" )</td>
 <td>
-<div id="selectionTree" style="width:325px; height:200px"></div>	            
+<div id="selectionTree" style="width:350px; height:180px"></div>	            
 <script type="text/javascript">
   selectionTreeSelection.setMultipleSelectionAllowed( true );
   selectionTreeSelection.setListenerFunction( organisationUnitSelected );
@@ -24,12 +24,12 @@
 
 <tr>
 <td>$i18n.getString( "subject" )</td>
-<td><input type="text" name="subject" style="width:400px"></td>
+<td><input type="text" name="subject" style="width:350px"></td>
 </tr>
 
 <tr>
 <td>$i18n.getString( "text" )</td>
-<td><textarea name="text" style="width:400px;height:400px"></textarea></td>
+<td><textarea name="text" style="width:350px;height:200px"></textarea></td>
 </tr>
 
 <tr>
