@@ -99,27 +99,15 @@ public class SendMessageAction
 
         Message message = new Message( subject, text, sender );
         
-        Set<UserMessage> userMessages = getUserMessages( message );
-        
-        message.setUserMessages( userMessages );
-        
-        messageService.saveMessage( message );
-        
-        return SUCCESS;
-    }
-    
-    private Set<UserMessage> getUserMessages( Message message )
-    {
-        Set<UserMessage> userMessages = new HashSet<UserMessage>();
+        Set<User> users = new HashSet<User>();
         
         for ( OrganisationUnit unit : selectionTreeManager.getSelectedOrganisationUnits() )
         {
-            for ( User user : unit.getUsers() )
-            {
-                userMessages.add( new UserMessage( user, message ) );
-            }
+            users.addAll( unit.getUsers() );
         }
+                
+        messageService.sendMessage( message, users );
         
-        return userMessages;
+        return SUCCESS;
     }
 }
