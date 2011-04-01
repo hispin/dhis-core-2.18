@@ -33,6 +33,7 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
 
@@ -51,6 +52,8 @@ public class UpdateValidationCriteriaAction
 
     private ValidationCriteriaService validationCriteriaService;
 
+    private PatientService patientService;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -67,8 +70,6 @@ public class UpdateValidationCriteriaAction
 
     private String value;
 
-    private I18nFormat format;
-
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
@@ -76,6 +77,11 @@ public class UpdateValidationCriteriaAction
     public void setValidationCriteriaService( ValidationCriteriaService validationCriteriaService )
     {
         this.validationCriteriaService = validationCriteriaService;
+    }
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
     }
 
     public void setName( String name )
@@ -96,11 +102,6 @@ public class UpdateValidationCriteriaAction
     public void setProperty( String property )
     {
         this.property = property;
-    }
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     public void setOperator( int operator )
@@ -127,39 +128,11 @@ public class UpdateValidationCriteriaAction
         criteria.setDescription( description );
         criteria.setProperty( property );
         criteria.setOperator( operator );
-        criteria.setValue( getObject() );
+        criteria.setValue( patientService.getObjectValue( property, value ) );
 
         validationCriteriaService.updateValidationCriteria( criteria );
 
         return SUCCESS;
     }
 
-    // -------------------------------------------------------------------------
-    // Supporting method
-    // -------------------------------------------------------------------------
-
-    private Object getObject()
-        throws Exception
-    {
-        Type type = Patient.class.getMethod( "get" + StringUtils.capitalize( property ) ).getReturnType();
-
-        if ( type == Integer.class || type == Integer.TYPE )
-        {
-            return Integer.valueOf( value );
-        }
-        else if ( type.equals( Boolean.class ) || type == Boolean.TYPE )
-        {
-            return Boolean.valueOf( value );
-        }
-        else if ( type.equals( Date.class ) )
-        {
-            return format.parseDate( value.trim() );
-        }
-        else if ( type.equals( Character.class ) || type == Character.TYPE )
-        {
-            return Character.valueOf ( value.charAt( 0 ) );
-        }
-
-        return value;
-    }
 }
