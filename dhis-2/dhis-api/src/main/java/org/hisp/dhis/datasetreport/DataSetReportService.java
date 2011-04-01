@@ -29,7 +29,9 @@ package org.hisp.dhis.datasetreport;
 
 import java.util.Map;
 
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -62,4 +64,18 @@ public interface DataSetReportService
      *         input fields.
      */
     String prepareReportContent( String dataEntryFormCode, Map<String, String> dataValues );
+    
+    /**
+     * Generates a Grid representing a data set report with all data elements
+     * in the data set. The data elements are grouped by their category combo.
+     * 
+     * @param dataSet the data set.
+     * @param unit the organisation unit.
+     * @param period the period.
+     * @param selectedUnitOnly indicators whether to use captured or aggregated data. 
+     * @param format the i18n format.
+     * @param i18n the i18n object.
+     * @return a Grid.
+     */
+    Grid getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit,  boolean selectedUnitOnly, I18nFormat format, I18n i18n );
 }

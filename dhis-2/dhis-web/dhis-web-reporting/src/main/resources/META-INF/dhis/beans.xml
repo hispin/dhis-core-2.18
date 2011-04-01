@@ -347,7 +347,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.pivottable.PivotTableService"/>
   </bean>
     
-  <!-- Custom DataSet Report -->
+  <!-- DataSet Report -->
 	
   <bean id="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction"
 	class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction">
@@ -389,14 +389,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction" 
     class="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction" 
     scope="prototype">
-	<property name="dataValueService" 
-	  ref="org.hisp.dhis.datavalue.DataValueService"/>
-	 <property name="systemSettingManager"
-	  ref="org.hisp.dhis.options.SystemSettingManager"/>
-	<property name="aggregatedDataValueService"
-	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
-	<property name="aggregationService"
-	  ref="org.hisp.dhis.aggregation.AggregationService"/>
+	<property name="dataSetReportService"
+	  ref="org.hisp.dhis.datasetreport.DataSetReportService"/>
   </bean>
   
   <bean id="org.hisp.dhis.de.action.SectionFormAction" class="org.hisp.dhis.de.action.SectionFormAction" scope="prototype">

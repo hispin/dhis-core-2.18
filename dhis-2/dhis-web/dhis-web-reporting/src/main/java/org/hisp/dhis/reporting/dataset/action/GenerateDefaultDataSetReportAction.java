@@ -27,36 +27,13 @@ package org.hisp.dhis.reporting.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.GridHeader;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.comparator.DataElementCategoryOptionComboNameComparator;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
-import org.hisp.dhis.system.grid.ListGrid;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.MathUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,30 +43,11 @@ import com.opensymphony.xwork2.Action;
 public class GenerateDefaultDataSetReportAction
     implements Action
 {
-    private static final String DEFAULT_HEADER = "Value";
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataValueService dataValueService;
-
-    private SystemSettingManager systemSettingManager;
-
-    private AggregatedDataValueService aggregatedDataValueService;
-
-    private AggregationService aggregationService;
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
+    private DataSetReportService dataSetReportService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -121,9 +79,9 @@ public class GenerateDefaultDataSetReportAction
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public void setAggregationService( AggregationService aggregationService )
+    public void setDataSetReportService( DataSetReportService dataSetReportService )
     {
-        this.aggregationService = aggregationService;
+        this.dataSetReportService = dataSetReportService;
     }
 
     public void setSelectedOrgunit( OrganisationUnit selectedOrgunit )
@@ -166,21 +124,6 @@ public class GenerateDefaultDataSetReportAction
         return grid;
     }
 
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
-    {
-        this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
     public void setSelectedUnitOnly( boolean selectedUnitOnly )
     {
         this.selectedUnitOnly = selectedUnitOnly;
@@ -193,90 +136,8 @@ public class GenerateDefaultDataSetReportAction
     public String execute()
         throws Exception
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>( selectedDataSet.getDataElements() );
-
-        if ( dataElements.size() == 0 )
-        {
-            return SUCCESS;
-        }
-
-        Collections.sort( dataElements, dataElementComparator );
-        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
-            DEFAULT_AGGREGATION_STRATEGY );
-
-        // ---------------------------------------------------------------------
-        // Get the category-option-combos
-        // ---------------------------------------------------------------------
-
-        Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
-
-        for ( DataElement dataElement : dataElements )
-        {
-            optionCombos.addAll( dataElement.getCategoryCombo().getOptionCombos() );
-        }
-
-        List<DataElementCategoryOptionCombo> orderedOptionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-            optionCombos );
-
-        Collections.sort( orderedOptionCombos, new DataElementCategoryOptionComboNameComparator() );
-
-        // ---------------------------------------------------------------------
-        // Create a GRID
-        // ---------------------------------------------------------------------
-
-        grid = new ListGrid().setTitle( selectedDataSet.getName() );
-        grid.setSubtitle( format.formatPeriod( selectedPeriod ) );
-
-        // ---------------------------------------------------------------------
-        // Headers for GRID
-        // ---------------------------------------------------------------------
-
-        grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) );
-         
-        for ( DataElementCategoryOptionCombo optionCombo : orderedOptionCombos )
-        {
-            grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(), false, false ) );
-        }
-
-        // ---------------------------------------------------------------------
-        // Values for GRID
-        // ---------------------------------------------------------------------
-
-        for ( DataElement dataElement : dataElements )
-        {
-            grid.addRow();
-
-            grid.addValue( dataElement.getName() );
-
-            for ( DataElementCategoryOptionCombo optionCombo : orderedOptionCombos )
-            {
-                String value = "";
-
-                if ( selectedUnitOnly )
-                {
-                    DataValue dataValue = dataValueService.getDataValue( selectedOrgunit, dataElement,
-                        selectedPeriod, optionCombo );
-                    value = (dataValue != null) ? dataValue.getValue() : null;
-                }
-                else
-                {
-                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                        .getAggregatedDataValue( dataElement, optionCombo, selectedPeriod.getStartDate(),
-                            selectedPeriod.getEndDate(), selectedOrgunit )
-                        : aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, selectedPeriod,
-                            selectedOrgunit );
-
-                    value = (aggregatedValue != null) ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) )
-                        : null;
-                }
-
-                grid.addValue( value );
-
-            }
-        }
-
+        dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
+        
         reportingUnit = selectedOrgunit.getName();
 
         reportingPeriod = format.formatPeriod( selectedPeriod );
