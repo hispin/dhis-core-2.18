@@ -27,9 +27,12 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +73,20 @@ public class DefaultMessageService
     // MessageService implementation
     // -------------------------------------------------------------------------
 
+    public int sendMessage( Message message, Set<User> users )
+    {
+        Set<UserMessage> userMessages = new HashSet<UserMessage>();
+        
+        for ( User user : users )
+        {
+            userMessages.add( new UserMessage( user, message ) );        
+        }
+        
+        message.setUserMessages( userMessages );
+        
+        return saveMessage( message );
+    }
+    
     public int saveMessage( Message message )
     {
         return messageStore.save( message );

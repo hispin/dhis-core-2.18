@@ -28,6 +28,7 @@ package org.hisp.dhis.message;
  */
 
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.user.User;
 
@@ -37,6 +38,8 @@ import org.hisp.dhis.user.User;
 public interface MessageService
 {
     final String ID = MessageService.class.getName();
+    
+    int sendMessage( Message message, Set<User> users );
     
     int saveMessage( Message message );
     
