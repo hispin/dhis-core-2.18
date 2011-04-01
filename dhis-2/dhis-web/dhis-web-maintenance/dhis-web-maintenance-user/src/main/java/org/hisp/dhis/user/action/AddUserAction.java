@@ -29,6 +29,7 @@ package org.hisp.dhis.user.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
@@ -118,7 +119,7 @@ public class AddUserAction
     {
         this.email = email;
     }
-    
+
     private String phoneNumber;
 
     public void setPhoneNumber( String phoneNumber )
@@ -174,7 +175,7 @@ public class AddUserAction
         user.setFirstName( firstName );
         user.setEmail( email );
         user.setPhoneNumber( phoneNumber );
-        user.setOrganisationUnits( orgUnits );
+        user.setOrganisationUnits( new HashSet<OrganisationUnit>( orgUnits ) );
 
         UserCredentials userCredentials = new UserCredentials();
         userCredentials.setUser( user );
@@ -186,7 +187,7 @@ public class AddUserAction
             UserAuthorityGroup group = userService.getUserAuthorityGroup( Integer.parseInt( id ) );
             userCredentials.getUserAuthorityGroups().add( group );
         }
-        
+
         userService.addUser( user );
         userService.addUserCredentials( userCredentials );
 
