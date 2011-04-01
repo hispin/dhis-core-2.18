@@ -34,9 +34,9 @@ import java.util.List;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
@@ -74,6 +74,8 @@ public class ValidateValueAction
 
     private PatientDataValueService patientDataValueService;
 
+    private PatientService patientService;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -85,8 +87,6 @@ public class ValidateValueAction
     private int dataElementId;
 
     private int statusCode;
-
-    private I18nFormat format;
 
     // -------------------------------------------------------------------------
     // Output
@@ -118,11 +118,6 @@ public class ValidateValueAction
         this.dataElementService = dataElementService;
     }
 
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
@@ -131,6 +126,11 @@ public class ValidateValueAction
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
+    }
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
     }
 
     public int getDataElementId()
@@ -242,7 +242,8 @@ public class ValidateValueAction
     @SuppressWarnings( "unchecked" )
     private List<ProgramStageDataElementValidation> validation(
         Collection<ProgramStageDataElementValidation> validations, OrganisationUnit organisationUnit,
-        ProgramInstance programInstance, String value, ProgramStage programStage, DataElement dataElement )throws Exception
+        ProgramInstance programInstance, String value, ProgramStage programStage, DataElement dataElement )
+        throws Exception
     {
         List<ProgramStageDataElementValidation> result = new ArrayList<ProgramStageDataElementValidation>();
 
@@ -264,7 +265,7 @@ public class ValidateValueAction
                     && leftSide.getDataElement().equals( dataElement ) )
                 {
                     // get left-side value
-                    Object objectValue = getObject( leftSide.getDataElement().getType(), value );
+                    Object objectValue = patientService.getObjectValue( leftSide.getDataElement().getType(), value );
 
                     // get program-stage of right-side
                     comparerogramStageInstance = programStageInstanceService.getProgramStageInstance( programInstance,
@@ -277,7 +278,7 @@ public class ValidateValueAction
                     if ( patientDataValue != null )
                     {
                         String dbValue = patientDataValue.getValue();
-                        Object compareValue = getObject( rightSide.getDataElement().getType(), dbValue );
+                        Object compareValue = patientService.getObjectValue( rightSide.getDataElement().getType(), dbValue );
 
                         i = ((Comparable<Object>) objectValue).compareTo( (Comparable<Object>) compareValue );
                     }
@@ -286,8 +287,8 @@ public class ValidateValueAction
                 else
                 {
                     // get right-side value
-                    Object objectValue = getObject( rightSide.getDataElement().getType(), value );
-                
+                    Object objectValue = patientService.getObjectValue( rightSide.getDataElement().getType(), value );
+
                     comparerogramStageInstance = programStageInstanceService.getProgramStageInstance( programInstance,
                         leftSide.getProgramStage() );
 
@@ -297,12 +298,12 @@ public class ValidateValueAction
                     if ( patientDataValue != null )
                     {
                         String dbValue = patientDataValue.getValue();
-                        Object compareValue = getObject( leftSide.getDataElement().getType(), dbValue );
+                        Object compareValue = patientService.getObjectValue( leftSide.getDataElement().getType(), dbValue );
 
                         i = ((Comparable<Object>) compareValue).compareTo( (Comparable<Object>) objectValue );
                     }
                 }
-                
+
                 if ( i != validation.getOperator() && i != 2 )
                 {
                     result.add( validation );
@@ -312,25 +313,6 @@ public class ValidateValueAction
         }
 
         return result;
-    }
-
-    private Object getObject( String type, String value )
-        throws Exception
-    {
-        if ( type.equals( DataElement.VALUE_TYPE_INT) )
-        {
-            return Integer.valueOf( value );
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_BOOL) )
-        {
-            return Boolean.valueOf( value );
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_DATE) )
-        {
-            return format.parseDate( value.trim() );
-        }
-        
-        return value;
     }
 
 }

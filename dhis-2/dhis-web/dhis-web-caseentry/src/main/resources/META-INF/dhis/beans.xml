@@ -203,6 +203,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="validationService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementValidationService" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
 
 	<!-- Multi DataEntry -->
