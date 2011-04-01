@@ -196,6 +196,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE validationrule ALTER description TYPE text" );
         executeSql( "ALTER TABLE expression ALTER expression TYPE text" );
         executeSql( "ALTER TABLE translation ALTER value TYPE text" );
+        executeSql( "ALTER TABLE organisationunit ALTER comment TYPE text" );
 
         // orgunit shortname uniqueness
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_shortname_key" );

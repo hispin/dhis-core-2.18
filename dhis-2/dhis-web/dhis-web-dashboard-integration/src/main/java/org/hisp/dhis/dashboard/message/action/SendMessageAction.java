@@ -32,7 +32,6 @@ import java.util.Set;
 
 import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.message.UserMessage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.user.CurrentUserService;
@@ -101,7 +100,7 @@ public class SendMessageAction
         
         Set<User> users = new HashSet<User>();
         
-        for ( OrganisationUnit unit : selectionTreeManager.getSelectedOrganisationUnits() )
+        for ( OrganisationUnit unit : selectionTreeManager.getReloadedSelectedOrganisationUnits() )
         {
             users.addAll( unit.getUsers() );
         }

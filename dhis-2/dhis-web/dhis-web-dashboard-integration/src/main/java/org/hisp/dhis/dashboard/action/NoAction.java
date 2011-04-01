@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.message.action;
+package org.hisp.dhis.dashboard.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,49 +27,17 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.message.UserMessage;
-
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetMessagesAction
+public class NoAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private MessageService messageService;
-
-    public void setMessageService( MessageService messageService )
-    {
-        this.messageService = messageService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private List<UserMessage> messages;
-
-    public List<UserMessage> getMessages()
-    {
-        return messages;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
     public String execute()
+        throws Exception
     {
-        messages = messageService.getUserMessages( 1, 200 );
-        
         return SUCCESS;
     }
 }
