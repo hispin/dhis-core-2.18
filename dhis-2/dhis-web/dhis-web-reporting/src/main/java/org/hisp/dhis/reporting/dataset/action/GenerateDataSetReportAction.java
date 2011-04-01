@@ -161,6 +161,5 @@ public class GenerateDataSetReportAction
         }
 
         return selectedDataSet.hasSections() ? RESULT_SECTION : RESULT_DEFAULT;
-
     }
 }

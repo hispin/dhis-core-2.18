@@ -376,14 +376,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.dataset.action.GenerateSectionDataSetReportAction" 
     class="org.hisp.dhis.reporting.dataset.action.GenerateSectionDataSetReportAction" 
     scope="prototype">
-	<property name="dataValueService" 
-	  ref="org.hisp.dhis.datavalue.DataValueService"/>
-	 <property name="systemSettingManager"
-	  ref="org.hisp.dhis.options.SystemSettingManager"/>
-	<property name="aggregatedDataValueService"
-	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
-	<property name="aggregationService"
-	  ref="org.hisp.dhis.aggregation.AggregationService"/>
+	<property name="dataSetReportService"
+	  ref="org.hisp.dhis.datasetreport.DataSetReportService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction" 

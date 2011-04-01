@@ -48,10 +48,13 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryOptionComboNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -77,6 +80,7 @@ public class DefaultDataSetReportService
     private static final String NULL_REPLACEMENT = "";
     private static final String SEPARATOR = ":";
     private static final String DEFAULT_HEADER = "Value";
+    private static final String TOTAL_HEADER = "Total";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -213,6 +217,110 @@ public class DefaultDataSetReportService
         matDataElement.appendTail( buffer );
         
         return buffer.toString();
+    }
+    
+    public List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, boolean selectedUnitOnly, I18nFormat format, I18n i18n )
+    {
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
+        boolean realTime = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME );
+        
+        List<Section> sections = new ArrayList<Section>( dataSet.getSections() );
+        Collections.sort( sections, new SectionOrderComparator() );
+
+        List<Grid> grids = new ArrayList<Grid>();
+        
+        // ---------------------------------------------------------------------
+        // Create a grid for each section
+        // ---------------------------------------------------------------------
+
+        for ( Section section : sections )
+        {
+            Grid grid = new ListGrid().setTitle( section.getName() );
+
+            DataElementCategoryCombo categoryCombo = section.getCategoryCombo();
+            
+            // -----------------------------------------------------------------
+            // Grid headers
+            // -----------------------------------------------------------------
+
+            grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) ); // Data element header
+
+            for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() ) // Value headers
+            {
+                grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(), false, false ) );
+            }
+
+            if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total headers
+            {
+                for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
+                {
+                    grid.addHeader( new GridHeader( categoryOption.getName(), false, false ) );
+                }
+            }
+            
+            if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total header
+            {
+                grid.addHeader( new GridHeader( TOTAL_HEADER, false, false ) );
+            }
+            
+            // -----------------------------------------------------------------
+            // Grid values
+            // -----------------------------------------------------------------
+
+            List<DataElement> dataElements = new ArrayList<DataElement>( section.getDataElements() );
+            Collections.sort( dataElements, new DataElementNameComparator() );
+            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
+
+            for ( DataElement dataElement : dataElements )
+            {
+                grid.addRow();
+                grid.addValue( dataElement.getName() ); // Data element name
+
+                for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() ) // Values
+                {
+                    Double value = null;
+
+                    if ( selectedUnitOnly )
+                    {
+                        DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
+                        value = dataValue != null && dataValue.getValue() != null ? Double.parseDouble( dataValue.getValue() ) : null;
+                    }
+                    else
+                    {
+                        value = realTime ? 
+                            aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(), period.getEndDate(), unit ) : 
+                            aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, unit );
+                    }
+                    
+                    grid.addValue( value );
+                }
+                
+                if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total values
+                {
+                    for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
+                    {
+                        Double value = realTime ? 
+                            aggregationService.getAggregatedDataValue( dataElement, period.getStartDate(), period.getEndDate(), unit, categoryOption ) : 
+                            aggregatedDataValueService.getAggregatedValue( dataElement, categoryOption, period, unit );
+
+                        grid.addValue( value );
+                    }
+                }
+                
+                if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total value
+                {
+                    Double value = realTime ?
+                        aggregationService.getAggregatedDataValue( dataElement, null, period.getStartDate(), period.getEndDate(), unit ) :
+                        aggregatedDataValueService.getAggregatedValue( dataElement, period, unit );
+                        
+                    grid.addValue( value );
+                }
+            }
+
+            grids.add( grid );
+        }
+
+        return grids;
     }
     
     public Grid getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, boolean selectedUnitOnly, I18nFormat format, I18n i18n )

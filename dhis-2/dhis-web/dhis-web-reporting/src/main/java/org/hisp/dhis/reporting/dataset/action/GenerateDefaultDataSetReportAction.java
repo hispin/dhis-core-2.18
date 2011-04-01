@@ -136,7 +136,7 @@ public class GenerateDefaultDataSetReportAction
     public String execute()
         throws Exception
     {
-        dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
+        grid = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
         
         reportingUnit = selectedOrgunit.getName();
 

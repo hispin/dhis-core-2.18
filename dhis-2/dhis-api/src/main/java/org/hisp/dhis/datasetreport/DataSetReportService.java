@@ -27,6 +27,7 @@ package org.hisp.dhis.datasetreport;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.Grid;
@@ -78,4 +79,18 @@ public interface DataSetReportService
      * @return a Grid.
      */
     Grid getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit,  boolean selectedUnitOnly, I18nFormat format, I18n i18n );
+    
+    /**
+     * Generates a list of Grids representing a data set report. The data elements
+     * are grouped and sorted by their section in the data set.
+     * 
+     * @param dataSet the data set.
+     * @param unit the organisation unit.
+     * @param period the period.
+     * @param selectedUnitOnly indicators whether to use captured or aggregated data. 
+     * @param format the i18n format.
+     * @param i18n the i18n object.
+     * @return a Grid.
+     */
+    List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, boolean selectedUnitOnly, I18nFormat format, I18n i18n );
 }
