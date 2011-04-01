@@ -1,0 +1,43 @@
+
+<h3>$i18n.getString( "create_new_message" )</h3>
+
+<form action="sendMessage.action" method="post">
+
+<table>
+
+<tr>
+<th colspan="2">$i18n.getString( "details" )</th>
+</tr>
+
+<tr>
+<td style="min-width:80px">$i18n.getString( "recipient" )</td>
+<td>
+<div id="selectionTree" style="width:325px; height:200px"></div>	            
+<script type="text/javascript">
+  selectionTreeSelection.setMultipleSelectionAllowed( true );
+  selectionTreeSelection.setListenerFunction( organisationUnitSelected );
+  selectionTree.clearSelectedOrganisationUnits();
+  selectionTree.buildSelectionTree();
+</script>
+</td>
+</tr>
+
+<tr>
+<td>$i18n.getString( "subject" )</td>
+<td><input type="text" name="subject" style="width:400px"></td>
+</tr>
+
+<tr>
+<td>$i18n.getString( "text" )</td>
+<td><textarea name="text" style="width:400px;height:400px"></textarea></td>
+</tr>
+
+<tr>
+<td></td>
+<td><input type="submit" value="$i18n.getString( 'send' )" style="width:120px">
+<input type="button" value="$i18n.getString( 'cancel' )"  style="width:120px" onclick="window.location.href='message.action'"></td>
+</tr>
+
+</table>
+
+</form>

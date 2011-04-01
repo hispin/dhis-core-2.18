@@ -3,6 +3,13 @@
 <img src="../dhis-web-commons/flags/$flag" style="margin-top: 16px; margin-left: 16px; border: 1px solid #D0D0D0;">
 #end
 
+<h2>$i18n.getString( "dashboard" )&nbsp;</h2>
+
+<ul>
+	<li><a href="index.action">$i18n.getString( "dashboard" )&nbsp;</a></li>
+	<li><a href="showSendMessage.action">$i18n.getString( "messages" )&nbsp;</a></li>
+</ul>
+
 <h2>$i18n.getString( "dhis2_online" )&nbsp;</h2>
 
 <ul>

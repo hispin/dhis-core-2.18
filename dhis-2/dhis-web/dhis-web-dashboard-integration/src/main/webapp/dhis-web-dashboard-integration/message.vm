@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "messages" )</h3>
 
-<div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )"></div>
+<div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )" onclick="window.location.href='message.action'"></div>
 
 <table class="listTable" style="width:75%">
 	<tr>
