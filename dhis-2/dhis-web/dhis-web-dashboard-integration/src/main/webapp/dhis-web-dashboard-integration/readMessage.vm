@@ -1,0 +1,12 @@
+
+<h3>$encoder.htmlEncode( $message.message.subject )</h3>
+
+<div style="margin-bottom:20px; width:50%; font-weight:bold;">$encoder.htmlEncode( $message.message.sender.name ) - $format.formatDate( $message.messageDate )</div>
+
+<div style="margin-bottom:20px; width:50%;">$encoder.htmlEncode( $message.message.text )</div>
+
+<div>
+<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='message.action'" style="width:120px">
+<input type="button" value="$i18n.getString( 'mark_unread' )" onclick="window.location.href='unreadMessage.action?id=${message.id}'" style="width:120px">
+<input type="button" value="$i18n.getString( 'remove' )" onclick="window.location.href='removeMessageRedirect.action?id=${message.id}'" style="width:120px">
+</div>

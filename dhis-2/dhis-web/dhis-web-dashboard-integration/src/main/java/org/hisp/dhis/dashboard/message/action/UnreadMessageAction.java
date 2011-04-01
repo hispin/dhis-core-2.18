@@ -27,8 +27,6 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.message.UserMessage;
 
@@ -37,13 +35,9 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Lars Helge Overland
  */
-public class GetMessagesAction
+public class UnreadMessageAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
     private MessageService messageService;
 
     public void setMessageService( MessageService messageService )
@@ -51,24 +45,22 @@ public class GetMessagesAction
         this.messageService = messageService;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private List<UserMessage> messages;
-
-    public List<UserMessage> getMessages()
+    private Integer id;
+    
+    public void setId( Integer id )
     {
-        return messages;
+        this.id = id;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
+    @Override
     public String execute()
+        throws Exception
     {
-        messages = messageService.getUserMessages( 0, 200 );
+        UserMessage message = messageService.getUserMessage( id );
+        
+        message.setRead( false );
+        
+        messageService.updateUserMessage( message );
         
         return SUCCESS;
     }

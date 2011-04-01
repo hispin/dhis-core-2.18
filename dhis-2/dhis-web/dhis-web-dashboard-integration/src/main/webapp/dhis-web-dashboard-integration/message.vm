@@ -3,19 +3,22 @@
 
 <div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )" onclick="window.location.href='showSendMessage.action'"></div>
 
-<table class="listTable" style="width:75%">
+<table style="width:75%">
 	<tr>
 		<th>$i18n.getString( "sender" )</th>
 		<th>$i18n.getString( "date" )</th>
 		<th>$i18n.getString( "subject" )</th>
-		<th></th>
+		<th>$i18n.getString( "operations" )</th>
 	</tr>
 	#foreach( $message in $messages )
-	<tr>
-		<td style="width:28%">$encoder.htmlEncode( $message.message.sender )</td>
-		<td style="width:10%">$format.formatDate( $message.messageDate )</td>
-		<td style="width:70%">$encoder.htmlEncode( $message.message.subject )</td>
-		<td style="width:2%"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/>
+	<tr id="tr${message.id}" style="#if( !$message.read )font-weight:bold;background-color:#ebf0f6;#end">
+		<td>$encoder.htmlEncode( $message.message.sender.name )</td>
+		<td style="width:80px">$format.formatDate( $message.messageDate )</td>
+		<td><a href="readMessage.action?id=${message.id}">$encoder.htmlEncode( $message.message.subject )</a></td>
+		<td style="width:70px; text-align:center;">
+			<a href="readMessage.action?id=${message.id}"><img src="../images/read.png" title="$i18n.getString( 'read' )"></a>
+			<a href="javascript:removeMessage( '${message.id}' )"><img src="../images/delete.png" title="$i18n.getString( 'delete' )"></a>
+		</td>
 	</tr>
 	#end
 </table>
