@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.GenericStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
