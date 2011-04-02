@@ -44,8 +44,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public abstract class ActionPagingSupport<T>
     extends ActionSupport
 {
-    protected static final Integer DEFAULT_PAGE_SIZE = 50;
-
     protected Integer currentPage;
 
     public void setCurrentPage( Integer currentPage )
@@ -88,7 +86,7 @@ public abstract class ActionPagingSupport<T>
             return Integer.valueOf( sessionPageSize );
         }
 
-        return DEFAULT_PAGE_SIZE;
+        return Paging.DEFAULT_PAGE_SIZE;
     }
 
     @SuppressWarnings( "unchecked" )
