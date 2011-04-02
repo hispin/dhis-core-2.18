@@ -32,7 +32,7 @@ package org.hisp.dhis.system.paging;
  */
 public class Paging
 {
-    private static final int DEFAULT_PAGE_SIZE = 50;
+    public static final int DEFAULT_PAGE_SIZE = 50;
     private static final int PAGE_OFFSET = 2; // Each side of current page
     private static final int PAGE_TOTAL_OFFSET = PAGE_OFFSET * 2; // Both sides of current page
 
