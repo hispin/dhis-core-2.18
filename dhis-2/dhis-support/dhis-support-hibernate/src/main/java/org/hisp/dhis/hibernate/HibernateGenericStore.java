@@ -47,8 +47,6 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 public class HibernateGenericStore<T>
     implements GenericIdentifiableObjectStore<T>
 {
-    //TODO cacheable
-    
     protected SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
@@ -74,6 +72,24 @@ public class HibernateGenericStore<T>
         this.clazz = clazz;
     }
     
+    private boolean cacheable = false;
+
+    /**
+     * Could be overridden programmatically.
+     */
+    protected boolean isCacheable()
+    {
+        return cacheable;
+    }
+
+    /**
+     * Could be injected through container.
+     */
+    public void setCacheable( boolean cacheable )
+    {
+        this.cacheable = cacheable;
+    }
+    
     // -------------------------------------------------------------------------
     // Convenience methods
     // -------------------------------------------------------------------------
@@ -86,7 +102,9 @@ public class HibernateGenericStore<T>
      */
     protected final Query getQuery( String hql )
     {
-        return sessionFactory.getCurrentSession().createQuery( hql );
+        Query query =  sessionFactory.getCurrentSession().createQuery( hql );
+        query.setCacheable( cacheable );
+        return query;
     }
     
     /**
@@ -97,7 +115,9 @@ public class HibernateGenericStore<T>
      */
     protected final SQLQuery getSqlQuery( String sql )
     {
-        return sessionFactory.getCurrentSession().createSQLQuery( sql );
+        SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery( sql );
+        query.setCacheable( cacheable );
+        return query;
     }
     
     /**
@@ -107,7 +127,9 @@ public class HibernateGenericStore<T>
      */
     protected final Criteria getCriteria()
     {
-        return sessionFactory.getCurrentSession().createCriteria( getClazz() );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( getClazz() );
+        criteria.setCacheable( cacheable );
+        return criteria;
     }
     
     /**
@@ -119,7 +141,7 @@ public class HibernateGenericStore<T>
      */
     protected final Criteria getCriteria( Criterion... expressions )
     {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( getClazz() );
+        Criteria criteria = getCriteria();
         
         for ( Criterion expression : expressions )
         {

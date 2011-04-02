@@ -127,7 +127,6 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> searchDataElementByName( String key )
     {
-
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );

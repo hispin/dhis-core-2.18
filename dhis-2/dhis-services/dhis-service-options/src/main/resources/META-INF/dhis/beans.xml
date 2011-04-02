@@ -26,6 +26,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.options.SystemSetting"/>
     <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="cacheable" value="true"/>
   </bean>
 
   <bean id="org.hisp.dhis.options.SystemSettingManager"
