@@ -351,8 +351,8 @@ public class HibernateUserStore
     }
     
     @SuppressWarnings( "unchecked" )
-    public Collection<UserCredentials> searchUsersByName( String key ){
-        
+    public Collection<UserCredentials> searchUsersByName( String key )
+    {        
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( UserCredentials.class );
@@ -432,7 +432,6 @@ public class HibernateUserStore
         return userRoleStore.getBetweenByName( name, first, max );
     }
 
-    // ===================
     public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max )
     {
         return getBlockUser( toUserCredentials( getUsersByOrganisationUnit( orgUnit ) ), first, max );
@@ -454,10 +453,6 @@ public class HibernateUserStore
         return findByName( toUserCredentials( getUsersByOrganisationUnit( orgUnit ) ), name ).size();
     }
 
-    // -------------------------------------------------------------------------
-    // 
-    // -------------------------------------------------------------------------
-    
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
     {
         return getBlockUser( toUserCredentials( getUsersWithoutOrganisationUnit()), first, max );
@@ -465,7 +460,6 @@ public class HibernateUserStore
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max )
     {
-
         return getBlockUser( findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ), first, max );
     }
 
