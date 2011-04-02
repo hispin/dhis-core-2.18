@@ -32,7 +32,9 @@ package org.hisp.dhis.system.paging;
  */
 public class Paging
 {
-    static final int MAX_ALLOWED_PAGE_SIZE = 50;
+    private static final int DEFAULT_PAGE_SIZE = 50;
+    private static final int PAGE_OFFSET = 2; // Each side of current page
+    private static final int PAGE_TOTAL_OFFSET = PAGE_OFFSET * 2; // Both sides of current page
 
     private int currentPage;
 
@@ -64,34 +66,44 @@ public class Paging
         return  total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
     }
 
+    /**
+     * Returns first page in paging range.
+     */
     public int getStartPage()
     {
         int startPage = 1;
         
-        if ( currentPage > 2 )
+        if ( currentPage > PAGE_OFFSET ) // Far enough from start, set start page
         {
-            startPage = currentPage - 2;
-            
-            if ( getNumberOfPages() - startPage < 4 )
-            {
-                startPage = getNumberOfPages() - 4;
-                
-                if ( startPage <= 0 )
-                {
-                    startPage = 1;
-                }
-            }
+            startPage = currentPage - PAGE_OFFSET;
         }
+        
+        if ( ( getNumberOfPages() - startPage ) < PAGE_TOTAL_OFFSET ) // Too close to end, decrease start page to maintain page range length
+        {
+            startPage = getNumberOfPages() - PAGE_TOTAL_OFFSET;            
+        }
+
+        if ( startPage <= 0 ) // Cannnot be 0 or less, set start page to 1
+        {
+            startPage = 1;
+        }
+        
         return startPage;
     }
 
+    /**
+     * Returns first row number in paged table for current page.
+     */
     public int getStartPos()
     {
-        int startPos = currentPage <= 0 ? 0 : (currentPage - 1) * pageSize;
+        int startPos = currentPage <= 0 ? 0 : ( currentPage - 1 ) * pageSize;
         startPos = ( startPos >  total ) ? total : startPos;
         return startPos;
     }
 
+    /**
+     * Returns last row number in paged table for current page.
+     */
     public int getEndPos()
     {
     	int endPos = getStartPos() + pageSize;
@@ -121,7 +133,7 @@ public class Paging
 
     public void setPageSize( int pageSize )
     {
-        this.pageSize = pageSize > 0 ? pageSize : Paging.MAX_ALLOWED_PAGE_SIZE;
+        this.pageSize = pageSize > 0 ? pageSize : Paging.DEFAULT_PAGE_SIZE;
     }
 
     public int getTotal()
