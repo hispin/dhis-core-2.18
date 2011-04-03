@@ -68,6 +68,10 @@
     maxElementsInMemory="100"
   />
   
+  <cache name="org.hisp.dhis.dataset.Section"
+    maxElementsInMemory="400"
+  />
+  
   <cache name="org.hisp.dhis.source.Source"
     maxElementsInMemory="10000"
   />

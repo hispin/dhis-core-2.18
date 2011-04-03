@@ -5,6 +5,9 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataset.Section" table="section">
+  
+    <cache usage="read-write"/>
+  
     <id name="id" column="sectionid">
       <generator class="native"/>
     </id>
