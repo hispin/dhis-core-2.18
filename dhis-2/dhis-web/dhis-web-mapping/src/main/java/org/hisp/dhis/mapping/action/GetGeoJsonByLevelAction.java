@@ -28,7 +28,6 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;

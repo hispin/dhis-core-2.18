@@ -27,12 +27,6 @@
 
 package org.hisp.dhis.patient.action.validation;
 
-import java.lang.reflect.Type;
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
