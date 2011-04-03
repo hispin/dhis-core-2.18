@@ -29,11 +29,8 @@ package org.hisp.dhis.patient.action.program;
 
 import java.util.List;
 
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.program.ProgramAttribute;
 import org.hisp.dhis.program.ProgramAttributeOption;
-import org.hisp.dhis.program.ProgramAttributeOptionService;
 import org.hisp.dhis.program.ProgramAttributeService;
 
 import com.opensymphony.xwork2.Action;

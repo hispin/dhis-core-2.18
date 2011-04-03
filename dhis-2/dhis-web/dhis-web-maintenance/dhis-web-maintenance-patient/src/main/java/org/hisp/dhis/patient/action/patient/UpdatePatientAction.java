@@ -28,7 +28,6 @@ package org.hisp.dhis.patient.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
