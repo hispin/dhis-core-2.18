@@ -20,6 +20,22 @@
     maxElementsInMemory="4000"
   />
 
+  <cache name="org.hisp.dhis.dataelement.DataElementCategoryCombo"
+    maxElementsInMemory="100"
+  />
+  
+  <cache name="org.hisp.dhis.dataelement.DataElementCategory"
+    maxElementsInMemory="200"
+  />
+  
+  <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption"
+    maxElementsInMemory="400"
+  />
+  
+  <cache name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
+    maxElementsInMemory="800"
+  />
+  
   <cache name="org.hisp.dhis.dataelement.DataElementGroup"
     maxElementsInMemory="200"
   />
@@ -38,6 +54,22 @@
   
   <cache name="org.hisp.dhis.datadictionary.DataDictionary"
     maxElementsInMemory="200"
+  />
+  
+  <cache name="org.hisp.dhis.period.Period"
+    maxElementsInMemory="200"
+  />
+  
+  <cache name="org.hisp.dhis.period.PeriodType"
+    maxElementsInMemory="50"
+  />
+  
+  <cache name="org.hisp.dhis.dataset.DataSet"
+    maxElementsInMemory="100"
+  />
+  
+  <cache name="org.hisp.dhis.source.Source"
+    maxElementsInMemory="10000"
   />
   
   <cache name="org.hisp.dhis.user.User"
@@ -69,7 +101,7 @@
   />
   
   <cache name="org.hisp.dhis.message.UserMessage"
-    maxElementsInMemory="100000"/>
+    maxElementsInMemory="50000"/>
   
   <!-- Hibernate Query Cache -->
   

@@ -181,17 +181,6 @@ public class HibernateDataSetStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataSet> getDataSetsBySource( Source source )
-    {
-        String hql = "from DataSet d where :source in elements(d.sources)";
-
-        Query query = sessionFactory.getCurrentSession().createQuery( hql );
-        query.setEntity( "source", source );
-
-        return query.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
     public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
     {
         String hql = "select distinct d from DataSet d join d.sources s where s.id in (:ids)";

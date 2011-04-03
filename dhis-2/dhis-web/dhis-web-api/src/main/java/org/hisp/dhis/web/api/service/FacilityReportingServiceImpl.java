@@ -338,7 +338,7 @@ public class FacilityReportingServiceImpl
 
     private boolean dataSetAssociatedWithOrgUnit( OrganisationUnit unit, org.hisp.dhis.dataset.DataSet dataSet )
     {
-        return dataSetService.getDataSetsBySource( unit ).contains( dataSet );
+        return unit.getDataSets().contains( dataSet );
     }
 
     private void saveValue( OrganisationUnit unit, Period period, org.hisp.dhis.dataelement.DataElement dataElement,

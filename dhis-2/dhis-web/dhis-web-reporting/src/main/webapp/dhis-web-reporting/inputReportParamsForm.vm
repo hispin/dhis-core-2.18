@@ -69,7 +69,7 @@
 			<script type="text/javascript">
 				selectionTreeSelection.setMultipleSelectionAllowed( false );
 				selectionTreeSelection.setListenerFunction( paramOrganisationUnitSet );
-				selectionTree.clearSelectedOrganisationUnits();
+				//selectionTree.clearSelectedOrganisationUnits();
 			    selectionTree.buildSelectionTree();
 			</script>
 	    </td>

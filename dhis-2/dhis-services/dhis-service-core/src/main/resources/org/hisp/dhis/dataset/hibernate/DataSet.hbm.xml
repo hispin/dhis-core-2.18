@@ -5,6 +5,9 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataset.DataSet" table="dataset">
+  
+    <cache usage="read-write"/>
+  
     <id name="id" column="datasetid">
       <generator class="native"/>
     </id>

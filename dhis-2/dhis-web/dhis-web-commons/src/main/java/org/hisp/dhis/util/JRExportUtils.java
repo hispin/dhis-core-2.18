@@ -46,8 +46,8 @@ import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
  */
 public class JRExportUtils
 {
-    public static String TYPE_XLS = "xls";
-    public static String TYPE_PDF = "pdf";
+    public static final String TYPE_XLS = "xls";
+    public static final String TYPE_PDF = "pdf";
     
     private static final Map<String, JRExportProvider> exporters = new HashMap<String, JRExportProvider>() { {
         put( TYPE_XLS, new JRXlsExportProvider() );

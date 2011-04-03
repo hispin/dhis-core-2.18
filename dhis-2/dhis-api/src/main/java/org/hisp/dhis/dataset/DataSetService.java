@@ -109,11 +109,6 @@ public interface DataSetService
     DataSet getDataSetByCode( String code );
 
     /**
-     * Returns all DataSets associated with the specified source.
-     */
-    Collection<DataSet> getDataSetsBySource( Source source );
-
-    /**
      * Returns all DataSets associated with the specified sources.
      */
     Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources );
