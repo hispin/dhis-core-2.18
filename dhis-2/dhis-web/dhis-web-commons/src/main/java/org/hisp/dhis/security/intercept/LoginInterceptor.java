@@ -71,7 +71,7 @@ public class LoginInterceptor
 
         if ( jli != null )
         {
-            log.info( "JLI marker is present. Running " + actions.size() + " JLI actions." );
+            log.debug( "JLI marker is present. Running " + actions.size() + " JLI actions." );
 
             for ( Action a : actions )
             {

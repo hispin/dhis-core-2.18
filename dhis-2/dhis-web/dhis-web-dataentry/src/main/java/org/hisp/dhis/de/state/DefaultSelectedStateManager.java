@@ -151,7 +151,7 @@ public class DefaultSelectedStateManager
 
     public List<DataSet> loadDataSetsForSelectedOrgUnit()
     {
-        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( getSelectedOrganisationUnit() ) );
+        List<DataSet> dataSets = new ArrayList<DataSet>( getSelectedOrganisationUnit().getDataSets() );
 
         // ---------------------------------------------------------------------
         // Retain only DataSets from current user's authority groups

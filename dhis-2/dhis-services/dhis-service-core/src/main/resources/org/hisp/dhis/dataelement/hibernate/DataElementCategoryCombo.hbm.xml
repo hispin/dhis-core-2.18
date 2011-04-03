@@ -6,6 +6,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataelement.DataElementCategoryCombo" table="categorycombo">
 
+    <cache usage="read-write"/>
+    
     <id name="id" column="categorycomboid">
       <generator class="native"/>
     </id>

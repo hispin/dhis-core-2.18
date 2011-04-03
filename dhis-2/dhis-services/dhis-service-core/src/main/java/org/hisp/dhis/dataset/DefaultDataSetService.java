@@ -153,11 +153,6 @@ public class DefaultDataSetService
         return i18n( i18nService, dataSetStore.getDataSetByCode( code ) );
     }
 
-    public Collection<DataSet> getDataSetsBySource( Source source )
-    {
-        return i18n( i18nService, dataSetStore.getDataSetsBySource( source ) );
-    }
-
     public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
     {
         return i18n( i18nService, dataSetStore.getDataSetsBySources( sources ) );

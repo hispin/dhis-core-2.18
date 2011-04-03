@@ -5,6 +5,9 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.period.PeriodType" table="periodtype">
+  
+    <cache usage="read-write"/>
+  
     <id name="id" column="periodtypeid">
       <generator class="native"/>
     </id>

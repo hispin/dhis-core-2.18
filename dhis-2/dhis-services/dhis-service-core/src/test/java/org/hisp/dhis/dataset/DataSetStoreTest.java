@@ -94,43 +94,6 @@ public class DataSetStoreTest
     // -------------------------------------------------------------------------
 
     @Test
-    public void testGetDataSetsBySource()
-    {
-        OrganisationUnit unitA = createOrganisationUnit( 'A' );
-        OrganisationUnit unitB = createOrganisationUnit( 'B' );  
-        OrganisationUnit unitC = createOrganisationUnit( 'C' );  
-        organisationUnitService.addOrganisationUnit( unitA );
-        organisationUnitService.addOrganisationUnit( unitB );
-        organisationUnitService.addOrganisationUnit( unitC );
-
-        DataSet dataSetA = createDataSet( 'A', periodType );
-        DataSet dataSetB = createDataSet( 'B', periodType );
-        DataSet dataSetC = createDataSet( 'C', periodType );
-        dataSetA.getSources().add( unitA );
-        dataSetA.getSources().add( unitB );
-        dataSetB.getSources().add( unitA );
-        
-        dataSetStore.addDataSet( dataSetA );
-        dataSetStore.addDataSet( dataSetB );
-        dataSetStore.addDataSet( dataSetC );
-        
-        Collection<DataSet> dataSets = dataSetStore.getDataSetsBySource( unitA );
-
-        assertEquals( 2, dataSets.size() );
-        assertTrue( dataSets.contains( dataSetA ) );
-        assertTrue( dataSets.contains( dataSetB ) );
-
-        dataSets = dataSetStore.getDataSetsBySource( unitB );
-        
-        assertEquals( 1, dataSets.size() );
-        assertTrue( dataSets.contains( dataSetA ) );
-
-        dataSets = dataSetStore.getDataSetsBySource( unitC );
-        
-        assertEquals( 0, dataSets.size() );
-    }
-
-    @Test
     public void testGetDataSetsBySources()
     {
         OrganisationUnit unitA = createOrganisationUnit( 'A' );

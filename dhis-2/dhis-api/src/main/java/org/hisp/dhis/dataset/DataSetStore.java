@@ -122,8 +122,6 @@ public interface DataSetStore
      */
     Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType );
 
-    Collection<DataSet> getDataSetsBySource( Source source );
-    
     /**
      * Returns all DataSets that can be collected through mobile.
      */

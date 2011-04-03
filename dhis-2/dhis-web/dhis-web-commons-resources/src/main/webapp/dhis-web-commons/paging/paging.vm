@@ -40,7 +40,7 @@
 				<span class="prev" title="Previous">&laquo;</span>
 			#end
 			
-			#foreach( $i in [0..4]   )
+			#foreach( $i in [0..4] )
 				#set( $p = $startPage + $i )
 				#if ( $p <= $numberOfPages )
 					#if( $i > 0 )

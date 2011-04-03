@@ -188,53 +188,6 @@ public class DataSetServiceTest
     }
 
     @Test
-    public void testGetDataSetsBySource()
-    {
-        OrganisationUnit sourceA = createOrganisationUnit( 'A' );
-        OrganisationUnit sourceB = createOrganisationUnit( 'B' );
-        OrganisationUnit sourceC = createOrganisationUnit( 'C' );
-        
-        organisationUnitService.addOrganisationUnit( sourceA );
-        organisationUnitService.addOrganisationUnit( sourceB );
-        organisationUnitService.addOrganisationUnit( sourceC );
-        
-        DataSet dataSetA = createDataSet( 'A', periodType );
-        DataSet dataSetB = createDataSet( 'B', periodType );
-        DataSet dataSetC = createDataSet( 'C', periodType );
-        
-        dataSetA.getSources().add( sourceA );
-        dataSetA.getSources().add( sourceB );
-        
-        dataSetB.getSources().add( sourceB );
-        dataSetB.getSources().add( sourceC );        
-
-        dataSetC.getSources().add( sourceA );
-        dataSetC.getSources().add( sourceC );
-        
-        dataSetService.addDataSet( dataSetA );
-        dataSetService.addDataSet( dataSetB );
-        dataSetService.addDataSet( dataSetC );
-        
-        Collection<DataSet> dataSets = dataSetService.getDataSetsBySource( sourceA );
-        
-        assertEquals( 2, dataSets.size() );
-        assertTrue( dataSets.contains( dataSetA ) );
-        assertTrue( dataSets.contains( dataSetC ) );
-        
-        dataSets = dataSetService.getDataSetsBySource( sourceB );        
-
-        assertEquals( 2, dataSets.size() );
-        assertTrue( dataSets.contains( dataSetA ) );
-        assertTrue( dataSets.contains( dataSetB ) );
-
-        dataSets = dataSetService.getDataSetsBySource( sourceC );
-        
-        assertEquals( 2, dataSets.size() );
-        assertTrue( dataSets.contains( dataSetB ) );
-        assertTrue( dataSets.contains( dataSetC ) );        
-    }
-
-    @Test
     public void testGetDataSetsBySources()
     {
         OrganisationUnit unitA = createOrganisationUnit( 'A' );

@@ -98,6 +98,7 @@ public class HibernatePeriodStore
         criteria.add( Restrictions.eq( "startDate", startDate ) );
         criteria.add( Restrictions.eq( "endDate", endDate ) );
         criteria.add( Restrictions.eq( "periodType", reloadPeriodType( periodType ) ) );
+        criteria.setCacheable( true );
 
         return (Period) criteria.uniqueResult();
     }
@@ -118,6 +119,7 @@ public class HibernatePeriodStore
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.ge( "startDate", startDate ) );
         criteria.add( Restrictions.le( "endDate", endDate ) );
+        criteria.setCacheable( true );
 
         return criteria.list();
     }
@@ -131,6 +133,7 @@ public class HibernatePeriodStore
         criteria.add( Restrictions.eq( "periodType", reloadPeriodType( periodType ) ) );
         criteria.add( Restrictions.ge( "startDate", startDate ) );
         criteria.add( Restrictions.le( "endDate", endDate ) );
+        criteria.setCacheable( true );
 
         return criteria.list();
     }
@@ -152,6 +155,7 @@ public class HibernatePeriodStore
         criteria.add( Restrictions.eq( "periodType", reloadPeriodType( periodType ) ) );
         criteria.add( Restrictions.ge( "endDate", startDate ) );
         criteria.add( Restrictions.le( "startDate", endDate ) );
+        criteria.setCacheable( true );
 
         return criteria.list();
     }
@@ -164,6 +168,7 @@ public class HibernatePeriodStore
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.ge( "endDate", startDate ) );
         criteria.add( Restrictions.le( "startDate", endDate ) );
+        criteria.setCacheable( true );
         
         return criteria.list();
     }
@@ -175,6 +180,7 @@ public class HibernatePeriodStore
 
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.eq( "periodType", reloadPeriodType( periodType ) ) );
+        criteria.setCacheable( true );
 
         return criteria.list();
     }
