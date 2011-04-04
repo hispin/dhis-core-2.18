@@ -1,4 +1,4 @@
-<h3>$i18n.getString( 'case_aggregation_mapping' )</h3>
+<h3>$i18n.getString( 'beneficiary_aggregation_query_builder' )</h3>
 
 <table class="mainPageTable">
   <tr>
