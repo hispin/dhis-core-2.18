@@ -6,14 +6,16 @@
   
   <link type="text/css" rel="stylesheet" media="screen" href="style/dhis-web-light.css">
   
+  <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
   <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
   <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
+  <script type="text/javascript" src="javascript/dhis-web-light.js"></script>
   
 </head>
 <head>
 <body>
 
-<div class="headerDiv">DHIS 2</div>
+<div class="headerDiv"><span class="header">DHIS 2</span></div>
 
 <!-- Charts -->
 
@@ -39,17 +41,17 @@
 
 <!-- Report tables -->
 
-<div class="headerDiv">Report tables</div>
+<div class="headerDiv"><span class="header">Report tables</span></div>
 
 <div class="contentDiv">
 #foreach( $table in $reportTables )
-<div class="contentItemDiv" onclick="">$encoder.htmlEncode( $table.name )</div>
+<div class="contentItemDiv" id="reportTable${table.id}" onclick="generateReportTable( '${table.id}' )">$encoder.htmlEncode( $table.name )</div>
 #end
 </div>
 
 <!-- Documents -->
 
-<div class="headerDiv">Documents</div>
+<div class="headerDiv"><span class="header">Documents</span></div>
 
 <div class="contentDiv">
 #foreach( $doc in $documents )
