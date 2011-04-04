@@ -53,6 +53,16 @@ public class ActivityPlan
         this.activitiesList = activitiesList;
     }
 
+    public ActivityPlan( )
+    {
+    }
+
+    
+    public ActivityPlan( List<Activity> activitiesList )
+    {
+        this.activitiesList = activitiesList;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
