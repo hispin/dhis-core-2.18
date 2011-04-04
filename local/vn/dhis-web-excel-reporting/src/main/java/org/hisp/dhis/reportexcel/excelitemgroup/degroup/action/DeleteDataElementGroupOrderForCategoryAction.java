@@ -24,9 +24,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action;
 
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
+package org.hisp.dhis.reportexcel.excelitemgroup.degroup.action;
+
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
 import com.opensymphony.xwork2.Action;
@@ -35,46 +35,45 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class GetDataElementGroupOrderForCategoryAction implements Action {
-	// -------------------------------------------
-	// Dependency
-	// -------------------------------------------
+public class DeleteDataElementGroupOrderForCategoryAction
+    implements Action
+{
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
 
-	private ExcelItemService excelItemService;
+    private ExcelItemService excelItemService;
 
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input & Ouput
+    // -------------------------------------------------------------------------
 
-	private Integer id;
+    private Integer id;
 
-	private DataElementGroupOrder dataElementGroupOrder;
+    // -------------------------------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------------------------------
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public DataElementGroupOrder getDataElementGroupOrder() {
-		return dataElementGroupOrder;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    // -------------------------------------------------------------------------
+    // Implementation Action
+    // -------------------------------------------------------------------------
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public String execute()
+        throws Exception
+    {
+        excelItemService.deleteDataElementGroupOrder( id );
 
-	// -------------------------------------------
-	// Action implementation
-	// -------------------------------------------
-
-	public String execute() throws Exception {
-
-		dataElementGroupOrder = excelItemService.getDataElementGroupOrder(id.intValue());
-
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportexcel.datasetcompleted.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,9 +56,9 @@ public class ViewCompletedReportByDataSetAction
     implements Action
 {
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private PeriodService periodService;
 
@@ -66,7 +66,7 @@ public class ViewCompletedReportByDataSetAction
     {
         this.periodService = periodService;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -96,9 +96,9 @@ public class ViewCompletedReportByDataSetAction
         this.format = format;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer periodId;
 
@@ -114,9 +114,9 @@ public class ViewCompletedReportByDataSetAction
         this.dataSetIds = dataSetIds;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private List<OrganisationUnit> organisationUnits;
 
@@ -146,7 +146,10 @@ public class ViewCompletedReportByDataSetAction
         return completedValues;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
@@ -168,9 +171,8 @@ public class ViewCompletedReportByDataSetAction
 
             for ( OrganisationUnit o : organisationUnits )
             {
-                if ( dataSetService.getDataSetsBySource( o ).contains( dataSet ) )
+                if ( o.getDataSets().contains( dataSet ) )
                 {
-
                     completeDataSetRegistration = completeDataSetRegistrationService.getCompleteDataSetRegistration(
                         dataSet, period, o );
 

@@ -5,7 +5,7 @@ import org.hisp.dhis.reportexcel.ReportExcelService;
 import com.opensymphony.xwork2.Action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,21 +33,21 @@ import com.opensymphony.xwork2.Action;
 public class DeleteDataEntryStatusAction
     implements Action
 {
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer dataStatusId;
 
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setDataStatusId( Integer dataStatusId )
     {
@@ -59,6 +59,10 @@ public class DeleteDataEntryStatusAction
         this.reportService = reportService;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+    
     public String execute()
         throws Exception
     {
@@ -66,5 +70,4 @@ public class DeleteDataEntryStatusAction
 
         return SUCCESS;
     }
-
 }

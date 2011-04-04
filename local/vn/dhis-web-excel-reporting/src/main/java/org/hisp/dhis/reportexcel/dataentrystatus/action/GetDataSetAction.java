@@ -1,4 +1,5 @@
 package org.hisp.dhis.reportexcel.dataentrystatus.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -32,7 +33,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
@@ -41,6 +41,7 @@ import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
@@ -48,27 +49,25 @@ import com.opensymphony.xwork2.Action;
 public class GetDataSetAction
     implements Action
 {
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private DataSetService dataSetService;
-
+    private CurrentUserService currentUserService;
+    
     private OrganisationUnitSelectionManager selectionManager;
 
     private UserService userService;
 
-    private CurrentUserService currentUserService;
-
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Ouput
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private List<DataSet> dataSets;
 
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public List<DataSet> getDataSets()
     {
@@ -85,25 +84,21 @@ public class GetDataSetAction
         this.currentUserService = currentUserService;
     }
 
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
     }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
     
-   
     public String execute()
         throws Exception
     {
         if ( selectionManager.getSelectedOrganisationUnit() != null )
         {
-
-            dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( selectionManager
-                .getSelectedOrganisationUnit() ) );
+            dataSets = new ArrayList<DataSet>( selectionManager.getSelectedOrganisationUnit().getDataSets() );
 
             if ( !currentUserService.currentUserIsSuper() )
             {
@@ -119,9 +114,9 @@ public class GetDataSetAction
                 dataSets.retainAll( dataSetUserAuthorityGroups );
             }
         }
-        
+
         Collections.sort( dataSets, new DataSetNameComparator() );
-        
+
         return SUCCESS;
     }
 

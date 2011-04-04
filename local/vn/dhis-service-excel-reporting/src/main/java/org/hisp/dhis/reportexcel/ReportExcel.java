@@ -63,9 +63,9 @@ public abstract class ReportExcel
 
     private Collection<UserAuthorityGroup> userRoles;
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Constructors
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public ReportExcel()
     {
@@ -75,7 +75,6 @@ public abstract class ReportExcel
 
     public Collection<ReportExcelItem> getReportItemBySheet( Integer sheetNo )
     {
-
         Set<ReportExcelItem> results = new HashSet<ReportExcelItem>();
 
         for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
@@ -87,7 +86,6 @@ public abstract class ReportExcel
         }
 
         return results;
-
     }
 
     public abstract boolean isCategory();
@@ -155,9 +153,9 @@ public abstract class ReportExcel
         return "[" + name + "]";
     }
 
-    // ----------------------------------------------------------------------
-    // Support methord
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Support method
+    // -------------------------------------------------------------------------
 
     public boolean reportExcelItemIsExist( String name, int sheetNo )
     {
@@ -195,9 +193,9 @@ public abstract class ReportExcel
         return null;
     }
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getters and setters
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public int getId()
     {

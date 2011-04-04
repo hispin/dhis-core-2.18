@@ -7,12 +7,11 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 
 public interface ExcelItemService
 {
-
     String ID = ExcelItemService.class.getName();
 
-    // ----------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Excelitem group services
-    // ----------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public int addExcelItemGroup( ExcelItemGroup excelItemGroup );
 
@@ -28,9 +27,9 @@ public interface ExcelItemService
 
     public Collection<ExcelItemGroup> getExcelItemGroups( OrganisationUnit organisationUnit );
 
-    // ----------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Excelitem services
-    // ----------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public int addExcelItem( ExcelItem excelItem );
 
@@ -44,9 +43,9 @@ public interface ExcelItemService
     
     public ExcelItem getExcelItem( String name );
 
-    // --------------------------------------
+    // -------------------------------------------------------------------------
     // DataElement Order
-    // --------------------------------------
+    // -------------------------------------------------------------------------
 
     public DataElementGroupOrder getDataElementGroupOrder( Integer id );
 

@@ -1,7 +1,5 @@
-package org.hisp.dhis.reportexcel.dataentrystatus.action;
-
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,10 +24,17 @@ package org.hisp.dhis.reportexcel.dataentrystatus.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
+package org.hisp.dhis.reportexcel.orgunitgrouplisting.action;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
 import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 
 import com.opensymphony.xwork2.Action;
 
@@ -37,7 +42,7 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class AddDataEntryStatusAction
+public class OpenUpdateOrgUnitGroupAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -46,55 +51,73 @@ public class AddDataEntryStatusAction
 
     private ReportExcelService reportService;
 
-    private DataSetService dataSetService;
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer dataSetId;
+    private Integer id;
 
-    private boolean makeDefault;
+    private List<OrganisationUnitGroup> availableOrganisationUnitGroups;
+
+    private List<OrganisationUnitGroup> selectedOrganisationUnitGroups;
+
+    private ReportExcelOganiztionGroupListing reportExcelOganiztionGroupListing;
 
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-    public void setDataSetService( DataSetService dataSetService )
+    public ReportExcelOganiztionGroupListing getReportExcelOganiztionGroupListing()
     {
-        this.dataSetService = dataSetService;
+        return reportExcelOganiztionGroupListing;
+    }
+
+    public List<OrganisationUnitGroup> getSelectedOrganisationUnitGroups()
+    {
+        return selectedOrganisationUnitGroups;
+    }
+
+    public List<OrganisationUnitGroup> getAvailableOrganisationUnitGroups()
+    {
+        return availableOrganisationUnitGroups;
+    }
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
     }
-    public void setDataSetId( Integer dataSetId )
-    {
-        this.dataSetId = dataSetId;
-    }
 
-    public void setMakeDefault( boolean makeDefault )
+    public void setId( Integer id )
     {
-        this.makeDefault = makeDefault;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        this.reportExcelOganiztionGroupListing = (ReportExcelOganiztionGroupListing) reportService.getReportExcel( id );
 
-        DataEntryStatus dataStatus = new DataEntryStatus();
-        dataStatus.setDataSet( dataSet );
-        dataStatus.setMakeDefault( makeDefault );
-        dataStatus.setPeriodType( dataSet.getPeriodType() );
+        this.availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>( this.organisationUnitGroupService
+            .getAllOrganisationUnitGroups() );
 
-        reportService.saveDataEntryStatus( dataStatus );
+        this.selectedOrganisationUnitGroups = reportExcelOganiztionGroupListing.getOrganisationUnitGroups();
+
+        availableOrganisationUnitGroups.removeAll( selectedOrganisationUnitGroups );
+
+        Collections.sort( this.availableOrganisationUnitGroups, new OrganisationUnitGroupNameComparator() );
 
         return SUCCESS;
     }
+
 }

@@ -1,7 +1,5 @@
-package org.hisp.dhis.reportexcel.dataentrystatus.action;
-
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,57 +24,84 @@ package org.hisp.dhis.reportexcel.dataentrystatus.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.status.DataEntryStatus;
+package org.hisp.dhis.reportexcel.excelitemgroup.degroup.action;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.reportexcel.DataElementGroupOrder;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class AddDataEntryStatusAction
+
+public class SaveDataElementGroupOrderForCategoryAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExcelItemService excelItemService;
 
-    private DataSetService dataSetService;
+    private DataElementService dataElementService;
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataSetId;
+    private Integer id;
 
-    private boolean makeDefault;
+    private String name;
+
+    private String code;
+
+    private List<String> dataElementIds = new ArrayList<String>();
 
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-    public void setDataSetService( DataSetService dataSetService )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.dataSetService = dataSetService;
+        this.dataElementService = dataElementService;
     }
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExcelItemService( ExcelItemService excelItemService )
     {
-        this.reportService = reportService;
-    }
-    public void setDataSetId( Integer dataSetId )
-    {
-        this.dataSetId = dataSetId;
+        this.excelItemService = excelItemService;
     }
 
-    public void setMakeDefault( boolean makeDefault )
+    public void setName( String name )
     {
-        this.makeDefault = makeDefault;
+        this.name = name;
+    }
+
+    public void setDataElementIds( List<String> dataElementIds )
+    {
+        this.dataElementIds = dataElementIds;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setCode( String code )
+    {
+        this.code = code;
     }
 
     // -------------------------------------------------------------------------
@@ -86,14 +111,30 @@ public class AddDataEntryStatusAction
     public String execute()
         throws Exception
     {
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        ExcelItemGroup excelItemGroup = (ExcelItemGroup) excelItemService.getExcelItemGroup( id );
 
-        DataEntryStatus dataStatus = new DataEntryStatus();
-        dataStatus.setDataSet( dataSet );
-        dataStatus.setMakeDefault( makeDefault );
-        dataStatus.setPeriodType( dataSet.getPeriodType() );
+        DataElementGroupOrder dataElementGroupOrder = new DataElementGroupOrder();
+        dataElementGroupOrder.setName( name );
+        dataElementGroupOrder.setCode( code );
 
-        reportService.saveDataEntryStatus( dataStatus );
+        List<DataElement> dataElements = new ArrayList<DataElement>();
+
+        for ( String id : dataElementIds )
+        {
+            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
+
+            dataElements.add( dataElement );
+        }
+
+        dataElementGroupOrder.setDataElements( dataElements );
+
+        List<DataElementGroupOrder> dataElementGroupOrders = excelItemGroup.getDataElementOrders();
+
+        dataElementGroupOrders.add( dataElementGroupOrder );
+
+        excelItemGroup.setDataElementOrders( dataElementGroupOrders );
+
+        excelItemService.updateExcelItemGroup( excelItemGroup );
 
         return SUCCESS;
     }

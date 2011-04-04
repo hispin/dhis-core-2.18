@@ -24,15 +24,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action;
+package org.hisp.dhis.reportexcel.excelitemgroup.degroup.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
@@ -42,36 +40,38 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class UpdateSortedDataElementForCategoryAction
+public class UpdateDataElementGroupOrderForCategoryAction
     implements Action
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ExcelItemService excelItemService;
 
     private DataElementService dataElementService;
 
-    // -------------------------------------------
-    // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
     private Integer id;
 
+    private Integer dataElementGroupOrderId;
+
+    private String name;
+
+    private String code;
+
     private List<String> dataElementIds = new ArrayList<String>();
 
-    public String message;
-
-    public I18n i18n;
-
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    public String getMessage()
+    public void setDataElementGroupOrderId( Integer dataElementGroupOrderId )
     {
-        return message;
+        this.dataElementGroupOrderId = dataElementGroupOrderId;
     }
 
     public void setExcelItemService( ExcelItemService excelItemService )
@@ -84,9 +84,9 @@ public class UpdateSortedDataElementForCategoryAction
         this.dataElementService = dataElementService;
     }
 
-    public void setId( Integer id )
+    public void setName( String name )
     {
-        this.id = id;
+        this.name = name;
     }
 
     public void setDataElementIds( List<String> dataElementIds )
@@ -94,34 +94,46 @@ public class UpdateSortedDataElementForCategoryAction
         this.dataElementIds = dataElementIds;
     }
 
-    public void setI18n( I18n i18n )
+    public Integer getId()
     {
-        this.i18n = i18n;
+        return id;
     }
 
-    // -------------------------------------------
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-
-        DataElementGroupOrder dataElementGroupOrder = excelItemService.getDataElementGroupOrder( id.intValue() );
+        DataElementGroupOrder dataElementGroupOrder = excelItemService
+            .getDataElementGroupOrder( dataElementGroupOrderId );
 
         List<DataElement> dataElements = new ArrayList<DataElement>();
 
-        for ( String dataElementId : this.dataElementIds )
+        for ( String id : dataElementIds )
         {
 
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
-            dataElements.add( dataElement );
+            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
 
+            dataElements.add( dataElement );
         }
 
         dataElementGroupOrder.setDataElements( dataElements );
 
-        this.message = i18n.getString( "update_sort_dataelement_success" );
+        dataElementGroupOrder.setName( name );
+
+        dataElementGroupOrder.setCode( code );
 
         excelItemService.updateDataElementGroupOrder( dataElementGroupOrder );
 

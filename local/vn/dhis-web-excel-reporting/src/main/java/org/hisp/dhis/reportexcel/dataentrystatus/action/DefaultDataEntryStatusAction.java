@@ -38,7 +38,6 @@ import java.util.Set;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -63,9 +62,9 @@ import com.opensymphony.xwork2.Action;
 public class DefaultDataEntryStatusAction
     implements Action
 {
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
@@ -75,17 +74,15 @@ public class DefaultDataEntryStatusAction
 
     private OrganisationUnitSelectionManager selectionManager;
 
-    private DataSetService dataSetService;
-
     private PeriodService periodService;
 
     private CompleteDataSetRegistrationService completeDataSetRegistrationService;
 
     private I18nFormat format;
 
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Output
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private List<DataEntryStatus> dataStatus;
 
@@ -95,14 +92,9 @@ public class DefaultDataEntryStatusAction
 
     private OrganisationUnit organisationUnit;
 
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------------
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
+    // -------------------------------------------------------------------------
 
     public OrganisationUnit getOrganisationUnit()
     {
@@ -165,6 +157,10 @@ public class DefaultDataEntryStatusAction
         return format;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
@@ -172,8 +168,7 @@ public class DefaultDataEntryStatusAction
 
         if ( organisationUnit != null )
         {
-            
-            dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
+            dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
 
             if ( !currentUserService.currentUserIsSuper() )
             {

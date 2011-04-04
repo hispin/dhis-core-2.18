@@ -39,7 +39,6 @@ import java.util.Set;
 public class ReportExcelPeriodColumnListing
     extends ReportExcel
 {
-
     private Set<PeriodColumn> periodColumns = new HashSet<PeriodColumn>();
 
     // -------------------------------------------------------------------------
