@@ -96,3 +96,8 @@ a:visited
 {
   color:#3567cd;
 }
+
+div#selectionTree 
+{
+  height:200px;
+}

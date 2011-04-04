@@ -277,7 +277,7 @@ function SelectionTree()
 			if ( typeof ( window.addSelectedOrganisationUnit__ ) == 'function' )
 			{ 
 				addSelectedOrganisationUnit__( childId );// This code is bad and must be removed
-			} 
+			}
         }
 
         var childTag = document.createElement( 'li' );

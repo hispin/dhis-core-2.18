@@ -12,7 +12,7 @@
 <table>
 	<tr>
 		<td>
-			#organisationUnitSelectionTree( true, true, true )			
+			#organisationUnitSelectionTree( true true true )
 		</td>
 	</tr>
 </table>	
