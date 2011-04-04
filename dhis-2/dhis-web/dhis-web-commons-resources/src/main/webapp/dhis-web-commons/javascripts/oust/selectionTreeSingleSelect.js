@@ -1,10 +1,6 @@
 
 var selectedOrganisationUnitListABCDEF;
 
-jQuery(document).ready( function() {
-
-});
-
 function addSelectedOrganisationUnitABCDEF( id )
 {
 	selectedOrganisationUnitListABCDEF.append( '<option value="' + id + ' selected="selected">' + id + '</option>');
