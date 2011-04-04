@@ -3,6 +3,10 @@
 
 <form id="systemSettingForm" method="post" action="setSystemSettings.action">
 
+<h4>$i18n.getString( "system_identifier" )</h4>
+
+<p><input type="text" name="systemIdentifier" style="width:30em" maxlength="40" value="$!keySystemIdentifier"/></p>
+
 <h4>$i18n.getString( "application_title" )</h4>
 
 <p><input type="text" name="applicationTitle" style="width:30em" maxlength="40" value="$!applicationTitle"/></p>

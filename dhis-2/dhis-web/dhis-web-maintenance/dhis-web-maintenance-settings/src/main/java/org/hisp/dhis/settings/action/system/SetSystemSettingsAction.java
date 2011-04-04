@@ -70,6 +70,13 @@ public class SetSystemSettingsAction
     // Output
     // -------------------------------------------------------------------------
     
+    private String systemIdentifier;
+    
+    public void setSystemIdentifier( String systemIdentifier )
+    {
+        this.systemIdentifier = systemIdentifier;
+    }
+
     private String applicationTitle;
 
     public void setApplicationTitle( String applicationTitle )
@@ -151,6 +158,7 @@ public class SetSystemSettingsAction
             startModule = null;
         }
         
+        systemSettingManager.saveSystemSetting( KEY_SYSTEM_IDENTIFIER, systemIdentifier );
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
