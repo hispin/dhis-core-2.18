@@ -102,8 +102,12 @@ public class DefaultActivityPlanService
 
     public Collection<Activity> getCurrentActivitiesByProvider( OrganisationUnit organisationUnit )
     {
-        long time = System.currentTimeMillis();
-
+        Date today = new Date();
+        today.setHours( 0 );
+        today.setMinutes( 0 );
+        today.setSeconds( 0 );
+        long time = today.getTime();
+        
         List<Activity> items = new ArrayList<Activity>();
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
@@ -115,32 +119,23 @@ public class DefaultActivityPlanService
             programInstances.addAll( programInstanceService.getProgramInstances( program, organisationUnit ) );
         }
 
-        Calendar expiredDate = Calendar.getInstance();
-
+        Calendar expiredDate = Calendar.getInstance(); 
+        
         for ( ProgramInstance programInstance : programInstances )
         {
             Set<ProgramStageInstance> programStageInstances = programInstance.getProgramStageInstances();
-            Inner: for ( ProgramStageInstance programStageInstance : programStageInstances )
+                for ( ProgramStageInstance programStageInstance : programStageInstances )
             {
                 if(!programStageInstance.isCompleted()){
-                    expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(),
-                        programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
-                    if ( programStageInstance.getDueDate().getTime() < time && expiredDate.getTimeInMillis() > time )
+                    expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
+                    
+                    if ( programStageInstance.getDueDate().getTime() <= time && expiredDate.getTimeInMillis() > time )
                     {
                         Activity activity = new Activity();
                         activity.setBeneficiary( programInstance.getPatient() );
                         activity.setTask( programStageInstance );
                         activity.setDueDate( programStageInstance.getDueDate() );
                         items.add( activity );
-                    }
-                    if ( programStageInstance.getDueDate().getTime() > time && expiredDate.getTimeInMillis() > time )
-                    {
-                        Activity activity = new Activity();
-                        activity.setBeneficiary( programInstance.getPatient() );
-                        activity.setTask( programStageInstance );
-                        activity.setDueDate( programStageInstance.getDueDate() );
-                        items.add( activity );
-                        break Inner;
                     }
                 }
             }
