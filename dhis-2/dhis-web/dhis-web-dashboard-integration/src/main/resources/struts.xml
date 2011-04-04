@@ -62,6 +62,7 @@
       <param name="page">/dhis-web-dashboard-integration/message.vm</param>
       <param name="menu">/dhis-web-dashboard-integration/menu.vm</param>
       <param name="javascripts">javascript/message.js</param>
+      <param name="stylesheets">style/dashboard.css</param>
     </action>
     
     <action name="sendMessage" class="org.hisp.dhis.dashboard.message.action.SendMessageAction">
@@ -73,6 +74,7 @@
       <param name="page">/dhis-web-dashboard-integration/sendMessage.vm</param>
       <param name="menu">/dhis-web-dashboard-integration/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/message.js</param>
+      <param name="stylesheets">style/dashboard.css</param>
     </action>
     
     <action name="readMessage" class="org.hisp.dhis.dashboard.message.action.ReadMessageAction">
@@ -80,6 +82,7 @@
       <param name="page">/dhis-web-dashboard-integration/readMessage.vm</param>
       <param name="menu">/dhis-web-dashboard-integration/menu.vm</param>
       <param name="javascripts">javascript/message.js</param>
+      <param name="stylesheets">style/dashboard.css</param>
     </action>
     
     <action name="unreadMessage" class="org.hisp.dhis.dashboard.message.action.UnreadMessageAction">

@@ -3,7 +3,7 @@
 
 <div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )" onclick="window.location.href='showSendMessage.action'"></div>
 
-<table style="width:75%">
+<table style="width:75%" class="plainList">
 	<tr>
 		<th>$i18n.getString( "sender" )</th>
 		<th>$i18n.getString( "date" )</th>
@@ -11,7 +11,7 @@
 		<th>$i18n.getString( "operations" )</th>
 	</tr>
 	#foreach( $message in $messages )
-	<tr id="tr${message.id}" style="#if( !$message.read )font-weight:bold;background-color:#ebf0f6;#end">
+	<tr id="tr${message.id}" #if( !$message.read )class="unread"#end>
 		<td>$encoder.htmlEncode( $message.message.sender.name )</td>
 		<td style="width:80px">$format.formatDate( $message.messageDate )</td>
 		<td><a href="readMessage.action?id=${message.id}">$encoder.htmlEncode( $message.message.subject )</a></td>

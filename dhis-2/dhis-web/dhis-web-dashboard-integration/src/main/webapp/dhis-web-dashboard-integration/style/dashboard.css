@@ -1,4 +1,8 @@
 
+/*----------------------------------------------------------------------------*/
+/* Dashboard                                                                  */
+/*----------------------------------------------------------------------------*/
+
 .contentProviderTable
 {
   width:305px;
@@ -9,11 +13,6 @@
   padding-top:3px;
   padding-bottom:3px;
   border-bottom:1px solid #cad5e5;
-}
-
-.contentProviderTable a
-{
-  text-decoration:none;
 }
 
 .linkArea
@@ -54,4 +53,46 @@
 .labelText
 {
   color:#808080;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Message                                                                    */
+/*----------------------------------------------------------------------------*/
+
+.plainList
+{
+  border-collapse:collapse;
+}
+
+.plainList td
+{
+  border-bottom:1px solid #c0c0c0;
+}
+
+.unread td
+{
+  font-weight:bold;
+  background-color:#ebf0f6;
+}
+
+.messageDiv
+{
+  margin-bottom:20px;
+  width:50%;
+}
+
+a
+{
+  text-decoration:none;
+  color:#3567cd;
+}
+
+a:hover
+{
+  text-decoration:underline;
+}
+
+a:visited
+{
+  color:#3567cd;
 }
