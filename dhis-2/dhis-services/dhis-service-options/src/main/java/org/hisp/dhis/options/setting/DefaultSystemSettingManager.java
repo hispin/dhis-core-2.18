@@ -136,4 +136,9 @@ public class DefaultSystemSettingManager
     {
         return Arrays.asList( AGGREGATION_STRATEGY_REAL_TIME, AGGREGATION_STRATEGY_BATCH );
     }
+    
+    public String getSystemIdentifier()
+    {
+        return (String) getSystemSetting( KEY_SYSTEM_IDENTIFIER, DEFAULT_SYSTEM_IDENTIFIER );
+    }
 }

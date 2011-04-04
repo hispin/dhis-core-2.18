@@ -40,6 +40,7 @@ public interface SystemSettingManager
 {
     final String ID = SystemSettingManager.class.getName();
     
+    final String KEY_SYSTEM_IDENTIFIER = "keySystemIdentifier";
     final String KEY_APPLICATION_TITLE = "applicationTitle";
     final String KEY_FLAG = "flag";
     final String KEY_START_MODULE = "startModule";
@@ -55,9 +56,7 @@ public interface SystemSettingManager
     final String KEY_COMPLETENESS_OFFSET = "completenessOffset";
     final String KEY_PATIENT_EXCEL_TEMPLATE_FILE_NAME = "patientExcelTemplateFileName";
     
-    final String KEY_CHR_IMAGE_DIRECTORY = "chrImageDirectory";
-    final String KEY_CHR_NUMBER_OF_RECORDS = "chrNumberOfRecords";
-    
+    final String DEFAULT_SYSTEM_IDENTIFIER = "http://dhis2.org";
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
     final double DEFAULT_FACTOR_OF_DEVIATION = 2.0;
@@ -81,4 +80,6 @@ public interface SystemSettingManager
     SortedMap<String, String> getFlags();
     
     List<String> getAggregationStrategies();
+    
+    String getSystemIdentifier();
 }
