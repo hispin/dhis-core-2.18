@@ -274,8 +274,9 @@ function SelectionTree()
             linkTag.className = 'selected';
 			selectedOrganisationUnit.push( childId );
 			
-			if ( typeof (window.addSelectedOrganisationUnitABCDEF) == 'function') { 
-				addSelectedOrganisationUnitABCDEF( childId );// This code is completely ridiculous and must be removed
+			if ( typeof ( window.addSelectedOrganisationUnit__ ) == 'function' )
+			{ 
+				addSelectedOrganisationUnit__( childId );// This code is bad and must be removed
 			} 
         }
 
