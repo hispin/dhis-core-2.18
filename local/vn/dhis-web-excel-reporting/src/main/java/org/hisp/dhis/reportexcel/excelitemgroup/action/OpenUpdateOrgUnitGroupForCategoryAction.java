@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.organisationunitgrouplisting.action;
+package org.hisp.dhis.reportexcel.excelitemgroup.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,29 +33,29 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
-import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class OpenUpdateOrganisationUnitGroupAction
+public class OpenUpdateOrgUnitGroupForCategoryAction
     implements Action
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExcelItemService excelItemService;
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer id;
 
@@ -63,20 +63,25 @@ public class OpenUpdateOrganisationUnitGroupAction
 
     private List<OrganisationUnitGroup> selectedOrganisationUnitGroups;
 
-    private ReportExcelOganiztionGroupListing reportExcelOganiztionGroupListing;
+    private ExcelItemGroup excelItemGroup;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    public ReportExcelOganiztionGroupListing getReportExcelOganiztionGroupListing()
+    public void setExcelItemService( ExcelItemService excelItemService )
     {
-        return reportExcelOganiztionGroupListing;
+        this.excelItemService = excelItemService;
     }
 
     public List<OrganisationUnitGroup> getSelectedOrganisationUnitGroups()
     {
         return selectedOrganisationUnitGroups;
+    }
+
+    public ExcelItemGroup getExcelItemGroup()
+    {
+        return excelItemGroup;
     }
 
     public List<OrganisationUnitGroup> getAvailableOrganisationUnitGroups()
@@ -89,25 +94,24 @@ public class OpenUpdateOrganisationUnitGroupAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
-
     public void setId( Integer id )
     {
         this.id = id;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
-        this.reportExcelOganiztionGroupListing = (ReportExcelOganiztionGroupListing) reportService.getReportExcel( id );
+        this.excelItemGroup = excelItemService.getExcelItemGroup( id );
 
         this.availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>( this.organisationUnitGroupService
             .getAllOrganisationUnitGroups() );
 
-        this.selectedOrganisationUnitGroups = reportExcelOganiztionGroupListing.getOrganisationUnitGroups();
+        this.selectedOrganisationUnitGroups = excelItemGroup.getOrganisationUnitGroups();
 
         availableOrganisationUnitGroups.removeAll( selectedOrganisationUnitGroups );
 

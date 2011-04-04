@@ -256,8 +256,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- REPORT ORGANISATION UNIT GROUP LISTING BEAN -->
 
 	<bean
-		id="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.OpenUpdateOrganisationUnitGroupAction"
-		class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.OpenUpdateOrganisationUnitGroupAction"
+		id="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.OpenUpdateOrgUnitGroupAction"
+		class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.OpenUpdateOrgUnitGroupAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="organisationUnitGroupService"
@@ -265,8 +265,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.ListOrganisationUnitGroupAtLevelAction"
-		class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.ListOrganisationUnitGroupAtLevelAction"
+		id="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.ListOrgUnitGroupAtLevelAction"
+		class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.ListOrgUnitGroupAtLevelAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="organisationUnitService"
@@ -274,8 +274,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAtLevelAction"
-		class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAtLevelAction"
+		id="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrgUnitGroupAtLevelAction"
+		class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrgUnitGroupAtLevelAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="organisationUnitService"
@@ -285,8 +285,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAction"
-		class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAction"
+		id="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrgUnitGroupAction"
+		class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrgUnitGroupAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="organisationUnitGroupService"
@@ -571,7 +571,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
@@ -583,9 +582,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
-		<property name="selectionManager"
+		<property name="selectionManager" 
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
 	<!-- DATA SET COMPLETED BEAN -->
@@ -898,8 +896,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrganisationUnitGroupAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrganisationUnitGroupAction"
+		id="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrgUnitGroupAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrgUnitGroupAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
@@ -908,8 +906,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupForCategoryAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupForCategoryAction"
+		id="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrgUnitGroupForCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrgUnitGroupForCategoryAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
@@ -922,33 +920,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!--- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.DeleteDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.DeleteDataElementGroupOrderForCategoryAction"
+		id="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.DeleteDataElementGroupOrderForCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.DeleteDataElementGroupOrderForCategoryAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.GetDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.GetDataElementGroupOrderForCategoryAction"
+		id="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.GetDataElementGroupOrderForCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.GetDataElementGroupOrderForCategoryAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.SaveDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.SaveDataElementGroupOrderForCategoryAction"
-		scope="prototype">
-		<property name="excelItemService"
-			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateDataElementGroupOrderForCategoryAction"
+		id="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.SaveDataElementGroupOrderForCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.SaveDataElementGroupOrderForCategoryAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
@@ -956,8 +945,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateSortedDataElementForCategoryAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateSortedDataElementForCategoryAction"
+		id="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.UpdateDataElementGroupOrderForCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.UpdateDataElementGroupOrderForCategoryAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
@@ -965,8 +954,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateSortedDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateSortedDataElementGroupOrderForCategoryAction"
+		id="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.UpdateSortedDataElementForCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.UpdateSortedDataElementForCategoryAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.UpdateSortedDataElementGroupOrderForCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.UpdateSortedDataElementGroupOrderForCategoryAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />

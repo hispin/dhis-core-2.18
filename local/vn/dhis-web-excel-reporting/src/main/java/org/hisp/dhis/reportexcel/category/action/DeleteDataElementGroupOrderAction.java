@@ -38,27 +38,26 @@ import com.opensymphony.xwork2.Action;
 public class DeleteDataElementGroupOrderAction
     implements Action
 {
-
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
-
-    // -------------------------------------------
-    // Input & Ouput
-    // -------------------------------------------
-
-    private Integer id;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
 
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
     }
+
+    // -------------------------------------------------------------------------
+    // Input & Ouput
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    // -------------------------------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------------------------------
 
     public void setId( Integer id )
     {
@@ -69,7 +68,7 @@ public class DeleteDataElementGroupOrderAction
         throws Exception
     {
         reportService.deleteDataElementGroupOrder( id );
-        
+
         return SUCCESS;
     }
 

@@ -250,7 +250,7 @@
 		<!-- REPORT ORGANISATION UNIT GROUP LISTING ACTION -->
 
 		<action name="openUpdateOrgnisationUnitGroupListingReport"
-			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.OpenUpdateOrganisationUnitGroupAction">
+			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.OpenUpdateOrganisationUnitGroupAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/organisationUnitGroupListingReport.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
@@ -258,20 +258,20 @@
 		</action>
 
 		<action name="updateOrgnisationUnitGroupListingReport"
-			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAction">
+			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrganisationUnitGroupAction">
 			<result name="success" type="redirect">listReportExcel.action
 			</result>
 		</action>
 
 		<action name="organisationUnitAtLevels"
-			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.ListOrganisationUnitGroupAtLevelAction">
+			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.ListOrganisationUnitGroupAtLevelAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/organisationUnitAtLevels.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 		</action>
 
 		<action name="updateOrganisationUnitGroupAtLevel"
-			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAtLevelAction">
+			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrganisationUnitGroupAtLevelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
@@ -905,33 +905,33 @@
 		</action>
 
 		<action name="addDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.SaveDataElementGroupOrderForCategoryAction">
+			class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.SaveDataElementGroupOrderForCategoryAction">
 			<result name="success" type="redirect">
 				listDataElementGroupOrderForExcelItemGroup.action?id=${id}
 			</result>
 		</action>
 
 		<action name="updateDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateDataElementGroupOrderForCategoryAction">
+			class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.UpdateDataElementGroupOrderForCategoryAction">
 			<result name="success" type="redirect">
 				listDataElementGroupOrderForExcelItemGroup.action?id=${id}
 			</result>
 		</action>
 
 		<action name="deleteDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.DeleteDataElementGroupOrderForCategoryAction">
+			class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.DeleteDataElementGroupOrderForCategoryAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="getDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.GetDataElementGroupOrderForCategoryAction">
+			class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.GetDataElementGroupOrderForCategoryAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseDataElementOrder.vm</result>
 		</action>
 
 		<action name="openSortDataElementForCategory"
-			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.GetDataElementGroupOrderForCategoryAction">
+			class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.GetDataElementGroupOrderForCategoryAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/import/sortDataElements.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
@@ -940,13 +940,13 @@
 		</action>
 
 		<action name="updateSortedDataElementsForCategory"
-			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateSortedDataElementForCategoryAction">
+			class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.UpdateSortedDataElementForCategoryAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="updateSortedDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateSortedDataElementGroupOrderForCategoryAction">
+			class="org.hisp.dhis.reportexcel.excelitemgroup.degroup.action.UpdateSortedDataElementGroupOrderForCategoryAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>

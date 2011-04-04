@@ -27,14 +27,14 @@ package org.hisp.dhis.reportexcel;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.AbstractNameableObject;
 
 /**
  * @author Tran Thanh Tri
  */
 @SuppressWarnings( "serial" )
 public class Bookmark
-    extends IdentifiableObject
+    extends AbstractNameableObject
 {
     public static final String CHART = "CHART";
 

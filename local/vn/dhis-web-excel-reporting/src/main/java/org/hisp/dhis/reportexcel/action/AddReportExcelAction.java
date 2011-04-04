@@ -44,16 +44,15 @@ import com.opensymphony.xwork2.Action;
 public class AddReportExcelAction
     implements Action
 {
-
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private String name;
 
@@ -73,9 +72,9 @@ public class AddReportExcelAction
 
     private String group;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setReportService( ReportExcelService reportService )
     {
@@ -130,7 +129,6 @@ public class AddReportExcelAction
     public String execute()
         throws Exception
     {
-
         if ( reportType.equalsIgnoreCase( ReportExcel.TYPE.NORMAL ) )
         {
             report = new ReportExcelNormal();

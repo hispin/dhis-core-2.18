@@ -45,17 +45,17 @@ import com.opensymphony.xwork2.Action;
 public class SaveDataElementGroupOrderAction
     implements Action
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
     private DataElementService dataElementService;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer id;
 
@@ -65,9 +65,9 @@ public class SaveDataElementGroupOrderAction
 
     private List<String> dataElementIds = new ArrayList<String>();
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setReportService( ReportExcelService reportService )
     {
@@ -104,6 +104,10 @@ public class SaveDataElementGroupOrderAction
         this.code = code;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
@@ -117,11 +121,9 @@ public class SaveDataElementGroupOrderAction
 
         for ( String id : dataElementIds )
         {
-
             DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
 
             dataElements.add( dataElement );
-
         }
 
         dataElementGroupOrder.setDataElements( dataElements );

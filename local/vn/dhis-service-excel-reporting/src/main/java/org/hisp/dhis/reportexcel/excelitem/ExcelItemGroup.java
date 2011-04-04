@@ -41,15 +41,16 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
  * @version $Id$
  */
 
-public class ExcelItemGroup implements Serializable
+public class ExcelItemGroup
+    implements Serializable
 {
     private int id;
 
     private String name;
 
-    private Set<ExcelItem> excelItems;
-
     private String type;
+    
+    private Set<ExcelItem> excelItems;
 
     private Set<OrganisationUnit> organisationAssocitions;
 
@@ -59,13 +60,12 @@ public class ExcelItemGroup implements Serializable
 
     private PeriodType periodType;
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Constructors
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public ExcelItemGroup()
     {
-
     }
 
     // -------------------------------------------------------------------------
@@ -111,9 +111,9 @@ public class ExcelItemGroup implements Serializable
         return true;
     }
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getters and setters
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public int getId()
     {
@@ -195,9 +195,9 @@ public class ExcelItemGroup implements Serializable
         this.periodType = periodType;
     }
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // getType
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public boolean isCategory()
     {
@@ -219,9 +219,9 @@ public class ExcelItemGroup implements Serializable
         return this.getType().equalsIgnoreCase( TYPE.NORMAL );
     }
 
-    // ----------------------------------------------------------------------
-    // Support methord
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Support method
+    // -------------------------------------------------------------------------
 
     public boolean excelItemIsExist( String name )
     {

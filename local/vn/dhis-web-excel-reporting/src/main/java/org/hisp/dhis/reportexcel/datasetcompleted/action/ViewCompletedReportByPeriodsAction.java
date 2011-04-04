@@ -60,9 +60,9 @@ public class ViewCompletedReportByPeriodsAction
     implements Action
 {
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private PeriodService periodService;
 
@@ -100,9 +100,9 @@ public class ViewCompletedReportByPeriodsAction
         this.dataValueService = dataValueService;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer dataSetId;
 
@@ -118,9 +118,9 @@ public class ViewCompletedReportByPeriodsAction
         this.periodIds = periodIds;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private List<OrganisationUnit> organisationUnits;
 
@@ -150,7 +150,10 @@ public class ViewCompletedReportByPeriodsAction
         return completedValues;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
@@ -172,7 +175,7 @@ public class ViewCompletedReportByPeriodsAction
 
             for ( OrganisationUnit o : organisationUnits )
             {
-                if ( dataSetService.getDataSetsBySource( o ).contains( dataSet ) )
+                if ( o.getDataSets().contains( dataSet ) )
                 {
                     Collection<DataElement> dataElements = dataSet.getDataElements();
                     Collection<DataValue> values = dataValueService.getDataValues( o, period, dataElements );

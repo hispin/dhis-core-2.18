@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.organisationunitgrouplisting.action;
+package org.hisp.dhis.reportexcel.orgunitgrouplisting.action;
 
 import java.util.List;
 import java.util.Map;
@@ -41,13 +41,12 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class ListOrganisationUnitGroupAtLevelAction
+public class ListOrgUnitGroupAtLevelAction
     implements Action
 {
-
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
@@ -63,9 +62,9 @@ public class ListOrganisationUnitGroupAtLevelAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer id;
 
@@ -102,7 +101,10 @@ public class ListOrganisationUnitGroupAtLevelAction
         return reportExcel;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
