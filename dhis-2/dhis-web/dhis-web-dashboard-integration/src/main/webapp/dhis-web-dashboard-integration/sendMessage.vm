@@ -6,30 +6,20 @@
 <table>
 
 <tr>
-<th colspan="2">$i18n.getString( "details" )</th>
-</tr>
-
-<tr>
-<td style="min-width:80px">$i18n.getString( "recipient" )</td>
+<td style="min-width:80px">$i18n.getString( "recipients" )</td>
 <td>
-<div id="selectionTree" style="width:350px; height:180px"></div>	            
-<script type="text/javascript">
-  selectionTreeSelection.setMultipleSelectionAllowed( true );
-  selectionTreeSelection.setListenerFunction( organisationUnitSelected );
-  selectionTree.clearSelectedOrganisationUnits();
-  selectionTree.buildSelectionTree();
-</script>
+#organisationUnitSelectionTree( true true true )
 </td>
 </tr>
 
 <tr>
 <td>$i18n.getString( "subject" )</td>
-<td><input type="text" name="subject" style="width:350px"></td>
+<td><input type="text" name="subject" style="width:495px"></td>
 </tr>
 
 <tr>
 <td>$i18n.getString( "text" )</td>
-<td><textarea name="text" style="width:350px;height:200px"></textarea></td>
+<td><textarea name="text" style="width:495px;height:200px"></textarea></td>
 </tr>
 
 <tr>

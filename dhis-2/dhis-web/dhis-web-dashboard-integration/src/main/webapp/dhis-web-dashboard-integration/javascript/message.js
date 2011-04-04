@@ -1,9 +1,5 @@
 
-function organisationUnitSelected( units )
-{
-}
-
 function removeMessage( id )
 {
-    removeItem( id, "", "Are you sure you want to delete this message?", "removeMessage.action" );
+    removeItem( id, "", i18n_confirm_delete_message, "removeMessage.action" );
 }
