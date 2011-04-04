@@ -103,35 +103,11 @@ public class ActivityReportingServiceImpl
 
         List<Activity> items = new ArrayList<Activity>();
 
-        Collection<org.hisp.dhis.activityplan.Activity> activities;
-
-        activities = activityPlanService.getCurrentActivitiesByProvider( unit );
-
-        for ( org.hisp.dhis.activityplan.Activity each : activities )
+        for ( org.hisp.dhis.activityplan.Activity activity : activityPlanService.getCurrentActivitiesByProvider( unit ) )
         {
-            Date expiredDate = DateUtils.getDateAfterAddition( each.getTask().getDueDate(), each.getTask()
-                .getProgramInstance().getProgram().getMaxDaysAllowedInputData() );
-
-            Activity activity = new Activity();
-            Patient patient = each.getBeneficiary();
-
-            activity.setBeneficiary( getBeneficiaryModel( patient ) );
-
-            activity.setDueDate( each.getDueDate() );
-
-            Task task = new Task();
-            task.setCompleted( each.getTask().isCompleted() );
-            task.setId( each.getTask().getId() );
-            task.setProgramStageId( each.getTask().getProgramStage().getId() );
-            task.setProgramId( each.getTask().getProgramInstance().getProgram().getId() );
-            activity.setTask( task );
-            
-            activity.setLate( each.getDueDate().getTime() < time );
-
-            activity.setExpireDate( expiredDate );
-
-            items.add( activity );
+            items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
         }
+
         if ( items.isEmpty() )
         {
             return null;
@@ -139,15 +115,11 @@ public class ActivityReportingServiceImpl
 
         Collections.sort( items, activityComparator );
 
-        ActivityPlan plan = new ActivityPlan();
-
-        plan.setActivitiesList( items );
-
         if ( DEBUG )
             log.debug( "Found " + items.size() + " current activities in " + (System.currentTimeMillis() - time)
                 + " ms." );
 
-        return plan;
+        return new ActivityPlan( items );
     }
 
     // -------------------------------------------------------------------------
@@ -213,10 +185,6 @@ public class ActivityReportingServiceImpl
 
     private Activity getActivity( ProgramStageInstance instance, boolean late )
     {
-        if ( instance == null )
-        {
-            return null;
-        }
         Activity activity = new Activity();
         Patient patient = instance.getProgramInstance().getPatient();
 
@@ -230,20 +198,16 @@ public class ActivityReportingServiceImpl
         return activity;
     }
 
-    private Task getTask( ProgramStageInstance stageInstance )
+    private Task getTask( ProgramStageInstance instance )
     {
-        if ( stageInstance == null )
-        {
+        if ( instance == null )
             return null;
-        }
 
         Task task = new Task();
-
-        task.setCompleted( stageInstance.isCompleted() );
-        task.setId( stageInstance.getId() );
-        task.setProgramStageId( stageInstance.getProgramStage().getId() );
-        task.setProgramId( stageInstance.getProgramInstance().getProgram().getId() );
-
+        task.setCompleted( instance.isCompleted() );
+        task.setId( instance.getId() );
+        task.setProgramStageId( instance.getProgramStage().getId() );
+        task.setProgramId( instance.getProgramInstance().getProgram().getId() );
         return task;
     }
 
