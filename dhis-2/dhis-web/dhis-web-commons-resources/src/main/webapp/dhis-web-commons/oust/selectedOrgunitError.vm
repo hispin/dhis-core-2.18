@@ -1,9 +1,0 @@
-$encoder.htmlEncode( $i18n.getString( "error_occurred" ) )
-
-#if ( !$selectedUnit )
-	<br/>
-	<br/>
-	$encoder.htmlEncode( $i18n.getString( "select_organisationunit" ) ) 
-#end
-
-<a href="javascript: history.go(-1)">$encoder.htmlEncode( $i18n.getString( "back" ) )</a><br/>

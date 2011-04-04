@@ -194,7 +194,7 @@
 		<action name="searchResult"
 			class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<result name="error" type="redirect">error.action</result>
+			<result name="error" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-dataadmin/dataBrowserResult.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>

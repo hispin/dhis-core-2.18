@@ -1,19 +1,19 @@
-var selectedOrganisationUnitListABCDEF;
+var selectedOrganisationUnitList__;
 
-function addSelectedOrganisationUnitABCDEF( id )
+function addSelectedOrganisationUnit__( id )
 {
-	selectedOrganisationUnitListABCDEF.append('<option value="' + id + ' selected="selected">' + id + '</option>');
+	selectedOrganisationUnitList__.append('<option value="' + id + ' selected="selected">' + id + '</option>');
 }
 
-function selectOrganisationUnitABCDEF( ids )
+function selectOrganisationUnit__( ids )
 {
-	selectedOrganisationUnitListABCDEF.empty();
+	selectedOrganisationUnitList__.empty();
 
 	jQuery.each(ids, function( i, item )
 	{
-		selectedOrganisationUnitListABCDEF.append('<option value="' + item + ' selected="selected">' + item
-				+ '</option>');
+		selectedOrganisationUnitList__.append('<option value="' + item + ' selected="selected">' + item	+ '</option>');
 	});
+	
 	byId('treeSelectedId').selectedIndex = 0;
 }
 
@@ -23,7 +23,7 @@ function unSelectChildren()
 		children : true
 	}, function( xml )
 	{
-		selectedOrganisationUnitXMLABCDEF(xml);
+		selectedOrganisationUnitXML__(xml);
 	});
 }
 
@@ -33,7 +33,7 @@ function selectChildren()
 		children : true
 	}, function( xml )
 	{
-		selectedOrganisationUnitXMLABCDEF(xml);
+		selectedOrganisationUnitXML__(xml);
 	});
 }
 
@@ -43,7 +43,7 @@ function selectOrganisationUnitAtLevel()
 		level : getFieldValue('levelList')
 	}, function( xml )
 	{
-		selectedOrganisationUnitXMLABCDEF(xml);
+		selectedOrganisationUnitXML__(xml);
 	});
 }
 
@@ -53,7 +53,7 @@ function unSelectOrganisationUnitAtLevel()
 		level : getFieldValue('levelList')
 	}, function( xml )
 	{
-		selectedOrganisationUnitXMLABCDEF(xml);
+		selectedOrganisationUnitXML__(xml);
 	});
 }
 
@@ -61,7 +61,7 @@ function unSelectAllTree()
 {
 	jQuery.get('../dhis-web-commons/oust/clearSelectedOrganisationUnits.action', function( xml )
 	{
-		selectedOrganisationUnitXMLABCDEF(xml);
+		selectedOrganisationUnitXML__(xml);
 	});
 }
 
@@ -69,7 +69,7 @@ function selectAllTree()
 {
 	jQuery.get('../dhis-web-commons/oust/selectallorgunit.action', function( xml )
 	{
-		selectedOrganisationUnitXMLABCDEF(xml);
+		selectedOrganisationUnitXML__(xml);
 	});
 }
 
@@ -79,7 +79,7 @@ function selectOrganisationUnitByGroup()
 		organisationUnitGroupId : getFieldValue('groupList')
 	}, function( xml )
 	{
-		selectedOrganisationUnitXMLABCDEF(xml);
+		selectedOrganisationUnitXML__(xml);
 	});
 }
 
@@ -89,7 +89,7 @@ function unSelectOrganisationUnitByGroup()
 		organisationUnitGroupId : getFieldValue('groupList')
 	}, function( xml )
 	{
-		selectedOrganisationUnitXMLABCDEF(xml);
+		selectedOrganisationUnitXML__(xml);
 	});
 }
 

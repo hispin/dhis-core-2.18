@@ -1,4 +1,10 @@
+<script type="text/javascript">
+jQuery(document).ready(function()
+{
+	selectionTreeSelection.setMultipleSelectionAllowed(true);
+	selectionTree.clearSelectedOrganisationUnits();
+	selectionTree.buildSelectionTree();
+});
+</script>
 
-## You don't have to use this template directly if you don't want to
-<script type="text/javascript" src="../dhis-web-commons/javascripts/oust/selectionTree.js"></script>
 <div id="selectionTree"></div>

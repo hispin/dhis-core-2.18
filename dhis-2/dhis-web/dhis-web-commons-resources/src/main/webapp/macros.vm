@@ -106,7 +106,7 @@ Formats a boolean into a readable value
 </li>
 #end
 
-#macro( organisationUnitSelectionTree $cleanAll $multipleSelectionAllowed $requied )
+#macro( organisationUnitSelectionTree $cleanAll $multipleSelectionAllowed $required )
 #if( $multipleSelectionAllowed )
 	#parse( "/dhis-web-commons/oust/selectionTreeMultipleSelect.vm" )
 #else
