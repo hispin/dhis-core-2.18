@@ -1,7 +1,8 @@
 
 <h3>$encoder.htmlEncode( $message.message.subject )</h3>
 
-<div style="margin-bottom:20px; width:50%; font-weight:bold;">$encoder.htmlEncode( $message.message.sender.name ) - $format.formatDate( $message.messageDate )</div>
+<div class="messageDiv"><span style="font-weight:bold;">$encoder.htmlEncode( $message.message.sender.name )</span>
+<span style="color:#606060">$format.formatDate( $message.messageDate )</span></div>
 
 <div style="margin-bottom:20px; width:50%;">$encoder.htmlEncode( $message.message.text )</div>
 
