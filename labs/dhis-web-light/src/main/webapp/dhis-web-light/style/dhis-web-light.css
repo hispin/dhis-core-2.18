@@ -10,15 +10,17 @@ body {
   
 .headerDiv {
   position: relative;
-  width: 96%;
+  width: 100%;
   font-size: 2em;
   color: #ffffff;
-  background-color: #32669a;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-left: 4%;
-  border-top: 1px solid #c0c0c0;
-  border-bottom: 1px solid #c0c0c0;
+  background-color: #000000;
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header {
+  margin: 1em;
 }
 
 .contentDiv {
@@ -31,14 +33,14 @@ body {
   padding-top: 1.5em;
   padding-bottom: 1.5em;
   margin-bottom: 1.5em;
-  border-bottom: 1px solid #c0c0c0;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .contentItemDiv {
-  font-size: 1.8em;
-  margin: 1em;
+  color: #ffffff;
+  font-size: 2em;
   padding: 1.5em;
-  border: 1px solid #c0c0c0;
-  background-color: #d0f6d5;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #35699f;
   cursor: pointer;
 }
