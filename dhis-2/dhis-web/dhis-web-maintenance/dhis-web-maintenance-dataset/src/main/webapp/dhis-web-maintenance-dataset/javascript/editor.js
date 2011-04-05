@@ -1,8 +1,6 @@
 
 // Global variables:
-
 arrayIds = new Array();
-
 
 function displayAssociatedForm()
 {
@@ -10,37 +8,43 @@ function displayAssociatedForm()
 	
 	showLoader();
 	
-	$( "#contentDiv" ).load( url, function(){
+	jQuery( "#contentDiv" ).load( url, function(){
 		hideLoader();
 	});
 }
 
 function changeAssociatedStatus( orgunitId, dataSetId, assigned )
 {
-	var url = "definedAssociationsEditor.action?";
+	var url = "definedAssociationEditor.action?";
 	url += "orgUnitId=" + orgunitId ;
 	url += "&dataSetId=" + dataSetId;
 	url += "&assigned=" + !assigned;
 	
-	$( "#div" + orgunitId + dataSetId ).load( url );
+	jQuery( "#div" + orgunitId + dataSetId ).load( url );
 }
 
 function assignAll( element, orgunitId )
 {
-	var status = false;
-	var checked = element.checked;
+	var url = "definedMultiAssociationsEditor.action?";
 
 	lockScreen();
 	
-	for ( var i = 0 ; i < arrayIds.length ; i++ )
+	for ( var i in arrayIds )
 	{
-		status = eval( $("#div" + orgunitId + arrayIds[i] + " input[type='hidden']").val() );
-	
-		if ( (checked && !status) || (!checked && status) )
-		{
-			changeAssociatedStatus( orgunitId, arrayIds[i], !checked );
-		}
+		url += "dataSetIds=" + arrayIds[i] + "&";
+		url += "statuses=" + $("#div" + orgunitId + arrayIds[i] + " input[type='hidden']").val();
+		url += (i < arrayIds.length-1) ? "&" : "";
 	}
 	
-	unLockScreen();
+	if ( url.length > 0 )
+	{
+		jQuery( "tr#tr" + orgunitId ).load( url,
+		{
+			'orgUnitId': orgunitId,
+			'checked': element.checked
+		},
+		function(){
+			unLockScreen();
+		});
+	}
 }
