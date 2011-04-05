@@ -1,7 +1,7 @@
 package org.hisp.dhis.mobile.sms.api;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,23 +27,11 @@ package org.hisp.dhis.mobile.sms.api;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-
 /**
- * The API for CRUD into the sms_inbound table
+ *
  * @author Saptarshi
  */
-public interface SmsInboundStore
+public interface SmsImportService
 {
-
-    String ID = SmsInboundStore.class.getName();
-
-    void saveSms( SmsInbound sms );
-
-    Collection<SmsInbound> getSms( String originator, Integer process, Date startDate, Date endDate);
-    
-    void updateSms (SmsInbound sms);
-
-    long getSmsCount();
+    int saveDataValues();
 }

@@ -32,10 +32,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
+import org.hisp.dhis.mobile.Compressor;
 import org.hisp.dhis.mobile.sms.api.SmsInbound;
+import org.hisp.dhis.mobile.sms.api.SmsInboundStoreService;
 import org.smslib.AGateway;
 import org.smslib.AGateway.Protocols;
 import org.smslib.GatewayException;
@@ -44,6 +50,7 @@ import org.smslib.IInboundMessageNotification;
 import org.smslib.IOrphanedMessageNotification;
 import org.smslib.IOutboundMessageNotification;
 import org.smslib.IQueueSendingNotification;
+import org.smslib.InboundBinaryMessage;
 import org.smslib.InboundMessage;
 import org.smslib.Message.MessageEncodings;
 import org.smslib.Message.MessageTypes;
@@ -61,17 +68,17 @@ import org.smslib.modem.SerialModemGateway;
  */
 public class SmsService
 {
-    
+
     /*------------------------------------------------------------------
      * Dependencies
     ------------------------------------------------------------------*/
-    HibernateSmsInboundStore hibernateSmsInboundStore;
-    
-    public void setHibernateSmsStore( HibernateSmsInboundStore hibernateSmsInboundStore )
+    SmsInboundStoreService smsInboundStoreService;
+
+    public void setSmsInboundStoreService( SmsInboundStoreService smsInboundStoreService )
     {
-        this.hibernateSmsInboundStore = hibernateSmsInboundStore;
+        this.smsInboundStoreService = smsInboundStoreService;
     }
-    
+
     /*------------------------------------------------------------------
      * Implementation
     ------------------------------------------------------------------*/
@@ -86,6 +93,8 @@ public class SmsService
     private QueueSendingNotification queueSendingNotification;
 
     private OrphanedMessageNotification orphanedMessageNotification;
+
+    private Timer inboundPollingTimer;
 
     /*
      * Constructor called when SmsService is loaded
@@ -117,11 +126,16 @@ public class SmsService
                 if ( !result.contains( "ERROR" ) )
                 {
                     Service.getInstance().startService();
+                    int inbound_interval = Integer.parseInt( props.getProperty( "settings.inbound_interval", "60" ) );
+                    inboundPollingTimer = new Timer( "SmsService - InboundPollingTask" );
+                    InboundPollingTask inboundPollingTask = new InboundPollingTask();
+                    inboundPollingTimer.schedule( inboundPollingTask, inbound_interval * 1000, inbound_interval * 1000 );
                 }
                 return result;
             } catch ( Exception ex )
             {
-                return "ERROR";
+                Logger.getInstance().logError( "Exception starting service: ", ex, null );
+                return "ERROR = " + ex.getMessage();
             }
         } else
         {
@@ -142,9 +156,11 @@ public class SmsService
             try
             {
                 Service.getInstance().stopService();
+                inboundPollingTimer.cancel();
                 return "SERVICE STOPPED";
             } catch ( Exception ex )
             {
+                Logger.getInstance().logError( "Exception stopping service: ", ex, null );
                 return "ERROR";
             }
         } else
@@ -255,10 +271,34 @@ public class SmsService
     }
     //</editor-fold>
 
+    /**
+     * 
+     * @param recipient
+     * @param msg
+     * @return
+     * @throws Exception 
+     */
+    public String sendMessage( String recipient, String msg ) throws Exception
+    {
+        OutboundMessage outboundMessage = new OutboundMessage( recipient, msg );
+        if ( isServiceRunning() )
+        {
+            Service.getInstance().sendMessage( outboundMessage );
+            return "MESSAGE SENT SUCCESSFULLY TO: " + recipient;
+        } else
+        {
+            return "SERVICE IS NOT RUNNING";
+        }
+    }
+
     /*------------------------------------------------------------------
      * SMSLIB CALLBACKS NOT IMPLEMENTED - ONLY USED FOR LOGGING
     ------------------------------------------------------------------*/
     //<editor-fold defaultstate="collapsed" desc="smslib callbacks">
+    /**
+     * Callback called when inbound message is received at the modem. 
+     * Depends on correct CNMI implementation by the modem
+     */
     class InboundNotification implements IInboundMessageNotification
     {
 
@@ -269,6 +309,9 @@ public class SmsService
         }
     }
 
+    /**
+     * Callback called when attempt for outbound message is made.
+     */
     class OutboundNotification implements IOutboundMessageNotification
     {
 
@@ -279,6 +322,9 @@ public class SmsService
         }
     }
 
+    /**
+     * Functions as a caller id to notify when call is received on the modem
+     */
     class CallNotification implements ICallNotification
     {
 
@@ -289,6 +335,9 @@ public class SmsService
         }
     }
 
+    /**
+     * Callback to manage the messages that are queued for sending. Any failed outgoing messages are stored in the queue
+     */
     class QueueSendingNotification implements IQueueSendingNotification
     {
 
@@ -318,15 +367,41 @@ public class SmsService
     /*------------------------------------------------------------------
      * Helper Methods
     ------------------------------------------------------------------*/
+    /**
+     * The Thread that polls the modem to check for all messages on the SIM
+     * NOTE: THE POLLING TIME, SIM MEMORY LOCATION ARE SET THROUGH CONFIGURATION
+     */
+    //<editor-fold defaultstate="collapsed" desc="InboundPollingTask">
+    class InboundPollingTask extends TimerTask
+    {
+
+        @Override
+        public void run()
+        {
+            try
+            {
+                if ( isServiceRunning() )
+                {
+                    Logger.getInstance().logDebug( "InboundPollingTask() run.", null, null );
+                    readMessages();
+                }
+            } catch ( Exception e )
+            {
+                Logger.getInstance().logDebug( "Error in InboundPollingTask()", e, null );
+            }
+        }
+    }
+    //</editor-fold>
+
     public Properties getProperties()
     {
         return props;
     }
 
-    //<editor-fold defaultstate="collapsed" desc="readMessages()">
     /**
      * Read the messages from the memory location and save it in the sms_inbound
      */
+    //<editor-fold defaultstate="collapsed" desc="readMessages()">
     void readMessages()
     {
         List<InboundMessage> msgList = new ArrayList<InboundMessage>();
@@ -336,131 +411,82 @@ public class SmsService
             Service.getInstance().readMessages( msgList, InboundMessage.MessageClasses.ALL );
             if ( msgList.size() > 0 )
             {
-                for ( InboundMessage msg : msgList )
+                for ( InboundMessage inMsg : msgList )
                 {
-                    //Creating sms to store in database
-                    SmsInbound sms = new SmsInbound();
-                    
-                    //Set sms encoding
-                    if(msg.getEncoding() == MessageEncodings.ENC7BIT)
-                        sms.setEncoding( '7' );
-                    else if(msg.getEncoding() == MessageEncodings.ENC8BIT)
-                        sms.setEncoding( '8' );
-                    else if(msg.getEncoding() == MessageEncodings.ENCUCS2)
-                        sms.setEncoding( 'U' );
-                    
-                    sms.setGatewayId( msg.getGatewayId());
-                    sms.setMessageDate( msg.getDate() );
-                    sms.setOriginalReceiveDate( msg.getDate() );
-                    sms.setOriginalRefNo( String.valueOf( msg.getMpRefNo() ) );
-                    sms.setOriginator( msg.getOriginator() );
-                    sms.setProcess( 0 );
-                    sms.setReceiveDate( msg.getDate());
-                    sms.setText( msg.getText() );
-                    sms.setType( 'I' );
-                    
-                    //saving sms into database
-                    hibernateSmsInboundStore.saveSms( sms );
-                    
-                    //Delete message based on configuration
-                    if ( getProperties().getProperty( "settings.delete_after_processing", "no" ).equalsIgnoreCase( "yes" ) )
+                    try
                     {
-                        Service.getInstance().deleteMessage( msg );
+                        InboundBinaryMessage msg = (InboundBinaryMessage) inMsg;
+                        //Creating sms to store in database
+                        SmsInbound sms = new SmsInbound();
+
+                        //Set sms encoding
+                        if ( msg.getEncoding() == MessageEncodings.ENC7BIT )
+                        {
+                            sms.setEncoding( '7' );
+                        } else
+                        {
+                            if ( msg.getEncoding() == MessageEncodings.ENC8BIT )
+                            {
+                                sms.setEncoding( '8' );
+                            } else
+                            {
+                                if ( msg.getEncoding() == MessageEncodings.ENCUCS2 )
+                                {
+                                    sms.setEncoding( 'U' );
+                                }
+                            }
+                        }
+
+                        sms.setGatewayId( msg.getGatewayId() );
+                        sms.setMessageDate( new Date() );
+                        sms.setOriginalReceiveDate( msg.getDate() );
+                        sms.setOriginalRefNo( String.valueOf( msg.getMpRefNo() ) );
+                        sms.setOriginator( msg.getOriginator() );
+                        sms.setProcess( 0 );
+                        sms.setReceiveDate( msg.getDate() );
+                        sms.setText( new String( Compressor.decompress( msg.getDataBytes() ), "UTF-8" ) );
+                        if ( msg.getType() == MessageTypes.INBOUND )
+                        {
+                            sms.setType( 'I' );
+                        } else
+                        {
+                            if ( msg.getType() == MessageTypes.OUTBOUND )
+                            {
+                                sms.setType( 'O' );
+                            } else
+                            {
+                                if ( msg.getType() == MessageTypes.STATUSREPORT )
+                                {
+                                    sms.setType( 'S' );
+                                } else
+                                {
+                                    sms.setType( 'U' );
+                                }
+                            }
+                        }
+
+                        //saving sms into database
+                        smsInboundStoreService.saveSms( sms );
+                        Logger.getInstance().logDebug( "Saved Sms from " + msg.getOriginator(), null, null );
+
+                        //Delete message based on configuration
+                        if ( getProperties().getProperty( "settings.delete_after_processing", "no" ).equalsIgnoreCase( "yes" ) )
+                        {
+                            Service.getInstance().deleteMessage( msg );
+                        }
+                    } catch ( ClassCastException ccex )
+                    {
+                        Logger.getInstance().logInfo( "Ignoring incorrect formatted message", ccex, null );
                     }
                 }
             }
+            Logger.getInstance().logInfo( "Total messages read at " + Calendar.getInstance().getTime() + " = " + msgList.size(), null, null );
         } catch ( Exception e )
         {
             Logger.getInstance().logError( "SMSServer: reading messages exception!", e, null );
         }
     }
     //</editor-fold>
-
-    /*void sendMessages()
-    {
-        boolean foundOutboundGateway = false;
-        for ( org.smslib.AGateway gtw : Service.getInstance().getGateways() )
-        {
-            if ( gtw.isOutbound() )
-            {
-                foundOutboundGateway = true;
-                break;
-            }
-        }
-        if ( foundOutboundGateway )
-        {
-            List<OutboundMessage> msgList = new ArrayList<OutboundMessage>();
-            try
-            {
-                for ( Interface<? extends Object> inf : getInfList() )
-                {
-                    if ( inf.isOutbound() )
-                    {
-                        msgList.addAll( inf.getMessagesToSend() );
-                    }
-                }
-            } catch ( Exception e )
-            {
-                Logger.getInstance().logError( "SMSServer: sending messages exception!", e, null );
-            }
-            if ( getProperties().getProperty( "settings.send_mode", "sync" ).equalsIgnoreCase( ( "sync" ) ) )
-            {
-                Logger.getInstance().logInfo( "SMSServer: sending synchronously...", null, null );
-                for ( OutboundMessage msg : msgList )
-                {
-                    try
-                    {
-                        Service.getInstance().sendMessage( msg );
-                        for ( Interface<? extends Object> inf : getInfList() )
-                        {
-                            if ( inf.isOutbound() )
-                            {
-                                inf.markMessage( msg );
-                            }
-                        }
-                    } catch ( Exception e )
-                    {
-                        Logger.getInstance().logError( "SMSServer: sending messages exception!", e, null );
-                        try
-                        {
-                            for ( Interface<? extends Object> inf : getInfList() )
-                            {
-                                if ( inf.isOutbound() )
-                                {
-                                    inf.markMessage( msg );
-                                }
-                            }
-                        } catch ( Exception e1 )
-                        {
-                            Logger.getInstance().logError( "SMSServer: sending messages exception!", e1, null );
-                        }
-                    }
-                }
-            } else
-            {
-                Logger.getInstance().logInfo( "SMSServer: sending asynchronously... [" + msgList.size() + "]", null, null );
-                for ( OutboundMessage msg : msgList )
-                {
-                    if ( !Service.getInstance().queueMessage( msg ) )
-                    {
-                        try
-                        {
-                            for ( Interface<? extends Object> inf : getInfList() )
-                            {
-                                if ( inf.isOutbound() )
-                                {
-                                    inf.markMessage( msg );
-                                }
-                            }
-                        } catch ( Exception e )
-                        {
-                            Logger.getInstance().logError( "SMSServer: sending messages exception!", e, null );
-                        }
-                    }
-                }
-            }
-        }
-    }*/
 
     /**
      * Loads the configuration settings from SMSServer.conf, which should be located in the DHIS2_HOME directory
@@ -474,9 +500,11 @@ public class SmsService
 
         if ( new File( configFile ).exists() )
         {
+            Collection<AGateway> existingGateways = new ArrayList<AGateway>();
+            existingGateways.addAll( Service.getInstance().getGateways() );
+
             //Remove all existing gateways
-            Collection<AGateway> gateways = Service.getInstance().getGateways();
-            for ( AGateway gateway : gateways )
+            for ( AGateway gateway : existingGateways )
             {
                 Service.getInstance().removeGateway( gateway );
             }
@@ -536,7 +564,6 @@ public class SmsService
                     {
                         gateway.setSimPin( pin );
                     }
-
                     if ( inbound.equalsIgnoreCase( "yes" ) )
                     {
                         gateway.setInbound( true );
@@ -551,10 +578,11 @@ public class SmsService
                     {
                         gateway.setOutbound( false );
                     }
-                    Logger.getInstance().logInfo( "SMSServer: added gateway " + i + " / ", null, null );
+                    Service.getInstance().addGateway( gateway );
+                    Logger.getInstance().logInfo( "Load Configuration: added gateway " + i + " / ", null, null );
                 } catch ( Exception e )
                 {
-                    Logger.getInstance().logError( "SMSServer: Unknown Gateway in configuration file!, " + e.getMessage(), null, null );
+                    Logger.getInstance().logError( "Load Configuration: Unknown Gateway in configuration file!, " + e.getMessage(), null, null );
                 }
             }
             //</editor-fold>

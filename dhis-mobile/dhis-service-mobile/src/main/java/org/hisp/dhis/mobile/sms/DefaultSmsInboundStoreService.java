@@ -1,5 +1,7 @@
+package org.hisp.dhis.mobile.sms;
+
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,61 +26,74 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.mobile.app.action;
 
-
-import com.opensymphony.xwork2.Action;
 import java.util.Collection;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
+import java.util.Date;
+import org.hisp.dhis.mobile.sms.api.SmsInbound;
+import org.hisp.dhis.mobile.sms.api.SmsInboundStore;
+import org.hisp.dhis.mobile.sms.api.SmsInboundStoreService;
+import org.springframework.transaction.annotation.Transactional;
 
-public class GetDataElementsAction implements Action
+/**
+ *
+ * @author Saptarshi
+ */
+@Transactional
+public class DefaultSmsInboundStoreService implements SmsInboundStoreService
 {
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    private DataSetService dataSetService;
+    private SmsInboundStore smsInboundStore;
 
-    public void setDataSetService( DataSetService dataSetService )
+    public void setSmsInboundStore( SmsInboundStore smsInboundStore )
     {
-        this.dataSetService = dataSetService;
+        this.smsInboundStore = smsInboundStore;
     }
 
     // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-    private String dataSetName;
-
-    public void setDataSetName( String dataSetName )
-    {
-        this.dataSetName = dataSetName;
-    }
-
-    public String getDataSetName(){
-        return this.dataSetName;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-    private Collection<DataElement> dataElements;
-
-    public Collection<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation
     // -------------------------------------------------------------------------
     @Override
-    public String execute()
-        throws Exception
+    public void saveSms( SmsInbound sms )
     {
-        DataSet dataSet = dataSetService.getDataSetByName( dataSetName );
-        dataElements = dataSet.getDataElements();
-        return SUCCESS;
+        smsInboundStore.saveSms( sms );
+    }
+
+    @Override
+    public Collection<SmsInbound> getSmsByDate( Date startDate, Date endDate )
+    {
+        return smsInboundStore.getSms( null, null, startDate, endDate);
+    }
+
+    @Override
+    public Collection<SmsInbound> getSmsByOriginator( String originator )
+    {
+        return smsInboundStore.getSms( originator, null, null, null );
+    }
+
+    @Override
+    public Collection<SmsInbound> getSmsByProcess( int process )
+    {
+        return smsInboundStore.getSms( null, process, null, null );
+    }
+
+    @Override
+    public Collection<SmsInbound> getAllReceivedSms()
+    {
+        return smsInboundStore.getSms( null, null, null, null );
+    }
+
+    @Override
+    public void updateSms( SmsInbound sms )
+    {
+        smsInboundStore.updateSms( sms );
+    }
+
+    @Override
+    public long getSmsCount()
+    {
+        return smsInboundStore.getSmsCount();
     }
 }

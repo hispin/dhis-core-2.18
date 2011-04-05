@@ -64,33 +64,22 @@ public class HibernateSmsInboundStore implements SmsInboundStore
     }
 
     @Override
-    public Collection<SmsInbound> getSmsByDate( Date startDate, Date endDate )
+    public Collection<SmsInbound> getSms( String originator, Integer process, Date startDate, Date endDate )
     {
-        return sessionFactory.getCurrentSession().createCriteria( SmsInbound.class )
-            .add( Restrictions.between("receiveDate", startDate, endDate) )
-            .list();
-    }
-
-    @Override
-    public Collection<SmsInbound> getSmsByOriginator( String originator )
-    {
-        return sessionFactory.getCurrentSession().createCriteria( SmsInbound.class )
-            .add(Restrictions.eq("originator", originator))
-            .list();
-    }
-
-    @Override
-    public Collection<SmsInbound> getSmsByProcess( int process )
-    {
-        return sessionFactory.getCurrentSession().createCriteria( SmsInbound.class )
-            .add(Restrictions.eq("process", process))
-            .list();
-    }
-
-    @Override
-    public Collection<SmsInbound> getAllReceiveSMS()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( SmsInbound.class ).list();
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria( SmsInbound.class );
+        if ( originator != null && !originator.equals( "" ) )
+        {
+            crit.add( Restrictions.eq( "originator", originator ) );
+        }
+        if ( process != null )
+        {
+            crit.add( Restrictions.eq( "process", process ) );
+        }
+        if ( startDate != null && endDate != null )
+        {
+            crit.add( Restrictions.between( "receiveDate", startDate, endDate ) );
+        }
+        return crit.list();
     }
 
     @Override
