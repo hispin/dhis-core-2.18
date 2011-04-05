@@ -755,7 +755,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/validationDEAssociations.vm</param>
 			<param name="javascripts">
-				,javascript/program.js
+				javascript/program.js
 				,javascript/programStageDEValidation.js
 			</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
