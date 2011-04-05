@@ -760,13 +760,6 @@
 			</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
-
-		<action name="defineCriteriaAssociations"
-			class="org.hisp.dhis.patient.action.program.DefineCriteriaAssociationsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
-		</action>
 		
 		<!-- ProgramStage -->
 
