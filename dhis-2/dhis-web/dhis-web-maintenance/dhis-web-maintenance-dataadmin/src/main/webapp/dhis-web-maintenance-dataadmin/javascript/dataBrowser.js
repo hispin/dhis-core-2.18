@@ -7,6 +7,13 @@
 currentUrlLink = "";
 currentParentId = "";
 
+var isOrgUnitSelected = false;
+
+function organisationUnitModeSelected( units )
+{
+	isOrgUnitSelected = (units && units.length > 0);
+}
+
 function modeHandler()
 {
     var modeList = byId( "mode" );
@@ -26,6 +33,17 @@ function modeHandler()
 		drillDownCheckBoxDiv.style.display = "none";
 		byId( "drillDownCheckBox" ).checked = false;
     }
+}
+
+function validateBeforeSubmit( form )
+{
+	var mode = getFieldValue( "mode" );
+
+	if ( (mode == "OU") && !isOrgUnitSelected )
+	{
+		setHeaderDelayMessage( i18n_please_select_org_unit );
+	}
+	else form.submit();
 }
 
 // -----------------------------------------------------------------------------
