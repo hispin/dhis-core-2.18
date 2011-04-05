@@ -42,7 +42,9 @@ public interface UserSettingService
     String ID = UserSettingService.class.getName();
 
     final String AUTO_SAVE_DATA_ENTRY_FORM = "autoSaveDataEntryForm";
-    
+
+    public static final String KEY_DASHBOARD_CHARTS_TO_DISPLAY = "keyDashboardChartsToDisplay";
+
     /**
      * Saves the name/value pair as a user setting connected to the currently
      * logged in user.
