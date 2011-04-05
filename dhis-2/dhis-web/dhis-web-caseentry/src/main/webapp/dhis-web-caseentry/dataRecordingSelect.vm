@@ -63,9 +63,10 @@
                     <option value="$programStage.id" #if( $programStageId && $programStage.id == $programStageId ) selected="selected" #end>$encoder.htmlEncode( $programStage.name )</option>
                 #end
             </select>
-        </td>        
+        </td>
         #if( $programStageInstance )
-            <td>&nbsp;</td>
+			<input type='hidden' id='incidentDate' name='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'/>
+			<td>&nbsp;</td>
             <td><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
             <td>
             	<input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"/>

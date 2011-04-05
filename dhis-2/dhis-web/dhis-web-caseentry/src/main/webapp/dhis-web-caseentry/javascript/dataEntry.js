@@ -998,7 +998,7 @@ function saveDateCustom(  this_ )
         }
     }
 	
-	var incidentDate = new Date( jQuery('#dueDate').val() );
+	var incidentDate = new Date( jQuery('#incidentDate').val() );
 	var inputtedDate = new Date(jQuery(this_).val());
 	if( inputtedDate < incidentDate )
 	{
