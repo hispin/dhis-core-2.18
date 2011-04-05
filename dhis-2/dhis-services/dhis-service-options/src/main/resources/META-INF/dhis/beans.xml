@@ -218,5 +218,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.options.help.HelpManager"
 	class="org.hisp.dhis.options.help.DefaultHelpManager"/>
+
+  <bean id="org.hisp.dhis.options.charts.DashboardChartsToDisplayManager"
+	class="org.hisp.dhis.options.charts.DefaultDashboardChartsToDisplayManager">
+	<property name="userSettingService"
+      ref="org.hisp.dhis.user.UserSettingService"/>
+  </bean>
   
 </beans>

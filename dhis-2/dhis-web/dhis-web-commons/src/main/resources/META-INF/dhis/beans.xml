@@ -478,6 +478,10 @@
 		<property name="databaseInfoProvider" ref="databaseInfoProvider" />
 	</bean>
 
+	<bean id="org.hisp.dhis.interceptor.UserSettingInterceptor" class="org.hisp.dhis.interceptor.UserSettingInterceptor">
+	    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+	</bean>
+
 	<bean id="org.hisp.dhis.useraccount.action.GetCurrentUserAction" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction" scope="prototype">
 		<property name="currentUserService">
 			<ref bean="org.hisp.dhis.user.CurrentUserService" />

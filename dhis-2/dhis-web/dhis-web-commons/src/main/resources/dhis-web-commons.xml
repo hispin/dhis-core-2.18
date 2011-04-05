@@ -54,6 +54,8 @@
 				class="org.hisp.dhis.interceptor.DisplayPropertyInterceptor" />
 			<interceptor name="systemSettingInterceptor"
 				class="org.hisp.dhis.interceptor.SystemSettingInterceptor" />
+			<interceptor name="userSettingInterceptor"
+				class="org.hisp.dhis.interceptor.UserSettingInterceptor" />
 			<interceptor name="styleInterceptor"
 				class="org.hisp.dhis.interceptor.StyleInterceptor" />
 			<interceptor name="contextInterceptor"
@@ -89,6 +91,7 @@
 				<interceptor-ref name="sortOrderInterceptor" />
 				<interceptor-ref name="displayPropertyInterceptor" />
 				<interceptor-ref name="systemSettingInterceptor" />
+				<interceptor-ref name="userSettingInterceptor" />
 				<interceptor-ref name="styleInterceptor" />
 				<interceptor-ref name="contextInterceptor"/>
 				<interceptor-ref name="portalParamsInterceptor" />

@@ -63,6 +63,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
+  <bean id="org.hisp.dhis.settings.action.user.GetAvailableDashboardChartsToDisplayAction"
+    class="org.hisp.dhis.settings.action.user.GetAvailableDashboardChartsToDisplayAction" 
+    scope="prototype">
+    <property name="dashboardChartsToDisplayManager">
+      <ref bean="org.hisp.dhis.options.charts.DashboardChartsToDisplayManager"/>
+    </property>
+  </bean>
+
   <bean id="org.hisp.dhis.settings.action.user.GetAvailableDisplayPropertiesAction"
     class="org.hisp.dhis.settings.action.user.GetAvailableDisplayPropertiesAction" 
     scope="prototype">
@@ -111,6 +119,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="sortOrderManager">
       <ref bean="org.hisp.dhis.options.sortorder.SortOrderManager"/>
+    </property>
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.user.SetCurrentDashboardChartsToDisplayAction"
+    class="org.hisp.dhis.settings.action.user.SetCurrentDashboardChartsToDisplayAction" 
+    scope="prototype">
+    <property name="dashboardChartsToDisplayManager">
+      <ref bean="org.hisp.dhis.options.charts.DashboardChartsToDisplayManager"/>
     </property>
   </bean>
 

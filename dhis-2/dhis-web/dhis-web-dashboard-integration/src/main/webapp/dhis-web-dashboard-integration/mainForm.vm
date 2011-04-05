@@ -33,7 +33,7 @@
         #end
         </ul>
     </div>
-    #if ( $chartId )        
+    #if ( $chartId )
         <img style="cursor:pointer" src="getChart.action?id=${chartId}" 
             onclick="viewChart( 'getChart.action?id=${chartId}&width=700&height=500' )">
     #else
@@ -56,21 +56,25 @@
         #dropDownButtonDiv( "dropDownC" "areaC" )
         #linkDropDownListDiv( "areaC" "dropDownC" $areaC )      
     </td>
-    <td style="width:20px"></td>
-    <td style="width:305px">        
-        #dropDownButtonDiv( "chartDropDownA" "chartAreaA" )
-        #chartDropDownListDiv( "chartAreaA" "chartDropDownA" $chartAreaA )
-        
-        #dropDownButtonDiv( "chartDropDownB" "chartAreaB" )
-        #chartDropDownListDiv( "chartAreaB" "chartDropDownB" $chartAreaB )        
-    </td>
-    <td style="width:20px"></td>
-    <td style="width:305px">        
-        #dropDownButtonDiv( "chartDropDownC" "chartAreaC" )
-        #chartDropDownListDiv( "chartAreaC" "chartDropDownC" $chartAreaC )
-        
-        #dropDownButtonDiv( "chartDropDownD" "chartAreaD" )
-        #chartDropDownListDiv( "chartAreaD" "chartDropDownD" $chartAreaD )        
-    </td>
+	<td>
+
+<table style="margin-left: 20px;">
+#set( $sizeHalf = $chartAreas.size() / 2 )
+
+#foreach( $chart in $chartAreas )
+#set( $count0 = $velocityCount - 1 )
+#set( $startHr = ($count0 % $sizeHalf) == 0 )
+#set( $endHr =  ($count0 % $sizeHalf) == ($sizeHalf - 1) )
+
+#if($startHr) <tr> #end
+	<td style="width:305px;">
+		#dropDownButtonDiv( "chartDropDown$velocityCount" "chartArea$velocityCount" )
+		#chartDropDownListDiv( "chartArea$velocityCount" "chartDropDown$velocityCount" $chart )
+	</td>
+#end
+#if($endHr) </tr> #end
+</table>
+
+	</td>
 </tr>
 </table>
