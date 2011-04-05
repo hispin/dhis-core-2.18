@@ -1,4 +1,6 @@
 jQuery(document).ready(function() {
+
+	selection.setListenerFunction( organisationUnitModeSelected );
 	datePickerInRange( 'fromDate' , 'toDate' );
 
 	var r = getValidationRules();
@@ -12,11 +14,9 @@ jQuery(document).ready(function() {
 		}
 	};
 
-	validation2( 'databrowser', function( form ){ 			
-		form.submit();
-	}, {
-		'rules': rules
-	});		
+	validation2( 'databrowser', function( form ){
+		validateBeforeSubmit();
+	}, { 'rules': rules });
 });
 
 var flag;
