@@ -3,9 +3,6 @@ function removeUserGroup( userGroupId, userGroupName )
     removeItem( userGroupId, userGroupName, i18n_confirm_delete, "removeUserGroup.action" );
 }
 
-
-
-
 function showUserGroupDetails( userGroupId )
 {
     var request = new Request();

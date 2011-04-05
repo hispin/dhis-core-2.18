@@ -31,19 +31,25 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
- * The API for CRUD into the sms_inbound table
+ *
  * @author Saptarshi
  */
-public interface SmsInboundStore
+public interface SmsInboundStoreService
 {
 
-    String ID = SmsInboundStore.class.getName();
+    String ID = SmsInboundStoreService.class.getName();
 
     void saveSms( SmsInbound sms );
 
-    Collection<SmsInbound> getSms( String originator, Integer process, Date startDate, Date endDate);
-    
-    void updateSms (SmsInbound sms);
+    Collection<SmsInbound> getSmsByDate( Date startDate, Date endDate );
+
+    Collection<SmsInbound> getSmsByOriginator( String originator );
+
+    Collection<SmsInbound> getSmsByProcess( int process );
+
+    Collection<SmsInbound> getAllReceivedSms();
+
+    void updateSms( SmsInbound sms );
 
     long getSmsCount();
 }

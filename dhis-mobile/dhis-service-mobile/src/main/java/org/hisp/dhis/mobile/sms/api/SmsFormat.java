@@ -1,4 +1,4 @@
-package org.hisp.dhis.mobile.action;
+package org.hisp.dhis.mobile.sms.api;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -26,82 +26,84 @@ package org.hisp.dhis.mobile.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.mobile.sms.SmsService;
-
-public class SendSMSAction implements Action
+/**
+ *
+ * @author Saptarshi
+ */
+public class SmsFormat
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
 
-    SmsService smsService;
+    String version;
 
-    public void setSmsService( SmsService smsService )
+    String formId;
+
+    String periodTypeId;
+
+    String periodText;
+
+    String[] dataValues;
+
+    public SmsFormat( SmsInbound sms )
     {
-        this.smsService = smsService;
+        String info = sms.getText();
+        String[] text = info.split( "#" );
+        version = text[0];
+        text = text[1].split( "\\*" );
+        formId = text[0];
+        text = text[1].split( "\\?" );
+        periodTypeId = text[0];
+        text = text[1].split( "\\$" );
+        periodText = text[0];
+        dataValues = text[1].split( "\\|", 1000 );
     }
 
-    // -------------------------------------------------------------------------
-    // Action Implementation
-    // -------------------------------------------------------------------------
-    boolean smsServiceStatus;
-
-    public boolean getSmsServiceStatus()
+    public String[] getDataValues()
     {
-        return smsService.isServiceRunning();
+        return dataValues;
     }
 
-    String statAction;
-
-    public void setStatAction( String statAction )
+    public void setDataValues( String[] dataValues )
     {
-        if ( statAction.equalsIgnoreCase( "Start" ) )
-        {
-            this.message = smsService.startSmsService();
-        } else
-        {
-            this.message = smsService.stopSmsService();
-        }
+        this.dataValues = dataValues;
     }
 
-    String recipient;
-
-    public void setRecipient( String recipient )
+    public String getFormId()
     {
-        this.recipient = recipient;
+        return formId;
     }
 
-    String msg;
-
-    public void setMsg( String msg )
+    public void setFormId( String formId )
     {
-        this.msg = msg;
+        this.formId = formId;
     }
 
-    String send;
-
-    public void setSend( String send )
+    public String getPeriodText()
     {
-        this.send = send;
+        return periodText;
     }
 
-    String message = "";
-
-    public String getMessage()
+    public void setPeriodText( String periodText )
     {
-        return message;
+        this.periodText = periodText;
     }
 
-    @Override
-    public String execute()
-        throws Exception
+    public String getPeriodTypeId()
     {
-        if ( this.send != null )
-        {
-            this.message = smsService.sendMessage( recipient, msg );
-        }
-        return SUCCESS;
+        return periodTypeId;
+    }
+
+    public void setPeriodTypeId( String periodTypeId )
+    {
+        this.periodTypeId = periodTypeId;
+    }
+
+    public String getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion( String version )
+    {
+        this.version = version;
     }
 }

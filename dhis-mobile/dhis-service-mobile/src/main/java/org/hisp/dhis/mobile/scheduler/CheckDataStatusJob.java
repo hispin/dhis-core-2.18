@@ -160,10 +160,10 @@ public class CheckDataStatusJob  extends QuartzJobBean
         {
             OrganisationUnit orgUnit = orgUnitIterator.next();
             
-            if( !dataSetService.getDataSetsBySource( orgUnit ).contains( dataSet ) )
+            /*if( !dataSetService.getDataSetsBySource( orgUnit ).contains( dataSet ) )
             {
                 orgUnitIterator.remove();
-            }
+            }*/
         }
         
         String deInfoAndCount = getDataSetMembersUsingQuery( dataSet.getId() );

@@ -29,12 +29,10 @@ package org.hisp.dhis.mobile.action;
 
 import com.opensymphony.xwork2.Action;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
-import org.hisp.dhis.mobile.SmsService;
-import org.hisp.dhis.mobile.XMLFilter;
-import org.hisp.dhis.mobile.api.MobileImportService;
+import org.hisp.dhis.mobile.sms.SmsService;
+import org.hisp.dhis.mobile.sms.api.SmsImportService;
 
 public class ReceiveImportPageAction implements Action
 {
@@ -49,11 +47,11 @@ public class ReceiveImportPageAction implements Action
         this.smsService = smsService;
     }
 
-    private MobileImportService mobileImportService;
+    private SmsImportService smsImportService;
 
-    public void setMobileImportService( MobileImportService mobileImportService )
+    public void setSmsImportService( SmsImportService smsImportService )
     {
-        this.mobileImportService = mobileImportService;
+        this.smsImportService = smsImportService;
     }
 
     // -------------------------------------------------------------------------
@@ -70,8 +68,10 @@ public class ReceiveImportPageAction implements Action
 
     public boolean getSmsServiceStatus()
     {
-        smsServiceStatus = smsService.getServiceStatus();
-        return smsServiceStatus;
+        if(smsService.isServiceRunning())
+            return true;
+        else
+            return false;
     }
 
     String statAction;
@@ -80,10 +80,10 @@ public class ReceiveImportPageAction implements Action
     {
         if ( statAction.equalsIgnoreCase( "Start" ) )
         {
-            this.result = smsService.startService();
+            this.result = smsService.startSmsService();
         } else
         {
-            this.result = smsService.stopService();
+            this.result = smsService.stopSmsService();
         }
     }
 
@@ -99,8 +99,6 @@ public class ReceiveImportPageAction implements Action
     public List<File> getPending()
     {
         File pendingFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator + "pending" );
-//        FilenameFilter filter = new XMLFilter();
-
         pending = (List<File>) FileUtils.listFiles( pendingFolder, new String[]
             {
                 "xml"
@@ -134,8 +132,7 @@ public class ReceiveImportPageAction implements Action
 
     public void startImportingMessages()
     {
-        //mobileImportService.importAllFiles();
-        mobileImportService.importPendingFiles();
+        smsImportService.saveDataValues();
     }
 
     @Override

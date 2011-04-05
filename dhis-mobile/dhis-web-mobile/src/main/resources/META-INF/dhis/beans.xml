@@ -11,15 +11,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.mobile.action.ReceiveImportPageAction"
           class="org.hisp.dhis.mobile.action.ReceiveImportPageAction"
           scope="prototype">
-        <property name="smsService" ref="org.hisp.dhis.mobile.SmsService" />
-        <property name="mobileImportService" ref="org.hisp.dhis.mobile.api.MobileImportService"/>
+        <property name="smsService" ref="org.hisp.dhis.mobile.sms.SmsService" />
+        <property name="smsImportService" ref="org.hisp.dhis.mobile.sms.api.SmsImportService"/>
     </bean>
 
 <!-- Inbox -->
     <bean id="org.hisp.dhis.mobile.action.ReceiveMessagesPageAction"
           class="org.hisp.dhis.mobile.action.ReceiveMessagesPageAction"
           scope="prototype">
-        <property name="smsService" ref="org.hisp.dhis.mobile.SmsService" />
+        <property name="smsService" ref="org.hisp.dhis.mobile.sms.SmsService" />
         <property name="mobileImportService" ref="org.hisp.dhis.mobile.api.MobileImportService"/>
     </bean>
 <!-- Draft -->
@@ -56,7 +56,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.mobile.action.SendSMSAction"
           class="org.hisp.dhis.mobile.action.SendSMSAction"
           scope="prototype">
-        <property name="smsService" ref="org.hisp.dhis.mobile.SmsService" />
+        <property name="smsService" ref="org.hisp.dhis.mobile.sms.SmsService" />
     </bean>
     
     <bean id="org.hisp.dhis.mobile.action.SendOtaAction"

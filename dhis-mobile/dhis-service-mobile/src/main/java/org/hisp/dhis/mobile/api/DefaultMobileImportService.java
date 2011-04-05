@@ -563,173 +563,394 @@ public class DefaultMobileImportService
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="TODO: discard = old code">
     /*
-    @Transactional
-    public void importAllFiles()
-    {
-        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
-        batchHandler.init();
-
-        String importStatus;
-        importStatus = "";
-
-        List<String> fileNames = new ArrayList<String>( getImportFiles() );
-
-        for ( String importFile : fileNames )
-        {
-            try
-            {
-                MobileImportParameters mobImportParameters = getParametersFromXML( importFile );
-
-                if ( mobImportParameters == null )
-                {
-                    LOG.error( importFile + " Import File is not Properly Formated First" );
-                    importStatus += "<br>" + new Date() + ": " + importFile + " Import File is not Properly Formated.";
-                    moveFailedFile( importFile );
-                    continue;
-                }
-
-                User curUser = getUserInfo( mobImportParameters.getMobileNumber() );
-
-                if ( curUser != null )
-                {
-
-                    UserCredentials userCredentials = userStore.getUserCredentials( curUser );
-
-                    if ( (userCredentials != null)
-                        && (mobImportParameters.getMobileNumber().equals( curUser.getPhoneNumber() )) )
-                    {
-                        storedBy = userCredentials.getUsername();
-                    }
-                    else
-                    {
-                        LOG.error( " Import File Contains Unrecognised Phone Numbers : "
-                            + mobImportParameters.getMobileNumber() );
-                        importStatus += "<br><font color=red><b>Import File Contains Unrecognised Phone Numbers :"
-                            + mobImportParameters.getMobileNumber() + ".</b></font>";
-                        moveFailedFile( importFile );
-                        continue;
-                    }
-
-                    List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
-
-                    if ( sources == null || sources.size() <= 0 )
-                    {
-                        importStatus += "<br><font color=red><b>No User Exist Who Registered Phone No. Is :"
-                            + mobImportParameters.getMobileNumber() + ".</b></font>";
-                        moveFailedFile( importFile );
-                        continue;
-                    }
-                    Source source = sources.get( 0 );
-
-                    System.out.println( "getStartDate = " + mobImportParameters.getStartDate() + " getPeriodType = "
-                        + mobImportParameters.getPeriodType() );
-
-                    Period period = getPeriodInfo( mobImportParameters.getStartDate(), mobImportParameters
-                        .getPeriodType() );
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-                    SimpleDateFormat monthFormat = new SimpleDateFormat("MMM-yy");
-
-                    Date timeStamp = dateFormat.parse( mobImportParameters.getSmsTime() );
-
-                    Map<String, String> dataValueMap = new HashMap<String, String>( mobImportParameters
-                        .getDataValues() );
-
-                    if ( dataValueMap == null || dataValueMap.size() <= 0 )
-                    {
-                        LOG.error( "dataValue map is null" );
-                    }
-                    else if ( source == null )
-                    {
-                        LOG.error( "source is null" );
-                    }
-                    else if ( period == null )
-                    {
-                        LOG.error( "period is null" );
-                    }
-                    else if ( timeStamp == null )
-                    {
-                        LOG.error( "timeStamp is null" );
-                    }
-
-                    if ( source == null || period == null || timeStamp == null || dataValueMap == null
-                        || dataValueMap.size() <= 0 )
-                    {
-
-                        LOG.error( importFile + " Import File is not Properly Formated" );
-                        importStatus += "<br>" + new Date() + ": " + importFile
-                            + " Import File is not Properly Formated.<br>";
-                        moveFailedFile( importFile );
-                        continue;
-                    }
-
-                    Set<String> keys = dataValueMap.keySet();
-
-                    for ( String key : keys )
-                    {
-                        String parts[] = key.split( "\\." );
-
-                        String deStr = parts[0];
-
-                        String optStr = parts[1];
-
-                        String value = String.valueOf( dataValueMap.get( key ) );
-
-                        DataElement dataElement = dataElementService.getDataElement( Integer.valueOf( deStr ) );
-
-                        DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
-
-                        optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
-                            .valueOf( optStr ) );
-
-                        DataValue dataValue = new DataValue( dataElement, period, source, value, storedBy, timeStamp,
-                            null, optionCombo );
-                        boolean exists = batchHandler.objectExists( dataValue );
-
-                        if ( !exists )
-                        {
-                            if ( value != null )
-                            {
-                                batchHandler.addObject( dataValue );
-                            }
-                        }
-                        else
-                        {
-                            dataValue.setValue( value );
-
-                            dataValue.setTimestamp( timeStamp );
-
-                            dataValue.setStoredBy( storedBy );
-
-                            batchHandler.updateObject( dataValue );
-                        }
-                    }
-
-                    importStatus += "<br>" + new Date() + ": " + importFile + " is Imported Successfully.";
-
-                    moveImportedFile( importFile );
-                }
-                else
-                {
-                    LOG.error( importFile + " Phone number not found... Sending to Bounced" );
-                    moveFailedFile( importFile );
-                }
-            }
-            catch ( Exception e )
-            {
-                e.printStackTrace();
-                LOG.error( e.getMessage() );
-                LOG.error( "Exception caused in importing... Moving to Bounced" );
-                moveFailedFile( importFile );
-            }
-            finally
-            {
-                batchHandler.flush();
-            }
-        }
-    }
-*/
+     * @Transactional
+     * public void importAllFiles()
+     * {
+     * BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
+     * batchHandler.init();
+     * 
+     * String importStatus;
+     * importStatus = "";
+     * 
+     * List<String> fileNames = new ArrayList<String>( getImportFiles() );
+     * 
+     * for ( String importFile : fileNames )
+     * {
+     * try
+     * {
+     * MobileImportParameters mobImportParameters = getParametersFromXML( importFile );
+     * 
+     * if ( mobImportParameters == null )
+     * {
+     * LOG.error( importFile + " Import File is not Properly Formated First" );
+     * importStatus += "<br>" + new Date() + ": " + importFile + " Import File is not Properly Formated.";
+     * moveFailedFile( importFile );
+     * continue;
+     * }
+     * 
+     * User curUser = getUserInfo( mobImportParameters.getMobileNumber() );
+     * 
+     * if ( curUser != null )
+     * {
+     * 
+     * UserCredentials userCredentials = userStore.getUserCredentials( curUser );
+     * 
+     * if ( (userCredentials != null)
+     * && (mobImportParameters.getMobileNumber().equals( curUser.getPhoneNumber() )) )
+     * {
+     * storedBy = userCredentials.getUsername();
+     * }
+     * else
+     * {
+     * LOG.error( " Import File Contains Unrecognised Phone Numbers : "
+     * + mobImportParameters.getMobileNumber() );
+     * importStatus += "<br><font color=red><b>Import File Contains Unrecognised Phone Numbers :"
+     * + mobImportParameters.getMobileNumber() + ".</b></font>";
+     * moveFailedFile( importFile );
+     * continue;
+     * }
+     * 
+     * List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
+     * 
+     * if ( sources == null || sources.size() <= 0 )
+     * {
+     * importStatus += "<br><font color=red><b>No User Exist Who Registered Phone No. Is :"
+     * + mobImportParameters.getMobileNumber() + ".</b></font>";
+     * moveFailedFile( importFile );
+     * continue;
+     * }
+     * Source source = sources.get( 0 );
+     * 
+     * System.out.println( "getStartDate = " + mobImportParameters.getStartDate() + " getPeriodType = "
+     * + mobImportParameters.getPeriodType() );
+     * 
+     * Period period = getPeriodInfo( mobImportParameters.getStartDate(), mobImportParameters
+     * .getPeriodType() );
+     * 
+     * SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+     * SimpleDateFormat monthFormat = new SimpleDateFormat("MMM-yy");
+     * 
+     * Date timeStamp = dateFormat.parse( mobImportParameters.getSmsTime() );
+     * 
+     * Map<String, String> dataValueMap = new HashMap<String, String>( mobImportParameters
+     * .getDataValues() );
+     * 
+     * if ( dataValueMap == null || dataValueMap.size() <= 0 )
+     * {
+     * LOG.error( "dataValue map is null" );
+     * }
+     * else if ( source == null )
+     * {
+     * LOG.error( "source is null" );
+     * }
+     * else if ( period == null )
+     * {
+     * LOG.error( "period is null" );
+     * }
+     * else if ( timeStamp == null )
+     * {
+     * LOG.error( "timeStamp is null" );
+     * }
+     * 
+     * if ( source == null || period == null || timeStamp == null || dataValueMap == null
+     * || dataValueMap.size() <= 0 )
+     * {
+     * 
+     * LOG.error( importFile + " Import File is not Properly Formated" );
+     * importStatus += "<br>" + new Date() + ": " + importFile
+     * + " Import File is not Properly Formated.<br>";
+     * moveFailedFile( importFile );
+     * continue;
+     * }
+     * 
+     * Set<String> keys = dataValueMap.keySet();
+     * 
+     * for ( String key : keys )
+     * {
+     * String parts[] = key.split( "\\." );
+     * 
+     * String deStr = parts[0];
+     * 
+     * String optStr = parts[1];
+     * 
+     * String value = String.valueOf( dataValueMap.get( key ) );
+     * 
+     * DataElement dataElement = dataElementService.getDataElement( Integer.valueOf( deStr ) );
+     * 
+     * DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
+     * 
+     * optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
+     * .valueOf( optStr ) );
+     * 
+     * DataValue dataValue = new DataValue( dataElement, period, source, value, storedBy, timeStamp,
+     * null, optionCombo );
+     * boolean exists = batchHandler.objectExists( dataValue );
+     * 
+     * if ( !exists )
+     * {
+     * if ( value != null )
+     * {
+     * batchHandler.addObject( dataValue );
+     * }
+     * }
+     * else
+     * {
+     * dataValue.setValue( value );
+     * 
+     * dataValue.setTimestamp( timeStamp );
+     * 
+     * dataValue.setStoredBy( storedBy );
+     * 
+     * batchHandler.updateObject( dataValue );
+     * }
+     * }
+     * 
+     * importStatus += "<br>" + new Date() + ": " + importFile + " is Imported Successfully.";
+     * 
+     * moveImportedFile( importFile );
+     * }
+     * else
+     * {
+     * LOG.error( importFile + " Phone number not found... Sending to Bounced" );
+     * moveFailedFile( importFile );
+     * }
+     * }
+     * catch ( Exception e )
+     * {
+     * e.printStackTrace();
+     * LOG.error( e.getMessage() );
+     * LOG.error( "Exception caused in importing... Moving to Bounced" );
+     * moveFailedFile( importFile );
+     * }
+     * finally
+     * {
+     * batchHandler.flush();
+     * }
+     * }
+     * }
+     */
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="TODO: discard = old code">
+    /*
+     * @Transactional
+     * public List<String> importPendingFile( String importFile )
+     * {
+     * List<String> statusMsgs = new ArrayList<String>();
+     * 
+     * int insertFlag = 1;
+     * String insertQuery = "INSERT INTO datavalue (dataelementid, periodid, sourceid, categoryoptioncomboid, value, storedby, lastupdated ) VALUES ";
+     * String importStatus="";
+     * 
+     * try
+     * {
+     * MobileImportParameters mobImportParameters = getParametersFromXML( importFile );
+     * 
+     * if ( mobImportParameters == null )
+     * {
+     * LOG.error( importFile + " Import File is not Properly Formated First" );
+     * moveFailedFile( importFile );
+     * 
+     * statusMsgs.add( 0, "1" );
+     * statusMsgs.add( 1, "Data not Received Properly, Please send again" );
+     * 
+     * return statusMsgs;
+     * }
+     * 
+     * User curUser = getUserInfo( mobImportParameters.getMobileNumber() );
+     * 
+     * if ( curUser != null )
+     * {
+     * UserCredentials userCredentials = userStore.getUserCredentials( curUser );
+     * 
+     * if ( (userCredentials != null) && (mobImportParameters.getMobileNumber().equals( curUser.getPhoneNumber() )) )
+     * {
+     * storedBy = userCredentials.getUsername();
+     * }
+     * else
+     * {
+     * LOG.error( " Import File Contains Unrecognised Phone Numbers : "
+     * + mobImportParameters.getMobileNumber() );
+     * moveFailedFile( importFile );
+     * 
+     * statusMsgs.add( 0, "2" );
+     * statusMsgs.add( 1, "Phone number is not registered to any facility. Please contact admin" );
+     * 
+     * return statusMsgs;
+     * }
+     * 
+     * List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
+     * 
+     * if ( sources == null || sources.size() <= 0 )
+     * {
+     * LOG.error( " No User Exists with corresponding Phone Numbers : "
+     * + mobImportParameters.getMobileNumber() );
+     * moveFailedFile( importFile );
+     * 
+     * statusMsgs.add( 0, "2" );
+     * statusMsgs.add( 1, "Phone number is not registered to any facility. Please contact admin" );
+     * 
+     * return statusMsgs;
+     * }
+     * 
+     * Source source = sources.get( 0 );
+     * 
+     * Period period = getPeriodInfo( mobImportParameters.getStartDate(), mobImportParameters.getPeriodType() );
+     * 
+     * SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+     * SimpleDateFormat monthFormat = new SimpleDateFormat("MMM-yy");
+     * 
+     * Date timeStamp = dateFormat.parse( mobImportParameters.getSmsTime() );
+     * 
+     * long t;
+     * if ( timeStamp == null )
+     * {
+     * Date d = new Date();
+     * t = d.getTime();
+     * }
+     * else
+     * {
+     * t = timeStamp.getTime();
+     * }
+     * 
+     * java.sql.Date lastUpdatedDate = new java.sql.Date( t );
+     * 
+     * Map<String, String> dataValueMap = new HashMap<String, String>( mobImportParameters.getDataValues() );
+     * 
+     * if( dataValueMap == null || dataValueMap.size() <= 0 )
+     * {
+     * LOG.error( "dataValue map is null" );
+     * }
+     * else if( source == null )
+     * {
+     * LOG.error( "source is null" );
+     * }
+     * else if( period == null )
+     * {
+     * LOG.error( "period is null" );
+     * }
+     * else if( timeStamp == null )
+     * {
+     * LOG.error( "timeStamp is null" );
+     * }
+     * 
+     * if( source == null || period == null || timeStamp == null || dataValueMap == null || dataValueMap.size() <= 0 )
+     * {
+     * LOG.error( importFile + " Import File is not Properly Formated" );
+     * moveFailedFile( importFile );
+     * 
+     * statusMsgs.add( 0, "1" );
+     * statusMsgs.add( 1, "Data not Received Properly, Please send again" );
+     * 
+     * return statusMsgs;
+     * }
+     * 
+     * Set<String> keys = dataValueMap.keySet();
+     * 
+     * for ( String key : keys )
+     * {
+     * String parts[] = key.split( "\\." );
+     * 
+     * String deStr = parts[0];
+     * 
+     * String optStr = parts[1];
+     * 
+     * String value = String.valueOf( dataValueMap.get( key ) );
+     * 
+     * DataElement dataElement = dataElementService.getDataElement( Integer.valueOf( deStr ) );
+     * 
+     * DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
+     * 
+     * optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.valueOf( optStr ) );
+     * 
+     * DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, optionCombo );
+     * 
+     * if ( dataValue == null )
+     * {
+     * if ( value != null )
+     * {
+     * insertQuery += "( "+ dataElement.getId() + ", " + period.getId() + ", "+ source.getId() +", " + optionCombo.getId() + ", '" + value + "', '" + storedBy + "', '" + lastUpdatedDate + "' ), ";
+     * 
+     * insertFlag = 2;
+     * }
+     * }
+     * else
+     * {
+     * dataValue.setValue( value );
+     * 
+     * dataValue.setTimestamp( timeStamp );
+     * 
+     * dataValue.setStoredBy( storedBy );
+     * 
+     * dataValueService.updateDataValue( dataValue );
+     * }
+     * }
+     * 
+     * if( insertFlag != 1 )
+     * {
+     * insertQuery = insertQuery.substring( 0, insertQuery.length()-2 );
+     * 
+     * jdbcTemplate.update( insertQuery );
+     * }
+     * 
+     * moveImportedFile( importFile );
+     * 
+     * if( period.getPeriodType().getName().equalsIgnoreCase( "monthly" ))
+     * {
+     * importStatus = "THANK YOU FOR SENDING MONTHLY REPORT FOR " + monthFormat.format( period.getStartDate() );
+     * 
+     * statusMsgs.add( 0, "3" );
+     * statusMsgs.add( 1, importStatus );
+     * }
+     * else if( period.getPeriodType().getName().equalsIgnoreCase( "daily" ))
+     * {
+     * importStatus = "THANK YOU FOR SENDING DAILY REPORT FOR " + dateFormat.format( period.getStartDate() );
+     * 
+     * statusMsgs.add( 0, "4" );
+     * statusMsgs.add( 1, importStatus );
+     * }
+     * else
+     * {
+     * importStatus = "THANK YOU FOR SENDING REPORT FOR " + dateFormat.format( period.getStartDate() ) + " : " + dateFormat.format( period.getEndDate() );
+     * 
+     * statusMsgs.add( 0, "5" );
+     * statusMsgs.add( 1, importStatus );
+     * }
+     * }
+     * else
+     * {
+     * LOG.error( importFile + " Phone number not found... Sending to Bounced" );
+     * importStatus = "Phone number is not registered to any facility. Please contact admin";
+     * 
+     * statusMsgs.add( 0, "2" );
+     * statusMsgs.add( 1, importStatus );
+     * 
+     * moveFailedFile( importFile );
+     * }
+     * }
+     * catch( Exception e )
+     * {
+     * e.printStackTrace();
+     * LOG.error( e.getMessage() );
+     * LOG.error( "Exception caused in importing... Moving to Bounced" );
+     * 
+     * importStatus = "Data not Received Properly, Please send again";
+     * 
+     * statusMsgs.add( 0, "1" );
+     * statusMsgs.add( 1, importStatus );
+     * 
+     * moveFailedFile( importFile );
+     * }
+     * finally
+     * {
+     * }
+     * 
+     * return statusMsgs;
+     * }
+     */
+    //</editor-fold>
+    
     @Override
     @Transactional
     public void importPendingFiles()
@@ -745,223 +966,6 @@ public class DefaultMobileImportService
             sendSMSService.addSendSMS( sendSMS );
         }
     }
-    
-    /*
-    @Transactional
-    public List<String> importPendingFile( String importFile )
-    {
-        List<String> statusMsgs = new ArrayList<String>();
-        
-        int insertFlag = 1;
-        String insertQuery = "INSERT INTO datavalue (dataelementid, periodid, sourceid, categoryoptioncomboid, value, storedby, lastupdated ) VALUES ";
-        String importStatus="";
-
-        try
-        {
-            MobileImportParameters mobImportParameters = getParametersFromXML( importFile );
-
-            if ( mobImportParameters == null )
-            {
-                LOG.error( importFile + " Import File is not Properly Formated First" );
-                moveFailedFile( importFile );
-                
-                statusMsgs.add( 0, "1" );
-                statusMsgs.add( 1, "Data not Received Properly, Please send again" );
-                
-                return statusMsgs;
-            }
-
-            User curUser = getUserInfo( mobImportParameters.getMobileNumber() );
-
-            if ( curUser != null )
-            {
-                UserCredentials userCredentials = userStore.getUserCredentials( curUser );
-
-                if ( (userCredentials != null) && (mobImportParameters.getMobileNumber().equals( curUser.getPhoneNumber() )) )
-                {
-                    storedBy = userCredentials.getUsername();
-                }
-                else
-                {
-                    LOG.error( " Import File Contains Unrecognised Phone Numbers : "
-                        + mobImportParameters.getMobileNumber() );
-                    moveFailedFile( importFile );
-                    
-                    statusMsgs.add( 0, "2" );
-                    statusMsgs.add( 1, "Phone number is not registered to any facility. Please contact admin" );
-                    
-                    return statusMsgs;
-                }
-
-                List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
-
-                if ( sources == null || sources.size() <= 0 )
-                {
-                    LOG.error( " No User Exists with corresponding Phone Numbers : "
-                        + mobImportParameters.getMobileNumber() );
-                    moveFailedFile( importFile );
-
-                    statusMsgs.add( 0, "2" );
-                    statusMsgs.add( 1, "Phone number is not registered to any facility. Please contact admin" );
-                    
-                    return statusMsgs;
-                }
-                
-                Source source = sources.get( 0 );
-
-                Period period = getPeriodInfo( mobImportParameters.getStartDate(), mobImportParameters.getPeriodType() );
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-                SimpleDateFormat monthFormat = new SimpleDateFormat("MMM-yy");
-
-                Date timeStamp = dateFormat.parse( mobImportParameters.getSmsTime() );            
-                
-                long t;
-                if ( timeStamp == null )
-                {
-                    Date d = new Date();
-                    t = d.getTime();
-                } 
-                else
-                {
-                    t = timeStamp.getTime();
-                }
-
-                java.sql.Date lastUpdatedDate = new java.sql.Date( t );
-
-                Map<String, String> dataValueMap = new HashMap<String, String>( mobImportParameters.getDataValues() );
-
-                if( dataValueMap == null || dataValueMap.size() <= 0 )
-                {
-                    LOG.error( "dataValue map is null" );
-                }
-                else if( source == null )
-                {
-                    LOG.error( "source is null" );
-                }
-                else if( period == null )
-                {
-                    LOG.error( "period is null" );
-                }
-                else if( timeStamp == null )
-                {
-                    LOG.error( "timeStamp is null" );
-                }
-
-                if( source == null || period == null || timeStamp == null || dataValueMap == null || dataValueMap.size() <= 0 )
-                {
-                    LOG.error( importFile + " Import File is not Properly Formated" );
-                    moveFailedFile( importFile );
-
-                    statusMsgs.add( 0, "1" );
-                    statusMsgs.add( 1, "Data not Received Properly, Please send again" );
-                    
-                    return statusMsgs;
-                }
-
-                Set<String> keys = dataValueMap.keySet();
-
-                for ( String key : keys )
-                {
-                    String parts[] = key.split( "\\." );
-
-                    String deStr = parts[0];
-
-                    String optStr = parts[1];
-
-                    String value = String.valueOf( dataValueMap.get( key ) );
-
-                    DataElement dataElement = dataElementService.getDataElement( Integer.valueOf( deStr ) );
-
-                    DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
-
-                    optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.valueOf( optStr ) );
-
-                    DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, optionCombo );
-
-                    if ( dataValue == null )
-                    {
-                        if ( value != null )
-                        {
-                            insertQuery += "( "+ dataElement.getId() + ", " + period.getId() + ", "+ source.getId() +", " + optionCombo.getId() + ", '" + value + "', '" + storedBy + "', '" + lastUpdatedDate + "' ), ";
-                            
-                            insertFlag = 2;
-                        }
-                    }
-                    else
-                    {
-                        dataValue.setValue( value );
-
-                        dataValue.setTimestamp( timeStamp );
-
-                        dataValue.setStoredBy( storedBy );
-
-                        dataValueService.updateDataValue( dataValue );
-                    }
-                }
-                
-                if( insertFlag != 1 )
-                {
-                    insertQuery = insertQuery.substring( 0, insertQuery.length()-2 );
-                    
-                    jdbcTemplate.update( insertQuery );
-                }
-
-                moveImportedFile( importFile );
-                
-                if( period.getPeriodType().getName().equalsIgnoreCase( "monthly" ))
-                {
-                    importStatus = "THANK YOU FOR SENDING MONTHLY REPORT FOR " + monthFormat.format( period.getStartDate() );
-                    
-                    statusMsgs.add( 0, "3" );
-                    statusMsgs.add( 1, importStatus );
-                }
-                else if( period.getPeriodType().getName().equalsIgnoreCase( "daily" ))
-                {
-                    importStatus = "THANK YOU FOR SENDING DAILY REPORT FOR " + dateFormat.format( period.getStartDate() );
-
-                    statusMsgs.add( 0, "4" );
-                    statusMsgs.add( 1, importStatus );
-                }
-                else
-                {
-                    importStatus = "THANK YOU FOR SENDING REPORT FOR " + dateFormat.format( period.getStartDate() ) + " : " + dateFormat.format( period.getEndDate() );
-                
-                    statusMsgs.add( 0, "5" );
-                    statusMsgs.add( 1, importStatus );
-                }
-            }
-            else
-            {
-                LOG.error( importFile + " Phone number not found... Sending to Bounced" );
-                importStatus = "Phone number is not registered to any facility. Please contact admin";
-                
-                statusMsgs.add( 0, "2" );
-                statusMsgs.add( 1, importStatus );
-
-                moveFailedFile( importFile );
-            }
-        }
-        catch( Exception e )
-        {
-            e.printStackTrace();
-            LOG.error( e.getMessage() );
-            LOG.error( "Exception caused in importing... Moving to Bounced" );
-            
-            importStatus = "Data not Received Properly, Please send again";
-            
-            statusMsgs.add( 0, "1" );
-            statusMsgs.add( 1, importStatus );
-
-            moveFailedFile( importFile );
-        }
-        finally
-        {
-        }
-
-        return statusMsgs;
-    }
-    */
 
     @Transactional
     public String importANMRegData( String importFile, MobileImportParameters mobImportParameters )

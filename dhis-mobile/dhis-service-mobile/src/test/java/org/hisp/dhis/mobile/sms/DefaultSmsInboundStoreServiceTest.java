@@ -1,6 +1,7 @@
 package org.hisp.dhis.mobile.sms;
 
 
+import org.hisp.dhis.mobile.sms.api.SmsInboundStoreService;
 import java.util.Calendar;
 import org.hisp.dhis.DhisSpringTest;
 import java.util.Collection;
@@ -13,10 +14,10 @@ import static org.junit.Assert.*;
  *
  * @author Saptarshi
  */
-public class HibernateSmsInboundStoreTest extends DhisSpringTest
+public class DefaultSmsInboundStoreServiceTest extends DhisSpringTest
 {
 
-    private HibernateSmsInboundStore hibernateSmsInboundStore;
+    private SmsInboundStoreService smsInboundStoreService;
 
     private SmsInbound testSms;
 
@@ -27,7 +28,7 @@ public class HibernateSmsInboundStoreTest extends DhisSpringTest
     public void setUpTest()
         throws Exception
     {
-        hibernateSmsInboundStore = (HibernateSmsInboundStore) getBean( HibernateSmsInboundStore.ID );
+        smsInboundStoreService = (SmsInboundStoreService) getBean( HibernateSmsInboundStore.ID );
         testSms = new SmsInbound();
         testSms.setEncoding( 'U' );
         testSms.setGatewayId( "modem1" );
@@ -48,9 +49,9 @@ public class HibernateSmsInboundStoreTest extends DhisSpringTest
     public void testSaveSms()
     {
         System.out.println( "testSaveSms" );
-        hibernateSmsInboundStore.saveSms( testSms );
+        smsInboundStoreService.saveSms( testSms );
 
-        for ( SmsInbound savedSms : hibernateSmsInboundStore.getAllReceiveSMS() )
+        for ( SmsInbound savedSms : smsInboundStoreService.getAllReceivedSms() )
         {
             assertEquals( testSms, savedSms );
         }
@@ -71,8 +72,8 @@ public class HibernateSmsInboundStoreTest extends DhisSpringTest
         System.out.println( "testGetSmsByDate" );
         Date startDate = prevDay.getTime();
         Date endDate = nextDay.getTime();
-        hibernateSmsInboundStore.saveSms( testSms );
-        Collection<SmsInbound> smsByDate = hibernateSmsInboundStore.getSmsByDate( startDate, endDate );
+        smsInboundStoreService.saveSms( testSms );
+        Collection<SmsInbound> smsByDate = smsInboundStoreService.getSmsByDate( startDate, endDate );
         for ( SmsInbound sms : smsByDate )
         {
             assertEquals( sms, testSms );
@@ -87,8 +88,8 @@ public class HibernateSmsInboundStoreTest extends DhisSpringTest
     {
         System.out.println( "testGetSmsByRecipient" );
         String originator = "+919867192752";
-        hibernateSmsInboundStore.saveSms( testSms );
-        Collection<SmsInbound> result = hibernateSmsInboundStore.getSmsByOriginator( originator );
+        smsInboundStoreService.saveSms( testSms );
+        Collection<SmsInbound> result = smsInboundStoreService.getSmsByOriginator( originator );
         for ( SmsInbound sms : result )
         {
             assertEquals( sms, testSms );
@@ -102,8 +103,8 @@ public class HibernateSmsInboundStoreTest extends DhisSpringTest
     public void testGetSmsByProcess()
     {
         System.out.println( "testGetSmsByProcess" );
-        hibernateSmsInboundStore.saveSms( testSms );
-        Collection<SmsInbound> result = hibernateSmsInboundStore.getSmsByProcess( 0 );
+        smsInboundStoreService.saveSms( testSms );
+        Collection<SmsInbound> result = smsInboundStoreService.getSmsByProcess( 0 );
         for ( SmsInbound sms : result )
         {
             assertEquals( sms, testSms );
