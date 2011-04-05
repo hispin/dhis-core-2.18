@@ -14,11 +14,11 @@
 					</td>
 				</tr>
 			</table>
-			<table class="listTable" id="criteriaList">
+			<table class="listTable" id="listTable">
 				<thead>	
 				 <tr>
 				  <th>$i18n.getString('name')</th>
-				  <th style="width:10em ">$i18n.getString('operator')</th>
+				  <th style="width:10em " class="{sorter: false}">$i18n.getString('operator')</th>
 				</tr>
 				</thead>
 				<tbody id="list">
@@ -59,4 +59,8 @@
 
 <script>
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_validation_criteria" ) , "'" )';
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );
+	});
+
 </script>
