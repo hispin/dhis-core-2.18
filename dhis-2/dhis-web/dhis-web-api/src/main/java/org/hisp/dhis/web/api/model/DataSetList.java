@@ -37,13 +37,13 @@ public class DataSetList
     extends Model
     implements DataStreamSerializable
 {
-    private List<DataSet> addedDataSets;
+    private List<DataSet> addedDataSets = new ArrayList<DataSet>();
 
-    private List<DataSet> deletedDataSets;
+    private List<DataSet> deletedDataSets = new ArrayList<DataSet>();
 
-    private List<DataSet> modifiedDataSets;
+    private List<DataSet> modifiedDataSets = new ArrayList<DataSet>();
 
-    private List<DataSet> currentDataSets;
+    private List<DataSet> currentDataSets = new ArrayList<DataSet>();
 
     public DataSetList()
     {
