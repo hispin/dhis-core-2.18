@@ -58,7 +58,7 @@
     </td>
 	<td>
 
-<table style="margin-left: 20px;">
+<table>
 #set( $sizeHalf = $chartAreas.size() / 2 )
 
 #foreach( $chart in $chartAreas )
@@ -67,7 +67,7 @@
 #set( $endHr =  ($count0 % $sizeHalf) == ($sizeHalf - 1) )
 
 #if($startHr) <tr> #end
-	<td style="width:305px;">
+	<td style="width:305px; padding-left: 10px;">
 		#dropDownButtonDiv( "chartDropDown$velocityCount" "chartArea$velocityCount" )
 		#chartDropDownListDiv( "chartArea$velocityCount" "chartDropDown$velocityCount" $chart )
 	</td>
