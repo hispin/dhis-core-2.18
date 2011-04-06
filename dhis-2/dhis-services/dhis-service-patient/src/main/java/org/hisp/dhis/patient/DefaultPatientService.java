@@ -110,13 +110,6 @@ public class DefaultPatientService
         this.relationshipTypeService = relationshipTypeService;
     }
 
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -502,7 +495,7 @@ public class DefaultPatientService
     }
 
     @Override
-    public Object getObjectValue( String property, String value )
+    public Object getObjectValue( String property, String value, I18nFormat format )
     {
         try
         {

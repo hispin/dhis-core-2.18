@@ -49,8 +49,6 @@ public class HibernatePatientMobileSettingStore
         Criteria criteria = session.createCriteria( PatientMobileSetting.class );
         criteria.setCacheable( true );
 
-        System.out.println( criteria.list().size() );
-
         return criteria.list();
     }
 }

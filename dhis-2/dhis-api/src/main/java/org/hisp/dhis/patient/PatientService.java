@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
@@ -225,6 +226,6 @@ public interface PatientService
     
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
     
-    Object getObjectValue( String property, String value );
+    Object getObjectValue( String property, String value, I18nFormat format );
     
 }
