@@ -28,6 +28,8 @@ package org.hisp.dhis.organisationunit;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
 
@@ -51,6 +54,7 @@ public class OrganisationUnit
     public static final String FEATURETYPE_POLYGON = "Polygon";
     public static final String FEATURETYPE_POINT = "Point";
         
+    private static final Comparator<OrganisationUnit> COMPARATOR = new OrganisationUnitNameComparator();
     private static final Pattern JSON_COORDINATE_PATTERN = Pattern.compile( "(\\[{3}.*?\\]{3})" );
     private static final Pattern COORDINATE_PATTERN = Pattern.compile("([\\-0-9.]+,[\\-0-9.]+)");
     
@@ -158,6 +162,13 @@ public class OrganisationUnit
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+    
+    public List<OrganisationUnit> getSortedChildren()
+    {
+        List<OrganisationUnit> sortedChildren = new ArrayList<OrganisationUnit>( children );
+        Collections.sort( sortedChildren, COMPARATOR );
+        return sortedChildren;
+    }
     
     public Set<OrganisationUnit> getGrandChildren()
     {
