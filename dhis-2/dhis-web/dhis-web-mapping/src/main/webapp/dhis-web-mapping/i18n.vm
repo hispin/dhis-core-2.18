@@ -21,6 +21,9 @@ G.i18n = {
     cancelled: '$encoder.jsEscape($i18n.getString( 'cancelled' ) , "'")',
     apply: '$encoder.jsEscape($i18n.getString( 'apply' ) , "'")',
     applied: '$encoder.jsEscape($i18n.getString( 'applied' ) , "'")',
+    show: '$encoder.jsEscape($i18n.getString( 'show' ) , "'")',
+    hide: '$encoder.jsEscape($i18n.getString( 'hide' ) , "'")',
+    toggle: '$encoder.jsEscape($i18n.getString( 'toggle' ) , "'")',
 
     boundary: '$encoder.jsEscape($i18n.getString( 'boundary' ) , "'")',
     level: '$encoder.jsEscape($i18n.getString( 'level' ) , "'")',
