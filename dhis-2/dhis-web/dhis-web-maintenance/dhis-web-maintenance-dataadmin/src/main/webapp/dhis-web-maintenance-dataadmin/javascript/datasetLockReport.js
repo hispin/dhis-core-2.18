@@ -100,6 +100,8 @@ function getDataSets() {
 										+ "</option>");
 					});
 			enable("availableDataSets");
+			$('#selectedPeriods >option').remove();
+			$('#selectedDataSets >option').remove();
 		}
 		});
 	}
