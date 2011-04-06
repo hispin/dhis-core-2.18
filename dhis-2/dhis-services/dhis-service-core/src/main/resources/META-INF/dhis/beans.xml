@@ -220,6 +220,11 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="clazz" value="org.hisp.dhis.message.UserMessage"/>
 	</bean>
 	
+	<bean id="org.hisp.dhis.sequence.SequenceStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="clazz" value="org.hisp.dhis.sequence.Sequence"/>
+	</bean>
+	
 	<!-- Service definitions -->
 
 	<bean id="org.hisp.dhis.dataelement.DataElementOperandService"
@@ -434,6 +439,10 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="messageStore" ref="org.hisp.dhis.message.MessageStore"/>
 		<property name="userMessageStore" ref="org.hisp.dhis.message.UserMessageStore"/>
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.sequence.SequenceGenerator" class="org.hisp.dhis.sequence.DefaultSequenceGenerator">
+		<property name="sequenceStore" ref="org.hisp.dhis.sequence.SequenceStore"/>
 	</bean>
 	
 	<!-- Concept Name -->
