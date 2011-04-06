@@ -34,6 +34,7 @@ import java.util.List;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
@@ -88,6 +89,8 @@ public class ValidateValueAction
 
     private int statusCode;
 
+    private I18nFormat format;
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -131,6 +134,11 @@ public class ValidateValueAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     public int getDataElementId()
@@ -265,7 +273,7 @@ public class ValidateValueAction
                     && leftSide.getDataElement().equals( dataElement ) )
                 {
                     // get left-side value
-                    Object objectValue = patientService.getObjectValue( leftSide.getDataElement().getType(), value );
+                    Object objectValue = patientService.getObjectValue( leftSide.getDataElement().getType(), value, format );
 
                     // get program-stage of right-side
                     comparerogramStageInstance = programStageInstanceService.getProgramStageInstance( programInstance,
@@ -278,7 +286,8 @@ public class ValidateValueAction
                     if ( patientDataValue != null )
                     {
                         String dbValue = patientDataValue.getValue();
-                        Object compareValue = patientService.getObjectValue( rightSide.getDataElement().getType(), dbValue );
+                        Object compareValue = patientService.getObjectValue( rightSide.getDataElement().getType(),
+                            dbValue, format );
 
                         i = ((Comparable<Object>) objectValue).compareTo( (Comparable<Object>) compareValue );
                     }
@@ -287,7 +296,7 @@ public class ValidateValueAction
                 else
                 {
                     // get right-side value
-                    Object objectValue = patientService.getObjectValue( rightSide.getDataElement().getType(), value );
+                    Object objectValue = patientService.getObjectValue( rightSide.getDataElement().getType(), value, format );
 
                     comparerogramStageInstance = programStageInstanceService.getProgramStageInstance( programInstance,
                         leftSide.getProgramStage() );
@@ -298,7 +307,8 @@ public class ValidateValueAction
                     if ( patientDataValue != null )
                     {
                         String dbValue = patientDataValue.getValue();
-                        Object compareValue = patientService.getObjectValue( leftSide.getDataElement().getType(), dbValue );
+                        Object compareValue = patientService.getObjectValue( leftSide.getDataElement().getType(),
+                            dbValue, format );
 
                         i = ((Comparable<Object>) compareValue).compareTo( (Comparable<Object>) objectValue );
                     }
