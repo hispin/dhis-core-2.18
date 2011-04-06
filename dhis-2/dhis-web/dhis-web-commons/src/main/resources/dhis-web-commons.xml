@@ -112,6 +112,7 @@
 			</interceptor-stack>
 
 			<interceptor-stack name="organisationUnitTreeStack">
+				<interceptor-ref name="exceptionInterceptor" />
 				<interceptor-ref name="organisationUnitTreeInterceptor" />
 				<interceptor-ref name="commonInterceptors" />
 			</interceptor-stack>
