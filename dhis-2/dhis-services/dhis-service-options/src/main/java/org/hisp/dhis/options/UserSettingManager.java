@@ -1,4 +1,4 @@
-package org.hisp.dhis.settings.action.user;
+package org.hisp.dhis.options;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,44 +27,28 @@ package org.hisp.dhis.settings.action.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
-import org.hisp.dhis.options.charts.DashboardChartsToDisplayManager;
-
-import com.opensymphony.xwork2.Action;
-
-public class GetAvailableDashboardChartsToDisplayAction
-    implements Action
+/**
+ * @author mortenoh
+ */
+public interface UserSettingManager
 {
-    private DashboardChartsToDisplayManager dashboardChartsToDisplayManager;
+    final String ID = UserSettingManager.class.getName();
 
-    public void setDashboardChartsToDisplayManager( DashboardChartsToDisplayManager dashboardChartsToDisplayManager )
-    {
-        this.dashboardChartsToDisplayManager = dashboardChartsToDisplayManager;
-    }
+    static String KEY_CHARTS_IN_DASHBOARD = "keyChartsInDashboard";
 
-    private String currentDashboardChartsToDisplay;
+    static int DEFAULT_CHARTS_IN_DASHBOARD = 4;
 
-    public String getCurrentDashboardChartsToDisplay()
-    {
-        return currentDashboardChartsToDisplay;
-    }
+    static List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );
 
-    private List<String> dashboardChartsToDisplay;
+    public Serializable getUserSetting( String key );
 
-    public List<String> getDashboardChartsToDisplay()
-    {
-        return dashboardChartsToDisplay;
-    }
+    public void saveUserSetting( String key, Serializable value );
 
-    @Override
-    public String execute()
-        throws Exception
-    {
-        dashboardChartsToDisplay = dashboardChartsToDisplayManager.getDashboardChartsToDisplay();
+    public List<Integer> getChartsInDashboardOptions();
 
-        currentDashboardChartsToDisplay = dashboardChartsToDisplayManager.getCurrentDashboardChartsToDisplay();
-
-        return SUCCESS;
-    }
+    public Integer getChartsInDashboard();
 }

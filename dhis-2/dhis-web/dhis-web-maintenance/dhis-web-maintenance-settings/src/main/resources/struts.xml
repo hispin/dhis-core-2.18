@@ -39,10 +39,10 @@
     </action>
 
     <action name="getAvailableSortOrders" class="org.hisp.dhis.settings.action.user.GetAvailableSortOrdersAction">
-      <result name="success" type="chain">getAvailableDashboardChartsToDisplay</result>
+      <result name="success" type="chain">getAvailableChartsInDashboard</result>
     </action>
 
-    <action name="getAvailableDashboardChartsToDisplay" class="org.hisp.dhis.settings.action.user.GetAvailableDashboardChartsToDisplayAction">
+    <action name="getAvailableChartsInDashboard" class="org.hisp.dhis.settings.action.user.GetAvailableChartsInDashboardAction">
       <result name="success" type="chain">getAvailableDisplayProperties</result>
     </action>
 
@@ -72,7 +72,7 @@
       <result name="success" type="redirect">userSettings.action</result>
     </action>
 
-    <action name="setCurrentDashboardChartsToDisplay" class="org.hisp.dhis.settings.action.user.SetCurrentDashboardChartsToDisplayAction">
+    <action name="setCurrentChartsInDashboard" class="org.hisp.dhis.settings.action.user.SetCurrentChartsInDashboardAction">
       <result name="success" type="redirect">userSettings.action</result>
     </action>
 

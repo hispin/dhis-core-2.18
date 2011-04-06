@@ -10,9 +10,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dashboard.action.ProvideContentAction"
     scope="prototype">
     <property name="manager" ref="org.hisp.dhis.dashboard.DashboardManager"/>
+    <property name="userSettingManager" ref="org.hisp.dhis.options.UserSettingManager" />
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService"/>
   </bean>
-  
+
   <bean id="org.hisp.dhis.dashboard.action.SetAreaItemAction"
     class="org.hisp.dhis.dashboard.action.SetAreaItemAction"
     scope="prototype">

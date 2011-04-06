@@ -37,7 +37,7 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.comparator.ChartTitleComparator;
 import org.hisp.dhis.dashboard.DashboardManager;
-import org.hisp.dhis.user.UserSettingService;
+import org.hisp.dhis.options.UserSettingManager;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -67,6 +67,13 @@ public class ProvideContentAction
         this.chartService = chartService;
     }
 
+    private UserSettingManager userSettingManager;
+
+    public void setUserSettingManager( UserSettingManager userSettingManager )
+    {
+        this.userSettingManager = userSettingManager;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -96,7 +103,7 @@ public class ProvideContentAction
     {
         return chartAreas;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -113,13 +120,13 @@ public class ProvideContentAction
 
         Collections.sort( charts, new ChartTitleComparator() );
 
-        Object keyDashboardChartsToDisplay = ActionContext.getContext().getActionInvocation().getStack()
-            .findString( UserSettingService.KEY_DASHBOARD_CHARTS_TO_DISPLAY );
+        Object sessionChartsInDashboard = ActionContext.getContext().getActionInvocation().getStack()
+            .findString( UserSettingManager.KEY_CHARTS_IN_DASHBOARD );
 
-        Integer dashboardChartsCount = keyDashboardChartsToDisplay != null ? Integer
-            .valueOf( (String) keyDashboardChartsToDisplay ) : 4;
+        Integer chartsInDashboardCount = sessionChartsInDashboard != null ? Integer
+            .valueOf( (String) sessionChartsInDashboard ) : UserSettingManager.DEFAULT_CHARTS_IN_DASHBOARD;
 
-        for ( int i = 1; i <= dashboardChartsCount; i++ )
+        for ( int i = 1; i <= chartsInDashboardCount; i++ )
         {
             chartAreas.add( content.get( "chartArea" + i ) );
         }

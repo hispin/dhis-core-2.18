@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.charts;
+package org.hisp.dhis.options.setting;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,17 +27,15 @@ package org.hisp.dhis.options.charts;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
+import org.hisp.dhis.options.UserSettingManager;
 import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
 
-/**
- * @author mortenoh
- */
-public class DefaultDashboardChartsToDisplayManager
-    implements DashboardChartsToDisplayManager
+public class DefaultUserSettingManager
+    implements UserSettingManager
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -51,38 +49,45 @@ public class DefaultDashboardChartsToDisplayManager
     }
 
     // -------------------------------------------------------------------------
-    // DashboardChartsToDisplayManager implementation
+    // UserSettingManager implementation
     // -------------------------------------------------------------------------
 
-    @Override
-    public void setCurrentDashboardChartsToDisplay( String chartsToDisplay )
+    public Serializable getUserSetting( String key )
     {
         try
         {
-            userSettingService.saveUserSetting( UserSettingService.KEY_DASHBOARD_CHARTS_TO_DISPLAY, chartsToDisplay );
+            return userSettingService.getUserSetting( key );
+        }
+        catch ( NoCurrentUserException e )
+        {
+        }
+
+        return null;
+    }
+    
+    public void saveUserSetting( String key, Serializable value )
+    {
+        try
+        {
+            userSettingService.saveUserSetting( key, value );
         }
         catch ( NoCurrentUserException e )
         {
         }
     }
 
-    @Override
-    public String getCurrentDashboardChartsToDisplay()
+    // -------------------------------------------------------------------------
+    // Specific methods
+    // -------------------------------------------------------------------------
+
+    public List<Integer> getChartsInDashboardOptions()
     {
-        return (String) userSettingService.getUserSetting( UserSettingService.KEY_DASHBOARD_CHARTS_TO_DISPLAY,
-            DASHBOARD_CHARTS_TO_DISPLAY_4 );
+        return DASHBOARD_CHARTS_TO_DISPLAY;
     }
 
-    @Override
-    public List<String> getDashboardChartsToDisplay()
+    public Integer getChartsInDashboard()
     {
-        List<String> list = new ArrayList<String>();
-
-        list.add( DASHBOARD_CHARTS_TO_DISPLAY_4 );
-        list.add( DASHBOARD_CHARTS_TO_DISPLAY_6 );
-        list.add( DASHBOARD_CHARTS_TO_DISPLAY_8 );
-
-        return list;
+        return (Integer) userSettingService.getUserSetting( UserSettingManager.KEY_CHARTS_IN_DASHBOARD,
+            UserSettingManager.DEFAULT_CHARTS_IN_DASHBOARD );
     }
-
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.charts;
+package org.hisp.dhis.settings.action.user;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -29,20 +29,41 @@ package org.hisp.dhis.options.charts;
 
 import java.util.List;
 
-/**
- * @author mortenoh
- */
-public interface DashboardChartsToDisplayManager
+import org.hisp.dhis.options.UserSettingManager;
+
+import com.opensymphony.xwork2.Action;
+
+public class GetAvailableChartsInDashboardAction
+    implements Action
 {
-    static final String DASHBOARD_CHARTS_TO_DISPLAY_4 = "4";
+    private UserSettingManager userSettingManager;
 
-    static final String DASHBOARD_CHARTS_TO_DISPLAY_6 = "6";
+    public void setUserSettingManager( UserSettingManager userSettingManager )
+    {
+        this.userSettingManager = userSettingManager;
+    }
 
-    static final String DASHBOARD_CHARTS_TO_DISPLAY_8 = "8";
+    private Integer chartsInDashboard;
 
-    public void setCurrentDashboardChartsToDisplay( String chartsToDisplay );
+    public Integer getChartsInDashboard()
+    {
+        return chartsInDashboard;
+    }
 
-    public String getCurrentDashboardChartsToDisplay();
+    private List<Integer> chartsInDashboardOptions;
 
-    public List<String> getDashboardChartsToDisplay();
+    public List<Integer> getChartsInDashboardOptions()
+    {
+        return chartsInDashboardOptions;
+    }
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+        chartsInDashboard = userSettingManager.getChartsInDashboard();
+        chartsInDashboardOptions = userSettingManager.getChartsInDashboardOptions();
+        
+        return SUCCESS;
+    }
 }

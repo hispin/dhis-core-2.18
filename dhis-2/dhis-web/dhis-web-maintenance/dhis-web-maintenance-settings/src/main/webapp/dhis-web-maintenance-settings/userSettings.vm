@@ -35,10 +35,10 @@
 		window.location.href = "setCurrentStyle.action?currentStyle=" + style;
 	}
 
-	function dashboardChartsToDisplayChanged( list )
+	function chartsInDashboardDisplayChanged( list )
 	{
 		var listValue = list.options[list.selectedIndex].value;
-		window.location.href = "setCurrentDashboardChartsToDisplay.action?currentDashboardChartsToDisplay=" + listValue;
+		window.location.href = "setCurrentChartsInDashboard.action?chartsInDashboard=" + listValue;
 	}
 </script>
 
@@ -87,9 +87,9 @@
 
 <h4>$i18n.getString( "dashboard_charts_to_display" )</h4>
 
-<select onchange="dashboardChartsToDisplayChanged( this )" style="min-width:250px">
-#foreach( $charts in $dashboardChartsToDisplay )
-	<option value="$charts" #if($charts == $currentDashboardChartsToDisplay) selected="selected"#end>$charts</option>
+<select onchange="chartsInDashboardDisplayChanged( this )" style="min-width:250px">
+#foreach( $charts in $chartsInDashboardOptions )
+	<option value="$charts" #if($charts == $chartsInDashboard) selected="selected"#end>$charts</option>
 #end
 </select>
 
