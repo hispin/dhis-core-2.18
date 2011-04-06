@@ -40,6 +40,16 @@ public class UsernameComparator
 {
     public int compare( UserCredentials uc0, UserCredentials uc1 )
     {
+        if ( uc0 == null )
+        {
+            return 1;
+        }
+        
+        if ( uc1 == null )
+        {
+            return -1;
+        }
+        
         return uc0.getUsername().compareTo( uc1.getUsername() );
     }
 }

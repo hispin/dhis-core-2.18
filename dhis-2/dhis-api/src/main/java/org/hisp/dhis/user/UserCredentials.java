@@ -90,6 +90,12 @@ public class UserCredentials
 
         return username.equals( other.getUsername() );
     }
+    
+    @Override
+    public String toString()
+    {
+        return "[" + username + "]";
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters

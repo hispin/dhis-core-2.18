@@ -92,8 +92,6 @@ public class GetUserGroupListAction
             userGroupList = new ArrayList<UserGroup>( userGroupService.getUserGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
-//        userGroupList = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-        
         return SUCCESS;
     }
 }

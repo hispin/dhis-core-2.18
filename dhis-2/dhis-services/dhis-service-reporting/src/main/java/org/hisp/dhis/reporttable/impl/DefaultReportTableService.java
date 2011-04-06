@@ -82,8 +82,6 @@ public class DefaultReportTableService
 {
     private static final Log log = LogFactory.getLog( DefaultReportTableService.class );
     
-    private static final String MODE_REPORT = "report";
-    private static final String MODE_REPORT_TABLE = "table";
     private static final String YES = "Yes";
     private static final String NO = "No";
     
