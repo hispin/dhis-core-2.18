@@ -166,7 +166,9 @@ public class OrganisationUnit
     public List<OrganisationUnit> getSortedChildren()
     {
         List<OrganisationUnit> sortedChildren = new ArrayList<OrganisationUnit>( children );
+        
         Collections.sort( sortedChildren, COMPARATOR );
+        
         return sortedChildren;
     }
     
