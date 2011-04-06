@@ -155,6 +155,18 @@ public class CustomDataEntryAction
         return id;
     }
 
+    private Integer programId;
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
+    }
+
+    public Integer getProgramId()
+    {
+        return programId;
+    }
+
     private Integer programStageId;
 
     public Integer getProgramStageId()
@@ -308,8 +320,8 @@ public class CustomDataEntryAction
         patient = patientService.getPatient( id );
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
-        
-        program = selectedStateManager.getSelectedProgram( );
+
+        program = selectedStateManager.getSelectedProgram();
 
         programStage = programStageService.getProgramStage( programStageId );
 
