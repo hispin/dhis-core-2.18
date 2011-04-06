@@ -2124,106 +2124,129 @@
             },
             
             showLabelWindow: function(item) {
-                if (item.labelWindow) {
-                    item.labelWindow.show();
-                }
-                else {
-                    var labelWindow = new Ext.Window({
-                        title: '<span id="window-labels-title">Labels</span>',
-                        layout: 'fit',
-                        closeAction: 'hide',
-                        width: G.conf.window_width,
-                        height: 170,
-                        items: [
-                            {
-                                xtype: 'form',
-                                bodyStyle: 'padding:8px',
-                                labelWidth: G.conf.label_width,
-                                items: [
-                                    {html: '<div class="window-info">Show/hide feature labels</div>'},
-                                    {
-                                        xtype: 'numberfield',
-                                        id: 'labelfontsize_nf',
-                                        fieldLabel: 'Font size',
-                                        labelSeparator: G.conf.labelseparator,
-                                        width: G.conf.combo_number_width_small,
-                                        enableKeyEvents: true,
-                                        allowDecimals: false,
-                                        allowNegative: false,
-                                        value: 13,
-                                        emptyText: 13,
-                                        listeners: {
-                                            'keyup': function(nf) {
-                                                var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];                                                
-                                                if (layer.widget.labels) {
-                                                    layer.widget.labels = false;
-                                                    G.util.labels.toggleFeatureLabels(layer.widget, nf.getValue(),
-                                                        Ext.getCmp('labelstrong_chb').getValue(), Ext.getCmp('labelitalic_chb').getValue());
+                var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];
+                if (layer.features.length) {
+                    if (item.labelWindow) {
+                        item.labelWindow.show();
+                    }
+                    else {
+                        item.labelWindow = new Ext.Window({
+                            title: '<span id="window-labels-title">Labels</span>',
+                            layout: 'fit',
+                            closeAction: 'hide',
+                            width: G.conf.window_width,
+                            height: 200,
+                            items: [
+                                {
+                                    xtype: 'form',
+                                    bodyStyle: 'padding:8px',
+                                    labelWidth: G.conf.label_width,
+                                    items: [
+                                        {html: '<div class="window-info">Show/hide feature labels</div>'},
+                                        {
+                                            xtype: 'numberfield',
+                                            id: 'labelfontsize_nf',
+                                            fieldLabel: 'Font size',
+                                            labelSeparator: G.conf.labelseparator,
+                                            width: G.conf.combo_number_width_small,
+                                            enableKeyEvents: true,
+                                            allowDecimals: false,
+                                            allowNegative: false,
+                                            value: 13,
+                                            emptyText: 13,
+                                            listeners: {
+                                                'keyup': function(nf) {
+                                                    if (layer.widget.labels) {
+                                                        layer.widget.labels = false;
+                                                        G.util.labels.toggleFeatureLabels(layer.widget, nf.getValue(), Ext.getCmp('labelstrong_chb').getValue(),
+                                                            Ext.getCmp('labelitalic_chb').getValue(), Ext.getCmp('labelcolor_cf').getValue());
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: 'labelstrong_chb',
+                                            fieldLabel: '<b>Bold</b>',
+                                            labelSeparator: G.conf.labelseparator,
+                                            listeners: {
+                                                'check': function(chb, checked) {
+                                                    if (layer.widget.labels) {
+                                                        layer.widget.labels = false;
+                                                        G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
+                                                            checked, Ext.getCmp('labelitalic_chb').getValue(), Ext.getCmp('labelcolor_cf').getValue());
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            id: 'labelitalic_chb',
+                                            fieldLabel: '<i>Italic</i>',
+                                            labelSeparator: G.conf.labelseparator,
+                                            listeners: {
+                                                'check': function(chb, checked) {
+                                                    if (layer.widget.labels) {
+                                                        layer.widget.labels = false;
+                                                        G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
+                                                            Ext.getCmp('labelstrong_chb').getValue(), checked, Ext.getCmp('labelcolor_cf').getValue());
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: 'colorfield',
+                                            id: 'labelcolor_cf',
+                                            fieldLabel: G.i18n.color,
+                                            labelSeparator: G.conf.labelseparator,
+                                            allowBlank: false,
+                                            width: G.conf.combo_width_fieldset,
+                                            value: "#000000",
+                                            listeners: {
+                                                'select': {
+                                                    scope: this,
+                                                    fn: function(cf) {
+                                                        if (layer.widget.labels) {
+                                                            layer.widget.labels = false;
+                                                            G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
+                                                                Ext.getCmp('labelstrong_chb').getValue(), Ext.getCmp('labelitalic_chb').getValue(), cf.getValue());
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
-                                    },
-                                    {
-                                        xtype: 'checkbox',
-                                        id: 'labelstrong_chb',
-                                        fieldLabel: '<b>Bold</b>',
-                                        labelSeparator: G.conf.labelseparator,
-                                        listeners: {
-                                            'check': function(chb, checked) {
-                                                var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];                                                
-                                                if (layer.widget.labels) {
-                                                    layer.widget.labels = false;
-                                                    G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
-                                                        checked, Ext.getCmp('labelitalic_chb').getValue());
-                                                }
-                                            }
+                                    ]
+                                }
+                            ],
+                            bbar: [
+                                '->',
+                                {
+                                    xtype: 'button',
+                                    id: 'labelshow_b',
+                                    iconCls: 'icon-assign',
+                                    hideLabel: true,
+                                    text: G.i18n.toggle,
+                                    handler: function() {
+                                        var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];                                    
+                                        if (layer.features.length) {
+                                            G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
+                                                Ext.getCmp('labelstrong_chb').getValue(), Ext.getCmp('labelitalic_chb').getValue(), Ext.getCmp('labelcolor_cf').getValue());
                                         }
-                                    },
-                                    {
-                                        xtype: 'checkbox',
-                                        id: 'labelitalic_chb',
-                                        fieldLabel: '<i>Italic</i>',
-                                        labelSeparator: G.conf.labelseparator,
-                                        listeners: {
-                                            'check': function(chb, checked) {
-                                                var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];                                                
-                                                if (layer.widget.labels) {
-                                                    layer.widget.labels = false;
-                                                    G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
-                                                        Ext.getCmp('labelstrong_chb').getValue(), checked);
-                                                }
-                                            }
+                                        else {
+                                            Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
                                         }
-                                    }
-                                ]
-                            }
-                        ],
-                        bbar: [
-                            '->',
-                            {
-                                xtype: 'button',
-                                id: 'labelshow_b',
-                                iconCls: 'icon-assign',
-                                hideLabel: true,
-                                text: G.i18n.toggle,
-                                handler: function() {
-                                    var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];                                    
-                                    if (layer.features.length) {
-                                        G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
-                                            Ext.getCmp('labelstrong_chb').getValue(), Ext.getCmp('labelitalic_chb').getValue());
-                                    }
-                                    else {
-                                        Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
                                     }
                                 }
-                            }
-                        ]
-                    });
-                    
-                    item.labelWindow = labelWindow;
-                    item.labelWindow.setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
-                    item.labelWindow.show();
-                }                
+                            ]
+                        });
+                        
+                        item.labelWindow.setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                        item.labelWindow.show();
+                    }
+                }
+                else {
+                    Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                }
             },
             items: [
                 {
