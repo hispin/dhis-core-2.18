@@ -160,18 +160,19 @@ G.util = {
     },
 
     labels: {    
-        getActivatedOpenLayersStyleMap: function(fsize, fweight, fstyle) {
+        getActivatedOpenLayersStyleMap: function(fsize, fweight, fstyle, fcolor) {
             return new OpenLayers.StyleMap({
                 'default' : new OpenLayers.Style(
                     OpenLayers.Util.applyDefaults({
                         'fillOpacity': 1,
-                        'strokeColor': '#222222',
                         'strokeWidth': 1,
+                        'strokeColor': '#222222',
                         'label': '${labelString}',
                         'fontFamily': 'arial,lucida sans unicode',
                         'fontSize': fsize ? fsize : 13,
                         'fontWeight': fweight ? 'bold' : 'normal',
-                        'fontStyle':  fstyle ? 'italic' : 'normal'
+                        'fontStyle': fstyle ? 'italic' : 'normal',
+                        'fontColor': fcolor ? fcolor : '#000000'
                     },
                     OpenLayers.Feature.Vector.style['default'])
                 ),
@@ -199,9 +200,9 @@ G.util = {
                 })
             });
         },
-        toggleFeatureLabels: function(widget, fsize, fweight, fstyle) {
+        toggleFeatureLabels: function(widget, fsize, fweight, fstyle, fcolor) {
             function activateLabels() {
-                widget.layer.styleMap = this.getActivatedOpenLayersStyleMap(fsize, fweight, fstyle);
+                widget.layer.styleMap = this.getActivatedOpenLayersStyleMap(fsize, fweight, fstyle, fcolor);
                 widget.labels = true;
             }
             function deactivateLabels(scope) {
