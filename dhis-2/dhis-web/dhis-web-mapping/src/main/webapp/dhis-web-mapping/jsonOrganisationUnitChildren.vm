@@ -10,7 +10,7 @@
   "children": [
   #set( $innerSize = $unit.children.size() )
   #set( $level = $unit.level + 1 )
-#foreach( $child in $unit.children )
+#foreach( $child in $unit.getSortedChildren() )
   {
     "id": ${child.id},
     "level": ${level},
