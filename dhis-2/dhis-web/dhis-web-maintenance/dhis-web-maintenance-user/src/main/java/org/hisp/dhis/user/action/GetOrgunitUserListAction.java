@@ -126,8 +126,7 @@ public class GetOrgunitUserListAction
             {
                 this.paging = createPaging( userService.getUsersByOrganisationUnitCount( organisationUnit ) );
                 
-                userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersByOrganisationUnitBetween( organisationUnit, paging.getStartPos(), paging.getPageSize() ) );
-                
+                userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersByOrganisationUnitBetween( organisationUnit, paging.getStartPos(), paging.getPageSize() ) );                
             }
         }
         

@@ -40,6 +40,9 @@ public interface ReportTableService
 {
     String ID = ReportTableService.class.getName();
 
+    final String MODE_REPORT = "report";
+    final String MODE_REPORT_TABLE = "table";
+    
     /**
      * Populated data mart with the relevant aggregated data for this ReportTable.
      * 
