@@ -63,11 +63,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.settings.action.user.GetAvailableDashboardChartsToDisplayAction"
-    class="org.hisp.dhis.settings.action.user.GetAvailableDashboardChartsToDisplayAction" 
+  <bean id="org.hisp.dhis.settings.action.user.GetAvailableChartsInDashboardAction"
+    class="org.hisp.dhis.settings.action.user.GetAvailableChartsInDashboardAction" 
     scope="prototype">
-    <property name="dashboardChartsToDisplayManager">
-      <ref bean="org.hisp.dhis.options.charts.DashboardChartsToDisplayManager"/>
+    <property name="userSettingManager">
+      <ref bean="org.hisp.dhis.options.UserSettingManager"/>
     </property>
   </bean>
 
@@ -122,11 +122,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.settings.action.user.SetCurrentDashboardChartsToDisplayAction"
-    class="org.hisp.dhis.settings.action.user.SetCurrentDashboardChartsToDisplayAction" 
+  <bean id="org.hisp.dhis.settings.action.user.SetCurrentChartsInDashboardAction"
+    class="org.hisp.dhis.settings.action.user.SetCurrentChartsInDashboardAction" 
     scope="prototype">
-    <property name="dashboardChartsToDisplayManager">
-      <ref bean="org.hisp.dhis.options.charts.DashboardChartsToDisplayManager"/>
+    <property name="userSettingManager">
+      <ref bean="org.hisp.dhis.options.UserSettingManager"/>
     </property>
   </bean>
 

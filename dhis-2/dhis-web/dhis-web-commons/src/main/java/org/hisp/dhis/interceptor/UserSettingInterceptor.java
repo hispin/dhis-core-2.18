@@ -30,7 +30,7 @@ package org.hisp.dhis.interceptor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.user.UserSettingService;
+import org.hisp.dhis.options.UserSettingManager;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
@@ -45,11 +45,11 @@ public class UserSettingInterceptor
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserSettingService userSettingService;
+    private UserSettingManager userSettingManager;
 
-    public void setUserSettingService( UserSettingService userSettingService )
+    public void setUserSettingManager( UserSettingManager userSettingManager )
     {
-        this.userSettingService = userSettingService;
+        this.userSettingManager = userSettingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -71,10 +71,7 @@ public class UserSettingInterceptor
     {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        Integer chartsToDisplay = Integer.valueOf( (String) userSettingService.getUserSetting(
-            UserSettingService.KEY_DASHBOARD_CHARTS_TO_DISPLAY, "4" ) );
-
-        map.put( UserSettingService.KEY_DASHBOARD_CHARTS_TO_DISPLAY, chartsToDisplay );
+        map.put( UserSettingManager.KEY_CHARTS_IN_DASHBOARD, userSettingManager.getChartsInDashboard() );
 
         invocation.getStack().push( map );
 

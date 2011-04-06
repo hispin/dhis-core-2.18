@@ -479,7 +479,7 @@
 	</bean>
 
 	<bean id="org.hisp.dhis.interceptor.UserSettingInterceptor" class="org.hisp.dhis.interceptor.UserSettingInterceptor">
-	    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+	    <property name="userSettingManager" ref="org.hisp.dhis.options.UserSettingManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.useraccount.action.GetCurrentUserAction" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction" scope="prototype">

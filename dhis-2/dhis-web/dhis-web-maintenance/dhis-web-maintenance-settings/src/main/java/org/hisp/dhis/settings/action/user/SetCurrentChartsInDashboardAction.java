@@ -27,32 +27,32 @@ package org.hisp.dhis.settings.action.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.options.charts.DashboardChartsToDisplayManager;
+import org.hisp.dhis.options.UserSettingManager;
 
 import com.opensymphony.xwork2.Action;
 
-public class SetCurrentDashboardChartsToDisplayAction
+public class SetCurrentChartsInDashboardAction
     implements Action
 {
-    private DashboardChartsToDisplayManager dashboardChartsToDisplayManager;
+    private UserSettingManager userSettingManager;
 
-    public void setDashboardChartsToDisplayManager( DashboardChartsToDisplayManager dashboardChartsToDisplayManager )
+    public void setUserSettingManager( UserSettingManager userSettingManager )
     {
-        this.dashboardChartsToDisplayManager = dashboardChartsToDisplayManager;
+        this.userSettingManager = userSettingManager;
     }
 
-    private String currentDashboardChartsToDisplay;
+    private Integer chartsInDashboard;
 
-    public void setCurrentDashboardChartsToDisplay( String currentDashboardChartsToDisplay )
+    public void setChartsInDashboard( Integer chartsInDashboard )
     {
-        this.currentDashboardChartsToDisplay = currentDashboardChartsToDisplay;
+        this.chartsInDashboard = chartsInDashboard;
     }
 
     @Override
     public String execute()
         throws Exception
     {
-        dashboardChartsToDisplayManager.setCurrentDashboardChartsToDisplay( currentDashboardChartsToDisplay );
+        userSettingManager.saveUserSetting( UserSettingManager.KEY_CHARTS_IN_DASHBOARD, chartsInDashboard );
 
         return SUCCESS;
     }
