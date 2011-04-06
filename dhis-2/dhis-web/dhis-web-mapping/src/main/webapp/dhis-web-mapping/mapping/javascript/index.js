@@ -488,7 +488,7 @@
                             if (params.featureType == G.conf.map_feature_type_multipolygon) {
 								G.stores.polygonMapView.load();
 							}
-							else if (params.featureType == G.conf.map_feature_type_multipolygon) {
+							else if (params.featureType == G.conf.map_feature_type_point) {
 								G.stores.pointMapView.load();
 							}
                             Ext.getCmp('favoritename_tf').reset();
@@ -2021,7 +2021,7 @@
                     
                     var locateFeatureWindow = new Ext.Window({
                         id: 'locatefeature_w',
-                        title: 'Locate features',
+                        title: '<span id="window-locate-title">Locate features</span>',
                         layout: 'fit',
                         width: G.conf.window_width,
                         height: G.util.getMultiSelectHeight() + 140,
@@ -2122,31 +2122,123 @@
                     Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
                 }
             },
+            
+            showLabelWindow: function(item) {
+                if (item.labelWindow) {
+                    item.labelWindow.show();
+                }
+                else {
+                    var labelWindow = new Ext.Window({
+                        title: '<span id="window-labels-title">Labels</span>',
+                        layout: 'fit',
+                        closeAction: 'hide',
+                        width: G.conf.window_width,
+                        height: 170,
+                        items: [
+                            {
+                                xtype: 'form',
+                                bodyStyle: 'padding:8px',
+                                labelWidth: G.conf.label_width,
+                                items: [
+                                    {html: '<div class="window-info">Show/hide feature labels</div>'},
+                                    {
+                                        xtype: 'numberfield',
+                                        id: 'labelfontsize_nf',
+                                        fieldLabel: 'Font size',
+                                        labelSeparator: G.conf.labelseparator,
+                                        width: G.conf.combo_number_width_small,
+                                        enableKeyEvents: true,
+                                        allowDecimals: false,
+                                        allowNegative: false,
+                                        value: 13,
+                                        emptyText: 13,
+                                        listeners: {
+                                            'keyup': function(nf) {
+                                                var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];                                                
+                                                if (layer.widget.labels) {
+                                                    layer.widget.labels = false;
+                                                    G.util.labels.toggleFeatureLabels(layer.widget, nf.getValue(),
+                                                        Ext.getCmp('labelstrong_chb').getValue(), Ext.getCmp('labelitalic_chb').getValue());
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        xtype: 'checkbox',
+                                        id: 'labelstrong_chb',
+                                        fieldLabel: '<b>Bold</b>',
+                                        labelSeparator: G.conf.labelseparator,
+                                        listeners: {
+                                            'check': function(chb, checked) {
+                                                var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];                                                
+                                                if (layer.widget.labels) {
+                                                    layer.widget.labels = false;
+                                                    G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
+                                                        checked, Ext.getCmp('labelitalic_chb').getValue());
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        xtype: 'checkbox',
+                                        id: 'labelitalic_chb',
+                                        fieldLabel: '<i>Italic</i>',
+                                        labelSeparator: G.conf.labelseparator,
+                                        listeners: {
+                                            'check': function(chb, checked) {
+                                                var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];                                                
+                                                if (layer.widget.labels) {
+                                                    layer.widget.labels = false;
+                                                    G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
+                                                        Ext.getCmp('labelstrong_chb').getValue(), checked);
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        bbar: [
+                            '->',
+                            {
+                                xtype: 'button',
+                                id: 'labelshow_b',
+                                iconCls: 'icon-assign',
+                                hideLabel: true,
+                                text: G.i18n.toggle,
+                                handler: function() {
+                                    var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];                                    
+                                    if (layer.features.length) {
+                                        G.util.labels.toggleFeatureLabels(layer.widget, Ext.getCmp('labelfontsize_nf').getValue(),
+                                            Ext.getCmp('labelstrong_chb').getValue(), Ext.getCmp('labelitalic_chb').getValue());
+                                    }
+                                    else {
+                                        Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                    
+                    item.labelWindow = labelWindow;
+                    item.labelWindow.setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                    item.labelWindow.show();
+                }                
+            },
             items: [
                 {
                     text: 'Locate feature',
                     iconCls: 'menu-layeroptions-locate',
-                    handler: function(item, e) {
+                    handler: function(item) {
                         item.parentMenu.showLocateFeatureWindow(item.parentMenu);
                     }
                 },
                 {
-                    text: 'Show/hide labels',
+                    text: 'Labels',
                     iconCls: 'menu-layeroptions-labels',
-                    handler: function(item, e) {
-                        var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];
-                        
-                        if (layer.features.length) {
-                            if (layer.name == 'Polygon layer') {
-                                G.util.labels.toggleFeatureLabels(layer.widget);
-                            }
-                            else if (layer.name == 'Point layer') {
-                                G.util.labels.toggleFeatureLabels(layer.widget);
-                            }
-                        }
-                        else {
-                            Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
-                        }
+                    labelsWindow: null,
+                    handler: function(item) {
+                        item.parentMenu.showLabelWindow(item);
                     }
                 },
                 {
