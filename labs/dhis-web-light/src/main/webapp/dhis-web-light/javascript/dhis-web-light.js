@@ -8,16 +8,9 @@ function getReportParams( id )
 	window.location.href = "getReportParams.action?id=" + id;
 }
 
-var paramOrganisationUnit = null;
-
-function paramOrganisationUnitSet( id )
-{
-	paramOrganisationUnit = id;
-}
-
 function validationError()
 {
-	if ( $( "#selectionTree" ).length && paramOrganisationUnit == null )
+	if ( $( "#selectionTree" ).length && selectionTreeSelection.getSelected().length == 0 )
 	{
 		setMessage( i18n_please_select_unit );
 		return true;
@@ -40,9 +33,9 @@ function generateReport()
         url += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
     }
         
-    if ( paramOrganisationUnit != null )
+    if ( $( "#selectionTree" ).length )
     {
-        url += "&organisationUnitId=" + paramOrganisationUnit;
+        url += "&organisationUnitId=" + selectionTreeSelection.getSelected()[0];
     }
     
 	window.location.href = "getReport.action?" + url;

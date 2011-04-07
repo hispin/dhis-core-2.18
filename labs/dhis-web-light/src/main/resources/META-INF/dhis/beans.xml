@@ -24,6 +24,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.light.action.GetReportParamsAction"
     class="org.hisp.dhis.light.action.GetReportParamsAction" scope="prototype">
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
   </bean>
   
 </beans>
