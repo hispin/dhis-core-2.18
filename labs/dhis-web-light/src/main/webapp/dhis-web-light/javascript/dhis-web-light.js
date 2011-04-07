@@ -26,7 +26,7 @@ function validationError()
 	return false;
 }	
 
-function generateReportTable()
+function generateReport()
 {
 	if ( validationError() )
 	{
@@ -45,5 +45,5 @@ function generateReportTable()
         url += "&organisationUnitId=" + paramOrganisationUnit;
     }
     
-	window.location.href = "exportTable.action?type=html&" + url;
+	window.location.href = "getReport.action?" + url;
 }

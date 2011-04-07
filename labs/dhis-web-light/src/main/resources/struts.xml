@@ -12,6 +12,11 @@
 	  <result name="success" type="velocity">/dhis-web-light/main.vm</result>
 	  <param name="page">/dhis-web-light/dashboard.vm</param>
     </action>
+    
+    <action name="getReport" class="org.hisp.dhis.light.action.GetReportAction">
+	  <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+	  <param name="page">/dhis-web-commons/ajax/htmlGrid.vm</param>
+    </action>
 
     <action name="getReportParams" class="org.hisp.dhis.light.action.GetReportParamsAction">
 	  <result name="success" type="velocity">/dhis-web-light/main.vm</result>

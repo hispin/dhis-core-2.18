@@ -67,7 +67,7 @@ table th {
 
 div#selectionTree 
 {
-  font-size: 1em; /* Size to change */
+  font-size: 1em;
   background-color: white;
   overflow:auto;
   border:1px solid #cccccc;   
@@ -75,24 +75,21 @@ div#selectionTree
 
 div#selectionTree ul 
 {
-  margin: 0em 0em 0em 1.5em;
-}
-
-div#selectionTree>ul 
-{
-  margin-left: 0em;
+  padding: 0em;
+  margin: 0em;
 }
 
 div#selectionTree li 
 {
+  margin: 0em 0em 0em 1.1em;
   list-style-type: none;
-  white-space: nowrap; /* Makes list items never wrap */
+  white-space: nowrap;
 }
 
 div#selectionTree span.toggle 
 {
   font-family: courier new, monospace;
-  font-size: 1em; /* Size to change */
+  font-size: 1em;
   cursor: pointer;
 }
 
