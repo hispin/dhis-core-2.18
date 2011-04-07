@@ -196,7 +196,7 @@ public class SearchPatientAction
 
             selectedStateManager.setSearchText( searchText );
 
-            patients = patientService.getPatients( searchText );
+            patients = patientService.getPatientsByNames( searchText );
 
             return SUCCESS;
         }
@@ -232,7 +232,7 @@ public class SearchPatientAction
             return SUCCESS;
         }
 
-        patients = patientService.getPatients( searchText );
+        patients = patientService.getPatientsByNames( searchText );
 
         return SUCCESS;
 
