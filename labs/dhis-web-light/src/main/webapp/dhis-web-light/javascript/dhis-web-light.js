@@ -1,4 +1,14 @@
 
+$( document ).ready( function() { pageInit(); } );
+
+function pageInit()
+{
+	// Zebra stripes in lists
+	
+	$( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+    $( "table.listTable tbody tr:even" ).addClass( "listRow" );
+}
+
 // -----------------------------------------------------------------------------
 // Report table
 // -----------------------------------------------------------------------------
