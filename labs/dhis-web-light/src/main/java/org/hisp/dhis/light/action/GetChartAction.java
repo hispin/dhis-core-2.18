@@ -114,7 +114,7 @@ public class GetChartAction
         {
             chart = chartService.getJFreeChart( id, format );
             
-            height = 300;
+            height = 280;
             
             width = 400;
         }
