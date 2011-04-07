@@ -25,6 +25,12 @@
 
 <div class="contentDiv">
 #foreach( $doc in $documents )
-<div class="contentItemDiv" onclick="">$encoder.htmlEncode( $doc.name )</div>
+#if( $doc.external )
+#set( $link = $doc.url )
+#else
+#set( $link = "../dhis-web-commons-stream/loadDocument.action?id=${doc.id}" )
+#end
+
+<div class="contentItemDiv" onclick="javascript:window.location.href='${link}'">$encoder.htmlEncode( $doc.name )</div>
 #end
 </div>
