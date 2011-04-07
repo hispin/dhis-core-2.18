@@ -51,7 +51,7 @@
 
 <div class="labelDiv">
 #if( $!reportParams.isSet() )
-<input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport()" style="width:150px" />
+<input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport()" style="width:150px; height:26px;" />
 #end
 </div>
 

@@ -27,29 +27,15 @@ package org.hisp.dhis.light.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.reporttable.ReportParams;
-import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * @author Lars Helge Overland
- */
-public class GetReportParamsAction
+public class GetReportAction
     implements Action
 {
-    private static final int AVAILABLE_REPORTING_MONTHS = 24;
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -60,87 +46,59 @@ public class GetReportParamsAction
     {
         this.reportTableService = reportTableService;
     }
-
+    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
     {
         this.format = format;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
-
-    public Integer getId()
-    {
-        return id;
-    }
-
+    
     public void setId( Integer id )
     {
         this.id = id;
     }
-        
+
+    private Integer reportingPeriod;
+
+    public void setReportingPeriod( Integer reportingPeriod )
+    {
+        this.reportingPeriod = reportingPeriod;
+    }
+
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private ReportParams reportParams;
+    private Grid grid;
 
-    public ReportParams getReportParams()
+    public Grid getGrid()
     {
-        return reportParams;
-    }
-        
-    private SortedMap<Integer, String> reportingPeriods = new TreeMap<Integer, String>();
-
-    public SortedMap<Integer, String> getReportingPeriods()
-    {
-        return reportingPeriods;
-    }
-    
-    private Report report;
-
-    public Report getReport()
-    {
-        return report;
+        return grid;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Result implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
+        throws Exception
     {
-        if ( id != null )
-        {
-            ReportTable reportTable = reportTableService.getReportTable( id, ReportTableService.MODE_REPORT_TABLE );
-            
-            if ( reportTable != null )
-            {
-                reportParams = reportTable.getReportParams();
-                                
-                if ( reportParams.isParamReportingMonth() )
-                {
-                    MonthlyPeriodType periodType = new MonthlyPeriodType();
-                    
-                    Calendar cal = PeriodType.createCalendarInstance();
-                    
-                    for ( int i = 0; i < AVAILABLE_REPORTING_MONTHS; i++ )
-                    {
-                        int month = i + 1;    
-                        cal.add( Calendar.MONTH, -1 );                    
-                        Period period = periodType.createPeriod( cal.getTime() );                    
-                        String periodName = format.formatPeriod( period );
-                        
-                        reportingPeriods.put( month, periodName );
-                    }                
-                }
-            }
-        }
+        grid = reportTableService.getReportTableGrid( id, format, reportingPeriod, organisationUnitId );
         
         return SUCCESS;
     }
