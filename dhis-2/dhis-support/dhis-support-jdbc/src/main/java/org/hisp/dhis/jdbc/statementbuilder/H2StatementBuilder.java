@@ -345,10 +345,17 @@ public class H2StatementBuilder
     
     public String getPatientsByFullName( String fullName )
     {
-        return "SELECT patientid, birthdate, deathdate, registrationdate, isdead, bloodgroup, " +
-                "gender, dobType, firstname, middlename, lastname FROM patient " +
+        return "SELECT patientid FROM patient " +
                 "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
                 "like lower('%" + fullName + "%') ";
+    }
+    
+    public String getPatientsByFullName( String fullName, int min, int max )
+    {
+        return "SELECT patientid FROM patient " +
+                "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
+                "like lower('%" + fullName + "%') " +
+                "limit " + max + " OFFSET " + min;
     }
     
     public String countPatientsByFullName( String fullName )

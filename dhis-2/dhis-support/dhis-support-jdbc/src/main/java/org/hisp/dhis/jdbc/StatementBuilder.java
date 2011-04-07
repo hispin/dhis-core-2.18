@@ -141,6 +141,8 @@ public interface StatementBuilder
     
     String getPatientsByFullName( String fullName );
     
+    String getPatientsByFullName( String fullName, int min, int max );
+    
     String countPatientsByFullName( String fullName );
 
     String queryDataElementStructureForOrgUnit();

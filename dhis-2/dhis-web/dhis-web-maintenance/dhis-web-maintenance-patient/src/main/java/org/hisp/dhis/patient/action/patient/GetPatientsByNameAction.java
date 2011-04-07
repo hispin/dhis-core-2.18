@@ -104,7 +104,7 @@ public class GetPatientsByNameAction
             }
         }
 
-        patients = new ArrayList<Patient>( patientService.getPatients( firstName + " " + middleName + " " + lastName ) );
+        patients = new ArrayList<Patient>( patientService.getPatientsByNames( firstName + " " + middleName + " " + lastName ) );
 
         return SUCCESS;
     }

@@ -222,7 +222,7 @@ public class ShowAddRelationshipFormAction
 
             if ( searchText.length() > 0 )
             {
-                patients = patientService.getPatients( searchText );
+                patients = patientService.getPatientsByNames( searchText );
 
                 patients.remove( patient );
 
