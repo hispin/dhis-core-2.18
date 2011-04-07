@@ -1,46 +1,12 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <title>DHIS 2</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
-  <link type="text/css" rel="stylesheet" media="screen" href="style/dhis-web-light.css">
-  
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
-  <script type="text/javascript" src="javascript/dhis-web-light.js"></script>
-  
-</head>
-<head>
-<body>
 
 <div class="headerDiv"><span class="header">DHIS 2</span></div>
 
 <!-- Charts -->
 
 <div class="contentDiv">
-
 #foreach( $id in $charts )
 <div class="contentChartDiv"><img src="getChart.action?id=${id}" style="width:100%"></div>
 #end
-
-#if( $chartAreaA )
-<div class="contentChartDiv"><img src="getChart.action?id=${chartAreaA}" style="width:100%"></div>
-#end
-
-#if( $chartAreaB )
-<div class="contentChartDiv"><img src="getChart.action?id=${chartAreaB}" style="width:100%"></div>
-#end
-
-#if( $chartAreaC )
-<div class="contentChartDiv"><img src="getChart.action?id=${chartAreaC}" style="width:100%"></div>
-#end
-
-#if( $chartAreaD )
-<div class="contentChartDiv"><img src="getChart.action?id=${chartAreaD}" style="width:100%"></div>
-#end
-
 </div>
 
 <!-- Report tables -->
@@ -62,6 +28,3 @@
 <div class="contentItemDiv" onclick="">$encoder.htmlEncode( $doc.name )</div>
 #end
 </div>
-
-</body>
-</html>
