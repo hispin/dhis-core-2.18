@@ -148,4 +148,14 @@ public interface SelectionTreeManager
      *             if the argument is null
      */
     void setSelectedOrganisationUnit( OrganisationUnit unit );
+    
+    /**
+     * Sets the current user's organisation unit as selected. If the user is
+     * associated with more than one organisation unit, it is undefined which one
+     * is selected.
+     * 
+     * @return true if the operation was successful, ie. if a current users exists
+     * and if the current user is associated with one or more organisation units.
+     */
+    boolean setCurrentUserOrganisationUnitAsSelected();
 }

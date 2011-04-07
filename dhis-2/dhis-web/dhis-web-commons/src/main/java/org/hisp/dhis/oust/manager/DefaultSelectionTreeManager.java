@@ -35,6 +35,8 @@ import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -59,6 +61,13 @@ public class DefaultSelectionTreeManager
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -199,6 +208,19 @@ public class DefaultSelectionTreeManager
         setSelectedOrganisationUnits( set );
     }
 
+    public boolean setCurrentUserOrganisationUnitAsSelected()
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        if ( user != null && user.getOrganisationUnit() != null )
+        {
+            setSelectedOrganisationUnit( user.getOrganisationUnit() );
+            return true;
+        }
+        
+        return false;
+    }
+    
     // -------------------------------------------------------------------------
     // Session methods
     // -------------------------------------------------------------------------

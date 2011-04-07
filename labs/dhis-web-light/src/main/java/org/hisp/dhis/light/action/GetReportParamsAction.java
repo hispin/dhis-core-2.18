@@ -32,6 +32,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -59,6 +60,13 @@ public class GetReportParamsAction
     public void setReportTableService( ReportTableService reportTableService )
     {
         this.reportTableService = reportTableService;
+    }
+    
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     private I18nFormat format;
@@ -115,6 +123,8 @@ public class GetReportParamsAction
 
     public String execute()
     {
+        selectionTreeManager.setCurrentUserOrganisationUnitAsSelected();
+        
         if ( id != null )
         {
             ReportTable reportTable = reportTableService.getReportTable( id, ReportTableService.MODE_REPORT_TABLE );

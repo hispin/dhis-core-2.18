@@ -180,13 +180,11 @@
 		</property>
 	</bean>
 
-
 	<!-- Organisation Unit Selection Tree -->
 
 	<bean id="org.hisp.dhis.oust.manager.SelectionTreeManager" class="org.hisp.dhis.oust.manager.DefaultSelectionTreeManager">
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		</property>
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.oust.action.ExpandSubtreeAction" class="org.hisp.dhis.oust.action.ExpandSubtreeAction" scope="prototype">

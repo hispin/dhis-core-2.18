@@ -40,8 +40,6 @@
 <div class="pageDiv" id="selectionTree" style="width:300px; height:200px"></div>	            
 <script type="text/javascript">
 	selectionTreeSelection.setMultipleSelectionAllowed( false );
-	selectionTreeSelection.setListenerFunction( paramOrganisationUnitSet );
-	selectionTree.clearSelectedOrganisationUnits();
 	selectionTree.buildSelectionTree();
 </script>
 
