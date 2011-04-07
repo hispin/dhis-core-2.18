@@ -214,28 +214,6 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatientsByNames( String name )
-    {
-        return patientStore.getByNames( name );
-    }
-
-    @Override
-    public Collection<Patient> getPatients( String searchText )
-    {
-        Set<Patient> patients = new HashSet<Patient>();
-
-        patients.addAll( getPatientsByNames( searchText ) );
-
-        for ( PatientIdentifier patientIdentifier : patientIdentifierService
-            .getPatientIdentifiersByIdentifier( searchText ) )
-        {
-            patients.add( patientIdentifier.getPatient() );
-        }
-
-        return patients;
-    }
-
-    @Override
     public Collection<Patient> getPatients( String searchText, int min, int max )
     {
         int countPatientName = patientStore.countGetPatientsByName( searchText );
@@ -309,7 +287,7 @@ public class DefaultPatientService
     {
         Collection<Patient> patients = new ArrayList<Patient>();
 
-        Collection<Patient> allPatients = getPatients( searchText );
+        Collection<Patient> allPatients = getPatientsByNames( searchText );
 
         if ( allPatients.retainAll( getPatients( organisationUnit, min, max ) ) )
         {
@@ -356,7 +334,7 @@ public class DefaultPatientService
     {
         SortedMap<String, Patient> patientsSortedByAttribute = new TreeMap<String, Patient>();
 
-        Collection<Patient> sortedPatients = new ArrayList<Patient>();
+        Set<Patient> sortedPatients = new HashSet<Patient>();
 
         // ---------------------------------------------------------------------
         // Better to fetch all attribute values at once than fetching the
@@ -401,9 +379,15 @@ public class DefaultPatientService
     }
 
     @Override
+    public Collection<Patient> getPatientsByNames( String name )
+    {
+        return patientStore.getByNames( name.toLowerCase() );
+    }
+    
+    @Override
     public Collection<Patient> getPatientsByNames( String name, int min, int max )
     {
-        return patientStore.getByNames( name, min, max );
+        return patientStore.getByNames( name.toLowerCase(), min, max );
     }
 
     @Override

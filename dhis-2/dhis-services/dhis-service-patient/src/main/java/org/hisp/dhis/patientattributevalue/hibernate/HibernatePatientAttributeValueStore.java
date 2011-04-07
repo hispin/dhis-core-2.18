@@ -131,13 +131,11 @@ public class HibernatePatientAttributeValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText, int min, int max )
     {
-        String hql = "select pav.patient from PatientAttributeValue pav where pav.patientAttribute = :patientAttribute and pav.value like '%"
-            + searchText + "%'";
+        return getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
+            Restrictions.ilike( "value", "%" + searchText + "%" ) )
+            .setProjection(Projections.distinct(Projections.property( "patient") ))
+            .setFirstResult( min ).setMaxResults( max ).list();
 
-        Query query = getQuery( hql );
-        query.setEntity( "patientAttribute", patientAttribute );
-
-        return query.setFirstResult( min ).setMaxResults( max ).list();
     }
 
     @SuppressWarnings( "unchecked" )

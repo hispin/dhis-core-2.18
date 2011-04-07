@@ -100,8 +100,9 @@ public class HibernatePatientStore
         return getCriteria( Restrictions.eq( "birthDate", birthDate ) ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByNames( String name )
-    {
+    {   
         String sql = statementBuilder.getPatientsByFullName( name );
 
         StatementHolder holder = statementManager.getHolder();
@@ -131,15 +132,38 @@ public class HibernatePatientStore
 
         return patients;
     }
-
+    
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByNames( String name, int min, int max )
-    {
-        return getCriteria(
-            Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) )
-            .setFirstResult( min ).setMaxResults( max ).list();
+    {   
+        String sql = statementBuilder.getPatientsByFullName( name, min, max );
+
+        StatementHolder holder = statementManager.getHolder();
+
+        Set<Patient> patients = new HashSet<Patient>();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement.executeQuery( sql );
+
+            while ( resultSet.next() )
+            {
+                Patient p = get( resultSet.getInt( 1 ) );
+                patients.add( p );
+            }
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return patients;
     }
 
     @SuppressWarnings( "unchecked" )

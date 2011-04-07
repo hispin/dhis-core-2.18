@@ -345,6 +345,14 @@ public class DerbyStatementBuilder
                "like lower('%" + fullName + "%') ";
    }
    
+   public String getPatientsByFullName( String fullName, int min, int max )
+   {
+       return "SELECT patientid FROM patient " +
+               "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
+               "like lower('%" + fullName + "%') " +
+               "limit " + max + " OFFSET " + min;
+   }
+   
    public String countPatientsByFullName( String fullName )
    {
        return "SELECT count(patientid) FROM patient " +

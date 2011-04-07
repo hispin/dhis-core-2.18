@@ -99,14 +99,6 @@ public interface PatientService
     Collection<Patient> getPatientsByNames( String name );
     
     /**
-     * Search Patient base on firstname/middlename/lastname/
-     * 
-     * @param name firstName/middleName/lastName/
-     * @return Patient List
-     */
-    Collection<Patient> getPatients( String searchText );
-    
-    /**
      * Search Patient base on identifier value with result limited
      * 
      * @param searchText value

@@ -337,12 +337,20 @@ public class MySQLStatementBuilder
                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
                "AND a.timestamp<=d.timestamp;";
    }
-   
+
    public String getPatientsByFullName( String fullName )
    {
        return "SELECT patientid FROM patient " +
                "where lower(concat( firstname, \" \",middleName , \" \" , lastname) ) " +
-               "like lower('%" + fullName + "%')";
+               "like lower('%" + fullName + "%') ";
+   }
+   
+   public String getPatientsByFullName( String fullName, int min, int max )
+   {
+       return "SELECT patientid FROM patient " +
+               "where lower(concat( firstname, \" \",middleName , \" \" , lastname) ) " +
+               "like lower('%" + fullName + "%') " +
+               "limit " + min + " ," + max;
    }
    
    public String countPatientsByFullName( String fullName )
