@@ -94,11 +94,6 @@ public class ProvideContentAction
 
     private List<Object> chartAreas = new ArrayList<Object>();
 
-    public void setChartAreas( List<Object> chartAreas )
-    {
-        this.chartAreas = chartAreas;
-    }
-
     public List<Object> getChartAreas()
     {
         return chartAreas;
@@ -124,7 +119,7 @@ public class ProvideContentAction
         
         for ( int i = 1; i <= chartsInDashboardCount; i++ )
         {
-            chartAreas.add( content.get( "chartArea" + i ) );
+            chartAreas.add( content.get( DashboardManager.CHART_AREA_PREFIX + i ) );
         }
 
         return SUCCESS;

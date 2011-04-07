@@ -1,5 +1,6 @@
 package org.hisp.dhis.light.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dashboard.DashboardConfiguration;
@@ -12,7 +13,6 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
 
 public class ProvideContentAction
     implements Action
@@ -59,6 +59,13 @@ public class ProvideContentAction
     {
         return documents;
     }
+    
+    private List<String> charts = new ArrayList<String>();
+
+    public List<String> getCharts()
+    {
+        return charts;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -68,10 +75,15 @@ public class ProvideContentAction
         throws Exception
     {
         DashboardConfiguration config = dashboardManager.getConfiguration();
-        
-        if ( config != null )
+
+        for ( int i = 0; i < 8; i++ )
         {
-            ActionContext.getContext().getActionInvocation().getStack().push( config.getAreaItems() );
+            String id = config.getAreaItems().get( DashboardManager.CHART_AREA_PREFIX + ( i + 1 ) );
+            
+            if ( id != null )
+            {
+                charts.add( id );
+            }
         }
         
         User user = currentUserService.getCurrentUser();

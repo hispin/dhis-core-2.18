@@ -1,6 +1,10 @@
 
+/*----------------------------------------------------------------------------*/
+/* Dashboard                                                                  */
+/*----------------------------------------------------------------------------*/
+
 html, body {
-  font-family: arial;
+  font-family: sans-serif;
 }
 
 body {
@@ -43,4 +47,63 @@ body {
   border-bottom: 1px solid #e0e0e0;
   background-color: #35699f;
   cursor: pointer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Organisation Unit Selection Tree                                           */
+/*----------------------------------------------------------------------------*/
+
+div#selectionTree 
+{
+  font-size: 9pt; /* Size to change */
+  background-color: white;
+  height: 300px;
+  width:595px;  
+  overflow:auto;
+  border:1px solid #cccccc;   
+}
+
+div#selectionTree ul 
+{
+  margin: 0em 0em 0em 1.5em;
+}
+
+div#selectionTree>ul 
+{
+  margin-left: 0em;
+}
+
+div#selectionTree li 
+{
+  list-style-type: none;
+  white-space: nowrap; /* Makes list items never wrap */
+}
+
+div#selectionTree span.toggle 
+{
+  font-family: courier new, monospace;
+  font-size: 9pt; /* Size to change */
+  cursor: pointer;
+}
+
+div#selectionTree a 
+{
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+div#selectionTree a:hover 
+{
+  color: #808080;
+}
+
+div#selectionTree a.selected 
+{
+  color: orange;
+}
+
+div#selectionTree a.locked 
+{
+  color: green;
 }

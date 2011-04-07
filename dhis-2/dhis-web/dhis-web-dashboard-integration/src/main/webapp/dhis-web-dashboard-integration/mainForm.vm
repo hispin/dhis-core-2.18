@@ -66,13 +66,13 @@
 #set( $startHr = ($count0 % $sizeHalf) == 0 )
 #set( $endHr =  ($count0 % $sizeHalf) == ($sizeHalf - 1) )
 
-#if($startHr) <tr> #end
+#if( $startHr )<tr> #end
 	<td style="width:305px; padding-left: 10px;">
-		#dropDownButtonDiv( "chartDropDown$velocityCount" "chartArea$velocityCount" )
-		#chartDropDownListDiv( "chartArea$velocityCount" "chartDropDown$velocityCount" $chart )
+		#dropDownButtonDiv( "chartDropDown${velocityCount}" "chartArea${velocityCount}" )
+		#chartDropDownListDiv( "chartArea${velocityCount}" "chartDropDown${velocityCount}" $chart )
 	</td>
 #end
-#if($endHr) </tr> #end
+#if( $endHr )</tr> #end
 </table>
 
 	</td>

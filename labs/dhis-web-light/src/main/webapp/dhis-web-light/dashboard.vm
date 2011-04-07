@@ -21,6 +21,10 @@
 
 <div class="contentDiv">
 
+#foreach( $id in $charts )
+<div class="contentChartDiv"><img src="getChart.action?id=${id}" style="width:100%"></div>
+#end
+
 #if( $chartAreaA )
 <div class="contentChartDiv"><img src="getChart.action?id=${chartAreaA}" style="width:100%"></div>
 #end
@@ -45,7 +49,7 @@
 
 <div class="contentDiv">
 #foreach( $table in $reportTables )
-<div class="contentItemDiv" id="reportTable${table.id}" onclick="generateReportTable( '${table.id}' )">$encoder.htmlEncode( $table.name )</div>
+<div class="contentItemDiv" id="reportTable${table.id}" onclick="getReportParams( '${table.id}' )">$encoder.htmlEncode( $table.name )</div>
 #end
 </div>
 
