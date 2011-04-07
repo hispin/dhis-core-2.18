@@ -36,6 +36,8 @@ import java.util.Set;
  */
 public interface DashboardManager
 {
+    final String CHART_AREA_PREFIX = "chartArea";
+    
     void setAreaItem( String area, String item );
     
     void clearArea( String area );

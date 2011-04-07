@@ -19,5 +19,9 @@
       </result>
     </action>
     
+    <action name="getReportParams" class="org.hisp.dhis.light.action.GetReportParamsAction">
+      <result name="success" type="velocity">/dhis-web-light/inputReportParamsForm.vm</result>
+    </action>
+    
   </package>
 </struts>
