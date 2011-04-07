@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.document.action;
+package org.hisp.dhis.commons.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -44,10 +44,10 @@ import org.hisp.dhis.util.StreamActionSupport;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class LoadDocumentFromFileSystemAction
+public class LoadDocumentAction
     extends StreamActionSupport
 {
-    private static final Log log = LogFactory.getLog( LoadDocumentFromFileSystemAction.class );
+    private static final Log log = LogFactory.getLog( LoadDocumentAction.class );
     
     // -------------------------------------------------------------------------
     // Dependencies

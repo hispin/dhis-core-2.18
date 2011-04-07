@@ -608,6 +608,17 @@
 		
 	</package>
 
+    <!-- Stream -->
+    
+    <package name="dhis-web-commons-stream" extends="dhis-web-commons"
+		namespace="/dhis-web-commons-stream">
+    
+		<action name="loadDocument" class="org.hisp.dhis.commons.action.LoadDocumentAction">
+			<result name="success" type="outputStreamResult"/>
+		</action>    
+		
+	</package>
+	
 	<!-- About -->
 
 	<package name="dhis-web-commons-about" extends="dhis-web-commons"

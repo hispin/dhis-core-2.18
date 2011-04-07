@@ -55,10 +55,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
-    <action name="loadDocument" class="org.hisp.dhis.reporting.document.action.LoadDocumentFromFileSystemAction">
-      <result name="success" type="outputStreamResult"/>
-    </action>
-    
     <!-- Chart -->
         
     <action name="saveChart" class="org.hisp.dhis.reporting.chart.action.SaveChartAction">
