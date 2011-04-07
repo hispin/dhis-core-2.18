@@ -38,11 +38,11 @@ public interface UserSettingManager
 {
     final String ID = UserSettingManager.class.getName();
 
-    static String KEY_CHARTS_IN_DASHBOARD = "keyChartsInDashboard";
+    final String KEY_CHARTS_IN_DASHBOARD = "keyChartsInDashboard";
 
-    static int DEFAULT_CHARTS_IN_DASHBOARD = 4;
+    final int DEFAULT_CHARTS_IN_DASHBOARD = 4;
 
-    static List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );
+    final List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );
 
     public Serializable getUserSetting( String key );
 

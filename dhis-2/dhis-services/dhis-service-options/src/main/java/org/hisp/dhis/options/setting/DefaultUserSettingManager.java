@@ -30,6 +30,8 @@ package org.hisp.dhis.options.setting;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.options.UserSettingManager;
 import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
@@ -37,6 +39,8 @@ import org.hisp.dhis.user.UserSettingService;
 public class DefaultUserSettingManager
     implements UserSettingManager
 {
+    private static final Log log = LogFactory.getLog( DefaultUserSettingManager.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -60,6 +64,7 @@ public class DefaultUserSettingManager
         }
         catch ( NoCurrentUserException e )
         {
+            log.warn( "No current user, could not get user setting for key " + key );
         }
 
         return null;
@@ -73,6 +78,7 @@ public class DefaultUserSettingManager
         }
         catch ( NoCurrentUserException e )
         {
+            log.warn( "No current user, could not save user setting for key " + key );
         }
     }
 
