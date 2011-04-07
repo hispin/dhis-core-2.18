@@ -120,12 +120,8 @@ public class ProvideContentAction
 
         Collections.sort( charts, new ChartTitleComparator() );
 
-        Object sessionChartsInDashboard = ActionContext.getContext().getActionInvocation().getStack()
-            .findString( UserSettingManager.KEY_CHARTS_IN_DASHBOARD );
-
-        Integer chartsInDashboardCount = sessionChartsInDashboard != null ? Integer
-            .valueOf( (String) sessionChartsInDashboard ) : UserSettingManager.DEFAULT_CHARTS_IN_DASHBOARD;
-
+        int chartsInDashboardCount = userSettingManager.getChartsInDashboard();
+        
         for ( int i = 1; i <= chartsInDashboardCount; i++ )
         {
             chartAreas.add( content.get( "chartArea" + i ) );
