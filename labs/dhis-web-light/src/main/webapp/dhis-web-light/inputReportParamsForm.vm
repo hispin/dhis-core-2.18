@@ -1,22 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <title>DHIS 2</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
-  <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css">
-  <link type="text/css" rel="stylesheet" media="screen" href="style/dhis-web-light.css">
-  
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
-  <script type="text/javascript" src="../dhis-web-commons/oust/oust.js"></script>
-  <script type="text/javascript" src="../request.js"></script>
-  <script type="text/javascript" src="javascript/dhis-web-light.js"></script>
-  
-</head>
-<head>
-<body>
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
@@ -30,71 +11,48 @@
 	var i18n_please_select_unit = '$encoder.jsEscape( $i18n.getString( "select_organisation_unit" ), "'")';
 </script>
 
-<h3>$i18n.getString( "report_table_parameters" )</h3>
+<div class="headerDiv"><span class="header">$i18n.getString( "report_table_parameters" )</span></div>
 
 <input type="hidden" id="id" name="id" value="$!id" />
 
-<table>
-	
-    <!-- Reporting month -->
-    
-    #if ( $!reportParams.isParamReportingMonth() )
-    
-    <tr>
-        <th>$i18n.getString( "reporting_month" )</th>
-    </tr>
-    <tr>
-        <td>
-            <select id="reportingPeriod" name="reportingPeriod" style="width:325px">               
-                #foreach ( $key in $reportingPeriods.keySet() )
-                    <option value="$key">$reportingPeriods.get( $key )</option>
-                #end
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="4" style="height:10px"></td>
-    </tr>
-    
-    #end
-    
-    <!-- OrganisationUnit -->
-    
-    #if ( $!reportParams.isParamGrandParentOrganisationUnit() || $!reportParams.isParamParentOrganisationUnit() || $!reportParams.isParamOrganisationUnit() )
-        
-	<tr>
-        <th>$i18n.getString( "organisation_unit" )</th>
-    </tr>
-    <tr>
-	    <td>
-			<div id="selectionTree" style="width:325px; height:200px"></div>	            
-			<script type="text/javascript">
-				selectionTreeSelection.setMultipleSelectionAllowed( false );
-				selectionTreeSelection.setListenerFunction( paramOrganisationUnitSet );
-				selectionTree.clearSelectedOrganisationUnits();
-			    selectionTree.buildSelectionTree();
-			</script>
-	    </td>
-	</tr>
-    <tr>
-        <td colspan="4" style="height:10px"></td>
-    </tr>
-    
-    #end
-    
-    <!-- Submit -->
-    
-    <tr>
-        <td>
-    	#if( $!reportParams.isSet() )
-        <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport()" style="width:140px" />
-        <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:140px" />
-        #end
-        </td>
-    </tr>
-</table>
+<!-- Reporting month -->
+
+#if ( $!reportParams.isParamReportingMonth() )
+
+<div class="labelDiv">$i18n.getString( "reporting_month" )</div>
+
+<div class="pageDiv">
+<select id="reportingPeriod" name="reportingPeriod" style="width:300px">               
+#foreach ( $key in $reportingPeriods.keySet() )
+<option value="$key">$reportingPeriods.get( $key )</option>
+#end
+</select>
+</div>
+
+#end
+
+<!-- OrganisationUnit -->
+
+#if ( $!reportParams.isParamGrandParentOrganisationUnit() || $!reportParams.isParamParentOrganisationUnit() || $!reportParams.isParamOrganisationUnit() )
+
+<div class="labelDiv">$i18n.getString( "organisation_unit" )</div>
+
+<div class="pageDiv" id="selectionTree" style="width:300px; height:200px"></div>	            
+<script type="text/javascript">
+	selectionTreeSelection.setMultipleSelectionAllowed( false );
+	selectionTreeSelection.setListenerFunction( paramOrganisationUnitSet );
+	selectionTree.clearSelectedOrganisationUnits();
+	selectionTree.buildSelectionTree();
+</script>
+
+#end
+
+<!-- Submit -->
+
+<div class="labelDiv">
+#if( $!reportParams.isSet() )
+<input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport()" style="width:150px" />
+#end
+</div>
 
 <span id="message"></span>
-
-</body>
-</html>

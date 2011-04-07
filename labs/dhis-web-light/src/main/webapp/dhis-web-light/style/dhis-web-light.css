@@ -3,24 +3,27 @@
 /* Dashboard                                                                  */
 /*----------------------------------------------------------------------------*/
 
-html, body {
-  font-family: sans-serif;
-}
-
 body {
   margin: 0px;
   padding: 0px;
+  font-family: sans-serif;
+  background-color: #35699f;
+  color: #ffffff;
+}
+
+table th {
+  text-align: left;
 }
   
 .headerDiv {
   position: relative;
   width: 100%;
-  font-size: 2em;
-  color: #ffffff;
+  font-size: 1em;
   background-color: #000000;
   padding-top: 0.6em;
   padding-bottom: 0.6em;
-  border-bottom: 1px solid #e0e0e0;
+  border-top: 1px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
 }
 
 .header {
@@ -33,20 +36,29 @@ body {
 }
 
 .contentChartDiv {
-  margin-top: 1.5em;
+  margin-top: 1em;
   padding-top: 1.5em;
   padding-bottom: 1.5em;
-  margin-bottom: 1.5em;
-  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 1em;
+  background-color: #ffffff;
 }
 
 .contentItemDiv {
-  color: #ffffff;
-  font-size: 2em;
-  padding: 1.5em;
+  font-size: 1em;
+  padding: 1.2em;
   border-bottom: 1px solid #e0e0e0;
-  background-color: #35699f;
   cursor: pointer;
+}
+
+.labelDiv {
+  font-size: 1em;
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+  margin-left: 0.3em;
+}
+
+.pageDiv { 
+  margin-left: 0.3em;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,10 +67,8 @@ body {
 
 div#selectionTree 
 {
-  font-size: 9pt; /* Size to change */
+  font-size: 1em; /* Size to change */
   background-color: white;
-  height: 300px;
-  width:595px;  
   overflow:auto;
   border:1px solid #cccccc;   
 }
@@ -82,7 +92,7 @@ div#selectionTree li
 div#selectionTree span.toggle 
 {
   font-family: courier new, monospace;
-  font-size: 9pt; /* Size to change */
+  font-size: 1em; /* Size to change */
   cursor: pointer;
 }
 

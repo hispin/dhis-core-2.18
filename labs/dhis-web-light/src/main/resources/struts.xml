@@ -9,18 +9,20 @@
   <package name="dhis-web-light" extends="dhis-web-commons" namespace="/dhis-web-light">
 
     <action name="index" class="org.hisp.dhis.light.action.ProvideContentAction">
-	  <result name="success" type="velocity">/dhis-web-light/dashboard.vm</result>
+	  <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+	  <param name="page">/dhis-web-light/dashboard.vm</param>
     </action>
 
+    <action name="getReportParams" class="org.hisp.dhis.light.action.GetReportParamsAction">
+	  <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+	  <param name="page">/dhis-web-light/inputReportParamsForm.vm</param>
+    </action>
+    
     <action name="getChart" class="org.hisp.dhis.light.action.GetChartAction">
       <result name="success" type="chart">
       <param name="width">480</param>
       <param name="height">800</param>
       </result>
-    </action>
-    
-    <action name="getReportParams" class="org.hisp.dhis.light.action.GetReportParamsAction">
-      <result name="success" type="velocity">/dhis-web-light/inputReportParamsForm.vm</result>
     </action>
     
   </package>
