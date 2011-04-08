@@ -45,13 +45,17 @@ import org.hisp.dhis.period.RelativePeriods;
 public class Chart
     implements Serializable, ImportableObject
 {
+    private static final long serialVersionUID = 2570074075484545534L;
+
     public static final String DIMENSION_PERIOD = "period";
     public static final String DIMENSION_ORGANISATIONUNIT = "organisationUnit";
     public static final String DIMENSION_INDICATOR = "indicator";
     
     public static final String TYPE_BAR = "bar";
     public static final String TYPE_LINE = "line";
-    
+    public static final String TYPE_PIE = "pie";
+    public static final String TYPE_PIE3D = "pie3d";
+
     public static final String SIZE_NORMAL = "normal";
     public static final String SIZE_WIDE = "wide";
     public static final String SIZE_TALL = "tall";

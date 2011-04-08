@@ -86,28 +86,38 @@ function saveChartReceived( messageElement )
     }
 }
 
+function selectedChartType()
+{
+	return $("#type").val();
+}
+
+function selectedIndicatorsCount()
+{
+	return $("#selectedIndicators option").length;
+}
+
 function validateCollections()
 {
     if ( !hasElements( "selectedIndicators" ) )
     {
         setMessage( i18n_must_select_at_least_one_indicator );
-        
+
         return false;
     }
-    
+
     if ( !hasElements( "selectedOrganisationUnits" ) && !isChecked( "userOrganisationUnit" ) )
     {
         setMessage( i18n_must_select_at_least_one_unit );
-        
+
         return false;
     }
-    
+
     if ( !hasElements( "selectedPeriods" ) && !relativePeriodsChecked() )
     {
         setMessage( i18n_must_select_at_least_one_period );
         
         return false;
     }
-    
+     
     return true;
 }

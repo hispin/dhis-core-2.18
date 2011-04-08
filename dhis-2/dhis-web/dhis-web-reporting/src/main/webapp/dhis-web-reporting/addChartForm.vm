@@ -35,6 +35,8 @@
     		<select id="type" name="type" style="width:300px">
     			<option value="bar"#if ( $!chart.type == "bar" ) selected#end>$i18n.getString( "bar_chart" )</option>
     			<option value="line"#if ( $!chart.type == "line" ) selected#end>$i18n.getString( "line_chart" )</option>
+    			<option value="pie"#if ( $!chart.type == "pie" ) selected#end>$i18n.getString( "pie_chart" )</option>
+    			<option value="pie3d"#if ( $!chart.type == "pie3d" ) selected#end>$i18n.getString( "pie3d_chart" )</option>
 		    </select>
 	    </td>
     </tr>
