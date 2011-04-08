@@ -262,7 +262,6 @@ public class FacilityReportingServiceImpl
     public void saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue )
         throws NotAllowedException
     {
-
         org.hisp.dhis.dataset.DataSet dataSet = dataSetService.getDataSet( dataSetValue.getId() );
 
         if ( !dataSetAssociatedWithOrgUnit( unit, dataSet ) )
@@ -297,7 +296,7 @@ public class FacilityReportingServiceImpl
 
             if ( emptyString( dataValue.getValue() ) )
             {
-                log.info( "Empty data value for data element " + dataValue.getId() + " not saved" );
+                log.debug( "Empty data value for data element " + dataValue.getId() + " not saved" );
                 continue;
             }
 
@@ -365,7 +364,6 @@ public class FacilityReportingServiceImpl
             dataValue.setTimestamp( new Date() );
             dataValueService.updateDataValue( dataValue );
         }
-
     }
 
     // -------------------------------------------------------------------------
@@ -374,9 +372,7 @@ public class FacilityReportingServiceImpl
 
     private boolean dataSetLocked( OrganisationUnit unit, org.hisp.dhis.dataset.DataSet dataSet, Period selectedPeriod )
     {
-        if ( dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, unit ) != null )
-            return true;
-        return false;
+        return dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, unit ) != null;
     }
 
     private boolean emptyString( String value )
@@ -455,5 +451,4 @@ public class FacilityReportingServiceImpl
     {
         this.registrationService = registrationService;
     }
-
 }
