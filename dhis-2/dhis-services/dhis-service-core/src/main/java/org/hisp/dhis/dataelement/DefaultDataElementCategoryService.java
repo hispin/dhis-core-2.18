@@ -540,7 +540,7 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementCategoryOptionCombo> sortOptionCombos( DataElementCategoryCombo categoryCombo )
     {
-        Collection<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
+        List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
             categoryCombo.getOptionCombos() );
 
         int totalColumns = optionCombos.size();

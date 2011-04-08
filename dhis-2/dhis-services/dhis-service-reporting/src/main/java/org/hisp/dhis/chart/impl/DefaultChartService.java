@@ -27,14 +27,17 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.chart.Chart.DIMENSION_INDICATOR;
 import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT;
 import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD;
-import static org.hisp.dhis.chart.Chart.DIMENSION_INDICATOR;
 import static org.hisp.dhis.chart.Chart.SIZE_NORMAL;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE3D;
+import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
 import java.awt.Color;
@@ -77,25 +80,19 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.MultiplePiePlot;
-import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.DatasetRenderingOrder;
-import org.jfree.chart.plot.Plot;
+import org.jfree.chart.plot.MultiplePiePlot;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.CategoryToPieDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
 import org.jfree.util.TableOrder;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -174,8 +171,6 @@ public class DefaultChartService
     }
 
     private CurrentUserService currentUserService;
-
-    private List keys;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {

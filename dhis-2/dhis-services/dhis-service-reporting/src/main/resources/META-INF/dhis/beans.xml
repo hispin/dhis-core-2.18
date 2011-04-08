@@ -365,7 +365,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <aop:aspect ref="statementInterceptor">
       <aop:around pointcut="execution( * org.hisp.dhis.completeness.DataSetCompletenessService.exportDataSetCompleteness(..) )" method="intercept"/>
       <aop:around pointcut="execution( * org.hisp.dhis.completeness.DataSetCompletenessService.getDataSetCompleteness(..) )" method="intercept"/>
-      <aop:around pointcut="execution( * org.hisp.dhis.chart.ChartService.getJFreeChart(..) )" method="intercept"/>
+      <aop:around pointcut="execution( * org.hisp.dhis.chart.ChartService.getJFreeChart*(..) )" method="intercept"/>
       <aop:around pointcut="execution( * org.hisp.dhis.datasetreport.DataSetReportService.getAggregatedValueMap(..) )" method="intercept"/>
     </aop:aspect>
       
