@@ -10,7 +10,8 @@ jQuery(document).ready(function() {
 		},
 		factor : {
 			required : true,
-			rangelength : r.indicatorType.factor.rangelength
+			rangelength : r.indicatorType.factor.rangelength,
+			digits : true
 		}
 	};
 
