@@ -108,7 +108,6 @@ public class DefaultMinMaxValuesGenerationService
     public Collection<DeflatedDataValue> findOutliers( OrganisationUnit organisationUnit, Collection<Period> periods,
         Collection<MinMaxDataElement> minMaxDataElements )
     {
-
         Set<DeflatedDataValue> result = new HashSet<DeflatedDataValue>();
 
         for ( MinMaxDataElement minMaxs : minMaxDataElements )

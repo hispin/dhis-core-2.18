@@ -192,8 +192,7 @@ public class ValidationAction
             Collection<MinMaxDataElement> minmaxs = minMaxDataElementService.getMinMaxDataElements( orgUnit, dataSet.getDataElements() );
             
             if ( minmaxs == null )
-            {
-    
+            {    
                 Double factor = (Double) systemSettingManager.getSystemSetting(
                     SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
     
