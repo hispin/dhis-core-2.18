@@ -22,7 +22,7 @@ jQuery(document).ready(	function() {
 		code: {
 			rangelength: [3, 40],
 			alphanumericwithbasicpuncspaces:true,
-			notOnlyDigits:true
+			notOnlyDigits:false
 		},
 		description: {
 			rangelength: [3, 250],
