@@ -47,8 +47,8 @@
 				#end
 			</select>
 
-			<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getPeriods( 'periodType', 'periodId', 'periodId', '-1' )" />
-			<input type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getPeriods( 'periodType', 'periodId', 'periodId', '1' )" /><br><br>
+			<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getPeriods( 'periodTypeId', 'periodId', 'periodId', '-1' )" />
+			<input type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getPeriods( 'periodTypeId', 'periodId', 'periodId', '1' )" /><br><br>
 
 			<!-- Period -->
 			
