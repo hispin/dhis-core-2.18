@@ -187,7 +187,7 @@ var validationRules = {
 		"code" : {
 			"rangelength" : [ 3, 25 ],
 			"alphanumericwithbasicpuncspaces" : true,
-			"notOnlyDigits" : true
+			"notOnlyDigits" : false
 		},
 		"description" : {
 			"rangelength" : [ 3, 250 ],
