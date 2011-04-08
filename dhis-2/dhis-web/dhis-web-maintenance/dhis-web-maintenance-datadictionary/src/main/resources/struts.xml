@@ -110,7 +110,8 @@
 			class="org.hisp.dhis.dd.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditorView.vm</param>
-			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>			
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>	
+			<param name="javascripts">javascript/dataElementGroupEditorView.js</param>		
 		</action>	
 
 		<action name="getAssignedDataElementGroups"
@@ -371,7 +372,8 @@
 			class="org.hisp.dhis.dd.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupEditorView.vm</param>
-			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>			
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>	
+			<param name="javascripts">javascript/indicatorGroupEditorView.js</param>
 		</action>
 		
 		<action name="getAssignedIndicatorGroups"
