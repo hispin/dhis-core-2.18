@@ -67,6 +67,7 @@
     
     <action name="sendMessage" class="org.hisp.dhis.dashboard.message.action.SendMessageAction">
       <result name="success" type="redirect">message.action</result>
+      <param name="requiredAuthorities">F_SEND_MESSAGE</param>
     </action>
     
     <action name="showSendMessage" class="org.hisp.dhis.dashboard.action.NoAction">
@@ -75,6 +76,7 @@
       <param name="menu">/dhis-web-dashboard-integration/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/message.js</param>
       <param name="stylesheets">style/dashboard.css</param>
+      <param name="requiredAuthorities">F_SEND_MESSAGE</param>
     </action>
     
     <action name="readMessage" class="org.hisp.dhis.dashboard.message.action.ReadMessageAction">
