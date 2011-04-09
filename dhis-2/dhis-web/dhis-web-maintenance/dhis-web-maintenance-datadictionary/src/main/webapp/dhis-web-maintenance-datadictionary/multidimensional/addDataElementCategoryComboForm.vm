@@ -8,7 +8,7 @@
 				rangelength: r.dateElementCategoryCombo.name.rangelength
 			},
 			selectedCategories: {
-				required: true
+				required: false
 			}
 		};
 
