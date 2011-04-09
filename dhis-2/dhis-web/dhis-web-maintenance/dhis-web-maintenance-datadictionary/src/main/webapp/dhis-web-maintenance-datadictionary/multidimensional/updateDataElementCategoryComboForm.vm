@@ -7,7 +7,7 @@
 				required: true,
 				rangelength: r.dateElementCategoryCombo.name.rangelength
 			},
-			selectedCategories: {
+			selectedList: {
 				required: true
 			}
 		};
