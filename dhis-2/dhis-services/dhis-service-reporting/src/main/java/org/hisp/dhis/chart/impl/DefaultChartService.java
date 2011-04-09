@@ -434,15 +434,19 @@ public class DefaultChartService
         else if ( chart.isType( TYPE_PIE ) )
         {
             JFreeChart multiplePieChart = ChartFactory.createMultiplePieChart( chart.getTitle(), dataSets[0],
-                TableOrder.BY_ROW, !chart.getHideLegend(), true, false );
+                TableOrder.BY_ROW, !chart.getHideLegend(), false, false );
             multiplePieChart.setBackgroundPaint( Color.WHITE );
             multiplePieChart.setAntiAlias( true );
+
+            TextTitle title = multiplePieChart.getTitle();
+            title.setFont( titleFont );
 
             MultiplePiePlot multiplePiePlot = (MultiplePiePlot) multiplePieChart.getPlot();
             PiePlot piePlot = (PiePlot) multiplePiePlot.getPieChart().getPlot();
             piePlot.setBackgroundPaint( Color.WHITE );
             piePlot.setShadowXOffset( 0 );
             piePlot.setShadowYOffset( 0 );
+            piePlot.setLabelGenerator( null );
 
             for ( int i = 0; i < dataSets[0].getColumnCount(); i++ )
             {
@@ -454,7 +458,7 @@ public class DefaultChartService
         else if ( chart.isType( TYPE_PIE3D ) )
         {
             JFreeChart multiplePieChart = ChartFactory.createMultiplePieChart3D( chart.getTitle(), dataSets[0],
-                TableOrder.BY_ROW, !chart.getHideLegend(), true, false );
+                TableOrder.BY_ROW, !chart.getHideLegend(), false, false );
             multiplePieChart.setBackgroundPaint( Color.WHITE );
             multiplePieChart.setAntiAlias( true );
 
