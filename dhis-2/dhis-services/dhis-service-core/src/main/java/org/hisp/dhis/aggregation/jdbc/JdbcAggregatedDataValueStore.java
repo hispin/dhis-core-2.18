@@ -311,7 +311,7 @@ public class JdbcAggregatedDataValueStore
             try
             {
                 final String sql = "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid)";        
-                statementManager.getHolder().executeUpdate( sql );
+                statementManager.getHolder().executeUpdate( sql, true );
             }
             catch ( Exception ex )
             {
@@ -324,7 +324,7 @@ public class JdbcAggregatedDataValueStore
             try
             {
                 final String sql = "CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid)";        
-                statementManager.getHolder().executeUpdate( sql );
+                statementManager.getHolder().executeUpdate( sql, true );
             }
             catch ( Exception ex )
             {
@@ -340,7 +340,7 @@ public class JdbcAggregatedDataValueStore
             try
             {
                 final String sql = "DROP INDEX aggregateddatavalue_index";
-                statementManager.getHolder().executeUpdate( sql );
+                statementManager.getHolder().executeUpdate( sql, true );
             }
             catch ( Exception ex )
             {
@@ -353,7 +353,7 @@ public class JdbcAggregatedDataValueStore
             try
             {
                 final String sql = "DROP INDEX aggregatedindicatorvalue_index";
-                statementManager.getHolder().executeUpdate( sql );
+                statementManager.getHolder().executeUpdate( sql, true );
             }
             catch ( Exception ex )
             {
