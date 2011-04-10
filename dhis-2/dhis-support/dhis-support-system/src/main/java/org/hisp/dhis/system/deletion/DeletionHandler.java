@@ -42,7 +42,6 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.FrequencyOverrideAssociation;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.document.Document;
@@ -323,15 +322,6 @@ public abstract class DeletionHandler
     }
 
     public boolean allowDeleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
-    {
-        return true;
-    }
-
-    public void deleteFrequencyOverrideAssociation( FrequencyOverrideAssociation association )
-    {
-    }
-
-    public boolean allowDeleteFrequencyOverrideAssociation( FrequencyOverrideAssociation association )
     {
         return true;
     }

@@ -221,63 +221,6 @@ public interface DataSetService
      */
     Collection<DataSet> getMobileDataSetsFromCategory(int categoryOptionId);
     
-    // -------------------------------------------------------------------------
-    // FrequencyOverrideAssociation
-    // -------------------------------------------------------------------------
-
-    /**
-     * Adds a FrequencyOverrideAssociation.
-     * 
-     * @param frequencyOverrideAssociation The FrequencyOverrideAssociation to
-     *        add.
-     */
-    void addFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation );
-
-    /**
-     * Updates a FrequencyOverrideAssociation.
-     * 
-     * @param frequencyOverrideAssociation The FrequencyOverrideAssociation to
-     *        update.
-     */
-    void updateFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation );
-
-    /**
-     * Removes a FrequencyOverrideAssociation.
-     * 
-     * @param frequencyOverrideAssociation The FrequencyOverrideAssociation to
-     *        remove.
-     */
-    void deleteFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation );
-
-    /**
-     * Retrieves a FrequencyOverrideAssociation.
-     * 
-     * @param dataSet The DataSet referred to by the
-     *        FrequencyOverrideAssociation.
-     * @param source The Source referred to by the FrequencyOverrideAssociation.
-     * @return The FrequencyOverrideAssociation for the given DataSet and
-     *         Source.
-     */
-    FrequencyOverrideAssociation getFrequencyOverrideAssociation( DataSet dataSet, Source source );
-
-    /**
-     * Retrieves FrequencyOverrideAssociations for a given DataSet.
-     * 
-     * @param dataSet The DataSet.
-     * @return A collection of FrequencyOverrideAssociations for the given
-     *         DataSet.
-     */
-    Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsByDataSet( DataSet dataSet );
-
-    /**
-     * Retrieves FrequencyOverrideAssociations for a given Source.
-     * 
-     * @param source The Source.
-     * @return A collection of FrequencyOverrideAssociations for the given
-     *         Source.
-     */
-    Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source );
-
     int getDataSetCountByName( String name );
     
     Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max );

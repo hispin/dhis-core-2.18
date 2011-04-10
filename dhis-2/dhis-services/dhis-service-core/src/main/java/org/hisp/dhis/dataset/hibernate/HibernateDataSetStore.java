@@ -43,7 +43,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetStore;
-import org.hisp.dhis.dataset.FrequencyOverrideAssociation;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
@@ -273,76 +272,6 @@ public class HibernateDataSetStore
         return mobileDataSets;
     }
     
-    // -------------------------------------------------------------------------
-    // FrequencyOverrideAssociation
-    // -------------------------------------------------------------------------
-
-    public void addFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
-    {
-        PeriodType periodType = PeriodType.getPeriodTypeByName( frequencyOverrideAssociation.getPeriodType().getName() );
-
-        periodType = periodStore.getPeriodType( periodType.getClass() );
-
-        frequencyOverrideAssociation.setPeriodType( periodType );
-
-        Session session = sessionFactory.getCurrentSession();
-
-        session.save( frequencyOverrideAssociation );
-    }
-
-    public void updateFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
-    {
-        PeriodType periodType = PeriodType.getPeriodTypeByName( frequencyOverrideAssociation.getPeriodType().getName() );
-
-        periodType = periodStore.getPeriodType( periodType.getClass() );
-
-        frequencyOverrideAssociation.setPeriodType( periodType );
-
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( frequencyOverrideAssociation );
-    }
-
-    public void deleteFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( frequencyOverrideAssociation );
-    }
-
-    public FrequencyOverrideAssociation getFrequencyOverrideAssociation( DataSet dataSet, Source source )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( FrequencyOverrideAssociation.class );
-        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
-        criteria.add( Restrictions.eq( "source", source ) );
-
-        return (FrequencyOverrideAssociation) criteria.uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsByDataSet( DataSet dataSet )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( FrequencyOverrideAssociation.class );
-        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( FrequencyOverrideAssociation.class );
-        criteria.add( Restrictions.eq( "source", source ) );
-
-        return criteria.list();
-    }
-
     @Override
     public int getDataSetCount()
     {

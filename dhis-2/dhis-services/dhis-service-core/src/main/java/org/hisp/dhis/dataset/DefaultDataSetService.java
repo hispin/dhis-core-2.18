@@ -299,39 +299,6 @@ public class DefaultDataSetService
     public Collection<DataSet> getMobileDataSetsFromCategory(int categoryId){
         return dataSetStore.getMobileDataSetsFromCategory(categoryId);
     }
-    // -------------------------------------------------------------------------
-    // FrequencyOverrideAssociation
-    // -------------------------------------------------------------------------
-
-    public void addFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
-    {
-        dataSetStore.addFrequencyOverrideAssociation( frequencyOverrideAssociation );
-    }
-
-    public void updateFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
-    {
-        dataSetStore.updateFrequencyOverrideAssociation( frequencyOverrideAssociation );
-    }
-
-    public void deleteFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
-    {
-        dataSetStore.deleteFrequencyOverrideAssociation( frequencyOverrideAssociation );
-    }
-
-    public FrequencyOverrideAssociation getFrequencyOverrideAssociation( DataSet dataSet, Source source )
-    {
-        return dataSetStore.getFrequencyOverrideAssociation( dataSet, source );
-    }
-
-    public Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsByDataSet( DataSet dataSet )
-    {
-        return dataSetStore.getFrequencyOverrideAssociationsByDataSet( dataSet );
-    }
-
-    public Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source )
-    {
-        return dataSetStore.getFrequencyOverrideAssociationsBySource( source );
-    }
 
     @Override
     public int getDataSetCount()
