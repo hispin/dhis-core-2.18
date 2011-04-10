@@ -545,7 +545,6 @@ public class DefaultChartService
                 int columnIndex = 0;
 
                 if ( chart.isDimension( DIMENSION_PERIOD ) || chart.isDimension( DIMENSION_INDICATOR ) )
-
                 {
                     // ---------------------------------------------------------
                     // Regular dataset

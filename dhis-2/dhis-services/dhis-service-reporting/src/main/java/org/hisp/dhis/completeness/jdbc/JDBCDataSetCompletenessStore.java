@@ -212,7 +212,7 @@ public class JDBCDataSetCompletenessStore
         try
         {
             final String sql = "CREATE INDEX aggregateddatasetcompleteness_index ON aggregateddatasetcompleteness (datasetid, periodid, organisationunitid)";        
-            statementManager.getHolder().executeUpdate( sql );
+            statementManager.getHolder().executeUpdate( sql, true );
         }
         catch ( Exception ex )
         {
@@ -225,7 +225,7 @@ public class JDBCDataSetCompletenessStore
         try
         {
             final String sql = "DROP INDEX aggregateddatasetcompleteness_index";        
-            statementManager.getHolder().executeUpdate( sql );
+            statementManager.getHolder().executeUpdate( sql, true );
         }
         catch ( Exception ex )
         {
