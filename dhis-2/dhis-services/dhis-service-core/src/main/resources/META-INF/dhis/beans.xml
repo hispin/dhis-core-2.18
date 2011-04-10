@@ -1108,11 +1108,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="sectionService" ref="org.hisp.dhis.dataset.SectionService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler"
-		class="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler">
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.expression.ExpressionDeletionHandler"
 		class="org.hisp.dhis.expression.ExpressionDeletionHandler">
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
@@ -1221,7 +1216,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 					<ref local="org.hisp.dhis.dataset.DataSetDeletionHandler" />
 					<ref local="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler" />
 					<ref local="org.hisp.dhis.dataset.SectionDeletionHandler" />
-					<ref local="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler" />
 					<ref local="org.hisp.dhis.expression.ExpressionDeletionHandler" />
 					<ref local="org.hisp.dhis.indicator.IndicatorDeletionHandler" />
 					<ref local="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" />

@@ -93,11 +93,6 @@ public class JdbcDataPruneStore
             jdbcTemplate.execute( sql );
             log.info( "Deleting values into datasetsource sucessfully" );
     
-            // delete values into frequencyoverrideassociation table
-            sql = "delete from frequencyoverrideassociation where sourceid in (" + orgUnitIds + ");";
-            jdbcTemplate.execute( sql );
-            log.info( "Deleting values into frequencyoverrideassociation sucessfully" );
-    
             // delete values into minmaxdataelement table
             sql = "delete from minmaxdataelement where sourceid in (" + orgUnitIds + ");";
             jdbcTemplate.execute( sql );
