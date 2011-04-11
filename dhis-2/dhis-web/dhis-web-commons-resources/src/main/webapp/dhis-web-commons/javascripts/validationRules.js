@@ -118,24 +118,28 @@ var validationRules = {
 	/* dhis-web-maintenance-dataset */
 	"dataEntry" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 4, 100 ]
 		}
 	},
 	"section" : {
-		"name" : {
+		"sectionName" : {
+			"required" : true,
 			"rangelength" : [ 2, 160 ]
 		},
 		"selectedList" : {
-
+			"required" : true
 		}
 	},
 	"dataSet" : {
 		"name" : {
+			"required" : true,
 			"alphanumericwithbasicpuncspaces" : true,
 			"firstletteralphabet" : false,
 			"rangelength" : [ 4, 150 ]
 		},
 		"shortName" : {
+			"required" : true,
 			"alphanumericwithbasicpuncspaces" : true,
 			"firstletteralphabet" : false,
 			"rangelength" : [ 2, 20 ]
@@ -144,6 +148,9 @@ var validationRules = {
 			"alphanumericwithbasicpuncspaces" : true,
 			"notOnlyDigits" : false,
 			"rangelength" : [ 4, 40 ]
+		},
+		"frequencySelect" : {
+			"required" : true
 		}
 	},
 
