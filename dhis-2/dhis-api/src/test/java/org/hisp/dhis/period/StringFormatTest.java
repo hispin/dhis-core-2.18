@@ -45,7 +45,7 @@ public class StringFormatTest {
 
         // override locale settings for weeks
         calendar.setFirstDayOfWeek( Calendar.MONDAY);
-        calendar.setMinimalDaysInFirstWeek( 4);
+        calendar.setMinimalDaysInFirstWeek( 4 );
 
         calendar.clear();
         calendar.set( year, month - 1, day );
