@@ -1,25 +1,11 @@
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
-		var r = getValidationRules();
-
-		var rules = {
-			name: {
-				required: true,
-				rangelength: r.dateElementCategoryCombo.name.rangelength
-			},
-			selectedList: {
-				required: true
-			}
-		};
-
 		validation2( 'editDataElementCategoryComboForm', function( form ) { 
 			validateSelectedCategories( form );
 		}, {
 			'beforeValidationHandler': function() { listValidator( 'selectedCategories', 'selectedList' ); },
-			'rules': rules 
+			'rules': getValidationRules("dateElementCategoryCombo")
 		});
-
-		jQuery("#name").attr("maxlength", r.dateElementCategoryCombo.name.rangelength[1]);
 
 		checkValueIsExist( "name", "validateDataElementCategoryCombo.action", {id: $dataElementCategoryCombo.id});				
 	});

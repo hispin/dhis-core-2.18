@@ -1,26 +1,9 @@
 <script type="text/javascript">
 	jQuery(document).ready(	function() {
-		var r = getValidationRules();
-
-		var rules = {
-			name: {
-				required: true,
-				rangelength: r.dateElementCategory.name.rangelength
-			},
-			conceptId: {
-				required: true
-			},
-			memberValidator: {
-				required: true
-			}
-		};
-	
 		validation2( 'editDataElementCategoryForm', function( form ){ form.submit()}, {
 			'beforeValidationHandler': function() { listValidator( 'memberValidator', 'categoryOptions' ); },
-			'rules': rules 
+			'rules': getValidationRules("dateElementCategory")
 		}); 
-
-		jQuery("#name").attr("maxlength", r.dateElementCategory.name.rangelength[1]);
 
 		checkValueIsExist( "name", "validateDataElementCategory.action", {id: $dataElementCategory.id});		
 	});
