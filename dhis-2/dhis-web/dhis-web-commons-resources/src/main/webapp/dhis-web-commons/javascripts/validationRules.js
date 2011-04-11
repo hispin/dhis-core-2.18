@@ -157,18 +157,39 @@ var validationRules = {
 	/* dhis-web-maintenance-dataadmin */
 	"sqlView" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 50 ]
 		},
 		"description" : {
+			"required" : true,
 			"rangelength" : [ 2, 255 ]
 		},
 		"sqlquery" : {
+			"required" : true,
 			"rangelength" : [ 1, 255 ]
 		}
 	},
-	"dataLocking" : {},
-	"dataBrowser" : {},
-	"minMax" : {},
+	"dataLocking" : {
+		"selectedPeriods" : {
+			"required" : true
+		},
+		"selectedDataSets" : {
+			"required" : true
+		}
+	},
+	"dataBrowser" : {
+		"periodTypeId" : {
+			"required" : true
+		},
+		"mode" : {
+			"required" : true
+		}
+	},
+	"minMax" : {
+		"dataSetIds" : {
+			"required" : true
+		}
+	},
 
 	/* dhis-web-validationrule */
 	"validationRule" : {

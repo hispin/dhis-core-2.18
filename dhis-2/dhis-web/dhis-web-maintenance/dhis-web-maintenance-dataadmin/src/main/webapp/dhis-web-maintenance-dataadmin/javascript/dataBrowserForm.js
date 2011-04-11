@@ -1,22 +1,13 @@
 jQuery(document).ready(function() {
 
-	selection.setListenerFunction( organisationUnitModeSelected );
-	datePickerInRange( 'fromDate' , 'toDate' );
+	selection.setListenerFunction(organisationUnitModeSelected);
+	datePickerInRange('fromDate', 'toDate');
 
-	var r = getValidationRules();
-	
-	var rules = {
-		periodTypeId: {
-			required: true
-		},
-		mode: {
-			required: true
-		}
-	};
-
-	validation2( 'databrowser', function( form ){
+	validation2('databrowser', function(form) {
 		validateBeforeSubmit();
-	}, { 'rules': rules });
+	}, {
+		'rules' : getValidationRules("dataBrowser")
+	});
 });
 
 var flag;
