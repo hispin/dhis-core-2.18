@@ -288,8 +288,7 @@ public class HibernateOrganisationUnitStore
         final String sqlUpdateFalse = "UPDATE organisationunit SET hasPatients=false WHERE organisationunitid not in ( " + ids +" );";
         
         jdbcTemplate.execute( sqlUpdateFalse );
-    }
-    
+    }    
     
     @SuppressWarnings("unchecked")
     public Collection<OrganisationUnit> get( Boolean hasPatients )

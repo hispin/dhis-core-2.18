@@ -454,9 +454,12 @@ function getTypeById( fieldId, attribute )
 function getRadioValue( radioName )
 {
 	result = null;
-	jQuery.each( jQuery( "input[type=radio][name=" + radioName + "]") , function(i, item ){
-		
-		if( item.checked ) result = item.value;
+	jQuery.each( jQuery( "input[type=radio][name=" + radioName + "]") , function( i, item )
+	{		
+		if ( item.checked )
+		{
+			result = item.value;
+		}
 	});
 	
 	return result;
@@ -470,9 +473,12 @@ function getRadioValue( radioName )
  */
 function setRadioValue( radioName, value )
 {
-	jQuery.each( jQuery( "input[type=radio][name=" + radioName + "]") , function(i, item ){
-		
-		if( item.value == value ) item.checked = true;
+	jQuery.each( jQuery( "input[type=radio][name=" + radioName + "]") , function( i, item )
+	{		
+		if ( item.value == value )
+		{
+			item.checked = true;
+		}
 	});	
 }
 
@@ -686,7 +692,7 @@ function toggleByIdAndFlag( id, display )
 {
     var node = byId( id );
     
-    if ( ! node )
+    if ( !node )
     {
         return;
     }
@@ -704,7 +710,7 @@ function toggleById( id )
 {
     var node = byId( id );
 
-    if ( ! node )
+    if ( !node )
     {
         return;
     }
@@ -712,21 +718,6 @@ function toggleById( id )
     var display = node.style.display;
     
     node.style.display = ( display == 'none' || display == '' ? 'block' : 'none' );
-}
-
-/**
- * Toggles visibility of document element.
- */
-function showHideDiv( elementId )
-{	
-	if ( document.getElementById( elementId ).style.display == "none" )
-	{
-		document.getElementById( elementId ).style.display = "block";
-	}
-	else
-	{
-		document.getElementById( elementId ).style.display = "none";
-	}	
 }
 
 /**
@@ -747,14 +738,7 @@ function getParamString( elementId, param )
 }
 
 /**
- * Creates an option and adds it to the list.
- * 
- * @param list
- *            the list.
- * @param optionValue
- *            the option value.
- * @param optionText
- *            the option text.
+ * @deprecated Use addOptionById
  */
 function addOptionToList( list, optionValue, optionText )
 {
@@ -916,8 +900,7 @@ function datePickerjQuery( jQueryString )
 		buttonImageOnly: true,
 		constrainInput: true,
         yearRange: '-100:+100'
-	});
-		
+	});		
 }
 
 /**
@@ -943,9 +926,13 @@ function datePickerValid( id, today )
         yearRange: '-100:+100'
 	});
 	
-	if( today == undefined ) today = false;
+	if ( today == undefined )
+	{
+		today = false;
+	}
 	
-	if( today ){
+	if( today )
+	{
 		s = jQuery("#" + id );
 		if( s.val()=='' ) s.val( getCurrentDate() );
 	}
@@ -1054,8 +1041,7 @@ function insertTextCommon( inputAreaName, inputText )
 	}
 	// MOZILLA/NETSCAPE support
 	else if ( inputArea.selectionStart || inputArea.selectionStart == '0' ) 
-	{
-	
+	{	
 		var startPos = inputArea.selectionStart;
 		var endPos = inputArea.selectionEnd;
 		

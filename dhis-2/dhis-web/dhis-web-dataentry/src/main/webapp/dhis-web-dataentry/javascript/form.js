@@ -41,18 +41,16 @@ function organisationUnitSelected( orgUnits )
     
     var url = 'loadDataSets.action';
     
-    var list = document.getElementById( 'selectedDataSetId' );
-    
-    clearList( list );
+    clearListById( 'selectedDataSetId' );
     
     $.getJSON( url, function( json ) {    
     	$( '#selectedOrganisationUnit' ).val( json.organisationUnit.name );
     	$( '#currentOrganisationUnit' ).html( json.organisationUnit.name );
     	
-    	addOptionToList( list, '-1', '[ ' + i18n_select_data_set + ' ]' );
+    	addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
     	
     	for ( i in json.dataSets ) {
-    		addOptionToList( list, json.dataSets[i].id, json.dataSets[i].name );
+    		addOptionById( 'selectedDataSetId', json.dataSets[i].id, json.dataSets[i].name );
     	}
     	
     	if ( json.dataSetValid && dataSetId != null ) {
@@ -91,15 +89,13 @@ function displayPeriodsInternal( next, previous )
 	
 	var url = 'loadNextPreviousPeriods.action?next=' + next + '&previous=' + previous;
 	
-	var list = document.getElementById( 'selectedPeriodIndex' );
-		
-	clearList( list );
+	clearListById( 'selectedPeriodIndex' );
 	    
     $.getJSON( url, function( json ) {    	
-		addOptionToList( list, '-1', '[ ' + i18n_select_period + ' ]' );
+		addOptionById( 'selectedPeriodIndex', '-1', '[ ' + i18n_select_period + ' ]' );
 	
     	for ( i in json.periods ) {
-    		addOptionToList( list, i, json.periods[i].name );
+    		addOptionById( 'selectedPeriodIndex', i, json.periods[i].name );
     	}
     	
     	enableNextPrevButtons();
@@ -135,17 +131,15 @@ function dataSetSelected()
 	{
 		var url = 'loadPeriods.action?dataSetId=' + dataSetId;
 
-		var list = document.getElementById( 'selectedPeriodIndex' );
-		
-	    clearList( list );
+	    clearListById( 'selectedPeriodIndex' );
 	    
 	    $.getJSON( url, function( json ) {
 	    	significantZeros = json.significantZeros;
 	    	
-	    	addOptionToList( list, '-1', '[ ' + i18n_select_period + ' ]' );
+	    	addOptionById( 'selectedPeriodIndex', '-1', '[ ' + i18n_select_period + ' ]' );
 		
 	    	for ( i in json.periods ) {
-	    		addOptionToList( list, i, json.periods[i].name );
+	    		addOptionById( 'selectedPeriodIndex', i, json.periods[i].name );
 	    	}
 	    	
 	    	if ( json.periodValid && periodIndex != null ) {

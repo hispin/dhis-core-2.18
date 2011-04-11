@@ -16,15 +16,13 @@ function dataElementCriteriaChanged()
         },
         function( json )
         {
-            var list = document.getElementById( "availableDataElements" );
-            
-            clearList( list );
+            clearListById( "availableDataElements" );
             
             var objects = json.dataElements;
             
             for ( var i=0; i<objects.length; i++ )
             {
-                addOptionToList( list, objects[i].id, objects[i].name );
+                addOptionById( "availableDataElements", objects[i].id, objects[i].name );
             }
         }
     );
@@ -47,15 +45,13 @@ function indicatorCriteriaChanged()
         },
         function( json )
         {
-            var list = document.getElementById( "availableIndicators" );
-            
-            clearList( list );
+            clearListById( "availableIndicators" );
             
             var objects = json.indicators;
             
             for ( var i=0; i<objects.length; i++ )
             {
-                addOptionToList( list, objects[i].id, objects[i].name );
+                addOptionById( "availableIndicators", objects[i].id, objects[i].name );
             }
         }
     );

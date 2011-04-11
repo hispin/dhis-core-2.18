@@ -61,14 +61,13 @@ function filterDataElements( dataSetName, filterName )
         },
         function( json )
         {
-        	var operandList = document.getElementById( "dataElementId" );
-        	clearList( operandList );
+        	clearListById( "dataElementId" );
         	
         	var objects = json.operands;
         	
         	for ( var i=0; i<objects.length; i++ )
 	        {
-        		addOptionToList( operandList, "[" + objects[i].operandId  + "]", objects[i].operandName );
+        		addOptionById( "dataElementId", "[" + objects[i].operandId  + "]", objects[i].operandName );
 	        }
 
         }
