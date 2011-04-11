@@ -449,3 +449,8 @@ function viewHistory( dataElementId, optionComboId, showComment )
 {
     window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&showComment=' + showComment, '_blank', 'width=580,height=710,scrollbars=yes' );
 }
+
+function closeCurrentSelection()
+{
+	$( '#currentSelection' ).fadeOut();
+}

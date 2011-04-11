@@ -2,16 +2,18 @@
 #currentSelection
 {
   color: black;
-  padding: 5px;
+  padding: 6px;
   background-color: #D5FFC5;
   border: 1px solid black;
   font-size: 14px;
   text-align: right;
   position: fixed;
-  top: 67px;
+  top: 66px;
   right: 10px;
   filter: alpha(opacity=85);
   opacity: 0.85;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 #actions
