@@ -1,22 +1,44 @@
 var validationRules = {
 	/* dhis-web-maintenance-user */
 	"user" : {
-		"name" : {
-			"rangelength" : [ 2, 140 ]
-		},
 		"username" : {
+			"required" : true,
 			"rangelength" : [ 2, 140 ],
 			"firstletteralphabet" : true,
 			"alphanumeric" : true
 		},
+		"firstName" : {
+			"required" : true,
+			"rangelength" : [ 2, 140 ]
+		},
+		"surname" : {
+			"required" : true,
+			"rangelength" : [ 2, 140 ]
+		},
 		"password" : {
+			"required" : true,
+			"password" : true,
+			"notequalto" : "#username",
 			"rangelength" : [ 8, 35 ]
 		},
+		"rawPassword" : {
+			"required" : true,
+			"password" : true,
+			"rangelength" : [ 8, 35 ]
+		},
+		"retypePassword" : {
+			"required" : true,
+			"equalTo" : "#rawPassword"
+		},
 		"email" : {
+			"email" : true,
 			"rangelength" : [ 0, 160 ]
 		},
-		"phone" : {
+		"phoneNumber" : {
 			"rangelength" : [ 0, 80 ]
+		},
+		"roleValidator" : {
+			"required" : true
 		}
 	},
 	"role" : {

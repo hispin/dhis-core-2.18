@@ -1099,27 +1099,39 @@ function validation2(formId, submitHandler, kwargs)
 	var rules = kwargs["rules"];
 
 	var validator = jQuery("#" + formId ).validate({
-		meta:"validate"
-		,errorElement:"span"
-		,beforeValidateHandler:beforeValidateHandler
-		,submitHandler: submitHandler
-		,rules: rules
+		meta:"validate",
+		errorElement:"span",
+		beforeValidateHandler: beforeValidateHandler,
+		submitHandler: submitHandler,
+		rules: rules
+	});
+
+	$("#" + formId + " input").each(function(n) {
+		try {
+			$(this).attr("maxlength", rules[this.id].rangelength[1]);
+		} catch(e) {}
 	});
 
 	var nameField = jQuery('#' + formId + ' :input')[0];
-
+	
 	if ( nameField )
 	{
 		nameField.focus();
 	}
-
+	
 	return validator;	
 }
 
 /**
- * @return A dictionary containing the default validation rules.
+ * @param form Get validation rules for this form
+ * 
+ * @return Validation rules for a given form
  */
-function getValidationRules() {
+function getValidationRules(form) {
+	if( form !== undefined ) {
+		return validationRules[form];
+	}
+	
 	return validationRules;
 }
 
