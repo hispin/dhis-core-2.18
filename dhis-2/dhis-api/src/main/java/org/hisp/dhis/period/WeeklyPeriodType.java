@@ -120,6 +120,8 @@ public class WeeklyPeriodType
     public List<Period> generatePeriods( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
+        cal.setMinimalDaysInFirstWeek(4);
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
 
         // ---------------------------------------------------------------------
         // If the supplied period is the first week of a year where the start
