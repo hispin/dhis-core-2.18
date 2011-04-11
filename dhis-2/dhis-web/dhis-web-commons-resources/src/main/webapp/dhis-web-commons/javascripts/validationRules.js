@@ -194,6 +194,7 @@ var validationRules = {
 	/* dhis-web-maintenance-datadictionary */
 	"concept" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 3, 10 ]
 		}
 	},
@@ -232,12 +233,23 @@ var validationRules = {
 	},
 	"dateElementCategoryCombo" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 160 ]
+		},
+		"selectedList" : {
+			"required" : true
 		}
 	},
 	"dateElementCategory" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 160 ]
+		},
+		"conceptId" : {
+			"required" : true
+		},
+		"memberValidator" : {
+			"required" : true
 		}
 	},
 	"dataElementGroup" : {
