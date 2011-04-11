@@ -99,24 +99,40 @@ public class WeeklyPeriodTypeTest
     }
 
     @Test
-    @Ignore //TODO fix this test seems to fail for different people, might be related to locale
     public void isoDates()
     {
         WeeklyPeriodType weekly = new WeeklyPeriodType();
         Calendar cal = Calendar.getInstance();
+
         cal.clear();
 
-        cal.set( 2010, 11, 27 );
+        cal.set( 2008, 11, 29 );
 
-        Period period = weekly.createPeriod( "2011W1" );
+        Period period = weekly.createPeriod( "2009W1" );
+
+        assertEquals(cal.getTime(), period.getStartDate());
+
+        cal.set( 2011, 0, 3 );
+
+        period = weekly.createPeriod( "2011W1" );
 
         assertEquals(cal.getTime(), period.getStartDate());
 
         period = weekly.createPeriod( "2011W11" );
 
-        cal.set( 2011, 2, 7 );
+        cal.set( 2011, 2, 14 );
 
         assertEquals(cal.getTime(), period.getStartDate());
 
+    }
+
+    @Test
+    public void getIsoDate()
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.set( 2011, 0, 3 ); // Wednesday
+        WeeklyPeriodType wpt = new WeeklyPeriodType();
+        Period p = wpt.createPeriod( cal.getTime() );
+        assertEquals( p.getIsoDate(), "2011W1");
     }
 }
