@@ -1,5 +1,4 @@
 
-
 var selectedList;
 var availableList;
 

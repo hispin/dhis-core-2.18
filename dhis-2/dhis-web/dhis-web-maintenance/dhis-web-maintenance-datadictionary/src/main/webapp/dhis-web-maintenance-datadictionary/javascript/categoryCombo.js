@@ -38,5 +38,4 @@ function validateSelectedCategories( form )
 		if( json.response == 'success' ) form.submit();
 		else markInvalid( 'selectedCategories', json.message );
 	});
-
 }

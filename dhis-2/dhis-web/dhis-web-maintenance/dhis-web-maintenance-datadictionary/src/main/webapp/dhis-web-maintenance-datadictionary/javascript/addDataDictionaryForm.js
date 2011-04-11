@@ -1,32 +1,13 @@
-jQuery(document).ready(	function() {
-	var r = getValidationRules();
-	
-	var rules = {
-		name: {
-			required: true,
-			rangelength: [2, 160]
+jQuery(document).ready(function() {
+	validation2('addDataDictionaryForm', function(form) {
+		form.submit()
+	}, {
+		'beforeValidateHandler' : function() {
+			listValidator('memberValidator', 'selectedDataElements');
+			listValidator('memberValidatorIn', 'selectedIndicators');
 		},
-		description: {
-			rangelength: [0, 255]
-		},
-		region: {
-			rangelength: [0, 255]
-		},
-		memberValidator: {
-			required: true			
-		},
-		memberValidatorIn: {
-			required: true
-		}
-	};
-
-	validation2( 'addDataDictionaryForm', function( form ){ form.submit()}, {
-		'beforeValidateHandler': function() {
-			listValidator( 'memberValidator', 'selectedDataElements' );
-			listValidator( 'memberValidatorIn', 'selectedIndicators' );
-		},
-		'rules': rules
+		'rules' : getValidationRules("dataDictionary")
 	});
-	
-	checkValueIsExist( "name", "validateDataDictionary.action");
+
+	checkValueIsExist("name", "validateDataDictionary.action");
 });
