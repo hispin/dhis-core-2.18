@@ -66,15 +66,22 @@ var validationRules = {
 	/* dhis-web-maintenance-organisationunit */
 	"organisationUnit" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 160 ]
 		},
 		"shortName" : {
+			"required" : true,
 			"rangelength" : [ 2, 25 ]
 		},
 		"code" : {
+			"required" : true,
 			"rangelength" : [ 0, 25 ]
 		},
+		"openingDate" : {
+			"required" : true
+		},
 		"url" : {
+			"url" : true,
 			"rangelength" : [ 0, 255 ]
 		},
 		"contactPerson" : {
@@ -84,6 +91,7 @@ var validationRules = {
 			"rangelength" : [ 0, 255 ]
 		},
 		"email" : {
+			"email" : true,
 			"rangelength" : [ 0, 250 ]
 		},
 		"phoneNumber" : {
@@ -92,14 +100,17 @@ var validationRules = {
 	},
 	"organisationUnitGroup" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 160 ]
 		}
 	},
 	"organisationUnitGroupSet" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 230 ]
 		},
 		"description" : {
+			"required" : true,
 			"rangelength" : [ 2, 255 ]
 		}
 	},
