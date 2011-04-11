@@ -175,6 +175,10 @@ public class I18nFormat
         
         String typeName = period.getPeriodType().getName();
 
+        if (typeName.equals( "Weekly")) {
+            return period.getIsoDate();
+        }
+
         String keyStartDate = "format." + typeName + ".startDate";
         String keyEndDate = "format." + typeName + ".endDate";
         
