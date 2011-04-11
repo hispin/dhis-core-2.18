@@ -102,7 +102,7 @@ public abstract class PeriodType
     {
         for ( PeriodType periodType : getAvailablePeriodTypes() )
         {
-            if ( periodType.getName().toLowerCase().trim().equals( name ) )
+            if ( name != null && periodType.getName().toLowerCase().trim().equals( name.toLowerCase().trim() ) )
             {
                 return periodType;
             }
@@ -110,8 +110,6 @@ public abstract class PeriodType
 
         return null;
     }
-
-
 
     // -------------------------------------------------------------------------
     // Persistable
