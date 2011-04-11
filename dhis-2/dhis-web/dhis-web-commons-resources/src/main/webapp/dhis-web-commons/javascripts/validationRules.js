@@ -194,14 +194,28 @@ var validationRules = {
 	/* dhis-web-validationrule */
 	"validationRule" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 160 ]
 		},
 		"description" : {
 			"rangelength" : [ 2, 160 ]
+		},
+		"periodTypeName" : {
+			"required" : true
+		},
+		"operator" : {
+			"required" : true
+		},
+		"leftSideExpression" : {
+			"required" : true
+		},
+		"rightSideExpression" : {
+			"required" : true
 		}
 	},
 	"validationRuleGroup" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 160 ]
 		},
 		"description" : {
