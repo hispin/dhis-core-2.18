@@ -54,8 +54,38 @@ where t.name='Indicators';
 
 -- Recreate indexes on aggregated tables
 
-DROP INDEX aggregateddatavalue_index;
-DROP INDEX aggregatedindicatorvalue_index;
-CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid);
-CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid);
+drop index aggregateddatavalue_index;
+drop index aggregatedindicatorvalue_index;
+drop index aggregateddatasetcompleteness_index;
+create index aggregateddatavalue_index on aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid);
+create index aggregatedindicatorvalue_index on aggregatedindicatorvalue (indicatorid, periodid, organisationunitid);
+create index aggregateddatasetcompleteness_index on aggregateddatasetcompleteness  (datasetid, periodid, organisationunitid);
+
+-- Get category option combos without category options
+
+select * from categoryoptioncombo where categoryoptioncomboid not in (select distinct categoryoptioncomboid from categoryoptioncombos_categoryoptions);
+
+-- Get category option combos without category combo
+
+select * from categoryoptioncombo where categoryoptioncomboid not in (select distinct categoryoptioncomboid from categorycombos_optioncombos);
+
+-- Get category options without category option combos
+
+select * from dataelementcategoryoption where categoryoptionid not in (select distinct categoryoptionid from categoryoptioncombos_categoryoptions);
+
+-- Get catetegory options without categories
+
+select * from dataelementcategoryoption where categoryoptionid not in (select distinct categoryoptionid from categories_categoryoptions);
+
+-- Get categories without category options
+
+select * from dataelementcategory where categoryid not in (select distinct categoryid from categories_categoryoptions);
+
+-- Get categories without category combos
+
+select * from dataelementcategory where categoryid not in (select distinct categoryid from categorycombos_categories);
+
+-- Get category combos without categories
+
+select * from categorycombo where categorycomboid not in (select distinct categorycomboid from categorycombos_categories);
 
