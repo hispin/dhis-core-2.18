@@ -42,7 +42,7 @@
 </div>
 #end
 
-<h3>$i18n.getString( "dashboard" )</h3>
+<h3>$i18n.getString( "dashboard" ) #if( $messageCount > 0 )<a href="message.action">$messageCount $i18n.getString( "unread_messages" )</a>#end</h3>
 
 <table cellspacing="0" cellpadding="0" style="width:960px">
 <tr>

@@ -37,6 +37,7 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.comparator.ChartTitleComparator;
 import org.hisp.dhis.dashboard.DashboardManager;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.options.UserSettingManager;
 
 import com.opensymphony.xwork2.Action;
@@ -74,6 +75,13 @@ public class ProvideContentAction
         this.userSettingManager = userSettingManager;
     }
     
+    private MessageService messageService;
+
+    public void setMessageService( MessageService messageService )
+    {
+        this.messageService = messageService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -97,6 +105,13 @@ public class ProvideContentAction
     public List<Object> getChartAreas()
     {
         return chartAreas;
+    }
+    
+    private long messageCount;
+
+    public long getMessageCount()
+    {
+        return messageCount;
     }
 
     // -------------------------------------------------------------------------
@@ -122,6 +137,8 @@ public class ProvideContentAction
             chartAreas.add( content.get( DashboardManager.CHART_AREA_PREFIX + i ) );
         }
 
+        messageCount = messageService.getUnreadMessageCount();
+        
         return SUCCESS;
     }
 }
