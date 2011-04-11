@@ -139,6 +139,6 @@ public class DefaultSystemSettingManager
     
     public String getSystemIdentifier()
     {
-        return (String) getSystemSetting( KEY_SYSTEM_IDENTIFIER, DEFAULT_SYSTEM_IDENTIFIER );
+        return (String) getSystemSetting( KEY_SYSTEM_IDENTIFIER );
     }
 }
