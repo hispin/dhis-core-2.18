@@ -129,6 +129,7 @@ var validationMessage	= {
         ,rangeWords : validatorFormat('$encoder.jsEscape($i18n.getString( 'please_enter_betwwen_a_and_b_words' ) , "'")')
         ,lettersonly : '$encoder.jsEscape($i18n.getString( 'letters_only_please' ) , "'")'
         ,nowhitespace : '$encoder.jsEscape($i18n.getString( 'no_white_space_please' ) , "'")'
+        ,nostartwhitespace : '$encoder.jsEscape($i18n.getString( 'no_start_white_space_please' ) , "'")'
         ,ziprange : '$encoder.jsEscape($i18n.getString( 'ZIP_code_must_be_in_the_range' ) , "'")'
         ,time : '$encoder.jsEscape($i18n.getString( 'please_enter_valid_time' ) , "'")'
         ,phone : '$encoder.jsEscape($i18n.getString( 'please_enter_valid_phone_number' ) , "'")'

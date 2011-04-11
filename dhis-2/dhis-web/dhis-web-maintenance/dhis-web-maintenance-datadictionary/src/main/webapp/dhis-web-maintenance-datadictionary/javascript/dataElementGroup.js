@@ -8,6 +8,7 @@ function beforeSubmit()
 		memberValidator.append( '<option value="' + item.value + '" selected="selected">' + item.value + '</option>');
 	});
 }
+
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------

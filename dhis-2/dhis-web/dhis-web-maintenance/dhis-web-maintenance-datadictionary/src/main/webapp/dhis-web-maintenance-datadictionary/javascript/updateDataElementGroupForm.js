@@ -1,24 +1,10 @@
 jQuery(document).ready(function() {
-	var r = getValidationRules();
-
-	var rules = {
-		name : {
-			required : true,
-			rangelength : r.dataElementGroup.name.rangelength,
-			alphanumericwithbasicpuncspaces : true,
-			notOnlyDigits : true,
-			firstletteralphabet : true
-		}
-	};
-
 	validation2('updateDataElementGroupForm', function(form) {
 		form.submit()
 	}, {
 		'beforeValidateHandler' : beforeSubmit,
-		'rules' : rules
+		'rules' : getValidationRules("dataElementGroup")
 	});
-
-	jQuery("#name").attr("maxlength", r.dataElementGroup.name.rangelength[1]);
 
 	checkValueIsExist("name", "validateDataElementGroup.action", {
 		id : getFieldValue('id')

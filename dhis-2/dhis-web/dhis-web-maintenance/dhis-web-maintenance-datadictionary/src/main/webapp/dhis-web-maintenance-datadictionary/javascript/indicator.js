@@ -70,4 +70,3 @@ function removeIndicator( indicatorId, indicatorName )
 {
 	removeItem( indicatorId, indicatorName, i18n_confirm_delete, 'removeIndicator.action' );
 }
-

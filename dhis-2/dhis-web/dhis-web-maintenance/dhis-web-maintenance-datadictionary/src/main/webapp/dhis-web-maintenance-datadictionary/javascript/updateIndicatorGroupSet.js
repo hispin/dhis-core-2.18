@@ -1,18 +1,10 @@
 jQuery(document).ready(function() {
-	var r = getValidationRules();
-
-	var rules = {
-		name : {
-			required : true,
-			rangelength : r.indicatorGroupSet.name.rangelength
-		}
-	};
-
-	validation('updateIndicatorGroupSet', function(form) {
+	validation2('updateIndicatorGroupSet', function(form) {
 		form.submit()
-	}, function() {
-		listValidator('memberValidator', 'groupMembers');
+	}, {
+		'beforeValidateHandler' : function() {
+			listValidator('memberValidator', 'groupMembers');
+		},
+		'rules' : getValidationRules("indicatorGroupSet")
 	});
-
-	jQuery("#name").attr("maxlength", r.indicatorGroupSet.name.rangelength[1]);
 });

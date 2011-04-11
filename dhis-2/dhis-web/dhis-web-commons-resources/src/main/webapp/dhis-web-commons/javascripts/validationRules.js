@@ -191,6 +191,153 @@ var validationRules = {
 		}
 	},
 
+	/* dhis-web-maintenance-datadictionary */
+	"concept" : {
+		"name" : {
+			"rangelength" : [ 3, 10 ]
+		}
+	},
+	"dataElement" : {
+		"name" : {
+			"required" : true,
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"notOnlyDigits" : true
+		},
+		"shortName" : {
+			"required" : true,
+			"rangelength" : [ 2, 20 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"notOnlyDigits" : true
+		},
+		"alternativeName" : {
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"notOnlyDigits" : true
+		},
+		"code" : {
+			"rangelength" : [ 3, 40 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"notOnlyDigits" : false
+		},
+		"description" : {
+			"rangelength" : [ 3, 250 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"notOnlyDigits" : true
+		},
+		"url" : {
+			"url" : true,
+			"rangelength" : [ 0, 255 ]
+		}
+	},
+	"dateElementCategoryCombo" : {
+		"name" : {
+			"rangelength" : [ 2, 160 ]
+		}
+	},
+	"dateElementCategory" : {
+		"name" : {
+			"rangelength" : [ 2, 160 ]
+		}
+	},
+	"dataElementGroup" : {
+		"name" : {
+			"required" : true,
+			"alphanumericwithbasicpuncspaces" : true,
+			"notOnlyDigits" : true,
+			"firstletteralphabet" : true,
+			"rangelength" : [ 3, 150 ]
+		}
+	},
+	"dataElementGroupSet" : {
+		"name" : {
+			"required" : true,
+			"rangelength" : [ 2, 230 ]
+		}
+	},
+	"dataDictionary" : {
+		"name" : {
+			"required" : true,
+			"rangelength" : [ 2, 160 ]
+		},
+		"description" : {
+			"rangelength" : [ 0, 255 ]
+		},
+		"region" : {
+			"rangelength" : [ 0, 255 ]
+		},
+		"memberValidator" : {
+			"required" : true
+		},
+		"memberValidatorIn" : {
+			"required" : true
+		}
+	},
+	"indicator" : {
+		"name" : {
+			"required" : true,
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"nostartwhitespace" : true
+		},
+		"shortName" : {
+			"required" : true,
+			"rangelength" : [ 2, 20 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+		},
+		"alternativeName" : {
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+		},
+		"code" : {
+			"rangelength" : [ 3, 25 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"notOnlyDigits" : false
+		},
+		"description" : {
+			"rangelength" : [ 3, 250 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+		},
+		"url" : {
+			"url" : true,
+			"rangelength" : [ 0, 255 ]
+		},
+		"indicatorTypeId" : {
+			"required" : true
+		},
+		"denominator" : {
+			"required" : true
+		}
+	},
+	"indicatorGroup" : {
+		"name" : {
+			"required" : true,
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+		}
+	},
+	"indicatorGroupSet" : {
+		"name" : {
+			"required" : true,
+			"rangelength" : [ 2, 230 ]
+		}
+	},
+	"indicatorType" : {
+		"name" : {
+			"required" : true,
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+		},
+		"factor" : {
+			"required" : true,
+			"rangelength" : [ 1, 10 ],
+			"digits" : true
+		}
+	},
+
 	/* dhis-web-validationrule */
 	"validationRule" : {
 		"name" : {
@@ -220,85 +367,6 @@ var validationRules = {
 		},
 		"description" : {
 			"rangelength" : [ 2, 160 ]
-		}
-	},
-
-	/* dhis-web-maintenance-datadictionary */
-	"concept" : {
-		"name" : {
-			"rangelength" : [ 3, 10 ]
-		}
-	},
-	"dateElementCategoryCombo" : {
-		"name" : {
-			"rangelength" : [ 2, 160 ]
-		}
-	},
-	"dateElementCategory" : {
-		"name" : {
-			"rangelength" : [ 2, 160 ]
-		}
-	},
-	"dataElementGroup" : {
-		"name" : {
-			"rangelength" : [ 3, 150 ]
-		}
-	},
-	"dataElementGroupSet" : {
-		"name" : {
-			"rangelength" : [ 2, 230 ]
-		}
-	},
-	"indicator" : {
-		"name" : {
-			"rangelength" : [ 3, 150 ],
-			"alphanumericwithbasicpuncspaces" : true,
-			"firstletteralphabet" : true
-		},
-		"shortName" : {
-			"rangelength" : [ 2, 20 ],
-			"alphanumericwithbasicpuncspaces" : true,
-			"firstletteralphabet" : true
-		},
-		"alternativeName" : {
-			"rangelength" : [ 3, 150 ],
-			"alphanumericwithbasicpuncspaces" : true,
-			"firstletteralphabet" : true
-		},
-		"code" : {
-			"rangelength" : [ 3, 25 ],
-			"alphanumericwithbasicpuncspaces" : true,
-			"notOnlyDigits" : false
-		},
-		"description" : {
-			"rangelength" : [ 3, 250 ],
-			"alphanumericwithbasicpuncspaces" : true,
-			"firstletteralphabet" : true
-		},
-		"url" : {
-			"rangelength" : [ 0, 255 ]
-		}
-	},
-	"indicatorGroup" : {
-		"name" : {
-			"rangelength" : [ 3, 150 ],
-			"alphanumericwithbasicpuncspaces" : true,
-			"firstletteralphabet" : true
-		}
-	},
-	"indicatorGroupSet" : {
-		"name" : {
-			"rangelength" : [ 2, 230 ]
-		}
-	},
-	"indicatorType" : {
-		"name" : {
-			"rangelength" : [ 3, 150 ],
-			"alphanumericwithbasicpuncspaces" : true,
-			"firstletteralphabet" : true
-		},
-		"factor" : {
-			"rangelength" : [ 1, 10 ]
 		}
 	}
 }
