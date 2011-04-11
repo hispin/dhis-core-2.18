@@ -159,16 +159,24 @@ function deselectAll( list ) {
 }
 
 /**
- * Adds an option to a select list.
- *
- * @param listId the id of the list.
- * @param text the text of the option.
- * @param value the value of the option.
+ * @deprecated Use addOptionById
  */
 function addOption( listId, text, value ) {
     var list = document.getElementById( listId );
     var option = new Option( text, value );
     list.add( option, null );
+}
+
+/**
+ * Adds an option to the list.
+ * 
+ * @param listId the id of the select list
+ * @param optionValue the value of option
+ * @param optionText the text of the option
+ */
+function addOptionById( listId, optionValue, optionText )
+{
+	$( '#' + listId ).append( '<option value="' + optionValue + '">' + optionText + '</option>' );
 }
 
 /**
