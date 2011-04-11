@@ -13,15 +13,11 @@
 		</tr>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $userAuthorityGroup.name )" style="width:20em"></td>
-			<td></td>
-			<td></td>
+			<td colspan="3"><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $userAuthorityGroup.name )" style="width:20em"></td>
 		</tr>
 		<tr>
 			<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $userAuthorityGroup.description )" style="width:20em"/></td>
-			<td></td>
-			<td></td>
+			<td colspan="3"><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $userAuthorityGroup.description )" style="width:20em"/></td>
 		</tr>
 		<tr>
 			<td colspan="4" height="10"></td>
