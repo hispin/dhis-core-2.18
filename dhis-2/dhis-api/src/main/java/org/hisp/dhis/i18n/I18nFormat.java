@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.WeeklyPeriodType;
 
 /**
  * @author Pham Thi Thuy
@@ -175,7 +176,8 @@ public class I18nFormat
         
         String typeName = period.getPeriodType().getName();
 
-        if (typeName.equals( "Weekly")) {
+        if ( typeName.equals( WeeklyPeriodType.NAME ) ) // Use ISO dates due to potential week confusion
+        {
             return period.getIsoDate();
         }
 
