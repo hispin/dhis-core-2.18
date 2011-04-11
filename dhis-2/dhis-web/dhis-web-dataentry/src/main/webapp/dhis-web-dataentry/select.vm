@@ -20,6 +20,7 @@
 <h3>$i18n.getString( "data_entry" ) #openHelp( "dataEntry" )</h3>
 
 <div id="currentSelection">
+	<span style="text-align:left;cursor:pointer;padding:4px;"><img src="../images/hide.png" title="$i18n.getString( 'close' )" onclick="closeCurrentSelection()"></span>
 	<span id="currentOrganisationUnit">$i18n.getString( "no_organisationunit_selected" )</span> -
 	<span id="currentPeriod">$i18n.getString( "no_period_selected" )</span/><br>
 	<span id="currentDataElement">$i18n.getString( "no_dataelement_selected" )</span> -
