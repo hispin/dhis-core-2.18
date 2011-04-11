@@ -191,6 +191,8 @@ public class WeeklyPeriodType
     public String getIsoDate( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
+        cal.setMinimalDaysInFirstWeek(4);
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
         int year = cal.get( Calendar.YEAR);
         int week = cal.get( Calendar.WEEK_OF_YEAR);
 
@@ -205,9 +207,12 @@ public class WeeklyPeriodType
         int week = Integer.parseInt( isoDate.substring( 5 ) );
         
         Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.setMinimalDaysInFirstWeek(4);
+        cal.setFirstDayOfWeek( Calendar.MONDAY );
+
         cal.set( Calendar.YEAR, year );
         cal.set( Calendar.WEEK_OF_YEAR, week );
-        cal.setFirstDayOfWeek( Calendar.MONDAY );
 
         return createPeriod( cal.getTime() );
     }
