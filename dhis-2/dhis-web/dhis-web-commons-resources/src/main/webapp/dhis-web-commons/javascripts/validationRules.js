@@ -43,17 +43,23 @@ var validationRules = {
 	},
 	"role" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 140 ]
 		},
 		"description" : {
+			"required" : true,
 			"rangelength" : [ 2, 210 ]
 		}
 	},
 	"userGroup" : {
 		"name" : {
+			"required" : true,
 			"rangelength" : [ 2, 210 ],
 			"alphanumericwithbasicpuncspaces" : true,
 			"firstletteralphabet" : true
+		},
+		"memberValidator" : {
+			"required" : true
 		}
 	},
 

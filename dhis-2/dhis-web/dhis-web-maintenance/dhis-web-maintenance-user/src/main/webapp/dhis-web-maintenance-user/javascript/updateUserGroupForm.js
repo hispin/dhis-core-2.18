@@ -1,19 +1,5 @@
 jQuery( document ).ready( function()
 {
-	var r = getValidationRules();
-
-	var rules = {
-		name : {
-			required : true,
-			alphanumericwithbasicpuncspaces : r.userGroup.name.alphanumericwithbasicpuncspaces,
-			firstletteralphabet : r.userGroup.name.firstletteralphabet,
-			rangelength : r.userGroup.name.rangelength
-		},
-		memberValidator : {
-			required : true
-		}
-	};
-
 	validation2( 'editUserGroupForm', function( form )
 	{
 		form.submit()
@@ -22,8 +8,6 @@ jQuery( document ).ready( function()
 		{
 			listValidator( 'memberValidator', 'groupMembers' );
 		},
-		'rules' : rules
+		'rules' : getValidationRules("userGroup")
 	} );
-
-	jQuery( "#name" ).attr( "maxlength", r.userGroup.name.rangelength[1] );
 } );
