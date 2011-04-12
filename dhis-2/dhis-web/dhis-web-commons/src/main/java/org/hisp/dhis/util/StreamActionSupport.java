@@ -81,7 +81,7 @@ public abstract class StreamActionSupport
     
     protected boolean disallowCache()
     {
-        return false;
+        return true;
     }
     
     protected boolean attachment()
