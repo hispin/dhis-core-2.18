@@ -4,15 +4,16 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.program.ProgramStageDataElement" table="programstage_dataelements">    
-      <composite-id>
-        <key-many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage" 
-          column="programstageid" foreign-key="fk_programstagedataelement_programstageid"/>		
-        <key-many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement"
-          column="dataelementid" foreign-key="fk_programstagedataelement_dataelementid"/>
-      </composite-id>  
-      
-    <property name="compulsory" column="compulsory" not-null="true"/>
-    
+  <class name="org.hisp.dhis.program.ProgramStageDataElement" table="programstage_dataelements">
+
+    <composite-id>
+      <key-many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage" column="programstageid"
+        foreign-key="fk_programstagedataelement_programstageid" />
+      <key-many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
+        foreign-key="fk_programstagedataelement_dataelementid" />
+    </composite-id>
+
+    <property name="compulsory" column="compulsory" not-null="true" />
+
   </class>
 </hibernate-mapping>

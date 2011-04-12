@@ -4,19 +4,17 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  
   <class name="org.hisp.dhis.relationship.RelationshipType" table="relationshiptype">
-        
+
     <id name="id" column="relationshiptypeid">
-      <generator class="native"/>
-    </id>      
-    
-    <property name="aIsToB" column="a_is_to_b" not-null="true"/>
-    
-    <property name="bIsToA" column="b_is_to_a" not-null="true"/>
-    
-    <property name="description" type="text"/>
-	
+      <generator class="native" />
+    </id>
+
+    <property name="aIsToB" column="a_is_to_b" not-null="true" />
+
+    <property name="bIsToA" column="b_is_to_a" not-null="true" />
+
+    <property name="description" type="text" />
+
   </class>
-  
 </hibernate-mapping>

@@ -4,27 +4,29 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.program.ProgramStage" table="programstage">    
+  <class name="org.hisp.dhis.program.ProgramStage" table="programstage">
+
     <id name="id" column="programstageid">
-      <generator class="native"/>
-    </id>   
-    
-    <property name="name" not-null="true" unique="true" length="160"/>
-    
-    <property name="description"/>    
-    
-    <property name="stageInProgram" column="stageinprogram"/>
-    
-    <property name="minDaysFromStart" column="mindaysfromstart"/>   
-    
-    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_programstage_program"/>    
-    
+      <generator class="native" />
+    </id>
+
+    <property name="name" not-null="true" unique="true" length="160" />
+
+    <property name="description" />
+
+    <property name="stageInProgram" column="stageinprogram" not-null="true" />
+
+    <property name="minDaysFromStart" column="mindaysfromstart" not-null="true" />
+
+    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_programstage_program" />
+
     <set name="programStageDataElements" inverse="true">
-      <key column="programstageid"/>
+      <key column="programstageid" />
       <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
-    </set>  	
-	
-	<many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm" cascade="all" foreign-key="fk_programstage_dataentryform"/>
-	
+    </set>
+
+    <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm" cascade="all"
+      foreign-key="fk_programstage_dataentryform" />
+
   </class>
 </hibernate-mapping>

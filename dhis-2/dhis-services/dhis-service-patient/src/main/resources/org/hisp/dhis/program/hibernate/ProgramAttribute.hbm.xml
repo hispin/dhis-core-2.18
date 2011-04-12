@@ -5,21 +5,21 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.program.ProgramAttribute" table="programattribute">
-    
+
     <id name="id" column="programattributeid">
-      <generator class="native"/>
-    </id>   
-    
-    <property name="name" not-null="true" unique="true"/>
-    
-    <property name="description"/>  
-    
+      <generator class="native" />
+    </id>
+
+    <property name="name" not-null="true" unique="true" />
+
+    <property name="description" />
+
     <property name="valueType" not-null="true" />
-  
-  	<set name="attributeOptions" lazy="false" cascade="all">
-      <key column="programattributeid"/>      
+
+    <set name="attributeOptions" lazy="false" cascade="all">
+      <key column="programattributeid" />
       <one-to-many class="org.hisp.dhis.program.ProgramAttributeOption" />
     </set>
-    
+
   </class>
 </hibernate-mapping>

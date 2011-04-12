@@ -4,25 +4,27 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="org.hisp.dhis.patient.PatientMobileSetting" table="patientmobilesetting">
-		<id name="id" column="patientmobilesettingid">
-			<generator class="native" />
-		</id>
-		
-		<property name="gender" column="gender" not-null="true"/>
-		
-		<property name="dobtype" column="dobtype" not-null="true"/>
-		
-		<property name="birthdate" column="birthdate" not-null="true"/>
-		
-		<property name="bloodgroup" column="bloodgroup" not-null="true"/>
-		
-		<property name="registrationdate" column="registrationdate" not-null="true"/>
-		
-		<list name="patientAttributes">
-			<key column="patientmobilesettingid" />
-			<list-index column="sort_order_patientattributename" base="0"/>
-			<one-to-many class="org.hisp.dhis.patient.PatientAttribute" />
-		</list>
-	</class>
+  <class name="org.hisp.dhis.patient.PatientMobileSetting" table="patientmobilesetting">
+
+    <id name="id" column="patientmobilesettingid">
+      <generator class="native" />
+    </id>
+
+    <property name="gender" column="gender" not-null="true" />
+
+    <property name="dobtype" column="dobtype" not-null="true" />
+
+    <property name="birthdate" column="birthdate" not-null="true" />
+
+    <property name="bloodgroup" column="bloodgroup" not-null="true" />
+
+    <property name="registrationdate" column="registrationdate" not-null="true" />
+
+    <list name="patientAttributes">
+      <key column="patientmobilesettingid" />
+      <list-index column="sort_order_patientattributename" base="0" />
+      <one-to-many class="org.hisp.dhis.patient.PatientAttribute" />
+    </list>
+
+  </class>
 </hibernate-mapping>

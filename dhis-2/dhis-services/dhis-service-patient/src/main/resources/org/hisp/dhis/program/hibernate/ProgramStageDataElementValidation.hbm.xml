@@ -4,30 +4,27 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="org.hisp.dhis.program.ProgramStageDataElementValidation"
-		table="programstage_dataelement_validation">
+  <class name="org.hisp.dhis.program.ProgramStageDataElementValidation" table="programstage_dataelement_validation">
 
-		<id name="id" column="programstagedevalidationid">
-			<generator class="native" />
-		</id>
+    <id name="id" column="programstagedevalidationid">
+      <generator class="native" />
+    </id>
 
-		<property name="description" />
+    <property name="description" />
 
-		<many-to-one name="leftProgramStageDataElement"
-			class="org.hisp.dhis.program.ProgramStageDataElement" lazy="false"
-			cascade="save-update">
-			<column name="leftdataelementid" />
-			<column name="leftprogramstageid" />
-		</many-to-one>
+    <many-to-one name="leftProgramStageDataElement" class="org.hisp.dhis.program.ProgramStageDataElement"
+      lazy="false" cascade="save-update">
+      <column name="leftdataelementid" />
+      <column name="leftprogramstageid" />
+    </many-to-one>
 
-		<many-to-one name="rightProgramStageDataElement"
-			class="org.hisp.dhis.program.ProgramStageDataElement" lazy="false"
-			cascade="save-update">
-			<column name="rightdataelementid" />
-			<column name="rightprogramstageid" />
-		</many-to-one>
+    <many-to-one name="rightProgramStageDataElement" class="org.hisp.dhis.program.ProgramStageDataElement"
+      lazy="false" cascade="save-update">
+      <column name="rightdataelementid" />
+      <column name="rightprogramstageid" />
+    </many-to-one>
 
-		<property name="operator" />
+    <property name="operator" not-null="true" />
 
-	</class>
+  </class>
 </hibernate-mapping>
