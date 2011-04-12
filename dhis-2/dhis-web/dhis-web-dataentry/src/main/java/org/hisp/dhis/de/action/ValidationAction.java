@@ -238,6 +238,6 @@ public class ValidationAction
             }
         }
         
-        return dataValues.size() == 0 && results.size() == 0 ? NONE : SUCCESS;
+        return dataValues.size() == 0 && results.size() == 0 ? SUCCESS : INPUT;
     }
 }

@@ -182,28 +182,18 @@ function refreshWindow()
 
 function markValueForFollowup( dataElementId, periodId, sourceId, categoryOptionComboId )
 {
-    var url = "markValueForFollowup.action?dataElementId=" + dataElementId + "&periodId=" + periodId +
-        "&sourceId=" + sourceId + "&categoryOptionComboId=" + categoryOptionComboId;
+    var url = 'markValueForFollowup.action?dataElementId=' + dataElementId + '&periodId=' + periodId +
+        '&sourceId=' + sourceId + '&categoryOptionComboId=' + categoryOptionComboId;
     
-    var request = new Request();
-    request.setResponseTypeXML( "message" );
-    request.setCallbackSuccess( markValueForFollowupReceived );    
-    request.send( url );
-}
-
-function markValueForFollowupReceived( messageElement )
-{	
-    var message = messageElement.firstChild.nodeValue;
-    var image = document.getElementById( "followup" );
-    
-    if ( message == "marked" )
-    {
-    	image.src = "../images/marked_large.png";
-        image.alt = i18n_unmark_value_for_followup;
-    }
-    else if ( message = "unmarked" )
-    {
-        image.src = "../images/unmarked_large.png";
-        image.alt = i18n_mark_value_for_followup;  	
-    }
+    $.getJSON( url, function( json ) {
+    	
+    	if ( json.message == 'marked' ) {
+    		$( '#followup' ).attr( 'src', '../images/marked_large.png' );
+    		$( '#followup' ).attr( 'alt', i18n_unmark_value_for_followup );
+    	}
+    	else if ( json.message == 'unmarked' ) {
+    		$( '#followup' ).attr( 'src', '../images/unmarked_large.png' );
+    		$( '#followup' ).attr( 'alt', i18n_mark_value_for_followup );
+    	}
+    } );
 }
