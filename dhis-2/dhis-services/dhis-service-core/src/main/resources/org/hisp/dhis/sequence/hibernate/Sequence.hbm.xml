@@ -4,14 +4,13 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-
   <class name="org.hisp.dhis.sequence.Sequence" table="systemsequence">
-    
+
     <id name="id" column="systemsequenceid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
 
-    <property name="currentValue" not-null="true"/>
+    <property name="currentValue" not-null="true" />
 
   </class>
 </hibernate-mapping>

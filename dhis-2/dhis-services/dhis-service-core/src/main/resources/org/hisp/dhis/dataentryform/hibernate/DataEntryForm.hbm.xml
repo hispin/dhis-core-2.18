@@ -4,13 +4,14 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataentryform.DataEntryForm" table="dataentryform">
+
     <id name="id" column="dataentryformid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
 
-    <property name="name" not-null="true" unique="true" length="160"/>
+    <property name="name" not-null="true" unique="true" length="160" />
 
-    <property name="htmlCode" column="htmlcode" type="text"/>
-    
+    <property name="htmlCode" column="htmlcode" type="text" />
+
   </class>
 </hibernate-mapping>

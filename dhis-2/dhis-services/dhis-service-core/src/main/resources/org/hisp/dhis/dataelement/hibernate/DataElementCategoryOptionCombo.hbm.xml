@@ -4,29 +4,28 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" table="categoryoptioncombo">
+  <class name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" table="categoryoptioncombo">
 
-    <cache usage="read-write"/>
-    
+    <cache usage="read-write" />
+
     <id name="id" column="categoryoptioncomboid">
-      <generator class="native"/>
-    </id>      
+      <generator class="native" />
+    </id>
 
     <property name="uuid">
-      <column name="uuid" length="40"/>
+      <column name="uuid" length="40" />
     </property>
 
     <list name="categoryOptions" table="categoryoptioncombos_categoryoptions">
-      <key column="categoryoptioncomboid"/>
-      <list-index column="sort_order" base="1"/>
-      <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOption"
-        column="categoryoptionid" foreign-key="fk_categoryoptioncombo_categoryoptionid"/> 
+      <key column="categoryoptioncomboid" />
+      <list-index column="sort_order" base="1" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOption" column="categoryoptionid"
+        foreign-key="fk_categoryoptioncombo_categoryoptionid" />
     </list>
-          
-    <join table="categorycombos_optioncombos">
-      <key column="categoryoptioncomboid"/>
-      <many-to-one name="categoryCombo" column="categorycomboid"/>
-    </join>  
 
+    <join table="categorycombos_optioncombos">
+      <key column="categoryoptioncomboid" />
+      <many-to-one name="categoryCombo" column="categorycomboid" />
+    </join>
   </class>
 </hibernate-mapping>

@@ -5,22 +5,23 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" table="orgunitgroupset">
+
     <id name="id" column="orgunitgroupsetid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
 
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="230"/>
+      <column name="name" not-null="true" unique="true" length="230" />
     </property>
 
-    <property name="description"/>
-    <property name="compulsory" not-null="true"/>
-    
+    <property name="description" />
+    <property name="compulsory" not-null="true" />
+
     <set name="organisationUnitGroups" table="orgunitgroupsetmembers">
-      <key column="orgunitgroupsetid"/>
-      <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" 
-          column="orgunitgroupid" foreign-key="fk_orgunitgroupset_orgunitgroupid"/>
+      <key column="orgunitgroupsetid" />
+      <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid"
+        foreign-key="fk_orgunitgroupset_orgunitgroupid" />
     </set>
-    
+
   </class>
 </hibernate-mapping>

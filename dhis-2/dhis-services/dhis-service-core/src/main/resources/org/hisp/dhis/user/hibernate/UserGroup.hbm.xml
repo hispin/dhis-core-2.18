@@ -5,18 +5,17 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.user.UserGroup" table="usergroup">
-    
-	<id name="id" column="usergroupid">
-      <generator class="native"/>
+
+    <id name="id" column="usergroupid">
+      <generator class="native" />
     </id>
 
-    <property name="name" not-null="true" unique="true" length="230"/>
-   		
+    <property name="name" not-null="true" unique="true" length="230" />
+
     <set name="members" table="usergroupmembers">
-      <key column="usergroupid"/>
-      <many-to-many column="userid" 
-        class="org.hisp.dhis.user.User" foreign-key="fk_usergroup_userid" />
+      <key column="usergroupid" />
+      <many-to-many column="userid" class="org.hisp.dhis.user.User" foreign-key="fk_usergroup_userid" />
     </set>
-	  	  	
+
   </class>
 </hibernate-mapping>

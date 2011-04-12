@@ -5,13 +5,14 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.organisationunit.OrganisationUnitLevel" table="orgunitlevel">
+
     <id name="id" column="orgunitlevelid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
 
-    <property name="level" not-null="true" unique="true"/>
-    
-    <property name="name" not-null="true"/>
-        
+    <property name="level" not-null="true" unique="true" />
+
+    <property name="name" not-null="true" />
+
   </class>
 </hibernate-mapping>

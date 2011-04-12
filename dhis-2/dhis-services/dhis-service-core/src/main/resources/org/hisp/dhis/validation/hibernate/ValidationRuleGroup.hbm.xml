@@ -6,19 +6,19 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.validation.ValidationRuleGroup" table="validationrulegroup">
     <id name="id" column="validationgroupid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="230"/>
+      <column name="name" not-null="true" unique="true" length="230" />
     </property>
-  
-    <property name="description" type="text"/>
-    
+
+    <property name="description" type="text" />
+
     <set name="members" table="validationrulegroupmembers">
-      <key column="validationgroupid"/>
-      <many-to-many class="org.hisp.dhis.validation.ValidationRule" 
-          column="validationruleid" foreign-key="fk_validationrulegroup_validationruleid"/>
+      <key column="validationgroupid" />
+      <many-to-many class="org.hisp.dhis.validation.ValidationRule" column="validationruleid"
+        foreign-key="fk_validationrulegroup_validationruleid" />
     </set>
 
   </class>

@@ -5,71 +5,71 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataelement.DataElement" table="dataelement">
-    
-    <cache usage="read-write"/>
-    
+
+    <cache usage="read-write" />
+
     <id name="id" column="dataelementid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
+
     <property name="uuid">
-      <column name="uuid" length="40"/>
+      <column name="uuid" length="40" />
     </property>
-		
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="230"/>
+      <column name="name" not-null="true" unique="true" length="230" />
     </property>
 
     <property name="alternativeName">
-      <column name="alternativename" not-null="false" unique="true" length="230"/>
+      <column name="alternativename" not-null="false" unique="true" length="230" />
     </property>
-    
+
     <property name="shortName">
-      <column name="shortname" not-null="true" unique="true" length="25"/>
+      <column name="shortname" not-null="true" unique="true" length="25" />
     </property>
 
     <property name="code">
-      <column name="code" not-null="false" unique="false" length="100"/>
+      <column name="code" not-null="false" unique="false" length="100" />
     </property>
-    
-    <property name="description" type="text"/>
 
-    <property name="active" not-null="true"/>
+    <property name="description" type="text" />
 
-    <property name="type" column="valuetype" length="16" not-null="true"/>
-    
-    <property name="numberType" column="numbertype" length="16"/>
-    
-    <property name="domainType" column="domaintype" length="16"/>
-		
-    <property name="aggregationOperator" not-null="true" column="aggregationtype" length="16"/>
+    <property name="active" not-null="true" />
 
-    <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo" 
-      column="categorycomboid" foreign-key="fk_dataelement_categorycomboid"/>
-    
-    <property name="sortOrder"/>
-    
-    <property name="url"/>
-	
-	<property name="lastUpdated"/>
-    
-	<set name="groups" table="dataelementgroupmembers" inverse="true">
-      <key column="dataelementid"/>
-	  <many-to-many class="org.hisp.dhis.dataelement.DataElementGroup" column="dataelementgroupid"/>
-	</set>
-	
-    <set name="dataSets" table="datasetmembers" inverse="true">
-      <key column="dataelementid"/>
-      <many-to-many class="org.hisp.dhis.dataset.DataSet" column="datasetid"/>
+    <property name="type" column="valuetype" length="16" not-null="true" />
+
+    <property name="numberType" column="numbertype" length="16" />
+
+    <property name="domainType" column="domaintype" length="16" />
+
+    <property name="aggregationOperator" not-null="true" column="aggregationtype" length="16" />
+
+    <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo" column="categorycomboid"
+      foreign-key="fk_dataelement_categorycomboid" />
+
+    <property name="sortOrder" />
+
+    <property name="url" />
+
+    <property name="lastUpdated" />
+
+    <set name="groups" table="dataelementgroupmembers" inverse="true">
+      <key column="dataelementid" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElementGroup" column="dataelementgroupid" />
     </set>
-	    
+
+    <set name="dataSets" table="datasetmembers" inverse="true">
+      <key column="dataelementid" />
+      <many-to-many class="org.hisp.dhis.dataset.DataSet" column="datasetid" />
+    </set>
+
     <list name="aggregationLevels" table="dataelementaggregationlevels">
-      <key column="dataelementid"/>
-      <list-index column="sort_order" base="0"/>
-      <element column="aggregationlevel" type="integer"/>
+      <key column="dataelementid" />
+      <list-index column="sort_order" base="0" />
+      <element column="aggregationlevel" type="integer" />
     </list>
-    
-    <property name="zeroIsSignificant"/>
-    
+
+    <property name="zeroIsSignificant" />
+
   </class>
 </hibernate-mapping>

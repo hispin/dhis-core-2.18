@@ -6,28 +6,27 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataelement.DataElementCategoryOption" table="dataelementcategoryoption">
 
-    <cache usage="read-write"/>
-    
+    <cache usage="read-write" />
+
     <id name="id" column="categoryoptionid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-        	
-    <property name="uuid" length="40"/>
-    
+
+    <property name="uuid" length="40" />
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="160"/>
+      <column name="name" not-null="true" unique="true" length="160" />
     </property>
-    
+
     <set name="categoryOptionCombos" table="categoryoptioncombos_categoryoptions" inverse="true">
-	  <key column="categoryoptionid"/>
-	  <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
-		column="categoryoptioncomboid" foreign-key="fk_categoryoption_categoryoptioncomboid"/>
-	</set> 
-    
+      <key column="categoryoptionid" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid"
+        foreign-key="fk_categoryoption_categoryoptioncomboid" />
+    </set>
+
     <join table="categories_categoryoptions" inverse="true">
-      <key column="categoryoptionid"/>
-      <many-to-one column="categoryid" name="category"/>
+      <key column="categoryoptionid" />
+      <many-to-one column="categoryid" name="category" />
     </join>
-    
+
   </class>
 </hibernate-mapping>

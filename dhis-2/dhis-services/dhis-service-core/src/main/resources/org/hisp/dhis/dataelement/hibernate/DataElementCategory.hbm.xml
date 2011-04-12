@@ -5,30 +5,30 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataelement.DataElementCategory" table="dataelementcategory">
-    
-    <cache usage="read-write"/>
-    
+
+    <cache usage="read-write" />
+
     <id name="id" column="categoryid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
- 
+
     <property name="uuid">
-      <column name="uuid" length="40"/>
+      <column name="uuid" length="40" />
     </property>
-       	
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="160"/>
+      <column name="name" not-null="true" unique="true" length="160" />
     </property>
-		
-	<many-to-one name="concept" class="org.hisp.dhis.concept.Concept"
-		column="conceptid" foreign-key="fk_dataelementcategory_conceptid"/>
-    
+
+    <many-to-one name="concept" class="org.hisp.dhis.concept.Concept" column="conceptid"
+      foreign-key="fk_dataelementcategory_conceptid" />
+
     <list name="categoryOptions" table="categories_categoryoptions">
-      <key column="categoryid"/>
-      <list-index column="sort_order" base="1"/>
-      <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOption" 
-        column="categoryoptionid" foreign-key="fk_category_categoryoptionid" unique="true"/>
-    </list>    
-        
+      <key column="categoryid" />
+      <list-index column="sort_order" base="1" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOption" column="categoryoptionid"
+        foreign-key="fk_category_categoryoptionid" unique="true" />
+    </list>
+
   </class>
 </hibernate-mapping>
