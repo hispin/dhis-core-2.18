@@ -56,7 +56,7 @@ function responseListPeriodForStartReceived( json )
 	clearListById('sDateLB');
 	
 	jQuery.each( json.periods, function(i, item ){
-		addOption('sDateLB', item.name , i );
+		addOptionById('sDateLB', item.name , i );
 	});
 }
 
@@ -77,7 +77,7 @@ function responseListPeriodForEndReceived( json )
 	clearListById('eDateLB');
 	
 	jQuery.each( json.periods, function(i, item ){
-		addOption('eDateLB', item.name , i );
+		addOptionById('eDateLB', item.name , i );
 	});
 }
 	
