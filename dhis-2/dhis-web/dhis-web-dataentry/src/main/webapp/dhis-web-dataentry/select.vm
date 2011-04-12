@@ -20,7 +20,7 @@
 <h3>$i18n.getString( "data_entry" ) #openHelp( "dataEntry" )</h3>
 
 <div id="currentSelection">
-	<span style="text-align:left;cursor:pointer;padding:4px;"><img src="../images/hide.png" title="$i18n.getString( 'close' )" onclick="closeCurrentSelection()"></span>
+	<span style="float:left;cursor:pointer;margin-right:5px;"><img src="../images/hide.png" title="$i18n.getString( 'close' )" onclick="closeCurrentSelection()"></span>
 	<span id="currentOrganisationUnit">$i18n.getString( "no_organisationunit_selected" )</span> -
 	<span id="currentPeriod">$i18n.getString( "no_period_selected" )</span/><br>
 	<span id="currentDataElement">$i18n.getString( "no_dataelement_selected" )</span> -
@@ -41,15 +41,15 @@
 <table>
 	<tr>
 		<td><label for="selectedOrganisationUnit">$i18n.getString( "organisation_unit" )</label></td>
-		<td><input type="text" id="selectedOrganisationUnit" readonly="readonly" value="[ $i18n.getString( 'select_from_tree' ) ]" style="min-width:348px"></td>
+		<td><input type="text" id="selectedOrganisationUnit" readonly="readonly" value="[ $i18n.getString( 'select_from_tree' ) ]" style="width:348px"></td>
 	</tr>	
 	<tr>
 		<td><label for="selectedDataSetId">$i18n.getString( "data_set" )</label></td>
-		<td><select id="selectedDataSetId" name="selectedDataSetId" style="min-width:350px" onchange="dataSetSelected()" disabled="disabled"></select></td>
+		<td><select id="selectedDataSetId" name="selectedDataSetId" style="width:350px" onchange="dataSetSelected()" disabled="disabled"></select></td>
 	</tr>	
 	<tr>
 		<td><label for="selectedPeriodIndex">$i18n.getString( "period" )</label></td>
-		<td><select id="selectedPeriodIndex" name="selectedPeriodIndex" style="min-width:227px" onchange="periodSelected()" disabled="disabled"></select>
+		<td><select id="selectedPeriodIndex" name="selectedPeriodIndex" style="width:227px" onchange="periodSelected()" disabled="disabled"></select>
 			<input type="button" id="prevButton" style="width:60px" value="$i18n.getString( 'prev' )" title="$i18n.getString('earlier_periods')" onclick="previousPeriodsSelected()" disabled="disabled"><input 
 				   type="button" id="nextButton" style="width:60px" value="$i18n.getString( 'next' )" title="$i18n.getString('later_periods')" onclick="nextPeriodsSelected()" disabled="disabled">
 		</td>
