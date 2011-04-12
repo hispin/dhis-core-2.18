@@ -29,7 +29,7 @@
         column="dataelementoperandid" foreign-key="fk_section_dataelementoperandid"/>
     </set>     
      
-   <property name="sortOrder" column="sortorder"/>
+   <property name="sortOrder" column="sortorder" not-null="true"/>
 
   </class>
 </hibernate-mapping>

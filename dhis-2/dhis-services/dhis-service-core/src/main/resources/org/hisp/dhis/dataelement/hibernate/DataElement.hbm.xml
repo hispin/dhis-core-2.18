@@ -34,7 +34,7 @@
     
     <property name="description" type="text"/>
 
-    <property name="active"/>
+    <property name="active" not-null="true"/>
 
     <property name="type" column="valuetype" length="16" not-null="true"/>
     

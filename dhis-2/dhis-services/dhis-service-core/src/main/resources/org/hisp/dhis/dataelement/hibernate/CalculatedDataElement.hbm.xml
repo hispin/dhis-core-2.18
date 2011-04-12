@@ -10,7 +10,7 @@
     
     <key column="calculateddataelementid"/>
     
-    <property name="saved"/>
+    <property name="saved" not-null="true"/>
     
     <many-to-one name="expression" class="org.hisp.dhis.expression.Expression" 
       cascade="all" column="expressionid" foreign-key="fk_expression_expressionid"/>
