@@ -50,6 +50,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryOptionComboNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
@@ -105,6 +106,13 @@ public class DefaultDataSetReportService
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
+    }
+    
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     private SystemSettingManager systemSettingManager;
@@ -245,7 +253,9 @@ public class DefaultDataSetReportService
 
             grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) ); // Data element header
 
-            for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() ) // Value headers
+            List<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
+
+            for ( DataElementCategoryOptionCombo optionCombo : optionCombos ) // Value headers
             {
                 grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(), false, false ) );
             }
@@ -276,7 +286,7 @@ public class DefaultDataSetReportService
                 grid.addRow();
                 grid.addValue( dataElement.getName() ); // Data element name
 
-                for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() ) // Values
+                for ( DataElementCategoryOptionCombo optionCombo : optionCombos ) // Values
                 {
                     Double value = null;
 

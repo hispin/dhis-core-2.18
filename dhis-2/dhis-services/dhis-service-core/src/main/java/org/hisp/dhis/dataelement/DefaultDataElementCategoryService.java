@@ -538,7 +538,7 @@ public class DefaultDataElementCategoryService
         updateDataElementCategoryCombo( categoryCombo );
     }
 
-    public Collection<DataElementCategoryOptionCombo> sortOptionCombos( DataElementCategoryCombo categoryCombo )
+    public List<DataElementCategoryOptionCombo> sortOptionCombos( DataElementCategoryCombo categoryCombo )
     {
         List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
             categoryCombo.getOptionCombos() );
@@ -547,14 +547,14 @@ public class DefaultDataElementCategoryService
 
         Map<Integer, Collection<DataElementCategoryOption>> orderedOptions = prepareOptionsForCombination( categoryCombo );
 
-        Collection<DataElementCategoryOptionCombo> orderdCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+        List<DataElementCategoryOptionCombo> orderdCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
         for ( int i = 0; i < totalColumns; i++ )
         {
-            Collection<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categoryCombo
+            List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categoryCombo
                 .getCategories().size() );
 
-            Collection<DataElementCategory> copyOforderedCategories = categoryCombo.getCategories();
+            List<DataElementCategory> copyOforderedCategories = categoryCombo.getCategories();
 
             Iterator<DataElementCategory> categoryIterator = copyOforderedCategories.iterator();
 

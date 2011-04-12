@@ -214,9 +214,9 @@ public class SectionFormAction
         return orderdCategoryOptionCombos;
     }
 
-    private Collection<DataElementCategoryOptionCombo> allOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private List<DataElementCategoryOptionCombo> allOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
-    public Collection<DataElementCategoryOptionCombo> getAllOptionCombos()
+    public List<DataElementCategoryOptionCombo> getAllOptionCombos()
     {
         return allOptionCombos;
     }
@@ -343,7 +343,7 @@ public class SectionFormAction
 
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
         {
-            Collection<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
+            List<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
 
             allOptionCombos.addAll( optionCombos );
 

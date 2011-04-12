@@ -100,7 +100,6 @@ public class HibernatePatientStore
         return getCriteria( Restrictions.eq( "birthDate", birthDate ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByNames( String name )
     {   
         String sql = statementBuilder.getPatientsByFullName( name );
@@ -133,7 +132,6 @@ public class HibernatePatientStore
         return patients;
     }
     
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByNames( String name, int min, int max )
     {   
         String sql = statementBuilder.getPatientsByFullName( name, min, max );
