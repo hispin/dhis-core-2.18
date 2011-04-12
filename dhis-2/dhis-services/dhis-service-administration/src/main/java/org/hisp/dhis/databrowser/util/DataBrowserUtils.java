@@ -244,7 +244,10 @@ public class DataBrowserUtils
     }
 
     private static String checkValue( String value, boolean isZeroAdded )
-    {
+    {   if  ( value == null )
+        {
+            return "null";
+        }
         return (value.equals( "0" ) && !isZeroAdded) ? "" : value;
     }
 }
