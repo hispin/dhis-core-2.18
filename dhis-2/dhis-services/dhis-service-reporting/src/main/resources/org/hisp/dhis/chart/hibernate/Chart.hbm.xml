@@ -5,59 +5,56 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.chart.Chart" table="chart">
-    
+
     <id name="id" column="chartid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
-    <property name="title" not-null="true" unique="true"/>
-    
-    <property name="type"/>
-    
-    <property name="size"/>
-    
-    <property name="dimension"/>
-    
-    <property name="hideLegend"/>
-    
-    <property name="verticalLabels"/>
-    
-    <property name="horizontalPlotOrientation"/>
-    
-    <property name="regression"/>
-    
+
+    <property name="title" not-null="true" unique="true" />
+
+    <property name="type" />
+
+    <property name="size" />
+
+    <property name="dimension" />
+
+    <property name="hideLegend" />
+
+    <property name="verticalLabels" />
+
+    <property name="horizontalPlotOrientation" />
+
+    <property name="regression" />
+
     <list name="indicators" table="chart_indicators">
-      <key column="chartid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="indicatorid"
-        class="org.hisp.dhis.indicator.Indicator"/>
+      <key column="chartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="indicatorid" class="org.hisp.dhis.indicator.Indicator" />
     </list>
-    
+
     <list name="periods" table="chart_periods">
-      <key column="chartid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="periodid"
-        class="org.hisp.dhis.period.Period"/>
+      <key column="chartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="periodid" class="org.hisp.dhis.period.Period" />
     </list>
-    
+
     <list name="organisationUnits" table="chart_organisationunits">
-      <key column="chartid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="organisationunitid"
-        class="org.hisp.dhis.organisationunit.OrganisationUnit"/>
+      <key column="chartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" />
     </list>
 
     <component name="relatives">
-      <property name="reportingMonth"/>
-      <property name="monthsThisYear"/>
-      <property name="quartersThisYear"/>
-      <property name="thisYear"/>
-      <property name="monthsLastYear"/>
-      <property name="quartersLastYear"/>
-      <property name="lastYear"/>
+      <property name="reportingMonth" />
+      <property name="monthsThisYear" />
+      <property name="quartersThisYear" />
+      <property name="thisYear" />
+      <property name="monthsLastYear" />
+      <property name="quartersLastYear" />
+      <property name="lastYear" />
     </component>
-    
-    <property name="userOrganisationUnit"/>
-    
+
+    <property name="userOrganisationUnit" />
+
   </class>
-</hibernate-mapping>  
+</hibernate-mapping>

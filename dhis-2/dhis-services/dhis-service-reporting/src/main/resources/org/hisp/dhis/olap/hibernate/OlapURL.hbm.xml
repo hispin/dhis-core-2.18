@@ -5,16 +5,16 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.olap.OlapURL" table="olapurl">
-    
+
     <id name="id" column="olapurlid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="160"/>
+      <column name="name" not-null="true" unique="true" length="160" />
     </property>
 
-    <property name="url" type="text"/>
+    <property name="url" type="text" />
 
   </class>
 </hibernate-mapping>

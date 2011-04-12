@@ -5,19 +5,19 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.report.Report" table="report">
-    
+
     <id name="id" column="reportid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="160"/>
+      <column name="name" not-null="true" unique="true" length="160" />
     </property>
 
-	<property name="designContent" type="text"/>
-        
-    <many-to-one name="reportTable" class="org.hisp.dhis.reporttable.ReportTable"
-      column="reporttableid" foreign-key="fk_report_reporttableid"/>
-    
+    <property name="designContent" type="text" />
+
+    <many-to-one name="reportTable" class="org.hisp.dhis.reporttable.ReportTable" column="reporttableid"
+      foreign-key="fk_report_reporttableid" />
+
   </class>
 </hibernate-mapping>
