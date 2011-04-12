@@ -1,5 +1,4 @@
 var validationRules = {
-	/* dhis-web-maintenance-user */
 	"user" : {
 		"username" : {
 			"required" : true,
@@ -62,8 +61,6 @@ var validationRules = {
 			"required" : true
 		}
 	},
-
-	/* dhis-web-maintenance-organisationunit */
 	"organisationUnit" : {
 		"name" : {
 			"required" : true,
@@ -114,8 +111,6 @@ var validationRules = {
 			"rangelength" : [ 2, 255 ]
 		}
 	},
-
-	/* dhis-web-maintenance-dataset */
 	"dataEntry" : {
 		"name" : {
 			"required" : true,
@@ -153,8 +148,6 @@ var validationRules = {
 			"required" : true
 		}
 	},
-
-	/* dhis-web-maintenance-dataadmin */
 	"sqlView" : {
 		"name" : {
 			"required" : true,
@@ -190,8 +183,6 @@ var validationRules = {
 			"required" : true
 		}
 	},
-
-	/* dhis-web-maintenance-datadictionary */
 	"concept" : {
 		"name" : {
 			"required" : true,
@@ -328,7 +319,7 @@ var validationRules = {
 		"name" : {
 			"required" : true,
 			"rangelength" : [ 3, 150 ],
-			"alphanumericwithbasicpuncspaces" : true,
+			"alphanumericwithbasicpuncspaces" : true
 		}
 	},
 	"indicatorGroupSet" : {
@@ -341,7 +332,7 @@ var validationRules = {
 		"name" : {
 			"required" : true,
 			"rangelength" : [ 3, 150 ],
-			"alphanumericwithbasicpuncspaces" : true,
+			"alphanumericwithbasicpuncspaces" : true
 		},
 		"factor" : {
 			"required" : true,
@@ -349,8 +340,6 @@ var validationRules = {
 			"digits" : true
 		}
 	},
-
-	/* dhis-web-validationrule */
 	"validationRule" : {
 		"name" : {
 			"required" : true,
