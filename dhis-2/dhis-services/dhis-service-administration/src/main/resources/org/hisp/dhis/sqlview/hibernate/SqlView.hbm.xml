@@ -4,21 +4,19 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-
   <class name="org.hisp.dhis.sqlview.SqlView" table="sqlview">
-  
+
     <id name="id" column="viewid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-        
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="50"/>
+      <column name="name" not-null="true" unique="true" length="50" />
     </property>
-    
-	<property name="description" type="text"/>
-	
-    <property name="sqlQuery" not-null="true" type="text"/>
+
+    <property name="description" type="text" />
+
+    <property name="sqlQuery" not-null="true" type="text" />
 
   </class>
-
 </hibernate-mapping>
