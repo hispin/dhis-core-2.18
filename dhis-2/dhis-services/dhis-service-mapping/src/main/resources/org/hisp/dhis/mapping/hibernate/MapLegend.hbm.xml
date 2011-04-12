@@ -4,21 +4,19 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class name="org.hisp.dhis.mapping.MapLegend" table="maplegend">
-    
-        <id name="id" column="maplegendid">
-            <generator class="native"/>
-        </id>
-    
-        <property name="name" column="name" unique="true"/>
-        
-        <property name="startValue" column="startvalue"/>
-    
-        <property name="endValue" column="endvalue"/>
-        
-        <property name="color" column="color"/>
-        
-    </class>
-    
+  <class name="org.hisp.dhis.mapping.MapLegend" table="maplegend">
+
+    <id name="id" column="maplegendid">
+      <generator class="native" />
+    </id>
+
+    <property name="name" column="name" unique="true" />
+
+    <property name="startValue" column="startvalue" />
+
+    <property name="endValue" column="endvalue" />
+
+    <property name="color" column="color" />
+
+  </class>
 </hibernate-mapping>
