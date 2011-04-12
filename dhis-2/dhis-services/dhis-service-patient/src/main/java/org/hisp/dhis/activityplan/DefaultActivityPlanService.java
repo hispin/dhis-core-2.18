@@ -40,6 +40,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -102,11 +103,7 @@ public class DefaultActivityPlanService
 
     public Collection<Activity> getCurrentActivitiesByProvider( OrganisationUnit organisationUnit )
     {
-        Date today = new Date();
-        today.setHours( 0 );
-        today.setMinutes( 0 );
-        today.setSeconds( 0 );
-        long time = today.getTime();
+        long time = PeriodType.createCalendarInstance().getTime().getTime();
         
         List<Activity> items = new ArrayList<Activity>();
 
@@ -128,6 +125,8 @@ public class DefaultActivityPlanService
             {
                 if(!programStageInstance.isCompleted()){
                     expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
+                    
+                    //TODO compare with date.before
                     
                     if ( programStageInstance.getDueDate().getTime() <= time && expiredDate.getTimeInMillis() > time )
                     {
