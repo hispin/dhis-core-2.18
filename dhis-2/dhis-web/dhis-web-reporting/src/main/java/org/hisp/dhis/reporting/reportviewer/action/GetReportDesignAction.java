@@ -69,12 +69,6 @@ public class GetReportDesignAction
     }
     
     // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private String filename;
-
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
@@ -88,8 +82,6 @@ public class GetReportDesignAction
             out.write( report.getDesignContent().getBytes() );
         }
         
-        filename = CodecUtils.filenameEncode( report.getName() ) + EXT_JRXML;
-        
         return SUCCESS;    
     }
 
@@ -102,7 +94,9 @@ public class GetReportDesignAction
     @Override
     protected String getFilename()
     {
-        return filename;
+        Report report = reportService.getReport( id );
+        
+        return CodecUtils.filenameEncode( report.getName() ) + EXT_JRXML;
     }
     
     @Override

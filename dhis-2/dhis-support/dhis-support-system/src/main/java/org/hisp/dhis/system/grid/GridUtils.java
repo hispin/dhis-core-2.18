@@ -248,13 +248,13 @@ public class GridUtils
     public static void toJrxml( Grid grid, Writer writer )
         throws Exception
     {
-        render(grid, writer);
+        render( grid, writer );
     }
     
     /**
-     * Render using velocity
+     * Render using Velocity.
      */
-    private static void render(Grid grid, Writer writer)
+    private static void render( Grid grid, Writer writer )
         throws Exception
     {
         final VelocityEngine velocity = new VelocityEngine();
@@ -268,7 +268,5 @@ public class GridUtils
         context.put( KEY_GRID, grid );
         
         velocity.getTemplate( TEMPLATE ).merge( context, writer );
-        
-
     }
 }
