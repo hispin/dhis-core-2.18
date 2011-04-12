@@ -5,49 +5,44 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dashboard.DashboardContent" table="dashboardcontent">
-  
+
     <id name="id" column="dashboardcontentid">
       <generator class="foreign">
         <param name="property">user</param>
       </generator>
     </id>
 
-    <one-to-one name="user" class="org.hisp.dhis.user.User" constrained="true"/>
-        
+    <one-to-one name="user" class="org.hisp.dhis.user.User" constrained="true" />
+
     <list name="reports" table="dashboardcontent_reports">
-      <key column="userid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="reportid"
-        class="org.hisp.dhis.report.Report"/>
+      <key column="userid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="reportid" class="org.hisp.dhis.report.Report" />
     </list>
-        
+
     <list name="olapUrls" table="dashboardcontent_olapurls">
-      <key column="userid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="olapurlid"
-        class="org.hisp.dhis.olap.OlapURL"/>
+      <key column="userid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="olapurlid" class="org.hisp.dhis.olap.OlapURL" />
     </list>
-    
+
     <list name="documents" table="dashboardcontent_documents">
-      <key column="userid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="documentid"
-        class="org.hisp.dhis.document.Document"/>
+      <key column="userid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="documentid" class="org.hisp.dhis.document.Document" />
     </list>
-    
+
     <list name="reportTables" table="dashboardcontent_reporttables">
-      <key column="userid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="reporttableid"
-        class="org.hisp.dhis.reporttable.ReportTable"/>
+      <key column="userid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="reporttableid" class="org.hisp.dhis.reporttable.ReportTable" />
     </list>
-    
+
     <list name="mapViews" table="dashboardcontent_mapviews">
-      <key column="userid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="mapviewid"
-        class="org.hisp.dhis.mapping.MapView"/>
+      <key column="userid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="mapviewid" class="org.hisp.dhis.mapping.MapView" />
     </list>
-    
+
   </class>
 </hibernate-mapping>

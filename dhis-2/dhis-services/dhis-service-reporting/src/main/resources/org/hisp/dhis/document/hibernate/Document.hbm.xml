@@ -5,18 +5,18 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.document.Document" table="document">
-    
+
     <id name="id" column="documentid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
-    <property name="name" not-null="true" unique="true" length="160"/>
 
-    <property name="url" not-null="true" type="text"/>
+    <property name="name" not-null="true" unique="true" length="160" />
 
-    <property name="external"/>
+    <property name="url" not-null="true" type="text" />
 
-	<property name="contentType"/>
-    
+    <property name="external" not-null="true" />
+
+    <property name="contentType" />
+
   </class>
 </hibernate-mapping>

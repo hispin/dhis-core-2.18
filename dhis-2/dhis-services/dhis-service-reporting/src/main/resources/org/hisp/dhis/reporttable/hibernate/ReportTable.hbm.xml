@@ -5,81 +5,76 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.reporttable.ReportTable" table="reporttable">
-    
+
     <id name="id" column="reporttableid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
+
     <property name="name">
-      <column name="name" not-null="true" unique="true"/>
+      <column name="name" not-null="true" unique="true" />
     </property>
-    
-    <property name="regression"/>
-    
+
+    <property name="regression" />
+
     <list name="dataElements" table="reporttable_dataelements">
-      <key column="reporttableid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="dataelementid"
-        class="org.hisp.dhis.dataelement.DataElement"/>
+      <key column="reporttableid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="dataelementid" class="org.hisp.dhis.dataelement.DataElement" />
     </list>
 
     <list name="indicators" table="reporttable_indicators">
-      <key column="reporttableid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="indicatorid"
-        class="org.hisp.dhis.indicator.Indicator"/>
+      <key column="reporttableid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="indicatorid" class="org.hisp.dhis.indicator.Indicator" />
     </list>
 
     <list name="dataSets" table="reporttable_datasets">
-      <key column="reporttableid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="datasetid"
-        class="org.hisp.dhis.dataset.DataSet"/>
+      <key column="reporttableid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet" />
     </list>
-    
-    <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo"
-      column="categorycomboid" foreign-key="fk_reporttable_categorycombo"/>
-	
+
+    <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo" column="categorycomboid"
+      foreign-key="fk_reporttable_categorycombo" />
+
     <list name="periods" table="reporttable_periods">
-      <key column="reporttableid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="periodid"
-        class="org.hisp.dhis.period.Period"/>
+      <key column="reporttableid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="periodid" class="org.hisp.dhis.period.Period" />
     </list>
 
     <list name="units" table="reporttable_organisationunits">
-      <key column="reporttableid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="organisationunitid"
-        class="org.hisp.dhis.organisationunit.OrganisationUnit"/>
+      <key column="reporttableid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" />
     </list>
 
-    <property name="doIndicators"/>
-    
-    <property name="doPeriods"/>
-    
-    <property name="doUnits"/>
-    
+    <property name="doIndicators" />
+
+    <property name="doPeriods" />
+
+    <property name="doUnits" />
+
     <component name="relatives">
-      <property name="reportingMonth"/>
-      <property name="monthsThisYear"/>
-      <property name="quartersThisYear"/>
-      <property name="thisYear"/>
-      <property name="monthsLastYear"/>
-      <property name="quartersLastYear"/>
-      <property name="lastYear"/>
+      <property name="reportingMonth" />
+      <property name="monthsThisYear" />
+      <property name="quartersThisYear" />
+      <property name="thisYear" />
+      <property name="monthsLastYear" />
+      <property name="quartersLastYear" />
+      <property name="lastYear" />
     </component>
-    
+
     <component name="reportParams">
-      <property name="paramReportingMonth"/>
-      <property name="paramGrandParentOrganisationUnit"/>
-      <property name="paramParentOrganisationUnit"/>
-      <property name="paramOrganisationUnit"/>
+      <property name="paramReportingMonth" />
+      <property name="paramGrandParentOrganisationUnit" />
+      <property name="paramParentOrganisationUnit" />
+      <property name="paramOrganisationUnit" />
     </component>
-    
-    <property name="sortOrder"/>
-    
-    <property name="topLimit"/>
-    
+
+    <property name="sortOrder" />
+
+    <property name="topLimit" />
+
   </class>
 </hibernate-mapping>
