@@ -338,6 +338,6 @@ public class ExportExcelAction
     @Override
     protected String getFilename()
     {
-        return "dhis2_gis.xls";
+        return "DHIS_2_GIS.xls";
     }
 }
