@@ -37,6 +37,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.mapping.export.SVGDocument;
 import org.hisp.dhis.mapping.export.SVGUtils;
+import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
@@ -212,13 +213,13 @@ public class ExportImageAction
     @Override
     protected String getContentType()
     {
-        return "image/png";
+        return ContextUtils.CONTENT_TYPE_PNG;
     }
 
     @Override
     protected String getFilename()
     {
-        return "dhis2_gis.png";
+        return "DHIS_2_GIS.png";
     }
     
     @Override
