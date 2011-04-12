@@ -36,16 +36,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.WeeklyPeriodType;
-import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
 
 /**
@@ -55,11 +49,7 @@ import org.junit.Test;
 public class DataSetStoreTest
     extends DhisSpringTest
 {
-    private PeriodStore periodStore;
-
     private DataSetStore dataSetStore;
-
-    private SourceStore sourceStore;
     
     private PeriodType periodType;
 
@@ -69,10 +59,6 @@ public class DataSetStoreTest
     {
         dataSetStore = (DataSetStore) getBean( DataSetStore.ID );
 
-        periodStore = (PeriodStore) getBean( PeriodStore.ID );
-
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
-        
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         
         periodType = PeriodType.getAvailablePeriodTypes().iterator().next();
