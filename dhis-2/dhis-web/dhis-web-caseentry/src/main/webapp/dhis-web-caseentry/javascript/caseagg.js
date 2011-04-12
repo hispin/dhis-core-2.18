@@ -125,4 +125,5 @@ function viewResultDetails( orgunitId, periodId, aggregationConditionId )
 		width: 800,
         height: 400
     });
+}
 
