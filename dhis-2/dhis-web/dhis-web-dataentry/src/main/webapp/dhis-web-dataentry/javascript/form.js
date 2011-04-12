@@ -1,26 +1,15 @@
 
 var significantZeros = []; // Identifiers for which zero values are insignificant, also used in entry.js
 
-function addEventListeners() 
+function addEventListeners()
 {
-	var inputs = document.getElementsByName( "entryfield" ) 
-
-	for ( var i = 0, input; input = inputs[i]; i++ )
-	{
-		input.addEventListener('focus', valueFocus, false);
-	}
-
-    var selects = document.getElementsByName( "entryselect" );
-
-	for ( var i = 0, select; select = selects[i]; i++ )
-	{
-		select.addEventListener('focus', valueFocus, false);
-	}
+	$( '[name="entryfield"]' ).focus( valueFocus );
+	$( '[name="entryselect"]' ).focus( valueFocus );
 }
 
 function clearPeriod()
 {	
-	clearList( document.getElementById( 'selectedPeriodIndex' ) );	
+	clearListById( 'selectedPeriodIndex' );	
 	clearEntryForm();
 }
 
@@ -283,8 +272,7 @@ function valueFocus(e)
 	}
 	
 	if( minContainer )
-	{
-	    	    
+	{	    	    
 	    if( minContainer.firstChild )
 	    {        
 	        optionName += " - "+minContainer.firstChild.nodeValue; 
@@ -357,48 +345,22 @@ function validateCompleteDataSet()
 {
 	var confirmed = confirm( i18n_confirm_complete );
 	
-	if ( confirmed )
-	{
-	    var url = "getValidationViolations.action";
-    
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( registerCompleteDataSet );
-        request.send( url );        
+	if ( confirmed ) {
+		$.getJSON( 'getValidationViolations.action', registerCompleteDataSet );
 	}
 }
 
-function registerCompleteDataSet( messageElement )
+function registerCompleteDataSet( json )
 {
-    var type = messageElement.getAttribute( 'type' );
-    
-    if ( type == "none" )
-    {    
-        var url = "registerCompleteDataSet.action";
-    
-        var request = new Request();
-		request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( registerReceived );
-        request.send( url );
-    }
-    else
-    {
-        window.open( 'validate.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
-    }
-}
-
-function registerReceived( messageElement )
-{
-	var type = messageElement.getAttribute( 'type' );
-	
-    if ( type=='input' )
-    {
-		setHeaderDelayMessage( messageElement.firstChild.nodeValue );
-		return;
+	if ( json.response == 'success' ) {
+		$.getJSON( 'registerCompleteDataSet.action', function() {
+			$( '#completeButton' ).attr( 'disabled', 'disabled' );
+			$( '#undoButton' ).removeAttr( 'disabled' );
+		} );
 	}
-	
-	document.getElementById( "completeButton" ).disabled = true;
-	document.getElementById( "undoButton" ).disabled = false;
+	else {
+		window.open( 'validate.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
+	}
 }
 
 function undoCompleteDataSet()
@@ -407,18 +369,11 @@ function undoCompleteDataSet()
 	
 	if ( confirmed )
 	{
-        var url = "undoCompleteDataSet.action";
-    
-        var request = new Request();
-        request.setCallbackSuccess( undoReceived );
-        request.send( url );
+		$.getJSON( 'undoCompleteDataSet.action', function() {
+			$( '#completeButton' ).removeAttr( 'disabled' );
+			$( '#undoButton' ).attr( 'disabled', 'disabled' );
+		} );
 	}
-}
-
-function undoReceived( messageElement )
-{
-    document.getElementById( "completeButton" ).disabled = false;
-    document.getElementById( "undoButton" ).disabled = true;
 }
 
 // -----------------------------------------------------------------------------
