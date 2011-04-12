@@ -394,7 +394,7 @@ public class HibernateUserStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        return session.createQuery( "from UserCredentials" ).setFirstResult( first ).setMaxResults( max ).list();
+        return session.createQuery( "from UserCredentials order by username" ).setFirstResult( first ).setMaxResults( max ).list();
     }
 
     @SuppressWarnings("unchecked")
