@@ -5,41 +5,42 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.datamart.DataMartExport" table="datamartexport">
+  
     <id name="id" column="datamartexportid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
-    <property name="name" column="name" unique="true" not-null="true"/>
-    
+
+    <property name="name" column="name" unique="true" not-null="true" />
+
     <set name="dataElements" table="datamartexportdataelements">
-      <key column="datamartexportid"/>
-      <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"/>
+      <key column="datamartexportid" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" />
     </set>
-    
+
     <set name="indicators" table="datamartexportindicators">
-      <key column="datamartexportid"/>
-      <many-to-many class="org.hisp.dhis.indicator.Indicator" column="indicatorid"/>
+      <key column="datamartexportid" />
+      <many-to-many class="org.hisp.dhis.indicator.Indicator" column="indicatorid" />
     </set>
-    
+
     <set name="organisationUnits" table="datamartexportorgunits">
-      <key column="datamartexportid"/>
-      <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" column="orgunitid"/>
+      <key column="datamartexportid" />
+      <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" column="orgunitid" />
     </set>
-    
+
     <set name="periods" table="datamartexportperiods">
-      <key column="datamartexportid"/>
-      <many-to-many class="org.hisp.dhis.period.Period" column="periodid"/>
+      <key column="datamartexportid" />
+      <many-to-many class="org.hisp.dhis.period.Period" column="periodid" />
     </set>
-    
+
     <component name="relatives">
-      <property name="reportingMonth"/>
-      <property name="monthsThisYear"/>
-      <property name="quartersThisYear"/>
-      <property name="thisYear"/>
-      <property name="monthsLastYear"/>
-      <property name="quartersLastYear"/>
-      <property name="lastYear"/>
+      <property name="reportingMonth" />
+      <property name="monthsThisYear" />
+      <property name="quartersThisYear" />
+      <property name="thisYear" />
+      <property name="monthsLastYear" />
+      <property name="quartersLastYear" />
+      <property name="lastYear" />
     </component>
-    
+
   </class>
 </hibernate-mapping>
