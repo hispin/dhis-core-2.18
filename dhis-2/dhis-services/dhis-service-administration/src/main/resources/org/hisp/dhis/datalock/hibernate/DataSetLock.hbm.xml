@@ -5,25 +5,25 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.datalock.DataSetLock" table="datasetlock">
+
     <id name="id" column="datasetlockid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
 
-    <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" lazy="false"
-        column="datasetid" not-null="true" foreign-key="fk_dataset_datasetid"/>
+    <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" lazy="false" column="datasetid"
+      not-null="true" foreign-key="fk_dataset_datasetid" />
 
-    <many-to-one name="period" class="org.hisp.dhis.period.Period" lazy="false"
-        column="periodid" not-null="true" foreign-key="fk_dataset_periodid"/>
-  
+    <many-to-one name="period" class="org.hisp.dhis.period.Period" lazy="false" column="periodid" not-null="true"
+      foreign-key="fk_dataset_periodid" />
+
     <set name="sources" table="datasetlocksource">
-      <key column="datasetlockid"/>
-      <many-to-many  column="sourceid"
-         class="org.hisp.dhis.source.Source"/>
+      <key column="datasetlockid" />
+      <many-to-many column="sourceid" class="org.hisp.dhis.source.Source" />
     </set>
-	  
-    <property name="storedBy" column="storedby" length="31"/>
-    
-    <property name="timestamp" column="lastupdated" type="date"/>
-	
+
+    <property name="storedBy" column="storedby" length="31" />
+
+    <property name="timestamp" column="lastupdated" type="date" />
+
   </class>
 </hibernate-mapping>

@@ -5,10 +5,14 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.useraudit.LoginFailure" table="loginfailure">
+
     <id name="id" column="loginfailureid">
-      <generator class="native"/>
-    </id>        
-    <property name="username"/>
-    <property name="date"/>
+      <generator class="native" />
+    </id>
+
+    <property name="username" />
+
+    <property name="date" />
+
   </class>
 </hibernate-mapping>
