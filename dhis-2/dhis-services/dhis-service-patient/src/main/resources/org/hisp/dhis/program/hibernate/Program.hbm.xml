@@ -5,41 +5,39 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.program.Program" table="program">
-    
+
     <id name="id" column="programid">
-      <generator class="native"/>
-    </id>   
-    
-    <property name="name" not-null="true" unique="true" length="160"/>
-    
-    <property name="description" type="text"/>
-	  
-	<property name="version"/>  
-    
-    <property name="dateOfEnrollmentDescription" type="text" not-null="true"/>
-     
-    <property name="dateOfIncidentDescription" type="text" not-null="true"/> 
-    
+      <generator class="native" />
+    </id>
+
+    <property name="name" not-null="true" unique="true" length="160" />
+
+    <property name="description" type="text" />
+
+    <property name="version" />
+
+    <property name="dateOfEnrollmentDescription" type="text" not-null="true" />
+
+    <property name="dateOfIncidentDescription" type="text" not-null="true" />
+
     <set name="programStages" order-by="stageinprogram" inverse="true" cascade="all">
-      <key column="programid"/>      
-      <one-to-many class="org.hisp.dhis.program.ProgramStage"/>
+      <key column="programid" />
+      <one-to-many class="org.hisp.dhis.program.ProgramStage" />
     </set>
-    
+
     <set name="organisationUnits" table="program_organisationunits">
-      <key column="programid"/>
-      <many-to-many column="organisationunitid" 
-        class="org.hisp.dhis.organisationunit.OrganisationUnit"/>
-    </set>  
-    
+      <key column="programid" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" />
+    </set>
+
     <set name="patientValidationCriteria" table="program_criteria">
-      <key column="programid"/>
-      <many-to-many column="validationcriteriaid" 
-      	class="org.hisp.dhis.validation.ValidationCriteria" />
-    </set>    
-    
-    <property name="minDaysAllowedInputData"/>  
-   
-    <property name="maxDaysAllowedInputData"/>  
-   
+      <key column="programid" />
+      <many-to-many column="validationcriteriaid" class="org.hisp.dhis.validation.ValidationCriteria" />
+    </set>
+
+    <property name="minDaysAllowedInputData" />
+
+    <property name="maxDaysAllowedInputData" />
+
   </class>
 </hibernate-mapping>

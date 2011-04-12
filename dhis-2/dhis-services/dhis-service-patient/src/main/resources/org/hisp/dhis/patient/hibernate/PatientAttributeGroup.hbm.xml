@@ -4,20 +4,21 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="org.hisp.dhis.patient.PatientAttributeGroup" table="patientattributegroup">
-		<id name="id" column="patientattributegroupid">
-			<generator class="native" />
-		</id>
+  <class name="org.hisp.dhis.patient.PatientAttributeGroup" table="patientattributegroup">
 
-		<property name="name" not-null="true" unique="true" length="160" />
+    <id name="id" column="patientattributegroupid">
+      <generator class="native" />
+    </id>
 
-		<property name="description" />
+    <property name="name" not-null="true" unique="true" length="160" />
 
-		<list name="attributes" table="patientattributegroupmembers">
-      		<key column="patientattributegroupid"/>
-			<list-index column="sort_order" base="1"/>
-      		<one-to-many class="org.hisp.dhis.patient.PatientAttribute"/>
-    	</list>
+    <property name="description" />
 
-	</class>
+    <list name="attributes" table="patientattributegroupmembers">
+      <key column="patientattributegroupid" />
+      <list-index column="sort_order" base="1" />
+      <one-to-many class="org.hisp.dhis.patient.PatientAttribute" />
+    </list>
+
+  </class>
 </hibernate-mapping>

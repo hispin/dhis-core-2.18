@@ -4,24 +4,25 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.patient.PatientIdentifierType" table="patientidentifiertype">    
+  <class name="org.hisp.dhis.patient.PatientIdentifierType" table="patientidentifiertype">
+
     <id name="id" column="patientidentifiertypeid">
-      <generator class="native"/>
-    </id>   
-    
-    <property name="name" not-null="true" unique="true" length="160"/>
-    
-    <property name="description"/>    
-    
-    <property name="format"/>     
-    
-    <property name="mandatory" not-null="true"/>  	
-    
-    <property name="related" not-null="true"/>
-    
-    <property name="noChars"/>
-    
-    <property name="type"/>
-	
+      <generator class="native" />
+    </id>
+
+    <property name="name" not-null="true" unique="true" length="160" />
+
+    <property name="description" />
+
+    <property name="format" />
+
+    <property name="mandatory" not-null="true" />
+
+    <property name="related" not-null="true" />
+
+    <property name="noChars" />
+
+    <property name="type" />
+
   </class>
 </hibernate-mapping>
