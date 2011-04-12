@@ -4,43 +4,38 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    
-    <class name="org.hisp.dhis.mapping.MapLegendSet" table="maplegendset">
-    
-        <id name="id" column="maplegendsetid">
-            <generator class="native"/>
-        </id>
-    
-        <property name="name" column="name" unique="true"/>
-        
-        <property name="type" column="type"/>
-    
-        <property name="method" column="method"/>
-        
-        <property name="classes" column="classes"/>
-        
-        <property name="colorLow" column="colorlow"/>
-            
-        <property name="colorHigh" column="colorhigh"/>
-        
-        <set name="mapLegends" table="maplegendsetmaplegend">
-            <key column="legendsetid"/>
-            <many-to-many column="maplegendid" 
-				class="org.hisp.dhis.mapping.MapLegend" foreign-key="fk_maplegendset_maplegend"/>
-        </set>
-            
-        <set name="indicators" table="maplegendsetindicator">
-            <key column="legendsetid"/>
-            <many-to-many column="indicatorid" 
-				class="org.hisp.dhis.indicator.Indicator" foreign-key="fk_maplegendset_indicator"/>
-        </set>
-		
-		<set name="dataElements" table="maplegendsetdataelement">
-            <key column="legendsetid"/>
-            <many-to-many column="dataelementid" 
-                class="org.hisp.dhis.dataelement.DataElement" foreign-key="fk_maplegendset_dataelement"/>
-        </set>
-      
-    </class>
-    
+  <class name="org.hisp.dhis.mapping.MapLegendSet" table="maplegendset">
+
+    <id name="id" column="maplegendsetid">
+      <generator class="native" />
+    </id>
+
+    <property name="name" column="name" unique="true" />
+
+    <property name="type" column="type" />
+
+    <property name="method" column="method" not-null="true" />
+
+    <property name="classes" column="classes" not-null="true" />
+
+    <property name="colorLow" column="colorlow" />
+
+    <property name="colorHigh" column="colorhigh" />
+
+    <set name="mapLegends" table="maplegendsetmaplegend">
+      <key column="legendsetid" />
+      <many-to-many column="maplegendid" class="org.hisp.dhis.mapping.MapLegend" foreign-key="fk_maplegendset_maplegend" />
+    </set>
+
+    <set name="indicators" table="maplegendsetindicator">
+      <key column="legendsetid" />
+      <many-to-many column="indicatorid" class="org.hisp.dhis.indicator.Indicator" foreign-key="fk_maplegendset_indicator" />
+    </set>
+
+    <set name="dataElements" table="maplegendsetdataelement">
+      <key column="legendsetid" />
+      <many-to-many column="dataelementid" class="org.hisp.dhis.dataelement.DataElement" foreign-key="fk_maplegendset_dataelement" />
+    </set>
+
+  </class>
 </hibernate-mapping>

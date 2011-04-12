@@ -4,29 +4,27 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	
-	<class name="org.hisp.dhis.mapping.MapLayer" table="maplayer">
-    
-    	<id name="id" column="maplayerid">
-			<generator class="native"/>
-		</id>
-	
-		<property name="name" column="name" unique="true"/>
-		
-		<property name="type" column="type"/>
-	
-		<property name="mapSource" column="mapsource"/>
-		
-		<property name="layer" column="layer"/>
-		
-		<property name="fillColor" column="fillcolor"/>
-		
-		<property name="fillOpacity" column="fillopacity"/>
-		
-		<property name="strokeColor" column="strokecolor"/>
-		
-		<property name="strokeWidth" column="strokewidth"/>
-		
-	</class>
-	
+  <class name="org.hisp.dhis.mapping.MapLayer" table="maplayer">
+
+    <id name="id" column="maplayerid">
+      <generator class="native" />
+    </id>
+
+    <property name="name" column="name" unique="true" />
+
+    <property name="type" column="type" />
+
+    <property name="mapSource" column="mapsource" />
+
+    <property name="layer" column="layer" />
+
+    <property name="fillColor" column="fillcolor" />
+
+    <property name="fillOpacity" column="fillopacity" not-null="true" />
+
+    <property name="strokeColor" column="strokecolor" />
+
+    <property name="strokeWidth" column="strokewidth" not-null="true" />
+
+  </class>
 </hibernate-mapping>
