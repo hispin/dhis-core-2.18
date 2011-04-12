@@ -37,7 +37,7 @@
 		
     <property name="closedDate" column="closeddate" type="date"/>
 		
-    <property name="active"/>
+    <property name="active" not-null="true"/>
     
     <property name="comment" type="text"/>
     
