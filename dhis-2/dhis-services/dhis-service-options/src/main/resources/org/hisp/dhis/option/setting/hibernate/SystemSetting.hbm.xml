@@ -5,18 +5,18 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.options.SystemSetting" table="systemsetting">
-  
-  	<cache usage="read-write"/>
+
+    <cache usage="read-write" />
 
     <id name="id" column="systemsettingid">
       <generator class="native" />
     </id>
 
     <property name="name">
-      <column name="name" not-null="true" unique="true"/>
+      <column name="name" not-null="true" unique="true" />
     </property>
-	  
-    <property name="value" type="serializable" length="65535"/>
+
+    <property name="value" type="serializable" length="65535" />
 
   </class>
 </hibernate-mapping>
