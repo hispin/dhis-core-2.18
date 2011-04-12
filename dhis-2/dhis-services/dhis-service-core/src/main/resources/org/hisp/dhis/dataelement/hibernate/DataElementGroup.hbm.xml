@@ -4,33 +4,32 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-
   <class name="org.hisp.dhis.dataelement.DataElementGroup" table="dataelementgroup">
-    
-    <cache usage="read-write"/>
-    
+
+    <cache usage="read-write" />
+
     <id name="id" column="dataelementgroupid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
 
     <property name="uuid">
-      <column name="uuid" length="40"/>
+      <column name="uuid" length="40" />
     </property>
 
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="230"/>
+      <column name="name" not-null="true" unique="true" length="230" />
     </property>
-		
+
     <set name="members" table="dataelementgroupmembers">
-      <key column="dataelementgroupid"/>
-      <many-to-many class="org.hisp.dhis.dataelement.DataElement" 
-        column="dataelementid" foreign-key="fk_dataelementgroup_dataelementid"/>
+      <key column="dataelementgroupid" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
+        foreign-key="fk_dataelementgroup_dataelementid" />
     </set>
-	
-	<join table="dataelementgroupsetmembers" inverse="true">
-      <key column="dataelementgroupid"/>
-	  <many-to-one column="dataelementgroupsetid" name="groupSet"/> 
-	</join>
+
+    <join table="dataelementgroupsetmembers" inverse="true">
+      <key column="dataelementgroupid" />
+      <many-to-one column="dataelementgroupsetid" name="groupSet" />
+    </join>
 
   </class>
 </hibernate-mapping>

@@ -5,69 +5,69 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.indicator.Indicator" table="indicator">
-    
-    <cache usage="read-write"/>
-    
+
+    <cache usage="read-write" />
+
     <id name="id" column="indicatorid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
+
     <property name="uuid">
-      <column name="uuid" length="40"/>
+      <column name="uuid" length="40" />
     </property>
-		
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="230"/>
+      <column name="name" not-null="true" unique="true" length="230" />
     </property>
-		
-	<property name="alternativeName">
-      <column name="alternativename" not-null="false" unique="true" length="230"/>
+
+    <property name="alternativeName">
+      <column name="alternativename" not-null="false" unique="true" length="230" />
     </property>
-		
+
     <property name="shortName">
-      <column name="shortname" not-null="true" unique="true" length="25"/>
+      <column name="shortname" not-null="true" unique="true" length="25" />
     </property>
-		
+
     <property name="code">
-      <column name="code" not-null="false" unique="false" length="25"/>
+      <column name="code" not-null="false" unique="false" length="25" />
     </property>
-		
-    <property name="description" type="text"/>
-    
-    <property name="annualized" column="annualized"/>
 
-    <many-to-one name="indicatorType" class="org.hisp.dhis.indicator.IndicatorType"
-      column="indicatortypeid" foreign-key="fk_indicator_indicatortypeid"/>
+    <property name="description" type="text" />
 
-    <property name="numerator" column="numerator" type="text"/>
-	  	
-    <property name="numeratorDescription" column="numeratordescription" type="text"/>
-		
-    <property name="numeratorAggregationOperator" column="numeratoraggregationtype" length="16"/>
-		
-    <property name="denominator" column="denominator" type="text"/>
-		
-    <property name="denominatorDescription" column="denominatordescription" type="text"/>
-		
-    <property name="denominatorAggregationOperator" column="denominatoraggregationtype" length="16"/>
+    <property name="annualized" column="annualized" />
 
-    <property name="sortOrder"/>
+    <many-to-one name="indicatorType" class="org.hisp.dhis.indicator.IndicatorType" column="indicatortypeid"
+      foreign-key="fk_indicator_indicatortypeid" />
 
-    <property name="url"/>
-    
-    <property name="lastUpdated"/>
-    
+    <property name="numerator" column="numerator" type="text" />
+
+    <property name="numeratorDescription" column="numeratordescription" type="text" />
+
+    <property name="numeratorAggregationOperator" column="numeratoraggregationtype" length="16" />
+
+    <property name="denominator" column="denominator" type="text" />
+
+    <property name="denominatorDescription" column="denominatordescription" type="text" />
+
+    <property name="denominatorAggregationOperator" column="denominatoraggregationtype" length="16" />
+
+    <property name="sortOrder" />
+
+    <property name="url" />
+
+    <property name="lastUpdated" />
+
     <set name="groups" table="indicatorgroupmembers" inverse="true">
-	  <key column="indicatorid"/>
-	  <many-to-many class="org.hisp.dhis.indicator.IndicatorGroup" column="indicatorgroupid"/>
+      <key column="indicatorid" />
+      <many-to-many class="org.hisp.dhis.indicator.IndicatorGroup" column="indicatorgroupid" />
     </set>
-		
+
     <list name="groupSets" table="indicator_indicatorgroupsetmembers">
-      <key column="indicatorid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many class="org.hisp.dhis.indicator.IndicatorGroupSet"
-        column="indicatorgroupsetid" foreign-key="fk_indicator_indicatorgroupsetid"/>   
+      <key column="indicatorid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many class="org.hisp.dhis.indicator.IndicatorGroupSet" column="indicatorgroupsetid"
+        foreign-key="fk_indicator_indicatorgroupsetid" />
     </list>
-    
+
   </class>
 </hibernate-mapping>

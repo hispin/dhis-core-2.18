@@ -5,31 +5,30 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.indicator.IndicatorGroup" table="indicatorgroup">
-    
-    <cache usage="read-write"/>
-    
+
+    <cache usage="read-write" />
+
     <id name="id" column="indicatorgroupid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
+
     <property name="uuid">
-      <column name="uuid" length="40"/>
+      <column name="uuid" length="40" />
     </property>
-		
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="230"/>
+      <column name="name" not-null="true" unique="true" length="230" />
     </property>
-	
+
     <set name="members" table="indicatorgroupmembers">
-      <key column="indicatorgroupid"/>
-      <many-to-many class="org.hisp.dhis.indicator.Indicator" 
-        column="indicatorid" foreign-key="fk_indicatorgroup_indicatorid"/>
+      <key column="indicatorgroupid" />
+      <many-to-many class="org.hisp.dhis.indicator.Indicator" column="indicatorid" foreign-key="fk_indicatorgroup_indicatorid" />
     </set>
-	
+
     <join table="indicatorgroupsetmembers" inverse="true">
-      <key column="indicatorgroupid"/>
-      <many-to-one column="indicatorgroupsetid" name="groupSet"/> 
+      <key column="indicatorgroupid" />
+      <many-to-one column="indicatorgroupsetid" name="groupSet" />
     </join>
-	
+
   </class>
 </hibernate-mapping>

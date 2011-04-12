@@ -5,16 +5,16 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataelement.DataElementOperand" table="dataelementoperand">
-    
+
     <id name="id" column="dataelementoperandid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-	
-	<many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement"
-		column="dataelementid" foreign-key="fk_dataelementoperand_dataelement"/>
-	
-	<many-to-one name="categoryOptionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
-		column="categoryoptioncomboid" foreign-key="fk_dataelementoperand_dataelementcategoryoptioncombo"/>
+
+    <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
+      foreign-key="fk_dataelementoperand_dataelement" />
+
+    <many-to-one name="categoryOptionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
+      column="categoryoptioncomboid" foreign-key="fk_dataelementoperand_dataelementcategoryoptioncombo" />
 
   </class>
 </hibernate-mapping>

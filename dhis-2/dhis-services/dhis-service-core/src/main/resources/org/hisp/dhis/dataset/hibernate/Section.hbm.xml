@@ -5,31 +5,30 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataset.Section" table="section">
-  
-    <cache usage="read-write"/>
-  
+
+    <cache usage="read-write" />
+
     <id name="id" column="sectionid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
 
-    <property name="name" not-null="true" />    
+    <property name="name" not-null="true" />
 
-    <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid"/>
+    <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid" />
 
-	<list name="dataElements" table="sectiondataelements">
-		<key column="sectionid"/>
-		<list-index column="sort_order" base="1"/>
-		<many-to-many class="org.hisp.dhis.dataelement.DataElement" 
-          column="dataelementid" foreign-key="fk_section_dataelementid"/>
-	</list> 	
-	  
-	<set name="greyedFields" table="sectiongreyedfields">
-      <key column="sectionid"/>
-      <many-to-many class="org.hisp.dhis.dataelement.DataElementOperand" 
-        column="dataelementoperandid" foreign-key="fk_section_dataelementoperandid"/>
-    </set>     
-     
-   <property name="sortOrder" column="sortorder" not-null="true"/>
+    <list name="dataElements" table="sectiondataelements">
+      <key column="sectionid" />
+      <list-index column="sort_order" base="1" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_section_dataelementid" />
+    </list>
+
+    <set name="greyedFields" table="sectiongreyedfields">
+      <key column="sectionid" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElementOperand" column="dataelementoperandid"
+        foreign-key="fk_section_dataelementoperandid" />
+    </set>
+
+    <property name="sortOrder" column="sortorder" not-null="true" />
 
   </class>
 </hibernate-mapping>

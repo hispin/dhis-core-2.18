@@ -3,77 +3,76 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
+  <joined-subclass name="org.hisp.dhis.organisationunit.OrganisationUnit" extends="org.hisp.dhis.source.Source"
+    table="organisationunit">
 
-  <joined-subclass name="org.hisp.dhis.organisationunit.OrganisationUnit"
-    extends="org.hisp.dhis.source.Source" table="organisationunit">
-    
-    <key column="organisationunitid"/>
-    
-	<property name="uuid">
-	  <column name="uuid" length="40"/>
-	</property>
-		
+    <key column="organisationunitid" />
+
+    <property name="uuid">
+      <column name="uuid" length="40" />
+    </property>
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="230"/>
+      <column name="name" not-null="true" unique="true" length="230" />
     </property>
-    
-	<set name="children" inverse="true" cascade="save-update,delete-orphan">
-      <key column="parentid"/>
-      <one-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit"/>
+
+    <set name="children" inverse="true" cascade="save-update,delete-orphan">
+      <key column="parentid" />
+      <one-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" />
     </set>
-		
-    <many-to-one name="parent" class="org.hisp.dhis.organisationunit.OrganisationUnit"
-        column="parentid" foreign-key="fk_parentid" index="in_parentid"/>
-	
+
+    <many-to-one name="parent" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="parentid"
+      foreign-key="fk_parentid" index="in_parentid" />
+
     <property name="shortName">
-      <column name="shortname" not-null="true" unique="false" length="50"/>			
+      <column name="shortname" not-null="true" unique="false" length="50" />
     </property>
-	
+
     <property name="code">
-      <column name="code" not-null="false" unique="false" length="25"/>
+      <column name="code" not-null="false" unique="false" length="25" />
     </property>
-		
-    <property name="openingDate" column="openingdate" type="date"/>
-		
-    <property name="closedDate" column="closeddate" type="date"/>
-		
-    <property name="active" not-null="true"/>
-    
-    <property name="comment" type="text"/>
-    
-    <property name="geoCode"/>
-    
-	<property name="featureType"/>
-	
-    <property name="coordinates" type="text"/>
-    
-    <property name="url"/>
-		
-    <property name="lastUpdated"/>
-    
+
+    <property name="openingDate" column="openingdate" type="date" />
+
+    <property name="closedDate" column="closeddate" type="date" />
+
+    <property name="active" not-null="true" />
+
+    <property name="comment" type="text" />
+
+    <property name="geoCode" />
+
+    <property name="featureType" />
+
+    <property name="coordinates" type="text" />
+
+    <property name="url" />
+
+    <property name="lastUpdated" />
+
     <set name="groups" table="orgunitgroupmembers" inverse="true">
-      <key column="organisationunitid"/>
-      <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid"/>
+      <key column="organisationunitid" />
+      <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid" />
     </set>
-	
+
     <set name="users" table="usermembership" inverse="true">
-      <key column="organisationunitid"/>
-      <many-to-many class="org.hisp.dhis.user.User" column="userinfoid"/>
+      <key column="organisationunitid" />
+      <many-to-many class="org.hisp.dhis.user.User" column="userinfoid" />
     </set>
-	
-	<!-- Contact info -->
-	
-	<property name="contactPerson" length="255"/>
-	
-	<property name="address" length="255"/>
-	
-	<property name="email" length="150"/>
-	
-	<property name="phoneNumber" length="150"/>
-	
-	<!-- hasPatients -->
-	
-	<property name="hasPatients"/>
-	
+
+    <!-- Contact info -->
+
+    <property name="contactPerson" length="255" />
+
+    <property name="address" length="255" />
+
+    <property name="email" length="150" />
+
+    <property name="phoneNumber" length="150" />
+
+    <!-- hasPatients -->
+
+    <property name="hasPatients" />
+
   </joined-subclass>
 </hibernate-mapping>

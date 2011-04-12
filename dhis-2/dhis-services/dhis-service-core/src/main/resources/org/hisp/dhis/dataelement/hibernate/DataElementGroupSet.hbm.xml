@@ -5,24 +5,24 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataelement.DataElementGroupSet" table="dataelementgroupset">
-        
+
     <id name="id" column="dataelementgroupsetid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
 
     <property name="uuid">
-      <column name="uuid" length="40"/>
+      <column name="uuid" length="40" />
     </property>
 
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="230"/>
+      <column name="name" not-null="true" unique="true" length="230" />
     </property>
-        
+
     <list name="members" table="dataelementgroupsetmembers">
-      <key column="dataelementgroupsetid"/>
-	  <list-index column="sort_order" base="1"/>
-      <many-to-many class="org.hisp.dhis.dataelement.DataElementGroup" 
-        column="dataelementgroupid" unique="true" foreign-key="fk_dataelementgroupset_dataelementgroupid"/>
+      <key column="dataelementgroupsetid" />
+      <list-index column="sort_order" base="1" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElementGroup" column="dataelementgroupid" unique="true"
+        foreign-key="fk_dataelementgroupset_dataelementgroupid" />
     </list>
 
   </class>

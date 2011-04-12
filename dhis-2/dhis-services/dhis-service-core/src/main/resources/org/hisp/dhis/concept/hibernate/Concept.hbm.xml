@@ -4,14 +4,14 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.concept.Concept" table="concept">    
+  <class name="org.hisp.dhis.concept.Concept" table="concept">
 
     <id name="id" column="conceptid">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-    
+
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="10"/>
+      <column name="name" not-null="true" unique="true" length="10" />
     </property>
 
   </class>
