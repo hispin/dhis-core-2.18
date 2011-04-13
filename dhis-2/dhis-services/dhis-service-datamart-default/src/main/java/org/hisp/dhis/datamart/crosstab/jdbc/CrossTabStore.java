@@ -40,8 +40,8 @@ import org.hisp.dhis.datamart.CrossTabDataValue;
 public interface CrossTabStore
 {
     final String ID = CrossTabStore.class.getName();
-    final String TABLE_NAME = "datavaluecrosstab_";
-    final String TABLE_NAME_TRIMMED = "datavaluecrosstabtrimmed_";
+    final String TABLE_PREFIX = "datavaluecrosstab_";
+    final String TABLE_PREFIX_TRIMMED = "datavaluecrosstabtrimmed_";
     
     /**
      * Filters and returns the DataElementOperands with data from the given

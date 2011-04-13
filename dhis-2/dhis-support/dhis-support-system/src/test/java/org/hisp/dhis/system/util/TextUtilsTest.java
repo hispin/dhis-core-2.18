@@ -27,19 +27,20 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import junit.framework.TestCase;
+import static org.hisp.dhis.system.util.TextUtils.*;
+import static junit.framework.Assert.*;
 
-import static org.hisp.dhis.system.util.TextUtils.subString;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id $
  */
 public class TextUtilsTest
-    extends TestCase
 {
     private static final String STRING = "abcdefghij";
     
+    @Test
     public void testSubString()
     {
         assertEquals( "abcdefghij", subString( STRING, 0, 10 ) );
@@ -55,5 +56,11 @@ public class TextUtilsTest
         assertEquals( "j", subString( STRING, 9, 1 ) );
         
         assertEquals( "", subString( STRING, 4, 0 ) );
+    }
+    
+    @Test
+    public void testTrim()
+    {
+        assertEquals( "abcdefgh", trimEnd( "abcdefghijkl", 4 ) );
     }
 }

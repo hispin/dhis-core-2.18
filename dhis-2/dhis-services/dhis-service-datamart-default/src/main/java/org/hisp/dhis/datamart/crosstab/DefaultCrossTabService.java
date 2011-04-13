@@ -53,7 +53,13 @@ public class DefaultCrossTabService
     private static final Log log = LogFactory.getLog( DefaultCrossTabService.class );
 
     private static final int MAX_LENGTH = 20;
-    private static final int MAX_COLUMNS = 1500;
+
+    private int maxColumns = 1500;
+
+    public void setMaxColumns( int maxColumns )
+    {
+        this.maxColumns = maxColumns;
+    }
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -94,7 +100,7 @@ public class DefaultCrossTabService
     {
         if ( validate( operands, periodIds, organisationUnitIds ) )
         {
-            final PaginatedList<DataElementOperand> operandList = new PaginatedList<DataElementOperand>( operands, MAX_COLUMNS );
+            final PaginatedList<DataElementOperand> operandList = new PaginatedList<DataElementOperand>( operands, maxColumns );
 
             final List<String> crossTabTableKeys = new ArrayList<String>();
             
@@ -110,7 +116,7 @@ public class DefaultCrossTabService
                 crossTabStore.createCrossTabTable( operandPage, key );
 
                 final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
-                batchHandler.setTableName( CrossTabStore.TABLE_NAME + key );
+                batchHandler.setTableName( CrossTabStore.TABLE_PREFIX + key );
                 batchHandler.init();
 
                 for ( final Integer periodId : periodIds )
