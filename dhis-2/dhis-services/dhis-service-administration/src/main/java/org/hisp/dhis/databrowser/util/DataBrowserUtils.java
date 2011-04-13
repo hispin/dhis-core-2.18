@@ -27,9 +27,7 @@ package org.hisp.dhis.databrowser.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,6 +37,8 @@ import java.util.List;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.databrowser.MetaValue;
@@ -48,7 +48,7 @@ import org.hisp.dhis.databrowser.MetaValue;
  * @version $Id$
  */
 public class DataBrowserUtils
-{
+{   protected static final Log log = LogFactory.getLog( DataBrowserUtils.class );
     public static void setMetaStructure( Grid grid, StringBuffer sqlsb, List<Integer> metaIds,
         StatementManager statementManager )
     {
@@ -70,8 +70,8 @@ public class DataBrowserUtils
             }
         }
         catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to add meta value\n" + sqlsb.toString(), e );
+        {   log.error( "Failed to add meta value\n" + sqlsb.toString());
+            throw new RuntimeException( "Failed to add meta value\n" , e );
         }
         catch ( Exception e )
         {
@@ -111,7 +111,7 @@ public class DataBrowserUtils
             }
         }
         catch ( SQLException e )
-        {
+        {   
             throw new RuntimeException( "Failed to add header\n", e );
         }
         catch ( Exception e )
@@ -140,7 +140,8 @@ public class DataBrowserUtils
         }
         catch ( SQLException e )
         {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
+            log.error( "Error executing" + sqlsb.toString());
+            throw new RuntimeException( "Failed to get aggregated data value\n" , e );
         }
         catch ( Exception e )
         {
@@ -190,7 +191,9 @@ public class DataBrowserUtils
         }
         catch ( SQLException e )
         {
+            log.error( "Error executing" + sqlsb.toString());
             throw new RuntimeException( "Failed to get aggregated data value\n", e );
+
         }
         catch ( Exception e )
         {
@@ -204,22 +207,7 @@ public class DataBrowserUtils
         return countRows;
     }
 
-    @SuppressWarnings( "unused" )
-    private static void writeToFile( StringBuffer sqlsb )
-    {
-        try
-        {
-            FileWriter stream = new FileWriter( "D:/drilldown.sql" );
-            BufferedWriter out = new BufferedWriter( stream );
 
-            out.write( sqlsb.toString() );
-            out.close();
-        }
-        catch ( IOException e )
-        {
-            throw new RuntimeException( "Error while writing file : " + e );
-        }
-    }
 
     // -------------------------------------------------------------------------
     // Supportive methods
@@ -239,7 +227,7 @@ public class DataBrowserUtils
         Connection con = holder.getConnection();
         Statement stm = con.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY );
         stm.execute( sql );
-
+        log.debug( sql );
         return stm.getResultSet();
     }
 
