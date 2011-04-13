@@ -1391,6 +1391,12 @@ function deleteDivEffect()
 function changePageSize( baseLink )
 {
     var pageSize = jQuery("#sizeOfPage").val();
+    
+    if(pageSize < 1)
+    {
+    	pageSize = 1;
+    }
+    
 	var currentPage = jQuery("#jumpToPage").val();
 	jQuery.cookie("pageSize", pageSize, {path: "/"});
     window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
