@@ -62,6 +62,24 @@ public class TextUtils
         
         return string.substring( beginIndex, endIndex );
     }
+    
+    /**
+     * Trims the given string from the end.
+     * 
+     * @param value the value to trim.
+     * @param length the number of characters to trim.
+     * @return the trimmed value, empty if given value is null or length is higher
+     *         than the value length.
+     */
+    public static String trimEnd( String value, int length )
+    {
+        if ( value == null || length > value.length() )
+        {
+            return "";
+        }
+        
+        return value.substring( 0, value.length() - length );
+    }
 
     /**
      * Transforms a collection of Integers into a comma delimited String.

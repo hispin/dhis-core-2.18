@@ -28,6 +28,7 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
  */
 
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,9 +47,7 @@ import org.hisp.dhis.datamart.CrossTabDataValue;
  */
 public class JDBCCrossTabStore
     implements CrossTabStore
-{
-    private static final String ALIAS_PREFIX = "c";
-    
+{    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -94,7 +93,7 @@ public class JDBCCrossTabStore
         
         try
         {
-            final StringBuffer sql = new StringBuffer( "CREATE TABLE " + TABLE_NAME + key + " ( " );
+            final StringBuffer sql = new StringBuffer( "CREATE TABLE " + TABLE_PREFIX + key + " ( " );
             
             sql.append( "periodid INTEGER NOT NULL, " );
             sql.append( "sourceid INTEGER NOT NULL, " );
@@ -124,7 +123,7 @@ public class JDBCCrossTabStore
         
         try
         {
-            final String sql = "DROP TABLE IF EXISTS " + TABLE_NAME + key;
+            final String sql = "DROP TABLE IF EXISTS " + TABLE_PREFIX + key;
             
             holder.getStatement().executeUpdate( sql );
         }
@@ -146,20 +145,13 @@ public class JDBCCrossTabStore
         Collection<Integer> periodIds, Collection<Integer> sourceIds, List<String> keys )
     {
         final StatementHolder holder = statementManager.getHolder();
-                
+        
+        String sql = getCrossTabSelectJoin( keys );
+        
+        sql += " WHERE c.periodid IN (" + getCommaDelimitedString( periodIds ) + ") AND c.sourceid IN (" + getCommaDelimitedString( sourceIds ) + ")";
+        
         try
-        {
-            String sql = "SELECT * FROM " + TABLE_NAME + keys.get( 0 ) + " AS c0 ";
-            
-            for ( int i = 1; i < keys.size(); i++ )
-            {
-                final String alias = ALIAS_PREFIX + i;
-                
-                sql += "FULL JOIN " + TABLE_NAME + keys.get( i ) + " AS " + alias + " ON c0.periodid=" + alias + ".periodid AND c0.sourceid=" + alias + ".sourceid ";
-            }
-            
-            sql += "WHERE c0.periodid IN (" + getCommaDelimitedString( periodIds ) + ") AND c0.sourceid IN (" + getCommaDelimitedString( sourceIds ) + ")";
-            
+        {            
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
             return getCrossTabDataValues( resultSet, operands );
@@ -178,20 +170,13 @@ public class JDBCCrossTabStore
         Collection<Integer> periodIds, int sourceId, List<String> keys )
     {
         final StatementHolder holder = statementManager.getHolder();
+
+        String sql = getCrossTabSelectJoin( keys );
         
+        sql += " WHERE c.periodid IN (" + getCommaDelimitedString( periodIds ) + ") AND c.sourceid = " + sourceId;
+
         try
         {
-            String sql = "SELECT * FROM " + TABLE_NAME + keys.get( 0 ) + " AS c0 ";
-            
-            for ( int i = 1; i < keys.size(); i++ )
-            {
-                final String alias = ALIAS_PREFIX + i;
-                
-                sql += "FULL JOIN " + TABLE_NAME + keys.get( i ) + " AS " + alias + " ON c0.periodid=" + alias + ".periodid AND c0.sourceid=" + alias + ".sourceid ";
-            }
-            
-            sql += "WHERE c0.periodid IN (" + getCommaDelimitedString( periodIds ) + ") AND c0.sourceid=" + sourceId;
-
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
             return getCrossTabDataValues( resultSet, operands );
@@ -238,5 +223,40 @@ public class JDBCCrossTabStore
         }
         
         return values;
+    }
+    
+    private String getCrossTabSelectJoin( List<String> keys )
+    {
+        String sql = "SELECT";
+        
+        if ( keys.size() == 1 )
+        {
+            sql += " * FROM " + TABLE_PREFIX + keys.get( 0 ) + " AS c";
+        }
+        else
+        {
+            sql += " c.periodid, c.sourceid";
+            
+            for ( String key : keys )
+            {
+                sql += ", " + TABLE_PREFIX + key + ".*";
+            }
+            
+            sql += " FROM ( SELECT DISTINCT periodid, sourceid FROM (";
+            
+            for ( String key : keys )
+            {
+                sql += " SELECT periodid, sourceid FROM " + TABLE_PREFIX + key + " UNION";
+            }
+            
+            sql = trimEnd( sql, " UNION".length() ) + " ) AS x ) AS c";
+            
+            for ( String key : keys )
+            {
+                sql += " LEFT JOIN " + TABLE_PREFIX + key + " ON c.periodid = " + TABLE_PREFIX + key + ".periodid AND c.sourceid = " + TABLE_PREFIX + key + ".sourceid";
+            }
+        }        
+        
+        return sql;
     }
 }
