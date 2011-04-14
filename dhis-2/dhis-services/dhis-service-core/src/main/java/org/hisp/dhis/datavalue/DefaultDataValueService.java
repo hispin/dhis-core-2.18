@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -198,5 +199,8 @@ public class DefaultDataValueService
         return true;
     }
 
-    
+    public Collection<DataElementOperand> getOperandsWithDataValues( Collection<DataElementOperand> operands )
+    {
+        return dataValueStore.getOperandsWithDataValues( operands );
+    }
 }

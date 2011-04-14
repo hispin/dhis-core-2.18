@@ -31,6 +31,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -253,7 +254,14 @@ public interface DataValueService
     
     DataValue getLatestDataValues( DataElement dataElement, PeriodType periodType, OrganisationUnit organisationUnit );
     
-    
+    /**
+     * Filters and returns the data element operands which have registered data values
+     * out of the given collection.
+     * 
+     * @param operands the data element operands to filter.
+     * @return the data element operands with registered data values.
+     */
+    Collection<DataElementOperand> getOperandsWithDataValues( Collection<DataElementOperand> operands );    
 }
 
 

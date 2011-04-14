@@ -41,6 +41,7 @@ import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.system.util.PaginatedList;
 
@@ -85,6 +86,13 @@ public class DefaultCrossTabService
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
+    
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
 
     // -------------------------------------------------------------------------
     // CrossTabService implementation
@@ -92,7 +100,7 @@ public class DefaultCrossTabService
 
     public Collection<DataElementOperand> getOperandsWithData( Collection<DataElementOperand> operands )
     {
-        return crossTabStore.getOperandsWithData( operands );
+        return dataValueService.getOperandsWithDataValues( operands );
     }
     
     public List<String> populateCrossTabTable( final Collection<DataElementOperand> operands,

@@ -63,30 +63,6 @@ public class JDBCCrossTabStore
     // CrossTabStore implementation
     // -------------------------------------------------------------------------
 
-    public Collection<DataElementOperand> getOperandsWithData( Collection<DataElementOperand> operands )
-    {
-        final Collection<DataElementOperand> operandsWithData = new ArrayList<DataElementOperand>();
-        
-        final StatementHolder holder = statementManager.getHolder();
-        
-        for ( DataElementOperand operand : operands )
-        {
-            final String sql = 
-                "SELECT COUNT(*) FROM datavalue " + 
-                "WHERE dataelementid=" + operand.getDataElementId() + " " +
-                "AND categoryoptioncomboid=" + operand.getOptionComboId();
-            
-            Integer count = holder.queryForInteger( sql );
-            
-            if ( count != null && count > 0 )
-            {
-                operandsWithData.add( operand );
-            }
-        }
-        
-        return operandsWithData;
-    }
-    
     public void createCrossTabTable( final List<DataElementOperand> operands, String key )
     {
         final StatementHolder holder = statementManager.getHolder();

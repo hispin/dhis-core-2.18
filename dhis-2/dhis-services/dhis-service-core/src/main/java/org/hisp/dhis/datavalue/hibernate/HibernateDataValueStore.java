@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
+import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -40,6 +41,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -375,4 +377,28 @@ public class HibernateDataValueStore
 
         return (DataValue) query.uniqueResult();
     }
+    
+    public Collection<DataElementOperand> getOperandsWithDataValues( Collection<DataElementOperand> operands )
+    {
+        final Collection<DataElementOperand> operandsWithData = new ArrayList<DataElementOperand>();
+        
+        final StatementHolder holder = statementManager.getHolder();
+        
+        for ( DataElementOperand operand : operands )
+        {
+            final String sql = 
+                "SELECT COUNT(*) FROM datavalue " + 
+                "WHERE dataelementid=" + operand.getDataElementId() + " " +
+                "AND categoryoptioncomboid=" + operand.getOptionComboId();
+            
+            Integer count = holder.queryForInteger( sql );
+            
+            if ( count != null && count > 0 )
+            {
+                operandsWithData.add( operand );
+            }
+        }
+        
+        return operandsWithData;
+    }    
 }
