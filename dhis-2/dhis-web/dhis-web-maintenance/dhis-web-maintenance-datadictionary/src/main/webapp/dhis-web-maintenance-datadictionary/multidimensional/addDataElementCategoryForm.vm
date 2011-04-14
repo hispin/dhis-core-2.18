@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	jQuery(document).ready(	function() {
 		validation2( 'addDataElementCategoryForm', function( form ){ form.submit() }, {
-			'beforeValidationHandler': function() { listValidator( 'memberValidator', 'categoryOptionNames' ); },
+			'beforeValidateHandler': function() { selectAllById('categoryOptionNames'); listValidator( 'memberValidator', 'categoryOptionNames' ); },
 			'rules': getValidationRules("dateElementCategory")
 		});
 
