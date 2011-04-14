@@ -78,6 +78,7 @@ public class OrgUnitsTest
         unit.setUploadActivityReportUrl( "uploadActivityReportUrl" );
         unit.setUploadFacilityReportUrl( "uploadFacilityReportUrl" );
         unit.setUpdateDataSetUrl( "updateDataSetUrl" );
+        unit.setChangeUpdateDataSetLangUrl( "changeUpdateDataSetLangUrl" );
         return unit;
     }
 }
