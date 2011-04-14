@@ -12,9 +12,9 @@
       <generator class="native" />
     </id>
 
-    <property name="name" not-null="true" />
+    <property name="name" not-null="true" unique-key="key_sectionnamedataset" />
 
-    <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid" />
+    <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid" unique-key="key_sectionnamedataset" />
 
     <list name="dataElements" table="sectiondataelements">
       <key column="sectionid" />
