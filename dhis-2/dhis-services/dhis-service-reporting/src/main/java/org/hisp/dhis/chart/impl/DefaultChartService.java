@@ -414,12 +414,25 @@ public class DefaultChartService
     }
 
     /**
+     * Returns a line and shape renderer (for target lines).
+     */
+    private LineAndShapeRenderer getTargetLineRenderer()
+    {
+        LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+        renderer.setBaseShapesVisible( false );
+        renderer.setBasePaint( Color.BLUE );
+
+        return renderer;
+    }
+
+    /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
     private JFreeChart getJFreeChart( Chart chart, boolean subTitle )
     {
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
+        final LineAndShapeRenderer targetLineRenderer = getTargetLineRenderer();
 
         // ---------------------------------------------------------------------
         // Plot
@@ -489,6 +502,12 @@ public class DefaultChartService
             plot.setRenderer( 1, lineRenderer );
         }
 
+        if ( chart.isTargetLine() )
+        {
+            plot.setDataset( 2, dataSets[2] );
+            plot.setRenderer( 2, targetLineRenderer );
+        }
+
         JFreeChart jFreeChart = new JFreeChart( chart.getTitle(), titleFont, plot, !chart.isHideLegend() );
 
         if ( subTitle )
@@ -532,6 +551,7 @@ public class DefaultChartService
 
         final DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         final DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
+        final DefaultCategoryDataset targetDataSet = new DefaultCategoryDataset();
 
         if ( chart != null )
         {
@@ -599,6 +619,15 @@ public class DefaultChartService
                             }
                         }
                     }
+
+                    if ( chart.isTargetLine() )
+                    {
+                        for ( Period period : chart.getAllPeriods() )
+                        {
+                            targetDataSet.addValue( chart.getTargetLineValue(), indicator.getShortName(), chart
+                                .getFormat().formatPeriod( period ) );
+                        }
+                    }
                 }
                 else if ( chart.isDimension( DIMENSION_ORGANISATIONUNIT ) )
                 {
@@ -625,7 +654,7 @@ public class DefaultChartService
             }
         }
 
-        return new CategoryDataset[] { regularDataSet, regressionDataSet };
+        return new CategoryDataset[] { regularDataSet, regressionDataSet, targetDataSet };
     }
 
     /**

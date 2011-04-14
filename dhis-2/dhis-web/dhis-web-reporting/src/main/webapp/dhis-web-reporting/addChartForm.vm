@@ -1,4 +1,15 @@
 <script type="text/javascript">
+	jQuery(document).ready(function() {
+		if( jQuery("#targetLine").attr("checked") !== true )
+		{
+			jQuery("#targetLineValueTr").hide();
+		}
+	
+		jQuery("#targetLine").change(function() {
+			jQuery("#targetLineValueTr").toggle();		
+		});
+	});
+
     var i18n_must_select_at_least_one_indicator = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_indicator" ), "'")';
     var i18n_must_select_at_least_one_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_unit" ), "'")';
     var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'")';
@@ -65,6 +76,14 @@
     <tr>
         <td><label for="regression">$i18n.getString( "include_regression_line" )</label></td>
         <td><input type="checkbox" id="regression" name="regression" value="true"#if( $!chart.regression ) checked#end></td>
+    </tr>
+    <tr>
+        <td><label for="targetLine">$i18n.getString( "include_target_line" )</label></td>
+        <td><input type="checkbox" id="targetLine" name="targetLine" value="true"#if( $!chart.targetLine ) checked#end></td>
+    </tr>
+    <tr id="targetLineValueTr">
+        <td><label for="targetLineValue">$i18n.getString( "target_line_value" )</label></td>
+        <td><input type="text" id="targetLineValue" name="targetLineValue" style="width:80px" value="$!chart.targetLineValue"></td>
     </tr>
     #if ( $currentUser && $currentUser.hasOrganisationUnit() )
     <tr>
