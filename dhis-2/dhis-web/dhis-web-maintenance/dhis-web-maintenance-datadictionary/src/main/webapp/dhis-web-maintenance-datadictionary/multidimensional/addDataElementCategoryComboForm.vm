@@ -3,7 +3,7 @@
 		validation2( 'addDataElementCategoryComboForm', function( form ){ 
 			validateSelectedCategories( form );
 		}, {
-			'beforeValidationHandler': function() { listValidator( 'selectedCategories', 'selectedList' ); },
+			'beforeValidateHandler': function() { listValidator( 'selectedCategories', 'selectedList' ); },
 			'rules': getValidationRules("dateElementCategoryCombo")
 		});
 
