@@ -26,6 +26,10 @@
 
     <property name="regression" />
 
+    <property name="targetLine" />
+
+    <property name="targetLineValue" />
+
     <list name="indicators" table="chart_indicators">
       <key column="chartid" />
       <list-index column="sort_order" base="0" />

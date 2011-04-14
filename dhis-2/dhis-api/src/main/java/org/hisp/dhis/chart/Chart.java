@@ -77,6 +77,10 @@ public class Chart
     private Boolean horizontalPlotOrientation;
     
     private Boolean regression;
+    
+    private Boolean targetLine;
+
+    private Double targetLineValue;
 
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
@@ -204,6 +208,11 @@ public class Chart
     {
         return regression != null && regression;
     }
+
+    public boolean isTargetLine()
+    {
+        return targetLine != null && targetLine;
+    }
     
     public int getWidth()
     {
@@ -326,6 +335,26 @@ public class Chart
     public void setRegression( Boolean regression )
     {
         this.regression = regression;
+    }
+
+    public void setTargetLine( Boolean targetLine )
+    {
+        this.targetLine = targetLine;
+    }
+
+    public Boolean getTargetLine()
+    {
+        return targetLine;
+    }
+
+    public void setTargetLineValue( Double targetLineValue )
+    {
+        this.targetLineValue = targetLineValue;
+    }
+    
+    public Double getTargetLineValue()
+    {
+        return targetLineValue;
     }
     
     public List<Indicator> getIndicators()

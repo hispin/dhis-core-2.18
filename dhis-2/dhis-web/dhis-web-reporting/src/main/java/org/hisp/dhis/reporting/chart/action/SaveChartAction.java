@@ -77,14 +77,14 @@ public class SaveChartAction
     {
         this.periodService = periodService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public class SaveChartAction
     {
         this.id = id;
     }
-    
+
     private String title;
 
     public void setTitle( String title )
@@ -109,7 +109,7 @@ public class SaveChartAction
     {
         this.type = type;
     }
-    
+
     private String size;
 
     public void setSize( String size )
@@ -123,21 +123,21 @@ public class SaveChartAction
     {
         this.dimension = dimension;
     }
-    
+
     private boolean hideLegend;
 
     public void setHideLegend( boolean hideLegend )
     {
         this.hideLegend = hideLegend;
     }
-    
+
     private boolean verticalLabels;
 
     public void setVerticalLabels( boolean verticalLabels )
     {
         this.verticalLabels = verticalLabels;
     }
-    
+
     private boolean horizontalPlotOrientation;
 
     public void setHorizontalPlotOrientation( boolean horizontalPlotOrientation )
@@ -151,9 +151,23 @@ public class SaveChartAction
     {
         this.regression = regression;
     }
-    
+
+    private boolean targetLine;
+
+    public void setTargetLine( boolean targetLine )
+    {
+        this.targetLine = targetLine;
+    }
+
+    private Double targetLineValue;
+
+    public void setTargetLineValue( Double targetLineValue )
+    {
+        this.targetLineValue = targetLineValue;
+    }
+
     private boolean userOrganisationUnit;
-    
+
     public void setUserOrganisationUnit( boolean userOrganisationUnit )
     {
         this.userOrganisationUnit = userOrganisationUnit;
@@ -223,7 +237,7 @@ public class SaveChartAction
     }
 
     private boolean lastYear;
-    
+
     public void setLastYear( boolean lastYear )
     {
         this.lastYear = lastYear;
@@ -240,19 +254,19 @@ public class SaveChartAction
         List<Indicator> indicators = new ArrayList<Indicator>();
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
         List<Period> periods = new ArrayList<Period>( periodService.getPeriodsByExternalIds( selectedPeriods ) );
-     
+
         for ( Integer id : getIntegerCollection( selectedIndicators ) )
         {
             indicators.add( indicatorService.getIndicator( id ) );
         }
-        
+
         for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
         {
             organisationUnits.add( organisationUnitService.getOrganisationUnit( id ) );
         }
-        
+
         Collections.sort( periods, new AscendingPeriodComparator() );
-        
+
         chart.setTitle( title );
         chart.setType( type );
         chart.setSize( size );
@@ -261,17 +275,20 @@ public class SaveChartAction
         chart.setVerticalLabels( verticalLabels );
         chart.setHorizontalPlotOrientation( horizontalPlotOrientation );
         chart.setRegression( regression );
+        chart.setTargetLine( targetLine );
+        chart.setTargetLineValue( targetLineValue );
         chart.setUserOrganisationUnit( userOrganisationUnit );
         chart.setIndicators( indicators );
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
 
-        RelativePeriods relatives = new RelativePeriods( reportingMonth, monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear );
-        
+        RelativePeriods relatives = new RelativePeriods( reportingMonth, monthsThisYear, quartersThisYear, thisYear,
+            monthsLastYear, quartersLastYear, lastYear );
+
         chart.setRelatives( relatives );
-        
+
         chartService.saveChart( chart );
-        
+
         return SUCCESS;
     }
 }
