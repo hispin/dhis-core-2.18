@@ -43,6 +43,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.importexport.dxf2.model.OrgUnit;
 import org.hisp.dhis.importexport.dxf2.service.OrgUnitMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -77,6 +78,8 @@ public class OrgUnitResource
     private ActivityReportingService activityReportingService;
 
     private FacilityReportingService facilityReportingService;
+
+    private I18nService i18nService;
 
     @PathParam( "id" )
     private String id;
@@ -129,6 +132,7 @@ public class OrgUnitResource
         mobileModel.setPrograms( programService.getPrograms( getUnit(), locale ) );
         mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( getUnit(), locale ) );
         mobileModel.setServerCurrentDate( new Date() );
+        mobileModel.setLocales( i18nService.getAvailableLocales() );
         return mobileModel;
     }
 
@@ -137,6 +141,13 @@ public class OrgUnitResource
     public DataSetList checkUpdatedDataSet( DataSetList dataSetList, @HeaderParam( "accept-language" ) String locale )
     {
         return facilityReportingService.getUpdatedDataSet( dataSetList, getUnit(), locale );
+    }
+
+    @GET
+    @Path( "changeLanguageDataSet" )
+    public DataSetList changeLanguageDataSet( @HeaderParam( "accept-language" ) String locale )
+    {
+        return facilityReportingService.getDataSetsForLocale( getUnit(), locale );
     }
 
     /**
@@ -195,6 +206,8 @@ public class OrgUnitResource
             .toString() );
         orgUnit.setUpdateDataSetUrl( getOrgUnitUrlBuilder( uriInfo ).path( "updateDataSets" ).build( unit.getId() )
             .toString() );
+        orgUnit.setChangeUpdateDataSetLangUrl( getOrgUnitUrlBuilder( uriInfo ).path( "changeLanguageDataSet" )
+            .build( unit.getId() ).toString() );
         return orgUnit;
     }
 
@@ -225,6 +238,12 @@ public class OrgUnitResource
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    @Required
+    public void setI18nService( I18nService i18nService )
+    {
+        this.i18nService = i18nService;
     }
 
 }

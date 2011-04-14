@@ -184,6 +184,13 @@ public class FacilityReportingServiceImpl
 
         return updatedDataSetList;
     }
+    
+    public DataSetList getDataSetsForLocale( OrganisationUnit unit, String locale ){
+        DataSetList dataSetList = new DataSetList();
+        List<DataSet> dataSets = this.getMobileDataSetsForUnit( unit, locale );
+        dataSetList.setModifiedDataSets( dataSets );
+        return dataSetList;
+    }
 
     public DataSet getDataSetForLocale( int dataSetId, Locale locale )
     {
