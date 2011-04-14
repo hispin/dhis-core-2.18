@@ -30,8 +30,10 @@ package org.hisp.dhis.web.api.model;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -46,6 +48,8 @@ public class MobileModel
     private Date serverCurrentDate;
 
     private List<DataSet> datasets;
+    
+    private Collection<Locale> locales;
 
     public ActivityPlan getActivityPlan()
     {
@@ -84,6 +88,16 @@ public class MobileModel
     public void setDatasets( List<DataSet> datasets )
     {
         this.datasets = datasets;
+    }    
+
+    public Collection<Locale> getLocales()
+    {
+        return locales;
+    }
+
+    public void setLocales( Collection<Locale> locales )
+    {
+        this.locales = locales;
     }
 
     @Override
@@ -115,6 +129,7 @@ public class MobileModel
             this.activityPlan.serialize( dout );
         }
         
+        // Write current server's date
         dout.writeLong(serverCurrentDate.getTime());
 
         // Write DataSets
@@ -130,6 +145,18 @@ public class MobileModel
                 ds.serialize( dout );
             }
         }
+        
+        // Write Locales
+        if ( locales == null ){
+            dout.writeInt( 0 );
+        }else{
+            dout.writeInt(locales.size());
+            for(Locale each : locales){
+                dout.writeUTF( each.getLanguage()+"-"+each.getCountry() ); 
+            }
+        }
+        
+        
     }
 
     @Override

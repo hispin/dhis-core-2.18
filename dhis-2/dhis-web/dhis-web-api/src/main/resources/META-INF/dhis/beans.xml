@@ -37,6 +37,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="activityReportingService" ref="org.hisp.dhis.web.api.service.ActivityReportingService" />
     <property name="programService" ref="org.hisp.dhis.web.api.service.IProgramService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
   <!-- Services -->

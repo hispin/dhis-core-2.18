@@ -51,5 +51,7 @@ public interface FacilityReportingService
         throws NotAllowedException;
     
     public DataSetList getUpdatedDataSet(DataSetList dataSetList, OrganisationUnit unit, String locale);
+    
+    public DataSetList getDataSetsForLocale( OrganisationUnit unit, String locale );
 
 }
