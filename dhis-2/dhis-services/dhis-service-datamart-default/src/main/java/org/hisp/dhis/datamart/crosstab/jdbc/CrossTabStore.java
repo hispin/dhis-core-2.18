@@ -44,15 +44,6 @@ public interface CrossTabStore
     final String TABLE_PREFIX_TRIMMED = "datavaluecrosstabtrimmed_";
     
     /**
-     * Filters and returns the DataElementOperands with data from the given
-     * collection of DataElementOperands.
-     * 
-     * @param operands the DataElementOperands.
-     * @return the DataElementOperands with data.
-     */
-    Collection<DataElementOperand> getOperandsWithData( Collection<DataElementOperand> operands );
-    
-    /**
      * Creates a crosstab table where the first column is the period identifier,
      * the second column is the source identifer, and each subsequent column
      * corresponds to an operand.
