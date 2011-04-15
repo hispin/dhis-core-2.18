@@ -77,7 +77,7 @@ public class GetLineListElementOptionsAction
             
             //Collections.sort( lineListElementOptions, new LineListOptionNameComparator() );
 
-            displayPropertyHandler.handle( lineListElementOptions );
+            //displayPropertyHandler.handle( lineListElementOptions );
         }
 
         // ---------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class GetLineListElementOptionsAction
 
         Collections.sort( availableLineListOptions, new LineListOptionNameComparator() );
 
-        displayPropertyHandler.handle( availableLineListOptions );
+       // displayPropertyHandler.handle( availableLineListOptions );
 
         return SUCCESS;
     }

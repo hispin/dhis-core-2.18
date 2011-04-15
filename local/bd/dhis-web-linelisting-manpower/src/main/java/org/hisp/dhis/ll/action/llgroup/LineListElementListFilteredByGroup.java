@@ -199,7 +199,7 @@ public class LineListElementListFilteredByGroup
 
         //Collections.sort( lineListElements, new LineListElementNameComparator() );
 
-        displayPropertyHandler.handle( lineListElements );
+        //displayPropertyHandler.handle( lineListElements );
 
         return SUCCESS;
     }

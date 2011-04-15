@@ -5,20 +5,18 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 
-	<bean id="org.hisp.dhis.ll.action.NoAction"
-		class="org.hisp.dhis.ll.action.NoAction"
-		scope="prototype">
-		<property name="employeeService" ref="org.hisp.dhis.linelisting.EmployeeService" />
-	</bean> 
+    <bean id="org.hisp.dhis.ll.action.NoAction"
+        class="org.hisp.dhis.ll.action.NoAction"
+        scope="prototype">
+        <property name="employeeService" ref="org.hisp.dhis.linelisting.EmployeeService" />
+    </bean> 
 
   <!-- Line List Option -->
 
     <bean id="org.hisp.dhis.ll.action.llOption.GetLineListOptionListAction"
-    class="org.hisp.dhis.ll.action.llOption.GetLineListOptionListAction"
-    scope="prototype">
-        <property name="lineListService">
-            <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>
+        class="org.hisp.dhis.ll.action.llOption.GetLineListOptionListAction"
+        scope="prototype">
+        <property name="lineListService" ref="org.hisp.dhis.linelisting.LineListService" />
     </bean>
     
     <bean id="org.hisp.dhis.ll.action.llOption.AddLineListOptionAction"
@@ -82,11 +80,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Overview -->
 
     <bean id="org.hisp.dhis.ll.action.llelements.LineListElementListAction"
-    class="org.hisp.dhis.ll.action.llelements.LineListElementListAction"
-    scope="prototype">
-        <property name="lineListService">
-            <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>
+        class="org.hisp.dhis.ll.action.llelements.LineListElementListAction"
+        scope="prototype">
+        <property name="lineListService" ref="org.hisp.dhis.linelisting.LineListService" />
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.llelements.LineListOptionListAction"
@@ -232,7 +228,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 
-	    <bean id="org.hisp.dhis.ll.action.llgroup.ValidateLineListGroupAddAction"
+        <bean id="org.hisp.dhis.ll.action.llgroup.ValidateLineListGroupAddAction"
     class="org.hisp.dhis.ll.action.llgroup.ValidateLineListGroupAddAction" scope="prototype">
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
@@ -330,71 +326,71 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 <!--    <property name="dataEntryFormService">
             <ref bean="org.hisp.dhis.dataset.DataEntryFormService"/>
         </property>-->
-		<property name="displayPropertyHandler">
+        <property name="displayPropertyHandler">
             <ref bean="org.hisp.dhis.options.displayproperty.DisplayPropertyHandler"/>
         </property>
-		
+        
     </bean>
 <!-- Line List Employee List 16/10/2010 start -->
-	
+    
     <bean id="org.hisp.dhis.ll.action.employee.GetEmployeeListAction"
     class="org.hisp.dhis.ll.action.employee.GetEmployeeListAction"
     scope="prototype">
         <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
-    </bean>	
-	
-	<bean id="org.hisp.dhis.ll.action.employee.AddEmployeeAction"
+    </bean> 
+    
+    <bean id="org.hisp.dhis.ll.action.employee.AddEmployeeAction"
     class="org.hisp.dhis.ll.action.employee.AddEmployeeAction"
     scope="prototype">
         <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
-    </bean>	
-	
-	<bean id="org.hisp.dhis.ll.action.employee.UpdateEmployeeAction"
+    </bean> 
+    
+    <bean id="org.hisp.dhis.ll.action.employee.UpdateEmployeeAction"
     class="org.hisp.dhis.ll.action.employee.UpdateEmployeeAction"
     scope="prototype">
         <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
-    </bean>	
-	
-	<bean id="org.hisp.dhis.ll.action.employee.ShowUpdateEmployeeFormAction"
+    </bean> 
+    
+    <bean id="org.hisp.dhis.ll.action.employee.ShowUpdateEmployeeFormAction"
     class="org.hisp.dhis.ll.action.employee.ShowUpdateEmployeeFormAction"
     scope="prototype">
         <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
-    </bean>	
-	
-	<bean id="org.hisp.dhis.ll.action.employee.RemoveEmployeeAction"
+    </bean> 
+    
+    <bean id="org.hisp.dhis.ll.action.employee.RemoveEmployeeAction"
     class="org.hisp.dhis.ll.action.employee.RemoveEmployeeAction"
     scope="prototype">
         <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
-    </bean>	
-	
-	<bean id="org.hisp.dhis.ll.action.employee.GetEmployeeAction"
+    </bean> 
+    
+    <bean id="org.hisp.dhis.ll.action.employee.GetEmployeeAction"
     class="org.hisp.dhis.ll.action.employee.GetEmployeeAction"
     scope="prototype">
         <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
-    </bean>	
-	
-	<bean id="org.hisp.dhis.ll.action.employee.ValidateEmployeeAction"
+    </bean> 
+    
+    <bean id="org.hisp.dhis.ll.action.employee.ValidateEmployeeAction"
     class="org.hisp.dhis.ll.action.employee.ValidateEmployeeAction"
     scope="prototype">
         <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
-    </bean>	
-	
+    </bean> 
+    
 <!-- Line List Employee List 16/10/2010 end -->
-	
+    
     <!-- Line List Data Entry -->
 
     <bean id="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"
@@ -410,7 +406,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.ll.action.lldataentry.SelectAction"
     class="org.hisp.dhis.ll.action.lldataentry.SelectAction" scope="prototype">
        
-		 <property name="selectedStateManager">
+         <property name="selectedStateManager">
             <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
         </property>
         <property name="lineListService">
@@ -458,7 +454,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataValueService">
             <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
         </property>
-		<property name="employeeService">
+        <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
     </bean>
@@ -467,7 +463,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.ll.action.lldataentry.SaveValueAction" scope="prototype">
         <property name="currentUserService"
             ref="org.hisp.dhis.user.CurrentUserService"/>
-	
+    
         <property name="dataBaseManagerInterface">
             <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
         </property>
@@ -484,25 +480,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
 
     </bean>
-	
-	<bean id="org.hisp.dhis.ll.action.lldataentry.GetValidatePostVacantAction"
+    
+    <bean id="org.hisp.dhis.ll.action.lldataentry.GetValidatePostVacantAction"
     class="org.hisp.dhis.ll.action.lldataentry.GetValidatePostVacantAction" scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+        <property name="selectedStateManager" ref="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
         <property name="dataBaseManagerInterface" ref="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
         <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
-		<property name="optionComboService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-	</bean>
-	
-	<bean id="org.hisp.dhis.ll.action.lldataentry.ValidateEmployeeExistAction"
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
+        <property name="optionComboService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </bean>
+    
+    <bean id="org.hisp.dhis.ll.action.lldataentry.ValidateEmployeeExistAction"
     class="org.hisp.dhis.ll.action.lldataentry.ValidateEmployeeExistAction" scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
+        <property name="selectedStateManager" ref="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
         <property name="dataBaseManagerInterface" ref="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
-		<property name="employeeService" ref="org.hisp.dhis.linelisting.EmployeeService"/>
-	</bean>
-		
+        <property name="employeeService" ref="org.hisp.dhis.linelisting.EmployeeService"/>
+    </bean>
+        
     <bean id="org.hisp.dhis.ll.action.llValidation.GetLineListValidationRuleListAction"
     class="org.hisp.dhis.ll.action.llValidation.GetLineListValidationRuleListAction">
         <property name="validationRuleService">
@@ -511,7 +507,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.llValidation.ShowAddLineListValidationForm"
-		class="org.hisp.dhis.ll.action.llValidation.ShowAddLineListValidationForm" scope="prototype">
+        class="org.hisp.dhis.ll.action.llValidation.ShowAddLineListValidationForm" scope="prototype">
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
@@ -528,93 +524,93 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.llValidation.GetFilteredLineListElementsAction"
-		class="org.hisp.dhis.ll.action.llValidation.GetFilteredLineListElementsAction" scope="prototype">
+        class="org.hisp.dhis.ll.action.llValidation.GetFilteredLineListElementsAction" scope="prototype">
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
     </bean>
-	
-	<bean id="org.hisp.dhis.ll.action.lldataentry.ShowEmployeePostFormAction"
-		class="org.hisp.dhis.ll.action.lldataentry.ShowEmployeePostFormAction" scope="prototype">
+    
+    <bean id="org.hisp.dhis.ll.action.lldataentry.ShowEmployeePostFormAction"
+        class="org.hisp.dhis.ll.action.lldataentry.ShowEmployeePostFormAction" scope="prototype">
         <property name="selectedStateManager">
             <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
         </property>
     </bean>
-	
-	<bean id="org.hisp.dhis.ll.action.lldataentry.SaveEmplyeePostAction"
-		class="org.hisp.dhis.ll.action.lldataentry.SaveEmplyeePostAction" scope="prototype">
+    
+    <bean id="org.hisp.dhis.ll.action.lldataentry.SaveEmplyeePostAction"
+        class="org.hisp.dhis.ll.action.lldataentry.SaveEmplyeePostAction" scope="prototype">
         <property name="selectedStateManager">
             <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
         </property>
-		<property name="lineListService">
+        <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
-		<property name="currentUserService">
+        <property name="currentUserService">
             <ref bean="org.hisp.dhis.user.CurrentUserService"/>
         </property>
-		<property name="dbManagerInterface">
+        <property name="dbManagerInterface">
             <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
         </property>
-		<property name="periodService">
+        <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
-		<property name="employeeService">
+        <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
     </bean>
-	
-	
-	<bean id="org.hisp.dhis.ll.action.lldataentry.ShowUpdateEmployeePostFormAction"
-		class="org.hisp.dhis.ll.action.lldataentry.ShowUpdateEmployeePostFormAction" scope="prototype">
+    
+    
+    <bean id="org.hisp.dhis.ll.action.lldataentry.ShowUpdateEmployeePostFormAction"
+        class="org.hisp.dhis.ll.action.lldataentry.ShowUpdateEmployeePostFormAction" scope="prototype">
         <property name="selectedStateManager">
             <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
         </property>
-		<property name="dataBaseManagerInterface">
+        <property name="dataBaseManagerInterface">
             <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
         </property>
     </bean>
-	
-	<bean id="org.hisp.dhis.ll.action.lldataentry.UpdateEmployeePostAction"
-		class="org.hisp.dhis.ll.action.lldataentry.UpdateEmployeePostAction" scope="prototype">
+    
+    <bean id="org.hisp.dhis.ll.action.lldataentry.UpdateEmployeePostAction"
+        class="org.hisp.dhis.ll.action.lldataentry.UpdateEmployeePostAction" scope="prototype">
         <property name="selectedStateManager">
             <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
         </property>
-		<property name="lineListService">
+        <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
-		<property name="currentUserService">
+        <property name="currentUserService">
             <ref bean="org.hisp.dhis.user.CurrentUserService"/>
         </property>
-		<property name="dbManagerInterface">
+        <property name="dbManagerInterface">
             <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
         </property>
-		<property name="periodService">
+        <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
-		<property name="employeeService">
+        <property name="employeeService">
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
     </bean>
-	
- 	
-	
+    
+    
+    
 <!-- 15/10/2010 Start -->
     <bean id="org.hisp.dhis.ll.action.llValidation.GetLineListElementsAction"
         class="org.hisp.dhis.ll.action.llValidation.GetLineListElementsAction" scope="prototype">
         
-		<property name="dataElementService">
+        <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
         </property>
-		<property name="dataElementCategoryOptionComboService">
+        <property name="dataElementCategoryOptionComboService">
             <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
         </property>
-    </bean>		
+    </bean>     
 <!-- 15/10/2010 End -->
-		
-	<!-- Line List and Data Element Mapping-->
+        
+    <!-- Line List and Data Element Mapping-->
 
     <bean id="org.hisp.dhis.ll.action.lldataelementmapping.GetOptionCombosAction"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.GetOptionCombosAction" scope="prototype">
+        class="org.hisp.dhis.ll.action.lldataelementmapping.GetOptionCombosAction" scope="prototype">
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
         </property>
@@ -624,30 +620,30 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.lldataelementmapping.LineListElementListAction"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.LineListElementListAction" scope="prototype">
+        class="org.hisp.dhis.ll.action.lldataelementmapping.LineListElementListAction" scope="prototype">
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
     </bean>
 
-	
+    
     <bean id="org.hisp.dhis.ll.action.lldataelementmapping.LineListOptionListAction"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.LineListOptionListAction" scope="prototype">
+        class="org.hisp.dhis.ll.action.lldataelementmapping.LineListOptionListAction" scope="prototype">
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
     </bean>
 
-	
+    
     <bean id="org.hisp.dhis.ll.action.lldataelementmapping.LineListGroupListAction"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.LineListGroupListAction" scope="prototype">
+        class="org.hisp.dhis.ll.action.lldataelementmapping.LineListGroupListAction" scope="prototype">
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.lldataelementmapping.AddLineListDataElementMapping"
-		class="org.hisp.dhis.ll.action.lldataelementmapping.AddLineListDataElementMapping" scope="prototype">
+        class="org.hisp.dhis.ll.action.lldataelementmapping.AddLineListDataElementMapping" scope="prototype">
 <!--    <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>-->
@@ -667,9 +663,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-        </property>		
+        </property>     
     </bean>
-	
+    
     <bean id="org.hisp.dhis.ll.action.llagg.SaveLLAggQueryAction"
         class="org.hisp.dhis.ll.action.llagg.SaveLLAggQueryAction" scope="prototype">
         <property name="linelistAggMapService">
@@ -683,7 +679,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
    
-	
+    
    <bean id="org.hisp.dhis.ll.action.llagg.GetAggDataElementsAction"
         class="org.hisp.dhis.ll.action.llagg.GetAggDataElementsAction" scope="prototype">
         <property name="dataElementService">
@@ -696,7 +692,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
     </bean>
-	
+    
     <bean id="org.hisp.dhis.ll.action.llagg.GetLinelistAggExpressionAction"
         class="org.hisp.dhis.ll.action.llagg.GetLinelistAggExpressionAction" scope="prototype">
         <property name="linelistAggMapService">
@@ -760,7 +756,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.ll.action.llimport.LineListingImportingResultAction" scope="prototype">
         <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>		
+        </property>     
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
@@ -778,21 +774,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 <!-- Linelisting Reports -->
     <bean id="org.hisp.dhis.ll.action.reports.SummaryReportAction"
         class="org.hisp.dhis.ll.action.reports.SummaryReportAction" scope="prototype">
-        <property name="lineListService">
-            <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>     
-        <property name="periodService">
-            <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
-        <property name="dataBaseManagerInterface">
-            <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
-        </property>
-        <property name="dataValueService">
-            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-        </property>
-        <property name="selectedStateManager">
-            <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
-        </property>
+        <property name="lineListService" ref="org.hisp.dhis.linelisting.LineListService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="dataBaseManagerInterface" ref="org.hisp.dhis.dbmanager.DataBaseManagerInterface" />
+        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+        <property name="selectedStateManager" ref="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager" />
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.reports.EmployeePostDetailsReportAction"
@@ -801,5 +787,29 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataBaseManagerInterface" ref="org.hisp.dhis.dbmanager.DataBaseManagerInterface" />
         <property name="selectedStateManager" ref="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager" />
     </bean>
-		
+
+<!-- Sanctioned Post Mapping -->
+    <bean id="org.hisp.dhis.ll.action.aggmap.SanctionedPostMappingForm"
+        class="org.hisp.dhis.ll.action.aggmap.SanctionedPostMappingForm" scope="prototype">
+        <property name="lineListService" ref="org.hisp.dhis.linelisting.LineListService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.ll.action.aggmap.GetLineListElementsAction"
+        class="org.hisp.dhis.ll.action.aggmap.GetLineListElementsAction" scope="prototype">
+        <property name="lineListService" ref="org.hisp.dhis.linelisting.LineListService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.ll.action.aggmap.GetSelDataElementAction"
+        class="org.hisp.dhis.ll.action.aggmap.GetSelDataElementAction" scope="prototype">
+        <property name="lineListService" ref="org.hisp.dhis.linelisting.LineListService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.ll.action.aggmap.SaveSanctionedPostMapAction"
+        class="org.hisp.dhis.ll.action.aggmap.SaveSanctionedPostMapAction" scope="prototype">
+        <property name="lineListService" ref="org.hisp.dhis.linelisting.LineListService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    </bean>
+        
 </beans>

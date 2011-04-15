@@ -8,35 +8,33 @@
 
     <package name="dhis-web-linelisting-mp" extends="dhis-web-commons" namespace="/dhis-web-linelisting-mp">
 
-		<action name="index"
-			class="org.hisp.dhis.ll.action.NoAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-linelisting-mp/welcome.vm</param>
-			<param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
+        <action name="index"
+            class="org.hisp.dhis.ll.action.NoAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-linelisting-mp/welcome.vm</param>
+            <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
             <param name="javascripts">javascript/employee.js,javascript/filterTable.js</param>
-		</action>
+        </action>
     
     <!-- LineListOption -->
     
         <action name="getLineListOptions"
-			class="org.hisp.dhis.ll.action.llOption.GetLineListOptionListAction">
+            class="org.hisp.dhis.ll.action.llOption.GetLineListOptionListAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-mp/lineListOption.vm</param>
             <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
-            <param name="javascripts">
-				javascript/lineListOption.js,javascript/filterTable.js
-            </param>
-            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="javascripts">javascript/lineListOption.js,javascript/filterTable.js</param>
+            <param name="stylesheets">css/StylesForTags.css,../dhis-web-commons/paging/paging.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
         </action>
         <action name="getLineListOption"
-      class="org.hisp.dhis.ll.action.llOption.GetLineListOptionAction">
+            class="org.hisp.dhis.ll.action.llOption.GetLineListOptionAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseLineListOption.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
 
         <action name="removeLineListOption"
-      class="org.hisp.dhis.ll.action.llOption.RemoveLineListOptionAction">
+            class="org.hisp.dhis.ll.action.llOption.RemoveLineListOptionAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSuccess.vm</result>
             <result name="error" type="velocity-xml">/dhis-web-linelisting-mp/responseError.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
@@ -44,7 +42,7 @@
         </action>
 
         <action name="showAddLineListOptionForm"
-      class="org.hisp.dhis.ll.action.llOption.ShowAddLineListOptionForm">
+            class="org.hisp.dhis.ll.action.llOption.ShowAddLineListOptionForm">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-mp/addLineListOptionForm.vm</param>
             <param name="javascripts">javascript/shortName.js,javascript/lineListOption.js</param>
@@ -53,7 +51,7 @@
         </action>
 
         <action name="addLineListOption"
-      class="org.hisp.dhis.ll.action.llOption.AddLineListOptionAction">
+            class="org.hisp.dhis.ll.action.llOption.AddLineListOptionAction">
             <result name="success" type="redirect">getLineListOptions.action</result>
             <param name="requiredAuthorities">F_LINELISTOPTION_ADD</param>
         </action>
@@ -80,14 +78,12 @@
             <result name="input" type="velocity-xml">/dhis-web-linelisting-mp/responseInput.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
-	
+    
 
-	  
- 
   <!-- Line List Element -->
     
         <action name="getLineListElement"
-      class="org.hisp.dhis.ll.action.llelements.GetLineListElementAction">
+            class="org.hisp.dhis.ll.action.llelements.GetLineListElementAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseLineListElementObject.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
@@ -97,12 +93,13 @@
             <param name="page">/dhis-web-linelisting-mp/lineListElements.vm</param>
             <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
             <param name="javascripts">javascript/lineListElement.js</param>
+            <param name="stylesheets">css/StylesForTags.css,../dhis-web-commons/paging/paging.css</param>
         </action>
     
     <!-- Show add Line List Element form-->
     
         <action name="addLineListElementForm"
-      class="org.hisp.dhis.ll.action.llelements.LineListOptionListAction">
+            class="org.hisp.dhis.ll.action.llelements.LineListOptionListAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-mp/addLineListElementForm.vm</param>
             <param name="javascripts">javascript/lineListElement.js,javascript/lineListElementOptions.js</param>
@@ -112,16 +109,16 @@
     <!-- Show edit Line List Element form-->
     
         <action name="showEditLineListElementForm"
-			class="org.hisp.dhis.ll.action.llelements.GetLineListElementAction">
+            class="org.hisp.dhis.ll.action.llelements.GetLineListElementAction">
             <result name="success" type="chain">editLineListElementForm</result>
         </action>
     
     
         <action name="editLineListElementForm"
-			class="org.hisp.dhis.ll.action.llelements.GetLineListElementOptionsAction">
+            class="org.hisp.dhis.ll.action.llelements.GetLineListElementOptionsAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">
-				/dhis-web-linelisting-mp/editLineListElementForm.vm
+                /dhis-web-linelisting-mp/editLineListElementForm.vm
             </param>
             <param name="javascripts">javascript/lineListElement.js,javascript/lineListElementOptions.js</param>
             <param name="requiredAuthorities">F_DATASET_UPDATE</param>
@@ -153,7 +150,7 @@
       class="org.hisp.dhis.ll.action.llelements.RemoveLineListElementAction">
 <!--        <result name="success" type="redirect">lineListElements.action</result>-->
              <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSuccess.vm</result>
-			 <result name="error" type="velocity-xml">/dhis-web-linelisting-mp/responseError.vm</result>
+             <result name="error" type="velocity-xml">/dhis-web-linelisting-mp/responseError.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
             <param name="requiredAuthorities">F_LINELISTELEMENT_DELETE</param>
         </action>
@@ -174,14 +171,14 @@
      <!-- LineListGroup -->
 
         <action name="getLineListGroups"
-			class="org.hisp.dhis.ll.action.llgroup.GetLineListGroupListAction">
+            class="org.hisp.dhis.ll.action.llgroup.GetLineListGroupListAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-mp/lineListGroup.vm</param>
             <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
             <param name="javascripts">
-				javascript/lineListGroup.js,javascript/filterTable.js
+                javascript/lineListGroup.js,javascript/filterTable.js
             </param>
-            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="stylesheets">css/StylesForTags.css,../dhis-web-commons/paging/paging.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
         </action>
 
@@ -230,14 +227,14 @@
         </action>
         
         <action name="updateLineListGroup"
-      	class="org.hisp.dhis.ll.action.llgroup.UpdateLineListGroupAction">
+        class="org.hisp.dhis.ll.action.llgroup.UpdateLineListGroupAction">
             <result name="success" type="redirect">getLineListGroups.action</result>
             <result name="error" type="velocity-xml">/dhis-web-linelisting-mp/responseError.vm</result>
             <param name="requiredAuthorities">F_LINELISTGroup_UPDATE</param>
         </action>
 
         <action name="validateLineListGroup"
-      	class="org.hisp.dhis.ll.action.llgroup.ValidateLineListGroupAction">
+        class="org.hisp.dhis.ll.action.llgroup.ValidateLineListGroupAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSuccess.vm</result>
             <result name="error" type="velocity-xml">/dhis-web-linelisting-mp/responseError.vm</result>
             <result name="input" type="velocity-xml">/dhis-web-linelisting-mp/responseInput.vm</result>
@@ -245,14 +242,14 @@
         </action>
 
         <action name="validateLineListGroupAdd"
-      	class="org.hisp.dhis.ll.action.llgroup.ValidateLineListGroupAddAction">
+        class="org.hisp.dhis.ll.action.llgroup.ValidateLineListGroupAddAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSuccess.vm</result>
             <result name="error" type="velocity-xml">/dhis-web-linelisting-mp/responseError.vm</result>
             <result name="input" type="velocity-xml">/dhis-web-linelisting-mp/responseInput.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
-		
-	  <!-- LLGroup association -->
+        
+      <!-- LLGroup association -->
     
         <action name="defineLLGroupAssociationsForm"
       class="org.hisp.dhis.ll.action.llgroup.GetNumberOfLevelsAction">
@@ -314,7 +311,7 @@
             <param name="page">/dhis-web-linelisting-mp/employeeList.vm</param>
             <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
             <param name="javascripts">javascript/employee.js,javascript/filterTable.js</param>
-            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="stylesheets">css/StylesForTags.css,../dhis-web-commons/paging/paging.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
         </action>
         
@@ -336,7 +333,7 @@
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-mp/updateEmployeeForm.vm</param>
             <param name="javascripts">javascript/employee.js,javascript/filterTable.js</param>
-        </action>	
+        </action>   
         
         <action name="updateEmployee"
             class="org.hisp.dhis.ll.action.employee.UpdateEmployeeAction">
@@ -348,7 +345,7 @@
             class="org.hisp.dhis.ll.action.employee.RemoveEmployeeAction">
             <result name="success" type="velocity-json">
                 /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="error" type="velocity-json">
+            <result name="error" type="velocity-json">
                 /dhis-web-commons/ajax/jsonResponseError.vm</result>
         </action>
         
@@ -359,18 +356,18 @@
         </action>
         
         <action name="validateEmployee"
-			class="org.hisp.dhis.ll.action.employee.ValidateEmployeeAction">
-			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
-	<!-- LL EmployeeList 16/10/2010 end -->  				
-		
-		
-		    
+            class="org.hisp.dhis.ll.action.employee.ValidateEmployeeAction">
+            <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+            </result>
+            <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+            </result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+        
+    <!-- LL EmployeeList 16/10/2010 end -->                 
+        
+        
+            
     <!-- LLDataentry -->
     
         <action name="select" class="org.hisp.dhis.ll.action.lldataentry.SelectAction">
@@ -401,7 +398,7 @@
         </action>
         
         <action name="showEmployeePostForm" class="org.hisp.dhis.ll.action.lldataentry.ShowEmployeePostFormAction">
-      		<result name="success" type="velocity">/dhis-web-linelisting-mp/employeePost.vm</result>
+            <result name="success" type="velocity">/dhis-web-linelisting-mp/employeePost.vm</result>
         </action>
 
         <action name="saveValueAction" class="org.hisp.dhis.ll.action.lldataentry.SaveValueAction">
@@ -413,7 +410,7 @@
         </action>
 
         <action name="updateLineListEntry"
-      	class="org.hisp.dhis.ll.action.lldataentry.SaveValueAction">
+        class="org.hisp.dhis.ll.action.lldataentry.SaveValueAction">
             <result name="success" type="redirect">select.action</result>
             <param name="requiredAuthorities">F_LINELISTEntry_UPDATE</param>
         </action>
@@ -422,14 +419,14 @@
             class="org.hisp.dhis.ll.action.lldataentry.ValidateEmployeeExistAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSuccess.vm</result>
             <result name="input" type="velocity-xml">/dhis-web-linelisting-mp/responseInput.vm</result>
-			<result name="employeeexist" type="velocity-xml">/dhis-web-linelisting-mp/responseEmployeeExist.vm</result>
+            <result name="employeeexist" type="velocity-xml">/dhis-web-linelisting-mp/responseEmployeeExist.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
-		
-		<action name="getValidatePostVacant"
+        
+        <action name="getValidatePostVacant"
             class="org.hisp.dhis.ll.action.lldataentry.GetValidatePostVacantAction">
-			<!--<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-linelisting-mp/responseSuccess.vm</param>-->
+            <!--<result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-linelisting-mp/responseSuccess.vm</param>-->
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSuccess.vm</result>
             <result name="input" type="velocity-xml">/dhis-web-linelisting-mp/responseInput.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
@@ -437,19 +434,19 @@
         
         <action name="showEditEmployeePostForm"
             class="org.hisp.dhis.ll.action.lldataentry.ShowUpdateEmployeePostFormAction">
-			<result name="success" type="velocity">/dhis-web-linelisting-mp/updateEmployeePostForm.vm</result>
+            <result name="success" type="velocity">/dhis-web-linelisting-mp/updateEmployeePostForm.vm</result>
         </action>
         
         <action name="updateEmployeePost"
             class="org.hisp.dhis.ll.action.lldataentry.UpdateEmployeePostAction">
-			<result name="success" type="redirect">select.action</result>
+            <result name="success" type="redirect">select.action</result>
         </action>
         
     <!-- Org unit -->
         <action name="getOrgUnitDetails"
-			class="org.hisp.dhis.ll.action.lldataentry.GetOrgUnitsAction">
+            class="org.hisp.dhis.ll.action.lldataentry.GetOrgUnitsAction">
             <result name="success" type="velocity">
-				/dhis-web-linelisting-mp/responseOrgUnit.vm
+                /dhis-web-linelisting-mp/responseOrgUnit.vm
             </result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
@@ -496,7 +493,7 @@
             <param name="javascripts">javascript/hashtable.js</param>
         </action>
     
-	<action name="showAddLineListMappingForm" class="org.hisp.dhis.validationrule.action.NoAction">
+    <action name="showAddLineListMappingForm" class="org.hisp.dhis.validationrule.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-linelisting-mp/addLineListDataElementMappingForm.vm</param>
       <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
@@ -513,13 +510,13 @@
       <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
       <param name="javascripts">javascript/general.js</param>
     </action> 
-	
-<!-- Linelisting Aggregation Query Builder -->	
+    
+<!-- Linelisting Aggregation Query Builder -->  
         <action name="showLLAggQueryBuilderForm" class="org.hisp.dhis.ll.action.llagg.LinelistingAggQueryBuilderFormAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-mp/llAggQueryBuilderForm.vm</param>
             <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
-			<param name="javascripts">javascript/linelistagg.js,../dhis-web-commons/util/jquery.metadata.js</param>
+            <param name="javascripts">javascript/linelistagg.js,../dhis-web-commons/util/jquery.metadata.js</param>
         </action>
 
         <action name="saveLinelistAggMapping"
@@ -531,20 +528,20 @@
             class="org.hisp.dhis.ll.action.llagg.GetAggDataElementsAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseAggDataElement.vm</result>
         </action>
-		
+        
         <action name="getLLGroupElements"
             class="org.hisp.dhis.ll.action.llagg.GetLinelistGroupDataElementsAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseLineListElement.vm</result>
         </action>
-		
+        
         <action name="getLinelistAggExpression"
             class="org.hisp.dhis.ll.action.llagg.GetLinelistAggExpressionAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseExpression.vm</result>
         </action>
-		
+        
 <!-- Linelisting Aggregation -->
         <action name="linelistAggForm" class="org.hisp.dhis.ll.action.llagg.LinelistingAggregationFormAction">
-			<interceptor-ref name="organisationUnitTreeStack"/>
+            <interceptor-ref name="organisationUnitTreeStack"/>
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-mp/linelistAggForm.vm</param>
             <param name="menu">/dhis-web-linelisting-mp/menuForLinelistAgg.vm</param>
@@ -556,11 +553,11 @@
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/dSetResponsePeriod.vm</result>
         </action>
 
-		<action name="linelistAggregationResult" class="org.hisp.dhis.ll.action.llagg.LinelistingAggregationResultAction">                 
-		  <result name="success" type="velocity">/main.vm</result>
-		  <param name="page">/dhis-web-linelisting-mp/summaryReportResult.vm</param>
-		  <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>      
-		</action>
+        <action name="linelistAggregationResult" class="org.hisp.dhis.ll.action.llagg.LinelistingAggregationResultAction">                 
+          <result name="success" type="velocity">/main.vm</result>
+          <param name="page">/dhis-web-linelisting-mp/summaryReportResult.vm</param>
+          <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>      
+        </action>
 
 <!-- Linelisting Importing -->
     <action name="lldataImport" class="org.hisp.dhis.ll.action.llimport.LineListingImportingResultAction">
@@ -571,15 +568,35 @@
 
 <!-- Linelisting Reports -->
     <action name="summaryReport" class="org.hisp.dhis.ll.action.reports.SummaryReportAction">
-		<interceptor-ref name="organisationUnitTreeStack"/>
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-linelisting-mp/summaryReportResult.vm</param>
-		<param name="menu">/dhis-web-linelisting-mp/menuForSummaryReport.vm</param>      	  
-        <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>	         
+        <interceptor-ref name="organisationUnitTreeStack"/>
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-linelisting-mp/summaryReportResult.vm</param>
+        <param name="menu">/dhis-web-linelisting-mp/menuForSummaryReport.vm</param>           
+        <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>           
     </action>
-		
+        
     <action name="showEmployeePostDetails" class="org.hisp.dhis.ll.action.reports.EmployeePostDetailsReportAction">
         <result name="success" type="velocity">/dhis-web-linelisting-mp/employeePostDetailsResult.vm</result>
+    </action>
+    
+<!-- Sanctioned Post Mapping -->
+    <action name="sanctionedPostMapping" class="org.hisp.dhis.ll.action.aggmap.SanctionedPostMappingForm">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-linelisting-mp/sanctionedPostMappingForm.vm</param>
+        <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
+        <param name="javascripts">javascript/sancPostMap.js</param>
+    </action>
+    
+    <action name="getPosts" class="org.hisp.dhis.ll.action.aggmap.GetLineListElementsAction">
+        <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseDepartment.vm</result>
+    </action>
+
+    <action name="getPostDataElement" class="org.hisp.dhis.ll.action.aggmap.GetSelDataElementAction">
+        <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSelDe.vm</result>
+    </action>
+
+    <action name="saveSanctionedPostMapping" class="org.hisp.dhis.ll.action.aggmap.SaveSanctionedPostMapAction">
+        <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSaveMapStatus.vm</result>
     </action>
     
     </package>
