@@ -1124,6 +1124,11 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.indicator.IndicatorGroupSetDeletionHandler"
+		class="org.hisp.dhis.indicator.IndicatorGroupSetDeletionHandler">
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
+
 	<bean id="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler"
 		class="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler">
 		<property name="minMaxDataElementService"
@@ -1219,6 +1224,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 					<ref local="org.hisp.dhis.expression.ExpressionDeletionHandler" />
 					<ref local="org.hisp.dhis.indicator.IndicatorDeletionHandler" />
 					<ref local="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" />
+					<ref local="org.hisp.dhis.indicator.IndicatorGroupSetDeletionHandler" />
 					<ref local="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler" />
 					<ref local="org.hisp.dhis.validation.ValidationRuleDeletionHandler" />
 					<ref local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" />

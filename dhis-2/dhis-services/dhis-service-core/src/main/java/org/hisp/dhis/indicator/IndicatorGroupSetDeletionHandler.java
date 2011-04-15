@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataelement;
+package org.hisp.dhis.indicator;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -30,41 +30,39 @@ package org.hisp.dhis.dataelement;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
- * @author Dang Duy Hieu
- * @version $Id$
+ * @author Lars Helge Overland
  */
-public class DataElementGroupSetDeletionHandler
+public class IndicatorGroupSetDeletionHandler
     extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementService dataElementService;
+    private IndicatorService indicatorService;
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setIndicatorService( IndicatorService indicatorService )
     {
-        this.dataElementService = dataElementService;
+        this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String getClassName()
     {
-        return DataElementGroupSet.class.getSimpleName();
+        return IndicatorGroupSet.class.getSimpleName();
     }
-
+    
     @Override
-    public void deleteDataElementGroup( DataElementGroup dataElementGroup )
+    public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        for ( DataElementGroupSet groupSet : dataElementService.getAllDataElementGroupSets() )
+        for ( IndicatorGroupSet groupSet : indicatorService.getAllIndicatorGroupSets() )
         {
-            if ( groupSet.getMembers().remove( dataElementGroup ) )
+            if ( groupSet.getMembers().remove( indicatorGroup ) )
             {
-                dataElementService.updateDataElementGroupSet( groupSet );
+                indicatorService.updateIndicatorGroupSet( groupSet );
             }
         }
     }
