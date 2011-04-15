@@ -1,5 +1,7 @@
 package org.hisp.dhis.reports.reportmanagement.action;
 
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportService;
@@ -26,6 +28,13 @@ public class UpdateReportAction
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -80,6 +89,13 @@ public class UpdateReportAction
     {
         this.reportId = reportId;
     }
+    
+    private Integer orgunitGroupId;
+    
+    public void setOrgunitGroupId( Integer orgunitGroupId )
+    {
+        this.orgunitGroupId = orgunitGroupId;
+    }
 
     // -------------------------------------------------------------------------
     // Action
@@ -98,7 +114,13 @@ public class UpdateReportAction
         report.setReportType( reporttype );
         report.setExcelTemplateName( excelname );
         report.setXmlTemplateName( xmlname );
-
+        
+        if( orgunitGroupId != null )
+        {
+            OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupId );
+            report.setOrgunitGroup( orgUnitGroup );
+        }
+        
         reportService.updateReport( report );
        
         return SUCCESS;

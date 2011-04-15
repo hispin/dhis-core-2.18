@@ -1,5 +1,7 @@
 package org.hisp.dhis.reports.aggregation.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +9,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -32,6 +35,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportService;
@@ -43,6 +47,13 @@ import com.opensymphony.xwork2.Action;
 public class GenerateAggregationReportAnalyserResultAction
     implements Action
 {
+   
+    private final String GENERATEAGGDATA = "generateaggdata";
+
+    private final String USEEXISTINGAGGDATA = "useexistingaggdata";
+
+    private final String USECAPTUREDDATA = "usecaptureddata";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -133,14 +144,14 @@ public class GenerateAggregationReportAnalyserResultAction
     {
         this.endDate = endDate;
     }
-
+/*
     private String aggCB;
 
     public void setAggCB( String aggCB )
     {
         this.aggCB = aggCB;
     }
-
+*/
     private String periodTypeId;
 
     public void setPeriodTypeId( String periodTypeId )
@@ -165,7 +176,14 @@ public class GenerateAggregationReportAnalyserResultAction
     private String raFolderName;
 
     private Integer monthCount;
-
+    
+    private String aggData;
+    
+    public void setAggData( String aggData )
+    {
+        this.aggData = aggData;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -635,25 +653,35 @@ public class GenerateAggregationReportAnalyserResultAction
                 {
                     if( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                        if ( aggCB == null )
+                        if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
                             tempStr = reportService.getIndividualResultDataValue(deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
                         } 
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             tempStr = reportService.getResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                        }
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                        {
+                            List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( sDate, eDate ) );
+                            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
                         }
                     }
                     else
                     {
-                        if ( aggCB == null )
+                        if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
                             tempStr = reportService.getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                         } 
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
-                        }                       
+                        }
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                        {
+                            tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit ); 
+                        }
                     }
                 }
                 

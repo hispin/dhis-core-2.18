@@ -3,12 +3,15 @@
  */
 package org.hisp.dhis.reports.physical.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +44,11 @@ import com.opensymphony.xwork2.Action;
 public class GeneratePhysicalReportResultAction
     implements Action
 {
+    private final String GENERATEAGGDATA = "generateaggdata";
+
+    private final String USEEXISTINGAGGDATA = "useexistingaggdata";
+
+    private final String USECAPTUREDDATA = "usecaptureddata";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -122,7 +130,18 @@ public class GeneratePhysicalReportResultAction
     private String raFolderName;
 
     String years[];
-
+    
+    private String aggData;
+    
+    public void setAggData( String aggData )
+    {
+        this.aggData = aggData;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+    
     public String execute()
         throws Exception
     {
@@ -187,7 +206,7 @@ public class GeneratePhysicalReportResultAction
             int count1 = 0;
             for ( Report_inDesign reportDesign : reportDesignList )
             {
-                String tempStr;
+                String tempStr = "";
                 String deCode = reportDesign.getExpression();
                 String deType = reportDesign.getPtype();
 
@@ -220,7 +239,21 @@ public class GeneratePhysicalReportResultAction
                 }
                 else
                 {
-                    tempStr = reportService.getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit, reportModelTB );
+                    if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
+                    {
+                        tempStr = reportService.getIndividualResultDataValue(deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit, reportModelTB );
+                    } 
+                    else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+                    {
+                        tempStr = reportService.getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit, reportModelTB );
+                    }
+                    else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                    {
+                        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
+                        Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+                        tempStr = reportService.getResultDataValueFromAggregateTable( deCode, periodIds, curOrgUnit, reportModelTB );
+                    }
+                    //tempStr = reportService.getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit, reportModelTB );
                 }
 
                 int tempRowNo = reportDesign.getRowno() + rowCount;

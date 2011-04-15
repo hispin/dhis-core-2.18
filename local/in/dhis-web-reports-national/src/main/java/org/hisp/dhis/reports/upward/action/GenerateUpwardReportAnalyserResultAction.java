@@ -1,6 +1,8 @@
 package org.hisp.dhis.reports.upward.action;
 
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +10,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -45,6 +48,11 @@ public class GenerateUpwardReportAnalyserResultAction
     implements Action
 {
 
+    private final String GENERATEAGGDATA = "generateaggdata";
+
+    private final String USEEXISTINGAGGDATA = "useexistingaggdata";
+
+    private final String USECAPTUREDDATA = "usecaptureddata";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -121,14 +129,14 @@ public class GenerateUpwardReportAnalyserResultAction
     {
         this.availablePeriods = availablePeriods;
     }
-
+/*
     private String aggCB;
 
     public void setAggCB( String aggCB )
     {
         this.aggCB = aggCB;
     }
-
+*/
     private String reportFileNameTB;
 
     private String reportModelTB;
@@ -148,6 +156,13 @@ public class GenerateUpwardReportAnalyserResultAction
     private Date eDate;
 
     private String raFolderName;
+    
+    private String aggData;
+    
+    public void setAggData( String aggData )
+    {
+        this.aggData = aggData;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -305,36 +320,53 @@ public class GenerateUpwardReportAnalyserResultAction
                 {
                     if( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                        if ( aggCB == null )
+                        if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
                             tempStr = reportService.getIndividualResultDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                         } 
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                        }
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                        {
+                            List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
+                            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
                         }
                     } 
                     else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
                     {
-                        if ( aggCB == null )
+                        if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
                             tempStr = reportService.getBooleanDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB);
                         } 
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             tempStr = reportService.getBooleanDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB);
                         }
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                        {
+                            tempStr = reportService.getBooleanDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB);
+                        }
+                        
                     }
                     else
                     {
-                        if ( aggCB == null )
+                        if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
                             tempStr = reportService.getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                         } 
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
-                        }                       
+                        }     
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                        {
+                            List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
+                            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
+                        }
                     }
                 }
         

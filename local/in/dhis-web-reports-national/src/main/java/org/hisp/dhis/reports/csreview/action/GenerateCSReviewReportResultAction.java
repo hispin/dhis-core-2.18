@@ -1,5 +1,7 @@
 package org.hisp.dhis.reports.csreview.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +9,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -64,6 +67,12 @@ public class GenerateCSReviewReportResultAction
 {
     private static final String NULL_REPLACEMENT = "0";
 
+    private final String GENERATEAGGDATA = "generateaggdata";
+
+    private final String USEEXISTINGAGGDATA = "useexistingaggdata";
+
+    private final String USECAPTUREDDATA = "usecaptureddata";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -234,7 +243,14 @@ public class GenerateCSReviewReportResultAction
     int deFlag2;
 
     int deFlag1;
-
+    
+    private String aggData;
+    
+    public void setAggData( String aggData )
+    {
+        this.aggData = aggData;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -416,7 +432,22 @@ public class GenerateCSReviewReportResultAction
                 }
                 else
                 {
-                    tempStr = getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit );
+                    if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
+                    {
+                        tempStr = reportService.getIndividualResultDataValue(deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit, reportModelTB );
+                    } 
+                    else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+                    {
+                        tempStr = getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit );
+                        //tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                    }
+                    else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                    {
+                        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
+                        Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+                        tempStr = reportService.getResultDataValueFromAggregateTable( deCode, periodIds, curOrgUnit, reportModelTB );
+                    }
+                    //tempStr = getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit );
                 }
                 System.out.println( "DECode : " + deCode + "   TempStr : " + tempStr );
                // System.out.println( "TempStr: " + tempStr );
@@ -584,7 +615,7 @@ public class GenerateCSReviewReportResultAction
                 {
                     Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == 0 )
+                    if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
                         deFlag2 = 0;

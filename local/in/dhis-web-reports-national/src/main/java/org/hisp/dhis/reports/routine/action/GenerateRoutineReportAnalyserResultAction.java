@@ -1,5 +1,7 @@
 package org.hisp.dhis.reports.routine.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +9,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -237,7 +240,7 @@ public class GenerateRoutineReportAnalyserResultAction
         
         List<OrganisationUnit> orgGroupMembers = null;
 
-        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) || organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
+        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) || organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) || organisationUnitGroupId.equalsIgnoreCase( "useexistingaggdata" ) )
         {
             
         }
@@ -740,6 +743,12 @@ public class GenerateRoutineReportAnalyserResultAction
                         else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
                         {
                             tempStr = reportService.getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                        }
+                        else if ( organisationUnitGroupId.equalsIgnoreCase( "useexistingaggdata" ) )
+                        {
+                            List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
+                            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
                         }
                         else
                         {

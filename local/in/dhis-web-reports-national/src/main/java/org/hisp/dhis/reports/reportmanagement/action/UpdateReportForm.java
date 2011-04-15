@@ -3,6 +3,8 @@ package org.hisp.dhis.reports.reportmanagement.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportModel;
@@ -32,6 +34,13 @@ public class UpdateReportForm
     public void setReportService( ReportService reportService )
     {
         this.reportService = reportService;
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -72,6 +81,13 @@ public class UpdateReportForm
     {
         this.reportId = reportId;
     }
+    
+    private List<OrganisationUnitGroup> orgUnitGroups;
+    
+    public List<OrganisationUnitGroup> getOrgUnitGroups()
+    {
+        return orgUnitGroups;
+    }
 
     // -------------------------------------------------------------------------
     // Action
@@ -84,6 +100,8 @@ public class UpdateReportForm
         report = reportService.getReport( reportId );
 
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
+        
+        orgUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
 
         reportTypes = ReportType.getReportTypes();
 
