@@ -100,7 +100,7 @@ public class GenerateDataStatusResultAction
     }
     
     @SuppressWarnings("unused")
-	private Comparator<OrganisationUnit> orgUnitComparator;
+    private Comparator<OrganisationUnit> orgUnitComparator;
 
     public void setOrgUnitComparator( Comparator<OrganisationUnit> orgUnitComparator )
     {
@@ -115,6 +115,13 @@ public class GenerateDataStatusResultAction
     public Map<OrganisationUnit, List<Integer>> getOuMapDataStatusResult()
     {
         return ouMapDataStatusResult;
+    }
+
+    private Map<OrganisationUnit, List<Integer>> ouMapDataElementCount;
+    
+    public Map<OrganisationUnit, List<Integer>> getOuMapDataElementCount()
+    {
+        return ouMapDataElementCount;
     }
 
     private Collection<Period> periodList;
@@ -151,6 +158,8 @@ public class GenerateDataStatusResultAction
     {
         return dataStatusResult;
     }
+    
+
 
     private Map<DataSet, Collection<Period>> dataSetPeriods;
 
@@ -179,7 +188,7 @@ public class GenerateDataStatusResultAction
     {
         return maxOULevel;
     }
-
+    
     // ---------------------------------------------------------------
     // Input Parameters
     // ---------------------------------------------------------------
@@ -316,6 +325,21 @@ public class GenerateDataStatusResultAction
     int orgUnitCount;
 
     private String dataViewName;
+    
+    private int dataSetMemberCount1;
+    
+    public int getDataSetMemberCount1()
+    {
+        return dataSetMemberCount1;
+    }
+    
+    
+    private Integer dataElementCount;
+    
+    public Integer getDataElementCount()
+    {
+        return dataElementCount;
+    }
 
     // ---------------------------------------------------------------
     // Action Implementation
@@ -327,7 +351,10 @@ public class GenerateDataStatusResultAction
         System.out.println("Inside Normal DtaaStatus Reult Action");
         orgUnitCount = 0;
         dataViewName = "";
-
+        
+        ouMapDataElementCount = new HashMap<OrganisationUnit,List<Integer>>();//Map for DataElement count
+        
+        
         // Intialization
         periodNameList = new ArrayList<String>();
         ouMapDataStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
@@ -456,12 +483,14 @@ public class GenerateDataStatusResultAction
         Collection<DataElement> dataElements = new ArrayList<DataElement>();
         dataElements = selDataSet.getDataElements();
 
-        int dataSetMemberCount1 = 0;
+        dataSetMemberCount1 = 0;
         for ( DataElement de1 : dataElements )
         {
             dataSetMemberCount1 += de1.getCategoryCombo().getOptionCombos().size();
         }
-
+       
+        //System.out.println( "DataSet Member Count :"  + dataSetMemberCount1  );
+        
         deInfo = getDEInfo( dataElements );
 
         Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
@@ -486,16 +515,19 @@ public class GenerateDataStatusResultAction
             Period p;
 
             double dataStatusPercentatge;
+            
             List<Integer> dsResults = new ArrayList<Integer>();
+            List<Integer> deCounts = new ArrayList<Integer>();
             while ( periodIterator.hasNext() )
             {
                 System.out.println("Inside period Iterator Loop");
                 p = (Period) periodIterator.next();
                 periodInfo = "" + p.getId();
-
+                dataElementCount = 0;
                 if ( dso == null )
                 {
                     dsResults.add( -1 );
+                    deCounts.add( -1 );
                     continue;
                 }
                 else if ( !dso.contains( o ) )
@@ -526,6 +558,7 @@ public class GenerateDataStatusResultAction
                         {
                             //System.out.println( "Result is : \t" + sqlResultSet.getLong( 1 ) );
                             dataStatusPercentatge = ((double) sqlResultSet.getInt( 1 ) / (double) (dataSetMemberCount1 * orgUnitCount)) * 100.0;
+                            
                         }
                         catch ( Exception e )
                         {
@@ -539,8 +572,10 @@ public class GenerateDataStatusResultAction
                         dataStatusPercentatge = 100;
 
                     dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-
+                    
                     dsResults.add( (int) dataStatusPercentatge );
+                    //dataElementCount = sqlResultSet.getInt( 1 );
+                    deCounts.add( -1 );
                     continue;
                 }
 
@@ -563,25 +598,32 @@ public class GenerateDataStatusResultAction
                 {
                     try
                     {
+                        dataElementCount = sqlResultSet.getInt( 1 );
                         dataStatusPercentatge = ((double) sqlResultSet.getInt( 1 ) / (double) dataSetMemberCount1) * 100.0;
                     }
                     catch ( Exception e )
                     {
+                        dataElementCount = -1;
                         dataStatusPercentatge = 0.0;
                     }
                 }
                 else
+                {
                     dataStatusPercentatge = 0.0;
-
+                    dataElementCount = -1;
+                }
+                
                 if ( dataStatusPercentatge > 100.0 )
                     dataStatusPercentatge = 100;
 
-                dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-
+                dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );                
+                
                 dsResults.add( (int) dataStatusPercentatge );
+                deCounts.add( dataElementCount );
             }
 
             ouMapDataStatusResult.put( o, dsResults );
+            ouMapDataElementCount.put( o, deCounts );
         }
 
         // For Level Names

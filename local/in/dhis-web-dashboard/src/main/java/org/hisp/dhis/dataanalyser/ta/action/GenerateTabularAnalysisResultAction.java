@@ -481,7 +481,7 @@ public class GenerateTabularAnalysisResultAction
             + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
-
+        
         sheet0.mergeCells( headerCol, headerRow, headerCol, headerRow + 1 );
         sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
 
@@ -1557,7 +1557,7 @@ public class GenerateTabularAnalysisResultAction
         throws Exception
     {
         WritableCellFormat wCellformat = new WritableCellFormat();
-
+        
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat.setAlignment( Alignment.CENTRE );
         wCellformat.setBackground( Colour.GRAY_25 );

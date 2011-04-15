@@ -85,6 +85,27 @@ public class GenerateSummaryDataStatusResultAction
     // Output Parameters
     // ---------------------------------------------------------------
 
+    private Map<OrganisationUnit, Integer> ouMapForColor;
+    
+    public Map<OrganisationUnit, Integer> getOuMapForColor()
+    {
+        return ouMapForColor;
+    }
+
+    private Map<OrganisationUnit, Integer> ouMapForChildDSAssociation;
+    
+    public Map<OrganisationUnit, Integer> getOuMapForChildDSAssociation()
+    {
+        return ouMapForChildDSAssociation;
+    }
+
+    private Map<OrganisationUnit, List<Integer>> ouMapStatusResult;
+
+    public Map<OrganisationUnit, List<Integer>> getOuMapStatusResult()
+    {
+        return ouMapStatusResult;
+    }
+
     private Map<OrganisationUnit, List<Integer>> ouMapSummaryStatusResult;
 
     public Map<OrganisationUnit, List<Integer>> getOuMapSummaryStatusResult()
@@ -266,6 +287,9 @@ public class GenerateSummaryDataStatusResultAction
         dataViewName = "";
 
         // Intialization
+        ouMapForChildDSAssociation = new HashMap<OrganisationUnit, Integer>();
+        ouMapForColor =  new HashMap<OrganisationUnit, Integer>();
+        ouMapStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
         periodNameList = new ArrayList<String>();
         ouMapSummaryStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
         maxOULevel = 1;
@@ -293,12 +317,10 @@ public class GenerateSummaryDataStatusResultAction
         {
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
             orgUnitList.addAll( organisationUnitService.getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
-            //getChildOrgUnitTree( selectedOrgUnit );
         }
         else if ( facilityLB.equals( "immChildren" ) )
         {
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
-            //number = selectedOrgUnit.getChildren().size();
             Iterator<String> orgUnitIterator = orgUnitListCB.iterator();
             while ( orgUnitIterator.hasNext() )
             {
@@ -403,6 +425,19 @@ public class GenerateSummaryDataStatusResultAction
             List<Integer> dsResults = new ArrayList<Integer>();
             List<Integer> dsSummaryResults = new ArrayList<Integer>();
            
+            List<OrganisationUnit> childOrgUnits = new ArrayList<OrganisationUnit>();
+            if ( !dso.contains( o ) )
+            {
+                childOrgUnits = filterChildOrgUnitsByDataSet( selDataSet, o );
+                ouMapForChildDSAssociation.put( o, childOrgUnits.size() );
+                ouMapForColor.put( o, 0 );
+            }
+            else
+            {
+                ouMapForChildDSAssociation.put( o, -1 );
+                ouMapForColor.put( o, 1 );
+            }
+            
             while ( periodIterator.hasNext() )
             {
                 p = (Period) periodIterator.next();
@@ -412,15 +447,16 @@ public class GenerateSummaryDataStatusResultAction
                 {
                     dsResults.add( -1 );
                     dsSummaryResults.add( -1 );
+                    ouMapForChildDSAssociation.put( o, -1 );
                     continue;
                 }
                 else if ( !dso.contains( o ) )
                 {
-                    List<OrganisationUnit> childOrgUnits = new ArrayList<OrganisationUnit>();
-                    childOrgUnits = filterChildOrgUnitsByDataSet( selDataSet, o );
-                    Iterator<OrganisationUnit> assignedChildrenIterator = childOrgUnits.iterator();
+                    //List<OrganisationUnit> childOrgUnits = new ArrayList<OrganisationUnit>();
+                    //childOrgUnits = filterChildOrgUnitsByDataSet( selDataSet, o );
+                    
                     int dataStatusCount = 0;
-
+                    Iterator<OrganisationUnit> assignedChildrenIterator = childOrgUnits.iterator();
                     while ( assignedChildrenIterator.hasNext() )
                     {
                         OrganisationUnit cUnit = (OrganisationUnit) assignedChildrenIterator.next();
@@ -469,12 +505,17 @@ public class GenerateSummaryDataStatusResultAction
                             dataStatusCount += 1;
                         }
                     }
+                    
                     dsSummaryResults.add( dataStatusCount );
+                    Double tempDouble = ( (double) dataStatusCount /(double) childOrgUnits.size() ) * 100.0;
+                    tempDouble = Math.round( tempDouble * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+                    dsResults.add( tempDouble.intValue() );
                     continue;
                 }
 
                 orgUnitInfo = "" + o.getId();
-
+                
+                
                 if ( includeZeros == null )
                 {
                     query = "SELECT COUNT(*) FROM " + dataViewName + " WHERE dataelementid IN (" + deInfo
@@ -506,7 +547,6 @@ public class GenerateSummaryDataStatusResultAction
                     dataStatusPercentatge = 100;
 
                 dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-                dsResults.add( (int) dataStatusPercentatge );
 
                 if ( dataStatusPercentatge >= 5.0 )
                 {
@@ -516,9 +556,12 @@ public class GenerateSummaryDataStatusResultAction
                 {
                     dsSummaryResults.add( 0 );
                 }
+                
+                dsResults.add( -1 );
             }
             
             ouMapSummaryStatusResult.put( o, dsSummaryResults );
+            ouMapStatusResult.put( o, dsResults );
         }
 
         // For Level Names

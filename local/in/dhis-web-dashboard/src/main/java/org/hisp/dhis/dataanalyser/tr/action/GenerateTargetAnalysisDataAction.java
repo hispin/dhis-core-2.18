@@ -279,6 +279,16 @@ public class GenerateTargetAnalysisDataAction implements Action
                 
                 for ( int j = 0; j < data2[i].length; j++ )
                 {
+                    Double tempdeTargetAggVal = deTargetAggVal;
+                    if( selButton.equalsIgnoreCase( "VIEWCCHART" ) )
+                    {
+                        tempdeTargetAggVal = deTargetAggVal * (j+1);
+                        tempdeTargetAggVal = Math.round( tempdeTargetAggVal * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                    }
+                    
+                    data2[i][j] = tempdeTargetAggVal;
+
+                    /*
                     if( selButton.equalsIgnoreCase( "VIEWCCHART" ) )
                     {
                         deTargetAggVal = deTargetAggVal * (j+1);
@@ -286,6 +296,7 @@ public class GenerateTargetAnalysisDataAction implements Action
                     }
                     
                     data2[i][j] = deTargetAggVal;
+                    */
                 }
             }
         }
