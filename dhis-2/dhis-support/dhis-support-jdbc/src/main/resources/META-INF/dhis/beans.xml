@@ -18,7 +18,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Interceptor -->
     
-  <bean id="statementInterceptor" class="org.hisp.dhis.jdbc.StatementInterceptor">
+  <bean id="statementInterceptor" class="org.amplecode.quick.StatementInterceptor">
     <property name="statementManager" ref="statementManager"/>
   </bean>
 
