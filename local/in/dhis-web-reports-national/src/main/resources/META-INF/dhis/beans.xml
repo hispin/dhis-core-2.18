@@ -1,1082 +1,1062 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	
-	<!-- Reports -->
-	<bean id="org.hisp.dhis.reports.action.ReportsHomePageAction"
-		class="org.hisp.dhis.reports.action.ReportsHomePageAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	<!-- Reports Management -->
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.ReportsListAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.ReportsListAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	<!-- Report Management Addition -->
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.AddReportFormAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.AddReportFormAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
-		</property>
-	</bean>
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.AddReportAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.AddReportAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
-		</property>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	
-	<!-- Report Management Editing/Updation -->
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.UpdateReportForm"
-		class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportForm"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
-		</property>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.UpdateReportAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
-		</property>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	
-	<!-- Report Validation during Addition or Updation of Report -->
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.ValidateReportAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.ValidateReportAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	
-	<!-- Get Report details -->
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.GetReportAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.GetReportAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	
-	<!-- Report Association -->
-	<bean
-		id="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
-		</property>
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
-		</property>
-	</bean>
-	<bean
-		id="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
-		</property>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	<bean
-		id="org.hisp.dhis.reports.reportmanagement.action.DefineReportAssociationsAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.DefineReportAssociationsAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
-		</property>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		
-	</bean>
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
-		</property>
-	</bean>
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.SelectLevelAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.SelectLevelAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
-		</property>
-	</bean>
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.UnselectLevelAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.UnselectLevelAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
-		</property>
-	</bean>
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.SelectGroupAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.SelectGroupAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
-		</property>
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
-		</property>
-	</bean>
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.UnselectGroupAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.UnselectGroupAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
-		</property>
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
-		</property>
-	</bean>
-	
-	<!-- Report Deletion -->
-	<bean id="org.hisp.dhis.reports.reportmanagement.action.DelReportAction"
-		class="org.hisp.dhis.reports.reportmanagement.action.DelReportAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	
-	<!-- Routine Reports -->
-	<bean
-		id="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserFormAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserResultAction"
-		class="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserResultAction"
-		scope="prototype">
-		<property name="statementManager" ref="statementManager"/>		
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-	
-	<!-- ED Report -->
-	<bean id="org.hisp.dhis.reports.ed.action.EDReportFormAction"
-		class="org.hisp.dhis.reports.ed.action.EDReportFormAction"
-		scope="prototype">
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.ed.action.EDReportResultAction"
-		class="org.hisp.dhis.reports.ed.action.EDReportResultAction"
-		scope="prototype">
-		
-		<property name="statementManager" ref="statementManager"/>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	
-	<!-- Auto Reports -->
-	<bean
-		id="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserFormAction"
-		scope="prototype">
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserResultAction"
-		class="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserResultAction"
-		scope="prototype">
-		
-		<property name="statementManager" ref="statementManager"/>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		
-	</bean>
-	
-	<!-- Aggregation Report -->
-	<bean
-		id="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserFormAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserResultAction"
-		class="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserResultAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-		<property name="statementManager" ref="statementManager" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-	
-	<!-- Feedback Reports -->
-	<bean
-		id="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserFormAction"
-		scope="prototype">		
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserResultAction"
-		class="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserResultAction"
-		scope="prototype">
-		<property name="statementManager" ref="statementManager"/>
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-	</bean>
-	
-	<!-- Upward / GOI Reports -->
-	<bean
-		id="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserResultAction"
-		class="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserResultAction"
-		scope="prototype">
-		<property name="statementManager" ref="statementManager"/>
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-	</bean>
-	
-	<!-- DataSet Lock Reports -->
-	<bean
-		id="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportAnalyserFormAction"
-		scope="prototype">
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		
-	</bean>
-	<bean
-		id="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportResultAction"
-		class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportResultAction"
-		scope="prototype">
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="dataSetLockService">
-			<ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
-		</property>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.datasetlock.action.GetPeriodsForLockAction"
-		class="org.hisp.dhis.reports.datasetlock.action.GetPeriodsForLockAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
-		
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.datasetlock.action.GetDataSetsForLockAction"
-		class="org.hisp.dhis.reports.datasetlock.action.GetDataSetsForLockAction"
-		scope="prototype">
-		<property name="dataSetService"
-			ref="org.hisp.dhis.dataset.DataSetService"/>
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.datasetlock.action.GetOrgUnitNameAction"
-		class="org.hisp.dhis.reports.datasetlock.action.GetOrgUnitNameAction"
-		scope="prototype">
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-	</bean>
-	
-	<!-- Linelisting Reports -->
-	<bean
-		id="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingReportAnalyserFormAction"
-		scope="prototype">
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingReportAnalyserResultAction"
-		class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingReportAnalyserResultAction"
-		scope="prototype">
-		
-		<property name="statementManager" ref="statementManager"/>
-		
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.ReportService"/>
-		</property>
-		<property name="jdbcTemplate" ref="jdbcTemplate"/>
-		
-	</bean>
-	
-	<!-- Periodwise Progress Reports -->
-	<bean
-		id="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressReportAnalyserFormAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
+    
+    <!-- Reports -->
+    <bean id="org.hisp.dhis.reports.action.ReportsHomePageAction"
+        class="org.hisp.dhis.reports.action.ReportsHomePageAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    <!-- Reports Management -->
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.ReportsListAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.ReportsListAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    <!-- Report Management Addition -->
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.AddReportFormAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.AddReportFormAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.AddReportAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.AddReportAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+    
+    <!-- Report Management Editing/Updation -->
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.UpdateReportForm"
+        class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportForm"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.UpdateReportAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+    
+    <!-- Report Validation during Addition or Updation of Report -->
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.ValidateReportAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.ValidateReportAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        
+    </bean>
+    
+    <!-- Get Report details -->
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.GetReportAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.GetReportAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    
+    <!-- Report Association -->
+    <bean
+        id="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction"
+        scope="prototype">
+        <property name="organisationUnitService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+        </property>
+        <property name="organisationUnitGroupService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+        </property>
+    </bean>
+    <bean
+        id="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction"
+        scope="prototype">
+        <property name="selectionTreeManager"
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
+        </property>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    <bean
+        id="org.hisp.dhis.reports.reportmanagement.action.DefineReportAssociationsAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.DefineReportAssociationsAction"
+        scope="prototype">
+        <property name="selectionTreeManager"
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
+        </property>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+        
+    </bean>
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction"
+        scope="prototype">
+        <property name="selectionTreeManager"
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
+        </property>
+    </bean>
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.SelectLevelAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.SelectLevelAction"
+        scope="prototype">
+        <property name="selectionTreeManager"
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
+        </property>
+    </bean>
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.UnselectLevelAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.UnselectLevelAction"
+        scope="prototype">
+        <property name="selectionTreeManager"
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
+        </property>
+    </bean>
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.SelectGroupAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.SelectGroupAction"
+        scope="prototype">
+        <property name="selectionTreeManager"
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
+        </property>
+        <property name="organisationUnitGroupService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+        </property>
+    </bean>
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.UnselectGroupAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.UnselectGroupAction"
+        scope="prototype">
+        <property name="selectionTreeManager"
+            ref="org.hisp.dhis.oust.manager.SelectionTreeManager">
+        </property>
+        <property name="organisationUnitGroupService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+        </property>
+    </bean>
+    
+    <!-- Report Deletion -->
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.DelReportAction"
+        class="org.hisp.dhis.reports.reportmanagement.action.DelReportAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    
+    <!-- Routine Reports -->
+    <bean
+        id="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserFormAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserResultAction"
+        class="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager"/>      
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+    
+    <!-- ED Report -->
+    <bean id="org.hisp.dhis.reports.ed.action.EDReportFormAction"
+        class="org.hisp.dhis.reports.ed.action.EDReportFormAction"
+        scope="prototype">
+        
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.ed.action.EDReportResultAction"
+        class="org.hisp.dhis.reports.ed.action.EDReportResultAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    
+    <!-- Auto Reports -->
+    <bean
+        id="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserFormAction"
+        scope="prototype">      
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserResultAction"
+        class="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+    </bean>
+    
+    <!-- Aggregation Report -->
+    <bean
+        id="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserFormAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserResultAction"
+        class="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserResultAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="statementManager" ref="statementManager" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
+    
+    <!-- Feedback Reports -->
+    <bean
+        id="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserFormAction"
+        scope="prototype">      
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserResultAction"
+        class="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+    </bean>
+    
+    <!-- Upward / GOI Reports -->
+    <bean
+        id="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserResultAction"
+        class="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+    </bean>
+    
+    <!-- DataSet Lock Reports -->
+    <bean
+        id="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportAnalyserFormAction"
+        scope="prototype">
+        
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        
+    </bean>
+    <bean
+        id="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportResultAction"
+        class="org.hisp.dhis.reports.datasetlock.action.GenerateDataSetLockReportResultAction"
+        scope="prototype">
+        
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="dataSetLockService">
+            <ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
+        </property>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.datasetlock.action.GetPeriodsForLockAction"
+        class="org.hisp.dhis.reports.datasetlock.action.GetPeriodsForLockAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+        
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.datasetlock.action.GetDataSetsForLockAction"
+        class="org.hisp.dhis.reports.datasetlock.action.GetDataSetsForLockAction"
+        scope="prototype">
+        <property name="dataSetService"
+            ref="org.hisp.dhis.dataset.DataSetService"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.datasetlock.action.GetOrgUnitNameAction"
+        class="org.hisp.dhis.reports.datasetlock.action.GetOrgUnitNameAction"
+        scope="prototype">
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+    </bean>
+    
+    <!-- Linelisting Reports -->
+    <bean
+        id="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingReportAnalyserFormAction"
+        scope="prototype">
+        
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingReportAnalyserResultAction"
+        class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingReportAnalyserResultAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+        
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="dataValueService">
+            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.ReportService"/>
+        </property>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        
+    </bean>
+    
+    <!-- Periodwise Progress Reports -->
+    <bean
+        id="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressReportAnalyserFormAction"
+        scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
 
-	<bean
-		id="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressAnalyserResultAction"
-		class="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressAnalyserResultAction"
-		scope="prototype">		
-		<property name="statementManager" ref="statementManager"/>		
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-	</bean>
-	
-	<!-- Orgunitwise Progress Reports -->
-	<bean
-		id="org.hisp.dhis.reports.ouwiseprogress.action.GenerateOuWiseProgressReportFormAction"
-		class="org.hisp.dhis.reports.ouwiseprogress.action.GenerateOuWiseProgressReportFormAction"
-		scope="prototype">
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.ouwiseprogress.action.GenerateOuWiseProgressReportResultAction"
-		class="org.hisp.dhis.reports.ouwiseprogress.action.GenerateOuWiseProgressReportResultAction"
-		scope="prototype">
-		<property name="statementManager" ref="statementManager" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-	
-	<!-- Meta Data Reports -->
-	<bean
-		id="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportAnalyserFormAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportResultAction"
-		class="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportResultAction"
-		scope="prototype">
-		<property name="statementManager" ref="statementManager" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		<property name="organisationUnitgroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService"/>
-		<property name="jdbcTemplate" ref="jdbcTemplate"/>
-	</bean>
-	
-	<!-- Advanced Reports -->
-	
-	<bean
-		id="org.hisp.dhis.reports.advanced.action.GenerateAdvancedReportsFormAction"
-		class="org.hisp.dhis.reports.advanced.action.GenerateAdvancedReportsFormAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.advanced.action.GenerateAdvancedReportResultAction"
-		class="org.hisp.dhis.reports.advanced.action.GenerateAdvancedReportResultAction"
-		scope="prototype">
-		
-		<property name="statementManager" ref="statementManager"/>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		
-	</bean>
-	
-	<!-- NLEP Reports -->
-	
-	<bean id="org.hisp.dhis.reports.leprosy.action.LeprosyReportFormAction"
-		class="org.hisp.dhis.reports.leprosy.action.LeprosyReportFormAction"
-		scope="prototype">
-		
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.leprosy.action.LeprosyReportResultAction"
-		class="org.hisp.dhis.reports.leprosy.action.LeprosyReportResultAction"
-		scope="prototype">
-		
-		<property name="statementManager" ref="statementManager"/>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		
-	</bean>
-	
-	<!-- Malaria Reports -->
-	
-	<bean
-		id="org.hisp.dhis.reports.malarya.action.GenerateMalaryaReportFormAction"
-		class="org.hisp.dhis.reports.malarya.action.GenerateMalaryaReportFormAction"
-		scope="prototype">
-		
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.malarya.action.GenerateMalaryaReportResultAction"
-		class="org.hisp.dhis.reports.malarya.action.GenerateMalaryaReportResultAction"
-		scope="prototype">
-		
-		<property name="statementManager" ref="statementManager"/>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		
-	</bean>
-	
-	<!-- Grading Reports -->
-	<bean
-		id="org.hisp.dhis.reports.grading.action.GenerateGradingReportFormAction"
-		class="org.hisp.dhis.reports.grading.action.GenerateGradingReportFormAction"
-		scope="prototype">
-		
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.grading.action.GenerateGradingReportResultAction"
-		class="org.hisp.dhis.reports.grading.action.GenerateGradingReportResultAction"
-		scope="prototype">
-		
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="statementManager" ref="statementManager"/>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.grading.action.GenerateImmChildGradingReportAction"
-		class="org.hisp.dhis.reports.grading.action.GenerateImmChildGradingReportAction"
-		scope="prototype">
-		
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="statementManager" ref="statementManager"/>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.grading.action.GenerateSelChildGradingReportAction"
-		class="org.hisp.dhis.reports.grading.action.GenerateSelChildGradingReportAction"
-		scope="prototype">
-		
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="statementManager" ref="statementManager"/>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.grading.action.GradingAbstrationFormAction"
-		class="org.hisp.dhis.reports.grading.action.GradingAbstrationFormAction"
-		scope="prototype">
-		
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.grading.action.GradingAbstractionResultAction"
-		class="org.hisp.dhis.reports.grading.action.GradingAbstractionResultAction"
-		scope="prototype">
-		
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="statementManager" ref="statementManager"/>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-	</bean>
-	
-	<!-- TwentyPoints Reports -->
-	
-	<bean
-		id="org.hisp.dhis.reports.TwentyPoint.action.GenerateTwentyPointReportsFromAction"
-		class="org.hisp.dhis.reports.TwentyPoint.action.GenerateTwentyPointReportsFromAction"
-		scope="prototype">
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.TwentyPoint.action.GenerateTwentyPointReportsResultAction"
-		class="org.hisp.dhis.reports.TwentyPoint.action.GenerateTwentyPointReportsResultAction"
-		scope="prototype">
-		
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		<property name="statementManager" ref="statementManager"/>
-		
-	</bean>
-	
-	<!-- Ranking Report -->
-	
-	<bean
-		id="org.hisp.dhis.reports.ranking.action.GenarateRankingReportFormAction"
-		class="org.hisp.dhis.reports.ranking.action.GenarateRankingReportFormAction"
-		scope="prototype">
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.ranking.action.GenerateRankingReportResultAction"
-		class="org.hisp.dhis.reports.ranking.action.GenerateRankingReportResultAction"
-		scope="prototype">
-		
-		<property name="statementManager" ref="statementManager"/>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		
-	</bean>
-	
-	<!-- Yojana Reports -->
-	
-	<bean
-		id="org.hisp.dhis.reports.orgunitgroupsetreport.action.GenerateOrgunitGroupsetReportsFormAction"
-		class="org.hisp.dhis.reports.orgunitgroupsetreport.action.GenerateOrgunitGroupsetReportsFormAction"
-		scope="prototype">
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-		
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.orgunitgroupsetreport.action.GenerateOrgunitGroupsetReportsResultAction"
-		class="org.hisp.dhis.reports.orgunitgroupsetreport.action.GenerateOrgunitGroupsetReportsResultAction"
-		scope="prototype">
-		
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		<property name="statementManager" ref="statementManager"/>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-		
-	</bean>
-	
-	<!--Mobile Reports-->
-	
-	<bean
-		id="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction"
-		class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction"
-		scope="prototype">
-		
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserResultAction"
-		class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserResultAction"
-		scope="prototype">
-		
-		<property name="organisationunitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="statementManager" ref="statementManager"/>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.ReportService"/>
-		</property>
-		<property name="jdbcTemplate" ref="jdbcTemplate"/>
-		<property name="userService">
-			<ref bean="org.hisp.dhis.user.UserService"/>
-		</property>
-		
-		
-	</bean>
-	
-	<!-- Report Service -->
-	<bean id="org.hisp.dhis.reports.util.ReportService"
-		class="org.hisp.dhis.reports.util.ReportService" scope="prototype">
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="jdbcTemplate" ref="jdbcTemplate"/>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="dataValueService">
-			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-		</property>
-		<property name="dataElementCategoryService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="configurationService">
-			<ref bean="org.hisp.dhis.config.ConfigurationService"/>
-		</property>
-	</bean>
-	
-	<!-- User Population -->
-	
-	<bean id="org.hisp.dhis.reports.action.AddUserAction"
-		class="org.hisp.dhis.reports.action.AddUserAction" scope="prototype">
-		
-		<property name="userStore">
-			<ref bean="org.hisp.dhis.user.UserStore"/>
-		</property>
-		<property name="passwordManager">
-			<ref bean="org.hisp.dhis.security.PasswordManager"/>
-		</property>
-<!--		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>-->
+    <bean
+        id="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressAnalyserResultAction"
+        class="org.hisp.dhis.reports.periodwiseprogress.action.GeneratePeriodWiseProgressAnalyserResultAction"
+        scope="prototype">      
+        <property name="statementManager" ref="statementManager"/>      
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+    </bean>
+    
+    <!-- Orgunitwise Progress Reports -->
+    <bean
+        id="org.hisp.dhis.reports.ouwiseprogress.action.GenerateOuWiseProgressReportFormAction"
+        class="org.hisp.dhis.reports.ouwiseprogress.action.GenerateOuWiseProgressReportFormAction"
+        scope="prototype">
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.ouwiseprogress.action.GenerateOuWiseProgressReportResultAction"
+        class="org.hisp.dhis.reports.ouwiseprogress.action.GenerateOuWiseProgressReportResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+    
+    <!-- Meta Data Reports -->
+    <bean
+        id="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportAnalyserFormAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportResultAction"
+        class="org.hisp.dhis.reports.meta.action.GenerateMetaDataReportResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        <property name="organisationUnitgroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+        <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
+        <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+        <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    
+    <!-- Advanced Reports -->
+    
+    <bean
+        id="org.hisp.dhis.reports.advanced.action.GenerateAdvancedReportsFormAction"
+        class="org.hisp.dhis.reports.advanced.action.GenerateAdvancedReportsFormAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.advanced.action.GenerateAdvancedReportResultAction"
+        class="org.hisp.dhis.reports.advanced.action.GenerateAdvancedReportResultAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        
+    </bean>
+    
+    <!-- NLEP Reports -->
+    
+    <bean id="org.hisp.dhis.reports.leprosy.action.LeprosyReportFormAction"
+        class="org.hisp.dhis.reports.leprosy.action.LeprosyReportFormAction"
+        scope="prototype">
+        
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.leprosy.action.LeprosyReportResultAction"
+        class="org.hisp.dhis.reports.leprosy.action.LeprosyReportResultAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        
+    </bean>
+    
+    <!-- Malaria Reports -->
+    
+    <bean
+        id="org.hisp.dhis.reports.malarya.action.GenerateMalaryaReportFormAction"
+        class="org.hisp.dhis.reports.malarya.action.GenerateMalaryaReportFormAction"
+        scope="prototype">
+        
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.malarya.action.GenerateMalaryaReportResultAction"
+        class="org.hisp.dhis.reports.malarya.action.GenerateMalaryaReportResultAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        
+    </bean>
+    
+    <!-- Grading Reports -->
+    <bean
+        id="org.hisp.dhis.reports.grading.action.GenerateGradingReportFormAction"
+        class="org.hisp.dhis.reports.grading.action.GenerateGradingReportFormAction"
+        scope="prototype">
+        
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="organisationUnitGroupService">
+            <ref
+                bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.grading.action.GenerateGradingReportResultAction"
+        class="org.hisp.dhis.reports.grading.action.GenerateGradingReportResultAction"
+        scope="prototype">
+        
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="statementManager" ref="statementManager"/>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="organisationUnitGroupService">
+            <ref
+                bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="dataValueService">
+            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.grading.action.GenerateImmChildGradingReportAction"
+        class="org.hisp.dhis.reports.grading.action.GenerateImmChildGradingReportAction"
+        scope="prototype">
+        
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="statementManager" ref="statementManager"/>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="organisationUnitGroupService">
+            <ref
+                bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="dataValueService">
+            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.grading.action.GenerateSelChildGradingReportAction"
+        class="org.hisp.dhis.reports.grading.action.GenerateSelChildGradingReportAction"
+        scope="prototype">
+        
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="statementManager" ref="statementManager"/>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="organisationUnitGroupService">
+            <ref
+                bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="dataValueService">
+            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.grading.action.GradingAbstrationFormAction"
+        class="org.hisp.dhis.reports.grading.action.GradingAbstrationFormAction"
+        scope="prototype">
+        
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="organisationUnitGroupService">
+            <ref
+                bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.grading.action.GradingAbstractionResultAction"
+        class="org.hisp.dhis.reports.grading.action.GradingAbstractionResultAction"
+        scope="prototype">
+        
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="statementManager" ref="statementManager"/>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="organisationUnitGroupService">
+            <ref
+                bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="dataValueService">
+            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+    </bean>
+    
+    <!-- TwentyPoints Reports -->
+    
+    <bean
+        id="org.hisp.dhis.reports.TwentyPoint.action.GenerateTwentyPointReportsFromAction"
+        class="org.hisp.dhis.reports.TwentyPoint.action.GenerateTwentyPointReportsFromAction"
+        scope="prototype">
+        
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.TwentyPoint.action.GenerateTwentyPointReportsResultAction"
+        class="org.hisp.dhis.reports.TwentyPoint.action.GenerateTwentyPointReportsResultAction"
+        scope="prototype">
+        
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="dataValueService">
+            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        <property name="statementManager" ref="statementManager"/>
+        
+    </bean>
+    
+    <!-- Ranking Report -->
+    
+    <bean
+        id="org.hisp.dhis.reports.ranking.action.GenarateRankingReportFormAction"
+        class="org.hisp.dhis.reports.ranking.action.GenarateRankingReportFormAction"
+        scope="prototype">
+        
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.ranking.action.GenerateRankingReportResultAction"
+        class="org.hisp.dhis.reports.ranking.action.GenerateRankingReportResultAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataValueService">
+            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        
+    </bean>
+    
+    <!-- Yojana Reports -->
+    
+    <bean
+        id="org.hisp.dhis.reports.orgunitgroupsetreport.action.GenerateOrgunitGroupsetReportsFormAction"
+        class="org.hisp.dhis.reports.orgunitgroupsetreport.action.GenerateOrgunitGroupsetReportsFormAction"
+        scope="prototype">
+        
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        <property name="organisationUnitGroupService">
+            <ref
+                bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+        
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.orgunitgroupsetreport.action.GenerateOrgunitGroupsetReportsResultAction"
+        class="org.hisp.dhis.reports.orgunitgroupsetreport.action.GenerateOrgunitGroupsetReportsResultAction"
+        scope="prototype">
+        
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="dataValueService">
+            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        <property name="statementManager" ref="statementManager"/>
+        <property name="organisationUnitGroupService">
+            <ref
+                bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+        
+    </bean>
+    
+    <!--Mobile Reports-->
+    
+    <bean
+        id="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction"
+        class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction"
+        scope="prototype">
+        
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserResultAction"
+        class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserResultAction"
+        scope="prototype">
+        
+        <property name="organisationunitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="statementManager" ref="statementManager"/>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.ReportService"/>
+        </property>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="userService">
+            <ref bean="org.hisp.dhis.user.UserService"/>
+        </property>
+        
+        
+    </bean>
+    
+    <!-- Report Service -->
+    <bean id="org.hisp.dhis.reports.util.ReportService"
+        class="org.hisp.dhis.reports.util.ReportService" scope="prototype">
+        
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="dataValueService">
+            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+        </property>
+        <property name="dataElementCategoryService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="configurationService">
+            <ref bean="org.hisp.dhis.config.ConfigurationService"/>
+        </property>
+    </bean>
+    
+    <!-- User Population -->
+    
+    <bean id="org.hisp.dhis.reports.action.AddUserAction"
+        class="org.hisp.dhis.reports.action.AddUserAction" scope="prototype">
+        
+        <property name="userStore">
+            <ref bean="org.hisp.dhis.user.UserStore"/>
+        </property>
+        <property name="passwordManager">
+            <ref bean="org.hisp.dhis.security.PasswordManager"/>
+        </property>
+<!--        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>-->
         <property name="organisationUnitGroupService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
         </property>
-	</bean>
-	
-	<!-- AJAX Requests -->
-	
-	<bean id="org.hisp.dhis.reports.action.GetDataElementsAction"
-		class="org.hisp.dhis.reports.action.GetDataElementsAction"
-		scope="prototype">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.action.GetPeriodsAction"
-		class="org.hisp.dhis.reports.action.GetPeriodsAction" scope="prototype">
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-	</bean>
-	<bean id="org.hisp.dhis.reports.action.GetReportsAction"
-		class="org.hisp.dhis.reports.action.GetReportsAction" scope="prototype">
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
-		</property>
-	</bean>
-	<bean id="org.hisp.dhis.reports.action.GetProgressReportsAction"
-		class="org.hisp.dhis.reports.action.GetProgressReportsAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.action.GetOrgUnitGroupsAction"
-		class="org.hisp.dhis.reports.action.GetOrgUnitGroupsAction"
-		scope="prototype">
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.action.GetOrgUnitsAction"
-		class="org.hisp.dhis.reports.action.GetOrgUnitsAction" scope="prototype">
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.action.ExportToExcelAction"
-		class="org.hisp.dhis.reports.action.ExportToExcelAction"
-		scope="prototype">
-	</bean>
-	
+    </bean>
+    
+    <!-- Multiple User Population -->
+    
+    <bean id="org.hisp.dhis.reports.action.AddMultipleUserAction"
+        class="org.hisp.dhis.reports.action.AddMultipleUserAction" scope="prototype">
+        
+        <property name="userStore">
+            <ref bean="org.hisp.dhis.user.UserStore"/>
+        </property>
+        <property name="passwordManager">
+            <ref bean="org.hisp.dhis.security.PasswordManager"/>
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.ReportService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+    </bean>
+    
+    <!-- AJAX Requests -->
+    
+    <bean id="org.hisp.dhis.reports.action.GetDataElementsAction"
+        class="org.hisp.dhis.reports.action.GetDataElementsAction"
+        scope="prototype">
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.action.GetPeriodsAction"
+        class="org.hisp.dhis.reports.action.GetPeriodsAction" scope="prototype">
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+    </bean>
+    <bean id="org.hisp.dhis.reports.action.GetReportsAction"
+        class="org.hisp.dhis.reports.action.GetReportsAction" scope="prototype">
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService">
+        </property>
+    </bean>
+    <bean id="org.hisp.dhis.reports.action.GetProgressReportsAction"
+        class="org.hisp.dhis.reports.action.GetProgressReportsAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.action.GetOrgUnitGroupsAction"
+        class="org.hisp.dhis.reports.action.GetOrgUnitGroupsAction"
+        scope="prototype">
+        <property name="organisationUnitGroupService">
+            <ref
+                bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.action.GetOrgUnitsAction"
+        class="org.hisp.dhis.reports.action.GetOrgUnitsAction" scope="prototype">
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.action.ExportToExcelAction"
+        class="org.hisp.dhis.reports.action.ExportToExcelAction"
+        scope="prototype">
+    </bean>
+    
     <!--physical reports -->
     <bean id="org.hisp.dhis.reports.physical.action.PhysicalReportFormAction"
         class="org.hisp.dhis.reports.physical.action.PhysicalReportFormAction" scope="prototype">
@@ -1125,205 +1105,205 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             </property>
     </bean>
 
-<!-- NBITS Reports Section -->	
-	<!-- NBITS : Activity Plan Report -->
-	
-	<bean
-		id="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsFormAction"
-		class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsFormAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsResultAction"
-		class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsResultAction"
-		scope="prototype">
-		
-		<property name="statementManager" ref="statementManager"/>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="aggregationService">
-			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-		</property>
-		<property name="indicatorService">
-			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="programService">
-			<ref bean="org.hisp.dhis.program.ProgramService"/>
-		</property>
-		<property name="programInstanceService">
-			<ref bean="org.hisp.dhis.program.ProgramInstanceService"/>
-		</property>
-		<property name="patientDataValueService">
-			<ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
-		</property>
-		<property name="patientAttributeValueService">
-			<ref
-				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService"/>
-		</property>
-		<property name="patientService">
-			<ref bean="org.hisp.dhis.patient.PatientService"/>
-		</property>
-		<property name="patientIdentifierService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierService"/>
-		</property>
-		<property name="programStageInstanceService">
-			<ref bean="org.hisp.dhis.program.ProgramStageInstanceService"/>
-		</property>
-		<property name="programStageService">
-			<ref bean="org.hisp.dhis.program.ProgramStageService"/>
-		</property>
-		<property name="programStageDataElementService">
-			<ref bean="org.hisp.dhis.program.ProgramStageDataElementService"/>
-		</property>
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService"/>
-		</property>
-		<property name="relationshipService">
-			<ref bean="org.hisp.dhis.relationship.RelationshipService"/>
-		</property>
-		<property name="relationshipTypeService">
-			<ref bean="org.hisp.dhis.relationship.RelationshipTypeService"/>
-		</property>
-	</bean>
-	
-	<!-- NBITS : BenificiaryInfo Report -->
-	
-	<bean
-		id="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsFormAction"
-		class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsFormAction"
-		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsResultAction"
-		class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsResultAction"
-		scope="prototype">
-		
-		<property name="statementManager" ref="statementManager"/>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="programService">
-			<ref bean="org.hisp.dhis.program.ProgramService"/>
-		</property>
-		<property name="programInstanceService">
-			<ref bean="org.hisp.dhis.program.ProgramInstanceService"/>
-		</property>
-		<property name="patientAttributeValueService">
-			<ref
-				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService"/>
-		</property>
-		<property name="patientService">
-			<ref bean="org.hisp.dhis.patient.PatientService"/>
-		</property>
-		<property name="patientIdentifierService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierService"/>
-		</property>
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService"/>
-		</property>
-		<property name="relationshipTypeService">
-			<ref bean="org.hisp.dhis.relationship.RelationshipTypeService"/>
-		</property>
-	</bean>
-	
-	<!-- NBITS : Portal Reports -->
-	
-	<bean id="org.hisp.dhis.reports.portal.action.PortalReportsFormAction"
-		class="org.hisp.dhis.reports.portal.action.PortalReportsFormAction"
-		scope="prototype">
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.reports.portal.action.PortalReportsResultAction"
-		class="org.hisp.dhis.reports.portal.action.PortalReportsResultAction"
-		scope="prototype">
-		<property name="statementManager" ref="statementManager"/>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="programService">
-			<ref bean="org.hisp.dhis.program.ProgramService"/>
-		</property>
-		<property name="programInstanceService">
-			<ref bean="org.hisp.dhis.program.ProgramInstanceService"/>
-		</property>
-		<property name="patientDataValueService">
-			<ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
-		</property>
-		<property name="patientAttributeValueService">
-			<ref
-				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService"/>
-		</property>
-		<property name="patientService">
-			<ref bean="org.hisp.dhis.patient.PatientService"/>
-		</property>
-		<property name="patientIdentifierService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierService"/>
-		</property>
-		<property name="programStageInstanceService">
-			<ref bean="org.hisp.dhis.program.ProgramStageInstanceService"/>
-		</property>
-		<property name="programStageService">
-			<ref bean="org.hisp.dhis.program.ProgramStageService"/>
-		</property>
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService"/>
-		</property>
-		
-	</bean>
+<!-- NBITS Reports Section -->  
+    <!-- NBITS : Activity Plan Report -->
+    
+    <bean
+        id="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsFormAction"
+        class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsFormAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsResultAction"
+        class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsResultAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="programService">
+            <ref bean="org.hisp.dhis.program.ProgramService"/>
+        </property>
+        <property name="programInstanceService">
+            <ref bean="org.hisp.dhis.program.ProgramInstanceService"/>
+        </property>
+        <property name="patientDataValueService">
+            <ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+        </property>
+        <property name="patientAttributeValueService">
+            <ref
+                bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
+        </property>
+        <property name="patientAttributeService">
+            <ref bean="org.hisp.dhis.patient.PatientAttributeService"/>
+        </property>
+        <property name="patientService">
+            <ref bean="org.hisp.dhis.patient.PatientService"/>
+        </property>
+        <property name="patientIdentifierService">
+            <ref bean="org.hisp.dhis.patient.PatientIdentifierService"/>
+        </property>
+        <property name="programStageInstanceService">
+            <ref bean="org.hisp.dhis.program.ProgramStageInstanceService"/>
+        </property>
+        <property name="programStageService">
+            <ref bean="org.hisp.dhis.program.ProgramStageService"/>
+        </property>
+        <property name="programStageDataElementService">
+            <ref bean="org.hisp.dhis.program.ProgramStageDataElementService"/>
+        </property>
+        <property name="patientIdentifierTypeService">
+            <ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService"/>
+        </property>
+        <property name="relationshipService">
+            <ref bean="org.hisp.dhis.relationship.RelationshipService"/>
+        </property>
+        <property name="relationshipTypeService">
+            <ref bean="org.hisp.dhis.relationship.RelationshipTypeService"/>
+        </property>
+    </bean>
+    
+    <!-- NBITS : BenificiaryInfo Report -->
+    
+    <bean
+        id="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsFormAction"
+        class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsFormAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsResultAction"
+        class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsResultAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="programService">
+            <ref bean="org.hisp.dhis.program.ProgramService"/>
+        </property>
+        <property name="programInstanceService">
+            <ref bean="org.hisp.dhis.program.ProgramInstanceService"/>
+        </property>
+        <property name="patientAttributeValueService">
+            <ref
+                bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
+        </property>
+        <property name="patientAttributeService">
+            <ref bean="org.hisp.dhis.patient.PatientAttributeService"/>
+        </property>
+        <property name="patientService">
+            <ref bean="org.hisp.dhis.patient.PatientService"/>
+        </property>
+        <property name="patientIdentifierService">
+            <ref bean="org.hisp.dhis.patient.PatientIdentifierService"/>
+        </property>
+        <property name="patientIdentifierTypeService">
+            <ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService"/>
+        </property>
+        <property name="relationshipTypeService">
+            <ref bean="org.hisp.dhis.relationship.RelationshipTypeService"/>
+        </property>
+    </bean>
+    
+    <!-- NBITS : Portal Reports -->
+    
+    <bean id="org.hisp.dhis.reports.portal.action.PortalReportsFormAction"
+        class="org.hisp.dhis.reports.portal.action.PortalReportsFormAction"
+        scope="prototype">
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+    </bean>
+    
+    <bean id="org.hisp.dhis.reports.portal.action.PortalReportsResultAction"
+        class="org.hisp.dhis.reports.portal.action.PortalReportsResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager"/>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="dataElementCategoryOptionComboService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="programService">
+            <ref bean="org.hisp.dhis.program.ProgramService"/>
+        </property>
+        <property name="programInstanceService">
+            <ref bean="org.hisp.dhis.program.ProgramInstanceService"/>
+        </property>
+        <property name="patientDataValueService">
+            <ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+        </property>
+        <property name="patientAttributeValueService">
+            <ref
+                bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
+        </property>
+        <property name="patientAttributeService">
+            <ref bean="org.hisp.dhis.patient.PatientAttributeService"/>
+        </property>
+        <property name="patientService">
+            <ref bean="org.hisp.dhis.patient.PatientService"/>
+        </property>
+        <property name="patientIdentifierService">
+            <ref bean="org.hisp.dhis.patient.PatientIdentifierService"/>
+        </property>
+        <property name="programStageInstanceService">
+            <ref bean="org.hisp.dhis.program.ProgramStageInstanceService"/>
+        </property>
+        <property name="programStageService">
+            <ref bean="org.hisp.dhis.program.ProgramStageService"/>
+        </property>
+        <property name="patientIdentifierTypeService">
+            <ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService"/>
+        </property>
+        
+    </bean>
 
-	<!-- NBITS Reports -->
+    <!-- NBITS Reports -->
     <bean id="org.hisp.dhis.reports.nbits.action.NBITSReportFormAction"
         class="org.hisp.dhis.reports.nbits.action.NBITSReportFormAction"
         scope="prototype">
@@ -1336,16 +1316,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="reportService" ref="org.hisp.dhis.reports.util.ReportService" />
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-        <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
         <property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
         <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
-        <property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-        <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
         <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-        <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-        <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
-	
+    
 </beans>

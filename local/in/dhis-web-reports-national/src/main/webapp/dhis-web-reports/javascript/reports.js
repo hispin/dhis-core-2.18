@@ -275,7 +275,8 @@ function getReports( ouId, reportListFileName )
 function getReports( ouId, reportTypeName )
 { 
 	var periodTypeList = byId( "periodTypeId" );
-	if( periodTypeList == null || periodTypeList.options.length == 0){
+	if( periodTypeList == null || periodTypeList.options.length == 0)
+	{
 		return;
 	}
     var periodType = periodTypeList.options[ periodTypeList.selectedIndex ].value;
@@ -305,7 +306,7 @@ function getReports( ouId, reportTypeName )
 		},'xml');
     }
 }
-//23/08/2010 end
+
 
 function getReportsReceived( xmlObject )
 {	
