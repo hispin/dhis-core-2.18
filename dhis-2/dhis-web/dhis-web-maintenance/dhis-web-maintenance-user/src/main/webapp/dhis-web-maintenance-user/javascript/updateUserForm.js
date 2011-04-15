@@ -1,17 +1,23 @@
-jQuery( document ).ready( function()
+jQuery(document).ready(function()
 {
-	validation2( 'updateUserForm', function( form )
-	{
-		form.submit()
-	}, {
-		'beforeValidateHandler' : function()
-		{
-			listValidator( 'roleValidator', 'selectedList' );
-		},
-		'rules' : getValidationRules("user")
-	} );
+    var rules = getValidationRules("user");
+    rules["rawPassword"].required = false;
+    rules["retypePassword"].required = false;
 
-	jQuery("#cancel").click(function() {
-		referrerBack( "alluser.action" );
-	});		
-} );
+    validation2('updateUserForm', function( form )
+    {
+        form.submit()
+    },
+    {
+        'beforeValidateHandler' : function()
+        {
+            listValidator('roleValidator', 'selectedList');
+        },
+        'rules' : rules
+    });
+
+    jQuery("#cancel").click(function()
+    {
+        referrerBack("alluser.action");
+    });
+});

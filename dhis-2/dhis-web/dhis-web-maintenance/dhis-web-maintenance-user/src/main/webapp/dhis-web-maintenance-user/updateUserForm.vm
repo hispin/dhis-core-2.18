@@ -79,7 +79,7 @@
 	<tr>
         <td><label for="selectionTree">$i18n.getString( "organisation_unit" )</label></td>
 		<td colspan="3">
-			#organisationUnitSelectionTree( false, true, true )
+			#organisationUnitSelectionTree( false, true, false )
 		</td>
 	</tr>
 	<tr>
