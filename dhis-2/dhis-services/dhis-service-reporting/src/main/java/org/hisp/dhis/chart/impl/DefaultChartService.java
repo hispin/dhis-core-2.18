@@ -40,6 +40,7 @@ import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STR
 import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -83,9 +84,11 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.DatasetRenderingOrder;
+import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.MultiplePiePlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -414,25 +417,12 @@ public class DefaultChartService
     }
 
     /**
-     * Returns a line and shape renderer (for target lines).
-     */
-    private LineAndShapeRenderer getTargetLineRenderer()
-    {
-        LineAndShapeRenderer renderer = new LineAndShapeRenderer();
-        renderer.setBaseShapesVisible( false );
-        renderer.setBasePaint( Color.BLUE );
-
-        return renderer;
-    }
-
-    /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
     private JFreeChart getJFreeChart( Chart chart, boolean subTitle )
     {
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
-        final LineAndShapeRenderer targetLineRenderer = getTargetLineRenderer();
 
         // ---------------------------------------------------------------------
         // Plot
@@ -504,8 +494,11 @@ public class DefaultChartService
 
         if ( chart.isTargetLine() )
         {
-            plot.setDataset( 2, dataSets[2] );
-            plot.setRenderer( 2, targetLineRenderer );
+            Marker marker = new ValueMarker( chart.getTargetLineValue() );
+            marker.setPaint( Color.BLUE );
+            marker.setStroke( new BasicStroke( 1.0f ) );
+
+            plot.addRangeMarker( marker );
         }
 
         JFreeChart jFreeChart = new JFreeChart( chart.getTitle(), titleFont, plot, !chart.isHideLegend() );
@@ -617,15 +610,6 @@ public class DefaultChartService
                                     .getFormat().formatPeriod( period ) );
 
                             }
-                        }
-                    }
-
-                    if ( chart.isTargetLine() )
-                    {
-                        for ( Period period : chart.getAllPeriods() )
-                        {
-                            targetDataSet.addValue( chart.getTargetLineValue(), indicator.getShortName(), chart
-                                .getFormat().formatPeriod( period ) );
                         }
                     }
                 }
