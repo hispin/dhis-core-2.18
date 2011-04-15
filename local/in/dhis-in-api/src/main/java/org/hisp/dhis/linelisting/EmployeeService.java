@@ -54,5 +54,9 @@ public interface EmployeeService
     Collection<Employee> getAllEmployee();
     
     Collection<Employee> getEmployeeByisTransferred( Boolean isTransferred );
+    
+    int getEmployeeCount();
+    
+    Collection<Employee> getEmployeesBetween( int first, int max );
 }
 

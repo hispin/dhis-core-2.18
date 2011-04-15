@@ -52,7 +52,7 @@ public class ReportType
     
     public final static String RT_ADVANCED_REPORT = "Advanced Reports";      
     
-   // public final static String RT_ = "";
+    public final static String RT_BULK_REPORT = "Bulk Reports";
 
     public static List<String> getReportTypes()
     {
@@ -78,7 +78,8 @@ public class ReportType
         
         reportTypes.add( RT_ADVANCED_REPORT );
         
-          
+        reportTypes.add( RT_BULK_REPORT );
+        
         return reportTypes;
     }
 }

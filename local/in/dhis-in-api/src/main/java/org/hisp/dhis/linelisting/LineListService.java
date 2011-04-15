@@ -30,6 +30,8 @@ package org.hisp.dhis.linelisting;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.source.Source;
 
 public interface LineListService
@@ -274,4 +276,18 @@ public interface LineListService
 
     List<LineListDataElementMap> getLinelistDataelementMappings( LineListElement linelistElement, LineListOption linelistOption );
     
+    LineListDataElementMap getLinelistDataelementMapping( LineListElement linelistElement, LineListOption linelistOption, DataElement dataElement, DataElementCategoryOptionCombo deCOC );
+    
+    int getLineListGroupCount();
+    
+    Collection<LineListGroup> getLineListGroupsBetween( int first, int max );
+    
+    int getLineListElementCount();
+    
+    Collection<LineListElement> getLineListElementsBetween( int first, int max );
+
+    int getLineListOptionCount();
+    
+    Collection<LineListOption> getLineListOptionsBetween( int first, int max );
+
 }
