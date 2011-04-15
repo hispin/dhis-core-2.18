@@ -21,7 +21,9 @@
 	<tr>
 		<td></td>
 		<td>
+		#if( $report )
 			<input type="button" value="$i18n.getString( 'get_current_design' )" onclick="window.location.href='getReportDesign.action?id=${report.id}'">
+		#end
 		</td>
 	</tr>
 	<tr>
