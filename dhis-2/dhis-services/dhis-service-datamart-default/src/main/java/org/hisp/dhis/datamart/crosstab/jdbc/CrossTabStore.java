@@ -28,7 +28,6 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
  */
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
@@ -50,7 +49,7 @@ public interface CrossTabStore
      * 
      * @param operands the DataElementOperands.
      */
-    void createCrossTabTable( List<DataElementOperand> operands, String key );
+    void createCrossTabTable( Collection<DataElementOperand> operands, String key );
 
     /**
      * Drops the crosstab table.
@@ -66,7 +65,7 @@ public interface CrossTabStore
      * @return collection of CrossTabDataValues.
      */
     Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
-        Collection<Integer> sourceIds, List<String> keys );
+        Collection<Integer> sourceIds, String key );
 
     /**
      * Gets all CrossTabDataValues for the given collection of period ids and the source id.
@@ -77,5 +76,5 @@ public interface CrossTabStore
      * @return collection of CrossTabDataValues.
      */
     Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
-        int sourceId, List<String> keys );
+        int sourceId, String key );
 }
