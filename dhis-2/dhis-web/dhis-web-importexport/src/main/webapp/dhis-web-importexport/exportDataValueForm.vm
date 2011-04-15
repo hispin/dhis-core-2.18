@@ -1,7 +1,6 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		datePickerInRange( 'startDate' , 'endDate' );	
-		jQuery("#ui-datepicker-div").hide();
 
         selectionTreeSelection.setMultipleSelectionAllowed( true );
 		selectionTree.clearSelectedOrganisationUnits();

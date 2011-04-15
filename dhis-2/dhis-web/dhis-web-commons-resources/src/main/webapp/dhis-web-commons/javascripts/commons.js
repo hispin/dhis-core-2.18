@@ -979,6 +979,8 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
 			dates.not(this).datepicker("option", option, date);
 		}
 	});
+
+    $("#ui-datepicker-div").hide();
 }
 
 function getCurrentDate()
