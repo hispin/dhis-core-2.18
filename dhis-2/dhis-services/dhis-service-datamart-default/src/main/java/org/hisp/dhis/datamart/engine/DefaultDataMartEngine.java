@@ -29,7 +29,6 @@ package org.hisp.dhis.datamart.engine;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -259,14 +258,14 @@ public class DefaultDataMartEngine
         Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
         Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
 
-        List<String> keys = crossTabService.populateCrossTabTable( allOperands, intersectingPeriodIds, childrenIds );
+        String key = crossTabService.populateCrossTabTable( allOperands, intersectingPeriodIds, childrenIds );
         
-        if ( CollectionUtils.isEmpty( allOperands ) || CollectionUtils.isEmpty( keys ) )
+        if ( CollectionUtils.isEmpty( allOperands ) )
         {
             return 0;
         }
 
-        log.info( "Number of crosstab tables: " + keys.size() + ", " + TimeUtils.getHMS() );
+        log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
         // Drop potential indexes
@@ -299,23 +298,23 @@ public class DefaultDataMartEngine
 
         if ( nonCalculatedOperands.size() > 0 )
         {
-            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, sumIntAggregator, keys );
+            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, sumIntAggregator, key );
 
             log.info( "Exported values for data element operands with sum aggregation operator of type number: " + TimeUtils.getHMS() );
             
-            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, averageIntAggregator, keys );
+            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, averageIntAggregator, key );
 
             log.info( "Exported values for data element operands with average aggregation operator of type number: " + TimeUtils.getHMS() );
             
-            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, averageIntSingleValueAggregator, keys );
+            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, averageIntSingleValueAggregator, key );
 
             log.info( "Exported values for data element operands with average aggregation operator with single value of type number: " + TimeUtils.getHMS() );
             
-            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, sumBoolAggregator, keys );
+            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, sumBoolAggregator, key );
 
             log.info( "Exported values for data element operands with sum aggregation operator of type yes/no: " + TimeUtils.getHMS() );
             
-            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, averageBoolAggregator, keys );
+            count += dataElementDataMart.exportDataValues( nonCalculatedOperands, periods, organisationUnits, averageBoolAggregator, key );
 
             log.info( "Exported values for data element operands with average aggregation operator of type yes/no: " + TimeUtils.getHMS() );
         }
@@ -328,7 +327,7 @@ public class DefaultDataMartEngine
 
         if ( isIndicators )
         {
-            count += indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits, indicatorOperands, keys );
+            count += indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits, indicatorOperands, key );
 
             log.info( "Exported values for indicators (" + indicators.size() + "): " + TimeUtils.getHMS() );
         }
@@ -341,7 +340,7 @@ public class DefaultDataMartEngine
 
         if ( isCalculatedDataElements )
         {
-            count += calculatedDataElementDataMart.exportCalculatedDataElements( calculatedDataElements, periods, organisationUnits, calculatedOperands, keys );
+            count += calculatedDataElementDataMart.exportCalculatedDataElements( calculatedDataElements, periods, organisationUnits, calculatedOperands, key );
 
             log.info( "Exported values for calculated data elements (" + calculatedDataElements.size() + "): " + TimeUtils.getHMS() );
         }
@@ -350,12 +349,9 @@ public class DefaultDataMartEngine
         // Drop crosstab tables
         // ---------------------------------------------------------------------
 
-        for ( String key : keys )
-        {
-            crossTabService.dropCrossTabTable( key );
-        }
+        crossTabService.dropCrossTabTable( key );
         
-        log.info( "Dropped crosstab tables: " + TimeUtils.getHMS() );
+        log.info( "Dropped crosstab table: " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
         // Create potential indexes

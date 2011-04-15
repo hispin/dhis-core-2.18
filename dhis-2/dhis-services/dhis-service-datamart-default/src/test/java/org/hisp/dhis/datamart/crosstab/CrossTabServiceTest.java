@@ -35,7 +35,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -179,9 +178,9 @@ public class CrossTabServiceTest
     @Test
     public void testPopulateCrossTabValue()
     {
-        List<String> keys = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
+        String key = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
         
-        Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operands, periodIds, organisationUnitIds, keys );
+        Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operands, periodIds, organisationUnitIds, key );
         
         assertNotNull( values );
         

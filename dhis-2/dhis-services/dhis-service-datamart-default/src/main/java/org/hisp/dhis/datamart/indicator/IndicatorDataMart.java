@@ -28,7 +28,6 @@ package org.hisp.dhis.datamart.indicator;
  */
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
@@ -41,5 +40,5 @@ import org.hisp.dhis.period.Period;
 public interface IndicatorDataMart
 {
     int exportIndicatorValues( Collection<Indicator> indicators, Collection<Period> periods, 
-        Collection<OrganisationUnit> organisationUnits, Collection<DataElementOperand> operands, List<String> keys );
+        Collection<OrganisationUnit> organisationUnits, Collection<DataElementOperand> operands, String key );
 }
