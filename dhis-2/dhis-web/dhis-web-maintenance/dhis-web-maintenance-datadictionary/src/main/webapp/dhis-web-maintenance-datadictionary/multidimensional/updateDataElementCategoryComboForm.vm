@@ -3,7 +3,10 @@
 		validation2( 'editDataElementCategoryComboForm', function( form ) { 
 			validateSelectedCategories( form );
 		}, {
-			'beforeValidateHandler': function() { listValidator( 'selectedCategories', 'selectedList' ); },
+			'beforeValidateHandler': function() { 
+				jQuery("#selectedList option").each(function() { jQuery(this).attr("selected", "true"); });
+				listValidator( 'selectedCategories', 'selectedList' );
+			},
 			'rules': getValidationRules("dateElementCategoryCombo")
 		});
 
