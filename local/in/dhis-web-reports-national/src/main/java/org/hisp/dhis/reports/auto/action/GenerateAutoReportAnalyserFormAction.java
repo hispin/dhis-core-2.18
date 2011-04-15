@@ -26,16 +26,12 @@
  */
 package org.hisp.dhis.reports.auto.action;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reports.util.ReportService;
+import org.hisp.dhis.reports.ReportType;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -57,25 +53,6 @@ public class GenerateAutoReportAnalyserFormAction extends ActionSupport
         this.periodService = periodService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    public OrganisationUnitService getOrganisationUnitService()
-    {
-        return organisationUnitService;
-    }
-
-    private ReportService reportService;
-
-    public void setReportService( ReportService reportService )
-    {
-        this.reportService = reportService;
-    }
-    
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -87,31 +64,22 @@ public class GenerateAutoReportAnalyserFormAction extends ActionSupport
         return ALL;
     }
 
-    private String raFolderName;
-    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-
-    private Collection<OrganisationUnit> organisationUnits;
-
-    public Collection<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    private Collection<Period> periods = new ArrayList<Period>();
-
-    public Collection<Period> getPeriods()
-    {
-        return periods;
-    }
 
     private Collection<PeriodType> periodTypes;
 
     public Collection<PeriodType> getPeriodTypes()
     {
         return periodTypes;
+    }
+
+    private String reportTypeName;
+
+    public String getReportTypeName()
+    {
+        return reportTypeName;
     }
 
     // -------------------------------------------------------------------------
@@ -121,58 +89,26 @@ public class GenerateAutoReportAnalyserFormAction extends ActionSupport
     public String execute()
         throws Exception
     {
-        clearCache();
+        reportTypeName = ReportType.RT_BULK_REPORT;
         
-        raFolderName = reportService.getRAFolderName();
-            
-        /* Period Info */
         periodTypes = periodService.getAllPeriodTypes();
 
-        for ( PeriodType type : periodTypes )
+        // Filtering Periodtypes other than Monthly, Quarterly and Yearly
+        Iterator<PeriodType> periodTypeIterator = periodTypes.iterator();
+        while ( periodTypeIterator.hasNext() )
         {
-            periods.addAll( periodService.getPeriodsByPeriodType( type ) );
+            PeriodType type = periodTypeIterator.next();
+            if ( type.getName().equalsIgnoreCase( "Monthly" ) || type.getName().equalsIgnoreCase( "quarterly" )
+                || type.getName().equalsIgnoreCase( "yearly" ) )
+            {
+            }
+            else
+            {
+                periodTypeIterator.remove();
+            }
         }
 
         return SUCCESS;
     }
-
-    public void clearCache()
-    {
-        try
-        {
-            String cacheFolderPath = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName + File.separator + "output";
-            try
-            {
-                String newpath = System.getenv( "DHIS2_HOME" );
-                if ( newpath != null )
-                {
-                    cacheFolderPath = newpath + File.separator + raFolderName + File.separator + "output";
-                }
-            }
-            catch ( NullPointerException npe )
-            {
-                System.out.println("DHIS2 Home is not set");
-                // do nothing, but we might be using this somewhere without
-                // DHIS2_HOME set, which will throw a NPE
-            }
-            
-            File dir = new File( cacheFolderPath );
-            String[] files = dir.list();        
-            for ( String file : files )
-            {
-                file = cacheFolderPath + File.separator + file;
-                File tempFile = new File(file);
-                tempFile.delete();
-            }
-            System.out.println("Cache cleared successfully");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }        
-    }
     
-
 }
-
-

@@ -1,5 +1,7 @@
 package org.hisp.dhis.reports.feedback.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +9,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -45,6 +48,13 @@ import com.opensymphony.xwork2.Action;
 public class GenerateFeedbackReportAnalyserResultAction
     implements Action
 {
+    
+    private final String GENERATEAGGDATA = "generateaggdata";
+
+    private final String USEEXISTINGAGGDATA = "useexistingaggdata";
+
+    private final String USECAPTUREDDATA = "usecaptureddata";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -121,14 +131,14 @@ public class GenerateFeedbackReportAnalyserResultAction
     {
         this.availablePeriods = availablePeriods;
     }
-
+/*
     private String aggCB;
 
     public void setAggCB( String aggCB )
     {
         this.aggCB = aggCB;
     }
-
+*/
     private List<OrganisationUnit> orgUnitList;
 
     private Period selectedPeriod;
@@ -160,6 +170,13 @@ public class GenerateFeedbackReportAnalyserResultAction
     private String raFolderName;
 
     private List<OrganisationUnit> childOrgUnits;
+    
+    private String aggData;
+    
+    public void setAggData( String aggData )
+    {
+        this.aggData = aggData;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -855,25 +872,36 @@ public class GenerateFeedbackReportAnalyserResultAction
 
                     if( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                        if ( aggCB == null )
+                        if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
                             //tempStr = getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                             tempStr = reportService.getIndividualResultDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                         }
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             //tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                             tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                         }
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                        {
+                            List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
+                            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
+                        }
                     }
                     else if ( sType.equalsIgnoreCase( "indicator-parent" ) )
                     {
-                        if ( aggCB == null )
+                        if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
                             //tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
                             tempStr = reportService.getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
                         }
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+                        {
+                            //tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
+                            tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
+                        }
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
                         {
                             //tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
                             tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
@@ -886,27 +914,36 @@ public class GenerateFeedbackReportAnalyserResultAction
                     }
                     else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
                     {
-                        if ( aggCB == null )
+                        if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
                             //tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                             tempStr = reportService.getBooleanDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB);
                         }
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             //tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                            tempStr = reportService.getBooleanDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB);
+                        }
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                        {
                             tempStr = reportService.getBooleanDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB);
                         }
                     }
                     else
                     {
-                        if ( aggCB == null )
+                        if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
                             //tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                             tempStr = reportService.getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                         }
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
-                            //tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                            //tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
+                            tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                        }
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                        {
+                            //tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
                             tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                         }
                     }
@@ -1047,5 +1084,3 @@ public class GenerateFeedbackReportAnalyserResultAction
     }
 
 }
-
-

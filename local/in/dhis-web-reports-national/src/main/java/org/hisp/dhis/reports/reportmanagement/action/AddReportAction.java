@@ -1,5 +1,7 @@
 package org.hisp.dhis.reports.reportmanagement.action;
 
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportService;
@@ -26,6 +28,13 @@ public class AddReportAction
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -74,6 +83,13 @@ public class AddReportAction
         this.frequencySelect = frequencySelect;
     }
 
+    private Integer orgunitGroupId;
+    
+    public void setOrgunitGroupId( Integer orgunitGroupId )
+    {
+        this.orgunitGroupId = orgunitGroupId;
+    }
+    
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -81,9 +97,19 @@ public class AddReportAction
     public String execute()
         throws Exception
     {
-
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
+        
+        if( orgunitGroupId != null )
+        {
+            OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupId );
+            Report_in report = new Report_in( name, reportmodel, periodType, excelname, xmlname, reporttype, orgUnitGroup );
 
+            reportService.addReport( report );
+            
+            return SUCCESS;
+
+        }
+        
         Report_in report = new Report_in( name, reportmodel, periodType, excelname, xmlname, reporttype );
 
         reportService.addReport( report );

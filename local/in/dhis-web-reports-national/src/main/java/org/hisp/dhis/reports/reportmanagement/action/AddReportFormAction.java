@@ -3,6 +3,8 @@ package org.hisp.dhis.reports.reportmanagement.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportModel;
@@ -25,6 +27,13 @@ public class AddReportFormAction
         this.periodService = periodService;
     }
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -50,16 +59,24 @@ public class AddReportFormAction
         return reportModels;
     }
 
+    private List<OrganisationUnitGroup> orgUnitGroups;
+    
+    public List<OrganisationUnitGroup> getOrgUnitGroups()
+    {
+        return orgUnitGroups;
+    }
+   
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
+    public String execute() throws Exception
     {
 
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
-
+        
+        orgUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
+        
         reportTypes = ReportType.getReportTypes();
 
         reportModels = ReportModel.getReportModels();

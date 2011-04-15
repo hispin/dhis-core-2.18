@@ -1,5 +1,7 @@
 package org.hisp.dhis.reports.periodwiseprogress.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,10 +22,13 @@ import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
+import jxl.format.VerticalAlignment;
 import jxl.write.Blank;
+import jxl.write.Formula;
 import jxl.write.Label;
 import jxl.write.Number;
 import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
@@ -42,9 +48,17 @@ import com.opensymphony.xwork2.Action;
 public class GeneratePeriodWiseProgressAnalyserResultAction
     implements Action
 {
+
+    private final String GENERATEAGGDATA = "generateaggdata";
+
+    private final String USEEXISTINGAGGDATA = "useexistingaggdata";
+
+    private final String USECAPTUREDDATA = "usecaptureddata";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -118,17 +132,26 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
     {
         this.availablePeriods = availablePeriods;
     }
-
-    private String aggCB;
-
-    public void setAggCB( String aggCB )
+    
+    private int availablePeriodsto;
+    
+    public void setAvailablePeriodsto( int availablePeriodsto )
     {
-        this.aggCB = aggCB;
+        this.availablePeriodsto = availablePeriodsto;
+    }
+
+    private String aggData;
+    
+    public void setAggData( String aggData )
+    {
+        this.aggData = aggData;
     }
 
     private List<OrganisationUnit> orgUnitList;
 
     private Period selectedPeriod;
+    
+    private Period selectedEndPeriod;
 
     private SimpleDateFormat simpleDateFormat;
 
@@ -167,11 +190,19 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
     private int tempColNo;
 
     private int tempRowNo;
-
+    
+    private Integer tempMonthCount;
+    
     Map<String, String> months;
+
     Map<String, Integer> monthOrder;
+
     String[] monthArray;
     
+    private Date tempSDate;
+
+    private Date tempEDate;
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -189,9 +220,15 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         mapOfTotalValues = new HashMap<Integer, Double>();
         List<Integer> totalRowList = new ArrayList<Integer>();
         
+        //char colArray[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+       // String colArray[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ"};
+        String colArray[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+            "AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ",
+            "BA","BB","BC","BD","BE","BF","BG","BH","BI","BJ","BK","BL","BM","BN","BO","BP","BQ","BR","BS","BT","BU","BV","BW","BX","BY","BZ" };
+        
         startMonth = 0;
         endMonth = 0;
-
+        
         String deCodesXMLFileName = "";
 
         Report_in selReportObj = reportService.getReport( Integer.parseInt( reportList ) );
@@ -217,16 +254,47 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         init();
         
         selectedPeriod = periodService.getPeriod( availablePeriods );
+        selectedEndPeriod = periodService.getPeriod( availablePeriodsto );
 
         sDate = format.parseDate( String.valueOf( selectedPeriod.getStartDate() ) );
 
         eDate = format.parseDate( String.valueOf( selectedPeriod.getEndDate() ) );
 
-        simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-
+        //simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
+        
+        // for Month count
+        tempSDate = format.parseDate( String.valueOf( selectedPeriod.getStartDate() ) );
+        tempEDate = format.parseDate( String.valueOf( selectedEndPeriod.getStartDate() ) );
+        
         Calendar tempStartMonth = Calendar.getInstance();
         Calendar tempEndMonth = Calendar.getInstance();
         tempStartMonth.setTime( selectedPeriod.getStartDate() );
+        
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        
+        startDate.setTime( tempSDate );
+        endDate.setTime( tempEDate );
+        
+        int eYear = endDate.get( Calendar.YEAR );
+        int sYear = startDate.get( Calendar.YEAR );
+        int eMonth = endDate.get( Calendar.MONTH );
+        int sMonth = startDate.get( Calendar.MONTH );
+
+        tempMonthCount = ((eYear - sYear) * 12) - sMonth + eMonth + 1;
+        
+        // period count for use existing agg data
+        //Date tempStartD = format.parseDate( String.valueOf( selectedPeriod.getStartDate() ) );
+        //Date tempEndD = format.parseDate( String.valueOf( selectedEndPeriod.getEndDate() ) );
+        
+        //List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartD, tempEndD ) );
+        
+        //Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+        
+        
+        //System.out.println( "Temp Month Count : " + tempMonthCount );
+        // month Count End
+        /*
         if( tempStartMonth.get( Calendar.MONTH ) == Calendar.JANUARY || tempStartMonth.get( Calendar.MONTH ) == Calendar.FEBRUARY || tempStartMonth.get( Calendar.MONTH ) == Calendar.MARCH )
         {
             tempStartMonth.set( Calendar.MONTH, Calendar.APRIL );
@@ -236,7 +304,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         {
             tempStartMonth.set( Calendar.MONTH, Calendar.APRIL );
         }
-
+        */
         String startMonthName = "";
 
         String endMonthName = "";
@@ -244,8 +312,10 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         startMonth = Calendar.MONTH;
 
         startMonthName = monthFormat.format( tempStartMonth.getTime() );
-
-        tempEndMonth.setTime( selectedPeriod.getStartDate() );
+        
+       // tempEndMonth.setTime( selectedPeriod.getStartDate() );
+        
+        tempEndMonth.setTime( selectedEndPeriod.getStartDate() );
 
         endMonth = Calendar.MONTH;
 
@@ -267,12 +337,15 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         String currentMonth = "";
 
         OrganisationUnit currentOrgUnit = orgUnitList.get( 0 );
+        
+       // int currentMonthOrder = monthOrder.get( monthFormat.format( tempEndMonth.getTime() ) );
 
-        int currentMonthOrder = monthOrder.get( monthFormat.format( tempEndMonth.getTime() ) );
-
-        while ( monthCount < currentMonthOrder )
+       // while ( monthCount < currentMonthOrder )
+        while ( monthCount < tempMonthCount )    
         {
-            currentMonth = monthArray[monthCount];
+            //currentMonth = monthArray[monthCount];
+            currentMonth = monthFormat.format( tempStartMonth.getTime() );
+            String tempCurrentMonth = simpleDateFormat.format( tempStartMonth.getTime() );
             int count1 = 0;
 
             Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
@@ -289,11 +362,11 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
                 tempColNo = reportDesign.getColno();
                 sheetNo = reportDesign.getSheetno();
                 totalRowList.add( count1, tempRowNo );
-
+                
                 Calendar tempStart = Calendar.getInstance();
                 Calendar tempEnd = Calendar.getInstance();
 
-                months.get( currentMonth );
+                //months.get( currentMonth );
 
                 String tempS = "01-" + months.get( currentMonth ) + "-" + tempStartMonth.get( Calendar.YEAR );
                 String tempE = String.valueOf( tempStartMonth.getActualMaximum( Calendar.DAY_OF_MONTH ) ) + "-" + months.get( currentMonth ) + "-" + tempStartMonth.get( Calendar.YEAR );
@@ -311,20 +384,22 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
                 tempDate = (Date) tempMonthFormat.parse( tempE );
 
                 tempEnd.setTime( tempDate );
-
+               
                 Calendar tempStartDate = Calendar.getInstance();
                 Calendar tempEndDate = Calendar.getInstance();
+                
                 List<Calendar> calendarList = new ArrayList<Calendar>( reportService.getStartingEndingPeriods( deType, tempStart.getTime(), tempEnd.getTime() ) );
                 if ( calendarList == null || calendarList.isEmpty() )
                 {
-                    tempStr = currentMonth;
+                    //tempStr = currentMonth;
+                    tempStr = tempCurrentMonth;
                 } 
                 else
                 {
                     tempStartDate = calendarList.get( 0 );
                     tempEndDate = calendarList.get( 1 );
                 }
-
+                 
                 if( deCodeString.equalsIgnoreCase( "FACILITY" ) )
                 {
                     tempStr = currentOrgUnit.getName();
@@ -335,7 +410,8 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
                 } 
                 else if ( deCodeString.equalsIgnoreCase( "MONTH-RANGE" ) )
                 {
-                    tempStr = startMonthName + " - " + endMonthName;
+                    //tempStr = startMonthName + " - " + endMonthName;
+                    tempStr = startMonthName + "-" + yearFormat.format( tempSDate )+ " - " + endMonthName + "-" + yearFormat.format( tempEDate );
                 } 
                 else if ( deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
                 {
@@ -390,16 +466,18 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
                     Period p = new Period();
     
                     p = periodService.getPeriod( tempStartDate.getTime(), tempEndDate.getTime(), periodService.getPeriodTypeByName( "Monthly" ) );
-    
+                    
                     startRowNumber = tempRowNo;
     
                     if( p == null )
                     {
-                        tempStr = currentMonth;
+                        //tempStr = currentMonth;
+                        tempStr = tempCurrentMonth;
                     } 
                     else
                     {
-                        tempStr = monthFormat.format( p.getStartDate() );
+                        //tempStr = monthFormat.format( p.getStartDate() );
+                        tempStr = simpleDateFormat.format( p.getStartDate() );
                     }
                 } 
                 else if( deCodeString.equalsIgnoreCase( "NA" ) )
@@ -412,28 +490,37 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
                     
                     if( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                        if( aggCB == null )
+                        if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) ) 
                         {
                             tempStr = reportService.getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                         } 
-                        else
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                         }
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                        {
+                            List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
+                            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
+                        }
                         
                         double totalRowValue = 0.0;
-    
+                        
                         if( mapOfTotalValues.get( tempRowNo ) != null )
                         {
                             totalRowValue = mapOfTotalValues.get( tempRowNo );
-    
-                            try
+                            
+                            if ( !( tempStr.equalsIgnoreCase( " " ) || tempStr.equalsIgnoreCase( "" ) ) )
                             {
-                                totalRowValue += Double.parseDouble( tempStr );
-                            }
-                            catch( Exception e )
-                            {
+                                try
+                                {
+                                    totalRowValue += Double.parseDouble( tempStr );
+                                }
+                                catch( Exception e )
+                                {
                                 
+                                }
                             }
                             
                             /*
@@ -445,18 +532,23 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
     
                             mapOfTotalValues.put( tempRowNo, totalRowValue );
                         } 
-                        else if( !( tempStr.equalsIgnoreCase( " " ) || tempStr.equalsIgnoreCase( "" ) ) )
+                        else
                         {
-                            try
+                            if( !( tempStr.equalsIgnoreCase( " " ) || tempStr.equalsIgnoreCase( "" ) ) )
                             {
-                                totalRowValue += Double.parseDouble( tempStr );
-                            }
-                            catch( Exception e )
-                            {
+                                try
+                                {
+                                    totalRowValue += Double.parseDouble( tempStr );
+                                }
+                                catch( Exception e )
+                                {
                                 
+                                }
                             }
+                        
+                            //System.out.println("totalRowValue = "+totalRowValue);
+                            mapOfTotalValues.put( tempRowNo, totalRowValue );
                         }
-                        mapOfTotalValues.put( tempRowNo, totalRowValue );
                     } 
                                         
                 }
@@ -493,6 +585,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
                         WritableCellFormat wCellformat = new WritableCellFormat();
                         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
                         wCellformat.setAlignment( Alignment.CENTRE );
+                        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
                         wCellformat.setWrap( true );
 
                         try
@@ -523,82 +616,60 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
             }
 
             monthCount++;
-
+            
         }// outer while loop end
 
         // ---------------------------------------------------------------------
         // Writing Total Values
         // ---------------------------------------------------------------------
-        totalColumnNumber = tempColNo + 1;
-        String valueToPrint = " ";
-
-        Iterator<Integer> totalRowListIterator = totalRowList.iterator();
-        while( totalRowListIterator.hasNext() )
+        
+        Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
+        while (  reportDesignIterator.hasNext() )
         {
-            Integer i = (Integer) totalRowListIterator.next();
-            if( i < startRowNumber )
+            Report_inDesign reportDesign =  reportDesignIterator.next();
+            
+            String deCodeString = reportDesign.getExpression();
+
+            if( deCodeString.equalsIgnoreCase( "FACILITY" ) || 
+                deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" ) ||
+                deCodeString.equalsIgnoreCase( "MONTH-RANGE" ) ||
+                deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) ) 
             {
-                totalRowListIterator.remove();
-            }
-        }
-
-        Iterator<Integer> rowIterator = totalRowList.iterator();
-        while( rowIterator.hasNext() )
-        {
-            Integer currentRow = (Integer) rowIterator.next();
-            double value = 0;
-
-            if( mapOfTotalValues.containsKey( currentRow ) )
-            {
-                value = mapOfTotalValues.get( currentRow );
-                valueToPrint = String.valueOf( value );
-            }
-
-            if( value == 0 )
-            {
-                valueToPrint = " ";
-            }
-
+                continue;
+            } 
+            
+            tempRowNo = reportDesign.getRowno();
+            tempColNo = reportDesign.getColno();
+            sheetNo = reportDesign.getSheetno();
+            
+            String colStart = ""+ colArray[tempColNo];
+            String colEnd = ""+ colArray[tempColNo+monthCount-1];
+            
+            String tempFormula = "SUM("+colStart+(tempRowNo+1)+":"+colEnd+(tempRowNo+1)+")";
+            
             WritableSheet totalSheet = outputReportWorkbook.getSheet( sheetNo );
-            WritableCellFormat totalCellformat = new WritableCellFormat();
-
+            WritableFont arialBold = new WritableFont( WritableFont.ARIAL, 10, WritableFont.BOLD );
+            WritableCellFormat totalCellformat = new WritableCellFormat( arialBold );
             totalCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
             totalCellformat.setAlignment( Alignment.CENTRE );
+            totalCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
             totalCellformat.setWrap( true );
-            
-            try
+
+            if( deCodeString.equalsIgnoreCase( "PROGRESSIVE-PERIOD" ) )
             {
-                if( valueToPrint.trim().equals("") )
-                {
-                    totalSheet.addCell( new Label( totalColumnNumber, currentRow.intValue(), valueToPrint, totalCellformat ) );
-                }
-                else
-                {
-                    totalSheet.addCell( new Number( totalColumnNumber, currentRow.intValue(), Integer.parseInt(valueToPrint), totalCellformat ) );
-                }
-            } 
-            catch( Exception e )
-            {
-                System.out.println( "Cannot write to Excel" );
+                totalSheet.addCell( new Label( tempColNo+monthCount, tempRowNo, "Total", totalCellformat ) );
             }
-
-            WritableSheet totalCellSheet = outputReportWorkbook.getSheet( sheetNo );
-            WritableCellFormat totalCellformat1 = new WritableCellFormat();
-
-            totalCellformat1.setBorder( Border.ALL, BorderLineStyle.THIN );
-            totalCellformat1.setAlignment( Alignment.CENTRE );
-            totalCellformat1.setWrap( true );
-
-            try
+            else if( deCodeString.equalsIgnoreCase( "NA" ) )
             {
-                totalCellSheet.addCell( new Label( totalColumnNumber, startRowNumber, "Total", totalCellformat1 ) );
-            } 
-            catch( Exception e )
+                totalSheet.addCell( new Label( tempColNo+monthCount, tempRowNo, " ", totalCellformat ) );
+            }
+            else
             {
-                System.out.println( "Cannot write to Excel" );
+                totalSheet.addCell( new Formula( tempColNo+monthCount, tempRowNo, tempFormula, totalCellformat ) );    
             }
         }
-
+        
+        
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
@@ -657,6 +728,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         monthArray[9] = "January";
         monthArray[10] = "February";
         monthArray[11] = "March";
+        
     }
 }
 

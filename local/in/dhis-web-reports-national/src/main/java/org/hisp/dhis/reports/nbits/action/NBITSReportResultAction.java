@@ -14,7 +14,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import jxl.Workbook;
+import jxl.format.Alignment;
+import jxl.format.Border;
+import jxl.format.BorderLineStyle;
+import jxl.format.Colour;
+import jxl.format.VerticalAlignment;
 import jxl.write.Label;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
@@ -27,26 +34,16 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
 import org.hisp.dhis.patient.comparator.PatientIdentifierTypeComparator;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.comparator.ProgramStageNameComparator;
+import org.hisp.dhis.program.comparator.ProgramStageOrderComparator;
 import org.hisp.dhis.reports.util.ReportService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -87,13 +84,6 @@ public class NBITSReportResultAction implements Action
         this.patientService = patientService;
     }
 
-    private PatientIdentifierService patientIdentifierService;
-    
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
-    }
-
     private PatientIdentifierTypeService patientIdentifierTypeService;
     
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
@@ -108,39 +98,11 @@ public class NBITSReportResultAction implements Action
         this.patientAttributeService = patientAttributeService;
     }
 
-    private PatientAttributeValueService patientAttributeValueService;
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
-
-    private PatientDataValueService patientDataValueService;
-
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
-    {
-        this.patientDataValueService = patientDataValueService;
-    }
-
     private ProgramService programService;
     
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
-    }
-
-    private ProgramStageInstanceService programStageInstanceService;
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
     }
 
     private JdbcTemplate jdbcTemplate;
@@ -216,10 +178,13 @@ public class NBITSReportResultAction implements Action
     public String execute() throws Exception 
     {
         statementManager.initialise();
-        
-        
+
         Program selProgram = programService.getProgram( programList );
         
+        OrganisationUnit selOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
+
+        System.out.println("NBITS Report_" + selOrgUnit.getName() + "_" + selProgram.getName() + "_StartTime: " + new Date() );
+
         List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( ouIDTB )  );
 
         List<OrganisationUnit> programOrgUnits = new ArrayList<OrganisationUnit>( selProgram.getOrganisationUnits() );
@@ -230,11 +195,9 @@ public class NBITSReportResultAction implements Action
         
         Date eDate = format.parseDate( endDate );
 
-        System.out.println("NBITS Report_" + orgUnitList.get( 0 ) + "_" + selProgram.getName() + "_StartTime: " + new Date() );
-        
         generateReport( selProgram, orgUnitList, sDate, eDate );
 
-        System.out.println("NBITS Report_" + orgUnitList.get( 0 ) + "_" + selProgram.getName() + "_EndTime: " + new Date() );
+        System.out.println("NBITS Report_" + selOrgUnit.getName() + "_" + selProgram.getName() + "_EndTime: " + new Date() );
 
         statementManager.destroy();
         
@@ -264,7 +227,7 @@ public class NBITSReportResultAction implements Action
             Collections.sort( patientAttributes, new PatientAttributeComparator() );
             
             List<ProgramStage> programStages = new ArrayList<ProgramStage>( selProgram.getProgramStages() );
-            Collections.sort( programStages, new ProgramStageNameComparator() );
+            Collections.sort( programStages, new ProgramStageOrderComparator() );
             
             Map<ProgramStage, List<DataElement>> programStageDataElementMap = new HashMap<ProgramStage, List<DataElement>>();
             for( ProgramStage programStage : programStages )
@@ -282,67 +245,102 @@ public class NBITSReportResultAction implements Action
             }
             
             // Printing Header Information
-            sheet0.addCell( new Label( colCount, rowCount, "OrgUnit" ) );
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "OrgUnit Hierarchy", getCellFormat1() ) );
+            colCount++;
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "OrgUnit", getCellFormat1() ) );
             colCount++;
             for( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
             {
-                sheet0.addCell( new Label( colCount, rowCount, patientIdentifierType.getName() ) );
+                sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+                sheet0.addCell( new Label( colCount, rowCount-1, patientIdentifierType.getName(), getCellFormat1() ) );
                 colCount++;
             }
-            sheet0.addCell( new Label( colCount, rowCount, "Benificiary Name" ) );
+            
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "Benificiary Name", getCellFormat1() ) );
             colCount++;
-            sheet0.addCell( new Label( colCount, rowCount, "Gender" ) );
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "Gender", getCellFormat1() ) );
             colCount++;
-            sheet0.addCell( new Label( colCount, rowCount, "Age" ) );
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "Age", getCellFormat1() ) );
             colCount++;
-            sheet0.addCell( new Label( colCount, rowCount, "Data of Birth" ) );
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "Data of Birth", getCellFormat1() ) );
             colCount++;
-            sheet0.addCell( new Label( colCount, rowCount, "Blood Group" ) );
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "Blood Group", getCellFormat1() ) );
             colCount++;
+            
             for( PatientAttribute patientAttribute : patientAttributes )
             {
-                sheet0.addCell( new Label( colCount, rowCount, patientAttribute.getName() ) );
+                sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+                sheet0.addCell( new Label( colCount, rowCount-1, patientAttribute.getName(), getCellFormat1() ) );
                 colCount++;
             }
-            sheet0.addCell( new Label( colCount, rowCount, "Incident Date" ) );
+            
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "Incident Date", getCellFormat1() ) );
             colCount++;
-            sheet0.addCell( new Label( colCount, rowCount, "Enrollment Date" ) );
+            
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "Enrollment Date", getCellFormat1() ) );
             colCount++;
             for( ProgramStage programStage : programStages )
             {
-                for( DataElement dataElement : programStageDataElementMap.get( programStage ) )
+                List<DataElement> dataElementList = new ArrayList<DataElement>( programStageDataElementMap.get( programStage ) );
+                sheet0.mergeCells( colCount, rowCount-1, colCount+dataElementList.size()+1, rowCount-1 );
+                sheet0.addCell( new Label( colCount, rowCount-1, programStage.getName(), getCellFormat1() ) );
+                
+                sheet0.addCell( new Label( colCount, rowCount, "Due Date", getCellFormat1() ) );
+                colCount++;
+                sheet0.addCell( new Label( colCount, rowCount, "Execution Date", getCellFormat1() ) );
+                colCount++;
+
+                for( DataElement dataElement : dataElementList )
                 {
-                    sheet0.addCell( new Label( colCount, rowCount, dataElement.getName() ) );
+                    sheet0.addCell( new Label( colCount, rowCount, dataElement.getName(), getCellFormat1() ) );
                     colCount++;
                 }
-                sheet0.addCell( new Label( colCount, rowCount, "Due Date" ) );
-                colCount++;
-                sheet0.addCell( new Label( colCount, rowCount, "Execution Date" ) );
-                colCount++;
             }
             rowCount++;
             
             for( OrganisationUnit orgUnit : orgUnitList )
             {
                 query = "SELECT patient.patientid, programinstance.programinstanceid,programinstance.dateofincident,programinstance.enrollmentdate FROM programinstance INNER JOIN patient " +
-                		" ON programinstance.patientid = patient.patientid " +
-                		" WHERE patient.organisationunitid = "+ orgUnit.getId() +
-                		" AND programinstance.programid = "+ selProgram.getId() +
-                		" AND enddate IS NULL";
+                                " ON programinstance.patientid = patient.patientid " +
+                                " WHERE patient.organisationunitid = "+ orgUnit.getId() +
+                                " AND programinstance.programid = "+ selProgram.getId() +
+                                " AND enddate IS NULL";
 
                 SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
                 if ( sqlResultSet != null )
                 {
+                    int count = 1;
+                    String orgUnitBranch = "";
                     sqlResultSet.beforeFirst();
                     while ( sqlResultSet.next() )
                     {
                         colCount = colStart;
-                        sheet0.addCell( new Label( colCount, rowCount, orgUnit.getName() ) );
+
+                        if( orgUnit.getParent() != null )
+                        {
+                            orgUnitBranch = getOrgunitBranch( orgUnit.getParent() );
+                        }
+                        else
+                        {
+                            orgUnitBranch = " ";
+                        }
+                        
+                        sheet0.addCell( new Label( colCount, rowCount, orgUnitBranch, getCellFormat2() ) );
+                        colCount++;
+                        sheet0.addCell( new Label( colCount, rowCount, orgUnit.getName(), getCellFormat2() ) );
                         colCount++;
 
                         int patientId = sqlResultSet.getInt( 1 );
                         int programInstanceId = sqlResultSet.getInt( 2 );
-                        ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
                         Date dateOfIncident = sqlResultSet.getDate( 3 );
                         Date dateOfEnrollment = sqlResultSet.getDate( 4 );
                         
@@ -351,98 +349,155 @@ public class NBITSReportResultAction implements Action
                         //Patient Identifier Details
                         for( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
                         {
-                            PatientIdentifier patientIdentifier = patientIdentifierService.getPatientIdentifier( patientIdentifierType, patient );
-                            if( patientIdentifier != null && patientIdentifier.getIdentifier() != null )
+                            query = "SELECT identifier from patientidentifier WHERE patientidentifiertypeid = " + patientIdentifierType.getId() + 
+                                            " AND patientid = " + patient.getId();
+        
+                            SqlRowSet sqlResultSet1 = jdbcTemplate.queryForRowSet( query );
+                            if ( sqlResultSet1 != null && sqlResultSet1.next() )
                             {
-                                sheet0.addCell( new Label( colCount, rowCount, patientIdentifier.getIdentifier() ) );
+                                String value = sqlResultSet1.getString( 1 );
+                                if( value != null && !value.trim().equalsIgnoreCase("") )
+                                {
+                                    sheet0.addCell( new Label( colCount, rowCount, value, getCellFormat2() ) );
+                                }
+                                else
+                                {
+                                    sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat2() ) );
+                                }
                             }
                             else
                             {
-                                sheet0.addCell( new Label( colCount, rowCount, "-" ) );
+                                sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat2() ) );
                             }
+                            
                             colCount++;
                         }
                         
                         //Patient Properties
-                        sheet0.addCell( new Label( colCount, rowCount, patient.getFullName() ) );
+                        sheet0.addCell( new Label( colCount, rowCount, patient.getFullName(), getCellFormat2() ) );
                         colCount++;
-                        sheet0.addCell( new Label( colCount, rowCount, patient.getTextGender() ) );
+                        sheet0.addCell( new Label( colCount, rowCount, patient.getTextGender(), getCellFormat2() ) );
                         colCount++;
-                        sheet0.addCell( new Label( colCount, rowCount, patient.getAge() ) );
+                        sheet0.addCell( new Label( colCount, rowCount, patient.getAge(), getCellFormat2() ) );
                         colCount++;
-                        sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( patient.getBirthDate() ) ) );
+                        sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( patient.getBirthDate() ), getCellFormat2() ) );
                         colCount++;
-                        sheet0.addCell( new Label( colCount, rowCount, patient.getBloodGroup() ) );
+                        sheet0.addCell( new Label( colCount, rowCount, patient.getBloodGroup(), getCellFormat2() ) );
                         colCount++;
 
                         //Patient Attribute Values
                         for( PatientAttribute patientAttribute : patientAttributes )
                         {
-                            PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
-                            if( patientAttributeValue != null && patientAttributeValue.getValue() != null )
+                            query = "SELECT value from patientattributevalue WHERE patientid = " + patient.getId() + 
+                                            " AND patientattributeid = " + patientAttribute.getId();
+                            
+                            SqlRowSet sqlResultSet1 = jdbcTemplate.queryForRowSet( query );
+                            if ( sqlResultSet1 != null && sqlResultSet1.next() )
                             {
-                                sheet0.addCell( new Label( colCount, rowCount, patientAttributeValue.getValue() ) );
+                                String value = sqlResultSet1.getString( 1 );
+                                if( value != null && !value.trim().equalsIgnoreCase("") )
+                                {
+                                    sheet0.addCell( new Label( colCount, rowCount, value, getCellFormat2() ) );
+                                }
+                                else
+                                {
+                                    sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat2() ) );
+                                }
                             }
                             else
                             {
-                                sheet0.addCell( new Label( colCount, rowCount, "-" ) );
+                                sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat2() ) );
                             }
+                
                             colCount++;
                         }
                         
                         //Program Enrollment Details
-                        sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( dateOfIncident ) ) );
+                        sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( dateOfIncident ), getCellFormat2() ) );
                         colCount++;
-                        sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( dateOfEnrollment ) ) );
+                        sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( dateOfEnrollment ), getCellFormat2() ) );
                         colCount++;
-                        
                         
                         //ProgramStage Values
                         for( ProgramStage programStage : programStages )
                         {
-                            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
-
-                            for( DataElement dataElement : programStageDataElementMap.get( programStage ) )
+                            query = "SELECT programstageinstanceid,duedate,executiondate from programstageinstance " +
+                                        " WHERE programinstanceid = " + programInstanceId + 
+                                        " AND programstageid = " + programStage.getId();
+                    
+                            SqlRowSet sqlResultSet2 = jdbcTemplate.queryForRowSet( query );
+                            Integer programStageInstanceId = 0;
+                            if ( sqlResultSet2 != null && sqlResultSet2.next() )
                             {
-                                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, dataElement, orgUnit );
+                                programStageInstanceId = sqlResultSet2.getInt( 1 );
                                 
-                                if( patientDataValue != null && patientDataValue.getValue() != null )
+                                //ProgramStage DueDate and Execution Date
+                                Date dueDate = sqlResultSet2.getDate( 2 );
+                                Date exeDate = sqlResultSet2.getDate( 3 );
+                                
+                                if( dueDate != null )
                                 {
-                                    sheet0.addCell( new Label( colCount, rowCount, patientDataValue.getValue() ) );    
+                                    String dueDateStr = simpleDateFormat.format( dueDate );
+                                    sheet0.addCell( new Label( colCount, rowCount, dueDateStr, getCellFormat3() ) );
                                 }
                                 else
                                 {
-                                    sheet0.addCell( new Label( colCount, rowCount, "-" ) );
+                                    sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat3() ) );
                                 }
                                 colCount++;
-                            }
-                            if( programStageInstance.getDueDate() != null )
-                            {
-                                sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( programStageInstance.getDueDate() ) ) );
-                            }
-                            else
-                            {
-                                sheet0.addCell( new Label( colCount, rowCount, " " ) );
-                            }
-                            colCount++;
-                            
-                            if( programStageInstance.getExecutionDate() != null )
-                            {
-                                sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( programStageInstance.getExecutionDate() ) ) );
+                                
+                                if( exeDate != null )
+                                {
+                                    String exeDateStr = simpleDateFormat.format( exeDate );
+                                    sheet0.addCell( new Label( colCount, rowCount, exeDateStr, getCellFormat3() ) );
+                                }
+                                else
+                                {
+                                    sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat3() ) );
+                                }
+                                
+                                colCount++;
                             }
                             else
                             {
-                                sheet0.addCell( new Label( colCount, rowCount, " " ) );
+                                sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat3() ) );
+                                colCount++;
+                                sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat3() ) );
+                                colCount++;
                             }
-                            colCount++;
+
+                            for( DataElement dataElement : programStageDataElementMap.get( programStage ) )
+                            {
+                                query = "SELECT value from patientdatavalue WHERE programstageinstanceid = " + programStageInstanceId + 
+                                                " AND dataelementid = " + dataElement.getId() + 
+                                                " AND organisationunitid = " + orgUnit.getId(); 
+
+                                SqlRowSet sqlResultSet3 = jdbcTemplate.queryForRowSet( query );
+                                if ( sqlResultSet3 != null && sqlResultSet3.next() )
+                                {
+                                    String value = sqlResultSet3.getString( 1 );
+                                    if( value != null && !value.trim().equalsIgnoreCase("") )
+                                    {
+                                        sheet0.addCell( new Label( colCount, rowCount, value, getCellFormat2() ) );
+                                    }
+                                    else
+                                    {
+                                        sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat2() ) );
+                                    }
+                                }
+                                else
+                                {
+                                    sheet0.addCell( new Label( colCount, rowCount, "-", getCellFormat2() ) );
+                                }
+                                
+                                colCount++;
+                            }
                         }
                         
                         rowCount++;
                     }
                 }
-
             }
-
         }
         catch( Exception e )
         {
@@ -458,4 +513,60 @@ public class NBITSReportResultAction implements Action
         outputReportFile.deleteOnExit();
 
     }
+    
+    
+    public WritableCellFormat getCellFormat1() throws Exception
+    {
+        WritableFont arialBold = new WritableFont( WritableFont.ARIAL, 10, WritableFont.BOLD );
+        WritableCellFormat wCellformat = new WritableCellFormat( arialBold );                        
+        
+        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        wCellformat.setAlignment( Alignment.CENTRE );
+        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+        wCellformat.setBackground( Colour.GRAY_50 );
+        wCellformat.setWrap( true );
+
+        return wCellformat;
+    }
+
+    public WritableCellFormat getCellFormat2() throws Exception
+    {
+        WritableFont arialBold = new WritableFont( WritableFont.ARIAL, 10, WritableFont.NO_BOLD );
+        WritableCellFormat wCellformat = new WritableCellFormat( arialBold );                        
+        
+        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        wCellformat.setAlignment( Alignment.CENTRE );
+        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+
+        return wCellformat;
+    }
+
+    public WritableCellFormat getCellFormat3() throws Exception
+    {
+        WritableFont arialBold = new WritableFont( WritableFont.ARIAL, 10, WritableFont.NO_BOLD );
+        WritableCellFormat wCellformat = new WritableCellFormat( arialBold );                        
+        
+        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        wCellformat.setAlignment( Alignment.CENTRE );
+        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+        wCellformat.setBackground( Colour.GRAY_25 );
+
+        return wCellformat;
+    }
+    
+    private String getOrgunitBranch( OrganisationUnit orgunit )
+    {
+        String hierarchyOrgunit = orgunit.getName();
+
+        while ( orgunit.getParent() != null )
+        {
+            hierarchyOrgunit = orgunit.getParent().getName() + " -> " + hierarchyOrgunit;
+
+            orgunit = orgunit.getParent();
+        }
+
+        return hierarchyOrgunit;
+    }
+    
+    
 }

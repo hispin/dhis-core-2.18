@@ -272,16 +272,20 @@ public class EDReportResultAction
 
             for ( Indicator indicator : indicators )
             {
-                double numValue = aggregationService.getAggregatedNumeratorValue( indicator, selectedStartPeriod
+                Double numValue = aggregationService.getAggregatedNumeratorValue( indicator, selectedStartPeriod
                     .getStartDate(), selectedEndPeriod.getEndDate(), ou );
-                double denValue = aggregationService.getAggregatedDenominatorValue( indicator, selectedStartPeriod
+                Double denValue = aggregationService.getAggregatedDenominatorValue( indicator, selectedStartPeriod
                     .getStartDate(), selectedEndPeriod.getEndDate(), ou );
-                double indValue = aggregationService.getAggregatedIndicatorValue( indicator, selectedStartPeriod
+                Double indValue = aggregationService.getAggregatedIndicatorValue( indicator, selectedStartPeriod
                     .getStartDate(), selectedEndPeriod.getEndDate(), ou );
 
-                if ( indValue == -1 )
-                    indValue = 0;
-
+                if ( indValue == null )
+                    indValue = 0.0;
+                if ( numValue == null )
+                    numValue = 0.0;
+                if ( denValue == null )
+                    denValue = 0.0;
+                
                 numValue = Math.round( numValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
                 denValue = Math.round( denValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
                 indValue = Math.round( indValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );

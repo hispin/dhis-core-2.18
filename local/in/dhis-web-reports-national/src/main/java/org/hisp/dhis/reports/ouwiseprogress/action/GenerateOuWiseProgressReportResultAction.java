@@ -20,6 +20,8 @@ import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
+import jxl.format.VerticalAlignment;
+import jxl.write.Formula;
 import jxl.write.Label;
 import jxl.write.Number;
 import jxl.write.WritableCellFormat;
@@ -46,6 +48,13 @@ public class GenerateOuWiseProgressReportResultAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private final String GENERATEAGGDATA = "generateaggdata";
+
+    private final String USEEXISTINGAGGDATA = "useexistingaggdata";
+
+    private final String USECAPTUREDDATA = "usecaptureddata";
+    
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -127,11 +136,11 @@ public class GenerateOuWiseProgressReportResultAction
         this.ouIDTB = ouIDTB;
     }
 
-    private String aggRadio;
+    private String aggData;
     
-    public void setAggRadio( String aggRadio )
+    public void setAggData( String aggData )
     {
-        this.aggRadio = aggRadio;
+        this.aggData = aggData;
     }
 
     private OrganisationUnit selectedOrgUnit;
@@ -149,7 +158,7 @@ public class GenerateOuWiseProgressReportResultAction
     private Date eDate;
 
     private String raFolderName;
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -163,6 +172,12 @@ public class GenerateOuWiseProgressReportResultAction
         raFolderName = reportService.getRAFolderName();
         simpleDateFormat = new SimpleDateFormat( "MMM-yy" );
         SimpleDateFormat dayFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+
+        String colArray[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+                                "AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ",
+                                "BA","BB","BC","BD","BE","BF","BG","BH","BI","BJ","BK","BL","BM","BN","BO","BP","BQ","BR","BS","BT","BU","BV","BW","BX","BY","BZ" };
+        //char colArray[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+        //char[] colArray = new char[ 101 ];
 
         // Getting Report Details       
         String deCodesXMLFileName = "";
@@ -181,7 +196,11 @@ public class GenerateOuWiseProgressReportResultAction
         {
             orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
             Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
-            orgUnitList.add( selectedOrgUnit );
+            
+            if( orgUnitList == null || orgUnitList.size() == 0 )
+            {
+                orgUnitList.add( selectedOrgUnit );
+            }
         }
 
         System.out.println( selectedOrgUnit.getName()+ " : " + selReportObj.getName()+" : Report Generation Start Time is : " + new Date() );
@@ -201,8 +220,6 @@ public class GenerateOuWiseProgressReportResultAction
         
         Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
         
-        //String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periodList ));
-
         // Getting DataValues
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
         int orgUnitCount = 0;
@@ -258,11 +275,15 @@ public class GenerateOuWiseProgressReportResultAction
                 {
                     if ( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                        if( aggRadio.equalsIgnoreCase( "generateaggdata" ) )
+                        if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) ) 
+                        {
+                            tempStr = reportService.getIndividualResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                        }
+                        else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             tempStr = reportService.getResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
                         }
-                        else
+                        else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
                         {
                             tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
                         }
@@ -286,19 +307,10 @@ public class GenerateOuWiseProgressReportResultAction
                         tempColNo += orgUnitCount;
                     }
 
-                    WritableCellFormat wCellformat;
-
-                    if( orgUnitCount == orgUnitList.size()-1 )
-                    {
-                        wCellformat = new WritableCellFormat( arialBold );
-                    }
-                    else
-                    {
-                        wCellformat = new WritableCellFormat();
-                    }
-                    
+                    WritableCellFormat wCellformat = new WritableCellFormat();
                     wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
                     wCellformat.setAlignment( Alignment.CENTRE );
+                    wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
                     wCellformat.setWrap( true );
 
                     try
@@ -314,7 +326,59 @@ public class GenerateOuWiseProgressReportResultAction
                 count1++;
             }// inner while loop end
             orgUnitCount++;
-        }// outer while loop end
+        }// outer while loop end        
+        
+        // ---------------------------------------------------------------------
+        // Writing Total Values
+        // ---------------------------------------------------------------------
+        
+        Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
+        while (  reportDesignIterator.hasNext() )
+        {
+            Report_inDesign reportDesign =  reportDesignIterator.next();
+            
+            String deCodeString = reportDesign.getExpression();
+
+            if( deCodeString.equalsIgnoreCase( "FACILITY" ) || 
+                deCodeString.equalsIgnoreCase( "FACILITYP" ) || 
+                deCodeString.equalsIgnoreCase( "FACILITYPP" ) ||                
+                deCodeString.equalsIgnoreCase( "MONTH-FROM" ) || 
+                deCodeString.equalsIgnoreCase( "MONTH-TO" ) ||
+                deCodeString.equalsIgnoreCase( "DATE-FROM" ) ||
+                deCodeString.equalsIgnoreCase( "DATE-TO" ) )
+            {
+                continue;
+            } 
+            
+            int tempRowNo = reportDesign.getRowno();
+            int tempColNo = reportDesign.getColno();
+            int sheetNo = reportDesign.getSheetno();
+            
+            String colStart = ""+ colArray[tempColNo];
+            String colEnd = ""+ colArray[tempColNo+orgUnitCount-1];
+            
+            String tempFormula = "SUM("+colStart+(tempRowNo+1)+":"+colEnd+(tempRowNo+1)+")";
+            
+            WritableSheet totalSheet = outputReportWorkbook.getSheet( sheetNo );
+            WritableCellFormat totalCellformat = new WritableCellFormat( arialBold );
+            totalCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+            totalCellformat.setAlignment( Alignment.CENTRE );
+            totalCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+            totalCellformat.setWrap( true );
+
+            if( deCodeString.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
+            {
+                totalSheet.addCell( new Label( tempColNo+orgUnitCount, tempRowNo, selectedOrgUnit.getName(), totalCellformat ) );
+            }
+            else if( deCodeString.equalsIgnoreCase( "NA" ) )
+            {
+                totalSheet.addCell( new Label( tempColNo+orgUnitCount, tempRowNo, " ", totalCellformat ) );
+            }
+            else
+            {
+                totalSheet.addCell( new Formula( tempColNo+orgUnitCount, tempRowNo, tempFormula, totalCellformat ) );    
+            }
+        }
 
         outputReportWorkbook.write();
         outputReportWorkbook.close();
