@@ -46,7 +46,7 @@ function chartReceived( xmlObject )
 
 function saveChart()
 {
-    if ( validateCollections() )
+    if ( validateTargetLine() && validateCollections() )
     {
         var url = "validateChart.action?id=" + getFieldValue( "id" ) + "&title=" + getFieldValue( "title" );
 
@@ -96,6 +96,32 @@ function selectedIndicatorsCount()
 	return $("#selectedIndicators option").length;
 }
 
+function validateTargetLine()
+{
+    var targetLine = $("#targetLine").attr("checked");
+
+    if( targetLine )
+    {
+        var targetLineValue = $("#targetLineValue").val(); 
+        
+        if( targetLineValue.length == 0)
+        {
+            setMessage( i18n_target_line_value_must_be_provided );
+
+            return false;
+        }
+
+        if( isNaN( targetLineValue ) )
+        {
+            setMessage( i18n_target_line_value_must_be_number );
+
+            return false;
+        }
+    }
+
+    return true;
+}
+
 function validateCollections()
 {
     if ( !hasElements( "selectedIndicators" ) )
@@ -118,6 +144,6 @@ function validateCollections()
         
         return false;
     }
-     
+
     return true;
 }
