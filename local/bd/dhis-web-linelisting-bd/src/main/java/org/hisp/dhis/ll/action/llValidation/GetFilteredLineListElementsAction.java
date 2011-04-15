@@ -135,7 +135,7 @@ public class GetFilteredLineListElementsAction
 
         //dataElements = displayPropertyHandler.handleDataElements( dataElements );
         
-        displayPropertyHandler.handle( llElements );
+        //displayPropertyHandler.handle( llElements );
 
         // ---------------------------------------------------------------------
         // String filter

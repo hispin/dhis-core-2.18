@@ -157,7 +157,7 @@ public class GetExpressionAction
         Collections.sort( llElements, lineListElementComparator );
 
         //dataElements = displayPropertyHandler.handleDataElements( dataElements );
-        displayPropertyHandler.handle( llElements );
+        //displayPropertyHandler.handle( llElements );
         
         lineListGroups = new ArrayList<LineListGroup>( lineListService.getAllLineListGroups() );
 
