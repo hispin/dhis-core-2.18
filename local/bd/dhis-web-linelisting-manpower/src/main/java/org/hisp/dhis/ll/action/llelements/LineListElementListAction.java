@@ -31,18 +31,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.linelisting.Employee;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.linelisting.comparator.LineListElementNameComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 import com.opensymphony.xwork2.Action;
 
-public class LineListElementListAction
-    implements Action
+public class LineListElementListAction extends ActionPagingSupport<LineListElement>
 {
-    private List<LineListElement> lineListElements;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -54,16 +53,11 @@ public class LineListElementListAction
         this.lineListService = lineListService;
     }
 
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
+
+    private List<LineListElement> lineListElements;
 
     public List<LineListElement> getLineListElements()
     {
@@ -77,12 +71,10 @@ public class LineListElementListAction
     public String execute()
         throws Exception
     {
-        lineListElements = new ArrayList<LineListElement>( lineListService.getAllLineListElements() );
+        this.paging = createPaging( lineListService.getLineListElementCount() );
         
-        Collections.sort( lineListElements, new LineListElementNameComparator() );
-        
-        displayPropertyHandler.handle( lineListElements );
-
+        lineListElements = new ArrayList<LineListElement>( lineListService.getLineListElementsBetween( paging.getStartPos(), paging.getPageSize() ) );
+       
         return SUCCESS;
     }
 }

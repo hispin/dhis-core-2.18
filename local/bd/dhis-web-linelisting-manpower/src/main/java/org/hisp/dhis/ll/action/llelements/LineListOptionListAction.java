@@ -81,7 +81,7 @@ public class LineListOptionListAction
 
         Collections.sort( lineListOptions, new LineListOptionNameComparator() );
 
-        displayPropertyHandler.handle( lineListOptions );
+        //displayPropertyHandler.handle( lineListOptions );
 
         return SUCCESS;
     }

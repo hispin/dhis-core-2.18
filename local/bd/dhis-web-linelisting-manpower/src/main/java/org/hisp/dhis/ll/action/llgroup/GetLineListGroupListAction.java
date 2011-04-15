@@ -32,14 +32,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.linelisting.Employee;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.linelisting.comparator.LineListGroupNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
-public class GetLineListGroupListAction
-    implements Action
+public class GetLineListGroupListAction extends ActionPagingSupport<LineListGroup>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -85,9 +86,14 @@ public class GetLineListGroupListAction
     @SuppressWarnings( "unchecked" )
     public String execute()
     {
-        lineListGroups = new ArrayList<LineListGroup>( lineListService.getAllLineListGroups() );
 
-        Collections.sort( lineListGroups, new LineListGroupNameComparator() );
+        this.paging = createPaging( lineListService.getLineListGroupCount() );
+        
+        lineListGroups = new ArrayList<LineListGroup>( lineListService.getLineListGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
+
+        //lineListGroups = new ArrayList<LineListGroup>( lineListService.getAllLineListGroups() );
+
+        //Collections.sort( lineListGroups, new LineListGroupNameComparator() );
 
         // displayPropertyHandler.handle( lineListGroups );
 

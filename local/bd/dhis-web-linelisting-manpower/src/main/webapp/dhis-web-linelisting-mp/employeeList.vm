@@ -5,6 +5,10 @@
 <table class="mainPageTable">
     <tr>
         <td style="vertical-align:top">
+            <p></p>
+            <div class="paging-container">
+                #parse( "/dhis-web-commons/paging/paging.vm" )
+            </div>
 
             <table class="listTable" id="listTable">
                 <col>
@@ -49,11 +53,11 @@
                 <p><label>$i18n.getString( "pdscode" )</label><br><span id="pdsCodeField"></span></p>
                 <p><label>$i18n.getString( "name" )</label><br><span id="nameField"></span></p>
                 <p><label>$i18n.getString( "dob" ):</label><br/><span id="dateOfBirthField"></span></p>
-				<p><label>$i18n.getString( "lprDate" ):</label><br/><span id="lprDateField"></span></p>
-				<p><label>$i18n.getString( "sex" ):</label><br/><span id="sexField"></span></p>
-				<p><label>$i18n.getString( "joinDate" ):</label><br/><span id="joinDateToGovtServiceField"></span></p>
-				<p><label>$i18n.getString( "res_Add" ):</label><br/><span id="resAddressField"></span></p>
-				<p><label>$i18n.getString( "contact_no" ):</label><br/><span id="contactNumberField"></span></p>
+                <p><label>$i18n.getString( "lprDate" ):</label><br/><span id="lprDateField"></span></p>
+                <p><label>$i18n.getString( "sex" ):</label><br/><span id="sexField"></span></p>
+                <p><label>$i18n.getString( "joinDate" ):</label><br/><span id="joinDateToGovtServiceField"></span></p>
+                <p><label>$i18n.getString( "res_Add" ):</label><br/><span id="resAddressField"></span></p>
+                <p><label>$i18n.getString( "contact_no" ):</label><br/><span id="contactNumberField"></span></p>
                 <p><label>$i18n.getString( "emer_cont_no" ):</label><br/><span id="emergencyContactNumberField"></span></p>
             </div>
 

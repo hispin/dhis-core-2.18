@@ -1,13 +1,8 @@
 
-<h2>Linelisting DataEntry</h2>
+<a href="index.action"><h2>Linelisting DataEntry</h2></a>
 <ul>
     <li>DataEntry</li>
 </ul>
-
-<div style=" float:right; font-size:6pt; cursor:pointer; margin-top:-20px; ">
-        <a href="index.action">
-          <img src="images/goback.png" width="36" height="30" alt="$i18n.getString( "go_back" )"></a>
-</div>
 
 <br/>
 #parse( "/dhis-web-commons/ouwt/orgunittree.vm" )

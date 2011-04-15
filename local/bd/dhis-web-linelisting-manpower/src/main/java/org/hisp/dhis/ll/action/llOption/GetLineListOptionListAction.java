@@ -31,14 +31,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.linelisting.comparator.LineListOptionNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetLineListOptionListAction
-    implements Action
+public class GetLineListOptionListAction extends ActionPagingSupport<LineListElement>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -50,21 +51,6 @@ public class GetLineListOptionListAction
     {
         this.lineListService = lineListService;
     }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-/*
-    private Comparator<LineListOption> lineListOptionNameComparator;
-
-    public void setLineListOptionComparator( Comparator<LineListOption> lineListOptionNameComparator )
-    {
-        this.lineListOptionNameComparator = lineListOptionNameComparator;
-    }
-*/
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------
     // Output
@@ -81,14 +67,12 @@ public class GetLineListOptionListAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-   // @SuppressWarnings( "unchecked" )
-    public String execute()
+    public String execute() throws Exception
     {
-        lineListOptions = new ArrayList<LineListOption>( lineListService.getAllLineListOptions() );
+        this.paging = createPaging( lineListService.getLineListOptionCount() );
+        
+        lineListOptions = new ArrayList<LineListOption>( lineListService.getLineListOptionsBetween( paging.getStartPos(), paging.getPageSize() ) );
 
-        Collections.sort( lineListOptions, new LineListOptionNameComparator() );
-
-        // displayPropertyHandler.handle( lineListOptions );
 
         return SUCCESS;
     }

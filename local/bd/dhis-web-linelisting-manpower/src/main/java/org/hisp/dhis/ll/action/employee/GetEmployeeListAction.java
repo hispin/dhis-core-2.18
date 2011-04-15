@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.hisp.dhis.linelisting.Employee;
 import org.hisp.dhis.linelisting.EmployeeService;
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetEmployeeListAction implements Action
+public class GetEmployeeListAction extends ActionPagingSupport<Employee>
 {
 
     // -------------------------------------------------------------------------
@@ -39,7 +41,9 @@ public class GetEmployeeListAction implements Action
 
     public String execute()
     {
-    	employeeList = new ArrayList<Employee>( employeeService.getAllEmployee() );
+        this.paging = createPaging( employeeService.getEmployeeCount() );
+        
+        employeeList = new ArrayList<Employee>( employeeService.getEmployeesBetween( paging.getStartPos(), paging.getPageSize() ) );
     	
         return SUCCESS;
     }
