@@ -495,8 +495,8 @@ public class DefaultChartService
         if ( chart.isTargetLine() )
         {
             Marker marker = new ValueMarker( chart.getTargetLineValue() );
-            marker.setPaint( Color.BLUE );
-            marker.setStroke( new BasicStroke( 1.0f ) );
+            marker.setPaint( Color.BLACK );
+            marker.setStroke( new BasicStroke( 1.2f ) );
 
             plot.addRangeMarker( marker );
         }
