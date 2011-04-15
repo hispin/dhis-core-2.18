@@ -85,5 +85,14 @@ public class DefaultEmployeeService implements EmployeeService
     {
         return employeeStore.getEmployeeByisTransferred( isTransferred );
     }
+    
+    public int getEmployeeCount()
+    {
+        return employeeStore.getEmployeeCount();
+    }
+    
+    public Collection<Employee> getEmployeesBetween( int first, int max )
+    {
+        return employeeStore.getEmployeesBetween( first, max );
+    }
 }
-

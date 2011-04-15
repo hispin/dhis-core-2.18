@@ -29,11 +29,13 @@ package org.hisp.dhis.linelisting.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.linelisting.Employee;
 import org.hisp.dhis.linelisting.EmployeeStore;
+import org.hisp.dhis.user.UserCredentials;
 
 /**
  * @author Mithilesh Kumar Thakur
@@ -106,6 +108,24 @@ public class HiberateEmployeeStore implements EmployeeStore
 
         return criteria.list();        
     }
+    
+    public int getEmployeeCount()
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Query query = session.createQuery( "select count(*) from Employee" );
+        
+        Number rs = (Number) query.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Collection<Employee> getEmployeesBetween( int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery( "from Employee" ).setFirstResult( first ).setMaxResults( max ).list();
+    }
+
 }
-
-

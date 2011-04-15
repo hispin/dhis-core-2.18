@@ -4,9 +4,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.linelisting.Employee;
 import org.hisp.dhis.linelisting.LineListDataElementMap;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
@@ -322,5 +326,75 @@ public class HibernateLineListStore
         return criteria.list();
     }
     
+
+    public LineListDataElementMap getLinelistDataelementMapping( LineListElement linelistElement, LineListOption linelistOption, DataElement dataElement, DataElementCategoryOptionCombo deCOC )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( LineListDataElementMap.class );
+        criteria.add( Restrictions.eq( "linelistElement", linelistElement ) );
+        criteria.add( Restrictions.eq( "linelistOption", linelistOption ) );
+        criteria.add( Restrictions.eq( "dataElement", dataElement ) );
+        criteria.add( Restrictions.eq( "dataElementOptionCombo", deCOC ) );
+
+        return (LineListDataElementMap) criteria.uniqueResult();
+    }
+
+    public int getLineListGroupCount()
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Query query = session.createQuery( "select count(*) from LineListGroup" );
+        
+        Number rs = (Number) query.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
     
+    @SuppressWarnings("unchecked")
+    public Collection<LineListGroup> getLineListGroupsBetween( int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery( "from LineListGroup" ).setFirstResult( first ).setMaxResults( max ).list();
+    }
+
+    public int getLineListElementCount()
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Query query = session.createQuery( "select count(*) from LineListElement" );
+        
+        Number rs = (Number) query.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Collection<LineListElement> getLineListElementsBetween( int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery( "from LineListElement" ).setFirstResult( first ).setMaxResults( max ).list();
+    }
+
+    public int getLineListOptionCount()
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Query query = session.createQuery( "select count(*) from LineListOption" );
+        
+        Number rs = (Number) query.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Collection<LineListOption> getLineListOptionsBetween( int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery( "from LineListOption" ).setFirstResult( first ).setMaxResults( max ).list();
+    }
+
 }

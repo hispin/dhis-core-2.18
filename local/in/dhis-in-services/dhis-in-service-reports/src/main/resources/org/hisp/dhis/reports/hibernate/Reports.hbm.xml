@@ -17,16 +17,20 @@
         column="periodtypeid" not-null="true" foreign-key="fk_reports_periodtypeid"/>
 
     <property name="excelTemplateName" column="excelname" not-null="true" length="100"/>
-	
-	<property name="xmlTemplateName" column="xmlname" not-null="true" length="100"/>
-	
-	<property name="reportType" column="reporttype" not-null="true" length="100"/>
+    
+    <property name="xmlTemplateName" column="xmlname" not-null="true" length="100"/>
+    
+    <property name="reportType" column="reporttype" not-null="true" length="100"/>
+
+    <many-to-one name="orgunitGroup" class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" lazy="false"
+        column="orgunitgroupid" not-null="false" foreign-key="fk_reports_orgunitgroupid"/>
+
     
     <set name="sources" table="reportsource">
       <key column="reportid"/>
       <many-to-many column="sourceid" 
         class="org.hisp.dhis.source.Source"/>
     </set>
-	  	
+        
   </class>
 </hibernate-mapping>

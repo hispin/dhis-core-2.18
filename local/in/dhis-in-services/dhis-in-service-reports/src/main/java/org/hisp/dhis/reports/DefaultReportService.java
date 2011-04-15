@@ -640,7 +640,7 @@ public class DefaultReportService
                     List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
                     if ( periodList == null || periodList.isEmpty() )
-                    {
+                    {   
                         replaceString = "";
                         matcher.appendReplacement( buffer, replaceString );
                         continue;

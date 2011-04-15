@@ -6,6 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
@@ -259,4 +265,40 @@ public class DefaultLineListService
         return lineListStore.getLinelistDataelementMappings( linelistElement, linelistOption );
     }
     
+    public LineListDataElementMap getLinelistDataelementMapping( LineListElement linelistElement, LineListOption linelistOption, DataElement dataElement, DataElementCategoryOptionCombo deCOC )
+    {
+        return lineListStore.getLinelistDataelementMapping( linelistElement, linelistOption, dataElement, deCOC );
+    }
+
+    public int getLineListGroupCount()
+    {
+        return lineListStore.getLineListGroupCount();
+    }
+    
+    public Collection<LineListGroup> getLineListGroupsBetween( int first, int max )
+    {
+        return lineListStore.getLineListGroupsBetween( first, max );
+    }
+
+    public int getLineListElementCount()
+    {
+        return lineListStore.getLineListElementCount();
+    }
+    
+    public Collection<LineListElement> getLineListElementsBetween( int first, int max )
+    {
+        return lineListStore.getLineListElementsBetween( first, max );
+    }
+
+    public int getLineListOptionCount()
+    {
+        return lineListStore.getLineListOptionCount();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Collection<LineListOption> getLineListOptionsBetween( int first, int max )
+    {
+        return lineListStore.getLineListOptionsBetween( first, max );
+    }
+
 }
