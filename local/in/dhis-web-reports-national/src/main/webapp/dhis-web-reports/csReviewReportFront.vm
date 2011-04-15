@@ -74,9 +74,9 @@
     </script>
     <h1>CS Review Report</h1><hr /><br />
           
-    <form id="reportForm" name="reportForm" action="generateCSReviewReportResult.action" method="post" target="_blank">
+<form id="reportForm" name="reportForm" action="generateCSReviewReportResult.action" method="post" target="_blank">
            <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
-            <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>                    
+    <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>                    
         <tr>
           <td class="NormalB">
                         <label for="startDate">$i18n.getString( 'start_date' ) ($i18n.getString( "format.date.label" ))</label><br/>
@@ -104,9 +104,16 @@
               #foreach($report in $reportList)
                 <option value="$report.id">$report.name</option>
               #end
-                        </select>
+                      </select>
               </td>
-          <td>&nbsp;</td>
+          <td class="NormalB">
+                 $i18n.getString( "generated_data_type" ) :<br />
+                <select id="aggData" name="aggData" style="width:200px">
+                    <option value="generateaggdata">$i18n.getString( "generate_agg_data" )</option>
+                    <option value="useexistingaggdata">$i18n.getString( "use_existing_agg_data" )</option>
+                    <option value="usecaptureddata">$i18n.getString( "use_captured_data" )</option>
+                </select>
+         </td>      
         </tr>
         <tr>
           <td>&nbsp;</td>
@@ -118,23 +125,23 @@
         </tr>         
  
         <tr>
-        	  <td><input type="submit" id= "generate" name="generate" title= "Generate report" value="$i18n.getString( "generate" )"  style="width:6em" #if( $!reportList.size() == 0 ) disabled #end > </td>
-        <!--  <td><input type="submit" name="generate" value='Generate Report'/></td> -->
+            <td><input type="submit" id= "generate" name="generate" title= "Generate report" value="$i18n.getString( "generate" )"  style="width:6em" #if( $!reportList.size() == 0 ) disabled #end > </td>
+            <!--  <td><input type="submit" name="generate" value='Generate Report'/></td> -->
             <td>
-                   <!-- <input type="submit" name="generate" value='Generate Report'/>
-            <input type="hidden" name="autogen" id="autogen" value="0" >
-                        <input type="hidden" name="ouIDTB" id="ouIDTB">
-                        <input type="hidden" name="ouLevelTB" id="ouLevelTB">
-                        <input type="hidden" name="reportModelTB" id="reportModelTB">
-                        <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">-->
-                        <input type="hidden" name="reportTypeNameTB" id="reportTypeNameTB" value="$reportTypeName">
-          </td>
-               </tr>
-            </table>
-    </form>
+                <!-- <input type="submit" name="generate" value='Generate Report'/>
+                <input type="hidden" name="autogen" id="autogen" value="0" >
+                <input type="hidden" name="ouIDTB" id="ouIDTB">
+                <input type="hidden" name="ouLevelTB" id="ouLevelTB">
+                <input type="hidden" name="reportModelTB" id="reportModelTB">
+                <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">-->
+                <input type="hidden" name="reportTypeNameTB" id="reportTypeNameTB" value="$reportTypeName">
+            </td>
+        </tr>
+    </table>
+</form>
 <script type="text/javascript">
-	jQuery( function(){
-			datePickerInRange( "startDate", "endDate", false, false );
-	});		
+    jQuery( function(){
+            datePickerInRange( "startDate", "endDate", false, false );
+    });     
 </script>
 

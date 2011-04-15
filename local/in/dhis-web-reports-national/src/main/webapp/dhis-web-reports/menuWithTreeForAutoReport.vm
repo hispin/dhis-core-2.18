@@ -4,9 +4,7 @@
 <ul>
     <li>Report Analysis</li>
     <ul>
-    	<li>
-            Auto Reports
-        </li>
+        <li>Bulk Reports</li>
     </ul>
 </ul>
 
@@ -14,18 +12,18 @@
 
 <script type="text/javascript">
 
-	function orgUnitHasBeenSelected( orgUnitIds )
-	{    
-		document.reportForm.ouIDTB.value = orgUnitIds;
-		
-		reportListFileName = document.reportForm.reportListFileNameTB.value;
-	
-		if(orgUnitIds != null && orgUnitIds != "" )
-		{
-			getReports(orgUnitIds, reportListFileName)		
-		}
-	}
-	
-	selection.setListenerFunction( orgUnitHasBeenSelected );
+    function orgUnitHasBeenSelected( orgUnitIds )
+    {    
+        document.reportForm.ouIDTB.value = orgUnitIds;
+        
+        reportTypeName = document.reportForm.reportTypeNameTB.value;
+    
+        if( orgUnitIds != null && orgUnitIds != "" )
+        {
+            getReports( orgUnitIds, reportTypeName )      
+        }
+    }
+    
+    selection.setListenerFunction( orgUnitHasBeenSelected );
 
 </script>
