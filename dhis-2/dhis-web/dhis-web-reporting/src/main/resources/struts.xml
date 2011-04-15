@@ -259,6 +259,7 @@
     </action>
     
     <action name="getDataCompleteness" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction">
+      <result name="input" type="redirect">displayViewDataCompletenessForm.action</result>
       <result name="csv" type="gridCsvResult"/>
       <result name="xls" type="gridXlsResult"/>
       <result name="pdf" type="gridPdfResult"/>

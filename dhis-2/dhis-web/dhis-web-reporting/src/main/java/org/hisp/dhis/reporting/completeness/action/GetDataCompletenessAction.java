@@ -158,12 +158,17 @@ public class GetDataCompletenessAction
             return type;
         }
         else
-        {    
-            Integer _periodId = periodService.getPeriodByExternalId( periodId ).getId();
+        {            
             OrganisationUnit selectedUnit = selectionTreeManager.getSelectedOrganisationUnit();
             
-            if ( periodId != null && selectedUnit != null && criteria != null )
+            if ( periodId == null || selectedUnit == null || criteria == null )
             {
+                return INPUT;
+            }            
+            else
+            {
+                Integer _periodId = periodService.getPeriodByExternalId( periodId ).getId();
+                
                 DataSet dataSet = null;
                 List<DataSetCompletenessResult> results = null;
     
