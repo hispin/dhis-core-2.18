@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
@@ -66,6 +67,8 @@ public class Report_in
 
     private String reportType;
 
+    private OrganisationUnitGroup orgunitGroup;
+    
     /**
      * All Sources that are generating this Report_in.
      */
@@ -89,6 +92,18 @@ public class Report_in
         this.excelTemplateName = excelTemplateName;
         this.xmlTemplateName = xmlTemplateName;
         this.reportType = reportType;
+    }
+
+    public Report_in( String name, String model, PeriodType periodType, String excelTemplateName,
+        String xmlTemplateName, String reportType, OrganisationUnitGroup orgunitGroup )
+    {
+        this.name = name;
+        this.model = model;
+        this.periodType = periodType;
+        this.excelTemplateName = excelTemplateName;
+        this.xmlTemplateName = xmlTemplateName;
+        this.reportType = reportType;
+        this.orgunitGroup = orgunitGroup;
     }
 
     // -------------------------------------------------------------------------
@@ -208,4 +223,15 @@ public class Report_in
         this.sources = sources;
     }
 
+    public OrganisationUnitGroup getOrgunitGroup()
+    {
+        return orgunitGroup;
+    }
+
+    public void setOrgunitGroup( OrganisationUnitGroup orgunitGroup )
+    {
+        this.orgunitGroup = orgunitGroup;
+    }
+
+    
 }
