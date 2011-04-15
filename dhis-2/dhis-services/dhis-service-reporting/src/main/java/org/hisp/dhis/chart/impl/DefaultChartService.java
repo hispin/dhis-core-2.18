@@ -544,7 +544,6 @@ public class DefaultChartService
 
         final DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         final DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
-        final DefaultCategoryDataset targetDataSet = new DefaultCategoryDataset();
 
         if ( chart != null )
         {
@@ -638,7 +637,7 @@ public class DefaultChartService
             }
         }
 
-        return new CategoryDataset[] { regularDataSet, regressionDataSet, targetDataSet };
+        return new CategoryDataset[] { regularDataSet, regressionDataSet };
     }
 
     /**
