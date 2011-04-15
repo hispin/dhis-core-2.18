@@ -134,7 +134,7 @@ public class GetLLGroupAction
 
         //Collections.sort( llElements, new LineListElementNameComparator() );
                 	
-        displayPropertyHandler.handle( llElements );
+        //displayPropertyHandler.handle( llElements );
 
         //dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( lineListGroup );
         

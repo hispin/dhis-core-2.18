@@ -69,7 +69,7 @@ public class LineListElementListAction
         
         Collections.sort( lineListElements, new LineListElementNameComparator() );
         
-        displayPropertyHandler.handle( lineListElements );
+        //displayPropertyHandler.handle( lineListElements );
 
         return SUCCESS;
     }
