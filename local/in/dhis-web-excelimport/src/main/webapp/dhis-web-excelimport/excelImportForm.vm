@@ -45,20 +45,7 @@
                 jQuery("#name").focus();
             }
     );
-	
-/*	
-function orgUnitHasBeenSelected( orgUnitIds )
-{    
-	if(orgUnitIds == null || orgUnitIds == "" )
-	{
-		return;
-	}
-
-	if(orgUnitIds != null)
-		getOUDetails(orgUnitIds);	
-}
-*/
-//selection.setListenerFunction( orgUnitHasBeenSelected );
+    
 
 </script>
 
@@ -70,7 +57,7 @@ function orgUnitHasBeenSelected( orgUnitIds )
     <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
         <tr>
             <td class="NormalB">
-                PeriodType : <br />
+                1. PeriodType : <br />
                 <select id="periodTypeId" name="periodTypeId" style="width:200px" onchange="getPeriods()">
                     <option value="NA">[ Select PeriodType ]</option>
                     #foreach ( $type in $periodTypes )
@@ -79,8 +66,9 @@ function orgUnitHasBeenSelected( orgUnitIds )
                 </select>
             </td>
             <td class="NormalB">                            
-                OrganisationUnit : <br />
-                <input type="text" name="ouNameTB" id="ouNameTB" size="20" class="{validate:{required:true}}" disabled >
+                4. Import Sheets :<br />
+                <select id="reportList" name="reportList" style="width:250px" class="{validate:{required:true}}">
+                </select>
             </td>
         </tr>
         <tr>
@@ -93,16 +81,14 @@ function orgUnitHasBeenSelected( orgUnitIds )
         </tr>
         <tr>
             <td class="NormalB">
-                Periods : <br />
+                2. Periods : <br />
                 <select id="availablePeriods" name="availablePeriods" style="width:200px" class="{validate:{required:true}}">
                     <option value="EMPTY_PLACEHOLDER_VALUE"></option>
                 </select>
             </td>
             <td class="NormalB">
-                Reports :<br />
-                <select id="reportList" name="reportList" style="width:200px" class="{validate:{required:true}}">
-                	
-                </select>
+                5. Upload/Import (XLS) File : <br/>
+                <input type="file" id="upload" name="upload" size="31" class="{validate:{required:true}}">
             </td>
         </tr>
         <tr>
@@ -113,28 +99,35 @@ function orgUnitHasBeenSelected( orgUnitIds )
             <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
+
         <tr>
             <td class="NormalB">
-                <input type="radio" id="riRadio" name="riRadio" value="overWrite" checked> New And Updates
-                &nbsp;<br>
-                <input type="radio" id="riRadio" name="riRadio" value="reject" > New (No Updates)
+                3. OrganisationUnit : <br />
+                <input type="text" name="ouNameTB" id="ouNameTB" style="width:200px" class="{validate:{required:true}}" disabled >
             </td>
-            <td class="NormalB"><input type="file" id="upload" name="upload" size="45" class="{validate:{required:true}}"></td>
+            <td class="NormalB">
+                <input type="radio" id="riRadio" name="riRadio" value="overWrite" checked> New And Updates
+                <input type="radio" id="riRadio" name="riRadio" value="reject" > New (No Updates)
+                <br />
+                <input type="submit" name="importReport" value='Import Data' style="width:250px">
+            </td>
+        </tr>                   
+        
+        <tr>
+            <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
+        
         <tr>
             <td>&nbsp;</td>
             <td>
-                <br /><br />
-                <input type="submit" name="importReport" value='Import Data' style="width:13em">
                 <input type="hidden" name="autogen" id="autogen" value="0" >
-                <input type="hidden" name="ouIDTB" id="ouIDTB">
+                <input type="hidden" name="ouIDTB" id="ouIDTB" />
                 <input type="hidden" name="reportModelTB" id="reportModelTB">
                 <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
                 <input type="hidden" name="checkerFileNameTB" id="checkerFileNameTB">
                 <input type="hidden" name="dataSetId" id="dataSetId">
                 <input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="excelImportReportsList.xml">
-                
             </td>
         </tr>
         <tr>
