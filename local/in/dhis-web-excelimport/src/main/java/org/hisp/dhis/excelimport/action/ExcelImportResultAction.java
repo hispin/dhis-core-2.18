@@ -591,9 +591,8 @@ public class ExcelImportResultAction
             orgUnitList = new ArrayList<OrganisationUnit>();
             orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
             orgUnitList.add( orgUnit );
-
         }
-
+        
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
         
         selectedPeriod = periodService.getPeriod( availablePeriods );

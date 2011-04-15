@@ -1,6 +1,7 @@
 package org.hisp.dhis.excelimport.util;
 
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -984,6 +985,47 @@ public class ReportService
         {
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
+    }
+
+    
+    public Period getSelectedPeriod( String startDate, PeriodType periodType ) throws Exception
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+
+        List<Period> periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) );
+        for ( Period period : periods )
+        {
+            String tempDate = dateFormat.format( period.getStartDate() );
+            if ( tempDate.equalsIgnoreCase( startDate ) )
+            {
+                return period;
+            }
+        }
+
+        Period period = periodType.createPeriod( dateFormat.parse( startDate ) );
+        period = reloadPeriodForceAdd( period );
+        periodService.addPeriod( period );
+    
+        return period;
+    }
+    
+    private final Period reloadPeriod( Period period )
+    {
+        return periodService.getPeriod( period.getStartDate(), period.getEndDate(), period.getPeriodType() );
+    }
+
+    private final Period reloadPeriodForceAdd( Period period )
+    {
+        Period storedPeriod = reloadPeriod( period );
+
+        if ( storedPeriod == null )
+        {
+            periodService.addPeriod( period );
+
+            return period;
+        }
+
+        return storedPeriod;
     }
 
 }
