@@ -899,6 +899,9 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart + 6, rowStart, "OrganisationUnitCode", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 7, rowStart, "OrganisationUnitUrl", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 8, rowStart, "Last Updated", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 9, rowStart, "Contact Person", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 10, rowStart, "Phone Number", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 11, rowStart, "Email", getCellFormat1() ) );
             }
             else if ( incID.equalsIgnoreCase( SOURCE ) )
             {
@@ -978,6 +981,39 @@ public class GenerateMetaDataReportResultAction
                         lastUpdate = "";
                     }
                     sheet0.addCell( new Label( colStart + 8, rowStart, lastUpdate, wCellformat ) );
+
+                    String contactPerson = new String();
+                    if ( ou.getContactPerson() != null )
+                    {
+                        contactPerson = ou.getContactPerson();
+                    }
+                    else
+                    {
+                        contactPerson = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 9, rowStart, contactPerson, wCellformat ) );
+
+                    String phoneNumber = new String();
+                    if( ou.getPhoneNumber() != null )
+                    {
+                        phoneNumber = ou.getPhoneNumber();
+                    }
+                    else
+                    {
+                        phoneNumber = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 10, rowStart, phoneNumber, wCellformat ) );
+                    
+                    String email = new String();
+                    if( ou.getEmail() != null )
+                    {
+                        email = ou.getEmail();
+                    }
+                    else
+                    {
+                        email = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 11, rowStart, email, wCellformat ) );
                 }
                 else if ( incID.equalsIgnoreCase( SOURCE ) )
                 {

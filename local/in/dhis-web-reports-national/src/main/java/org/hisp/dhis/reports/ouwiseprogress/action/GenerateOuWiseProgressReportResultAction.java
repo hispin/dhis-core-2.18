@@ -239,7 +239,11 @@ public class GenerateOuWiseProgressReportResultAction
                 String deCodeString = report_inDesign.getExpression();
                 String tempStr = "";
 
-                if ( deCodeString.equalsIgnoreCase( "FACILITY" ) || deCodeString.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
+                if ( deCodeString.equalsIgnoreCase( "FACILITY" ) )
+                {
+                    tempStr = selectedOrgUnit.getName();
+                }
+                else if( deCodeString.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
                 {
                     tempStr = currentOrgUnit.getName();
                 }

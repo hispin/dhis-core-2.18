@@ -279,7 +279,8 @@ public class SelectAction
         // Load DataSets
         // ---------------------------------------------------------------------
 
-        dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
+        dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+        //dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
 System.out.println("\n\n\n +++++++++++++ \n organisationUnit : " + organisationUnit);
 System.out.println("\n  dataSets : " + dataSets);
         // ---------------------------------------------------------------------
