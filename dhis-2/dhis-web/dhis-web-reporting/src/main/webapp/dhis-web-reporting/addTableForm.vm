@@ -350,7 +350,7 @@
 			<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '-1' )" />
 			<input type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '1' )" />
 			<select id="periodType" name="periodType" style="min-width:518px" onchange="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '0' )">
-				<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
+				<option value="">[ $i18n.getString( "select_period_type" ) ]</option>
 				#foreach ( $type in $periodTypes )
 					<option value="$type.name">$type.name</option>
 				#end
