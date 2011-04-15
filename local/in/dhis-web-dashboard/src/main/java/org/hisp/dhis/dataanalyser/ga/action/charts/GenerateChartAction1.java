@@ -153,12 +153,12 @@ public class GenerateChartAction1
 
         initialzeAllLists( series1S,  categories1S );
       
-        System.out.println( "\n data1 : " + objData1 );
-        System.out.println( "\n series1 : " + series1S );
-        System.out.println( "\n categories1 : " + categories1S );
-        System.out.println( "\n chartTitle : " + chartTitle );
-        System.out.println( "\n xAxisTitle : " + xAxis_Title );
-        System.out.println( "\n yAxisTitle : " + yAxis_Title );
+        //System.out.println( "\n data1 : " + objData1 );
+        //System.out.println( "\n series1 : " + series1S );
+        //System.out.println( "\n categories1 : " + categories1S );
+        //System.out.println( "\n chartTitle : " + chartTitle );
+        //System.out.println( "\n xAxisTitle : " + xAxis_Title );
+        //System.out.println( "\n yAxisTitle : " + yAxis_Title );
        
         
         if( objData1 == null || series1 == null ||  categories1 == null ||  chartTitle == null || xAxis_Title == null || yAxis_Title == null )
@@ -176,7 +176,7 @@ public class GenerateChartAction1
         
         initializeDataLists();
         
-        System.out.println( "current chart Type is : " + currentChart + " ,And Chart Display Option is : " + chartDisplayOption );
+        //System.out.println( "current chart Type is : " + currentChart + " ,And Chart Display Option is : " + chartDisplayOption );
         
         if ( currentChart == null )
         {

@@ -1,6 +1,5 @@
 package org.hisp.dhis.dataanalyser.ga.action.charts;
 
-// <editor-fold defaultstate="collapsed" desc="imports">
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,7 +66,6 @@ import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
 
-// </editor-fold>
 
 /**
  * 
@@ -76,11 +74,9 @@ import com.opensymphony.xwork2.Action;
 public class GenerateDrillDownResultAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    // <editor-fold defaultstate="collapsed" desc="dependencies">
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -89,11 +85,6 @@ public class GenerateDrillDownResultAction
     }
 
     private OrganisationUnitService organisationUnitService;
-
-    public OrganisationUnitService getOrganisationUnitService()
-    {
-        return organisationUnitService;
-    }
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
@@ -107,15 +98,6 @@ public class GenerateDrillDownResultAction
         this.caseAggregationConditionService = caseAggregationConditionService;
     }
 
-    /*
-    private CaseAggregationMappingService caseAggregationMappingService;
-
-    public void setCaseAggregationMappingService( CaseAggregationMappingService caseAggregationMappingService )
-    {
-        this.caseAggregationMappingService = caseAggregationMappingService;
-    }
-    */
-    
     private ConfigurationService configurationService;
 
     public void setConfigurationService( ConfigurationService configurationService )
@@ -173,8 +155,10 @@ public class GenerateDrillDownResultAction
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="properties">
+    
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
     public String selectedValues;
 
     public String getSelectedValues()
@@ -209,15 +193,11 @@ public class GenerateDrillDownResultAction
 
     private String outputReportPath;
 
-   // private Period startDate;
-
     private OrganisationUnit selectedOrgUnit;
 
     private DataElement de;
 
     private DataElementCategoryOptionCombo coc;
-
-    //private CaseAggregationMapping caseAggMapping;
 
     private List<String> serviceType;
 
@@ -244,85 +224,71 @@ public class GenerateDrillDownResultAction
     
     private Date tempEndDate;
     
-    private PeriodType periodTypeName;
-    
     private Collection<Period> periods;
-    // </editor-fold>
 
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
     public String execute()
         throws Exception
     {
+        // Initialization
+
+        statementManager.initialise();
+
+        deCodeType = new ArrayList<String>();
+        serviceType = new ArrayList<String>();
+        sheetList = new ArrayList<Integer>();
+        rowList = new ArrayList<Integer>();
+        colList = new ArrayList<Integer>();
+        deCodesXMLFileName = "NBITS_DrillDownToCaseBasedDECodes.xml";
+        reportFileNameTB = "DrillDownToCaseBased.xls";
+        raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
 
         values = selectedValues.split( ":" );
         int orgunit = Integer.parseInt( values[0] );
-       // int periodid = Integer.parseInt( values[3] );
         int deid = Integer.parseInt( values[1] );
         int cocid = Integer.parseInt( values[2] );
-        
-        //06/12/2010
-        String periodType = values[3];
-        //Date  startDate = values[4];
-       // String endDate = values[5];
-        
+        String periodTypeName = values[3];
         tempStartDate = format.parseDate( values[4] );
         tempEndDate   = format.parseDate( values[5] );
         
+        PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
+        periods = periodService.getPeriodsBetweenDates( periodType, tempStartDate, tempEndDate );
         
-        periodTypeName = periodService.getPeriodTypeByName( periodType );
-        periods = periodService.getPeriodsBetweenDates( periodTypeName, tempStartDate, tempEndDate );
-        
-        
-       // startDate = periodService.getPeriod( periodid );
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( orgunit );
         de = dataElementService.getDataElement( deid );
         coc = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( cocid );
         
-        System.out.println( "orgunit is " + orgunit + " de is " + deid + " coc is " + cocid + " periodType is " + periodType + " tempStartDate is " + tempStartDate + " tempEndDate is  " + tempEndDate );
-
-        statementManager.initialise();
-        raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        deCodesXMLFileName = "NBITS_DrillDownToCaseBasedDECodes.xml";
-        // System.out.println( "reportList = " + reportList );
-        deCodeType = new ArrayList<String>();
-        serviceType = new ArrayList<String>();
-
-        sheetList = new ArrayList<Integer>();
-        rowList = new ArrayList<Integer>();
-        colList = new ArrayList<Integer>();
-        reportFileNameTB = "DrillDownToCaseBased.xls";
-
-        // Initialization
         inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template"
             + File.separator + reportFileNameTB;
 
         outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output"
             + File.separator + UUID.randomUUID().toString() + ".xls";
 
-        // System.out.println( " inputTemplatePath " + inputTemplatePath );
-
         generatDrillDownReport();
+
         statementManager.destroy();
+        
         return SUCCESS;
-    }// end if loop
+    }
 
     public void generatDrillDownReport()
         throws Exception
     {
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
-        WritableWorkbook outputReportWorkbook = Workbook
-            .createWorkbook( new File( outputReportPath ), templateWorkbook );
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
 
         // Cell formatting
         WritableCellFormat wCellformat = new WritableCellFormat();
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat.setAlignment( Alignment.CENTRE );
         wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
-        // System.out.println( "deCodesXMLFileName = " + deCodesXMLFileName );
+        
         List<String> deCodesList = getDECodes( deCodesXMLFileName );
-        // System.out.println( "deCodesList size = "+deCodesList.size() );
+
         // taking expression for selected de and decoc
         CaseAggregationCondition caseAggregationCondition = caseAggregationConditionService.getCaseAggregationCondition( de, coc );
-        //caseAggMapping = caseAggregationMappingService.getCaseAggregationMappingByOptionCombo( de, coc );
 
         List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
         List<OrganisationUnit> orgUnitDataList = new ArrayList<OrganisationUnit>();
@@ -349,9 +315,6 @@ public class GenerateDrillDownResultAction
                 patientDataValues.addAll( caseAggregationConditionService.getPatientDataValues( caseAggregationCondition, ou, period ) );
             }
             
-           // patientDataValues.addAll( caseAggregationConditionService.getPatientDataValues( caseAggregationCondition, ou, startDate ) );
-           // patientDataValues = caseAggregationMappingService.getCaseAggregatePatientDataValue( ou, startDate,
-           //     caseAggMapping );
             if ( patientDataValues != null )
             {
                 ouPatientDataValueMap.put( ou, patientDataValues );
@@ -374,15 +337,14 @@ public class GenerateDrillDownResultAction
         wCellformat1.setWrap( true );
         wCellformat1.setBackground( Colour.GREY_40_PERCENT );
 
-        // <editor-fold defaultstate="collapsed" desc="adding column names">
         int count1 = 0;
         for ( DataElement de : des )
         {
             // DEName
             sheet0.addCell( new Label( 7 + count1, 1, "" + de.getName(), wCellformat1 ) );
-
             count1++;
         }
+
         sheet0.addCell( new Label( 7 + count1, 1, "Execution Date", wCellformat1 ) );
 
         for ( int i = levelsList.size() - 1; i >= 0; i-- )
@@ -393,23 +355,14 @@ public class GenerateDrillDownResultAction
                 .getName(), wCellformat1 ) );
         }
 
-        // </editor-fold>
-
         int rowNo = rowList.get( 0 );
         int srno = 0;
-        // <editor-fold defaultstate="collapsed"
-        // desc="For loop of orgUnitDataList">
         for ( OrganisationUnit ou : orgUnitDataList )
         {
             List<PatientDataValue> pdvList = ouPatientDataValueMap.get( ou );
-            // System.out.println( "pdvList size = " + pdvList.size() + " ou " +
-            // ou.getName() );
 
-            // <editor-fold defaultstate="collapsed"
-            // desc="For loop of orgUnitDataList">
             for ( PatientDataValue patientDataValue : pdvList )
             {
-
                 ProgramStageInstance psi = patientDataValue.getProgramStageInstance();
                 ProgramInstance pi = psi.getProgramInstance();
                 String value = patientDataValue.getValue();
@@ -417,16 +370,12 @@ public class GenerateDrillDownResultAction
                 Patient patient = pi.getPatient();
                 int colNo = 0;
                 int rowCount = 0;
-                // <editor-fold defaultstate="collapsed"
-                // desc="for loop for deCodesList">
                 for ( String deCodeString : deCodesList )
                 {
                     tempStr = "";
                     String sType = (String) serviceType.get( rowCount );
                     if ( !deCodeString.equalsIgnoreCase( "NA" ) )
                     {
-                        // <editor-fold defaultstate="collapsed"
-                        // desc="stype = caseProperty">
                         if ( sType.equalsIgnoreCase( "caseProperty" ) )
                         {
                             if ( deCodeString.equalsIgnoreCase( "Name" ) )
@@ -452,17 +401,14 @@ public class GenerateDrillDownResultAction
                                     tempStr = "";
                                 }
                             }
-                        } // </editor-fold>
-                        // <editor-fold defaultstate="collapsed"
-                        // desc="stype = caseAttribute">
+                        }
                         else if ( sType.equalsIgnoreCase( "caseAttribute" ) )
                         {
                             int deCodeInt = Integer.parseInt( deCodeString );
 
                             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( deCodeInt );
-                            PatientAttributeValue patientAttributeValue = patientAttributeValueService
-                                .getPatientAttributeValue( patient, patientAttribute );
-                            if ( patientAttributeValue != null )
+                            PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
+                            if ( patientAttributeValue != null && patientAttributeValue.getValue() != null )
                             {
                                 tempStr = patientAttributeValue.getValue();
                             }
@@ -470,20 +416,15 @@ public class GenerateDrillDownResultAction
                             {
                                 tempStr = " ";
                             }
-                        } // </editor-fold>
-                        // <editor-fold defaultstate="collapsed"
-                        // desc="stype = identifiertype">
+                        }
                         else if ( sType.equalsIgnoreCase( "identifiertype" ) )
                         {
                             int deCodeInt = Integer.parseInt( deCodeString );
-                            // _______________________Id.
-                            // no._______________________
-                            PatientIdentifierType patientIdentifierType = patientIdentifierTypeService
-                                .getPatientIdentifierType( deCodeInt );
+
+                            PatientIdentifierType patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( deCodeInt );
                             if ( patientIdentifierType != null )
                             {
-                                PatientIdentifier patientIdentifier = patientIdentifierService.getPatientIdentifier(
-                                    patientIdentifierType, patient );
+                                PatientIdentifier patientIdentifier = patientIdentifierService.getPatientIdentifier( patientIdentifierType, patient );
                                 if ( patientIdentifier != null )
                                 {
                                     tempStr = patientIdentifier.getIdentifier();
@@ -494,38 +435,25 @@ public class GenerateDrillDownResultAction
                                 }
                             }
                         }
-                        // </editor-fold>
                     }
                     else
                     {
-                        // <editor-fold defaultstate="collapsed"
-                        // desc="stype = srno">
                         if ( sType.equalsIgnoreCase( "srno" ) )
                         {
                             int tempNum = 1 + srno;
                             tempStr = String.valueOf( tempNum );
                         }
-                        // </editor-fold>
                     }
-                    // <editor-fold defaultstate="collapsed"
-                    // desc="adding columns">
+
                     int tempColNo = colList.get( rowCount );
                     int sheetNo = sheetList.get( rowCount );
                     sheet0 = outputReportWorkbook.getSheet( sheetNo );
-                   // WritableCell cell = sheet0.getWritableCell( tempColNo, rowNo );
-                    // System.out.println(
-                    // "_______________________ count = "+rowCount
-                    // +"tempColNo = " + tempColNo + " rowNo = " + rowNo +
-                    // " value = " + tempStr );
                     sheet0.addCell( new Label( tempColNo, rowNo, tempStr, wCellformat ) );
                     colNo = tempColNo;
-                    // </editor-fold>
 
                     rowCount++;
                 }
-                // </editor-fold>
-                // <editor-fold defaultstate="collapsed"
-                // desc="adding des columns">
+
                 int count = 0;
                 for ( count = 0; count < des.size(); count++ )
                 {
@@ -535,16 +463,12 @@ public class GenerateDrillDownResultAction
 
                 }
                 colNo++;
-                // </editor-fold>
-                // <editor-fold defaultstate="collapsed"
-                // desc="adding executiondate">
+
                 // Execution date
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
                 String eDate = simpleDateFormat.format( executionDate );
                 sheet0.addCell( new Label( colNo, rowNo, "" + eDate, wCellformat ) );
-                // </editor-fold>
-                // <editor-fold defaultstate="collapsed"
-                // desc="adding ou in report at the end column">
+
                 OrganisationUnit ouname = ou;
                 for ( int i = levelsList.size() - 1; i >= 0; i-- )
                 {
@@ -553,18 +477,13 @@ public class GenerateDrillDownResultAction
                     if ( levelsList.get( i ) == level )
                     {
                         sheet0.addCell( new Label( colNo, rowNo, ouname.getName(), wCellformat ) );
-                        // System.out.println( colNo+" "+ rowNo+" "+
-                        // ou.getName()+" "+ wCellformat );
                     }
                     ouname = ouname.getParent();
                 }
-                // </editor-fold>
                 rowNo++;
                 srno++;
             }
-            // </editor-fold>
         }
-        // </editor-fold>
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
@@ -573,11 +492,9 @@ public class GenerateDrillDownResultAction
         File outputReportFile = new File( outputReportPath );
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
         outputReportFile.deleteOnExit();
-        // Cell formatting
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="getChildOrgUnitTree Method">
     @SuppressWarnings( "unchecked" )
     public List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
     {
@@ -597,8 +514,6 @@ public class GenerateDrillDownResultAction
         return orgUnitTree;
     }// getChildOrgUnitTree end
 
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="getDECodes method">
 
     public List<String> getDECodes( String fileName )
     {
@@ -644,11 +559,7 @@ public class GenerateDrillDownResultAction
                 sheetList.add( new Integer( deCodeElement.getAttribute( "sheetno" ) ) );
                 rowList.add( new Integer( deCodeElement.getAttribute( "rowno" ) ) );
                 colList.add( new Integer( deCodeElement.getAttribute( "colno" ) ) );
-
-                // System.out.println( deCodes.get( s )+" : "+deCodeType.get( s
-                // ) );
             }// end of for loop with s var
-
         }// try block end
         catch ( SAXParseException err )
         {
@@ -667,5 +578,4 @@ public class GenerateDrillDownResultAction
 
         return deCodes;
     }// getDECodes end
-    // </editor-fold>
 }

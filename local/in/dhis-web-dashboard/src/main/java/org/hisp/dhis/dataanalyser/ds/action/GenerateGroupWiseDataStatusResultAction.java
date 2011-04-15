@@ -340,11 +340,21 @@ public class GenerateGroupWiseDataStatusResultAction
     {
         return dsSize;
     }
+    
+    private List<Integer> dataElementCount;
+    
+    public List<Integer> getDataElementCount()
+    {
+        return dataElementCount;
+    }
+    
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
     
- //   @SuppressWarnings({ "deprecation", "unchecked" })
+ 
+
+    //   @SuppressWarnings({ "deprecation", "unchecked" })
     public String execute()
         throws Exception
     {
@@ -356,6 +366,8 @@ public class GenerateGroupWiseDataStatusResultAction
         deMapGroupCount = new HashMap<DataElementGroup, Integer>(); // dataelement Group Count
         
         results = new ArrayList<Integer>();
+        dataElementCount = new ArrayList<Integer>();
+        
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
 
@@ -510,9 +522,9 @@ public class GenerateGroupWiseDataStatusResultAction
             }
 
             // detaElement Group member Count
-            Integer deGroupMemberCount = dataElements.size();
+            //Integer deGroupMemberCount = dataElements.size();
             
-            deMapGroupCount.put( deg, deGroupMemberCount );
+            deMapGroupCount.put( deg, deGroupMemberCount1 );
             
             deInfo = getDEInfo( dataElements );
 
@@ -545,6 +557,7 @@ public class GenerateGroupWiseDataStatusResultAction
               //  @SuppressWarnings("unused")
                // Collection dataValueResult;
                 double dataStatusPercentatge;
+                int tempDataElementCount = 0;
 
                 while ( periodIterator.hasNext() )
                 {
@@ -554,6 +567,7 @@ public class GenerateGroupWiseDataStatusResultAction
                     if ( dso == null )
                     {
                         results.add( -1 );
+                        dataElementCount.add( -1 );
                         continue;
                     }
                     else if ( !dso.contains( o ) )
@@ -595,7 +609,11 @@ public class GenerateGroupWiseDataStatusResultAction
                         dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) )
                             / Math.pow( 10, 0 );
 
+                        tempDataElementCount = sqlResultSet.getInt( 1 );
+                        dataElementCount.add( tempDataElementCount );
+                        
                         results.add( (int) dataStatusPercentatge );
+                        dataElementCount.add( -1 );
                         continue;
                     }
 
@@ -632,7 +650,10 @@ public class GenerateGroupWiseDataStatusResultAction
                         dataStatusPercentatge = 100;
 
                     dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-
+                    
+                    tempDataElementCount = sqlResultSet.getInt( 1 );
+                    dataElementCount.add( tempDataElementCount );
+                    
                     results.add( (int) dataStatusPercentatge );
                 }
             }
