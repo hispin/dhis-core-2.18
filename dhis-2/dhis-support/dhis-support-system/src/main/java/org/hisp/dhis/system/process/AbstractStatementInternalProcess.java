@@ -64,6 +64,13 @@ public abstract class AbstractStatementInternalProcess
         this.statementManager = statementManager;
     }
     
+    private StatementManager inMemoryStatementManager;
+
+    public void setInMemoryStatementManager( StatementManager inMemoryStatementManager )
+    {
+        this.inMemoryStatementManager = inMemoryStatementManager;
+    }
+
     // -------------------------------------------------------------------------
     // InternalProcess implementation
     // -------------------------------------------------------------------------
@@ -81,6 +88,11 @@ public abstract class AbstractStatementInternalProcess
         this.state = state;
 
         statementManager.initialise();
+        
+        if ( inMemoryStatementManager != null )
+        {
+            inMemoryStatementManager.initialise();
+        }
         
         getState().setMessage( PROCESS_STARTED );
         
@@ -106,6 +118,11 @@ public abstract class AbstractStatementInternalProcess
         finally
         {   
             statementManager.destroy();
+            
+            if ( inMemoryStatementManager != null )
+            {
+                inMemoryStatementManager.destroy();
+            }
         }
     }
 
