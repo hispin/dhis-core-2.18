@@ -31,8 +31,8 @@ import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -170,7 +170,7 @@ public class JDBCCrossTabStore
     private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Collection<DataElementOperand> operands )
         throws SQLException
     {
-        final Collection<CrossTabDataValue> values = new ArrayList<CrossTabDataValue>();
+        final Collection<CrossTabDataValue> values = new HashSet<CrossTabDataValue>();
         
         while ( resultSet.next() )
         {
