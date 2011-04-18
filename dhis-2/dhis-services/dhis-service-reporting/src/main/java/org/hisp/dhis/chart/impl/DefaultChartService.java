@@ -32,7 +32,9 @@ import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT;
 import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD;
 import static org.hisp.dhis.chart.Chart.SIZE_NORMAL;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR;
+import static org.hisp.dhis.chart.Chart.TYPE_BAR3D;
 import static org.hisp.dhis.chart.Chart.TYPE_LINE;
+import static org.hisp.dhis.chart.Chart.TYPE_LINE3D;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE3D;
 import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
@@ -90,8 +92,10 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.category.LineRenderer3D;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
@@ -402,6 +406,24 @@ public class DefaultChartService
     }
 
     /**
+     * Returns a bar3d renderer.
+     */
+    private BarRenderer getBar3DRenderer()
+    {
+        BarRenderer3D renderer = new BarRenderer3D();
+
+        renderer.setMaximumBarWidth( 0.07 );
+
+        for ( int i = 0; i < colors.length; i++ )
+        {
+            renderer.setSeriesPaint( i, colors[i] );
+            renderer.setShadowVisible( false );
+        }
+
+        return renderer;
+    }
+
+    /**
      * Returns a line and shape renderer.
      */
     private LineAndShapeRenderer getLineRenderer()
@@ -417,12 +439,29 @@ public class DefaultChartService
     }
 
     /**
+     * Returns a line3d renderer.
+     */
+    private LineRenderer3D getLineRenderer3D()
+    {
+        LineRenderer3D renderer = new LineRenderer3D();
+
+        for ( int i = 0; i < colors.length; i++ )
+        {
+            renderer.setSeriesPaint( i, colors[i] );
+        }
+
+        return renderer;
+    }
+
+    /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
     private JFreeChart getJFreeChart( Chart chart, boolean subTitle )
     {
         final BarRenderer barRenderer = getBarRenderer();
+        final BarRenderer bar3dRenderer = getBar3DRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
+        final LineAndShapeRenderer line3dRenderer = getLineRenderer3D();
 
         // ---------------------------------------------------------------------
         // Plot
@@ -435,6 +474,10 @@ public class DefaultChartService
         if ( chart.isType( TYPE_LINE ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
+        }
+        if ( chart.isType( TYPE_LINE3D ) )
+        {
+            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), line3dRenderer );
         }
         else if ( chart.isType( TYPE_PIE ) || chart.isType( TYPE_PIE3D ) )
         {
@@ -481,9 +524,13 @@ public class DefaultChartService
 
             return multiplePieChart;
         }
-        else
+        else if ( chart.isType( TYPE_BAR ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
+        }
+        else if ( chart.isType( TYPE_BAR3D ) )
+        {
+            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), bar3dRenderer );
         }
 
         if ( chart.isRegression() )
