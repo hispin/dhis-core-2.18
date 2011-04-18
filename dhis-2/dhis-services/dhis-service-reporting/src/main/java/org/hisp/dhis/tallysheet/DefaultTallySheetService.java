@@ -69,12 +69,12 @@ public class DefaultTallySheetService
     public TallySheet createTallySheet( OrganisationUnit organisationUnit, List<DataElement> dataElements,
         boolean a3Format, boolean displayFacilityName, DataSet selectedDataSet, String tallySheetName )
     {
-        PeriodType periodType = selectedDataSet.getPeriodType();        
+        PeriodType periodType = selectedDataSet.getPeriodType();
 
         Collection<DataValue> dataValues = new HashSet<DataValue>();
 
         for ( DataElement dataElement : dataElements )
-        {           
+        {
 
             DataValue dataValue = dataValueService.getLatestDataValues( dataElement, periodType, organisationUnit );
 
@@ -85,8 +85,8 @@ public class DefaultTallySheetService
 
         }
 
-        return internalCreateTallySheet( organisationUnit, dataElements, dataValues, a3Format,
-            displayFacilityName, tallySheetName );
+        return internalCreateTallySheet( organisationUnit, dataElements, dataValues, a3Format, displayFacilityName,
+            tallySheetName );
     }
 
     // -------------------------------------------------------------------------
@@ -94,8 +94,7 @@ public class DefaultTallySheetService
     // -------------------------------------------------------------------------
 
     private TallySheet internalCreateTallySheet( OrganisationUnit organisationUnit, List<DataElement> dataElements,
-        Collection<DataValue> dataValues, boolean a3Format, boolean displayFacilityName,
-        String tallySheetName )
+        Collection<DataValue> dataValues, boolean a3Format, boolean displayFacilityName, String tallySheetName )
     {
         TallySheet tallySheet = new TallySheet();
 
@@ -112,10 +111,18 @@ public class DefaultTallySheetService
 
             for ( DataValue dataValue : dataValues )
             {
+
                 if ( dataValue.getSource().equals( organisationUnit )
                     && dataValue.getDataElement().equals( dataElement ) )
                 {
-                    calculatedNumberOfElements = Integer.parseInt( dataValue.getValue() );
+                    try
+                    {
+                        calculatedNumberOfElements = Integer.parseInt( dataValue.getValue() );
+                    }
+                    catch ( NumberFormatException e )
+                    {
+                        continue;
+                    }
 
                     break;
                 }
