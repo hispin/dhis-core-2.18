@@ -85,7 +85,6 @@ public class GetPeriodsByPeriodTypeAction
         }
         else
         {
-
             periodGenericManager.setPeriodType( periodTypeName );
         }
 

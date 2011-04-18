@@ -44,17 +44,17 @@ import com.opensymphony.xwork2.Action;
 public class CopyReportExcelItemAction
     implements Action
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
     private StatementManager statementManager;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer reportId;
 
@@ -62,9 +62,9 @@ public class CopyReportExcelItemAction
 
     private List<String> reportItems = new ArrayList<String>();
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setReportService( ReportExcelService reportService )
     {

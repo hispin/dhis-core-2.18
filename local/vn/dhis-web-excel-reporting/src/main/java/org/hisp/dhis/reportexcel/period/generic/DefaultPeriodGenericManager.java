@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportexcel.period.generic;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,16 +48,14 @@ import com.opensymphony.xwork2.ActionContext;
 public class DefaultPeriodGenericManager
     implements PeriodGenericManager
 {
-
     private static final Log log = LogFactory.getLog( DefaultPeriodGenericManager.class );
 
-
-    public static final String SESSION_KEY_SELECTED_PERIOD_TYPE= "SESSION_KEY_SELECTED_PERIOD_TYPE";
+    public static final String SESSION_KEY_SELECTED_PERIOD_TYPE = "SESSION_KEY_SELECTED_PERIOD_TYPE";
 
     public static final String SESSION_KEY_SELECTED_PERIOD_INDEX = "SESSION_KEY_SELECTED_PERIOD_INDEX";
 
     public static final String SESSION_KEY_BASE_PERIOD = "SESSION_KEY_BASE_PERIOD";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -68,12 +66,11 @@ public class DefaultPeriodGenericManager
     {
         this.periodService = periodService;
     }
-  
 
     // -------------------------------------------------------------------------
     // Period
     // -------------------------------------------------------------------------
-    
+
     public void setSelectedPeriodIndex( Integer index )
     {
         getSession().put( SESSION_KEY_SELECTED_PERIOD_INDEX, index );
@@ -111,7 +108,7 @@ public class DefaultPeriodGenericManager
     public List<Period> getPeriodList()
     {
         Period basePeriod = getBasePeriod();
-        
+
         CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
         List<Period> periods = periodType.generatePeriods( basePeriod );
@@ -119,7 +116,7 @@ public class DefaultPeriodGenericManager
         Date now = new Date();
 
         Iterator<Period> iterator = periods.iterator();
-        
+
         while ( iterator.hasNext() )
         {
             if ( iterator.next().getStartDate().after( now ) )
@@ -127,10 +124,10 @@ public class DefaultPeriodGenericManager
                 iterator.remove();
             }
         }
-        
+
         return periods;
     }
-    
+
     public void nextPeriodSpan()
     {
         List<Period> periods = getPeriodList();
@@ -168,7 +165,7 @@ public class DefaultPeriodGenericManager
     private Period getBasePeriod()
     {
         Period basePeriod = (Period) getSession().get( SESSION_KEY_BASE_PERIOD );
-        
+
         PeriodType periodType = getPeriodType();
 
         if ( basePeriod == null )
@@ -197,7 +194,6 @@ public class DefaultPeriodGenericManager
     @Override
     public Period getSelectedPeriod( Integer index )
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
