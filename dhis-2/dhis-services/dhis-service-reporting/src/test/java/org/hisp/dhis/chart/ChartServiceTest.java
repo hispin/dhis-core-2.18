@@ -147,8 +147,13 @@ public class ChartServiceTest
         units.add( unitC );
         
         chartA = createChart( 'A', indicators, periods, units );
+        chartA.setType( Chart.TYPE_BAR );
+
         chartB = createChart( 'B', indicators, periods, units );
+        chartB.setType( Chart.TYPE_BAR );
+
         chartC = createChart( 'C', indicators, periods, units );
+        chartC.setType( Chart.TYPE_BAR );
     }
 
     // -------------------------------------------------------------------------
