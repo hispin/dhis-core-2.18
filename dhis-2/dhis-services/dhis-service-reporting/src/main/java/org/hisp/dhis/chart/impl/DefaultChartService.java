@@ -461,7 +461,7 @@ public class DefaultChartService
         final BarRenderer barRenderer = getBarRenderer();
         final BarRenderer bar3dRenderer = getBar3DRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
-        final LineAndShapeRenderer line3dRenderer = getLineRenderer3D();
+        final LineRenderer3D line3dRenderer = getLineRenderer3D();
 
         // ---------------------------------------------------------------------
         // Plot
