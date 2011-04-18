@@ -705,44 +705,6 @@
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
-		<!-- INDIVIDUAL REPORT EXCEL -->
-
-		<action name="openIndividualReportExcel"
-			class="org.hisp.dhis.reportexcel.export.individual.action.OpenIndividualReportExcelAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/individualReportExcel.vm</param>
-			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
-			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">
-				javascript/individual.js,
-				javascript/commons.js,
-				../dhis-web-commons/ouwt/ouwt.js
-			</param>
-			<param name="stylesheets">style/style.css</param>
-		</action>
-
-		<action name="filterAvailableDataElementsByDataElementGroup"
-			class="org.hisp.dhis.reportexcel.export.individual.action.DataElementListFilteredByGroup">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseDataElementGroup.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="generateIndividualReportExcel"
-			class="org.hisp.dhis.reportexcel.export.individual.action.GenerateIndividualReportExcelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>			
-		</action>
-
-		<action name="cleanUpDraftFile"
-			class="org.hisp.dhis.reportexcel.filemanager.action.CleanUpDraftFilesAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-		</action>
-
 		<!-- PREVIEW ADVANCED REPORT -->
 
 		<action name="previewAdvancedReportExcel"
@@ -1057,7 +1019,13 @@
 		</action>
 
 		<!-- IMPORT DATA -->
-
+		
+		<action name="cleanUpDraftFile"
+			class="org.hisp.dhis.reportexcel.filemanager.action.CleanUpDraftFilesAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+		</action>
+		
 		<action name="validateUploadExcelImport"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelFile">
 			<interceptor-ref name="fileUploadStack" />

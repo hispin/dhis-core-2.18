@@ -588,7 +588,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- DATA SET COMPLETED BEAN -->
 	
-
 	<bean
 		id="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByPeriodsAction"
 		class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCompletedReportByPeriodsAction"
@@ -765,48 +764,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="periodGenericManager"
 			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
-		<property name="initPOIStylesManager"
-			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
-	</bean>
-
-	<!-- INDIVIDUAL REPORT EXCEL -->
-
-	<bean
-		id="org.hisp.dhis.reportexcel.export.individual.action.OpenIndividualReportExcelAction"
-		class="org.hisp.dhis.reportexcel.export.individual.action.OpenIndividualReportExcelAction"
-		scope="prototype">
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.export.individual.action.DataElementListFilteredByGroup"
-		class="org.hisp.dhis.reportexcel.export.individual.action.DataElementListFilteredByGroup"
-		scope="prototype">
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.export.individual.action.GenerateIndividualReportExcelAction"
-		class="org.hisp.dhis.reportexcel.export.individual.action.GenerateIndividualReportExcelAction"
-		scope="prototype">
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="statementManager" ref="statementManager" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 	</bean>
