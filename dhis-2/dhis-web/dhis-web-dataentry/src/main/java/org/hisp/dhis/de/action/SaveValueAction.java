@@ -202,17 +202,12 @@ public class SaveValueAction
         {
             if ( value != null )
             {
-                LOG.debug( "Adding DataValue" );
-
-                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null,
-                    optionCombo );
+                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null, optionCombo );
                 dataValueService.addDataValue( dataValue );
             }
         }
         else
         {
-            LOG.debug( "Updating DataValue" );
-
             dataValue.setValue( value );
             dataValue.setTimestamp( new Date() );
             dataValue.setStoredBy( storedBy );
