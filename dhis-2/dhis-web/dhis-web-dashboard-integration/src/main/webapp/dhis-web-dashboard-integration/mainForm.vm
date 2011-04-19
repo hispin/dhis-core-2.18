@@ -45,17 +45,23 @@
 <h3>$i18n.getString( "dashboard" ) 
 #if( $messageCount > 0 )<a href="message.action">$messageCount #if( $messageCount > 1 )$i18n.getString( "unread_messages" )#else$i18n.getString( "unread_message" )#end</a> #end</h3>
 
-<table cellspacing="0" cellpadding="0" style="width:960px">
+<table cellspacing="0" cellpadding="0" style="width:960px;">
 <tr>
-    <td style="width:305px">        
-        #dropDownButtonDiv( "dropDownA" "areaA" )
-        #linkDropDownListDiv( "areaA" "dropDownA" $areaA )
+    <td style="width:305px;">
+    	<div style="padding-top: 2px; padding-bottom: 1px;">
+	        #dropDownButtonDiv( "dropDownA" "areaA" )
+	        #linkDropDownListDiv( "areaA" "dropDownA" $areaA )
+        </div>
 
-        #dropDownButtonDiv( "dropDownB" "areaB" )
-        #linkDropDownListDiv( "areaB" "dropDownB" $areaB )
+    	<div style="padding-bottom: 3px;">
+	        #dropDownButtonDiv( "dropDownB" "areaB" )
+	        #linkDropDownListDiv( "areaB" "dropDownB" $areaB )
+        </div>
 
-        #dropDownButtonDiv( "dropDownC" "areaC" )
-        #linkDropDownListDiv( "areaC" "dropDownC" $areaC )      
+    	<div style="padding-bottom: 2px;">
+	        #dropDownButtonDiv( "dropDownC" "areaC" )
+	        #linkDropDownListDiv( "areaC" "dropDownC" $areaC )
+        </div>
     </td>
 	<td>
 
