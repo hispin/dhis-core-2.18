@@ -250,7 +250,7 @@
 		<!-- REPORT ORGANISATION UNIT GROUP LISTING ACTION -->
 
 		<action name="openUpdateOrgnisationUnitGroupListingReport"
-			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.OpenUpdateOrganisationUnitGroupAction">
+			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.OpenUpdateOrgUnitGroupAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/organisationUnitGroupListingReport.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
@@ -258,20 +258,20 @@
 		</action>
 
 		<action name="updateOrgnisationUnitGroupListingReport"
-			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrganisationUnitGroupAction">
+			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrgUnitGroupAction">
 			<result name="success" type="redirect">listReportExcel.action
 			</result>
 		</action>
 
 		<action name="organisationUnitAtLevels"
-			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.ListOrganisationUnitGroupAtLevelAction">
+			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.ListOrgUnitGroupAtLevelAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/organisationUnitAtLevels.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 		</action>
 
 		<action name="updateOrganisationUnitGroupAtLevel"
-			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrganisationUnitGroupAtLevelAction">
+			class="org.hisp.dhis.reportexcel.orgunitgrouplisting.action.UpdateOrgUnitGroupAtLevelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
@@ -847,7 +847,7 @@
 		</action>
 
 		<action name="updateOrgnisationUnitGroupForExcelItemGroup"
-			class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrganisationUnitGroupAction">
+			class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrgUnitGroupAction">
 			<result name="success" type="redirect">listAllExcelItemGroup.action
 			</result>
 		</action>
