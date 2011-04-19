@@ -69,6 +69,8 @@ public class Report_in
 
     private OrganisationUnitGroup orgunitGroup;
     
+    private String dataSetIds;
+    
     /**
      * All Sources that are generating this Report_in.
      */
@@ -106,6 +108,31 @@ public class Report_in
         this.orgunitGroup = orgunitGroup;
     }
 
+    public Report_in( String name, String model, PeriodType periodType, String excelTemplateName,
+        String xmlTemplateName, String reportType, String dataSetIds )
+    {
+        this.name = name;
+        this.model = model;
+        this.periodType = periodType;
+        this.excelTemplateName = excelTemplateName;
+        this.xmlTemplateName = xmlTemplateName;
+        this.reportType = reportType;
+        this.dataSetIds = dataSetIds;
+    }
+
+    public Report_in( String name, String model, PeriodType periodType, String excelTemplateName,
+        String xmlTemplateName, String reportType, OrganisationUnitGroup orgunitGroup, String dataSetIds )
+    {
+        this.name = name;
+        this.model = model;
+        this.periodType = periodType;
+        this.excelTemplateName = excelTemplateName;
+        this.xmlTemplateName = xmlTemplateName;
+        this.reportType = reportType;
+        this.orgunitGroup = orgunitGroup;
+        this.dataSetIds = dataSetIds;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -233,5 +260,13 @@ public class Report_in
         this.orgunitGroup = orgunitGroup;
     }
 
-    
+    public String getDataSetIds()
+    {
+        return dataSetIds;
+    }
+
+    public void setDataSetIds( String dataSetIds )
+    {
+        this.dataSetIds = dataSetIds;
+    }
 }

@@ -97,6 +97,13 @@ public class UpdateReportAction
         this.orgunitGroupId = orgunitGroupId;
     }
 
+    private String dataSetIds;
+    
+    public void setDataSetIds( String dataSetIds )
+    {
+        this.dataSetIds = dataSetIds;
+    }
+
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -119,6 +126,11 @@ public class UpdateReportAction
         {
             OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupId );
             report.setOrgunitGroup( orgUnitGroup );
+        }
+        
+        if( dataSetIds != null )
+        {
+            report.setDataSetIds( dataSetIds );
         }
         
         reportService.updateReport( report );

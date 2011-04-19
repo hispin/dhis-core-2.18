@@ -1,6 +1,7 @@
 package org.hisp.dhis.reports.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -9,6 +10,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
+import org.hisp.dhis.reports.comparator.Report_inNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -96,11 +98,10 @@ public class GetReportsAction
 
                 PeriodType periodTypeObj = periodService.getPeriodTypeByName( periodType );
                 
-                System.out.println( "report type  : " + reportType  + " ,Period Type :" + periodTypeObj.getName() + " ,org Unit :"  + ouName );
-                
                 reportList = new ArrayList<Report_in>( reportService.getReportsByPeriodSourceAndReportType(
                     periodTypeObj, orgUnit, reportType ) );
-                System.out.println( "Size of Reports List : " + reportList.size() );
+                
+                Collections.sort( reportList, new Report_inNameComparator() );
             }
             catch ( Exception e )
             {
