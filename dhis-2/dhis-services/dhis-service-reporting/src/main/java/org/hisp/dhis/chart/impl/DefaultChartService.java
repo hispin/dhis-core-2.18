@@ -479,6 +479,14 @@ public class DefaultChartService
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), line3dRenderer );
         }
+        else if ( chart.isType( TYPE_BAR3D ) )
+        {
+            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), bar3dRenderer );
+        }
+        else if ( chart.isType( TYPE_BAR ) )
+        {
+            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
+        }
         else if ( chart.isType( TYPE_PIE ) || chart.isType( TYPE_PIE3D ) )
         {
             JFreeChart multiplePieChart = null;
@@ -523,14 +531,6 @@ public class DefaultChartService
             }
 
             return multiplePieChart;
-        }
-        else if ( chart.isType( TYPE_BAR3D ) )
-        {
-            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), bar3dRenderer );
-        }
-        else if ( chart.isType( TYPE_BAR ) )
-        {
-            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
         }
 
         if ( chart.isRegression() )
