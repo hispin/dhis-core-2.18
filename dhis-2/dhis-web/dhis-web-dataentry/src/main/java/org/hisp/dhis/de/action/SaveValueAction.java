@@ -29,8 +29,6 @@ package org.hisp.dhis.de.action;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -52,8 +50,6 @@ import com.opensymphony.xwork2.Action;
 public class SaveValueAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( SaveValueAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
