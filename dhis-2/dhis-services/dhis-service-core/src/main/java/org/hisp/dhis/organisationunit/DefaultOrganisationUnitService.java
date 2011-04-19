@@ -38,13 +38,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
-import org.hisp.dhis.system.util.AuditLogLevel;
 import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -63,7 +63,7 @@ public class DefaultOrganisationUnitService
 {
     private static final String LEVEL_PREFIX = "Level ";
 
-    private Logger logger = Logger.getLogger( getClass() );
+    private static final Log log = LogFactory.getLog( DefaultOrganisationUnitService.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -105,7 +105,7 @@ public class DefaultOrganisationUnitService
 
         int id = sourceStore.addSource( organisationUnit );
 
-        logger.log( AuditLogLevel.AUDIT_TRAIL, AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_ADD, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
 
         return id;
@@ -117,7 +117,7 @@ public class DefaultOrganisationUnitService
 
         sourceStore.updateSource( organisationUnit );
 
-        logger.log( AuditLogLevel.AUDIT_TRAIL, AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_EDIT, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
     }
 
@@ -145,7 +145,7 @@ public class DefaultOrganisationUnitService
 
         sourceStore.deleteSource( organisationUnit );
 
-        logger.log( AuditLogLevel.AUDIT_TRAIL, AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_DELETE, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
     }
 

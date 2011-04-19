@@ -2,7 +2,10 @@ package org.hisp.dhis.user;
 
 import java.util.Collection;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.util.AuditLogUtil;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -38,10 +41,19 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class DefaultUserService
     implements UserService
 {
+    private static final Log log = LogFactory.getLog( DefaultUserService.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private CurrentUserService currentUserService;
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+    
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
@@ -117,17 +129,32 @@ public class DefaultUserService
 
     public int addUser( User user )
     {
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_ADD , 
+            User.class.getSimpleName(), 
+            user.getName()) );
+        
         return userStore.addUser( user );
     }
 
     public void deleteUser( User user )
     {
         userStore.deleteUser( user );
+        
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+            AuditLogUtil.ACTION_DELETE , 
+            User.class.getSimpleName(), 
+            user.getName()) );
     }
 
     public void updateUser( User user )
     {
         userStore.updateUser( user );
+
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+                AuditLogUtil.ACTION_EDIT , 
+                User.class.getSimpleName(), 
+                user.getName()) );
     }
 
     public Collection<User> getAllUsers()

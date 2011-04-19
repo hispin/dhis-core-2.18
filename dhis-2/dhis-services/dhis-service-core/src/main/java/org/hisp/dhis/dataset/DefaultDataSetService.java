@@ -36,13 +36,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
-import org.hisp.dhis.system.util.AuditLogLevel;
 import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -58,7 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataSetService
     implements DataSetService
 {
-    private Logger logger = Logger.getLogger( getClass() );
+    private static final Log log = LogFactory.getLog( DefaultDataSetService.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -100,7 +100,7 @@ public class DefaultDataSetService
 
         i18nService.addObject( dataSet );
 
-        logger.log( AuditLogLevel.AUDIT_TRAIL, AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_ADD, DataSet.class.getSimpleName(), dataSet.getName() ) );
 
         return id;
@@ -110,7 +110,7 @@ public class DefaultDataSetService
     {
         dataSetStore.updateDataSet( dataSet );
 
-        logger.log( AuditLogLevel.AUDIT_TRAIL, AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_EDIT, DataSet.class.getSimpleName(), dataSet.getName() ) );
 
         i18nService.verify( dataSet );
@@ -122,7 +122,7 @@ public class DefaultDataSetService
 
         dataSetStore.deleteDataSet( dataSet );
 
-        logger.log( AuditLogLevel.AUDIT_TRAIL, AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_DELETE, DataSet.class.getSimpleName(), dataSet.getName() ) );
     }
 
