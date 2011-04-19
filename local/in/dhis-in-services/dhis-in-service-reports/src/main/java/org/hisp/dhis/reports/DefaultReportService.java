@@ -9,8 +9,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1652,25 +1654,7 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
                 }
                 if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
-                    //PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    //List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
-                    //List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
-                    
                     Double aggregatedValue = aggregatedDataValueService.getAggregatedValue( dataElement.getId(), optionCombo.getId(), periodIds, organisationUnit.getId() );
-                    
-                    /*
-                    for( Period period : periodList )
-                    {
-                        Double tempAggValue = aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, organisationUnit );
-                        if( tempAggValue != null )
-                        {
-                            aggregatedValue += tempAggValue;
-                            isAggregated = 1;
-                        }
-                    }
-                    
-                    replaceString = String.valueOf( aggregatedValue );
-                    */
                     
                     if ( aggregatedValue == null )
                     {
@@ -1687,16 +1671,10 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
                 else
                 {
                     deFlag1 = 1;
-                    //PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
-                    //periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
-                    //Period tempPeriod = new Period();
                     
                     Period tempPeriod = new Period();
-                    //tempPeriod = periodService.getPeriod( Integer.parseInt( periodIds.split( "," )[0] ) );
                     
                     if ( periodIds == null || periodIds.isEmpty() )
-                    //if ( tempPeriod == null )
                     {
                         replaceString = "";
                         matcher.appendReplacement( buffer, replaceString );
@@ -1786,6 +1764,111 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
             {
                 resultValue = " ";
             }
+
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+    }
+
+    public Map<String, String> getResultDataValueFromAggregateTable( Integer orgunitId, String dataElmentIdsByComma, String periodIdsByComma )
+    {
+        Map<String, String> aggDeMap = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT dataelementid,categoryoptioncomboid, SUM(value) FROM aggregateddatavalue" +
+                           " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                           " organisationunitid = "+ orgunitId +" AND "+
+                           " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer deId = rs.getInt( 1 );
+                Integer optionComId = rs.getInt( 2 );
+                Double aggregatedValue = rs.getDouble( 3 );
+                if( aggregatedValue != null )
+                {
+                    aggDeMap.put( deId+"."+optionComId, ""+aggregatedValue );
+                }
+            }
+            
+            return aggDeMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }
+    
+    public String getResultDataValueFromAggregateTable( String formula, String periodIdsByComma, Integer orgunitId )
+    {
+        try
+        {
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( formula );
+            StringBuffer buffer = new StringBuffer();
+
+            String resultValue = "";
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
+                    .length() );
+
+                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                int dataElementId = Integer.parseInt( replaceString );
+                int optionComboId = Integer.parseInt( optionComboIdStr );
+                
+                String query = "SELECT SUM(value) FROM aggregateddatavalue WHERE dataelementid = " + dataElementId + 
+                                " AND categoryoptioncomboid = "+optionComboId + 
+                                " AND periodid IN ("+ periodIdsByComma +")"+
+                                " AND organisationunitid = "+  orgunitId;
+
+                SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+
+                Double aggregatedValue = null;
+                if( rs.next() )
+                {
+                    aggregatedValue = rs.getDouble( 1 );
+                }
+
+                if ( aggregatedValue == null )
+                {
+                    replaceString = NULL_REPLACEMENT;
+                }
+                else
+                {
+                    replaceString = String.valueOf( aggregatedValue );
+                }
+                    
+                matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
+            }
+
+            matcher.appendTail( buffer );
+            
+            double d = 0.0;
+            try
+            {
+                d = MathUtils.calculateExpression( buffer.toString() );
+            }
+            catch ( Exception e )
+            {
+                d = 0.0;
+                resultValue = "";
+            }
+            
+            resultValue = "" + (double) d;
 
             return resultValue;
         }

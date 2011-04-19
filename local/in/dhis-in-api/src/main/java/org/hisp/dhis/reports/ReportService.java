@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -127,4 +128,8 @@ public interface ReportService
     String getAggCountForTextData( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
     
     String getCountForTextData( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
+    
+    String getResultDataValueFromAggregateTable( String formula, String periodIdsByComma, Integer orgunitId );
+    
+    Map<String, String> getResultDataValueFromAggregateTable( Integer orgunitId, String dataElmentIdsByComma, String periodIdsByComma );
 }
