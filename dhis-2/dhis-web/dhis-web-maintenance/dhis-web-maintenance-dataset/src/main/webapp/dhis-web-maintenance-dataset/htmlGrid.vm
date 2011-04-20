@@ -54,6 +54,8 @@
 	
 	if( arrayIds.length < $headerIds.size() )
 	{	
+		arrayIds.length = 0;
+	
 		#foreach( $id in $headerIds )
 			arrayIds.push( '$encoder.jsEscape( $id, "'" )' );	
 		#end
