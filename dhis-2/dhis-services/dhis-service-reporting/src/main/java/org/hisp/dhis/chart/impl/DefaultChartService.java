@@ -527,7 +527,7 @@ public class DefaultChartService
 
             for ( int i = 0; i < dataSets[0].getColumnCount(); i++ )
             {
-                piePlot.setSectionPaint( dataSets[0].getColumnKey( i ), colors[i] );
+                piePlot.setSectionPaint( dataSets[0].getColumnKey( i ), colors[ ( i % colors.length ) ] );
             }
 
             return multiplePieChart;
