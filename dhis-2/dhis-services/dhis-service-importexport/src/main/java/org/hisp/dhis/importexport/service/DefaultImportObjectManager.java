@@ -493,14 +493,21 @@ public class DefaultImportObjectManager
             CalculatedDataElement object = (CalculatedDataElement) importObject.getObject();
             object.getCategoryCombo().setId( categoryComboMapping.get( object.getCategoryCombo().getId() ) );
             object.getExpression().setExpression(
-                expressionService.convertExpression( object.getExpression().getExpression(), dataElementMapping,
-                    categoryOptionComboMapping ) );
-            importer.importObject( object, params );
+            expressionService.convertExpression( object.getExpression().getExpression(), dataElementMapping, categoryOptionComboMapping ) );
+            
+            try
+            {
+                importer.importObject( object, params );
+            }
+            catch ( ClassCastException e )
+            {
+                log.warn( "Cannot convert a regular data element to a calculated data element", e );
+            }
         }
 
         importObjectStore.deleteImportObjects( CalculatedDataElement.class );
 
-        log.info( "Imported CalculatedDataElements" );
+        log.info( "Imported CalculatedDataElements"  );
     }
 
     @Transactional
@@ -1073,6 +1080,9 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataValues()
     {
+        Integer importedObjects = 0;
+        Integer failedObjects = 0;
+
         BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class )
             .init();
 
@@ -1088,20 +1098,28 @@ public class DefaultImportObjectManager
         for ( ImportDataValue importValue : importValues )
         {
             DataValue value = importValue.getDataValue();
+            try
+            {
+                value.getDataElement().setId( dataElementMapping.get( value.getDataElement().getId() ) );
+                value.getPeriod().setId( periodMapping.get( value.getPeriod().getId() ) );
+                value.getSource().setId( sourceMapping.get( value.getSource().getId() ) );
+                value.getOptionCombo().setId( categoryOptionComboMapping.get( value.getOptionCombo().getId() ) );
+                importer.importObject( value, params );
+                importedObjects++;
 
-            value.getDataElement().setId( dataElementMapping.get( value.getDataElement().getId() ) );
-            value.getPeriod().setId( periodMapping.get( value.getPeriod().getId() ) );
-            value.getSource().setId( sourceMapping.get( value.getSource().getId() ) );
-            value.getOptionCombo().setId( categoryOptionComboMapping.get( value.getOptionCombo().getId() ) );
-
-            importer.importObject( value, params );
+            } catch ( Exception e )
+            {
+                importedObjects--;
+                failedObjects++;
+                log.error( "Object import failed" + e );
+            }
         }
 
         batchHandler.flush();
 
         importDataValueService.deleteImportDataValues();
 
-        log.info( "Imported DataValues" );
+        log.info( importReport( importedObjects,failedObjects ) );
     }
 
     // -------------------------------------------------------------------------
@@ -1133,5 +1151,23 @@ public class DefaultImportObjectManager
         batchHandler.flush();
 
         importObjectStore.deleteImportObjects( type );
+    }
+
+    private String importReport(Integer importedObjects, Integer failedObjects)
+    {
+        Integer totalObjects = importedObjects + failedObjects;
+        String importReportString = "";
+        if (failedObjects > 0 )
+        {
+            importReportString = totalObjects.toString() + " values handled.\n" + importedObjects.toString() + " new values successfully imported.\n"
+                + failedObjects.toString() + " were not imported due to errors.";
+             return importReportString;
+        }
+        else
+        {
+            importReportString = importedObjects.toString() + " values were imported.";
+                return importReportString;
+        }
+
     }
 }

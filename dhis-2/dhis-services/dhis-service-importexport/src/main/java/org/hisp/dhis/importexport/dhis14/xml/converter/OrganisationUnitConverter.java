@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
  */
 
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanToDhis14;
+import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanFromDhis14;
 
 import java.util.Collection;
 import java.util.Map;
@@ -43,6 +44,7 @@ import org.hisp.dhis.importexport.dhis14.util.Dhis14DateUtil;
 import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+
 
 /**
  * @author Lars Helge Overland
@@ -61,9 +63,11 @@ public class OrganisationUnitConverter
     private static final String FIELD_VALID_FROM = "ValidFrom";
     private static final String FIELD_VALID_TO = "ValidTo";
     private static final String FIELD_ACTIVE = "Active";
+    private static final String FIELD_COMMENT = "Comment";
     private static final String FIELD_SELECTED = "Selected";
     private static final String FIELD_LAST_USER = "LastUserID";
     private static final String FIELD_LAST_UPDATED = "LastUpdated";
+    private static final String FIELD_ALT_NAME = "OrgUnitNameAlt1"; //1.4 has multiple alternative names. Support the first.
 
     private static final int VALID_FROM = 34335;
     private static final int VALID_TO = 2958465;
@@ -119,6 +123,7 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
                 writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
                 writer.writeElement( FIELD_ACTIVE, convertBooleanToDhis14( unit.isActive() ) );
+                writer.writeElement (FIELD_COMMENT, unit.getComment() );
                 writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
                 writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
                 writer.writeElement( FIELD_LAST_UPDATED, Dhis14DateUtil.getDateString( unit.getLastUpdated() ) );
@@ -137,10 +142,13 @@ public class OrganisationUnitConverter
         unit.setId( Integer.valueOf( values.get( FIELD_ID ) ) );
         unit.setName( values.get( FIELD_NAME ) );
         unit.setShortName( values.get( FIELD_SHORT_NAME ) );
+        unit.setOpeningDate(   Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_VALID_FROM ) ) ) );
+        unit.setClosedDate( Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_VALID_TO ) ) ) );
         unit.setCode( values.get( FIELD_CODE ) );
-        unit.setActive( true );
+        unit.setActive( convertBooleanFromDhis14(values.get( FIELD_ACTIVE ) ) ) ;
+        unit.setComment( values.get( FIELD_COMMENT ) );
         unit.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
-
+        //unit.setAlternativeName( values.get( FIELD_ALT_NAME ));
         importObject( unit, params );        
     }
 }
