@@ -514,8 +514,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 						<entry key="required" value="false" />
 						<entry key="minlength" value="0" />
 						<entry key="maxlength" value="25" />
-						<!--entry key="regex" value="/^[\w]?[\w\d]*$/" /-->
-						<entry key="regex" value="''" />
+						<entry key="regex"><value><![CDATA[/^[^\d][^\^\-(&lt;&gt;&apos;&quot;){=+}\[!@#$%*\]\\/`:~|;,\.\?]*$/]]></value></entry>
 						<entry key="message" value="translation_shortname_wellformed" />
 					</map>
 				</entry>
@@ -611,7 +610,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 						<entry key="required" value="false" />
 						<entry key="minlength" value="0" />
 						<entry key="maxlength" value="25" />
-						<entry key="regex" value="''" />
+						<entry key="regex"><value><![CDATA[/^[^\d][^\^\-(&lt;&gt;&apos;&quot;){=+}\[!@#$%*\]\\/`:~|;,\.\?]*$/]]></value></entry>
 						<entry key="message" value="translation_shortname_wellformed" />
 					</map>
 				</entry>
@@ -795,7 +794,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 						<entry key="required" value="false" />
 						<entry key="minlength" value="0" />
 						<entry key="maxlength" value="25" />
-						<entry key="regex" value="''" />
+						<entry key="regex"><value><![CDATA[/^[^\d][^\^\-(&lt;&gt;&apos;&quot;){=+}\[!@#$%*\]\\/`:~|;,\.\?]*$/]]></value></entry>
 						<entry key="message" value="translation_shortname_wellformed" />
 					</map>
 				</entry>
@@ -899,7 +898,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 						<entry key="required" value="false" />
 						<entry key="minlength" value="0" />
 						<entry key="maxlength" value="25" />
-						<entry key="regex" value="''" />
+						<entry key="regex"><value><![CDATA[/^[^\d][^\^\-(&lt;&gt;&apos;&quot;){=+}\[!@#$%*\]\\/`:~|;,\.\?]*$/]]></value></entry>
 						<entry key="message" value="translation_shortname_wellformed" />
 					</map>
 				</entry>
