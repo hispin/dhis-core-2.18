@@ -6,8 +6,6 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.source.Source" table="source" abstract="true">
 
-    <cache usage="read-write" />
-
     <id name="id" column="sourceid">
       <generator class="native" />
     </id>

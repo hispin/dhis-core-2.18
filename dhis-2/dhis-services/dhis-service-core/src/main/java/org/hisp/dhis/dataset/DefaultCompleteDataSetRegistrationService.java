@@ -27,8 +27,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -63,7 +63,7 @@ public class DefaultCompleteDataSetRegistrationService
         completeDataSetRegistrationStore.deleteCompleteDataSetRegistration( registration );
     }
 
-    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, Source source )
+    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source )
     {
         return completeDataSetRegistrationStore.getCompleteDataSetRegistration( dataSet, period, source );
     }
@@ -74,16 +74,16 @@ public class DefaultCompleteDataSetRegistrationService
     }    
 
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
-        Collection<DataSet> dataSets, Collection<? extends Source> sources, Collection<Period> periods )
+        Collection<DataSet> dataSets, Collection<OrganisationUnit> sources, Collection<Period> periods )
     {
         return completeDataSetRegistrationStore.getCompleteDataSetRegistrations( dataSets, sources, periods );
     }    
 
     @SuppressWarnings( "unchecked" )
     @Deprecated
-    public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<? extends Source> sources, Period period )
+    public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<OrganisationUnit> sources, Period period )
     {
-        final Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
+        final Collection<OrganisationUnit> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
         
         if ( intersectingSources == null || intersectingSources.size() == 0 )
         {
@@ -95,9 +95,9 @@ public class DefaultCompleteDataSetRegistrationService
     
     @SuppressWarnings( "unchecked" )
     @Deprecated
-    public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<? extends Source> sources, Period period, Date deadline )
+    public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<OrganisationUnit> sources, Period period, Date deadline )
     {
-        final Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
+        final Collection<OrganisationUnit> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
         
         if ( intersectingSources == null || intersectingSources.size() == 0 )
         {

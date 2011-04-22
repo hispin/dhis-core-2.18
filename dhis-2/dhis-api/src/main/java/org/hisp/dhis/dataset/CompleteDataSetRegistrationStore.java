@@ -30,8 +30,8 @@ package org.hisp.dhis.dataset;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -57,7 +57,7 @@ public interface CompleteDataSetRegistrationStore
      * @param source the Source.
      * @return the CompleteDataSetRegistration.
      */
-    CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, Source source );
+    CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source );
 
     /**
      * Deletes a CompleteDataSetRegistration.
@@ -76,7 +76,7 @@ public interface CompleteDataSetRegistrationStore
      * @return the number of existing CompleteDataSetRegistrations.
      */
     Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
-        DataSet dataSet, Collection<? extends Source> sources, Period period );
+        DataSet dataSet, Collection<OrganisationUnit> sources, Period period );
     
     /**
      * Retrieves all CompleteDataSetRegistration.
@@ -95,7 +95,7 @@ public interface CompleteDataSetRegistrationStore
      * @return a Collection of CompleteDataSetRegistrations.
      */
     Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
-        Collection<DataSet> dataSets, Collection<? extends Source> sources, Collection<Period> periods );
+        Collection<DataSet> dataSets, Collection<OrganisationUnit> sources, Collection<Period> periods );
     
     /**
      * Retrieves a Collection of CompleteDataSetRegistrations for the given DataSet,
@@ -109,7 +109,7 @@ public interface CompleteDataSetRegistrationStore
      * @return a Collection of CompleteDataSetRegistrations.
      */
     Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
-        DataSet dataSet, Collection<? extends Source> sources, Period period, Date deadline );
+        DataSet dataSet, Collection<OrganisationUnit> sources, Period period, Date deadline );
 
     /**
      * Deletes the CompleteDataSetRegistrations associated with the given DataSet.

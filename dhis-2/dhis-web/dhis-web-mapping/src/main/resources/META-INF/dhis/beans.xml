@@ -325,14 +325,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Export Map -->
 
 	<bean id="org.hisp.dhis.mapping.action.ExportImageAction" class="org.hisp.dhis.mapping.action.ExportImageAction"
-		scope="prototype">
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
+		scope="prototype"/>
 
 	<bean id="org.hisp.dhis.mapping.action.ExportExcelAction" class="org.hisp.dhis.mapping.action.ExportExcelAction"
 		scope="prototype">
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>

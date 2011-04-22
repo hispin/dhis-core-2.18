@@ -38,12 +38,11 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.mock.MockSource;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
 
 /**
@@ -70,8 +69,8 @@ public class CompleteDataSetRegistrationStoreTest
     private Period periodA;
     private Period periodB;
     
-    private Source sourceA;
-    private Source sourceB;
+    private OrganisationUnit sourceA;
+    private OrganisationUnit sourceB;
 
     private Date onTimeA;
     private Date onTimeB;
@@ -92,16 +91,16 @@ public class CompleteDataSetRegistrationStoreTest
         
         periodService = (PeriodService) getBean( PeriodService.ID );
 
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
-
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+        
         dataSetA = createDataSet( 'A', new MonthlyPeriodType() );
         dataSetB = createDataSet( 'B', new MonthlyPeriodType() );
         
         periodA = createPeriod( new MonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) );
         periodB = createPeriod( new MonthlyPeriodType(), getDate( 2000, 2, 1 ), getDate( 2000, 2, 28 ) );
         
-        sourceA = new MockSource( "SourceA" );
-        sourceB = new MockSource( "SourceB" );
+        sourceA = createOrganisationUnit( 'A' );
+        sourceB = createOrganisationUnit( 'B' );
         
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
@@ -109,8 +108,8 @@ public class CompleteDataSetRegistrationStoreTest
         periodService.addPeriod( periodA );
         periodService.addPeriod( periodB );
         
-        sourceStore.addSource( sourceA );
-        sourceStore.addSource( sourceB );
+        organisationUnitService.addOrganisationUnit( sourceA );
+        organisationUnitService.addOrganisationUnit( sourceB );
         
         onTimeA = getDate( 2000, 1, 10 );
         onTimeB = getDate( 2000, 2, 10 );
@@ -213,7 +212,7 @@ public class CompleteDataSetRegistrationStoreTest
         
         dataSets.add( dataSetB );
         
-        Collection<Source> sources = new ArrayList<Source>();
+        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
 
         sources.add( sourceA );
         sources.add( sourceB );
@@ -252,7 +251,7 @@ public class CompleteDataSetRegistrationStoreTest
         registrationStore.saveCompleteDataSetRegistration( registrationG );
         registrationStore.saveCompleteDataSetRegistration( registrationH );
         
-        Collection<Source> sources = new ArrayList<Source>();
+        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
         
         sources.add( sourceA );
         sources.add( sourceB );
@@ -287,7 +286,7 @@ public class CompleteDataSetRegistrationStoreTest
         registrationStore.saveCompleteDataSetRegistration( registrationG );
         registrationStore.saveCompleteDataSetRegistration( registrationH );
         
-        Collection<Source> sources = new ArrayList<Source>();
+        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
         
         sources.add( sourceA );
         sources.add( sourceB );

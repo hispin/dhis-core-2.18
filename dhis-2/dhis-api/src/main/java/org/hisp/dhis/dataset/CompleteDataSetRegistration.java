@@ -31,8 +31,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.hisp.dhis.common.ImportableObject;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -45,7 +45,7 @@ public class CompleteDataSetRegistration
 
     private Period period;
     
-    private Source source;
+    private OrganisationUnit source;
     
     private Date date;
     
@@ -57,7 +57,7 @@ public class CompleteDataSetRegistration
     {   
     }
 
-    public CompleteDataSetRegistration( DataSet dataSet, Period period, Source source, Date date )
+    public CompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source, Date date )
     {
         this.dataSet = dataSet;
         this.period = period;
@@ -179,12 +179,12 @@ public class CompleteDataSetRegistration
         this.period = period;
     }
     
-    public Source getSource()
+    public OrganisationUnit getSource()
     {
         return source;
     }
 
-    public void setSource( Source source )
+    public void setSource( OrganisationUnit source )
     {
         this.source = source;
     }

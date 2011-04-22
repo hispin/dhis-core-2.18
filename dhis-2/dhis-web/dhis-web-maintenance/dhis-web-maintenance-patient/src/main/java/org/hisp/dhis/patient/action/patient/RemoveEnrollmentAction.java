@@ -47,7 +47,6 @@ import org.hisp.dhis.program.ProgramAttributeOptionService;
 import org.hisp.dhis.program.ProgramAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.programattributevalue.ProgramAttributeValue;
 import org.hisp.dhis.programattributevalue.ProgramAttributeValueService;
 
@@ -67,8 +66,6 @@ public class RemoveEnrollmentAction
     // -------------------------------------------------------------------------
 
     private PatientService patientService;
-
-    private ProgramService programService;
 
     private ProgramInstanceService programInstanceService;
 
@@ -97,11 +94,6 @@ public class RemoveEnrollmentAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
-    }
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
     }
 
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )

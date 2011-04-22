@@ -67,10 +67,6 @@ public class ValidateAddRelationshipPatientAction
 
     private boolean underAge;
 
-    private Integer relationshipId;
-
-    private Integer relationshipTypeId;
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -342,16 +338,6 @@ public class ValidateAddRelationshipPatientAction
     public void setUnderAge( boolean underAge )
     {
         this.underAge = underAge;
-    }
-
-    public void setRelationshipTypeId( Integer relationshipTypeId )
-    {
-        this.relationshipTypeId = relationshipTypeId;
-    }
-
-    public void setRelationshipId( Integer relationshipId )
-    {
-        this.relationshipId = relationshipId;
     }
 
     public void setAgeType( char ageType )

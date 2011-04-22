@@ -39,11 +39,10 @@ import java.util.Date;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
 
 /**
@@ -97,15 +96,15 @@ public class CompleteDataSetRegistrationServiceTest
         
         periodService = (PeriodService) getBean( PeriodService.ID );
 
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
-
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+        
         sourceA = createOrganisationUnit( 'A' );
         sourceB = createOrganisationUnit( 'B' );
         sourceC = createOrganisationUnit( 'C' );
         
-        sourceStore.addSource( sourceA );
-        sourceStore.addSource( sourceB ); 
-        sourceStore.addSource( sourceC );    
+        organisationUnitService.addOrganisationUnit( sourceA );
+        organisationUnitService.addOrganisationUnit( sourceB ); 
+        organisationUnitService.addOrganisationUnit( sourceC );    
         
         periodA = createPeriod( new MonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) );
         periodB = createPeriod( new MonthlyPeriodType(), getDate( 2000, 2, 1 ), getDate( 2000, 2, 28 ) );
@@ -230,7 +229,7 @@ public class CompleteDataSetRegistrationServiceTest
         
         dataSets.add( dataSetB );
         
-        Collection<Source> sources = new ArrayList<Source>();
+        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
 
         sources.add( sourceA );
         sources.add( sourceB );
@@ -278,7 +277,7 @@ public class CompleteDataSetRegistrationServiceTest
         completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationK );
         completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationL );
         
-        Collection<Source> sources = new ArrayList<Source>();
+        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
         
         sources.add( sourceA );
         sources.add( sourceB );
@@ -322,7 +321,7 @@ public class CompleteDataSetRegistrationServiceTest
         completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationK );
         completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationL );
         
-        Collection<Source> sources = new ArrayList<Source>();
+        Collection<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
         
         sources.add( sourceA );
         sources.add( sourceB );
