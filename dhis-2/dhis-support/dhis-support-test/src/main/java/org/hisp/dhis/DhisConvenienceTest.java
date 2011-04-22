@@ -972,7 +972,7 @@ public abstract class DhisConvenienceTest
      * 
      * @return a dataSetLock instance
      */
-    protected static DataSetLock createDataSetLock( DataSet dataSet, Period period, Set<Source> sources,
+    protected static DataSetLock createDataSetLock( DataSet dataSet, Period period, Set<OrganisationUnit> sources,
         String storedBy, Date timestamp )
     {
         DataSetLock dataSetLock = new DataSetLock();

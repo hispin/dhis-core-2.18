@@ -36,7 +36,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.source.Source;
 
 import com.opensymphony.xwork2.Action;
 
@@ -101,14 +100,14 @@ public class DefineDataSetAssociationsAction
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-        Set<Source> assignedSources = dataSet.getSources();
+        Set<OrganisationUnit> assignedSources = dataSet.getSources();
 
         assignedSources.removeAll( organisationUnitService.convert( unitsInTheTree ) );
 
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
             .getReloadedSelectedOrganisationUnits();
 
-        assignedSources.addAll( organisationUnitService.convert( selectedOrganisationUnits ) );
+        assignedSources.addAll( selectedOrganisationUnits );
 
         dataSet.setSources( assignedSources );
 

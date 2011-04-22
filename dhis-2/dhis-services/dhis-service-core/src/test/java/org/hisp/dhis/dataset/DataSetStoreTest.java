@@ -39,7 +39,6 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 import org.junit.Test;
 
 /**
@@ -103,7 +102,7 @@ public class DataSetStoreTest
         dataSetStore.addDataSet( dataSetC );
         dataSetStore.addDataSet( dataSetD );
         
-        Collection<Source> sources = new HashSet<Source>();
+        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( unitA );
         sources.add( unitB );
         
@@ -114,7 +113,7 @@ public class DataSetStoreTest
         assertTrue( dataSets.contains( dataSetB ) );
         assertTrue( dataSets.contains( dataSetC ) );
 
-        sources = new HashSet<Source>();
+        sources = new HashSet<OrganisationUnit>();
         sources.add( unitA );
         
         dataSets = dataSetStore.getDataSetsBySources( sources );
