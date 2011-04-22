@@ -75,16 +75,6 @@ public class HibernateOrganisationUnitStore
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
-
-    public OrganisationUnit getOrganisationUnit( String uuid )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        Criteria criteria = session.createCriteria( OrganisationUnit.class );
-        criteria.add( Restrictions.eq( "uuid", uuid ) );
-        
-        return (OrganisationUnit) criteria.uniqueResult();                
-    }
     
     public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
     {
