@@ -102,7 +102,6 @@ public class DefaultSelectedStateManager
         return selectionManager.getSelectedOrganisationUnit();
     }
 
-    @SuppressWarnings( "unchecked" )
     public void setSelectedPatient( Patient patient )
     {
         getSession().put( SESSION_KEY_SELECTED_PATIENT_ID, patient.getId() );
@@ -125,7 +124,6 @@ public class DefaultSelectedStateManager
         getSession().remove( SESSION_KEY_SELECTED_PATIENT_ID );
     }
 
-    @SuppressWarnings( "unchecked" )
     public void setSelectedProgram( Program program )
     {
         getSession().put( SESSION_KEY_SELECTED_PROGRAM_ID, program.getId() );
@@ -148,7 +146,6 @@ public class DefaultSelectedStateManager
         getSession().remove( SESSION_KEY_SELECTED_PROGRAM_ID );
     }
 
-    @SuppressWarnings( "unchecked" )
     public void setSelectedProgramStage( ProgramStage programStage )
     {
         getSession().put( SESSION_KEY_SELECTED_PROGRAMSTAGE_ID, programStage.getId() );
@@ -189,7 +186,6 @@ public class DefaultSelectedStateManager
         }
     }
 
-    @SuppressWarnings( "unchecked" )
     public void setListAll( boolean listAll )
     {
         getSession().put( SESSION_KEY_LISTALL, listAll );
@@ -199,7 +195,6 @@ public class DefaultSelectedStateManager
     // Search patients by patient-attribute
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public void setSearchingAttributeId( int searchingAttributeId )
     {
         getSession().put( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID, searchingAttributeId );
@@ -215,7 +210,6 @@ public class DefaultSelectedStateManager
         getSession().remove( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID );
     }
 
-    @SuppressWarnings( "unchecked" )
     public void setSearchText( String searchText )
     {
         getSession().put( SESSION_KEY_SPECIFIED_SEARCH_TEXT, searchText );
@@ -235,7 +229,6 @@ public class DefaultSelectedStateManager
     // Sort by patient-attribute
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public void setSortingAttributeId( int sortAttributeId )
     {
         getSession().put( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID, sortAttributeId );
@@ -255,8 +248,7 @@ public class DefaultSelectedStateManager
     // Supporting methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
-    private static final Map getSession()
+    private static final Map<String, Object> getSession()
     {
         return ActionContext.getContext().getSession();
     }

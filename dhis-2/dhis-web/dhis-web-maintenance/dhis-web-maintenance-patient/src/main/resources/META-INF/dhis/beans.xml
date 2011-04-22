@@ -600,7 +600,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
 		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programAttributeService"
 			ref="org.hisp.dhis.program.ProgramAttributeService" />

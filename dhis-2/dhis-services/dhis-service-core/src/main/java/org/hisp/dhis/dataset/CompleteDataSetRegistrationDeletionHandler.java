@@ -27,8 +27,8 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -83,12 +83,11 @@ public class CompleteDataSetRegistrationDeletionHandler
     }
 
     @Override
-    public void deleteSource( Source source )
+    public void deleteOrganisationUnit( OrganisationUnit unit ) // TODO inefficient, use query
     {
-        for ( CompleteDataSetRegistration registration : completeDataSetRegistrationService
-            .getAllCompleteDataSetRegistrations() )
+        for ( CompleteDataSetRegistration registration : completeDataSetRegistrationService.getAllCompleteDataSetRegistrations() )
         {
-            if ( registration.getSource().equals( source ) )
+            if ( registration.getSource().equals( unit ) )
             {
                 completeDataSetRegistrationService.deleteCompleteDataSetRegistration( registration );
             }

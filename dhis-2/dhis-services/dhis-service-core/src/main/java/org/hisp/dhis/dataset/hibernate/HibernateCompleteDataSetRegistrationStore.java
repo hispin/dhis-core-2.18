@@ -33,9 +33,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationStore;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -92,7 +92,7 @@ public class HibernateCompleteDataSetRegistrationStore
         sessionFactory.getCurrentSession().save( registration );
     }
 
-    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, Source source )
+    public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source )
     {
         period = reloadPeriod( period );
         
@@ -114,7 +114,7 @@ public class HibernateCompleteDataSetRegistrationStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
-        DataSet dataSet, Collection<? extends Source> sources, Period period )
+        DataSet dataSet, Collection<OrganisationUnit> sources, Period period )
     {
         period = reloadPeriod( period );
         
@@ -135,7 +135,7 @@ public class HibernateCompleteDataSetRegistrationStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
-        Collection<DataSet> dataSets, Collection<? extends Source> sources, Collection<Period> periods )
+        Collection<DataSet> dataSets, Collection<OrganisationUnit> sources, Collection<Period> periods )
     {
         for ( Period period : periods )
         {
@@ -153,7 +153,7 @@ public class HibernateCompleteDataSetRegistrationStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
-        DataSet dataSet, Collection<? extends Source> sources, Period period, Date deadline )
+        DataSet dataSet, Collection<OrganisationUnit> sources, Period period, Date deadline )
     {
         period = reloadPeriod( period );
         
