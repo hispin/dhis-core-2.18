@@ -31,8 +31,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -120,11 +120,11 @@ public class ReportTableDeletionHandler
     }
 
     @Override
-    public void deleteSource( Source source )
+    public void deleteOrganisationUnit( OrganisationUnit unit )
     {
         for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
-            if ( reportTable.getUnits().remove( source ) )
+            if ( reportTable.getUnits().remove( unit ) )
             {
                 reportTableService.updateReportTable( reportTable );
             }

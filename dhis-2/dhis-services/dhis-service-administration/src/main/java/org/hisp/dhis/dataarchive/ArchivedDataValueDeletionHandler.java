@@ -29,8 +29,8 @@ package org.hisp.dhis.dataarchive;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -77,9 +77,9 @@ public class ArchivedDataValueDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteSource( Source source )
+    public boolean allowDeleteOrganisationUnit( OrganisationUnit unit )
     {
-        String sql = "SELECT COUNT(*) FROM datavaluearchive where sourceid=" + source.getId();
+        String sql = "SELECT COUNT(*) FROM datavaluearchive where sourceid=" + unit.getId();
         
         return jdbcTemplate.queryForInt( sql ) == 0;
     }

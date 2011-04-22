@@ -33,8 +33,8 @@ import java.util.Date;
 import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Kristian Nordal
@@ -59,7 +59,7 @@ public class DataValue
     /**
      * Part of the DataValue's composite ID
      */
-    private Source source;
+    private OrganisationUnit source;
 
     /**
      * Part of the DataValue's composite ID
@@ -84,14 +84,14 @@ public class DataValue
     {
     }
 
-    public DataValue( DataElement dataElement, Period period, Source source )
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source )
     {
         this.dataElement = dataElement;
         this.period = period;
         this.source = source;
     }
 
-    public DataValue( DataElement dataElement, Period period, Source source, DataElementCategoryOptionCombo optionCombo )
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo optionCombo )
     {
         this.dataElement = dataElement;
         this.period = period;
@@ -99,7 +99,7 @@ public class DataValue
         this.optionCombo = optionCombo;
     }
 
-    public DataValue( DataElement dataElement, Period period, Source source, String value )
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value )
     {
         this.dataElement = dataElement;
         this.period = period;
@@ -107,7 +107,7 @@ public class DataValue
         this.value = value;
     }
 
-    public DataValue( DataElement dataElement, Period period, Source source, String value, DataElementCategoryOptionCombo optionCombo )
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, DataElementCategoryOptionCombo optionCombo )
     {
         this.dataElement = dataElement;
         this.period = period;
@@ -116,7 +116,7 @@ public class DataValue
         this.optionCombo = optionCombo;
     }
 
-    public DataValue( DataElement dataElement, Period period, Source source, String value, String storedBy,
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
         Date timestamp, String comment )
     {
         this.dataElement = dataElement;
@@ -128,7 +128,7 @@ public class DataValue
         this.comment = comment;
     }
     
-    public DataValue( DataElement dataElement, Period period, Source source, String value, String storedBy,
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
         Date timestamp, String comment, DataElementCategoryOptionCombo optionCombo )
     {
         this.dataElement = dataElement;
@@ -241,12 +241,12 @@ public class DataValue
         this.period = period;
     }
 
-    public Source getSource()
+    public OrganisationUnit getSource()
     {
         return source;
     }
 
-    public void setSource( Source source )
+    public void setSource( OrganisationUnit source )
     {
         this.source = source;
     }

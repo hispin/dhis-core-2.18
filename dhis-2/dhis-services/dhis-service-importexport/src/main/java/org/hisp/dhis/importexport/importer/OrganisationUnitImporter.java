@@ -36,7 +36,6 @@ import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -47,16 +46,13 @@ public class OrganisationUnitImporter
 {
     protected OrganisationUnitService organisationUnitService;
 
-    protected BatchHandler<Source> sourceBatchHandler;
-
     public OrganisationUnitImporter()
     {
     }
     
-    public OrganisationUnitImporter( BatchHandler<OrganisationUnit> batchHandler, BatchHandler<Source> sourceBatchHandler, OrganisationUnitService organisationUnitService )
+    public OrganisationUnitImporter( BatchHandler<OrganisationUnit> batchHandler, OrganisationUnitService organisationUnitService )
     {
         this.batchHandler = batchHandler;
-        this.sourceBatchHandler = sourceBatchHandler;
         this.organisationUnitService = organisationUnitService;
     }
     
@@ -71,10 +67,6 @@ public class OrganisationUnitImporter
     @Override
     protected void importUnique( OrganisationUnit object )
     {
-        int id = sourceBatchHandler.insertObject( object, true );
-        
-        object.setId( id );
-        
         batchHandler.addObject( object );
     }
 

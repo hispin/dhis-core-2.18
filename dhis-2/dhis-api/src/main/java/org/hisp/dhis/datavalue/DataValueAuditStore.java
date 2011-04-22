@@ -31,8 +31,8 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Quang Nguyen
@@ -48,7 +48,7 @@ public interface DataValueAuditStore
 
     int deleteDataValueAuditByDataValue( DataValue dataValue );
 
-    void deleteDataValueAuditBySource( Source source );
+    void deleteDataValueAuditBySource( OrganisationUnit source );
 
     void deleteDataValueAuditByDataElement( DataElement dataElement );
 

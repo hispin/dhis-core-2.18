@@ -152,7 +152,7 @@ public class TableCreator
                 "CONSTRAINT fk_datavaluearchive_periodid FOREIGN KEY (periodid) " +
                     "REFERENCES period (periodid), " +
                 "CONSTRAINT fk_datavaluearchive_sourceid FOREIGN KEY (sourceid) " +
-                    "REFERENCES source (sourceid) );";
+                    "REFERENCES organisationunit (organisationunitid) );";
             
             jdbcTemplate.execute( sql );
             

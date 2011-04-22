@@ -43,8 +43,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -68,13 +66,6 @@ public class DefaultOrganisationUnitService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SourceStore sourceStore;
-
-    public void setSourceStore( SourceStore sourceStore )
-    {
-        this.sourceStore = sourceStore;
-    }
 
     private OrganisationUnitStore organisationUnitStore;
 
@@ -103,7 +94,7 @@ public class DefaultOrganisationUnitService
 
         organisationUnit.setLastUpdated( new Date() );
 
-        int id = sourceStore.addSource( organisationUnit );
+        int id = organisationUnitStore.save( organisationUnit );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_ADD, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
@@ -115,7 +106,7 @@ public class DefaultOrganisationUnitService
     {
         organisationUnit.setLastUpdated( new Date() );
 
-        sourceStore.updateSource( organisationUnit );
+        organisationUnitStore.update( organisationUnit );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_EDIT, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
@@ -140,10 +131,10 @@ public class DefaultOrganisationUnitService
         {
             parent.getChildren().remove( organisationUnit );
 
-            sourceStore.updateSource( parent );
+            organisationUnitStore.update( parent );
         }
 
-        sourceStore.deleteSource( organisationUnit );
+        organisationUnitStore.delete( organisationUnit );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_DELETE, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
@@ -151,12 +142,12 @@ public class DefaultOrganisationUnitService
 
     public OrganisationUnit getOrganisationUnit( int id )
     {
-        return sourceStore.getSource( id );
+        return organisationUnitStore.get( id );
     }
 
     public Collection<OrganisationUnit> getAllOrganisationUnits()
     {
-        return sourceStore.getAllSources();
+        return organisationUnitStore.getAll();
     }
 
     public Collection<OrganisationUnit> getOrganisationUnits( final Collection<Integer> identifiers )
@@ -174,12 +165,12 @@ public class DefaultOrganisationUnitService
 
     public OrganisationUnit getOrganisationUnit( String uuid )
     {
-        return organisationUnitStore.getOrganisationUnit( uuid );
+        return organisationUnitStore.getByUuid( uuid );
     }
 
     public OrganisationUnit getOrganisationUnitByName( String name )
     {
-        return organisationUnitStore.getOrganisationUnitByName( name );
+        return organisationUnitStore.getByName( name );
     }
     
     public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
@@ -570,16 +561,6 @@ public class DefaultOrganisationUnitService
     public int getNumberOfOrganisationUnits()
     {
         return organisationUnitStore.getNumberOfOrganisationUnits();
-    }
-
-    @Override
-    public Set<Source> convert( Collection<OrganisationUnit> organisationUnits )
-    {
-        Set<Source> sources = new HashSet<Source>();
-
-        sources.addAll( organisationUnits );
-
-        return sources;
     }
 
     @Override

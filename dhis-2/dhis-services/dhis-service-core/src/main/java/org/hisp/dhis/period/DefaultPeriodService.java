@@ -38,7 +38,7 @@ import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -205,7 +205,7 @@ public class DefaultPeriodService
     }
 
     public Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements,
-        Collection<? extends Source> sources )
+        Collection<OrganisationUnit> sources )
     {
         return periodStore.getPeriods( period, dataElements, sources );
     }

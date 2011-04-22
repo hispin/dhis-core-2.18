@@ -35,7 +35,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -105,7 +104,7 @@ public class ImportDataValue
         Period period = new Period();
         value.setPeriod( period );
         
-        Source source = new OrganisationUnit();
+        OrganisationUnit source = new OrganisationUnit();
         value.setSource( source );
         
         value.getDataElement().setId( this.dataElementId );

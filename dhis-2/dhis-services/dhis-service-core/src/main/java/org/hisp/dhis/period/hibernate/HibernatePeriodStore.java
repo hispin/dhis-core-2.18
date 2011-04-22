@@ -38,10 +38,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 
 /**
  * Implements the PeriodStore interface.
@@ -187,7 +187,7 @@ public class HibernatePeriodStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements,
-        Collection<? extends Source> sources )
+        Collection<OrganisationUnit> sources )
     {
         Set<Period> periods = new HashSet<Period>();
 

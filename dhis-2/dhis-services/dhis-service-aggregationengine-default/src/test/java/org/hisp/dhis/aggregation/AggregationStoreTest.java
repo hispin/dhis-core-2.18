@@ -43,10 +43,9 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
 
 /**
@@ -57,8 +56,6 @@ public class AggregationStoreTest
     extends DhisTest
 {
     private AggregationStore aggregationStore;
-
-    private SourceStore sourceStore;
 
     private DataElementCategoryOptionCombo optionCombo;
     
@@ -76,8 +73,8 @@ public class AggregationStoreTest
         
         periodService = (PeriodService) getBean( PeriodService.ID );
 
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
-
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+        
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
         optionCombo = new DataElementCategoryOptionCombo();
@@ -128,9 +125,9 @@ public class AggregationStoreTest
         Period periodG = createPeriod( getDay( 8 ), getDay( 10 ) );
         Period periodH = createPeriod( getDay( 5 ), getDay( 10 ) );
 
-        Source sourceA = new OrganisationUnit( "nameA", null, "shortNameA", "codeA", null, null, false, null );
-        Source sourceB = new OrganisationUnit( "nameB", null, "shortNameB", "codeB", null, null, false, null );
-        Source sourceC = new OrganisationUnit( "nameC", null, "shortNameC", "codeC", null, null, false, null );
+        OrganisationUnit sourceA = new OrganisationUnit( "nameA", null, "shortNameA", "codeA", null, null, false, null );
+        OrganisationUnit sourceB = new OrganisationUnit( "nameB", null, "shortNameB", "codeB", null, null, false, null );
+        OrganisationUnit sourceC = new OrganisationUnit( "nameC", null, "shortNameC", "codeC", null, null, false, null );
 
         DataValue dataValueA = new DataValue( dataElementA, periodA, sourceA, optionCombo );
         dataValueA.setValue( "1" );
@@ -160,9 +157,9 @@ public class AggregationStoreTest
         periodService.addPeriod( periodG );
         periodService.addPeriod( periodH );
 
-        sourceStore.addSource( sourceA );
-        sourceStore.addSource( sourceB );
-        sourceStore.addSource( sourceC );
+        organisationUnitService.addOrganisationUnit( sourceA );
+        organisationUnitService.addOrganisationUnit( sourceB );
+        organisationUnitService.addOrganisationUnit( sourceC );
 
         dataValueService.addDataValue( dataValueA );
         dataValueService.addDataValue( dataValueB );

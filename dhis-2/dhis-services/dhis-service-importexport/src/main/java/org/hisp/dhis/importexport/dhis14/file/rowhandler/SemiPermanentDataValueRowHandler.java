@@ -41,7 +41,6 @@ import org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler;
 import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 
@@ -62,7 +61,7 @@ public class SemiPermanentDataValueRowHandler
     
     private DataElement element;
 
-    private Source source;
+    private OrganisationUnit source;
     
     private DataValue value;   
     

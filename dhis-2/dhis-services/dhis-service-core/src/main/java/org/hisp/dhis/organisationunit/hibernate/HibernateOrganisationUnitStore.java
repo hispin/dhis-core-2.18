@@ -36,8 +36,8 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
@@ -52,18 +52,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @version $Id: HibernateOrganisationUnitStore.java 6251 2008-11-10 14:37:05Z larshelg $
  */
 public class HibernateOrganisationUnitStore
-    implements OrganisationUnitStore
+    extends HibernateGenericStore<OrganisationUnit> implements OrganisationUnitStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     private StatementManager statementManager;
 
@@ -91,17 +84,6 @@ public class HibernateOrganisationUnitStore
         criteria.add( Restrictions.eq( "uuid", uuid ) );
         
         return (OrganisationUnit) criteria.uniqueResult();                
-    }
-
-    public OrganisationUnit getOrganisationUnitByName( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from OrganisationUnit o where o.name = :name" );
-
-        query.setString( "name", name );
-
-        return (OrganisationUnit) query.uniqueResult();
     }
     
     public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )

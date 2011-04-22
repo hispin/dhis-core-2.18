@@ -34,8 +34,8 @@ import java.util.List;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Margrethe Store
@@ -55,7 +55,7 @@ public interface ValidationRuleService
      * Returns a Grid containing the percentage of aggregated violations. Periods
      * are listed as columns and Sources are listed as rows.
      */
-    Grid getAggregateValidationResult( Collection<ValidationResult> results, List<Period> periods, List<? extends Source> sources );
+    Grid getAggregateValidationResult( Collection<ValidationResult> results, List<Period> periods, List<OrganisationUnit> sources );
     
     /**
      * Validates AggregatedDataValues.
@@ -65,7 +65,7 @@ public interface ValidationRuleService
      * @param sources a collection of Sources.
      * @return a collection of ValidationResults for each validation violation. 
      */
-    Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<? extends Source> sources );
+    Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<OrganisationUnit> sources );
 
     /**
      * Validate AggregatedDataValues.
@@ -76,7 +76,7 @@ public interface ValidationRuleService
      * @param group a group of ValidationRules.
      * @return a collection of ValidationResults for each validation violation. 
      */
-    public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<? extends Source> sources, ValidationRuleGroup group );
+    public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group );
     
     /**
      * Validate DataValues.
@@ -86,7 +86,7 @@ public interface ValidationRuleService
      * @param sources a collection of Sources.
      * @return a collection of ValidationResults for each validation violation. 
      */
-    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<? extends Source> sources );
+    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources );
     
     /**
      * Validate DataValues.
@@ -97,7 +97,7 @@ public interface ValidationRuleService
      * @param group a group of ValidationRules.
      * @return a collection of ValidationResults for each validation violation. 
      */
-    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<? extends Source> sources, ValidationRuleGroup group );
+    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group );
     
     /**
      * Validate DataValues.
@@ -107,7 +107,7 @@ public interface ValidationRuleService
      * @param source the Source.
      * @return a collection of ValidationResults for each validation violation. 
      */
-    Collection<ValidationResult> validate( DataSet dataSet, Period period, Source source );
+    Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source );
 
     /**
      * Validate DataValues.
@@ -117,7 +117,7 @@ public interface ValidationRuleService
      * @param source the Source.
      * @return a collection of ValidationResults for each validation violation. 
      */
-    Collection<ValidationResult> validate( Date startDate, Date endDate, Source source );
+    Collection<ValidationResult> validate( Date startDate, Date endDate, OrganisationUnit source );
 
     // -------------------------------------------------------------------------
     // ValidationRule

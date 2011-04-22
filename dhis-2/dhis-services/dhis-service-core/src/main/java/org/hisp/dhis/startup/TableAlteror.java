@@ -272,6 +272,10 @@ public class TableAlteror
         executeSql( "ALTER TABLE datasetlocksource DROP CONSTRAINT fk582fdf7e8fd8026a" );
         executeSql( "ALTER TABLE completedatasetregistration DROP CONSTRAINT fk_datasetcompleteregistration_sourceid" );
         executeSql( "ALTER TABLE minmaxdataelement DROP CONSTRAINT fk_minmaxdataelement_sourceid" );
+        executeSql( "ALTER TABLE datavalue DROP CONSTRAINT fk_datavalue_sourceid" );
+        executeSql( "ALTER TABLE datavaluearchive DROP CONSTRAINT fk_datavaluearchive_sourceid" );
+        executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT fke509dd5ef1c932ed" );
+        executeSql( "DROP TABLE source CASCADE" );        
         
         log.info( "Tables updated" );
     }

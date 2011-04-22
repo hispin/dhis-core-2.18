@@ -29,8 +29,8 @@ package org.hisp.dhis.datavalue;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -63,9 +63,9 @@ public class DataValueAuditDeletionHandler
     }
 
     @Override
-    public void deleteSource( Source source )
+    public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-    	dataValueAuditService.deleteDataValueAuditBySource( source );
+    	dataValueAuditService.deleteDataValueAuditBySource( unit );
     }
 
     @Override

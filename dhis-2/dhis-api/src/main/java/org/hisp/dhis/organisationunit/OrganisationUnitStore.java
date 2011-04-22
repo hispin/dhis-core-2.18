@@ -29,6 +29,8 @@ package org.hisp.dhis.organisationunit;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+
 /**
  * Defines methods for persisting OrganisationUnits.
  * 
@@ -36,28 +38,13 @@ import java.util.Collection;
  * @version $Id: OrganisationUnitStore.java 5645 2008-09-04 10:01:02Z larshelg $
  */
 public interface OrganisationUnitStore
+    extends GenericIdentifiableObjectStore<OrganisationUnit>
 {
     String ID = OrganisationUnitStore.class.getName();
 
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
-
-    /**
-     * Returns the OrganisationUnit with the given UUID.
-     * 
-     * @param uuid the UUID of the OrganisationUnit to return.
-     * @return the OrganisationUnit with the given UUID, or null if no match.
-     */
-    OrganisationUnit getOrganisationUnit( String uuid );
-
-    /**
-     * Returns an OrganisationUnit with a given name.
-     * 
-     * @param name the name of the OrganisationUnit to return.
-     * @return the OrganisationUnit with the given name, or null if not match.
-     */
-    OrganisationUnit getOrganisationUnitByName( String name );
 
     /**
      * Returns an OrganisationUnit with a given name. Case is ignored.

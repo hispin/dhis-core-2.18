@@ -27,7 +27,6 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -59,11 +58,11 @@ public class OrganisationUnitGroupDeletionHandler
     }
     
     @Override
-    public void deleteSource( Source source )
+    public void deleteOrganisationUnit( OrganisationUnit unit )
     {
         for ( OrganisationUnitGroup group : organisationUnitGroupService.getAllOrganisationUnitGroups() )
         {
-            if ( group.getMembers().remove( source ) )
+            if ( group.getMembers().remove( unit ) )
             {
                 organisationUnitGroupService.updateOrganisationUnitGroup( group );
             }

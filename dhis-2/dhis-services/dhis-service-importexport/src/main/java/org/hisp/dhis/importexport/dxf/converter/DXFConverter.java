@@ -107,7 +107,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -119,7 +118,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
@@ -719,18 +717,14 @@ public class DXFConverter
             else if ( reader.isStartElement( OrganisationUnitConverter.COLLECTION_NAME ) )
             {
                 state.setMessage( "importing_organisation_units" );
-
-                BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler(
-                    SourceBatchHandler.class ).init();
+                
                 BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler(
                     OrganisationUnitBatchHandler.class ).init();
 
-                XMLConverter converter = new OrganisationUnitConverter( batchHandler, sourceBatchHandler,
-                    importObjectService, organisationUnitService, importAnalyser );
+                XMLConverter converter = new OrganisationUnitConverter( batchHandler, importObjectService, organisationUnitService, importAnalyser );
 
                 converterInvoker.invokeRead( converter, reader, params );
 
-                sourceBatchHandler.flush();
                 batchHandler.flush();
 
                 log.info( "Imported OrganisationUnits" );

@@ -65,7 +65,7 @@ public class DataSetResource
         t.append( "</p>\n" );
 
         t.append( "<h2>Org units reporting data set</h2>\n<ul>" );
-        for ( OrganisationUnit unit : dataSet.getOrganisationUnits() )
+        for ( OrganisationUnit unit : dataSet.getSources() )
         {
             t.append( "<li><b>" ).append( unit.getName() ).append( "</b> - " ).append( unit.getUuid() )
                 .append( "</li>" );

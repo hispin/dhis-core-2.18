@@ -33,7 +33,7 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Kristian Nordal
@@ -231,7 +231,7 @@ public interface PeriodService
      * @return all intersecting Periods for the given Period which have assosiated DataValues for
      *         the given collection of DataElements and Sources.
      */
-    Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<? extends Source> sources );
+    Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<OrganisationUnit> sources );
     
     /**
      * Enforces that each Period in the given collection is loaded in the current

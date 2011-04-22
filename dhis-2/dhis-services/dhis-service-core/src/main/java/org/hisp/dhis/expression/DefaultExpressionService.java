@@ -27,7 +27,9 @@ package org.hisp.dhis.expression;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.expression.Expression.*;
+import static org.hisp.dhis.expression.Expression.EXP_CLOSE;
+import static org.hisp.dhis.expression.Expression.EXP_OPEN;
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 
 import java.util.Collection;
@@ -50,8 +52,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -145,7 +147,7 @@ public class DefaultExpressionService
     // Business logic
     // -------------------------------------------------------------------------
 
-    public Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues, boolean aggregate )
+    public Double getExpressionValue( Expression expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregate )
     {
         final String expressionString = generateExpression( expression.getExpression(), period, source, nullIfNoValues, aggregate );
 
@@ -417,7 +419,7 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
     
-    public String generateExpression( String expression, Period period, Source source, boolean nullIfNoValues, boolean aggregated )
+    public String generateExpression( String expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregated )
     {
         StringBuffer buffer = null;
         

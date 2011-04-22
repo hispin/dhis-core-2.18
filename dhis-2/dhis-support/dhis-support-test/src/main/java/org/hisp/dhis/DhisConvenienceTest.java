@@ -88,8 +88,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
@@ -129,8 +127,6 @@ public abstract class DhisConvenienceTest
     protected SectionService sectionService;
 
     protected CompleteDataSetRegistrationService completeDataSetRegistrationService;
-
-    protected SourceStore sourceStore;
 
     protected OrganisationUnitService organisationUnitService;
 
@@ -689,7 +685,7 @@ public abstract class DhisConvenienceTest
      * @param value The value.
      * @param categoryOptionCombo The data element category option combo.
      */
-    public static DataValue createDataValue( DataElement dataElement, Period period, Source source, String value,
+    public static DataValue createDataValue( DataElement dataElement, Period period, OrganisationUnit source, String value,
         DataElementCategoryOptionCombo categoryOptionCombo )
     {
         DataValue dataValue = new DataValue();
@@ -714,7 +710,7 @@ public abstract class DhisConvenienceTest
      * @param lastupdated The date.
      * @param categoryOptionCombo The data element category option combo.
      */
-    public static DataValue createDataValue( DataElement dataElement, Period period, Source source, String value,
+    public static DataValue createDataValue( DataElement dataElement, Period period, OrganisationUnit source, String value,
         Date lastupdated, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         DataValue dataValue = new DataValue();

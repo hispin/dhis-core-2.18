@@ -32,7 +32,7 @@ import java.util.HashMap;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Lars Helge Overland
@@ -49,7 +49,7 @@ public class MinMaxValueMap
         super.put( key, element );
     }
     
-    public MinMaxDataElement get( Source source, DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
+    public MinMaxDataElement get( OrganisationUnit source, DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         return super.get( source.getId() + SEP + dataElement.getId() + SEP + categoryOptionCombo.getId() );
     }

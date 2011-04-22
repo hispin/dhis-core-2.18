@@ -33,8 +33,8 @@ import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * Interface for ExpressionService. Defines service functionality for
@@ -110,7 +110,7 @@ public interface ExpressionService
      *         if no values are registered for a given combination of 
      *         DataElement, Source, and Period.
      */
-    Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues, boolean aggregate );
+    Double getExpressionValue( Expression expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregate );
     
     /**
      * Returns all DataElements included in the given expression string.
@@ -202,6 +202,6 @@ public interface ExpressionService
      *        used when evaluating the expression.
      * @return A numerical expression.
      */    
-    String generateExpression( String expression, Period period, Source source, boolean nullIfNoValues, boolean aggregated );
+    String generateExpression( String expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregated );
 
 }

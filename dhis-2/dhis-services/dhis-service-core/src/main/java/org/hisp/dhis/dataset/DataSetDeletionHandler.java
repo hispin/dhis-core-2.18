@@ -28,7 +28,7 @@ package org.hisp.dhis.dataset;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -72,11 +72,11 @@ public class DataSetDeletionHandler
     }
 
     @Override
-    public void deleteSource( Source source )
+    public void deleteOrganisationUnit( OrganisationUnit unit )
     {
         for ( DataSet dataSet : dataSetService.getAllDataSets() )
         {
-            if ( dataSet.getSources().remove( source ) )
+            if ( dataSet.getSources().remove( unit ) )
             {
                 dataSetService.updateDataSet( dataSet );
             }

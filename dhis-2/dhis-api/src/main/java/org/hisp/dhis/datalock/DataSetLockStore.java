@@ -29,8 +29,8 @@ package org.hisp.dhis.datalock;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Brajesh Murari
@@ -104,12 +104,12 @@ public interface DataSetLockStore
      * @param dataSet, period, source The DataSetLock.
      * @return The DataSetLock with the given DataSetLock.
      */   
-    DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, Source source );
+    DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, OrganisationUnit source );
    
     /**
      * Returns all DataSetLocks associated with the specified source.
      */
-    Collection<DataSetLock> getDataSetLocksBySource( Source source );
+    Collection<DataSetLock> getDataSetLocksBySource( OrganisationUnit source );
 
     /**
      * Get all DataSetLocks.

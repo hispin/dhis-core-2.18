@@ -29,7 +29,7 @@ package org.hisp.dhis.user;
 
 import java.util.Collection;
 
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -61,7 +61,7 @@ public class UserDeletionHandler
     }
     
     @Override
-    public void deleteSource( Source unit )
+    public void deleteOrganisationUnit( OrganisationUnit unit )
     {
         for ( User user : userStore.getAllUsers() )
         {
