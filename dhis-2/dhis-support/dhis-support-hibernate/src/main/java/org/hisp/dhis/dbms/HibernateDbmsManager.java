@@ -100,7 +100,6 @@ public class HibernateDbmsManager
         emptyTable( "orgunitgroupset" );
         emptyTable( "orgunitgroupmembers" );
         emptyTable( "orgunitgroup" );
-        emptyTable( "organisationunit" );
 
         emptyTable( "datadictionarydataelements" );
         emptyTable( "datadictionaryindicators" );
@@ -133,6 +132,7 @@ public class HibernateDbmsManager
         emptyTable( "dataelementcategory" );
         emptyTable( "dataelementcategoryoption" );
 
+        emptyTable( "organisationunit" );
         emptyTable( "mocksource" );
         emptyTable( "source" );
         emptyTable( "period" );

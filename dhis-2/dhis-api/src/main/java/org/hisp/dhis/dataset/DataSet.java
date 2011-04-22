@@ -68,7 +68,7 @@ public class DataSet
     /**
      * All Sources that register data with this DataSet.
      */
-    private Set<Source> sources = new HashSet<Source>();
+    private Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
 
     /**
      * Property indicating whether the DataSet is locked for data entry.
@@ -236,12 +236,12 @@ public class DataSet
         this.compulsoryDataElementOperands = compulsoryDataElementOperands;
     }
 
-    public Set<Source> getSources()
+    public Set<OrganisationUnit> getSources()
     {
         return sources;
     }
 
-    public void setSources( Set<Source> sources )
+    public void setSources( Set<OrganisationUnit> sources )
     {
         this.sources = sources;
     }

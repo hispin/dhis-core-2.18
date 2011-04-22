@@ -30,8 +30,8 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Brajesh Murari
@@ -106,23 +106,23 @@ public interface DataSetLockService
      * @param dataSet, period, source The DataSetLock.
      * @return The DataSetLock with the given DataSetLock.
      */
-    DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, Source source );
+    DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, OrganisationUnit source );
    
     /**
      * Returns all DataSetLocks associated with the specified source.
      */
-    Collection<DataSetLock> getDataSetLocksBySource( Source source );
+    Collection<DataSetLock> getDataSetLocksBySource( OrganisationUnit source );
 
     /**
      * Returns all DataSetLocks associated with the specified sources.
      */
-    Collection<DataSetLock> getDataSetLocksBySources( Collection<? extends Source> sources );
+    Collection<DataSetLock> getDataSetLocksBySources( Collection<OrganisationUnit> sources );
     
     /**
      * Returns the number of Sources among the specified Sources associated with
      * the specified DataSetLock.
      */
-    int getSourcesAssociatedWithDataSetLock( DataSetLock dataSetLock, Collection<? extends Source> sources );
+    int getSourcesAssociatedWithDataSetLock( DataSetLock dataSetLock, Collection<OrganisationUnit> sources );
     
     /**
      * Get all DataSetLocks.
@@ -156,7 +156,7 @@ public interface DataSetLockService
      * @param selectedSources The selected organization unit from tree.
      * @param userName The user name.
      */
-    void applyCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods, Set<Source> selectedSources, String userName );
+    void applyCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods, Set<OrganisationUnit> selectedSources, String userName );
     
     /**
      * Remove lock from data sets.
@@ -166,6 +166,6 @@ public interface DataSetLockService
      * @param selectedSources The selected organization unit from tree.
      * @param userName The user name.
      */
-    void removeCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods, Set<Source> selectedSources, String userName );
+    void removeCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods, Set<OrganisationUnit> selectedSources, String userName );
 }
 

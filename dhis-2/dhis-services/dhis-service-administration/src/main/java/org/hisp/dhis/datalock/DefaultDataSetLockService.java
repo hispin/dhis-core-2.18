@@ -33,8 +33,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -104,7 +104,7 @@ public class DefaultDataSetLockService
         return dataSetLockStore.getDataSetLockByDataSetAndPeriod( dataSet, period );
     }
 
-    public  DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, Source source )
+    public  DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, OrganisationUnit source )
     {
         return dataSetLockStore.getDataSetLockByDataSetPeriodAndSource( dataSet, period, source );       
     }
@@ -126,16 +126,16 @@ public class DefaultDataSetLockService
         return objects;
     }
 
-    public Collection<DataSetLock> getDataSetLocksBySource( Source source )
+    public Collection<DataSetLock> getDataSetLocksBySource( OrganisationUnit source )
     {
         return dataSetLockStore.getDataSetLocksBySource( source );
     }
 
-    public Collection<DataSetLock> getDataSetLocksBySources( Collection<? extends Source> sources )
+    public Collection<DataSetLock> getDataSetLocksBySources( Collection<OrganisationUnit> sources )
     {
         Set<DataSetLock> dataSetLocks = new HashSet<DataSetLock>();
         
-        for ( Source source : sources )
+        for ( OrganisationUnit source : sources )
         {
             dataSetLocks.addAll( dataSetLockStore.getDataSetLocksBySource( source ) );
         }
@@ -157,11 +157,11 @@ public class DefaultDataSetLockService
         return dataSets;
     }
 
-    public int getSourcesAssociatedWithDataSetLock( DataSetLock dataSetLock, Collection<? extends Source> sources )
+    public int getSourcesAssociatedWithDataSetLock( DataSetLock dataSetLock, Collection<OrganisationUnit> sources )
     {
         int count = 0;
         
-        for ( Source source : sources )
+        for ( OrganisationUnit source : sources )
         {
             if ( dataSetLock.getSources().contains( source ) )
             {
@@ -173,12 +173,12 @@ public class DefaultDataSetLockService
     }
 
     public void applyCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods,
-        Set<Source> selectedSources, String userName )
+        Set<OrganisationUnit> selectedSources, String userName )
     {
         for ( DataSet dataSet : dataSets )
         {
-            Set<Source> dataSetOrganisationUnits = dataSet.getSources();
-            Set<Source> selOrgUnitSource = new HashSet<Source>();
+            Set<OrganisationUnit> dataSetOrganisationUnits = dataSet.getSources();
+            Set<OrganisationUnit> selOrgUnitSource = new HashSet<OrganisationUnit>();
 
             selOrgUnitSource.addAll( selectedSources );
             selOrgUnitSource.retainAll( dataSetOrganisationUnits );
@@ -188,7 +188,7 @@ public class DefaultDataSetLockService
                 DataSetLock dataSetLock = this.getDataSetLockByDataSetAndPeriod( dataSet, period );
                 if ( dataSetLock != null )
                 {
-                    Set<Source> lockedOrganisationUnitsSource = dataSetLock.getSources();
+                    Set<OrganisationUnit> lockedOrganisationUnitsSource = dataSetLock.getSources();
                     selOrgUnitSource.removeAll( lockedOrganisationUnitsSource );
                     dataSetLock.getSources().addAll( selOrgUnitSource );
                     dataSetLock.setTimestamp( new Date() );
@@ -211,12 +211,12 @@ public class DefaultDataSetLockService
     }
 
     public void removeCollectiveDataLock( Collection<DataSet> dataSets, Collection<Period> periods,
-        Set<Source> selectedSources, String userName )
+        Set<OrganisationUnit> selectedSources, String userName )
     {
         for ( DataSet dataSet : dataSets )
         {
-            Set<Source> dataSetOrganisationUnits = dataSet.getSources();
-            Set<Source> selOrgUnitSource = new HashSet<Source>();
+            Set<OrganisationUnit> dataSetOrganisationUnits = dataSet.getSources();
+            Set<OrganisationUnit> selOrgUnitSource = new HashSet<OrganisationUnit>();
 
             selOrgUnitSource.addAll( selectedSources );
             selOrgUnitSource.retainAll( dataSetOrganisationUnits );
@@ -226,7 +226,7 @@ public class DefaultDataSetLockService
                 DataSetLock dataSetLock = this.getDataSetLockByDataSetAndPeriod( dataSet, period );
                 if ( dataSetLock != null )
                 {
-                    Set<Source> lockedOrganisationUnitsSource = dataSetLock.getSources();
+                    Set<OrganisationUnit> lockedOrganisationUnitsSource = dataSetLock.getSources();
                     selOrgUnitSource.retainAll( lockedOrganisationUnitsSource );
                     dataSetLock.getSources().removeAll( selOrgUnitSource );
                     dataSetLock.setTimestamp( new Date() );

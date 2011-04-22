@@ -31,17 +31,22 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertNotSame;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
 
 /**
@@ -49,20 +54,149 @@ import org.junit.Test;
  * @version $Id$
  */
 public class DataSetLockServiceTest
-    extends DataSetLockTest
+    extends DhisSpringTest
 {
+    protected DataSetLockService dataSetLockService;
+
+    protected DataSet dataSetA;
+
+    protected DataSet dataSetB;
+
+    protected DataSet dataSetC;
+
+    protected Period periodA;
+
+    protected Period periodB;
+
+    protected Period periodC;
+
+    protected Period periodD;
+
+    protected OrganisationUnit unitA;
+
+    protected OrganisationUnit unitB;
+
+    protected OrganisationUnit unitC;
+
+    protected OrganisationUnit unitD;
+
+    protected OrganisationUnit unitE;
+
+    protected OrganisationUnit unitF;
+
+    protected OrganisationUnit unitG;
+
+    protected OrganisationUnit unitH;
+
+    protected OrganisationUnit unitI;
+
+    protected String user1;
+
+    protected String user2;
+
+    protected String user3;
+
+    protected String user4;
+
+    protected String user5;
+
     @Override
     public void setUpTest()
         throws Exception
     {
-        setUpDataSetLockTest();
+        dataSetService = (DataSetService) getBean( DataSetService.ID );
+        
+        dataSetLockService = (DataSetLockService) getBean( DataSetLockService.ID );
+
+        periodService = (PeriodService) getBean( PeriodService.ID );
+
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+
+        // ---------------------------------------------------------------------
+        // Setup Periods
+        // ---------------------------------------------------------------------
+
+        Iterator<PeriodType> periodTypeIt = periodService.getAllPeriodTypes().iterator();
+        PeriodType periodTypeA = periodTypeIt.next(); // Daily
+        PeriodType periodTypeB = periodTypeIt.next(); // Weekly
+
+        Date mar01 = super.getDate( 2005, 3, 1 );
+        Date mar31 = super.getDate( 2005, 3, 31 );
+        Date apr01 = super.getDate( 2005, 4, 1 );
+        Date apr30 = super.getDate( 2005, 4, 30 );
+        Date may01 = super.getDate( 2005, 5, 1 );
+        Date may31 = super.getDate( 2005, 5, 31 );
+
+        periodA = super.createPeriod( periodTypeA, mar01, mar31 );
+        periodB = super.createPeriod( periodTypeA, apr01, apr30 );
+        periodC = super.createPeriod( periodTypeB, mar01, may31 );
+        periodD = super.createPeriod( periodTypeB, may01, may31 );
+
+        periodService.addPeriod( periodA );
+        periodService.addPeriod( periodB );
+        periodService.addPeriod( periodC );
+        periodService.addPeriod( periodD );
+
+        // ---------------------------------------------------------------------
+        // Setup DataSets
+        // ---------------------------------------------------------------------
+
+        dataSetA = super.createDataSet( 'A', periodTypeA );
+        dataSetB = super.createDataSet( 'B', periodTypeB );
+        dataSetC = super.createDataSet( 'C', periodTypeB );
+
+        dataSetService.addDataSet( dataSetA );
+        dataSetService.addDataSet( dataSetB );
+        dataSetService.addDataSet( dataSetC );
+
+        // ---------------------------------------------------------------------
+        // Setup OrganisationUnits
+        // ---------------------------------------------------------------------
+
+        unitA = super.createOrganisationUnit( 'A' );
+        unitB = super.createOrganisationUnit( 'B', unitA );
+        unitC = super.createOrganisationUnit( 'C', unitA );
+        unitD = super.createOrganisationUnit( 'D', unitB );
+        unitE = super.createOrganisationUnit( 'E', unitB );
+        unitF = super.createOrganisationUnit( 'F', unitB );
+        unitG = super.createOrganisationUnit( 'G', unitF );
+        unitH = super.createOrganisationUnit( 'H', unitF );
+        unitI = super.createOrganisationUnit( 'I' );
+
+        organisationUnitService.addOrganisationUnit( unitA );
+        organisationUnitService.addOrganisationUnit( unitB );
+        organisationUnitService.addOrganisationUnit( unitC );
+        organisationUnitService.addOrganisationUnit( unitD );
+        organisationUnitService.addOrganisationUnit( unitE );
+        organisationUnitService.addOrganisationUnit( unitF );
+        organisationUnitService.addOrganisationUnit( unitG );
+        organisationUnitService.addOrganisationUnit( unitH );
+        organisationUnitService.addOrganisationUnit( unitI );
+
+        // ---------------------------------------------------------------------
+        // Setup Users
+        // ---------------------------------------------------------------------
+
+        user1 = "admin";
+        user2 = "User2";
+        user3 = "User3";
+        user4 = "User4";
+        user5 = "User5";
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void assertEq( DataSetLock dataSetLock, DataSet dataSet, Period period, Set<Source> sources )
+    public void initOrgunitSet( Set<OrganisationUnit> units, OrganisationUnit... sources )
+    {
+        for ( OrganisationUnit s : sources )
+        {
+            units.add( s );
+        }
+    }
+    
+    private void assertEq( DataSetLock dataSetLock, DataSet dataSet, Period period, Set<OrganisationUnit> sources )
     {
         assertEquals( dataSet, dataSetLock.getDataSet() );
         assertEquals( period, dataSetLock.getPeriod() );
@@ -76,7 +210,7 @@ public class DataSetLockServiceTest
     @Test
     public void testAddDataSetLock()
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC, unitI );
 
         DataSetLock dataSetLockAA = createDataSetLock( dataSetA, periodA, lockSources, user1, new Date() );
@@ -109,7 +243,7 @@ public class DataSetLockServiceTest
     @Test
     public void testUpdateDataSetLock()
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC );
 
         DataSetLock dataSetLock = createDataSetLock( dataSetC, periodC, lockSources, user2, new Date() );
@@ -131,7 +265,7 @@ public class DataSetLockServiceTest
     @Test
     public void testDeleteAndGetDataSetLock()
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC );
 
         DataSetLock dataSetLockAA = createDataSetLock( dataSetA, periodA, lockSources, user1, new Date() );
@@ -158,7 +292,7 @@ public class DataSetLockServiceTest
     public void testGetDataSetLockByDataSet()
         throws Exception
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC, unitI );
 
         DataSetLock dataSetLockAB = createDataSetLock( dataSetA, periodB, lockSources, user1, new Date() );
@@ -187,7 +321,7 @@ public class DataSetLockServiceTest
     public void testGetDataSetLockByPeriod()
         throws Exception
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC, unitI );
 
         DataSetLock dataSetLockAB = createDataSetLock( dataSetA, periodB, lockSources, user1, new Date() );
@@ -216,7 +350,7 @@ public class DataSetLockServiceTest
     @Test
     public void testGetAllDataSetLocks()
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC, unitI );
 
         DataSetLock dataSetLockAA = createDataSetLock( dataSetA, periodA, lockSources, user1, new Date() );
@@ -244,7 +378,7 @@ public class DataSetLockServiceTest
     @Test
     public void testGetDataSetLocks()
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC, unitI );
 
         DataSetLock dataSetLockAA = createDataSetLock( dataSetA, periodA, lockSources, user1, new Date() );
@@ -271,7 +405,7 @@ public class DataSetLockServiceTest
     @Test
     public void testGetDataSetLockByDataSetAndPeriod()
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC, unitI );
 
         DataSetLock dataSetLock = createDataSetLock( dataSetA, periodB, lockSources, user1, new Date() );
@@ -287,7 +421,7 @@ public class DataSetLockServiceTest
     @Test
     public void testGetDataSetLockByDataSetPeriodAndSource()
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC );
 
         DataSetLock dataSetLockAA = createDataSetLock( dataSetA, periodA, lockSources, user1, new Date() );
@@ -295,10 +429,7 @@ public class DataSetLockServiceTest
         int idAA = dataSetLockService.addDataSetLock( dataSetLockAA );
         dataSetLockAA = dataSetLockService.getDataSetLock( idAA );
 
-        // assertSame( dataSetLockAA,
-        // dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSetA,
-        // periodA, unitC ) );
-        assertNull( dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSetA, periodA, unitC ) );
+        assertNotNull( dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSetA, periodA, unitC ) );
 
         lockSources.add( unitI );
         lockSources.remove( unitC );
@@ -311,7 +442,7 @@ public class DataSetLockServiceTest
     @Test
     public void testGetDataSetLocksBySource()
     {
-        Set<Source> lockSources = new HashSet<Source>();
+        Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
         initOrgunitSet( lockSources, unitB, unitC, unitI );
 
         DataSetLock dataSetLockAA = createDataSetLock( dataSetA, periodA, lockSources, user1, new Date() );
@@ -325,10 +456,9 @@ public class DataSetLockServiceTest
         Collection<DataSetLock> dataSetLocks = new HashSet<DataSetLock>( dataSetLockService
             .getDataSetLocksBySource( unitI ) );
 
-        //assertEquals( 3, dataSetLocks.size() );
-        assertNotSame( 3, dataSetLocks.size() );
-        assertTrue( !dataSetLocks.contains( dataSetLockService.getDataSetLock( idAA ) ) );
-        assertTrue( !dataSetLocks.contains( dataSetLockService.getDataSetLock( idBB ) ) );
-        assertTrue( !dataSetLocks.contains( dataSetLockService.getDataSetLock( idCC ) ) );
+        assertEquals( 3, dataSetLocks.size() );
+        assertTrue( dataSetLocks.contains( dataSetLockService.getDataSetLock( idAA ) ) );
+        assertTrue( dataSetLocks.contains( dataSetLockService.getDataSetLock( idBB ) ) );
+        assertTrue( dataSetLocks.contains( dataSetLockService.getDataSetLock( idCC ) ) );
     }
 }

@@ -41,8 +41,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -153,16 +153,16 @@ public class DefaultDataSetService
         return i18n( i18nService, dataSetStore.getDataSetByCode( code ) );
     }
 
-    public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
+    public Collection<DataSet> getDataSetsBySources( Collection<OrganisationUnit> sources )
     {
         return i18n( i18nService, dataSetStore.getDataSetsBySources( sources ) );
     }
 
-    public int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<? extends Source> sources )
+    public int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<OrganisationUnit> sources )
     {
         int count = 0;
 
-        for ( Source source : sources )
+        for ( OrganisationUnit source : sources )
         {
             if ( dataSet.getSources().contains( source ) )
             {
@@ -283,7 +283,7 @@ public class DefaultDataSetService
         return i18n( i18nService, dataSet.getDataElements() );
     }    
     
-    public Collection<DataSet> getDataSetsForMobile(Source source) 
+    public Collection<DataSet> getDataSetsForMobile( OrganisationUnit source ) 
     {
         return i18n( i18nService, dataSetStore.getDataSetsForMobile(source) );		
     }

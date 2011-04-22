@@ -18,7 +18,7 @@
 
     <set name="sources" table="datasetlocksource">
       <key column="datasetlockid" />
-      <many-to-many column="sourceid" class="org.hisp.dhis.source.Source" />
+      <many-to-many column="sourceid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_datasetlock_organisationunit"/>
     </set>
 
     <property name="storedBy" column="storedby" length="31" />

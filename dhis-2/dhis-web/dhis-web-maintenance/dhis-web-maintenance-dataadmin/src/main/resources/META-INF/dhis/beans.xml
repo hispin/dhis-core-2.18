@@ -20,8 +20,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.period.PeriodService"/>
 		<property name="dataSetService"
 			ref="org.hisp.dhis.dataset.DataSetService"/>
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		<property name="dataSetLockService"
 			ref="org.hisp.dhis.datalock.DataSetLockService"/>
 		<property name="currentUserService"

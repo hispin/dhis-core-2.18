@@ -56,6 +56,7 @@ import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.olap.OlapURL;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -331,6 +332,15 @@ public abstract class DeletionHandler
     }
 
     public boolean allowDeleteDataEntryForm( DataEntryForm form )
+    {
+        return true;
+    }
+
+    public void deleteOrganisationUnit( OrganisationUnit unit )
+    {
+    }
+
+    public boolean allowDeleteOrganisationUnit( OrganisationUnit unit )
     {
         return true;
     }

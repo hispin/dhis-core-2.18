@@ -31,8 +31,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Brajesh Murari
@@ -58,7 +58,7 @@ public class DataSetLock
     /**
      * All Sources that are associated with DataSetLock.
      */
-    private Set<Source> sources = new HashSet<Source>();
+    private Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
     
     /**
      * All DataSetLocks applied by users.
@@ -85,7 +85,7 @@ public class DataSetLock
         this.period = period;
     }
     
-    public DataSetLock( DataSet dataSet, Period period, Set<Source> sources )
+    public DataSetLock( DataSet dataSet, Period period, Set<OrganisationUnit> sources )
     {
         this.dataSet = dataSet;
         this.period = period;
@@ -128,7 +128,7 @@ public class DataSetLock
 
         final DataSetLock other = (DataSetLock) o;
 
-        return dataSet.equals( other.getDataSet() ) && period.equals( other.getPeriod() ) ;
+        return dataSet.equals( other.dataSet ) && period.equals( other.period );
     }
     
     
@@ -167,12 +167,12 @@ public class DataSetLock
         this.period = period;
     }
 
-    public Set<Source> getSources()
+    public Set<OrganisationUnit> getSources()
     {
         return sources;
     }
 
-    public void setSources( Set<Source> sources )
+    public void setSources( Set<OrganisationUnit> sources )
     {
         this.sources = sources;
     }

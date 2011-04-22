@@ -29,8 +29,8 @@ package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Kristian Nordal
@@ -125,11 +125,11 @@ public interface DataSetStore
     /**
      * Returns all DataSets that can be collected through mobile.
      */
-    Collection<DataSet> getDataSetsForMobile(Source source);
+    Collection<DataSet> getDataSetsForMobile( OrganisationUnit source );
     
     Collection<DataSet> getDataSetsForMobile();
 
-    Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources );
+    Collection<DataSet> getDataSetsBySources( Collection<OrganisationUnit> sources );
     
     Collection<DataSet> getMobileDataSetsFromCategoryOption(int categoryOptionId);
     

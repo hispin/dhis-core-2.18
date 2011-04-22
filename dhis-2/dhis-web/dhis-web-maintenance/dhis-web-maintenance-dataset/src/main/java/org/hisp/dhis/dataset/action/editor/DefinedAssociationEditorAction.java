@@ -30,8 +30,8 @@ package org.hisp.dhis.dataset.action.editor;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.source.Source;
 
 import com.opensymphony.xwork2.Action;
 
@@ -132,7 +132,7 @@ public class DefinedAssociationEditorAction
         throws Exception
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        Source source = organisationUnitService.getOrganisationUnit( orgUnitId );
+        OrganisationUnit source = organisationUnitService.getOrganisationUnit( orgUnitId );
 
         title = SEPERATE + dataSet.getName() + SEPERATE + source.getName();
 

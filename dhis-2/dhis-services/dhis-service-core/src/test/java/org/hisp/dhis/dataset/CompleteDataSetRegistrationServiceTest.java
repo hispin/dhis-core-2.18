@@ -38,7 +38,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.mock.MockSource;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -73,9 +73,9 @@ public class CompleteDataSetRegistrationServiceTest
     private Period periodA;
     private Period periodB;
     
-    private Source sourceA;
-    private Source sourceB;
-    private Source sourceC;
+    private OrganisationUnit sourceA;
+    private OrganisationUnit sourceB;
+    private OrganisationUnit sourceC;
 
     private Date onTimeA;
     private Date onTimeB;
@@ -99,9 +99,9 @@ public class CompleteDataSetRegistrationServiceTest
 
         sourceStore = (SourceStore) getBean( SourceStore.ID );
 
-        sourceA = new MockSource( "SourceA" );
-        sourceB = new MockSource( "SourceB" );
-        sourceC = new MockSource( "SourceC" );
+        sourceA = createOrganisationUnit( 'A' );
+        sourceB = createOrganisationUnit( 'B' );
+        sourceC = createOrganisationUnit( 'C' );
         
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB ); 

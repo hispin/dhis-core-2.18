@@ -43,6 +43,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
@@ -173,7 +174,14 @@ public class DefaultValidationRuleService
     {
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         
-        Collection<DataSet> dataSets = dataSetService.getDataSetsBySources( sources );
+        Collection<OrganisationUnit> units = new HashSet<OrganisationUnit>(); //TODO fix
+        
+        for ( Source source : sources )
+        {
+            units.add( (OrganisationUnit) source );
+        }
+        
+        Collection<DataSet> dataSets = dataSetService.getDataSetsBySources( units );
         
         Collection<DataElement> dataElements = dataElementService.getDataElementsByDataSets( dataSets );
         

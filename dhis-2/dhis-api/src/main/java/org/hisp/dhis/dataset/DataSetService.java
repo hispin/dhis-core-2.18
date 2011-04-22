@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -111,13 +111,13 @@ public interface DataSetService
     /**
      * Returns all DataSets associated with the specified sources.
      */
-    Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources );
+    Collection<DataSet> getDataSetsBySources( Collection<OrganisationUnit> sources );
 
     /**
      * Returns the number of Sources among the specified Sources associated with
      * the specified DataSet.
      */
-    int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<? extends Source> sources );
+    int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<OrganisationUnit> sources );
 
     /**
      * Get all DataSets.
@@ -200,7 +200,7 @@ public interface DataSetService
     /**
      * Returns all DataSets that can be collected through mobile (one organisation unit).
      */
-    Collection<DataSet> getDataSetsForMobile(Source source);
+    Collection<DataSet> getDataSetsForMobile( OrganisationUnit source );
 
     /**
      * Returns all DataSets that can be collected through mobile (all organisation unit).

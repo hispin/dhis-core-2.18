@@ -266,6 +266,11 @@ public class TableAlteror
         executeSql( "ALTER TABLE datamartexport DROP COLUMN individualmonthsthisyear" );
         executeSql( "ALTER TABLE datamartexport DROP COLUMN individualquartersthisyear" );
 
+        // remove source
+        
+        executeSql( "ALTER TABLE datasetsource DROP CONSTRAINT fk766ae2938fd8026a" );
+        executeSql( "ALTER TABLE datasetlocksource DROP CONSTRAINT fk582fdf7e8fd8026a" );
+        
         log.info( "Tables updated" );
     }
 

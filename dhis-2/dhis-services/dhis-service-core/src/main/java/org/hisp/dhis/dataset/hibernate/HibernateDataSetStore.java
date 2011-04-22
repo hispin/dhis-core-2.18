@@ -44,9 +44,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
@@ -180,16 +180,16 @@ public class HibernateDataSetStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
+    public Collection<DataSet> getDataSetsBySources( Collection<OrganisationUnit> sources )
     {
         String hql = "select distinct d from DataSet d join d.sources s where s.id in (:ids)";
 
         return sessionFactory.getCurrentSession().createQuery( hql )
-            .setParameterList( "ids", ConversionUtils.getIdentifiers( Source.class, sources ) ).list();
+            .setParameterList( "ids", ConversionUtils.getIdentifiers( OrganisationUnit.class, sources ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataSet> getDataSetsForMobile( Source source )
+    public Collection<DataSet> getDataSetsForMobile( OrganisationUnit source )
     {
         String hql = "from DataSet d where :source in elements(d.sources) and d.mobile = true";
         Query query = sessionFactory.getCurrentSession().createQuery( hql );

@@ -36,8 +36,8 @@ import org.hisp.dhis.databrowser.MetaValue;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.source.Source;
 
 import com.opensymphony.xwork2.Action;
 
@@ -91,7 +91,7 @@ public class DefinedMultiAssociationsEditorAction
 
     private boolean checked;
 
-    private Source source;
+    private OrganisationUnit source;
 
     private List<MetaValue> metaItems = new ArrayList<MetaValue>();
 
@@ -140,7 +140,7 @@ public class DefinedMultiAssociationsEditorAction
         return itemMaps;
     }
 
-    public Source getSource()
+    public OrganisationUnit getSource()
     {
         return source;
     }

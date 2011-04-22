@@ -36,11 +36,9 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -80,13 +78,6 @@ public class CollectiveDataLockingAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     private DataSetLockService dataSetLockService;
@@ -167,13 +158,10 @@ public class CollectiveDataLockingAction
         }
 
         String currentUserName = currentUserService.getCurrentUsername();
-        Collection<OrganisationUnit> selectedOrganisationUnits = new HashSet<OrganisationUnit>();
-        Set<Source> selectedSources = new HashSet<Source>();
 
-        selectedOrganisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
-        selectedSources = organisationUnitService.convert( selectedOrganisationUnits );
+        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
 
-        this.executeCollectiveDataLock( selectedSources, currentUserName );
+        this.executeCollectiveDataLock( new HashSet<OrganisationUnit>( selectedOrganisationUnits ), currentUserName );
 
         return SUCCESS;
     }
@@ -182,7 +170,7 @@ public class CollectiveDataLockingAction
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void executeCollectiveDataLock( Set<Source> sources, String currentUserName )
+    private void executeCollectiveDataLock( Set<OrganisationUnit> sources, String currentUserName )
     {
         if ( selectBetweenLockUnlock )
         {
