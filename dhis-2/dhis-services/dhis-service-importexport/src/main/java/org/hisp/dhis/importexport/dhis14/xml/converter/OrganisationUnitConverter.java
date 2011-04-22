@@ -67,7 +67,6 @@ public class OrganisationUnitConverter
     private static final String FIELD_SELECTED = "Selected";
     private static final String FIELD_LAST_USER = "LastUserID";
     private static final String FIELD_LAST_UPDATED = "LastUpdated";
-    private static final String FIELD_ALT_NAME = "OrgUnitNameAlt1"; //1.4 has multiple alternative names. Support the first.
 
     private static final int VALID_FROM = 34335;
     private static final int VALID_TO = 2958465;
@@ -148,7 +147,6 @@ public class OrganisationUnitConverter
         unit.setActive( convertBooleanFromDhis14(values.get( FIELD_ACTIVE ) ) ) ;
         unit.setComment( values.get( FIELD_COMMENT ) );
         unit.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
-        //unit.setAlternativeName( values.get( FIELD_ALT_NAME ));
         importObject( unit, params );        
     }
 }
