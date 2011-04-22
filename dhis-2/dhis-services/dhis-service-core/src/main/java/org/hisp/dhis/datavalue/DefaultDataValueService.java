@@ -39,7 +39,6 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -95,7 +94,7 @@ public class DefaultDataValueService
     }
 
     @Transactional
-    public int deleteDataValuesBySource( Source source )
+    public int deleteDataValuesBySource( OrganisationUnit source )
     {
         return dataValueStore.deleteDataValuesBySource( source );
     }
@@ -106,7 +105,7 @@ public class DefaultDataValueService
         return dataValueStore.deleteDataValuesByDataElement( dataElement );
     }
 
-    public DataValue getDataValue( Source source, DataElement dataElement, Period period,
+    public DataValue getDataValue( OrganisationUnit source, DataElement dataElement, Period period,
         DataElementCategoryOptionCombo optionCombo )
     {
         return dataValueStore.getDataValue( source, dataElement, period, optionCombo );
@@ -126,46 +125,46 @@ public class DefaultDataValueService
         return dataValueStore.getAllDataValues();
     }
 
-    public Collection<DataValue> getDataValues( Source source, Period period )
+    public Collection<DataValue> getDataValues( OrganisationUnit source, Period period )
     {
         return dataValueStore.getDataValues( source, period );
     }
 
-    public Collection<DataValue> getDataValues( Source source, DataElement dataElement )
+    public Collection<DataValue> getDataValues( OrganisationUnit source, DataElement dataElement )
     {
         return dataValueStore.getDataValues( source, dataElement );
     }
 
-    public Collection<DataValue> getDataValues( Collection<Source> sources, DataElement dataElement )
+    public Collection<DataValue> getDataValues( Collection<OrganisationUnit> sources, DataElement dataElement )
     {
         return dataValueStore.getDataValues( sources, dataElement );
     }
 
-    public Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements )
+    public Collection<DataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements )
     {
         return dataValueStore.getDataValues( source, period, dataElements );
     }
 
-    public Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements,
+    public Collection<DataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements,
         Collection<DataElementCategoryOptionCombo> optionCombos )
     {
         return dataValueStore.getDataValues( source, period, dataElements, optionCombos );
     }
 
     public Collection<DataValue> getDataValues( DataElement dataElement, Period period,
-        Collection<? extends Source> sources )
+        Collection<OrganisationUnit> sources )
     {
         return dataValueStore.getDataValues( dataElement, period, sources );
     }
 
     public Collection<DataValue> getDataValues( DataElement dataElement, Collection<Period> periods,
-        Collection<? extends Source> sources )
+        Collection<OrganisationUnit> sources )
     {
         return dataValueStore.getDataValues( dataElement, periods, sources );
     }
 
     public Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
-        Collection<Period> periods, Collection<? extends Source> sources )
+        Collection<Period> periods, Collection<OrganisationUnit> sources )
     {
         return dataValueStore.getDataValues( dataElement, optionCombo, periods, sources );
     }

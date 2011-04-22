@@ -46,7 +46,6 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.importer.GroupMemberImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -119,7 +118,7 @@ public class DataSetSourceAssociationConverter
             {
                 if ( dataSet.getSources() != null )
                 {
-                    for ( Source source : dataSet.getSources() )
+                    for ( OrganisationUnit source : dataSet.getSources() )
                     {
                         if ( units.contains( source ) )
                         {

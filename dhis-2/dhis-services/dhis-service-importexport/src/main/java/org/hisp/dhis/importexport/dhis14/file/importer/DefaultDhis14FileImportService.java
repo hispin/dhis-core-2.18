@@ -103,7 +103,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -111,7 +110,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 
@@ -511,11 +509,9 @@ public class DefaultDhis14FileImportService
     {
         state.setMessage( "importing_organisation_units" );
         
-        BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class ).init();
         BatchHandler<OrganisationUnit> organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class ).init();
         
         RowHandler rowHandler = new OrganisationUnitRowHandler( organisationUnitBatchHandler, 
-            sourceBatchHandler,
             importObjectService,
             organisationUnitService,
             params,
@@ -523,7 +519,6 @@ public class DefaultDhis14FileImportService
         
         queryManager.queryWithRowhandler( "getOrganisationUnits", rowHandler );
         
-        sourceBatchHandler.flush();
         organisationUnitBatchHandler.flush();
         
         log.info( "Imported OrganisationUnits" );       

@@ -41,11 +41,10 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementStore;
-import org.hisp.dhis.mock.MockSource;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
 
 /**
@@ -60,8 +59,6 @@ public class DataValueStoreTest
     private DataElementStore dataElementStore;
     
     private PeriodStore periodStore;
-
-    private SourceStore sourceStore;
 
     // -------------------------------------------------------------------------
     // Supporting data
@@ -85,13 +82,13 @@ public class DataValueStoreTest
 
     private Period periodD;
 
-    private Source sourceA;
+    private OrganisationUnit sourceA;
 
-    private Source sourceB;
+    private OrganisationUnit sourceB;
 
-    private Source sourceC;
+    private OrganisationUnit sourceC;
 
-    private Source sourceD;
+    private OrganisationUnit sourceD;
 
     // -------------------------------------------------------------------------
     // Set up/tear down
@@ -108,8 +105,8 @@ public class DataValueStoreTest
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         periodStore = (PeriodStore) getBean( PeriodStore.ID );
-        
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
+
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         
         // ---------------------------------------------------------------------
         // Add supporting data
@@ -135,15 +132,15 @@ public class DataValueStoreTest
         periodStore.addPeriod( periodC );
         periodStore.addPeriod( periodD );
 
-        sourceA = new MockSource( "SourceA" );
-        sourceB = new MockSource( "SourceB" );
-        sourceC = new MockSource( "SourceC" );
-        sourceD = new MockSource( "SourceD" );
+        sourceA = createOrganisationUnit( 'A' );
+        sourceB = createOrganisationUnit( 'B' );
+        sourceC = createOrganisationUnit( 'C' );
+        sourceD = createOrganisationUnit( 'D' );
 
-        sourceStore.addSource( sourceA );
-        sourceStore.addSource( sourceB );
-        sourceStore.addSource( sourceC );
-        sourceStore.addSource( sourceD );        
+        organisationUnitService.addOrganisationUnit( sourceA );
+        organisationUnitService.addOrganisationUnit( sourceB );
+        organisationUnitService.addOrganisationUnit( sourceC );
+        organisationUnitService.addOrganisationUnit( sourceD );        
 
         optionCombo = new DataElementCategoryOptionCombo();
         
@@ -481,7 +478,7 @@ public class DataValueStoreTest
         dataValueStore.addDataValue( dataValueC );
         dataValueStore.addDataValue( dataValueD );
 
-        Collection<Source> sources = new HashSet<Source>();
+        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( sourceA );
         sources.add( sourceB );
 
@@ -555,7 +552,7 @@ public class DataValueStoreTest
         periods.add( periodA );
         periods.add( periodB );
 
-        Collection<Source> sources = new HashSet<Source>();
+        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( sourceA );
         sources.add( sourceB );
         
@@ -588,7 +585,7 @@ public class DataValueStoreTest
         periods.add( periodA );
         periods.add( periodB );
 
-        Collection<Source> sources = new HashSet<Source>();
+        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( sourceA );
         sources.add( sourceB );
         

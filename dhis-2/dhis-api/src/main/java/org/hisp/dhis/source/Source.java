@@ -38,6 +38,7 @@ import org.hisp.dhis.dataset.DataSet;
  * @author Torgeir Lorange Ostby
  * @version $Id: Source.java 5277 2008-05-27 15:48:42Z larshelg $
  */
+@Deprecated
 public abstract class Source
     extends AbstractNameableObject
 {

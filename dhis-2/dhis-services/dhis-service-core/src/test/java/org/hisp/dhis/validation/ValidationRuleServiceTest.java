@@ -61,12 +61,11 @@ import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.system.util.MathUtils;
 import org.junit.Test;
 
@@ -121,7 +120,7 @@ public class ValidationRuleServiceTest
 
     private OrganisationUnit sourceB;
 
-    private Set<Source> sourcesA = new HashSet<Source>();
+    private Set<OrganisationUnit> sourcesA = new HashSet<OrganisationUnit>();
 
     private ValidationRule validationRuleA;
 
@@ -155,10 +154,10 @@ public class ValidationRuleServiceTest
 
         dataSetService = (DataSetService) getBean( DataSetService.ID );
 
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
-
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+        
         periodService = (PeriodService) getBean( PeriodService.ID );
 
         periodType = new MonthlyPeriodType();
@@ -207,8 +206,8 @@ public class ValidationRuleServiceTest
         sourceA.getDataSets().add( dataSet );
         sourceB.getDataSets().add( dataSet );
 
-        sourceStore.addSource( sourceA );
-        sourceStore.addSource( sourceB );
+        organisationUnitService.addOrganisationUnit( sourceA );
+        organisationUnitService.addOrganisationUnit( sourceB );
 
         sourcesA.add( sourceA );
         sourcesA.add( sourceB );
@@ -263,7 +262,7 @@ public class ValidationRuleServiceTest
         periods.add( periodA );
         periods.add( periodB );
         
-        List<Source> sources = new ArrayList<Source>();
+        List<OrganisationUnit> sources = new ArrayList<OrganisationUnit>();
         sources.add( sourceA );
         sources.add( sourceB );
         

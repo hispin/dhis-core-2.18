@@ -78,7 +78,6 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -296,15 +295,6 @@ public abstract class DeletionHandler
     }
 
     public boolean allowDeletePeriod( Period period )
-    {
-        return true;
-    }
-
-    public void deleteSource( Source source )
-    {
-    }
-
-    public boolean allowDeleteSource( Source source )
     {
         return true;
     }

@@ -38,8 +38,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.common.AbstractNameableObject;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
 
 /**
@@ -47,7 +49,7 @@ import org.hisp.dhis.user.User;
  * @version $Id: OrganisationUnit.java 6251 2008-11-10 14:37:05Z larshelg $
  */
 public class OrganisationUnit
-    extends Source
+    extends AbstractNameableObject
 {
     public static final String FEATURETYPE_NONE = "None";
     public static final String FEATURETYPE_MULTIPOLYGON = "MultiPolygon";
@@ -83,6 +85,8 @@ public class OrganisationUnit
     private Date lastUpdated;
 
     private Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
+    
+    private Set<DataSet> dataSets = new HashSet<DataSet>();
     
     private Set<User> users = new HashSet<User>();
     
@@ -335,6 +339,18 @@ public class OrganisationUnit
         return builder.toString();
     }
     
+    public Set<DataElement> getDataElementsInDataSets()
+    {
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            dataElements.addAll( dataSet.getDataElements() );
+        }
+        
+        return dataElements;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -526,6 +542,16 @@ public class OrganisationUnit
     public void setGroups( Set<OrganisationUnitGroup> groups )
     {
         this.groups = groups;
+    }
+
+    public Set<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
+    public void setDataSets( Set<DataSet> dataSets )
+    {
+        this.dataSets = dataSets;
     }
 
     public Set<User> getUsers()

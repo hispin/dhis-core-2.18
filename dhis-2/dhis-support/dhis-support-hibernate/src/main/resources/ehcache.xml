@@ -73,7 +73,7 @@
   />
   
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnit"
-    maxElementsInMemory="10000"
+    maxElementsInMemory="20000"
   />
   
   <cache name="org.hisp.dhis.user.User"

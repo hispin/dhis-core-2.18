@@ -2,8 +2,8 @@ package org.hisp.dhis.datamart;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /*
@@ -98,11 +98,11 @@ public class DataMartExportDeletionHandler
     }
     
     @Override
-    public void deleteSource( Source source )
+    public void deleteOrganisationUnit( OrganisationUnit unit )
     {
         for ( DataMartExport export : dataMartService.getAllDataMartExports() )
         {
-            if ( export.getOrganisationUnits().remove( source ) )
+            if ( export.getOrganisationUnits().remove( unit ) )
             {
                 dataMartService.saveDataMartExport( export );
             }

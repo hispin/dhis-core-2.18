@@ -25,7 +25,7 @@ public class DataSetMapper
         dxfDataSet.setId( dataSet.getUuid() );
 
         dxfDataSet.setDataElements( getDataElements( dataSet.getDataElements() ) );
-        dxfDataSet.setOrgUnitLinks( linkBuilder.getLinks( dataSet.getOrganisationUnits() ) );
+        dxfDataSet.setOrgUnitLinks( linkBuilder.getLinks( dataSet.getSources() ) );
 
         return dxfDataSet;
     }

@@ -44,11 +44,10 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.mock.MockSource;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
 
 /**
@@ -72,7 +71,7 @@ public class DataValueDimensionTest
     
     private Period periodA;
     
-    private Source sourceA;
+    private OrganisationUnit sourceA;
         
     @Override
     public void setUpTest()
@@ -81,7 +80,7 @@ public class DataValueDimensionTest
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         dataValueService = (DataValueService) getBean( DataValueService.ID );
         periodService = (PeriodService) getBean( PeriodService.ID );
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         
         male = new DataElementCategoryOption( "Male" );
         female = new DataElementCategoryOption( "Female" );
@@ -120,9 +119,9 @@ public class DataValueDimensionTest
         
         periodService.addPeriod( periodA );
         
-        sourceA = new MockSource( "Bobs Clinic" );
+        sourceA = createOrganisationUnit( 'A' );
         
-        sourceStore.addSource( sourceA );
+        organisationUnitService.addOrganisationUnit( sourceA );
         
         for ( DataElementCategoryOptionCombo categoryOptionCombo : genderAndAgeGroup.getOptionCombos() )
         {

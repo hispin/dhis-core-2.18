@@ -35,9 +35,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockStore;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Brajesh Murari
@@ -161,7 +161,7 @@ public class HibernateDataSetLockStore
         return (DataSetLock) criteria.uniqueResult();
     }
 
-    public DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, Source source )
+    public DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -177,7 +177,7 @@ public class HibernateDataSetLockStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataSetLock> getDataSetLocksBySource( Source source )
+    public Collection<DataSetLock> getDataSetLocksBySource( OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 

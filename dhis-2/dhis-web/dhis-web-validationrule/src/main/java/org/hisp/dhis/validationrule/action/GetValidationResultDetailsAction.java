@@ -38,10 +38,10 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -170,7 +170,7 @@ public class GetValidationResultDetailsAction
 
         Period period = periodService.getPeriod( periodId );
 
-        Source source = organisationUnitService.getOrganisationUnit( sourceId );
+        OrganisationUnit source = organisationUnitService.getOrganisationUnit( sourceId );
 
         for ( DataElementOperand operand : expressionService.getOperandsInExpression( validationRule.getLeftSide().getExpression() ) )
         {

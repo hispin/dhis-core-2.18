@@ -36,8 +36,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.DeleteNotAllowedException;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -70,11 +68,6 @@ public class DefaultDeletionManager
     public void execute( Object object )
     {
         Class<?> clazz = object.getClass();
-
-        if ( object instanceof OrganisationUnit )
-        {
-            clazz = Source.class; // Set class of Source implementations to Source
-        }
 
         String className = clazz.getSimpleName();
 

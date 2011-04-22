@@ -44,7 +44,7 @@ public class OrganisationUnitBatchHandler
 
     public OrganisationUnitBatchHandler( JdbcConfiguration config )
     {
-        super( config, true, false );
+        super( config, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -54,6 +54,12 @@ public class OrganisationUnitBatchHandler
     protected void setTableName()
     {
         statementBuilder.setTableName( "organisationunit" );
+    }
+
+    @Override
+    protected void setAutoIncrementColumn()
+    {
+        statementBuilder.setAutoIncrementColumn( "organisationunitid" );
     }
     
     @Override
@@ -84,7 +90,6 @@ public class OrganisationUnitBatchHandler
     
     protected void setColumns()
     {
-        statementBuilder.setColumn( "organisationunitid" );
         statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "parentid" );
@@ -101,8 +106,7 @@ public class OrganisationUnitBatchHandler
     }
     
     protected void setValues( OrganisationUnit unit )
-    {        
-        statementBuilder.setValue( unit.getId() );
+    {
         statementBuilder.setValue( unit.getUuid() );
         statementBuilder.setValue( unit.getName() );        
         statementBuilder.setValue( unit.getParent() != null ? unit.getParent().getId() : null );

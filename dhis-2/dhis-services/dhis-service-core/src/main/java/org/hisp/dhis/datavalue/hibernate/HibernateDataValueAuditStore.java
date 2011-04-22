@@ -39,8 +39,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueAuditStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Quang Nguyen
@@ -89,7 +89,7 @@ public class HibernateDataValueAuditStore
         return query.executeUpdate();
     }
 
-    public void deleteDataValueAuditBySource( Source source )
+    public void deleteDataValueAuditBySource( OrganisationUnit source )
     {
         for ( DataValueAudit each : getAll() )
         {

@@ -31,8 +31,8 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Quang Nguyen
@@ -81,9 +81,9 @@ public class DefaultDataValueAuditService
         return dataValueAuditStore.getAll();
     }
 
-    public void deleteDataValueAuditBySource( Source source )
+    public void deleteDataValueAuditBySource( OrganisationUnit unit )
     {
-        dataValueAuditStore.deleteDataValueAuditBySource( source );
+        dataValueAuditStore.deleteDataValueAuditBySource( unit );
     }
 
     public void deleteDataValueAuditByDataElement( DataElement dataElement )

@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
-import org.hisp.dhis.source.Source;
 
 /**
  * Defines methods for working with OrganisationUnits.
@@ -217,14 +216,6 @@ public interface OrganisationUnitService
      * @return all OrganisationUnits which are not a member of any OrganisationUnitGroups.
      */
     Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups();
-    
-    
-    /**
-     * Convert the OrganisationUnit collection to the set of Source 
-     * 
-     * @return a Set with Source entries.
-     */
-    Set<Source> convert( Collection<OrganisationUnit> organisationUnits );
     
     /**
      * Get the units which name are like the given name and are members of the

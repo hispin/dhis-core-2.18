@@ -31,7 +31,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static org.hisp.dhis.expression.Expression.*;
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,10 +49,9 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.mock.MockSource;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
 
 /**
@@ -61,9 +60,7 @@ import org.junit.Test;
  */
 public class ExpressionServiceTest
     extends DhisTest
-{        
-    private SourceStore sourceStore;
-    
+{
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
     private DataElementCategoryOption categoryOptionC;
@@ -82,7 +79,7 @@ public class ExpressionServiceTest
     
     private Period period;
     
-    private Source source;
+    private OrganisationUnit source;
     
     private int dataElementIdA;
     private int dataElementIdB;
@@ -119,7 +116,7 @@ public class ExpressionServiceTest
         
         dataValueService = (DataValueService) getBean( DataValueService.ID );
         
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         
         categoryOptionA = new DataElementCategoryOption( "Under 5" );
         categoryOptionB = new DataElementCategoryOption( "Over 5" );
@@ -166,9 +163,9 @@ public class ExpressionServiceTest
         
         period = createPeriod( getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
         
-        source = new MockSource( "SourceA" );
+        source = createOrganisationUnit( 'A' );
         
-        sourceStore.addSource( source );
+        organisationUnitService.addOrganisationUnit( source );
         
         expressionA = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+[" + dataElementIdB + SEPARATOR + categoryOptionComboId + "]";
         expressionB = "[" + dataElementIdC + SEPARATOR + categoryOptionComboId + "]-[" + dataElementIdD + SEPARATOR + categoryOptionComboId + "]";

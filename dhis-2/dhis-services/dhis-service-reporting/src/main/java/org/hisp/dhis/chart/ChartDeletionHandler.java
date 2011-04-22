@@ -28,8 +28,8 @@ package org.hisp.dhis.chart;
  */
 
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -89,11 +89,11 @@ public class ChartDeletionHandler
     }
 
     @Override
-    public void deleteSource( Source source )
+    public void deleteOrganisationUnit( OrganisationUnit unit )
     {
         for ( Chart chart : chartService.getAllCharts() )
         {
-            if ( chart.getOrganisationUnits().remove( source ) )
+            if ( chart.getOrganisationUnits().remove( unit ) )
             {
                 chartService.saveChart( chart );
             }

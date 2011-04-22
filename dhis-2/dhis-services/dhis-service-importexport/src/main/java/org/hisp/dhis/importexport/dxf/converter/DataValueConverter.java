@@ -48,7 +48,6 @@ import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
 
 /**
@@ -170,7 +169,7 @@ public class DataValueConverter
     }
     
     public void read( XMLReader reader, ImportParams params )
-    {      
+    {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
@@ -183,7 +182,7 @@ public class DataValueConverter
             final Period period = new Period();          
             value.setPeriod( period );
             
-            final Source source = new OrganisationUnit();
+            final OrganisationUnit source = new OrganisationUnit();
             value.setSource( source );
 
             final DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();

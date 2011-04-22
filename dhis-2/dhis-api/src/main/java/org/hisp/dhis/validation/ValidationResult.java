@@ -29,8 +29,8 @@ package org.hisp.dhis.validation;
 
 import java.io.Serializable;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Margrethe Store
@@ -39,7 +39,7 @@ import org.hisp.dhis.source.Source;
 public class ValidationResult
     implements Serializable
 {
-    private Source source;
+    private OrganisationUnit source;
     
     private Period period;
     
@@ -57,7 +57,7 @@ public class ValidationResult
     {      
     }
     
-    public ValidationResult( Period period, Source source, ValidationRule validationRule,
+    public ValidationResult( Period period, OrganisationUnit source, ValidationRule validationRule,
         double leftsideValue, double rightsideValue )
     {
         this.source = source;
@@ -154,12 +154,12 @@ public class ValidationResult
     // Set and get methods
     // -------------------------------------------------------------------------     
 
-    public Source getSource()
+    public OrganisationUnit getSource()
     {
         return source;
     }
 
-    public void setSource( Source source )
+    public void setSource( OrganisationUnit source )
     {
         this.source = source;
     }

@@ -132,7 +132,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -147,7 +146,6 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.transaction.annotation.Transactional;
@@ -781,22 +779,18 @@ public class DefaultImportObjectManager
     @Transactional
     public void importOrganisationUnits()
     {
-        BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class )
-            .init();
         BatchHandler<OrganisationUnit> organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler(
             OrganisationUnitBatchHandler.class ).init();
 
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OrganisationUnit.class );
 
-        Importer<OrganisationUnit> importer = new OrganisationUnitImporter( organisationUnitBatchHandler,
-            sourceBatchHandler, organisationUnitService );
+        Importer<OrganisationUnit> importer = new OrganisationUnitImporter( organisationUnitBatchHandler, organisationUnitService );
 
         for ( ImportObject importObject : importObjects )
         {
             importer.importObject( (OrganisationUnit) importObject.getObject(), params );
         }
 
-        sourceBatchHandler.flush();
         organisationUnitBatchHandler.flush();
 
         importObjectStore.deleteImportObjects( OrganisationUnit.class );

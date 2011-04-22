@@ -34,7 +34,6 @@ import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
@@ -53,14 +52,12 @@ public class OrganisationUnitRowHandler
     // -------------------------------------------------------------------------
 
     public OrganisationUnitRowHandler( BatchHandler<OrganisationUnit> batchHandler, 
-        BatchHandler<Source> sourceBatchHandler,
         ImportObjectService importObjectService,
         OrganisationUnitService organisationUnitService,
         ImportParams params,
         ImportAnalyser importAnalyser )
     {
         this.batchHandler = batchHandler;
-        this.sourceBatchHandler = sourceBatchHandler;
         this.importObjectService = importObjectService;
         this.organisationUnitService = organisationUnitService;
         this.params = params;

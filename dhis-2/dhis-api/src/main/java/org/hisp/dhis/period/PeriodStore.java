@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * Defines the functionality for persisting Periods and PeriodTypes.
@@ -165,7 +165,7 @@ public interface PeriodStore
      * @return all intersecting Periods for the given Period which have assosiated DataValues for
      *         the given collection of DataElements and Sources.
      */
-    Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<? extends Source> sources );
+    Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<OrganisationUnit> sources );
     
     /**
      * Checks if the given period is associated with the current session and loads
