@@ -71,6 +71,8 @@ public class TableAlteror
 
         updateDOBType();
 
+        executeSql( "UPDATE patientattribute SET mandatory = false WHERE mandatory is NULL" );
+        
         executeSql( "UPDATE program SET version = 1 WHERE version is NULL" );
 
         updateDataSetMobileAttribute();

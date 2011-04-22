@@ -183,10 +183,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_code_key" );
 
         // add mandatory boolean field to patientattribute
-        if ( executeSql( "ALTER TABLE patientattribute ADD mandatory bool" ) >= 0 )
-        {
-            executeSql( "UPDATE patientattribute SET mandatory=false" );
-        }
+        executeSql( "ALTER TABLE patientattribute ADD mandatory bool" );
         
         if ( executeSql( "ALTER TABLE patientattribute ADD groupby bool" ) >= 0){
             executeSql( "UPDATE patientattribute SET groupby=false" );
