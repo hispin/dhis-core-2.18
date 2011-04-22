@@ -30,23 +30,19 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
 import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertAggregationOperatorFromDhis14;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertAggregationOperatorToDhis14;
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanFromDhis14;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanToDhis14;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertTypeToDhis14;
 import static org.hisp.dhis.system.util.ConversionUtils.parseInt;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
@@ -99,8 +95,6 @@ public class DataElementConverter
 
     private DataElementCategoryService categoryService;
     
-    private Map<Integer, String> expressionMap;
-    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -122,32 +116,12 @@ public class DataElementConverter
     public DataElementConverter( ImportObjectService importObjectService,
         DataElementService dataElementService,
         DataElementCategoryService categoryService,
-        Map<Integer, String> expressionMap,
         ImportAnalyser importAnalyser )
     {
         this.importObjectService = importObjectService;
         this.dataElementService = dataElementService;
         this.categoryService = categoryService;
-        this.expressionMap = expressionMap;
         this.importAnalyser = importAnalyser;
-    }
-
-    // -------------------------------------------------------------------------
-    // AbstractDataElementConverter implementation
-    // -------------------------------------------------------------------------
-    
-    @Override
-    protected DataElement getMatching( DataElement object )
-    {
-        DataElement element = super.getMatching( object );
-        
-        if ( element instanceof CalculatedDataElement )
-        {
-            ((CalculatedDataElement)element).isSaved(); // Loading saved property into memory
-            ((CalculatedDataElement)element).getExpression().getExpression(); // Loading expression into memory
-        }
-        
-        return element;
     }
     
     // -------------------------------------------------------------------------
@@ -163,11 +137,6 @@ public class DataElementConverter
             int i = 0;
             for ( DataElement object : elements )
             {
-                final boolean calculated = object instanceof CalculatedDataElement;
-                final boolean saveCalculated = calculated ? ((CalculatedDataElement)object).isSaved() : false;
-               
-                i++;
-
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
@@ -184,8 +153,8 @@ public class DataElementConverter
                 writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
                 writer.writeElement( FIELD_DESCRIPTION, object.getDescription() );
                 writer.writeElement( FIELD_COMMENT, "" );
-                writer.writeElement( FIELD_CALCULATED, convertBooleanToDhis14( calculated ) );
-                writer.writeElement( FIELD_SAVE_CALCULATED, convertBooleanToDhis14( saveCalculated ) );
+                writer.writeElement( FIELD_CALCULATED, convertBooleanToDhis14( false ) );
+                writer.writeElement( FIELD_SAVE_CALCULATED, convertBooleanToDhis14( false ) );
                 writer.writeElement( FIELD_AGGREGATION_START_LEVEL, String.valueOf( AGG_START_LEVEL ) );
                 writer.writeElement( FIELD_AGGREGATION_OPERATOR, convertAggregationOperatorToDhis14( object.getAggregationOperator() ) );
                 writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
@@ -203,25 +172,12 @@ public class DataElementConverter
     {
         Map<String, String> values = reader.readElements( ELEMENT_NAME );
         
-        boolean calculated = convertBooleanFromDhis14( values.get( FIELD_CALCULATED ) );
-        
         DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
         DataElementCategoryCombo proxyCategoryCombo = new DataElementCategoryCombo();
         proxyCategoryCombo.setId( categoryCombo.getId() );
         
-        DataElement element = null;
+        DataElement element = new DataElement();
         
-        if ( calculated )
-        {
-            element = new CalculatedDataElement();
-            ((CalculatedDataElement)element).setSaved( convertBooleanFromDhis14( values.get( FIELD_SAVE_CALCULATED ) ) );
-            ((CalculatedDataElement)element).setExpression( new Expression( expressionMap.get( element.getId() ), null, new HashSet<DataElement>() ) );
-        }
-        else
-        {
-            element = new DataElement();            
-        }
-
         element.setCategoryCombo( proxyCategoryCombo );
         element.setId( Integer.valueOf( values.get( FIELD_ID ) ) );
         element.setName( values.get( FIELD_NAME ) );

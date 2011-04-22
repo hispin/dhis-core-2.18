@@ -30,7 +30,6 @@ package org.hisp.dhis.importexport.dhis14.xml.importer;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -54,7 +53,6 @@ import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.analysis.DefaultImportAnalyser;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
-import org.hisp.dhis.importexport.dhis14.xml.converter.CalculatedDataElementAssociationConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryComboConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryOptionComboConverter;
@@ -74,7 +72,6 @@ import org.hisp.dhis.jdbc.batchhandler.ImportDataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.process.OutputHolderState;
-import org.hisp.dhis.system.util.AppendingHashMap;
 import org.hisp.dhis.system.util.StreamUtils;
 
 /**
@@ -225,8 +222,6 @@ public class DefaultDhis14XMLImportService
                 // are later used during import of calculated dataelements
                 // -------------------------------------------------------------
 
-                Map<Integer, String> expressionMap = new AppendingHashMap<Integer, String>();
-                
                 state.setMessage( "importing_meta_data" );                
                 log.info( "Importing meta data" );
         
@@ -235,10 +230,8 @@ public class DefaultDhis14XMLImportService
                 XMLConverter categoryOptionConverter = new DataElementCategoryOptionConverter( importObjectService, categoryService );
                 XMLConverter categoryConverter = new DataElementCategoryConverter( importObjectService, categoryService );
                 XMLConverter categoryComboConverter = new DataElementCategoryComboConverter( importObjectService, categoryService );
-                XMLConverter categoryOptionComboConverter = new DataElementCategoryOptionComboConverter( importObjectService, categoryService );
-                XMLConverter calculatedDataElementAssociationConverter = new CalculatedDataElementAssociationConverter( expressionMap );
-                XMLConverter dataElementConverter = new DataElementConverter( 
-                    importObjectService, dataElementService, categoryService, expressionMap, importAnalyser );
+                XMLConverter categoryOptionComboConverter = new DataElementCategoryOptionComboConverter( importObjectService, categoryService );                
+                XMLConverter dataElementConverter = new DataElementConverter( importObjectService, dataElementService, categoryService, importAnalyser );
                 XMLConverter indicatorTypeConverter = new IndicatorTypeConverter( importObjectService, indicatorService );
                 XMLConverter indicatorConverter = new IndicatorConverter( importObjectService, indicatorService, importAnalyser, defaultCategoryOptionCombo );
                 XMLConverter organisationUnitConverter = new OrganisationUnitConverter( importObjectService, organisationUnitService, importAnalyser );
@@ -252,11 +245,7 @@ public class DefaultDhis14XMLImportService
                 
                 while ( reader.next() )
                 {
-                    if ( reader.isStartElement( CalculatedDataElementAssociationConverter.ELEMENT_NAME ) )
-                    {
-                        converterInvoker.invokeRead( calculatedDataElementAssociationConverter, reader, params );
-                    }
-                    else if ( reader.isStartElement( DataElementConverter.ELEMENT_NAME ) )
+                    if ( reader.isStartElement( DataElementConverter.ELEMENT_NAME ) )
                     {
                         converterInvoker.invokeRead( dataElementConverter, reader, params );  
                     }

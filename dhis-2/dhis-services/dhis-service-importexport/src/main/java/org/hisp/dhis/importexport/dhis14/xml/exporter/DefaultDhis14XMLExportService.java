@@ -44,7 +44,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
 import org.hisp.dhis.importexport.ExportService;
-import org.hisp.dhis.importexport.dhis14.xml.converter.CalculatedDataElementAssociationConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataTypeConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataValueConverter;
@@ -186,9 +185,7 @@ public class DefaultDhis14XMLExportService
             thread.registerXSDConverter( new UserRoleXSDConverter() );
             
             thread.registerXMLConverter( new DataElementConverter( dataElementService ) );
-            thread.registerXMLConverter( new CalculatedDataElementAssociationConverter( dataElementService ) );
             thread.registerXMLConverter( new PeriodTypeConverter() );
-            thread.registerXMLConverter( new CalculatedDataElementAssociationConverter( dataElementService ) );
             thread.registerXMLConverter( new PeriodTypeConverter() );
             thread.registerXMLConverter( new OrganisationUnitConverter( organisationUnitService ) );
             //thread.registerXMLConverter( new OrganisationUnitGroupConverter( organisationUnitGroupService ) );
