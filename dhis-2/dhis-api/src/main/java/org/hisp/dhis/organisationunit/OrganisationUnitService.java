@@ -249,15 +249,6 @@ public interface OrganisationUnitService
      */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit );
     
-    /**
-     * Get the units in tree by the collection of given roots
-     * 
-     * @param rootUnits the collection of given roots.
-     * @param unitsInTheTree the units in tree.
-     */
-    void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree );
-   
-    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

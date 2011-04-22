@@ -583,16 +583,6 @@ public class DefaultOrganisationUnitService
     }
 
     @Override
-    public void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
-    {
-        for ( OrganisationUnit root : rootUnits )
-        {
-            unitsInTheTree.add( root );
-            getUnitsInTheTree( root.getChildren(), unitsInTheTree );
-        }
-    }
-
-    @Override
     public int getMaxOfOrganisationUnitLevels()
     {
         return organisationUnitStore.getMaxOfOrganisationUnitLevels();
