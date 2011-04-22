@@ -72,7 +72,7 @@
     maxElementsInMemory="400"
   />
   
-  <cache name="org.hisp.dhis.source.Source"
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnit"
     maxElementsInMemory="10000"
   />
   
