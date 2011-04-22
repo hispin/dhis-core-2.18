@@ -28,7 +28,7 @@ package org.hisp.dhis.minmax;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -72,7 +72,7 @@ public class MinMaxDataElementDeletionHandler
     }
     
     @Override
-    public void deleteSource( Source source )
+    public void deleteOrganisationUnit( OrganisationUnit source )
     {
         for ( MinMaxDataElement element : minMaxDataElementService.getAllMinMaxDataElements() )
         {

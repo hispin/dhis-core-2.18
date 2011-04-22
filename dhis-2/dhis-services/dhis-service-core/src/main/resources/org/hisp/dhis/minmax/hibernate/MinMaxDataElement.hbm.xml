@@ -10,7 +10,7 @@
       <generator class="native" />
     </id>
 
-    <many-to-one name="source" class="org.hisp.dhis.source.Source" column="sourceid" foreign-key="fk_minmaxdataelement_sourceid"
+    <many-to-one name="source" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="sourceid" foreign-key="fk_minmaxdataelement_organisationunitid"
       index="index_minmaxdataelement" />
     <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
       foreign-key="fk_minmaxdataelement_dataelementid" index="index_minmaxdataelement" />

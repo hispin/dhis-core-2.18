@@ -31,7 +31,7 @@ import java.io.Serializable;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Kristian Nordal
@@ -42,7 +42,7 @@ public class MinMaxDataElement
 {
     private int id;
 
-    private Source source;
+    private OrganisationUnit source;
 
     private DataElement dataElement;
     
@@ -62,7 +62,7 @@ public class MinMaxDataElement
     {
     }
 
-    public MinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo, int min, int max,
+    public MinMaxDataElement( OrganisationUnit source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo, int min, int max,
         boolean generated )
     {
         this.source = source;
@@ -138,12 +138,12 @@ public class MinMaxDataElement
         this.id = id;
     }
 
-    public Source getSource()
+    public OrganisationUnit getSource()
     {
         return source;
     }
 
-    public void setSource( Source source )
+    public void setSource( OrganisationUnit source )
     {
         this.source = source;
     }
