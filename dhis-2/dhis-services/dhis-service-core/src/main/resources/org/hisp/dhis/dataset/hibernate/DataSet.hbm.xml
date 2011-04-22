@@ -22,7 +22,7 @@
 
     <property name="code" unique="true" length="60" />
 
-    <many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
+    <many-to-one name="periodType" lazy="false" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
       not-null="true" foreign-key="fk_dataset_periodtypeid" />
 
     <set name="dataElements" table="datasetmembers">

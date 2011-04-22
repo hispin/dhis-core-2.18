@@ -163,9 +163,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
 	</bean>		
 	
 	<bean id="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction"

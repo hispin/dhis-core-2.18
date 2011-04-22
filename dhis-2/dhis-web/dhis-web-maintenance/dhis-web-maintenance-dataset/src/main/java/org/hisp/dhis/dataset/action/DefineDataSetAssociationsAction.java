@@ -27,14 +27,8 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
@@ -66,13 +60,6 @@ public class DefineDataSetAssociationsAction
         this.dataSetService = dataSetService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -91,26 +78,11 @@ public class DefineDataSetAssociationsAction
     public String execute()
         throws Exception
     {
-
-        Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
-
-        Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();
-
-        organisationUnitService.getUnitsInTheTree( rootUnits, unitsInTheTree );
-
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-        Set<OrganisationUnit> assignedSources = dataSet.getSources();
-
-        assignedSources.removeAll( organisationUnitService.convert( unitsInTheTree ) );
-
-        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
-            .getReloadedSelectedOrganisationUnits();
-
-        assignedSources.addAll( selectedOrganisationUnits );
-
-        dataSet.setSources( assignedSources );
-
+        dataSet.getSources().clear();
+        dataSet.getSources().addAll( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
+        
         dataSetService.updateDataSet( dataSet );
 
         return SUCCESS;
