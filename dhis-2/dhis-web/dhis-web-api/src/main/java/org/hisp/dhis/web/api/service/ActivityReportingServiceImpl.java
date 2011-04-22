@@ -96,14 +96,24 @@ public class ActivityReportingServiceImpl
     // -------------------------------------------------------------------------
     // MobileDataSetService
     // -------------------------------------------------------------------------
+    
+    private PatientMobileSetting setting;
+    
+    private org.hisp.dhis.patient.PatientAttribute groupByAttribute;
 
     public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString )
     {
         long time = System.currentTimeMillis();
 
         List<Activity> items = new ArrayList<Activity>();
-
-        for ( org.hisp.dhis.activityplan.Activity activity : activityPlanService.getCurrentActivitiesByProvider( unit ) )
+        
+        this.setSetting( getSettings() );
+        
+        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( true ) );
+        
+        Collection<org.hisp.dhis.activityplan.Activity> activities = activityPlanService.getCurrentActivitiesByProvider( unit );
+        
+        for ( org.hisp.dhis.activityplan.Activity activity : activities )
         {
             items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
         }
@@ -187,7 +197,7 @@ public class ActivityReportingServiceImpl
     {
         Activity activity = new Activity();
         Patient patient = instance.getProgramInstance().getPatient();
-
+                
         activity.setBeneficiary( getBeneficiaryModel( patient ) );
         activity.setDueDate( instance.getDueDate() );
         activity.setTask( getTask( instance ) );
@@ -214,8 +224,8 @@ public class ActivityReportingServiceImpl
     private Beneficiary getBeneficiaryModel( Patient patient )
     {
         Beneficiary beneficiary = new Beneficiary();
-
         List<PatientAttribute> patientAtts = new ArrayList<PatientAttribute>();
+        List<org.hisp.dhis.patient.PatientAttribute> atts;
 
         beneficiary.setId( patient.getId() );
         beneficiary.setFirstName( patient.getFirstName() );
@@ -224,8 +234,6 @@ public class ActivityReportingServiceImpl
 
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         beneficiary.setAge( period.getYears() );
-
-        PatientMobileSetting setting = getSettings();
 
         if ( setting != null )
         {
@@ -249,28 +257,8 @@ public class ActivityReportingServiceImpl
             {
                 beneficiary.setRegistrationDate( patient.getRegistrationDate() );
             }
-        }
-
-        // Set attribute which is used to group beneficiary on mobile (only if
-        // there is attribute which is set to be group factor)
-        PatientAttribute beneficiaryAttribute = null;
-        org.hisp.dhis.patient.PatientAttribute patientAttribute = patientAttService.getPatientAttributeByGroupBy( true );
-
-        if ( patientAttribute != null )
-        {
-            beneficiaryAttribute = new PatientAttribute();
-            beneficiaryAttribute.setName( patientAttribute.getName() );
-            PatientAttributeValue value = patientAttValueService.getPatientAttributeValue( patient, patientAttribute );
-            beneficiaryAttribute.setValue( value == null ? "Unknown" : value.getValue() );
-            beneficiary.setGroupAttribute( beneficiaryAttribute );
-        }
-        patientAttribute = null;
-
-        // Set all attributes
-
-        List<org.hisp.dhis.patient.PatientAttribute> atts;
-        if ( setting != null )
-        {
+            
+            
             atts = setting.getPatientAttributes();
             for ( org.hisp.dhis.patient.PatientAttribute each : atts )
             {
@@ -280,6 +268,20 @@ public class ActivityReportingServiceImpl
                     patientAtts.add( new PatientAttribute( each.getName(), value.getValue() ) );
                 }
             }
+            
+        }
+
+        // Set attribute which is used to group beneficiary on mobile (only if
+        // there is attribute which is set to be group factor)
+        PatientAttribute beneficiaryAttribute = null;
+       
+        if ( groupByAttribute != null )
+        {
+            beneficiaryAttribute = new PatientAttribute();
+            beneficiaryAttribute.setName( groupByAttribute.getName() );
+            PatientAttributeValue value = patientAttValueService.getPatientAttributeValue( patient, groupByAttribute );
+            beneficiaryAttribute.setValue( value == null ? "Unknown" : value.getValue() );
+            beneficiary.setGroupAttribute( beneficiaryAttribute );
         }
 
         // Set all identifier
@@ -424,5 +426,27 @@ public class ActivityReportingServiceImpl
     {
         this.activityPlanService = activityPlanService;
     }
+
+    public PatientMobileSetting getSetting()
+    {
+        return setting;
+    }
+
+    public void setSetting( PatientMobileSetting setting )
+    {
+        this.setting = setting;
+    }
+
+    public org.hisp.dhis.patient.PatientAttribute getGroupByAttribute()
+    {
+        return groupByAttribute;
+    }
+
+    public void setGroupByAttribute( org.hisp.dhis.patient.PatientAttribute groupByAttribute )
+    {
+        this.groupByAttribute = groupByAttribute;
+    }
+    
+    
 
 }

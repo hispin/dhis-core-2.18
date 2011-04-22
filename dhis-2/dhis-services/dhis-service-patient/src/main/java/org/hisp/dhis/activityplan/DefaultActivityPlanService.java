@@ -34,8 +34,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -97,46 +95,33 @@ public class DefaultActivityPlanService
     public Collection<Activity> getActivitiesByBeneficiary( Patient beneficiary )
     {
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( beneficiary, false );
-        
+
         return getActivties( programInstances );
     }
 
     public Collection<Activity> getCurrentActivitiesByProvider( OrganisationUnit organisationUnit )
     {
         long time = PeriodType.createCalendarInstance().getTime().getTime();
-        
+
         List<Activity> items = new ArrayList<Activity>();
 
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
+        Calendar expiredDate = Calendar.getInstance();
 
-        Collection<Program> programs = programService.getPrograms( organisationUnit );
-
-        for ( Program program : programs )
-        {
-            programInstances.addAll( programInstanceService.getProgramInstances( program, organisationUnit ) );
-        }
-
-        Calendar expiredDate = Calendar.getInstance(); 
+        Collection<ProgramStageInstance> programStageInstances = programStageInstanceService.get( organisationUnit,
+            null, null, false );
         
-        for ( ProgramInstance programInstance : programInstances )
+        for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
-            Set<ProgramStageInstance> programStageInstances = programInstance.getProgramStageInstances();
-                for ( ProgramStageInstance programStageInstance : programStageInstances )
+            expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(),
+                programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
+            // TODO compare with date.before
+            if ( programStageInstance.getDueDate().getTime() <= time && expiredDate.getTimeInMillis() > time )
             {
-                if(!programStageInstance.isCompleted()){
-                    expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
-                    
-                    //TODO compare with date.before
-                    
-                    if ( programStageInstance.getDueDate().getTime() <= time && expiredDate.getTimeInMillis() > time )
-                    {
-                        Activity activity = new Activity();
-                        activity.setBeneficiary( programInstance.getPatient() );
-                        activity.setTask( programStageInstance );
-                        activity.setDueDate( programStageInstance.getDueDate() );
-                        items.add( activity );
-                    }
-                }
+                Activity activity = new Activity();
+                activity.setBeneficiary( programStageInstance.getProgramInstance().getPatient() );
+                activity.setTask( programStageInstance );
+                activity.setDueDate( programStageInstance.getDueDate() );
+                items.add( activity );
             }
         }
         return items;
