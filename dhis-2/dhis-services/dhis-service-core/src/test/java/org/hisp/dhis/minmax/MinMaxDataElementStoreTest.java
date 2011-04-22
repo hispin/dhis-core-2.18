@@ -39,9 +39,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.mock.MockSource;
-import org.hisp.dhis.source.Source;
-import org.hisp.dhis.source.SourceStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
 
 /**
@@ -51,19 +50,15 @@ import org.junit.Test;
 public class MinMaxDataElementStoreTest
     extends DhisSpringTest
 {
-    private SourceStore sourceStore;
-
-    private DataElementService dataElementService;
-    
     private MinMaxDataElementStore minMaxDataElementStore;
 
     @Override
     public void setUpTest()
         throws Exception
     {
-        sourceStore = (SourceStore) getBean( SourceStore.ID );
-
         dataElementService = (DataElementService) getBean( DataElementService.ID );
+        
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
@@ -74,11 +69,11 @@ public class MinMaxDataElementStoreTest
     public void testBasic()
         throws Exception
     {
-        Source source1 = new MockSource("Source1name");
-        Source source2 = new MockSource("Source2name");
+        OrganisationUnit source1 = createOrganisationUnit( 'A' );
+        OrganisationUnit source2 = createOrganisationUnit( 'B' );
 
-        sourceStore.addSource( source1 );
-        sourceStore.addSource( source2 );
+        organisationUnitService.addOrganisationUnit( source1 );
+        organisationUnitService.addOrganisationUnit( source2 );
 
         DataElement dataElement1 = new DataElement();
         dataElement1.setName( "DE1name" );

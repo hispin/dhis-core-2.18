@@ -31,7 +31,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -77,17 +77,17 @@ public class DefaultMinMaxDataElementService
         return minMaxDataElementStore.get( id );
     }
 
-    public MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
+    public MinMaxDataElement getMinMaxDataElement( OrganisationUnit source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
     {
         return minMaxDataElementStore.get( source, dataElement, optionCombo );
     }
     
-    public Collection<MinMaxDataElement> getMinMaxDataElements( Source source, DataElement dataElement )
+    public Collection<MinMaxDataElement> getMinMaxDataElements( OrganisationUnit source, DataElement dataElement )
     {
         return minMaxDataElementStore.get( source, dataElement );
     }   
 
-    public Collection<MinMaxDataElement> getMinMaxDataElements( Source source, Collection<DataElement> dataElements )
+    public Collection<MinMaxDataElement> getMinMaxDataElements( OrganisationUnit source, Collection<DataElement> dataElements )
     {
         return minMaxDataElementStore.get( source, dataElements );
     }

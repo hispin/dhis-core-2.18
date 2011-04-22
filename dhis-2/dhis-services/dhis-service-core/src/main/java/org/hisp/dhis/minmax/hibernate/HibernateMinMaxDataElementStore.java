@@ -36,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementStore;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Kristian Nordal
@@ -49,7 +49,7 @@ public class HibernateMinMaxDataElementStore
     // MinMaxDataElementStore Implementation
     // -------------------------------------------------------------------------
 
-    public MinMaxDataElement get( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
+    public MinMaxDataElement get( OrganisationUnit source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
     {
         return (MinMaxDataElement) getCriteria(
             Restrictions.eq( "source", source ),
@@ -58,7 +58,7 @@ public class HibernateMinMaxDataElementStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<MinMaxDataElement> get( Source source, DataElement dataElement )
+    public Collection<MinMaxDataElement> get( OrganisationUnit source, DataElement dataElement )
     {
         return getCriteria(
         	Restrictions.eq( "source", source ),
@@ -66,7 +66,7 @@ public class HibernateMinMaxDataElementStore
     }    
 
     @SuppressWarnings( "unchecked" )
-    public Collection<MinMaxDataElement> get( Source source, Collection<DataElement> dataElements )
+    public Collection<MinMaxDataElement> get( OrganisationUnit source, Collection<DataElement> dataElements )
     {
         if ( dataElements.size() == 0 )
         {

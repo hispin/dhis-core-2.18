@@ -31,7 +31,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Lars Helge Overland
@@ -49,11 +49,11 @@ public interface MinMaxDataElementService
 
     MinMaxDataElement getMinMaxDataElement( int id );
 
-    MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
+    MinMaxDataElement getMinMaxDataElement( OrganisationUnit source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
     
-    Collection<MinMaxDataElement> getMinMaxDataElements( Source source, DataElement dataElement );
+    Collection<MinMaxDataElement> getMinMaxDataElements( OrganisationUnit source, DataElement dataElement );
 
-    Collection<MinMaxDataElement> getMinMaxDataElements( Source source, Collection<DataElement> dataElements );
+    Collection<MinMaxDataElement> getMinMaxDataElements( OrganisationUnit source, Collection<DataElement> dataElements );
     
     Collection<MinMaxDataElement> getAllMinMaxDataElements();
 }

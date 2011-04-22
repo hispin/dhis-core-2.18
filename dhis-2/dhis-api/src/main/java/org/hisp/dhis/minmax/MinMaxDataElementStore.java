@@ -32,7 +32,7 @@ import java.util.Collection;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Kristian Nordal
@@ -43,9 +43,9 @@ public interface MinMaxDataElementStore
 {
     String ID = MinMaxDataElementStore.class.getName();
 
-    MinMaxDataElement get( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
+    MinMaxDataElement get( OrganisationUnit source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
     
-    Collection<MinMaxDataElement> get( Source source, DataElement dataElement );  
+    Collection<MinMaxDataElement> get( OrganisationUnit source, DataElement dataElement );  
 
-    Collection<MinMaxDataElement> get( Source source, Collection<DataElement> dataElements );
+    Collection<MinMaxDataElement> get( OrganisationUnit source, Collection<DataElement> dataElements );
 }
