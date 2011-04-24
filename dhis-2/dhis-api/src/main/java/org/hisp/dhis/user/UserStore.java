@@ -74,15 +74,6 @@ public interface UserStore
     Collection<User> getAllUsers();
 
     /**
-     * Returns a Collection of the Users associated with the given
-     * OrganisationUnit.
-     * 
-     * @param organisationUnit the OrganisationUnit.
-     * @return a Collection of Users.
-     */
-    Collection<User> getUsersByOrganisationUnit( OrganisationUnit organisationUnit );
-
-    /**
      * Returns a Collection of the Users which are not associated with any
      * OrganisationUnits.
      * 

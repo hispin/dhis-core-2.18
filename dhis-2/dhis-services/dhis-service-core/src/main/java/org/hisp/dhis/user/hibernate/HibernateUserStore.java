@@ -112,23 +112,6 @@ public class HibernateUserStore
         return session.createQuery( "from User" ).list();
     }
 
-    public Collection<User> getUsersByOrganisationUnit( OrganisationUnit organisationUnit )
-    {   
-        Collection<User> users = getAllUsers();
-        
-        Iterator<User> iterator = users.iterator();
-        
-        while( iterator.hasNext() )
-        {
-            if( ! iterator.next().getOrganisationUnits().contains( organisationUnit ) )
-            {
-        	iterator.remove();
-            }
-        }
-        
-        return users;
-    }
-
     public Collection<User> getUsersWithoutOrganisationUnit()
     {    	
     	Collection<User> users = getAllUsers();
@@ -403,23 +386,23 @@ public class HibernateUserStore
 
     public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max )
     {
-        return getBlockUser( toUserCredentials( getUsersByOrganisationUnit( orgUnit ) ), first, max );
+        return getBlockUser( toUserCredentials( orgUnit.getUsers() ), first, max );
     }
 
     public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
         int first, int max )
     {
-        return getBlockUser( findByName( toUserCredentials( getUsersByOrganisationUnit( orgUnit ) ), name ), first, max );
+        return getBlockUser( findByName( toUserCredentials( orgUnit.getUsers() ), name ), first, max );
     }
 
     public int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit )
     {
-        return getUsersByOrganisationUnit( orgUnit ).size();
+        return orgUnit.getUsers().size();
     }
 
     public int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name )
     {
-        return findByName( toUserCredentials( getUsersByOrganisationUnit( orgUnit ) ), name ).size();
+        return findByName( toUserCredentials( orgUnit.getUsers() ), name ).size();
     }
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
@@ -445,6 +428,8 @@ public class HibernateUserStore
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+    
+    // TODO All this user / credentials search stuff is horrible and must be improved
     
     private Collection<UserCredentials> findByName( Collection<UserCredentials> users, String key )
     {
@@ -480,12 +465,13 @@ public class HibernateUserStore
     
     private List<UserCredentials> toUserCredentials( Collection<User> users )
     {
-        List<UserCredentials> returnUserCredentials = new ArrayList<UserCredentials>();
+        List<UserCredentials> credentials = new ArrayList<UserCredentials>();
 
         for ( User user : users )
         {
-            returnUserCredentials.add( getUserCredentials( user ) );
+            credentials.add( getUserCredentials( user ) );
         }
-        return returnUserCredentials;
+        
+        return credentials;
     }
 }
