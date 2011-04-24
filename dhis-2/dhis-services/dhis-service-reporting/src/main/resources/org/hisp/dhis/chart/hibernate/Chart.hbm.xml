@@ -33,18 +33,21 @@
     <property name="targetLineValue" />
 
     <list name="indicators" table="chart_indicators">
+      <cache usage="read-write" />
       <key column="chartid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="indicatorid" class="org.hisp.dhis.indicator.Indicator" />
     </list>
 
     <list name="periods" table="chart_periods">
+      <cache usage="read-write" />
       <key column="chartid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="periodid" class="org.hisp.dhis.period.Period" />
     </list>
 
     <list name="organisationUnits" table="chart_organisationunits">
+      <cache usage="read-write" />
       <key column="chartid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" />

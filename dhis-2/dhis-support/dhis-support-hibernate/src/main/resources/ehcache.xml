@@ -4,7 +4,7 @@
   <diskStore path="java.io.tmpdir"/>
 
   <defaultCache
-    maxElementsInMemory="400000"
+    maxElementsInMemory="500000"
     eternal="false"
     timeToIdleSeconds="360"
     timeToLiveSeconds="720"
@@ -120,6 +120,9 @@
   <cache name="org.hisp.dhis.document.Document"
     maxElementsInMemory="100"/>
   
+  <cache name="org.hisp.dhis.dashboard.DashboardContent"
+    maxElementsInMemory="1000"/>
+  
   <!-- Hibernate Associations -->
   
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryCombo.categories"
@@ -140,6 +143,9 @@
   <cache name="org.hisp.dhis.dataset.DataSet.dataElements"
     maxElementsInMemory="4000"/>
   
+  <cache name="org.hisp.dhis.dataset.DataSet.sources"
+    maxElementsInMemory="20000"/>
+  
   <cache name="org.hisp.dhis.dataset.DataSet.sections"
     maxElementsInMemory="400"/>
   
@@ -158,6 +164,33 @@
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.children"
     maxElementsInMemory="20000"/>
   
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.dataSets"
+    maxElementsInMemory="400"/>
+  
+  <cache name="org.hisp.dhis.reporttable.ReportTable.dataElements"
+    maxElementsInMemory="4000"/>
+  
+  <cache name="org.hisp.dhis.reporttable.ReportTable.indicators"
+    maxElementsInMemory="1000"/>
+  
+  <cache name="org.hisp.dhis.reporttable.ReportTable.dataSets"
+    maxElementsInMemory="100"/>
+    
+  <cache name="org.hisp.dhis.reporttable.ReportTable.periods"
+    maxElementsInMemory="200"/>
+    
+  <cache name="org.hisp.dhis.reporttable.ReportTable.units"
+    maxElementsInMemory="2000"/>
+    
+  <cache name="org.hisp.dhis.chart.Chart.indicators"
+    maxElementsInMemory="1000"/>
+    
+  <cache name="org.hisp.dhis.chart.Chart.periods"
+    maxElementsInMemory="200"/>
+    
+  <cache name="org.hisp.dhis.chart.Chart.organisationUnits"
+    maxElementsInMemory="2000"/>
+    
   <!-- Hibernate Query Cache -->
   
   <cache name="org.hibernate.cache.StandardQueryCache"
