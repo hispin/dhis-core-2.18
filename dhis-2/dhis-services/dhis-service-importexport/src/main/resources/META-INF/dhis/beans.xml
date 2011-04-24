@@ -87,7 +87,6 @@
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
-		<property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 		<property name="importDataValueService"	ref="org.hisp.dhis.importexport.ImportDataValueService" />
 		<property name="reportService" ref="org.hisp.dhis.report.ReportService"/>
@@ -122,7 +121,6 @@
 		<property name="reportService" ref="org.hisp.dhis.report.ReportService"/>
 		<property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
 		<property name="chartService" ref="org.hisp.dhis.chart.ChartService"/>
-		<property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="cacheManager" ref="cacheManager"/>
 	</bean>
@@ -256,7 +254,6 @@
 		<property name="reportService" ref="org.hisp.dhis.report.ReportService"/>
         <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
 		<property name="chartService" ref="org.hisp.dhis.chart.ChartService"/>
-        <property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
         <property name="batchHandlerFactory" ref="batchHandlerFactory" />
@@ -316,7 +313,6 @@
 		<property name="reportService" ref="org.hisp.dhis.report.ReportService" />
 		<property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
 		<property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-		<property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />

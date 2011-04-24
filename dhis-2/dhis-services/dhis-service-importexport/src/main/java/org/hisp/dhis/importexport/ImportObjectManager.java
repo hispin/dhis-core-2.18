@@ -105,8 +105,6 @@ public interface ImportObjectManager
     
     void importCharts();
     
-    void importOlapURLs();
-    
     void importCompleteDataSetRegistrations();
     
     void importDataValues();

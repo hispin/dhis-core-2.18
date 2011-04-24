@@ -107,7 +107,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
-import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -252,13 +251,6 @@ public class DXFConverter
     public void setChartService( ChartService chartService )
     {
         this.chartService = chartService;
-    }
-
-    private OlapURLService olapURLService;
-
-    public void setOlapURLService( OlapURLService olapURLService )
-    {
-        this.olapURLService = olapURLService;
     }
 
     private AggregatedDataValueService aggregatedDataValueService;
@@ -910,16 +902,6 @@ public class DXFConverter
                 converterInvoker.invokeRead( converter, reader, params );
 
                 log.info( "Imported Charts" );
-            }
-            else if ( reader.isStartElement( OlapUrlConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_olap_urls" );
-
-                XMLConverter converter = new OlapUrlConverter( importObjectService, olapURLService );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                log.info( "Imported OlapURLs" );
             }
             else if ( reader.isStartElement( CompleteDataSetRegistrationConverter.COLLECTION_NAME )
                 && params.isDataValues() )

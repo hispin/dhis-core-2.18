@@ -41,14 +41,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="reportService" ref="org.hisp.dhis.report.ReportService"/>
   </bean>
   
-  <bean id="org.hisp.dhis.dashboard.action.RemoveOlapUrlAction"
-    class="org.hisp.dhis.dashboard.action.RemoveOlapUrlAction"
-    scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService"/>
-  </bean>
-  
   <bean id="org.hisp.dhis.dashboard.action.RemoveDocumentAction"
     class="org.hisp.dhis.dashboard.action.RemoveDocumentAction"
     scope="prototype">

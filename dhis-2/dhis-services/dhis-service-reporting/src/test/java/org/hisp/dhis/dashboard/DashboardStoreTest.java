@@ -33,8 +33,6 @@ import static junit.framework.Assert.assertNull;
 
 import org.hibernate.NonUniqueObjectException;
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.olap.OlapURL;
-import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.user.User;
@@ -53,15 +51,11 @@ public class DashboardStoreTest
     
     private ReportService reportService;
     
-    private OlapURLService olapURLService;
-    
     private DashboardContentStore dashboardContentStore;
     
     private User userA;
     
     private Report reportA;
-    
-    private OlapURL urlA;
     
     private DashboardContent contentA;
     private DashboardContent contentB;
@@ -73,8 +67,6 @@ public class DashboardStoreTest
         
         reportService = (ReportService) getBean( ReportService.ID );
 
-        olapURLService = (OlapURLService) getBean( OlapURLService.ID );
-        
         dashboardContentStore = (DashboardContentStore) getBean( DashboardContentStore.ID );
         
         userA = createUser( 'A' );
@@ -82,9 +74,6 @@ public class DashboardStoreTest
         
         reportA = new Report( "ReportA", "DesignA", null );
         reportService.saveReport( reportA );
-        
-        urlA = createOlapURL( 'A' );
-        olapURLService.saveOlapURL( urlA );
         
         contentA = new DashboardContent();
         contentB = new DashboardContent();
@@ -95,14 +84,12 @@ public class DashboardStoreTest
     {
         contentA.setUser( userA );
         contentA.getReports().add( reportA );
-        contentA.getOlapUrls().add( urlA );
         
         dashboardContentStore.save( contentA );
         
         assertEquals( contentA, dashboardContentStore.get( userA ) );
         assertEquals( userA, dashboardContentStore.get( userA ).getUser() );
         assertEquals( reportA, dashboardContentStore.get( userA ).getReports().iterator().next() );
-        assertEquals( urlA, dashboardContentStore.get( userA ).getOlapUrls().iterator().next() );
     }
     
     @Test
@@ -115,26 +102,7 @@ public class DashboardStoreTest
         dashboardContentStore.save( contentA );
         dashboardContentStore.save( contentB );        
     }
-    
-    @Test
-    public void saveOrUpdate()
-    {
-        contentA.setUser( userA );
-        contentA.getReports().add( reportA );
-
-        dashboardContentStore.save( contentA );
         
-        assertEquals( contentA, dashboardContentStore.get( userA ) );
-        assertEquals( reportA, dashboardContentStore.get( userA ).getReports().iterator().next() );
-        
-        contentA.getOlapUrls().add( urlA );
-
-        dashboardContentStore.save( contentA );
-
-        assertEquals( contentA, dashboardContentStore.get( userA ) );
-        assertEquals( urlA, dashboardContentStore.get( userA ).getOlapUrls().iterator().next() );
-    }
-    
     @Test
     public void delete()
     {

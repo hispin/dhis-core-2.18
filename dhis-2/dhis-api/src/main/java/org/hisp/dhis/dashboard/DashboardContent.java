@@ -32,7 +32,6 @@ import java.util.List;
 
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.MapView;
-import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
@@ -50,8 +49,6 @@ public class DashboardContent
     private User user;
 
     private List<Report> reports = new ArrayList<Report>();
-    
-    private List<OlapURL> olapUrls = new ArrayList<OlapURL>();
     
     private List<Document> documents = new ArrayList<Document>();
     
@@ -108,19 +105,6 @@ public class DashboardContent
             while ( reports.size() > MAX_DASHBOARD_ELEMENTS )
             {
                 reports.remove( MAX_DASHBOARD_ELEMENTS );
-            }
-        }
-    }
-        
-    public void addOlapUrl( OlapURL url )
-    {
-        if ( !olapUrls.contains( url ) )
-        {
-            olapUrls.add( 0, url );
-            
-            while ( olapUrls.size() > MAX_DASHBOARD_ELEMENTS )
-            {
-                olapUrls.remove( MAX_DASHBOARD_ELEMENTS );
             }
         }
     }
@@ -196,16 +180,6 @@ public class DashboardContent
     public void setReports( List<Report> reports )
     {
         this.reports = reports;
-    }
-
-    public List<OlapURL> getOlapUrls()
-    {
-        return olapUrls;
-    }
-
-    public void setOlapUrls( List<OlapURL> olapUrls )
-    {
-        this.olapUrls = olapUrls;
     }
 
     public List<Document> getDocuments()

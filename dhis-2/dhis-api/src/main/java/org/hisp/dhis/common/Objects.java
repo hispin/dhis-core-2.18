@@ -57,6 +57,5 @@ public enum Objects
     USER,
     REPORTTABLE,
     REPORT,
-    CHART,
-    OLAPURL
+    CHART
 }

@@ -38,7 +38,6 @@ import static org.hisp.dhis.common.Objects.INDICATOR;
 import static org.hisp.dhis.common.Objects.INDICATORGROUP;
 import static org.hisp.dhis.common.Objects.INDICATORGROUPSET;
 import static org.hisp.dhis.common.Objects.INDICATORTYPE;
-import static org.hisp.dhis.common.Objects.OLAPURL;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUP;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUPSET;
@@ -62,7 +61,6 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -98,7 +96,6 @@ public class ClassMapUtil
         classMap.put( ORGANISATIONUNITLEVEL, OrganisationUnitLevel.class );
         classMap.put( VALIDATIONRULE, ValidationRule.class );
         classMap.put( REPORTTABLE, ReportTable.class );
-        classMap.put( OLAPURL, OlapURL.class );
         classMap.put( DATAVALUE, DataValue.class );
     }
     
