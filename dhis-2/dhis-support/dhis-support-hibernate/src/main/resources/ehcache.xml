@@ -143,10 +143,16 @@
   <cache name="org.hisp.dhis.dataset.DataSet.sections"
     maxElementsInMemory="400"/>
   
+  <cache name="org.hisp.dhis.dataelement.DataElement.dataSets"
+    maxElementsInMemory="400"/>
+  
   <cache name="org.hisp.dhis.dataset.Section.dataElements"
     maxElementsInMemory="4000"/>
   
   <cache name="org.hisp.dhis.dataset.Section.greyedFields"
+    maxElementsInMemory="1000"/>
+    
+  <cache name="org.hisp.dhis.expression.Expression.dataElementsInExpression"
     maxElementsInMemory="1000"/>
   
   <!-- Hibernate Query Cache -->

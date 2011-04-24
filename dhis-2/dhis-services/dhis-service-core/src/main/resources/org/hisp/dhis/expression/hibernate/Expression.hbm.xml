@@ -17,6 +17,7 @@
     <property name="expression" type="text" />
 
     <set name="dataElementsInExpression" table="expressiondataelement">
+      <cache usage="read-write" />      
       <key column="expressionid" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_expression_dataelementid" />
     </set>
