@@ -19,18 +19,21 @@
     <property name="regression" />
 
     <list name="dataElements" table="reporttable_dataelements">
+      <cache usage="read-write" />
       <key column="reporttableid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="dataelementid" class="org.hisp.dhis.dataelement.DataElement" />
     </list>
 
     <list name="indicators" table="reporttable_indicators">
+      <cache usage="read-write" />
       <key column="reporttableid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="indicatorid" class="org.hisp.dhis.indicator.Indicator" />
     </list>
 
     <list name="dataSets" table="reporttable_datasets">
+      <cache usage="read-write" />
       <key column="reporttableid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet" />
@@ -40,12 +43,14 @@
       foreign-key="fk_reporttable_categorycombo" />
 
     <list name="periods" table="reporttable_periods">
+      <cache usage="read-write" />
       <key column="reporttableid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="periodid" class="org.hisp.dhis.period.Period" />
     </list>
 
     <list name="units" table="reporttable_organisationunits">
+      <cache usage="read-write" />
       <key column="reporttableid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" />
