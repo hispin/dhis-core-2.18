@@ -27,17 +27,13 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -95,13 +91,6 @@ public class ShowUpdateDataElementFormAction
     public DataElement getDataElement()
     {
         return dataElement;
-    }
-
-    private CalculatedDataElement calculatedDataElement;
-
-    public CalculatedDataElement getCalculatedDataElement()
-    {
-        return calculatedDataElement;
     }
 
     private Collection<DataElementGroup> dataElementGroups;
@@ -185,33 +174,6 @@ public class ShowUpdateDataElementFormAction
         }
 
         organisationUnitLevels.removeAll( aggregationLevels );
-
-        if ( dataElement != null && dataElement instanceof CalculatedDataElement )
-        {
-            calculatedDataElement = (CalculatedDataElement) dataElement;
-            dataElementGroups = dataElementService.getAllDataElementGroups();
-
-            Collection<String> operandIds = new ArrayList<String>();
-
-            operandIds = dataElementService.getOperandIds( calculatedDataElement );
-            factorMap = dataElementService.getOperandFactors( calculatedDataElement );
-
-            for ( String operandId : operandIds )
-            {
-                String dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );
-                String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId
-                    .length() );
-
-                DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
-                    .getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );
-
-                DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(),
-                    dataElement.getName() + optionCombo.getName() );
-
-                operands.add( operand );
-            }
-        }
 
         return SUCCESS;
     }

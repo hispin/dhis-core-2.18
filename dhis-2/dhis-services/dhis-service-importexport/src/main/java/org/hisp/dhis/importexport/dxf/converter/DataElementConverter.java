@@ -112,7 +112,7 @@ public class DataElementConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElement> elements = dataElementService.getNonCalculatedDataElements( params.getDataElements() );
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() );
         
         if ( elements != null && elements.size() > 0 )
         {

@@ -36,17 +36,13 @@ import static junit.framework.Assert.fail;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.system.util.UUIdUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -73,25 +69,6 @@ public class DataElementStoreTest
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
         dataSetService = (DataSetService) getBean( DataSetService.ID );
-    }
-
-    // -------------------------------------------------------------------------
-    // Support methods
-    // -------------------------------------------------------------------------
-
-    private DataElement setDataElementFields( DataElement dataElement, char uniqueCharacter )
-    {
-        dataElement.setUuid( UUIdUtils.getUUId() );
-        dataElement.setName( "DataElement" + uniqueCharacter );
-        dataElement.setAlternativeName( "DataElementAlternative" + uniqueCharacter );
-        dataElement.setShortName( "DataElementShort" + uniqueCharacter );
-        dataElement.setCode( "DataElementCode" + uniqueCharacter );
-        dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
-        dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        dataElement.setType( DataElement.VALUE_TYPE_INT );
-        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
-        
-        return dataElement;
     }
     
     // -------------------------------------------------------------------------
@@ -526,84 +503,5 @@ public class DataElementStoreTest
         assertTrue( dataElements.contains( dataElementC ) );
         assertTrue( dataElements.contains( dataElementD ) );
         assertTrue( dataElements.contains( dataElementF ) );
-    }
-
-    // -------------------------------------------------------------------------
-    // CalculatedDataElements
-    // -------------------------------------------------------------------------
-
-    @Ignore //TODO
-    @Test
-    public void testCalculatedDataElements()
-    {
-        DataElement deA = createDataElement('A');
-        DataElement deB = createDataElement('B');
-        DataElement deC = createDataElement('C');
-        DataElement deD = createDataElement('D');
-        DataElement deE = createDataElement('E');
-
-        int deIdA = dataElementStore.addDataElement(deA);
-        int deIdB = dataElementStore.addDataElement(deB);
-        int deIdC = dataElementStore.addDataElement(deC);
-        int deIdD = dataElementStore.addDataElement(deD);
-        dataElementStore.addDataElement(deE);
-        
-        CalculatedDataElement cdeX = (CalculatedDataElement) setDataElementFields( new CalculatedDataElement (), 'X' );
-        CalculatedDataElement cdeY = (CalculatedDataElement) setDataElementFields( new CalculatedDataElement (), 'Y' );
-
-        Set<DataElement> dataElementsX = new HashSet<DataElement> ();
-        dataElementsX.add(deA);
-        dataElementsX.add(deB);
-        Expression expressionX = new Expression ( "["+deIdA+"] * 2 + ["+deIdB+"] * 3", "foo", dataElementsX );
-        cdeX.setExpression(expressionX);
-        cdeX.setSaved(true);
-        dataElementStore.addDataElement(cdeX);
-        
-        Set<DataElement> dataElementsY = new HashSet<DataElement> ();
-        dataElementsY.add(deC);
-        dataElementsY.add(deD);
-        Expression expressionY = new Expression ( "["+deIdC+"] * 2 + ["+deIdD+"] * 3", "foo", dataElementsY );
-        cdeY.setExpression(expressionY);
-        cdeY.setSaved(true);
-        dataElementStore.addDataElement(cdeY);
-        
-        Collection<CalculatedDataElement> cdes = dataElementStore.getAllCalculatedDataElements();
-        assertEquals( 2, cdes.size() );
-        
-        //CalculatedDataElement cde;
-        CalculatedDataElement cde = dataElementStore.getCalculatedDataElementByDataElement( deA );
-        assertNotNull(cde);
-        assertEquals("DataElementX", cde.getName() );
-        
-        cde = dataElementStore.getCalculatedDataElementByDataElement( deE );
-        assertNull(cde);
-        
-        Set<DataElement> dataElements = new HashSet<DataElement> ();
-        dataElements.add(deA);
-        cdes = dataElementStore.getCalculatedDataElementsByDataElements( dataElements );
-        assertEquals( 1, cdes.size() );
-        assertEquals("DataElementX", cdes.iterator().next().getName());
-        
-        dataElements.add(deC);
-        cdes = dataElementStore.getCalculatedDataElementsByDataElements( dataElements );
-        assertEquals( 2, cdes.size() );
-
-        Iterator<CalculatedDataElement> iterator = cdes.iterator();
-        assertEquals( iterator.next().getName(), "DataElementX" );
-        assertEquals( iterator.next().getName(), "DataElementY" );
-        
-        //Make sure the results are unique
-        dataElements.add(deB);
-        cdes = dataElementStore.getCalculatedDataElementsByDataElements( dataElements );
-        assertEquals( 2, cdes.size() );
-
-        iterator = cdes.iterator();
-        assertEquals( iterator.next().getName(), "DataElementX" );
-        assertEquals( iterator.next().getName(), "DataElementY" );
-
-        //Check that no other data elements are returned
-        dataElements.add(deE);
-        cdes = dataElementStore.getCalculatedDataElementsByDataElements( dataElements );
-        assertEquals( 2, cdes.size() );
     }
 }

@@ -27,15 +27,6 @@ package org.hisp.dhis.importexport.dhis14.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.hisp.dhis.dataelement.CalculatedDataElement;
-import org.hisp.dhis.dataelement.DataElementOperand;
 
 /**
  * @author Lars Helge Overland
@@ -58,35 +49,5 @@ public class Dhis14ParsingUtils
         }
         
         return string;
-    }    
-
-    /**
-     * Gets the operands and corresponding factor from the calculated data element
-     * expression.
-     * 
-     * @param calculatedDataElement the calculated data element.
-     * @return a map with operands and factors.
-     */
-    public static Map<DataElementOperand, Double> getOperandFactors( CalculatedDataElement calculatedDataElement )
-    {
-        Map<DataElementOperand, Double> factorMap = new HashMap<DataElementOperand, Double>();
-
-        Pattern pattern = Pattern.compile( "\\[(\\d+\\.\\d+)\\]\\s*\\*\\s*(-?\\d+)" ); // "[id] * factor"
-
-        Matcher matcher = pattern.matcher( calculatedDataElement.getExpression().getExpression() );
-
-        while ( matcher.find() )
-        {
-            final DataElementOperand operand = new DataElementOperand();
-            
-            String operandString = matcher.group( 1 );
-            
-            operand.setDataElementId( Integer.valueOf( operandString.substring( 0, operandString.indexOf( SEPARATOR ) ) ) );
-            operand.setOptionComboId( Integer.valueOf( operandString.substring( operandString.indexOf( SEPARATOR ) + 1, operandString.length() ) ) );
-            
-            factorMap.put( operand, Double.parseDouble( matcher.group( 2 ) ) );
-        }
-
-        return factorMap;
     }
 }

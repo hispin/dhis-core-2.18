@@ -34,7 +34,6 @@ import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -44,7 +43,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.GenericStore;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -327,51 +325,6 @@ public class DefaultExpressionService
                 match = DataElementOperand.getPrettyName( dataElement, categoryOptionCombo );
                 
                 matcher.appendReplacement( buffer, match );
-            }
-
-            matcher.appendTail( buffer );
-        }
-
-        return buffer != null ? buffer.toString() : null;
-    }
-
-    public String replaceCDEsWithTheirExpression( String expression )
-    {
-        StringBuffer buffer = null;
-
-        if ( expression != null )
-        {
-            buffer = new StringBuffer();
-
-            final Set<DataElement> caclulatedDataElementsInExpression = getDataElementsInExpression( expression );
-
-            final Iterator<DataElement> iterator = caclulatedDataElementsInExpression.iterator();
-
-            while ( iterator.hasNext() )
-            {
-                if ( !(iterator.next() instanceof CalculatedDataElement) )
-                {
-                    iterator.remove();
-                }
-            }
-
-            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
-
-            while ( matcher.find() )
-            {
-                String replaceString = matcher.group();
-
-                for ( DataElement dataElement : caclulatedDataElementsInExpression )
-                {
-                    if ( replaceString.startsWith( EXP_OPEN + dataElement.getId() + SEPARATOR ) )
-                    {
-                        replaceString = ((CalculatedDataElement) dataElement).getExpression().getExpression();
-
-                        break;
-                    }
-                }
-
-                matcher.appendReplacement( buffer, replaceString );
             }
 
             matcher.appendTail( buffer );

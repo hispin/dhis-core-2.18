@@ -39,7 +39,6 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -290,8 +289,7 @@ public class DefaultImportObjectService<T>
 
         if ( importObject != null )
         {
-            if ( importObject.getClassName().equals( DataElement.class.getName() )
-                || importObject.getClassName().equals( CalculatedDataElement.class.getName() ) )
+            if ( importObject.getClassName().equals( DataElement.class.getName() ) )
             {
                 DataElement element = (DataElement) importObject.getObject();
 
@@ -394,7 +392,7 @@ public class DefaultImportObjectService<T>
     {
         importObjectStore.deleteImportObjects( clazz );
 
-        if ( clazz.equals( DataElement.class ) || clazz.equals( CalculatedDataElement.class ) )
+        if ( clazz.equals( DataElement.class ) )
         {
             importObjectStore.deleteImportObjects( DataElementCategoryOptionCombo.class );
             importObjectStore.deleteImportObjects( DataElementCategoryCombo.class );
@@ -494,7 +492,7 @@ public class DefaultImportObjectService<T>
         // object.
         // ---------------------------------------------------------------------
 
-        if ( object.getClass().equals( DataElement.class ) || object.getClass().equals( CalculatedDataElement.class ) )
+        if ( object.getClass().equals( DataElement.class ) )
         {
             DataElement element = (DataElement) object;
 
@@ -628,7 +626,6 @@ public class DefaultImportObjectService<T>
         importObjectManager.importCategoryCategoryOptionAssociations();
         importObjectManager.importCategoryComboCategoryAssociations();
         importObjectManager.importDataElements();
-        importObjectManager.importCalculatedDataElements();
         importObjectManager.importDataElementGroups();
         importObjectManager.importDataElementGroupMembers();
         importObjectManager.importDataElementGroupSets();

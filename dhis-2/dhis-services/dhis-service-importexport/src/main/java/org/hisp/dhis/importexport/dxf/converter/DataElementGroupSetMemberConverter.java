@@ -104,7 +104,7 @@ public class DataElementGroupSetMemberConverter
     {
         Collection<DataElementGroupSet> groupSets = dataElementService.getDataElementGroupSets( params.getDataElementGroups() );
         
-        Collection<DataElementGroup> groups = dataElementService.getDataElementGroups( params.getAllDataElements() );
+        Collection<DataElementGroup> groups = dataElementService.getDataElementGroups( params.getDataElements() );
         
         if ( groupSets != null && groupSets.size() > 0 && groups != null && groups.size() > 0 )
         {

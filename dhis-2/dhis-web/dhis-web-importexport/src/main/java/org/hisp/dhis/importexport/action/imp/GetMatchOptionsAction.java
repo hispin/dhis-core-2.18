@@ -27,7 +27,6 @@ package org.hisp.dhis.importexport.action.imp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.Objects.CALCULATEDDATAELEMENT;
 import static org.hisp.dhis.common.Objects.CHART;
 import static org.hisp.dhis.common.Objects.DATADICTIONARY;
 import static org.hisp.dhis.common.Objects.DATAELEMENT;
@@ -207,11 +206,7 @@ public class GetMatchOptionsAction
         
         if ( objectType.equals( DATAELEMENT.name() ) )
         {
-            objects = dataElementService.getNonCalculatedDataElements();
-        }
-        else if ( objectType.equals( CALCULATEDDATAELEMENT.name() ) )
-        {
-            objects = dataElementService.getAllCalculatedDataElements();
+            objects = dataElementService.getAllDataElements();
         }
         else if ( objectType.equals( DATAELEMENTGROUP.name() ) )
         {

@@ -58,7 +58,6 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.dxf.converter.AggregatedDataValueConverter;
-import org.hisp.dhis.importexport.dxf.converter.CalculatedDataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryCategoryOptionAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryComboCategoryAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.ChartConverter;
@@ -288,7 +287,6 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new CategoryComboCategoryAssociationConverter( categoryService ) );
 
             thread.registerXMLConverter( new DataElementConverter( dataElementService ) );
-            thread.registerXMLConverter( new CalculatedDataElementConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupMemberConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupSetConverter( dataElementService ) );

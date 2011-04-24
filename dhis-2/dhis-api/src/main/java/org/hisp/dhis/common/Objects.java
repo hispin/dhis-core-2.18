@@ -34,7 +34,6 @@ package org.hisp.dhis.common;
 public enum Objects
 {
     DATAELEMENT,
-    CALCULATEDDATAELEMENT,
     EXTENDEDDATAELEMENT,
     DATAELEMENTGROUP,
     DATAELEMENTGROUPSET,

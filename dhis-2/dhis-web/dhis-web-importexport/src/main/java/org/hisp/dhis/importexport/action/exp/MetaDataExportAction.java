@@ -240,7 +240,6 @@ public class MetaDataExportAction
             params.setCategoryOptions( null );
             params.setCategoryOptionCombos( null );
             params.setDataElements( null );
-            params.setCalculatedDataElements( null );
         }
 
         if ( dataElementGroups )

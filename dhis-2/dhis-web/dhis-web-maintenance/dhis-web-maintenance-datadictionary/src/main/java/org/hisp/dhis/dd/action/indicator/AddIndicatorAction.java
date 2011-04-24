@@ -27,7 +27,6 @@ package org.hisp.dhis.dd.action.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -51,14 +50,7 @@ public class AddIndicatorAction
     {
         this.indicatorService = indicatorService;
     }
-    
-    private ExpressionService expressionService;
-
-    public void setExpressionService( ExpressionService expressionService )
-    {
-        this.expressionService = expressionService;
-    }    
-    
+        
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -183,10 +175,6 @@ public class AddIndicatorAction
         {
             description = null;
         }
-        
-        numerator = expressionService.replaceCDEsWithTheirExpression( numerator );
-        
-        denominator = expressionService.replaceCDEsWithTheirExpression( denominator );        
         
         Indicator indicator = new Indicator();
         

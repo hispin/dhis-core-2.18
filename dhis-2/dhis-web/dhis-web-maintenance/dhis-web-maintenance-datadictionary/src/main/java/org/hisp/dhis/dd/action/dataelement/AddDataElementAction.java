@@ -27,20 +27,13 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.system.util.ConversionUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -53,8 +46,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class AddDataElementAction
     extends ActionSupport
 {
-    private static final String TRUE = "on";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -140,13 +131,6 @@ public class AddDataElementAction
         this.aggregationOperator = aggregationOperator;
     }
 
-    private String calculated;
-
-    public void setCalculated( String calculated )
-    {
-        this.calculated = calculated;
-    }
-
     private String url;
 
     public void setUrl( String url )
@@ -159,27 +143,6 @@ public class AddDataElementAction
     public void setAggregationLevels( Collection<String> aggregationLevels )
     {
         this.aggregationLevels = aggregationLevels;
-    }
-
-    private String saved;
-
-    public void setSaved( String saved )
-    {
-        this.saved = saved;
-    }
-
-    private List<String> dataElementIds;
-
-    public void setDataElementIds( List<String> dataElementIds )
-    {
-        this.dataElementIds = dataElementIds;
-    }
-
-    private List<Double> factors;
-
-    public void setFactors( List<Double> factors )
-    {
-        this.factors = factors;
     }
 
     private Integer selectedCategoryComboId;
@@ -225,62 +188,10 @@ public class AddDataElementAction
         // Create data element
         // ---------------------------------------------------------------------
 
-        DataElement dataElement = null;
-
-        DataElementCategoryCombo defaultCategoryCombo = dataElementCategoryService
-            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        DataElement dataElement = new DataElement();
 
         DataElementCategoryCombo categoryCombo = dataElementCategoryService
             .getDataElementCategoryCombo( selectedCategoryComboId );
-
-        if ( calculated != null && calculated.equals( TRUE ) )
-        {
-            categoryCombo = defaultCategoryCombo;
-
-            dataElement = new CalculatedDataElement();
-
-            CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
-
-            Set<DataElement> expressionDataElements = new HashSet<DataElement>();
-
-            String expressionString = "";
-
-            for ( int i = 0; i < dataElementIds.size(); i++ )
-            {
-                String operandId = dataElementIds.get( i );
-
-                String dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );
-
-                DataElement expressionDataElement = dataElementService.getDataElement( Integer
-                    .parseInt( dataElementIdString ) );
-
-                if ( expressionDataElement == null )
-                {
-                    continue;
-                }
-
-                Double factor = factors.get( i );
-
-                expressionString += " + ([" + operandId + "] * " + factor + ")";
-
-                expressionDataElements.add( expressionDataElement );
-            }
-
-            if ( expressionString.length() > 3 )
-            {
-                expressionString = expressionString.substring( 3 );
-            }
-
-            Expression expression = new Expression( expressionString, "", expressionDataElements );
-
-            calculatedDataElement.setExpression( expression );
-
-            calculatedDataElement.setSaved( saved != null );
-        }
-        else
-        {
-            dataElement = new DataElement();
-        }
 
         dataElement.setName( name );
         dataElement.setAlternativeName( alternativeName );

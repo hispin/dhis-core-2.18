@@ -36,7 +36,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.screen.DataEntryScreenManager;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -359,13 +358,11 @@ public class CustomDataEntryAction
         boolean cdeFormExists = (dataEntryForm != null);
 
         String disabled = "";
-        Map<CalculatedDataElement, Integer> calculatedValueMap = dataEntryScreenManager
-            .populateValuesForCalculatedDataElements( organisationUnit, programStage, programStageInstance );
 
         if ( cdeFormExists )
         {
             customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
-                dataEntryForm.getHtmlCode(), patientDataValues, calculatedValueMap, minMaxMap, disabled, i18n,
+                dataEntryForm.getHtmlCode(), patientDataValues, minMaxMap, disabled, i18n,
                 programStage, programStageInstance, organisationUnit );
         }
 

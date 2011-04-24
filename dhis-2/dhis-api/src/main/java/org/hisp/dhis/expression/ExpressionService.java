@@ -170,15 +170,6 @@ public interface ExpressionService
     String getExpressionDescription( String expression );
 
     /**
-     * Looks for the existence of calculated dataelement in the give expression.
-     * If exists, it will replace this CDE with its equivalent expression.
-     * 
-     * @param expression The expression string
-     * @return expression containing non CDE
-     */
-    String replaceCDEsWithTheirExpression( String expression );
-    
-    /**
      * Replaces references to data element totals with references to all
      * category option combos in the category combo for that data element.
      * 

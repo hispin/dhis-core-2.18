@@ -61,8 +61,6 @@ public class ExportParams
 
     private Collection<Integer> dataElements = new ArrayList<Integer>();
     
-    private Collection<Integer> calculatedDataElements = new ArrayList<Integer>();
-    
     private Collection<Integer> dataElementGroups = new ArrayList<Integer>();
     
     private Collection<Integer> dataElementGroupSets = new ArrayList<Integer>();
@@ -111,35 +109,6 @@ public class ExportParams
     {   
     }
 
-    // -------------------------------------------------------------------------
-    // Getters & setters
-    // -------------------------------------------------------------------------
-
-    public Collection<Integer> getAllDataElements()
-    {
-        if ( dataElements == null && calculatedDataElements == null )
-        {
-            return null;
-        }
-        else if ( dataElements == null && calculatedDataElements != null )
-        {
-            return calculatedDataElements;
-        }
-        else if ( dataElements != null && calculatedDataElements == null )
-        {
-            return dataElements;
-        }
-        else
-        {
-            final Collection<Integer> elements = getDataElements();
-            
-            elements.addAll( getCalculatedDataElements() );
-            
-            return elements;
-        }
-        
-    }
-    
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
@@ -262,16 +231,6 @@ public class ExportParams
     public void setDataElements( Collection<Integer> dataElements )
     {
         this.dataElements = dataElements;
-    }
-
-    public Collection<Integer> getCalculatedDataElements()
-    {
-        return calculatedDataElements;
-    }
-
-    public void setCalculatedDataElements( Collection<Integer> calculatedDataElements )
-    {
-        this.calculatedDataElements = calculatedDataElements;
     }
 
     public Collection<Integer> getDataElementGroups()

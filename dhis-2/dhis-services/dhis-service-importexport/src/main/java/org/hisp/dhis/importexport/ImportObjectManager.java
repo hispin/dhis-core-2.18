@@ -47,8 +47,6 @@ public interface ImportObjectManager
     
     void importDataElements();
     
-    void importCalculatedDataElements();
-    
     void importDataElementGroups();
     
     void importDataElementGroupMembers();
