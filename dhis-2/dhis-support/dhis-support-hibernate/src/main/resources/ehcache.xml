@@ -154,6 +154,9 @@
     
   <cache name="org.hisp.dhis.expression.Expression.dataElementsInExpression"
     maxElementsInMemory="1000"/>
+    
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.children"
+    maxElementsInMemory="20000"/>
   
   <!-- Hibernate Query Cache -->
   
