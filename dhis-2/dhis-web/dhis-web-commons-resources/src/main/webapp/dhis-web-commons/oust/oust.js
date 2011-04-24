@@ -357,7 +357,7 @@ function SelectionTree()
     
     function setLoadingMessage( treeTag )
     {
-        treeTag.style.backgroundImage = 'url( ../images/loading.png )';
+        treeTag.style.backgroundImage = 'url(../images/ajax-loader-circle.gif)';
         treeTag.style.backgroundRepeat = 'no-repeat';
     }
     
