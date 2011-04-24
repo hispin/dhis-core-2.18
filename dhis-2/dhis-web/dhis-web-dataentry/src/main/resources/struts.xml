@@ -40,7 +40,6 @@
 		</action>
 		
 		<action name="select" class="org.hisp.dhis.de.action.SelectAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="customform" type="chain">customform</result>
 			<result name="sectionform" type="chain">sectionform</result>
 			<result name="defaultform" type="chain">defaultform</result>
@@ -48,17 +47,14 @@
 		</action>
 
 		<action name="customform" class="org.hisp.dhis.de.action.FormAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/dhis-web-dataentry/customForm.vm</result>
 		</action>
 
 		<action name="sectionform" class="org.hisp.dhis.de.action.SectionFormAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
 		</action>
 
 		<action name="defaultform"	class="org.hisp.dhis.de.action.FormAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
 		</action>
 
