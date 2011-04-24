@@ -53,6 +53,7 @@ public class ClearSelectedOrganisationUnitsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+    
     private String message;
 
     public String getMessage()
@@ -63,6 +64,7 @@ public class ClearSelectedOrganisationUnitsAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+    
     public String execute()
     {
         try
@@ -80,5 +82,4 @@ public class ClearSelectedOrganisationUnitsAction
 
         return SUCCESS;
     }
-
 }

@@ -82,5 +82,4 @@ public class SelectAllOrganisationUnitAction
 
         return SUCCESS;
     }
-
 }
