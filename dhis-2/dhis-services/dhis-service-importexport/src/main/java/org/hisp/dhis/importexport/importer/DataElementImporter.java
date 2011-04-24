@@ -28,7 +28,6 @@ package org.hisp.dhis.importexport.importer;
  */
 
 import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -141,18 +140,5 @@ public class DataElementImporter
         }
 
         return true;
-    }
-    
-    @Override
-    protected boolean ignore( DataElement object, DataElement match )
-    {
-        boolean ignore = object instanceof CalculatedDataElement && !( match instanceof CalculatedDataElement );
-        
-        if ( ignore )
-        {
-            log.warn( "Calculated data element ignored because it matches with a regular data element: " + object );
-        }
-        
-        return ignore;
     }
 }

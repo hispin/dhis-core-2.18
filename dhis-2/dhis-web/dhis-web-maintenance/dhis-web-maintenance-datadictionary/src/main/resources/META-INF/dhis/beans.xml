@@ -545,18 +545,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService">
 			<ref bean="org.hisp.dhis.indicator.IndicatorService" />
 		</property>
-		<property name="expressionService">
-			<ref bean="org.hisp.dhis.expression.ExpressionService" />
-		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction"
 		class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction" scope="prototype">
 		<property name="indicatorService">
 			<ref bean="org.hisp.dhis.indicator.IndicatorService" />
-		</property>
-		<property name="expressionService">
-			<ref bean="org.hisp.dhis.expression.ExpressionService" />
 		</property>
 	</bean>
 

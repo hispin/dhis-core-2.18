@@ -444,19 +444,6 @@ public class DXFConverter
 
                 log.info( "Imported DataElements" );
             }
-            else if ( reader.isStartElement( CalculatedDataElementConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_calculated_data_elements" );
-
-                XMLConverter converter = new CalculatedDataElementConverter( importObjectService, dataElementService,
-                    expressionService, objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ), objectMappingGenerator
-                        .getCategoryOptionComboMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                log.info( "Imported CalculatedDataElements" );
-            }
             else if ( reader.isStartElement( DataElementGroupConverter.COLLECTION_NAME ) )
             {
                 state.setMessage( "importing_data_element_groups" );

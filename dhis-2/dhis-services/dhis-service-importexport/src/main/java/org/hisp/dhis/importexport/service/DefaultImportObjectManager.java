@@ -41,7 +41,6 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -68,7 +67,6 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.ImportType;
 import org.hisp.dhis.importexport.Importer;
-import org.hisp.dhis.importexport.importer.CalculatedDataElementImporter;
 import org.hisp.dhis.importexport.importer.ChartImporter;
 import org.hisp.dhis.importexport.importer.CompleteDataSetRegistrationImporter;
 import org.hisp.dhis.importexport.importer.DataDictionaryImporter;
@@ -463,39 +461,6 @@ public class DefaultImportObjectManager
         importObjectStore.deleteImportObjects( DataElement.class );
 
         log.info( "Imported DataElements" );
-    }
-
-    @Transactional
-    public void importCalculatedDataElements()
-    {
-        Map<Object, Integer> categoryComboMapping = objectMappingGenerator.getCategoryComboMapping( false );
-        Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
-        Map<Object, Integer> categoryOptionComboMapping = objectMappingGenerator.getCategoryOptionComboMapping( false );
-
-        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( CalculatedDataElement.class );
-
-        Importer<CalculatedDataElement> importer = new CalculatedDataElementImporter( dataElementService );
-
-        for ( ImportObject importObject : importObjects )
-        {
-            CalculatedDataElement object = (CalculatedDataElement) importObject.getObject();
-            object.getCategoryCombo().setId( categoryComboMapping.get( object.getCategoryCombo().getId() ) );
-            object.getExpression().setExpression(
-            expressionService.convertExpression( object.getExpression().getExpression(), dataElementMapping, categoryOptionComboMapping ) );
-            
-            try
-            {
-                importer.importObject( object, params );
-            }
-            catch ( ClassCastException e )
-            {
-                log.warn( "Cannot convert a regular data element to a calculated data element", e );
-            }
-        }
-
-        importObjectStore.deleteImportObjects( CalculatedDataElement.class );
-
-        log.info( "Imported CalculatedDataElements"  );
     }
 
     @Transactional

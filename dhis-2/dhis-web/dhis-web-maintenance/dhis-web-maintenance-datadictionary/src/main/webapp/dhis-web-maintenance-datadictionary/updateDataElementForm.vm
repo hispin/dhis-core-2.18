@@ -5,11 +5,7 @@
 		checkValueIsExist( "shortName", "validateDataElement.action", {id:getFieldValue('id')});
 		checkValueIsExist( "alternativeName", "validateDataElement.action", {id:getFieldValue('id')});
 
-		#if ( $calculatedDataElement )
-			toggleCDEForm();
-		#else
-			updateAggreationOperation( getFieldValue('valueType') );
-		#end
+		updateAggreationOperation( getFieldValue('valueType') );
 	});
 
 	var previousName = '$encoder.jsEscape( $dataElement.name, "'" )';
@@ -124,7 +120,7 @@
 	<tr #if( $calculatedDataElement ) style="display:none" #end >	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="selectedCategoryComboId" style="min-width:20em" onchange="changeCategory(this.value)">				
+			<select id="selectedCategoryComboId" style="min-width:20em">				
 			#foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
 				<option value="$dataElementCategoryCombo.id" #if( $dataElementCategoryCombo.id == $dataElement.categoryCombo.id ) selected="selected" #end>$encoder.htmlEncode( $dataElementCategoryCombo.name )</option>
 			#end
@@ -132,82 +128,6 @@
 			<input type="hidden" id="submitCategoryComboId" name="selectedCategoryComboId"/>
 		</td>
 	</tr>
-	#if ( $calculatedDataElement )
-    <tr>
-        <td style="height:10px"></td>
-    </tr>
-	<tr>
-		<td><label for="calculated">$i18n.getString( "calculated" )</label></td>
- 		<td><input type="checkbox" id="calculated" name="calculated" checked="checked" disabled="disabled"/></td>
-	</tr>
-	#end
-</table>
-
-#if ( $calculatedDataElement )
-<div id="calculatedContainer" style="border:1px solid #808080; padding:10px;">
-	<table>
-		<tr>
-			<td><label for="saved">$i18n.getString('saved')</label>&nbsp;
-			    <input type="checkbox" id="saved" name="saved" value="true" #if( $calculatedDataElement.saved ) checked="checked" #end/>
-			</td>
-		</tr>
-	    <tr>
-	        <td style="height:10px"></td>
-	    </tr>
-	    <tr>
-	        <th>$i18n.getString( "available_dataelements" )</td>
-	    </tr>
-		<tr>
-			<td>
-				<select id="dataElementGroupId" name="dataElementGroupId" onchange="getDataElements( this.options[this.selectedIndex].value, 'int', true )" style="width:30em">
-					<option value="[select]" selected="selected">[ $i18n.getString( "select_dataelementgroup" ) ]</option>
-					<option value="$ALL">[ $i18n.getString( "all_dataelements" ) ]</option>
-					#foreach ( $group in $dataElementGroups )
-						<option value="$group.id">$group.name</option>
-					#end
-				</select><br/>
-				<select id="availableDataElements" size="5" multiple="multiple" style="width:30em">
-					#foreach( $dataElement in $dataElements )
-					<option value="$dataElement.id" title="$dataElement.name">$dataElement.name</option>
-					#end
-				</select>
-			</td>
-	    </tr>    
-	    <tr>
-	        <td>
-	            <input id="selectOneButton" type="button" value="$i18n.getString('add_selected')" title="$i18n.getString('add_selected')" onclick="addCDEDataElements()" style="width:120px"/><input 
-	                   id="deselectAllButton" type="button" value="$i18n.getString('remove_all')" title="$i18n.getString('remove_all')" onclick="removeCDEDataElements()" style="width:120px"/>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th style="width:450px">$i18n.getString( "selected_dataelements" )</th>
-			<td><select id="selectedDEValidator" multiple="multiple"  name="selectedDEValidator" style="display:none"></select></td>
-	    </tr>
-	    <tr>
-			<td>
-				<table id="selectedDataElements" style="min-width:450px">
-					<tr>
-	                    <td style="font-weight:bold;">$i18n.getString( "data_element" )</td>
-	                    <td style="font-weight:bold;">$i18n.getString( "factor" )</td>
-	                    <td style="font-weight:bold;">$i18n.getString( "remove" )</td>                  
-	                </tr>
-					#set($i = 0)
-					#foreach ( $operand in $operands )
-					<tr>
-						<td>$operand.operandName<input type="hidden" name="dataElementIds" value="$operand.operandId"></td>
-						<td><input type="text" name="factors$i" value="$factorMap.get($operand.operandId)"/></td>
-						<td><button type="button" title="$i18n.getString('remove_all')" onclick="removeCDEDataElement( this )"><img src="../images/delete.png" alt="$i18n.getString('delete_icon')"/></button></td>
-					</tr>
-					#set($i = $i + 1)
-					#end
-				</table>
-			</td>
-		</tr>
-	</table>
-</div>
-#end
-
-<table>
     <tr>
         <td style="height:10px" colspan="2"></td>
     </tr>

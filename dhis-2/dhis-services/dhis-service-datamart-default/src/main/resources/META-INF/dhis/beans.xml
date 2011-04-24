@@ -40,8 +40,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datamart.dataelement.DataElementDataMart"/>
     <property name="indicatorDataMart"
       ref="org.hisp.dhis.datamart.indicator.IndicatorDataMart"/>
-    <property name="calculatedDataElementDataMart"
-      ref="org.hisp.dhis.datamart.calculateddataelement.CalculatedDataElementDataMart"/>
     <property name="sumIntAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
     <property name="averageIntAggregator"
@@ -174,26 +172,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.options.SystemSettingManager"/>
 	<property name="batchHandlerFactory" ref="batchHandlerFactory"/>
   </bean>
-  
-  <!-- CalculatedDataElementDataMart -->
-
-  <bean id="org.hisp.dhis.datamart.calculateddataelement.CalculatedDataElementDataMart"
-    class="org.hisp.dhis.datamart.calculateddataelement.DefaultCalculatedDataElementDataMart">
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="sumIntAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
-    <property name="averageIntAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
-	<property name="averageIntSingleValueAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
-    <property name="categoryService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    <property name="aggregationCache"
-      ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
-	<property name="batchHandlerFactory" ref="batchHandlerFactory"/>
-  </bean>
-  
+    
   <!-- DeletionHandler -->
   
   <bean id="org.hisp.dhis.datamart.DataMartExportDeletionHandler"

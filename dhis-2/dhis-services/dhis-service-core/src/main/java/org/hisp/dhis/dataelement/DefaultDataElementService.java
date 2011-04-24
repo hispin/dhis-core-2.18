@@ -39,8 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.comparator.CategoryComboSizeComparator;
@@ -147,21 +145,6 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getAllDataElements() );
     }
 
-    public Collection<DataElement> getNonCalculatedDataElements()
-    {
-        Collection<DataElement> dataElements = new ArrayList<DataElement>();
-
-        for ( DataElement dataElement : getAllDataElements() )
-        {
-            if ( !(dataElement instanceof CalculatedDataElement) )
-            {
-                dataElements.add( dataElement );
-            }
-        }
-
-        return dataElements;
-    }
-
     public Collection<DataElement> getDataElements( final Collection<Integer> identifiers )
     {
         Collection<DataElement> dataElements = getAllDataElements();
@@ -202,16 +185,6 @@ public class DefaultDataElementService
         }
 
         return dataElements;
-    }
-
-    public Collection<DataElement> getNonCalculatedDataElements( Collection<Integer> identifiers )
-    {
-        if ( identifiers == null )
-        {
-            return getNonCalculatedDataElements();
-        }
-
-        return getDataElements( identifiers );
     }
 
     public Collection<DataElement> getAggregateableDataElements()
@@ -365,132 +338,6 @@ public class DefaultDataElementService
         return dataElementStore.getDataElementCountByName( name );
     }
     
-    // -------------------------------------------------------------------------
-    // CalculatedDataElement
-    // -------------------------------------------------------------------------
-
-    public Collection<CalculatedDataElement> getAllCalculatedDataElements()
-    {
-        return i18n( i18nService, dataElementStore.getAllCalculatedDataElements() );
-    }
-
-    public Collection<CalculatedDataElement> getCalculatedDataElements( final Collection<Integer> identifiers )
-    {
-        Collection<CalculatedDataElement> dataElements = getAllCalculatedDataElements();
-
-        return identifiers == null ? dataElements : FilterUtils.filter( dataElements,
-            new Filter<CalculatedDataElement>()
-            {
-                public boolean retain( CalculatedDataElement dataElement )
-                {
-                    return identifiers.contains( dataElement.getId() );
-                }
-            } );
-    }
-
-    public CalculatedDataElement getCalculatedDataElementByDataElement( DataElement dataElement )
-    {
-        return i18n( i18nService, dataElementStore.getCalculatedDataElementByDataElement( dataElement ) );
-    }
-
-    public Collection<CalculatedDataElement> getCalculatedDataElementsByDataElements(
-        Collection<DataElement> dataElements )
-    {
-        return i18n( i18nService, dataElementStore.getCalculatedDataElementsByDataElements( dataElements ) );
-    }
-
-    public Map<DataElement, Double> getDataElementFactors( CalculatedDataElement calculatedDataElement )
-    {
-        Map<DataElement, Double> factorMap = new HashMap<DataElement, Double>();
-
-        Pattern pattern = Pattern.compile( "\\[(\\d+)\\]\\s*\\*\\s*(\\d+(\\.\\d)*)" );
-
-        // ---------------------------------------------------------------------
-        // In readable form: \[(\d+)\]\s*\*\s*(\d+)
-        // Meaning any expression on the form "[id] * factor"
-        // ---------------------------------------------------------------------
-
-        Matcher matcher = pattern.matcher( calculatedDataElement.getExpression().getExpression() );
-
-        while ( matcher.find() )
-        {
-            // -----------------------------------------------------------------
-            // Key: Datelementid
-            // Value: Factor
-            // -----------------------------------------------------------------
-
-            factorMap.put( getDataElement( Integer.parseInt( matcher.group( 1 ) ) ), Double.parseDouble( matcher
-                .group( 2 ) ) );
-        }
-
-        return factorMap;
-    }
-
-    public Map<String, Double> getOperandFactors( CalculatedDataElement calculatedDataElement )
-    {
-        Map<String, Double> factorMap = new HashMap<String, Double>();
-
-        Pattern pattern = Pattern.compile( "\\[(\\d+\\.\\d+)\\]\\s*\\*\\s*(-?\\d+(\\.\\d)*)" );
-
-        // ---------------------------------------------------------------------
-        // In readable form: \[(\d+)\]\s*\*\s*(\d+)
-        // Meaning any expression on the form "[id] * factor"
-        // ---------------------------------------------------------------------
-
-        Matcher matcher = pattern.matcher( calculatedDataElement.getExpression().getExpression() );
-
-        while ( matcher.find() )
-        {
-            // -----------------------------------------------------------------
-            // Key: Datelementid.optioncomboid
-            // Value: Factor
-            // -----------------------------------------------------------------
-
-            factorMap.put( matcher.group( 1 ), Double.parseDouble( matcher.group( 2 ) ) );
-        }
-
-        return factorMap;
-    }
-
-    public Collection<String> getOperandIds( CalculatedDataElement calculatedDataElement )
-    {
-        Collection<String> operands = new ArrayList<String>();
-
-        Pattern pattern = Pattern.compile( "\\[(\\d+\\.\\d+)\\]" );
-
-        // ---------------------------------------------------------------------
-        // In readable form: \[(\d+)\]\s*\*\s*(\d+)
-        // Meaning any expression on the form "[id] * factor"
-        // ---------------------------------------------------------------------
-
-        Matcher matcher = pattern.matcher( calculatedDataElement.getExpression().getExpression() );
-
-        while ( matcher.find() )
-        {
-            // -----------------------------------------------------------------
-            // Datelementid.optioncomboid
-            // -----------------------------------------------------------------
-
-            operands.add( matcher.group( 1 ) );
-        }
-
-        return operands;
-    }
-
-    public Map<Integer, String> getCalculatedDataElementExpressionMap( Collection<Integer> identifiers )
-    {
-        Collection<CalculatedDataElement> dataElements = getCalculatedDataElements( identifiers );
-
-        Map<Integer, String> map = new HashMap<Integer, String>();
-
-        for ( CalculatedDataElement element : dataElements )
-        {
-            map.put( element.getId(), element.getExpression().getExpression() );
-        }
-
-        return map;
-    }
-
     public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByDataSets( dataSets ) );

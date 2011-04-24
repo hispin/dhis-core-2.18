@@ -40,7 +40,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -329,53 +328,6 @@ public class HibernateDataElementStore
 
         return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids",
             ConversionUtils.getIdentifiers( DataSet.class, dataSets ) ).list();
-    }
-
-    // -------------------------------------------------------------------------
-    // CalculatedDataElement
-    // -------------------------------------------------------------------------
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<CalculatedDataElement> getAllCalculatedDataElements()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( CalculatedDataElement.class );
-
-        return criteria.list();
-    }
-
-    public CalculatedDataElement getCalculatedDataElementByDataElement( DataElement dataElement )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Set<Integer> dataElementIds = new HashSet<Integer>();
-        dataElementIds.add( dataElement.getId() );
-
-        Criteria criteria = session.createCriteria( CalculatedDataElement.class ).createCriteria( "expression" )
-            .createCriteria( "dataElementsInExpression" ).add( Restrictions.in( "id", dataElementIds ) );
-
-        return (CalculatedDataElement) criteria.uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<CalculatedDataElement> getCalculatedDataElementsByDataElements(
-        Collection<DataElement> dataElements )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Set<Integer> dataElementIds = new HashSet<Integer>();
-
-        for ( DataElement dataElement : dataElements )
-        {
-            dataElementIds.add( dataElement.getId() );
-        }
-
-        Criteria criteria = session.createCriteria( CalculatedDataElement.class ).createCriteria( "expression" )
-            .createCriteria( "dataElementsInExpression" ).add( Restrictions.in( "id", dataElementIds ) );
-
-        return new HashSet<CalculatedDataElement>( criteria.list() );
-
     }
 
     public Collection<DataElement> getDataElementsLikeName( String name )

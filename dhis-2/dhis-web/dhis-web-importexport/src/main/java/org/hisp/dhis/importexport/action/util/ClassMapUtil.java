@@ -27,7 +27,6 @@ package org.hisp.dhis.importexport.action.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.Objects.CALCULATEDDATAELEMENT;
 import static org.hisp.dhis.common.Objects.DATADICTIONARY;
 import static org.hisp.dhis.common.Objects.DATAELEMENT;
 import static org.hisp.dhis.common.Objects.DATAELEMENTGROUP;
@@ -51,7 +50,6 @@ import java.util.Map;
 
 import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
@@ -81,7 +79,6 @@ public class ClassMapUtil
         classMap = new HashMap<Objects, Class<?>>();
         
         classMap.put( DATAELEMENT, DataElement.class );
-        classMap.put( CALCULATEDDATAELEMENT, CalculatedDataElement.class );
         classMap.put( DATAELEMENTGROUP, DataElementGroup.class );
         classMap.put( DATAELEMENTGROUPSET, DataElementGroupSet.class );
         classMap.put( INDICATORTYPE, IndicatorType.class );

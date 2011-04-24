@@ -132,15 +132,6 @@ public interface DataElementService
     Collection<DataElement> getAllDataElements();
 
     /**
-     * Returns all DataElements which are not instances of
-     * CalculatedDataElements.
-     * 
-     * @return all DataElements which are not instances of
-     *         CalculatedDataElements.
-     */
-    Collection<DataElement> getNonCalculatedDataElements();
-
-    /**
      * Returns all DataElements with corresponding identifiers. Returns all
      * DataElements if the given argument is null.
      * 
@@ -148,24 +139,6 @@ public interface DataElementService
      * @return a collection of DataElements.
      */
     Collection<DataElement> getDataElements( Collection<Integer> identifiers );
-
-    /**
-     * Returns all CalculatedDataElements with corresponding identifiers.
-     * Returns all CalculatedDataElements if the given argument is null.
-     * 
-     * @param identifiers the collection of identifiers.
-     * @return a collection of CalculatedDataElements.
-     */
-    Collection<CalculatedDataElement> getCalculatedDataElements( Collection<Integer> identifiers );
-
-    /**
-     * Returns all non-calculated DataElements with corresponding identifiers.
-     * Returns all non-calculated DataElements if the given argument is null.
-     * 
-     * @param identifiers the collection of identifiers.
-     * @return a collection of DataElements.
-     */
-    Collection<DataElement> getNonCalculatedDataElements( Collection<Integer> identifiers );
 
     /**
      * Returns all DataElements with types that are possible to aggregate. The
@@ -298,76 +271,6 @@ public interface DataElementService
     
     int getDataElementCountByName( String name );
     
-    // -------------------------------------------------------------------------
-    // Calculated Data Elements
-    // -------------------------------------------------------------------------
-
-    /**
-     * Returns a CalclulatedDataElement which contains a given dataElement
-     * 
-     * @param dataElement the DataElement which is contained by the
-     *        CalculatedDataElement to return.
-     * @return a CalculatedDataElement which contains the given DataElement, or
-     *         null if the DataElement is not part of a CalculatedDataElement.
-     */
-    CalculatedDataElement getCalculatedDataElementByDataElement( DataElement dataElement );
-
-    /**
-     * Returns CalculatedDataElements which contain any of the given
-     * DataElements
-     * 
-     * @param dataElements Collection of DataElements which can be contained by
-     *        the returned CalculatedDataElements
-     * @return a collection of CalculatedDataElements which contain any of the
-     *         given DataElements, or an empty collection if no
-     *         CalculatedDataElements contain any of the DataElements.
-     */
-    Collection<CalculatedDataElement> getCalculatedDataElementsByDataElements( Collection<DataElement> dataElements );
-
-    /**
-     * Returns all CalculatedDataElements
-     * 
-     * @return a collection of all CalculatedDataElements, or an empty
-     *         collection if there are no CalculcatedDataELements
-     */
-    Collection<CalculatedDataElement> getAllCalculatedDataElements();
-
-    /**
-     * Returns a Map of factors for the DataElements in the given
-     * CalculatedDataElement
-     * 
-     * @param calculatedDataElement CalculatedDataElement to get factors for
-     * @return a map of factors for the DataElements in the given
-     *         CalculatedDataElement
-     */
-    Map<DataElement, Double> getDataElementFactors( CalculatedDataElement calculatedDataElement );
-
-    /**
-     * Returns a Map of factors for the Operands in the given
-     * CalculatedDataElement
-     * 
-     * @param calculatedDataElement CalculatedDataElement to get factors for
-     * @return a map of factors for the Operands in the given
-     *         CalculatedDataElement
-     */
-    Map<String, Double> getOperandFactors( CalculatedDataElement calculatedDataElement );
-
-    /**
-     * Returns a collection of OperandIds in the given CalculatedDataElement
-     * 
-     * @param calculatedDataElement CalculatedDataElement to get operands for
-     * @return a collection of operands (actually string) for the expression in
-     *         the given CalculatedDataElement
-     */
-    Collection<String> getOperandIds( CalculatedDataElement calculatedDataElement );
-
-    /**
-     * 
-     * @param identifiers
-     * @return
-     */
-    Map<Integer, String> getCalculatedDataElementExpressionMap( Collection<Integer> identifiers );
-
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------

@@ -108,7 +108,7 @@ public class DataSetMemberConverter
     {
         Collection<DataSet> dataSets = dataSetService.getDataSets( params.getDataSets() );
         
-        Collection<DataElement> elements = dataElementService.getDataElements( params.getAllDataElements() );
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() );
         
         if ( dataSets != null && dataSets.size() > 0 && elements != null && elements.size() > 0 )
         {

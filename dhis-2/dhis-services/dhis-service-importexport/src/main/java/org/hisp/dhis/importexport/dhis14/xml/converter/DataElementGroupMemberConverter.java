@@ -72,7 +72,7 @@ public class DataElementGroupMemberConverter
     {
         Collection<DataElementGroup> groups = dataElementService.getDataElementGroups( params.getDataElementGroups() );
         
-        Collection<DataElement> elements = dataElementService.getDataElements( params.getAllDataElements() );
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() );
         
         if ( groups != null && groups.size() >  0 && elements != null && elements.size() > 0 )
         {

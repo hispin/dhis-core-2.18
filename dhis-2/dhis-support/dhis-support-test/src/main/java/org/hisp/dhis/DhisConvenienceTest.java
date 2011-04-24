@@ -41,7 +41,6 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -392,32 +391,6 @@ public abstract class DhisConvenienceTest
         dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setCategoryCombo( categoryCombo );
-
-        return dataElement;
-    }
-
-    /**
-     * @param uniqueCharacter A unique character to identify the object.
-     * @param expression The Expression.
-     */
-    public static CalculatedDataElement createCalculatedDataElement( char uniqueCharacter, String type,
-        String aggregationOperator, DataElementCategoryCombo categoryCombo, Expression expression )
-    {
-        CalculatedDataElement dataElement = new CalculatedDataElement();
-
-        dataElement.setUuid( BASE_UUID + uniqueCharacter );
-        dataElement.setName( "DataElement" + uniqueCharacter );
-        dataElement.setAlternativeName( "AlternativeName" + uniqueCharacter );
-        dataElement.setShortName( "ShortName" + uniqueCharacter );
-        dataElement.setCode( "Code" + uniqueCharacter );
-        dataElement.setDescription( "Description" + uniqueCharacter );
-        dataElement.setActive( true );
-        dataElement.setType( type );
-        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
-        dataElement.setAggregationOperator( aggregationOperator );
-        dataElement.setCategoryCombo( categoryCombo );
-        dataElement.setSaved( false );
-        dataElement.setExpression( expression );
 
         return dataElement;
     }

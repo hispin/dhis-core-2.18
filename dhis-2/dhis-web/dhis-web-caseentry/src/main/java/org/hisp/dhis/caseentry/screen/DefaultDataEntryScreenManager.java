@@ -39,7 +39,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -159,79 +158,24 @@ public class DefaultDataEntryScreenManager
         return hasMultiDimensionalDataElement( dataSet ) ? MULTI_DIMENSIONAL_FORM : DEFAULT_FORM;
     }
 
-    public Collection<Integer> getAllCalculatedDataElements( ProgramStage programStage )
-    {
-        Collection<Integer> calculatedDataElementIds = new HashSet<Integer>();
-
-        Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
-
-        CalculatedDataElement cde;
-
-        for ( DataElement dataElement : dataElements )
-        {
-            if ( dataElement instanceof CalculatedDataElement )
-            {
-                cde = (CalculatedDataElement) dataElement;
-
-                calculatedDataElementIds.add( cde.getId() );
-            }
-        }
-
-        return calculatedDataElementIds;
-    }
-
-    public Map<CalculatedDataElement, Map<DataElement, Double>> getNonSavedCalculatedDataElements(
-        ProgramStage programStage )
-    {
-        Map<CalculatedDataElement, Map<DataElement, Double>> calculatedDataElementMap = new HashMap<CalculatedDataElement, Map<DataElement, Double>>();
-
-        Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
-
-        CalculatedDataElement cde;
-
-        for ( DataElement dataElement : dataElements )
-        {
-            if ( dataElement instanceof CalculatedDataElement )
-            {
-                cde = (CalculatedDataElement) dataElement;
-
-                if ( !cde.isSaved() )
-                {
-                    calculatedDataElementMap.put( cde, dataElementService.getDataElementFactors( cde ) );
-                }
-            }
-        }
-
-        return calculatedDataElementMap;
-    }
-
-    public Map<CalculatedDataElement, Integer> populateValuesForCalculatedDataElements(
-        OrganisationUnit organisationUnit, ProgramStage programStage, ProgramStageInstance programStageInstance )
-    {
-        Map<CalculatedDataElement, Integer> calculatedValueMap = new HashMap<CalculatedDataElement, Integer>();
-
-        return calculatedValueMap;
-    }
-
     public String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
+        Collection<PatientDataValue> dataValues, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit )
     {
         Map<Integer, Collection<PatientDataValue>> mapDataValue = new HashMap<Integer, Collection<PatientDataValue>>();
 
         String result = "";
 
-        result = populateCustomDataEntryForTextBox( dataEntryFormCode, dataValues, calculatedValueMap, disabled, i18n,
+        result = populateCustomDataEntryForTextBox( dataEntryFormCode, dataValues, disabled, i18n,
             programStage, programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForBoolean( result, dataValues, calculatedValueMap, minMaxMap, disabled, i18n,
+        result = populateCustomDataEntryForBoolean( result, dataValues, minMaxMap, disabled, i18n,
             programStage, programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForMutiDimentionalString( result, dataValues, calculatedValueMap, minMaxMap,
+        result = populateCustomDataEntryForMutiDimentionalString( result, dataValues, minMaxMap,
             disabled, i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForDate( result, dataValues, calculatedValueMap, minMaxMap, disabled, i18n,
+        result = populateCustomDataEntryForDate( result, dataValues, minMaxMap, disabled, i18n,
             programStage, programStageInstance, organisationUnit, mapDataValue );
 
         result = populateI18nStrings( result, i18n );
@@ -240,8 +184,7 @@ public class DefaultDataEntryScreenManager
     }
 
     private String populateCustomDataEntryForTextBox( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
+        Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
         OrganisationUnit organisationUnit, Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
         // ---------------------------------------------------------------------
@@ -249,8 +192,6 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
 
         final String jsCodeForInputs = " $DISABLED onchange=\"saveValueCustom( this )\" data=\"{compulsory:$COMPULSORY, optionComboId:$OPTIONCOMBOID, dataElementId:$DATAELEMENTID, dataElementName:'$DATAELEMENTNAME', dataElementType:'$DATAELEMENTTYPE', programStageId:$PROGRAMSTAGEID, programStageName: '$PROGRAMSTAGENAME', orgUnitName:'$ORGUNITNAME'}\"  onkeypress=\"return keyPress(event, this)\"   ";
-
-        final String calDataElementCode = " class=\"calculated\" disabled ";
 
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
@@ -368,29 +309,9 @@ public class DefaultDataEntryScreenManager
                 }
                 else
                 {
-                    if ( (dataElement instanceof CalculatedDataElement) )
-                    {
-                        CalculatedDataElement cde = (CalculatedDataElement) dataElement;
+                    patientDataValue = getValue( dataValues, dataElementId );
 
-                        if ( cde.isSaved() )
-                        {
-                            patientDataValue = getValue( dataValues, dataElementId );
-
-                            dataElementValue = patientDataValue != null ? patientDataValue.getValue()
-                                : dataElementValue;
-                        }
-                        else
-                        {
-                            dataElementValue = String.valueOf( calculatedValueMap.get( cde ) );
-                        }
-                    }
-                    else
-                    {
-                        patientDataValue = getValue( dataValues, dataElementId );
-
-                        dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
-
-                    }
+                    dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
 
                 // -------------------------------------------------------------
@@ -421,11 +342,6 @@ public class DefaultDataEntryScreenManager
                 String appendCode = dataElementCode;
 
                 appendCode += jsCodeForInputs;
-
-                if ( (dataElement instanceof CalculatedDataElement) )
-                {
-                    appendCode += calDataElementCode;
-                }
 
                 appendCode += " />";
 
@@ -488,8 +404,7 @@ public class DefaultDataEntryScreenManager
     }
 
     private String populateCustomDataEntryForBoolean( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
+        Collection<PatientDataValue> dataValues, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
         Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
@@ -499,8 +414,6 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
 
         final String jsCodeForBoolean = " name=\"entryselect\" data=\"{compulsory:$COMPULSORY, dataElementId:$DATAELEMENTID, dataElementName:'$DATAELEMENTNAME', dataElementType:'$DATAELEMENTTYPE', programStageId:$PROGRAMSTAGEID, programStageName: '$PROGRAMSTAGENAME', orgUnitName:'$ORGUNITNAME'}\" $DISABLED onchange=\"saveChoiceCustom( $PROGRAMSTAGEID, $DATAELEMENTID,this)\"";
-
-        final String calDataElementCode = " class=\"calculated\" disabled ";
 
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
@@ -615,27 +528,11 @@ public class DefaultDataEntryScreenManager
                 else
                 {
 
-                    if ( (dataElement instanceof CalculatedDataElement) )
+                    patientDataValue = getValue( dataValues, dataElementId );
+                    
+                    if ( patientDataValue != null )
                     {
-                        CalculatedDataElement cde = (CalculatedDataElement) dataElement;
-
-                        if ( cde.isSaved() )
-                        {
-                            patientDataValue = getValue( dataValues, dataElementId );
-                            if ( patientDataValue != null )
-                                dataElementValue = patientDataValue.getValue();
-                        }
-                        else
-                        {
-                            dataElementValue = String.valueOf( calculatedValueMap.get( cde ) );
-                        }
-                    }
-                    else
-                    {
-                        patientDataValue = getValue( dataValues, dataElementId );
-                        if ( patientDataValue != null )
-                            dataElementValue = patientDataValue.getValue();
-
+                        dataElementValue = patientDataValue.getValue();
                     }
                 }
 
@@ -692,11 +589,6 @@ public class DefaultDataEntryScreenManager
                 // persisting to output code, and insert value and type for
                 // fields
                 // -------------------------------------------------------------
-
-                if ( (dataElement instanceof CalculatedDataElement) )
-                {
-                    appendCode += calDataElementCode;
-                }
 
                 appendCode += metaDataCode;
 
@@ -761,8 +653,7 @@ public class DefaultDataEntryScreenManager
     }
 
     private String populateCustomDataEntryForMutiDimentionalString( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
+        Collection<PatientDataValue> dataValues, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
         Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
@@ -773,8 +664,6 @@ public class DefaultDataEntryScreenManager
 
         final String jsCodeForCombo = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, dataElementId:$DATAELEMENTID, dataElementName:'$DATAELEMENTNAME', dataElementType:'$DATAELEMENTTYPE', programStageId:$PROGRAMSTAGEID, programStageName: '$PROGRAMSTAGENAME', orgUnitName:'$ORGUNITNAME'}\" onchange=\"saveChoiceCustom( $PROGRAMSTAGEID, $DATAELEMENTID,this)\"";
         
-        final String calDataElementCode = " class=\"calculated\" disabled ";
-
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
         // ---------------------------------------------------------------------
@@ -888,28 +777,9 @@ public class DefaultDataEntryScreenManager
                 }
                 else
                 {
-                    if ( (dataElement instanceof CalculatedDataElement) )
-                    {
-                        CalculatedDataElement cde = (CalculatedDataElement) dataElement;
+                    patientDataValue = getValue( dataValues, dataElementId );
 
-                        if ( cde.isSaved() )
-                        {
-                            patientDataValue = getValue( dataValues, dataElementId );
-
-                            dataElementValue = patientDataValue != null ? patientDataValue.getValue()
-                                : dataElementValue;
-                        }
-                        else
-                        {
-                            dataElementValue = String.valueOf( calculatedValueMap.get( cde ) );
-                        }
-                    }
-                    else
-                    {
-                        patientDataValue = getValue( dataValues, dataElementId );
-
-                        dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
-                    }
+                    dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
 
                 String appendCode = dataElementCode;
@@ -955,11 +825,6 @@ public class DefaultDataEntryScreenManager
                 // persisting to output code, and insert value and type for
                 // fields
                 // -------------------------------------------------------------
-
-                if ( (dataElement instanceof CalculatedDataElement) )
-                {
-                    appendCode += calDataElementCode;
-                }
 
                 appendCode += metaDataCode;
 
@@ -1022,8 +887,7 @@ public class DefaultDataEntryScreenManager
     }
 
     private String populateCustomDataEntryForDate( String dataEntryFormCode, Collection<PatientDataValue> dataValues,
-        Map<CalculatedDataElement, Integer> calculatedValueMap, Map<Integer, MinMaxDataElement> minMaxMap,
-        String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
+        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
         OrganisationUnit organisationUnit, Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
 
@@ -1149,30 +1013,9 @@ public class DefaultDataEntryScreenManager
                 }
                 else
                 {
+                    patientDataValue = getValue( dataValues, dataElementId );
 
-                    if ( (dataElement instanceof CalculatedDataElement) )
-                    {
-                        CalculatedDataElement cde = (CalculatedDataElement) dataElement;
-
-                        if ( cde.isSaved() )
-                        {
-                            patientDataValue = getValue( dataValues, dataElementId );
-
-                            dataElementValue = patientDataValue != null ? patientDataValue.getValue()
-                                : dataElementValue;
-                        }
-                        else
-                        {
-                            dataElementValue = String.valueOf( calculatedValueMap.get( cde ) );
-                        }
-                    }
-                    else
-                    {
-                        patientDataValue = getValue( dataValues, dataElementId );
-
-                        dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
-
-                    }
+                    dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
 
                 // -------------------------------------------------------------

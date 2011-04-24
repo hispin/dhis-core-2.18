@@ -35,7 +35,6 @@ import java.util.HashSet;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -565,76 +564,5 @@ public class DataMartServiceTest
         assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitF ), 500.4, 0.5 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitG ), 16.1, 0.5 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitH ), 412.1, 0.5 );
-    }
-
-    @Test
-    public void testCalculatedDataElementDataMart()
-    {
-        // ---------------------------------------------------------------------
-        // Setup DataElements
-        // ---------------------------------------------------------------------
-
-        DataElement dataElementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        DataElement dataElementD = createDataElement( 'D', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        
-        int idC = dataElementService.addDataElement( dataElementC );
-        int idD = dataElementService.addDataElement( dataElementD );
-        
-        dataSet.getDataElements().add( dataElementC );
-        dataSet.getDataElements().add( dataElementD );
-        dataSetService.updateDataSet( dataSet );
-        dataElementC.getDataSets().add( dataSet );
-        dataElementD.getDataSets().add( dataSet );
-        dataElementService.updateDataElement( dataElementC );
-        dataElementService.updateDataElement( dataElementD );
-
-        // ---------------------------------------------------------------------
-        // Setup DataValues
-        // ---------------------------------------------------------------------
-
-        dataValueService.addDataValue( createDataValue( dataElementC, periodA, unitF, "40", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodA, unitG, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodA, unitH, "75", categoryOptionCombo ) );        
-        dataValueService.addDataValue( createDataValue( dataElementC, periodB, unitF, "45", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodB, unitG, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodB, unitH, "75", categoryOptionCombo ) );        
-        dataValueService.addDataValue( createDataValue( dataElementC, periodC, unitF, "40", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodC, unitG, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodC, unitH, "70", categoryOptionCombo ) );
-
-        dataValueService.addDataValue( createDataValue( dataElementD, periodA, unitF, "65", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodA, unitG, "90", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodA, unitH, "25", categoryOptionCombo ) );        
-        dataValueService.addDataValue( createDataValue( dataElementD, periodB, unitF, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodB, unitG, "55", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodB, unitH, "85", categoryOptionCombo ) );        
-        dataValueService.addDataValue( createDataValue( dataElementD, periodC, unitF, "45", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodC, unitG, "15", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodC, unitH, "25", categoryOptionCombo ) );
-
-        // ---------------------------------------------------------------------
-        // Setup CalculatedDataElement
-        // ---------------------------------------------------------------------
-
-        String suffix = Expression.SEPARATOR + categoryOptionCombo.getId();
-        
-        Expression expression = createExpression( 'A', "(2*[" + idC + suffix + "])+(1*[" + idD + suffix + "])", null );
-        
-        expressionService.addExpression( expression );
-        
-        CalculatedDataElement calculated = createCalculatedDataElement( 'E', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo, expression );
-        
-        dataElementIds.clear();
-        dataElementIds.add( dataElementService.addDataElement( calculated ) );
-        
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
-
-        // ---------------------------------------------------------------------
-        // Assert
-        // ---------------------------------------------------------------------
-        
-        assertEquals( 430.0, aggregatedDataValueService.getAggregatedValue( calculated, categoryOptionCombo, periodA, unitF ) );
-        assertEquals( 110.0, aggregatedDataValueService.getAggregatedValue( calculated, categoryOptionCombo, periodA, unitG ) );
-        assertEquals( 175.0, aggregatedDataValueService.getAggregatedValue( calculated, categoryOptionCombo, periodA, unitH ) );
     }
 }

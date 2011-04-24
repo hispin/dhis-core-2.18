@@ -107,7 +107,6 @@ public class MetaDataExportAction
         params.setCategoryOptions( null );
         params.setCategoryOptionCombos( null );
         params.setDataElements( null );
-        params.setCalculatedDataElements( null );
         params.setDataElementGroups( null );
         params.setDataElementGroupSets( null );
         params.setIndicators( null );

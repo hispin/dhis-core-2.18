@@ -41,7 +41,6 @@ import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
@@ -431,7 +430,6 @@ public class GetPreviewOptionsAction
         throws Exception
     {
         newDataElements = importObjectService.getImportObjects( NEW, DataElement.class ).size();
-        newCalculatedDataElements = importObjectService.getImportObjects( NEW, CalculatedDataElement.class ).size();
         newDataElementGroups = importObjectService.getImportObjects( NEW, DataElementGroup.class ).size();
         newDataElementGroupSets = importObjectService.getImportObjects( NEW, DataElementGroupSet.class ).size();
         newIndicatorTypes = importObjectService.getImportObjects( NEW, IndicatorType.class ).size();
@@ -451,7 +449,6 @@ public class GetPreviewOptionsAction
         newDataValues = importDataValueService.getNumberOfImportDataValues( NEW );
         
         updateDataElements = importObjectService.getImportObjects( UPDATE, DataElement.class ).size();
-        updateCalculatedDataElements = importObjectService.getImportObjects( UPDATE, CalculatedDataElement.class ).size();
         updateDataElementGroups = importObjectService.getImportObjects( UPDATE, DataElementGroup.class ).size();
         updateDataElementGroupSets = importObjectService.getImportObjects( UPDATE, DataElementGroupSet.class ).size();
         updateIndicatorTypes = importObjectService.getImportObjects( UPDATE, IndicatorType.class ).size();

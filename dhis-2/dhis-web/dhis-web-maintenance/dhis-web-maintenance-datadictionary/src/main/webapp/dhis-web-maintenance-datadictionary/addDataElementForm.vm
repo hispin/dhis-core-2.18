@@ -89,7 +89,7 @@
 	<tr>	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="selectedCategoryComboId" style="min-width:20em" onchange="changeCategory(this.value)">				
+			<select id="selectedCategoryComboId" style="min-width:20em">				
 			#foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
 				<option value="$dataElementCategoryCombo.id" #if( $dataElementCategoryCombo.id == $defaultCategoryCombo.id ) selected="selected" #end>$encoder.htmlEncode( $dataElementCategoryCombo.name )</option>
 			#end
@@ -97,76 +97,6 @@
 			<input type="hidden" id="submitCategoryComboId" name="selectedCategoryComboId"/>
 		</td>
 	</tr>
-    <tr>
-        <td style="height:10px"></td>
-    </tr>
-	<tr>
-		<td><label for="calculated" id="lblCalculated">$i18n.getString( "calculated" )</label></td>
-		<td><input type="checkbox" id="calculated" name="calculated" onchange="toggleCDEForm()"/></td>
-    </tr>
-</table>
-
-<div id="calculatedContainer" style="border:1px solid #808080; padding:10px; display:none;">
-
-<table>
-    <tr>
-        <td><label for="saved">$i18n.getString( "saved" )</label>&nbsp;
-            <input type="checkbox" id="saved" name="saved" #if( $calculatedDataElement.saved ) checked="checked" #end/>
-        </td>
-    </tr>
-    <tr>
-        <td style="height:10px"></td>
-    </tr>
-    <tr>
-    	<th>$i18n.getString( "available_dataelements" )</td>
-    </tr>
-    <tr>
-    	<td>
-	    	<select id="dataElementGroupId" name="dataElementGroupId" onchange="getDataElements( this.options[this.selectedIndex].value, 'int', true )" style="width:450px">
-				<option value="[select]" selected="selected">[ $i18n.getString( "select_dataelementgroup" ) ]</option>
-				<option value="$ALL">[ $i18n.getString( "all_dataelements" ) ]</option>
-				#foreach ( $group in $dataElementGroups )
-					<option value="$group.id">$group.name</option>
-				#end
-			</select><br/>
-			<select id="availableDataElements" size="5" multiple="multiple" style="width:450px">
-	            #foreach( $operand in $operands )
-					<option value="[$operand.operandId]">$encoder.htmlEncode( $operand.operandName )</option>
-				#end             
-	        </select>		
-		</td>
-    </tr>
-    <tr>
-		<td>
-			<input id="selectOneButton" type="button" value="$i18n.getString('add_selected')" title="$i18n.getString('add_selected')" onclick="addCDEDataElements()" style="width:120px"/><input 
-			       id="deselectAllButton" type="button" value="$i18n.getString('remove_all')" title="$i18n.getString('remove_all')" onclick="removeCDEDataElements()" style="width:120px"/>
-		</td>
-    </tr>    
-    <tr>
-        <th>$i18n.getString( "selected_dataelements" )</th>
-		<td><select id="selectedDEValidator" multiple="multiple" name="selectedDEValidator" style="display:none"></select></td>
-    </tr>
-    <tr>
-		<td>
-			<table id="selectedDataElements" style="min-width:450px">
-				<tr>
-					<td style="font-weight:bold;">$i18n.getString( "data_element" )</td>
-					<td style="font-weight:bold;">$i18n.getString( "factor" )</td>
-					<td style="font-weight:bold;">$i18n.getString( "remove" )</td>					
-				</tr>
-				<tbody>
-	          		<tr class="placeholder">
-	          			<td colspan="2">None selected</td>
-	          		</tr>
-				</tbody>
-        	</table>
-		</td>
-	</tr>
-</table>
-
-</div>
-
-<table>
 	<tr>
 		<td style="height:10px" colspan="2"></td>
 	</tr>

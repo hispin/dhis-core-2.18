@@ -37,7 +37,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.ServiceProvider;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -204,14 +203,7 @@ public class DetailedMetaDataExportAction
         {
             final DataElement element = dataElementService.getDataElement( id );
             
-            if ( element instanceof CalculatedDataElement )
-            {
-                params.getCalculatedDataElements().add( element.getId() );
-            }
-            else
-            {
-                params.getDataElements().add( element.getId() );
-            }
+            params.getDataElements().add( element.getId() );
         }
         
         params.setIncludeDataValues( false );

@@ -247,40 +247,6 @@ public interface DataElementStore
     int getDataElementCountByName( String name );
     
     // -------------------------------------------------------------------------
-    // Calculated Data Elements
-    // -------------------------------------------------------------------------
-
-    /**
-     * Returns a CalclulatedDataElement which contains a given dataElement
-     * 
-     * @paran dataElement the DataElement which is contained by the
-     *        CalculatedDataElement to return.
-     * @return a CalculatedDataElement which contains the given DataElement, or
-     *         null if the DataElement is not part of a CalculatedDataElement.
-     */
-    CalculatedDataElement getCalculatedDataElementByDataElement( DataElement dataElement );
-
-    /**
-     * Returns CalculatedDataElements which contain any of the given
-     * DataElements
-     * 
-     * @param dataElements Collection of DataElements which can be contained by
-     *        the returned CalculatedDataElements
-     * @return a collection of CalculatedDataElements which contain any of the
-     *         given DataElements, or an empty collection if no
-     *         CalculatedDataElements contain any of the DataElements.
-     */
-    Collection<CalculatedDataElement> getCalculatedDataElementsByDataElements( Collection<DataElement> dataElements );
-
-    /**
-     * Returns all CalculatedDataElements
-     * 
-     * @return a collection of all CalculatedDataElements, or an empty
-     *         collection if there are no CalculcatedDataELements
-     */
-    Collection<CalculatedDataElement> getAllCalculatedDataElements();
-
-    // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------
 
