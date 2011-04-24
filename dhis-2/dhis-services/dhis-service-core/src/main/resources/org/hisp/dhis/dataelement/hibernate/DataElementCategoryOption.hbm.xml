@@ -18,6 +18,7 @@
     </property>
 
     <set name="categoryOptionCombos" table="categoryoptioncombos_categoryoptions" inverse="true">
+      <cache usage="read-write" />
       <key column="categoryoptionid" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid"
         foreign-key="fk_categoryoption_categoryoptioncomboid" />

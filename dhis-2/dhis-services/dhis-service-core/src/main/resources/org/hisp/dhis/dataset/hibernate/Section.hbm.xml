@@ -17,12 +17,14 @@
     <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid" unique-key="key_sectionnamedataset" />
 
     <list name="dataElements" table="sectiondataelements">
+      <cache usage="read-write" />
       <key column="sectionid" />
       <list-index column="sort_order" base="1" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_section_dataelementid" />
     </list>
 
     <set name="greyedFields" table="sectiongreyedfields">
+      <cache usage="read-write" />
       <key column="sectionid" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElementOperand" column="dataelementoperandid"
         foreign-key="fk_section_dataelementoperandid" />

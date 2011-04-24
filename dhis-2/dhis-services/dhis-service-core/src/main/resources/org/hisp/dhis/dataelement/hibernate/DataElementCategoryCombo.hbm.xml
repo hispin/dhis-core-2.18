@@ -17,6 +17,7 @@
     </property>
 
     <list name="categories" table="categorycombos_categories">
+      <cache usage="read-write" />
       <key column="categorycomboid" />
       <list-index column="sort_order" base="1" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategory" column="categoryid"
@@ -24,6 +25,7 @@
     </list>
 
     <set name="optionCombos" table="categorycombos_optioncombos" inverse="true" cascade="all">
+      <cache usage="read-write" />
       <key column="categorycomboid" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid"
         foreign-key="fk_categorycombo_categoryoptioncomboid" unique="true" />
