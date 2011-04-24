@@ -73,7 +73,6 @@ import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -848,16 +847,6 @@ public abstract class DhisConvenienceTest
         chart.setOrganisationUnits( units );
 
         return chart;
-    }
-
-    public static OlapURL createOlapURL( char uniqueCharacter )
-    {
-        OlapURL olapURL = new OlapURL();
-
-        olapURL.setName( "OlapURL" + uniqueCharacter );
-        olapURL.setUrl( "URL" + uniqueCharacter );
-
-        return olapURL;
     }
 
     public static User createUser( char uniqueCharacter )

@@ -29,7 +29,6 @@ package org.hisp.dhis.dashboard;
 
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.MapView;
-import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -68,19 +67,7 @@ public class DashboardContentDeletionHandler
             }
         }
     }
-    
-    @Override
-    public void deleteOlapURL( OlapURL olapURL )
-    {
-        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
-        {
-            if ( content.getOlapUrls().remove( olapURL ) )
-            {
-                dashboardService.saveDashboardContent( content );
-            }
-        }
-    }
-        
+            
     @Override
     public void deleteDocument( Document document )
     {

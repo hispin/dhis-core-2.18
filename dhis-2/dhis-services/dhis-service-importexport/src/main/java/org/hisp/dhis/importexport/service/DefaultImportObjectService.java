@@ -67,8 +67,6 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.olap.OlapURL;
-import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -184,13 +182,6 @@ public class DefaultImportObjectService<T>
     public void setChartService( ChartService chartService )
     {
         this.chartService = chartService;
-    }
-
-    private OlapURLService olapURLService;
-
-    public void setOlapURLService( OlapURLService olapURLService )
-    {
-        this.olapURLService = olapURLService;
     }
 
     private DataValueService dataValueService;
@@ -605,12 +596,6 @@ public class DefaultImportObjectService<T>
 
             chart.setName( chartService.getChart( existingObjectId ).getName() );
         }
-        else if ( object.getClass().equals( OlapURL.class ) )
-        {
-            OlapURL url = (OlapURL) object;
-
-            url.setName( olapURLService.getOlapURL( existingObjectId ).getName() );
-        }
         else if ( object.getClass().equals( DataValue.class ) )
         {
             DataValue dataValue = (DataValue) object;
@@ -672,7 +657,6 @@ public class DefaultImportObjectService<T>
         importObjectManager.importReports();
         importObjectManager.importReportTables();
         importObjectManager.importCharts();
-        importObjectManager.importOlapURLs();
         importObjectManager.importCompleteDataSetRegistrations();
         importObjectManager.importDataValues();
 

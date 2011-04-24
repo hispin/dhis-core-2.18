@@ -22,12 +22,6 @@
       <many-to-many column="reportid" class="org.hisp.dhis.report.Report" />
     </list>
 
-    <list name="olapUrls" table="dashboardcontent_olapurls">
-      <key column="userid" />
-      <list-index column="sort_order" base="0" />
-      <many-to-many column="olapurlid" class="org.hisp.dhis.olap.OlapURL" />
-    </list>
-
     <list name="documents" table="dashboardcontent_documents">
       <key column="userid" />
       <list-index column="sort_order" base="0" />

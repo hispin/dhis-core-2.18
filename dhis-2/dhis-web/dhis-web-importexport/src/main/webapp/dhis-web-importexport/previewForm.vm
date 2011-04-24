@@ -61,7 +61,6 @@
 	#displayObjects( "report" "Report" $newReports $updateReports )
 	#displayObjects( "report_table" "ReportTable" $newReportTables $updateReportTables )
 	#displayObjects( "chart" "Chart" $newCharts $updateCharts )
-	#displayObjects( "olap_url" "OlapUrl" $newOlapUrls $updateOlapUrls )
 	#displayObjects( "datavalue" "DataValue" $newDataValues $updateDataValues )
 	
 	<tr>

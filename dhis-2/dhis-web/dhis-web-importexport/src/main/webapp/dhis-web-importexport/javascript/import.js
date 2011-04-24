@@ -206,14 +206,6 @@ function discardObjectCallback( xmlElement )
 		{
 		    handleField( discardedElements, "updateChartSpan", "updateChartTd" );
 		}
-		else if ( elementType == "OLAPURL" && elementStatus == "NEW" )
-		{
-		    handleField( discardedElements, "newOlapUrlSpan", "newOlapUrlTd" );
-		}
-		else if ( elementType == "OLAPURL" && elementStatus == "UPDATE" )
-		{
-		    handleField( iscardedElements, "updateOlapUrlSpan", "updateOlapUrlTd" );
-		}
 		else if ( elementType == "DATAVALUE" && elementStatus == "NEW" )
 		{
 			handleField( discardedElements, "newDataValueSpan", "newDataValueTd" );
@@ -342,11 +334,6 @@ function discardObjectsOfTypeCallback( xmlElement )
 		{
 		    clearField( "newChartTd" );
 		    clearFIeld( "updateChartTd" );
-		}
-		else if ( elementType == "OLAPURL" )
-		{
-		    clearField( "newOlapUrlTd" );
-		    clearField( "updateOlapUrlTd" );
 		}
 		else if ( elementType == "DATAVALUE" )
 		{

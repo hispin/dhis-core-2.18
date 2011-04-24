@@ -85,7 +85,6 @@ import org.hisp.dhis.importexport.importer.IndicatorGroupImporter;
 import org.hisp.dhis.importexport.importer.IndicatorGroupSetImporter;
 import org.hisp.dhis.importexport.importer.IndicatorImporter;
 import org.hisp.dhis.importexport.importer.IndicatorTypeImporter;
-import org.hisp.dhis.importexport.importer.OlapUrlImporter;
 import org.hisp.dhis.importexport.importer.OrganisationUnitGroupImporter;
 import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.importexport.importer.OrganisationUnitLevelImporter;
@@ -132,8 +131,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
-import org.hisp.dhis.olap.OlapURL;
-import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -240,13 +237,6 @@ public class DefaultImportObjectManager
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
-    }
-
-    private OlapURLService olapURLService;
-
-    public void setOlapURLService( OlapURLService olapURLService )
-    {
-        this.olapURLService = olapURLService;
     }
 
     private ExpressionService expressionService;
@@ -1021,24 +1011,7 @@ public class DefaultImportObjectManager
 
         log.info( "Imported Reports" );
     }
-
-    @Transactional
-    public void importOlapURLs()
-    {
-        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OlapURL.class );
-
-        Importer<OlapURL> importer = new OlapUrlImporter( olapURLService );
-
-        for ( ImportObject importObject : importObjects )
-        {
-            importer.importObject( (OlapURL) importObject.getObject(), params );
-        }
-
-        importObjectStore.deleteImportObjects( OlapURL.class );
-
-        log.info( "Imported OlapURLs" );
-    }
-
+    
     @Transactional
     public void importCompleteDataSetRegistrations()
     {

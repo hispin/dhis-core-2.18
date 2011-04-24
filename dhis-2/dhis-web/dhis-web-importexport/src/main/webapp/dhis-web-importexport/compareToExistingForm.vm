@@ -192,12 +192,6 @@
 	    
     #end
     
-    #if ( $objectType == "OLAPURL" )
-    	
-	#compareProperty( $importObject.object.url $importObject.compareObject.url "url" )
-    	
-    #end
-        
 	<tr>
 		<td colspan="2" style="height:15px"></td>
 	</tr>

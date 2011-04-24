@@ -84,10 +84,6 @@
         <td><input id="charts" name="charts" type="checkbox" value="true" /></td>
         <td><label for="charts">$i18n.getString( 'charts' )</label></td>
     </tr>
-    <tr>
-    	<td><input id="olapUrls" name="olapUrls" type="checkbox" value="true" /></td>
-        <td><label for="olapUrls">$i18n.getString( 'olap_urls' )</label></td>
-    </tr>
 	
 	<!-- Submit -->
 	

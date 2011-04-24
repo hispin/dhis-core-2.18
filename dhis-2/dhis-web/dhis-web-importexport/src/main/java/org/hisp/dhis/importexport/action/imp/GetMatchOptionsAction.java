@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.action.imp;
  */
 
 import static org.hisp.dhis.common.Objects.CALCULATEDDATAELEMENT;
+import static org.hisp.dhis.common.Objects.CHART;
 import static org.hisp.dhis.common.Objects.DATADICTIONARY;
 import static org.hisp.dhis.common.Objects.DATAELEMENT;
 import static org.hisp.dhis.common.Objects.DATAELEMENTGROUP;
@@ -37,14 +38,12 @@ import static org.hisp.dhis.common.Objects.INDICATOR;
 import static org.hisp.dhis.common.Objects.INDICATORGROUP;
 import static org.hisp.dhis.common.Objects.INDICATORGROUPSET;
 import static org.hisp.dhis.common.Objects.INDICATORTYPE;
-import static org.hisp.dhis.common.Objects.OLAPURL;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUP;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUPSET;
 import static org.hisp.dhis.common.Objects.ORGANISATIONUNITLEVEL;
 import static org.hisp.dhis.common.Objects.REPORT;
 import static org.hisp.dhis.common.Objects.REPORTTABLE;
-import static org.hisp.dhis.common.Objects.CHART;
 import static org.hisp.dhis.common.Objects.VALIDATIONRULE;
 
 import java.util.Collection;
@@ -55,7 +54,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.report.ReportService;
@@ -197,13 +195,6 @@ public class GetMatchOptionsAction
     {
         this.chartService = chartService;
     }
-
-    private OlapURLService olapURLService;
-
-    public void setOlapURLService( OlapURLService olapURLService )
-    {
-        this.olapURLService = olapURLService;
-    }
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -285,10 +276,6 @@ public class GetMatchOptionsAction
         else if ( objectType.equals( CHART.name() ) )
         {
             objects = chartService.getAllCharts();
-        }
-        else if ( objectType.equals( OLAPURL.name() ) )
-        {
-            objects = olapURLService.getAllOlapURLs();
         }
         
         return SUCCESS;
