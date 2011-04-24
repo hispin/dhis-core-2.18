@@ -24,6 +24,7 @@
       foreign-key="fk_dataelementcategory_conceptid" />
 
     <list name="categoryOptions" table="categories_categoryoptions">
+      <cache usage="read-write" />
       <key column="categoryid" />
       <list-index column="sort_order" base="1" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOption" column="categoryoptionid"

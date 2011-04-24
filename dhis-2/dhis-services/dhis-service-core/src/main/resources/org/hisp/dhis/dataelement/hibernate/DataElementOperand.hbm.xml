@@ -6,6 +6,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataelement.DataElementOperand" table="dataelementoperand">
 
+    <cache usage="read-write" />
+
     <id name="id" column="dataelementoperandid">
       <generator class="native" />
     </id>
