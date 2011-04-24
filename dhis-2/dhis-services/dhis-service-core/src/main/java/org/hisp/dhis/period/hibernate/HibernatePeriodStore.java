@@ -213,6 +213,19 @@ public class HibernatePeriodStore
         return periods;
     }
 
+    public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Period.class );
+        criteria.add( Restrictions.eq( "startDate", startDate ) );
+        criteria.add( Restrictions.eq( "endDate", endDate ) );
+        criteria.add( Restrictions.eq( "periodType", periodType ) );
+        criteria.setCacheable( true );
+
+        return (Period) criteria.uniqueResult();
+    }
+
     public Period reloadPeriod( Period period )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -272,7 +285,7 @@ public class HibernatePeriodStore
 
         Criteria criteria = session.createCriteria( periodType );
 
-        return (PeriodType) criteria.uniqueResult();
+        return (PeriodType) criteria.setCacheable( true ).uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -280,7 +293,7 @@ public class HibernatePeriodStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        return session.createCriteria( PeriodType.class ).list();
+        return session.createCriteria( PeriodType.class ).setCacheable( true ).list();
     }
 
     // -------------------------------------------------------------------------
@@ -305,17 +318,5 @@ public class HibernatePeriodStore
         }
 
         return reloadedPeriodType;
-    }
-
-    public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( Period.class );
-        criteria.add( Restrictions.eq( "startDate", startDate ) );
-        criteria.add( Restrictions.eq( "endDate", endDate ) );
-        criteria.add( Restrictions.eq( "periodType", periodType ) );
-
-        return (Period) criteria.uniqueResult();
     }
 }
