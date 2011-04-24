@@ -6,6 +6,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.chart.Chart" table="chart">
 
+    <cache usage="read-write" />
+
     <id name="id" column="chartid">
       <generator class="native" />
     </id>

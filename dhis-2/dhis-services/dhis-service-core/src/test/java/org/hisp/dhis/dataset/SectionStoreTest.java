@@ -86,50 +86,50 @@ public class SectionStoreTest
     }
     
     @Test
-    public void addGet()
+    public void testAddGet()
     {        
-        int idA = sectionStore.addSection( sectionA );
-        int idB = sectionStore.addSection( sectionB );
-        int idC = sectionStore.addSection( sectionC );
+        int idA = sectionStore.save( sectionA );
+        int idB = sectionStore.save( sectionB );
+        int idC = sectionStore.save( sectionC );
         
-        assertEquals( sectionA, sectionStore.getSection( idA ) );
-        assertEquals( sectionB, sectionStore.getSection( idB ) );
-        assertEquals( sectionC, sectionStore.getSection( idC ) );
+        assertEquals( sectionA, sectionStore.get( idA ) );
+        assertEquals( sectionB, sectionStore.get( idB ) );
+        assertEquals( sectionC, sectionStore.get( idC ) );
 
-        assertEquals( dataSet, sectionStore.getSection( idA ).getDataSet() );
-        assertNotNull( sectionStore.getSection( idA ).getDataElements() );
-        assertEquals( 2, sectionStore.getSection( idA ).getDataElements().size() );
-        assertNotNull( sectionStore.getSection( idA ).getGreyedFields() );
-        assertEquals( 2, sectionStore.getSection( idA ).getGreyedFields().size() );
+        assertEquals( dataSet, sectionStore.get( idA ).getDataSet() );
+        assertNotNull( sectionStore.get( idA ).getDataElements() );
+        assertEquals( 2, sectionStore.get( idA ).getDataElements().size() );
+        assertNotNull( sectionStore.get( idA ).getGreyedFields() );
+        assertEquals( 2, sectionStore.get( idA ).getGreyedFields().size() );
     }
     
     @Test
-    public void delete()
+    public void testDelete()
     {        
-        int idA = sectionStore.addSection( sectionA );
-        int idB = sectionStore.addSection( sectionB );
-        int idC = sectionStore.addSection( sectionC );
+        int idA = sectionStore.save( sectionA );
+        int idB = sectionStore.save( sectionB );
+        int idC = sectionStore.save( sectionC );
 
-        assertNotNull( sectionStore.getSection( idA ) );
-        assertNotNull( sectionStore.getSection( idB ) );
-        assertNotNull( sectionStore.getSection( idC ) );
+        assertNotNull( sectionStore.get( idA ) );
+        assertNotNull( sectionStore.get( idB ) );
+        assertNotNull( sectionStore.get( idC ) );
         
-        sectionStore.deleteSection( sectionA );
+        sectionStore.delete( sectionA );
         
-        assertNull( sectionStore.getSection( idA ) );
-        assertNotNull( sectionStore.getSection( idB ) );
-        assertNotNull( sectionStore.getSection( idC ) );
+        assertNull( sectionStore.get( idA ) );
+        assertNotNull( sectionStore.get( idB ) );
+        assertNotNull( sectionStore.get( idC ) );
         
-        sectionStore.deleteSection( sectionB );
+        sectionStore.delete( sectionB );
         
-        assertNull( sectionStore.getSection( idA ) );
-        assertNull( sectionStore.getSection( idB ) );
-        assertNotNull( sectionStore.getSection( idC ) );       
+        assertNull( sectionStore.get( idA ) );
+        assertNull( sectionStore.get( idB ) );
+        assertNotNull( sectionStore.get( idC ) );       
 
-        sectionStore.deleteSection( sectionC );
+        sectionStore.delete( sectionC );
         
-        assertNull( sectionStore.getSection( idA ) );
-        assertNull( sectionStore.getSection( idB ) );
-        assertNull( sectionStore.getSection( idC ) );   
+        assertNull( sectionStore.get( idA ) );
+        assertNull( sectionStore.get( idB ) );
+        assertNull( sectionStore.get( idC ) );   
     }
 }

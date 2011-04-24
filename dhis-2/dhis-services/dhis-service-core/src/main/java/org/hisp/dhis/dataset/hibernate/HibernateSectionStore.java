@@ -23,75 +23,28 @@ package org.hisp.dhis.dataset.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionStore;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 
 /**
  * @author Tri
  * @version $Id$
  */
 public class HibernateSectionStore
-    implements SectionStore
+    extends HibernateGenericStore<Section> implements SectionStore
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // -------------------------------------------------------------------------
-    // SectionStore implementation
-    // -------------------------------------------------------------------------
-
-    public int addSection( Section section )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        return (Integer) session.save( section );
-    }
-
-    public void deleteSection( Section section )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        session.delete( section );
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Section> getAllSections()
-    {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createCriteria( Section.class ).list();
-    }
-
-    public Section getSection( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        return (Section) session.get( Section.class, id );
-    }
-
     public Section getSectionByName( String name, DataSet dataSet )
     {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( Section.class );
         criteria.add( Restrictions.eq( "name", name ) );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
+        criteria.setCacheable( true );
         return (Section) criteria.uniqueResult();
-    }
-
-    public void updateSection( Section section )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        session.update( section );
     }
 }

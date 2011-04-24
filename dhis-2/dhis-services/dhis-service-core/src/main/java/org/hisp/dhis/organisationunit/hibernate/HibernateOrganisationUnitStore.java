@@ -228,14 +228,6 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
-    public int getNumberOfOrganisationUnits()
-    {
-        final String sql = "SELECT count(*) FROM organisationunit";
-
-        return jdbcTemplate.queryForInt( sql );
-    }
-
-    @Override
     public int getMaxOfOrganisationUnitLevels()
     {
         final String sql = "SELECT MAX(level) FROM orgunitlevel";

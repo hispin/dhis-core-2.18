@@ -39,6 +39,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.reporttable.ReportTable"/>
     <property name="sessionFactory" ref="sessionFactory"/>
+	<property name="cacheable" value="true"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporttable.ReportTableService"
@@ -65,6 +66,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.report.Report"/>
     <property name="sessionFactory" ref="sessionFactory"/>
+	<property name="cacheable" value="true"/>
   </bean>
   
   <bean id="org.hisp.dhis.report.ReportService"
@@ -79,6 +81,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.chart.hibernate.HibernateChartStore">
     <property name="clazz" value="org.hisp.dhis.chart.Chart"/>
     <property name="sessionFactory" ref="sessionFactory"/>
+	<property name="cacheable" value="true"/>
   </bean>
   
   <bean id="org.hisp.dhis.chart.ChartService"
@@ -107,6 +110,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.document.Document"/>
     <property name="sessionFactory" ref="sessionFactory"/>
+	<property name="cacheable" value="true"/>
   </bean>
   
   <bean id="org.hisp.dhis.document.DocumentService"

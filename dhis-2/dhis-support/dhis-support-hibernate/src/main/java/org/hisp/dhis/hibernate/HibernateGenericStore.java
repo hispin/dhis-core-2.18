@@ -102,9 +102,7 @@ public class HibernateGenericStore<T>
      */
     protected final Query getQuery( String hql )
     {
-        Query query =  sessionFactory.getCurrentSession().createQuery( hql );
-        query.setCacheable( cacheable );
-        return query;
+        return sessionFactory.getCurrentSession().createQuery( hql ).setCacheable( cacheable );
     }
     
     /**
@@ -127,9 +125,7 @@ public class HibernateGenericStore<T>
      */
     protected final Criteria getCriteria()
     {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( getClazz() );
-        criteria.setCacheable( cacheable );
-        return criteria;
+        return sessionFactory.getCurrentSession().createCriteria( getClazz() ).setCacheable( cacheable );
     }
     
     /**
@@ -288,7 +284,7 @@ public class HibernateGenericStore<T>
     public int getCount()
     {
         Criteria criteria = getCriteria();
-        criteria.setProjection( Projections.rowCount() );        
+        criteria.setProjection( Projections.rowCount() );
         return ((Number) criteria.uniqueResult()).intValue();
     }
 
@@ -297,7 +293,7 @@ public class HibernateGenericStore<T>
     {
         Criteria criteria = getCriteria();
         criteria.setProjection( Projections.rowCount() );
-        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );        
+        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
         return ((Number) criteria.uniqueResult()).intValue();
     }    
 }

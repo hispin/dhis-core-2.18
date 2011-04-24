@@ -6,6 +6,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.expression.Expression" table="expression">
 
+    <cache usage="read-write" />
+
     <id name="id" column="expressionid">
       <generator class="native" />
     </id>

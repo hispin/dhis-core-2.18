@@ -69,7 +69,7 @@ public class DefaultSectionService
 
     public int addSection( Section section )
     {
-        int id = sectionStore.addSection( section );
+        int id = sectionStore.save( section );
 
         i18nService.addObject( section );
 
@@ -80,17 +80,17 @@ public class DefaultSectionService
     {
         i18nService.removeObject( section );
 
-        sectionStore.deleteSection( section );
+        sectionStore.delete( section );
     }
 
     public Collection<Section> getAllSections()
     {
-        return i18n( i18nService, sectionStore.getAllSections() );
+        return i18n( i18nService, sectionStore.getAll() );
     }
 
     public Section getSection( int id )
     {
-        return i18n( i18nService, sectionStore.getSection( id ) );
+        return i18n( i18nService, sectionStore.get( id ) );
     }
 
     public Section getSectionByName( String name, Integer dataSetId )
@@ -100,7 +100,7 @@ public class DefaultSectionService
 
     public void updateSection( Section section )
     {
-        sectionStore.updateSection( section );
+        sectionStore.update( section );
 
         i18nService.verify( section );
     }
