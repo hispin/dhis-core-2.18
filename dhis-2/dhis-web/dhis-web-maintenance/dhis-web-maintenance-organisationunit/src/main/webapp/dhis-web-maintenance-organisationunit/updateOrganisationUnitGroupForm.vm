@@ -17,7 +17,7 @@
 	<table>
 		<tr>
 			<td>
-				#organisationUnitSelectionTree( false, true, true )
+				#organisationUnitSelectionTree( false, true, false )
 			</td>
 		</tr>
 	</table>

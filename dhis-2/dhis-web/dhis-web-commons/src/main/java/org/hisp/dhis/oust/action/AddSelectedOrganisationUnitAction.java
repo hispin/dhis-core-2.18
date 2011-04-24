@@ -30,8 +30,6 @@ package org.hisp.dhis.oust.action;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -47,8 +45,6 @@ import com.opensymphony.xwork2.Action;
 public class AddSelectedOrganisationUnitAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( AddSelectedOrganisationUnitAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -120,43 +116,34 @@ public class AddSelectedOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        try
+        selectedUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getSelectedOrganisationUnits() );
+
+        if ( id != null )
         {
-            selectedUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getSelectedOrganisationUnits() );
-
-            if ( id != null )
-            {
-                OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-                selectedUnits.add( unit );
-            }
-
-            if ( level != null )
-            {
-                selectedUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
-            }
-
-            if ( organisationUnitGroupId != null )
-            {
-                selectedUnits.addAll( organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId )
-                    .getMembers() );
-            }
-
-            if ( children != null && children == true )
-            {
-                for ( OrganisationUnit selected : selectionTreeManager.getSelectedOrganisationUnits() )
-                {
-                    selectedUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( selected.getId() ) );
-                }
-            }
-
-            selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
+            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+            selectedUnits.add( unit );
         }
-        catch ( Exception e )
+
+        if ( level != null )
         {
-            LOG.error( e.getMessage(), e );
-
-            throw e;
+            selectedUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
         }
+
+        if ( organisationUnitGroupId != null )
+        {
+            selectedUnits.addAll( organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId )
+                .getMembers() );
+        }
+
+        if ( children != null && children == true )
+        {
+            for ( OrganisationUnit selected : selectionTreeManager.getSelectedOrganisationUnits() )
+            {
+                selectedUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( selected.getId() ) );
+            }
+        }
+
+        selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
 
         return SUCCESS;
     }

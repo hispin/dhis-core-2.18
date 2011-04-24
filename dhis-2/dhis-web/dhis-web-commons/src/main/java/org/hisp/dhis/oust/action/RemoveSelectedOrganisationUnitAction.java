@@ -31,8 +31,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -48,8 +46,6 @@ import com.opensymphony.xwork2.Action;
 public class RemoveSelectedOrganisationUnitAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( RemoveSelectedOrganisationUnitAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -121,54 +117,45 @@ public class RemoveSelectedOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        try
+        selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
+
+        if ( id != null )
         {
-            selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
+            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+            selectedUnits.remove( unit );
+        }
 
-            if ( id != null )
+        if ( level != null )
+        {
+            selectedUnits.removeAll( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
+        }
+
+        if ( organisationUnitGroupId != null )
+        {
+            selectedUnits.removeAll( organisationUnitGroupService
+                .getOrganisationUnitGroup( organisationUnitGroupId ).getMembers() );
+        }
+
+        if ( children != null && children == true )
+        {
+
+            Set<OrganisationUnit> selectedOrganisationUnits = new HashSet<OrganisationUnit>( selectedUnits );
+
+            for ( OrganisationUnit selected : selectedOrganisationUnits )
             {
-                OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-                selectedUnits.remove( unit );
-            }
+                OrganisationUnit parent = selected.getParent();
 
-            if ( level != null )
-            {
-                selectedUnits.removeAll( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
-            }
-
-            if ( organisationUnitGroupId != null )
-            {
-                selectedUnits.removeAll( organisationUnitGroupService
-                    .getOrganisationUnitGroup( organisationUnitGroupId ).getMembers() );
-            }
-
-            if ( children != null && children == true )
-            {
-
-                Set<OrganisationUnit> selectedOrganisationUnits = new HashSet<OrganisationUnit>( selectedUnits );
-
-                for ( OrganisationUnit selected : selectedOrganisationUnits )
+                if ( !selectedOrganisationUnits.contains( parent ) )
                 {
-                    OrganisationUnit parent = selected.getParent();
-
-                    if ( !selectedOrganisationUnits.contains( parent ) )
-                    {
-                        selectedUnits.removeAll( organisationUnitService.getOrganisationUnitWithChildren( selected
-                            .getId() ) );
-                        
-                        selectedUnits.add( selected );                      
-                    }                    
-                }
+                    selectedUnits.removeAll( organisationUnitService.getOrganisationUnitWithChildren( selected
+                        .getId() ) );
+                    
+                    selectedUnits.add( selected );                      
+                }                    
             }
-
-            selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
         }
-        catch ( Exception e )
-        {
-            LOG.error( e.getMessage(), e );
 
-            throw e;
-        }
+        selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
 
         return SUCCESS;
     }
