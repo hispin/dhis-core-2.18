@@ -59,6 +59,7 @@
     </set>
 
     <set name="dataSets" table="datasetmembers" inverse="true">
+      <cache usage="read-write" />
       <key column="dataelementid" />
       <many-to-many class="org.hisp.dhis.dataset.DataSet" column="datasetid" />
     </set>
