@@ -560,7 +560,7 @@ public class DefaultOrganisationUnitService
     @Override
     public int getNumberOfOrganisationUnits()
     {
-        return organisationUnitStore.getNumberOfOrganisationUnits();
+        return organisationUnitStore.getCount();
     }
 
     @Override

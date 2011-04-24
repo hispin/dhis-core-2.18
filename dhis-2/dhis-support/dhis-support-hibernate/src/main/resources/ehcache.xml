@@ -11,110 +11,118 @@
     overflowToDisk="false"
     diskPersistent="false"
     diskExpiryThreadIntervalSeconds="720"
-    memoryStoreEvictionPolicy="LRU"
-  />
+    memoryStoreEvictionPolicy="LRU"/>
 
   <!-- Hibernate entities -->
 
   <cache name="org.hisp.dhis.dataelement.DataElement"
-    maxElementsInMemory="4000"
-  />
+    maxElementsInMemory="4000"/>
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryCombo"
-    maxElementsInMemory="100"
-  />
+    maxElementsInMemory="100"/>
   
   <cache name="org.hisp.dhis.dataelement.DataElementCategory"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
   
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption"
-    maxElementsInMemory="400"
-  />
+    maxElementsInMemory="400"/>
   
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
-    maxElementsInMemory="800"
-  />
+    maxElementsInMemory="800"/>
   
   <cache name="org.hisp.dhis.dataelement.DataElementGroup"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
+
+  <cache name="org.hisp.dhis.dataelement.DataElementGroupSet"
+    maxElementsInMemory="100"/>
 
   <cache name="org.hisp.dhis.indicator.Indicator"
-    maxElementsInMemory="1000"
-  />
+    maxElementsInMemory="1000"/>
   
   <cache name="org.hisp.dhis.indicator.IndicatorGroup"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
+  
+  <cache name="org.hisp.dhis.indicator.IndicatorGroupSet"
+    maxElementsInMemory="100"/>
   
   <cache name="org.hisp.dhis.indicator.IndicatorType"
-    maxElementsInMemory="100"
-  />
+    maxElementsInMemory="100"/>
   
   <cache name="org.hisp.dhis.datadictionary.DataDictionary"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
   
   <cache name="org.hisp.dhis.period.Period"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
   
   <cache name="org.hisp.dhis.period.PeriodType"
-    maxElementsInMemory="50"
-  />
+    maxElementsInMemory="50"/>
   
   <cache name="org.hisp.dhis.dataset.DataSet"
-    maxElementsInMemory="100"
-  />
+    maxElementsInMemory="100"/>
   
   <cache name="org.hisp.dhis.dataset.Section"
-    maxElementsInMemory="400"
-  />
+    maxElementsInMemory="400"/>
+  
+  <cache name="org.hisp.dhis.expression.Expression"
+    maxElementsInMemory="200"/>
+  
+  <cache name="org.hisp.dhis.validation.ValidationRule"
+    maxElementsInMemory="200"/>
+  
+  <cache name="org.hisp.dhis.validation.ValidationRuleGroup"
+    maxElementsInMemory="50"/>
   
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnit"
-    maxElementsInMemory="20000"
-  />
+    maxElementsInMemory="20000"/>
+  
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroup"
+    maxElementsInMemory="100"/>
+  
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet"
+    maxElementsInMemory="50"/>
   
   <cache name="org.hisp.dhis.user.User"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
 
   <cache name="org.hisp.dhis.user.UserSetting"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
 
   <cache name="org.hisp.dhis.user.UserCredentials"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
 
   <cache name="org.hisp.dhis.user.UserCredentials.userAuthorityGroups"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
 
   <cache name="org.hisp.dhis.options.SystemSetting"
-    maxElementsInMemory="200"
-  />
+    maxElementsInMemory="200"/>
   
   <cache name="org.hisp.dhis.translation.Translation"
-    maxElementsInMemory="8000"
-  />
+    maxElementsInMemory="8000"/>
   
   <cache name="org.hisp.dhis.message.Message"
-    maxElementsInMemory="500"
-  />
+    maxElementsInMemory="500"/>
   
   <cache name="org.hisp.dhis.message.UserMessage"
     maxElementsInMemory="50000"/>
   
+  <cache name="org.hisp.dhis.chart.Chart"
+    maxElementsInMemory="100"/>
+  
+  <cache name="org.hisp.dhis.reporttable.ReportTable"
+    maxElementsInMemory="100"/>
+  
+  <cache name="org.hisp.dhis.report.Report"
+    maxElementsInMemory="100"/>
+    
+  <cache name="org.hisp.dhis.document.Document"
+    maxElementsInMemory="100"/>
+  
   <!-- Hibernate Query Cache -->
   
   <cache name="org.hibernate.cache.StandardQueryCache"
-    maxElementsInMemory="200000"
-  />
+    maxElementsInMemory="200000"/>
 
   <cache name="org.hibernate.cache.UpdateTimestampsCache"
-    maxElementsInMemory="1000"
-  />
+    maxElementsInMemory="1000"/>
 
 </ehcache>

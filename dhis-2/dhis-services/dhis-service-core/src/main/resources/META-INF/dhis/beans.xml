@@ -13,6 +13,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.dataelement.DataElementOperand" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataentryform.DataEntryFormStore"
@@ -25,23 +26,26 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="clazz" value="org.hisp.dhis.dataelement.DataElement"/>
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="statementManager" ref="statementManager"/>
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataelement.DataElementGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.dataelement.DataElementGroup" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataelement.DataElementGroupSetStore"
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
-		<property name="clazz"
-			value="org.hisp.dhis.dataelement.DataElementGroupSet" />
+		<property name="clazz" value="org.hisp.dhis.dataelement.DataElementGroupSet" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.datadictionary.DataDictionaryStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.datadictionary.DataDictionary" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.datavalue.DataValueStore"
@@ -55,21 +59,25 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		class="org.hisp.dhis.indicator.hibernate.HibernateIndicatorStore">
 		<property name="clazz" value="org.hisp.dhis.indicator.Indicator"/>
 		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.indicator.IndicatorTypeStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.indicator.IndicatorType" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.indicator.IndicatorGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.indicator.IndicatorGroup" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.indicator.IndicatorGroupSetStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.indicator.IndicatorGroupSet" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.period.PeriodStore" class="org.hisp.dhis.period.hibernate.HibernatePeriodStore">
@@ -81,6 +89,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 		<property name="statementManager" ref="statementManager" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationStore"
@@ -98,6 +107,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	<bean id="org.hisp.dhis.expression.ExpressionStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.expression.Expression" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.validation.ValidationRuleStore"
@@ -105,42 +115,48 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="clazz" value="org.hisp.dhis.validation.ValidationRule" />
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.validation.ValidationRuleGroupStore"
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.validation.ValidationRuleGroup" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataelement.DataElementCategoryStore"
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategory" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionStore"
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryOption" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataelement.DataElementCategoryComboStore"
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
-		<property name="clazz"
-			value="org.hisp.dhis.dataelement.DataElementCategoryCombo" />
+		<property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryCombo" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore"
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
-		<property name="clazz"
-			value="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" />
+		<property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataset.SectionStore" class="org.hisp.dhis.dataset.hibernate.HibernateSectionStore">
+		<property name="clazz" value="org.hisp.dhis.dataset.Section" />
 		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.organisationunit.OrganisationUnitStore"
@@ -149,20 +165,21 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="statementManager" ref="statementManager"/>
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cacheable" value="true"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
-		<property name="clazz"
-			value="org.hisp.dhis.organisationunit.OrganisationUnitGroup" />
+		<property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitGroup" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore"
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
-		<property name="clazz"
-			value="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" />
+		<property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore"
@@ -207,13 +224,15 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	</bean>
 	
 	<bean id="org.hisp.dhis.message.MessageStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
-		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="clazz" value="org.hisp.dhis.message.Message"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.message.UserMessageStore" class="org.hisp.dhis.message.hibernate.HibernateUserMessageStore">
-		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="clazz" value="org.hisp.dhis.message.UserMessage"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.sequence.SequenceStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">

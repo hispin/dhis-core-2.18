@@ -6,6 +6,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.validation.ValidationRule" table="validationrule">
 
+    <cache usage="read-write" />
+
     <id name="id" column="validationruleid">
       <generator class="native" />
     </id>

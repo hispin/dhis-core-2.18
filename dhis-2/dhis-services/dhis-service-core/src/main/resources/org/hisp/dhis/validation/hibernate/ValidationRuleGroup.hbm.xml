@@ -5,6 +5,9 @@
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.validation.ValidationRuleGroup" table="validationrulegroup">
+  
+    <cache usage="read-write" />
+      
     <id name="id" column="validationgroupid">
       <generator class="native" />
     </id>

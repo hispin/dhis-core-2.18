@@ -27,54 +27,18 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.common.GenericStore;
 
 public interface SectionStore
+    extends GenericStore<Section>
 {
     String ID = SectionStore.class.getName();
 
     /**
-     * Adds a Section.
-     * 
-     * @param section the Section to add.
-     * @return the generated identifier.
-     */
-    int addSection( Section section );
-
-    /**
-     * Updates a Section.
-     * 
-     * @param section the Section to update.
-     */
-    void updateSection( Section section );
-
-    /**
-     * Deletes a Section.
-     * 
-     * @param section the Section to delete.
-     */
-    void deleteSection( Section section );   
-
-    /**
-     * Retrieves the Section with the given identifier.
-     * 
-     * @param id the identifier of the Section to retrieve.
-     * @return the Section.
-     */
-    Section getSection( int id );
-
-    /**
-     * Retrieves the Section with the given name.
+     * Retrieves the Section with the given name and the given DataSet.
      * 
      * @param name the name of the Section to retrieve.
      * @return the Section.
      */
     Section getSectionByName( String name, DataSet dataSet );
-
-    /**
-     * Retrieves all Sections.
-     * 
-     * @return a Collection of Sections.
-     */
-    Collection<Section> getAllSections();   
 }

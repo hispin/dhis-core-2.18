@@ -6,6 +6,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.indicator.IndicatorGroupSet" table="indicatorgroupset">
 
+    <cache usage="read-write" />
+
     <id name="id" column="indicatorgroupsetid">
       <generator class="native" />
     </id>
