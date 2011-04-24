@@ -30,8 +30,6 @@ package org.hisp.dhis.ouwt.action;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -45,8 +43,6 @@ import com.opensymphony.xwork2.Action;
 public class SetSelectedOrganisationUnitAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( SetSelectedOrganisationUnitAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -90,26 +86,17 @@ public class SetSelectedOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        try
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+
+        if ( unit == null )
         {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-
-            if ( unit == null )
-            {
-                throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
-            }
-
-            selectedUnits = new HashSet<OrganisationUnit>( 1 );
-            selectedUnits.add( unit );
-
-            selectionManager.setSelectedOrganisationUnits( selectedUnits );
+            throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
         }
-        catch ( Exception e )
-        {
-            LOG.error( e.getMessage(), e );
 
-            throw e;
-        }
+        selectedUnits = new HashSet<OrganisationUnit>( 1 );
+        selectedUnits.add( unit );
+
+        selectionManager.setSelectedOrganisationUnits( selectedUnits );
 
         return SUCCESS;
     }

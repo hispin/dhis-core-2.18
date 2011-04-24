@@ -29,8 +29,6 @@ package org.hisp.dhis.ouwt.action;
 
 import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.TreeStateManager;
@@ -44,8 +42,6 @@ import com.opensymphony.xwork2.Action;
 public class CollapseSubtreeAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( CollapseSubtreeAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -93,18 +89,9 @@ public class CollapseSubtreeAction
     public String execute()
         throws Exception
     {
-        try
-        {
-            OrganisationUnit parentUnit = organisationUnitService.getOrganisationUnit( parentId );
+        OrganisationUnit parentUnit = organisationUnitService.getOrganisationUnit( parentId );
 
-            collapsedUnits = treeStateManager.setSubtreeCollapsed( parentUnit );
-        }
-        catch ( Exception e )
-        {
-            LOG.error( e.getMessage(), e );
-
-            throw e;
-        }
+        collapsedUnits = treeStateManager.setSubtreeCollapsed( parentUnit );
 
         return SUCCESS;
     }

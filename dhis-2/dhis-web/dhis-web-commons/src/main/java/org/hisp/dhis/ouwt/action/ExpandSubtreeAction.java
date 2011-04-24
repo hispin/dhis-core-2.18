@@ -28,16 +28,12 @@ package org.hisp.dhis.ouwt.action;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.TreeStateManager;
 
 import com.opensymphony.xwork2.Action;
@@ -49,8 +45,6 @@ import com.opensymphony.xwork2.Action;
 public class ExpandSubtreeAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( ExpandSubtreeAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -105,25 +99,16 @@ public class ExpandSubtreeAction
     public String execute()
         throws Exception
     {
-        try
+        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
+
+        if ( parent == null )
         {
-            OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
-
-            if ( parent == null )
-            {
-                throw new RuntimeException( "OrganisationUnit with id " + parentId + " doesn't exist" );
-            }
-
-            treeStateManager.setSubtreeExpanded( parent );
-
-            addParentWithChildren( parent );
+            throw new RuntimeException( "OrganisationUnit with id " + parentId + " doesn't exist" );
         }
-        catch ( Exception e )
-        {
-            LOG.error( e.getMessage(), e );
 
-            throw e;
-        }
+        treeStateManager.setSubtreeExpanded( parent );
+
+        addParentWithChildren( parent );
 
         return SUCCESS;
     }
@@ -131,7 +116,7 @@ public class ExpandSubtreeAction
     private void addParentWithChildren( OrganisationUnit parent )
         throws Exception
     {
-        List<OrganisationUnit> children = getChildren( parent );
+        List<OrganisationUnit> children = parent.getSortedChildren();
 
         parents.add( parent );
 
@@ -139,23 +124,10 @@ public class ExpandSubtreeAction
 
         for ( OrganisationUnit child : children )
         {
-            boolean hasChildren = child.getChildren().size() > 0; // Dirty loading
-
-            LOG.debug( "OrganisationUnit " + child.getId() + " has children = " + hasChildren );
-
             if ( treeStateManager.isSubtreeExpanded( child ) )
             {
                 addParentWithChildren( child );
             }
         }
-    }
-
-    private final List<OrganisationUnit> getChildren( OrganisationUnit parent )
-    {
-        List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( parent.getChildren() );
-
-        Collections.sort( children, new OrganisationUnitNameComparator() );
-
-        return children;
     }
 }

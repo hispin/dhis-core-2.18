@@ -72,10 +72,7 @@ public class DefaultOrganisationUnitSelectionManager
             throw new IllegalArgumentException( "Root OrganisationUnit cannot be null" );
         }
 
-        Collection<OrganisationUnit> rootUnits = new HashSet<OrganisationUnit>();
-        rootUnits.addAll( organisationUnits );
-
-        saveToSession( SESSION_KEY_ROOT_ORG_UNITS, rootUnits );
+        saveToSession( SESSION_KEY_ROOT_ORG_UNITS, new HashSet<OrganisationUnit>( organisationUnits ) );
 
         clearSelectedOrganisationUnits();
     }

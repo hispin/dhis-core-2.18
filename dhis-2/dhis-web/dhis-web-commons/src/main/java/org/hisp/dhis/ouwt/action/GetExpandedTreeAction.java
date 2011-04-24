@@ -34,8 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -50,8 +48,6 @@ import com.opensymphony.xwork2.Action;
 public class GetExpandedTreeAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( GetExpandedTreeAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -123,10 +119,6 @@ public class GetExpandedTreeAction
 
         for ( OrganisationUnit root : roots )
         {
-            boolean hasChildren = root.getChildren().size() > 0; // Dirty loading
-
-            LOG.debug( "OrganisationUnit " + root.getId() + " has children = " + hasChildren );
-
             if ( treeStateManager.isSubtreeExpanded( root ) )
             {
                 addParentWithChildren( root );
@@ -145,7 +137,7 @@ public class GetExpandedTreeAction
     private void addParentWithChildren( OrganisationUnit parent )
         throws Exception
     {
-        List<OrganisationUnit> children = getChildren( parent );
+        List<OrganisationUnit> children = parent.getSortedChildren();
 
         parents.add( parent );
 
@@ -153,23 +145,10 @@ public class GetExpandedTreeAction
 
         for ( OrganisationUnit child : children )
         {
-            boolean hasChildren = child.getChildren().size() > 0; // Dirty loading
-
-            LOG.debug( "OrganisationUnit " + child.getId() + " has children = " + hasChildren );
-
             if ( treeStateManager.isSubtreeExpanded( child ) )
             {
                 addParentWithChildren( child );
             }
         }
-    }
-
-    private final List<OrganisationUnit> getChildren( OrganisationUnit parent )
-    {
-        List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( parent.getChildren() );
-
-        Collections.sort( children, new OrganisationUnitNameComparator() );
-
-        return children;
     }
 }
