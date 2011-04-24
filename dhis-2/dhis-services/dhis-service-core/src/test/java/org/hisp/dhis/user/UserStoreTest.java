@@ -87,8 +87,6 @@ public class UserStoreTest
         assertEquals( userStore.getUser( id ).getSurname(), userName );
         assertEquals( userStore.getUser( id ).getFirstName(), userName );
         assertEquals( 1, userStore.getAllUsers().size(), 1 );
-        assertEquals( 0, userStore.getUsersByOrganisationUnit( unit1 ).size() );
-        assertEquals( 0, userStore.getUsersByOrganisationUnit( unit2 ).size() );
         assertEquals( 1, userStore.getUsersWithoutOrganisationUnit().size() );
 
         // Test updateUser
@@ -97,8 +95,6 @@ public class UserStoreTest
         userStore.updateUser( user );
         
         assertEquals( userStore.getUser( id ).getSurname(), "User1" );
-        assertEquals( 1, userStore.getUsersByOrganisationUnit( unit1 ).size() );
-        assertEquals( 1, userStore.getUsersByOrganisationUnit( unit2 ).size() );
         assertEquals( 0, userStore.getUsersWithoutOrganisationUnit().size() );
 
         // Test getUser
@@ -119,8 +115,6 @@ public class UserStoreTest
 
         assertEquals( userStore.getAllUsers().size(), 2 );
         
-        assertEquals( 1, userStore.getUsersByOrganisationUnit( unit1 ).size() );
-        assertEquals( 2, userStore.getUsersByOrganisationUnit( unit2 ).size() );
         assertEquals( 0, userStore.getUsersWithoutOrganisationUnit().size() );
 
         // Test deleteUser

@@ -177,11 +177,6 @@ public class DefaultUserService
         return userStore.getUserCountByName( userName );
     }
 
-    public Collection<User> getUsersByOrganisationUnit( OrganisationUnit unit )
-    {
-        return userStore.getUsersByOrganisationUnit( unit );
-    }
-
     public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit unit, int first, int max )
     {
         return userStore.getUsersByOrganisationUnitBetween( unit, first, max );
