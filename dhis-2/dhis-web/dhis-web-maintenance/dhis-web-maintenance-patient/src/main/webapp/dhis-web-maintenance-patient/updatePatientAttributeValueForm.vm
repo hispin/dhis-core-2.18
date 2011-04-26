@@ -1,5 +1,5 @@
 <div>
-    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="window.location.href='searchPatient.action'" style="width:10em">
+    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="window.location.href='patient.action'" style="width:10em">
 </div>
 
 

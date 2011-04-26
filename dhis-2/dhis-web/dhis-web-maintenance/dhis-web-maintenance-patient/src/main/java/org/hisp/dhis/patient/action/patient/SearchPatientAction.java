@@ -44,8 +44,6 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.relationship.Relationship;
-import org.hisp.dhis.relationship.RelationshipService;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -67,8 +65,6 @@ public class SearchPatientAction
     private PatientAttributeService patientAttributeService;
 
     private PatientAttributeValueService patientAttributeValueService;
-
-    private RelationshipService relationshipService;
 
     private ProgramService programService;
 
@@ -92,22 +88,16 @@ public class SearchPatientAction
 
     private Integer total;
 
-    private Collection<PatientAttribute> patientAttributes;
-
     private Collection<Patient> patients = new ArrayList<Patient>();
 
-    private Map<Integer, Collection<Relationship>> mapRelationShip = new HashMap<Integer, Collection<Relationship>>();
+    private Map<Integer, String> mapPatientPatientAttr = new HashMap<Integer, String>();
 
-    private Map<Patient, String> mapPatientPatientAttr = new HashMap<Patient, String>();
-
-    private Map<Patient, String> mapPatientOrgunit = new HashMap<Patient, String>();
+    private Map<Integer, String> mapPatientOrgunit = new HashMap<Integer, String>();
 
     private PatientAttribute sortingPatientAttribute = null;
 
     private PatientAttribute searchingPatientAttribute = null;
  
-    private Collection<Program> programs;
-    
     private Program program;
     
     // -------------------------------------------------------------------------
@@ -139,14 +129,9 @@ public class SearchPatientAction
         this.program = program;
     }
 
-    public Map<Patient, String> getMapPatientOrgunit()
+    public Map<Integer, String> getMapPatientOrgunit()
     {
         return mapPatientOrgunit;
-    }
-    
-    public Collection<Program> getPrograms()
-    {
-        return programs;
     }
     
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
@@ -157,11 +142,6 @@ public class SearchPatientAction
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
-    }
-
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
     }
 
     public void setSearchText( String searchText )
@@ -194,11 +174,6 @@ public class SearchPatientAction
         this.searchingAttributeId = searchingAttributeId;
     }
 
-    public Collection<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
-
     public Collection<Patient> getPatients()
     {
         return patients;
@@ -207,11 +182,6 @@ public class SearchPatientAction
     public Integer getTotal()
     {
         return total;
-    }
-
-    public Map<Integer, Collection<Relationship>> getMapRelationShip()
-    {
-        return mapRelationShip;
     }
 
     public Integer getSortPatientAttributeId()
@@ -229,12 +199,12 @@ public class SearchPatientAction
         this.selectedStateManager = selectedStateManager;
     }
 
-    public Map<Patient, String> getMapPatientPatientAttr()
+    public Map<Integer, String> getMapPatientPatientAttr()
     {
         return mapPatientPatientAttr;
     }
 
-    public void setMapPatientPatientAttr( Map<Patient, String> mapPatientPatientAttr )
+    public void setMapPatientPatientAttr( Map<Integer, String> mapPatientPatientAttr )
     {
         this.mapPatientPatientAttr = mapPatientPatientAttr;
     }
@@ -247,14 +217,7 @@ public class SearchPatientAction
         throws Exception
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
-        // ---------------------------------------------------------------------
-        // Get all of Patient-Attributes 
-        // and programs by selected organisation unit
-        // ---------------------------------------------------------------------
-
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
-        programs = programService.getPrograms( organisationUnit );
+        
         getParamsToSearch();      
 
         // ---------------------------------------------------------------------
@@ -435,15 +398,13 @@ public class SearchPatientAction
         {
             for ( Patient patient : patients )
             {
-                mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
-
                 if ( sortingPatientAttribute != null )
                 {
                     PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue(
                         patient, sortingPatientAttribute );
                     String value = (attributeValue == null) ? "" : attributeValue.getValue();
 
-                    mapPatientPatientAttr.put( patient, value );
+                    mapPatientPatientAttr.put( patient.getId(), value );
                 }
             }
         }
@@ -463,7 +424,7 @@ public class SearchPatientAction
         {
             for ( Patient patient : patients )
             {
-                mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+//                mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
 
                 if ( sortingPatientAttribute != null )
                 {
@@ -471,7 +432,7 @@ public class SearchPatientAction
                         patient, sortingPatientAttribute );
                     String value = (attributeValue == null) ? "" : attributeValue.getValue();
 
-                    mapPatientPatientAttr.put( patient, value );
+                    mapPatientPatientAttr.put( patient.getId(), value );
                 }
             }
         }
@@ -495,13 +456,11 @@ public class SearchPatientAction
 
             for ( Patient patient : patients )
             {
-                mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
-
                 // -------------------------------------------------------------
                 // Get hierarchy organisation unit
                 // -------------------------------------------------------------
 
-                mapPatientOrgunit.put( patient, getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+                mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
 
                 // -------------------------------------------------------------
                 // Sort patients
@@ -513,7 +472,7 @@ public class SearchPatientAction
                         patient, sortingPatientAttribute );
                     String value = (attributeValue == null) ? "" : attributeValue.getValue();
 
-                    mapPatientPatientAttr.put( patient, value );
+                    mapPatientPatientAttr.put( patient.getId(), value );
                 }
             }
         }
@@ -539,7 +498,7 @@ public class SearchPatientAction
                 // Get hierarchy organisation unit
                 // -------------------------------------------------------------
 
-                mapPatientOrgunit.put( patient, getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+                mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
 
                 // -------------------------------------------------------------
                 // Sort patients
@@ -551,7 +510,7 @@ public class SearchPatientAction
                         patient, sortingPatientAttribute );
                     String value = (attributeValue == null) ? "" : attributeValue.getValue();
 
-                    mapPatientPatientAttr.put( patient, value );
+                    mapPatientPatientAttr.put( patient.getId(), value );
                 }
             }
         }

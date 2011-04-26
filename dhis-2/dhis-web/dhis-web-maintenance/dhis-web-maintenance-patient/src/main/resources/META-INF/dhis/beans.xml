@@ -395,8 +395,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="relationshipService"
-			ref="org.hisp.dhis.relationship.RelationshipService" />
 		<property name="programService"
 			ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
