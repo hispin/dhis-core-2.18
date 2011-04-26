@@ -508,11 +508,6 @@ public class DefaultOrganisationUnitService
         List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>( organisationUnitStore
             .getOrganisationUnitLevels() );
 
-        if ( levels.isEmpty() )
-        {
-            levels = this.getFilledOrganisationUnitLevels();
-        }
-
         Collections.sort( levels, new OrganisationUnitLevelComparator() );
 
         return levels;
@@ -545,11 +540,13 @@ public class DefaultOrganisationUnitService
         return levels;
     }
 
-    private Map<Integer, OrganisationUnitLevel> getOrganisationUnitLevelMap()
+    public Map<Integer, OrganisationUnitLevel> getOrganisationUnitLevelMap()
     {
         Map<Integer, OrganisationUnitLevel> levelMap = new HashMap<Integer, OrganisationUnitLevel>();
 
-        for ( OrganisationUnitLevel level : organisationUnitStore.getOrganisationUnitLevels() )
+        Collection<OrganisationUnitLevel> levels = getOrganisationUnitLevels();
+        
+        for ( OrganisationUnitLevel level : levels )
         {
             levelMap.put( level.getLevel(), level );
         }

@@ -32,11 +32,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -79,14 +77,7 @@ public class ShowAddDataElementForm
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-    
-    private final static int ALL = 0;
-    
-    public int getALL()
-    {
-        return ALL;
-    }
-        
+            
     private Collection<DataElementGroup> dataElementGroups;
     
     public Collection<DataElementGroup> getDataElementGroups()
@@ -108,13 +99,6 @@ public class ShowAddDataElementForm
     	return defaultCategoryCombo;
     }
     
-    private List<DataElementGroupSet> dataElementGroupSets;
-    
-    public List<DataElementGroupSet> getDataElementGroupSets()
-    {
-        return dataElementGroupSets;
-    }
-
     private List<OrganisationUnitLevel> organisationUnitLevels;
 
     public List<OrganisationUnitLevel> getOrganisationUnitLevels()
@@ -135,10 +119,6 @@ public class ShowAddDataElementForm
         dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() );
         
         Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
-        
-        dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
-
-        Collections.sort( dataElementGroupSets, new IdentifiableObjectNameComparator() );
         
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
         

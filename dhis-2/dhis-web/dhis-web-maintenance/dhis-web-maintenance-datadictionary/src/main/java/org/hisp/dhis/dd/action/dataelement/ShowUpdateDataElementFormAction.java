@@ -36,7 +36,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -100,27 +99,6 @@ public class ShowUpdateDataElementFormAction
         return dataElementGroups;
     }
 
-    private Map<String, Double> factorMap;
-
-    public Map<String, Double> getFactorMap()
-    {
-        return factorMap;
-    }
-
-    private Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
-
-    public Collection<DataElementOperand> getOperands()
-    {
-        return operands;
-    }
-
-    private final static int ALL = 0;
-
-    public int getALL()
-    {
-        return ALL;
-    }
-
     private List<DataElementCategoryCombo> dataElementCategoryCombos;
 
     public List<DataElementCategoryCombo> getDataElementCategoryCombos()
@@ -165,28 +143,15 @@ public class ShowUpdateDataElementFormAction
 
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
-        List<OrganisationUnitLevel> filledOrganisationUnitLevels = organisationUnitService
-            .getFilledOrganisationUnitLevels();
-
+        Map<Integer, OrganisationUnitLevel> levelMap = organisationUnitService.getOrganisationUnitLevelMap();
+        
         for ( Integer level : dataElement.getAggregationLevels() )
         {
-            aggregationLevels.add( getOrganisationUnitLevel( level, filledOrganisationUnitLevels ) );
+            aggregationLevels.add( levelMap.get( level ) );
         }
 
         organisationUnitLevels.removeAll( aggregationLevels );
 
         return SUCCESS;
-    }
-
-    private OrganisationUnitLevel getOrganisationUnitLevel( Integer level,
-        List<OrganisationUnitLevel> organisationUnitLevels )
-    {
-        for ( OrganisationUnitLevel organisationUnitLevel : organisationUnitLevels )
-        {
-            if ( level.equals( organisationUnitLevel.getLevel() ) )
-                return organisationUnitLevel;
-        }
-
-        return null;
     }
 }
