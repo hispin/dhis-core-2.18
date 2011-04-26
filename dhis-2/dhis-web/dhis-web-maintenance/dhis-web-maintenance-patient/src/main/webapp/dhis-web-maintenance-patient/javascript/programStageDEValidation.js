@@ -31,21 +31,24 @@ function isEmpty(value){
 
 function addProgramStageDEValidation()
 {
-	var params = 'description=' + getFieldValue( 'description' );
-		params += '&leftProgramStageId=' + getFieldValue( 'leftProgramStageId' );
-		params += '&leftDataElementId=' + getFieldValue( 'leftDataElementId' );
-		params += '&operator=' + getFieldValue( 'operator' );
-		params += '&rightProgramStageId=' + getFieldValue( 'rightProgramStageId' );
-		params += '&rightDataElementId=' + getFieldValue( 'rightDataElementId' );
-
-	var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( function(data){
-			window.location.reload();
-		} );
-	
-		request.sendAsPost( params );
-		request.send( "addProgramStageDEValidation.action");
+	jQuery.post( "addProgramStageDEValidation.action",
+		{
+			'programId': getFieldValue( 'programId' ),
+			'description': getFieldValue( 'description' ),
+			'leftProgramStageId': getFieldValue( 'leftProgramStageId' ),
+			'leftDataElementId': getFieldValue( 'leftDataElementId' ),
+			'operator': getFieldValue( 'operator' ),
+			'rightProgramStageId': getFieldValue( 'rightProgramStageId' ),
+			'rightDataElementId': getFieldValue( 'rightDataElementId' )
+		},
+		function(data){
+			jQuery( "table.listTable tbody#list tr:last" ).after( data );
+			jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+			jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+			jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
+			jQuery( "table.listTable tbody" ).trigger("update");
+		}
+	);
 }
 
 // -----------------------------------------------------------------------------

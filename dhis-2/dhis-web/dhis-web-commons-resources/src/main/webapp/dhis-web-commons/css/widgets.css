@@ -116,16 +116,16 @@ div.thingy
   position: fixed;
   left: 23px;
   top: 53px;
+  font-family: LiberationSansBold, arial;
   font-size: 9pt;
-  font-weight: bold;
   cursor: pointer;
 }
 
 #hideLeftBar
 {
   float: right;
+  font-family: LiberationSansBold, arial;
   font-size: 9pt;
-  font-weight: bold;
   cursor: pointer;
 }
 
@@ -206,7 +206,7 @@ div#orgUnitTree a:hover
 div#orgUnitTree a.selected 
 {
   color: #000000;
-  font-weight:bold;
+  font-family: LiberationSansBold, arial;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -303,7 +303,7 @@ div#detailsArea
 
 div#detailsArea label 
 {
-  font-weight: bold;
+  font-family: LiberationSansBold, arial;
 }
 
 div#warningArea

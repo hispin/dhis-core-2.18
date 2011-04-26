@@ -73,6 +73,8 @@ public class AddProgramStageDEValidationAction
 
     private Integer rightDataElementId;
 
+    private ProgramStageDataElementValidation validation;
+
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
@@ -128,6 +130,15 @@ public class AddProgramStageDEValidationAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    public ProgramStageDataElementValidation getValidation()
+    {
+        return validation;
+    }
+
+    // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
 
@@ -135,7 +146,7 @@ public class AddProgramStageDEValidationAction
     public String execute()
         throws Exception
     {
-        ProgramStageDataElementValidation validation = new ProgramStageDataElementValidation();
+        validation = new ProgramStageDataElementValidation();
 
         validation.setDescription( description );
 
@@ -178,10 +189,12 @@ public class AddProgramStageDEValidationAction
         // ---------------------------------------------------------------------
         // Operator
         // ---------------------------------------------------------------------
-        
+
         validation.setOperator( operator );
 
-        validationService.saveProgramStageDataElementValidation( validation );
+        int id = validationService.saveProgramStageDataElementValidation( validation );
+
+        validation = validationService.getProgramStageDataElementValidation( id );
 
         return SUCCESS;
     }
