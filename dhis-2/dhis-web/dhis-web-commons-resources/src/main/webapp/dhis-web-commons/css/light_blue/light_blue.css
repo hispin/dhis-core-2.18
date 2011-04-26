@@ -5,7 +5,7 @@
 
 * 
 {
-  font-family: arial, sans-serif;
+  font-family: LiberationSansRegular, arial;
   line-height: 125%;
 }
 
@@ -28,8 +28,13 @@ ul,ol
 
 a
 {
-  text-decoration:none;
-  color:#3b73b8;
+  text-decoration: none;
+  color: #3b73b8;
+}
+
+select
+{
+  padding: 1px;
 }
 
 a:hover
@@ -50,7 +55,7 @@ div#header
 {
   background-image: url('logo_background.png');
   background-repeat: repeat-x;
-  height: 55px;
+  height: 46px;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -65,8 +70,8 @@ img#header1
 img#header2
 {
   position: absolute;
-  top: 2px;
-  left: 35px;
+  top: 5px;
+  left: 59px;
 }
 
 img#header3
@@ -111,13 +116,13 @@ img#menuSeparator5
 
 .menuLink
 {
-  height: 64px;
+  height: 47px;
   width: 98px;
-  font-size: 12px;
+  font-family: LiberationSansBold, arial;
+  font-size: 11px;
   color: #ffffff;
-  font-weight: bold;
   text-align: center;
-  line-height: 54px;
+  line-height: 45px;
   cursor: pointer;
 }
 
@@ -148,11 +153,12 @@ div#menuLink4
 span#headerText
 {
   position: absolute;
-  top: 17px;
-  left: 235px;
+  top: 13px;
+  left: 253px;
+  font-family: LiberationSansBold, arial;
   font-weight: lighter;
   color: white;
-  font-size: 13pt;
+  font-size: 12pt;
 }
 
 div#popupHeader 
@@ -179,21 +185,21 @@ span#popupHeaderText
 div#menuDropDown1
 {
   position: absolute;
-  top: 55px;
+  top: 46px;
   left: 580px;
 }
 
 div#menuDropDown2
 {
   position: absolute;
-  top: 55px;
+  top: 46px;
   left: 680px;
 }
 
 div#menuDropDown3
 {
   position: absolute;
-  top: 55px;
+  top: 46px;
   left: 780px;
 }
 
@@ -228,7 +234,7 @@ div#menuDropDown3
 {
   padding-top: 5px;
   padding-left: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 4px;
   padding-right: 10px;
   border: 1px solid #2a5a8a;
   cursor: pointer;
@@ -242,12 +248,12 @@ div#menuDropDown3
 
 #leftBar
 {
-  background-color: #35699f;
+  background-color: #1f5489;
   height: 535px;
   width: 235px;
   float: left;
   position: absolute;
-  top: 55px;
+  top: 46px;
   left: 0px;
   padding-top: 6px;
   border-right: 1px solid #10375f;
@@ -267,17 +273,13 @@ div#menuDropDown3
 #leftBarContents h2
 {
   font-size: 14px;
-  margin-top: 16px;
-  margin-right: 15px;
-  margin-left: 15px;
-  background-color: #265687;
-  padding-top: 6px;
-  padding-bottom: 5px;
-  padding-left: 10px;
+  background-color: #4a89ba;
+  margin: 16px 15px 0px 15px;
+  padding: 4px 0px 3px 10px;
   color: white;
   border-style: solid;
   border-width: 1px;
-  border-color: #e5e5e5;
+  border-color: #4a89ba;
   font-weight: normal;
   border-radius: 3px;
   -moz-border-radius: 3px; /* Firefox */
@@ -298,7 +300,7 @@ div#menuDropDown3
 
 #leftBarContents a:hover
 {
-  color: #D1D3FF;
+  color: #acc8de;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -364,20 +366,21 @@ div#menuDropDown3
 
 .page th, thead tr
 {
-  background-image: url('head.png');
+  background-color: #cbddeb;
   background-repeat: repeat-x;
   text-align: left;
-  color: #3f5d8e;
+  color: #39547d;
+  padding:3px 0px 2px 6px;
   border-style: solid;
   border-width: 1px;
-  border-color: #99bbe8;
-  padding-left: 7px;
-  height: 19px;
+  border-color: #c8dbea;
+  font-family: LiberationSansBold, arial;
+  font-weight: normal;
 }
 
 #mainPage 
 {
-  margin: 78px 10px 10px 270px;
+  margin: 69px 10px 10px 270px;
 }
 
 #popupPage 
@@ -399,7 +402,7 @@ div#menuDropDown3
 
 .listTable td
 {
-  padding: 2px;
+  padding: 2px 2px 2px 5px;
 }
 
 .listRow
@@ -439,15 +442,41 @@ div#menuDropDown3
 	
 .introItem
 {
-  padding: 15px;
+  padding: 12px;
   cursor: pointer;
   border: 1px solid #d5efd5;
-  border-radius: 5px;
-  -moz-border-radius: 5px; /* Firefox */
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 .introItemHeader
 {
+  font-family: LiberationSansBold, arial;
   color: #3c533c;
-  font-weight: bold;
+}
+
+/*----------------------------------------------------------------------------*/
+/* @font-face                                                                 */
+/*----------------------------------------------------------------------------*/
+
+@font-face {
+    font-family: 'LiberationSansRegular';
+    src: url('../../fonts/LiberationSans-Regular-webfont.eot');
+    src: url('../../fonts/LiberationSans-Regular-webfont.eot?#iefix') format('eot'),
+         url('../../fonts/LiberationSans-Regular-webfont.woff') format('woff'),
+         url('../../fonts/LiberationSans-Regular-webfont.ttf') format('truetype'),
+         url('../../fonts/LiberationSans-Regular-webfont.svg#webfontc8rbNdBe') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'LiberationSansBold';
+    src: url('../../fonts/LiberationSans-Bold-webfont.eot');
+    src: url('../../fonts/LiberationSans-Bold-webfont.eot?#iefix') format('eot'),
+         url('../../fonts/LiberationSans-Bold-webfont.woff') format('woff'),
+         url('../../fonts/LiberationSans-Bold-webfont.ttf') format('truetype'),
+         url('../../fonts/LiberationSans-Bold-webfont.svg#webfontHyWb8e07') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
