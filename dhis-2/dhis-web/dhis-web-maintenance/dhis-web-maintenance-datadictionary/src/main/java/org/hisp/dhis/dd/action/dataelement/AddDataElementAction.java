@@ -40,8 +40,6 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @author Hans S. Toemmerholt
- * @version $Id: AddDataElementAction.java 6216 2008-11-06 18:06:42Z eivindwa $
  */
 public class AddDataElementAction
     extends ActionSupport

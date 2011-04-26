@@ -29,6 +29,7 @@ package org.hisp.dhis.organisationunit;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
@@ -286,6 +287,8 @@ public interface OrganisationUnitService
     OrganisationUnitLevel getOrganisationUnitLevelByName( String name );
     
     List<OrganisationUnitLevel> getFilledOrganisationUnitLevels();
+    
+    Map<Integer, OrganisationUnitLevel> getOrganisationUnitLevelMap();
     
     int getNumberOfOrganisationUnits();
     
