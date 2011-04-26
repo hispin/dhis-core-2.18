@@ -354,18 +354,13 @@
 				/dhis-web-maintenance-patient/responseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-
+		
 		<action name="searchPatient"
 			class="org.hisp.dhis.patient.action.patient.SearchPatientAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
+			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/listPatient.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
-			<param name="menuTreeHeight">285</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
 			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-		</action>
+		</action> 
 
 		<action name="listAllPatients"
 			class="org.hisp.dhis.patient.action.patient.SearchPatientAction">

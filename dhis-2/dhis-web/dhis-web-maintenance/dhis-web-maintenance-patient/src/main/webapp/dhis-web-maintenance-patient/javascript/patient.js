@@ -275,8 +275,7 @@ function searchValidationCompleted( messageElement )
 	
 	if ( type == 'success' )
 	{
-		var form = document.getElementById( 'searchPatientForm' );        
-		form.submit();
+		searchPatients();
 	}
 	else if ( type == 'error' )
 	{
@@ -284,7 +283,7 @@ function searchValidationCompleted( messageElement )
 	}
 	else if ( type == 'input' )
 	{
-		setHeaderMessage( message );
+		$('#contentDiv').html( "<i style='color:red'>" + message + "</i>" );
 	}
 }
 
@@ -705,4 +704,37 @@ function f_filterResults(n_win, n_docel, n_body) {
 function removeEnrollment(){
 	byId('programEnrollmentForm').action = "removeEnrollment.action";
 	byId('programEnrollmentForm').submit();
+}
+
+isAjax = true;
+function loadAllPatients()
+{
+	showLoader();
+	var url = 'searchPatient.action?listAll=true';
+	$('#contentDiv').load(url);
+	hideLoader();
+}
+
+function searchPatients()
+{
+	showLoader();
+	
+	var url  = 'searchPatient.action?';
+		url += 'searchText=' + getFieldValue('searchText');
+		url += '&searchingAttributeId=' + getFieldValue('searchingAttributeId');
+		url += '&sortPatientAttributeId=' + getFieldValue('sortPatientAttributeId');
+		url += '&programId=' + getFieldValue('programId');
+	$('#contentDiv').load(url);
+	
+	hideLoader();
+}
+
+function searchPatientsbyBackBtn()
+{
+	showLoader();
+	
+	var url  = 'searchPatient.action';
+	$('#contentDiv').load(url);
+	
+	hideLoader();
 }

@@ -1,4 +1,3 @@
-
 <h3>$i18n.getString( "patient_management" )</h3>
 
 <table>    
@@ -6,13 +5,11 @@
         <td><label>$i18n.getString( "registering_unit" )</label></td>
         <td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:22em"></td>
         <td>&nbsp;</td>
-        <td><input type="button" value="$i18n.getString( "list_all_patients" )" onclick="window.location.href='searchPatient.action?listAll=true'"></td>
+        <td><input type="button" value="$i18n.getString( "list_all_patients" )" onclick="loadAllPatients();"></td>
     </tr>
 </table>
 
 <hr style="clear:both">
-
-<form id="searchPatientForm" action="searchPatient.action" method="post" onsubmit="return validateSearchPatient()">
 
 <table>	
 	<tr>	       
@@ -37,9 +34,9 @@
 			</select>
 			
 		</td>		
-		<td><input type="submit" value="$i18n.getString( "search" )"</td>
+		<td><input type="button" value='$i18n.getString( "search" )' onclick='searchPatients();'></td>
 		<td>&nbsp;</td>
-		<td><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddPatientForm.action'"></td>
+		<td><input type="button" value='$i18n.getString( "add_new" )' onclick="window.location.href='showAddPatientForm.action'"></td>
 		
 	</tr>
 	
@@ -61,20 +58,14 @@
 <p></p>
 <p></p>
 
-</form>
+#parse( "dhis-web-commons/loader/loader.vm" )
 
-<script type="text/javascript">	
+<div id='contentDiv'></div>
+
+<script type="text/javascript">
+
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
 
-	searchingAttributeOnChange();
-	
-    function selectPatientAttribute()
-    {
-
-        var patientAttributeLB = document.getElementById('patientAttributeId');
-        var patientAttributeId = patientAttributeLB.options[patientAttributeLB.selectedIndex].value;
-
-		window.location.href='listAllPatients.action?sortPatientAttributeId='+patientAttributeId;
-    }
+	searchPatientsbyBackBtn();
 	
 </script>
