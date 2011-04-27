@@ -76,16 +76,13 @@ ATTRIBUTE_OPTION =
 		if( jQuery(this_).siblings("input").attr("name") != "attrOptions")
 		{
 			jQuery.get("removePatientAttributeOption.action?id="+optionId,function(data){
-				var type  = jQuery(data).find("message").attr("type");
-				alert(type);
-				if( type == "success")
+				if( data.response == "success")
 				{
-					alert("success");
 					jQuery(this_).parent().parent().remove();
-					alert(jQuery(data).text());
+					showSuccessMessage( data.message );
 				}else 
 				{
-					alert(jQuery(data).text());
+					showErrorMessage( data.message );
 				}
 			});
 		}else

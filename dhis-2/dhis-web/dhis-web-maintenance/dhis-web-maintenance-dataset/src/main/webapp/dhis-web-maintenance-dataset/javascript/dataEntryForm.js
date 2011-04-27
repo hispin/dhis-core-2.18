@@ -144,9 +144,10 @@ function findDataElementCountCompleted( dataSetElement )
 }
 
 
+// TODO: remove this? does not seem to be used anywhere, updating to ckeditor just in case
 function onloadFunction()
-{ 	
-  htmlCode = FCK.GetXHTML( FCKConfig.FormatSource );
+{
+  htmlCode = $("#designTextarea").ckeditorGet().getData();
   findDataElementCount();
 } 
 // -----------------------------------------------------------------------------
@@ -159,7 +160,7 @@ function autoSaveDataEntryFormValidationCompleted( messageElement )
   var message = messageElement.firstChild.nodeValue;
 
   if ( type == 'success' )
-  {  
+  {
      autoSaveDataEntryForm();
   }
   else if ( type == 'input' )
@@ -177,11 +178,9 @@ function autoSaveDataEntryFormValidationCompleted( messageElement )
   }
 }
 
-function autoSaveDataEntryForm(){
-	
-	var field = FCKeditorAPI.GetInstance('designTextarea');
-    
-	var designTextarea = htmlEncode(field.GetHTML(true));
+function autoSaveDataEntryForm() {
+	var field = $("#designTextarea").ckeditorGet();
+	var designTextarea = htmlEncode(field.getData());
 
 	var request = new Request();
 	request.setResponseTypeXML( 'dataSet' );
@@ -204,5 +203,4 @@ function autoSaveDataEntryForm(){
 	
 	request.sendAsPost(params);
 	request.send('autoSaveDataEntryForm.action');
-	
 }

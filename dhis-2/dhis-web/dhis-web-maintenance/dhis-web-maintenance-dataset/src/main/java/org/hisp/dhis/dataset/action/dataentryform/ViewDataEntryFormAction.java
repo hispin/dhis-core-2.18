@@ -139,6 +139,13 @@ public class ViewDataEntryFormAction
         return operands;
     }
 
+    private String dataEntryValue;
+    
+    public String getDataEntryValue()
+    {
+        return dataEntryValue;
+    }
+    
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -151,6 +158,8 @@ public class ViewDataEntryFormAction
 
         dataEntryForm = dataSet.getDataEntryForm();
 
+        dataEntryValue = prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
+        
         if ( dataEntryForm != null )
         {
             editorManager.setValue( prepareDataEntryFormCode( dataEntryForm.getHtmlCode() ) );
