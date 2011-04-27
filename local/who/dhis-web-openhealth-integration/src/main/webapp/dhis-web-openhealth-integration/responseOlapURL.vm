@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<url>
-	<name>$encoder.xmlEncode( $url.name )</name>
-	<url>$encoder.xmlEncode( $url.url )</url>
-</url>
