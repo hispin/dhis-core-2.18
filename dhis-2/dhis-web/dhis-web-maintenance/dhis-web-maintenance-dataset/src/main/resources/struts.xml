@@ -247,7 +247,8 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/viewDataEntryForm.vm</param>
       <param name="javascripts">
-      javascript/FCK/fckeditor.js, javascript/FCK/editor/js/fckeditorcode_gecko.js, javascript/dataEntryForm.js</param>
+      	../dhis-web-commons/ckeditor/ckeditor.js, ../dhis-web-commons/ckeditor/adapters/jquery.js, javascript/dataEntryForm.js
+      </param>
       <param name="stylesheets">css/cde.css</param>
     </action>
     

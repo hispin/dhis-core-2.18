@@ -40,7 +40,7 @@ function select(id) {
 }
 
 function insertDataElement() {
-	var oEditor = FCKeditorAPI.GetInstance('designTextarea');
+	var oEditor = $("#designTextarea").ckeditorGet();
 	var viewByValue = getFieldValue('viewBySelector');
 
 	var json = JSON.parse(jQuery("#json_" + selected).val());
@@ -92,13 +92,12 @@ function insertDataElement() {
 		jQuery("#message_").html("");
 	}
 
-	oEditor.InsertHtml(html);
-
+	oEditor.insertHtml(html);
 }
 
 function checkExisted(id) {
 	var result = false;
-	var html = FCKeditorAPI.GetInstance('designTextarea').GetHTML();
+	var html = $("#designTextarea").ckeditorGet().getData();
 	var input = jQuery(html).find("select, :text");
 	input.each(function(i, item) {
 		if (id == item.id)

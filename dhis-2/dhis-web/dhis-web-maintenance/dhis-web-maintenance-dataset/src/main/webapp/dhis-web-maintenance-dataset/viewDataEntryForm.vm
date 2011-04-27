@@ -8,6 +8,13 @@
 				  timedCount();
 			  }
 		}
+		
+		jQuery('#designTextarea').ckeditor({
+			skin: 'office2003'
+		});
+		
+		var editor = jQuery("#designTextarea").ckeditorGet();
+		editor.setData('$encoder.jsEscape( $dataEntryValue, "'" )');
 	});
 
     var stat = ('$!dataEntryForm') ? "EDIT" : "ADD";
@@ -95,7 +102,9 @@
       </tr>
       <tr>
         <td>
-			$editorManager.create( "designTextarea", "100%", "400" )
+        	<div>
+        		<textarea id="designTextarea" name="designTextarea"></textarea>
+        	</div>
 		</td>
       </tr>
       <tr>
