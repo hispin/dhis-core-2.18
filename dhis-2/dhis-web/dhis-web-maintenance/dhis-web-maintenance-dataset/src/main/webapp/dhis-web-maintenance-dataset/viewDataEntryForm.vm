@@ -14,18 +14,22 @@
 		});
 		
 		var editor = jQuery("#designTextarea").ckeditorGet();
+		
+		#if( $dataEntryForm )
 		editor.setData('$encoder.jsEscape( $dataEntryValue, "'" )');
+		#end
 	});
 
-    var stat = ('$!dataEntryForm') ? "EDIT" : "ADD";
+    var stat = "ADD";
     var dataEntryFormId = -1;
 	var selected = null;
-	var autoSave = '$!autoSave';
+	var autoSave = $autoSave;
 	var t;
-	var timer_is_on=0;
+	var timer_is_on = 0;
 
-    #if($!dataEntryForm)
-        dataEntryFormId = $dataEntryForm.id;
+    #if( $dataEntryForm )
+    stat = "EDIT";
+    dataEntryFormId = $dataEntryForm.id;
     #end
 
     var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "dataentryform_confirm_delete" ) , "'" )';

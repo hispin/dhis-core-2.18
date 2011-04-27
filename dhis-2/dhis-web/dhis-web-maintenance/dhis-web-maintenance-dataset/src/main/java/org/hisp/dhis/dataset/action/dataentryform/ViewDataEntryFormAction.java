@@ -112,9 +112,9 @@ public class ViewDataEntryFormAction
         return dataSet;
     }
 
-    private Boolean autoSave;
+    private boolean autoSave;
 
-    public Boolean getAutoSave()
+    public boolean getAutoSave()
     {
         return autoSave;
     }
