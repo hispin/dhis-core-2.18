@@ -34,7 +34,6 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.util.comparator.PeriodStartDateComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -131,7 +130,7 @@ public class GenerateDataSetLockReportResultAction
 
     private DataSet dataSet;
 
-    private Set<Source> dSetSource;
+    private Set<OrganisationUnit> dSetSource;
 
     private List<Period> periods;
 
@@ -310,7 +309,7 @@ public class GenerateDataSetLockReportResultAction
                 for ( Period periodElement : periods )
                 {
                     DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet,
-                        periodElement, (Source) organisationUnit );
+                        periodElement, organisationUnit );
                     if ( dataSetLock != null )
                     {
                         sheet0.addCell( new Number( colStart
@@ -383,7 +382,7 @@ public class GenerateDataSetLockReportResultAction
                 for ( Period periodElement : periods )
                 {
                     DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet,
-                        periodElement, (Source) organisationUnit );
+                        periodElement, organisationUnit );
                     if ( dataSetLock != null )
                     {
                         sheet0.addCell( new Number( colStart

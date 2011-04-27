@@ -40,8 +40,8 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.detarget.DeTarget;
 import org.hisp.dhis.detargetdatavalue.DeTargetDataValue;
 import org.hisp.dhis.detargetdatavalue.DeTargetDataValueStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 
 /**
@@ -87,7 +87,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         session.delete( deTargetDataValue );
     }
     
-    public int deleteDeTargetDataValuesBySource( Source source )
+    public int deleteDeTargetDataValuesBySource( OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -118,7 +118,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         return query.executeUpdate();
     }
     
-    public int deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo, Source source )
+    public int deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo, OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -152,7 +152,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         return criteria.list();
     }
     @SuppressWarnings( "unchecked" )
-    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -162,7 +162,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         return criteria.list();
     }
     @SuppressWarnings( "unchecked" )
-    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source, DeTarget deTarget )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -173,7 +173,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         return criteria.list();
     }
     @SuppressWarnings( "unchecked" )
-    public  Collection<DeTargetDataValue> getDeTargetDataValues( Collection<Source> sources, DeTarget deTarget )
+    public  Collection<DeTargetDataValue> getDeTargetDataValues( Collection<OrganisationUnit> sources, DeTarget deTarget )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -184,7 +184,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         return criteria.list();
     }
     @SuppressWarnings( "unchecked" )
-    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, Collection<DeTarget> deTargets )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source, Collection<DeTarget> deTargets )
     {
        Session session = sessionFactory.getCurrentSession();
 
@@ -195,7 +195,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
        return criteria.list();
     }
     @SuppressWarnings( "unchecked" )
-    public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, Collection<? extends Source> sources )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, Collection<OrganisationUnit> sources )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -206,7 +206,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         return criteria.list();
     }
     @SuppressWarnings( "unchecked" )
-    public Collection<DeTargetDataValue> getDeTargetDataValues( Collection<DeTarget> deTargets,  Collection<? extends Source> sources, int firstResult, int maxResults )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Collection<DeTarget> deTargets,  Collection<OrganisationUnit> sources, int firstResult, int maxResults )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -240,7 +240,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
     }
 */    
     @SuppressWarnings( "unchecked" )
-     public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget , Source source, Period period )
+     public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, OrganisationUnit source, Period period )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -279,7 +279,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
     }
    
     @SuppressWarnings( "unchecked" )
-    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -292,7 +292,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         return  criteria.list();
     }
     
-    public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+    public DeTargetDataValue getDeTargetDataValue( OrganisationUnit source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
     {
         Session session = sessionFactory.getCurrentSession();
 

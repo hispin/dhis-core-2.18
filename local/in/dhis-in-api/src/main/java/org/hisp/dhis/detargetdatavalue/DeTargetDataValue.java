@@ -32,8 +32,8 @@ import java.util.Date;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.detarget.DeTarget;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Mithilesh Kumar Thakur
@@ -59,7 +59,7 @@ public class DeTargetDataValue implements Serializable
     /**
      * Part of the DeTargetDataValue's composite ID
      */
-    private Source source;
+    private OrganisationUnit source;
 
     /**
      * 
@@ -89,7 +89,7 @@ public class DeTargetDataValue implements Serializable
     {
     }
 
-    public DeTargetDataValue( DeTarget deTarget, DataElement dataelement, DataElementCategoryOptionCombo decategoryOptionCombo, Source source, Period period, String value )
+    public DeTargetDataValue( DeTarget deTarget, DataElement dataelement, DataElementCategoryOptionCombo decategoryOptionCombo, OrganisationUnit source, Period period, String value )
     {
         this.deTarget = deTarget;
         this.dataelement = dataelement;
@@ -99,7 +99,7 @@ public class DeTargetDataValue implements Serializable
         this.value = value;
     }
 
-    public DeTargetDataValue( DeTarget deTarget, DataElement dataelement, DataElementCategoryOptionCombo decategoryOptionCombo, Source source, Period period ,String value, String storedBy,Date timestamp )
+    public DeTargetDataValue( DeTarget deTarget, DataElement dataelement, DataElementCategoryOptionCombo decategoryOptionCombo, OrganisationUnit source, Period period ,String value, String storedBy,Date timestamp )
     {
         this.deTarget = deTarget;
         this.dataelement = dataelement;
@@ -185,12 +185,12 @@ public class DeTargetDataValue implements Serializable
         this.decategoryOptionCombo = decategoryOptionCombo;
     }
 
-    public Source getSource()
+    public OrganisationUnit getSource()
     {
         return source;
     }
 
-    public void setSource( Source source )
+    public void setSource( OrganisationUnit source )
     {
         this.source = source;
     }

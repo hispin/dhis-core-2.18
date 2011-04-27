@@ -37,7 +37,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 
 public interface ReportService
 {
@@ -57,7 +56,7 @@ public interface ReportService
 
     Report_in getReportByName( String name );
 
-    Collection<Report_in> getReportBySource( Source source );
+    Collection<Report_in> getReportBySource( OrganisationUnit source );
 
     Collection<Report_in> getAllReports();
 
@@ -67,7 +66,7 @@ public interface ReportService
 
     Collection<Report_in> getReportsByPeriodAndReportType( PeriodType periodType, String reportType );
 
-    Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, Source source, String reportType );
+    Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, OrganisationUnit source, String reportType );
 
     // -------------------------------------------------------------------------
     // Report_in Design

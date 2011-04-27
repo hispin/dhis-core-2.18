@@ -6,14 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -101,7 +97,7 @@ public class DefaultLineListService
         return objects;
     }
 
-    public Collection<LineListGroup> getLineListGroupsBySource(Source source)
+    public Collection<LineListGroup> getLineListGroupsBySource(OrganisationUnit source)
     {
         return lineListStore.getLineListGroupsBySource( source );
     }
@@ -111,11 +107,11 @@ public class DefaultLineListService
         return lineListStore.getLineListGroupsByElement( lineListElement );
     }
 
-    public Collection<LineListGroup> getLineListGroupsBySources( Collection<? extends Source> sources )
+    public Collection<LineListGroup> getLineListGroupsBySources( Collection<OrganisationUnit> sources )
     {
         Set<LineListGroup> lineListGroups = new HashSet<LineListGroup>();
 
-        for (Source source : sources)
+        for (OrganisationUnit source : sources)
         {
             lineListGroups.addAll( lineListStore.getLineListGroupsBySource( source ) );
         }
@@ -123,11 +119,11 @@ public class DefaultLineListService
         return lineListGroups;
     }
 
-    public int getSourcesAssociatedWithLineListGroup( LineListGroup lineListGroup, Collection<? extends Source> sources )
+    public int getSourcesAssociatedWithLineListGroup( LineListGroup lineListGroup, Collection<OrganisationUnit> sources )
     {
         int count = 0;
 
-        for ( Source source : sources )
+        for ( OrganisationUnit source : sources )
         {
             if ( lineListGroup.getSources().contains( source ) )
             {

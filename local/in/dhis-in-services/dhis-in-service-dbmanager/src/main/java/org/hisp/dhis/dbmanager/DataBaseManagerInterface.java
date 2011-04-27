@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.hisp.dhis.linelisting.LineListDataValue;
 import org.hisp.dhis.linelisting.LineListElement;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 
 public interface DataBaseManagerInterface
@@ -25,7 +25,7 @@ public interface DataBaseManagerInterface
     public boolean insertSingleLLValueIntoDb( LineListDataValue llDataValue, String tableName );
 
     //public List<Map<String, String>> getFromLLTable( String tableName, int source, int  period );
-    public List<LineListDataValue> getFromLLTable( String tableName, Source source, Period  period );
+    public List<LineListDataValue> getFromLLTable( String tableName, OrganisationUnit source, Period  period );
 
     public boolean removeLLRecord( int recordId , String tableName );
 
@@ -37,17 +37,17 @@ public interface DataBaseManagerInterface
     
     public boolean updateSingleLLValue( LineListDataValue llDataValue, String tableName );
     
-    public int getLLValueCountByLLElements( String tablename, Map<String,String> llElementValueMap, Source source );
+    public int getLLValueCountByLLElements( String tablename, Map<String,String> llElementValueMap, OrganisationUnit source );
     
-    public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String,String> llElementValueMap, Source source, Period  period );
+    public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String,String> llElementValueMap, OrganisationUnit source, Period  period );
     
-    public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String,String> llElementValueMap, Source source );
+    public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String,String> llElementValueMap, OrganisationUnit source );
 
-    public List<LineListDataValue> getLLValuesByLLElementValue( String tableName, String llElementName, String llElementValue, Source source, Period  period );
+    public List<LineListDataValue> getLLValuesByLLElementValue( String tableName, String llElementName, String llElementValue, OrganisationUnit source, Period  period );
 
-    public Period getRecentPeriodForOnChangeData( String tableName, String llElementName, String llElementValue, Source source );
+    public Period getRecentPeriodForOnChangeData( String tableName, String llElementName, String llElementValue, OrganisationUnit source );
     
-    public List<LineListDataValue> getLLValuesSortBy( String tableName, String sortBy, Source source, Period  period );
+    public List<LineListDataValue> getLLValuesSortBy( String tableName, String sortBy, OrganisationUnit source, Period  period );
     
     public int rowCount( String tableName );
     

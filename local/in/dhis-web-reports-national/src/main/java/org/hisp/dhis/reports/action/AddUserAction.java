@@ -85,7 +85,7 @@ public class AddUserAction
 
                 username = username.trim();
 
-                Collection<User> tempUserList = userStore.getUsersByOrganisationUnit( orgU );
+                Collection<User> tempUserList = orgU.getUsers();
 
                 int flag = 0;
                 if ( tempUserList != null )

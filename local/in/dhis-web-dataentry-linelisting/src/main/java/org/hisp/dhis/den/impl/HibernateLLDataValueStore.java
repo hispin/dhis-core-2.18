@@ -49,7 +49,6 @@ import org.hisp.dhis.den.api.LLDataValueStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.Source;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -154,7 +153,7 @@ public class HibernateLLDataValueStore
         session.delete( dataValue );
     }
 
-    public int deleteDataValuesBySource( Source source )
+    public int deleteDataValuesBySource( OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -174,7 +173,7 @@ public class HibernateLLDataValueStore
         return query.executeUpdate();
     }
 
-    public LLDataValue getDataValue( Source source, DataElement dataElement, Period period,
+    public LLDataValue getDataValue( OrganisationUnit source, DataElement dataElement, Period period,
         DataElementCategoryOptionCombo optionCombo, int recordNo )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -198,7 +197,7 @@ public class HibernateLLDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<LLDataValue> getDataValues( Source source, DataElement dataElement, Period period )
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, DataElement dataElement, Period period )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -218,7 +217,7 @@ public class HibernateLLDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<LLDataValue> getDataValues( Source source, DataElement dataElement, Period period,
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, DataElement dataElement, Period period,
         DataElementCategoryOptionCombo optionCombo )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -254,7 +253,7 @@ public class HibernateLLDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<LLDataValue> getDataValues( Source source, Period period )
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, Period period )
     {
         Period storedPeriod = reloadPeriod( period );
 
@@ -273,7 +272,7 @@ public class HibernateLLDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<LLDataValue> getDataValues( Source source, DataElement dataElement )
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, DataElement dataElement )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -285,7 +284,7 @@ public class HibernateLLDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<LLDataValue> getDataValues( Collection<? extends Source> sources, DataElement dataElement )
+    public Collection<LLDataValue> getDataValues( Collection<OrganisationUnit> sources, DataElement dataElement )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -297,7 +296,7 @@ public class HibernateLLDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<LLDataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements )
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements )
     {
         Period storedPeriod = reloadPeriod( period );
 
@@ -317,7 +316,7 @@ public class HibernateLLDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<LLDataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements,
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements,
         Collection<DataElementCategoryOptionCombo> optionCombos )
     {
         Period storedPeriod = reloadPeriod( period );
@@ -340,7 +339,7 @@ public class HibernateLLDataValueStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<LLDataValue> getDataValues( DataElement dataElement, Collection<Period> periods,
-        Collection<? extends Source> sources )
+        Collection<OrganisationUnit> sources )
     {
         Collection<Period> storedPeriods = new ArrayList<Period>();
 
@@ -366,7 +365,7 @@ public class HibernateLLDataValueStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<LLDataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
-        Collection<Period> periods, Collection<? extends Source> sources )
+        Collection<Period> periods, Collection<OrganisationUnit> sources )
     {
         Collection<Period> storedPeriods = new ArrayList<Period>();
 
@@ -393,7 +392,7 @@ public class HibernateLLDataValueStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<LLDataValue> getDataValues( Collection<DataElement> dataElements, Collection<Period> periods,
-        Collection<? extends Source> sources, int firstResult, int maxResults )
+        Collection<OrganisationUnit> sources, int firstResult, int maxResults )
     {
         Collection<Period> storedPeriods = new ArrayList<Period>();
 
@@ -2383,7 +2382,7 @@ public class HibernateLLDataValueStore
 
         //PreparedStatement pst = null;
 
-        String query = "DELETE from lldatavalue WHERE recordno = " + recordNo;
+        //String query = "DELETE from lldatavalue WHERE recordno = " + recordNo;
 
         try
         {
@@ -2392,7 +2391,7 @@ public class HibernateLLDataValueStore
             //pst = con.prepareStatement( query );
 
             //pst.executeUpdate();
-            int sqlResult = jdbcTemplate.update( query );
+            //int sqlResult = jdbcTemplate.update( query );
         }
         catch ( Exception e )
         {

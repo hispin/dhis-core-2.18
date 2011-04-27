@@ -10,15 +10,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.linelisting.Employee;
 import org.hisp.dhis.linelisting.LineListDataElementMap;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.linelisting.LineListStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 
 public class HibernateLineListStore
     implements LineListStore
@@ -102,7 +101,7 @@ public class HibernateLineListStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<LineListGroup> getLineListGroupsBySource( Source source )
+    public Collection<LineListGroup> getLineListGroupsBySource( OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 

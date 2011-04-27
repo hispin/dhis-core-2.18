@@ -52,7 +52,6 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameCompar
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
@@ -456,7 +455,7 @@ implements Action
             }
         }
 
-        Set<Source> dSetSource = selDataSet.getSources();
+        Set<OrganisationUnit> dSetSource = selDataSet.getSources();
         orgUnitInfo = "-1";
         Iterator<OrganisationUnit> ouIt = orgUnitList.iterator();
         while ( ouIt.hasNext() )
@@ -509,13 +508,13 @@ implements Action
 
         Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
         OrganisationUnit o;
-        Set<Source> dso = new HashSet<Source>();
+        Set<OrganisationUnit> dso = new HashSet<OrganisationUnit>();
         Iterator<Period> periodIterator;
         dso = selDataSet.getSources();
         
         while ( orgUnitListIterator.hasNext() )
         {
-            o = (OrganisationUnit) orgUnitListIterator.next();
+            o = orgUnitListIterator.next();
             orgUnitInfo = "" + o.getId();
 
             if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
@@ -676,7 +675,7 @@ implements Action
         return SUCCESS;
     }
 
-    public void getDataSetAssignedOrgUnitCount( OrganisationUnit organisationUnit, Set<Source> dso )
+    public void getDataSetAssignedOrgUnitCount( OrganisationUnit organisationUnit, Set<OrganisationUnit> dso )
     {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
 
@@ -755,7 +754,7 @@ implements Action
     }
 
     @SuppressWarnings( "unused" )
-    private void getOrgUnitInfo( OrganisationUnit organisationUnit, Set<Source> dso )
+    private void getOrgUnitInfo( OrganisationUnit organisationUnit, Set<OrganisationUnit> dso )
     {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
 

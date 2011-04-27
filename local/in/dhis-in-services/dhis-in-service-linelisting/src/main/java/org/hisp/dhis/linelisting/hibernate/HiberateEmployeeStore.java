@@ -35,7 +35,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.linelisting.Employee;
 import org.hisp.dhis.linelisting.EmployeeStore;
-import org.hisp.dhis.user.UserCredentials;
 
 /**
  * @author Mithilesh Kumar Thakur

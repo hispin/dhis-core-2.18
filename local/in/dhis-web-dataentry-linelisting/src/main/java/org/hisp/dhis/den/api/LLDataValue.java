@@ -33,8 +33,8 @@ import java.util.Date;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 @SuppressWarnings("serial")
 public class LLDataValue implements Serializable
@@ -52,7 +52,7 @@ public class LLDataValue implements Serializable
     /**
      * Part of the DataValue's composite ID
      */
-    private Source source;
+    private OrganisationUnit source;
 
     private String value;
 
@@ -74,14 +74,14 @@ public class LLDataValue implements Serializable
     {
     }
 
-    public LLDataValue( DataElement dataElement, Period period, Source source )
+    public LLDataValue( DataElement dataElement, Period period, OrganisationUnit source )
     {
         this.dataElement = dataElement;
         this.period = period;
         this.source = source;
     }
 
-    public LLDataValue( DataElement dataElement, Period period, Source source, DataElementCategoryOptionCombo optionCombo )
+    public LLDataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo optionCombo )
     {
         this.dataElement = dataElement;
         this.period = period;
@@ -89,7 +89,7 @@ public class LLDataValue implements Serializable
         this.optionCombo = optionCombo;
     }
 
-    public LLDataValue( DataElement dataElement, Period period, Source source, String value )
+    public LLDataValue( DataElement dataElement, Period period, OrganisationUnit source, String value )
     {
         this.dataElement = dataElement;
         this.period = period;
@@ -97,7 +97,7 @@ public class LLDataValue implements Serializable
         this.value = value;
     }
 
-    public LLDataValue( DataElement dataElement, Period period, Source source, String value, DataElementCategoryOptionCombo optionCombo )
+    public LLDataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, DataElementCategoryOptionCombo optionCombo )
     {
         this.dataElement = dataElement;
         this.period = period;
@@ -106,7 +106,7 @@ public class LLDataValue implements Serializable
         this.optionCombo = optionCombo;
     }
 
-    public LLDataValue( DataElement dataElement, Period period, Source source, String value, String storedBy,
+    public LLDataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
         Date timestamp, String comment )
     {
         this.dataElement = dataElement;
@@ -118,7 +118,7 @@ public class LLDataValue implements Serializable
         this.comment = comment;
     }
     
-    public LLDataValue( DataElement dataElement, Period period, Source source, String value, String storedBy,
+    public LLDataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
             Date timestamp, String comment, DataElementCategoryOptionCombo optionCombo, Integer recordNo )
     {
             this.dataElement = dataElement;
@@ -198,12 +198,12 @@ public class LLDataValue implements Serializable
         this.period = period;
     }
 
-    public Source getSource()
+    public OrganisationUnit getSource()
     {
         return source;
     }
 
-    public void setSource( Source source )
+    public void setSource( OrganisationUnit source )
     {
         this.source = source;
     }

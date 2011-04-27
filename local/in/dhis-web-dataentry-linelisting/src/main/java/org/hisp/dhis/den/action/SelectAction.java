@@ -27,21 +27,16 @@ package org.hisp.dhis.den.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
@@ -54,7 +49,6 @@ import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.ActionSupport;
-import java.text.SimpleDateFormat;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -99,20 +93,6 @@ public class SelectAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     // -------------------------------------------------------------------------
@@ -223,20 +203,6 @@ public class SelectAction
         return useShortName;
     }
 
-    private Collection<Integer> calculatedDataElementIds;
-
-    public Collection<Integer> getCalculatedDataElementIds()
-    {
-        return calculatedDataElementIds;
-    }
-
-    private HashMap<CalculatedDataElement, Map<DataElement, Double>> calculatedDataElementMap;
-
-    public Map<CalculatedDataElement, Map<DataElement, Double>> getCalculatedDataElementMap()
-    {
-        return calculatedDataElementMap;
-    }
-
     private String selStartDate;
 
     public String getSelStartDate()
@@ -281,8 +247,7 @@ public class SelectAction
 
         dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
         //dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
-System.out.println("\n\n\n +++++++++++++ \n organisationUnit : " + organisationUnit);
-System.out.println("\n  dataSets : " + dataSets);
+        
         // ---------------------------------------------------------------------
         // Remove DataSets which don't have a CalendarPeriodType or are locked
         // ---------------------------------------------------------------------
@@ -399,31 +364,6 @@ System.out.println("\n  dataSets : " + dataSets);
             selectedStateManager.clearSelectedPeriod();
 
             return SUCCESS;
-        }
-
-        // ---------------------------------------------------------------------
-        // Prepare CalculatedDataElementInformation
-        // ---------------------------------------------------------------------
-
-        calculatedDataElementIds = new HashSet<Integer>();
-        calculatedDataElementMap = new HashMap<CalculatedDataElement, Map<DataElement, Double>>();
-        CalculatedDataElement cde;
-
-        for ( DataElement dataElement : selectedDataSet.getDataElements() )
-        {
-            if ( dataElement instanceof CalculatedDataElement )
-            {
-                cde = (CalculatedDataElement) dataElement;
-                calculatedDataElementIds.add( cde.getId() );
-
-                if ( cde.isSaved() )
-                {
-                    continue;
-                }
-
-                calculatedDataElementMap.put( cde, dataElementService.getDataElementFactors( cde ) );
-
-            }
         }
 
         // ---------------------------------------------------------------------

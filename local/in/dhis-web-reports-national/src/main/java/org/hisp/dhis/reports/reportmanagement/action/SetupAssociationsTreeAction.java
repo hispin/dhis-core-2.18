@@ -8,7 +8,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
-import org.hisp.dhis.source.Source;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,25 +65,9 @@ public class SetupAssociationsTreeAction
     {
         report = reportService.getReport( reportId );
 
-        selectionTreeManager.setSelectedOrganisationUnits( convert( report.getSources() ) );
+        selectionTreeManager.setSelectedOrganisationUnits( report.getSources() );
 
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Set<OrganisationUnit> convert( Collection<Source> sources )
-    {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-
-        for ( Source source : sources )
-        {
-            organisationUnits.add( (OrganisationUnit) source );
-        }
-
-        return organisationUnits;
     }
 }
 

@@ -33,7 +33,6 @@ import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyService;
 
@@ -91,13 +90,13 @@ public class DefineSurveyAssociationsAction
 	
         Survey survey = surveyService.getSurvey( surveyId );    	
     	
-    	Set<Source> assignedSources = survey.getSources();
+    	Set<OrganisationUnit> assignedSources = survey.getSources();
     	
-    	assignedSources.removeAll( convert( unitsInTheTree ) );        
+    	assignedSources.removeAll( unitsInTheTree );        
 
     	Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
     	
-    	assignedSources.addAll( convert( selectedOrganisationUnits ) );  	
+    	assignedSources.addAll( selectedOrganisationUnits );  	
     	
     	survey.setSources( assignedSources );
     	
@@ -109,15 +108,6 @@ public class DefineSurveyAssociationsAction
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    private Set<Source> convert( Collection<OrganisationUnit> organisationUnits )
-    {
-        Set<Source> sources = new HashSet<Source>();
-        
-        sources.addAll( organisationUnits );
-        
-        return sources;
-    }   
     
     private void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
     {

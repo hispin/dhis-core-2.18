@@ -18,7 +18,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
-import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.util.ReportService;
 import org.w3c.dom.Document;

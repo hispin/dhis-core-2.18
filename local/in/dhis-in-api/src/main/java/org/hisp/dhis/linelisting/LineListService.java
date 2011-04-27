@@ -32,7 +32,7 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 public interface LineListService
 {
@@ -92,7 +92,7 @@ public interface LineListService
     /**
      * Returns all Line List Groups associated with the specified source.
      */
-    Collection<LineListGroup> getLineListGroupsBySource(Source source);
+    Collection<LineListGroup> getLineListGroupsBySource(OrganisationUnit source);
     
     /**
      * Returns all Line List Groups associated with the specified Element
@@ -102,13 +102,13 @@ public interface LineListService
     /**
      * Returns all Line List Groups associated with the specified sources.
      */
-    Collection<LineListGroup> getLineListGroupsBySources( Collection<? extends Source> sources );
+    Collection<LineListGroup> getLineListGroupsBySources( Collection<OrganisationUnit> sources );
     
     /**
      * Returns the number of Sources among the specified Sources associated with
      * the specified Line List Group.
      */
-    int getSourcesAssociatedWithLineListGroup( LineListGroup lineListGroup, Collection<? extends Source> sources );
+    int getSourcesAssociatedWithLineListGroup( LineListGroup lineListGroup, Collection<OrganisationUnit> sources );
 
     /**
      * Get all LineListGroups.

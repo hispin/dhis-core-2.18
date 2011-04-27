@@ -39,7 +39,6 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyService;
 import org.hisp.dhis.surveydatavalue.SurveyDataValue;
@@ -202,7 +201,7 @@ public class DefaultReportService
     }
 
     @Transactional
-    public Collection<Report_in> getReportBySource( Source source )
+    public Collection<Report_in> getReportBySource( OrganisationUnit source )
     {
         return reportStore.getReportBySource( source );
     }
@@ -226,7 +225,7 @@ public class DefaultReportService
     }
 
     @Transactional
-    public Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, Source source,
+    public Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, OrganisationUnit source,
         String reportType )
     {
         return reportStore.getReportsByPeriodSourceAndReportType( periodType, source, reportType );

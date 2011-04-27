@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -102,11 +102,11 @@ public class DefaultSurveyService
         return indicators;
     }
 
-    public int getSourcesAssociatedWithSurvey( Survey survey, Collection<? extends Source> sources )
+    public int getSourcesAssociatedWithSurvey( Survey survey, Collection<OrganisationUnit> sources )
     {
         int count = 0;
 
-        for ( Source source : sources )
+        for ( OrganisationUnit source : sources )
         {
             if ( survey.getSources().contains( source ) )
             {
@@ -149,7 +149,7 @@ public class DefaultSurveyService
         return objects;
     }
 
-    public Collection<Survey> getSurveysBySource( Source source )
+    public Collection<Survey> getSurveysBySource( OrganisationUnit source )
     {
         return surveyStore.getSurveysBySource( source );
     }
@@ -159,11 +159,11 @@ public class DefaultSurveyService
         return surveyStore.getSurveysByIndicator( indicator );
     }
 
-    public Collection<Survey> getSurveysBySources( Collection<? extends Source> sources )
+    public Collection<Survey> getSurveysBySources( Collection<OrganisationUnit> sources )
     {
         Set<Survey> surveys = new HashSet<Survey>();
 
-        for ( Source source : sources )
+        for ( OrganisationUnit source : sources )
         {
             surveys.addAll( surveyStore.getSurveysBySource( source ) );
         }

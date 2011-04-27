@@ -29,8 +29,8 @@ package org.hisp.dhis.reports;
 
 import java.util.Collection;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 
 public interface ReportStore 
 {
@@ -50,7 +50,7 @@ public interface ReportStore
         
         Report_in getReportByName( String name );
         
-        Collection<Report_in> getReportBySource( Source source );
+        Collection<Report_in> getReportBySource( OrganisationUnit source );
         
         Collection<Report_in> getAllReports();
         
@@ -60,5 +60,5 @@ public interface ReportStore
         
         Collection<Report_in> getReportsByPeriodAndReportType( PeriodType periodType, String reportType );
 
-        Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, Source source, String reportType );
+        Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, OrganisationUnit source, String reportType );
 }
