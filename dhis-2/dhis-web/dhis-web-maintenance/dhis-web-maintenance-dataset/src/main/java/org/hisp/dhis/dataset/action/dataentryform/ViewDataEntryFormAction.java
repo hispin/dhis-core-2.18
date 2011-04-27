@@ -44,7 +44,6 @@ import org.hisp.dhis.dataelement.comparator.DataElementOperandNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.editor.EditorManager;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
@@ -86,18 +85,6 @@ public class ViewDataEntryFormAction
     public void setUserSettingService( UserSettingService userSettingService )
     {
         this.userSettingService = userSettingService;
-    }
-
-    private EditorManager editorManager;
-
-    public EditorManager getEditorManager()
-    {
-        return editorManager;
-    }
-
-    public void setEditorManager( EditorManager editorManager )
-    {
-        this.editorManager = editorManager;
     }
 
     // -------------------------------------------------------------------------
@@ -153,26 +140,18 @@ public class ViewDataEntryFormAction
     public String execute()
         throws Exception
     {
-
         dataSet = dataSetService.getDataSet( dataSetId );
 
         dataEntryForm = dataSet.getDataEntryForm();
 
-        dataEntryValue = prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
-        
         if ( dataEntryForm != null )
         {
-            editorManager.setValue( prepareDataEntryFormCode( dataEntryForm.getHtmlCode() ) );
+            dataEntryValue = prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
         }
-        else
-        {
-            editorManager.setValue( "" );
-        }
-
+        
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
 
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet
-            .getDataElements() ) );
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet.getDataElements() ) );
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
 
@@ -182,7 +161,6 @@ public class ViewDataEntryFormAction
     /**
      * Prepares the data entry form code by injecting the dataElement name for
      * each entry field
-     * 
      * 
      * @param dataEntryFormCode HTML code of the data entry form (as persisted
      *        in the database)
