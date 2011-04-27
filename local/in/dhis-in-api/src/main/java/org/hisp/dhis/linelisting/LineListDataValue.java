@@ -31,8 +31,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 @SuppressWarnings("serial")
 public class LineListDataValue
@@ -55,7 +55,7 @@ public class LineListDataValue
     /**
      * The organisation unit the values are saved for the specific LineListing Group
      */
-    private Source source;
+    private OrganisationUnit source;
 
     private String storedBy;
 
@@ -72,14 +72,14 @@ public class LineListDataValue
         // TODO Auto-generated constructor stub
     }
 
-    public LineListDataValue (Period period, Source source,Map<String, String>  lineListValues)
+    public LineListDataValue (Period period, OrganisationUnit source,Map<String, String>  lineListValues)
     {
         this.period = period;
         this.source = source;
         this.lineListValues =lineListValues;
     }
 
-    public LineListDataValue (Period period, Source source,Map<String, String>  lineListValues, String storedBy)
+    public LineListDataValue (Period period, OrganisationUnit source,Map<String, String>  lineListValues, String storedBy)
     {
         this.period = period;
         this.source = source;
@@ -111,12 +111,12 @@ public class LineListDataValue
         this.period = period;
     }
 
-    public Source getSource()
+    public OrganisationUnit getSource()
     {
         return source;
     }
 
-    public void setSource( Source source )
+    public void setSource( OrganisationUnit source )
     {
         this.source = source;
     }

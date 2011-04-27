@@ -45,14 +45,13 @@ import org.hisp.dhis.den.api.LLDataValueStore;
 import org.hisp.dhis.den.api.LLImportParameters;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class DefaultLLDataValueService
@@ -98,7 +97,7 @@ public class DefaultLLDataValueService
         dataValueStore.deleteDataValue( dataValue );
     }
 
-    public int deleteDataValuesBySource( Source source )
+    public int deleteDataValuesBySource( OrganisationUnit source )
     {
         return dataValueStore.deleteDataValuesBySource( source );
     }
@@ -108,18 +107,18 @@ public class DefaultLLDataValueService
         return dataValueStore.deleteDataValuesByDataElement( dataElement );
     }
 
-    public LLDataValue getDataValue( Source source, DataElement dataElement, Period period,
+    public LLDataValue getDataValue( OrganisationUnit source, DataElement dataElement, Period period,
         DataElementCategoryOptionCombo optionCombo, int recordNo )
     {
         return dataValueStore.getDataValue( source, dataElement, period, optionCombo, recordNo );
     }
 
-    public Collection<LLDataValue> getDataValues( Source source, DataElement dataElement, Period period )
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, DataElement dataElement, Period period )
     {
         return dataValueStore.getDataValues( source, dataElement, period );
     }
 
-    public Collection<LLDataValue> getDataValues( Source source, DataElement dataElement, Period period,
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, DataElement dataElement, Period period,
         DataElementCategoryOptionCombo optionCombo )
     {
         return dataValueStore.getDataValues( source, dataElement, period, optionCombo );
@@ -134,46 +133,46 @@ public class DefaultLLDataValueService
         return dataValueStore.getAllDataValues();
     }
 
-    public Collection<LLDataValue> getDataValues( Source source, Period period )
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, Period period )
     {
         return dataValueStore.getDataValues( source, period );
     }
 
-    public Collection<LLDataValue> getDataValues( Source source, DataElement dataElement )
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, DataElement dataElement )
     {
         return dataValueStore.getDataValues( source, dataElement );
     }
 
-    public Collection<LLDataValue> getDataValues( Collection<Source> sources, DataElement dataElement )
+    public Collection<LLDataValue> getDataValues( Collection<OrganisationUnit> sources, DataElement dataElement )
     {
         return dataValueStore.getDataValues( sources, dataElement );
     }
 
-    public Collection<LLDataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements )
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements )
     {
         return dataValueStore.getDataValues( source, period, dataElements );
     }
 
-    public Collection<LLDataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements,
+    public Collection<LLDataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements,
         Collection<DataElementCategoryOptionCombo> optionCombos )
     {
         return dataValueStore.getDataValues( source, period, dataElements, optionCombos );
     }
 
     public Collection<LLDataValue> getDataValues( DataElement dataElement, Collection<Period> periods,
-        Collection<? extends Source> sources )
+        Collection<OrganisationUnit> sources )
     {
         return dataValueStore.getDataValues( dataElement, periods, sources );
     }
 
     public Collection<LLDataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
-        Collection<Period> periods, Collection<? extends Source> sources )
+        Collection<Period> periods, Collection<OrganisationUnit> sources )
     {
         return dataValueStore.getDataValues( dataElement, optionCombo, periods, sources );
     }
 
     public Collection<LLDataValue> getDataValues( Collection<DataElement> dataElements, Collection<Period> periods,
-        Collection<? extends Source> sources, int firstResult, int maxResults )
+        Collection<OrganisationUnit> sources, int firstResult, int maxResults )
     {
         return dataValueStore.getDataValues( dataElements, periods, sources, firstResult, maxResults );
     }

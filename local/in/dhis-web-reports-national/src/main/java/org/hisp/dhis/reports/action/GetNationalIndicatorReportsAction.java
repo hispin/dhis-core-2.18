@@ -1,13 +1,11 @@
 package org.hisp.dhis.reports.action;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reports.Report_in;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

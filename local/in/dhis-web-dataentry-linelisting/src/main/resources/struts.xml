@@ -120,15 +120,7 @@
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_MINMAX_DELETE</param>
     </action>
-    
-    <action name="calculateCDEs"
-      class="org.hisp.dhis.den.action.CalculateCDEsAction">
-      <!--<interceptor-ref name="transactionStack"/>-->
-      <result name="success" type="velocity">responseCalculateCDEs.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
-    </action>
-        
+            
     <action name="viewHistory" class="org.hisp.dhis.den.action.HistoryAction">
       <!--<interceptor-ref name="transactionStack"/>-->
       <result name="success" type="velocity">/popup.vm</result>

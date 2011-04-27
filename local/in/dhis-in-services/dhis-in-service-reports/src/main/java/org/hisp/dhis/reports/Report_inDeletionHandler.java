@@ -1,6 +1,6 @@
 package org.hisp.dhis.reports;
 
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 public class Report_inDeletionHandler
@@ -28,11 +28,11 @@ public class Report_inDeletionHandler
     }
 
     @Override
-    public void deleteSource( Source source )
+    public void deleteOrganisationUnit( OrganisationUnit unit )
     {
         for ( Report_in report : reportService.getAllReports() )
         {
-            if ( report.getSources().remove( source ) )
+            if ( report.getSources().remove( unit ) )
             {
                 reportService.updateReport( report );
             }

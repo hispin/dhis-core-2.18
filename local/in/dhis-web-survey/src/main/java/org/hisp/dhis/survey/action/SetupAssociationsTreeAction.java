@@ -27,13 +27,7 @@ package org.hisp.dhis.survey.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyService;
 
@@ -96,24 +90,8 @@ public class SetupAssociationsTreeAction
     {
     	survey = surveyService.getSurvey( surveyId );
         
-        selectionTreeManager.setSelectedOrganisationUnits( convert( survey.getSources() ) );
+        selectionTreeManager.setSelectedOrganisationUnits( survey.getSources() );
 
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Set<OrganisationUnit> convert( Collection<Source> sources )
-    {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-        
-        for ( Source source : sources )
-        {        	
-            organisationUnits.add( (OrganisationUnit) source );
-        }       
-        
-        return organisationUnits;
     }
 }

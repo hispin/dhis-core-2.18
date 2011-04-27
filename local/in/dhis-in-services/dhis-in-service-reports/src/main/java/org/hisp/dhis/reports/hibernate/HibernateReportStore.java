@@ -6,11 +6,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportStore;
 import org.hisp.dhis.reports.Report_in;
-import org.hisp.dhis.source.Source;
 
 public class HibernateReportStore
     implements ReportStore
@@ -94,7 +94,7 @@ public class HibernateReportStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Report_in> getReportBySource( Source source )
+    public Collection<Report_in> getReportBySource( OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -148,7 +148,7 @@ public class HibernateReportStore
     }
     
     @SuppressWarnings( "unchecked" )
-    public Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, Source source, String reportType )
+    public Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, OrganisationUnit source, String reportType )
     {
         Session session = sessionFactory.getCurrentSession();
 

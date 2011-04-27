@@ -32,10 +32,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import org.hisp.dhis.indicator.Indicator;
-
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Brajesh Murari
@@ -68,7 +66,7 @@ public class Survey implements Serializable
     /**
      * All Sources that register data with this Survey.
      */
-    private Set<Source> sources = new HashSet<Source>();
+    private Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
     
     /**
      * Description of this Survey.
@@ -197,12 +195,12 @@ public class Survey implements Serializable
         this.indicators = indicators;
     }
 
-    public Set<Source> getSources()
+    public Set<OrganisationUnit> getSources()
     {
         return sources;
     }
 
-    public void setSources( Set<Source> sources )
+    public void setSources( Set<OrganisationUnit> sources )
     {
         this.sources = sources;
     }

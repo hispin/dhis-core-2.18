@@ -36,7 +36,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.surveydatavalue.SurveyDataValue;
 import org.hisp.dhis.surveydatavalue.SurveyDataValueStore;
@@ -78,7 +78,7 @@ public class HibernateSurveyDataValueStore
         session.delete( surveyDataValue );
     }
 
-    public int deleteSurveyDataValuesBySource( Source source )
+    public int deleteSurveyDataValuesBySource( OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -108,7 +108,7 @@ public class HibernateSurveyDataValueStore
         return query.executeUpdate();
     }
 
-    public int deleteSurveyDataValuesBySurveyIndicatorAndSource( Survey survey, Indicator indicator, Source source )
+    public int deleteSurveyDataValuesBySurveyIndicatorAndSource( Survey survey, Indicator indicator, OrganisationUnit source )
     {
     	Session session = sessionFactory.getCurrentSession();
 
@@ -131,7 +131,7 @@ public class HibernateSurveyDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<SurveyDataValue> getSurveyDataValues( Source source )
+    public Collection<SurveyDataValue> getSurveyDataValues( OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -142,7 +142,7 @@ public class HibernateSurveyDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<SurveyDataValue> getSurveyDataValues( Survey survey, Collection<? extends Source> sources )
+    public Collection<SurveyDataValue> getSurveyDataValues( Survey survey, Collection<OrganisationUnit> sources )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -153,7 +153,7 @@ public class HibernateSurveyDataValueStore
         return criteria.list();
     }
 
-    public SurveyDataValue getSurveyDataValue( Source source, Survey survey )
+    public SurveyDataValue getSurveyDataValue( OrganisationUnit source, Survey survey )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -165,7 +165,7 @@ public class HibernateSurveyDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<SurveyDataValue> getSurveyDataValues( Source source, Survey survey )
+    public Collection<SurveyDataValue> getSurveyDataValues( OrganisationUnit source, Survey survey )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -177,7 +177,7 @@ public class HibernateSurveyDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<SurveyDataValue> getSurveyDataValues( Collection<Source> sources, Survey survey )
+    public Collection<SurveyDataValue> getSurveyDataValues( Collection<OrganisationUnit> sources, Survey survey )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -189,7 +189,7 @@ public class HibernateSurveyDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<SurveyDataValue> getSurveyDataValues( Source source, Collection<Survey> surveys )
+    public Collection<SurveyDataValue> getSurveyDataValues( OrganisationUnit source, Collection<Survey> surveys )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -202,7 +202,7 @@ public class HibernateSurveyDataValueStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<SurveyDataValue> getSurveyDataValues( Collection<Survey> surveys,
-        Collection<? extends Source> sources, int firstResult, int maxResults )
+        Collection<OrganisationUnit> sources, int firstResult, int maxResults )
     {
 
         Session session = sessionFactory.getCurrentSession();
@@ -241,7 +241,7 @@ public class HibernateSurveyDataValueStore
         session.update( dataValue );
     }
 
-    public SurveyDataValue getSurveyDataValue( Source source, Survey survey, Indicator indicator )
+    public SurveyDataValue getSurveyDataValue( OrganisationUnit source, Survey survey, Indicator indicator )
     {
         Session session = sessionFactory.getCurrentSession();
 

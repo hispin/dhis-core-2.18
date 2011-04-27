@@ -32,9 +32,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 
 public class LineListGroup
 {
@@ -74,7 +74,7 @@ public class LineListGroup
     /**
      * All Sources that register data with this LineList Group.
      */
-    private Set<Source> sources = new HashSet<Source>();
+    private Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
     
     /**
     * Property indicating whether the LineList is locked for data entry.
@@ -89,7 +89,7 @@ public class LineListGroup
     /**
      * All locked Sources within the LineList Group.
      */    
-    private Set<Source> lockedSources = new HashSet<Source>();
+    private Set<OrganisationUnit> lockedSources = new HashSet<OrganisationUnit>();
     
     /**
      * Indicating position in the custom sort order.
@@ -234,12 +234,12 @@ public class LineListGroup
         this.lineListElements = lineListElements;
     }
 
-    public Set<Source> getSources()
+    public Set<OrganisationUnit> getSources()
     {
         return sources;
     }
 
-    public void setSources( Set<Source> sources )
+    public void setSources( Set<OrganisationUnit> sources )
     {
         this.sources = sources;
     }
@@ -254,12 +254,12 @@ public class LineListGroup
         this.lineListLockedPeriods = lockedPeriods;
     }
 
-    public Set<Source> getLockedSources()
+    public Set<OrganisationUnit> getLockedSources()
     {
         return lockedSources;
     }
 
-    public void setLockedSources( Set<Source> lockedSources )
+    public void setLockedSources( Set<OrganisationUnit> lockedSources )
     {
         this.lockedSources = lockedSources;
     }

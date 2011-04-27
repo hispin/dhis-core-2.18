@@ -31,15 +31,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.survey.Survey;
 
 /**
  * @author Brajesh Murari
  * @version $Id$
  */
-
-@SuppressWarnings("serial")
 public class SurveyDataValue implements Serializable
 {
     /**
@@ -55,7 +53,7 @@ public class SurveyDataValue implements Serializable
     /**
      * Part of the SurveyDataValue's composite ID
      */
-    private Source source;
+    private OrganisationUnit source;
 
     /**
      * 
@@ -81,7 +79,7 @@ public class SurveyDataValue implements Serializable
     {
     }
 
-    public SurveyDataValue( Survey survey, Indicator indicator, Source source, String value )
+    public SurveyDataValue( Survey survey, Indicator indicator, OrganisationUnit source, String value )
     {
         this.survey = survey;
         this.indicator = indicator;
@@ -89,7 +87,7 @@ public class SurveyDataValue implements Serializable
         this.value = value;
     }
 
-    public SurveyDataValue( Survey survey, Indicator indicator, Source source, String value, String storedBy,
+    public SurveyDataValue( Survey survey, Indicator indicator, OrganisationUnit source, String value, String storedBy,
         Date timestamp )
     {
         this.survey = survey;
@@ -153,12 +151,12 @@ public class SurveyDataValue implements Serializable
         this.survey = survey;
     }
 
-    public Source getSource()
+    public OrganisationUnit getSource()
     {
         return source;
     }
 
-    public void setSource( Source source )
+    public void setSource( OrganisationUnit source )
     {
         this.source = source;
     }

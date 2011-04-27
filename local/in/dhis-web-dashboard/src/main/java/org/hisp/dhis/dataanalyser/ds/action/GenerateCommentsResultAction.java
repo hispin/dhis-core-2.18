@@ -27,7 +27,6 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameCompar
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 
 import com.opensymphony.xwork2.Action;
 
@@ -369,7 +368,7 @@ public class GenerateCommentsResultAction implements Action
         //dataTableName = dashBoardService.createDataTableForComments(orgUnitInfo, deInfo, periodInfo);
         
         dataSetPeriods = new HashMap<DataSet, Collection<Period>>();
-        Iterator dataSetIterator = selectedDataSets.iterator();
+        Iterator<String> dataSetIterator = selectedDataSets.iterator();
         
         DataSet ds;
         Collection<DataElement> dataElements = new ArrayList<DataElement>();
@@ -389,15 +388,15 @@ public class GenerateCommentsResultAction implements Action
                 endPeriod.getEndDate() );
             dataSetPeriods.put( ds, periodList );
 
-            Iterator orgUnitListIterator = orgUnitList.iterator();
+            Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
             OrganisationUnit o;
-            Set<Source> dso = new HashSet<Source>();
+            Set<OrganisationUnit> dso = new HashSet<OrganisationUnit>();
             Iterator periodIterator;
             
             while ( orgUnitListIterator.hasNext() )
             {
                 
-                o = (OrganisationUnit) orgUnitListIterator.next();
+                o = orgUnitListIterator.next();
                 orgUnitInfo = ""+o.getId();
                 
                 if(maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ))
@@ -410,7 +409,6 @@ public class GenerateCommentsResultAction implements Action
                 periodIterator = periodList.iterator();
                 
                 Period p;
-                @SuppressWarnings("unused")
                 Collection dataValueResult;
                 double dataStatusPercentatge;
                 
@@ -442,24 +440,13 @@ public class GenerateCommentsResultAction implements Action
                         {
                             OrganisationUnit ou = organisationUnitService.getOrganisationUnit( rs1.getInt( 1 ) );
                             DataElement de = dataElementService.getDataElement( rs1.getInt( 2 ));
-                            @SuppressWarnings("unused")
                             Period per = periodService.getPeriod( rs1.getInt(3) );
-                            
-                            @SuppressWarnings("unused")
                             String tempStr = ou.getShortName() + " --- " + de.getName(); 
                         }                            
                         
-                        
-                        //results.add( new Integer( (int) dataStatusPercentatge ) );
                         continue;
                     }
-                    
-                    /*
-                    dataValueResult = dataValueService.getDataValues( o, p, dataElements );
-                    dataStatusPercentatge = ((double) dataValueResult.size() / (double) dataElements.size()) * 100.0;
-                 
-                    */
-                    
+                                        
                     orgUnitInfo = ""+ o.getId();
                     query = "SELECT COUNT(*) FROM "+ dataTableName +" WHERE dataelementid IN ("+deInfo+") AND sourceid IN ("+orgUnitInfo+") AND periodid IN ("+periodInfo+")";
                     ps1 = con.prepareStatement(query);
@@ -540,7 +527,6 @@ public class GenerateCommentsResultAction implements Action
     }
 
     // Returns the OrgUnitTree for which Root is the orgUnit
-    @SuppressWarnings("unchecked")
     public List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
     {
         List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>();
@@ -548,11 +534,11 @@ public class GenerateCommentsResultAction implements Action
 
         Collection<OrganisationUnit> children = orgUnit.getChildren();
 
-        Iterator childIterator = children.iterator();
+        Iterator<OrganisationUnit> childIterator = children.iterator();
         OrganisationUnit child;
         while ( childIterator.hasNext() )
         {
-            child = (OrganisationUnit) childIterator.next();
+            child = childIterator.next();
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;
@@ -573,7 +559,7 @@ public class GenerateCommentsResultAction implements Action
         }               
     }
 
-    private void getOrgUnitInfo(OrganisationUnit organisationUnit, Set<Source> dso)
+    private void getOrgUnitInfo(OrganisationUnit organisationUnit, Set<OrganisationUnit> dso)
     {                
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
 
@@ -602,7 +588,4 @@ public class GenerateCommentsResultAction implements Action
         }
         return deInfo.toString();
     }
-
-
-    
-}// class end
+}

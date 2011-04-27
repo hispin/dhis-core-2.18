@@ -36,7 +36,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyStore;
 import org.hisp.dhis.surveydatavalue.SurveyDataValue;
@@ -133,7 +133,7 @@ public class HibernateSurveyStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Survey> getSurveysBySource( Source source )
+    public Collection<Survey> getSurveysBySource( OrganisationUnit source )
     {
         Session session = sessionFactory.getCurrentSession();
 

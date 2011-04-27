@@ -21,11 +21,11 @@ import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.linelisting.LineListDataValue;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.comparator.PeriodComparator;
-import org.hisp.dhis.source.Source;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -351,7 +351,7 @@ public class MySQLDataBaseManager
     // -------------------------------------------------------------------------
     // Get LineListDataValues from Department table by source and period
     // -------------------------------------------------------------------------    
-    public List<LineListDataValue> getFromLLTable( String tableName, Source source, Period period )
+    public List<LineListDataValue> getFromLLTable( String tableName, OrganisationUnit source, Period period )
     {
         String columnDefinition = "";
         
@@ -421,7 +421,7 @@ public class MySQLDataBaseManager
     // -------------------------------------------------------------------------
     // Get LineListDataValues from Department table by source and period and linelist element
     // -------------------------------------------------------------------------    
-    public List<LineListDataValue> getLLValuesByLLElementValue( String tableName, String llElementName, String llElementValue, Source source, Period period )
+    public List<LineListDataValue> getLLValuesByLLElementValue( String tableName, String llElementName, String llElementValue, OrganisationUnit source, Period period )
     {
         String columnDefinition = "";
 
@@ -510,7 +510,7 @@ public class MySQLDataBaseManager
     // -------------------------------------------------------------------------
     // Get LineListDataValues from Department table filter by source and period and list of linelist elements
     // -------------------------------------------------------------------------    
-    public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String, String> llElementValueMap, Source source, Period period )
+    public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String, String> llElementValueMap, OrganisationUnit source, Period period )
     {
         String columnDefinition = "";
 
@@ -622,7 +622,7 @@ public class MySQLDataBaseManager
     // -------------------------------------------------------------------------
     // Get LineListDataValues from Department table filter by source and list of linelist elements
     // -------------------------------------------------------------------------    
-    public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String, String> llElementValueMap, Source source )
+    public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String, String> llElementValueMap, OrganisationUnit source )
     {
         String columnDefinition = "";
 
@@ -733,7 +733,7 @@ public class MySQLDataBaseManager
     // -------------------------------------------------------------------------
     // Get LineListDataValueCount from Department table filter by source and list of linelist elements
     // -------------------------------------------------------------------------    
-    public int getLLValueCountByLLElements( String tableName, Map<String, String> llElementValueMap, Source source )
+    public int getLLValueCountByLLElements( String tableName, Map<String, String> llElementValueMap, OrganisationUnit source )
     {
         String columnDefinition = "";
         int noOfRows = 0;
@@ -786,7 +786,7 @@ public class MySQLDataBaseManager
     // -------------------------------------------------------------------------
     // Get LineListDataValues from Department table sort by line list element
     // -------------------------------------------------------------------------    
-    public List<LineListDataValue> getLLValuesSortBy( String tableName, String sortBy, Source source, Period period )
+    public List<LineListDataValue> getLLValuesSortBy( String tableName, String sortBy, OrganisationUnit source, Period period )
     {
         String columnDefinition = "";
 
@@ -886,7 +886,7 @@ public class MySQLDataBaseManager
         
         Period period = llDataValue.getPeriod();
 
-        Source source = llDataValue.getSource();
+        OrganisationUnit source = llDataValue.getSource();
 
         Map<String, String> elementValues = llDataValue.getLineListValues();
         Set<String> elements = elementValues.keySet();
@@ -972,7 +972,7 @@ public class MySQLDataBaseManager
 
             Period period = llDataValue.getPeriod();
 
-            Source source = llDataValue.getSource();
+            OrganisationUnit source = llDataValue.getSource();
 
             Map<String, String> elementValues = llDataValue.getLineListValues();
             Set<String> elements = elementValues.keySet();
@@ -1263,7 +1263,7 @@ public class MySQLDataBaseManager
     // -------------------------------------------------------------------------
     // Get Recent Period from Department table for onChange period type
     // -------------------------------------------------------------------------        
-    public Period getRecentPeriodForOnChangeData( String tableName, String llElementName, String llElementValue, Source source )
+    public Period getRecentPeriodForOnChangeData( String tableName, String llElementName, String llElementValue, OrganisationUnit source )
     {
         String columnDefinition = "";
 

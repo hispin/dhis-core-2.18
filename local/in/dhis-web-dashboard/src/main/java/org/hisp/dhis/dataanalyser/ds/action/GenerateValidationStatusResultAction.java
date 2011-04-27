@@ -51,7 +51,6 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameCompar
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 
 import com.opensymphony.xwork2.Action;
 
@@ -373,7 +372,7 @@ public class GenerateValidationStatusResultAction
             }
         }
 
-        Set<Source> dSetSource = selDataSet.getSources();      
+        Set<OrganisationUnit> dSetSource = selDataSet.getSources();      
         orgUnitInfo = "-1";
         Iterator<OrganisationUnit> ouIt = orgUnitList.iterator();
         while ( ouIt.hasNext() )
@@ -413,7 +412,7 @@ public class GenerateValidationStatusResultAction
 
         Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
         OrganisationUnit o;
-        Set<Source> dso = new HashSet<Source>();
+        Set<OrganisationUnit> dso = new HashSet<OrganisationUnit>();
         Iterator periodIterator;
         dso = selDataSet.getSources();
         String orgUnitId = "";
@@ -421,7 +420,7 @@ public class GenerateValidationStatusResultAction
         while ( orgUnitListIterator.hasNext() )
         {
             //System.out.println( "Getting into first orgunit loop" );
-            o = (OrganisationUnit) orgUnitListIterator.next();
+            o = orgUnitListIterator.next();
             orgUnitInfo = "" + o.getId();
 
             if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
@@ -501,19 +500,7 @@ public class GenerateValidationStatusResultAction
             //System.out.println("o = "+o.getName() + " dsValidationPassResults size = "+dsValidationPassResults.size());
             ouMapValidationPassStatusResult.put( o, dsValidationPassResults );
         }
-/*        
         
-        for( OrganisationUnit orgUnit : ouMapValidationPassStatusResult.keySet() )
-        {
-            System.out.print( orgUnit.getName() );
-            for( Integer result : ouMapValidationPassStatusResult.get( orgUnit ) )
-            {
-                System.out.print( " - "+ result );
-            }
-            System.out.println("");
-        }
-*/        
-        // For Level Names
         String ouLevelNames[] = new String[organisationUnitService.getNumberOfOrganisationalLevels() + 1];
         
         for ( int i = 0; i < ouLevelNames.length; i++ )
@@ -541,7 +528,7 @@ public class GenerateValidationStatusResultAction
         return SUCCESS;
     }
 
-    public void getDataSetAssignedOrgUnitCount( OrganisationUnit organisationUnit, Set<Source> dso )
+    public void getDataSetAssignedOrgUnitCount( OrganisationUnit organisationUnit, Set<OrganisationUnit> dso )
     {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
         Iterator<OrganisationUnit> childIterator = children.iterator();
@@ -566,12 +553,12 @@ public class GenerateValidationStatusResultAction
         orgUnitTree.add( orgUnit );
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
         Collections.sort( children, new OrganisationUnitNameComparator() );
-        Iterator childIterator = children.iterator();
+        Iterator<OrganisationUnit> childIterator = children.iterator();
         OrganisationUnit child;
         
         while ( childIterator.hasNext() )
         {
-            child = (OrganisationUnit) childIterator.next();
+            child = childIterator.next();
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;
@@ -590,7 +577,7 @@ public class GenerateValidationStatusResultAction
         }
     }
 
-    private void getOrgUnitInfo( OrganisationUnit organisationUnit, Set<Source> dso )
+    private void getOrgUnitInfo( OrganisationUnit organisationUnit, Set<OrganisationUnit> dso )
     {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
         Iterator<OrganisationUnit> childIterator = children.iterator();
@@ -615,7 +602,7 @@ public class GenerateValidationStatusResultAction
 
         @SuppressWarnings( "unused" )
         List<OrganisationUnit> assignedOrganisationUnits = new ArrayList<OrganisationUnit>();
-        Set<Source> assignedSources = selectedDataSet.getSources();
+        Set<OrganisationUnit> assignedSources = selectedDataSet.getSources();
         filteredOrganisationUnits.retainAll( assignedSources );
         return filteredOrganisationUnits;
     }

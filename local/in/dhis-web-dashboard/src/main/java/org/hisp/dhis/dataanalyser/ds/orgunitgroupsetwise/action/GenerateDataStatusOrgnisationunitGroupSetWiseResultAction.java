@@ -50,7 +50,6 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.Source;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -393,7 +392,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
             endPeriod.getEndDate() );
 
         // Dataset source
-        Set<Source> dSetSource = selDataSet.getSources();
+        Set<OrganisationUnit> dSetSource = selDataSet.getSources();
 
         // OrgUnit Group Info
         orgUnitGroupList = new ArrayList<OrganisationUnitGroup>( orgUnitListCB.size() );
@@ -458,7 +457,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
             
             Iterator orgUnitListIterator = orgUnitList.iterator();          
             OrganisationUnit o;
-            Set<Source> dso = new HashSet<Source>();
+            Set<OrganisationUnit> dso = new HashSet<OrganisationUnit>();
             Iterator periodIterator = null;
             dso = selDataSet.getSources();
             Map<Integer, Integer> ougResult = new HashMap<Integer, Integer>();
@@ -641,7 +640,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
         return SUCCESS;
     }
 
-    public void getDataSetAssignedOrgUnitCount( OrganisationUnit organisationUnit, Set<Source> dso )
+    public void getDataSetAssignedOrgUnitCount( OrganisationUnit organisationUnit, Set<OrganisationUnit> dso )
     {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
 
@@ -691,7 +690,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
         }
     }
 
-    private void getOrgUnitInfo( OrganisationUnit organisationUnit, Set<Source> dso )
+    private void getOrgUnitInfo( OrganisationUnit organisationUnit, Set<OrganisationUnit> dso )
     {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
 

@@ -30,7 +30,7 @@ package org.hisp.dhis.survey;
 import java.util.Collection;
 
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Brajesh Murari
@@ -94,7 +94,7 @@ public interface SurveyStore
     /**
      * Returns all Survey associated with the specified source.
      */
-    Collection<Survey> getSurveysBySource( Source source );
+    Collection<Survey> getSurveysBySource( OrganisationUnit source );
     
     /**
      * Returns all Survey associated with the specified indicator.

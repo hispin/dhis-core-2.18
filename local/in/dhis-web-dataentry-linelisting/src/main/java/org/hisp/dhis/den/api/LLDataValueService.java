@@ -35,7 +35,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 public interface LLDataValueService
 {
@@ -77,7 +76,7 @@ public interface LLDataValueService
      * @param source the Source for which the DataValues should be deleted.
      * @return the number of deleted DataValues.
      */
-    int deleteDataValuesBySource( Source source );
+    int deleteDataValuesBySource( OrganisationUnit source );
 
     /**
      * Deletes all DataValues registered for the given DataElemt.
@@ -87,7 +86,7 @@ public interface LLDataValueService
      */
     int deleteDataValuesByDataElement( DataElement dataElement );
 
-    LLDataValue getDataValue(  Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo, int recordNo);
+    LLDataValue getDataValue( OrganisationUnit source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo, int recordNo);
     
     /**
      * Returns a List of DataValues.
@@ -98,7 +97,7 @@ public interface LLDataValueService
      * @return the DataValue which corresponds to the given parameters, or null
      *         if no match.
      */
-    Collection<LLDataValue> getDataValues( Source source, DataElement dataElement, Period period );
+    Collection<LLDataValue> getDataValues( OrganisationUnit source, DataElement dataElement, Period period );
     
     /**
      * Returns a List of DataValues.
@@ -109,7 +108,7 @@ public interface LLDataValueService
      * @return the DataValue which corresponds to the given parameters, or null
      *         if no match.
      */
-    Collection<LLDataValue> getDataValues( Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo );
+    Collection<LLDataValue> getDataValues( OrganisationUnit source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo );
 
     // -------------------------------------------------------------------------
     // Collections of DataValues
@@ -130,7 +129,7 @@ public interface LLDataValueService
      * @return a collection of all DataValues which match the given Source and
      *         Period, or an empty collection if no values match.
      */
-    Collection<LLDataValue> getDataValues( Source source, Period period );
+    Collection<LLDataValue> getDataValues( OrganisationUnit source, Period period );
 
     /**
      * Returns all DataValues for a given Source and DataElement.
@@ -140,7 +139,7 @@ public interface LLDataValueService
      * @return a collection of all DataValues which match the given Source and
      *         DataElement, or an empty collection if no values match.
      */
-    Collection<LLDataValue> getDataValues( Source source, DataElement dataElement );
+    Collection<LLDataValue> getDataValues( OrganisationUnit source, DataElement dataElement );
 
     /**
      * Returns all DataValues for a given collection of Sources and a
@@ -152,7 +151,7 @@ public interface LLDataValueService
      *         Sources and the DataElement, or an empty collection if no values
      *         match.
      */
-    Collection<LLDataValue> getDataValues( Collection<Source> sources, DataElement dataElement );
+    Collection<LLDataValue> getDataValues( Collection<OrganisationUnit> sources, DataElement dataElement );
     
     /**
      * Returns all DataValues for a given Source, Period, collection of
@@ -165,7 +164,7 @@ public interface LLDataValueService
      *         Period, and any of the DataElements, or an empty collection if no
      *         values match.
      */
-    Collection<LLDataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements, Collection<DataElementCategoryOptionCombo> optionCombos );
+    Collection<LLDataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements, Collection<DataElementCategoryOptionCombo> optionCombos );
 
     /**
      * Returns all DataValues for a given Source, Period, and collection of
@@ -178,7 +177,7 @@ public interface LLDataValueService
      *         Period, and any of the DataElements, or an empty collection if no
      *         values match.
      */
-    Collection<LLDataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements );
+    Collection<LLDataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements );
     
     /**
      * Returns all DataValues for a given DataElement, collection of Periods, and 
@@ -190,7 +189,7 @@ public interface LLDataValueService
      *         Periods, and Sources.
      */
     Collection<LLDataValue> getDataValues( DataElement dataElement, Collection<Period> periods, 
-        Collection<? extends Source> sources );
+        Collection<OrganisationUnit> sources );
 
     /**
      * Returns all DataValues for a given DataElement, DataElementCategoryOptionCombo,
@@ -204,7 +203,7 @@ public interface LLDataValueService
      *         Periods, and Sources.
      */
     Collection<LLDataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, 
-        Collection<Period> periods, Collection<? extends Source> sources );
+        Collection<Period> periods, Collection<OrganisationUnit> sources );
     
     /**
      * Returns all DataValues for a given collection of DataElements, collection of Periods, and
@@ -219,7 +218,7 @@ public interface LLDataValueService
      *         Periods, and Sources, limited by the firstResult and maxResults property.
      */
     Collection<LLDataValue> getDataValues( Collection<DataElement> dataElements, Collection<Period> periods, 
-        Collection<? extends Source> sources, int firstResult, int maxResults );    
+        Collection<OrganisationUnit> sources, int firstResult, int maxResults );    
     
     /**
      * Returns all DataValues for a given collection of DataElementCategoryOptionCombos.
@@ -240,11 +239,11 @@ public interface LLDataValueService
     
     int getMaxRecordNo();
     
-    Map<String,String> processLineListBirths(OrganisationUnit organisationUnit, Period period);
+    Map<String,String> processLineListBirths( OrganisationUnit organisationUnit, Period period );
     
-    Map<String,String> processLineListDeaths(OrganisationUnit organisationUnit, Period periodL);
+    Map<String,String> processLineListDeaths( OrganisationUnit organisationUnit, Period periodL );
     
-    Map<String,String> processLineListMaternalDeaths(OrganisationUnit organisationUnit, Period periodL);
+    Map<String,String> processLineListMaternalDeaths( OrganisationUnit organisationUnit, Period periodL );
     
     List<String> getLLImportFiles();
     

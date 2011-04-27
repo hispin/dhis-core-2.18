@@ -36,7 +36,6 @@ import org.hisp.dhis.detarget.DeTarget;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -88,7 +87,7 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
         deTargetDataValueStore.deleteDeTargetDataValue( deTargetDataValue );
     }
         
-    public  int deleteDeTargetDataValuesBySource( Source source )
+    public  int deleteDeTargetDataValuesBySource( OrganisationUnit source )
     {
         return deTargetDataValueStore.deleteDeTargetDataValuesBySource( source );
     }
@@ -103,7 +102,7 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
         return deTargetDataValueStore.deleteDeTargetDataValuesByDataElementAndCategoryOptionCombo( dataelement, deoptioncombo );
     }
     
-    public int deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo, Source source )
+    public int deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo, OrganisationUnit source )
     {
         return deTargetDataValueStore.deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( deTarget, dataelement, deoptioncombo, source );
     }
@@ -118,32 +117,32 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
         return deTargetDataValueStore.getAllDeTargetDataValues();
     }
     
-    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source )
     {
         return deTargetDataValueStore.getDeTargetDataValues( source );
     }
    
-    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source, DeTarget deTarget )
     {
         return deTargetDataValueStore.getDeTargetDataValues( source, deTarget );
     }
     
-    public Collection<DeTargetDataValue> getDeTargetDataValues( Collection<Source> sources, DeTarget deTarget )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Collection<OrganisationUnit> sources, DeTarget deTarget )
     {
         return deTargetDataValueStore.getDeTargetDataValues( sources, deTarget );
     }
     
-   public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, Collection<DeTarget> deTargets )
+   public Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source, Collection<DeTarget> deTargets )
    {
        return deTargetDataValueStore.getDeTargetDataValues( source, deTargets );
    }
    
-   public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, Collection<? extends Source> sources )
+   public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, Collection<OrganisationUnit> sources )
    {
        return deTargetDataValueStore.getDeTargetDataValues( deTarget, sources );
    }
     
-   public Collection<DeTargetDataValue> getDeTargetDataValues( Collection<DeTarget> deTargets,  Collection<? extends Source> sources, int firstResult, int maxResults )
+   public Collection<DeTargetDataValue> getDeTargetDataValues( Collection<DeTarget> deTargets,  Collection<OrganisationUnit> sources, int firstResult, int maxResults )
    {
        return deTargetDataValueStore.getDeTargetDataValues( deTargets, sources, firstResult, maxResults );
    }
@@ -153,12 +152,12 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
        return deTargetDataValueStore.getDeTargetDataValues( deTarget );
    }
    
-   public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+   public Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
    {
        return deTargetDataValueStore.getDeTargetDataValues( source, deTarget, dataelement, deoptioncombo );
    }
 
-   public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+   public DeTargetDataValue getDeTargetDataValue( OrganisationUnit source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
    {
        return deTargetDataValueStore.getDeTargetDataValue( source, deTarget, period, dataelement, deoptioncombo );
    }
@@ -176,12 +175,12 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
    }
    
 
-   public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget , Source source, Period period)
+   public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, OrganisationUnit source, Period period)
    {
         return deTargetDataValueStore.getDeTargetDataValues( deTarget ,source , period );
    }
    
-   public Double getAggregatedDeTargetDataValue( Source source, DeTarget deTarget,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+   public Double getAggregatedDeTargetDataValue( OrganisationUnit source, DeTarget deTarget,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
    {
        List<OrganisationUnit> childOrgUnitList = new ArrayList<OrganisationUnit>();
        childOrgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( source.getId() ) );

@@ -31,11 +31,8 @@ import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.detarget.DeTarget;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
-
-
-
 
 /**
  * @author Mithilesh Kumar Thakur
@@ -82,7 +79,7 @@ public interface DeTargetDataValueService
      * @param source the Source for which the DeTargetDataValue should be deleted.
      * @return the number of deleted DeTargetDataValue.
      */
-    int deleteDeTargetDataValuesBySource( Source source );
+    int deleteDeTargetDataValuesBySource( OrganisationUnit source );
     
     /**
      * Deletes all DeTargetDataValue registered for the given DeTarget.
@@ -100,7 +97,7 @@ public interface DeTargetDataValueService
      */
     int deleteDeTargetDataValuesByDataElementAndCategoryOptionCombo( DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
     
-    int deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo, Source source );
+    int deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( DeTarget deTarget, DataElement dataelement, DataElementCategoryOptionCombo deoptioncombo, OrganisationUnit source );
     
     /**
      * Returns a DeTargetDataValue.
@@ -124,7 +121,7 @@ public interface DeTargetDataValueService
      * @return the DeTargetDataValue which corresponds to the given parameters, or null
      *         if no match.
      */
-    DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
+    DeTargetDataValue getDeTargetDataValue( OrganisationUnit source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
     
     // -------------------------------------------------------------------------
     // Collections of DataValues
@@ -144,7 +141,7 @@ public interface DeTargetDataValueService
      * @return a collection of all DeTargetDataValue which match the given Source 
      *         or an empty collection if no values match.
      */
-    Collection<DeTargetDataValue> getDeTargetDataValues( Source source );
+    Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source );
     
     /**
      * Returns all DeTargetDataValue for a given Source and DeTarget.
@@ -154,7 +151,7 @@ public interface DeTargetDataValueService
      * @return a collection of all DeTargetDataValue which match the given Source and
      *         DeTarget, or an empty collection if no values match.
      */
-    Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget );
+    Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source, DeTarget deTarget );
     
     /**
      * Returns all SurveyDataValues for a given collection of Sources and a
@@ -166,7 +163,7 @@ public interface DeTargetDataValueService
      *         Sources and the Survey, or an empty collection if no values
      *         match.
      */
-    Collection<DeTargetDataValue> getDeTargetDataValues( Collection<Source> sources, DeTarget deTarget );
+    Collection<DeTargetDataValue> getDeTargetDataValues( Collection<OrganisationUnit> sources, DeTarget deTarget );
     
     /**
      * Returns all DeTargetDataValue for a given Source, and collection of
@@ -179,7 +176,7 @@ public interface DeTargetDataValueService
      *         and any of the DeTarget, or an empty collection if no
      *         values match.
      */
-    Collection<DeTargetDataValue> getDeTargetDataValues( Source source, Collection<DeTarget> deTargets );
+    Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source, Collection<DeTarget> deTargets );
     
     /**
      * Returns all DataValues for a given DataElement, Period, and collection of 
@@ -191,7 +188,7 @@ public interface DeTargetDataValueService
      * @return a collection of all DeTargetDataValue which match the given DeTarget,
      *         and Sources.
      */
-    Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, Collection<? extends Source> sources );
+    Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, Collection<OrganisationUnit> sources );
     
     /**
      * Returns all DataValues for a given collection of DataElements, collection of Periods, and
@@ -204,7 +201,7 @@ public interface DeTargetDataValueService
      * @return a collection of all DeTargetDataValue which match the given collection of DeTarget,
      *         and Sources, limited by the firstResult and maxResults property.
      */
-    Collection<DeTargetDataValue> getDeTargetDataValues( Collection<DeTarget> deTargets,  Collection<? extends Source> sources, int firstResult, int maxResults );
+    Collection<DeTargetDataValue> getDeTargetDataValues( Collection<DeTarget> deTargets,  Collection<OrganisationUnit> sources, int firstResult, int maxResults );
     
     /**
      * Returns all DeTargetDataValue for a given collection of DeTarget.
@@ -224,7 +221,7 @@ public interface DeTargetDataValueService
      * @param deTarget the DeTarget of the DeTargetDataValue.
      * @return a collection of all DeTargetDataValue which mach the given collection of DeTarget.
      */
-    Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget , Source source, Period period);
+    Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, OrganisationUnit source, Period period);
     
     
     /**
@@ -235,8 +232,8 @@ public interface DeTargetDataValueService
      * * @param deoptioncombo
      * @return
      */
-    Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
+    Collection<DeTargetDataValue> getDeTargetDataValues( OrganisationUnit source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
     
-    Double getAggregatedDeTargetDataValue( Source source, DeTarget deTarget,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
+    Double getAggregatedDeTargetDataValue( OrganisationUnit source, DeTarget deTarget,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
     
 }

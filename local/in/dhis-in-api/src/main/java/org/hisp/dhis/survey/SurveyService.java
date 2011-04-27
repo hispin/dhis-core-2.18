@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Brajesh Murari
@@ -94,7 +94,7 @@ public interface SurveyService
     /**
      * Returns all Survey associated with the specified source.
      */
-    Collection<Survey> getSurveysBySource( Source source );
+    Collection<Survey> getSurveysBySource( OrganisationUnit source );
 
     /**
      * Returns all Survey associated with the specified indicator.
@@ -104,13 +104,13 @@ public interface SurveyService
     /**
      * Returns all Survey associated with the specified sources.
      */
-    Collection<Survey> getSurveysBySources( Collection<? extends Source> sources );
+    Collection<Survey> getSurveysBySources( Collection<OrganisationUnit> sources );
 
     /**
      * Returns the number of Sources among the specified Sources associated with
      * the specified Survey.
      */
-    int getSourcesAssociatedWithSurvey( Survey survey, Collection<? extends Source> sources );
+    int getSourcesAssociatedWithSurvey( Survey survey, Collection<OrganisationUnit> sources );
 
     /**
      * Get all Surveys.

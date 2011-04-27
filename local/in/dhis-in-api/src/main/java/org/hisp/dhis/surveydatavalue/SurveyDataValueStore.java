@@ -29,7 +29,7 @@ package org.hisp.dhis.surveydatavalue;
 
 import java.util.Collection;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.source.Source;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.survey.Survey;
 
 /**
@@ -77,7 +77,7 @@ public interface SurveyDataValueStore
      * @param source the Source for which the SurveyDataValue should be deleted.
      * @return the number of deleted SurveyDataValue.
      */
-    int deleteSurveyDataValuesBySource( Source source );
+    int deleteSurveyDataValuesBySource( OrganisationUnit source );
 
     /**
      * Deletes all SurveyDataValues registered for the given Survey.
@@ -87,7 +87,7 @@ public interface SurveyDataValueStore
      */
     int deleteSurveyDataValuesByIndicator( Indicator indicator );
     
-    int deleteSurveyDataValuesBySurveyIndicatorAndSource( Survey survey, Indicator indicator, Source source );
+    int deleteSurveyDataValuesBySurveyIndicatorAndSource( Survey survey, Indicator indicator, OrganisationUnit source );
 
     /**
      * Deletes all SurveyDataValues registered for the given Survey.
@@ -105,7 +105,7 @@ public interface SurveyDataValueStore
      * @return the SurveyDataValue which corresponds to the given parameters, or null
      *         if no match.
      */
-    SurveyDataValue getSurveyDataValue( Source source, Survey survey );
+    SurveyDataValue getSurveyDataValue( OrganisationUnit source, Survey survey );
 
     // -------------------------------------------------------------------------
     // Collections of DataValues
@@ -125,7 +125,7 @@ public interface SurveyDataValueStore
      * @return a collection of all SurveyDataValues which match the given Source 
      *         or an empty collection if no values match.
      */
-    Collection<SurveyDataValue> getSurveyDataValues( Source source );
+    Collection<SurveyDataValue> getSurveyDataValues( OrganisationUnit source );
 
     /**
      * Returns all SurveyDataValues for a given Source and Survey.
@@ -135,7 +135,7 @@ public interface SurveyDataValueStore
      * @return a collection of all SurveyDataValues which match the given Source and
      *         Survey, or an empty collection if no values match.
      */
-    Collection<SurveyDataValue> getSurveyDataValues( Source source, Survey survey );
+    Collection<SurveyDataValue> getSurveyDataValues( OrganisationUnit source, Survey survey );
 
     /**
      * Returns all SurveyDataValues for a given collection of Sources and a
@@ -147,7 +147,7 @@ public interface SurveyDataValueStore
      *         Sources and the Survey, or an empty collection if no values
      *         match.
      */
-    Collection<SurveyDataValue> getSurveyDataValues( Collection<Source> sources, Survey survey );
+    Collection<SurveyDataValue> getSurveyDataValues( Collection<OrganisationUnit> sources, Survey survey );
 
     /**
      * Returns all SurveyDataValues for a given Source, and collection of
@@ -160,7 +160,7 @@ public interface SurveyDataValueStore
      *         and any of the Surveys, or an empty collection if no
      *         values match.
      */
-    Collection<SurveyDataValue> getSurveyDataValues( Source source, Collection<Survey> surveys );
+    Collection<SurveyDataValue> getSurveyDataValues( OrganisationUnit source, Collection<Survey> surveys );
 
     /**
      * Returns all DataValues for a given DataElement, Period, and collection of 
@@ -172,7 +172,7 @@ public interface SurveyDataValueStore
      * @return a collection of all SurveyDataValues which match the given Survey,
      *         and Sources.
      */
-    Collection<SurveyDataValue> getSurveyDataValues( Survey survey, Collection<? extends Source> sources );
+    Collection<SurveyDataValue> getSurveyDataValues( Survey survey, Collection<OrganisationUnit> sources );
   
     /**
      * Returns all DataValues for a given collection of DataElements, collection of Periods, and
@@ -186,7 +186,7 @@ public interface SurveyDataValueStore
      *         and Sources, limited by the firstResult and maxResults property.
      */
     Collection<SurveyDataValue> getSurveyDataValues( Collection<Survey> surveys,  
-        Collection<? extends Source> sources, int firstResult, int maxResults );    
+        Collection<OrganisationUnit> sources, int firstResult, int maxResults );    
     
     /**
      * Returns all SurveyDataValues for a given collection of Surveys.
@@ -204,6 +204,6 @@ public interface SurveyDataValueStore
      * @param indicator
      * @return
      */
-    SurveyDataValue getSurveyDataValue( Source source, Survey survey, Indicator indicator );
+    SurveyDataValue getSurveyDataValue( OrganisationUnit source, Survey survey, Indicator indicator );
 
 }

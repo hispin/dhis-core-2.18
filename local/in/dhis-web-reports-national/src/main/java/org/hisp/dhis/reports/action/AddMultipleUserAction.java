@@ -89,7 +89,7 @@ public class AddMultipleUserAction
             Set<OrganisationUnit> orgUnits = new HashSet<OrganisationUnit>();
             orgUnits.add( orgUId );
             
-            Collection<User> tempUserList = userStore.getUsersByOrganisationUnit( orgUId );
+            Collection<User> tempUserList = orgUId.getUsers();
             
             int flag = 0;
             if ( tempUserList != null )

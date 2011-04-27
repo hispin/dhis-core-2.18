@@ -255,8 +255,7 @@ public class DefaultSelectedStateManager
         return basePeriod;
     }
 
-    @SuppressWarnings("unchecked")
-	private static final Map getSession()
+    private static final Map getSession()
     {
         return ActionContext.getContext().getSession();
     }

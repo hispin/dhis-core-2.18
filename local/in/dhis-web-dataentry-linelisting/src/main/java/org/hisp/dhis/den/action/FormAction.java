@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -173,13 +172,6 @@ public class FormAction
     public Map<Integer, DataValue> getDataValueMap()
     {
         return dataValueMap;
-    }
-
-    private Map<CalculatedDataElement,Integer> calculatedValueMap;
-    
-    public Map<CalculatedDataElement,Integer> getCalculatedValueMap()
-    {
-        return calculatedValueMap;
     }
     
     private List<String> standardComments;
