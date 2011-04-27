@@ -56,7 +56,6 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.mobile.SmsService;
-import org.hisp.dhis.mobile.api.ReceiveSMSService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
@@ -66,7 +65,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
@@ -1174,9 +1172,9 @@ public class DefaultMobileImportService
                     return "Phone number is not registered to any facility. Please contact admin";
                 }
 
-                List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
+                List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( curUser.getOrganisationUnits() );
 
-                if ( sources == null || sources.size() <= 0 )
+                if ( units == null || units.size() <= 0 )
                 {
                     LOG.error( " No User Exists with corresponding Phone Numbers : "
                         + mobImportParameters.getMobileNumber() );
@@ -1185,7 +1183,7 @@ public class DefaultMobileImportService
                     return "Phone number is not registered to any facility. Please contact admin";
                 }
                 
-                Source source = sources.get( 0 );
+                OrganisationUnit unit = units.get( 0 );
 
                 Period period = getPeriodInfo( mobImportParameters.getStartDate(), mobImportParameters.getPeriodType() );
 
@@ -1213,7 +1211,7 @@ public class DefaultMobileImportService
                 {
                     LOG.error( "dataValue map is null" );
                 }
-                else if ( source == null )
+                else if ( unit == null )
                 {
                     LOG.error( "source is null" );
                 }
@@ -1226,7 +1224,7 @@ public class DefaultMobileImportService
                     LOG.error( "timeStamp is null" );
                 }
 
-                if ( source == null || period == null || timeStamp == null || dataValueMap == null
+                if ( unit == null || period == null || timeStamp == null || dataValueMap == null
                     || dataValueMap.size() <= 0 )
                 {
 
@@ -1255,13 +1253,13 @@ public class DefaultMobileImportService
                     optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
                         .valueOf( optStr ) );
 
-                    DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, optionCombo );
+                    DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
 
                     if ( dataValue == null )
                     {
                         if ( value != null )
                         {
-                            insertQuery += "( "+ dataElement.getId() + ", " + period.getId() + ", "+ source.getId() +", " + optionCombo.getId() + ", '" + value + "', '" + storedBy + "', '" + lastUpdatedDate + "' ), ";
+                            insertQuery += "( "+ dataElement.getId() + ", " + period.getId() + ", "+ unit.getId() +", " + optionCombo.getId() + ", '" + value + "', '" + storedBy + "', '" + lastUpdatedDate + "' ), ";
 
                             insertFlag = 2;
                         }

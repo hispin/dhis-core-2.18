@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -44,6 +45,7 @@ import org.hisp.dhis.mobile.sms.api.SmsFormat;
 import org.hisp.dhis.mobile.sms.api.SmsImportService;
 import org.hisp.dhis.mobile.sms.api.SmsInbound;
 import org.hisp.dhis.mobile.sms.api.SmsInboundStoreService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -51,7 +53,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
@@ -231,14 +232,14 @@ public class DefaultSmsImportService implements SmsImportService
                                 + sms.getOriginator(), null, null );
                             return -1;
                         }
-                        List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
-                        if ( sources == null || sources.size() <= 0 )
+                        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( curUser.getOrganisationUnits() );
+                        if ( units == null || units.size() <= 0 )
                         {
                             Logger.getInstance().logError( " User with phone number not assigned any organization unit : "
                                 + sms.getOriginator(), null, null );
                             return -1;
                         }
-                        Source source = sources.get( 0 );
+                        OrganisationUnit unit = units.get( 0 );
                         Period period = getPeriodInfo( dataSms.getPeriodText(), dataSms.getPeriodTypeId() );
 
                         String[] deIds = props.getProperty( dataSms.getFormId() ).split( "\\," );
@@ -260,13 +261,13 @@ public class DefaultSmsImportService implements SmsImportService
 
                                 optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.valueOf( optStr ) );
 
-                                DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, optionCombo );
+                                DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
 
                                 if ( dataValue == null )
                                 {
                                     if ( dataValues[i] != null )
                                     {
-                                        dataValue = new DataValue( dataElement, period, source, optionCombo );
+                                        dataValue = new DataValue( dataElement, period, unit, optionCombo );
                                         dataValueService.addDataValue( dataValue );
                                         saveCount++;
                                     }
