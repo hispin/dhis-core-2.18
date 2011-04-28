@@ -19,7 +19,7 @@
     <tbody>
 	
     <tr>
-        <td width="20em" ><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td width="20em" ><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,minlength:2}}"></td>
     </tr>
     
@@ -36,7 +36,7 @@
 	</tr>
     
     <tr>
-		<td width="20em"><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td width="20em"><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="aggregationDataElementId" name="aggregationDataElementId" style="min-width:30.5em" class="{validate:{required:true}}" >
 			</select>
@@ -44,7 +44,7 @@
 	</tr>
 	
 	<tr>
-		<input type="radio" id="operator" name="operator" value="COUNT" checked style='display:none;'>
+		<input type="radio" id="operator" name="operator" value="COUNT" checked style='display:none;'/>
 	</tr>
 	<tr>
         <td colspan="2"><p></p></td>
@@ -53,8 +53,6 @@
     </tbody>
 </table>
 
-
-   
 <table>
 	<thead>
 		<tr>
@@ -106,7 +104,7 @@
 			</tr>
 			<tr>
 				<td>
-					<input type='text' style="min-width:19.8em" onkeyup="filterDE(event, this.value, 'programstageDE');">
+					<input type='text' style="min-width:19.8em" onkeyup="filterDE(event, this.value, 'programstageDE');"/>
 				</td>
 			</tr>
 			<tr>
@@ -146,7 +144,6 @@
 		<legend>$i18n.getString( "program_properties" )</legend>
 		
 		<table>
-		
 			<tr>
 				<td>
 					<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" >
@@ -158,7 +155,6 @@
 			</tr>
 		</table>
 		</td>
-		
 	</tr>	
 	<tr>
 		<td colspan='3'>
@@ -166,26 +162,26 @@
 			<img src="../images/less_or_equal.png" alt="$i18n.getString( 'less_or_equal' )" onclick='insertOperator( "<=" );' style="cursor:pointer;">
 			<img src="../images/greater.png" alt="$i18n.getString( 'greater' )" onclick='insertOperator( ">" );' style="cursor:pointer;">
 			<img src="../images/greater_or_equal.png" alt="$i18n.getString( 'greater_or_equal' )" onclick='insertOperator( ">=" );' style="cursor:pointer;">
-			<img src="../images/equal.png" alt="$i18n.getString( 'equal' )" onclick='insertOperator( "=" );' style="cursor:pointer;">
-			<img src="../images/diff.png" alt="$i18n.getString( 'diff' )" onclick='insertOperator( "!=" );' style="cursor:pointer;">
+			<img src="../images/equal.png" alt="$i18n.getString( 'equal' )" onclick='insertOperator( "=" );' style="cursor:pointer;"/>
+			<img src="../images/diff.png" alt="$i18n.getString( 'diff' )" onclick='insertOperator( "!=" );' style="cursor:pointer;"/>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="../images/plus.png" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' style="cursor:pointer;">
+			<img src="../images/plus.png" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' style="cursor:pointer;"/>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="../images/is_null.png" alt="$i18n.getString( 'is_null' )" onclick='insertOperator( "is null" );' style="cursor:pointer;">
-			<img src="../images/not_null.png" alt="$i18n.getString( 'not_null' )" onclick='insertOperator( "is not null" );' style="cursor:pointer;">
+			<img src="../images/is_null.png" alt="$i18n.getString( 'is_null' )" onclick='insertOperator( "is null" );' style="cursor:pointer;"/>
+			<img src="../images/not_null.png" alt="$i18n.getString( 'not_null' )" onclick='insertOperator( "is not null" );' style="cursor:pointer;"/>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="../images/and.png" alt="$i18n.getString( 'and' )" onclick='insertOperator( "AND" );' style="cursor:pointer;">
-			<img src="../images/or.png" alt="$i18n.getString( 'or' )" onclick='insertOperator( "OR" );' style="cursor:pointer;">
-			<img src="../images/in.png" alt="$i18n.getString( 'in' )" onclick='insertOperator( "IN" );' style="cursor:pointer;">
+			<img src="../images/and.png" alt="$i18n.getString( 'and' )" onclick='insertOperator( "AND" );' style="cursor:pointer;"/>
+			<img src="../images/or.png" alt="$i18n.getString( 'or' )" onclick='insertOperator( "OR" );' style="cursor:pointer;"/>
+			<img src="../images/in.png" alt="$i18n.getString( 'in' )" onclick='insertOperator( "IN" );' style="cursor:pointer;"/>
 			
-			<img src="../images/clear.png" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" style="cursor:pointer;">
+			<img src="../images/clear.png" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" style="cursor:pointer;"/>
 		</td>
 	</tr>
     </tbody>
 	
 	<tr>
 		<td colspan='3'>
-			<fieldset style="border: 1px solid #3f5d8e; ">
+			<fieldset style="border: 1px solid #3f5d8e;">
 				<legend>$i18n.getString( "condition" )</legend>
 				<textarea id="aggregationCondition" name="aggregationCondition" style="width:62.5em; height:10em" class="{validate:{required:true}}" onkeyup='getConditionDescription();'></textarea>
 			</fieldset>
@@ -202,8 +198,8 @@
 	
 	<tr>
 		<td colspan='3'>
-			<input type="submit" value="$i18n.getString( "add" )" style="width:10em">
-			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='caseAggregation.action'" style="width:10em">
+			<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action'" style="width:10em"/>
 		</td>
 	</tr>
 </table>

@@ -1,5 +1,5 @@
 <div>
-    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="window.location.href='patient.action'" style="width:10em">
+    <input type="button" value="$i18n.getString( 'back_to_search' )" onclick="window.location.href='patient.action'" style="width:10em"/>
 </div>
 
 
@@ -8,7 +8,7 @@
 <form id="updatePatientAttributeValueForm" name="updatePatientAttributeValueForm" action="updatePatientAttribute.action" method="post" onsubmit="return validateUpdatePatientAttribute()">
 
 <div>
-    <input type="hidden" id="patientId" name="patientId" value="$patient.id">
+    <input type="hidden" id="patientId" name="patientId" value="$patient.id"/>
 </div>
 
 <table>
@@ -44,10 +44,10 @@
 
 <br/><br/>
 <table width="100%">
-	<col width="10%">
-    <col width="40%">    
-    <col width="20%">
-    <col width="30">
+	<col width="10%"/>
+    <col width="40%"/>    
+    <col width="20%"/>
+    <col width="30"/>
     <tr>
         <th style="text-align: center">$i18n.getString( "nr" )</th>
         <th>$i18n.getString( "attribute" )</th>  
@@ -93,8 +93,8 @@
                     <option value="false" #if( $patientAttributeValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
                 </select>                
             #elseif( $patientAttribute.valueType == "DATE" )
-                <input type="text" id="value[$patientAttribute.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveDate( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' )" tabindex="$tabIndex" >
-                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$patientAttribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
+                <input type="text" id="value[$patientAttribute.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveDate( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' )" tabindex="$tabIndex" />
+                <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$patientAttribute.id" style="cursor: pointer;" title="$i18n.getString( 'date_selector' )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( 'date' )"/>
                     <script type="text/javascript">
                         Calendar.setup({
                             inputField     :    "value[$patientAttribute.id].date",      // id of the input field
@@ -103,16 +103,16 @@
                         });
                     </script>     
             #elseif( $patientAttribute.valueType == "COMBO" )
-					<select name="entryselect" id="value[$patientAttribute.id].combo"  name="entryfield" onchange="saveCombo( $patient.id, $patientAttribute.id, this)" tabindex="$tabIndex"  >
-						 <option value="">[$i18n.getString( "please_select" )]</option>
+					<select name="entryselect" id="value[$patientAttribute.id].combo"  name="entryfield" onchange="saveCombo( $patient.id, $patientAttribute.id, this)" tabindex="$tabIndex" >
+						<option value="">[$i18n.getString( "please_select" )]</option>
 						#foreach ($option in $patientAttribute.attributeOptions )
 							<option value="$option.id" #if($patientAttributeValue.patientAttributeOption.id == $option.id ) selected="selected" #end>$option.name</option>
 						#end
 					</select>
             #else
-                <input name="entryfield" id="value[$patientAttribute.id].value" type="text" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveAttributeValue( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $dataElement.name )' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
+                <input name="entryfield" id="value[$patientAttribute.id].value" type="text" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveAttributeValue( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $dataElement.name )' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" />
             #end
-        </td>       
+        </td>
     </tr>
     #set( $tabIndex = $tabIndex + 1 )
 #end
@@ -151,7 +151,7 @@
                 </select>                
             #elseif( $patientAttribute.valueType == "DATE" )
                 <input type="text" id="value[$patientAttribute.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveDate( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' )" tabindex="$tabIndex" >
-                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$patientAttribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
+                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$patientAttribute.id" style="cursor: pointer;" title="$i18n.getString( 'date_selector' )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( 'date' )"/>
                     <script type="text/javascript">
                         Calendar.setup({
                             inputField     :    "value[$patientAttribute.id].date",      // id of the input field
@@ -161,13 +161,13 @@
                     </script>     
             #elseif( $patientAttribute.valueType == "COMBO" )
 					<select name="entryselect" id="value[$patientAttribute.id].combo"  name="entryfield" onchange="saveCombo( $patient.id, $patientAttribute.id, this )" tabindex="$tabIndex"  >
-						 <option value="">[$i18n.getString( "please_select" )]</option>
+						<option value="">[$i18n.getString( "please_select" )]</option>
 						#foreach ($option in $patientAttribute.attributeOptions )
 							<option value="$option.id" #if($patientAttributeValue.patientAttributeOption.id == $option.id ) selected="selected" #end>$option.name</option>
 						#end
 					</select>
             #else
-                <input name="entryfield" id="value[$patientAttribute.id].value" type="text" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveAttributeValue( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $dataElement.name )' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
+                <input name="entryfield" id="value[$patientAttribute.id].value" type="text" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveAttributeValue( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $dataElement.name )' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" />
             #end
         </td>       
     </tr>
@@ -175,7 +175,7 @@
 #end
 </table>
 
-</form>     
+</form>
 
 <script type="text/javascript">    
     var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
