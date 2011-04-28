@@ -28,7 +28,7 @@ public class DefaultSmsInboundStoreServiceTest extends DhisSpringTest
     public void setUpTest()
         throws Exception
     {
-        smsInboundStoreService = (SmsInboundStoreService) getBean( HibernateSmsInboundStore.ID );
+        smsInboundStoreService = (SmsInboundStoreService) getBean( SmsInboundStoreService.ID );
         testSms = new SmsInbound();
         testSms.setEncoding( 'U' );
         testSms.setGatewayId( "modem1" );
