@@ -11,16 +11,13 @@
 	});		
 </script>
 <div>
-    <input type="button" value="$i18n.getString( "back_to_search" )"  onclick="window.location.href='patient.action'" style="width:10em">
+    <input type="button" value="$i18n.getString( 'back_to_search' )" onclick="window.location.href='patient.action'" style="width:10em"/>
 </div>
 
 <h3>$i18n.getString( "adding_new_relationship_for" )</h3>
 
 <form id="relationshipSelectForm" name="relationshipSelectForm" method="post" action="showAddRelationshipForm.action" onsubmit="return validateSearchPartner()">
-
-    <div>
-        <input type="hidden" id="id" name="id" value="$patient.id">    
-    </div>
+<input type="hidden" id="id" name="id" value="$patient.id"/>
 
 <table>
 <tr>
@@ -81,9 +78,9 @@
                             <option value="$attribute.id" #if( $searchingAttributeId && $attribute.id == $searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.name )</option>
                         #end
                     </select> 
-                    <em title="$i18n.getString( "required" )" class="required">*</em>
-                    <input type="text" id="searchText" name="searchText" maxlength="30">        
-                    <input type="submit" value="$i18n.getString( "search" )">
+                    <em title="$i18n.getString( 'required' )" class="required">*</em>
+                    <input type="text" id="searchText" name="searchText" maxlength="30"/>        
+                    <input type="submit" value="$i18n.getString( 'search' )"/>
                 </td> 
             </tr>                  
             <tr>  
@@ -104,7 +101,7 @@
                 </td>                     
             </tr>
             <tr>
-            	<td><input type="button" value="$i18n.getString( "assign_relationship" )" onclick="javascript:addRelationship()" style="width:10em"></td>
+            	<td><input type="button" value="$i18n.getString( 'assign_relationship' )" onclick="javascript:addRelationship()" style="width:10em"/></td>
             </tr>            
         </table>
     </td>

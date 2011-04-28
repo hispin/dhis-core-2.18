@@ -33,62 +33,58 @@ jQuery( function(){
 <form id="updateProgramStageForm" name="updateProgramStageForm" action="updateProgramStage.action" method="post">
 
 <div style="display:inline">
-  <input type="hidden" id="id" name="id" value="$programStage.id">
+	<input type="hidden" id="id" name="id" value="$programStage.id"/>
 </div>
   
-  <table id="detailsList">
+<table id="detailsList">
     <thead>
-      <tr>
-        <th colspan="2">$i18n.getString( "program_stage_details" )</th>
-      </tr>
+		<tr><th colspan="2">$i18n.getString( "program_stage_details" )</th></tr>
     </thead>
     <tbody>
-      <tr>
-		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $programStage.name )" style="width:30em"  class="{validate:{required:true,minlength:4}}"/></td>
-	  </tr>
-	  	  
-      <tr>
-		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $programStage.description )" style="width:30em"  class="{validate:{required:true,minlength:4}}"/></td>
-	  </tr>  
-	  
-	  <tr>
-        <td><label>$i18n.getString( "min_days_from_start" )</label></td>
-        <td><input type="text" id="minDaysFromStart" name="minDaysFromStart" maxlength="30" value="$programStage.minDaysFromStart" style="width:30em" class="{validate:{number:true,min:0}}"/></td>
-      </tr> 
-      
-      <tr>
-        <td><label>$i18n.getString( "program" )</label></td>
-        <td><input type="text" id="program" name="program" maxlength="30" value="$encoder.htmlEncode( $programStage.program.name )" style="width:30em" disabled="disabled">
-      </tr>     
-         
-      <tr><td>&nbsp;</td><td>&nbsp;</td></tr>       
+		<tr>
+			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $programStage.name )" style="width:30em"  class="{validate:{required:true,minlength:4}}"/></td>
+		</tr>
+
+		<tr>
+			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $programStage.description )" style="width:30em"  class="{validate:{required:true,minlength:4}}"/></td>
+		</tr>  
+
+		<tr>
+			<td><label>$i18n.getString( "min_days_from_start" )</label></td>
+			<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" maxlength="30" value="$programStage.minDaysFromStart" style="width:30em" class="{validate:{number:true,min:0}}"/></td>
+		</tr> 
+
+		<tr>
+			<td><label>$i18n.getString( "program" )</label></td>
+			<td><input type="text" id="program" name="program" maxlength="30" value="$encoder.htmlEncode( $programStage.program.name )" style="width:30em" disabled="disabled"/></td>
+		</tr>     
+
+		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>       
       
     </tbody>
-  </table>
+</table>
 
-  <table id="programStageMembersArea">
-    
+<table id="programStageMembersArea">
     <thead>
-      <tr>        
-        <th>$i18n.getString( "available_data_elements" )</th>
-        <th></th>
-        <th>$i18n.getString( "selected_data_elements" )</th>
-      </tr>
+		<tr>
+			<th>$i18n.getString( "available_data_elements" )</th>
+			<th></th>
+			<th>$i18n.getString( "selected_data_elements" )</th>
+		</tr>
     </thead>
 	
 	<tbody>
 	 
 	<tr>
 		<td>
-			<input type='text' style="width:29.5em" onkeyup="filterDE(event, this.value, 'availableList');">
+			<input type='text' style="width:29.5em" onkeyup="filterDE(event, this.value, 'availableList');"/>
 		</td>
-		<td></td>
-		<td></td>
+		<td></td><td></td>
 	 </tr>
 	 
-      <tr>
+	<tr>
         <td>
             <select size="15" id="availableList" multiple="multiple" style="width:30em;height:20em" ondblclick="selectDataElements( )">
                 #foreach ( $dataElement in $dataElements )
@@ -97,8 +93,8 @@ jQuery( function(){
             </select>
         </td>
         <td valign="top" align="center">         
-            <input type="button" value="&gt;" onclick="selectDataElements()"><br>    
-            <input type="button" value="&lt;" onclick="unSelectDataElements()"><br><br>                    
+            <input type="button" value="&gt;" onclick="selectDataElements()"/><br/>    
+            <input type="button" value="&lt;" onclick="unSelectDataElements()"/><br/><br/>                    
         <td>
 			<div style="overflow:auto; height:20em; width:40em;border:1px solid #9DA1AA">
 				<table width="100%">
@@ -109,26 +105,24 @@ jQuery( function(){
 						#foreach ( $programStageDataElement in $programStageDataElements )
 							<tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id" class="selected">
 								<td onclick="select(this)">$encoder.htmlEncode( $programStageDataElement.dataElement.name )</td>
-								<td><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id"></td>
+								<td><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id"/></td>
 							</tr>
 						#end
 					</tbody>
 				</table>
 			</div>
         </td>
-      </tr>
+    </tr>
     </tbody>
-  </table>
+</table>
 <select id="selectedDataElementsValidator" name="selectedList" multiple="multiple" class="{validate:{required:true}}" style="display:none"> </select>
 <select id="compulsories" name="compulsories" multiple="multiple" style="display:none"></select>
 <p>
-	<input type="submit" value="$i18n.getString( "update" )" style="width:10em">
-	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='programStage.action'" style="width:10em">
+	<input type="submit" value="$i18n.getString( 'update' )" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action'" style="width:10em"/>
 </p>
 
 </form> 	
-
-
 
 <script type="text/javascript">     
     var i18n_invalid_min_max_days = '$encoder.jsEscape( $i18n.getString( "invalid_min_max_days" ) , "'")';
