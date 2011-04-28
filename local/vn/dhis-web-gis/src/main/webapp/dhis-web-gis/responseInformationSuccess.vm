@@ -1,7 +1,0 @@
-<information type="success">
-	<indicator>$encoder.xmlEncode( $indicator.name )</indicator>
-	<startdate>$startdate</startdate>
-	<enddate>$enddate</enddate>
-	<organisation>$encoder.xmlEncode( $organisationUnit.name )</organisation>
-	<value>$indicatorValue</value>
-</information>

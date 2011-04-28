@@ -1,2 +1,0 @@
-#parse( "/dhis-web-gis/menu.vm" )
-#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )

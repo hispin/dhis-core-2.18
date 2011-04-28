@@ -12,10 +12,9 @@
   <modules>
     <module>dhis-api-chr</module>
     <module>dhis-service-chr</module>
-    <module>dhis-service-gis</module>
     <module>dhis-web-chr-form</module>
-    <module>dhis-web-gis</module>
     <module>dhis-web-dataentry-chr</module>
     <module>dhis-web-datastatus</module>
+    <module>dhis-web-excel-reporting</module>
   </modules>
 </project>
