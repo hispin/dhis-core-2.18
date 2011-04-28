@@ -127,12 +127,12 @@ public class ViewDataEntryFormAction
     }
 
     private String dataEntryValue;
-    
+
     public String getDataEntryValue()
     {
         return dataEntryValue;
     }
-    
+
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -148,10 +148,15 @@ public class ViewDataEntryFormAction
         {
             dataEntryValue = prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
         }
-        
+        else
+        {
+            dataEntryValue = "";
+        }
+
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
 
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet.getDataElements() ) );
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet
+            .getDataElements() ) );
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
 
