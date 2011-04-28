@@ -49,6 +49,7 @@ import org.hisp.dhis.importexport.dxf2.service.OrgUnitMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.api.UrlResourceListener;
+import org.hisp.dhis.web.api.model.ActivityPlan;
 import org.hisp.dhis.web.api.model.ActivityValue;
 import org.hisp.dhis.web.api.model.DataSetList;
 import org.hisp.dhis.web.api.model.DataSetValue;
@@ -190,6 +191,13 @@ public class OrgUnitResource
         return model;
     }
 
+    @GET
+    @Path( "search" )
+    public ActivityPlan search( @HeaderParam( "identifier" ) String identifier )
+    {
+        return activityReportingService.getActivitiesByIdentifier( identifier );
+    }
+
     public static MobileOrgUnitLinks getOrgUnit( OrganisationUnit unit, UriInfo uriInfo )
     {
         MobileOrgUnitLinks orgUnit = new MobileOrgUnitLinks();
@@ -207,6 +215,8 @@ public class OrgUnitResource
         orgUnit.setUpdateDataSetUrl( getOrgUnitUrlBuilder( uriInfo ).path( "updateDataSets" ).build( unit.getId() )
             .toString() );
         orgUnit.setChangeUpdateDataSetLangUrl( getOrgUnitUrlBuilder( uriInfo ).path( "changeLanguageDataSet" )
+            .build( unit.getId() ).toString() );
+        orgUnit.setSearchUrl( getOrgUnitUrlBuilder( uriInfo ).path( "search" )
             .build( unit.getId() ).toString() );
         return orgUnit;
     }

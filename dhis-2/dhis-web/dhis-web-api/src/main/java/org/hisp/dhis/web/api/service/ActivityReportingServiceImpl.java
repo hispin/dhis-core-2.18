@@ -28,30 +28,38 @@ package org.hisp.dhis.web.api.service;
  */
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.activityplan.ActivityPlanService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientMobileSetting;
 import org.hisp.dhis.patient.PatientMobileSettingService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.web.api.model.Activity;
 import org.hisp.dhis.web.api.model.ActivityPlan;
@@ -79,26 +87,28 @@ public class ActivityReportingServiceImpl
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService;
+    private ProgramStageInstanceService programStageInstanceService;
 
-    private org.hisp.dhis.activityplan.ActivityPlanService activityPlanService;
+    private ActivityPlanService activityPlanService;
 
     private PatientAttributeValueService patientAttValueService;
 
     private PatientAttributeService patientAttService;
 
-    private org.hisp.dhis.dataelement.DataElementCategoryService categoryService;
+    private DataElementCategoryService categoryService;
 
-    private org.hisp.dhis.patientdatavalue.PatientDataValueService dataValueService;
+    private PatientDataValueService dataValueService;
 
     private PatientMobileSettingService patientMobileSettingService;
+
+    private PatientIdentifierService patientIdentifierService;
 
     // -------------------------------------------------------------------------
     // MobileDataSetService
     // -------------------------------------------------------------------------
-    
+
     private PatientMobileSetting setting;
-    
+
     private org.hisp.dhis.patient.PatientAttribute groupByAttribute;
 
     public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString )
@@ -106,13 +116,14 @@ public class ActivityReportingServiceImpl
         long time = System.currentTimeMillis();
 
         List<Activity> items = new ArrayList<Activity>();
-        
+
         this.setSetting( getSettings() );
-        
+
         this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( true ) );
-        
-        Collection<org.hisp.dhis.activityplan.Activity> activities = activityPlanService.getCurrentActivitiesByProvider( unit );
-        
+
+        Collection<org.hisp.dhis.activityplan.Activity> activities = activityPlanService
+            .getCurrentActivitiesByProvider( unit );
+
         for ( org.hisp.dhis.activityplan.Activity activity : activities )
         {
             items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
@@ -129,6 +140,47 @@ public class ActivityReportingServiceImpl
             log.debug( "Found " + items.size() + " current activities in " + (System.currentTimeMillis() - time)
                 + " ms." );
 
+        return new ActivityPlan( items );
+    }
+    
+    @Override
+    public ActivityPlan getActivitiesByIdentifier( String keyword )
+    {
+        
+       long time = PeriodType.createCalendarInstance().getTime().getTime();
+
+        Calendar expiredDate = Calendar.getInstance();
+
+        List<Activity> items = new ArrayList<Activity>();
+        
+        Collection<Patient> patients = patientIdentifierService.getPatientsByIdentifier( keyword, 0, patientIdentifierService.countGetPatientsByIdentifier( keyword ) );
+        
+        if ( patients != null )
+        {
+            Iterator<Patient> iterator = patients.iterator();
+
+            while ( iterator.hasNext() )
+            {
+                Patient patient = iterator.next();
+                
+                List<ProgramStageInstance> programStageInstances = programStageInstanceService
+                    .getProgramStageInstances( patient, false );
+
+                for ( int i = 0; i < programStageInstances.size(); i++ )
+                {
+                    ProgramStageInstance programStageInstance = programStageInstances.get( i );
+
+                    expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(),
+                        programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
+
+                    if ( programStageInstance.getDueDate().getTime() <= time && expiredDate.getTimeInMillis() > time )
+                    {
+                        items.add( getActivity( programStageInstance,
+                            programStageInstance.getDueDate().getTime() < time ) );
+                    }
+                }
+            }
+        }
         return new ActivityPlan( items );
     }
 
@@ -197,7 +249,7 @@ public class ActivityReportingServiceImpl
     {
         Activity activity = new Activity();
         Patient patient = instance.getProgramInstance().getPatient();
-                
+
         activity.setBeneficiary( getBeneficiaryModel( patient ) );
         activity.setDueDate( instance.getDueDate() );
         activity.setTask( getTask( instance ) );
@@ -257,8 +309,7 @@ public class ActivityReportingServiceImpl
             {
                 beneficiary.setRegistrationDate( patient.getRegistrationDate() );
             }
-            
-            
+
             atts = setting.getPatientAttributes();
             for ( org.hisp.dhis.patient.PatientAttribute each : atts )
             {
@@ -268,13 +319,13 @@ public class ActivityReportingServiceImpl
                     patientAtts.add( new PatientAttribute( each.getName(), value.getValue() ) );
                 }
             }
-            
+
         }
 
         // Set attribute which is used to group beneficiary on mobile (only if
         // there is attribute which is set to be group factor)
         PatientAttribute beneficiaryAttribute = null;
-       
+
         if ( groupByAttribute != null )
         {
             beneficiaryAttribute = new PatientAttribute();
@@ -445,6 +496,17 @@ public class ActivityReportingServiceImpl
     public void setGroupByAttribute( org.hisp.dhis.patient.PatientAttribute groupByAttribute )
     {
         this.groupByAttribute = groupByAttribute;
+    }
+
+    public PatientIdentifierService getPatientIdentifierService()
+    {
+        return patientIdentifierService;
+    }
+    
+    @Required
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+    {
+        this.patientIdentifierService = patientIdentifierService;
     }
     
     

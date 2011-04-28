@@ -34,6 +34,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -111,6 +112,16 @@ public class HibernateProgramStageInstanceStore
         if ( completed != null )
             q.setBoolean( "completed", completed );
 
+        return q.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed )
+    {
+        String hql = "from ProgramStageInstance where programInstance.patient = :patient and completed = :completed";
+        Query q = getQuery( hql );
+        q.setEntity( "patient", patient );
+        q.setBoolean( "completed", completed );
         return q.list();
     }
 

@@ -61,6 +61,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="patientMobileSettingService" ref="org.hisp.dhis.patient.PatientMobileSettingService" />
     <property name="activityPlanService" ref="org.hisp.dhis.activityplan.ActivityPlanService" />
+	<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.service.IProgramService" class="org.hisp.dhis.web.api.service.DefaultProgramService">

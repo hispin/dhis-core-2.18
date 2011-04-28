@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 
 /**
  * @author Abyot Asalefew
@@ -65,4 +66,5 @@ public interface ProgramStageInstanceStore
      */
     public List<ProgramStageInstance> get(OrganisationUnit unit, Date after, Date before, Boolean completed);
 
+    List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed);
 }

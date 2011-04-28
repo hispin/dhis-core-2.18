@@ -53,6 +53,7 @@ public class OrgUnitTest
         unit.setUploadFacilityReportUrl( "uploadFacilityReportUrl" );
         unit.setUpdateDataSetUrl( "updateDataSetUrl" );
         unit.setChangeUpdateDataSetLangUrl( "changeUpdateDataSetLangUrl" );
+        unit.setSearchUrl( "search" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 
 /**
  * @author Abyot Asalefew
@@ -40,40 +41,46 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public interface ProgramStageInstanceService
 {
     String ID = ProgramStageInstanceService.class.getName();
-    
-    int addProgramStageInstance( ProgramStageInstance programStageInstance );    
-    
+
+    int addProgramStageInstance( ProgramStageInstance programStageInstance );
+
     void deleteProgramStageInstance( ProgramStageInstance programStageInstance );
-    
+
     void updateProgramStageInstance( ProgramStageInstance programStageInstance );
-    
+
     ProgramStageInstance getProgramStageInstance( int id );
-    
-    ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage );      
-    
+
+    ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage );
+
     Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage );
-    
+
     Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances );
-    
+
     Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate );
-    
+
     Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed );
-    
+
     Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate );
-    
+
     Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed );
-    
-    Collection<ProgramStageInstance> getAllProgramStageInstances();     
-    
+
+    Collection<ProgramStageInstance> getAllProgramStageInstances();
+
     Map<Integer, String> colorProgramStageInstances( Collection<ProgramStageInstance> programStageInstances );
 
-    /** Get all {@link ProgramStageInstance program stage instances} for unit, optionally filtering by date or completed.
+    /**
+     * Get all {@link ProgramStageInstance program stage instances} for unit,
+     * optionally filtering by date or completed.
+     * 
      * @param unit - the unit to get instances for.
      * @param after - optional date the instance should be on or after.
      * @param before - optional date the instance should be on or before.
-     * @param completed - optional flag to only get completed (<code>true</code>) or uncompleted (<code>false</code>) instances. 
+     * @param completed - optional flag to only get completed (<code>true</code>
+     *        ) or uncompleted (<code>false</code>) instances.
      * @return
      */
-    public List<ProgramStageInstance> get(OrganisationUnit unit, Date after, Date before, Boolean completed);
+    public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
+
+    List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
 
 }
