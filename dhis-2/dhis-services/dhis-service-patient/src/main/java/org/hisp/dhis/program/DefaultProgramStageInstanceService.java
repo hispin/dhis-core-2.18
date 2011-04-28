@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -162,5 +163,10 @@ public class DefaultProgramStageInstanceService
     public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed )
     {
         return programStageInstanceStore.get( unit, after, before, completed );
+    }
+
+    public List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed )
+    {
+        return programStageInstanceStore.getProgramStageInstances( patient, completed );
     }
 }

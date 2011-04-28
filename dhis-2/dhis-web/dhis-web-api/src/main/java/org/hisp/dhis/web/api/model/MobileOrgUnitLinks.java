@@ -53,6 +53,8 @@ public class MobileOrgUnitLinks
     private String updateDataSetUrl;
     
     private String changeUpdateDataSetLangUrl;
+    
+    private String searchUrl;
 
     @XmlAttribute
     public int getId()
@@ -126,6 +128,16 @@ public class MobileOrgUnitLinks
         this.changeUpdateDataSetLangUrl = changeUpdateDataSetLangUrl;
     }
 
+    public String getSearchUrl()
+    {
+        return searchUrl;
+    }
+
+    public void setSearchUrl( String searchUrl )
+    {
+        this.searchUrl = searchUrl;
+    }
+
     public String getUpdateActivityPlanUrl() {
 		return updateActivityPlanUrl;
 	}
@@ -145,6 +157,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.uploadActivityReportUrl );
         dataOutputStream.writeUTF( this.updateDataSetUrl );
         dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
+        dataOutputStream.writeUTF( this.searchUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -158,6 +171,7 @@ public class MobileOrgUnitLinks
         this.uploadActivityReportUrl = dataInputStream.readUTF();
         this.updateDataSetUrl = dataInputStream.readUTF();
         this.changeUpdateDataSetLangUrl = dataInputStream.readUTF();
+        this.searchUrl = dataInputStream.readUTF();
     }
 
 }
