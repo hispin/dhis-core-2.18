@@ -22,8 +22,7 @@
     
     <set name="sources" table="surveysource">
       <key column="surveyid"/>
-      <many-to-many column="sourceid" 
-        class="org.hisp.dhis.source.Source" foreign-key="fk_survey_sourceid"/>
+	  <many-to-many column="sourceid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_survey_organisationunit"/>      
     </set>
     
     <property name="description" type="text"/>
