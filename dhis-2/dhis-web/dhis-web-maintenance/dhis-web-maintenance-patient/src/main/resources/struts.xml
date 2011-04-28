@@ -1251,7 +1251,7 @@
 			class="org.hisp.dhis.patient.action.mobilesetting.ShowMobileSettingFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/showPatientMobileSetting.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
 		</action>
 		
 		<action name="editPatientMobileSetting"
