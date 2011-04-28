@@ -29,8 +29,7 @@
     
     <set name="sources" table="reportsource">
       <key column="reportid"/>
-      <many-to-many column="sourceid" 
-        class="org.hisp.dhis.source.Source"/>
+	  <many-to-many column="sourceid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_reportin_organisationunit"/>
     </set>
         
   </class>

@@ -27,8 +27,7 @@
 
     <set name="sources" table="linelistsource">
       <key column="llgroupid"/>
-      <many-to-many column="sourceid" 
-        class="org.hisp.dhis.source.Source"/>
+	  <many-to-many column="sourceid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_llgroup_organisationunit"/>      
     </set>
       
     <set name="lineListLockedPeriods" table="linelistlockedPeriods">

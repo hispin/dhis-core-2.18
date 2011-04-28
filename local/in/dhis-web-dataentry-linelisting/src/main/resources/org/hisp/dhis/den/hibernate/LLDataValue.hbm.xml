@@ -5,33 +5,14 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.den.api.LLDataValue" table="lldatavalue">
 	 <composite-id>
-      <key-many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement"
-          column="dataelementid" foreign-key="fk_lldatavalue_dataelementid" />
-      <key-many-to-one name="period" class="org.hisp.dhis.period.Period" 
-          column="periodid" foreign-key="fk_lldatavalue_periodid"/>
-      <!--
-        The source relationship is made not lazy so that Hibernate won't put a
-        proxy on the reference which cannot be casted to the desired subclass.
-      -->
-      <key-many-to-one name="source" class="org.hisp.dhis.source.Source" lazy="false"
-          column="sourceid" foreign-key="fk_lldatavalue_sourceid"/>
-	    <key-many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" 
-          column="categoryoptioncomboid" foreign-key="fk_lldatavalue_categoryoptioncomboid"/>
-
-		<key-property name="recordNo" column="recordno" type="integer"/>
-		
+      <key-many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_lldatavalue_dataelementid" />
+      <key-many-to-one name="period" class="org.hisp.dhis.period.Period" column="periodid" foreign-key="fk_lldatavalue_periodid"/>
+	  <key-many-to-one name="source" class="org.hisp.dhis.organisationunit.OrganisationUnit" lazy="false" column="sourceid" foreign-key="fk_lldatavalue_organisationunitid" />       
+      <key-many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid" foreign-key="fk_lldatavalue_categoryoptioncomboid"/>
+	  <key-property name="recordNo" column="recordno" type="integer"/>		
     </composite-id>
 
-	<!-- many-to-many name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_datavalue_dataelementid" unique="false"/>
-
-	<many-to-many name="period" class="org.hisp.dhis.period.Period" column="periodid" foreign-key="fk_datavalue_periodid" unique="false"/>
-
-	<many-to-many name="source" class="org.hisp.dhis.source.Source" column="sourceid" foreign-key="fk_datavalue_sourceid" unique="false"/>
-
-	<many-to-many name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid" foreign-key="fk_datavalue_categoryoptioncomboid" unique="false"/>
-	
-    <property name="value"/-->
-	<property  name="value"         column="value" />
+	<property  name="value" column="value" />
     <property name="storedBy" column="storedby" length="31"/>
     <property name="timestamp" column="lastupdated" type="date"/>
     <property name="comment" length="360"/>
