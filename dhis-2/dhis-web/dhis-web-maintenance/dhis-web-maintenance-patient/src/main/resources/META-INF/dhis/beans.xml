@@ -817,7 +817,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageService">
 			<ref bean="org.hisp.dhis.program.ProgramStageService" />
 		</property>
-		<property name="editorManager" ref="editorManager" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>

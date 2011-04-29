@@ -35,7 +35,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
-import org.hisp.dhis.editor.EditorManager;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -68,18 +67,6 @@ public class ViewDataEntryFormAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
-    }
-
-    private EditorManager editorManager;
-
-    public EditorManager getEditorManager()
-    {
-        return editorManager;
-    }
-
-    public void setEditorManager( EditorManager editorManager )
-    {
-        this.editorManager = editorManager;
     }
 
     private ProgramStageDataElementService programStageDataElementService;
@@ -135,6 +122,13 @@ public class ViewDataEntryFormAction
         return programStages;
     }
 
+    private String dataEntryValue;
+
+    public String getDataEntryValue()
+    {
+        return dataEntryValue;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -149,9 +143,15 @@ public class ViewDataEntryFormAction
         // ---------------------------------------------------------------------
 
         dataEntryForm = programStage.getDataEntryForm();
-        
-        editorManager.setValue( dataEntryForm == null ? "" : dataEntryFormService.prepareDataEntryFormCode( dataEntryForm
-            .getHtmlCode() ) );
+
+        if ( dataEntryForm != null )
+        {
+            dataEntryValue = dataEntryFormService.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
+        }
+        else
+        {
+            dataEntryValue = "";
+        }
         
         // ---------------------------------------------------------------------
         // Get existing Data Entry Forms
