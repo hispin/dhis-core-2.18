@@ -241,7 +241,7 @@ public class GenerateOuWiseProgressReportResultAction
         
         String dataSetIds = selReportObj.getDataSetIds();
         Collection<Integer> dataElementIdList = new ArrayList<Integer>();
-        if( dataSetIds != null )
+        if( dataSetIds != null && !dataSetIds.trim().equalsIgnoreCase( "" ) )
         {
             String[] partsOfDataSetIds = dataSetIds.split( "," );
             for( int i = 0; i < partsOfDataSetIds.length; i++ )
@@ -262,7 +262,7 @@ public class GenerateOuWiseProgressReportResultAction
         sDate = format.parseDate( startDate );
         eDate = format.parseDate( endDate );
         
-        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( sDate, eDate ) );
+        List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriods( sDate, eDate ) );
         
         Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
         
@@ -281,6 +281,18 @@ public class GenerateOuWiseProgressReportResultAction
             if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
             {
                 aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( currentOrgUnit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+            {
+                List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
+                List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+                String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
+
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            else if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
+            {
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+currentOrgUnit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
             }
 
             int count1 = 0;
@@ -335,11 +347,13 @@ public class GenerateOuWiseProgressReportResultAction
                     {
                         if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) ) 
                         {
-                            tempStr = reportService.getIndividualResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                            tempStr = getAggVal( deCodeString, aggDeMap );
+                            //tempStr = reportService.getIndividualResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
                         }
                         else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
-                            tempStr = reportService.getResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                            //tempStr = reportService.getResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                            tempStr = getAggVal( deCodeString, aggDeMap );
                         }
                         else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
                         {

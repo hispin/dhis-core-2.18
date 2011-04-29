@@ -131,4 +131,6 @@ public interface ReportService
     String getResultDataValueFromAggregateTable( String formula, String periodIdsByComma, Integer orgunitId );
     
     Map<String, String> getResultDataValueFromAggregateTable( Integer orgunitId, String dataElmentIdsByComma, String periodIdsByComma );
+    
+    Map<String, String> getAggDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodsByComma );
 }

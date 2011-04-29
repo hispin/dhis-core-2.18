@@ -1,5 +1,7 @@
 package org.hisp.dhis.excelimport.portal.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -500,6 +502,7 @@ public class PortalExcelImportResultAction implements Action
             List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedBlockId ) );
             OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupId );
             orgUnitList.retainAll( orgUnitGroup.getMembers() );
+            List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnitList ) );
             
             System.out.println( orgUnitList.size() + " : " + orgUnitGroup.getMembers().size() + " : " + orgUnitList.size() );
             
@@ -518,7 +521,7 @@ public class PortalExcelImportResultAction implements Action
                     continue;
                 }
                 
-                Integer currentOrgunitId = getOrgUnitIdByComment( facility );
+                Integer currentOrgunitId = getOrgUnitIdByComment( facility, orgUnitIds );
                 if( currentOrgunitId != null )
                 {
                     OrganisationUnit portalOrgUnit = organisationUnitService.getOrganisationUnit( currentOrgunitId );
@@ -624,6 +627,23 @@ public class PortalExcelImportResultAction implements Action
                 sheet.getWritableCell( c, r ).setCellFormat( wCellformat );
             }
         }
+    }
+    
+    public Integer getOrgUnitIdByComment( String comment, List<Integer> orgUnitIds )
+    {
+        String query = "SELECT organisationunitid FROM organisationunit WHERE comment LIKE '"+ comment +"'";
+        SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
+        
+        while ( sqlResultSet.next() )
+        {
+            Integer orgUnitId = sqlResultSet.getInt( 1 );
+            if( orgUnitIds.contains( orgUnitId ) )
+            {
+                return orgUnitId;
+            }
+        }
+        
+        return null;
     }
     
     public Integer getOrgUnitIdByComment( String comment )

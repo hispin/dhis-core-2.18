@@ -33,6 +33,18 @@ function getOUDetailsForAARecevied(xmlObject)
 
 function getOUDeatilsForGA(orgUnitIds)
 {
+
+	$.post("getOrgUnitDetails.action",
+			{
+				orgUnitId : orgUnitIds[0],
+				type : 'ta'
+			},
+			function (data)
+			{
+				getOUDetailsForGARecevied(data);
+			},'xml');
+
+	/*
 	var request = new Request();
     request.setResponseTypeXML( 'orgunit' );
     request.setCallbackSuccess( getOUDetailsForGARecevied );
@@ -40,7 +52,8 @@ function getOUDeatilsForGA(orgUnitIds)
     var requestString = "getOrgUnitDetails.action";
     var params = "orgUnitId=" + orgUnitIds+"&type=ta";
     request.sendAsPost( params );
-    request.send( requestString ); 	
+    request.send( requestString );
+    */ 	
 }
 
 function getOUDetailsForGARecevied(xmlObject)

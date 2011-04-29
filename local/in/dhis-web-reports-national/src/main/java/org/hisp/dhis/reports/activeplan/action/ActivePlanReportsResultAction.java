@@ -31,7 +31,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,7 +59,6 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
-import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -81,9 +79,7 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -97,6 +93,10 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.reports.ReportService;
+import org.hisp.dhis.reports.util.Report_Decode;
+import org.hisp.dhis.reports.util.Report_Header;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -271,6 +271,13 @@ public class ActivePlanReportsResultAction
     {
         this.patientDataValueService = patientDataValueService;
     }
+    
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private I18nFormat format;
 
@@ -282,13 +289,6 @@ public class ActivePlanReportsResultAction
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-
-    private Map<Patient, Set<ProgramStageInstance>> visitsByPatients = new HashMap<Patient, Set<ProgramStageInstance>>();
-
-    public Map<Patient, Set<ProgramStageInstance>> getVisitsByPatients()
-    {
-        return visitsByPatients;
-    }
 
     private InputStream inputStream;
 
@@ -302,13 +302,6 @@ public class ActivePlanReportsResultAction
     public String getFileName()
     {
         return fileName;
-    }
-
-    private MathTool mathTool;
-
-    public MathTool getMathTool()
-    {
-        return mathTool;
     }
 
     private OrganisationUnit selectedOrgUnit;
@@ -325,27 +318,6 @@ public class ActivePlanReportsResultAction
         return orgUnitList;
     }
 
-    private List<String> dataValueList;
-
-    public List<String> getDataValueList()
-    {
-        return dataValueList;
-    }
-
-    private List<String> services;
-
-    public List<String> getServices()
-    {
-        return services;
-    }
-
-    private List<String> slNos;
-
-    public List<String> getSlNos()
-    {
-        return slNos;
-    }
-
     private SimpleDateFormat simpleDateFormat;
 
     public SimpleDateFormat getSimpleDateFormat()
@@ -358,13 +330,6 @@ public class ActivePlanReportsResultAction
     public void setReportFileNameTB( String reportFileNameTB )
     {
         this.reportFileNameTB = reportFileNameTB;
-    }
-
-    private String reportModelTB;
-
-    public void setReportModelTB( String reportModelTB )
-    {
-        this.reportModelTB = reportModelTB;
     }
 
     private String reportProgramTB;
@@ -381,13 +346,6 @@ public class ActivePlanReportsResultAction
         this.reportList = reportList;
     }
 
-    private Period selectedPeriod;
-
-    public Period getSelectedPeriod()
-    {
-        return selectedPeriod;
-    }
-
     private int ouIDTB;
 
     public void setOuIDTB( int ouIDTB )
@@ -395,16 +353,18 @@ public class ActivePlanReportsResultAction
         this.ouIDTB = ouIDTB;
     }
 
-    private int periodList;
+    private String startDate;
 
-    public int getPeriodList()
+    public void setStartDate( String startDate )
     {
-        return periodList;
+        this.startDate = startDate;
     }
 
-    public void setPeriodList( int periodList )
+    private String endDate;
+
+    public void setEndDate( String endDate )
     {
-        this.periodList = periodList;
+        this.endDate = endDate;
     }
 
     private List<String> serviceType;
@@ -425,20 +385,6 @@ public class ActivePlanReportsResultAction
 
     private String deCodesXMLFileName;
 
-    private String startDate;
-
-    public void setStartDate( String startDate )
-    {
-        this.startDate = startDate;
-    }
-
-    private String endDate;
-
-    public void setEndDate( String endDate )
-    {
-        this.endDate = endDate;
-    }
-
     private Date sDate;
 
     private Date eDate;
@@ -456,9 +402,6 @@ public class ActivePlanReportsResultAction
         raFolderName = reportService.getRAFolderName();
 
         // Initialization
-        mathTool = new MathTool();
-        services = new ArrayList<String>();
-        slNos = new ArrayList<String>();
         simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
         deCodesXMLFileName = reportList + "DECodes.xml";
         deCodeType = new ArrayList<String>();
@@ -467,6 +410,7 @@ public class ActivePlanReportsResultAction
         rowList = new ArrayList<Integer>();
         colList = new ArrayList<Integer>();
 
+        /*
         Calendar c = Calendar.getInstance();
         c.setTime( format.parseDate( startDate ) );
         c.add( Calendar.DATE, -1 ); 
@@ -476,17 +420,446 @@ public class ActivePlanReportsResultAction
         endDate = format.formatDate( c.getTime() );
         sDate = format.parseDate( startDate );
         eDate = format.parseDate( endDate );
+        */
         
         inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
         outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
 
-        generatFeedbackReport();
+        //generatFeedbackReport();
+        generateActivityPlanReport();
 
         statementManager.destroy();
 
         return SUCCESS;
     }
 
+    public List<Report_Decode> getDataInfo( String fileName )
+    {
+        List<Report_Decode> deCodeList = new ArrayList<Report_Decode>();
+
+        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName + File.separator + fileName;
+        try
+        {
+            String newpath = System.getenv( "DHIS2_HOME" );
+            if ( newpath != null )
+            {
+                path = newpath + File.separator + raFolderName + File.separator + fileName;
+            }
+        }
+        catch ( NullPointerException npe )
+        {
+            System.out.println("DHIS_HOME is not set");
+        }
+
+        try
+        {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse( new File( path ) );
+            if ( doc == null )
+            {
+                System.out.println( "There is no DECodes related XML file in the DHIS2 Home" );
+                return null;
+            }
+
+            NodeList listOfDeCodes = doc.getElementsByTagName( "de-code" );
+            int totalDeCodes = listOfDeCodes.getLength();
+
+            for( int s = 0; s < totalDeCodes; s++ )
+            {
+                Element deCodeElement = (Element) listOfDeCodes.item( s );
+                NodeList textDeCodeList = deCodeElement.getChildNodes();
+                String deCodeExpression = ((Node) textDeCodeList.item( 0 )).getNodeValue().trim();
+                Integer sheetNo = Integer.parseInt( deCodeElement.getAttribute( "sheetno" ) );
+                Integer rowNo = Integer.parseInt(  deCodeElement.getAttribute( "rowno" ) );
+                Integer colNo = Integer.parseInt( deCodeElement.getAttribute( "colno" ) );
+                String stype = deCodeElement.getAttribute( "stype" );
+                Report_Decode report_DeCode = new Report_Decode( sheetNo, rowNo, colNo, deCodeExpression, stype );
+                
+                deCodeList.add( report_DeCode );
+            }// end of for loop with s var
+        }// try block end
+        catch ( SAXParseException err )
+        {
+            System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
+            System.out.println( " " + err.getMessage() );
+        }
+        catch ( SAXException e )
+        {
+            Exception x = e.getException();
+            ((x == null) ? e : x).printStackTrace();
+        }
+        catch ( Throwable t )
+        {
+            t.printStackTrace();
+        }
+        
+        return deCodeList;
+    }
+
+    
+    public List<Report_Header> getHeaderInfo( String fileName )
+    {
+        List<Report_Header> report_HeaderList = new ArrayList<Report_Header>();
+
+        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
+            + File.separator + fileName;
+        try
+        {
+            String newpath = System.getenv( "DHIS2_HOME" );
+            if ( newpath != null )
+            {
+                path = newpath + File.separator + raFolderName + File.separator + fileName;
+            }
+        }
+        catch ( NullPointerException npe )
+        {
+            System.out.println("DHIS_HOME is not set");
+        }
+
+        try
+        {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse( new File( path ) );
+            if ( doc == null )
+            {
+                System.out.println( "There is no DECodes related XML file in the DHIS2 Home" );
+                return null;
+            }
+
+            NodeList listOfHeaders = doc.getElementsByTagName( "header" );
+            int totalHeaders = listOfHeaders.getLength();
+
+            for( int s = 0; s < totalHeaders; s++ )
+            {
+                Element headerElement = (Element) listOfHeaders.item( s );
+                NodeList textHeaderList = headerElement.getChildNodes();
+                String headerExpression = ((Node) textHeaderList.item( 0 )).getNodeValue().trim();
+                Integer sheetNo = Integer.parseInt( headerElement.getAttribute( "sheetno" ) );
+                Integer rowNo = Integer.parseInt(  headerElement.getAttribute( "rowno" ) );
+                Integer colNo = Integer.parseInt( headerElement.getAttribute( "colno" ) );
+                Report_Header report_Header = new Report_Header( sheetNo, rowNo, colNo, headerExpression );
+                
+                report_HeaderList.add( report_Header );
+            }// end of for loop with s var
+        }// try block end
+        catch ( SAXParseException err )
+        {
+            System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
+            System.out.println( " " + err.getMessage() );
+        }
+        catch ( SAXException e )
+        {
+            Exception x = e.getException();
+            ((x == null) ? e : x).printStackTrace();
+        }
+        catch ( Throwable t )
+        {
+            t.printStackTrace();
+        }
+        
+        return report_HeaderList;
+    }
+
+    
+    public void generateActivityPlanReport() throws Exception
+    {
+        Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
+
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
+
+        // Cell formatting
+        WritableCellFormat wCellformat = new WritableCellFormat();
+        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        wCellformat.setAlignment( Alignment.CENTRE );
+        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+        wCellformat.setWrap( true );
+
+        WritableCellFormat deWCellformat = new WritableCellFormat();
+        deWCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        deWCellformat.setAlignment( Alignment.CENTRE );
+        deWCellformat.setVerticalAlignment( VerticalAlignment.JUSTIFY );
+        deWCellformat.setWrap( true );
+
+        // OrgUnit Related Info
+        selectedOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
+
+        // Getting Program
+        Program curProgram = programService.getProgram( Integer.parseInt( reportProgramTB ) );
+        
+        List<Report_Header> headerInfoList = new ArrayList<Report_Header>();
+        headerInfoList = getHeaderInfo( deCodesXMLFileName );
+
+        List<Report_Decode> deCodeList = new ArrayList<Report_Decode>();
+        deCodeList = getDataInfo( deCodesXMLFileName );
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        int sortAttributeId = 0;
+        
+        String tempStr = "";
+        for( Report_Header report_Header : headerInfoList )
+        {
+            if( report_Header.getExpression().equalsIgnoreCase( Report_Header.HEADER_FACILITY ) )
+            {
+                tempStr = selectedOrgUnit.getName();
+            }
+            else if( report_Header.getExpression().equalsIgnoreCase( Report_Header.HEADER_FACILITY_P ) )
+            {
+                tempStr = selectedOrgUnit.getParent().getName();
+            }
+            else if( report_Header.getExpression().equalsIgnoreCase( Report_Header.HEADER_FACILITY_PP ) )
+            {
+                tempStr = selectedOrgUnit.getParent().getParent().getName();
+            }
+            else if( report_Header.getExpression().equalsIgnoreCase( Report_Header.HEADER_HEALTH_WORKER ) )
+            {
+                tempStr = selectedOrgUnit.getContactPerson();
+            }
+            else if( report_Header.getExpression().equalsIgnoreCase( Report_Header.HEADER_PERIOD_FROM ) )
+            {
+                tempStr = startDate;
+            }
+            else if( report_Header.getExpression().equalsIgnoreCase( Report_Header.HEADER_PERIOD_TO ) )
+            {
+                tempStr = endDate;
+            }
+            else if( report_Header.getExpression().equalsIgnoreCase( Report_Header.HEADER_SORT_ATTRIBUTE ) )
+            {
+                sortAttributeId = report_Header.getRowno();
+                continue;
+            }
+            
+            WritableSheet sheet0 = outputReportWorkbook.getSheet( report_Header.getSheetno() );
+            sheet0.addCell( new Label( report_Header.getColno(), report_Header.getRowno(), tempStr, wCellformat ) );            
+        }
+        
+        String query = "SELECT patient.patientid, programstageinstance.programstageinstanceid, programstageinstance.duedate, " +
+        		    " programstageinstance.programinstanceid, programstageinstance.programstageid, CONCAT(patient.firstname,' ',patient.middlename,' ',patient.lastname), patient.birthdate " +
+        		    " FROM patientattributevalue INNER JOIN ( (patient INNER JOIN programinstance ON patient.patientid = programinstance.patientid) "+ 
+        		    " INNER JOIN programstageinstance ON programinstance.programinstanceid = programstageinstance.programinstanceid) ON patientattributevalue.patientid = patient.patientid "+
+        		    " WHERE patientattributevalue.patientattributeid = "+ sortAttributeId + " AND " +
+        		    	" programstageinstance.executiondate is null AND " +
+        		    	" programstageinstance.duedate >= '"+ startDate +"' AND " +
+        		    	" programstageinstance.duedate <= '"+ endDate +"' AND " + 
+        		    	" patient.organisationunitid = "+ selectedOrgUnit.getId() +" AND " +
+        		    	" programinstance.programid = "+ reportProgramTB +" ORDER BY patientattributevalue.value,patient.firstname";
+
+        SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
+        if ( sqlResultSet != null )
+        {
+            sqlResultSet.beforeFirst();
+            int rowCount = 0;
+            int slNoCount = 1;
+            while ( sqlResultSet.next() )
+            {
+                int patientId = sqlResultSet.getInt( 1 );
+                int programStageInstanceId = sqlResultSet.getInt( 2 );
+                Date programStageDueDate = sqlResultSet.getDate( 3 );
+                int programInstanceID = sqlResultSet.getInt( 4 );
+                int dueProgramStageId = sqlResultSet.getInt( 5 );
+                String patientName = sqlResultSet.getString( 6 );
+                Date patientDOB = sqlResultSet.getDate( 7 );
+                
+                List<String> rowContentList = new ArrayList<String>();
+                
+                for( Report_Decode report_Decode : deCodeList )
+                {
+                    tempStr = report_Decode.getSheetno()+":"+report_Decode.getRowno()+":"+report_Decode.getColno()+":";
+                    if( report_Decode.getStype().equalsIgnoreCase( Report_Decode.STYPE_SLNO ) )
+                    {
+                        tempStr += slNoCount;
+                        rowContentList.add( tempStr );
+                    }
+                    else if( report_Decode.getStype().equalsIgnoreCase( Report_Decode.STYPE_BATTRIBUTE ) )
+                    {
+                        if( report_Decode.getExpression().equalsIgnoreCase( "NA" ) )
+                        {
+                            tempStr += "-";
+                            rowContentList.add( tempStr );
+                            continue;
+                        }
+                        query = "SELECT value FROM patientattributevalue WHERE patientid = "+ patientId +" AND patientattributeid = "+report_Decode.getExpression();
+                        
+                        SqlRowSet sqlResultSet1 = jdbcTemplate.queryForRowSet( query );
+                        if ( sqlResultSet1 != null && sqlResultSet1.next() )
+                        {
+                            String value = sqlResultSet1.getString( 1 );
+                            if( value != null && !value.trim().equalsIgnoreCase("") )
+                            {
+                                tempStr += value;
+                            }
+                            else
+                            {
+                                tempStr += "-";
+                            }
+                        }
+                        else
+                        {
+                            tempStr += "-";
+                        }
+                        
+                        rowContentList.add( tempStr );
+                    }
+                    else if( report_Decode.getStype().equalsIgnoreCase( Report_Decode.STYPE_BIDENTIFIERTYPE ) )
+                    {
+                        query = "SELECT identifier FROM patientidentifier WHERE patientid = "+ patientId +" AND patientidentifiertypeid = "+report_Decode.getExpression();
+                        SqlRowSet sqlResultSet2 = jdbcTemplate.queryForRowSet( query );
+                        if ( sqlResultSet2 != null && sqlResultSet2.next() )
+                        {
+                            String value = sqlResultSet2.getString( 1 );
+                            if( value != null && !value.trim().equalsIgnoreCase("") )
+                            {
+                                tempStr += value;
+                            }
+                            else
+                            {
+                                tempStr += "-";
+                            }
+                        }
+                        else
+                        {
+                            tempStr += "-";
+                        }
+                        
+                        rowContentList.add( tempStr );
+                    }
+                    else if( report_Decode.getStype().equalsIgnoreCase( Report_Decode.STYPE_BPROPERTY ) )
+                    {
+                        if( report_Decode.getExpression().equalsIgnoreCase( "Name" ) )
+                        {
+                            tempStr += patientName.trim();
+                        }
+                        else if( report_Decode.getExpression().equalsIgnoreCase( "DOB" ) )
+                        {
+                            String value = simpleDateFormat.format( patientDOB );
+                            if( value != null && !value.trim().equalsIgnoreCase("") )
+                            {
+                                tempStr += value;
+                            }
+                            else
+                            {
+                                tempStr += "-";
+                            }
+                        }
+                        
+                        rowContentList.add( tempStr );
+                    }
+                    else if( report_Decode.getStype().equalsIgnoreCase( Report_Decode.STYPE_PROGRAMSTAGEDUEDATE ) )
+                    {
+                        if( report_Decode.getExpression().equalsIgnoreCase( "NA" ) )
+                        {
+                            tempStr += simpleDateFormat.format( programStageDueDate );
+                        }
+                        else
+                        {
+                            query = "SELECT duedate FROM programstageinstance WHERE programstageid = "+ report_Decode.getExpression() +" AND programinstanceid = "+ programInstanceID;
+                            SqlRowSet sqlResultSet3 = jdbcTemplate.queryForRowSet( query );
+                            if ( sqlResultSet3 != null && sqlResultSet3.next() )
+                            {
+                                Date dueDate = sqlResultSet3.getDate( 1 );
+                                String value = simpleDateFormat.format( dueDate );
+                                if( value != null && !value.trim().equalsIgnoreCase("") )
+                                {
+                                    tempStr += value;
+                                }
+                                else
+                                {
+                                    tempStr += "-";
+                                }
+                            }
+                            else
+                            {
+                                tempStr += "-";
+                            }
+                        }
+                        
+                        rowContentList.add( tempStr );
+                    }
+                    else if( report_Decode.getStype().equalsIgnoreCase( Report_Decode.STYPE_PROGRAMSTAGEDUE ) )
+                    {
+                        query = "SELECT name FROM programstage WHERE programstageid = "+dueProgramStageId;
+                        SqlRowSet sqlResultSet4 = jdbcTemplate.queryForRowSet( query );
+                        if ( sqlResultSet4 != null && sqlResultSet4.next() )
+                        {
+                            String value = sqlResultSet4.getString( 1 );
+                            if( value != null && !value.trim().equalsIgnoreCase("") )
+                            {
+                                tempStr += value;
+                            }
+                            else
+                            {
+                                tempStr += "-";
+                            }
+                        }
+                        else
+                        {
+                            tempStr += "-";
+                        }
+                        
+                        rowContentList.add( tempStr );
+                    }
+                    else if( report_Decode.getStype().equalsIgnoreCase( Report_Decode.STYPE_NA ) )
+                    {
+                        tempStr += " ";
+                        
+                        rowContentList.add( tempStr );
+                    }
+                    else if( report_Decode.getStype().equalsIgnoreCase( Report_Decode.STYPE_SERVICEDUE ) )
+                    {
+                        String[] str1 = report_Decode.getExpression().split( ";" );
+                        
+                        String[] serviceList = null; 
+                        for( int i = 0; i < str1.length; i++ )
+                        {
+                            String[] str2 = str1[i].split( ":" );
+                            if( dueProgramStageId == Integer.parseInt( str2[0] ) )
+                            {
+                                serviceList = str2[1].split( "," );
+                            }
+                        }
+                        
+                        if( serviceList != null && serviceList.length > 0 )
+                        {
+                            for( int j=0; j < serviceList.length; j++ )
+                            {
+                                WritableSheet sheet0 = outputReportWorkbook.getSheet( report_Decode.getSheetno() );
+                                sheet0.addCell( new Label( report_Decode.getColno(), report_Decode.getRowno()+j+rowCount, serviceList[j], wCellformat ) );
+                                sheet0.addCell( new Label( report_Decode.getColno()+1, report_Decode.getRowno()+j+rowCount, " ", wCellformat ) );
+                                sheet0.addCell( new Label( report_Decode.getColno()+2, report_Decode.getRowno()+j+rowCount, " ", wCellformat ) );
+                            }
+
+                            for( String rowContent : rowContentList )
+                            {
+                                String[] parts = rowContent.split( ":" );
+                                WritableSheet sheet0 = outputReportWorkbook.getSheet( Integer.parseInt( parts[0] ) );
+                                sheet0.mergeCells( Integer.parseInt( parts[2] ), Integer.parseInt( parts[1] )+rowCount, Integer.parseInt( parts[2] ), Integer.parseInt( parts[1] )+rowCount+serviceList.length-1 );
+                                sheet0.addCell( new Label( Integer.parseInt( parts[2] ), Integer.parseInt( parts[1] )+rowCount, parts[3], wCellformat ) );
+                            }
+                            
+                            rowCount += serviceList.length;
+                            slNoCount++;
+                        }
+                    }
+                }
+            }
+        }
+
+        outputReportWorkbook.write();
+
+        outputReportWorkbook.close();
+
+        fileName = reportFileNameTB.replace( ".xls", "" );
+        fileName += "_" + selectedOrgUnit.getShortName() + ".xls";
+
+        File outputReportFile = new File( outputReportPath );
+
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+
+        outputReportFile.deleteOnExit();
+
+    }
+    
     public void generatFeedbackReport()
         throws Exception
     {
