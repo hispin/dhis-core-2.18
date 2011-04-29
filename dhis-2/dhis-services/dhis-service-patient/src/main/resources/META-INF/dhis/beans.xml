@@ -48,6 +48,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="clazz" value="org.hisp.dhis.program.Program" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.program.ProgramValidationStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramValidationStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramValidation" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientStore">
 		<property name="clazz" value="org.hisp.dhis.patient.Patient" />
@@ -103,12 +109,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
      <property name="sessionFactory" ref="sessionFactory"/>
    </bean>
    
-   <bean id="org.hisp.dhis.program.ProgramStageDataElementValidationStore"
-	 class="org.hisp.dhis.program.hibernate.HibernateProgramStageDataElementValidationStore">
-	 <property name="clazz" value="org.hisp.dhis.program.ProgramStageDataElementValidation" />
-	 <property name="sessionFactory" ref="sessionFactory" />
-   </bean>
-   
    <bean id="org.hisp.dhis.program.ProgramAttributeStore"
 		class="org.hisp.dhis.program.hibernate.HibernateProgramAttributeStore">
 		<property name="clazz" value="org.hisp.dhis.program.ProgramAttribute" />
@@ -156,12 +156,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />     	     	
     </bean>
     
-    <bean id="org.hisp.dhis.program.ProgramStageDataElementService"
-    class="org.hisp.dhis.program.DefaultProgramStageDataElementService">
-      <property name="programStageDataElementStore"
-        ref="org.hisp.dhis.program.ProgramStageDataElementStore"/>
-    </bean>
-	
 	<bean id="org.hisp.dhis.program.nextvisit.NextVisitGenerator"
 		class="org.hisp.dhis.program.nextvisit.DefaultNextVisitGenerator">
 		<property name="patientDataValueService"
@@ -196,6 +190,20 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="org.hisp.dhis.program.ProgramService" class="org.hisp.dhis.program.DefaultProgramService">
 		<property name="programStore" ref="org.hisp.dhis.program.ProgramStore" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.program.ProgramValidationService"
+		class="org.hisp.dhis.program.DefaultProgramValidationService">
+		<property name="validationStore"
+			ref="org.hisp.dhis.program.ProgramValidationStore" />
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="stageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="valueService"
+			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientService" class="org.hisp.dhis.patient.DefaultPatientService">
@@ -253,10 +261,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.patient.PatientAttributeGroupStore" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.program.ProgramStageDataElementValidationService"
-		class="org.hisp.dhis.program.DefaultProgramStageDataElementValidationService">
-		<property name="validationStore"
-	  		ref="org.hisp.dhis.program.ProgramStageDataElementValidationStore" />
+	<bean id="org.hisp.dhis.program.ProgramStageDataElementService"
+		class="org.hisp.dhis.program.DefaultProgramStageDataElementService">
+		<property name="programStageDataElementStore"
+	  		ref="org.hisp.dhis.program.ProgramStageDataElementStore" />
   	</bean>
   
   	<bean id="org.hisp.dhis.program.ProgramAttributeService" class="org.hisp.dhis.program.DefaultProgramAttributeService">
@@ -301,7 +309,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.program.ProgramInstanceDeletionHandler">
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService"/>
 		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
-		<property name="programStageDEService" ref="org.hisp.dhis.program.ProgramStageDataElementService"/>
 		<property name="programAttributeValueService" ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueService"/>
 	</bean>
 	
@@ -336,7 +343,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" 
 		class="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler">
 		<property name="programStageDEService" ref="org.hisp.dhis.program.ProgramStageDataElementService"/>
-		<property name="programStageDEValidationService" ref="org.hisp.dhis.program.ProgramStageDataElementValidationService"/>
 	</bean>
 	
 	<!-- Startup -->
@@ -346,6 +352,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="name" value="PatientTableAlteror" />
 		<property name="runlevel" value="4" />
 		<property name="skipInTests" value="true" />
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.patient.startup.ProgramAttributePopulator" class="org.hisp.dhis.patient.startup.ProgramAttributePopulator">

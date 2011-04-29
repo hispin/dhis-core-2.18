@@ -24,7 +24,7 @@
 					
 					<td style="text-align:center">
 					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( "define_associations" )"></a>
-					  <a href="defineValidationDEAssociationsForm.action?id=$program.id" title="$i18n.getString( "validationDE_associations" )"><img src="../images/assign_b.png" alt="$i18n.getString( "validationDE_associations" )"></a>
+					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( "define_program_validation" )"><img src="../images/assign_b.png" alt="$i18n.getString( "define_program_validation" )"></a>
 					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 					  <a href="programStage.action?id=$program.id" title="$i18n.getString( "view_stage_management" )"><img src="../images/add_section.png" alt="$i18n.getString( "view_stage_management" )"></a>
 					  <a href="javascript:removeProgram( '$program.id', '$encoder.jsEncode( $program.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>

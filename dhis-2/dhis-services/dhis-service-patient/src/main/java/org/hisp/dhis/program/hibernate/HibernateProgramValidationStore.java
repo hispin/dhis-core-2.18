@@ -25,28 +25,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.program;
+package org.hisp.dhis.program.hibernate;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericStore;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramValidation;
+import org.hisp.dhis.program.ProgramValidationStore;
 
 /**
  * @author Chau Thu Tran
- * @version ProgramStageDataElementValidationStore.java May 7, 2010 10:08:04 AM
+ * @version $ HibernateProgramValidationStore.java Apr 28, 2011 10:43:09 AM $
  */
-public interface ProgramStageDataElementValidationStore
-    extends GenericStore<ProgramStageDataElementValidation>
+public class HibernateProgramValidationStore
+    extends HibernateGenericStore<ProgramValidation>
+    implements ProgramValidationStore
 {
-    String ID = ProgramStageDataElementValidationStore.class.getName();
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramValidation> get( Program program )
+    {
+        return getCriteria( Restrictions.eq( "program", program ) ).list();
+    }
 
-    // -------------------------------------------------------------------------
-    // ProgramStage - DataElement validation
-    // -------------------------------------------------------------------------
-
-    Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( Program program );
-
-    Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( ProgramStageDataElement element );
-    
-    Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( ProgramStage programStage );
 }

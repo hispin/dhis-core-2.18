@@ -31,30 +31,23 @@ import java.util.Collection;
 
 /**
  * @author Chau Thu Tran
- * @version ProgramStageDataElementValidationService.java May 6, 2010 10:08:04
- *          AM
+ * @version $ ProgramValidationService.java Apr 28, 2011 10:32:20 AM $
  */
-public interface ProgramStageDataElementValidationService
+public interface ProgramValidationService
 {
-    String ID = ProgramStageDataElementValidationService.class.getName();
+    String ID = ProgramValidationService.class.getName();
 
-    // -------------------------------------------------------------------------
-    // ProgramStage - DataElement validation
-    // -------------------------------------------------------------------------
+    int addProgramValidation( ProgramValidation programValidation );
 
-    int saveProgramStageDataElementValidation( ProgramStageDataElementValidation validation );
+    void deleteProgramValidation( ProgramValidation programValidation );
 
-    void deleteProgramStageDataElementValidation( ProgramStageDataElementValidation validation );
+    void updateProgramValidation( ProgramValidation programValidation );
 
-    void updateProgramStageDataElementValidation( ProgramStageDataElementValidation validation );
+    ProgramValidation getProgramValidation( int id );
 
-    ProgramStageDataElementValidation getProgramStageDataElementValidation( int id );
+    Collection<ProgramValidation> getAllProgramValidation();
 
-    Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( Program program );
+    Collection<ProgramValidation> getProgramValidation( Program program );
 
-    Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( ProgramStageDataElement element );
-
-    Collection<ProgramStageDataElementValidation> getAllProgramStageDataElementValidations();
-    
-    Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( ProgramStage programStage );
+    boolean runValidation( ProgramValidation validation, ProgramInstance programInstance );
 }

@@ -90,19 +90,15 @@
     </action>
     
     <!-- save value -->
-    <action name="saveValue" class="org.hisp.dhis.caseentry.action.caseentry.ValidateValueAction">
-      <result name="success" type="chain">saveValueChain</result>
-      <result name="input" type="velocity-xml">/dhis-web-caseentry/status.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>      
-    </action> 
     
-    <action name="saveValueChain" class="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction">
+    <action name="saveValue" class="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction">
       <result name="success" type="velocity">status.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-caseentry/responseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>      
     </action>
     
     <!-- save data-value -->
+    
     <action name="saveDateValue" class="org.hisp.dhis.caseentry.action.caseentry.ValidateValueAction">
       <result name="success" type="chain">saveDateValueChain</result>
       <result name="input" type="velocity-xml">/dhis-web-caseentry/status.vm</result>
@@ -258,5 +254,10 @@
 		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPeriods.vm</result>
 	</action>
 		  
+	<action name="validateProgram" class="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction">
+      <result name="success" type="velocity">/popup.vm</result>
+      <param name="page">/dhis-web-caseentry/validationResult.vm</param>
+    </action>
+    
   </package>
 </struts>

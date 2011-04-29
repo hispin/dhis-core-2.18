@@ -32,15 +32,16 @@ import java.io.Serializable;
 
 /**
  * @author Chau Thu Tran
- * @version ProgramStageValidation.java May 6, 2010 9:34:10 AM
+ * @version $ ProgramValidation.java Apr 28, 2011 10:27:29 AM $
  */
-public class ProgramStageDataElementValidation implements Serializable
+public class ProgramValidation
+implements Serializable
 {
-    public static final int OPERATOR_LESS_THAN = -1;
+    public static final String SEPARATOR_ID = "\\.";
 
-    public static final int OPERATOR_EQUAL_TO = 0;
+    public static final String SEPARATOR_OBJECT = ":";
 
-    public static final int OPERATOR_GREATER_THAN = 1;
+    public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
 
     // -------------------------------------------------------------------------
     // Fields
@@ -50,22 +51,46 @@ public class ProgramStageDataElementValidation implements Serializable
 
     private String description;
 
-    private ProgramStageDataElement leftProgramStageDataElement;
+    private String leftSide;
 
-    private int operator;
+    private String rightSide;
 
-    private ProgramStageDataElement rightProgramStageDataElement;
+    private Program program;
 
     // -------------------------------------------------------------------------
-    // equals && hashCode
+    // Constructor
     // -------------------------------------------------------------------------
+
+    public ProgramValidation()
+    {
+
+    }
+
+    public ProgramValidation( String description, String leftSide, String rightSide, Program program )
+    {
+        this.description = description;
+        this.leftSide = leftSide;
+        this.rightSide = rightSide;
+        this.program = program;
+    }
+
+    // -------------------------------------------------------------------------
+    // hashCode() and equals()
+    // -------------------------------------------------------------------------
+
+    public int getId()
+    {
+        return id;
+    }
 
     @Override
     public int hashCode()
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
+        result = prime * result + ((leftSide == null) ? 0 : leftSide.hashCode());
+        result = prime * result + ((program == null) ? 0 : program.hashCode());
+        result = prime * result + ((rightSide == null) ? 0 : rightSide.hashCode());
         return result;
     }
 
@@ -78,20 +103,34 @@ public class ProgramStageDataElementValidation implements Serializable
             return false;
         if ( getClass() != obj.getClass() )
             return false;
-        ProgramStageDataElementValidation other = (ProgramStageDataElementValidation) obj;
-        if ( id != other.id )
+        ProgramValidation other = (ProgramValidation) obj;
+        if ( leftSide == null )
+        {
+            if ( other.leftSide != null )
+                return false;
+        }
+        else if ( !leftSide.equals( other.leftSide ) )
+            return false;
+        if ( program == null )
+        {
+            if ( other.program != null )
+                return false;
+        }
+        else if ( !program.equals( other.program ) )
+            return false;
+        if ( rightSide == null )
+        {
+            if ( other.rightSide != null )
+                return false;
+        }
+        else if ( !rightSide.equals( other.rightSide ) )
             return false;
         return true;
     }
 
     // -------------------------------------------------------------------------
-    // getters && Setters
+    // Getters && Setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
 
     public void setId( int id )
     {
@@ -102,40 +141,40 @@ public class ProgramStageDataElementValidation implements Serializable
     {
         return description;
     }
-    
+
     public void setDescription( String description )
     {
         this.description = description;
     }
 
-    public int getOperator()
+    public String getLeftSide()
     {
-        return operator;
+        return leftSide;
     }
 
-    public void setOperator( int operator )
+    public void setLeftSide( String leftSide )
     {
-        this.operator = operator;
+        this.leftSide = leftSide;
     }
 
-    public ProgramStageDataElement getLeftProgramStageDataElement()
+    public String getRightSide()
     {
-        return leftProgramStageDataElement;
+        return rightSide;
     }
 
-    public void setLeftProgramStageDataElement( ProgramStageDataElement leftProgramStageDataElement )
+    public void setRightSide( String rightSide )
     {
-        this.leftProgramStageDataElement = leftProgramStageDataElement;
+        this.rightSide = rightSide;
     }
 
-    public ProgramStageDataElement getRightProgramStageDataElement()
+    public Program getProgram()
     {
-        return rightProgramStageDataElement;
+        return program;
     }
 
-    public void setRightProgramStageDataElement( ProgramStageDataElement rightProgramStageDataElement )
+    public void setProgram( Program program )
     {
-        this.rightProgramStageDataElement = rightProgramStageDataElement;
+        this.program = program;
     }
 
 }

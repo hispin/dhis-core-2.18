@@ -25,97 +25,64 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.program;
+package org.hisp.dhis.patient.action.validation;
 
-import java.util.Collection;
-
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageDataElementValidation;
-import org.hisp.dhis.program.ProgramStageDataElementValidationService;
+import org.hisp.dhis.program.ProgramValidation;
+import org.hisp.dhis.program.ProgramValidationService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version ShowValidationDEAssociationsFormAction.java May 5, 2010 9:35:09 AM
+ * @version $ GetProgramValidationAction.java Apr 28, 2011 11:17:58 AM $
  */
-public class ShowValidationDEAssociationsFormAction
+public class GetProgramValidationAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramService programService;
-
-    private ProgramStageDataElementValidationService programStageDEValidationService;
+    private ProgramValidationService programValidationService;
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input && Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer validationId;
+
+    private ProgramValidation validation;
 
     // -------------------------------------------------------------------------
-    // Output
+    // Getter && Setter
     // -------------------------------------------------------------------------
 
-    private Program program;
-
-    private Collection<ProgramStage> stages;
-    
-    private Collection<ProgramStageDataElementValidation> validations;
-
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
-    public Program getProgram()
+    public void setProgramValidationService( ProgramValidationService programValidationService )
     {
-        return program;
+        this.programValidationService = programValidationService;
     }
 
-    public Collection<ProgramStageDataElementValidation> getValidations()
+    public void setValidationId( Integer validationId )
     {
-        return validations;
+        this.validationId = validationId;
     }
 
-    public void setProgramStageDEValidationService( ProgramStageDataElementValidationService programStageDEValidationService )
+    public ProgramValidation getValidation()
     {
-        this.programStageDEValidationService = programStageDEValidationService;
-    }
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
-    public Collection<ProgramStage> getStages()
-    {
-        return stages;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
+        return validation;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     @Override
     public String execute()
         throws Exception
     {
-        program = programService.getProgram( id );
-
-        stages = program.getProgramStages();
-
-        validations = programStageDEValidationService.getProgramStageDataElementValidations( program );
+        validation = programValidationService.getProgramValidation( validationId );
 
         return SUCCESS;
     }
+
 }

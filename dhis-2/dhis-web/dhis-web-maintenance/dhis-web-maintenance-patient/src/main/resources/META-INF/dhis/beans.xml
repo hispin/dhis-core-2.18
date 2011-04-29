@@ -720,18 +720,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
-
-	<!-- Program_ValidationDE Association  -->
-
-	<bean
-		id="org.hisp.dhis.patient.action.program.ShowValidationDEAssociationsFormAction"
-		class="org.hisp.dhis.patient.action.program.ShowValidationDEAssociationsFormAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programStageDEValidationService"
-			ref="org.hisp.dhis.program.ProgramStageDataElementValidationService" />
-	</bean>
-
+	
 	<!-- ProgramStage -->
 
 	<bean id="org.hisp.dhis.patient.action.programstage.AddProgramStageAction"
@@ -1201,53 +1190,59 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<!-- Validation - ProgramStageDataElementValidation -->
+	<!-- Program Validation -->
 
 	<bean
-		id="org.hisp.dhis.patient.action.validation.AddProgramStageDEValidationAction"
-		class="org.hisp.dhis.patient.action.validation.AddProgramStageDEValidationAction"
+		id="org.hisp.dhis.patient.action.validation.AddProgramValidationAction"
+		class="org.hisp.dhis.patient.action.validation.AddProgramValidationAction"
 		scope="prototype">
-		<property name="validationService">
-			<ref bean="org.hisp.dhis.program.ProgramStageDataElementValidationService" />
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
 		</property>
-		<property name="programStageService">
-			<ref bean="org.hisp.dhis.program.ProgramStageService" />
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>
-		<property name="programStageDataElementService">
-			<ref bean="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
 		</property>
 	</bean>
-
+	
 	<bean
-		id="org.hisp.dhis.patient.action.validation.GetProgramStageDEValidationAction"
-		class="org.hisp.dhis.patient.action.validation.GetProgramStageDEValidationAction"
+		id="org.hisp.dhis.patient.action.validation.GetProgramValidationAction"
+		class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction"
 		scope="prototype">
-		<property name="validationService">
-			<ref bean="org.hisp.dhis.program.ProgramStageDataElementValidationService" />
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
 		</property>
 	</bean>
-
+	
 	<bean
-		id="org.hisp.dhis.patient.action.validation.GetProgramStageDEValidationListAction"
-		class="org.hisp.dhis.patient.action.validation.GetProgramStageDEValidationListAction"
+		id="org.hisp.dhis.patient.action.validation.GetProgramValidationListAction"
+		class="org.hisp.dhis.patient.action.validation.GetProgramValidationListAction"
 		scope="prototype">
-		<property name="validationService">
-			<ref bean="org.hisp.dhis.program.ProgramStageDataElementValidationService" />
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
 		</property>
 	</bean>
-
+	
 	<bean
-		id="org.hisp.dhis.patient.action.validation.RemoveProgramStageDEValidationAction"
-		class="org.hisp.dhis.patient.action.validation.RemoveProgramStageDEValidationAction"
+		id="org.hisp.dhis.patient.action.validation.RemoveProgramValidationAction"
+		class="org.hisp.dhis.patient.action.validation.RemoveProgramValidationAction"
 		scope="prototype">
-		<property name="validationService">
-			<ref bean="org.hisp.dhis.program.ProgramStageDataElementValidationService" />
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
 		</property>
 	</bean>
-
+	
+	<bean
+		id="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction"
+		class="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction"
+		scope="prototype">
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
+		</property>
+	</bean>
+	
 	<!-- Configuration -->
 
 	<bean

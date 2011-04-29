@@ -34,6 +34,8 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +61,13 @@ public class TableAlteror
         this.statementManager = statementManager;
     }
 
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -69,15 +78,15 @@ public class TableAlteror
     {
         updatePatientOrgunitAssociation();
 
-        updateDOBType();
+        executeSql( "UPDATE patient SET dobType='A' WHERE birthdateestimated=true" );
+
+        executeSql( "ALTER TABLE patient drop column birthdateestimated" );
+
+        executeSql( "DELETE FROM validationcriteria where property='birthdateestimated'" );
 
         executeSql( "UPDATE patientattribute SET mandatory = false WHERE mandatory is NULL" );
-        
+
         executeSql( "UPDATE program SET version = 1 WHERE version is NULL" );
-
-        updateDataSetMobileAttribute();
-
-        updateDataSetVersionAttribute();
 
         executeSql( "UPDATE patientidentifiertype SET type='" + PatientIdentifierType.VALUE_TYPE_TEXT
             + "' WHERE type IS NULL" );
@@ -89,6 +98,13 @@ public class TableAlteror
         executeSql( "UPDATE patient SET isdead=false WHERE isdead IS NULL" );
 
         executeSql( "UPDATE patient SET hasPatients=false WHERE hasPatients IS NULL" );
+
+        executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null" );
+
+        executeSql( "UPDATE dataset SET version = 1 WHERE version is null" );
+        
+        updateSingleProgramValidation();
+
     }
 
     // -------------------------------------------------------------------------
@@ -130,53 +146,53 @@ public class TableAlteror
         }
     }
 
-    private void updateDOBType()
+    private void updateSingleProgramValidation()
     {
         StatementHolder holder = statementManager.getHolder();
-
+        
+        int optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
+        
         try
         {
-            executeSql( "UPDATE patient SET dobType='A' WHERE birthdateestimated=true" );
+            Statement statement = holder.getStatement();
 
-            executeSql( "ALTER TABLE patient drop column birthdateestimated" );
+            ResultSet isUpdated = statement
+                .executeQuery( "SELECT * FROM INFORMATION_SCHEMA.COLUMNS " +
+                                "WHERE TABLE_NAME = 'programstage_dataelement_validation'" );
 
-            executeSql( "DELETE FROM validationcriteria where property='birthdateestimated'" );
-        }
-        catch ( Exception ex )
-        {
-            log.error( ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
+            if ( isUpdated.next() )
+            {
+                ResultSet rsCount = statement.executeQuery( "SELECT max(programvalidationid) FROM programvalidation" );
+                rsCount.next();
 
-    private void updateDataSetMobileAttribute()
-    {
-        StatementHolder holder = statementManager.getHolder();
+                int max = rsCount.getInt( 1 ) + 1;
 
-        try
-        {
-            executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null" );
-        }
-        catch ( Exception ex )
-        {
-            log.error( ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
+                ResultSet resultSet = statement
+                .executeQuery( "SELECT pdv.description, pdv.leftprogramstageid, pdv.leftdataelementid, "+
+                                      "pdv.rightprogramstageid, pdv.rightdataelementid, " +
+                                      "pdv.operator, ps.programid "+
+                                "FROM programstage_dataelement_validation pdv "+
+                                "INNER JOIN programstage_dataelements pd "+
+                                       "ON (pdv.leftprogramstageid=pd.dataelementid AND "+
+                                           "pdv.leftdataelementid=pd.programstageid) "+
+                                "INNER JOIN programstage ps "+
+                                        "ON pd.programstageid=ps.programstageid" );
 
-    private void updateDataSetVersionAttribute()
-    {
-        StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            executeSql( "UPDATE dataset SET version = 1 WHERE version is null" );
+                while ( resultSet.next() )
+                {
+                    max++;
+                    String leftSide = "[" + resultSet.getString( 2 ) + "." + resultSet.getString( 3 ) + "." + optionCombo + "]";
+                    String rightSide = "[" + resultSet.getString( 4 ) + "." + resultSet.getString( 5 ) + "." + optionCombo + "]";
+                    String operator = resultSet.getInt( 6 ) > 0 ? ">" : ( resultSet.getInt( 6 ) < 0 ) ? "<" : "==";
+                    
+                    String fomular = leftSide + operator + rightSide;
+         
+                    executeSql( "INSERT INTO programvalidation (programvalidationid, description,leftSide, rightSide, programid )" +
+                                "VALUES ( " + max + ",'" + resultSet.getString( 1 )  + "', '" + fomular  + "', '1==1', " + resultSet.getInt( 7 )  + ")" );
+                }
+                
+                executeSql( "DROP TABLE programstage_dataelement_validation" );
+            }
         }
         catch ( Exception ex )
         {

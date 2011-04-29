@@ -82,7 +82,12 @@
         #end
     </tr>   
 	<tr>
-		<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()"></td>
+		<td>
+			<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" style="width:12em">
+		</td>
+		<td>
+			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="window.open( 'validateProgram.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );" style="width:12em">
+		</td>
 	</tr>
 </table>
 
