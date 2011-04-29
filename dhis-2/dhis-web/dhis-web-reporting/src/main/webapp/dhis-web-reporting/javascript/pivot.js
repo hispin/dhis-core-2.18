@@ -42,57 +42,64 @@ function organisationUnitSelected( orgunits )
  */
 function getData()
 {
-  clearGlobalVariables();
-  
-  var dataType = $( "#dataType" ).val();
-  var indicatorGroupId = $( "#indicatorGroup" ).val();
-  var dataElementGroupId = $( "#dataElementGroup" ).val();
-  var startDate = $( "#startDate" ).val();
-  var endDate = $( "#endDate" ).val();
-  var periodTypeName = $( "#periodType" ).val();
-  
-  document.getElementById( "dataLabel" ).innerHTML = i18n_start_date + ": " + startDate + 
-    ", " + i18n_end_date + ": " + endDate + ", " + i18n_period_type + ": " + periodTypeName;
-  
-  var url = "getPivotTable.action";
-  
-  var groupId = dataType == DATA_TYPE_INDICATOR ? indicatorGroupId : dataElementGroupId;
-  
-  currentDataType = dataType;
-  
-  hideDivs();
-  
-  showLoader();
-  
-  $.getJSON(
-    url,
-    {
-      "dataType": dataType,
-      "groupId": groupId,
-      "periodTypeName": periodTypeName, 
-      "startDate": startDate, 
-      "endDate": endDate, 
-      "organisationUnitId": organisationUnitId 
-    },
-    function( json ) 
-    {
-      var pivot = json.pivotTable;
-      
-      indicators = pivot.indicators;
-      periods = pivot.periods;
-      orgunits = pivot.organisationUnits;
-      
-      sizes["indicator"] = pivot.sizeIndicators;
-      sizes["period"] = pivot.sizePeriods;
-      sizes["orgunit"] = pivot.sizeOrganisationUnits;
-      
-      data = pivot.indicatorValues[0];
-      
-      hideLoader();
-      
-      generateTable();
-    }
-  );
+  if ( organisationUnitId == -1 )
+  {
+	setHeaderDelayMessage( i18n_selected_organisation_unit );
+  }
+  else
+  {
+	  clearGlobalVariables();
+	  
+	  var dataType = $( "#dataType" ).val();
+	  var indicatorGroupId = $( "#indicatorGroup" ).val();
+	  var dataElementGroupId = $( "#dataElementGroup" ).val();
+	  var startDate = $( "#startDate" ).val();
+	  var endDate = $( "#endDate" ).val();
+	  var periodTypeName = $( "#periodType" ).val();
+	  
+	  document.getElementById( "dataLabel" ).innerHTML = i18n_start_date + ": " + startDate + 
+		", " + i18n_end_date + ": " + endDate + ", " + i18n_period_type + ": " + periodTypeName;
+	  
+	  var url = "getPivotTable.action";
+	  
+	  var groupId = dataType == DATA_TYPE_INDICATOR ? indicatorGroupId : dataElementGroupId;
+	  
+	  currentDataType = dataType;
+	  
+	  hideDivs();
+	  
+	  showLoader();
+	  
+	  $.getJSON(
+		url,
+		{
+		  "dataType": dataType,
+		  "groupId": groupId,
+		  "periodTypeName": periodTypeName, 
+		  "startDate": startDate, 
+		  "endDate": endDate, 
+		  "organisationUnitId": organisationUnitId 
+		},
+		function( json ) 
+		{
+		  var pivot = json.pivotTable;
+		  
+		  indicators = pivot.indicators;
+		  periods = pivot.periods;
+		  orgunits = pivot.organisationUnits;
+		  
+		  sizes["indicator"] = pivot.sizeIndicators;
+		  sizes["period"] = pivot.sizePeriods;
+		  sizes["orgunit"] = pivot.sizeOrganisationUnits;
+		  
+		  data = pivot.indicatorValues[0];
+		  
+		  hideLoader();
+		  
+		  generateTable();
+		}
+	  );
+  }
 }
 
 /**
