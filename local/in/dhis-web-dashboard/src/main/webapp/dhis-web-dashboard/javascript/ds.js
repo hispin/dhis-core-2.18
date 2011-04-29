@@ -253,39 +253,27 @@ function formValidationsForOUwiseDataStatus()
 } 
 // formValidations Function End	
 
-
-
-
 //  Getting corresponding Period List for Datasets. 
 function getdSetPeriods()
 {
-    var dataSetList = document.getElementById("selectedDataSets");
+
+	var dataSetList = document.getElementById("selectedDataSets");
     var dataSetId = dataSetList.options[ dataSetList.selectedIndex].value;
-
-    var request = new Request();
-    request.setResponseTypeXML( 'period' );
-    request.setCallbackSuccess( getdSetPeriodsReceived );
-
-    var requestString = "getDataSetPeriods.action";
-    var params = "id=" + dataSetId;
-    request.sendAsPost( params );
-    request.send( requestString );
-	
-    /*
+    
 	$.post("getDataSetPeriods.action",
 	{
-		id:dataSetId
+		id : dataSetId
 	},
 	function (data)
 	{
 		getdSetPeriodsReceived(data);
 	},'xml');
- 	*/
+ 	
 }
 
 function getdSetPeriodsReceived( xmlObject )
 {	
-    var sDateLB = document.getElementById( "sDateLB" );
+	var sDateLB = document.getElementById( "sDateLB" );
     var eDateLB = document.getElementById( "eDateLB" );
 		
     var periods = xmlObject.getElementsByTagName( "period" );
@@ -295,8 +283,8 @@ function getdSetPeriodsReceived( xmlObject )
     	clearList( sDateLB );
         clearList( eDateLB );
     }
-	
-    for ( var i = 0; i < periods.length; i++)
+
+    for ( var i = 0; i < periods.length; i++ )
     {
         var periodType = periods[ i ].getElementsByTagName( "periodtype" )[0].firstChild.nodeValue;
 		
@@ -316,7 +304,7 @@ function getdSetPeriodsReceived( xmlObject )
 				
         var id = periods[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
         var periodName = periods[ i ].getElementsByTagName( "periodname" )[0].firstChild.nodeValue;
-							
+
         var option1 = document.createElement( "option" );
         option1.value = id;
         option1.text = periodName;
@@ -326,7 +314,6 @@ function getdSetPeriodsReceived( xmlObject )
         option2.value = id;
         option2.text = periodName;
         eDateLB.add( option2, null);
-				
     }
 		
 }

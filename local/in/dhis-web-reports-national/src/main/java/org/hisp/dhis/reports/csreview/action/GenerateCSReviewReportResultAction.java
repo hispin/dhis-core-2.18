@@ -1,6 +1,7 @@
 package org.hisp.dhis.reports.csreview.action;
 
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -12,14 +13,12 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import jxl.Workbook;
 import jxl.format.Alignment;
@@ -34,38 +33,24 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
-import org.amplecode.quick.StatementManager; 
-import org.hisp.dhis.system.util.MathUtils;
-import org.hisp.dhis.aggregation.AggregationService;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType; 
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
+import org.hisp.dhis.reports.Report_inDesign;
+import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.CurrentUserService;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+
 import com.opensymphony.xwork2.Action;
 
 public class GenerateCSReviewReportResultAction
     implements Action
 {
-    private static final String NULL_REPLACEMENT = "0";
 
     private final String GENERATEAGGDATA = "generateaggdata";
 
@@ -104,56 +89,24 @@ public class GenerateCSReviewReportResultAction
     {
         this.currentUserService = currentUserService;
     }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
-    private AggregationService aggregationService;
-
-    public void setAggregationService( AggregationService aggregationService )
-    {
-        this.aggregationService = aggregationService;
-    }
-   
-    private DataElementCategoryService dataElementCategoryOptionComboService;
     
-    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService )
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.organisationUnitService = organisationUnitService;
     }
-    
-/*    
-    private DataElementCategoryService dataElementCategoryOptionComboService;
-    
-    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService )
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.format = format;
     }
- */   
 
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
-
- 
 
     private String reportList;
 
@@ -176,6 +129,13 @@ public class GenerateCSReviewReportResultAction
         this.endDate = endDate;
     }
 
+    private String aggData;
+    
+    public void setAggData( String aggData )
+    {
+        this.aggData = aggData;
+    }
+
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -190,32 +150,8 @@ public class GenerateCSReviewReportResultAction
         return fileName;
     }
 
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
-    private SimpleDateFormat simpleDateFormat;
-
-    public SimpleDateFormat getSimpleDateFormat()
-    {
-        return simpleDateFormat;
-    }
-
-    private SimpleDateFormat yearFormat;
-
-    public SimpleDateFormat getYearFormat()
-    {
-        return yearFormat;
-    }
 
     private List<OrganisationUnit> orgUnitList;
-
-    private List<String> deCodeType;
-
-    private List<String> serviceType;
 
     private String raFolderName;
 
@@ -223,33 +159,15 @@ public class GenerateCSReviewReportResultAction
 
     private String reportFileNameTB;
 
-    private List<Integer> sheetList;
-
-    private List<Integer> rowList;
-
-    private List<Integer> colList;
-
     private Date sDate;
 
     private Date eDate;
 
-    // private Date sDateTemp;
-
-    // private Date eDateTemp;
     private Integer monthCount;
 
-    int isAggregated = 0;
+    private SimpleDateFormat simpleDateFormat;
 
-    int deFlag2;
-
-    int deFlag1;
-    
-    private String aggData;
-    
-    public void setAggData( String aggData )
-    {
-        this.aggData = aggData;
-    }
+    private SimpleDateFormat yearFormat;
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -261,11 +179,6 @@ public class GenerateCSReviewReportResultAction
         // Intialisation
 
         statementManager.initialise();
-        deCodeType = new ArrayList<String>();
-        serviceType = new ArrayList<String>();
-        sheetList = new ArrayList<Integer>();
-        rowList = new ArrayList<Integer>();
-        colList = new ArrayList<Integer>();
         orgUnitList = new ArrayList<OrganisationUnit>();
         String deCodesXMLFileName = "";
         raFolderName = reportService.getRAFolderName();
@@ -282,11 +195,7 @@ public class GenerateCSReviewReportResultAction
         String tempFromDate = simpleDateFormat.format( sDate );
         String tempToDate = simpleDateFormat.format( eDate );
 
-        //System.out.println( "Starting:" + tempFromDate + "Ending: " + tempToDate );
-
         String startTargetYear = yearFormat.format( sDate );
-
-       // System.out.println( "StartTargetYear:" + startTargetYear );
 
         Calendar tempStartDate = Calendar.getInstance();
         Calendar tempEndDate = Calendar.getInstance();
@@ -300,7 +209,6 @@ public class GenerateCSReviewReportResultAction
         int startMonth = tempStartDate.get( Calendar.MONTH );
 
         monthCount = ((endYear - startYear) * 12) - startMonth + endMonth + 1;
-       // System.out.println( "MonthCount : " + monthCount );
 
         tempStr = monthCount.toString();
 
@@ -316,8 +224,7 @@ public class GenerateCSReviewReportResultAction
         System.out.println( "Report Generation Start Time is : \t" + new Date() );
 
         // Getting Orgunit Details
-        List<OrganisationUnit> curUserRootOrgUnitList = new ArrayList<OrganisationUnit>( currentUserService
-            .getCurrentUser().getOrganisationUnits() );
+        List<OrganisationUnit> curUserRootOrgUnitList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
         if ( curUserRootOrgUnitList != null && curUserRootOrgUnitList.size() != 0 )
         {
             for ( OrganisationUnit orgUnit : curUserRootOrgUnitList )
@@ -325,30 +232,22 @@ public class GenerateCSReviewReportResultAction
                 List<OrganisationUnit> childOrgList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
                 Collections.sort( childOrgList, new OrganisationUnitNameComparator() );
                 orgUnitList.addAll( childOrgList );
-                // Collections.sort( orgUnitList, new
-                // OrganisationUnitNameComparator() );
                 orgUnitList.add( orgUnit );
-
             }
         }
 
-        System.out.println( "OrgUnitSize:" + orgUnitList.size() );
         // Getting DeCodes
-        List<String> deCodesList = getDECodes( deCodesXMLFileName );
+        List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
+        String dataElmentIdsByComma = getDataelementIds( reportDesignList );
+        //List<String> deCodesList = getDECodes( deCodesXMLFileName );
 
         // Getting Exel Template
-        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-            + "template" + File.separator + reportFileNameTB;
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
+        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
 
-        WritableWorkbook outputReportWorkbook = Workbook
-            .createWorkbook( new File( outputReportPath ), templateWorkbook );
-        // WritableSheet sheet0 = outputReportWorkbook.createSheet(
-        // selReportObj.getName(), 0 );
-        // int rowStart = 0;
-        // int colStart = 0;
+        Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
+
         WritableCellFormat wCellformat = new WritableCellFormat();
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat.setWrap( true );
@@ -360,50 +259,43 @@ public class GenerateCSReviewReportResultAction
         sheet0.addCell( new Label( 3, 4, startTargetYear, getCellFormat2() ) );
         sheet0.addCell( new Label( 5, 3, "Achievement for : " + tempFromDate + " - " + tempToDate, getCellFormat2() ) );
 
-        // Period selPeriod = periodService.getPeriod( sDate, eDate, new
-        // YearlyPeriodType() );
-        /*
-         * if ( reportModelTB.equalsIgnoreCase( "dynamicwithrootfacility" ) ) {
-         * OrganisationUnit orgUnit =
-         * organisationUnitService.getOrganisationUnit( ouIDTB ); orgUnitList =
-         * new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-         * Collections.sort( orgUnitList, new OrganisationUnitNameComparator()
-         * ); orgUnitList.add( orgUnit );
-         * 
-         * parentUnit = orgUnit.getName(); }
-         */
+        List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriods( tempStartDate.getTime(), tempEndDate.getTime() ) );
+        Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+        String periodIdsByComma = getCommaDelimitedString( periodIds );
 
         int rowCount = 1;
         int rowIncr = 0;
+
         // Getting DataValues
         for ( OrganisationUnit curOrgUnit : orgUnitList )
         {
-            int count1 = 0;
-            for ( String deCode : deCodesList )
+            Map<String, String> aggDeMap = new HashMap<String, String>();
+            if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
             {
-                int tempRowNo = rowList.get( count1 ) + rowIncr;
-                int tempColNo = colList.get( count1 );
-                int sheetNo = sheetList.get( count1 );
+                aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( curOrgUnit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+            {
+                List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( curOrgUnit.getId() ) );
+                List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+                String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
 
-                // String deType = (String) deCodeType.get( count1 );
-                String sType = (String) serviceType.get( count1 );
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            else if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
+            {
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+curOrgUnit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            }
 
-                /*
-                 * Calendar tempStartDate1 = Calendar.getInstance(); Calendar
-                 * tempEndDate1 = Calendar.getInstance();
-                 * 
-                 * tempStartDate1.setTime( sDate ); tempEndDate1.setTime( eDate
-                 * );
-                 */
-                /*
-                 * List<Calendar> calendarList = new ArrayList<Calendar>(
-                 * getStartingEndingPeriods( deType ) ); if ( calendarList ==
-                 * null || calendarList.isEmpty() ) { tempStartDate1.setTime(
-                 * selPeriod.getStartDate() ); tempEndDate1.setTime(
-                 * selPeriod.getEndDate() ); return SUCCESS; } else {
-                 * tempStartDate1 = calendarList.get( 0 ); tempEndDate1 =
-                 * calendarList.get( 1 ); }
-                 */
+            int count1 = 0;
+            for ( Report_inDesign report_inDesign : reportDesignList )
+            {
+                int tempRowNo = report_inDesign.getRowno() + rowIncr;
+                int tempColNo = report_inDesign.getColno();
+                int sheetNo = report_inDesign.getSheetno();
+                String sType = report_inDesign.getStype();
+                String deCode = report_inDesign.getExpression();
+
                 if ( deCode.equalsIgnoreCase( "[0.0]" ) )
                 {
                     tempStr = " ";
@@ -427,40 +319,28 @@ public class GenerateCSReviewReportResultAction
                 {
                     tempStr = deCode.replace( "?", "" + (tempRowNo + 1) );
                     tempStr = tempStr.replace( "MONTHCOUNT", "" + monthCount );
-                    // float f = Float.parseFloat(tempStr);
-                    // int tempStrRound = Math.round(f);
                 }
                 else
                 {
                     if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                     {
-                        tempStr = reportService.getIndividualResultDataValue(deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit, reportModelTB );
+                        tempStr = getAggVal( deCode, aggDeMap );
+                        //tempStr = reportService.getIndividualResultDataValue(deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit, reportModelTB );
                     } 
                     else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                     {
-                        tempStr = getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit );
-                        //tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                        tempStr = getAggVal( deCode, aggDeMap );
+                        //tempStr = getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit );
+                        //tempStr = reportService.getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit, " " );
                     }
                     else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
                     {
-                        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
-                        Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
-                        tempStr = reportService.getResultDataValueFromAggregateTable( deCode, periodIds, curOrgUnit, reportModelTB );
+                        tempStr = getAggVal( deCode, aggDeMap );
+                        //tempStr = reportService.getResultDataValueFromAggregateTable( deCode, periodIds, curOrgUnit, reportModelTB );
                     }
-                    //tempStr = getResultDataValue( deCode, tempStartDate.getTime(), tempEndDate.getTime(), curOrgUnit );
                 }
                 System.out.println( "DECode : " + deCode + "   TempStr : " + tempStr );
-               // System.out.println( "TempStr: " + tempStr );
                 sheet0 = outputReportWorkbook.getSheet( sheetNo );
-                // sheet0.addCell( new Label( colStart, rowStart,
-                // selReportObj.getName(), getCellFormat1() ) );
-
-                /*
-                 * WritableCellFormat wCellformat = new WritableCellFormat();
-                 * wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-                 * wCellformat.setWrap( true ); wCellformat.setAlignment(
-                 * Alignment.CENTRE );
-                 */
                 if ( tempStr == null || tempStr.equals( " " ) )
                 {
                     sheet0.addCell( new Blank( tempColNo, tempRowNo, wCellformat ) );
@@ -469,21 +349,15 @@ public class GenerateCSReviewReportResultAction
                 {
                     if ( sType.equalsIgnoreCase( "formula" ) )
                     {
-
                         sheet0.addCell( new Formula( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                        // float f = Float.parseFloat(tempStr);
-                        // int tempStrRound = Math.round(f);
-                        // System.out.println("Round value :" +tempStrRound);
                     }
                     else
                     {
                         sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
                     }
                 }
-                // System.out.println("Temp Data value : " + tempStr );
                 count1++;
             }
-           // System.out.println( "Name og OrgUnit :" + curOrgUnit.getName() );
             rowCount++;
             rowIncr++;
         }
@@ -492,7 +366,6 @@ public class GenerateCSReviewReportResultAction
 
         outputReportWorkbook.close();
 
-        //fileName = reportFileNameTB.replace( ".xls", "" );
         fileName = reportFileNameTB;
         File outputReportFile = new File( outputReportPath );
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
@@ -508,83 +381,13 @@ public class GenerateCSReviewReportResultAction
     // Supportive Methods
     // -------------------------------------------------------------------------
 
-    // for EXL file
-
-    public List<String> getDECodes( String fileName )
+    private String getAggVal( String expression, Map<String, String> aggDeMap )
     {
-        List<String> deCodes = new ArrayList<String>();
-        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
-            + File.separator + fileName;
-        try
-        {
-            String newpath = System.getenv( "DHIS2_HOME" );
-            if ( newpath != null )
-            {
-                path = newpath + File.separator + raFolderName + File.separator + fileName;
-            }
-        }
-        catch ( NullPointerException npe )
-        {
-            // do nothing, but we might be using this somewhere without
-            // USER_HOME set, which will throw a NPE
-        }
-        try
-        {
-            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse( new File( path ) );
-            if ( doc == null )
-            {
-                // System.out.println( "There is no DECodes related XML file in
-                // the user home" );
-                return null;
-            }
-
-            NodeList listOfDECodes = doc.getElementsByTagName( "de-code" );
-            int totalDEcodes = listOfDECodes.getLength();
-
-            for ( int s = 0; s < totalDEcodes; s++ )
-            {
-                Element deCodeElement = (Element) listOfDECodes.item( s );
-                NodeList textDECodeList = deCodeElement.getChildNodes();
-
-                deCodes.add( ((Node) textDECodeList.item( 0 )).getNodeValue().trim() );
-                serviceType.add( deCodeElement.getAttribute( "stype" ) );
-                deCodeType.add( deCodeElement.getAttribute( "type" ) );
-                sheetList.add( new Integer( deCodeElement.getAttribute( "sheetno" ) ) );
-                rowList.add( new Integer( deCodeElement.getAttribute( "rowno" ) ) );
-                colList.add( new Integer( deCodeElement.getAttribute( "colno" ) ) );
-
-            }// end of for loop with s var
-        }// try block end
-        catch ( SAXParseException err )
-        {
-            System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
-            System.out.println( " " + err.getMessage() );
-        }
-        catch ( SAXException e )
-        {
-            Exception x = e.getException();
-            ((x == null) ? e : x).printStackTrace();
-        }
-        catch ( Throwable t )
-        {
-            t.printStackTrace();
-        }
-        return deCodes;
-    }// getDECodes end
-
-    // Function for get data Value
-
-    private String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
-    {
-        isAggregated = 0;
-
         try
         {
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
-            Matcher matcher = pattern.matcher( formula );
+            Matcher matcher = pattern.matcher( expression );
             StringBuffer buffer = new StringBuffer();
 
             String resultValue = "";
@@ -594,152 +397,33 @@ public class GenerateCSReviewReportResultAction
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
 
-                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
-
-                int dataElementId = Integer.parseInt( replaceString );
-                int optionComboId = Integer.parseInt( optionComboIdStr );
-
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
-
-                if ( dataElement == null || optionCombo == null )
+                replaceString = aggDeMap.get( replaceString );
+                
+                if( replaceString == null )
                 {
-                    replaceString = "";
-                    matcher.appendReplacement( buffer, replaceString );
-                    continue;
+                    replaceString = "0";
                 }
-                if ( dataElement.getType().equalsIgnoreCase( "int" ) )
-                {
-                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
-                        startDate, endDate, organisationUnit );
-                    if ( aggregatedValue == null )
-                    {
-                        replaceString = NULL_REPLACEMENT;
-                        deFlag2 = 0;
-
-                    }
-                    else
-                    {
-                        replaceString = String.valueOf( aggregatedValue );
-
-                        deFlag2 = 1;
-
-                        isAggregated = 1;
-                    }
-
-                }
-                else
-                {
-                    deFlag1 = 1;
-                    deFlag2 = 0;
-                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-                        dePeriodType, startDate, endDate ) );
-                    Period tempPeriod = new Period();
-                    if ( periodList == null || periodList.isEmpty() )
-                    {
-                        replaceString = "";
-                        matcher.appendReplacement( buffer, replaceString );
-                        continue;
-                    }
-                    else
-                    {
-                        tempPeriod = (Period) periodList.get( 0 );
-                    }
-
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
-                        optionCombo );
-
-                    if ( dataValue != null )
-                    {
-                        // Works for both text and boolean data types
-
-                        replaceString = dataValue.getValue();
-                    }
-                    else
-                    {
-                        replaceString = "";
-                    }
-
-                    if ( replaceString == null )
-                    {
-                        replaceString = "";
-                    }
-                }
+                
                 matcher.appendReplacement( buffer, replaceString );
 
                 resultValue = replaceString;
             }
 
             matcher.appendTail( buffer );
-
-            if ( deFlag1 == 0 )
+            
+            double d = 0.0;
+            try
             {
-
-                double d = 0.0;
-                try
-                {
-                    d = MathUtils.calculateExpression( buffer.toString() );
-                }
-                catch ( Exception e )
-                {
-                    d = 0.0;
-                    resultValue = "";
-                }
-                if ( d == -1 )
-                {
-                    d = 0.0;
-                    resultValue = "";
-                }
-                else
-                {
-
-                    // This is to display financial data as it is like 2.1476838
-                    resultValue = "" + d;
-
-                    // These lines are to display financial data that do not
-                    // have decimals
-                    d = d * 10;
-
-                    if ( d % 10 == 0 )
-                    {
-                        resultValue = "" + (int) d / 10;
-                    }
-
-                    d = d / 10;
-
-                    // These line are to display non financial data that do not
-                    // require decimals
-                    /*
-                     * if ( !( reportModelTB.equalsIgnoreCase(
-                     * "STATIC-FINANCIAL" ) ) ) { resultValue = "" + (int) d; }
-                     */
-
-                    // if ( resultValue.equalsIgnoreCase( "0" ) )
-                    // {
-                    // resultValue = "";
-                    // }
-                }
-
+                d = MathUtils.calculateExpression( buffer.toString() );
             }
-            else
+            catch ( Exception e )
             {
-                deFlag2 = 0;
-                resultValue = buffer.toString();
+                d = 0.0;
+                resultValue = "";
             }
-
-            if ( isAggregated == 0 )
-            {
-                resultValue = " ";
-            }
-
-            if ( resultValue.equalsIgnoreCase( "" ) )
-            {
-                resultValue = " ";
-            }
+            
+            resultValue = "" + (double) d;
 
             return resultValue;
         }
@@ -747,51 +431,45 @@ public class GenerateCSReviewReportResultAction
         {
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
-    }// end data valu function
+    }
 
-    /*
-     * Returns the PeriodType Object for selected DataElement, If no PeriodType
-     * is found then by default returns Monthly Period type
-     */
-    public PeriodType getDataElementPeriodType( DataElement de )
+    public String getDataelementIds( List<Report_inDesign> reportDesignList )
     {
-        List<DataSet> dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        Iterator<DataSet> it = dataSetList.iterator();
-        // Iterator it = dataSetList.iterator();
-        while ( it.hasNext() )
+        String dataElmentIdsByComma = "-1";
+        for( Report_inDesign report_inDesign : reportDesignList )
         {
-            DataSet ds = (DataSet) it.next();
-            List<DataElement> dataElementList = new ArrayList<DataElement>( ds.getDataElements() );
-            if ( dataElementList.contains( de ) )
+            String formula = report_inDesign.getExpression();
+            try
             {
-                return ds.getPeriodType();
+                Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+                Matcher matcher = pattern.matcher( formula );
+                StringBuffer buffer = new StringBuffer();
+
+                while ( matcher.find() )
+                {
+                    String replaceString = matcher.group();
+
+                    replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                    replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                    int dataElementId = Integer.parseInt( replaceString );
+                    dataElmentIdsByComma += "," + dataElementId;
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                }
+            }
+            catch( Exception e )
+            {
+                
             }
         }
-
-        return null;
-
-    } // getDataElementPeriodType end
-
-    // getStartEndDateFunction
-    /*
-     * public List<Calendar> getStartingEndingPeriods( String deType ) {
-     * 
-     * List<Calendar> calendarList = new ArrayList<Calendar>();
-     * 
-     * Calendar tempStartDate1 = Calendar.getInstance(); Calendar tempEndDate1 =
-     * Calendar.getInstance();
-     * 
-     * //tempStartDate1.setTime( selPeriod.getStartDate() ); //
-     * tempEndDate1.setTime( selPeriod.getEndDate() );
-     * 
-     * 
-     * calendarList.add( tempStartDate1 ); calendarList.add( tempEndDate1 );
-     * 
-     * 
-     * 
-     * return calendarList; }
-     */
-
+        
+        System.out.println("DataElementIdsByComma : "+ dataElmentIdsByComma );
+        
+        return dataElmentIdsByComma;
+    }
+    
     // Excel sheet format function
     public WritableCellFormat getCellFormat1()
         throws Exception
@@ -815,7 +493,6 @@ public class GenerateCSReviewReportResultAction
         wCellformat.setAlignment( Alignment.CENTRE );
         wCellformat.setBackground( Colour.GRAY_50 );
         wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
-        // wCellformat.
         wCellformat.setWrap( true );
         return wCellformat;
     } // end getCellFormat1() function

@@ -563,7 +563,17 @@ function getPeriodsReceived( xmlObject )
 function getOUDeatilsForTA( orgUnitIds )
 {
 	showOverlay();
-	
+	$.post("getOrgUnitDetails.action",
+		{
+			orgUnitId : orgUnitIds[0],
+			type : 'ta'
+		},
+		function (data)
+		{
+			getOUDetailsForTARecevied(data);
+		},'xml');
+
+	/*
     var request = new Request();
     request.setResponseTypeXML( 'orgunit' );
     request.setCallbackSuccess( getOUDetailsForTARecevied );
@@ -571,7 +581,8 @@ function getOUDeatilsForTA( orgUnitIds )
     var requestString = "getOrgUnitDetails.action";
     var params = "orgUnitId=" + orgUnitIds+"&type=ta";
     request.sendAsPost( params );
-    request.send( requestString ); 
+    request.send( requestString );
+    */ 
 }
 
 function getOUDetailsForTARecevied(xmlObject)

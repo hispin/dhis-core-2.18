@@ -213,8 +213,12 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
 
         // OrgUnit Info
         OrganisationUnit currentOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
-
+        
         System.out.println( currentOrgUnit.getName()+ " : " + selReportObj.getName()+" : Report Generation Start Time is : " + new Date() );
+
+        List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( ouIDTB ) );
+        List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+        String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
 
         // Report Info
         String deCodesXMLFileName = selReportObj.getXmlTemplateName();
@@ -241,6 +245,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
 
         PeriodType periodType = periodService.getPeriodTypeByName( periodTypeId );
         List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( periodType, sDate, eDate ) );
+        //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriods( sDate, eDate ) );
         Collections.sort( periodList, new PeriodStartDateComparator() );
         
         if( periodTypeId.equalsIgnoreCase( "monthly" ) )
@@ -259,7 +264,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         // To get Aggregation Data
         String dataSetIds = selReportObj.getDataSetIds();
         Collection<Integer> dataElementIdList = new ArrayList<Integer>();
-        if( dataSetIds != null )
+        if( dataSetIds != null && !dataSetIds.trim().equalsIgnoreCase( "" ) )
         {
             String[] partsOfDataSetIds = dataSetIds.split( "," );
             for( int i = 0; i < partsOfDataSetIds.length; i++ )
@@ -281,7 +286,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         for( Period period : periodList )
         {
 
-            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodService.getPeriodsBetweenDates( period.getStartDate(), period.getEndDate() ) ) );
+            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ) ) );
             String periodsByComma = getCommaDelimitedString( periodIds );
 
             Map<String, String> aggDeMap = new HashMap<String, String>();
@@ -289,6 +294,15 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
             {
                 aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( currentOrgUnit.getId(), dataElmentIdsByComma, periodsByComma ) );
             }
+            else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+            {
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodsByComma ) );
+            }
+            else if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
+            {
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+currentOrgUnit.getId(), dataElmentIdsByComma, periodsByComma ) );
+            }
+            
             
             Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
             while (  reportDesignIterator.hasNext() )
@@ -325,11 +339,13 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
                     {
                         if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) ) 
                         {
-                            tempStr = reportService.getIndividualResultDataValue( deCodeString, period.getStartDate(), period.getEndDate(), currentOrgUnit, reportModelTB );
+                            //tempStr = reportService.getIndividualResultDataValue( deCodeString, period.getStartDate(), period.getEndDate(), currentOrgUnit, reportModelTB );
+                            tempStr = getAggVal( deCodeString, aggDeMap );
                         } 
                         else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
-                            tempStr = reportService.getResultDataValue( deCodeString, period.getStartDate(), period.getEndDate(), currentOrgUnit, reportModelTB );
+                            //tempStr = reportService.getResultDataValue( deCodeString, period.getStartDate(), period.getEndDate(), currentOrgUnit, reportModelTB );
+                            tempStr = getAggVal( deCodeString, aggDeMap );
                         }
                         else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
                         {

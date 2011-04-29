@@ -1803,6 +1803,37 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
         }
     }
     
+    public Map<String, String> getAggDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
+    {
+        Map<String, String> aggDeMap = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT dataelementid,categoryoptioncomboid, SUM(value) FROM datavalue " +
+                           " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                           " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
+                           " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer deId = rs.getInt( 1 );
+                Integer optionComId = rs.getInt( 2 );
+                Double aggregatedValue = rs.getDouble( 3 );
+                if( aggregatedValue != null )
+                {
+                    aggDeMap.put( deId+"."+optionComId, ""+aggregatedValue );
+                }
+            }
+            
+            return aggDeMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }
+
     public String getResultDataValueFromAggregateTable( String formula, String periodIdsByComma, Integer orgunitId )
     {
         try
