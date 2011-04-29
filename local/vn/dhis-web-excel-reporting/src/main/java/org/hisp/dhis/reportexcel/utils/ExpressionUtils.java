@@ -29,14 +29,11 @@ package org.hisp.dhis.reportexcel.utils;
 
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.aggregation.AggregationService;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -95,7 +92,7 @@ public class ExpressionUtils
                     .getDataElementCategoryOptionCombo( optionComboId );
 
                 // CalculatedDataElement
-                if ( dataElement instanceof CalculatedDataElement )
+                /*if ( dataElement instanceof CalculatedDataElement )
                 {
                     CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
 
@@ -126,9 +123,9 @@ public class ExpressionUtils
                     }
 
                     matcher.appendReplacement( buffer, value + "" );
-                }
+                }*/
                 // Normal
-                else
+                //else
                 {
                     replaceString = getValue( dataElement, optionCombo, organisationUnit, startDate, endDate,
                         aggregationService )

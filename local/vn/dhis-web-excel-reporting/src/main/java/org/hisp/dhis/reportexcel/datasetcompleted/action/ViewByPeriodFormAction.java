@@ -94,7 +94,7 @@ public class ViewByPeriodFormAction
     {
         DataSet dataSet = dataSetService.getDataSet( id );
 
-        selectionTreeManager.setSelectedOrganisationUnits( dataSet.getOrganisationUnits() );
+        selectionTreeManager.setSelectedOrganisationUnits( dataSet.getSources() );
 
         periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( dataSet.getPeriodType() ) );
 
