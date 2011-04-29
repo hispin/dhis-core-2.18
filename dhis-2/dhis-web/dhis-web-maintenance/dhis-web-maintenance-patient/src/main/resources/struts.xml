@@ -832,7 +832,9 @@
 			class="org.hisp.dhis.patient.action.dataentryform.ViewDataEntryFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/viewDataEntryForm.vm</param>	
-			<param name="javascripts">javascript/viewDataEntryForm.js</param>		
+			<param name="javascripts">
+			      	../dhis-web-commons/ckeditor/ckeditor.js, ../dhis-web-commons/ckeditor/adapters/jquery.js, javascript/viewDataEntryForm.js
+			</param>		
 		</action>
 
 		<action name="saveDataEntryForm"
