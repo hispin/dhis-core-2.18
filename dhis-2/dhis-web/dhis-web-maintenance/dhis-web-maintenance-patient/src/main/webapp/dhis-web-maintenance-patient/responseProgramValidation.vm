@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validation>
+	<id>$validation.id</id>
+	<description>$encoder.htmlEncode($validation.description)</description>
+	<leftSide>$encoder.htmlEncode($validation.leftSide)</leftSide>
+	<rightSide>$encoder.htmlEncode($validation.rightSide)</rightSide>
+	<program>$encoder.htmlEncode($validation.rightSide.name)</program>
+</validation>

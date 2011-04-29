@@ -1172,9 +1172,11 @@ function toggleContentForReportDate(show)
         jQuery("#startMsg").hide();
         jQuery("#entryFormContainer").show();
         jQuery("#completeBtn").removeAttr('disabled');
+		jQuery("#validationBtn").removeAttr('disabled');
     }else {
         jQuery("#entryFormContainer").hide();
         jQuery("#completeBtn").attr('disabled', 'disabled');
+		jQuery("#validationBtn").attr('disabled', 'disabled');
         jQuery("#startMsg").show();
     }
 }

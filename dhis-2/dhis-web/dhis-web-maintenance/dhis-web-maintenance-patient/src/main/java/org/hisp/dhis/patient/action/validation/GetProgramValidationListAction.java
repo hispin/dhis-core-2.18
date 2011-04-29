@@ -29,55 +29,79 @@ package org.hisp.dhis.patient.action.validation;
 
 import java.util.Collection;
 
-import org.hisp.dhis.program.ProgramStageDataElementValidation;
-import org.hisp.dhis.program.ProgramStageDataElementValidationService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramValidation;
+import org.hisp.dhis.program.ProgramValidationService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version GetProgramStageDEValidationListAction.java May 6, 2010 1:28:06 PM
+ * @version $ GetProgramValidationListAction.java Apr 28, 2011 11:19:56 AM $
  */
-public class GetProgramStageDEValidationListAction
+public class GetProgramValidationListAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageDataElementValidationService programStageDataElementValidationService;
+    private ProgramValidationService programValidationService;
+
+    private ProgramService programService;
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input && Output
     // -------------------------------------------------------------------------
 
-    private Collection<ProgramStageDataElementValidation> validations;
+    private Integer programId;
+
+    private Collection<ProgramValidation> validations;
 
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
 
-    public void setProgramStageDataElementValidationService(
-        ProgramStageDataElementValidationService programStageDataElementValidationService )
+    public void setProgramService( ProgramService programService )
     {
-        this.programStageDataElementValidationService = programStageDataElementValidationService;
+        this.programService = programService;
     }
 
-    public Collection<ProgramStageDataElementValidation> getValidations()
+    public Collection<ProgramValidation> getValidations()
     {
         return validations;
     }
 
+    public void setProgramValidationService( ProgramValidationService programValidationService )
+    {
+        this.programValidationService = programValidationService;
+    }
+
+    public Integer getProgramId()
+    {
+        return programId;
+    }
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
+    }
+
     // -------------------------------------------------------------------------
-    // Action Implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
+
 
     @Override
     public String execute()
         throws Exception
     {
-        validations = programStageDataElementValidationService.getAllProgramStageDataElementValidations();
+        Program program = programService.getProgram( programId );
+
+        validations = programValidationService.getProgramValidation( program );
 
         return SUCCESS;
     }
+
 }

@@ -51,14 +51,6 @@ public class ProgramStageDataElementDeletionHandler
         this.programStageDEService = programStageDEService;
     }
 
-    ProgramStageDataElementValidationService programStageDEValidationService;
-
-    public void setProgramStageDEValidationService(
-        ProgramStageDataElementValidationService programStageDEValidationService )
-    {
-        this.programStageDEValidationService = programStageDEValidationService;
-    }
-
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -72,18 +64,6 @@ public class ProgramStageDataElementDeletionHandler
     @Override
     public void deleteProgram( Program program )
     {
-        // ---------------------------------------------------------------------
-        // Delete Program Stage data element validations
-        // ---------------------------------------------------------------------
-
-        Collection<ProgramStageDataElementValidation> validations = programStageDEValidationService
-            .getProgramStageDataElementValidations( program );
-
-        for ( ProgramStageDataElementValidation validation : validations )
-        {
-            programStageDEValidationService.deleteProgramStageDataElementValidation( validation );
-        }
-
         // ---------------------------------------------------------------------
         // Delete Program Stage data elements
         // ---------------------------------------------------------------------
@@ -107,18 +87,6 @@ public class ProgramStageDataElementDeletionHandler
     @Override
     public void deleteProgramStage( ProgramStage programStage )
     {
-        // ---------------------------------------------------------------------
-        // Delete Program Stage data element validations
-        // ---------------------------------------------------------------------
-
-        Collection<ProgramStageDataElementValidation> validations = programStageDEValidationService
-            .getProgramStageDataElementValidations( programStage );
-
-        for ( ProgramStageDataElementValidation validation : validations )
-        {
-            programStageDEValidationService.deleteProgramStageDataElementValidation( validation );
-        }
-
         // ---------------------------------------------------------------------
         // Delete Program Stage data elements
         // ---------------------------------------------------------------------

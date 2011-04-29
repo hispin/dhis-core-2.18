@@ -27,56 +27,90 @@
 
 package org.hisp.dhis.patient.action.validation;
 
-import org.hisp.dhis.program.ProgramStageDataElementValidation;
-import org.hisp.dhis.program.ProgramStageDataElementValidationService;
+import org.hisp.dhis.program.ProgramValidation;
+import org.hisp.dhis.program.ProgramValidationService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version AddProgramStageDataElementValidation.java May 6, 2010 1:28:06 PM
+ * @version $ UpdateProgramValidationAction.java Apr 28, 2011 11:24:43 AM $
  */
-public class RemoveProgramStageDEValidationAction
+public class UpdateProgramValidationAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageDataElementValidationService validationService;
+    private ProgramValidationService programValidationService;
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Integer id;
+
+    private String description;
+
+    private String leftSide;
+
+    private String rightSide;
+
+    private Integer programId;
 
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
 
-    public void setValidationService( ProgramStageDataElementValidationService validationService )
+    public void setProgramValidationService( ProgramValidationService programValidationService )
     {
-        this.validationService = validationService;
+        this.programValidationService = programValidationService;
     }
 
-    public void setId( int id )
+    public Integer getProgramId()
+    {
+        return programId;
+    }
+
+    public void setId( Integer id )
     {
         this.id = id;
     }
 
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    public void setLeftSide( String leftSide )
+    {
+        this.leftSide = leftSide;
+    }
+
+    public void setRightSide( String rightSide )
+    {
+        this.rightSide = rightSide;
+    }
+
     // -------------------------------------------------------------------------
-    // Action Implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
     @Override
     public String execute()
         throws Exception
     {
-        ProgramStageDataElementValidation validation = validationService.getProgramStageDataElementValidation( id );
-        
-        validationService.deleteProgramStageDataElementValidation( validation );
+        ProgramValidation validation = programValidationService.getProgramValidation( id );
+
+        programId = validation.getProgram().getId();
+
+        validation.setDescription( description );
+        validation.setLeftSide( leftSide );
+        validation.setRightSide( rightSide );
+        programValidationService.updateProgramValidation( validation );
 
         return SUCCESS;
     }
+
 }

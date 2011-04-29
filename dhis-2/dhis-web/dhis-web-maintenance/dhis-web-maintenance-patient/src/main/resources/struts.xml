@@ -742,19 +742,6 @@
 			<result name="success" type="redirect">program.action</result>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
-	
-		<!-- Program_ValidationDE Association -->
-
-		<action name="defineValidationDEAssociationsForm"
-			class="org.hisp.dhis.patient.action.program.ShowValidationDEAssociationsFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/validationDEAssociations.vm</param>
-			<param name="javascripts">
-				javascript/program.js
-				,javascript/programStageDEValidation.js
-			</param>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
-		</action>
 		
 		<!-- ProgramStage -->
 
@@ -1166,27 +1153,59 @@
 				validationCriteria.action</result>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
-
-		<!-- Validation - ProgramStageDataElementValidation -->
-
-		<action name="programStageDEValidation"
-			class="org.hisp.dhis.patient.action.validation.GetProgramStageDEValidationListAction">
+		
+		<!-- Program Validation -->
+		
+		<action name="programValidation"
+			class="org.hisp.dhis.patient.action.validation.GetProgramValidationListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programStageDataElementValidation.vm</param>
+			<param name="page">/dhis-web-maintenance-patient/programValidationList.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
-			<param name="javascripts">javascript/programStageDEValidation.js</param>
+			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
-
-		<action name="addProgramStageDEValidation"
-			class="org.hisp.dhis.patient.action.validation.AddProgramStageDEValidationAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-patient/loadValidationDEAssociation.vm</result>
+		
+		<action name="showAddProgramValidationForm"
+			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/addProgramValidationForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
-
-		<action name="removeProgramStageDEValidation"
-			class="org.hisp.dhis.patient.action.validation.RemoveProgramStageDEValidationAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		
+		<action name="addProgramValidation"
+			class="org.hisp.dhis.patient.action.validation.AddProgramValidationAction">
+			<result name="success" type="redirect">programValidation.action?programId=${programId}</result>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
+		</action>
+		
+		<action name="showUpdateProgramValidationForm"
+			class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/updateProgramValidationForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
+		</action>
+		
+		<action name="updateProgramValidation"
+			class="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction">
+			<result name="success" type="redirect">programValidation.action?programId=${programId}</result>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
+		</action>
+		
+		<action name="removeProgramValidation"
+			class="org.hisp.dhis.patient.action.validation.RemoveProgramValidationAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
+		</action>
+		
+		<action name="getProgramValidation"
+			class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseProgramValidation.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<!-- Configuration -->
