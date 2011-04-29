@@ -44,11 +44,12 @@
 </xsl:template>
 
 <xsl:template match="gml:featureMember">
+  <xsl:variable name="name" select=".//*[local-name()='Name' or local-name()='NAME' or local-name()='name']"/>
   <organisationUnit>
     <id>0</id>
     <uuid/>
-    <name><xsl:value-of select=".//*[local-name()='Name']"/></name>
-    <shortName><xsl:value-of select=".//*[local-name()='Name']"/></shortName>
+    <name><xsl:value-of select="$name"/></name>
+    <shortName><xsl:value-of select="$name"/></shortName>
     <code/>
     <openingDate/>
     <closedDate/>
