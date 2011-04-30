@@ -61,11 +61,13 @@
     </set>
 
     <set name="groups" table="orgunitgroupmembers" inverse="true">
+      <cache usage="read-write" />
       <key column="organisationunitid" />
       <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid" />
     </set>
 
     <set name="users" table="usermembership" inverse="true">
+      <cache usage="read-write" />
       <key column="organisationunitid" />
       <many-to-many class="org.hisp.dhis.user.User" column="userinfoid" />
     </set>

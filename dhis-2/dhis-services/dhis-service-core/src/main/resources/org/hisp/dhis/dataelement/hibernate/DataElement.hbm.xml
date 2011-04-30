@@ -54,6 +54,7 @@
     <property name="lastUpdated" />
 
     <set name="groups" table="dataelementgroupmembers" inverse="true">
+      <cache usage="read-write" />
       <key column="dataelementid" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElementGroup" column="dataelementgroupid" />
     </set>
