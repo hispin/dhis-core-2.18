@@ -42,7 +42,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -216,8 +215,7 @@ public class DefaultOrganisationUnitService
             level++;
         }
 
-        List<OrganisationUnit> childList = new ArrayList<OrganisationUnit>( parent.getChildren() );
-        Collections.sort( childList, new OrganisationUnitNameComparator() );
+        List<OrganisationUnit> childList = parent.getSortedChildren();
         
         for ( OrganisationUnit child : childList )
         {
