@@ -63,12 +63,5 @@
       <many-to-many class="org.hisp.dhis.indicator.IndicatorGroup" column="indicatorgroupid" />
     </set>
 
-    <list name="groupSets" table="indicator_indicatorgroupsetmembers">
-      <key column="indicatorid" />
-      <list-index column="sort_order" base="0" />
-      <many-to-many class="org.hisp.dhis.indicator.IndicatorGroupSet" column="indicatorgroupsetid"
-        foreign-key="fk_indicator_indicatorgroupsetid" />
-    </list>
-
   </class>
 </hibernate-mapping>
