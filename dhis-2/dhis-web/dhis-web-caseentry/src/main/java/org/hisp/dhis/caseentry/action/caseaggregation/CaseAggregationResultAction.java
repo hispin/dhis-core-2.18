@@ -34,8 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.caseentry.state.PeriodGenericManager;
@@ -60,8 +58,6 @@ import com.opensymphony.xwork2.Action;
 public class CaseAggregationResultAction
     implements Action
 {
-    Log log = LogFactory.getLog( getClass() );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

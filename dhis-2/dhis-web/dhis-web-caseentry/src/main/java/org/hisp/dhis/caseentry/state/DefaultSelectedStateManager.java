@@ -222,5 +222,4 @@ public class DefaultSelectedStateManager
     {
         return ActionContext.getContext().getSession();
     }
-
 }

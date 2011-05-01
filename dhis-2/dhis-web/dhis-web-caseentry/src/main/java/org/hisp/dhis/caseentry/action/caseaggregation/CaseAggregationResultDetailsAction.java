@@ -151,5 +151,4 @@ public class CaseAggregationResultDetailsAction
         
         return SUCCESS;
     }
-
 }

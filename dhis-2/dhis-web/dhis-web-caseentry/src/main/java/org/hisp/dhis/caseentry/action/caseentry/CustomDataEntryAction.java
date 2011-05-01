@@ -32,8 +32,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.screen.DataEntryScreenManager;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
@@ -62,15 +60,10 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Viet Nguyen
- * @version $Id$
- * 
  */
-
 public class CustomDataEntryAction
     implements Action
 {
-    Log log = LogFactory.getLog( CustomDataEntryAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

@@ -263,8 +263,7 @@ public class DataEntryAction
             optionMap.put( dataElement.getId(), dataElement.getCategoryCombo().getOptionCombos() );
         }
 
-        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program,
-            false );
+        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program, false );
 
         programInstance = progamInstances.iterator().next();
 
