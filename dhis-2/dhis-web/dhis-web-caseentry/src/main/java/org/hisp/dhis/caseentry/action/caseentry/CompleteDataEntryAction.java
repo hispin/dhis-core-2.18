@@ -38,8 +38,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Viet Nguyen
- * 
- * @version $Id$
  */
 public class CompleteDataEntryAction
     implements Action
@@ -157,5 +155,4 @@ public class CompleteDataEntryAction
         
         return SUCCESS;
     }
-
 }

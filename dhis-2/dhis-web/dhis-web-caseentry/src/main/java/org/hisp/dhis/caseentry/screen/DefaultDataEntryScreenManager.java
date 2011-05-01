@@ -56,13 +56,11 @@ import org.hisp.dhis.program.ProgramStageService;
 
 /**
  * @author Viet Nguyen
- * @version $Id$
  */
 public class DefaultDataEntryScreenManager
     implements DataEntryScreenManager
 {
-
-    Log logger = LogFactory.getLog( getClass() );
+    private static final Log log = LogFactory.getLog( DefaultDataEntryScreenManager.class );
 
     private static final String DEFAULT_FORM = "defaultform";
 
@@ -1048,11 +1046,11 @@ public class DefaultDataEntryScreenManager
                 
                 appendCode += metaDataCode;
 
-                // -----------------------------------------------------------
+                // -------------------------------------------------------------
                 // Check if this dataElement is from another programStage then
                 // disable
                 // If programStagsInstance is completed then disabled it
-                // -----------------------------------------------------------
+                // -------------------------------------------------------------
                 
                 disabled = "";
                 if ( programStageId != programStage.getId() || programStageInstance.isCompleted() )
@@ -1063,16 +1061,17 @@ public class DefaultDataEntryScreenManager
                 {
                     appendCode += jQueryCalendar;
 
-                    // -----------------------------------------------------------
+                    // ---------------------------------------------------------
                     // Add ProvidedByOtherFacility checkbox
-                    // -----------------------------------------------------------
+                    // ---------------------------------------------------------
+                    
                     appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
 
                 }
 
-                // -----------------------------------------------------------
+                // -------------------------------------------------------------
                 // Get Org Unit name
-                // -----------------------------------------------------------
+                // -------------------------------------------------------------
                 
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
@@ -1116,6 +1115,47 @@ public class DefaultDataEntryScreenManager
         return sb.toString();
     }
 
+    @Override
+    public Collection<ProgramStageDataElement> getProgramStageDataElements( String htmlCode )
+    {
+        Set<ProgramStageDataElement> result = new HashSet<ProgramStageDataElement>();
+
+        Pattern identifierPattern = Pattern
+            .compile( "id=\"value\\[([\\p{Digit}.]*)\\].(value|boolean|combo|date):value\\[([\\p{Digit}.]*)\\].(value|boolean|combo|date)\"" );
+
+        Matcher matcher = identifierPattern.matcher( htmlCode );
+
+        while ( matcher.find() )
+        {
+            String replaceString = matcher.group();
+            replaceString = replaceString.replaceAll( "[\\\"\\=\\.\\[\\]]|value|date|id|combo|boolean", "" );
+
+            Integer programStageId = Integer.parseInt( replaceString.split( ":" )[0] );
+            Integer dataElementId = Integer.parseInt( replaceString.split( ":" )[1] );
+
+            ProgramStage programStage = programStageService.getProgramStage( programStageId );
+
+            if ( programStage == null )
+            {
+                log.error( "program stage id : " + programStageId + " does not exist" );
+            }
+
+            DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+            if ( dataElement == null )
+            {
+                log.error( "data element id : " + programStageId + " does not exist" );
+            }
+
+            ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
+                dataElement );
+
+            result.add( programStageDataElement );
+        }
+
+        return result;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -1202,6 +1242,13 @@ public class DefaultDataEntryScreenManager
 
     }
 
+    /**
+     * Replaces i18n string in the custom form code.
+     * 
+     * @param dataEntryFormCode the data entry form html.
+     * @param i18n the I18n object.
+     * @return internationalized data entry form html.
+     */
     private String populateI18nStrings( String dataEntryFormCode, I18n i18n )
     {
         StringBuffer sb = new StringBuffer();
@@ -1236,46 +1283,4 @@ public class DefaultDataEntryScreenManager
 
         return result;
     }
-
-    @Override
-    public Collection<ProgramStageDataElement> getProgramStageDataElements( String htmlCode )
-    {
-        Set<ProgramStageDataElement> result = new HashSet<ProgramStageDataElement>();
-
-        Pattern identifierPattern = Pattern
-            .compile( "id=\"value\\[([\\p{Digit}.]*)\\].(value|boolean|combo|date):value\\[([\\p{Digit}.]*)\\].(value|boolean|combo|date)\"" );
-
-        Matcher matcher = identifierPattern.matcher( htmlCode );
-
-        while ( matcher.find() )
-        {
-            String replaceString = matcher.group();
-            replaceString = replaceString.replaceAll( "[\\\"\\=\\.\\[\\]]|value|date|id|combo|boolean", "" );
-
-            Integer programStageId = Integer.parseInt( replaceString.split( ":" )[0] );
-            Integer dataElementId = Integer.parseInt( replaceString.split( ":" )[1] );
-
-            ProgramStage programStage = programStageService.getProgramStage( programStageId );
-
-            if ( programStage == null )
-            {
-                logger.error( "program stage id : " + programStageId + " does not exist" );
-            }
-
-            DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
-            if ( dataElement == null )
-            {
-                logger.error( "data element id : " + programStageId + " does not exist" );
-            }
-
-            ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
-                dataElement );
-
-            result.add( programStageDataElement );
-        }
-
-        return result;
-    }
-
 }

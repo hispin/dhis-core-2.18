@@ -37,7 +37,6 @@ import java.util.Set;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -61,7 +60,6 @@ import com.opensymphony.xwork2.Action;
 public class ValidateProgramInstanceAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -79,8 +77,6 @@ public class ValidateProgramInstanceAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
-    private I18nFormat format;
 
     private I18n i18n;
 
@@ -114,11 +110,6 @@ public class ValidateProgramInstanceAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
-    }
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
@@ -170,8 +161,7 @@ public class ValidateProgramInstanceAction
 
         ProgramStage programStage = selectedStateManager.getSelectedProgramStage();
 
-        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program,
-            false );
+        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program, false );
 
         ProgramInstance programInstance = progamInstances.iterator().next();
 
@@ -181,17 +171,15 @@ public class ValidateProgramInstanceAction
         // ---------------------------------------------------------------------
         // Get selected objects
         // ---------------------------------------------------------------------
+        
         Set<ProgramStageDataElement> dataElements = programStage.getProgramStageDataElements();
 
         for ( ProgramStageDataElement psDataElement : dataElements )
         {
             DataElement dataElement = psDataElement.getDataElement();
             
-            // resultDEMultiStages
             checkDataElementInMultiStage( programStageInstance, organisationUnit, dataElement );
-
         }
-        // end Check validation for dataElement into the Stage
 
         // ---------------------------------------------------------------------
         // Check validations for dataelement into multi-stages
@@ -243,11 +231,9 @@ public class ValidateProgramInstanceAction
     }
 
     private void runProgramValidation( Collection<ProgramValidation> validations, ProgramInstance programInstance )
-        throws Exception
     {
         if ( validations != null )
         {
-
             for ( ProgramValidation validation : validations )
             {
                 boolean valid = programValidationService.runValidation( validation, programInstance );
@@ -258,27 +244,5 @@ public class ValidateProgramInstanceAction
                 }
             }
         }
-
     }
-
-    private Object getObject( String type, String value )
-        throws Exception
-    {
-        if ( type.equals( DataElement.VALUE_TYPE_INT ) )
-        {
-            return Integer.valueOf( value );
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_BOOL ) )
-        {
-            return Boolean.valueOf( value );
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_DATE ) )
-        {
-            return format.parseDate( value.trim() );
-        }
-
-        return value;
-
-    }
-
 }

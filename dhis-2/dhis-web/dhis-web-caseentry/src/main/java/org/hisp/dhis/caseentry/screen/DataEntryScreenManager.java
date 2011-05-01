@@ -1,5 +1,3 @@
-package org.hisp.dhis.caseentry.screen;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -26,6 +24,9 @@ package org.hisp.dhis.caseentry.screen;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package org.hisp.dhis.caseentry.screen;
+
 import java.util.Collection;
 import java.util.Map;
 

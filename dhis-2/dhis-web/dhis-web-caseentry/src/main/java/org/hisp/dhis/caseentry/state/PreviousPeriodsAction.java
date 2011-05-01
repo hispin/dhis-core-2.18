@@ -35,10 +35,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: PreviousPeriodsAction.java 2966 2007-03-03 14:38:20Z torgeilo $
- *          *
- * @modifier Dang Duy Hieu
- * @since 2009-10-14
+ * @author Dang Duy Hieu
  */
 public class PreviousPeriodsAction
     implements Action
@@ -107,5 +104,4 @@ public class PreviousPeriodsAction
 
         return SUCCESS;
     }
-
 }

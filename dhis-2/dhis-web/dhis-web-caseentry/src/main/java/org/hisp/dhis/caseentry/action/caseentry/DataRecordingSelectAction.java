@@ -31,8 +31,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -55,8 +53,6 @@ import com.opensymphony.xwork2.Action;
 public class DataRecordingSelectAction
     implements Action
 {
-    Log log = LogFactory.getLog( DataRecordingSelectAction.class );
-
     private static final String DATAENTRY_FORM = "dataentryform";
 
     private static final String CUSTOM_DATAENTRY_FORM = "customentryform";
