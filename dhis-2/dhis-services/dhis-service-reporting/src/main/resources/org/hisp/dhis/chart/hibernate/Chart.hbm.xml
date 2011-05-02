@@ -32,6 +32,8 @@
 
     <property name="targetLineValue" />
 
+    <property name="targetLineLabel" />
+
     <list name="indicators" table="chart_indicators">
       <cache usage="read-write" />
       <key column="chartid" />
