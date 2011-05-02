@@ -38,19 +38,20 @@
     </set>
 
     <set name="programs" table="patient_programs">
-      <key column="patientid" />
+      <key column="patientid" foreign-key="fk_patient_programs_patientid" />
       <many-to-many class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_patient_programid" />
     </set>
 
     <set name="attributes" table="patient_attributes">
-      <key column="patientid" />
+      <key column="patientid" foreign-key="fk_patient_attributes_patientid" />
       <many-to-many class="org.hisp.dhis.patient.PatientAttribute" column="patientattributeid" foreign-key="fk_patient_patientattributeid" />
     </set>
 
     <many-to-one name="representative" class="org.hisp.dhis.patient.Patient" column="representativeid"
       foreign-key="fk_representativeid" />
 
-    <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid" />
+    <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
+      foreign-key="fk_patient_organisationunitid" />
 
   </class>
 </hibernate-mapping>

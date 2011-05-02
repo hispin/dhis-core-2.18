@@ -18,17 +18,17 @@
 
     <set name="members" table="userrolemembers" inverse="true">
       <key column="userroleid" />
-      <many-to-many column="userid" class="org.hisp.dhis.user.UserCredentials" foreign-key="fk_userid" />
+      <many-to-many column="userid" class="org.hisp.dhis.user.UserCredentials"/>
     </set>
 
     <set name="authorities" table="userroleauthorities">
-      <key column="userroleid" />
+      <key column="userroleid" foreign-key="fk_userroleauthorities_userroleid" />
       <element type="string" column="authority" />
     </set>
 
     <set name="dataSets" table="userroledataset">
-      <key column="userroleid" />
-      <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet" foreign-key="fk_datasetid" />
+      <key column="userroleid" foreign-key="fk_userroledataset_userroleid" />
+      <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet" foreign-key="fk_userroledataset_datasetid" />
     </set>
 
   </class>

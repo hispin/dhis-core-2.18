@@ -19,7 +19,7 @@
     <property name="description" type="text" />
 
     <set name="members" table="validationrulegroupmembers">
-      <key column="validationgroupid" />
+      <key column="validationgroupid" foreign-key="fk_validationrulegroupmembers_validationrulegroupid" />
       <many-to-many class="org.hisp.dhis.validation.ValidationRule" column="validationruleid"
         foreign-key="fk_validationrulegroup_validationruleid" />
     </set>
