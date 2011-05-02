@@ -218,7 +218,7 @@ public class SearchPatientAction
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
         
-        getParamsToSearch();      
+        setParamsToSearch();      
 
         // ---------------------------------------------------------------------
         // Get all of patient into the selected organisation unit
@@ -330,14 +330,12 @@ public class SearchPatientAction
         searchText = selectedStateManager.getSearchText();
         program = selectedStateManager.getSelectedProgram();
 
-        getParamsToSearch();
+        setParamsToSearch();
 
         if ( listAll )
         {
             listAllPatient( organisationUnit, sortingPatientAttribute );
-
             return SUCCESS;
-
         }
 
         if ( searchingAttributeId != null && searchingAttributeId == 0 && program != null )
@@ -365,7 +363,7 @@ public class SearchPatientAction
     // Supporting methods
     // -------------------------------------------------------------------------
 
-    private void getParamsToSearch()
+    private void setParamsToSearch()
     {
         // ---------------------------------------------------------------------
         // Get sorting patient-attribute
@@ -414,7 +412,6 @@ public class SearchPatientAction
         PatientAttribute sortingPatientAttribute )
     {
         total = patientService.countGetPatientsByOrgUnitProgram( organisationUnit, program );
-
         this.paging = createPaging( total );
 
         patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, program, paging.getStartPos(),
@@ -424,7 +421,7 @@ public class SearchPatientAction
         {
             for ( Patient patient : patients )
             {
-//                mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+                // mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
 
                 if ( sortingPatientAttribute != null )
                 {

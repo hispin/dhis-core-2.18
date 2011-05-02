@@ -183,9 +183,9 @@ public class HibernatePatientDataValueStore
     public Collection<PatientDataValue> get( Patient patient, Collection<DataElement> dataElements, Date startDate,
         Date endDate )
     {
-        String hql = "From PatientDataValue pdv where pdv.dataElement in ( :dataElements ) "
-            + "AND pdv.programStageInstance.programInstance.patient = :patient "
-            + "AND pdv.programStageInstance.executionDate >= :startDate AND pdv.programStageInstance.executionDate <= :endDate ";
+        String hql = "from PatientDataValue pdv where pdv.dataElement in ( :dataElements ) "
+            + "and pdv.programStageInstance.programInstance.patient = :patient "
+            + "and pdv.programStageInstance.executionDate >= :startDate and pdv.programStageInstance.executionDate <= :endDate ";
 
         return getQuery( hql ).setParameterList( "dataElements", dataElements ).setEntity( "patient", patient )
             .setDate( "startDate", startDate ).setDate( "endDate", endDate ).list();
