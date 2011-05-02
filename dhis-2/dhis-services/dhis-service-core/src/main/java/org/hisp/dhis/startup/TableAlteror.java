@@ -280,9 +280,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT fke509dd5ef1c932ed" );
         executeSql( "DROP TABLE source CASCADE" );        
 
-        // add columns to chart
-        executeSql( "ALTER TABLE chart ADD COLUMN targetlinelabel varchar(255)" );
-        
         log.info( "Tables updated" );
     }
 
