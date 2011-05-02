@@ -48,50 +48,61 @@ public class Chart
     private static final long serialVersionUID = 2570074075484545534L;
 
     public static final String DIMENSION_PERIOD = "period";
+
     public static final String DIMENSION_ORGANISATIONUNIT = "organisationUnit";
+
     public static final String DIMENSION_INDICATOR = "indicator";
-    
+
     public static final String TYPE_BAR = "bar";
+
     public static final String TYPE_BAR3D = "bar3d";
+
     public static final String TYPE_LINE = "line";
+
     public static final String TYPE_LINE3D = "line3d";
+
     public static final String TYPE_PIE = "pie";
+
     public static final String TYPE_PIE3D = "pie3d";
 
     public static final String SIZE_NORMAL = "normal";
+
     public static final String SIZE_WIDE = "wide";
+
     public static final String SIZE_TALL = "tall";
-        
+
     private int id;
-    
+
     private String title;
-    
+
     private String type;
-    
+
     private String size;
-    
+
     private String dimension;
-    
+
     private Boolean hideLegend;
-    
+
     private Boolean verticalLabels;
-    
+
     private Boolean horizontalPlotOrientation;
-    
+
     private Boolean regression;
-    
+
     private Boolean targetLine;
 
     private Double targetLineValue;
 
+    private String targetLineLabel;
+
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
     private List<Period> periods = new ArrayList<Period>();
-    
+
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-    
+
     private RelativePeriods relatives;
-    
+
     private Boolean userOrganisationUnit;
 
     // -------------------------------------------------------------------------
@@ -101,38 +112,38 @@ public class Chart
     private transient I18nFormat format;
 
     private List<Period> relativePeriods = new ArrayList<Period>();
-    
+
     private List<Period> allPeriods = new ArrayList<Period>();
-    
+
     private OrganisationUnit organisationUnit;
-    
+
     private List<OrganisationUnit> allOrganisationUnits = new ArrayList<OrganisationUnit>();
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
     public Chart()
-    {   
+    {
     }
-    
+
     public Chart( String title )
     {
         this.title = title;
     }
-    
+
     public void init()
     {
         allPeriods.addAll( periods );
         allPeriods.addAll( relativePeriods );
         allOrganisationUnits.addAll( organisationUnits );
-        
+
         if ( organisationUnit != null )
         {
             allOrganisationUnits.add( organisationUnit );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals, toString
     // -------------------------------------------------------------------------
@@ -150,22 +161,22 @@ public class Chart
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         Chart other = (Chart) object;
-        
+
         return title.equals( other.getTitle() );
     }
-    
+
     @Override
     public String toString()
     {
@@ -180,32 +191,32 @@ public class Chart
     {
         return this.type != null && this.type.equals( type );
     }
-    
+
     public boolean isSize( String size )
     {
         return this.size != null && this.size.equals( size );
     }
-    
+
     public boolean isDimension( String dimension )
     {
         return this.dimension != null && this.dimension.equals( dimension );
     }
-    
+
     public boolean isHideLegend()
     {
         return hideLegend != null && hideLegend;
     }
-    
+
     public boolean isVerticalLabels()
     {
         return verticalLabels != null && verticalLabels;
     }
-    
+
     public boolean isHorizontalPlotOrientation()
     {
         return horizontalPlotOrientation != null && horizontalPlotOrientation;
     }
-    
+
     public boolean isRegression()
     {
         return regression != null && regression;
@@ -215,17 +226,17 @@ public class Chart
     {
         return targetLine != null && targetLine;
     }
-    
+
     public int getWidth()
     {
         return isSize( SIZE_WIDE ) ? 1000 : 700;
     }
-    
+
     public int getHeight()
     {
         return isSize( SIZE_TALL ) ? 800 : 500;
     }
-    
+
     public boolean isUserOrganisationUnit()
     {
         return userOrganisationUnit != null && userOrganisationUnit;
@@ -239,12 +250,12 @@ public class Chart
     {
         return title;
     }
-    
+
     public void setName( String name )
     {
         this.title = name;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -353,12 +364,26 @@ public class Chart
     {
         this.targetLineValue = targetLineValue;
     }
-    
+
     public Double getTargetLineValue()
     {
         return targetLineValue;
     }
-    
+
+    public void setTargetLineLabel( String targetLineLabel )
+    {
+        this.targetLineLabel = targetLineLabel;
+    }
+
+    public String getTargetLineLabel()
+    {
+        if(targetLineLabel == null || targetLineLabel.length() == 0) {
+            targetLineLabel = "Target Line";
+        }
+        
+        return targetLineLabel;
+    }
+
     public List<Indicator> getIndicators()
     {
         return indicators;

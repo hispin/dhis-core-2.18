@@ -166,6 +166,12 @@ public class SaveChartAction
         this.targetLineValue = targetLineValue;
     }
 
+    private String targetLineLabel;
+    
+    public void setTargetLineLabel( String targetLineLabel ) {
+        this.targetLineLabel = targetLineLabel;
+    }
+
     private boolean userOrganisationUnit;
 
     public void setUserOrganisationUnit( boolean userOrganisationUnit )
@@ -277,6 +283,7 @@ public class SaveChartAction
         chart.setRegression( regression );
         chart.setTargetLine( targetLine );
         chart.setTargetLineValue( targetLineValue );
+        chart.setTargetLineLabel( targetLineLabel );
         chart.setUserOrganisationUnit( userOrganisationUnit );
         chart.setIndicators( indicators );
         chart.setPeriods( periods );

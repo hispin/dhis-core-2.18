@@ -2,11 +2,18 @@
 	jQuery(document).ready(function() {
 		if( jQuery("#targetLine").attr("checked") !== true )
 		{
-			jQuery("#targetLineValueTr").hide();
+			jQuery("#targetLineValue").attr("disabled", "disabled");
+			jQuery("#targetLineLabel").attr("disabled", "disabled");
 		}
-	
+
 		jQuery("#targetLine").change(function() {
-			jQuery("#targetLineValueTr").toggle();		
+			if(jQuery("#targetLineValue").attr("disabled")) {
+				jQuery("#targetLineValue").removeAttr("disabled");
+				jQuery("#targetLineLabel").removeAttr("disabled");
+			} else {
+				jQuery("#targetLineValue").attr("disabled", "disabled");
+				jQuery("#targetLineLabel").attr("disabled", "disabled");
+			}
 		});
 	});
 
@@ -85,9 +92,13 @@
         <td><label for="targetLine">$i18n.getString( "include_target_line" )</label></td>
         <td><input type="checkbox" id="targetLine" name="targetLine" value="true"#if( $!chart.targetLine ) checked#end></td>
     </tr>
-    <tr id="targetLineValueTr">
+    <tr>
         <td><label for="targetLineValue">$i18n.getString( "target_line_value" )</label></td>
         <td><input type="text" id="targetLineValue" name="targetLineValue" style="width:80px" value="$!chart.targetLineValue"></td>
+    </tr>
+    <tr>
+        <td><label for="targetLineLabel">$i18n.getString( "target_line_label" )</label></td>
+        <td><input type="text" id="targetLineLabel" name="targetLineLabel" style="width:80px" value="$!chart.targetLineLabel"></td>
     </tr>
     #if ( $currentUser && $currentUser.hasOrganisationUnit() )
     <tr>
