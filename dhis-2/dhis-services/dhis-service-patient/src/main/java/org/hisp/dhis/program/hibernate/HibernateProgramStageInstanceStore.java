@@ -97,20 +97,36 @@ public class HibernateProgramStageInstanceStore
         String hql = "from ProgramStageInstance where programInstance.patient.organisationUnit = :unit";
 
         if ( after != null )
+        {
             hql += " and dueDate >= :after";
+        }
+        
         if ( before != null )
+        {
             hql += " and dueDate <= :before";
+        }
+        
         if ( completed != null )
+        {
             hql += " and completed = :completed";
+        }
 
         Query q = getQuery( hql ).setEntity( "unit", unit );
 
         if ( after != null )
+        {
             q.setDate( "after", after );
+        }
+        
         if ( before != null )
+        {
             q.setDate( "before", before );
+        }
+        
         if ( completed != null )
+        {
             q.setBoolean( "completed", completed );
+        }
 
         return q.list();
     }
@@ -119,10 +135,7 @@ public class HibernateProgramStageInstanceStore
     public List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed )
     {
         String hql = "from ProgramStageInstance where programInstance.patient = :patient and completed = :completed";
-        Query q = getQuery( hql );
-        q.setEntity( "patient", patient );
-        q.setBoolean( "completed", completed );
-        return q.list();
+        
+        return getQuery( hql ).setEntity( "patient", patient ).setBoolean( "completed", completed ).list();
     }
-
 }
