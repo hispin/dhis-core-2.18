@@ -26,13 +26,13 @@
     </set>
 
     <set name="organisationUnits" table="program_organisationunits">
-      <key column="programid" />
-      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" />
+      <key column="programid" foreign-key="fk_program_organisationunits_programid" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_program_organisationunits_organisationunitid" />
     </set>
 
     <set name="patientValidationCriteria" table="program_criteria">
-      <key column="programid" />
-      <many-to-many column="validationcriteriaid" class="org.hisp.dhis.validation.ValidationCriteria" />
+      <key column="programid" foreign-key="fk_program_criteria_programid" />
+      <many-to-many column="validationcriteriaid" class="org.hisp.dhis.validation.ValidationCriteria" foreign-key="fk_program_criteria_validationcriteriaid" />
     </set>
 
     <property name="minDaysAllowedInputData" />

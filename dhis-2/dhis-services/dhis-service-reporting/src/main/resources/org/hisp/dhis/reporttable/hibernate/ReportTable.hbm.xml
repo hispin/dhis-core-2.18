@@ -20,23 +20,23 @@
 
     <list name="dataElements" table="reporttable_dataelements">
       <cache usage="read-write" />
-      <key column="reporttableid" />
+      <key column="reporttableid" foreign-key="fk_reporttable_dataelements_reporttableid" />
       <list-index column="sort_order" base="0" />
-      <many-to-many column="dataelementid" class="org.hisp.dhis.dataelement.DataElement" />
+      <many-to-many column="dataelementid" class="org.hisp.dhis.dataelement.DataElement" foreign-key="fk_reporttable_dataelements_dataelementid" />
     </list>
 
     <list name="indicators" table="reporttable_indicators">
       <cache usage="read-write" />
-      <key column="reporttableid" />
+      <key column="reporttableid" foreign-key="fk_reporttable_indicators_reporttableid" />
       <list-index column="sort_order" base="0" />
-      <many-to-many column="indicatorid" class="org.hisp.dhis.indicator.Indicator" />
+      <many-to-many column="indicatorid" class="org.hisp.dhis.indicator.Indicator" foreign-key="fk_reporttable_indicators_indicatorid" />
     </list>
 
     <list name="dataSets" table="reporttable_datasets">
       <cache usage="read-write" />
-      <key column="reporttableid" />
+      <key column="reporttableid" foreign-key="fk_reporttable_datasets_reporttableid" />
       <list-index column="sort_order" base="0" />
-      <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet" />
+      <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet" foreign-key="fk_reporttable_datasets_datasetid" />
     </list>
 
     <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo" column="categorycomboid"
@@ -44,16 +44,16 @@
 
     <list name="periods" table="reporttable_periods">
       <cache usage="read-write" />
-      <key column="reporttableid" />
+      <key column="reporttableid" foreign-key="fk_reporttable_periods_reporttableid" />
       <list-index column="sort_order" base="0" />
-      <many-to-many column="periodid" class="org.hisp.dhis.period.Period" />
+      <many-to-many column="periodid" class="org.hisp.dhis.period.Period" foreign-key="fk_reporttable_periods_periodid" />
     </list>
 
     <list name="units" table="reporttable_organisationunits">
       <cache usage="read-write" />
-      <key column="reporttableid" />
+      <key column="reporttableid" foreign-key="fk_reporttable_organisationunits_reporttableid" />
       <list-index column="sort_order" base="0" />
-      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_reporttable_organisationunits_organisationunitid" />
     </list>
 
     <property name="doIndicators" />

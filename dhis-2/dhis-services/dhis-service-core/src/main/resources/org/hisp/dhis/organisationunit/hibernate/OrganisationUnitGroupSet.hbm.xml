@@ -21,7 +21,7 @@
 
     <set name="organisationUnitGroups" table="orgunitgroupsetmembers">
       <cache usage="read-write" />
-      <key column="orgunitgroupsetid" />
+      <key column="orgunitgroupsetid" foreign-key="fk_orgunitgroupsetmembers_orgunitgroupsetid" />
       <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid"
         foreign-key="fk_orgunitgroupset_orgunitgroupid" />
     </set>

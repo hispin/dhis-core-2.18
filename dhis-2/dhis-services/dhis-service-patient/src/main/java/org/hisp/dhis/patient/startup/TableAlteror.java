@@ -35,7 +35,6 @@ import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
@@ -137,8 +136,7 @@ public class TableAlteror
         }
         catch ( Exception ex )
         {
-            ex.printStackTrace();
-            log.error( ex );
+            log.debug( ex );
         }
         finally
         {
@@ -196,7 +194,7 @@ public class TableAlteror
         }
         catch ( Exception ex )
         {
-            log.error( ex );
+            log.debug( ex );
         }
         finally
         {

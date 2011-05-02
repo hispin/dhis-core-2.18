@@ -14,18 +14,18 @@
 
     <property name="name" not-null="true" unique-key="key_sectionnamedataset" />
 
-    <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid" unique-key="key_sectionnamedataset" />
+    <many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid" unique-key="key_sectionnamedataset" foreign-key="fk_section_datasetid" />
 
     <list name="dataElements" table="sectiondataelements">
       <cache usage="read-write" />
-      <key column="sectionid" />
+      <key column="sectionid" foreign-key="fk_sectiondataelements_sectionid" />
       <list-index column="sort_order" base="1" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_section_dataelementid" />
     </list>
 
     <set name="greyedFields" table="sectiongreyedfields">
       <cache usage="read-write" />
-      <key column="sectionid" />
+      <key column="sectionid" foreign-key="fk_sectiongreyedfields_sectionid" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElementOperand" column="dataelementoperandid"
         foreign-key="fk_section_dataelementoperandid" />
     </set>
