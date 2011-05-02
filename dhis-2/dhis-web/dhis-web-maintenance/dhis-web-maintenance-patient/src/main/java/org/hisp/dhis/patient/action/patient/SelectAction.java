@@ -86,7 +86,7 @@ public class SelectAction
             return SUCCESS;
         }
 
-        if ( organisationUnit.isHasPatients() )
+        if ( !organisationUnit.isHasPatients() )
         {
             message = "can_not_register_patient_for_orgunit";
             return SUCCESS;
