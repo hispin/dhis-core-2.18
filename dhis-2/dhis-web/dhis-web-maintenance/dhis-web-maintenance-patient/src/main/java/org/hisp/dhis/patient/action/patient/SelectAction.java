@@ -27,10 +27,7 @@
 
 package org.hisp.dhis.patient.action.patient;
 
-import java.util.Collection;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.Action;
@@ -53,13 +50,6 @@ public class SelectAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -89,10 +79,6 @@ public class SelectAction
     {
         message = "";
         
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
-        
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         if ( organisationUnit == null )
@@ -100,9 +86,7 @@ public class SelectAction
             return SUCCESS;
         }
 
-        Collection<OrganisationUnit> orgunits = organisationUnitService.getOrganisationUnits( true );
-
-        if ( !orgunits.contains( organisationUnit ) )
+        if ( organisationUnit.isHasPatients() )
         {
             message = "can_not_register_patient_for_orgunit";
             return SUCCESS;

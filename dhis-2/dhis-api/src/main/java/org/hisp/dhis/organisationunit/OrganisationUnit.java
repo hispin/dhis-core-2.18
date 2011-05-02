@@ -351,6 +351,11 @@ public class OrganisationUnit
         return dataElements;
     }
     
+    public boolean isHasPatients()
+    {
+        return hasPatients != null && hasPatients;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
