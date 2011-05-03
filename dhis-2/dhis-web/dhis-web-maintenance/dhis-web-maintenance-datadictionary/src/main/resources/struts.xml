@@ -327,8 +327,7 @@
 
 		<action name="showUpdateIndicatorForm"
 			class="org.hisp.dhis.dd.action.indicator.GetIndicatorAction">
-			<result name="success" type="chain">getIndicatorTypeList
-			</result>
+			<result name="success" type="chain">getIndicatorTypeList</result>
 			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
 		</action>
 

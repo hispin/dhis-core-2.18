@@ -64,7 +64,7 @@
 		
 		var key = getFieldValue( "indicator-expression-container input[id=filter]");
 
-		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {aggregationOperator: aggregationOperator, usePaging: true, key: key, includeTotals: true} );	
+		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {aggregationOperator: aggregationOperator, usePaging: true, key: key, includeTotals: true} );
 
 		checkAggregationOperator();
 	}	
