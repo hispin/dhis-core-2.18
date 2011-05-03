@@ -211,8 +211,19 @@ function DataDictionary()
 						}
 
 						html += '</select>';
-					}
 
+						if(currentPage == startPage) {
+							html += '<button type="button" disabled="disabled">Previous page</button>';
+							html += '<button type="button" onclick="dataDictionary.reloadOperands( ' + (parseInt( currentPage ) + 1) + ' )">Next page</button>';
+						} else if(currentPage == numberOfPages) {
+							html += '<button type="button" onclick="dataDictionary.reloadOperands( ' + (parseInt( currentPage ) - 1) + ' )">Previous page</button>';
+							html += '<button type="button" disabled="disabled">Next page</button>';
+						} else {
+							html += '<button type="button" onclick="dataDictionary.reloadOperands( ' + (parseInt( currentPage ) - 1) + ')">Previous page</button>';
+							html += '<button type="button" onclick="dataDictionary.reloadOperands( ' + (parseInt( currentPage ) + 1) + ')">Next page</button>';
+						}
+					}
+					
 					html += 'Size: <input type="text" style="width:50px" onchange="dataDictionary.changeOperandsPageSize( this.value )" value="' + pageSize + '"/></div>';
 					jQuery( '#operandPaging_div' ).remove();
 					jQuery( html ).insertAfter( target );
