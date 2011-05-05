@@ -28,6 +28,7 @@ package org.hisp.dhis.minmax;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -77,6 +78,18 @@ public class MinMaxDataElementDeletionHandler
         for ( MinMaxDataElement element : minMaxDataElementService.getAllMinMaxDataElements() )
         {
             if ( element.getSource().equals( source ) )
+            {
+                minMaxDataElementService.deleteMinMaxDataElement( element );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
+    {
+        for ( MinMaxDataElement element : minMaxDataElementService.getAllMinMaxDataElements() )
+        {
+            if ( element.getOptionCombo().equals( categoryOptionCombo ) )
             {
                 minMaxDataElementService.deleteMinMaxDataElement( element );
             }
