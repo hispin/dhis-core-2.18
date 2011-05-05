@@ -27,18 +27,18 @@ package org.hisp.dhis.dd.action.concept;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
 public class RemoveConceptAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

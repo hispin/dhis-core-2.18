@@ -45,6 +45,11 @@ import com.opensymphony.xwork2.util.TextParseUtil;
 public class PlainTextErrorResult
     implements Result
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 5500263448725254319L;
+
     // -------------------------------------------------------------------------
     // Parameters
     // -------------------------------------------------------------------------

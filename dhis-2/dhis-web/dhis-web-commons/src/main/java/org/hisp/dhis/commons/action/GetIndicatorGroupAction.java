@@ -30,14 +30,14 @@ package org.hisp.dhis.commons.action;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: GetIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z larshelg $
  */
 public class GetIndicatorGroupAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

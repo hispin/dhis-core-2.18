@@ -43,6 +43,11 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 public class StyleInterceptor
     implements Interceptor
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -4046465567852737440L;
+
     private static final String KEY_STYLE = "stylesheet";
 
     private static final String KEY_STYLE_DIRECTORY = "stylesheetDirectory";

@@ -47,14 +47,14 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ConversionUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataValueExportAction
-    extends ActionSupport
+    implements Action
 {
     private final static String FILE_EXTENSION = ".zip";
     private final static String FILE_PREFIX = "Export";

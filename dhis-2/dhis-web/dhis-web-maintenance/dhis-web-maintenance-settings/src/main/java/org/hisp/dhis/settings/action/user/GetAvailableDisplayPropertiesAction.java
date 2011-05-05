@@ -31,14 +31,14 @@ import java.util.List;
 
 import org.hisp.dhis.options.displayproperty.DisplayPropertyManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: GetAvailableDisplayPropertiesAction.java 3264 2007-04-25 14:54:05Z stianast $
  */
 public class GetAvailableDisplayPropertiesAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

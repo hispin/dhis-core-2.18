@@ -52,14 +52,14 @@ import org.hisp.dhis.importexport.ImportType;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ImportAction
-    extends ActionSupport
+    implements Action
 {
     private static final String IMPORT_INTERNAL_PROCESS_ID_POSTFIX = "ImportService";
     

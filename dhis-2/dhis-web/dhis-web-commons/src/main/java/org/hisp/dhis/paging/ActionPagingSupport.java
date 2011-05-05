@@ -36,13 +36,13 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.system.paging.Paging;
 import org.hisp.dhis.util.ContextUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Quang Nguyen
  */
 public abstract class ActionPagingSupport<T>
-    extends ActionSupport
+    implements Action
 {
     protected Integer currentPage;
 

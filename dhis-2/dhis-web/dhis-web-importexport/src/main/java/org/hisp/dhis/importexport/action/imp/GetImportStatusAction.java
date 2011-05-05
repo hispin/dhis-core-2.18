@@ -27,22 +27,29 @@ package org.hisp.dhis.importexport.action.imp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.*;
+import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.TYPE_ANALYSIS;
+import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.TYPE_IMPORT;
+import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.TYPE_PREVIEW;
+import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.getCurrentImportFileName;
+import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.getCurrentRunningProcessType;
+import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.setCurrentRunningProcessType;
 import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_IMPORT;
+import static org.hisp.dhis.util.InternalProcessUtil.getCurrentRunningProcess;
+import static org.hisp.dhis.util.InternalProcessUtil.processIsRunning;
 
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
 import org.amplecode.cave.process.state.MessageState;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetImportStatusAction
-    extends ActionSupport
+    implements Action
 {
     private static final String ACTION_INFO = "info";
     private static final String ACTION_PREVIEW = "preview";

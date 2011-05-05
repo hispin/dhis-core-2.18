@@ -30,6 +30,10 @@ package org.hisp.dhis.web.api.service;
 public class NotAllowedException
     extends Exception
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 2830950542493770883L;
 
     public static final NotAllowedException INVALID_PROGRAM_STAGE = new NotAllowedException( "INVALID_PROGRAM_STAGE" );
 

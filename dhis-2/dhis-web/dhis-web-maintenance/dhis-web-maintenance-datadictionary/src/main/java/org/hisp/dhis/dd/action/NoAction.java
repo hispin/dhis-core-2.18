@@ -27,14 +27,14 @@ package org.hisp.dhis.dd.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: NoAction.java 4279 2007-12-11 18:41:22Z larshelg $
  */
 public class NoAction
-    extends ActionSupport
+    implements Action
 {
     public String execute()
     {

@@ -27,21 +27,24 @@ package org.hisp.dhis.datamart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.util.InternalProcessUtil.*;
+import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_DATAMART;
+import static org.hisp.dhis.util.InternalProcessUtil.getCurrentRunningProcess;
+import static org.hisp.dhis.util.InternalProcessUtil.processIsRunning;
+import static org.hisp.dhis.util.InternalProcessUtil.removeCurrentRunningProcess;
 
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
 import org.amplecode.cave.process.state.MessageState;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetExportStatusAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

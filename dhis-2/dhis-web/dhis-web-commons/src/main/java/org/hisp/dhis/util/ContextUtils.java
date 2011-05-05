@@ -57,7 +57,12 @@ public class ContextUtils
     private static final String PORT_SEPARATOR = ":";
     private static final String PROTOCOL = "http://";
 
-    private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() { {
+    private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() {
+        /**
+         * Determines if a de-serialized file is compatible with this class.
+         */
+        private static final long serialVersionUID = -8332376695197474041L;
+    {
         put( "pdf", CONTENT_TYPE_PDF );
         put( "zip", CONTENT_TYPE_ZIP );
         put( "json", CONTENT_TYPE_JSON );

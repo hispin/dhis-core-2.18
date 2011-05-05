@@ -33,14 +33,14 @@ import static org.hisp.dhis.util.InternalProcessUtil.processIsRunning;
 
 import org.amplecode.cave.process.ProcessCoordinator;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class CancelExportAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

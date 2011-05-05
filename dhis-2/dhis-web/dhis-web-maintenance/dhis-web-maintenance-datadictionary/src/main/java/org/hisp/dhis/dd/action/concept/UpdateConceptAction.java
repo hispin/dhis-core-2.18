@@ -27,17 +27,17 @@ package org.hisp.dhis.dd.action.concept;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.concept.ConceptService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
 public class UpdateConceptAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

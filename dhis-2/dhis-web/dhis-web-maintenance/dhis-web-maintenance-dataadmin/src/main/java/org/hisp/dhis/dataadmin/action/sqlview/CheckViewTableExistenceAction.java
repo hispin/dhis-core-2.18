@@ -30,7 +30,7 @@ package org.hisp.dhis.dataadmin.action.sqlview;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * Updates a existing sqlview in database.
@@ -39,7 +39,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @version $Id CheckViewTableExistenceAction.java July 16, 2010$
  */
 public class CheckViewTableExistenceAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

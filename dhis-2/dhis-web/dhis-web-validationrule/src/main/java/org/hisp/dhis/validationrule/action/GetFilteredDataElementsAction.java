@@ -46,7 +46,7 @@ import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
@@ -54,7 +54,7 @@ import com.opensymphony.xwork2.ActionSupport;
  *          larshelg $
  */
 public class GetFilteredDataElementsAction
-    extends ActionSupport
+    implements Action
 {
     private static final int ALL = 0;
 

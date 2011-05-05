@@ -38,14 +38,14 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.expression.ExpressionService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Oeverland
  * @version $id$
  */
 public class GetDenumAction
-    extends ActionSupport
+    implements Action
 {
     private String formula;
 

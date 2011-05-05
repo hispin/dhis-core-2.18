@@ -35,7 +35,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * Adds a new validation rule to the database.
@@ -45,7 +45,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @version $Id: AddValidationRuleAction.java 3868 2007-11-08 15:11:12Z larshelg $
  */
 public class AddValidationRuleAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

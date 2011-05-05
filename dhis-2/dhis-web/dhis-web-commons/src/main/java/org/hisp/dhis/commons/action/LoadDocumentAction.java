@@ -48,7 +48,7 @@ public class LoadDocumentAction
     extends StreamActionSupport
 {
     private static final Log log = LogFactory.getLog( LoadDocumentAction.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

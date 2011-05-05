@@ -59,14 +59,14 @@ import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetMatchOptionsAction
-    extends ActionSupport  
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Input

@@ -47,6 +47,11 @@ import com.opensymphony.xwork2.Result;
 public class GridXlsResult
     implements Result
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 3030165635768899728L;
+
     private static final String DEFAULT_FILENAME = "Grid.xls";
     
     // -------------------------------------------------------------------------

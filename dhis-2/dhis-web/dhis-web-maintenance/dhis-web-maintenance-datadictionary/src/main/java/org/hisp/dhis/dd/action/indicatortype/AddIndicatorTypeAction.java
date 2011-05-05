@@ -30,7 +30,7 @@ package org.hisp.dhis.dd.action.indicatortype;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -38,7 +38,7 @@ import com.opensymphony.xwork2.ActionSupport;
  *          $
  */
 public class AddIndicatorTypeAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

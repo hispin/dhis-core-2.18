@@ -45,6 +45,11 @@ import com.opensymphony.xwork2.Result;
 public class GridJasperResult
     implements Result
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 7071299079048199227L;
+
     private static final String DEFAULT_FILENAME = "Grid";
 
     // -------------------------------------------------------------------------

@@ -31,7 +31,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * Updates a existing sqlview to the database.
@@ -40,7 +40,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @version $Id ExecuteSqlViewQueryAction.java July 06, 2010$
  */
 public class ExecuteSqlViewQueryAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

@@ -48,6 +48,11 @@ public class XWorkSecurityInterceptor
     extends AbstractSecurityInterceptor
     implements Interceptor
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -3734961911452433836L;
+
     private static final String KEY_ACTION_ACCESS_RESOLVER = "auth";
 
     private ThreadLocal<SecurityMetadataSource> definitionSourceTag = new ThreadLocal<SecurityMetadataSource>();

@@ -27,14 +27,14 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Margrethe Store
  * @version $Id: NoAction.java 3868 2007-11-08 15:11:12Z larshelg $
  */
 public class NoAction 
-    extends ActionSupport
+    implements Action
 {
     public String execute() throws Exception
     {

@@ -29,14 +29,14 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: RemoveOrganisationUnitGroupAction.java 1898 2006-09-22 12:06:56Z torgeilo $
  */
 public class RemoveOrganisationUnitGroupAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

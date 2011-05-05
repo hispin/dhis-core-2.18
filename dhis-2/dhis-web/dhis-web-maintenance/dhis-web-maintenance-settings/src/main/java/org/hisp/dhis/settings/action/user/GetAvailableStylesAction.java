@@ -32,14 +32,14 @@ import java.util.SortedMap;
 import org.hisp.dhis.options.style.StyleManager;
 import org.hisp.dhis.options.style.UserStyleManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * @version $Id: GetAvailableStylesAction.java 2010-10-26 17:28:05Z $
  */
 public class GetAvailableStylesAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

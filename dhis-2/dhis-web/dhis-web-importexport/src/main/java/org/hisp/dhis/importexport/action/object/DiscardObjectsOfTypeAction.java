@@ -30,14 +30,14 @@ package org.hisp.dhis.importexport.action.object;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.action.util.ClassMapUtil;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DiscardObjectsOfTypeAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Input
