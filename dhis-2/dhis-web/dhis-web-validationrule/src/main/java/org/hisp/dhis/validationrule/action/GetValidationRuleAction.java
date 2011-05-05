@@ -28,12 +28,14 @@ package org.hisp.dhis.validationrule.action;
  */
 
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 import com.opensymphony.xwork2.Action;
 
+import static org.hisp.dhis.expression.ExpressionService.VALID;
 
 /**
  * @author Margrethe Store
@@ -60,6 +62,13 @@ public class GetValidationRuleAction
         this.expressionService = expressionService;
     }
     
+    private I18n i18n;
+    
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -112,8 +121,14 @@ public class GetValidationRuleAction
     {
         validationRule = validationRuleService.getValidationRule( id );
         
-        leftSideTextualExpression = expressionService.getExpressionDescription( validationRule.getLeftSide().getExpression() );
-        rightSideTextualExpression = expressionService.getExpressionDescription( validationRule.getRightSide().getExpression() );
+        String leftSideFormula = validationRule.getLeftSide().getExpression();
+        String rightSideFormula = validationRule.getRightSide().getExpression();
+        
+        String leftSideResult = expressionService.expressionIsValid( leftSideFormula );
+        String rightSideResult = expressionService.expressionIsValid( rightSideFormula );
+        
+        leftSideTextualExpression = VALID.equals( leftSideResult ) ? expressionService.getExpressionDescription( leftSideFormula ) : i18n.getString( leftSideResult );
+        rightSideTextualExpression = VALID.equals( rightSideResult ) ? expressionService.getExpressionDescription( rightSideFormula ) : i18n.getString( rightSideResult );
         
         validationOperator = validationRule.getOperator().toString();       
         
