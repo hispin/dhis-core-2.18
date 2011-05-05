@@ -37,13 +37,13 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.period.Cal;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Nguyen Dang Quang
  */
 public class PrepareAddOrganisationUnitAction
-    extends ActionSupport
+    implements Action
 {
     private DataSetService dataSetService;
     

@@ -32,14 +32,14 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.importexport.IbatisConfiguration;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetDhis14ConfigurationAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

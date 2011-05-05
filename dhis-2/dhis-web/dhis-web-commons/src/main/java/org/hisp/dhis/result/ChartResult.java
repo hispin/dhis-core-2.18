@@ -38,6 +38,11 @@ import java.io.OutputStream;
 public class ChartResult
     implements Result
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -8364233242858237681L;
+
     private static final String DEFAULT_FILENAME = "chart.png";
     
     private JFreeChart chart = null;

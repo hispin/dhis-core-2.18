@@ -30,14 +30,14 @@ package org.hisp.dhis.dd.action.indicatordenum;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: GetFormulaTextAction.java 5334 2008-06-04 13:45:41Z larshelg $
  */
 public class GetFormulaTextAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

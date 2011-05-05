@@ -29,14 +29,14 @@ package org.hisp.dhis.settings.action.user;
 
 import org.hisp.dhis.options.displayproperty.DisplayPropertyManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: SetCurrentDisplayPropertyAction.java 3264 2007-04-25 14:54:05Z stianast $
  */
 public class SetCurrentDisplayPropertyAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

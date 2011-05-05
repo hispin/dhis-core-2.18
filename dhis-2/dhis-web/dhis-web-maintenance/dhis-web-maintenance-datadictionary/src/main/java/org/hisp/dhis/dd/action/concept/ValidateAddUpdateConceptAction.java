@@ -30,14 +30,14 @@ import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
 public class ValidateAddUpdateConceptAction
-    extends ActionSupport
+    implements Action
 {
     //TODO private static final Pattern conceptNamePattern = Pattern.compile( "^[a-zA-Z][a-zA-Z0-9_]{0,9}$" );
 

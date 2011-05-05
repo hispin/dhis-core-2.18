@@ -27,14 +27,14 @@ package org.hisp.dhis.datamart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: NoAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class NoAction
-    extends ActionSupport
+    implements Action
 {
     public String execute()
     {

@@ -30,14 +30,14 @@ package org.hisp.dhis.commons.action;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: GetDataElementGroupAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class GetDataElementGroupAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

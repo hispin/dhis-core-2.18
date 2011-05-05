@@ -34,14 +34,14 @@ import java.util.Map;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id ValidateAddUpdateSqlViewAction.java July 07, 2010$
  */
 public class ValidateAddUpdateSqlViewAction
-    extends ActionSupport
+    implements Action
 {
     private static final String ADD = "add";
 

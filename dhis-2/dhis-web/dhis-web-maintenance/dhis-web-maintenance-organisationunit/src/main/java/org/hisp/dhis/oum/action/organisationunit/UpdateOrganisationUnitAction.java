@@ -39,14 +39,14 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: UpdateOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
  */
 public class UpdateOrganisationUnitAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

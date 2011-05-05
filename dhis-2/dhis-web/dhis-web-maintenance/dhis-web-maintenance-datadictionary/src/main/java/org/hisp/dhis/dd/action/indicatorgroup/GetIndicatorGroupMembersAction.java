@@ -37,14 +37,14 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: GetIndicatorGroupMembersAction.java 6475 2008-11-25 15:42:55Z larshelg $
  */
 public class GetIndicatorGroupMembersAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

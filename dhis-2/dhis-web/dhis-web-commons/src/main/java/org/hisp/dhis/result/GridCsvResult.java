@@ -47,6 +47,11 @@ import com.opensymphony.xwork2.Result;
 public class GridCsvResult
     implements Result
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -8568665099535892269L;
+
     private static final String DEFAULT_FILENAME = "Grid.csv";
 
     // -------------------------------------------------------------------------

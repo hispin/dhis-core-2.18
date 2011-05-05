@@ -34,14 +34,14 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * @version $Id ValidationRunAnalysisAction.java Mar 1, 2011 9:54:31 AM $
  */
 public class ValidationRunAnalysisAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

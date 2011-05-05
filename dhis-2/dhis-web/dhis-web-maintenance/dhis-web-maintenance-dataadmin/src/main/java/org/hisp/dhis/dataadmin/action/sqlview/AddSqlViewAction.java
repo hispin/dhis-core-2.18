@@ -29,14 +29,14 @@ package org.hisp.dhis.dataadmin.action.sqlview;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id AddSqlViewAction.java July 06, 2010$
  */
 public class AddSqlViewAction
-    extends ActionSupport
+    implements Action
 {
     private static final String REGEX = "\\s+";
 

@@ -30,7 +30,7 @@ package org.hisp.dhis.dataadmin.action.sqlview;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * Removes a existing regular expression from the database.
@@ -39,7 +39,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @version $Id GetSqlViewObjectAction.java July 06, 2010$
  */
 public class GetSqlViewObjectAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

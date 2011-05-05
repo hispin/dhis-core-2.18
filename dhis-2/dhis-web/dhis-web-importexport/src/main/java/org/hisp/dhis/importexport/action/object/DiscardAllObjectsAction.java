@@ -27,18 +27,20 @@ package org.hisp.dhis.importexport.action.object;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.util.SessionUtils.*;
+import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_STATUS;
+import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_TYPE;
+import static org.hisp.dhis.util.SessionUtils.removeSessionVar;
 
 import org.hisp.dhis.importexport.ImportObjectService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DiscardAllObjectsAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

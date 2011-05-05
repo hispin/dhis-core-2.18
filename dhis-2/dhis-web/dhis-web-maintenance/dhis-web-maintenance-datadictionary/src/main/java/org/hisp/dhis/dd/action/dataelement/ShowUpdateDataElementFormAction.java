@@ -40,14 +40,14 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Hans S. Toemmerholt
  * @version $Id: GetDataElementAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class ShowUpdateDataElementFormAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

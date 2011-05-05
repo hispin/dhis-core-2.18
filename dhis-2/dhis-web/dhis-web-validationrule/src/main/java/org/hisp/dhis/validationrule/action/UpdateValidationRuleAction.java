@@ -34,7 +34,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Margrethe Store
@@ -43,7 +43,7 @@ import com.opensymphony.xwork2.ActionSupport;
  *          larshelg $
  */
 public class UpdateValidationRuleAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

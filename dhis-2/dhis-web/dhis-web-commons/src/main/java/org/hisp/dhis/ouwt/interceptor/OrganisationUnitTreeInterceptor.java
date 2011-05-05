@@ -52,6 +52,11 @@ import com.opensymphony.xwork2.ActionInvocation;
 public class OrganisationUnitTreeInterceptor
     extends AbstractPreResultListener
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 8494211825850245931L;
+
     private static final String VALUE_KEY = "organisationUnitTree";
 
     // -------------------------------------------------------------------------

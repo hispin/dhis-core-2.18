@@ -33,14 +33,14 @@ import java.util.List;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id GetSqlViewListAction.java July 10, 2010$
  */
 public class GetSqlViewListAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

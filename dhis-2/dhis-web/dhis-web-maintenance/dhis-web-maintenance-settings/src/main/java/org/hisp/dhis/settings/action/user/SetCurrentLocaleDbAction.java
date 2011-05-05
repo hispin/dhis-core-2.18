@@ -28,14 +28,16 @@ package org.hisp.dhis.settings.action.user;
  */
 
 import java.util.Locale;
+
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import com.opensymphony.xwork2.ActionSupport;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Oyvind Brucker
  */
 public class SetCurrentLocaleDbAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

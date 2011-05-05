@@ -43,6 +43,11 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 public class XWorkPortalParamsInterceptor
     implements Interceptor
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 4915716647953480053L;
+
     // -------------------------------------------------------------------------
     // External configuration
     // -------------------------------------------------------------------------

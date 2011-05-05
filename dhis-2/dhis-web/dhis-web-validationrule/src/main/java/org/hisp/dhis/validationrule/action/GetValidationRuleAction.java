@@ -32,7 +32,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 
 /**
@@ -40,7 +40,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @version $Id: GetValidationRuleAction.java 4438 2008-01-26 16:35:24Z abyot $
  */
 public class GetValidationRuleAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

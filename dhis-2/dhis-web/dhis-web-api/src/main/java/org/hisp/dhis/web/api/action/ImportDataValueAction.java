@@ -47,11 +47,11 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import com.opensymphony.xwork2.ActionSupport;
+
+import com.opensymphony.xwork2.Action;
 
 public class ImportDataValueAction
-    extends ActionSupport
-    implements ServletRequestAware, ServletResponseAware
+    implements ServletRequestAware, ServletResponseAware, Action
 {
     // Dependencies
     private ProgramStageInstanceService programStageInstanceService;
@@ -186,12 +186,12 @@ public class ImportDataValueAction
                 this.setInputStream( new ByteArrayInputStream( message.getBytes() ) );
             }
         }
+
         return SUCCESS;
     }
 
     private void saveDataValue( DataInputStream dis, OrganisationUnit orgUnit )
         throws IOException
-
     {
         DataElement dataElement = dataElementService.getDataElement( dis.readInt() );
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( dis.readInt() );
@@ -208,5 +208,4 @@ public class ImportDataValueAction
 
         patientDataValueService.savePatientDataValue( patientDataValue );
     }
-
 }

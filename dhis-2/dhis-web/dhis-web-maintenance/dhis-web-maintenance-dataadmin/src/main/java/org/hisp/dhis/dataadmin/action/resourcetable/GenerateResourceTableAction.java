@@ -32,14 +32,14 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GenerateResourceTableAction
-    extends ActionSupport
+    implements Action
 {
     private static final Log log = LogFactory.getLog( GenerateResourceTableAction.class );
     

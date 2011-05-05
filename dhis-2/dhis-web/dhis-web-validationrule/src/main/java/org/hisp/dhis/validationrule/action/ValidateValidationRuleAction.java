@@ -31,14 +31,14 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /** 
  * @author Margrethe Store
  * @version $Id: ValidateValidationRuleAction.java 3868 2007-11-08 15:11:12Z larshelg $
  */
 public class ValidateValidationRuleAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

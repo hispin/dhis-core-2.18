@@ -47,6 +47,11 @@ import com.opensymphony.xwork2.Result;
 public class GridPdfResult
     implements Result
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6613101138470779866L;
+
     private static final String DEFAULT_FILENAME = "Grid";
 
     // -------------------------------------------------------------------------

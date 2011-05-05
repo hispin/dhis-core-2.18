@@ -35,14 +35,14 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class MetaDataExportAction
-    extends ActionSupport
+    implements Action
 {
     private static final String FILENAME = "Export_meta.zip";
 

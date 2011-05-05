@@ -29,14 +29,14 @@ package org.hisp.dhis.settings.action.user;
 
 import org.hisp.dhis.options.sortorder.SortOrderManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: SetCurrentSortOrderAction.java 3264 2007-04-25 14:54:05Z stianast $
  */
 public class SetCurrentSortOrderAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

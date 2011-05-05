@@ -31,14 +31,14 @@ import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.IndicatorService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: RemoveIndicatorTypeAction.java 5693 2008-09-13 17:56:36Z larshelg $
  */
 public class RemoveIndicatorTypeAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

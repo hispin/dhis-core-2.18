@@ -51,6 +51,11 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 public class ExceptionInterceptor
     implements Interceptor
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 8500468340861599537L;
+
     private static final Log LOG = LogFactory.getLog( ExceptionInterceptor.class );
 
     public static final String EXCEPTION_RESULT_KEY = "onExceptionReturn";

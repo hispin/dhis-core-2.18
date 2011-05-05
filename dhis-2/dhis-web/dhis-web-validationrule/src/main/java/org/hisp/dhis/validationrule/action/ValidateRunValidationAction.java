@@ -36,14 +36,14 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Margrethe Store
  * @version $Id: ValidateRunValidationAction.java 3868 2007-11-08 15:11:12Z larshelg $
  */
 public class ValidateRunValidationAction 
-    extends ActionSupport
+    implements Action
 {
     private static final Log LOG = LogFactory.getLog( ValidateRunValidationAction.class );
     

@@ -33,7 +33,7 @@ import org.hisp.dhis.dataprune.DataPruneService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Quang Nguyen
@@ -41,7 +41,7 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 
 public class PruneOrganisationUnitAction
-    extends ActionSupport
+    implements Action
 {
     private static final Log log = LogFactory.getLog( PruneOrganisationUnitAction.class );
 

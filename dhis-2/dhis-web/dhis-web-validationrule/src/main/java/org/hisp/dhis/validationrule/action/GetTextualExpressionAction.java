@@ -30,14 +30,14 @@ package org.hisp.dhis.validationrule.action;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: GetFormulaTextAction.java 3814 2007-11-02 12:11:54Z larshelg $
  */
 public class GetTextualExpressionAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

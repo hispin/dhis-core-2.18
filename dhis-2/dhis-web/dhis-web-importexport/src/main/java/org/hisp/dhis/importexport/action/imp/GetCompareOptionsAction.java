@@ -30,14 +30,14 @@ package org.hisp.dhis.importexport.action.imp;
 import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetCompareOptionsAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Input

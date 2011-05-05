@@ -29,14 +29,14 @@ package org.hisp.dhis.settings.action.user;
 
 import org.hisp.dhis.user.UserSettingService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * @version GetAvailableAutoSaveDataEntryFormAction.java Jun 23, 2010 3:49:11 PM
  */
 public class SetAutoSaveDataEntryFormAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency

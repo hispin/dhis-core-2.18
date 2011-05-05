@@ -27,19 +27,19 @@ package org.hisp.dhis.importexport.action.imp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.*;
+import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.getCurrentRunningProcessImportFormat;
 
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetImportOptionsAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

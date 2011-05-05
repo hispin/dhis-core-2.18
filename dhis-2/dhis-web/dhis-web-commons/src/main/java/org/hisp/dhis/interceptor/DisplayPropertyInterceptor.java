@@ -46,6 +46,11 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 public class DisplayPropertyInterceptor
     implements Interceptor
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -400429585902812175L;
+
     private static final String KEY_DISPLAY_PROPERTY_HANDLER = "displayPropertyHandler";
 
     // -------------------------------------------------------------------------

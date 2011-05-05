@@ -45,14 +45,14 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetValidationResultDetailsAction
-    extends ActionSupport
+    implements Action
 {
     private static final String NULL_REPLACEMENT = "-";
     

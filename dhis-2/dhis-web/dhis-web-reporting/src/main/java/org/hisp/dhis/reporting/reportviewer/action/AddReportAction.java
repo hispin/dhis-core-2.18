@@ -37,14 +37,14 @@ import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.StreamUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: UploadDesignAction.java 5207 2008-05-22 12:16:36Z larshelg $
  */
 public class AddReportAction
-    extends ActionSupport
+    implements Action
 {
     private static final Log log = LogFactory.getLog( AddReportAction.class );
     

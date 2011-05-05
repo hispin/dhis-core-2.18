@@ -40,14 +40,14 @@ import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: SelectAction.java 5930 2008-10-15 03:30:52Z tri $
  */
 public class SelectAction
-    extends ActionSupport
+    implements Action
 {
     private static final Log log = LogFactory.getLog( SelectAction.class );
 

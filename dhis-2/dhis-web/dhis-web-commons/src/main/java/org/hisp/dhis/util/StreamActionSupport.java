@@ -34,14 +34,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.system.util.StreamUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public abstract class StreamActionSupport
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // ActionSupport implementation

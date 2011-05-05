@@ -51,7 +51,7 @@ import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.hisp.dhis.validation.comparator.ValidationResultComparator;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Margrethe Store
@@ -59,7 +59,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @version $Id: RunValidationAction.java 6059 2008-10-28 15:15:34Z larshelg $
  */
 public class RunValidationAction
-    extends ActionSupport
+    implements Action
 {
     private static final Log log = LogFactory.getLog( RunValidationAction.class );
 

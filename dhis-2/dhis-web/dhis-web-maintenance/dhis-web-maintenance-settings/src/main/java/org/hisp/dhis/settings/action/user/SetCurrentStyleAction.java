@@ -29,14 +29,14 @@ package org.hisp.dhis.settings.action.user;
 
 import org.hisp.dhis.options.style.UserStyleManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * @version $Id: SetCurrentStyleAction.java 2010-10-26 17:29:15Z $
  */
 public class SetCurrentStyleAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

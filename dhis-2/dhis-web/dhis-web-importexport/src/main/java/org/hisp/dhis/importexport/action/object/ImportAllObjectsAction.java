@@ -27,7 +27,8 @@ package org.hisp.dhis.importexport.action.object;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.*;
+import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_IMPORT;
+import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
 import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_STATUS;
 import static org.hisp.dhis.util.SessionUtils.KEY_PREVIEW_TYPE;
 import static org.hisp.dhis.util.SessionUtils.removeSessionVar;
@@ -36,14 +37,14 @@ import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ImportAllObjectsAction
-    extends ActionSupport
+    implements Action
 {
     private static final String PROCESS_TYPE = "ImportPreview";
     

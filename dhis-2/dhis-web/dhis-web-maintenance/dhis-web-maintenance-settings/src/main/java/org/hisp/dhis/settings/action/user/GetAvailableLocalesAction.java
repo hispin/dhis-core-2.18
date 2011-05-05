@@ -36,14 +36,14 @@ import java.util.Locale;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: GetAvailableLocalesAction.java 3264 2007-04-25 14:54:05Z stianast $
  */
 public class GetAvailableLocalesAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

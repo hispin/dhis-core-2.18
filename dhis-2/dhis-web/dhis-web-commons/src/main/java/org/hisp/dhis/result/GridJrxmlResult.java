@@ -47,6 +47,11 @@ import com.opensymphony.xwork2.Result;
 public class GridJrxmlResult
     implements Result
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -2883847942469564557L;
+
     private static final String DEFAULT_FILENAME = "Grid";
 
     // -------------------------------------------------------------------------

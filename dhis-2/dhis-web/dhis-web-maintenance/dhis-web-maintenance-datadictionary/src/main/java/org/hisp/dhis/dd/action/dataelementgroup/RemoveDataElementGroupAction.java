@@ -31,7 +31,7 @@ import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -39,7 +39,7 @@ import com.opensymphony.xwork2.ActionSupport;
  *          andegje $
  */
 public class RemoveDataElementGroupAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

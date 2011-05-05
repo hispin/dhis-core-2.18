@@ -50,6 +50,11 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 public class SortOrderInterceptor
     implements Interceptor
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -2581250719044309788L;
+
     private static final String KEY_DATAELEMENT_COMPARATOR = "dataElementComparator";
     private static final String KEY_INDICATOR_COMPARATOR = "indicatorComparator";    
     private static final String KEY_ORGANISATIONUNIT_COMPARATOR = "organisationUnitComparator";

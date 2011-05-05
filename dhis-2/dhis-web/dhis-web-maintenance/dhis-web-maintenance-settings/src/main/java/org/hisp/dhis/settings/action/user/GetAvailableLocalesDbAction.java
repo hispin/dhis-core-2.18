@@ -9,7 +9,7 @@ import java.util.Locale;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,7 +19,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * To change this template use File | Settings | File Templates.
  */
 public class GetAvailableLocalesDbAction 
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

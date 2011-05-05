@@ -37,14 +37,14 @@ import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: GetOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
  */
 public class GetOrganisationUnitAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
