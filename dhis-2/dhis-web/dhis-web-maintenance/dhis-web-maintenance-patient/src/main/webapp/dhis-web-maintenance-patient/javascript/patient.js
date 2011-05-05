@@ -1,7 +1,28 @@
 
 function organisationUnitSelected( orgUnits )
 {		
-    window.location.href = 'patient.action';    
+	$.getJSON( 'organisationUnitHasPatients.action?orgunitId=' + orgUnits[0], function( json ) 
+	{
+		var type = json.response;
+		
+		if( type == 'success' )
+		{
+			showLoader();
+			
+			var url = 'patientform.action';
+			$('#patientListDiv').load(url);
+			hideById('selectPatientDiv');
+			showById('patientListDiv');
+			
+			hideLoader();
+		}
+		else if( type == 'input' )
+		{
+			setInnerHTML('warnmessage', i18n_can_not_register_patient_for_orgunit);
+			showById('selectPatientDiv');
+			hideById('patientListDiv');
+		}
+	} );
 }
 
 selection.setListenerFunction( organisationUnitSelected );
