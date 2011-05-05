@@ -44,6 +44,11 @@ import org.hisp.dhis.period.RelativePeriods;
 public class DataMartExport
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -4567670325185822423L;
+
     private int id;
     
     private String name;

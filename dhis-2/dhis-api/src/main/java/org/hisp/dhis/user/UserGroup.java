@@ -4,8 +4,14 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserGroup implements Serializable
+public class UserGroup
+    implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 347909584755616508L;
+
     /**
      * id is the primary key which is auto generated
      */

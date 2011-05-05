@@ -42,6 +42,11 @@ import org.hisp.dhis.validation.ValidationCriteria;
 public class Program
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -2581751965520009382L;
+
     private int id;
 
     private String name;

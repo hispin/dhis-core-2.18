@@ -38,6 +38,11 @@ import org.hisp.dhis.common.AggregatedValue;
 public class DataSetCompletenessResult
     implements AggregatedValue, Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 8726709312489400802L;
+
     // -------------------------------------------------------------------------
     // Properties 1
     // -------------------------------------------------------------------------

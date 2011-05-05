@@ -37,6 +37,11 @@ import java.io.Serializable;
 public class ProgramValidation
 implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 4785165717118297802L;
+
     public static final String SEPARATOR_ID = "\\.";
 
     public static final String SEPARATOR_OBJECT = ":";

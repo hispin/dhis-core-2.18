@@ -44,6 +44,11 @@ public class TwoYearlyPeriodType
     extends CalendarPeriodType
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 5813755542990991810L;
+
+    /**
      * The name of the TwoYearlyPeriodType, which is "TwoYearly".
      */
     public static final String NAME = "TwoYearly";

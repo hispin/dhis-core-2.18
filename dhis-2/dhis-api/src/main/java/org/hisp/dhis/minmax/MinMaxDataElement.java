@@ -40,6 +40,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class MinMaxDataElement
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 1557460368163701333L;
+
     private int id;
 
     private OrganisationUnit source;

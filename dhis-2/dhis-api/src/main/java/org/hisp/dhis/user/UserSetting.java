@@ -37,6 +37,11 @@ public class UserSetting
     implements Serializable
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -5436090314407097851L;
+
+    /**
      * Required. Unique together with name.
      */
     private User user;

@@ -35,6 +35,11 @@ import java.util.Calendar;
 public class FinancialOctoberPeriodType
     extends FinancialPeriodType
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -1623576547899897811L;
+
     public static final String NAME = "FinancialOct";
 
     @Override

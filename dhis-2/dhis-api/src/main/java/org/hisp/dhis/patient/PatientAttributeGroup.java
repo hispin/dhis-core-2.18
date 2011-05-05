@@ -37,6 +37,11 @@ import java.util.List;
 public class PatientAttributeGroup
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -7084277284999239111L;
+
     private int id;
 
     private String name;

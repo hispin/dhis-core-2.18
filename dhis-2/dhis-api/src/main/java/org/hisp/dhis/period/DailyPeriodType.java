@@ -44,6 +44,11 @@ import java.util.List;
 public class DailyPeriodType
     extends CalendarPeriodType
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 5371766471215556241L;
+
     public static final String ISO_FORMAT = "yyyyMMdd";
 
     /**

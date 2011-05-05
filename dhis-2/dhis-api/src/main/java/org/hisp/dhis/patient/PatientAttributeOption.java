@@ -35,6 +35,11 @@ import java.io.Serializable;
  */
 public class PatientAttributeOption implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 9052641474847384010L;
+
     private int id;
     
     private String name;

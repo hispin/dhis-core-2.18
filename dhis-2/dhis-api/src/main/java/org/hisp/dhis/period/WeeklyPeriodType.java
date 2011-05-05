@@ -44,6 +44,11 @@ public class WeeklyPeriodType
     extends CalendarPeriodType
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6466760375688564528L;
+
+    /**
      * The name of the WeeklyPeriodType, which is "Weekly".
      */
     public static final String NAME = "Weekly";

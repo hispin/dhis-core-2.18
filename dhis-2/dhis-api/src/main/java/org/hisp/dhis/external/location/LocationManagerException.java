@@ -34,6 +34,11 @@ package org.hisp.dhis.external.location;
 public class LocationManagerException
     extends Exception
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -9034096136406983058L;
+
     public LocationManagerException( String message )
     {
         super( message );

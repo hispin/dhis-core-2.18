@@ -52,6 +52,11 @@ import org.hisp.dhis.dataelement.DataElement;
 public class Expression
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -4868682510629094282L;
+
     public static final String SEPARATOR = ".";
     public static final String EXP_OPEN = "[";
     public static final String EXP_CLOSE = "]";

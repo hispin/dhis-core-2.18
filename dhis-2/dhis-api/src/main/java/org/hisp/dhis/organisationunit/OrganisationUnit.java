@@ -51,6 +51,11 @@ import org.hisp.dhis.user.User;
 public class OrganisationUnit
     extends AbstractNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 1228298379303894619L;
+
     public static final String FEATURETYPE_NONE = "None";
     public static final String FEATURETYPE_MULTIPOLYGON = "MultiPolygon";
     public static final String FEATURETYPE_POLYGON = "Polygon";

@@ -36,6 +36,11 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
 public class OrganisationUnitLevel
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 1599124366660090489L;
+
     private int level;
     
     // -------------------------------------------------------------------------

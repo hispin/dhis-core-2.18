@@ -43,6 +43,10 @@ import org.hisp.dhis.program.Program;
 public class Patient
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 884114994005945275L;
     public static final String MALE = "M";
     public static final String FEMALE = "F";
 

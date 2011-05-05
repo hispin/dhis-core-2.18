@@ -42,6 +42,11 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
 public class Concept
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 5017726436040704261L;
+
     public static String DEFAULT_CONCEPT_NAME = "default";
     
     // -------------------------------------------------------------------------

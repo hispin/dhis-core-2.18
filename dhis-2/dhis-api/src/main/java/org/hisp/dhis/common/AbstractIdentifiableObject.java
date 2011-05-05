@@ -34,6 +34,11 @@ public abstract class AbstractIdentifiableObject
     implements IdentifiableObject
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 5532508099213570673L;
+
+    /**
      * The database internal identifier for this Object.
      */
     protected int id;

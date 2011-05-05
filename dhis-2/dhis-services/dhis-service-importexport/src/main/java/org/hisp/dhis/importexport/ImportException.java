@@ -33,6 +33,10 @@ package org.hisp.dhis.importexport;
  */
 public class ImportException extends Exception
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -3052037962965596955L;
 
     private String message = null;
 

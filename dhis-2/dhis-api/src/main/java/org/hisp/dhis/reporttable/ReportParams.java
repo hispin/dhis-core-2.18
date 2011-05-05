@@ -40,6 +40,11 @@ import java.io.Serializable;
 public class ReportParams
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 2509958165452862235L;
+
     private Boolean paramReportingMonth;
 
     private Boolean paramGrandParentOrganisationUnit;

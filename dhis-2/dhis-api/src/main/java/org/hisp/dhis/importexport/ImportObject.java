@@ -38,6 +38,11 @@ import org.hisp.dhis.common.ImportableObject;
 public class ImportObject
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 1078032918149125675L;
+
     private int id;
 
     private ImportObjectStatus status;

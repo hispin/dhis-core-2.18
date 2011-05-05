@@ -59,6 +59,11 @@ import org.hisp.dhis.period.YearlyPeriodType;
 public class DataElement
     extends AbstractNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -7131541880444446669L;
+
     public static final String VALUE_TYPE_STRING = "string";
     
     public static final String VALUE_TYPE_INT = "int";

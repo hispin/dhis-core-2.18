@@ -38,6 +38,11 @@ import java.util.Set;
 public class ProgramAttribute
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 4924652651610802521L;
+
     // -------------------------------------------------------------------------
     // Define ValueType
     // -------------------------------------------------------------------------

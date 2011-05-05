@@ -49,6 +49,11 @@ public class DataSet
     extends AbstractNameableObject
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -2466830446144115499L;
+
+    /**
      * The PeriodType indicating the frequency that this DataSet should be used
      */
     private PeriodType periodType;

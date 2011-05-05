@@ -32,8 +32,14 @@ import java.io.Serializable;
 /**
  * @author Oyvind Brucker
  */
-public class Translation implements Serializable
+public class Translation
+    implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 4432944068677351446L;
+
     private String className;
 
     private int id;

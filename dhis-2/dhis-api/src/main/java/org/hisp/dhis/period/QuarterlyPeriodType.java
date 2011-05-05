@@ -44,6 +44,11 @@ public class QuarterlyPeriodType
     extends CalendarPeriodType
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -5973809094923012052L;
+
+    /**
      * The name of the QuarterlyPeriodType, which is "Quarterly".
      */
     public static final String NAME = "Quarterly";

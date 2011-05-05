@@ -34,6 +34,11 @@ package org.hisp.dhis.i18n.resourcebundle;
 public class ResourceBundleManagerException
     extends Exception
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 3993400755227581346L;
+
     public ResourceBundleManagerException( String message )
     {
         super( message );

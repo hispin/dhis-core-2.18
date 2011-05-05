@@ -42,6 +42,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class User
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 859837727604102353L;
+
     private int id;
 
     /**

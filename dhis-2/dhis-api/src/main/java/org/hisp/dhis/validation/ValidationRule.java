@@ -42,6 +42,11 @@ import org.hisp.dhis.period.PeriodType;
 public class ValidationRule
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -9058559806538024350L;
+
     public static final String TYPE_STATISTICAL = "statistical";
     public static final String TYPE_ABSOLUTE = "absolute";
     

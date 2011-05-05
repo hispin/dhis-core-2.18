@@ -39,6 +39,11 @@ import org.hisp.dhis.period.Period;
 public class ValidationResult
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -4118317796752962296L;
+
     private OrganisationUnit source;
     
     private Period period;

@@ -34,6 +34,11 @@ package org.hisp.dhis.external.configuration;
 public class NoConfigurationFoundException
     extends Exception
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 5030826893740758095L;
+
     public NoConfigurationFoundException( String message )
     {
         super( message );

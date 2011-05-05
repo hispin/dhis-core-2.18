@@ -40,6 +40,11 @@ import org.hisp.dhis.common.AbstractNameableObject;
 public class Indicator
     extends AbstractNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6551567526188061690L;
+
     private Boolean annualized;
 
     private IndicatorType indicatorType;

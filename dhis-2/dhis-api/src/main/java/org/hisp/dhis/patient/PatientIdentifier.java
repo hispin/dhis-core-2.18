@@ -36,6 +36,11 @@ import java.io.Serializable;
 public class PatientIdentifier
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 5576120173066869531L;
+
     public static final int IDENTIFIER_INDEX_LENGTH = 5;
 
     private int id;

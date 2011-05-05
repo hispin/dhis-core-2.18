@@ -41,6 +41,10 @@ import org.hisp.dhis.program.ProgramStageInstance;
 public class PatientDataValue
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 8538519573273769587L;
 
     private DataElement dataElement;
 

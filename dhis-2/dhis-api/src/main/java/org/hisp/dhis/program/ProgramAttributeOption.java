@@ -35,8 +35,14 @@ import java.io.Serializable;
  * 
  * @version ProgramAttributeOption.java Nov 1, 2010 2:57:37 PM
  */
-public class ProgramAttributeOption implements Serializable
+public class ProgramAttributeOption
+    implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 3822720812540068723L;
+
     private int id;
 
     private String name;

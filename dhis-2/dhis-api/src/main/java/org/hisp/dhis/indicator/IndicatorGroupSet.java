@@ -43,6 +43,11 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
 public class IndicatorGroupSet
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 3051446168246358150L;
+
     private List<IndicatorGroup> members = new ArrayList<IndicatorGroup>();
 
     // -------------------------------------------------------------------------
