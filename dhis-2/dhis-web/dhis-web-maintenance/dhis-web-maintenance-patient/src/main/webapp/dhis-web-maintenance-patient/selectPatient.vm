@@ -26,6 +26,8 @@
 
 </form>
 
+#parse( "dhis-web-commons/loader/loader.vm" )
+
 <script>
 	var i18n_can_not_register_patient_for_orgunit = '$encoder.jsEscape( $i18n.getString( "can_not_register_patient_for_orgunit" ), "'")';	
 </script>
