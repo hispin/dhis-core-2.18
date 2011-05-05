@@ -108,7 +108,7 @@ public class ViewDataNormalAction
 
             excelItemValues = new ArrayList<ExcelItemValue>();
 
-            if ( excelItems == null || !excelItems.isEmpty() )
+            if ( excelItems == null || excelItems.isEmpty() )
             {
                 message = i18n.getString( "import_excel_items_cannot_be_empty" );
                 
