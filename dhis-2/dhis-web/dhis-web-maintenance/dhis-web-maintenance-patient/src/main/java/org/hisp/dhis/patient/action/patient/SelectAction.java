@@ -39,8 +39,6 @@ import com.opensymphony.xwork2.Action;
 public class SelectAction
     implements Action
 {
-    private static final String PATIENT_FORM = "patientform";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -53,45 +51,14 @@ public class SelectAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        message = "";
-        
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        selectionManager.clearSelectedOrganisationUnits();
 
-        if ( organisationUnit == null )
-        {
-            return SUCCESS;
-        }
-
-        if ( !organisationUnit.isHasPatients() )
-        {
-            message = "can_not_register_patient_for_orgunit";
-            return SUCCESS;
-        }
-
-        return PATIENT_FORM;
+        return SUCCESS;
     }
 }

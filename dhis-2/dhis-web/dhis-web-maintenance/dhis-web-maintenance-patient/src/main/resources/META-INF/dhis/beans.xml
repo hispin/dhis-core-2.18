@@ -357,9 +357,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.patient.SelectAction"
-		class="org.hisp.dhis.patient.action.patient.SelectAction" scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		class="org.hisp.dhis.patient.action.patient.SelectAction"
+		scope="prototype"> <property name="selectionManager"
+		ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+		
+	<bean
+		id="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
+		class="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
@@ -369,8 +377,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="programService"
-			ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean
@@ -393,8 +400,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="programService"
-			ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.patient.GetPatientAction"
@@ -513,14 +519,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientIdentifierTypeService"
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction"
 		class="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction"
 		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction"
+
+	<bean
+		id="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction"
 		class="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction"
 		scope="prototype">
 		<property name="selectionTreeManager"
@@ -528,7 +535,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.patient.DefinePatientOrgnunitRegistrationAction"
 		class="org.hisp.dhis.patient.action.patient.DefinePatientOrgnunitRegistrationAction"
@@ -538,7 +545,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
-	
+
 	<!-- Patient-Program Enrollment -->
 
 	<bean
@@ -579,19 +586,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction"
+	<bean
+		id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction"
 		class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction"
 		scope="prototype">
 		<property name="programAttributeService"
 			ref="org.hisp.dhis.program.ProgramAttributeService" />
-		<property name="programInstanceService" 
-			ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientService" 
-			ref="org.hisp.dhis.patient.PatientService" />
-		<property name="programService" 
-			ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
 		class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
 		scope="prototype">
@@ -718,7 +723,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
-	
+
 	<!-- ProgramStage -->
 
 	<bean id="org.hisp.dhis.patient.action.programstage.AddProgramStageAction"
@@ -992,9 +997,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		</property>
 	</bean>
-	
+
 	<!-- Case Aggregation Mapping -->
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.AddCaseAggregationConditionAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.AddCaseAggregationConditionAction"
@@ -1009,7 +1014,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction"
@@ -1018,7 +1023,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction"
@@ -1027,7 +1032,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction"
@@ -1036,7 +1041,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction"
@@ -1056,7 +1061,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.RemoveCaseAggregationConditionAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.RemoveCaseAggregationConditionAction"
@@ -1065,7 +1070,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.ShowCaseAggregationConditionFormAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.ShowCaseAggregationConditionFormAction"
@@ -1080,7 +1085,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.UpdateCaseAggregationConditionAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.UpdateCaseAggregationConditionAction"
@@ -1095,7 +1100,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.GetAggConditionDescriptionAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.GetAggConditionDescriptionAction"
@@ -1104,7 +1109,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		</property>
 	</bean>
-	
+
 	<!-- Validation - PatientValidationCriteria -->
 
 	<bean
@@ -1200,7 +1205,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.program.ProgramService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.validation.GetProgramValidationAction"
 		class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction"
@@ -1209,7 +1214,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.validation.GetProgramValidationListAction"
 		class="org.hisp.dhis.patient.action.validation.GetProgramValidationListAction"
@@ -1221,7 +1226,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.program.ProgramService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.validation.RemoveProgramValidationAction"
 		class="org.hisp.dhis.patient.action.validation.RemoveProgramValidationAction"
@@ -1230,7 +1235,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction"
 		class="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction"
@@ -1239,7 +1244,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
 		</property>
 	</bean>
-	
+
 	<!-- Configuration -->
 
 	<bean
@@ -1318,10 +1323,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 		</property>
 		<property name="patientAttributeValueService">
-			<ref bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+			<ref
+				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		</property>
 	</bean>
-	
+
 	<!-- Patient Mobile Setting -->
 	<bean
 		id="org.hisp.dhis.patient.action.mobilesetting.ShowMobileSettingFormAction"
@@ -1334,8 +1340,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
 		</property>
 	</bean>
-	
-	<bean id="org.hisp.dhis.patient.action.mobilesetting.UpdateMobileSettingAction"
+
+	<bean
+		id="org.hisp.dhis.patient.action.mobilesetting.UpdateMobileSettingAction"
 		class="org.hisp.dhis.patient.action.mobilesetting.UpdateMobileSettingAction"
 		scope="prototype">
 		<property name="patientMobileSettingService">

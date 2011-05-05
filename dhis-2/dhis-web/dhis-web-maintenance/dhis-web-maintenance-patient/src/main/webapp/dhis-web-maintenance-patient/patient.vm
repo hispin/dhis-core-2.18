@@ -1,26 +1,31 @@
-<h3>$i18n.getString( "patient_management" )</h3>
+<table>
+		
+	<tr>
+		<td><label>$i18n.getString( "registering_unit" )</label></td>
+		<td><input type="text" readonly="readonly" value="$encoder.htmlEncode( $organisationUnit.name )" style="min-width:22em"></td>
+		<td>&nbsp;</td>
+		<td><input type="button" id='listAllPatientsBtn' value="$i18n.getString( 'list_all_patients' )" onclick="loadAllPatients();"></td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td><i><span id='warnmessage' style='color: red;'></span></i> </td>
+	</tr>
 
-<table>    
-    <tr>
-        <td><label>$i18n.getString( "registering_unit" )</label></td>
-        <td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:22em"></td>
-        <td>&nbsp;</td>
-        <td><input type="button" value="$i18n.getString( "list_all_patients" )" onclick="loadAllPatients();"></td>
-    </tr>
 </table>
 
 <hr style="clear:both">
-
+	
 <table>	
 	<tr>	       
 		<td>
 		  <select id="searchingAttributeId" name="searchingAttributeId" style="min-width:20.2em"  #if( $patientAttributes.size() == 0 ) disabled="disabled" #end onchange="searchingAttributeOnChange()">
-            <option value="">$i18n.getString( "search_by_name_identifier" )</option>
+			<option value="">$i18n.getString( "search_by_name_identifier" )</option>
 			<option value="0" #if( $!searchingAttributeId && $!searchingAttributeId=='0' ) selected="selected" #end>$i18n.getString( "search_by_program" )</option>
-                #foreach( $attribute in $patientAttributes )
-                    <option value="$attribute.id" #if( $!searchingAttributeId && $!attribute.id == $!searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.name )</option>
-                #end
-          </select> 
+				#foreach( $attribute in $patientAttributes )
+					<option value="$attribute.id" #if( $!searchingAttributeId && $!attribute.id == $!searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.name )</option>
+				#end
+		  </select> 
 		  <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>		
 		<td>
@@ -42,7 +47,7 @@
 	
 	<tr>
 		<td></td>
-        <td>
+		<td>
 		<select id="sortPatientAttributeId" name="sortPatientAttributeId" maxlength="30" style="width:20.2em" onchange="validateSearchPatient()">
 				<option value="">[ $i18n.getString( "sort_by" ) ]</option>
 				#foreach( $patientAttribute in $patientAttributes )
@@ -50,7 +55,7 @@
 				#end
 			</select>
 		</td>
-    </tr>
+	</tr>
 	
 </table>
 
@@ -63,9 +68,5 @@
 <div id='contentDiv'></div>
 
 <script type="text/javascript">
-
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
-
-	searchPatientsbyBackBtn();
-	
 </script>
