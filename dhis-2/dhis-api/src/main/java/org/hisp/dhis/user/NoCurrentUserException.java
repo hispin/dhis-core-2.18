@@ -34,6 +34,11 @@ package org.hisp.dhis.user;
 public class NoCurrentUserException
     extends Exception
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 4261030912284935962L;
+
     public NoCurrentUserException( String message )
     {
         super( message );

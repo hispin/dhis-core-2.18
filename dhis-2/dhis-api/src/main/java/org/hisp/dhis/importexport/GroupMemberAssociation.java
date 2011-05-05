@@ -38,6 +38,11 @@ import org.hisp.dhis.common.ImportableObject;
 public class GroupMemberAssociation
     implements ImportableObject, Serializable
 {    
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -8480207952613722482L;
+
     private int groupId;
     
     private int memberId;

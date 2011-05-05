@@ -39,6 +39,11 @@ import org.hisp.dhis.common.AbstractNameableObject;
 public class DataElementCategoryOption
     extends AbstractNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -4479376547579688312L;
+
     public static final String DEFAULT_NAME = "default";
 
     private DataElementCategory category;

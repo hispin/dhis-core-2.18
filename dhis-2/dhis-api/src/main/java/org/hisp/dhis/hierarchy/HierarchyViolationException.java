@@ -36,6 +36,11 @@ package org.hisp.dhis.hierarchy;
 public class HierarchyViolationException
     extends Exception
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6006664467676025829L;
+
     public HierarchyViolationException( String message )
     {
         super( message );

@@ -40,6 +40,11 @@ import org.hisp.dhis.common.ImportableObject;
 public class DataEntryForm
     implements Serializable, ImportableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 3183079113944562138L;
+
     public static final Pattern INPUT_PATTERN = Pattern.compile( "value\\[\\d+\\]\\.value:value\\[\\d+\\]\\.value" );
     public static final Pattern OPERAND_PATTERN = Pattern.compile( "\\d+" );
     

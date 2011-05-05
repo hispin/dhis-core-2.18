@@ -35,6 +35,11 @@ import java.io.Serializable;
 public class RelationshipType
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -8788979454816878770L;
+
     private int id;
 
     private String aIsToB;

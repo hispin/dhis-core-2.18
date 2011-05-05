@@ -39,6 +39,11 @@ import java.util.Date;
 public class OnChangePeriodType
     extends PeriodType
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 299664418759849772L;
+
     private static final int INSURMOUNTABLE_YEAR = 9999;
 
     /**

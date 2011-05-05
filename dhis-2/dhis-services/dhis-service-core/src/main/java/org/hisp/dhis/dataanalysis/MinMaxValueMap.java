@@ -40,6 +40,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class MinMaxValueMap
     extends HashMap<String, MinMaxDataElement>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6046170950071436264L;
+
     private static final String SEP = "-";
     
     public void put( MinMaxDataElement element )

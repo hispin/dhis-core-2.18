@@ -40,6 +40,11 @@ import java.util.List;
 public abstract class CalendarPeriodType
     extends PeriodType
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -2748690219217338988L;
+
     // -------------------------------------------------------------------------
     // CalendarPeriodType functionality
     // -------------------------------------------------------------------------

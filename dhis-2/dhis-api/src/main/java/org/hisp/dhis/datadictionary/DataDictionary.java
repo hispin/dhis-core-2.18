@@ -41,6 +41,11 @@ import org.hisp.dhis.indicator.Indicator;
 public class DataDictionary
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -2221681462723457717L;
+
     private String description;
     
     private String region;

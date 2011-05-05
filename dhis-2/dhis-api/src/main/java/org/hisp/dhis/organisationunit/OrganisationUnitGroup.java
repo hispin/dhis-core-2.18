@@ -40,6 +40,11 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
 public class OrganisationUnitGroup
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -1131637847640209166L;
+
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
     
     private OrganisationUnitGroupSet groupSet;

@@ -45,6 +45,11 @@ import java.util.Map;
 public abstract class PeriodType
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 2402122626196305083L;
+
     // -------------------------------------------------------------------------
     // Available PeriodTypes
     // -------------------------------------------------------------------------

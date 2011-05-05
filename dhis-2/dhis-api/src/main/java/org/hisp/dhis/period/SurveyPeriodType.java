@@ -40,6 +40,11 @@ public class SurveyPeriodType
     extends PeriodType
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 8032118463759330180L;
+
+    /**
      * The name of the SurveyPeriodType, which is "Survey".
      */
     public static final String NAME = "Survey";

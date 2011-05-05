@@ -38,6 +38,11 @@ import org.hisp.dhis.common.AggregatedValue;
 public class AggregatedDataValue
     implements AggregatedValue, Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6569434956128470844L;
+
     private int dataElementId;
     
     private int categoryOptionComboId;

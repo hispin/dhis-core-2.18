@@ -41,6 +41,11 @@ import org.hisp.dhis.period.Period;
 public class CompleteDataSetRegistration
     implements ImportableObject, Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 334738541365949298L;
+
     private DataSet dataSet;
 
     private Period period;

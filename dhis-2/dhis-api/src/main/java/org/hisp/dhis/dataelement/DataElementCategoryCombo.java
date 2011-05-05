@@ -41,6 +41,11 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
 public class DataElementCategoryCombo
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 1549406078091077760L;
+
     public static final String DEFAULT_CATEGORY_COMBO_NAME = "default";
 
     /**

@@ -37,6 +37,11 @@ import org.hisp.dhis.reporttable.ReportTable;
 public class Report
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 7880117720157807526L;
+
     public static final String TEMPLATE_DIR = "templates";
     
     private String designContent;

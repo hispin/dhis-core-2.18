@@ -37,6 +37,10 @@ import org.hisp.dhis.patient.Patient;
 public class Relationship
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 3818815755138507997L;
 
     private int id;
 

@@ -45,6 +45,11 @@ import org.hisp.dhis.concept.Concept;
 public class DataElementCategory
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6797241235048185629L;
+
     public static final String DEFAULT_NAME = "default";
 
     private Concept concept;

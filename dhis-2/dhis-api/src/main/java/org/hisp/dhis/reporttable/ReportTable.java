@@ -60,6 +60,11 @@ import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 public class ReportTable
     extends AbstractNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 5618655666320890565L;
+
     public static final String DATAELEMENT_ID = "dataelementid";
     public static final String DATAELEMENT_NAME = "dataelementname";
     public static final String CATEGORYCOMBO_ID = "categoryoptioncomboid";
@@ -88,7 +93,12 @@ public class ReportTable
     public static final int DESC = 1;
     public static final int NONE = 0;
     
-    public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>() { {
+    public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>() {
+        /**
+         * Determines if a de-serialized file is compatible with this class.
+         */
+        private static final long serialVersionUID = 4194194769957136714L;
+    {
         put( DATAELEMENT_ID, "Data element ID" );
         put( DATAELEMENT_NAME, "Data element" );
         put( CATEGORYCOMBO_ID, "Category combination ID" );
@@ -106,7 +116,12 @@ public class ReportTable
         put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
     } };
     
-    public static final Map<Class<? extends NameableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends NameableObject>, String>() { {
+    public static final Map<Class<? extends NameableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends NameableObject>, String>() {
+        /**
+         * Determines if a de-serialized file is compatible with this class.
+         */
+        private static final long serialVersionUID = 4742098364404485991L;
+    {
         put( Indicator.class, INDICATOR_ID );
         put( DataElement.class, DATAELEMENT_ID );
         put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );

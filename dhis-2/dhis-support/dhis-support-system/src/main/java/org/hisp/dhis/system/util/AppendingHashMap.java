@@ -39,6 +39,11 @@ import java.util.HashMap;
 public class AppendingHashMap<K, V>
     extends HashMap<K, String>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 2579976271277075017L;
+
     @Override
     public String put( K key, String value )
     {

@@ -37,6 +37,11 @@ import java.util.List;
 public class PaginatedList<T>
     extends ArrayList<T>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6296545460322554660L;
+
     private final int pageSize;
 
     private int fromIndex = 0;

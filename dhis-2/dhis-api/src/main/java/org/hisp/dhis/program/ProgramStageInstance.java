@@ -36,6 +36,11 @@ import java.util.Date;
 public class ProgramStageInstance
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6239130884678145713L;
+
     public static final String COLOR_RED = "#ff0000";
 
     public static final String COLOR_YELLOW = "#ffff00";

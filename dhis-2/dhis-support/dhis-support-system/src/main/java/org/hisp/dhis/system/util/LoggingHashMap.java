@@ -42,6 +42,11 @@ import org.apache.commons.logging.LogFactory;
 public class LoggingHashMap<K, V>
     extends HashMap<K, V>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -8527416574033355571L;
+
     private static final Log log = LogFactory.getLog( LoggingHashMap.class );
     
     public LoggingHashMap()

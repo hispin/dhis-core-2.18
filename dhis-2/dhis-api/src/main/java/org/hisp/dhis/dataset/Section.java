@@ -35,6 +35,11 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 public class Section
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -4657657995917502852L;
+
     private int id;
 
     private String name;

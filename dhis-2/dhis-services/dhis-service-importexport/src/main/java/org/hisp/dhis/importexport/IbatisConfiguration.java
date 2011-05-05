@@ -36,6 +36,11 @@ import java.io.Serializable;
 public class IbatisConfiguration
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -2191931273375896356L;
+
     private String dataFile;
 
     private String userName;

@@ -43,6 +43,11 @@ import org.hisp.dhis.period.Period;
 public class ImportDataValue
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 8854484524956458617L;
+
     private int dataElementId;
     
     private int categoryOptionComboId;

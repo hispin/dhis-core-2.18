@@ -37,6 +37,11 @@ import java.util.Set;
 public class PatientAttribute
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 3026922158464592390L;
+
     public static final String TYPE_DATE = "DATE";
 
     public static final String TYPE_STRING = "TEXT";

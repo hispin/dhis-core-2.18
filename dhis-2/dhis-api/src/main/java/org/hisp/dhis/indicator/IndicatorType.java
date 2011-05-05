@@ -36,6 +36,11 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
 public class IndicatorType
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 8436277274106210656L;
+
     private int factor;
 
     private Boolean number;

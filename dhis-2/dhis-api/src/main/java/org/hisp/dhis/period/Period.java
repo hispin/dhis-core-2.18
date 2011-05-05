@@ -40,6 +40,11 @@ import org.hisp.dhis.common.AbstractNameableObject;
 public class Period
     extends AbstractNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -4445992494203466044L;
+
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
     private static final String SEPARATOR = "_";

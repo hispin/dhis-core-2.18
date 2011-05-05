@@ -38,6 +38,11 @@ import org.hisp.dhis.common.AggregatedValue;
 public class AggregatedIndicatorValue
     implements AggregatedValue, Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -26851210554553790L;
+
     private int indicatorId;
     
     private int periodId;

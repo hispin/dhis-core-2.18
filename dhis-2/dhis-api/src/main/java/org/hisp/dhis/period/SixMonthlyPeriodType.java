@@ -44,6 +44,11 @@ public class SixMonthlyPeriodType
     extends CalendarPeriodType
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 5709134010793412705L;
+
+    /**
      * The name of the SixMonthlyPeriodType, which is "SixMonthly".
      */
     public static final String NAME = "SixMonthly";

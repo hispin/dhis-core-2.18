@@ -44,6 +44,11 @@ import org.apache.commons.lang.StringEscapeUtils;
 public class DataElementOperand
     implements Serializable, Comparable<DataElementOperand>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 2490172100580528479L;
+
     public static final String SEPARATOR = ".";
     public static final String NAME_TOTAL = "(Total)";
     

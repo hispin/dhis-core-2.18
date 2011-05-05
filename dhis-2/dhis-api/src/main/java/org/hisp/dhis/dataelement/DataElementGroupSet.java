@@ -43,6 +43,11 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
 public class DataElementGroupSet
     extends AbstractIdentifiableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -2118690320625221749L;
+
     private List<DataElementGroup> members = new ArrayList<DataElementGroup>();
 
     // -------------------------------------------------------------------------

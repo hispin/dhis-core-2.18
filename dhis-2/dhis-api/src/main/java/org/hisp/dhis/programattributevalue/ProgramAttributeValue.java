@@ -40,6 +40,11 @@ import org.hisp.dhis.program.ProgramInstance;
 public class ProgramAttributeValue
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6942663950035085618L;
+
     private ProgramAttribute programAttribute;
 
     private ProgramInstance programInstance;

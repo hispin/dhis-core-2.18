@@ -38,6 +38,11 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 public class ProgramStage
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6876401001559656214L;
+
     private int id;
 
     private String name;

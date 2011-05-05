@@ -38,6 +38,10 @@ import org.hisp.dhis.dataelement.DataElement;
 public class ProgramStageDataElement
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -5670110591005778814L;
 
     /**
      * Part of composite key

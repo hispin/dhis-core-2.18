@@ -40,6 +40,11 @@ import org.hisp.dhis.patient.Patient;
 public class ProgramInstance
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -1235315582356509653L;
+
     private int id;
 
     private Date dateOfIncident;

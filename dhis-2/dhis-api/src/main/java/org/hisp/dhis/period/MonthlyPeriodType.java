@@ -45,6 +45,11 @@ import java.util.List;
 public class MonthlyPeriodType
     extends CalendarPeriodType
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6920058214699654387L;
+
     private static final String ISO_FORMAT = "yyyyMM";
 
     /**

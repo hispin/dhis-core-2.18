@@ -43,6 +43,11 @@ public class YearlyPeriodType
     extends CalendarPeriodType
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 3893035414025085437L;
+
+    /**
      * The name of the YearlyPeriodType, which is "Yearly".
      */
     public static final String NAME = "Yearly";

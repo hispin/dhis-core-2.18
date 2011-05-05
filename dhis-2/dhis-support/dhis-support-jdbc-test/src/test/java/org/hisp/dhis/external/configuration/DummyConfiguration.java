@@ -36,6 +36,11 @@ import java.io.Serializable;
 public class DummyConfiguration
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 1270752110781492612L;
+
     private String home;
     
     private String directory;

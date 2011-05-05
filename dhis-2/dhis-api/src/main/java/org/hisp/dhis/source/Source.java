@@ -42,6 +42,11 @@ import org.hisp.dhis.dataset.DataSet;
 public abstract class Source
     extends AbstractNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6092035466150465846L;
+
     protected Set<DataSet> dataSets = new HashSet<DataSet>();
 
     // -------------------------------------------------------------------------

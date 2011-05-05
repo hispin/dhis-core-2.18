@@ -39,6 +39,10 @@ import org.hisp.dhis.patient.PatientAttributeOption;
 public class PatientAttributeValue
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -4469496681709547707L;
 
     public static final String UNKNOWN = " ";
 
