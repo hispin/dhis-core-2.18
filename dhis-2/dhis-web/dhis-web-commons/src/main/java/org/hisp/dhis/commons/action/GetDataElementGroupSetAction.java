@@ -1,4 +1,5 @@
 package org.hisp.dhis.commons.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -36,7 +37,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 public class GetDataElementGroupSetAction
-   implements Action
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -48,7 +49,7 @@ public class GetDataElementGroupSetAction
     {
         this.dataElementService = dataElementService;
     }
-       
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -59,9 +60,9 @@ public class GetDataElementGroupSetAction
     {
         this.id = id;
     }
-    
+
     private DataElementGroupSet dataElementGroupSet;
-    
+
     public DataElementGroupSet getDataElementGroupSet()
     {
         return dataElementGroupSet;
@@ -70,9 +71,10 @@ public class GetDataElementGroupSetAction
     public String execute()
         throws Exception
     {
-
-        dataElementGroupSet = dataElementService.getDataElementGroupSet( id  );       
-       
+        if ( id != null )
+        {
+            dataElementGroupSet = dataElementService.getDataElementGroupSet( id );
+        }
 
         return SUCCESS;
     }

@@ -34,7 +34,8 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z larshelg $
+ * @version $Id: GetIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z larshelg
+ *          $
  */
 public class GetIndicatorGroupAction
     implements Action
@@ -49,7 +50,7 @@ public class GetIndicatorGroupAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -81,9 +82,11 @@ public class GetIndicatorGroupAction
 
     public String execute()
     {
-        indicatorGroup = indicatorService.getIndicatorGroup( id );
-
-        memberCount = indicatorGroup.getMembers().size();
+        if ( id != null )
+        {
+            indicatorGroup = indicatorService.getIndicatorGroup( id );
+            memberCount = indicatorGroup.getMembers().size();
+        }
 
         return SUCCESS;
     }

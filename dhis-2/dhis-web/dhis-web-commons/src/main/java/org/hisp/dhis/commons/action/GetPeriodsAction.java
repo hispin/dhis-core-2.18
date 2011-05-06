@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -45,7 +46,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id: GetPeriodsAction.java 3272 2007-04-26 22:22:50Z larshelg $
  */
 public class GetPeriodsAction
-    implements Action
+    extends ActionPagingSupport<Period>
 {
     private final static String ALL = "ALL";
 
@@ -66,7 +67,7 @@ public class GetPeriodsAction
     {
         this.format = format;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -81,7 +82,7 @@ public class GetPeriodsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private List<Period> periods;
 
     public List<Period> getPeriods()
@@ -113,13 +114,20 @@ public class GetPeriodsAction
 
             periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) );
         }
-        
+
         for ( Period period : periods )
         {
             period.setName( format.formatPeriod( period ) );
         }
-        
+
         Collections.sort( periods, new PeriodComparator() );
+
+        if ( usePaging )
+        {
+            this.paging = createPaging( periods.size() );
+
+            periods = periods.subList( paging.getStartPos(), paging.getEndPos() );
+        }
 
         return SUCCESS;
     }

@@ -1,4 +1,5 @@
 package org.hisp.dhis.commons.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -72,8 +73,11 @@ public class GetIndicatorGroupSetAction
     public String execute()
         throws Exception
     {
-        indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
-        
+        if ( id != null )
+        {
+            indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
+        }
+
         return SUCCESS;
     }
 }

@@ -43,7 +43,7 @@ public class GetDataSetAction
     // -------------------------------------------------------------------------
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -59,11 +59,11 @@ public class GetDataSetAction
     {
         this.id = id;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private DataSet dataSet;
 
     public DataSet getDataSet()
@@ -74,11 +74,14 @@ public class GetDataSetAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        dataSet = dataSetService.getDataSet( id );
-        
+        if ( id != null )
+        {
+            dataSet = dataSetService.getDataSet( id );
+        }
+
         return SUCCESS;
     }
 }

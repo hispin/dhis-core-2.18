@@ -52,7 +52,7 @@ public class GetDataElementNameAction
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
@@ -93,12 +93,16 @@ public class GetDataElementNameAction
 
     public String execute()
     {
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
-        
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
-        
-        name = dataElement.getName() + " " + categoryOptionCombo.getName();
-        
+        if ( dataElementId != null && categoryOptionComboId != null )
+        {
+            DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+            DataElementCategoryOptionCombo categoryOptionCombo = categoryService
+                .getDataElementCategoryOptionCombo( categoryOptionComboId );
+
+            name = dataElement.getName() + " " + categoryOptionCombo.getName();
+        }
+
         return SUCCESS;
     }
 }

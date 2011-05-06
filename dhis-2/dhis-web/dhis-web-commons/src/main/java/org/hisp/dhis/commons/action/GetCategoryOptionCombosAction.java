@@ -30,6 +30,7 @@ package org.hisp.dhis.commons.action;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
 
@@ -80,10 +81,21 @@ public class GetCategoryOptionCombosAction
 
     public String execute()
     {
-        DataElement dataElement = dataElementService.getDataElement( id );
-        
-        categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
-        
+        if ( id != null )
+        {
+            DataElement dataElement = dataElementService.getDataElement( id );
+
+            if ( dataElement != null )
+            {
+                DataElementCategoryCombo categoryCombo = dataElement.getCategoryCombo();
+
+                if ( categoryCombo != null )
+                {
+                    categoryOptionCombos = categoryCombo.getOptionCombos();
+                }
+            }
+        }
+
         return SUCCESS;
     }
 }

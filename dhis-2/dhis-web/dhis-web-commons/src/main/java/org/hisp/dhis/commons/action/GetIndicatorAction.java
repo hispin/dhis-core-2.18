@@ -48,37 +48,40 @@ public class GetIndicatorAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
-    
+
     public void setId( Integer id )
     {
         this.id = id;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private Indicator indicator;    
-    
+    private Indicator indicator;
+
     public Indicator getIndicator()
     {
         return indicator;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        indicator = indicatorService.getIndicator( id );
-        
+        if ( id != null )
+        {
+            indicator = indicatorService.getIndicator( id );
+        }
+
         return SUCCESS;
     }
 }

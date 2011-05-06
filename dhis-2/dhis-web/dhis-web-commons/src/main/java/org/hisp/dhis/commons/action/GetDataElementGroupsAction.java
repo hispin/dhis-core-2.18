@@ -34,18 +34,15 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id: GetDataElementGroupsAction 2010-8-28$
  */
 public class GetDataElementGroupsAction
-    implements Action
+    extends ActionPagingSupport<DataElementGroup>
 {
-    
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -79,6 +76,13 @@ public class GetDataElementGroupsAction
 
         Collections.sort( this.dataElementGroups, new DataElementGroupNameComparator() );
 
+        if ( usePaging )
+        {
+            this.paging = createPaging( dataElementGroups.size() );
+
+            dataElementGroups = dataElementGroups.subList( paging.getStartPos(), paging.getEndPos() );
+        }
+        
         return SUCCESS;
     }
 }

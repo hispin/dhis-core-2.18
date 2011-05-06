@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -40,13 +41,11 @@ import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.util.SessionUtils;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Lars Helge Overland
  */
 public class GetAvailablePeriodsAction
-    implements Action
+    extends ActionPagingSupport<Period>
 {
     private I18nFormat format;
 
@@ -113,6 +112,13 @@ public class GetAvailablePeriodsAction
         FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
         
         Collections.reverse( periods );
+
+        if ( usePaging )
+        {
+            this.paging = createPaging( periods.size() );
+
+            periods = periods.subList( paging.getStartPos(), paging.getEndPos() );
+        }
         
         for ( Period period : periods )
         {

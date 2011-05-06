@@ -30,16 +30,15 @@ package org.hisp.dhis.commons.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
  */
 public class GetPeriodTypesAction
-    implements Action
+    extends ActionPagingSupport<PeriodType>
 {
     // -------------------------------------------
     // Dependency
@@ -69,7 +68,13 @@ public class GetPeriodTypesAction
     {
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
 
+        if ( usePaging )
+        {
+            this.paging = createPaging( periodTypes.size() );
+
+            periodTypes = periodTypes.subList( paging.getStartPos(), paging.getEndPos() );
+        }
+
         return SUCCESS;
     }
-
 }

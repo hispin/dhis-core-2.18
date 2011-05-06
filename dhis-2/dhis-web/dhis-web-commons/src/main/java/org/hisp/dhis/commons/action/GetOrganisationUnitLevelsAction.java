@@ -32,14 +32,13 @@ import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Tran Thanh Tri
  */
 public class GetOrganisationUnitLevelsAction
-    implements Action
+    extends ActionPagingSupport<OrganisationUnitLevel>
 {
 
     // -------------------------------------------------------------------------
@@ -68,10 +67,16 @@ public class GetOrganisationUnitLevelsAction
     public String execute()
         throws Exception
     {
-        organisationUnitLevels = new ArrayList<OrganisationUnitLevel>( organisationUnitService
-            .getOrganisationUnitLevels() );
+        organisationUnitLevels = new ArrayList<OrganisationUnitLevel>(
+            organisationUnitService.getOrganisationUnitLevels() );
+
+        if ( usePaging )
+        {
+            this.paging = createPaging( organisationUnitLevels.size() );
+
+            organisationUnitLevels = organisationUnitLevels.subList( paging.getStartPos(), paging.getEndPos() );
+        }
 
         return SUCCESS;
     }
-
 }

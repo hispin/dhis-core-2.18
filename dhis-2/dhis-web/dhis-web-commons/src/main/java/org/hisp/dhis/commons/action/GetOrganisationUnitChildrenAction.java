@@ -35,15 +35,14 @@ import java.util.List;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetOrganisationUnitChildrenAction
-    implements Action
+    extends ActionPagingSupport<OrganisationUnit>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -77,7 +76,7 @@ public class GetOrganisationUnitChildrenAction
     {
         this.organisationUnitComparator = organisationUnitComparator;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -92,7 +91,7 @@ public class GetOrganisationUnitChildrenAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private List<OrganisationUnit> organisationUnits;
 
     public List<OrganisationUnit> getOrganisationUnits()
@@ -108,11 +107,18 @@ public class GetOrganisationUnitChildrenAction
         throws Exception
     {
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-        
+
         organisationUnits = new ArrayList<OrganisationUnit>( unit.getChildren() );
 
         Collections.sort( organisationUnits, organisationUnitComparator );
-        
+
+        if ( usePaging )
+        {
+            this.paging = createPaging( organisationUnits.size() );
+
+            organisationUnits = organisationUnits.subList( paging.getStartPos(), paging.getEndPos() );
+        }
+
         displayPropertyHandler.handle( organisationUnits );
 
         return SUCCESS;
