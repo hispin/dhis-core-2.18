@@ -339,6 +339,11 @@
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.commons.action.GetDataElementsNotInGroupAction" class="org.hisp.dhis.commons.action.GetDataElementsNotInGroupAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
 	<bean id="org.hisp.dhis.commons.action.GetDataElementGroupSetAction" class="org.hisp.dhis.commons.action.GetDataElementGroupSetAction"
 		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
