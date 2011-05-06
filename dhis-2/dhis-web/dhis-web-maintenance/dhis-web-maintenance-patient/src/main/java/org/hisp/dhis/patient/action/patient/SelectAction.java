@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.patient.action.patient;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.Action;
