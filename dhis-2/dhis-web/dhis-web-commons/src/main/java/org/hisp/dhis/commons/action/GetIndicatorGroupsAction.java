@@ -34,14 +34,13 @@ import java.util.List;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Tran Thanh Tri
  */
 public class GetIndicatorGroupsAction
-    implements Action
+    extends ActionPagingSupport<IndicatorGroup>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -72,8 +71,15 @@ public class GetIndicatorGroupsAction
     public String execute()
     {
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
-        
+
         Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+
+        if ( usePaging )
+        {
+            this.paging = createPaging( indicatorGroups.size() );
+
+            indicatorGroups = indicatorGroups.subList( paging.getStartPos(), paging.getEndPos() );
+        }
 
         return SUCCESS;
     }

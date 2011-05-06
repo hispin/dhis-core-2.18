@@ -36,18 +36,17 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: GetIndicatorsAction.java 3305 2007-05-14 18:55:52Z larshelg $
  */
 public class GetIndicatorsAction
-    implements Action
+    extends ActionPagingSupport<Indicator>
 {
     private final static int ALL = 0;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -58,7 +57,7 @@ public class GetIndicatorsAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
@@ -79,31 +78,32 @@ public class GetIndicatorsAction
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
-    }    
-    
+    }
+
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public void setId( Integer id )
     {
         this.id = id;
     }
-    
+
     private List<Indicator> indicators;
 
     public List<Indicator> getIndicators()
     {
         return indicators;
-    }    
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         if ( id == null || id == ALL )
         {
@@ -112,9 +112,9 @@ public class GetIndicatorsAction
         else
         {
             IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( id );
-            
+
             if ( indicatorGroup != null )
-            {        
+            {
                 indicators = new ArrayList<Indicator>( indicatorGroup.getMembers() );
             }
             else
@@ -122,11 +122,18 @@ public class GetIndicatorsAction
                 indicators = new ArrayList<Indicator>();
             }
         }
-        
+
         Collections.sort( indicators, indicatorComparator );
-        
+
+        if ( usePaging )
+        {
+            this.paging = createPaging( indicators.size() );
+
+            indicators = indicators.subList( paging.getStartPos(), paging.getEndPos() );
+        }
+
         displayPropertyHandler.handle( indicators );
-        
+
         return SUCCESS;
     }
 }

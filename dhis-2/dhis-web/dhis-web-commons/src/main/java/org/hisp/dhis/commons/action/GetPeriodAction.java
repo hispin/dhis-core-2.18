@@ -77,8 +77,11 @@ public class GetPeriodAction
 
     public String execute()
     {
-        period = periodService.getPeriod( id );
-        
+        if ( id != null )
+        {
+            period = periodService.getPeriod( id );
+        }
+
         return SUCCESS;
     }
 }

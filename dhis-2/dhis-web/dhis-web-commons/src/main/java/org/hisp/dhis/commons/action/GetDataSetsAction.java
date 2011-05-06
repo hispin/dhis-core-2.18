@@ -36,19 +36,18 @@ import java.util.Set;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetDataSetsAction
-    implements Action
+    extends ActionPagingSupport<DataSet>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -98,7 +97,7 @@ public class GetDataSetsAction
     public void setName( String name )
     {
         this.name = name;
-    }   
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -124,8 +123,8 @@ public class GetDataSetsAction
         }
         else if ( id != null )
         {
-            dataSets = new ArrayList<DataSet>( dataSetService
-                .getDataSetsByPeriodType( periodService.getPeriodType( id ) ) );
+            dataSets = new ArrayList<DataSet>(
+                dataSetService.getDataSetsByPeriodType( periodService.getPeriodType( id ) ) );
         }
         else if ( name != null )
         {
@@ -147,6 +146,13 @@ public class GetDataSetsAction
         }
 
         Collections.sort( dataSets, new DataSetNameComparator() );
+
+        if ( usePaging )
+        {
+            this.paging = createPaging( dataSets.size() );
+
+            dataSets = dataSets.subList( paging.getStartPos(), paging.getEndPos() );
+        }
 
         return SUCCESS;
     }

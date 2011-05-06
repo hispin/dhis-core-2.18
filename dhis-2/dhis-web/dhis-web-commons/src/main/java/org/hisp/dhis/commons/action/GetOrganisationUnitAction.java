@@ -41,7 +41,7 @@ public class GetOrganisationUnitAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -52,7 +52,7 @@ public class GetOrganisationUnitAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public void setId( Integer id )
@@ -63,7 +63,7 @@ public class GetOrganisationUnitAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private OrganisationUnit organisationUnit;
 
     public OrganisationUnit getOrganisationUnit()
@@ -74,11 +74,14 @@ public class GetOrganisationUnitAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        organisationUnit = organisationUnitService.getOrganisationUnit( id );
-        
+        if ( id != null )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        }
+
         return SUCCESS;
     }
 }

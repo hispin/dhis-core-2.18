@@ -40,19 +40,18 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.util.FilterUtils;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: GetDataElementsAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class GetDataElementsAction
-    implements Action
+    extends ActionPagingSupport<DataElement>
 {
     private final static int ALL = 0;
     
@@ -209,14 +208,21 @@ public class GetDataElementsAction
         }
         
         Collections.sort( dataElements, dataElementComparator );
-        
-        displayPropertyHandler.handle( dataElements );
 
         if ( aggregate )
         {
             FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
         }
+
+        if ( usePaging )
+        {
+            this.paging = createPaging( dataElements.size() );
+
+            dataElements = dataElements.subList( paging.getStartPos(), paging.getEndPos() );
+        }
         
+        displayPropertyHandler.handle( dataElements );
+
         return SUCCESS;
     }
 }

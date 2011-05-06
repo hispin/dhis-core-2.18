@@ -41,20 +41,20 @@ public class GetDataElementAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private DataElementService dataElementService;
-    
+
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
-    // Input 
+    // Input
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
-    
+
     public void setId( Integer id )
     {
         this.id = id;
@@ -63,7 +63,7 @@ public class GetDataElementAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private DataElement dataElement;
 
     public DataElement getDataElement()
@@ -74,10 +74,13 @@ public class GetDataElementAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        dataElement = dataElementService.getDataElement( id );      
+        if ( id != null )
+        {
+            dataElement = dataElementService.getDataElement( id );
+        }
 
         return SUCCESS;
     }
