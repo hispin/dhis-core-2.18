@@ -40,12 +40,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <value>armenia.png</value>
         </entry>
         <entry>
+          <key><value>bangladesh</value></key>
+          <value>bangladesh.png</value>
+        </entry>
+        <entry>
+          <key><value>bening</value></key>
+          <value>benin.png</value>
+        </entry>
+        <entry>
           <key><value>botswana</value></key>
           <value>botswana.png</value>
         </entry>
         <entry>
           <key><value>burkina_faso</value></key>
           <value>burkina_faso.png</value>
+        </entry>
+        <entry>
+          <key><value>cambodia</value></key>
+          <value>cambodia.png</value>
         </entry>
         <entry>
           <key><value>ethiopia</value></key>
@@ -70,6 +82,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <entry>
           <key><value>india</value></key>
           <value>india.png</value>
+        </entry>
+        <entry>
+          <key><value>indonesia</value></key>
+          <value>indionesia.png</value>
         </entry>
         <entry>
           <key><value>irc</value></key>
@@ -116,6 +132,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <value>norway.png</value>
         </entry>
         <entry>
+          <key><value>philippines</value></key>
+          <value>philippines.png</value>
+        </entry>
+        <entry>
           <key><value>rwanda</value></key>
           <value>rwanda.png</value>
         </entry>
@@ -138,6 +158,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <entry>
           <key><value>south_africa_department_of_health</value></key>
           <value>south_africa_department_of_health.png</value>
+        </entry>
+        <entry>
+          <key><value>sri_lanka</value></key>
+          <value>sri_lanka.png</value>
         </entry>
         <entry>
           <key><value>swaziland</value></key>
