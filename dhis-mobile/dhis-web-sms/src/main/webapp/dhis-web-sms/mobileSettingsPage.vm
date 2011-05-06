@@ -5,6 +5,10 @@
             #if($balancer) <tr><td>Balancer: </td><td><input size="100" name="balancer" type="text" value="$balancer" /></td></tr>#end
             #if($router) <tr><td>Router: </td><td><input size="100" name="router" type="text" value="$router" /></td></tr>#end
             #if($gatewayName) <tr><td>Gateway Name: </td><td><input size="100" name="gatewayName" type="text" value="$gatewayName" /></td></tr>#end
+            #if($gatewayName == "bulksms")
+                <tr><td>Bulksms Username: </td><td><input size="100" name="bulksmsUsername" type="text" value="$!bulksmsUsername" /></td></tr>
+                <tr><td>Bulksms Password: </td><td><input size="100" name="bulksmsPassword" type="text" value="$!bulksmsPassword" /></td></tr>
+            #end
             #if($port) <tr><td>Modem Port#: </td><td><input size="100" name="port" type="text" value="$port" /></td></tr>#end
             #if($baudRate) <tr><td>Baudrate: </td><td><input size="100" name="baudRate" type="text" value="$baudRate" /></td></tr>#end
             #if($manufacturer) <tr><td>Manufacturer: </td><td><input size="100" name="manufacturer" type="text" value="$manufacturer" /></td></tr>#end
