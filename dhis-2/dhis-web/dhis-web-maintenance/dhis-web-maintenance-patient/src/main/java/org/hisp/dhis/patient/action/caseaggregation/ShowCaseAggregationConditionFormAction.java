@@ -65,7 +65,9 @@ public class ShowCaseAggregationConditionFormAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
+    
+	private Integer id;
+	
     private List<PatientAttribute> patientAttributes;
 
     private List<DataElementGroup> dataElementGroups;
@@ -78,6 +80,16 @@ public class ShowCaseAggregationConditionFormAction
     // Getters && Setters
     // -------------------------------------------------------------------------
     
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+	
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
