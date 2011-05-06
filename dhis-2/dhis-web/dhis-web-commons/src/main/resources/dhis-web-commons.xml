@@ -473,6 +473,12 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="getDataElementsNotInGroup" class="org.hisp.dhis.commons.action.GetDataElementsNotInGroupAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonDataElements.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<action name="getDataElementName"
 			class="org.hisp.dhis.commons.action.GetDataElementNameAction">
 			<result name="success" type="velocity-json">
