@@ -48,6 +48,11 @@ import org.hisp.dhis.user.comparator.UsernameComparator;
 public class GetOrgunitUserListAction
     extends ActionPagingSupport<User>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -5175610874946088030L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

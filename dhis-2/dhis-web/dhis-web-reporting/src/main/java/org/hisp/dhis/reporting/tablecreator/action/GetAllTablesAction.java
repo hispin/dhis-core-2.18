@@ -45,6 +45,11 @@ import org.hisp.dhis.reporttable.comparator.ReportTableComparator;
 public class GetAllTablesAction
     extends ActionPagingSupport<ReportTable>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 392357311060063539L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

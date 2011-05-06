@@ -50,6 +50,11 @@ import org.hisp.dhis.system.util.FilterUtils;
 public class GetOperandsAction
     extends ActionPagingSupport<DataElementOperand>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -5383013578576715476L;
+
     private static Filter<DataElement> AGGREGATABLE_FILTER = new AggregatableDataElementFilter();
     
     // -------------------------------------------------------------------------

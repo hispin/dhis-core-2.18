@@ -43,6 +43,11 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetAllDocumentsAction
     extends ActionPagingSupport<Document>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 3239745318140276726L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

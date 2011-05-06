@@ -45,6 +45,11 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetAllDataMartExportsAction
     extends ActionPagingSupport<DataMartExport>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6689317770553253852L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

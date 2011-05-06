@@ -47,6 +47,11 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetOrganisationUnitListAction
     extends ActionPagingSupport<OrganisationUnit>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -5977539372198760349L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

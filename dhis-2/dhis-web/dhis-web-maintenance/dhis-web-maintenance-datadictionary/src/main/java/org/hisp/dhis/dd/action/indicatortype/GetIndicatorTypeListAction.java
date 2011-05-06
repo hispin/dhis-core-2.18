@@ -43,8 +43,13 @@ import org.hisp.dhis.paging.ActionPagingSupport;
  * @version $Id: GetIndicatorTypeListAction.java 3305 2007-05-14 18:55:52Z larshelg $
  */
 public class GetIndicatorTypeListAction
-extends ActionPagingSupport<IndicatorType>
+    extends ActionPagingSupport<IndicatorType>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 6266707412846006610L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

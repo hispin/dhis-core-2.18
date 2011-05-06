@@ -49,8 +49,13 @@ import org.hisp.dhis.paging.ActionPagingSupport;
  *          ch_bharath1 $
  */
 public class GetIndicatorListAction
-extends ActionPagingSupport<Indicator>
+    extends ActionPagingSupport<Indicator>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -8113994255652430513L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
