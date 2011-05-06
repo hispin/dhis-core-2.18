@@ -76,7 +76,31 @@ public class MobileSettingsAction implements Action
     {
         props.setProperty( "gateway.0", gatewayName );
     }
+    
+    private String bulksmsUsername;
 
+    public String getBulksmsUsername()
+    {
+        return props.getProperty( "bulksms.username" );
+    }
+
+    public void setBulksmsUsername( String bulksmsUsername )
+    {
+        props.setProperty( "bulksms.username", bulksmsUsername );
+    }
+    
+    private String bulksmsPassword;
+
+    public String getBulksmsPassword()
+    {
+        return props.getProperty( "bulksms.password" );
+    }
+
+    public void setBulksmsPassword( String bulksmsPassword )
+    {
+        props.setProperty( "bulksms.password", bulksmsPassword );
+    }
+    
     private String port;
 
     public String getPort()
@@ -277,6 +301,8 @@ public class MobileSettingsAction implements Action
             props.setProperty( "smsserver.balancer", "RoundRobinLoadBalancer" );
             props.setProperty( "smsserver.router", "NumberPoolRouter" );
             props.setProperty( "gateway.0", "modem1, SerialModem" );
+            props.setProperty( "bulksms.username", "" );
+            props.setProperty( "bulksms.password", "" );
             props.setProperty( "modem1.port", "COM1" );
             props.setProperty( "modem1.baudrate", "57600" );
             props.setProperty( "modem1.manufacturer", "Generic" );

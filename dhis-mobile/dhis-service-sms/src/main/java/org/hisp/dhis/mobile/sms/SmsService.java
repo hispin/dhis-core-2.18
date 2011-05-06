@@ -60,6 +60,7 @@ import org.smslib.OutboundWapSIMessage.WapSISignals;
 import org.smslib.Service;
 import org.smslib.TimeoutException;
 import org.smslib.helper.Logger;
+import org.smslib.http.BulkSmsHTTPGateway;
 import org.smslib.modem.SerialModemGateway;
 
 /*
@@ -528,57 +529,67 @@ public class SmsService
                         break;
                     }
                     String modemName = propValue.split( "\\," )[0].trim();
-                    String port = getProperties().getProperty( modemName + ".port" );
-                    int baudRate = Integer.parseInt( getProperties().getProperty( modemName + ".baudrate" ) );
-                    String manufacturer = getProperties().getProperty( modemName + ".manufacturer" );
-                    String model = getProperties().getProperty( modemName + ".model" );
-                    String protocol = getProperties().getProperty( modemName + ".protocol" );
-                    String pin = getProperties().getProperty( modemName + ".pin" );
-                    String inbound = getProperties().getProperty( modemName + ".inbound" );
-                    String outbound = getProperties().getProperty( modemName + ".outbound" );
-                    String simMemLocation = getProperties().getProperty( modemName + ".simMemLocation" );
-
-                    // TODO: DETECT MODEM CLASS AND INSTANTIATE
-                    SerialModemGateway gateway = new SerialModemGateway( modemName, port, baudRate, manufacturer, model );
-
-                    if ( simMemLocation != null && !simMemLocation.equals( "-" ) )
+                    if ( modemName.contains( "bulksms" ) )
                     {
-                        gateway.getATHandler().setStorageLocations( simMemLocation );
-                    }
-
-                    if ( protocol != null && protocol.equalsIgnoreCase( "PDU" ) )
-                    {
-                        gateway.setProtocol( Protocols.PDU );
+                        String username = getProperties().getProperty( "bulksms.username" );
+                        String password = getProperties().getProperty( "bulksms.password" );
+                        BulkSmsHTTPGateway gateway = new BulkSmsHTTPGateway("bulksms.http.1", username, password);
+                        gateway.setOutbound( true );
+                        Service.getInstance().addGateway( gateway );
                     } else
                     {
-                        if ( protocol != null && protocol.equalsIgnoreCase( "TEXT" ) )
-                        {
-                            gateway.setProtocol( Protocols.TEXT );
+                        String port = getProperties().getProperty( modemName + ".port" );
+                        int baudRate = Integer.parseInt( getProperties().getProperty( modemName + ".baudrate" ) );
+                        String manufacturer = getProperties().getProperty( modemName + ".manufacturer" );
+                        String model = getProperties().getProperty( modemName + ".model" );
+                        String protocol = getProperties().getProperty( modemName + ".protocol" );
+                        String pin = getProperties().getProperty( modemName + ".pin" );
+                        String inbound = getProperties().getProperty( modemName + ".inbound" );
+                        String outbound = getProperties().getProperty( modemName + ".outbound" );
+                        String simMemLocation = getProperties().getProperty( modemName + ".simMemLocation" );
 
-                        } else
+                        // TODO: DETECT MODEM CLASS AND INSTANTIATE
+                        SerialModemGateway gateway = new SerialModemGateway( modemName, port, baudRate, manufacturer, model );
+
+                        if ( simMemLocation != null && !simMemLocation.equals( "-" ) )
+                        {
+                            gateway.getATHandler().setStorageLocations( simMemLocation );
+                        }
+
+                        if ( protocol != null && protocol.equalsIgnoreCase( "PDU" ) )
                         {
                             gateway.setProtocol( Protocols.PDU );
+                        } else
+                        {
+                            if ( protocol != null && protocol.equalsIgnoreCase( "TEXT" ) )
+                            {
+                                gateway.setProtocol( Protocols.TEXT );
+
+                            } else
+                            {
+                                gateway.setProtocol( Protocols.PDU );
+                            }
                         }
+                        if ( pin != null )
+                        {
+                            gateway.setSimPin( pin );
+                        }
+                        if ( inbound.equalsIgnoreCase( "yes" ) )
+                        {
+                            gateway.setInbound( true );
+                        } else
+                        {
+                            gateway.setInbound( false );
+                        }
+                        if ( outbound.equalsIgnoreCase( "yes" ) )
+                        {
+                            gateway.setOutbound( true );
+                        } else
+                        {
+                            gateway.setOutbound( false );
+                        }
+                        Service.getInstance().addGateway( gateway );
                     }
-                    if ( pin != null )
-                    {
-                        gateway.setSimPin( pin );
-                    }
-                    if ( inbound.equalsIgnoreCase( "yes" ) )
-                    {
-                        gateway.setInbound( true );
-                    } else
-                    {
-                        gateway.setInbound( false );
-                    }
-                    if ( outbound.equalsIgnoreCase( "yes" ) )
-                    {
-                        gateway.setOutbound( true );
-                    } else
-                    {
-                        gateway.setOutbound( false );
-                    }
-                    Service.getInstance().addGateway( gateway );
                     Logger.getInstance().logInfo( "Load Configuration: added gateway " + i + " / ", null, null );
                 } catch ( Exception e )
                 {
