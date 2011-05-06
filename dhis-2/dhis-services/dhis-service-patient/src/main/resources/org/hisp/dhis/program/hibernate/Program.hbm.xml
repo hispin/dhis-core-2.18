@@ -20,7 +20,7 @@
 
     <property name="dateOfIncidentDescription" type="text" not-null="true" />
 
-    <set name="programStages" order-by="stageinprogram" inverse="true" cascade="all">
+    <set name="programStages" order-by="stageinprogram" cascade="all">
       <key column="programid" />
       <one-to-many class="org.hisp.dhis.program.ProgramStage" />
     </set>

@@ -32,7 +32,7 @@
 
     <property name="dobType" column="dobType" />
 
-    <set name="identifiers" inverse="true" cascade="all">
+    <set name="identifiers" cascade="all">
       <key column="patientid" />
       <one-to-many class="org.hisp.dhis.patient.PatientIdentifier" />
     </set>
