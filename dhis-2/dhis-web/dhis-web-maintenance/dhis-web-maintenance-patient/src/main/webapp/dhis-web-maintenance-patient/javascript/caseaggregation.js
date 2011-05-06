@@ -40,8 +40,6 @@ function getAggDataElementsCompleted( dataelementElement )
         option.title = name;
         
         de.add(option, null);  
-        
-      
     }	    
 }
 

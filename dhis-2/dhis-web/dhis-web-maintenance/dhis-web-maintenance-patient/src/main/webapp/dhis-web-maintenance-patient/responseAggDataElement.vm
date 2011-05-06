@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataelements>
-
-	#set( $count = 0 )
-	#foreach( $ocName in $optionComboNames )							
-		<dataelement>							
+	#foreach( $ocName in $optionComboNames )
+	#set( $count = $velocityCount - 1 )
+		<dataelement>
   			<id>$optionComboIds.get($count)</id>
   			<name>$encoder.xmlEncode( $ocName )</name>
   			<type>$encoder.xmlEncode( $optionComboType.get($count) )</type>
-		</dataelement>			
-		#set( $count = $count + 1 )		
+		</dataelement>	
 	#end
-
 </dataelements>
