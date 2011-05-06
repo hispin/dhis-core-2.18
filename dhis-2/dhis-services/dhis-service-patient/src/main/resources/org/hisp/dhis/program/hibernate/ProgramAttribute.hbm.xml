@@ -16,7 +16,7 @@
 
     <property name="valueType" not-null="true" />
 
-    <set name="attributeOptions" lazy="false" cascade="all">
+    <set name="attributeOptions" cascade="all" >
       <key column="programattributeid" />
       <one-to-many class="org.hisp.dhis.program.ProgramAttributeOption" />
     </set>

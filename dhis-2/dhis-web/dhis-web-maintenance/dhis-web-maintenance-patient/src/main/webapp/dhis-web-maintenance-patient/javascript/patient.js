@@ -740,13 +740,18 @@ function searchPatients()
 {
 	showLoader();
 	
-	var url  = 'searchPatient.action?';
-		url += 'searchText=' + getFieldValue('searchText');
-		url += '&searchingAttributeId=' + getFieldValue('searchingAttributeId');
-		url += '&sortPatientAttributeId=' + getFieldValue('sortPatientAttributeId');
-		url += '&programId=' + getFieldValue('programId');
-	$('#contentDiv').load(url);
-	
+	$.post("searchPatient.action",
+		{
+			searchText: getFieldValue('searchText'),
+			searchingAttributeId: getFieldValue('searchingAttributeId'),
+			sortPatientAttributeId: getFieldValue('sortPatientAttributeId'),
+			programId: getFieldValue('programId')
+		},
+		function (data)
+		{
+			setInnerHTML('contentDiv', data);
+		},'html');
+		
 	hideLoader();
 }
 
