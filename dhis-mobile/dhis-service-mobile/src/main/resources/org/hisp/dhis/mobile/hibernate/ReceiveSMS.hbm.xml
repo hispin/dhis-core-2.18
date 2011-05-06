@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
-  <class name="org.hisp.dhis.mobile.api.ReceiveSMS" table="receivesms">
-    <id column="receiverInfo" length="230" name="receiverInfo"/>
-    <property column="smscontent" length="230" name="receiveingMessage" not-null="true"/>
-  </class>
-</hibernate-mapping>
