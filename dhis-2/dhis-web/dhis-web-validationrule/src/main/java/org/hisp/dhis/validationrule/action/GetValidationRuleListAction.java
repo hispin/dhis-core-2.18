@@ -45,6 +45,11 @@ import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 public class GetValidationRuleListAction 
     extends ActionPagingSupport<ValidationRule>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -5674675722729050868L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

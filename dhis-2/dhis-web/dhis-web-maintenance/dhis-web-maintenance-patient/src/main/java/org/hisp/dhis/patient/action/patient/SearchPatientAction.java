@@ -52,6 +52,11 @@ import org.hisp.dhis.program.ProgramService;
 public class SearchPatientAction
     extends ActionPagingSupport<Patient>
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -2815128850665795197L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

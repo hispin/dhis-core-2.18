@@ -47,6 +47,11 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class ExportImageAction
     extends StreamActionSupport
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = 8329931104387254592L;
+
     private static final Log log = LogFactory.getLog( ExportImageAction.class );
 
     private static final String SVGDOCUMENT = "SVGDOCUMENT";
