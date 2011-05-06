@@ -203,10 +203,10 @@ function DataDictionary()
 
 					var html = '<div id="operandPaging_div">';
 
-					if( numberOfPages > 1 ){
+					if( numberOfPages > 1 ) {
 						html += 'Page: <select onchange="dataDictionary.reloadOperands( this.value )">';
 
-						for(var i=1;i<=numberOfPages;i++){
+						for(var i=1;i<=numberOfPages;i++) {
 							html += '<option value="' + i + '"' + ( currentPage==i?'selected=true':'' ) + '>' + i + '</option>';
 						}
 
