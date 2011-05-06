@@ -9,8 +9,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
-import com.opensymphony.xwork2.Action;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
