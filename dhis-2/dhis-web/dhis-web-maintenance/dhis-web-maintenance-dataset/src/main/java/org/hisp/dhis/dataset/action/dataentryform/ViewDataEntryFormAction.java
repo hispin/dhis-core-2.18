@@ -29,13 +29,11 @@ package org.hisp.dhis.dataset.action.dataentryform;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -229,21 +227,7 @@ public class ViewDataEntryFormAction
                 int optionComboId = Integer.parseInt( dataElementMatcher.group( 2 ) );
                 DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
-                String optionComboName = "";
-
-                if ( optionCombo != null )
-                {
-                    List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>(
-                        optionCombo.getCategoryOptions() );
-                    Iterator<DataElementCategoryOption> categoryOptionsIterator = categoryOptions.iterator();
-
-                    while ( categoryOptionsIterator.hasNext() )
-                    {
-                        DataElementCategoryOption categoryOption = categoryOptionsIterator.next();
-
-                        optionComboName += categoryOption.getName() + " ";
-                    }
-                }
+                String optionComboName = optionCombo != null ? optionCombo.getName() : "";
 
                 // -------------------------------------------------------------
                 // Insert name of data element in output code
@@ -281,7 +265,7 @@ public class ViewDataEntryFormAction
                     }
 
                     StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
-                        append( dataElement.getName() ).append( " - " ).append( optionCombo.getId() ).append( " - " ).
+                        append( dataElement.getName() ).append( " - " ).append( optionComboId ).append( " - " ).
                         append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
                     
                     if ( dataElementCode.contains( "title=\"\"" ) )
@@ -378,23 +362,8 @@ public class ViewDataEntryFormAction
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                 int optionComboId = Integer.parseInt( dataElementMatcher.group( 2 ) );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
-                    .getDataElementCategoryOptionCombo( optionComboId );
-                String optionComboName = "";
-
-                if ( optionCombo != null )
-                {
-                    List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>(
-                        optionCombo.getCategoryOptions() );
-                    Iterator<DataElementCategoryOption> categoryOptionsIterator = categoryOptions.iterator();
-
-                    while ( categoryOptionsIterator.hasNext() )
-                    {
-                        DataElementCategoryOption categoryOption = categoryOptionsIterator.next();
-
-                        optionComboName += categoryOption.getName() + " ";
-                    }
-                }
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( optionComboId );
+                String optionComboName = optionCombo != null ? optionCombo.getName() : "";
                 
                 // -------------------------------------------------------------
                 // Insert name of data element in output code.
@@ -432,7 +401,7 @@ public class ViewDataEntryFormAction
                     }
 
                     StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
-                        append( dataElement.getName() ).append( " - " ).append( optionCombo.getId() ).append( " - " ).
+                        append( dataElement.getName() ).append( " - " ).append( optionComboId ).append( " - " ).
                         append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
                     
                     if ( dataElementCode.contains( "title=\"\"" ) )
