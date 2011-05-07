@@ -319,12 +319,13 @@ public class SectionFormAction
 
         for ( Section section : sections )
         {
-            if ( section.getDataElements().size() > 0 )
+            DataElementCategoryCombo sectionCategoryCombo = section.getCategoryCombo();
+            
+            if ( sectionCategoryCombo != null )
             {
-                orderedCategoryCombos.add( section.getDataElements().iterator().next().getCategoryCombo() );
+                orderedCategoryCombos.add( sectionCategoryCombo );
 
-                sectionCombos.put( section.getId(), section.getDataElements().iterator().next().getCategoryCombo()
-                    .getId() );
+                sectionCombos.put( section.getId(), sectionCategoryCombo.getId() );
             }
 
             if ( section.hasMultiDimensionalDataElement() )
@@ -373,18 +374,20 @@ public class SectionFormAction
             // Calculating the number of times each category should be repeated
             // -----------------------------------------------------------------
 
-            int catColSpan = optionCombos.size();
-
             Map<Integer, Integer> catRepeat = new HashMap<Integer, Integer>();
 
             Map<Integer, Collection<Integer>> colRepeat = new HashMap<Integer, Collection<Integer>>();
 
+            int catColSpan = optionCombos.size();
+
             for ( DataElementCategory cat : categoryCombo.getCategories() )
             {
-                if ( !cat.getCategoryOptions().isEmpty() )
+                int categoryOptionSize = cat.getCategoryOptions().size();
+                
+                if ( catColSpan > 0 && categoryOptionSize > 0 )
                 {
-                    catColSpan = catColSpan / cat.getCategoryOptions().size();
-                    int total = optionCombos.size() / (catColSpan * cat.getCategoryOptions().size());
+                    catColSpan = catColSpan / categoryOptionSize;
+                    int total = optionCombos.size() / ( catColSpan * categoryOptionSize );
                     Collection<Integer> cols = new ArrayList<Integer>( total );
 
                     for ( int i = 0; i < total; i++ )
