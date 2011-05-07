@@ -94,6 +94,15 @@ public interface DataEntryFormService
      * @return htmlCode.
      */
     String prepareDataEntryFormCode( String preparedCode );
+
+    /**
+     * Prepares the data entry form code by injecting the dataElement name and
+     * and title for each entry field.
+     * 
+     * @param htmlCode HTML code of the data entry form.
+     * @return HTML code for the data entry form injected with data element names.
+     */
+    String prepareDataEntryFormForEdit( String htmlCode );
     
     Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
     

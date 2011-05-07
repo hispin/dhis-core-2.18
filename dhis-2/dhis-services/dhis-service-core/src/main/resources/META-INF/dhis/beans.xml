@@ -308,8 +308,9 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	</bean>
 
 	<bean id="org.hisp.dhis.dataentryform.DataEntryFormService" class="org.hisp.dhis.dataentryform.DefaultDataEntryFormService">
-		<property name="dataEntryFormStore"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormStore" />
+		<property name="dataEntryFormStore" ref="org.hisp.dhis.dataentryform.DataEntryFormStore" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.expression.ExpressionService" class="org.hisp.dhis.expression.DefaultExpressionService">
