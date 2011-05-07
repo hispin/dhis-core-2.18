@@ -20,8 +20,10 @@
 	var t;
 	var timer_is_on = 0;
 
+	#if( $dataEntryForm )
     stat = "EDIT";
     dataEntryFormId = $dataEntryForm.id;
+    #end
 
     var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "dataentryform_confirm_delete" ) , "'" )';
 	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
@@ -151,13 +153,7 @@
 	<table>
 		<tr>
 			<td>
-				<b>$i18n.getString( "view_as" )</b><br>
-				<select name="viewBySelector" id="viewBySelector" style="width:150px">		
-					<option value="deid">$i18n.getString( "id" )</option>
-					<option value="dename">$i18n.getString( "name" )</option>
-					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
-				</select>
-				<input type="button" value="Insert" onclick="insertDataElement()"/>
+				<input type="button" value="Insert" onclick="insertDataElement()" style="width:120px"/>
 			</td>
 			<td>
 				<span id="message_"></span>

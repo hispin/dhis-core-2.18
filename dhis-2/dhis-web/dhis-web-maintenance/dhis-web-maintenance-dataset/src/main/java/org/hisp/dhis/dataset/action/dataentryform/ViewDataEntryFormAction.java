@@ -54,7 +54,6 @@ public class ViewDataEntryFormAction
     implements Action
 {
     private static final Pattern IDENTIFIER_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
-    private static final Pattern VIEWBY_PATTERN = Pattern.compile( "view=\"@@(.*)@@\"" );
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -145,19 +144,11 @@ public class ViewDataEntryFormAction
 
         dataEntryForm = dataSet.getDataEntryForm();
 
-        if ( dataEntryForm != null )
-        {
-            dataEntryValue = prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() );
-        }
-        else
-        {
-            dataEntryValue = "";
-        }
-
+        dataEntryValue = dataEntryForm != null ? prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() ) : "";
+        
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
 
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet
-            .getDataElements() ) );
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet.getDataElements() ) );
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
 
@@ -165,8 +156,8 @@ public class ViewDataEntryFormAction
     }
 
     /**
-     * Prepares the data entry form code by injecting the dataElement name for
-     * each entry field.
+     * Prepares the data entry form code by injecting the dataElement name and
+     * and title for each entry field.
      * 
      * @param htmlCode HTML code of the data entry form.
      * @return HTML code for the data entry form injected with data element names.
@@ -204,8 +195,6 @@ public class ViewDataEntryFormAction
 
             Matcher dataElementMatcher = IDENTIFIER_PATTERN.matcher( dataElementCode );
 
-            Matcher viewByMatcher = VIEWBY_PATTERN.matcher( dataElementCode );
-
             if ( dataElementMatcher.find() && dataElementMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
@@ -223,27 +212,11 @@ public class ViewDataEntryFormAction
                 // Insert name of data element in output code
                 // -------------------------------------------------------------
 
-                String displayValue = "No Such DataElement Exists";
+                String displayValue = "Data element does not exist";
 
                 if ( dataElement != null )
                 {
-                    displayValue = dataElement.getShortName();
-
-                    if ( viewByMatcher.find() && viewByMatcher.groupCount() > 0 )
-                    {
-                        String viewByVal = viewByMatcher.group( 1 );
-                        
-                        if ( viewByVal.equalsIgnoreCase( "deid" ) )
-                        {
-                            displayValue = String.valueOf( dataElement.getId() );
-                        }
-                        else if ( viewByVal.equalsIgnoreCase( "dename" ) )
-                        {
-                            displayValue = dataElement.getName();
-                        }
-                    }
-
-                    displayValue += " - " + optionComboName;
+                    displayValue = dataElement.getShortName() + " " + optionComboName;
 
                     if ( dataElementCode.contains( "value=\"\"" ) )
                     {

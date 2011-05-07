@@ -56,11 +56,7 @@ function validateDataEntryForm()
 
   var params = 'name=' + document.getElementById( 'nameField' ).value;
   
-  if(stat == "ADD")
-  {
-  	
-  }	
-  else
+  if(stat == "EDIT")
   {
     params += '&dataEntryFormId=' + dataEntryFormId;      
   }        
