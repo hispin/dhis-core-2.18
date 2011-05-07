@@ -44,13 +44,13 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.comments.StandardCommentsManager;
-import org.hisp.dhis.de.screen.DataEntryScreenManager;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
@@ -107,11 +107,11 @@ public class FormAction
         this.selectedStateManager = selectedStateManager;
     }
 
-    private DataEntryScreenManager dataEntryScreenManager;
+    private DataEntryFormService dataEntryFormService;
 
-    public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
+    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
-        this.dataEntryScreenManager = dataEntryScreenManager;
+        this.dataEntryFormService = dataEntryFormService;
     }
 
     private DataElementCategoryService categoryService;
@@ -474,7 +474,7 @@ public class FormAction
 
         if ( cdeFormExists )
         {
-            customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
+            customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEntry(
                 dataEntryForm.getHtmlCode(), dataValues, minMaxMap, disabled, i18n, dataSet );
         }
 

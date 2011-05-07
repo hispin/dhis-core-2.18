@@ -109,10 +109,8 @@ public class SaveDataEntryFormAction
             dataEntryForm.setName( nameField );
             dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
-        }        
-       
+        }
 
         return SUCCESS;
     }
-
 }
