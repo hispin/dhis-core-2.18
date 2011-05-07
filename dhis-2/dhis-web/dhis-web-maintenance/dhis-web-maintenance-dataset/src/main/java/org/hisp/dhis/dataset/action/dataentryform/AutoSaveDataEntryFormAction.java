@@ -104,8 +104,7 @@ public class AutoSaveDataEntryFormAction
 
         if ( dataEntryForm == null )
         {
-            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService
-                .prepareDataEntryFormCode( designTextarea ) );
+            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
             int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
             message = id + "";
             
