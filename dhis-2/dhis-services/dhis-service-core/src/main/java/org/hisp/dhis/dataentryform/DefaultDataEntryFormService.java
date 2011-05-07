@@ -32,6 +32,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataEntryFormService
     implements DataEntryFormService
 {
+    private static final Pattern IDENTIFIER_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
+    
     // ------------------------------------------------------------------------
     // Dependencies
     // ------------------------------------------------------------------------
@@ -55,6 +61,20 @@ public class DefaultDataEntryFormService
         this.dataEntryFormStore = dataEntryFormStore;
     }
 
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
     // ------------------------------------------------------------------------
     // Implemented Methods
     // ------------------------------------------------------------------------
@@ -164,6 +184,124 @@ public class DefaultDataEntryFormService
         return sb.toString();
     }
 
+    public String prepareDataEntryFormForEdit( String htmlCode )
+    {
+        // ---------------------------------------------------------------------
+        // Buffer to contain the final result.
+        // ---------------------------------------------------------------------
+
+        StringBuffer sb = new StringBuffer();
+
+        // ---------------------------------------------------------------------
+        // Pattern to match data elements in the HTML code.
+        // ---------------------------------------------------------------------
+
+        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>" );
+        Matcher matDataElement = patDataElement.matcher( htmlCode );
+
+        // ---------------------------------------------------------------------
+        // Iterate through all matching data element fields.
+        // ---------------------------------------------------------------------
+
+        while ( matDataElement.find() )
+        {
+            // -----------------------------------------------------------------
+            // Get input HTML code
+            // -----------------------------------------------------------------
+
+            String dataElementCode = matDataElement.group( 1 );
+
+            // -----------------------------------------------------------------
+            // Pattern to extract data element ID from data element field
+            // -----------------------------------------------------------------
+
+            Matcher dataElementMatcher = IDENTIFIER_PATTERN.matcher( dataElementCode );
+
+            if ( dataElementMatcher.find() && dataElementMatcher.groupCount() > 0 )
+            {
+                // -------------------------------------------------------------
+                // Get data element id,name, optionCombo id,name of data element
+                // -------------------------------------------------------------
+
+                int dataElementId = Integer.parseInt( dataElementMatcher.group( 1 ) );
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+                int optionComboId = Integer.parseInt( dataElementMatcher.group( 2 ) );
+                DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+                String optionComboName = optionCombo != null ? optionCombo.getName() : "";
+
+                // -------------------------------------------------------------
+                // Insert name of data element in output code
+                // -------------------------------------------------------------
+
+                String displayValue = "Data element does not exist";
+
+                if ( dataElement != null )
+                {
+                    displayValue = dataElement.getShortName() + " " + optionComboName;
+
+                    if ( dataElementCode.contains( "value=\"\"" ) )
+                    {
+                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + displayValue + " ]\"" );
+                    }
+                    else
+                    {
+                        dataElementCode += " value=\"[ " + displayValue + " ]\"";
+                    }
+
+                    StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
+                        append( dataElement.getName() ).append( " - " ).append( optionComboId ).append( " - " ).
+                        append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
+                    
+                    if ( dataElementCode.contains( "title=\"\"" ) )
+                    {
+                        dataElementCode = dataElementCode.replace( "title=\"\"", title );
+                    }
+                    else
+                    {
+                        dataElementCode += " " + title;
+                    }
+                }
+                else
+                {
+                    if ( dataElementCode.contains( "value=\"\"" ) )
+                    {
+                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + displayValue + " ]\"" );
+                    }
+                    else
+                    {
+                        dataElementCode += " value=\"[ " + displayValue + " ]\"";
+                    }
+
+                    if ( dataElementCode.contains( "title=\"\"" ) )
+                    {
+                        dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + displayValue + "\"" );
+                    }
+                    else
+                    {
+                        dataElementCode += " title=\"" + displayValue + "\"";
+                    }
+                }
+
+                // -------------------------------------------------------------
+                // Appends dataElementCode
+                // -------------------------------------------------------------
+
+                String appendCode = dataElementCode;
+                appendCode += "/>";
+                matDataElement.appendReplacement( sb, appendCode );
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Add remaining code (after the last match), and return formatted code
+        // ---------------------------------------------------------------------
+
+        matDataElement.appendTail( sb );
+
+        return sb.toString();
+    }
+    
     public Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
     {
         if ( programStageIds == null || programStageIds.isEmpty() )

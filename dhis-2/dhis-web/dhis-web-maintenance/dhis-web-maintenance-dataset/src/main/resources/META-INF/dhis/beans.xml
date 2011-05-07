@@ -304,14 +304,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="userSettingService">
 			<ref bean="org.hisp.dhis.user.UserSettingService"/>
+		</property>
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService"/>
 		</property>
 	</bean>
 	
