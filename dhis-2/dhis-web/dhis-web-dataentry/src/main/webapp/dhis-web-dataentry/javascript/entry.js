@@ -14,7 +14,7 @@ function saveVal( dataElementId, optionComboId )
 	saveValue( dataElementId, optionComboId, dataElementName, null );
 }
 
-function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode ) // ZeroValueSaveMode kept for CDE backwards compatibility
+function saveValue( dataElementId, optionComboId, dataElementName )
 {
     var field = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
     var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;   

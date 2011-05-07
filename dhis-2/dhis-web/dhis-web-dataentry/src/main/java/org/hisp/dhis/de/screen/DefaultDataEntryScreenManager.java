@@ -66,7 +66,7 @@ public class DefaultDataEntryScreenManager
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
         int i = 1;
-        final String jsCodeForInputs = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
+        final String jsCodeForInputs = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME' )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
         final String jsCodeForCombos = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeyup=\"return keyPress(event, this)\" >";
         final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
         
@@ -123,9 +123,7 @@ public class DefaultDataEntryScreenManager
 
                 if ( dataElement == null )
                 {
-                    //throw new RuntimeException( "Data Element Id: " + dataElementId + " not found" );
-                	
-                	log.error( "Data Element Id: " + dataElementId + " not found in this data set" );
+                    log.error( "Data Element Id: " + dataElementId + " not found in this data set" );
                     
                     return "Data Element Id :" + dataElementId + " not found in this data set";
                 }
@@ -252,7 +250,6 @@ public class DefaultDataEntryScreenManager
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementValueType );
                 appendCode = appendCode.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
-                appendCode = appendCode.replace( "$SAVEMODE", "false" ); // TODO backwards compatibility, save mode removed
                 appendCode = appendCode.replace( "$DISABLED", disabled );
 
                 if ( minMaxDataElement == null )
