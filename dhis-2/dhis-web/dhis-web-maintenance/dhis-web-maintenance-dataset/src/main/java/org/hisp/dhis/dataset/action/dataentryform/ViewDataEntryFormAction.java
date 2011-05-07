@@ -147,7 +147,7 @@ public class ViewDataEntryFormAction
 
         if ( dataEntryForm != null )
         {
-            dataEntryValue = prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
+            dataEntryValue = prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() );
         }
         else
         {
@@ -166,21 +166,12 @@ public class ViewDataEntryFormAction
 
     /**
      * Prepares the data entry form code by injecting the dataElement name for
-     * each entry field
+     * each entry field.
      * 
-     * @param dataEntryFormCode HTML code of the data entry form (as persisted
-     *        in the database)
-     * @return HTML code for the data entry form injected with dataelement name
+     * @param htmlCode HTML code of the data entry form.
+     * @return HTML code for the data entry form injected with data element names.
      */
-    private String prepareDataEntryFormCode( String dataEntryFormCode )
-    {
-        dataEntryFormCode = prepareDataEntryFormInputs( dataEntryFormCode );
-        dataEntryFormCode = prepareDataEntryFormCombos( dataEntryFormCode );
-
-        return dataEntryFormCode;
-    }
-
-    private String prepareDataEntryFormInputs( String preparedCode )
+    private String prepareDataEntryFormForEdit( String htmlCode )
     {
         // ---------------------------------------------------------------------
         // Buffer to contain the final result.
@@ -193,7 +184,7 @@ public class ViewDataEntryFormAction
         // ---------------------------------------------------------------------
 
         Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>" );
-        Matcher matDataElement = patDataElement.matcher( preparedCode );
+        Matcher matDataElement = patDataElement.matcher( htmlCode );
 
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields.
@@ -225,8 +216,7 @@ public class ViewDataEntryFormAction
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                 int optionComboId = Integer.parseInt( dataElementMatcher.group( 2 ) );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
-                    .getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( optionComboId );
                 String optionComboName = optionCombo != null ? optionCombo.getName() : "";
 
                 // -------------------------------------------------------------
@@ -295,142 +285,6 @@ public class ViewDataEntryFormAction
                     else
                     {
                         dataElementCode += " title=\"" + displayValue + "\"";
-                    }
-                }
-
-                // -------------------------------------------------------------
-                // Appends dataElementCode
-                // -------------------------------------------------------------
-
-                String appendCode = dataElementCode;
-                appendCode += "/>";
-                matDataElement.appendReplacement( sb, appendCode );
-            }
-        }
-
-        // ---------------------------------------------------------------------
-        // Add remaining code (after the last match), and return formatted code
-        // ---------------------------------------------------------------------
-
-        matDataElement.appendTail( sb );
-
-        return sb.toString();
-    }
-
-    private String prepareDataEntryFormCombos( String preparedCode )
-    {
-        // ---------------------------------------------------------------------
-        // Buffer to contain the final result.
-        // ---------------------------------------------------------------------
-
-        StringBuffer sb = new StringBuffer();
-
-        // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code
-        // ---------------------------------------------------------------------
-
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>" );
-        Matcher matDataElement = patDataElement.matcher( preparedCode );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields
-        // ---------------------------------------------------------------------
-
-        while ( matDataElement.find() )
-        {
-            // -----------------------------------------------------------------
-            // Get input HTML code
-            // -----------------------------------------------------------------
-
-            String dataElementCode = matDataElement.group( 1 );
-
-            // -----------------------------------------------------------------
-            // Pattern to extract data element ID from data element field
-            // -----------------------------------------------------------------
-
-            Matcher dataElementMatcher = IDENTIFIER_PATTERN.matcher( dataElementCode );
-
-            Matcher viewByMatcher = VIEWBY_PATTERN.matcher( dataElementCode );
-
-            if ( dataElementMatcher.find() && dataElementMatcher.groupCount() > 0 )
-            {
-                // -------------------------------------------------------------
-                // Get data element id,name, optionCombo id,name of data element
-                // -------------------------------------------------------------
-
-                int dataElementId = Integer.parseInt( dataElementMatcher.group( 1 ) );
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
-                int optionComboId = Integer.parseInt( dataElementMatcher.group( 2 ) );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( optionComboId );
-                String optionComboName = optionCombo != null ? optionCombo.getName() : "";
-                
-                // -------------------------------------------------------------
-                // Insert name of data element in output code.
-                // -------------------------------------------------------------
-
-                String dispVal = "No Such DataElement Exists";
-
-                if ( dataElement != null )
-                {
-                    dispVal = dataElement.getShortName();
-
-                    if ( viewByMatcher.find() && viewByMatcher.groupCount() > 0 )
-                    {
-                        String viewByVal = viewByMatcher.group( 1 );
-
-                        if ( viewByVal.equalsIgnoreCase( "deid" ) )
-                        {
-                            dispVal = String.valueOf( dataElement.getId() );
-                        }
-                        else if ( viewByVal.equalsIgnoreCase( "dename" ) )
-                        {
-                            dispVal = dataElement.getName();
-                        }
-                    }
-
-                    dispVal += " - " + optionComboName;
-
-                    if ( dataElementCode.contains( "value=\"\"" ) )
-                    {
-                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + dispVal + " ]\"" );
-                    }
-                    else
-                    {
-                        dataElementCode += " value=\"[ " + dispVal + " ]\"";
-                    }
-
-                    StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
-                        append( dataElement.getName() ).append( " - " ).append( optionComboId ).append( " - " ).
-                        append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
-                    
-                    if ( dataElementCode.contains( "title=\"\"" ) )
-                    {
-                        dataElementCode = dataElementCode.replace( "title=\"\"", title );
-                    }
-                    else
-                    {
-                        dataElementCode += " " + title;
-                    }
-                }
-                else
-                {
-                    if ( dataElementCode.contains( "value=\"\"" ) )
-                    {
-                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + dispVal + " ]\"" );
-                    }
-                    else
-                    {
-                        dataElementCode += " value=\"[ " + dispVal + " ]\"";
-                    }
-
-                    if ( dataElementCode.contains( "title=\"\"" ) )
-                    {
-                        dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + dispVal + "\"" );
-                    }
-                    else
-                    {
-                        dataElementCode += " title=\"" + dispVal + "\"";
                     }
                 }
 
