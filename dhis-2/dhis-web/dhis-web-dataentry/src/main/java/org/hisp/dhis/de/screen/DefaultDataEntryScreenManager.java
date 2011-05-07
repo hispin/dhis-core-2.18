@@ -176,7 +176,7 @@ public class DefaultDataEntryScreenManager
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
 
                 // -------------------------------------------------------------
-                // Insert title info - Data element id, name, type, min, max
+                // Insert title info
                 // -------------------------------------------------------------
 
                 StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getShortName() ).
@@ -189,7 +189,7 @@ public class DefaultDataEntryScreenManager
                 }
                 else
                 {
-                    dataElementCode += title;
+                    dataElementCode += " " + title;
                 }
 
                 // -------------------------------------------------------------

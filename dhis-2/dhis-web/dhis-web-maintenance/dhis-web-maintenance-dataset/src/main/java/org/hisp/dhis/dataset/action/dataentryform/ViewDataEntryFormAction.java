@@ -55,6 +55,9 @@ import com.opensymphony.xwork2.Action;
 public class ViewDataEntryFormAction
     implements Action
 {
+    private static final Pattern IDENTIFIER_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
+    private static final Pattern VIEWBY_PATTERN = Pattern.compile( "view=\"@@(.*)@@\"" );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -173,12 +176,10 @@ public class ViewDataEntryFormAction
      */
     private String prepareDataEntryFormCode( String dataEntryFormCode )
     {
-        String preparedCode = dataEntryFormCode;
+        dataEntryFormCode = prepareDataEntryFormInputs( dataEntryFormCode );
+        dataEntryFormCode = prepareDataEntryFormCombos( dataEntryFormCode );
 
-        preparedCode = prepareDataEntryFormInputs( preparedCode );
-        preparedCode = prepareDataEntryFormCombos( preparedCode );
-
-        return preparedCode;
+        return dataEntryFormCode;
     }
 
     private String prepareDataEntryFormInputs( String preparedCode )
@@ -200,11 +201,10 @@ public class ViewDataEntryFormAction
         // Iterate through all matching data element fields.
         // ---------------------------------------------------------------------
 
-        boolean result = matDataElement.find();
-        while ( result )
+        while ( matDataElement.find() )
         {
             // -----------------------------------------------------------------
-            // Get input HTML code (HTML input field code)
+            // Get input HTML code
             // -----------------------------------------------------------------
 
             String dataElementCode = matDataElement.group( 1 );
@@ -213,22 +213,20 @@ public class ViewDataEntryFormAction
             // Pattern to extract data element ID from data element field
             // -----------------------------------------------------------------
 
-            Pattern patDataElementId = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
-            Matcher matDataElementId = patDataElementId.matcher( dataElementCode );
+            Matcher dataElementMatcher = IDENTIFIER_PATTERN.matcher( dataElementCode );
 
-            Pattern patViewBy = Pattern.compile( "view=\"@@(.*)@@\"" );
-            Matcher matViewBy = patViewBy.matcher( dataElementCode );
+            Matcher viewByMatcher = VIEWBY_PATTERN.matcher( dataElementCode );
 
-            if ( matDataElementId.find() && matDataElementId.groupCount() > 0 )
+            if ( dataElementMatcher.find() && dataElementMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
                 // Get data element id,name, optionCombo id,name of data element
                 // -------------------------------------------------------------
 
-                int dataElementId = Integer.parseInt( matDataElementId.group( 1 ) );
+                int dataElementId = Integer.parseInt( dataElementMatcher.group( 1 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) );
+                int optionComboId = Integer.parseInt( dataElementMatcher.group( 2 ) );
                 DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
                 String optionComboName = "";
@@ -248,69 +246,71 @@ public class ViewDataEntryFormAction
                 }
 
                 // -------------------------------------------------------------
-                // Insert name of data element in output code.
+                // Insert name of data element in output code
                 // -------------------------------------------------------------
 
-                String dispVal = "No Such DataElement Exists";
+                String displayValue = "No Such DataElement Exists";
 
                 if ( dataElement != null )
                 {
-                    dispVal = dataElement.getShortName();
+                    displayValue = dataElement.getShortName();
 
-                    if ( matViewBy.find() && matViewBy.groupCount() > 0 )
+                    if ( viewByMatcher.find() && viewByMatcher.groupCount() > 0 )
                     {
-                        String viewByVal = matViewBy.group( 1 );
+                        String viewByVal = viewByMatcher.group( 1 );
+                        
                         if ( viewByVal.equalsIgnoreCase( "deid" ) )
                         {
-                            dispVal = String.valueOf( dataElement.getId() );
+                            displayValue = String.valueOf( dataElement.getId() );
                         }
                         else if ( viewByVal.equalsIgnoreCase( "dename" ) )
                         {
-                            dispVal = dataElement.getName();
+                            displayValue = dataElement.getName();
                         }
                     }
 
-                    dispVal += " - " + optionComboName;
+                    displayValue += " - " + optionComboName;
 
                     if ( dataElementCode.contains( "value=\"\"" ) )
                     {
-                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + dispVal + " ]\"" );
+                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + displayValue + " ]\"" );
                     }
                     else
                     {
-                        dataElementCode += " value=\"[ " + dispVal + " ]\"";
+                        dataElementCode += " value=\"[ " + displayValue + " ]\"";
                     }
 
+                    StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
+                        append( dataElement.getName() ).append( " - " ).append( optionCombo.getId() ).append( " - " ).
+                        append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
+                    
                     if ( dataElementCode.contains( "title=\"\"" ) )
                     {
-                        dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"-- " + dataElement.getId()
-                            + ". " + dataElement.getName() + " " + optionComboId + ". " + optionComboName + " ("
-                            + dataElement.getType() + ") --\"" );
+                        dataElementCode = dataElementCode.replace( "title=\"\"", title );
                     }
                     else
                     {
-                        dataElementCode += " title=\"-- " + dataElement.getId() + ". " + dataElement.getName() + " "
-                            + optionComboId + ". " + optionComboName + " (" + dataElement.getType() + ") --\"";
+                        dataElementCode += " " + title;
                     }
                 }
                 else
                 {
                     if ( dataElementCode.contains( "value=\"\"" ) )
                     {
-                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + dispVal + " ]\"" );
+                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + displayValue + " ]\"" );
                     }
                     else
                     {
-                        dataElementCode += " value=\"[ " + dispVal + " ]\"";
+                        dataElementCode += " value=\"[ " + displayValue + " ]\"";
                     }
 
                     if ( dataElementCode.contains( "title=\"\"" ) )
                     {
-                        dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"-- " + dispVal + " --\"" );
+                        dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + displayValue + "\"" );
                     }
                     else
                     {
-                        dataElementCode += " title=\"-- " + dispVal + " --\"";
+                        dataElementCode += " title=\"" + displayValue + "\"";
                     }
                 }
 
@@ -322,12 +322,6 @@ public class ViewDataEntryFormAction
                 appendCode += "/>";
                 matDataElement.appendReplacement( sb, appendCode );
             }
-
-            // -----------------------------------------------------------------
-            // Go to next data entry field
-            // -----------------------------------------------------------------
-
-            result = matDataElement.find();
         }
 
         // ---------------------------------------------------------------------
@@ -348,22 +342,20 @@ public class ViewDataEntryFormAction
         StringBuffer sb = new StringBuffer();
 
         // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code.
+        // Pattern to match data elements in the HTML code
         // ---------------------------------------------------------------------
 
         Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>" );
         Matcher matDataElement = patDataElement.matcher( preparedCode );
 
         // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
+        // Iterate through all matching data element fields
         // ---------------------------------------------------------------------
 
-        boolean result = matDataElement.find();
-
-        while ( result )
+        while ( matDataElement.find() )
         {
             // -----------------------------------------------------------------
-            // Get input HTML code (HTML input field code).
+            // Get input HTML code
             // -----------------------------------------------------------------
 
             String dataElementCode = matDataElement.group( 1 );
@@ -372,22 +364,20 @@ public class ViewDataEntryFormAction
             // Pattern to extract data element ID from data element field
             // -----------------------------------------------------------------
 
-            Pattern patDataElementId = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].boolean" );
-            Matcher matDataElementId = patDataElementId.matcher( dataElementCode );
+            Matcher dataElementMatcher = IDENTIFIER_PATTERN.matcher( dataElementCode );
 
-            Pattern patViewBy = Pattern.compile( "view=\"@@(.*)@@\"" );
-            Matcher matViewBy = patViewBy.matcher( dataElementCode );
+            Matcher viewByMatcher = VIEWBY_PATTERN.matcher( dataElementCode );
 
-            if ( matDataElementId.find() && matDataElementId.groupCount() > 0 )
+            if ( dataElementMatcher.find() && dataElementMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
                 // Get data element id,name, optionCombo id,name of data element
                 // -------------------------------------------------------------
 
-                int dataElementId = Integer.parseInt( matDataElementId.group( 1 ) );
+                int dataElementId = Integer.parseInt( dataElementMatcher.group( 1 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) );
+                int optionComboId = Integer.parseInt( dataElementMatcher.group( 2 ) );
                 DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
                 String optionComboName = "";
@@ -405,6 +395,7 @@ public class ViewDataEntryFormAction
                         optionComboName += categoryOption.getName() + " ";
                     }
                 }
+                
                 // -------------------------------------------------------------
                 // Insert name of data element in output code.
                 // -------------------------------------------------------------
@@ -415,9 +406,9 @@ public class ViewDataEntryFormAction
                 {
                     dispVal = dataElement.getShortName();
 
-                    if ( matViewBy.find() && matViewBy.groupCount() > 0 )
+                    if ( viewByMatcher.find() && viewByMatcher.groupCount() > 0 )
                     {
-                        String viewByVal = matViewBy.group( 1 );
+                        String viewByVal = viewByMatcher.group( 1 );
 
                         if ( viewByVal.equalsIgnoreCase( "deid" ) )
                         {
@@ -440,16 +431,17 @@ public class ViewDataEntryFormAction
                         dataElementCode += " value=\"[ " + dispVal + " ]\"";
                     }
 
+                    StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
+                        append( dataElement.getName() ).append( " - " ).append( optionCombo.getId() ).append( " - " ).
+                        append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
+                    
                     if ( dataElementCode.contains( "title=\"\"" ) )
                     {
-                        dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"-- " + dataElement.getId()
-                            + ". " + dataElement.getName() + " " + optionComboId + ". " + optionComboName + " ("
-                            + dataElement.getType() + ") --\"" );
+                        dataElementCode = dataElementCode.replace( "title=\"\"", title );
                     }
                     else
                     {
-                        dataElementCode += " title=\"-- " + dataElement.getId() + ". " + dataElement.getName() + " "
-                            + optionComboId + ". " + optionComboName + " (" + dataElement.getType() + ") --\"";
+                        dataElementCode += " " + title;
                     }
                 }
                 else
@@ -465,11 +457,11 @@ public class ViewDataEntryFormAction
 
                     if ( dataElementCode.contains( "title=\"\"" ) )
                     {
-                        dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"-- " + dispVal + " --\"" );
+                        dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + dispVal + "\"" );
                     }
                     else
                     {
-                        dataElementCode += " title=\"-- " + dispVal + " --\"";
+                        dataElementCode += " title=\"" + dispVal + "\"";
                     }
                 }
 
@@ -481,16 +473,10 @@ public class ViewDataEntryFormAction
                 appendCode += "/>";
                 matDataElement.appendReplacement( sb, appendCode );
             }
-
-            // -----------------------------------------------------------------
-            // Go to next data entry field
-            // -----------------------------------------------------------------
-
-            result = matDataElement.find();
         }
 
         // ---------------------------------------------------------------------
-        // Add remaining code (after the last match), and return formatted code.
+        // Add remaining code (after the last match), and return formatted code
         // ---------------------------------------------------------------------
 
         matDataElement.appendTail( sb );
