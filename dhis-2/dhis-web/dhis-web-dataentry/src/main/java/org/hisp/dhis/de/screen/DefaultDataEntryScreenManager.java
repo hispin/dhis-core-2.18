@@ -29,6 +29,8 @@ package org.hisp.dhis.de.screen;
 
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
+import static org.hisp.dhis.datavalue.DataValue.TRUE;
+import static org.hisp.dhis.datavalue.DataValue.FALSE;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,7 +56,9 @@ public class DefaultDataEntryScreenManager
     private static final Log log = LogFactory.getLog( DefaultDataEntryScreenManager.class );
     
     private static final String EMPTY = "";
-
+    private static final Pattern DATAELEMENT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
+    private static final Pattern IDENTIFIER_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
+    
     // -------------------------------------------------------------------------
     // DataEntryScreenManager implementation
     // -------------------------------------------------------------------------
@@ -66,8 +70,8 @@ public class DefaultDataEntryScreenManager
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
         int i = 1;
-        final String jsCodeForInputs = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME' )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
-        final String jsCodeForCombos = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeyup=\"return keyPress(event, this)\" >";
+        final String jsCodeForInputFields = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME' )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
+        final String jsCodeForSelectLists = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeyup=\"return keyPress(event, this)\" >";
         final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
         
         // ---------------------------------------------------------------------
@@ -81,18 +85,7 @@ public class DefaultDataEntryScreenManager
 
         StringBuffer sb = new StringBuffer();
 
-        // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code
-        // ---------------------------------------------------------------------
-
-        Pattern dataElementPattern = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-        Matcher dataElementMatcher = dataElementPattern.matcher( dataEntryFormCode );
-
-        // ---------------------------------------------------------------------
-        // Pattern to extract data element ID from data element field
-        // ---------------------------------------------------------------------
-
-        Pattern identifierPattern = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
+        Matcher dataElementMatcher = DATAELEMENT_PATTERN.matcher( dataEntryFormCode );
 
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields
@@ -108,7 +101,7 @@ public class DefaultDataEntryScreenManager
 
             String dataElementCode = dataElementMatcher.group( 1 );
 
-            Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -183,20 +176,20 @@ public class DefaultDataEntryScreenManager
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
 
                 // -------------------------------------------------------------
-                // Insert title information - Data element id, name, type, min,
-                // max
+                // Insert title info - Data element id, name, type, min, max
                 // -------------------------------------------------------------
 
+                StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getShortName() ).
+                    append( " Type: " ).append( dataElement.getType() ).append( " Min: " ).append( minValue ).
+                    append( " Max: " ).append( maxValue ).append( "\"" );
+                
                 if ( dataElementCode.contains( "title=\"\"" ) )
                 {
-                    dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"-- ID:" + dataElement.getId()
-                        + " Name:" + dataElement.getShortName() + " Type:" + dataElement.getType() + " Min:" + minValue
-                        + " Max:" + maxValue + " --\"" );
+                    dataElementCode = dataElementCode.replace( "title=\"\"", title );
                 }
                 else
                 {
-                    dataElementCode += "title=\"-- ID:" + dataElement.getId() + " Name:" + dataElement.getShortName()
-                        + " Type:" + dataElement.getType() + " Min:" + minValue + " Max:" + maxValue + " --\"";
+                    dataElementCode += title;
                 }
 
                 // -------------------------------------------------------------
@@ -209,11 +202,11 @@ public class DefaultDataEntryScreenManager
 
                 if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) )
                 {
-                    appendCode += jsCodeForCombos + "tabindex=\"" + i++ + "\"";
+                    appendCode += jsCodeForSelectLists + "tabindex=\"" + i++ + "\"";
 
                     appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
 
-                    if ( dataElementValue.equalsIgnoreCase( "true" ) )
+                    if ( dataElementValue.equals( TRUE ) )
                     {
                         appendCode += "<option value=\"true\" selected>" + i18n.getString( "yes" ) + "</option>";
                     }
@@ -222,7 +215,7 @@ public class DefaultDataEntryScreenManager
                         appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
                     }
 
-                    if ( dataElementValue.equalsIgnoreCase( "false" ) )
+                    if ( dataElementValue.equals( FALSE ) )
                     {
                         appendCode += "<option value=\"false\" selected>" + i18n.getString( "no" ) + "</option>";
                     }
@@ -235,7 +228,7 @@ public class DefaultDataEntryScreenManager
                 }
                 else
                 {
-                    appendCode += jsCodeForInputs + "tabindex=\"" + i++ + "\"";
+                    appendCode += jsCodeForInputFields + "tabindex=\"" + i++ + "\"";
 
                     if ( dataElement.getType().equals( VALUE_TYPE_INT ) )
                     {
