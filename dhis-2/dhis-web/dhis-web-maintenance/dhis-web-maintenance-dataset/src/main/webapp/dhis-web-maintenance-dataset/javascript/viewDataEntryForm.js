@@ -25,7 +25,7 @@ jQuery(document).ready(function() {
 
 function timedCount() {
 	validateDataEntryForm();
-	t = setTimeout("timedCount()", 20000);// 1000 -> 1s
+	t = setTimeout("timedCount()", 20000); // ms
 	byId('message').style.display = 'none';
 }
 
@@ -41,7 +41,6 @@ function select(id) {
 
 function insertDataElement() {
 	var oEditor = $("#designTextarea").ckeditorGet();
-	var viewByValue = getFieldValue('viewBySelector');
 
 	var json = JSON.parse(jQuery("#json_" + selected).val());
 
@@ -51,36 +50,26 @@ function insertDataElement() {
 	var optionComboName = json.optionCombo.name;
 	var optionComboId = json.optionCombo.id;
 
-	if (viewByValue == "deid")
-		dispName = "[ " + dataElementId;
-	else if (viewByValue == "deshortname")
-		dispName = "[ " + json.dataElement.shortName;
-	else
-		dispName = "[ " + json.dataElement.name;
+	var titleValue = dataElementId + " - " + dataElementName + " - "
+			+ optionComboId + " - " + optionComboName + " - " + dataElementType;
 
-	var titleValue = "-- " + dataElementId + ". " + dataElementName + " "
-			+ optionComboId + ". " + optionComboName + " (" + dataElementType
-			+ ") --";
-
-	var displayName = dispName + " - " + optionComboName + " ]";
+	var displayName = "[ " + dataElementName + " " + optionComboName + " ]";
 	var dataEntryId = "value[" + dataElementId + "].value:value["
 			+ optionComboId + "].value";
 	var boolDataEntryId = "value[" + dataElementId + "].value:value["
 			+ optionComboId + "].value";
-
-	viewByValue = "@@" + viewByValue + "@@";
 
 	var id = "";
 	var html = "";
 
 	if (dataElementType == "bool") {
 		id = boolDataEntryId;
-		html = "<input title=\"" + titleValue + "\" view=\"" + viewByValue
+		html = "<input title=\"" + titleValue
 				+ "\" value=\"" + displayName + "\" id=\"" + boolDataEntryId
 				+ "\" style=\"width:4em;text-align:center\"/>";
 	} else {
 		id = dataEntryId;
-		html = "<input title=\"" + titleValue + "\" view=\"" + viewByValue
+		html = "<input title=\"" + titleValue
 				+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId
 				+ "\" style=\"width:4em;text-align:center\"/>";
 	}

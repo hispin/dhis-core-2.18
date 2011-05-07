@@ -141,7 +141,6 @@ public class DefaultDataEntryScreenManager
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
-                    dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
                 }
                 else
                 {
@@ -169,11 +168,7 @@ public class DefaultDataEntryScreenManager
                     maxValue = String.valueOf( minMaxDataElement.getMax() );
                 }
 
-                // -------------------------------------------------------------
-                // Remove placeholder view attribute from input field
-                // -------------------------------------------------------------
-
-                dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
+                dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" ); // For backwards compatibility
 
                 // -------------------------------------------------------------
                 // Insert title info
