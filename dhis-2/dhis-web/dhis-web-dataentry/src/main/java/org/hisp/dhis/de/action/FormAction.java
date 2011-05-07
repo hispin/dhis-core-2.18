@@ -380,18 +380,20 @@ public class FormAction
             // Calculating the number of times each category should be repeated
             // -----------------------------------------------------------------
 
-            int catColSpan = optionCombos.size();
-
             Map<Integer, Integer> catRepeat = new HashMap<Integer, Integer>();
 
             Map<Integer, Collection<Integer>> colRepeat = new HashMap<Integer, Collection<Integer>>();
 
+            int catColSpan = optionCombos.size();
+
             for ( DataElementCategory cat : categoryCombo.getCategories() )
             {
-                if ( catColSpan > 0 && cat.getCategoryOptions().size() > 0 )
+                int categoryOptionSize = cat.getCategoryOptions().size();
+                
+                if ( catColSpan > 0 && categoryOptionSize > 0 )
                 {
-                    catColSpan = catColSpan / cat.getCategoryOptions().size();
-                    int total = optionCombos.size() / (catColSpan * cat.getCategoryOptions().size());
+                    catColSpan = catColSpan / categoryOptionSize;
+                    int total = optionCombos.size() / ( catColSpan * categoryOptionSize );
                     Collection<Integer> cols = new ArrayList<Integer>( total );
 
                     for ( int i = 0; i < total; i++ )
