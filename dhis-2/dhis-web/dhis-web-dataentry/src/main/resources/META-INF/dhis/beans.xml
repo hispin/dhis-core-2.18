@@ -24,8 +24,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.de.screen.DataEntryScreenManager" class="org.hisp.dhis.de.screen.DefaultDataEntryScreenManager"/>
-
 	<!-- Actions -->
 
 	<bean id="org.hisp.dhis.de.action.LoadOrganisationUnitAction" class="org.hisp.dhis.de.action.LoadOrganisationUnitAction" scope="prototype">
@@ -59,7 +57,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="dataEntryScreenManager"	ref="org.hisp.dhis.de.screen.DataEntryScreenManager" />
+		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		<property name="standardCommentsManager" ref="org.hisp.dhis.de.comments.StandardCommentsManager" />
 		<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
