@@ -4,6 +4,8 @@
 // -----------------------------------------------------------------------------
 
 var headerMessageTimeout = -1;
+var _loading_bar_html = "<img src='../images/ajax-loader-bar.gif'>";
+var _loading_circle_html = "<img src='../images/ajax-loader-circle.gif'>";
 
 /**
  * Go back using the document.referrer.
@@ -510,7 +512,7 @@ function setMessage( message )
  */
 function setWaitMessage( message )
 {
-	setMessage( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
+	setMessage( message + "&nbsp;&nbsp;&nbsp;" + _loading_bar_html );
 }
 
 /**
@@ -553,7 +555,7 @@ function updateHeaderMessage( message )
  */
 function setHeaderWaitMessage( message )
 {
-	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
+	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;" + _loading_bar_html );
     $( 'div#headerMessage' ).slideDown( 'fast' );
 }
 
@@ -565,7 +567,7 @@ function setHeaderWaitMessage( message )
  */
 function updateHeaderWaitMessage( message )
 {
-	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
+	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;" + _loading_bar_html );
 }
 
 /**
