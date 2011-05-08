@@ -30,6 +30,11 @@
       <key column="datasetid" foreign-key="fk_datasetmembers_datasetid" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_dataset_dataelementid" />
     </set>
+	
+	<set name="indicators" table="datasetindicators">
+	  <key column="datasetid" foreign-key="fk_datasetindicators_datasetid" />
+	  <many-to-many class="org.hisp.dhis.indicator.Indicator" column="indicatorid" foreign-key="fk_dataset_indicatorid" />
+	</set>
 
     <set name="compulsoryDataElementOperands" table="datasetoperands" cascade="all-delete-orphan">
       <key column="datasetid" foreign-key="fk_datasetoperands_datasetid" />
