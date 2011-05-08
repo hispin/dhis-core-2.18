@@ -287,13 +287,7 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSelDataElementList.vm</result>
       <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js</param>
     </action>
-    
-    <action name="getOptionCombos"
-      class="org.hisp.dhis.dataset.action.dataentryform.GetOptionCombosAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseOptionCombo.vm</result>
-      <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js</param>
-    </action>
-    
+        
     <!-- Compulsory data elements -->
   
     <action name="displayCompulsoryDataElementsForm"

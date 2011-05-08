@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -171,17 +170,9 @@ public class GreySectionAction
     {
         section = sectionService.getSection( sectionId.intValue() );
 
-        for ( DataElement dataElement : section.getDataElements() )
-        {
-            if ( dataElement.isMultiDimensional() )
-            {
-                sectionIsMultiDimensional = true;
-
-                break;
-            }
-        }
-
-        categoryCombo = section.getDataElements().iterator().next().getCategoryCombo();
+        sectionIsMultiDimensional = section.hasMultiDimensionalDataElement();
+        
+        categoryCombo = section.getCategoryCombo();
 
         if ( sectionIsMultiDimensional )
         {
@@ -200,11 +191,13 @@ public class GreySectionAction
 
             for ( DataElementCategory cat : categoryCombo.getCategories() )
             {
-                if ( !cat.getCategoryOptions().isEmpty() )
+                int categoryOptionSize = cat.getCategoryOptions().size();
+                
+                if ( catColSpan > 0 && categoryOptionSize > 0 )
                 {
-                    catColSpan = catColSpan / cat.getCategoryOptions().size();
+                    catColSpan = catColSpan / categoryOptionSize;
 
-                    int total = optionCombos.size() / (catColSpan * cat.getCategoryOptions().size());
+                    int total = optionCombos.size() / ( catColSpan * categoryOptionSize );
 
                     Collection<Integer> cols = new ArrayList<Integer>( total );
 
@@ -216,11 +209,10 @@ public class GreySectionAction
                     colRepeat.put( cat.getId(), cols );
                 }
             }
-        }       
-        
+        }
         else
         {
-        	defaultOptionComboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
+            defaultOptionComboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
         }       
 
         for ( DataElementOperand operand : section.getGreyedFields() )

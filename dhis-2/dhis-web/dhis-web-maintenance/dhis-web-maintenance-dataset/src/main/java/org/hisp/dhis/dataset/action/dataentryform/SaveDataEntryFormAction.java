@@ -97,8 +97,7 @@ public class SaveDataEntryFormAction
 
         if ( dataEntryForm == null )
         {
-            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService
-                .prepareDataEntryFormCode( designTextarea ) );
+            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
             dataEntryFormService.addDataEntryForm( dataEntryForm );
 
             dataset.setDataEntryForm( dataEntryForm );
@@ -107,7 +106,7 @@ public class SaveDataEntryFormAction
         else
         {
             dataEntryForm.setName( nameField );
-            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
+            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
         }
 

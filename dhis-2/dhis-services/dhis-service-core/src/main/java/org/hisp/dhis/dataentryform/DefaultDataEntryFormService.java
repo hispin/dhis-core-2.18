@@ -122,7 +122,7 @@ public class DefaultDataEntryFormService
         return dataEntryFormStore.getAllDataEntryForms();
     }
 
-    public String prepareDataEntryFormCode( String htmlCode )
+    public String prepareDataEntryFormForSave( String htmlCode )
     {
         // ---------------------------------------------------------------------
         // Buffer to contain the final result.

@@ -362,15 +362,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
 	</bean>
-	
-	<bean id="org.hisp.dhis.dataset.action.dataentryform.GetOptionCombosAction"
-		class="org.hisp.dhis.dataset.action.dataentryform.GetOptionCombosAction"
-		scope="prototype">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-	</bean>
-	
+		
 	<!-- Compulsory data elements -->
 	
 	<bean
