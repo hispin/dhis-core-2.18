@@ -60,7 +60,7 @@ public class DefaultDataEntryFormService
     implements DataEntryFormService
 {
     private static final Pattern IDENTIFIER_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
-    private static final Pattern DATAELEMENT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
+    private static final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
     private static final String EMPTY = "";
     
     // ------------------------------------------------------------------------
@@ -124,32 +124,17 @@ public class DefaultDataEntryFormService
 
     public String prepareDataEntryFormForSave( String htmlCode )
     {
-        // ---------------------------------------------------------------------
-        // Buffer to contain the final result.
-        // ---------------------------------------------------------------------
-
         StringBuffer sb = new StringBuffer();
 
-        // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code.
-        // ---------------------------------------------------------------------
+        Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
 
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>" );
-        Matcher matDataElement = patDataElement.matcher( htmlCode );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
-        // ---------------------------------------------------------------------
-
-        boolean result = matDataElement.find();
-
-        while ( result )
+        while ( inputMatcher.find() )
         {
             // -----------------------------------------------------------------
             // Get input HTML code (HTML input field code).
             // -----------------------------------------------------------------
 
-            String dataElementCode = matDataElement.group( 1 );
+            String dataElementCode = inputMatcher.group( 1 );
 
             // -----------------------------------------------------------------
             // Pattern to extract data element name from data element field
@@ -178,51 +163,32 @@ public class DefaultDataEntryFormService
 
                 String appendCode = dataElementCode;
                 appendCode += "/>";
-                matDataElement.appendReplacement( sb, appendCode );
+                inputMatcher.appendReplacement( sb, appendCode );
             }
-
-            // -----------------------------------------------------------------
-            // Go to next data entry field
-            // -----------------------------------------------------------------
-
-            result = matDataElement.find();
         }
 
-        // -----------------------------------------------------------------
-        // Add remaining code (after the last match), and return formatted code.
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------------------
+        // Add remaining code (after the last match), and return formatted code
+        // ---------------------------------------------------------------------
 
-        matDataElement.appendTail( sb );
+        inputMatcher.appendTail( sb );
 
         return sb.toString();
     }
 
     public String prepareDataEntryFormForEdit( String htmlCode )
     {
-        // ---------------------------------------------------------------------
-        // Buffer to contain the final result.
-        // ---------------------------------------------------------------------
-
         StringBuffer sb = new StringBuffer();
 
-        // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code.
-        // ---------------------------------------------------------------------
+        Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
 
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>" );
-        Matcher matDataElement = patDataElement.matcher( htmlCode );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
-        // ---------------------------------------------------------------------
-
-        while ( matDataElement.find() )
+        while ( inputMatcher.find() )
         {
             // -----------------------------------------------------------------
             // Get input HTML code
             // -----------------------------------------------------------------
 
-            String dataElementCode = matDataElement.group( 1 );
+            String dataElementCode = inputMatcher.group( 1 );
 
             // -----------------------------------------------------------------
             // Pattern to extract data element ID from data element field
@@ -302,7 +268,7 @@ public class DefaultDataEntryFormService
 
                 String appendCode = dataElementCode;
                 appendCode += "/>";
-                matDataElement.appendReplacement( sb, appendCode );
+                inputMatcher.appendReplacement( sb, appendCode );
             }
         }
 
@@ -310,7 +276,7 @@ public class DefaultDataEntryFormService
         // Add remaining code (after the last match), and return formatted code
         // ---------------------------------------------------------------------
 
-        matDataElement.appendTail( sb );
+        inputMatcher.appendTail( sb );
 
         return sb.toString();
     }
@@ -338,11 +304,7 @@ public class DefaultDataEntryFormService
 
         StringBuffer sb = new StringBuffer();
 
-        Matcher dataElementMatcher = DATAELEMENT_PATTERN.matcher( htmlCode );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields
-        // ---------------------------------------------------------------------
+        Matcher dataElementMatcher = INPUT_PATTERN.matcher( htmlCode );
 
         Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
 
@@ -372,15 +334,7 @@ public class DefaultDataEntryFormService
                     return "Data Element Id :" + dataElementId + " not found in this data set";
                 }
 
-                // -------------------------------------------------------------
-                // Find value type of data element
-                // -------------------------------------------------------------
-
                 String dataElementValueType = dataElement.getType();
-
-                // -------------------------------------------------------------
-                // Find existing value of data element in data set
-                // -------------------------------------------------------------
 
                 String dataElementValue = getValue( dataValues, dataElementId, optionComboId );
 
@@ -531,8 +485,8 @@ public class DefaultDataEntryFormService
         return dataEntryFormStore.listDisctinctDataEntryFormByDataSetIds( dataSetIds );
     }
     
-    public Collection<DataEntryForm> getDataEntryForms( final Collection<Integer> identifiers ){
-        
+    public Collection<DataEntryForm> getDataEntryForms( final Collection<Integer> identifiers )
+    {        
         Collection<DataEntryForm> dataEntryForms = getAllDataEntryForms();
 
         return identifiers == null ? dataEntryForms : FilterUtils.filter( dataEntryForms, new Filter<DataEntryForm>()
