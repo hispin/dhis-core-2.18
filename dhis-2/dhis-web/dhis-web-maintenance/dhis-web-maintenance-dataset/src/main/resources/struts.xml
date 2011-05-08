@@ -246,10 +246,7 @@
       class="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/viewDataEntryForm.vm</param>
-      <param name="javascripts">
-      	../dhis-web-commons/ckeditor/ckeditor.js, ../dhis-web-commons/ckeditor/adapters/jquery.js, javascript/dataEntryForm.js
-      </param>
-      <param name="stylesheets">css/cde.css</param>
+      <param name="javascripts">../dhis-web-commons/ckeditor/ckeditor.js, ../dhis-web-commons/ckeditor/adapters/jquery.js, javascript/dataEntryForm.js</param>
     </action>
     
     <action name="saveDataEntryForm"
