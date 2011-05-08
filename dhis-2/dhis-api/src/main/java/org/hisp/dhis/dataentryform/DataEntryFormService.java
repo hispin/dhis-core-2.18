@@ -109,11 +109,11 @@ public interface DataEntryFormService
     String prepareDataEntryFormForSave( String htmlCode );
 
     /**
-     * Prepares the data entry form code by injecting the data element name and
-     * and title for each entry field.
+     * Prepares the data entry form code by injecting the data element operand
+     * name as value and title for each entry field.
      * 
      * @param htmlCode the HTML code of the data entry form.
-     * @return HTML code for the data entry form injected with data element names.
+     * @return HTML code for the data entry form.
      */
     String prepareDataEntryFormForEdit( String htmlCode );
     

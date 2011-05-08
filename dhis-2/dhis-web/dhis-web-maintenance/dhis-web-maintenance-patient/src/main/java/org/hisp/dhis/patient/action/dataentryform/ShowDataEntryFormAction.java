@@ -82,7 +82,7 @@ public class ShowDataEntryFormAction
 
             if ( dataEntryForm != null )
             {
-                dataEntryFormCode = dataEntryFormService.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
+                dataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() );
             }
         }
 

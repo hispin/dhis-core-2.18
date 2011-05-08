@@ -36,9 +36,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
 
@@ -49,13 +53,15 @@ import org.junit.Test;
 public class DataEntryFormServiceTest
     extends DhisSpringTest
 {
-    private PeriodStore periodStore;
-
-    private DataSetService dataSetService;
-
-    private DataEntryFormService dataEntryFormService;
-
     private PeriodType periodType;
+    
+    private DataElement dataElement;
+    
+    private DataElementCategoryOptionCombo categoryOptionCombo;
+    
+    private int dataElementId;
+    
+    private int categoryOptionComboId;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -67,11 +73,21 @@ public class DataEntryFormServiceTest
     {
         dataSetService = (DataSetService) getBean( DataSetService.ID );
 
-        periodStore = (PeriodStore) getBean( PeriodStore.ID );
-
         dataEntryFormService = (DataEntryFormService) getBean( DataEntryFormService.ID );
 
-        periodType = periodStore.getAllPeriodTypes().iterator().next();
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
+        
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
+        
+        periodType = new MonthlyPeriodType();
+        
+        dataElement = createDataElement( 'A' );
+        
+        dataElementId = dataElementService.addDataElement( dataElement );
+        
+        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
+        categoryOptionComboId = categoryOptionCombo.getId();
     }
 
     // -------------------------------------------------------------------------
@@ -220,5 +236,28 @@ public class DataEntryFormServiceTest
         List<DataSet> dataSets = dataSetService.getAssignedDataSets();
 
         assertEquals( dataSets.size(), 2 );
+    }
+    
+    @Test
+    public void testPrepareForSave()
+    {
+        String html = "<table><tr><td><input id=\"value[1434].value:value[11].value\" style=\"width:4em;text-align:center\" title=\"[ 1434 - Expected Births - 11 - (default) - int ]\" value=\"[ Expected Births - (default) ]\" /></td></tr></table>";
+        String expected = "<table><tr><td><input id=\"value[1434].value:value[11].value\" style=\"width:4em;text-align:center\" title=\"\" value=\"\" /></td></tr></table>";
+        String actual = dataEntryFormService.prepareDataEntryFormForSave( html );
+        
+        assertEquals( expected, actual );
+    }
+    
+    @Test
+    public void testPrepareForEdit()
+    {
+        String html = "<table><tr><td><input id=\"value[" + dataElementId + "].value:value[" + categoryOptionComboId + "].value\" style=\"width:4em;text-align:center\" title=\"\" value=\"\" /></td></tr></table>";
+        String title = "[ " + dataElementId + " - " + dataElement.getShortName() + " - " + categoryOptionComboId + " - " + categoryOptionCombo.getName() + " - " + dataElement.getType() + " ]";
+        String value = "[ " + dataElement.getShortName() + " " + categoryOptionCombo.getName() + " ]";
+        String expected = "<table><tr><td><input id=\"value[" + dataElementId + "].value:value[" + categoryOptionComboId + "].value\" style=\"width:4em;text-align:center\" title=\"" + title + "\" value=\"" + value + "\" /></td></tr></table>";
+        String actual = dataEntryFormService.prepareDataEntryFormForEdit( html );
+
+        assertEquals( expected.length(), actual.length() );
+        //assertEquals( expected, actual );
     }
 }

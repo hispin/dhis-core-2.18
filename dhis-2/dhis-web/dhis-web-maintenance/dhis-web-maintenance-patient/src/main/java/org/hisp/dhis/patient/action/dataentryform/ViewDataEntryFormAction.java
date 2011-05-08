@@ -146,7 +146,7 @@ public class ViewDataEntryFormAction
 
         if ( dataEntryForm != null )
         {
-            dataEntryValue = dataEntryFormService.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
+            dataEntryValue = dataEntryFormService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() );
         }
         else
         {
