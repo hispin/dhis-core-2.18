@@ -59,8 +59,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataEntryFormService
     implements DataEntryFormService
 {
+    private static final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?/>)", Pattern.DOTALL );
     private static final Pattern IDENTIFIER_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
-    private static final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
+    private static final Pattern VALUE_TAG_PATTERN = Pattern.compile( "value=\"(.*?)\"", Pattern.DOTALL );
+    private static final Pattern TITLE_TAG_PATTERN = Pattern.compile( "title=\"(.*?)\"", Pattern.DOTALL );
+    
+    private static final String EMPTY_VALUE_TAG = "value=\"\"";
+    private static final String EMPTY_TITLE_TAG = "title=\"\"";
+    private static final String TAG_CLOSE = "/>";
     private static final String EMPTY = "";
     
     // ------------------------------------------------------------------------
@@ -131,45 +137,26 @@ public class DefaultDataEntryFormService
         while ( inputMatcher.find() )
         {
             // -----------------------------------------------------------------
-            // Get input HTML code (HTML input field code).
+            // Remove value and title tags from the HTML code
             // -----------------------------------------------------------------
 
-            String dataElementCode = inputMatcher.group( 1 );
+            String dataElementCode = inputMatcher.group();
+            
+            Matcher valueTagMatcher = VALUE_TAG_PATTERN.matcher( dataElementCode );
+            Matcher titleTagMatcher = TITLE_TAG_PATTERN.matcher( dataElementCode );
 
-            // -----------------------------------------------------------------
-            // Pattern to extract data element name from data element field
-            // -----------------------------------------------------------------
-
-            Pattern patDataElementName = Pattern.compile( "value=\"\\[ (.*) \\]\"" );
-            Matcher matDataElementName = patDataElementName.matcher( dataElementCode );
-
-            Pattern patTitle = Pattern.compile( "title=\"-- (.*) --\"" );
-            Matcher matTitle = patTitle.matcher( dataElementCode );
-
-            if ( matDataElementName.find() && matDataElementName.groupCount() > 0 )
+            if ( valueTagMatcher.find() && valueTagMatcher.groupCount() > 0 )
             {
-                String temp = "[ " + matDataElementName.group( 1 ) + " ]";
-                dataElementCode = dataElementCode.replace( temp, "" );
-
-                if ( matTitle.find() && matTitle.groupCount() > 0 )
-                {
-                    temp = "-- " + matTitle.group( 1 ) + " --";
-                    dataElementCode = dataElementCode.replace( temp, "" );
-                }
-
-                // -------------------------------------------------------------
-                // Appends dataElementCode
-                // -------------------------------------------------------------
-
-                String appendCode = dataElementCode;
-                appendCode += "/>";
-                inputMatcher.appendReplacement( sb, appendCode );
+                dataElementCode = dataElementCode.replace( valueTagMatcher.group( 1 ), EMPTY );
             }
-        }
+            
+            if ( titleTagMatcher.find() && valueTagMatcher.groupCount() > 0 )
+            {
+                dataElementCode = dataElementCode.replace( titleTagMatcher.group( 1 ), EMPTY );
+            }
 
-        // ---------------------------------------------------------------------
-        // Add remaining code (after the last match), and return formatted code
-        // ---------------------------------------------------------------------
+            inputMatcher.appendReplacement( sb, dataElementCode );
+        }
 
         inputMatcher.appendTail( sb );
 
@@ -184,97 +171,76 @@ public class DefaultDataEntryFormService
 
         while ( inputMatcher.find() )
         {
-            // -----------------------------------------------------------------
-            // Get input HTML code
-            // -----------------------------------------------------------------
+            String inputHtml = inputMatcher.group();
 
-            String dataElementCode = inputMatcher.group( 1 );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
 
-            // -----------------------------------------------------------------
-            // Pattern to extract data element ID from data element field
-            // -----------------------------------------------------------------
-
-            Matcher dataElementMatcher = IDENTIFIER_PATTERN.matcher( dataElementCode );
-
-            if ( dataElementMatcher.find() && dataElementMatcher.groupCount() > 0 )
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
-                // -------------------------------------------------------------
-                // Get data element id,name, optionCombo id,name of data element
-                // -------------------------------------------------------------
-
-                int dataElementId = Integer.parseInt( dataElementMatcher.group( 1 ) );
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                int optionComboId = Integer.parseInt( dataElementMatcher.group( 2 ) );
+                int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
                 String optionComboName = optionCombo != null ? optionCombo.getName() : "";
 
                 // -------------------------------------------------------------
-                // Insert name of data element in output code
+                // Insert name of data element operand as value and title in
+                // the HTML code
                 // -------------------------------------------------------------
 
-                String displayValue = "Data element does not exist";
+                String displayValue = "[ Data element does not exist ]";
 
                 if ( dataElement != null )
                 {
-                    displayValue = dataElement.getShortName() + " " + optionComboName;
+                    displayValue = "[ " + dataElement.getShortName() + " " + optionComboName + " ]";
 
-                    if ( dataElementCode.contains( "value=\"\"" ) )
+                    if ( inputHtml.contains( EMPTY_VALUE_TAG ) )
                     {
-                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + displayValue + " ]\"" );
+                        inputHtml = inputHtml.replace( EMPTY_VALUE_TAG, "value=\"" + displayValue + "\"" );
                     }
                     else
                     {
-                        dataElementCode += " value=\"[ " + displayValue + " ]\"";
+                        inputHtml += " value=\"" + displayValue + "\"";
                     }
 
-                    StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
-                        append( dataElement.getName() ).append( " - " ).append( optionComboId ).append( " - " ).
-                        append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
+                    StringBuilder title = new StringBuilder( "title=\"[ " ).append( dataElement.getId() ).append( " - " ).
+                        append( dataElement.getShortName() ).append( " - " ).append( optionComboId ).append( " - " ).
+                        append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( " ]\"" );
                     
-                    if ( dataElementCode.contains( "title=\"\"" ) )
+                    if ( inputHtml.contains( EMPTY_TITLE_TAG ) )
                     {
-                        dataElementCode = dataElementCode.replace( "title=\"\"", title );
+                        inputHtml = inputHtml.replace( EMPTY_TITLE_TAG, title );
                     }
                     else
                     {
-                        dataElementCode += " " + title;
+                        inputHtml += " " + title;
                     }
                 }
                 else
                 {
-                    if ( dataElementCode.contains( "value=\"\"" ) )
+                    if ( inputHtml.contains( EMPTY_VALUE_TAG ) )
                     {
-                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"[ " + displayValue + " ]\"" );
+                        inputHtml = inputHtml.replace( EMPTY_VALUE_TAG, "value=\"" + displayValue + "\"" );
                     }
                     else
                     {
-                        dataElementCode += " value=\"[ " + displayValue + " ]\"";
+                        inputHtml += " value=\"" + displayValue + "\"";
                     }
 
-                    if ( dataElementCode.contains( "title=\"\"" ) )
+                    if ( inputHtml.contains( EMPTY_TITLE_TAG ) )
                     {
-                        dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + displayValue + "\"" );
+                        inputHtml = inputHtml.replace( EMPTY_TITLE_TAG, "title=\"" + displayValue + "\"" );
                     }
                     else
                     {
-                        dataElementCode += " title=\"" + displayValue + "\"";
+                        inputHtml += " title=\"" + displayValue + "\"";
                     }
                 }
 
-                // -------------------------------------------------------------
-                // Appends dataElementCode
-                // -------------------------------------------------------------
-
-                String appendCode = dataElementCode;
-                appendCode += "/>";
-                inputMatcher.appendReplacement( sb, appendCode );
+                inputMatcher.appendReplacement( sb, inputHtml );
             }
         }
-
-        // ---------------------------------------------------------------------
-        // Add remaining code (after the last match), and return formatted code
-        // ---------------------------------------------------------------------
 
         inputMatcher.appendTail( sb );
 
@@ -285,16 +251,16 @@ public class DefaultDataEntryFormService
         Collection<DataValue> dataValues, Map<String, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, DataSet dataSet )
     {
         // ---------------------------------------------------------------------
-        // Inline Javascript to add to HTML before outputting
+        // Inline javascript to add to HTML before output
         // ---------------------------------------------------------------------
         
         int i = 1;
         final String jsCodeForInputFields = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME' )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
-        final String jsCodeForSelectLists = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeyup=\"return keyPress(event, this)\" >";
+        final String jsCodeForSelectLists = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeyup=\"return keyPress(event, this)\" ";
         final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
         
         // ---------------------------------------------------------------------
-        // Metadata code to add to HTML before outputting
+        // Metadata code to add to HTML before output
         // ---------------------------------------------------------------------
 
         final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
@@ -304,26 +270,22 @@ public class DefaultDataEntryFormService
 
         StringBuffer sb = new StringBuffer();
 
-        Matcher dataElementMatcher = INPUT_PATTERN.matcher( htmlCode );
+        Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
 
         Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
 
-        while ( dataElementMatcher.find() )
+        while ( inputMatcher.find() )
         {
             // -----------------------------------------------------------------
             // Get HTML input field code
             // -----------------------------------------------------------------
 
-            String dataElementCode = dataElementMatcher.group( 1 );
+            String inputHtml = inputMatcher.group();
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
-                // -------------------------------------------------------------
-                // Get data element ID of data element
-                // -------------------------------------------------------------
-
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
@@ -331,7 +293,7 @@ public class DefaultDataEntryFormService
 
                 if ( dataElement == null )
                 {
-                    return "Data Element Id :" + dataElementId + " not found in this data set";
+                    return "Data element with id :" + dataElementId + " does not exist in this data set";
                 }
 
                 String dataElementValueType = dataElement.getType();
@@ -339,57 +301,47 @@ public class DefaultDataEntryFormService
                 String dataElementValue = getValue( dataValues, dataElementId, optionComboId );
 
                 // -------------------------------------------------------------
-                // Insert value of data element in output code
+                // Insert data value for data element in output code
                 // -------------------------------------------------------------
 
                 if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
                 {
-                    dataElementCode = dataElementCode.replace( "input", "select" );
-                    dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
+                    inputHtml = inputHtml.replace( "input", "select" );
+                    inputHtml = inputHtml.replaceAll( "value=\".*?\"", "" );
                 }
                 else
                 {
-                    if ( dataElementCode.contains( "value=\"\"" ) )
+                    if ( inputHtml.contains( EMPTY_VALUE_TAG ) )
                     {
-                        dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"" + dataElementValue + "\"" );
+                        inputHtml = inputHtml.replace( EMPTY_VALUE_TAG, "value=\"" + dataElementValue + "\"" );
                     }
                     else
                     {
-                        dataElementCode += "value=\"" + dataElementValue + "\"";
+                        inputHtml += "value=\"" + dataElementValue + "\"";
                     }
                 }
-
-                // -------------------------------------------------------------
-                // Min-max values
-                // -------------------------------------------------------------
-
-                MinMaxDataElement minMaxDataElement = minMaxMap.get( dataElement.getId() + ":" + optionComboId );
-                String minValue = "No Min";
-                String maxValue = "No Max";
-
-                if ( minMaxDataElement != null )
-                {
-                    minValue = String.valueOf( minMaxDataElement.getMin() );
-                    maxValue = String.valueOf( minMaxDataElement.getMax() );
-                }
-
-                dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" ); // For backwards compatibility
 
                 // -------------------------------------------------------------
                 // Insert title info
                 // -------------------------------------------------------------
 
+                MinMaxDataElement minMaxDataElement = minMaxMap.get( dataElement.getId() + ":" + optionComboId );
+                String minValue = minMaxDataElement != null ? String.valueOf( minMaxDataElement.getMin() ) : "-";
+                String maxValue = minMaxDataElement != null ? String.valueOf( minMaxDataElement.getMax() ) : "-";
+
+                inputHtml = inputHtml.replaceAll( "view=\".*?\"", "" ); // For backwards compatibility
+
                 StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getShortName() ).
                     append( " Type: " ).append( dataElement.getType() ).append( " Min: " ).append( minValue ).
                     append( " Max: " ).append( maxValue ).append( "\"" );
                 
-                if ( dataElementCode.contains( "title=\"\"" ) )
+                if ( inputHtml.contains( EMPTY_TITLE_TAG ) )
                 {
-                    dataElementCode = dataElementCode.replace( "title=\"\"", title );
+                    inputHtml = inputHtml.replace( EMPTY_TITLE_TAG, title );
                 }
                 else
                 {
-                    dataElementCode += " " + title;
+                    inputHtml += " " + title;
                 }
 
                 // -------------------------------------------------------------
@@ -398,11 +350,11 @@ public class DefaultDataEntryFormService
                 // fields
                 // -------------------------------------------------------------
 
-                String appendCode = dataElementCode;
+                String appendCode = "";
 
                 if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) )
                 {
-                    appendCode += jsCodeForSelectLists + "tabindex=\"" + i++ + "\"";
+                    appendCode += jsCodeForSelectLists + "tabindex=\"" + i++ + "\">";
 
                     appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
 
@@ -435,32 +387,34 @@ public class DefaultDataEntryFormService
                         appendCode += historyCode;
                     }
 
-                    appendCode += " />";
+                    appendCode += TAG_CLOSE;
                 }
 
-                appendCode += metaDataCode;
-                appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
-                appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
-                appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementValueType );
-                appendCode = appendCode.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
-                appendCode = appendCode.replace( "$DISABLED", disabled );
+                inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
+                
+                inputHtml += metaDataCode;
+                inputHtml = inputHtml.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
+                inputHtml = inputHtml.replace( "$DATAELEMENTNAME", dataElement.getName() );
+                inputHtml = inputHtml.replace( "$DATAELEMENTTYPE", dataElementValueType );
+                inputHtml = inputHtml.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
+                inputHtml = inputHtml.replace( "$DISABLED", disabled );
 
                 if ( minMaxDataElement == null )
                 {
-                    appendCode = appendCode.replace( "$MIN", minValue );
-                    appendCode = appendCode.replace( "$MAX", maxValue );
+                    inputHtml = inputHtml.replace( "$MIN", minValue );
+                    inputHtml = inputHtml.replace( "$MAX", maxValue );
                 }
                 else
                 {
-                    appendCode = appendCode.replace( "$MIN", String.valueOf( minMaxDataElement.getMin() ) );
-                    appendCode = appendCode.replace( "$MAX", String.valueOf( minMaxDataElement.getMax() ) );
+                    inputHtml = inputHtml.replace( "$MIN", String.valueOf( minMaxDataElement.getMin() ) );
+                    inputHtml = inputHtml.replace( "$MAX", String.valueOf( minMaxDataElement.getMax() ) );
                 }
 
-                dataElementMatcher.appendReplacement( sb, appendCode );
+                inputMatcher.appendReplacement( sb, inputHtml );
             }
         }
 
-        dataElementMatcher.appendTail( sb );
+        inputMatcher.appendTail( sb );
 
         return sb.toString();
     }

@@ -284,7 +284,7 @@ public class DataElementOperand
 
     /**
      * Generates a DataElementOperand based on the given formula. The formula
-     * needs to be on the form "[<dataelementid>,<categoryoptioncomboid>]".
+     * needs to be on the form "[<dataelementid>.<categoryoptioncomboid>]".
      * 
      * @param formula the formula.
      * @return a DataElementOperand.
