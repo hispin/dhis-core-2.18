@@ -104,7 +104,7 @@ public class AutoSaveDataEntryFormAction
 
         if ( dataEntryForm == null )
         {
-            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
+            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
             int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
             message = id + "";
             
@@ -114,12 +114,11 @@ public class AutoSaveDataEntryFormAction
         else
         {
             dataEntryForm.setName( nameField );
-            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
+            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
             message = dataEntryForm.getId() + "";
         }
 
         return SUCCESS;
     }
-
 }

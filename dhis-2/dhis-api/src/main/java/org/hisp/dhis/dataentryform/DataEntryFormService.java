@@ -92,14 +92,21 @@ public interface DataEntryFormService
      */
     Collection<DataEntryForm> getAllDataEntryForms();    
     
+    /**
+     * Return the DataEntryForms with the given collection of identifiers. If the
+     * given argument is null, all DataEntryForms are returned.
+     * 
+     * @param identifiers the collection of identifiers.
+     * @return a collection of DataEntryForms.
+     */
     Collection<DataEntryForm> getDataEntryForms( final Collection<Integer> identifiers );
     
     /**
-     * Prepare DataEntryForm code.
+     * Prepare DataEntryForm code for persisting.
      * 
      * @return htmlCode the HTML code of the data entry form.
      */
-    String prepareDataEntryFormCode( String htmlCode );
+    String prepareDataEntryFormForSave( String htmlCode );
 
     /**
      * Prepares the data entry form code by injecting the data element name and
