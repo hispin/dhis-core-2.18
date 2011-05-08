@@ -1,3 +1,1 @@
-<status>
-	<code>$statusCode</code>
-</status>
+{ "code": "${statusCode}" }

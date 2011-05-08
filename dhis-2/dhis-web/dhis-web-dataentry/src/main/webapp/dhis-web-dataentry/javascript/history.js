@@ -68,19 +68,16 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, valu
     
     this.save = function()
     {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-        request.send( 'saveComment.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' +
-                dataElementId + '&optionComboId=' + optionComboId + '&comment=' + value );
+        var url = 'saveComment.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' +
+                dataElementId + '&optionComboId=' + optionComboId + '&comment=' + value;
+        
+        $.ajax( { url: url, dataType: 'json', success: handleResponse, error: handleError } );
     };
     
-    function handleResponse( rootElement )
+    function handleResponse( json )
     {
-        var codeElement = rootElement.getElementsByTagName( 'code' )[0];
-        var code = parseInt( codeElement.firstChild.nodeValue );
-        
+    	var code = json.code;
+    	
         if ( code == 0 )
         {
             markComment( SUCCESS );           
@@ -92,10 +89,10 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, valu
         }
     }
     
-    function handleHttpError( errorCode )
+    function handleError( jqXHR, textStatus, errorThrown )
     {
         markComment( ERROR );
-        window.alert( i18n_saving_comment_failed_error_code + '\n\n' + errorCode );
+        window.alert( i18n_saving_comment_failed_error_code + '\n\n' + textStatus );
     }
     
     function markComment( color )
