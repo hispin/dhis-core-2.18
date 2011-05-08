@@ -67,7 +67,8 @@ function insertDataElement() {
 		html = "<input title=\"" + titleValue
 				+ "\" value=\"" + displayName + "\" id=\"" + boolDataEntryId
 				+ "\" style=\"width:4em;text-align:center\"/>";
-	} else {
+	} 
+	else {
 		id = dataEntryId;
 		html = "<input title=\"" + titleValue
 				+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId
@@ -77,7 +78,8 @@ function insertDataElement() {
 	if (checkExisted(id)) {
 		jQuery("#message_").html("<b>" + i18n_dataelement_is_inserted + "</b>");
 		return;
-	} else {
+	}
+	else {
 		jQuery("#message_").html("");
 	}
 
