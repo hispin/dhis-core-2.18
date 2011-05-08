@@ -66,13 +66,13 @@ function insertDataElement() {
 		id = boolDataEntryId;
 		html = "<input title=\"" + titleValue
 				+ "\" value=\"" + displayName + "\" id=\"" + boolDataEntryId
-				+ "\" style=\"width:4em;text-align:center\"/>";
+				+ "\" style=\"width:10em;text-align:center\"/>";
 	} 
 	else {
 		id = dataEntryId;
 		html = "<input title=\"" + titleValue
 				+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId
-				+ "\" style=\"width:4em;text-align:center\"/>";
+				+ "\" style=\"width:10em;text-align:center\"/>";
 	}
 
 	if (checkExisted(id)) {
