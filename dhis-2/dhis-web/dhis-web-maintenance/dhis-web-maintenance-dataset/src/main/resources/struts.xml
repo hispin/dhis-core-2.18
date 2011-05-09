@@ -153,16 +153,28 @@
     
     <action name="editDataSetForm"
       class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup">
+      <result name="success" type="chain">indicatorListFilteredByGroup</result>
+      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
+    </action>
+
+    <action name="indicatorListFilteredByGroup"
+      class="org.hisp.dhis.dataset.action.IndicatorListFilteredByGroup">
       <result name="success" type="chain">dataElementGroupListEditChain</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
-    
+
     <action name="dataElementGroupListEditChain"
       class="org.hisp.dhis.dataset.action.DataElementGroupListAction">
+      <result name="success" type="chain">indicatorGroupListEditChain</result>
+      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
+    </action>
+
+    <action name="indicatorGroupListEditChain"
+      class="org.hisp.dhis.dataset.action.IndicatorGroupListAction">
       <result name="success" type="chain">getDataSetEditChain</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
-    
+
     <action name="getDataSetEditChain"
       class="org.hisp.dhis.dataset.action.GetDataSetAction">
       <result name="success" type="chain">periodTypeListEditChain</result>
@@ -211,6 +223,12 @@
     <action name="filterAvailableDataElementsByDataElementGroup"
       class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseDataElementGroup.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="filterAvailableIndicatorsByIndicatorGroup"
+      class="org.hisp.dhis.dataset.action.IndicatorListFilteredByGroup">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseIndicatorGroup.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	

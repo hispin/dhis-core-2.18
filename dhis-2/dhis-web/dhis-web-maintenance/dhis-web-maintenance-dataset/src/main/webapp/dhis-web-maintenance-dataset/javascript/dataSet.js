@@ -88,3 +88,48 @@ function filterByDataElementGroupCompleted( dataElementGroup )
     availableList.add( new Option( name, id ), null );
   }
 }
+
+function filterByIndicatorGroup( selectedIndicatorGroup )
+{
+  var request = new Request();
+  
+  var requestString = 'filterAvailableIndicatorsByIndicatorGroup.action';
+
+  var params = 'indicatorGroupId=' + selectedIndicatorGroup;
+
+  var selectedList = document.getElementById( 'indicatorSelectedList' );
+
+  for ( var i = 0; i < selectedList.options.length; ++i)
+  {
+  	params += '&selectedIndicators=' + selectedList.options[i].value;
+  }
+
+  // Clear the list
+  var availableList = document.getElementById( 'indicatorAvailableList' );
+
+  availableList.options.length = 0;
+
+  request.setResponseTypeXML( 'indicatorGroup' );
+  request.setCallbackSuccess( filterByIndicatorGroupCompleted );
+  request.sendAsPost( params );
+  request.send( requestString );
+}
+
+function filterByIndicatorGroupCompleted( indicatorGroup )
+{
+  var indicators = indicatorGroup.getElementsByTagName( 'indicators' )[0];
+  var indicatorList = indicators.getElementsByTagName( 'indicator' );
+
+  alert(indicatorList.length);
+  
+  var availableList = document.getElementById( 'indicatorAvailableList' );
+
+  for ( var i = 0; i < indicatorList.length; i++ )
+  {
+    var indicator = indicatorList[i];
+    var name = indicator.firstChild.nodeValue;
+    var id = indicator.getAttribute( 'id' );
+
+    availableList.add( new Option( name, id ), null );
+  }
+}
