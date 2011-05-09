@@ -61,13 +61,6 @@ public class VerifyOrganisationUnitHasParentAction
         this.orgunitId = orgunitId;
     }
 
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -75,8 +68,6 @@ public class VerifyOrganisationUnitHasParentAction
     public String execute()
         throws Exception
     {
-        message = "";
-
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgunitId );
 
         if ( organisationUnit == null )
@@ -86,7 +77,6 @@ public class VerifyOrganisationUnitHasParentAction
 
         if ( !organisationUnit.isHasPatients() )
         {
-            message = "can_not_register_patient_for_orgunit";
             return INPUT;
         }
 
