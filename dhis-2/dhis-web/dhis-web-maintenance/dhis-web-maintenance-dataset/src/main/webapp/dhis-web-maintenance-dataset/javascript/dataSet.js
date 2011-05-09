@@ -120,8 +120,6 @@ function filterByIndicatorGroupCompleted( indicatorGroup )
   var indicators = indicatorGroup.getElementsByTagName( 'indicators' )[0];
   var indicatorList = indicators.getElementsByTagName( 'indicator' );
 
-  alert(indicatorList.length);
-  
   var availableList = document.getElementById( 'indicatorAvailableList' );
 
   for ( var i = 0; i < indicatorList.length; i++ )

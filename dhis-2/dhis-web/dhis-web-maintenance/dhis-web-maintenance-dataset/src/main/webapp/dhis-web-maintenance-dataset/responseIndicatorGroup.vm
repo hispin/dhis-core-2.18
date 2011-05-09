@@ -2,7 +2,7 @@
 <indicatorGroup>
   <indicators>
     #foreach( $indicator in $indicators )
-      <indicator id="$indicator.id">$encoder.xmlEncode( $indicator.name )</dataElement>
+      <indicator id="$indicator.id">$encoder.xmlEncode( $indicator.name )</indicator>
     #end
   </indicators>
 </indicatorGroup>
