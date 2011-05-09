@@ -6,17 +6,6 @@ jQuery(document).ready(function() {
 		'rules' : getValidationRules("dataEntry")
 	});
 
-	jQuery("#dataElementSelection").resizable({
-		minHeight : 210,
-		minWidth : 400,
-		width : 400,
-		alsoResize : "#dataElementList"
-	});
-
-	jQuery("#dataElementSelection").draggable({
-		handle : 'h3'
-	});
-
 	leftBar.hideAnimated();
 
 	select(1);
@@ -37,6 +26,22 @@ function select(id) {
 	jQuery("#tr" + id).addClass("selected");
 
 	selected = id;
+}
+
+function insertIndicator() {
+	var oEditor = $("#designTextarea").ckeditorGet();
+
+	$("#indicatorSelector option").each(function() {
+		if($(this).attr("selected")) {
+			var id = $(this).data("id");
+			var title = $(this).val();
+			var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" name="indicator" indicatorId="' + id + '" style="width:10em;text-align:center;" disabled="disabled" />';
+
+			if(!checkExisted("indicator" + id)) {
+				oEditor.insertHtml( template )
+			}
+		}
+	});
 }
 
 function insertDataElement() {
