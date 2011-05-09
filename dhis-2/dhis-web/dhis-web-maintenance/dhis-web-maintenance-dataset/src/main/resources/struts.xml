@@ -259,7 +259,7 @@
       class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction">
       <result name="success" type="chain">viewDataEntryFormChain</result>
     </action>
-        
+
     <action name="viewDataEntryForm"
       class="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction">
       <result name="success" type="velocity">/main.vm</result>

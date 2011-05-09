@@ -30,6 +30,7 @@ package org.hisp.dhis.dataset.action.dataentryform;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -38,6 +39,7 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
@@ -73,7 +75,7 @@ public class ViewDataEntryFormAction
     {
         this.userSettingService = userSettingService;
     }
-    
+
     private DataEntryFormService dataEntryFormService;
 
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
@@ -120,6 +122,13 @@ public class ViewDataEntryFormAction
         return operands;
     }
 
+    private Set<Indicator> indicators;
+
+    public Set<Indicator> getIndicators()
+    {
+        return indicators;
+    }
+
     private String dataEntryValue;
 
     public String getDataEntryValue()
@@ -138,11 +147,15 @@ public class ViewDataEntryFormAction
 
         dataEntryForm = dataSet.getDataEntryForm();
 
-        dataEntryValue = dataEntryForm != null ? dataEntryFormService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() ) : "";
-        
+        dataEntryValue = dataEntryForm != null ? dataEntryFormService.prepareDataEntryFormForEdit( dataEntryForm
+            .getHtmlCode() ) : "";
+
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
 
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet.getDataElements() ) );
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet
+            .getDataElements() ) );
+
+        indicators = dataSet.getIndicators();
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
 

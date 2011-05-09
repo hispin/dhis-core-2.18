@@ -11,6 +11,26 @@
 		
 		jQuery('#designTextarea').ckeditor();
 		jQuery("#designTextarea").ckeditorGet().setData('$encoder.jsEscape( $dataEntryValue, "'" )');
+
+		jQuery("#selectionDialog").dialog({
+			minWidth: 560,
+			minHeight: 320,
+			position: [600, 60]
+		});
+
+		jQuery("#selectionTabs").tabs();
+
+		jQuery("#dataElementInsertButton").button().click(function() {
+			insertDataElement()
+		});
+
+		jQuery("#indicatorInsertButton").button().click(function() {
+			insertIndicator()
+		});
+		
+		jQuery("#showSelectionBoxButton").click(function() {
+			jQuery("#selectionDialog").dialog("open");
+		});
 	});
 
     var stat = "ADD";
@@ -38,9 +58,9 @@
 	left:500px;
 	z-index:999999;
 	font-size:10pt;
-	
 }
-#dataElementSelection h3 {
+
+#dataElementTab h3 {
 	font-size:10pt;
 	color:#FFFFFF;
 	cursor:move;
@@ -48,16 +68,16 @@
 	margin: 0;
 }
 
-#dataElementSelection tr{
+#dataElementTab tr {
 	cursor:default;	
 }
 
-#dataElementSelection tr.selected{
+#dataElementTab tr.selected {
 	background-color:#2B0AAF;
 	color:#FFFFFF;
 }
 
-#dataElementList{
+#dataElementList,#indicatorList {
 	margin-top:5px;
 }
 
@@ -102,10 +122,11 @@
     </tr>
     <tr>
       <td>
-	    <input type="button" name="save" value="$i18n.getString( 'save' )" onclick="autoSave = true; validateDataEntryForm(); autoSave = '$!autoSave';"/>
-        <input type="submit" name="saveClose" value="$i18n.getString( 'save_close' )"/>
-        <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataSet.action'"/>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
-        <input type="button" id='delete' name="delete" value="$i18n.getString( 'delete' )" onclick="removeDataEntryForm( '$dataSet.id', '$dataEntryForm.id', '$dataEntryForm.name' )"/>
+	    <input type="button" id="saveButton" name="save" value="$i18n.getString( 'save' )" onclick="autoSave = true; validateDataEntryForm(); autoSave = '$!autoSave';"/>
+        <input type="submit" id="saveCloseButton" name="saveClose" value="$i18n.getString( 'save_close' )"/>
+        <input type="button" id="cancelButton" name="cancel" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataSet.action'"/>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
+        <input type="button" id="showSelectionBoxButton" name="showselectionbox" value="$i18n.getString( 'show_selection_box' )"/>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
+        <input type="button" id="delete" name="delete" value="$i18n.getString( 'delete' )" onclick="removeDataEntryForm( '$dataSet.id', '$dataEntryForm.id', '$dataEntryForm.name' )"/>
       </td>          
 	  <script>
 		if(stat == "EDIT")
@@ -123,28 +144,65 @@
   <input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id" />
 </form>
 
-<div id="dataElementSelection" class="ui-widget-content">
-<h3 class="ui-widget-header"><b>$i18n.getString( 'dataelement' )</b></h3>
-	<input type="text" style="width:440px" onkeyup="filterValues( this.value, 1 )"/>
-	<div id="dataElementList" style="height:150px;overflow:auto;border:1px solid #7AAED5">
-	<table width="100%">
-		<tbody id="list">
-		#foreach( $operand in $operands )
-			<tr id="tr$velocityCount" onclick="select($velocityCount)" ondblclick="insertDataElement()">				
-				<td>$encoder.htmlEncode( $operand.operandName )<input type="hidden" id="json_$velocityCount" value='$operand.toJSON()'/></td>
-			</tr>						
-		#end
-		</tbody>
-	</table>
+<div id="selectionDialog" title="Selection Box">
+
+<div id="selectionTabs">
+	<ul>
+		<li><a href="#dataElementTab">$i18n.getString( 'dataelement' )</a></li>
+		<li><a href="#indicatorTab">Indicators</a></li>
+	</ul>
+
+	<div id="dataElementTab">
+		<input type="text" style="width:440px" onkeyup="filterValues( this.value, 1 )"/>
+		<div id="dataElementList" style="height:150px;overflow:auto;border:1px solid #7AAED5">
+			<table width="100%">
+				<tbody id="list">
+				#foreach( $operand in $operands )
+					<tr id="tr$velocityCount" onclick="select($velocityCount)" ondblclick="insertDataElement()">				
+						<td>$encoder.htmlEncode( $operand.operandName )<input type="hidden" id="json_$velocityCount" value='$operand.toJSON()'/></td>
+					</tr>						
+				#end
+				</tbody>
+			</table>
+		</div>
+
+		<table>
+			<tr>
+				<td>
+					<input id="dataElementInsertButton" type="button" value="Insert" style="width:120px"/>
+				</td>
+				<td>
+					<span id="message_"></span>
+				</td>
+			</tr>
+		</table>
 	</div>
-	<table>
-		<tr>
-			<td>
-				<input type="button" value="Insert" onclick="insertDataElement()" style="width:120px"/>
-			</td>
-			<td>
-				<span id="message_"></span>
-			</td>
-		</tr>
-	</table>	
+
+	<div id="indicatorTab">
+		<input type="text" style="width:100%" onkeyup="filterValues( this.value, 1 )"/>
+		<div id="indicatorList" style="height:150px;overflow:auto;border:1px solid #7AAED5">
+			<table width="100%">
+				<tbody id="list">
+				<select id="indicatorSelector" multiple="multiple" style="height: 144px; width: 100%">
+				#foreach( $indicator in $indicators )
+					<option data-id="${indicator.id}">$encoder.htmlEncode( $indicator.name )</option>
+				#end
+				</input>
+				</tbody>
+			</table>
+		</div>
+
+		<table>
+			<tr>
+				<td>
+					<input id="indicatorInsertButton" type="button" value="Insert" style="width:120px"/>
+				</td>
+				<td>
+					<span id="message_"></span>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
 </div>
