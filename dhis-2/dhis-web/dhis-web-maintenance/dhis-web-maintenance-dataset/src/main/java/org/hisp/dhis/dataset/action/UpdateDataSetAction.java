@@ -29,11 +29,14 @@ package org.hisp.dhis.dataset.action;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -88,6 +91,13 @@ public class UpdateDataSetAction
         this.selectedList = selectedList;
     }
 
+    private Collection<String> indicatorSelectedList = new HashSet<String>();
+
+    public void setIndicatorSelectedList( Collection<String> indicatorSelectedList )
+    {
+        this.indicatorSelectedList = indicatorSelectedList;
+    }
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -111,6 +121,13 @@ public class UpdateDataSetAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
@@ -141,6 +158,13 @@ public class UpdateDataSetAction
             dataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
 
+        Set<Indicator> indicators = new HashSet<Indicator>();
+
+        for ( String id : indicatorSelectedList )
+        {
+            indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
+        }
+
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
@@ -150,12 +174,13 @@ public class UpdateDataSetAction
         dataSet.setCode( code );
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
         dataSet.setDataElements( dataElements );
-        
+        dataSet.setIndicators( indicators );
+
         if ( dataSet.isMobile() )
         {
             dataSet.setVersion( dataSet.getVersion() + 1 ); // TODO we should check if anything is actually updated before bumping version and push this to service layer
         }
-        
+
         dataSetService.updateDataSet( dataSet );
 
         return SUCCESS;

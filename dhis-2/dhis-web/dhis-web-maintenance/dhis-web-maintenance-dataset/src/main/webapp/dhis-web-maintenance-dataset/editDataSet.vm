@@ -106,4 +106,69 @@
       
     </tbody>
   </table>
+
+  <table id="indicatorSelectionArea">
+    <col/> ## Available Indicators
+    <col/> ## Filter
+    <col/> ## Selected Indicators
+    <thead>
+      <tr>
+        <th>$i18n.getString( "available_indicators" )</th>
+		<th>$i18n.getString( "filter" )</th>
+        <th>$i18n.getString( "selected_indicators" )</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <select id="indicatorGroupSelect" name="indicatorGroupSelect" style="min-width:20em"
+              onchange="javascript:filterByIndicatorGroup( this.options[this.selectedIndex].value )">
+            <option value="ALL" selected="selected">$i18n.getString( "all" )</option>
+            #foreach ( $indicatorGroup in $indicatorGroups )
+              <option value="$indicatorGroup.id">$encoder.htmlEncode( $indicatorGroup.name )</option>
+            #end
+          </select>
+        </td>
+        <td>$i18n.getString( "group" )</td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td><input type="text" id="availableIndicatorsFilter" onkeyup="filterList( this.value, 'indicatorAvailableList' )" style="min-width:20em"></td>
+      	<td>$i18n.getString( "name" )</td>
+      	<td></td>        
+      </tr>
+
+      <tr>
+        <td>
+          <select size="15" id="indicatorAvailableList" name="indicatorAvailableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'indicatorAvailableList', 'indicatorSelectedList');">
+              #foreach ( $availableIndicator in $indicators )
+                  <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.name )</option>
+              #end               
+          </select>
+        </td>
+        <td>
+            <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="moveSelectedById( 'indicatorAvailableList', 'indicatorSelectedList');"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="moveSelectedById( 'indicatorSelectedList', 'indicatorAvailableList');"/><br/>
+            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'indicatorAvailableList', 'indicatorSelectedList' );"/><br/>
+            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'indicatorSelectedList', 'indicatorAvailableList' );"/>
+        </td>
+        <td>
+          <select id="indicatorSelectedList" name="indicatorSelectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'indicatorSelectedList', 'indicatorAvailableList' );">
+              #foreach ( $availableIndicator in $dataSetIndicators )
+                  <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.name )</option>
+              #end
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/><input type="button"
+            onclick="window.location.href='dataSet.action'" value="$i18n.getString( 'cancel' )" style="width:10em"/>
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
 </form>

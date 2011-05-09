@@ -30,49 +30,48 @@ package org.hisp.dhis.dataset.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Kristian
- * @version $Id: GetDataSetAction.java 6256 2008-11-10 17:10:30Z larshelg $
+ * @author mortenoh
  */
-public class GetDataSetAction
+public class IndicatorListFilteredByGroup
     implements Action
 {
+    private String indicatorGroupId;
+
+    private String selectedIndicators[];
+
+    private List<Indicator> indicators;
+
+    private Integer dataSetId;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
 
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
     }
 
     private Comparator<Indicator> indicatorComparator;
@@ -82,22 +81,25 @@ public class GetDataSetAction
         this.indicatorComparator = indicatorComparator;
     }
 
-    private SelectionTreeManager selectionTreeManager;
+    private DisplayPropertyHandler displayPropertyHandler;
 
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
-        this.selectionTreeManager = selectionTreeManager;
+        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
-    // Input & output
+    // Getters & Setters
     // -------------------------------------------------------------------------
 
-    private Integer dataSetId;
-
-    public Integer getDataSetId()
+    public void setIndicatorGroupId( String indicatorGroupId )
     {
-        return dataSetId;
+        this.indicatorGroupId = indicatorGroupId;
+    }
+
+    public void setSelectedIndicators( String[] selectedIndicators )
+    {
+        this.selectedIndicators = selectedIndicators;
     }
 
     public void setDataSetId( Integer dataSetId )
@@ -105,39 +107,14 @@ public class GetDataSetAction
         this.dataSetId = dataSetId;
     }
 
-    private DataSet dataSet;
-
-    public DataSet getDataSet()
+    public String getIndicatorGroupId()
     {
-        return dataSet;
+        return indicatorGroupId;
     }
 
-    private List<DataElement> dataSetDataElements;
-
-    public List<DataElement> getDataSetDataElements()
+    public List<Indicator> getIndicators()
     {
-        return dataSetDataElements;
-    }
-
-    private List<Indicator> dataSetIndicators;
-
-    public List<Indicator> getDataSetIndicators()
-    {
-        return dataSetIndicators;
-    }
-
-    private DataEntryForm dataEntryForm;
-
-    public DataEntryForm getDataEntryForm()
-    {
-        return dataEntryForm;
-    }
-
-    private DataElementCategoryCombo categoryCombo;
-
-    public DataElementCategoryCombo getCategoryCombo()
-    {
-        return categoryCombo;
+        return indicators;
     }
 
     // -------------------------------------------------------------------------
@@ -147,21 +124,45 @@ public class GetDataSetAction
     public String execute()
         throws Exception
     {
-        dataSet = dataSetService.getDataSet( dataSetId );
+        if ( indicatorGroupId == null || indicatorGroupId.equals( "ALL" ) )
+        {
+            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+        }
+        else
+        {
+            IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer.parseInt( indicatorGroupId ) );
 
-        dataSetDataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+            indicators = new ArrayList<Indicator>( indicatorGroup.getMembers() );
+        }
 
-        Collections.sort( dataSetDataElements, dataElementComparator );
+        if ( selectedIndicators != null && selectedIndicators.length > 0 )
+        {
+            Iterator<Indicator> iter = indicators.iterator();
 
-        dataSetIndicators = new ArrayList<Indicator>( dataSet.getIndicators() );
+            while ( iter.hasNext() )
+            {
+                Indicator indicator = iter.next();
 
-        Collections.sort( dataSetIndicators, indicatorComparator );
+                for ( int i = 0; i < selectedIndicators.length; i++ )
+                {
+                    if ( indicator.getId() == Integer.parseInt( selectedIndicators[i] ) )
+                    {
+                        iter.remove();
+                    }
+                }
+            }
+        }
 
-        displayPropertyHandler.handle( dataSetDataElements );
+        if ( dataSetId != null )
+        {
+            DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-        dataEntryForm = dataSet.getDataEntryForm();
+            indicators.removeAll( dataSet.getIndicators() );
+        }
 
-        selectionTreeManager.setSelectedOrganisationUnits( dataSet.getSources() );
+        Collections.sort( indicators, indicatorComparator );
+
+        displayPropertyHandler.handle( indicators );
 
         return SUCCESS;
     }
