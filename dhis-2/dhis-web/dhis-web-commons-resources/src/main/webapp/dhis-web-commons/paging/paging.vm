@@ -15,14 +15,14 @@
 				</td>
 				<td>
 					<span>$i18n.getString("rows_in_page"):</span>
-					<input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onchange="changePageSize('$baseLink');">
+					<input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onkeyup="changePageSize('$baseLink');">
 				</td>
 				<td>
 					<span>$i18n.getString("jump_to_page"):</span>					
-					<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onchange="jumpToPage('$baseLink');">
+					<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onkeyup="changePageSize('$baseLink');">
 				</td>
 				<td>
-					<input type="button" id="submitButton" value="$i18n.getString('go')" onclick="jumpToPage('$baseLink');">
+					<input type="button" id="submitButton" value="$i18n.getString('go')" onclick="changePageSize('$baseLink');">
 				</td>				
 			</tr>		
 			<tr>
@@ -72,20 +72,45 @@
 
 <script>
 	
-	var isAjax;
-	
-	function ajaxPaging( currentPage, pageSize )
+var isAjax;
+
+function ajaxPaging( currentPage, pageSize )
+{
+	if( isAjax == undefined )
 	{
-		if( isAjax == undefined )
-		{
-			window.location.href = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
-		}
-		else
-		{
-			showLoader();
-			var url = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
-			$( '#contentDiv' ).load(url);
-			hideLoader();
-		}
+		window.location.href = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
 	}
+	else
+	{
+		showLoader();
+		var url = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
+		$( '#contentDiv' ).load(url);
+		hideLoader();
+	}
+}
+
+function changePageSize( baseLink )
+{
+    var pageSize = jQuery("#sizeOfPage").val();
+    
+    if(pageSize < 1)
+    {
+    	pageSize = 1;
+    }
+    
+	var currentPage = jQuery("#jumpToPage").val();
+	jQuery.cookie("pageSize", pageSize, {path: "/"});
+	var url = baseLink + 'currentPage=' + currentPage + '&pageSize=' + pageSize;
+	if( isAjax == undefined )
+	{
+		window.location.href = url;
+	}
+	else
+	{
+		showLoader();
+		$( '#contentDiv' ).load(url);
+		hideLoader();
+	}
+}
+
 </script>

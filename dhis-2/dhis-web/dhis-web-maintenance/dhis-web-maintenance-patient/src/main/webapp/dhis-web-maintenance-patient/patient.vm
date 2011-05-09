@@ -1,21 +1,4 @@
-<table>
-		
-	<tr>
-		<td><label>$i18n.getString( "registering_unit" )</label></td>
-		<td><input type="text" readonly="readonly" value="$encoder.htmlEncode( $organisationUnit.name )" style="min-width:22em"></td>
-		<td>&nbsp;</td>
-		<td><input type="button" id='listAllPatientsBtn' value="$i18n.getString( 'list_all_patients' )" onclick="loadAllPatients();"></td>
-	</tr>
-	
-	<tr>
-		<td></td>
-		<td><i><span id='warnmessage' style='color: red;'></span></i> </td>
-	</tr>
 
-</table>
-
-<hr style="clear:both">
-	
 <table>	
 	<tr>	       
 		<td>
@@ -29,7 +12,7 @@
 		  <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>		
 		<td>
-			<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText">
+			<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText" >
 			
 			<select id="programId" name='programId' style="display:none; width:20.2em" >
 				<option value="">[ $i18n.getString('select_program') ]</option>
@@ -63,6 +46,5 @@
 <p></p>
 <p></p>
 
-<script type="text/javascript">
-	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
-</script>
+<input type ='hidden' name='orgunitname' id='orgunitname' value='$organisationUnit.name'>
+<div id='contentDiv'></div>

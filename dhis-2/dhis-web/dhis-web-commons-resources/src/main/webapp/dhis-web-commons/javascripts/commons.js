@@ -1390,30 +1390,6 @@ function deleteDivEffect()
 }
 
 /**
- * Paging
- */
-function changePageSize( baseLink )
-{
-    var pageSize = jQuery("#sizeOfPage").val();
-    
-    if(pageSize < 1)
-    {
-    	pageSize = 1;
-    }
-    
-	var currentPage = jQuery("#jumpToPage").val();
-	jQuery.cookie("pageSize", pageSize, {path: "/"});
-    window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
-}
-
-function jumpToPage( baseLink )
-{
-    var pageSize = jQuery("#sizeOfPage").val();
-    var currentPage = jQuery("#jumpToPage").val();
-    window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
-}
-
-/**
  * Used to export PDF file by the given type and the active items in table
  */
 function exportPdfByType( type )
