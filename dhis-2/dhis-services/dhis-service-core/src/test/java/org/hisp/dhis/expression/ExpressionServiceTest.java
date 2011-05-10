@@ -195,7 +195,7 @@ public class ExpressionServiceTest
     // -------------------------------------------------------------------------
 
     @Test
-    public void testExplodeExpression()
+    public void testExplodeExpressionA()
     {
         categoryService.generateOptionCombos( categoryCombo );
         
@@ -209,6 +209,13 @@ public class ExpressionServiceTest
         {
             assertTrue( actual.contains( "[" + dataElementIdE + SEPARATOR + categoryOptionCombo.getId() + "]" ) );
         }
+    }
+
+    @Test
+    public void testExplodeExpressionB()
+    {
+        assertEquals( "1", expressionService.explodeExpression( "1" ) );
+        assertEquals( "2+6/4", expressionService.explodeExpression( "2+6/4" ) );
     }
 
     @Test

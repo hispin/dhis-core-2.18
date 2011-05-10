@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.de.state.SelectedStateManager;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.Action;
@@ -41,6 +44,13 @@ public class LoadPeriodsAction
     {
         this.format = format;
     }
+    
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -71,11 +81,18 @@ public class LoadPeriodsAction
         return periodValid;
     }
     
-    private Collection<DataElement> significantZeros = new HashSet<DataElement>();
+    private Set<DataElement> significantZeros = new HashSet<DataElement>();
 
-    public Collection<DataElement> getSignificantZeros()
+    public Set<DataElement> getSignificantZeros()
     {
         return significantZeros;
+    }
+    
+    private Collection<Indicator> indicators = new HashSet<Indicator>();
+
+    public Collection<Indicator> getIndicators()
+    {
+        return indicators;
     }
 
     // -------------------------------------------------------------------------
@@ -126,6 +143,18 @@ public class LoadPeriodsAction
                 {
                     significantZeros.add( dataElement );
                 }
+            }
+
+            // -----------------------------------------------------------------
+            // Explode and add indicators from data set
+            // -----------------------------------------------------------------
+
+            for ( Indicator indicator : selectedDataSet.getIndicators() )
+            {
+                indicator.setExplodedNumerator( expressionService.explodeExpression( indicator.getNumerator() ) );
+                indicator.setExplodedDenominator( expressionService.explodeExpression( indicator.getDenominator() ) );
+                
+                indicators.add( indicator );
             }
             
             // -----------------------------------------------------------------

@@ -35,7 +35,7 @@ function insertIndicator() {
 		if($(this).attr("selected")) {
 			var id = $(this).data("id");
 			var title = $(this).val();
-			var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" name="indicator" indicatorId="' + id + '" style="width:10em;text-align:center;" disabled="disabled" />';
+			var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" name="indicator" indicatorId="' + id + '" style="width:10em;text-align:center;" readonly="readonly" />';
 
 			if(!checkExisted("indicator" + id)) {
 				oEditor.insertHtml( template )
