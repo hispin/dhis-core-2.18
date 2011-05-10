@@ -396,6 +396,11 @@ public class UpdatePatientAction
     {
         this.gender = gender;
     }
+	
+    public void setBloodGroup( String bloodGroup )
+    {
+        this.bloodGroup = bloodGroup;
+    }
 
     public Patient getPatient()
     {
