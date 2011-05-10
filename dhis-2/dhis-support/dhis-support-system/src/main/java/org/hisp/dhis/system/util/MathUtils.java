@@ -294,7 +294,10 @@ public class MathUtils
         
         for ( Double value : values )
         {
-            sum += value;
+            if ( value != null )
+            {
+                sum += value;
+            }
         }
         
         return sum;

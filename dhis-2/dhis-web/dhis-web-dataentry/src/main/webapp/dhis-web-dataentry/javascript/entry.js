@@ -7,8 +7,6 @@ var COLOR_GREEN = '#b9ffb9';
 var COLOR_YELLOW = '#fffe8c';
 var COLOR_RED = '#ff8a8a';
 
-var indicatorFormulas = new Array();
-
 var FORMULA_PATTERN = /\[.+?\]/g;
 var SEPARATOR = '.';
 
@@ -21,10 +19,12 @@ function updateIndicators()
 	var entryFieldValues = getEntryFieldValues();
 
 	$( 'input[name="indicator"]' ).each( function( index ) {
-		var indicatorId = $( this ).attr( 'indicatorId' );
+		var indicatorId = $( this ).attr( 'indicatorid' );
+		
 		var formula = indicatorFormulas[ indicatorId ];
 		
-		var expression = generateExpression( formula );		
+		var expression = generateExpression( formula );
+		
 		var value = eval( expression );
 		
 		if ( value )
@@ -70,7 +70,7 @@ function generateExpression( expression )
 		
 		var value = entryField && entryField.value ? entryField.value : '0';
 		
-		expression = expression.replace( match, value );
+		expression = expression.replace( match, value ); // TODO signed numbers
 	}
 	
 	return expression;
@@ -83,13 +83,19 @@ function saveVal( dataElementId, optionComboId )
 {
 	var dataElementName = document.getElementById( 'value[' + dataElementId + '].name' ).innerHTML;
 	
-	saveValue( dataElementId, optionComboId, dataElementName, null );
+	saveValueInternal( dataElementId, optionComboId, dataElementName, null );
 }
 
 /**
 /* Used by custom forms.
 */
 function saveValue( dataElementId, optionComboId, dataElementName )
+{
+	saveValueInternal( dataElementId, optionComboId, dataElementName );
+	updateIndicators();
+}
+
+function saveValueInternal( dataElementId, optionComboId, dataElementName )
 {
     var field = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
     var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;   

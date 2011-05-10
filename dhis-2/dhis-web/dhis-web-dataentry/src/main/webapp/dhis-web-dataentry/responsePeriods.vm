@@ -14,5 +14,10 @@
 #foreach( $dataElement in $significantZeros )
   ${dataElement.id}#if( $velocityCount < $size2 ),#end
 #end ],
+#set( $size3 = $indicators.size() )
+  "indicatorFormulas": {
+#foreach( $indicator in $indicators )
+  "${indicator.id}": "$!{indicator.explodedNumerator}/$!{indicator.explodedDenominator}"#if( $velocityCount < $size3 ),#end
+#end },
   "periodValid": ${periodValid}
 }

@@ -37,6 +37,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.de.action.LoadPeriodsAction" class="org.hisp.dhis.de.action.LoadPeriodsAction" scope="prototype">
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.de.action.LoadNextPreviousPeriodsAction" class="org.hisp.dhis.de.action.LoadNextPreviousPeriodsAction" scope="prototype">
