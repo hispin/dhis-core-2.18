@@ -27,8 +27,12 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import java.util.Collection;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -39,8 +43,6 @@ import com.opensymphony.xwork2.Action;
 public class DataEntrySelectAction
     implements Action
 {
-    private static final String SEARCH_FORM = "searchform";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -50,6 +52,13 @@ public class DataEntrySelectAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -63,6 +72,13 @@ public class DataEntrySelectAction
         return organisationUnit;
     }
 
+    Collection<PatientAttribute> patientAttributes;
+
+    public Collection<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -72,11 +88,8 @@ public class DataEntrySelectAction
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        if ( organisationUnit == null )
-        {
-            return SUCCESS;
-        }
+        patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        return SEARCH_FORM;
+        return SUCCESS;
     }
 }

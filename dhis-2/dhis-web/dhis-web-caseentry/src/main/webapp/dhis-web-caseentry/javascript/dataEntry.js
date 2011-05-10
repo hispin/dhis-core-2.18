@@ -1,3 +1,209 @@
+
+function organisationUnitSelected( orgUnits )
+{
+	showLoader();
+	setInnerHTML( 'contentDiv', '' );
+	hideById('dataEntryFormDiv');
+	hideById('dataRecordingSelectDiv');
+	showById('searchPatientDiv');
+			
+	jQuery.post("searchform.action",
+		{
+		},
+		function (data)
+		{
+			enable('listPatientBtn');
+			enable('searchingAttributeId');
+			enable('searchBtn');
+			jQuery('#searchText').removeAttr( 'readonly' );
+			
+			setFieldValue( 'orgunitName', data.getElementsByTagName( "name" )[0].firstChild.nodeValue );
+			
+			hideLoader();
+		},'xml');
+}
+
+selection.setListenerFunction( organisationUnitSelected );
+
+//--------------------------------------------------------------------------------------------
+// Show search-form
+//--------------------------------------------------------------------------------------------
+
+function showSearchForm()
+{
+	hideById('dataRecordingSelectDiv');
+	hideById('dataEntryFormDiv');
+	showById('searchPatientDiv');
+	showById('contentDiv');
+}
+
+//--------------------------------------------------------------------------------------------
+// Show all patients in select orgunit
+//--------------------------------------------------------------------------------------------
+
+isAjax = true;
+function listAllPatient()
+{
+	jQuery('#contentDiv').load( 'listAllPatients.action',
+		function()
+		{
+			hideById('dataRecordingSelectDiv');
+			hideById('dataEntryFormDiv');
+			showById('searchPatientDiv');
+			hideLoader();
+		});
+}
+
+//--------------------------------------------------------------------------------------------
+// Show selected data-recording
+//--------------------------------------------------------------------------------------------
+
+function showSelectedDataRecoding( patientId )
+{
+	showLoader();
+	hideById('searchPatientDiv');
+	hideById('dataEntryFormDiv');
+	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
+		{
+			patientId: patientId
+		},
+		function()
+		{
+			showById('dataRecordingSelectDiv');
+			hideLoader();
+			hideById('contentDiv');
+		});
+}
+
+//--------------------------------------------------------------------------------------------
+// Load program-stages by the selected program
+//--------------------------------------------------------------------------------------------
+
+function loadProgramStages()
+{
+	if ( getFieldValue('programId') )
+	{
+		
+	}
+	jQuery.postJSON( "loadProgramStages.action",
+		{
+			patientId: getFieldValue('patientId'),
+			programId: getFieldValue('programId')
+		}, 
+		function( json ) 
+		{    
+			addOptionById( 'programStageId', "0", i18n_select );
+			for ( i in json.programStages ) 
+			{
+				addOptionById( 'programStageId', json.programStages[i].id, json.programStages[i].name );
+			} 
+			
+			// show history / plan
+			var history = '<h4>' + i18n_program_stages_history_plan + '</h4>';
+			history += '<table>'
+			for ( i in json.programStageInstances ) 
+			{
+				history += '<tr>';
+                history += '<td>';
+                history += '<strong>' + json.programStageInstances[i].name + '</strong>';
+				history += '</td>';
+                history += '<td style="text-align:center" bgcolor=' + json.programStageInstances[i].colorMap + '>'                                                         
+                history += json.programStageInstances[i].infor;
+                history += '</td>';
+                history += '</tr>';
+			}
+			history += '</table>';
+			setInnerHTML( 'currentSelection', history ); 
+	});
+}
+
+//--------------------------------------------------------------------------------------------
+// Load data-entry-form
+//--------------------------------------------------------------------------------------------
+
+function loadDataEntry()
+{
+	if( getFieldValue('programStageId') == '0' )
+	{
+		disable('listPatientBtn');
+		disable('searchingAttributeId');
+		jQuery('#searchText').removeAttr( 'readonly' );
+		disable('searchBtn');
+			
+		return;
+	}
+	
+	showLoader();
+	jQuery('#dataEntryFormDiv').load("dataentryform.action",
+		{
+			programStageId:getFieldValue('programStageId'),
+			patientId: getFieldValue('patientId'),
+			useDefaultForm: jQuery('#useDefaultForm').find("checked").value
+		}, 
+		function( data ) 
+		{
+			enable('listPatientBtn');
+			enable('searchingAttributeId');
+			jQuery('#searchText').removeAttr( 'readonly' );
+			enable('searchBtn');
+		
+			hideById('searchPatientDiv');
+			
+			showById('dataRecordingSelectDiv');
+			if ( getFieldValue('executionDate') =='' )
+			{
+				hideById('dataEntryFormDiv');
+				setInnerHTML('startMsg', i18n_report_date_warning);
+			}
+			else
+			{
+				showById('dataEntryFormDiv');
+				setInnerHTML('startMsg', '');
+			}
+			
+			enable('dueDate');
+			enable('executionDate');
+			enable('validationBtn');
+			enable('completeBtn');
+			
+			enable('useDefaultForm');
+			enable('useCustomForm');
+			
+			if( byId('useCustomForm').checked )
+			{
+				selectUseCustomDataEntryForm();
+			}else
+			{
+				selectUseDefaultDataEntryForm();
+			}
+			
+			hideLoader();
+			hideById('contentDiv');
+		});
+}
+
+//--------------------------------------------------------------------------------------------
+// Checkbox useDefaultForm is checked
+//--------------------------------------------------------------------------------------------
+
+function selectUseDefaultDataEntryForm()
+{
+	byId('useCustomForm').checked = false;
+	hideById( 'customEntryScreenContainer' );
+	showById( 'defaultEntryScreenContainer' );
+}
+
+function selectUseCustomDataEntryForm()
+{
+	byId('useDefaultForm').checked = false;
+	hideById( 'defaultEntryScreenContainer' );
+	showById( 'customEntryScreenContainer' );
+}
+
+//--------------------------------------------------------------------------------------------
+// Show multi data-entry-form
+//--------------------------------------------------------------------------------------------
+
 function viewPrgramStageRecords( programStageInstanceId ) 
 {
 	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
@@ -13,28 +219,17 @@ function viewPrgramStageRecords( programStageInstanceId )
     });
 }
 
-
-function organisationUnitSelected( orgUnits )
-{
-    window.location.href = 'dataEntrySelect.action';
-}
-
-selection.setListenerFunction( organisationUnitSelected );
-
 //-----------------------------------------------------------------------------
-//Search Patient
+// Search Patient
 //-----------------------------------------------------------------------------
 
 function validateSearch()
 {	
-	
-    var url = 'validateSearch.action?' +
-    'searchText=' + getFieldValue( 'searchText' );
-	
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( searchValidationCompleted );
-    request.send( url );
+	request.sendAsPost('searchText=' + getFieldValue( 'searchText' ));
+    request.send( 'validateSearch.action' );
 
     return false;
 }
@@ -46,8 +241,19 @@ function searchValidationCompleted( messageElement )
 	
     if ( type == 'success' )
     {
-        var form = document.getElementById( 'searchForm' );
-        form.submit();
+		showLoader();
+		hideById('dataEntryFormDiv');
+		hideById('dataRecordingSelectDiv');
+		$('#contentDiv').load( 'searchPatient.action', 
+			{
+				searchingAttributeId: getFieldValue('searchingAttributeId'), 
+				searchText: getFieldValue('searchText')
+			},
+			function()
+			{
+				showById('searchPatientDiv');
+				hideLoader();
+			});
     }
     else if ( type == 'error' )
     {
@@ -55,13 +261,12 @@ function searchValidationCompleted( messageElement )
     }
     else if ( type == 'input' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
+        setMessage( message );
     }
 }
 
 //-----------------------------------------------------------------------------
-//View details
+// View details
 //-----------------------------------------------------------------------------
 
 function showPatientDetails( patientId )
@@ -108,8 +313,6 @@ function patientReceived( patientElement )
 	}
 	
 	setInnerHTML( 'identifierField', identifierText );
-	
-	
 	
 	// ----------------------------------------------------------------------------
 	// Get attribute
@@ -197,6 +400,7 @@ function ExecutionDateSaver( programStageInstanceId_, executionDate_, resultColo
         if ( code == 0 )
         {
             markValue( resultColor );
+			showById('dataEntryFormDiv');
         }
         else
         {
@@ -209,6 +413,7 @@ function ExecutionDateSaver( programStageInstanceId_, executionDate_, resultColo
             {
                 markValue( resultColor );
             }
+			hideById('dataEntryFormDiv');
         }
     }
 
@@ -396,7 +601,6 @@ function updateProvidingFacility( dataElementId, checkedBox )
 
 function updateProvidingFacilityCustom( programStageId, dataElementId, checkedBox )
 {
-    //	checkedBox.style.backgroundColor = '#ffffcc';
     var providedByAnotherFacility = checkedBox.checked;
     var checkBoxSaver = new CustomCheckBoxSaver( programStageId, dataElementId, providedByAnotherFacility, '#ccffcc' );
     checkBoxSaver.save();
@@ -652,11 +856,19 @@ function ValueSaver( dataElementId_, value_, providedByAnotherFacility_, resultC
 	
     this.save = function()
     {
+		var params = 'dataElementId=' + dataElementId;
+			params += '&value=' + value;
+			params += '&providedByAnotherFacility=' + providedByAnotherFacility;
+			params += '&orgunitId=' + getFieldValue('orgunitId');
+			params += '&patientId=' + getFieldValue('patientId');
+			params += '&programStageId=' + getFieldValue('programStageId');
+			
         var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
-        request.send( 'saveValue.action?dataElementId=' + dataElementId + '&value=' + value + '&providedByAnotherFacility=' + providedByAnotherFacility );
+		request.sendAsPost( params );
+        request.send( 'saveValue.action');
     };
  
     function handleResponse( rootElement )
@@ -753,11 +965,28 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
 		
         if( optionComboId )
         {
-            request.send( 'saveValue.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&value=' + value + '&providedByAnotherFacility=' + providedByAnotherFacility );
+			var params = 'dataElementId=' + dataElementId;
+				params += '&optionComboId=' + optionComboId;
+				params += '&value=' + value;
+				params += '&providedByAnotherFacility=' + providedByAnotherFacility;
+				params += '&orgunitId=' + getFieldValue('orgunitId');
+				params += '&patientId=' + getFieldValue('patientId');
+				params += '&programStageId=' + getFieldValue('programStageId');
+				
+			request.sendAsPost( params );
+            request.send( 'saveValue.action' );
         }
         else
-        {
-            request.send( 'saveValue.action?dataElementId=' + dataElementId + '&value=' + value + '&providedByAnotherFacility=' + providedByAnotherFacility );
+        {	
+			var params = 'dataElementId=' + dataElementId;
+				params += '&value=' + value;
+				params += '&providedByAnotherFacility=' + providedByAnotherFacility;
+				params += '&orgunitId=' + getFieldValue('orgunitId');
+				params += '&patientId=' + getFieldValue('patientId');
+				params += '&programStageId=' + getFieldValue('programStageId');
+			
+			request.sendAsPost( params );
+            request.send( 'saveValue.action' );
         }
 		
 		
@@ -933,8 +1162,6 @@ function getNextEntryField( field )
     {
         // No more fields after this:
         return false;
-    // First field:
-    //return inputs[0];
     }
     else
     {
@@ -945,6 +1172,7 @@ function getNextEntryField( field )
 //------------------------------------------------------
 // Save value for dataElement of type date in entryscreen
 //------------------------------------------------------
+
 function saveDate( dataElementId , dataElementName )
 {
     var providedByAnotherFacility ;
@@ -1076,11 +1304,9 @@ jQuery(document).ready(function(){
 	
         jQuery("#customEntryScreenContainer td").hover(
             function(){
-                //				jQuery(this).siblings("td").removeClass("focusCell");
                 var childrens = jQuery(this).children("input[name='entryfield'],select[name='entryselect']");
                 
 				if( jQuery(childrens[0]).is(":disabled")) {
-                    //					jQuery(this).addClass("focusCell");
                     DRAG_DIV.showData(jQuery(childrens[0]).metadata({
                         "type":"attr",
                         "name":"data"
@@ -1090,29 +1316,22 @@ jQuery(document).ready(function(){
 				
             },
             function(){
-            //				if( currentFocus )
-            //				{
-            //					jQuery(currentFocus).focus();
-            //				}
-            //				jQuery(this).removeClass("focusCell");
             }
             );
 		
         jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){
             jQuery(this).focus(function(){
                 currentFocus = this;
-                //			jQuery(this).addClass("focusCell");
                 DRAG_DIV.showData(jQuery(this).metadata({
                     "type":"attr",
                     "name":"data"
                 }));
             });
             jQuery(this).blur(function(){
-                //			jQuery(this).removeClass("focusCell");
+               
                 });
             jQuery(this).hover(
                 function(){
-                    //					jQuery(this).addClass("focusCell");
                     DRAG_DIV.showData(jQuery(this).metadata({
                         "type":"attr",
                         "name":"data"
@@ -1120,15 +1339,12 @@ jQuery(document).ready(function(){
                 },
                 function()
                 {
-                    //					jQuery(this).removeClass("focusCell");
                     if(currentFocus){
-                        //						jQuery(currentFocus).addClass("focusCell");
                         DRAG_DIV.showData(jQuery(currentFocus).metadata({
                             "type":"attr",
                             "name":"data"
                         }));
                     }
-                //					jQuery(this).parent("td:first").removeClass("focusCell");
                 }
                 );
             jQuery(this).addClass("inputText");
@@ -1191,7 +1407,7 @@ function openChildRegistrationForm()
 function doComplete()
 {
     var flag = false;
-    jQuery("#entryFormContainer input[name='entryfield'],select[name='entryselect']").each(function(){
+    jQuery("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect']").each(function(){
         jQuery(this).parent().removeClass("errorCell");
         if( jQuery(this).metadata({
             "type":"attr",
@@ -1208,7 +1424,29 @@ function doComplete()
         return;
     }else {
         if( confirm(i18n_complete_confirm_message) )
-            jQuery("#completeDataEntryForm").submit();
+		{
+			$.postJSON( "completeDataEntry.action",
+				{
+					programStageInstanceId: getFieldValue('programStageInstanceId')
+				},
+				function (data)
+				{
+					jQuery("#dataEntryFormDiv :input").each(function()
+					{
+						jQuery(this).attr('disabled', 'disabled');
+					});
+					jQuery("#dataEntryFormDiv").find(".ui-datepicker-trigger").each(function()
+					{
+						jQuery(this).attr('style', 'display:none');
+					});
+					jQuery("#dataEntryFormDiv").find(".holder").each(function()
+					{
+						jQuery(this).attr('style', 'display:none');
+					});
+					
+					hideLoader();
+				},'xml');
+		}
     }
 }
 
@@ -1220,8 +1458,6 @@ TOGGLE = {
             jQuery(this).click(function(){
                 var table = jQuery(this).next("table:first");
                 if( table.hasClass("sectionClose")){
-                    //					jQuery(".sectionOpen").removeClass("sectionOpen").addClass("sectionClose");
-                    //					jQuery(".togglePanel.open").removeClass("open").addClass("close");
                     table.removeClass("sectionClose").addClass("sectionOpen");
                     jQuery(this).removeClass("close").addClass("open");
                     window.scroll(0,jQuery(this).position().top);
@@ -1232,4 +1468,15 @@ TOGGLE = {
             });
         });
     },
+}
+
+//------------------------------------------------------
+// Run validation
+//------------------------------------------------------
+
+function runValidation()
+{
+	window.open( 'validateProgram.action?orgunitId=' + getFieldValue('orgunitId') 
+							+ '&patientId=' + getFieldValue('patientId') 
+							+ '&programStageId=' + getFieldValue('programStageId') );
 }

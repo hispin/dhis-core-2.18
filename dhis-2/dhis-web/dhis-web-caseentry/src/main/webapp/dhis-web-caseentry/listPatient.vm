@@ -1,14 +1,3 @@
-<script type="text/javascript">
-	var i18n_id = '$encoder.jsEscape( $i18n.getString( "id" ), "'")';
-	var i18n_full_name = '$encoder.jsEscape( $i18n.getString( "full_name" ), "'")';
-	var i18n_gender = '$encoder.jsEscape( $i18n.getString( "gender" ), "'")';
-	var i18n_dob_type = '$encoder.jsEscape( $i18n.getString( "dob_type" ), "'")';
-	var i18n_date_of_birth = '$encoder.jsEscape( $i18n.getString( "date_of_birth" ), "'")';
-	var i18n_blood_group = '$encoder.jsEscape( $i18n.getString( "blood_group" ), "'")';
-	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ), "'")';
-</script>
-
-#parse( "/dhis-web-caseentry/search.vm" )
 
 <table>
 	<tr>
@@ -38,9 +27,8 @@
 		  	<td></td>
 		  	<td></td>
 		  	<td></td>  		  	
-		  	<td colspan="2" style="text-align:right">  			
-				<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataEntrySelect.action'" style="width:60px">
-			</td>
+		  	<td></td>
+			<td></td>
           <tr>
             <th>$i18n.getString( "first_name" )</th>
             <th>$i18n.getString( "middle_name" )</th>
@@ -75,7 +63,7 @@
                     $encoder.htmlEncode( $patient.getAge() )
                 </td>				
 				<td style="text-align:center"#alternate( $mark )>
-                  <a href="selectDataRecording.action?id=$patient.id" title="$i18n.getString( "data_entry" )"><img src="images/data_entry.png" alt="$i18n.getString( "data_entry" )"></a>                  
+                  <a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( "data_entry" )"><img src="images/data_entry.png" alt="$i18n.getString( "data_entry" )"></a>                  
                 </td>
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
@@ -88,7 +76,15 @@
 			#end
     	#end
     	</tbody>
-    
+		<tr>
+		<td colspan="8">
+			<p></p>
+			<div class="paging-container">
+					#parse( "/dhis-web-commons/paging/paging.vm" )
+			</div>
+		</td>
+		<td></td>
+	  </tr>
 	  </table>
     </td>
     <td style="width:20em; padding-left:2em; vertical-align:top">
@@ -104,5 +100,7 @@
     </td>
   </tr>
 </table>
+
+
    
 <span id="message"></span>

@@ -24,22 +24,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ LoadProgramStagesAction.java May 7, 2011 2:31:47 PM $
+ * 
  */
-public class DataRecordingSelectAction
+public class LoadProgramStagesAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -53,8 +62,29 @@ public class DataRecordingSelectAction
         this.patientService = patientService;
     }
 
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input && Output
     // -------------------------------------------------------------------------
 
     private Integer patientId;
@@ -64,18 +94,32 @@ public class DataRecordingSelectAction
         this.patientId = patientId;
     }
 
-    private Patient patient;
+    private Integer programId;
 
-    public Patient getPatient()
+    public void setProgramId( Integer programId )
     {
-        return patient;
+        this.programId = programId;
     }
 
-    private Collection<Program> programs = new ArrayList<Program>();
+    private ProgramInstance programInstance;
 
-    public Collection<Program> getPrograms()
+    public ProgramInstance getProgramInstance()
     {
-        return programs;
+        return programInstance;
+    }
+
+    private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
+
+    public Set<ProgramStage> getProgramStages()
+    {
+        return programStages;
+    }
+
+    private Map<Integer, String> colorMap = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getColorMap()
+    {
+        return colorMap;
     }
 
     // -------------------------------------------------------------------------
@@ -85,13 +129,17 @@ public class DataRecordingSelectAction
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( patientId );
+        Patient patient = patientService.getPatient( patientId );
 
-        for ( Program program : patient.getPrograms() )
-        {
-            programs.add( program );
-        }
+        Program program = programService.getProgram( programId );
+
+        programInstance = programInstanceService.getProgramInstances( patient, program, false ).iterator().next();
+
+        colorMap = programStageInstanceService.colorProgramStageInstances( programInstance.getProgramStageInstances() );
+
+        programStages = program.getProgramStages();
 
         return SUCCESS;
     }
+
 }

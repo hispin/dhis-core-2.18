@@ -38,7 +38,9 @@ import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
@@ -48,6 +50,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationService;
 
@@ -74,10 +77,21 @@ public class ValidateProgramInstanceAction
 
     private ProgramValidationService programValidationService;
 
+    private OrganisationUnitService orgunitService;
+
+    private PatientService patientService;
+    
+    private ProgramStageService programStageService;
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
+    private Integer orgunitId;
+
+    private Integer patientId;
+
+    private Integer programStageId;
+    
     private I18n i18n;
 
     // -------------------------------------------------------------------------
@@ -97,6 +111,36 @@ public class ValidateProgramInstanceAction
         this.selectedStateManager = selectedStateManager;
     }
 
+    public void setOrgunitService( OrganisationUnitService orgunitService )
+    {
+        this.orgunitService = orgunitService;
+    }
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
+
+    public void setOrgunitId( Integer orgunitId )
+    {
+        this.orgunitId = orgunitId;
+    }
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
+
+    public void setProgramStageId( Integer programStageId )
+    {
+        this.programStageId = programStageId;
+    }
+
     public List<ProgramValidation> getProgramValidations()
     {
         return programValidations;
@@ -106,7 +150,7 @@ public class ValidateProgramInstanceAction
     {
         this.programValidationService = programValidationService;
     }
-    
+
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
@@ -136,7 +180,8 @@ public class ValidateProgramInstanceAction
     {
         return selectedStateManager;
     }
-    
+
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -153,15 +198,16 @@ public class ValidateProgramInstanceAction
         // Get selected objects
         // ---------------------------------------------------------------------
 
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = orgunitService.getOrganisationUnit( orgunitId );
 
-        Patient patient = selectedStateManager.getSelectedPatient();
+        Patient patient = patientService.getPatient( patientId );
 
-        Program program = selectedStateManager.getSelectedProgram();
+        ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        ProgramStage programStage = selectedStateManager.getSelectedProgramStage();
+        Program program = programStage.getProgram();
 
-        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program, false );
+        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program,
+            false );
 
         ProgramInstance programInstance = progamInstances.iterator().next();
 
@@ -171,13 +217,13 @@ public class ValidateProgramInstanceAction
         // ---------------------------------------------------------------------
         // Get selected objects
         // ---------------------------------------------------------------------
-        
+
         Set<ProgramStageDataElement> dataElements = programStage.getProgramStageDataElements();
 
         for ( ProgramStageDataElement psDataElement : dataElements )
         {
             DataElement dataElement = psDataElement.getDataElement();
-            
+
             checkDataElementInMultiStage( programStageInstance, organisationUnit, dataElement );
         }
 
@@ -185,7 +231,8 @@ public class ValidateProgramInstanceAction
         // Check validations for dataelement into multi-stages
         // ---------------------------------------------------------------------
 
-        runProgramValidation( programValidationService.getProgramValidation( programInstance.getProgram() ), programInstance );
+        runProgramValidation( programValidationService.getProgramValidation( programInstance.getProgram() ),
+            programInstance );
 
         return SUCCESS;
     }
