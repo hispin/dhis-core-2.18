@@ -187,49 +187,25 @@ public class DefaultDataEntryFormService
 
                 if ( dataElement != null )
                 {
-                    displayValue = "[ " + dataElement.getShortName() + " " + optionComboName + " ]";
+                    displayValue = "value=\"[ " + dataElement.getShortName() + " " + optionComboName + " ]\"";
 
-                    if ( inputHtml.contains( EMPTY_VALUE_TAG ) )
-                    {
-                        inputHtml = inputHtml.replace( EMPTY_VALUE_TAG, "value=\"" + displayValue + "\"" );
-                    }
-                    else
-                    {
-                        inputHtml += " value=\"" + displayValue + "\"";
-                    }
-
+                    inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
+                    
                     StringBuilder title = new StringBuilder( "title=\"[ " ).append( dataElement.getId() ).append( " - " ).
                         append( dataElement.getShortName() ).append( " - " ).append( optionComboId ).append( " - " ).
                         append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( " ]\"" );
                     
-                    if ( inputHtml.contains( EMPTY_TITLE_TAG ) )
-                    {
-                        inputHtml = inputHtml.replace( EMPTY_TITLE_TAG, title );
-                    }
-                    else
-                    {
-                        inputHtml += " " + title;
-                    }
+                    inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, title ) : " " + title;                    
                 }
                 else
                 {
-                    if ( inputHtml.contains( EMPTY_VALUE_TAG ) )
-                    {
-                        inputHtml = inputHtml.replace( EMPTY_VALUE_TAG, "value=\"" + displayValue + "\"" );
-                    }
-                    else
-                    {
-                        inputHtml += " value=\"" + displayValue + "\"";
-                    }
-
-                    if ( inputHtml.contains( EMPTY_TITLE_TAG ) )
-                    {
-                        inputHtml = inputHtml.replace( EMPTY_TITLE_TAG, "title=\"" + displayValue + "\"" );
-                    }
-                    else
-                    {
-                        inputHtml += " title=\"" + displayValue + "\"";
-                    }
+                    String displayNotExisting = "value=\"" + displayValue + "\"";
+                    
+                    inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayNotExisting ) : inputHtml + displayNotExisting;
+                    
+                    displayNotExisting = "title=\"" + displayValue + "\"";
+                    
+                    inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayNotExisting ) : inputHtml + displayNotExisting;
                 }
 
                 inputMatcher.appendReplacement( sb, inputHtml );
