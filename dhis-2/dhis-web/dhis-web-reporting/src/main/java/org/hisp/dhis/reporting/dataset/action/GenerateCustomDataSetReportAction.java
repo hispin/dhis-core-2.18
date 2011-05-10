@@ -134,10 +134,12 @@ public class GenerateCustomDataSetReportAction
         Map<String, String> aggregatedDataValueMap = dataSetReportService.getAggregatedValueMap( selectedDataSet, selectedOrgunit, selectedPeriod,
             selectedUnitOnly, format );
 
+        Map<Integer, String> aggregatedIndicatorMap = dataSetReportService.getAggregatedIndicatorValueMap( selectedDataSet, selectedOrgunit, selectedPeriod, format );
+        
         DataEntryForm dataEntryForm = selectedDataSet.getDataEntryForm();
 
         customDataEntryFormCode = dataSetReportService.prepareReportContent( dataEntryForm.getHtmlCode(),
-            aggregatedDataValueMap );
+            aggregatedDataValueMap, aggregatedIndicatorMap );
 
         reportingUnit = selectedOrgunit.getName();
 
