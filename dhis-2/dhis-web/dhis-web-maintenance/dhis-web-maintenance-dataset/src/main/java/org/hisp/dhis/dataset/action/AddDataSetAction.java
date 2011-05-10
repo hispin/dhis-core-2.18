@@ -29,11 +29,14 @@ package org.hisp.dhis.dataset.action;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
@@ -90,6 +93,13 @@ public class AddDataSetAction
         this.userService = userService;
     }
 
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -129,6 +139,13 @@ public class AddDataSetAction
         this.selectedList = selectedList;
     }
 
+    private Collection<String> indicatorSelectedList = new HashSet<String>();
+
+    public void setIndicatorSelectedList( Collection<String> indicatorSelectedList )
+    {
+        this.indicatorSelectedList = indicatorSelectedList;
+    }
+
     private boolean mobile;
 
     public void setMobile( boolean mobile )
@@ -159,18 +176,27 @@ public class AddDataSetAction
 
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
 
-        DataSet dataSet = new DataSet( name, shortName, code, periodType );
-
-        dataSet.setMobile( mobile );
-        dataSet.setVersion( 1 );
+        Collection<DataElement> dataElements = new HashSet<DataElement>();
         
         for ( String id : selectedList )
         {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
-
-            dataSet.getDataElements().add( dataElement );
+            dataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
 
+        Set<Indicator> indicators = new HashSet<Indicator>();
+
+        for ( String id : indicatorSelectedList )
+        {
+            indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
+        }
+
+        DataSet dataSet = new DataSet( name, shortName, code, periodType );
+        
+        dataSet.setMobile( mobile );
+        dataSet.setVersion( 1 );
+        dataSet.setDataElements( dataElements );
+        dataSet.setIndicators( indicators );
+        
         dataSetService.addDataSet( dataSet );
 
         assignDataSetToUserRole( dataSet );

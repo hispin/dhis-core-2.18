@@ -117,8 +117,6 @@ public class ActivityReportingServiceImpl
 
         List<Activity> items = new ArrayList<Activity>();
 
-        this.setSetting( getSettings() );
-
         this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( true ) );
 
         Collection<org.hisp.dhis.activityplan.Activity> activities = activityPlanService
@@ -142,19 +140,20 @@ public class ActivityReportingServiceImpl
 
         return new ActivityPlan( items );
     }
-    
+
     @Override
     public ActivityPlan getActivitiesByIdentifier( String keyword )
     {
-        
-       long time = PeriodType.createCalendarInstance().getTime().getTime();
+
+        long time = PeriodType.createCalendarInstance().getTime().getTime();
 
         Calendar expiredDate = Calendar.getInstance();
 
         List<Activity> items = new ArrayList<Activity>();
-        
-        Collection<Patient> patients = patientIdentifierService.getPatientsByIdentifier( keyword, 0, patientIdentifierService.countGetPatientsByIdentifier( keyword ) );
-        
+
+        Collection<Patient> patients = patientIdentifierService.getPatientsByIdentifier( keyword, 0,
+            patientIdentifierService.countGetPatientsByIdentifier( keyword ) );
+
         if ( patients != null )
         {
             Iterator<Patient> iterator = patients.iterator();
@@ -162,7 +161,7 @@ public class ActivityReportingServiceImpl
             while ( iterator.hasNext() )
             {
                 Patient patient = iterator.next();
-                
+
                 List<ProgramStageInstance> programStageInstances = programStageInstanceService
                     .getProgramStageInstances( patient, false );
 
@@ -286,6 +285,8 @@ public class ActivityReportingServiceImpl
 
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         beneficiary.setAge( period.getYears() );
+
+        this.setSetting( getSettings() );
 
         if ( setting != null )
         {
@@ -502,13 +503,11 @@ public class ActivityReportingServiceImpl
     {
         return patientIdentifierService;
     }
-    
+
     @Required
     public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
     {
         this.patientIdentifierService = patientIdentifierService;
     }
-    
-    
 
 }
