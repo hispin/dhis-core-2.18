@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<orgunits>
-	<orgunit>
-		<id>$!orgUnit.id</id>
-		<name>$encoder.xmlEncode( $!orgUnit.shortName )</name>
-		<level>$!orgUnitLevel</level>
-	</orgunit>
-</orgunits>
+<organisationUnit>
+	<id>$!organisationUnit.id</id>
+	<name>$encoder.xmlEncode( $!organisationUnit.name )</name>
+</organisationUnit>

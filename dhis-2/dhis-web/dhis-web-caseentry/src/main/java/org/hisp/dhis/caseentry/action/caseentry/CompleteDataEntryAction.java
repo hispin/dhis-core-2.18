@@ -64,30 +64,6 @@ public class CompleteDataEntryAction
     // Input / Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    private Integer programId;
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
-    public Integer getProgramId()
-    {
-        return programId;
-    }
-
     private Integer programStageId;
 
     public Integer getProgramStageId()

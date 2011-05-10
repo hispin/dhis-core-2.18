@@ -27,20 +27,18 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.Collection;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.PatientAttribute;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ GetSelectedOrgunitAction.java May 7, 2011 12:39:43 PM $
+ * 
  */
-public class SearchPatientFormAction
-    implements Action
+public class GetSelectedOrgunitAction
+implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -64,13 +62,6 @@ public class SearchPatientFormAction
         return organisationUnit;
     }
 
-    Collection<PatientAttribute> patientAttributes;
-
-    public Collection<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
-
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -83,3 +74,4 @@ public class SearchPatientFormAction
         return SUCCESS;
     }
 }
+

@@ -30,24 +30,21 @@ package org.hisp.dhis.caseentry.action.caseentry;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
 public class SearchPatientAction
-    implements Action
+    extends ActionPagingSupport<Patient>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -55,51 +52,47 @@ public class SearchPatientAction
 
     private OrganisationUnitSelectionManager selectionManager;
 
+    private PatientService patientService;
+
+    private PatientAttributeService patientAttributeService;
+
+    private PatientAttributeValueService patientAttributeValueService;
+
+    // -------------------------------------------------------------------------
+    // Input/output
+    // -------------------------------------------------------------------------
+
+    private String searchText;
+
+    private boolean listAll;
+
+    private Integer searchingAttributeId;
+
+    private Collection<Patient> patients = new ArrayList<Patient>();
+
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
     }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
-    private PatientService patientService;
 
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
     }
 
-    private PatientAttributeService patientAttributeService;
-
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
 
-    private PatientAttributeValueService patientAttributeValueService;
-
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
     }
-
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    private String searchText;
 
     public void setSearchText( String searchText )
     {
@@ -111,18 +104,14 @@ public class SearchPatientAction
         return searchText;
     }
 
-    private boolean listAll;
-
     public void setListAll( boolean listAll )
     {
         this.listAll = listAll;
     }
 
-    private Integer searchingAttributeId;
-
-    public Integer getSearchingAttributeId()
+    public Collection<Patient> getPatients()
     {
-        return searchingAttributeId;
+        return patients;
     }
 
     public void setSearchingAttributeId( Integer searchingAttributeId )
@@ -130,18 +119,11 @@ public class SearchPatientAction
         this.searchingAttributeId = searchingAttributeId;
     }
 
-    private Collection<PatientAttribute> patientAttributes;
+    private Integer total;
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public Integer getTotal()
     {
-        return patientAttributes;
-    }
-
-    private Collection<Patient> patients = new ArrayList<Patient>();
-
-    public Collection<Patient> getPatients()
-    {
-        return patients;
+        return total;
     }
 
     // -------------------------------------------------------------------------
@@ -151,90 +133,41 @@ public class SearchPatientAction
     public String execute()
         throws Exception
     {
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         if ( listAll )
         {
-            selectedStateManager.setListAll( listAll );
-
-            selectedStateManager.clearSearchingAttributeId();
-            selectedStateManager.clearSearchTest();
-
-            patients = patientService.getPatients( organisationUnit );
-
             searchText = "list_all_patients";
+
+            total = patientService.countGetPatientsByOrgUnit( organisationUnit );
+            this.paging = createPaging( total );
+
+            patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(),
+                paging.getPageSize() ) );
 
             return SUCCESS;
         }
 
         if ( searchingAttributeId != null && searchText != null )
         {
-            selectedStateManager.clearListAll();
+            PatientAttribute searchingPatientAttribute = patientAttributeService
+                .getPatientAttribute( searchingAttributeId );
 
-            selectedStateManager.setSearchingAttributeId( searchingAttributeId );
-            selectedStateManager.setSearchText( searchText );
+            total = patientAttributeValueService.countSearchPatientAttributeValue( searchingPatientAttribute,
+                searchText );
+            this.paging = createPaging( total );
 
-            PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
-
-            Collection<PatientAttributeValue> matching = patientAttributeValueService.searchPatientAttributeValue(
-                patientAttribute, searchText );
-
-            for ( PatientAttributeValue patientAttributeValue : matching )
-            {
-                patients.add( patientAttributeValue.getPatient() );
-            }
+            patients = patientAttributeValueService.searchPatients( searchingPatientAttribute, searchText, paging
+                .getStartPos(), paging.getPageSize() );
 
             return SUCCESS;
         }
 
-        if ( searchingAttributeId == null && searchText != null )
-        {
-            selectedStateManager.clearListAll();
-            selectedStateManager.clearSearchingAttributeId();
+        total = patientService.countGetPatients( searchText );
+        this.paging = createPaging( total );
 
-            selectedStateManager.setSearchText( searchText );
-
-            patients = patientService.getPatientsByNames( searchText );
-
-            return SUCCESS;
-        }
-
-        listAll = selectedStateManager.getListAll();
-
-        if ( listAll )
-        {
-            patients = patientService.getPatients( organisationUnit );
-
-            searchText = "list_all_patients";
-
-            return SUCCESS;
-
-        }
-
-        searchingAttributeId = selectedStateManager.getSearchingAttributeId();
-        searchText = selectedStateManager.getSearchText();
-
-        if ( searchingAttributeId != null && searchText != null )
-        {
-
-            PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
-
-            Collection<PatientAttributeValue> matching = patientAttributeValueService.searchPatientAttributeValue(
-                patientAttribute, searchText );
-
-            for ( PatientAttributeValue patientAttributeValue : matching )
-            {
-                patients.add( patientAttributeValue.getPatient() );
-            }
-
-            return SUCCESS;
-        }
-
-        patients = patientService.getPatientsByNames( searchText );
+        patients = patientService.getPatients( searchText, paging.getStartPos(), paging.getPageSize() );
 
         return SUCCESS;
-
     }
 }

@@ -1,10 +1,7 @@
 <div>
-    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="window.location.href='searchPatient.action'" style="width:10em">
+    <input type="button" value="$i18n.getString( 'back_to_search' )" onclick="javascript:showSearchForm();" style="width:10em">
 </div>
    
-<input type="hidden" id="id" name="id" value="$patient.id">        
-<form id="selectRecordingForm" name="selectRecordingForm" method="post" action="selectDataRecording.action?id=$patient.id">
-
 <table class="mainPageTable"> 
     <tr>            
         <td>
@@ -14,38 +11,18 @@
             <strong>$i18n.getString( "age" ):</strong>$encoder.htmlEncode( $patient.getAge() )
         </td>
         <td style="vertical-align:top">
-            #if( $programInstance )
-                <div id="currentSelection" style="float:right">
-                    <h4>$i18n.getString( "program_stages_history_plan" )</h4>
-                    <table>                        
-                        #foreach( $stageInstance in $programInstance.programStageInstances )
-                            <tr>
-                                <td>
-                                    <strong>$encoder.htmlEncode( $stageInstance.programStage.name ):</strong>
-                                </td>
-                                <td style="text-align:center" bgcolor="$colorMap.get( $stageInstance.id )">                                                           
-                                    #if( $stageInstance.completed )
-                                        $i18n.getString( "completed_on" )$format.formatDate( $stageInstance.executionDate )
-                                    #else
-                                        $i18n.getString( "scheduled_for" )$format.formatDate( $stageInstance.dueDate )
-                                    #end
-                               </td>
-                            </tr>                            
-                        #end
-                    </table>     
-                </div>
-            #end
+			<div id="currentSelection" style="float:right"></div>
         </td>
     </tr>                    
 </table>
 
 <hr style="clear:both">
 
-<table>    
+<table> 
    <tr>
         <td><label for="programId">$i18n.getString( "program" )</label></td>
         <td>
-            <select id="programId" name="programId" style="min-width:350px" onchange="document.getElementById( 'selectRecordingForm' ).submit();" #if( $programs.size() == 0 ) disabled="disabled" #end>
+            <select id="programId" name="programId" style="min-width:350px" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
                 <option value="0">[$i18n.getString( "select" )]</option>
                 #foreach( $program in $programs )
                     <option value="$program.id" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
@@ -57,49 +34,48 @@
     <tr>
         <td><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
         <td>
-            <select id="programStageId" name="programStageId" style="min-width:350px" onchange="document.getElementById( 'selectRecordingForm' ).submit();" #if( $programStages.size() == 0 ) disabled="disabled" #end>
-                <option value="0">[$i18n.getString( "select" )]</option>
-                #foreach( $programStage in $programStages )
-                    <option value="$programStage.id" #if( $programStageId && $programStage.id == $programStageId ) selected="selected" #end>$encoder.htmlEncode( $programStage.name )</option>
-                #end
+            <select id="programStageId" name="programStageId" style="min-width:350px" onchange="javascript:loadDataEntry();" >
             </select>
         </td>
-        #if( $programStageInstance )
-			<input type='hidden' id='incidentDate' name='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'/>
-			<td>&nbsp;</td>
-            <td><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
-            <td>
-            	<input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"/>
-            </td>
-            <td>&nbsp;</td>
-            <td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-            <td>
-            	<input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
-            </td>
-			<script type="text/javascript">
-				datePickerValid('executionDate', false);
-            </script>
-        #end
+		<td>&nbsp;</td>
+		<td>
+			<label for="dueDate">$i18n.getString( "due_date" ) </label>
+		</td>
+		<td>
+			<input type="text" id="dueDate" name="dueDate" disabled="disabled"/>
+		</td>
+		<td>&nbsp;</td>
+		<td>
+			<label for="executionDate">$i18n.getString( "report_date" ) </label>
+		</td>
+		<td>
+			<input type="text" id="executionDate" name="executionDate" onchange="saveExecutionDate( getFieldValue('programStageInstanceId'), getFieldValue('programStageInstanceName') );" disabled="disabled"/>
+		</td>
+		<script type="text/javascript">
+			datePickerValid('executionDate', false);
+		</script>
     </tr>   
 	<tr>
 		<td>
-			<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" style="width:12em">
+			<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" style="width:12em" disabled="disabled" >
 		</td>
 		<td>
-			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="window.open( 'validateProgram.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );" style="width:12em">
+			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();", '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );" style="width:12em " disabled="disabled" >
 		</td>
 	</tr>
 </table>
-
-<div id="actions" style="float:right">
-	<input type="checkbox" id="useDefaultForm" name="useDefaultForm"
-		#if( $useDefaultForm  ) 
-			checked="checked" 
-		#end 
-		onchange="selectDefaultForm();"/>
+<p align='right'>
+	<input type="checkbox" id="useDefaultForm" name="useDefaultForm" value="true" onclick="selectUseDefaultDataEntryForm();" disabled="disabled" />
 	<label>$i18n.getString( "use_default_form" )</label><br>	
-</div>
-
-</form>
+	
+	<input type="checkbox" id="useCustomForm" name="useCustomForm" checked onclick="selectUseCustomDataEntryForm();" disabled="disabled" />
+	<label>$i18n.getString( "use_custom_form" )</label><br>	
+</p>
 
 <hr style="clear:both">
+
+<span id="startMsg" style="font-style:italic; color:blue"> </span>
+
+<script type="text/javascript">  
+	setFieldValue('patientId', '$patient.id');
+</script>

@@ -33,22 +33,23 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,11 +67,25 @@ public class SaveValueAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private PatientService patientService;
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
+
+    private ProgramStageService programStageService;
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
     }
 
     private ProgramInstanceService programInstanceService;
@@ -164,6 +179,27 @@ public class SaveValueAction
         this.optionComboId = optionComboId;
     }
 
+    private Integer orgunitId;
+
+    public void setOrgunitId( Integer orgunitId )
+    {
+        this.orgunitId = orgunitId;
+    }
+
+    private Integer patientId;
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
+
+    private Integer programStageId;
+
+    public void setProgramStageId( Integer programStageId )
+    {
+        this.programStageId = programStageId;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -171,21 +207,27 @@ public class SaveValueAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        // ---------------------------------------------------------------------
+        // Get program-stage-instance
+        // ---------------------------------------------------------------------
 
-        Patient patient = selectedStateManager.getSelectedPatient();
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgunitId );
 
-        Program program = selectedStateManager.getSelectedProgram();
+        Patient patient = patientService.getPatient( patientId );
 
-        ProgramStage programStage = selectedStateManager.getSelectedProgramStage();
+        ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program,
-            false );
+        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, programStage
+            .getProgram(), false );
 
         ProgramInstance programInstance = progamInstances.iterator().next();
 
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
             programInstance, programStage );
+        
+        // ---------------------------------------------------------------------
+        // Save value
+        // ---------------------------------------------------------------------
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
