@@ -9,8 +9,7 @@
   <package name="dhis-web-caseentry" extends="dhis-web-commons"
     namespace="/dhis-web-caseentry">   
     
-    <action name="index" class="org.hisp.dhis.caseentry.action.NoAction">  
-      <interceptor-ref name="organisationUnitTreeStack"/>    
+    <action name="index" class="org.hisp.dhis.caseentry.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>     
       <param name="page">/dhis-web-caseentry/index.vm</param>
       <param name="menu">/dhis-web-caseentry/menu.vm</param>             

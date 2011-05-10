@@ -45,6 +45,8 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -88,6 +90,13 @@ public class DefaultDataEntryFormService
         this.dataElementService = dataElementService;
     }
     
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+
     // ------------------------------------------------------------------------
     // Implemented Methods
     // ------------------------------------------------------------------------
@@ -168,6 +177,7 @@ public class DefaultDataEntryFormService
             String inputHtml = inputMatcher.group();
 
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
+            Matcher indicatorMatcher = INDICATOR_PATTERN.matcher( inputHtml );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -179,36 +189,37 @@ public class DefaultDataEntryFormService
                 String optionComboName = optionCombo != null ? optionCombo.getName() : "";
 
                 // -------------------------------------------------------------
-                // Insert name of data element operand as value and title in
-                // the HTML code
+                // Insert name of data element operand as value and title
                 // -------------------------------------------------------------
 
-                String displayValue = "[ Data element does not exist ]";
-
-                if ( dataElement != null )
-                {
-                    displayValue = "value=\"[ " + dataElement.getShortName() + " " + optionComboName + " ]\"";
-
-                    inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
-                    
-                    StringBuilder title = new StringBuilder( "title=\"[ " ).append( dataElement.getId() ).append( " - " ).
-                        append( dataElement.getShortName() ).append( " - " ).append( optionComboId ).append( " - " ).
-                        append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( " ]\"" );
-                    
-                    inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, title ) : " " + title;                    
-                }
-                else
-                {
-                    String displayNotExisting = "value=\"" + displayValue + "\"";
-                    
-                    inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayNotExisting ) : inputHtml + displayNotExisting;
-                    
-                    displayNotExisting = "title=\"" + displayValue + "\"";
-                    
-                    inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayNotExisting ) : inputHtml + displayNotExisting;
-                }
+                StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
+                    append( dataElement.getShortName() ).append( " - " ).append( optionComboId ).append( " - " ).
+                    append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
+                
+                String displayValue = dataElement != null ? "value=\"[ " + dataElement.getShortName() + " " + optionComboName + " ]\"" : "[ Data element does not exist ]";
+                String displayTitle = dataElement != null ? title.toString() : "[ Data element does not exist ]";
+                
+                inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;                    
+                inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : " " + displayTitle;
 
                 inputMatcher.appendReplacement( sb, inputHtml );
+            }
+            else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
+            {
+                int indicatorId = Integer.parseInt( indicatorMatcher.group( 1 ) );
+                Indicator indicator = indicatorService.getIndicator( indicatorId );
+
+                // -------------------------------------------------------------
+                // Insert name of indicator as value and title
+                // -------------------------------------------------------------
+
+                String displayValue = indicator != null ? "value=\"[ " + indicator.getName() + "]\"" : "[ Indicator does not exist ]";
+                String displayTitle = indicator != null ? "title=\"" + indicator.getName() + "\"" : "[ Indicator does not exist ]";
+
+                inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;                    
+                inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : " " + displayTitle;
+
+                inputMatcher.appendReplacement( sb, inputHtml );                
             }
         }
 
