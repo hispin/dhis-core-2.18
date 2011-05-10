@@ -92,7 +92,6 @@
 
 		<action name="showRelationshipList"
 			class="org.hisp.dhis.patient.action.relationship.ShowRelationshipListAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="relationshiplist" type="chain">getRelationshipList
 			</result>
 			<result name="success" type="velocity">/main.vm</result>
@@ -105,7 +104,6 @@
 
 		<action name="getRelationshipList"
 			class="org.hisp.dhis.patient.action.relationship.GetRelationshipListAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/relationshipList.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
@@ -116,7 +114,6 @@
 
 		<action name="showAddRelationshipForm"
 			class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipFormAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addRelationshipForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
@@ -178,7 +175,6 @@
 
 		<action name="showAddRelationshipPatient"
 			class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipPatientAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addRelationshipPatientForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
@@ -302,7 +298,6 @@
 
 		<action name="showUpdatePatientAttributeValueForm"
 			class="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeValueAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updatePatientAttributeValueForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
@@ -374,7 +369,6 @@
 
 		<action name="listAllPatients"
 			class="org.hisp.dhis.patient.action.patient.SearchPatientAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="listAll">true</param>
 			<param name="page">/dhis-web-maintenance-patient/listPatient.vm</param>
@@ -412,7 +406,6 @@
 
 		<action name="showAddPatientForm"
 			class="org.hisp.dhis.patient.action.patient.ShowAddPatientFormAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addPatientForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
@@ -429,7 +422,6 @@
 
 		<action name="showUpdatePatientForm"
 			class="org.hisp.dhis.patient.action.patient.GetPatientAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/updatePatientForm.vm</param>
@@ -515,7 +507,6 @@
 
 		<action name="showProgramEnrollmentForm"
 			class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentSelectAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="enrollmentform" type="chain">enrollmentform
 			</result>
 			<result name="success" type="velocity">/main.vm</result>
@@ -531,7 +522,6 @@
 
 		<action name="enrollmentform"
 			class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
@@ -556,7 +546,6 @@
 
 		<action name="saveProgramEnrollment"
 			class="org.hisp.dhis.patient.action.patient.SaveProgramEnrollmentAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
@@ -567,22 +556,8 @@
 				javascript/patient.js</param>
 		</action>
 
-		<!--
-			<action name="showProgramUnEnrollmentForm"
-			class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentSelectAction">
-			<result name="enrollmentform" type="chain">enrollChain</result>
-			<result name="success" type="chain">unEnrollmentFormChain</result>
-			<param name="requiredAuthorities">F_PATIENT_UPDATE</param> </action>
-
-			<action name="enrollChain"
-			class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentAction">
-			<result name="success" type="chain">unEnrollmentFormChain</result>
-			</action>
-		-->
-
 		<action name="showProgramUnEnrollmentForm"
 			class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
 			<param name="menuTreeHeight">321</param>
