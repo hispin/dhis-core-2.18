@@ -27,6 +27,8 @@ package org.hisp.dhis.datasetreport.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataentryform.DataEntryFormService.IDENTIFIER_PATTERN;
+import static org.hisp.dhis.dataentryform.DataEntryFormService.INPUT_PATTERN;
 import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
 import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
@@ -40,7 +42,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregationService;
@@ -76,8 +77,6 @@ import org.hisp.dhis.system.util.MathUtils;
 public class DefaultDataSetReportService
     implements DataSetReportService
 {
-    private static final Pattern DATAENTRYFORM_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-    private static final Pattern OPERAND_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
     private static final String NULL_REPLACEMENT = "";
     private static final String SEPARATOR = ":";
     private static final String DEFAULT_HEADER = "Value";
@@ -172,7 +171,7 @@ public class DefaultDataSetReportService
     {        
         StringBuffer buffer = new StringBuffer();
 
-        Matcher matDataElement = DATAENTRYFORM_PATTERN.matcher( dataEntryFormCode );
+        Matcher matDataElement = INPUT_PATTERN.matcher( dataEntryFormCode );
 
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields.
@@ -186,23 +185,15 @@ public class DefaultDataSetReportService
             
             String dataElementCode = matDataElement.group( 1 );
             
-            // -----------------------------------------------------------------
-            // Pattern to extract data element ID from data element field
-            // -----------------------------------------------------------------
-
-            Matcher matDataElementId = OPERAND_PATTERN.matcher( dataElementCode );
+            Matcher matDataElementId = IDENTIFIER_PATTERN.matcher( dataElementCode );
             
             if ( matDataElementId.find() && matDataElementId.groupCount() > 0 )
-            {   
-                // -------------------------------------------------------------
-                // Get data element ID of data element.
-                // -------------------------------------------------------------
-                
+            {
                 int dataElementId = Integer.parseInt( matDataElementId.group( 1 ) );
                 int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) ); 
                 
                // --------------------------------------------------------------
-               // Find existing value of data element in data set.
+               // Find existing value of data element in data set and replace
                // --------------------------------------------------------------               
                 
                 String dataElementValue = dataValues.get( dataElementId + SEPARATOR + optionComboId );               
