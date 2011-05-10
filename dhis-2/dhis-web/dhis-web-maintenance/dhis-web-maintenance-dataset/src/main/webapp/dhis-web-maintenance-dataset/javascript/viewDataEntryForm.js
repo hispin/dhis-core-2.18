@@ -32,7 +32,7 @@ function filterSelectList( selector, filter )
 		if(val.indexOf( filter ) != -1) {
 			$(this).removeAttr("disabled");
 		} else {
-			$(this).attr("disabled");
+			$(this).attr("disabled", "true");
 		}
 	});
 }
