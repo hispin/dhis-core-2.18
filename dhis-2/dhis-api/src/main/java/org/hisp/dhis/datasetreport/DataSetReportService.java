@@ -47,13 +47,25 @@ public interface DataSetReportService
      * Generates a map with aggregated data values or regular data values (depending
      * on the selectedUnitOnly argument) mapped to a DataElemenet operand identifier.
      * 
-     * @param dataSet the DataSet containing the DataElement to include in the map.
+     * @param dataSet the DataSet.
      * @param unit the OrganisationUnit.
      * @param period the Period.
      * @param selectedUnitOnly whether to include aggregated or regular data in the map.
+     * @param format the I18nFormat.
      * @return a map.
      */
     Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format );
+    
+    /**
+     * Generates a map with aggregated indicator values mapped to an Indicator identifier.
+     * 
+     * @param dataSet the DataSet.
+     * @param unit the OrganisationUnit.
+     * @param period the Period.
+     * @param format the I18nFormat.
+     * @return a map.
+     */
+    Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, Period period, I18nFormat format );
 
     /**
      * Puts in aggregated datavalues in the custom dataentry form and returns
@@ -64,7 +76,7 @@ public interface DataSetReportService
      * @return data entry form HTML code populated with aggregated data in the
      *         input fields.
      */
-    String prepareReportContent( String dataEntryFormCode, Map<String, String> dataValues );
+    String prepareReportContent( String dataEntryFormCode, Map<String, String> dataValues, Map<Integer, String> indicatorValues );
     
     /**
      * Generates a Grid representing a data set report with all data elements
