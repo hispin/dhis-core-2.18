@@ -185,7 +185,7 @@
 				<tbody id="list">
 				<select id="indicatorSelector" multiple="multiple" style="height: 144px; width: 100%">
 				#foreach( $indicator in $indicators )
-					<option data-id="${indicator.id}">$encoder.htmlEncode( $indicator.name )</option>
+					<option data-id="${indicator.id}" ondblclick="insertIndicator()">$encoder.htmlEncode( $indicator.name )</option>
 				#end
 				</input>
 				</tbody>
