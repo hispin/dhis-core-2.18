@@ -40,18 +40,17 @@ import com.opensymphony.xwork2.Action;
 public class ImportDataFlowAction
     implements Action
 {
-
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ExcelItemService excelItemService;
 
     private PeriodGenericManager periodGenericManager;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer excelItemGroupId;
 
@@ -61,9 +60,9 @@ public class ImportDataFlowAction
 
     private Integer orgunitGroupId;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setExcelItemGroupId( Integer excelItemGroupId )
     {
@@ -106,10 +105,13 @@ public class ImportDataFlowAction
         this.orgunitGroupId = orgunitGroupId;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+    
     public String execute()
         throws Exception
     {
-
         periodGenericManager.setSelectedPeriodIndex( periodId );
 
         ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );

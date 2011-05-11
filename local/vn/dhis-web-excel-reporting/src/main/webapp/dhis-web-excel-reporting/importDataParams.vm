@@ -1,8 +1,8 @@
 <body>
 #if($!fileExcel)
-<div id="messageUpload">
-	$i18n.getString( "upload_file" ) $i18n.getString( "success" )<br>$fileExcel.getName()
-</div>
+	<div id="messageUpload">
+		$i18n.getString( "upload_file" ) $i18n.getString( "success" )<br>$fileExcel.getName()
+	</div>
 #end
 <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
 
@@ -20,9 +20,9 @@
 	<tr>
 		<td>$i18n.getString( 'excelitem_group' )</td>
 		<td>
-			<select type="text" id="excelItemGroupId" name="excelItemGroupId" #if(!$!fileExcel || !$!organisationUnit) disabled #end  style="min-width:20em;" onchange="getPeriodsByExcelItemGroup(this.value)">					
+			<select type="text" id="excelItemGroupId" name="excelItemGroupId" #if(!$!fileExcel || !$!organisationUnit) disabled #end style="min-width:20em;" onchange="getPeriodsByExcelItemGroup(this.value)">					
 			#foreach($excelItemGroup in $excelItemGroups)
-			<option value="$!excelItemGroup.id">$!encoder.htmlEncode($!excelItemGroup.name)</option>
+				<option value="$!excelItemGroup.id">$!encoder.htmlEncode($!excelItemGroup.name)</option>
 			#end
 			</select>
 			<input type="button" onClick="javascript: getPreviewImportData();" style="width:100px" value="$i18n.getString('preview')" #if(!$!fileExcel || !$!organisationUnit) disabled #end>
@@ -65,9 +65,8 @@
 	</div>
 <script language="javascript">	
 	
-	#if($!fileExcel && $!organisationUnit)
-		getPeriodsByExcelItemGroup($("#excelItemGroupId").val());
+	#if ( $!fileExcel && $!organisationUnit )
+		getPeriodsByExcelItemGroup( $("#excelItemGroupId").val() );
 	#end
 </script>
 </body>
-

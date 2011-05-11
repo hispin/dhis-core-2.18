@@ -29,18 +29,17 @@ package org.hisp.dhis.reportexcel.importing.action;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
 public class GetPeriodsByExcelItemGroupAction
-    implements Action
+    extends ActionSupport
 {
 
     // -------------------------------------------------------------------------
@@ -57,7 +56,7 @@ public class GetPeriodsByExcelItemGroupAction
 
     private List<Period> periods;
 
-    private Integer excelItemGroupId;
+    private String excelItemGroupId;
 
     // -------------------------------------------------------------------------
     // Getters & Setters
@@ -68,7 +67,7 @@ public class GetPeriodsByExcelItemGroupAction
         return periods;
     }
 
-    public void setExcelItemGroupId( Integer excelItemGroupId )
+    public void setExcelItemGroupId( String excelItemGroupId )
     {
         this.excelItemGroupId = excelItemGroupId;
     }
@@ -90,8 +89,14 @@ public class GetPeriodsByExcelItemGroupAction
     public String execute()
         throws Exception
     {
+        if ( excelItemGroupId == null || excelItemGroupId.equals( "null" ) )
+        {
+            message = i18n.getString( "there_is_no_excel_item_group" );
 
-        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
+            return ERROR;
+        }
+
+        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( Integer.parseInt( excelItemGroupId ) );
 
         periodGenericManager.setPeriodType( excelItemGroup.getPeriodType().getName() );
 

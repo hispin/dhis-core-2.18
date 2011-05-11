@@ -272,7 +272,7 @@ function selectAll(){
 // PERIOD TYPE
 // --------------------------------------------------------------------
 
-function getPeriodsByExcelItemGroup(excelItemGroupId) {
+function getPeriodsByExcelItemGroup( excelItemGroupId ) {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
@@ -283,14 +283,25 @@ function getPeriodsByExcelItemGroup(excelItemGroupId) {
 function responseListPeriodReceived( xmlObject ) {
 
 	clearListById('period');
-	var list = xmlObject.getElementsByTagName('period');
-	for ( var i = 0; i < list.length; i++ )
-    {
-        item = list[i];
-        var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-        
-		addOption('period', name, i);
-    }
+	
+	var type = xmlObject.getAttribute( 'type' );
+
+	if ( (type != undefined) && (type == 'error') )
+	{
+		setHeaderDelayMessage( xmlObject.firstChild.nodeValue );
+	}
+	else
+	{
+		var list = xmlObject.getElementsByTagName('period');
+		
+		for ( var i = 0; i < list.length; i++ )
+		{
+			item = list[i];
+			var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
+			
+			addOption('period', name, i);
+		}
+	}
 }
 
 function lastPeriod() {
