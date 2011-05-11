@@ -185,6 +185,7 @@
 					<select id="dataElementSelector" multiple="multiple" style="height: 150px; width: 100%; margin: 1px;">
 					#foreach( $operand in $operands )
 						<option class="dataElementSelectorOption"
+								data-idx="${velocityCount}"
 								data-dataelement-id="$operand.dataElement.id" data-dataelement-name="$operand.dataElement.name" data-dataelement-type="$operand.dataElement.type"
 								data-optioncombo-id="$operand.categoryOptionCombo.id" data-optioncombo-name="$operand.categoryOptionCombo.name" ondblclick="insertDataElement()">
 							$encoder.htmlEncode( $operand.operandName )
@@ -199,7 +200,7 @@
 					<select id="indicatorSelector" multiple="multiple" style="height: 150px; width: 100%; margin: 1px;">
 					#foreach( $indicator in $indicators )
 						<option class="indicatorSelectorOption"
-								data-id="${indicator.id}" ondblclick="insertIndicator()">$encoder.htmlEncode( $indicator.name )</option>
+								data-idx="${velocityCount}" data-id="${indicator.id}" ondblclick="insertIndicator()">$encoder.htmlEncode( $indicator.name )</option>
 					#end
 					</select>
 				</td>

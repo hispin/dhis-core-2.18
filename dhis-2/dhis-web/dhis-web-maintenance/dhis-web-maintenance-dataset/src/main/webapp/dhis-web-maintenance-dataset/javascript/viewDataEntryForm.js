@@ -18,21 +18,38 @@ function timedCount() {
 function localFilterSelectList( filter )
 {
 	if( jQuery("#dataElementsTab").is(":visible") ) {
-		filterSelectList( "#dataElementSelector", filter )
+		filterSelectList( "dataElementSelector", filter )
 	} else {
-		filterSelectList( "#indicatorSelector", filter )
+		filterSelectList( "indicatorSelector", filter )
 	}
 }
 
-function filterSelectList( selector, filter )
+function filterSelectList( select_id, filter )
 {
-	$(selector).find("option").each(function() {
+	var select_selector = "#" + select_id;
+	var select_hidden_id = select_id + "_ghost"
+	var select_hidden_selector = "#" + select_hidden_id;
+
+	if( $(select_hidden_selector).length === 0 ) {
+		var $element = $("<select multiple=\"multiple\" id=\"" + select_hidden_id + "\" style=\"display: none\"></select>");
+		$element.appendTo( "body" );
+	}
+
+	$(select_selector).find("option").each(function() {
 		var val = $(this).val().toLowerCase();
-		
+
+		if(val.indexOf( filter ) == -1) {
+			var $option = $(this).detach();
+			$option.appendTo( select_hidden_selector );
+		}
+	});
+
+	$(select_hidden_selector).find("option").each(function() {
+		var val = $(this).val().toLowerCase();
+
 		if(val.indexOf( filter ) != -1) {
-			$(this).removeAttr("disabled");
-		} else {
-			$(this).attr("disabled", "true");
+			var $option = $(this).detach();
+			$option.appendTo( select_selector );
 		}
 	});
 }
