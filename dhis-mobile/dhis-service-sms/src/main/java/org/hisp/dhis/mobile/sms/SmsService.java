@@ -47,7 +47,6 @@ import org.smslib.AGateway.Protocols;
 import org.smslib.GatewayException;
 import org.smslib.ICallNotification;
 import org.smslib.IInboundMessageNotification;
-import org.smslib.IOrphanedMessageNotification;
 import org.smslib.IOutboundMessageNotification;
 import org.smslib.IQueueSendingNotification;
 import org.smslib.InboundBinaryMessage;
@@ -61,6 +60,7 @@ import org.smslib.Service;
 import org.smslib.TimeoutException;
 import org.smslib.helper.Logger;
 import org.smslib.http.BulkSmsHTTPGateway;
+import org.smslib.http.ClickatellHTTPGateway;
 import org.smslib.modem.SerialModemGateway;
 
 /*
@@ -93,7 +93,8 @@ public class SmsService
 
     private QueueSendingNotification queueSendingNotification;
 
-    private OrphanedMessageNotification orphanedMessageNotification;
+    // TODO: check advisory: http://blog.smslib.org/2011/05/orphaned-part-detection-issue.html
+    //private OrphanedMessageNotification orphanedMessageNotification;
 
     private Timer inboundPollingTimer;
 
@@ -105,7 +106,8 @@ public class SmsService
         Service.getInstance().setInboundMessageNotification( inboundNotification );
         Service.getInstance().setOutboundMessageNotification( outboundNotification );
         Service.getInstance().setCallNotification( callNotification );
-        Service.getInstance().setOrphanedMessageNotification( orphanedMessageNotification );
+        // TODO: check advisory: http://blog.smslib.org/2011/05/orphaned-part-detection-issue.html
+        //Service.getInstance().setOrphanedMessageNotification( orphanedMessageNotification );
         Service.getInstance().setQueueSendingNotification( queueSendingNotification );
     }
 
@@ -349,7 +351,11 @@ public class SmsService
         }
     }
 
-    class OrphanedMessageNotification implements IOrphanedMessageNotification
+    /**
+     * TODO: ADVISORY: http://blog.smslib.org/2011/05/orphaned-part-detection-issue.html
+     * Commented the code callback for Orphaned message
+     */
+    /*class OrphanedMessageNotification implements IOrphanedMessageNotification
     {
 
         @Override
@@ -362,7 +368,7 @@ public class SmsService
             // Return FALSE to leave orphaned parts in memory.
             return false;
         }
-    }
+    }*/
     //</editor-fold>
 
     /*------------------------------------------------------------------
@@ -535,9 +541,19 @@ public class SmsService
                         String password = getProperties().getProperty( "bulksms.password" );
                         BulkSmsHTTPGateway gateway = new BulkSmsHTTPGateway("bulksms.http.1", username, password);
                         gateway.setOutbound( true );
+                        gateway.setInbound( true );
                         Service.getInstance().addGateway( gateway );
-                    } else
+                    } else if( modemName.contains( "clickatell") )
                     {
+                        String username = getProperties().getProperty( "clickatell.username" );
+                        String password = getProperties().getProperty( "clickatell.password" );
+                        String api_id = getProperties().getProperty( "clickatell.api_id" );
+                        ClickatellHTTPGateway gateway = new ClickatellHTTPGateway( "clickatell.http.1", api_id, username, password );
+                        gateway.setOutbound( true );
+                        gateway.setInbound( true );
+                        Service.getInstance().addGateway( gateway );
+                    }
+                    else{
                         String port = getProperties().getProperty( modemName + ".port" );
                         int baudRate = Integer.parseInt( getProperties().getProperty( modemName + ".baudrate" ) );
                         String manufacturer = getProperties().getProperty( modemName + ".manufacturer" );
