@@ -13,9 +13,9 @@
 		jQuery("#designTextarea").ckeditorGet().setData('$encoder.jsEscape( $dataEntryValue, "'" )');
 
 		jQuery("#selectionDialog").dialog({
-			minWidth: 560,
-			minHeight: 350,
-			position: [600, 60]
+			minWidth: 460,
+			minHeight: 250,
+			position: [900, 60]
 		});
 
 		jQuery(":button").button();
@@ -108,6 +108,10 @@
 	font-weight: bold;
 	color: #e17009;
 }
+
+.ui-dialog .ui-dialog-content {
+	padding: 1px;
+}
 </style>
 
 <h3>$i18n.getString( "dataentryform_management" ) #openHelp( "custom_forms" )</h3>
@@ -178,7 +182,7 @@
 
 			<tr id="dataElementsTab">
 				<td colspan="2">
-					<select id="dataElementSelector" multiple="multiple" style="height: 246px; width: 100%; margin: 1px;">
+					<select id="dataElementSelector" multiple="multiple" style="height: 150px; width: 100%; margin: 1px;">
 					#foreach( $operand in $operands )
 						<option class="dataElementSelectorOption"
 								data-dataelement-id="$operand.dataElement.id" data-dataelement-name="$operand.dataElement.name" data-dataelement-type="$operand.dataElement.type"
@@ -192,7 +196,7 @@
 
 			<tr id="indicatorsTab">
 				<td colspan="2">
-					<select id="indicatorSelector" multiple="multiple" style="height: 246px; width: 100%; margin: 1px;">
+					<select id="indicatorSelector" multiple="multiple" style="height: 150px; width: 100%; margin: 1px;">
 					#foreach( $indicator in $indicators )
 						<option class="indicatorSelectorOption"
 								data-id="${indicator.id}" ondblclick="insertIndicator()">$encoder.htmlEncode( $indicator.name )</option>
