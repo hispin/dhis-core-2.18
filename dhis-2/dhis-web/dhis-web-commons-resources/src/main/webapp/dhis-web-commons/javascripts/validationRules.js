@@ -137,12 +137,12 @@ var validationRules = {
 			"required" : true,
 			"alphanumericwithbasicpuncspaces" : true,
 			"firstletteralphabet" : false,
-			"rangelength" : [ 2, 20 ]
+			"rangelength" : [ 2, 25 ]
 		},
 		"code" : {
 			"alphanumericwithbasicpuncspaces" : true,
 			"notOnlyDigits" : false,
-			"rangelength" : [ 4, 40 ]
+			"rangelength" : [ 0, 25 ]
 		},
 		"frequencySelect" : {
 			"required" : true
@@ -198,7 +198,7 @@ var validationRules = {
 		},
 		"shortName" : {
 			"required" : true,
-			"rangelength" : [ 2, 20 ],
+			"rangelength" : [ 2, 25 ],
 			"alphanumericwithbasicpuncspaces" : true,
 			"notOnlyDigits" : true
 		},
@@ -208,7 +208,7 @@ var validationRules = {
 			"notOnlyDigits" : true
 		},
 		"code" : {
-			"rangelength" : [ 3, 40 ],
+			"rangelength" : [ 0, 25 ],
 			"alphanumericwithbasicpuncspaces" : true,
 			"notOnlyDigits" : false
 		},
@@ -285,7 +285,7 @@ var validationRules = {
 		},
 		"shortName" : {
 			"required" : true,
-			"rangelength" : [ 2, 20 ],
+			"rangelength" : [ 2, 25 ],
 			"alphanumericwithbasicpuncspaces" : true,
 			"firstletteralphabet" : true
 		},
@@ -295,7 +295,7 @@ var validationRules = {
 			"firstletteralphabet" : true
 		},
 		"code" : {
-			"rangelength" : [ 3, 25 ],
+			"rangelength" : [ 0, 25 ],
 			"alphanumericwithbasicpuncspaces" : true,
 			"notOnlyDigits" : false
 		},

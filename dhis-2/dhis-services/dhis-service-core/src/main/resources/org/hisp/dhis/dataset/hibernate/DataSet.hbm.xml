@@ -18,9 +18,9 @@
 
     <property name="name" not-null="true" unique="true" length="230" />
 
-    <property name="shortName" unique="true" length="60" />
+    <property name="shortName" unique="true" length="30" />
 
-    <property name="code" unique="true" length="60" />
+    <property name="code" unique="true" length="30" />
 
     <many-to-one name="periodType" lazy="false" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
       not-null="true" foreign-key="fk_dataset_periodtypeid" />
