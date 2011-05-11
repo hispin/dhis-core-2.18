@@ -29,11 +29,11 @@
       foreign-key="fk_parentid" index="in_parentid" />
 
     <property name="shortName">
-      <column name="shortname" not-null="true" unique="false" length="50" />
+      <column name="shortname" not-null="true" unique="false" length="30" />
     </property>
 
     <property name="code">
-      <column name="code" not-null="false" unique="false" length="25" />
+      <column name="code" not-null="false" unique="false" length="30" />
     </property>
 
     <property name="openingDate" column="openingdate" type="date" />
