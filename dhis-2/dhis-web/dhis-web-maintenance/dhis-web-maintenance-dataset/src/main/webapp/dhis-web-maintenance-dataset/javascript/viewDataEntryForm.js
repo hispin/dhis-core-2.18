@@ -65,7 +65,7 @@ function insertIndicator() {
 	{
 		var id = $option.data("id");
 		var title = $option.val();
-		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorId="' + id + '" style="width:10em;text-align:center;" readonly="readonly" />';
+		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorid="' + id + '" style="width:10em;text-align:center;" readonly="readonly" />';
 
 		if(!checkExisted("indicator" + id)) {
 			oEditor.insertHtml( template )
