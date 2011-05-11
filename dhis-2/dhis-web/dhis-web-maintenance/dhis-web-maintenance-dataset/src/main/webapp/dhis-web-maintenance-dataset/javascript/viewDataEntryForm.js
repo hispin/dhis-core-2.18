@@ -46,6 +46,18 @@ function filterSelectList( select_id, filter )
 			$option.appendTo( select_selector );
 		}
 	});
+	
+	var $sorted = $(select_selector).find("option").sort(function(a, b) {
+		var idxa = +$(a).data("idx");
+		var idxb = +$(b).data("idx");
+
+		if(idxa > idxb) return 1;
+		else if(idxa < idxb) return -1;
+		else return 0;
+	})
+	
+	$(select_selector).empty();
+	$sorted.appendTo( select_selector );
 }
 
 function showThenFadeOutMessage( message )
