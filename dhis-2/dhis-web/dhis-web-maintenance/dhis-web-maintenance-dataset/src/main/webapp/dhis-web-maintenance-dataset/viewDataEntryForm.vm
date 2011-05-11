@@ -38,15 +38,13 @@
 			jQuery("#selectionDialog").dialog("open");
 		});
 		
-		jQuery("#dataElementsTab").show();
-		jQuery("#indicatorsTab").hide();
+		showDataElements();
 
 		jQuery("#dataElementsButton").click(function() {
 			jQuery("#dataElementsButton").addClass("ui-state-active2");
 			jQuery("#indicatorsButton").removeClass("ui-state-active2");
-			
-			jQuery("#dataElementsTab").show();
-			jQuery("#indicatorsTab").hide();
+
+			showDataElements();
 		});
 
 		jQuery("#dataElementsButton").addClass("ui-state-active2");
@@ -55,10 +53,8 @@
 			jQuery("#indicatorsButton").addClass("ui-state-active2");
 			jQuery("#dataElementsButton").removeClass("ui-state-active2");
 
-			jQuery("#indicatorsTab").show();
-			jQuery("#dataElementsTab").hide();
+			showIndicators();
 		});
-
 
 		jQuery("#insertButton").click(function() {
 			if( jQuery("#dataElementsTab").is(":visible") ) {
@@ -75,6 +71,20 @@
 		jQuery("#cancelButton").button("option", "icons", { primary: "ui-icon-cancel" });
 		jQuery("#delete").button("option", "icons", { primary: "ui-icon-trash" });
 	});
+
+	function showDataElements() {
+		jQuery("#dataElementsTab").show();
+		jQuery("#dataElementsFilter").show();
+		jQuery("#indicatorsTab").hide();
+		jQuery("#indicatorsFilter").hide();
+	}
+	
+	function showIndicators() {
+		jQuery("#indicatorsTab").show();
+		jQuery("#indicatorsFilter").show();
+		jQuery("#dataElementsTab").hide();
+		jQuery("#dataElementsFilter").hide();
+	}
 
     var stat = "ADD";
     var dataEntryFormId = -1;
@@ -174,9 +184,9 @@
 <div id="selectionDialog" title="Selection Box">
 <div id="tabs">
 		<table style="width: 100%;">
-			<tr>
+			<tr id="dataElementsFilter">
 				<td colspan="2">
-					<input type="text" style="width: 100%; border: 1px solid #888; padding: 0;" onkeyup="localFilterSelectList( this.value )"/>
+					<input type="text" style="width: 100%; border: 1px solid #888; padding: 1px 0 1px 0;" onkeyup="filterSelectList( 'dataElementSelector', this.value )"/>
 				</td>
 			</tr>
 
@@ -192,6 +202,12 @@
 						</option>
 					#end
 					</select>
+				</td>
+			</tr>
+
+			<tr id="indicatorsFilter">
+				<td colspan="2">
+					<input type="text" style="width: 100%; border: 1px solid #888; padding: 1px 0 1px 0;" onkeyup="filterSelectList( 'indicatorSelector', this.value )"/>
 				</td>
 			</tr>
 
