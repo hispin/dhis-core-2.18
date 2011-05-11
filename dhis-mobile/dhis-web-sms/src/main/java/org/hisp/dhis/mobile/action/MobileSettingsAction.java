@@ -101,6 +101,42 @@ public class MobileSettingsAction implements Action
         props.setProperty( "bulksms.password", bulksmsPassword );
     }
     
+    private String clickatellUsername;
+    
+    public String getClickatellUsername()
+    {
+        return props.getProperty( "clickatell.username" );
+    }
+
+    public void setClickatellUsername( String clickatellUsername )
+    {
+        props.setProperty( "clickatell.username", clickatellUsername);
+    }
+    
+    private String clickatellPassword;
+    
+    public String getClickatellPassword()
+    {
+        return props.getProperty( "clickatell.password" );
+    }
+
+    public void setClickatellPassword( String clickatellPassword )
+    {
+        props.setProperty( "clickatell.password", clickatellPassword);
+    }
+    
+    private String clickatellApiId;
+    
+    public String getClickatellApiId()
+    {
+        return props.getProperty( "clickatell.api_id" );
+    }
+
+    public void setClickatellApiId( String clickatellApiId )
+    {
+        props.setProperty( "clickatell.api_id" , clickatellApiId);
+    }
+    
     private String port;
 
     public String getPort()
@@ -303,6 +339,9 @@ public class MobileSettingsAction implements Action
             props.setProperty( "gateway.0", "modem1, SerialModem" );
             props.setProperty( "bulksms.username", "" );
             props.setProperty( "bulksms.password", "" );
+            props.setProperty( "clickatell.username", "");
+            props.setProperty( "clickatell.password", "");
+            props.setProperty( "clickatell.api_id", "");
             props.setProperty( "modem1.port", "COM1" );
             props.setProperty( "modem1.baudrate", "57600" );
             props.setProperty( "modem1.manufacturer", "Generic" );
