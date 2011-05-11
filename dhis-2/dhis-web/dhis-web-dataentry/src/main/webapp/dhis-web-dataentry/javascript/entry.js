@@ -27,10 +27,9 @@ function updateIndicators()
 		
 		var value = eval( expression );
 		
-		if ( value )
-		{
-			$( this ).attr( 'value', value );
-		}
+		value = isNaN( value ) ? '-' : Math.round( value );
+		
+		$( this ).attr( 'value', value );
 	} );
 }
 
