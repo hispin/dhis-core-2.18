@@ -29,6 +29,7 @@ package org.hisp.dhis.dd.action.dataelement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -139,6 +141,8 @@ public class ShowUpdateDataElementFormAction
         dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
             .getAllDataElementCategoryCombos() );
 
+        Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
+        
         dataElement = dataElementService.getDataElement( id );
 
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
