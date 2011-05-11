@@ -71,10 +71,9 @@ function showThenFadeOutMessage( message )
 
 function insertIndicator() {
 	var oEditor = $("#designTextarea").ckeditorGet();
-	var $option = $("#indicatorSelector option:selected").first();
+	var $option = $("#indicatorSelector option:selected");
 
-	if( $option !== undefined )
-	{
+	if( $option.length !== 0 ) {
 		var id = $option.data("id");
 		var title = $option.val();
 		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorid="' + id + '" style="width:10em;text-align:center;" readonly="readonly" />';
@@ -91,10 +90,9 @@ function insertIndicator() {
 
 function insertDataElement() {
 	var oEditor = $("#designTextarea").ckeditorGet();
-	var $option = $("#dataElementSelector option:selected").first();
+	var $option = $("#dataElementSelector option:selected");
 
-	if( $option !== undefined )
-	{
+	if( $option.length !== 0 ) {
 		var dataElementId = $option.data("dataelement-id");
 		var dataElementName = $option.data("dataelement-name");
 		var dataElementType = $option.data("dataelement-type");
