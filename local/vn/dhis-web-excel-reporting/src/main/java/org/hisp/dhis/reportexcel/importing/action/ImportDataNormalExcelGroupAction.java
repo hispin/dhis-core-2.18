@@ -62,10 +62,9 @@ import org.hisp.dhis.user.CurrentUserService;
 public class ImportDataNormalExcelGroupAction
     extends ActionSupport
 {
-
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private DataValueService dataValueService;
 
@@ -85,17 +84,17 @@ public class ImportDataNormalExcelGroupAction
 
     private PeriodGenericManager periodGenericManager;
 
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Inputs && Outputs
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer excelItemGroupId;
 
     public Integer[] excelItemIds;
 
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getters and Setters
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
     {
@@ -152,9 +151,9 @@ public class ImportDataNormalExcelGroupAction
         this.dataElementService = dataElementService;
     }
 
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
@@ -177,6 +176,7 @@ public class ImportDataNormalExcelGroupAction
             HSSFWorkbook wb = new HSSFWorkbook( upload );
 
             Collection<ExcelItem> excelItems = new ArrayList<ExcelItem>();
+            
             if ( excelItemIds != null )
             {
                 for ( int i = 0; i < excelItemIds.length; i++ )

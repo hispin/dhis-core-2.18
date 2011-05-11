@@ -1059,6 +1059,8 @@
 			class="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByExcelItemGroupAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlPeriods.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 		</action>
 
 		<action name="openExcelItemGroupAssociations"
