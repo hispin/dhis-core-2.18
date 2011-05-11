@@ -28,6 +28,7 @@ package org.hisp.dhis.organisationunit.hibernate;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -49,10 +50,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Kristian Nordal
- * @version $Id: HibernateOrganisationUnitStore.java 6251 2008-11-10 14:37:05Z larshelg $
+ * @version $Id: HibernateOrganisationUnitStore.java 6251 2008-11-10 14:37:05Z
+ *          larshelg $
  */
 public class HibernateOrganisationUnitStore
-    extends HibernateGenericStore<OrganisationUnit> implements OrganisationUnitStore
+    extends HibernateGenericStore<OrganisationUnit>
+    implements OrganisationUnitStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -71,14 +74,14 @@ public class HibernateOrganisationUnitStore
     {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
-    
+
     public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
     {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnit.class );        
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnit.class );
         criteria.add( Restrictions.eq( "name", name ).ignoreCase() );
         return (OrganisationUnit) criteria.uniqueResult();
     }
@@ -95,62 +98,63 @@ public class HibernateOrganisationUnitStore
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
         String hql = "from OrganisationUnit o where o.groups.size = 0";
-        
+
         return sessionFactory.getCurrentSession().createQuery( hql ).list();
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, boolean limit )
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name,
+        Collection<OrganisationUnitGroup> groups, boolean limit )
     {
         boolean first = true;
-        
+
         name = StringUtils.trimToNull( name );
         groups = CollectionUtils.isEmpty( groups ) ? null : groups;
-        
+
         StringBuilder hql = new StringBuilder( "from OrganisationUnit o" );
-        
+
         if ( name != null )
         {
-            hql.append(  " where lower(name) like :name" );
-            
+            hql.append( " where lower(name) like :name" );
+
             first = false;
         }
-        
+
         if ( groups != null )
         {
             for ( int i = 0; i < groups.size(); i++ )
             {
                 String clause = first ? " where" : " and";
-                
+
                 hql.append( clause ).append( " :g" ).append( i ).append( " in elements( o.groups )" );
-                
+
                 first = false;
             }
         }
 
         Query query = sessionFactory.getCurrentSession().createQuery( hql.toString() );
-        
+
         if ( name != null )
         {
             query.setString( "name", "%" + name.toLowerCase() + "%" );
         }
-        
+
         if ( groups != null )
         {
             int i = 0;
-            
+
             for ( OrganisationUnitGroup group : groups )
             {
                 query.setEntity( "g" + i++, group );
             }
         }
-        
+
         if ( limit )
         {
             query.setMaxResults( OrganisationUnitService.MAX_LIMIT );
         }
-        
-        return query.list();        
+
+        return query.list();
     }
 
     // -------------------------------------------------------------------------
@@ -160,22 +164,20 @@ public class HibernateOrganisationUnitStore
     public OrganisationUnitHierarchy getOrganisationUnitHierarchy()
     {
         final String sql = "SELECT organisationunitid, parentid FROM organisationunit";
-        
+
         return new OrganisationUnitHierarchy( jdbcTemplate.query( sql, new OrganisationUnitRelationshipRowMapper() ) );
     }
-        
+
     public void updateOrganisationUnitParent( int organisationUnitId, int parentId )
     {
         StatementHolder holder = statementManager.getHolder();
-        
-        final String sql = 
-            "UPDATE organisationunit " + 
-            "SET parentid='" + parentId + "' " +
-            "WHERE organisationunitid='" + organisationUnitId + "'";
-        
+
+        final String sql = "UPDATE organisationunit " + "SET parentid='" + parentId + "' "
+            + "WHERE organisationunitid='" + organisationUnitId + "'";
+
         holder.executeUpdate( sql );
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------
@@ -203,7 +205,7 @@ public class HibernateOrganisationUnitStore
     public void deleteOrganisationUnitLevels()
     {
         String hql = "delete from OrganisationUnitLevel";
-        
+
         sessionFactory.getCurrentSession().createQuery( hql ).executeUpdate();
     }
 
@@ -216,14 +218,14 @@ public class HibernateOrganisationUnitStore
     public OrganisationUnitLevel getOrganisationUnitLevelByLevel( int level )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
-        
+
         return (OrganisationUnitLevel) criteria.add( Restrictions.eq( "level", level ) ).uniqueResult();
     }
 
     public OrganisationUnitLevel getOrganisationUnitLevelByName( String name )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
-        
+
         return (OrganisationUnitLevel) criteria.add( Restrictions.eq( "name", name ) ).uniqueResult();
     }
 
@@ -238,27 +240,38 @@ public class HibernateOrganisationUnitStore
     @Override
     public void update( Collection<OrganisationUnit> units )
     {
-        String ids = "";
+        Collection<Integer> unitIds = new HashSet<Integer>();
+
         for ( OrganisationUnit orgunit : units )
         {
-            ids += orgunit.getId()+", ";
+            unitIds.add( orgunit.getId() );
         }
-        ids += "0";
-        
-        final String sqlUpdateTrue = "UPDATE organisationunit SET hasPatients=true WHERE organisationunitid in ( " + ids +" );";
 
-        jdbcTemplate.execute( sqlUpdateTrue );
-        
-        final String sqlUpdateFalse = "UPDATE organisationunit SET hasPatients=false WHERE organisationunitid not in ( " + ids +" );";
-        
-        jdbcTemplate.execute( sqlUpdateFalse );
-    }    
-    
-    @SuppressWarnings("unchecked")
+        if ( unitIds.size() > 0 )
+        {
+            String sql = "update OrganisationUnit set hasPatients=true where organisationunitid in (:unitIds)";
+            Query query = sessionFactory.getCurrentSession().createQuery( sql );
+            query.setParameterList( "unitIds", unitIds );
+            query.executeUpdate();
+
+            sql = "UPDATE OrganisationUnit SET hasPatients=false WHERE organisationunitid not in ( :unitIds )";
+            query = sessionFactory.getCurrentSession().createQuery( sql );
+            query.setParameterList( "unitIds", unitIds );
+            query.executeUpdate();
+        }
+        else
+        {
+            String sql = "update OrganisationUnit set hasPatients=false";
+            Query query = sessionFactory.getCurrentSession().createQuery( sql );
+            query.executeUpdate();
+        }
+    }
+
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> get( Boolean hasPatients )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnit.class );
-        
+
         return criteria.add( Restrictions.eq( "hasPatients", hasPatients ) ).list();
     }
 }

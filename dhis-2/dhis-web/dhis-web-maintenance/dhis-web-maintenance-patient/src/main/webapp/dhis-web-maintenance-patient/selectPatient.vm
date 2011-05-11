@@ -9,7 +9,7 @@
 				<td><label>$i18n.getString( "registering_unit" )</label></td>
 				<td><input type="text" id='selectedOrgunitText' readonly="readonly" value="[$i18n.getString( 'please_select_village' )]" style="min-width:22em"></td>
 				<td>&nbsp;</td>
-				<td><input type="button" id='listAllPatientsBtn' value="$i18n.getString( 'list_all_patients' )" disabled></td>
+				<td><input type="button" id='listAllPatientsBtn' value="$i18n.getString( 'list_all_patients' )" disabled onclick='loadAllPatients();'></td>
 			</tr>
 			
 			<tr>
