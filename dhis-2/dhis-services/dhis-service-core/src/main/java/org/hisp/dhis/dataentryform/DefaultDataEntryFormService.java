@@ -193,10 +193,10 @@ public class DefaultDataEntryFormService
                 // -------------------------------------------------------------
 
                 StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
-                    append( dataElement.getShortName() ).append( " - " ).append( optionComboId ).append( " - " ).
+                    append( dataElement.getName() ).append( " - " ).append( optionComboId ).append( " - " ).
                     append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
                 
-                String displayValue = dataElement != null ? "value=\"[ " + dataElement.getShortName() + " " + optionComboName + " ]\"" : "[ Data element does not exist ]";
+                String displayValue = dataElement != null ? "value=\"[ " + dataElement.getName() + " " + optionComboName + " ]\"" : "[ Data element does not exist ]";
                 String displayTitle = dataElement != null ? title.toString() : "[ Data element does not exist ]";
                 
                 inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;                    
@@ -312,7 +312,7 @@ public class DefaultDataEntryFormService
 
                 inputHtml = inputHtml.replaceAll( "view=\".*?\"", "" ); // For backwards compatibility
 
-                StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getShortName() ).
+                StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getName() ).
                     append( " Type: " ).append( dataElement.getType() ).append( " Min: " ).append( minValue ).
                     append( " Max: " ).append( maxValue ).append( "\"" );
                 
