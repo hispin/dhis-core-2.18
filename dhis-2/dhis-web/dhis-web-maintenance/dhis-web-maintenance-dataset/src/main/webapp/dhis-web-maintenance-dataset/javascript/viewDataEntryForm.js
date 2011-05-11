@@ -9,12 +9,6 @@ jQuery(document).ready(function() {
 	leftBar.hideAnimated();
 });
 
-//function timedCount() {
-//	validateDataEntryForm();
-//	t = setTimeout("timedCount()", 20000); // ms
-//	byId('message').style.display = 'none';
-//}
-
 function localFilterSelectList( filter )
 {
 	if( jQuery("#dataElementsTab").is(":visible") ) {
