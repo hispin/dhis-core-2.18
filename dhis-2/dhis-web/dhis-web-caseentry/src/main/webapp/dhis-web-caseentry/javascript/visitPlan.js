@@ -1,3 +1,5 @@
+isAjax = true;
+isShowLoader = false;
 
 function organisationUnitSelected( orgUnits )
 {
@@ -7,6 +9,24 @@ function organisationUnitSelected( orgUnits )
 selection.setListenerFunction( organisationUnitSelected );
 
 function sortByAttribute( sortingAttributeId )
-{	
-	window.location = "visitplan.action?sortingAttributeId=" + sortingAttributeId;
+{
+	var url = "visitplanSortByAttribute.action";
+	
+	lockScreen();
+	
+	if ( url.length > 0 )
+	{
+		jQuery( "#contentDiv" ).load( url,
+			{ "sortingAttributeId": sortingAttributeId },
+			function()
+			{
+				jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+				jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+				jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
+				jQuery( "table.listTable tbody" ).trigger( "update" );
+
+				unLockScreen();
+			}
+		);
+	}
 }

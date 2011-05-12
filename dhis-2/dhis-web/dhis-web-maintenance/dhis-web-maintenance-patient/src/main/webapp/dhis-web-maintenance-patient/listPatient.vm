@@ -124,15 +124,14 @@
 				#end
 				
 				<td style="text-align:center">
-				  <a href="showProgramEnrollmentForm.action?id=$patient.id" title='$i18n.getString( "manage_program_enrollment" )'><img src="../images/enroll.png" alt='$i18n.getString( "manage_program_enrollment" )'></a>                  
-				  <a href="showProgramUnEnrollmentForm.action?patientId=$patient.id" title='$i18n.getString( "manage_program_unenrollment" )'><img src="../images/unenroll.png" alt='$i18n.getString( "manage_program_unenrollment" )'></a>
-				  <a href="showUpdatePatientForm.action?id=$patient.id" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
-				  <a href="showRelationshipList.action?id=$patient.id" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
-				  <a href="showAddRelationshipPatient.action?id=$patient.id" title='$i18n.getString( "add_dependent" )'><img src="../images/add.png" alt='$i18n.getString( "add_dependent" )'></a>
-				  <a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
-				  <a href="javascript:showPatientDetails( $patient.id )" title='$i18n.getString( "show_details" )'><img src="../images/information.png" alt='$i18n.getString( "show_details" )'></a>
+				  <a href="showProgramEnrollmentForm.action?id=$patient.id" title='$i18n.getString( "manage_program_enrollment" )'><img src="../images/enroll.png" alt='$i18n.getString( "manage_program_enrollment" )'/></a>       
+				  <a href="showProgramUnEnrollmentForm.action?patientId=$patient.id" title='$i18n.getString( "manage_program_unenrollment" )'><img src="../images/unenroll.png" alt='$i18n.getString( "manage_program_unenrollment" )'/></a>
+				  <a href="showUpdatePatientForm.action?id=$patient.id" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'/></a>
+				  <a href="showRelationshipList.action?id=$patient.id" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'/></a>
+				  <a href="showAddRelationshipPatient.action?id=$patient.id" title='$i18n.getString( "add_dependent" )'><img src="../images/add.png" alt='$i18n.getString( "add_dependent" )'/></a>
+				  <a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'/></a>
+				  <a href="javascript:showPatientDetails( $patient.id )" title='$i18n.getString( "show_details" )'><img src="../images/information.png" alt='$i18n.getString( "show_details" )'/></a>
 				</td>
-				
 			</tr>
 			#set( $mark = !$mark)
     	#end
@@ -145,7 +144,7 @@
   	<td colspan="6">
 		<p></p>
   		<div class="paging-container">
-				#parse( "/dhis-web-commons/paging/paging.vm" )
+			#parse( "/dhis-web-commons/paging/paging.vm" )
 		</div>
 	</td>
   	<td></td>
@@ -154,10 +153,10 @@
 
 <div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px">
 	<div style="float:right">
-		<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+		<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
 	</div>
-	<p><label>$i18n.getString( "common_info" ):</label><br><span id="commonInfoField"></span></p>	
-	<p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>
-	<p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
-	<p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
+	<p><label>$i18n.getString( "common_info" ):</label><br/><span id="commonInfoField"></span></p>	
+	<p><label>$i18n.getString( "identifier" ):</label><br/><span id="identifierField"></span></p>
+	<p><label>$i18n.getString( "attributes" ):</label><br/><span id="attributeField"></span></p>
+	<p><label>$i18n.getString( "enrolled_in_program" ):</label><br/><span id="programField"></span></p>
 </div>
