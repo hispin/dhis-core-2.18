@@ -47,12 +47,11 @@
 }
 
 .ui-dialog .ui-dialog-content {
-	padding: 1px;
+	padding: 2px;
 }
 
 #indicatorSelector, #dataElementSelector {
-	margin: 1px !important;
-	padding: 2px !important;
+	padding: 2px;
 }
 </style>
 
@@ -116,7 +115,7 @@
 <div id="selectionDialog" title="Selection Box">
 <div id="tabs">
 		<table style="width: 100%;">
-			<tr id="dataElementsFilter">
+			<tr id="dataElementsFilter" style="padding: 0; margin: 0; width: 100%;">
 				<td>
 					<input id="dataElementsFilterInput" type="text" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" />
 				</td>
@@ -127,7 +126,7 @@
 
 			<tr id="dataElementsTab">
 				<td colspan="2">
-					<select id="dataElementSelector" multiple="multiple" style="height: 200px; width: 100%; margin: 1px;">
+					<select id="dataElementSelector" multiple="multiple" style="height: 200px; width: 100%;">
 					#foreach( $operand in $operands )
 						<option class="dataElementSelectorOption"
 								data-idx="${velocityCount}"
@@ -151,7 +150,7 @@
 
 			<tr id="indicatorsTab">
 				<td colspan="2">
-					<select id="indicatorSelector" multiple="multiple" style="height: 200px; width: 100%; margin: 1px;">
+					<select id="indicatorSelector" multiple="multiple" style="height: 200px; width: 100%;">
 					#foreach( $indicator in $indicators )
 						<option class="indicatorSelectorOption"
 								data-idx="${velocityCount}" data-id="${indicator.id}" ondblclick="insertIndicator()">$encoder.htmlEncode( $indicator.name )</option>
@@ -166,7 +165,9 @@
 					<button type="button" id="indicatorsButton">Indicators</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 					<button type="button" id="insertButton">Insert</button>
 				</td>
-				<td><span id="message_"></span></td>
+				<td>
+					<span id="message_"></span>
+				</td>
 			</tr>
 		</table>		
 	</div>
