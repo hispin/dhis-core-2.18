@@ -97,12 +97,15 @@ function filterSelectList( select_id, filter )
 	var select_hidden_id = select_id + "_ghost"
 	var select_hidden_selector = "#" + select_hidden_id;
 
+	var $select_options = $(select_selector).find("option"); 
+	var $select_hidden_options = $(select_hidden_selector).find("option"); 
+
 	if( $(select_hidden_selector).length === 0 ) {
 		var $element = $("<select multiple=\"multiple\" id=\"" + select_hidden_id + "\" style=\"display: none\"></select>");
 		$element.appendTo( "body" );
 	}
 
-	$(select_selector).find("option").each(function() {
+	$select_options.each(function() {
 		var val = $(this).val().toLowerCase();
 
 		if(val.indexOf( filter ) == -1) {
@@ -111,7 +114,7 @@ function filterSelectList( select_id, filter )
 		}
 	});
 
-	$(select_hidden_selector).find("option").each(function() {
+	$select_hidden_options.each(function() {
 		var val = $(this).val().toLowerCase();
 
 		if(val.indexOf( filter ) != -1) {
@@ -119,7 +122,7 @@ function filterSelectList( select_id, filter )
 			$option.appendTo( select_selector );
 		}
 	});
-	
+
 	var $sorted = $(select_selector).find("option").sort(function(a, b) {
 		var idxa = +$(a).data("idx");
 		var idxb = +$(b).data("idx");
