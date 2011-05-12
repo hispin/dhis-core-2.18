@@ -274,7 +274,14 @@ public class DefaultDataEntryFormService
 
                 if ( dataElement == null )
                 {
-                    return "Data element with id :" + dataElementId + " does not exist in this data set";
+                    return "Data element with id : " + dataElementId + " does not exist";
+                }
+                
+                DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+                
+                if ( categoryOptionCombo == null )
+                {
+                    return "Category option combo with id: " + optionComboId + " does not exist";
                 }
 
                 String dataElementValueType = dataElement.getType();
@@ -312,18 +319,11 @@ public class DefaultDataEntryFormService
 
                 inputHtml = inputHtml.replaceAll( "view=\".*?\"", "" ); // For backwards compatibility
 
-                StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getName() ).
-                    append( " Type: " ).append( dataElement.getType() ).append( " Min: " ).append( minValue ).
-                    append( " Max: " ).append( maxValue ).append( "\"" );
+                StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getName() ).append( " " ).
+                    append( categoryOptionCombo.getName() ).append( " Type: " ).append( dataElement.getType() ).
+                    append( " Min: " ).append( minValue ).append( " Max: " ).append( maxValue ).append( "\"" );
                 
-                if ( inputHtml.contains( EMPTY_TITLE_TAG ) )
-                {
-                    inputHtml = inputHtml.replace( EMPTY_TITLE_TAG, title );
-                }
-                else
-                {
-                    inputHtml += " " + title;
-                }
+                inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, title ) : inputHtml + " " + title;
 
                 // -------------------------------------------------------------
                 // Append Javascript code and meta data (type/min/max) for
