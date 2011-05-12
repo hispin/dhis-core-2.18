@@ -124,7 +124,7 @@
 
 			<tr id="dataElementsTab">
 				<td colspan="2">
-					<select id="dataElementSelector" multiple="multiple" style="height: 212px; width: 100%; margin: 1px;">
+					<select id="dataElementSelector" multiple="multiple" style="height: 200px; width: 100%; margin: 1px;">
 					#foreach( $operand in $operands )
 						<option class="dataElementSelectorOption"
 								data-idx="${velocityCount}"
@@ -145,7 +145,7 @@
 
 			<tr id="indicatorsTab">
 				<td colspan="2">
-					<select id="indicatorSelector" multiple="multiple" style="height: 212px; width: 100%; margin: 1px;">
+					<select id="indicatorSelector" multiple="multiple" style="height: 200px; width: 100%; margin: 1px;">
 					#foreach( $indicator in $indicators )
 						<option class="indicatorSelectorOption"
 								data-idx="${velocityCount}" data-id="${indicator.id}" ondblclick="insertIndicator()">$encoder.htmlEncode( $indicator.name )</option>
