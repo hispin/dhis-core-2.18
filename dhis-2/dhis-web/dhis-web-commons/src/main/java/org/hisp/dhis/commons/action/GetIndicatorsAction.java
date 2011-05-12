@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
