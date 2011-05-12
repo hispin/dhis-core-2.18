@@ -36,7 +36,7 @@
 <style type="text/css">
 #message_{
 	display:block;
-	color:red;	
+	color:red;
 }
 
 .ui-state-active2, .ui-widget-content .ui-state-active2, .ui-widget-header .ui-state-active2 {
@@ -117,8 +117,11 @@
 <div id="tabs">
 		<table style="width: 100%;">
 			<tr id="dataElementsFilter">
-				<td colspan="2">
-					<input type="text" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" onkeyup="filterSelectList( 'dataElementSelector', this.value )"/>
+				<td>
+					<input id="dataElementsFilterInput" type="text" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" />
+				</td>
+				<td style="padding: 0; margin: 0; width: 20px; height: 20px;">
+					<button id="dataElementsFilterButton" style="width: 20px; height: 20px;">Search</button>
 				</td>
 			</tr>
 
@@ -138,8 +141,11 @@
 			</tr>
 
 			<tr id="indicatorsFilter">
-				<td colspan="2">
-					<input type="text" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" onkeyup="filterSelectList( 'indicatorSelector', this.value )"/>
+				<td>
+					<input type="text" id="indicatorsFilterInput" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" />
+				</td>
+				<td style="padding: 0; margin: 0; width: 20px; height: 20px;">
+					<button id="indicatorsFilterButton" style="width: 20px; height: 20px;">Search</button>
 				</td>
 			</tr>
 

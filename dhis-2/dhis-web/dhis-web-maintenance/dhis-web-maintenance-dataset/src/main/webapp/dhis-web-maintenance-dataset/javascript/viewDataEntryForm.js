@@ -75,6 +75,24 @@ $(document).ready(function() {
 	$("#showSelectionBoxButton").button("option", "icons", { primary: "ui-icon-newwin" });
 	$("#cancelButton").button("option", "icons", { primary: "ui-icon-cancel" });
 	$("#delete").button("option", "icons", { primary: "ui-icon-trash" });
+	
+	$("#dataElementsFilterButton").button({
+		icons: {
+			primary: "ui-icon-search"
+		},
+		text: false
+	}).click(function() {
+		filterSelectList( 'dataElementSelector', $("#dataElementsFilterInput").val() );
+	});
+	
+	$("#indicatorsFilterButton").button({
+		icons: {
+			primary: "ui-icon-search"
+		},
+		text: false
+	}).click(function() {
+		filterSelectList( 'indicatorSelector', $("#indicatorsFilterInput").val() );
+	});
 });
 
 function showDataElements() {
