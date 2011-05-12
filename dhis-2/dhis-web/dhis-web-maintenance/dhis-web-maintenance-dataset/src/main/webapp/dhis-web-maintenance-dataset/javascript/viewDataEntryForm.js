@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+$(document).ready(function() {
 	validation2('saveDataEntryForm', function() {
 		autoSave = false;
 		validateDataEntryForm();
@@ -8,87 +8,87 @@ jQuery(document).ready(function() {
 
 	leftBar.hideAnimated();
 
-	jQuery("#selectionDialog").dialog({
+	$("#selectionDialog").dialog({
 		minWidth: 560,
 		minHeight: 320,
-		position: [900, 60]
+		position: [($("body").width() - 560) - 50, 50]
 	});
 
-	jQuery("#selectionDialog").parent().bind("resize", function(e) {
-		var dialog = jQuery("#selectionDialog");
-		var indicatorSelector = jQuery("#indicatorSelector");
-		var dataElementSelector = jQuery("#dataElementSelector");
+	$("#selectionDialog").parent().bind("resize", function(e) {
+		var dialog = $("#selectionDialog");
+		var indicatorSelector = $("#indicatorSelector");
+		var dataElementSelector = $("#dataElementSelector");
 
 		dataElementSelector.height( dialog.height() - 80 );
 		indicatorSelector.height( dialog.height() - 80 );
 	});
 
-	jQuery(":button").button();
-	jQuery(":submit").button();
+	$(":button").button();
+	$(":submit").button();
 
-	jQuery("#dataElementInsertButton").click(insertDataElement);
-	jQuery("#indicatorInsertButton").click(insertIndicator);
+	$("#dataElementInsertButton").click(insertDataElement);
+	$("#indicatorInsertButton").click(insertIndicator);
 
-	jQuery("#selectionDialog").bind("dialogopen", function(event, ui) {
-		jQuery("#showSelectionBoxButton").button("disable");
+	$("#selectionDialog").bind("dialogopen", function(event, ui) {
+		$("#showSelectionBoxButton").button("disable");
 	});
 
-	jQuery("#selectionDialog").bind("dialogclose", function(event, ui) {
-		jQuery("#showSelectionBoxButton").button("enable");
+	$("#selectionDialog").bind("dialogclose", function(event, ui) {
+		$("#showSelectionBoxButton").button("enable");
 	});
 
-	jQuery("#showSelectionBoxButton").button("disable");
+	$("#showSelectionBoxButton").button("disable");
 
-	jQuery("#showSelectionBoxButton").click(function() {
-		jQuery("#selectionDialog").dialog("open");
+	$("#showSelectionBoxButton").click(function() {
+		$("#selectionDialog").dialog("open");
 	});
 	
 	showDataElements();
 
-	jQuery("#dataElementsButton").click(function() {
-		jQuery("#dataElementsButton").addClass("ui-state-active2");
-		jQuery("#indicatorsButton").removeClass("ui-state-active2");
+	$("#dataElementsButton").click(function() {
+		$("#dataElementsButton").addClass("ui-state-active2");
+		$("#indicatorsButton").removeClass("ui-state-active2");
 
 		showDataElements();
 	});
 
-	jQuery("#dataElementsButton").addClass("ui-state-active2");
+	$("#dataElementsButton").addClass("ui-state-active2");
 
-	jQuery("#indicatorsButton").click(function() {
-		jQuery("#indicatorsButton").addClass("ui-state-active2");
-		jQuery("#dataElementsButton").removeClass("ui-state-active2");
+	$("#indicatorsButton").click(function() {
+		$("#indicatorsButton").addClass("ui-state-active2");
+		$("#dataElementsButton").removeClass("ui-state-active2");
 
 		showIndicators();
 	});
 
-	jQuery("#insertButton").click(function() {
-		if( jQuery("#dataElementsTab").is(":visible") ) {
+	$("#insertButton").click(function() {
+		if( $("#dataElementsTab").is(":visible") ) {
 			insertDataElement();
 		} else {
 			insertIndicator();
 		}
 	})
 
-	jQuery("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
-	jQuery("#saveButton").button("option", "icons", { primary: "ui-icon-disk" });
-	jQuery("#saveCloseButton").button("option", "icons", { primary: "ui-icon-disk" });
-	jQuery("#showSelectionBoxButton").button("option", "icons", { primary: "ui-icon-newwin" });
-	jQuery("#cancelButton").button("option", "icons", { primary: "ui-icon-cancel" });
-	jQuery("#delete").button("option", "icons", { primary: "ui-icon-trash" });
+	$("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
+	$("#saveButton").button("option", "icons", { primary: "ui-icon-disk" });
+	$("#saveCloseButton").button("option", "icons", { primary: "ui-icon-disk" });
+	$("#showSelectionBoxButton").button("option", "icons", { primary: "ui-icon-newwin" });
+	$("#cancelButton").button("option", "icons", { primary: "ui-icon-cancel" });
+	$("#delete").button("option", "icons", { primary: "ui-icon-trash" });
 });
 
 function showDataElements() {
-	jQuery("#dataElementsTab").show();
-	jQuery("#dataElementsFilter").show();
-	jQuery("#indicatorsTab").hide();
-	jQuery("#indicatorsFilter").hide();
+	$("#dataElementsTab").show();
+	$("#dataElementsFilter").show();
+	$("#indicatorsTab").hide();
+	$("#indicatorsFilter").hide();
 }
 
 function showIndicators() {
-	jQuery("#indicatorsTab").show();
-	jQuery("#indicatorsFilter").show();
-	jQuery("#dataElementsTab").hide();
-	jQuery("#dataElementsFilter").hide();
+	$("#indicatorsTab").show();
+	$("#indicatorsFilter").show();
+	$("#dataElementsTab").hide();
+	$("#dataElementsFilter").hide();
 }
 
 function filterSelectList( select_id, filter )
@@ -135,10 +135,10 @@ function filterSelectList( select_id, filter )
 
 function showThenFadeOutMessage( message )
 {
-	jQuery("#message_").html(message);
-	jQuery("#message_").fadeOut(1000, function() {
-		jQuery("#message_").html("");
-		jQuery("#message_").show();
+	$("#message_").html(message);
+	$("#message_").fadeOut(1000, function() {
+		$("#message_").html("");
+		$("#message_").show();
 	});
 }
 
@@ -210,7 +210,7 @@ function insertDataElement() {
 function checkExisted(id) {
 	var result = false;
 	var html = $("#designTextarea").ckeditorGet().getData();
-	var input = jQuery(html).find("select, :text");
+	var input = $(html).find("select, :text");
 	input.each(function(i, item) {
 		if (id == item.id)
 			result = true;
