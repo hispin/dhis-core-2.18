@@ -28,7 +28,10 @@
 package org.hisp.dhis.caseentry.action.visitplan;
 
 import java.util.Collection;
+import java.util.HashSet;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 
@@ -47,6 +50,13 @@ public class VisitPlanAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
     private PatientAttributeService patientAttributeService;
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
@@ -58,11 +68,18 @@ public class VisitPlanAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<PatientAttribute> attributes;
+    private Collection<PatientAttribute> attributes = new HashSet<PatientAttribute>();
 
     public Collection<PatientAttribute> getAttributes()
     {
         return attributes;
+    }
+
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
     }
 
     // -------------------------------------------------------------------------
@@ -72,9 +89,12 @@ public class VisitPlanAction
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Make attributes available so that users can sort based on attributes
-        // ---------------------------------------------------------------------
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+
+        if ( organisationUnit == null )
+        {
+            return SUCCESS;
+        }
 
         attributes = patientAttributeService.getAllPatientAttributes();
 
