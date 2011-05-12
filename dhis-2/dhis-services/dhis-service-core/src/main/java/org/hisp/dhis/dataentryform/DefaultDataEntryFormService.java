@@ -213,7 +213,7 @@ public class DefaultDataEntryFormService
                 // Insert name of indicator as value and title
                 // -------------------------------------------------------------
 
-                String displayValue = indicator != null ? "value=\"[ " + indicator.getName() + "]\"" : "[ Indicator does not exist ]";
+                String displayValue = indicator != null ? "value=\"[ " + indicator.getName() + " ]\"" : "[ Indicator does not exist ]";
                 String displayTitle = indicator != null ? "title=\"" + indicator.getName() + "\"" : "[ Indicator does not exist ]";
 
                 inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;                    
