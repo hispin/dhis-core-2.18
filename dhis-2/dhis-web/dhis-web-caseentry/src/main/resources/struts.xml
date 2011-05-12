@@ -138,16 +138,7 @@
         <result name="success" type="redirect">getDataRecords.action?programId=${programId}</result>
     </action>
 	    
-    <!-- Visit Plan -->
-    
-    <action name="visitPlanSelect" class="org.hisp.dhis.caseentry.action.visitplan.VisitPlanSelectAction">
-      <interceptor-ref name="organisationUnitTreeStack"/>
-      <result name="visitplan" type="chain">visitplan</result>
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-caseentry/visitPlanSelect.vm</param>
-      <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>      
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/visitPlan.js</param>      
-    </action>   
+    <!-- Visit Plan -->  
     
     <action name="visitplan" class="org.hisp.dhis.caseentry.action.visitplan.VisitPlanAction">
       <interceptor-ref name="organisationUnitTreeStack"/>

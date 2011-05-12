@@ -3,7 +3,7 @@ isShowLoader = false;
 
 function organisationUnitSelected( orgUnits )
 {
-    window.location.href = 'visitPlanSelect.action';
+    window.location.href = 'visitplan.action';
 }
 
 selection.setListenerFunction( organisationUnitSelected );
