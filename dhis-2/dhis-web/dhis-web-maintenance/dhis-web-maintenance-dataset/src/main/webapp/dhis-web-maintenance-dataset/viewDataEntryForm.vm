@@ -121,7 +121,7 @@
 					<input id="dataElementsFilterInput" type="text" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" />
 				</td>
 				<td style="padding: 0; margin: 0; width: 20px; height: 20px;">
-					<button id="dataElementsFilterButton" style="width: 20px; height: 20px;">Search</button>
+					<button id="dataElementsFilterButton" style="width: 20px; height: 20px;">Filter</button>
 				</td>
 			</tr>
 
@@ -145,7 +145,7 @@
 					<input type="text" id="indicatorsFilterInput" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" />
 				</td>
 				<td style="padding: 0; margin: 0; width: 20px; height: 20px;">
-					<button id="indicatorsFilterButton" style="width: 20px; height: 20px;">Search</button>
+					<button id="indicatorsFilterButton" style="width: 20px; height: 20px;">Filter</button>
 				</td>
 			</tr>
 
