@@ -73,7 +73,9 @@
 		<td>
 			<input type="button" id="denominatorButton" name="denominatorButton" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em"  #if($!indicator.indicatorType.number=='true') disabled #end/>
 			<input type="hidden" id="denominator" name="denominator" value="$!indicator.denominator"/>
+			<input type="hidden" id="denominatorFormula" name="denominatorFormula" value="$!indicator.denominator"/>
 		</td>
+		<td><span id='warning'></span></td>
 	</tr>
 	<tr>
 		<td height="20px"></td>
@@ -87,3 +89,7 @@
 </form>
 
 #parse( "/dhis-web-maintenance-datadictionary/indicatorExpressionBuilderForm.vm" )
+
+<script>
+	var i18n_warning_choose_indicator_type_as_number = '$encoder.jsEscape( $i18n.getString( "warning_choose_indicator_type_as_number" ) , "'")';
+</script>
