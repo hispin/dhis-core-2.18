@@ -10,7 +10,7 @@ $(document).ready(function() {
 
 	$("#selectionDialog").dialog({
 		minWidth: 560,
-		minHeight: 320,
+		minHeight: 300,
 		position: [($("body").width() - 560) - 50, 50]
 	});
 
