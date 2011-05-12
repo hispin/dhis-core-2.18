@@ -1,5 +1,4 @@
 isAjax = true;
-isShowLoader = false;
 
 function organisationUnitSelected( orgUnits )
 {

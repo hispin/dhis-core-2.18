@@ -1,13 +1,10 @@
-
-#parse( "/dhis-web-caseentry/reportSelect.vm" )
-
 <table class="mainPageTable">
 <tr>
     <td style="vertical-align:top">    
     <table class="listTable">
-        <col>
+        <col/>
         #foreach( $programStage in $program.programStages )
-            <col>
+		<col/>
         #end       
         <tr>
             <th style="text-align:center">$i18n.getString( "full_name" )</th>
@@ -53,7 +50,7 @@
 
 <div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px" ondblclick="javascript:hideDetails()">
     <div style="float:right;" onclick="javascript:hideDetails()">
-        <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+        <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
     </div>              
     <p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>
     <p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
