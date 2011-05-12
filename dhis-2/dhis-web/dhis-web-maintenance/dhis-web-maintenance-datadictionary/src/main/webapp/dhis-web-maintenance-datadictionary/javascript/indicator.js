@@ -1,8 +1,26 @@
 
 function indicatorTypeChanged()
 {
-	var type  = byId('indicatorTypeId').options[byId('indicatorTypeId').selectedIndex].getAttribute('number');
+	var type = byId('indicatorTypeId').options[byId('indicatorTypeId').selectedIndex].getAttribute('number');
 	byId('denominatorButton').disabled = eval(type);
+	if( eval(type) )
+	{
+		setFieldValue('denominator','1');
+		setInnerHTML('warning', "<i style='color:red'>" + i18n_warning_choose_indicator_type_as_number + "</i>")
+	}
+	else
+	{
+		if(getFieldValue('denominatorFormula') == undefined )
+		{
+			setFieldValue('denominator','');
+		}
+		else
+		{
+			setFieldValue('denominator',getFieldValue('denominatorFormula'));
+		}
+		
+		setInnerHTML('warning',"");
+	}	
 }
 
 // -----------------------------------------------------------------------------
