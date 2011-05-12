@@ -216,11 +216,6 @@ public class DefaultDhis14XMLImportService
                 // Meta-data
                 // -------------------------------------------------------------
 
-                // -------------------------------------------------------------
-                // This map will be filled with 1.4 calculated dataelement
-                // expression associations and generate expressions, which
-                // are later used during import of calculated dataelements
-                // -------------------------------------------------------------
 
                 state.setMessage( "importing_meta_data" );                
                 log.info( "Importing meta data" );
