@@ -54,7 +54,6 @@ import org.hisp.dhis.importexport.dhis14.xml.converter.OrganisationUnitHierarchy
 import org.hisp.dhis.importexport.dhis14.xml.converter.PeriodTypeConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.UserConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.UserRoleConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.CalculatedDataElementAssociationXSDConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.DataElementXSDConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.DataRootXSDConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.DataTypeXSDConverter;
@@ -174,7 +173,6 @@ public class DefaultDhis14XMLExportService
 
             thread.registerXSDConverter( new DataRootXSDConverter() );
             thread.registerXSDConverter( new DataElementXSDConverter() );
-            thread.registerXSDConverter( new CalculatedDataElementAssociationXSDConverter() );
             thread.registerXSDConverter( new PeriodTypeXSDConverter() );
             thread.registerXSDConverter(new OrganisationUnitXSDConverter() );
             thread.registerXSDConverter( new OrganisationUnitHierarchyXSDConverter() );
