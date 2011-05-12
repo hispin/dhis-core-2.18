@@ -7,15 +7,88 @@ jQuery(document).ready(function() {
 	});
 
 	leftBar.hideAnimated();
+
+	jQuery("#selectionDialog").dialog({
+		minWidth: 560,
+		minHeight: 320,
+		position: [900, 60]
+	});
+
+	jQuery("#selectionDialog").parent().bind("resize", function(e) {
+		var dialog = jQuery("#selectionDialog");
+		var indicatorSelector = jQuery("#indicatorSelector");
+		var dataElementSelector = jQuery("#dataElementSelector");
+
+		dataElementSelector.height( dialog.height() - 80 );
+		indicatorSelector.height( dialog.height() - 80 );
+	});
+
+	jQuery(":button").button();
+	jQuery(":submit").button();
+
+	jQuery("#dataElementInsertButton").click(insertDataElement);
+	jQuery("#indicatorInsertButton").click(insertIndicator);
+
+	jQuery("#selectionDialog").bind("dialogopen", function(event, ui) {
+		jQuery("#showSelectionBoxButton").button("disable");
+	});
+
+	jQuery("#selectionDialog").bind("dialogclose", function(event, ui) {
+		jQuery("#showSelectionBoxButton").button("enable");
+	});
+
+	jQuery("#showSelectionBoxButton").button("disable");
+
+	jQuery("#showSelectionBoxButton").click(function() {
+		jQuery("#selectionDialog").dialog("open");
+	});
+	
+	showDataElements();
+
+	jQuery("#dataElementsButton").click(function() {
+		jQuery("#dataElementsButton").addClass("ui-state-active2");
+		jQuery("#indicatorsButton").removeClass("ui-state-active2");
+
+		showDataElements();
+	});
+
+	jQuery("#dataElementsButton").addClass("ui-state-active2");
+
+	jQuery("#indicatorsButton").click(function() {
+		jQuery("#indicatorsButton").addClass("ui-state-active2");
+		jQuery("#dataElementsButton").removeClass("ui-state-active2");
+
+		showIndicators();
+	});
+
+	jQuery("#insertButton").click(function() {
+		if( jQuery("#dataElementsTab").is(":visible") ) {
+			insertDataElement();
+		} else {
+			insertIndicator();
+		}
+	})
+
+	jQuery("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
+	jQuery("#saveButton").button("option", "icons", { primary: "ui-icon-disk" });
+	jQuery("#saveCloseButton").button("option", "icons", { primary: "ui-icon-disk" });
+	jQuery("#showSelectionBoxButton").button("option", "icons", { primary: "ui-icon-newwin" });
+	jQuery("#cancelButton").button("option", "icons", { primary: "ui-icon-cancel" });
+	jQuery("#delete").button("option", "icons", { primary: "ui-icon-trash" });
 });
 
-function localFilterSelectList( filter )
-{
-	if( jQuery("#dataElementsTab").is(":visible") ) {
-		filterSelectList( "dataElementSelector", filter )
-	} else {
-		filterSelectList( "indicatorSelector", filter )
-	}
+function showDataElements() {
+	jQuery("#dataElementsTab").show();
+	jQuery("#dataElementsFilter").show();
+	jQuery("#indicatorsTab").hide();
+	jQuery("#indicatorsFilter").hide();
+}
+
+function showIndicators() {
+	jQuery("#indicatorsTab").show();
+	jQuery("#indicatorsFilter").show();
+	jQuery("#dataElementsTab").hide();
+	jQuery("#dataElementsFilter").hide();
 }
 
 function filterSelectList( select_id, filter )
