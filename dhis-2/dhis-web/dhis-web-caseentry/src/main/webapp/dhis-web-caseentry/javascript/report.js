@@ -1,3 +1,4 @@
+isAjax = true;
 
 function organisationUnitSelected( orgUnits )
 {
@@ -17,8 +18,7 @@ function validateAndGenerateReport()
 	request.setCallbackSuccess( reportValidationCompleted );    
 	request.send( url );
 	
-	return false;   
-    
+	return false;
 }
 
 function reportValidationCompleted( messageElement )
@@ -28,9 +28,7 @@ function reportValidationCompleted( messageElement )
 	
 	if ( type == 'success' )
 	{
-		window.location.href='generateReport.action?' +			
-			'startDate=' + getFieldValue( 'startDate' ) +
-			'&endDate=' + getFieldValue( 'endDate' ) ;
+		loadGeneratedReport();
 	}
 	else if ( type == 'error' )
 	{
@@ -38,9 +36,19 @@ function reportValidationCompleted( messageElement )
 	}
 	else if ( type == 'input' )
 	{
-		document.getElementById( 'message' ).innerHTML = message;
-		document.getElementById( 'message' ).style.display = 'block';
+		setMessage( message );
 	}
+}
+
+function loadGeneratedReport()
+{
+	lockScreen();
+
+	jQuery( "#contentDiv" ).load( "generateReport.action",
+	{
+		'startDate': getFieldValue( 'startDate' ),
+		'&endDate': getFieldValue( 'endDate' )
+	}, function() { unLockScreen(); });
 }
 
 function viewRecords( programStageInstanceId ) 

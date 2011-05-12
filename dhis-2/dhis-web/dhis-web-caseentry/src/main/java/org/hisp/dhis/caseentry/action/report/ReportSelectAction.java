@@ -140,7 +140,6 @@ public class ReportSelectAction
             programId = selectedProgram.getId();
             selectedStateManager.setSelectedProgram( selectedProgram );
         }
-
         else
         {
             programId = null;
