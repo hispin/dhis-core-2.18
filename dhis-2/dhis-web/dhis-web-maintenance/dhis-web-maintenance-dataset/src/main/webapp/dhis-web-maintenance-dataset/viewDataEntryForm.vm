@@ -117,7 +117,7 @@
 		<table style="width: 100%;">
 			<tr id="dataElementsFilter" style="padding: 0; margin: 0; width: 100%;">
 				<td>
-					<input id="dataElementsFilterInput" type="text" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" />
+					<input id="dataElementsFilterInput" placeholder="Filter" type="text" style="width: 100%; height: 18px; border: 1px inset #888; padding: 1px 0 1px 0;" />
 				</td>
 				<td style="padding: 0; margin: 0; width: 20px; height: 20px;">
 					<button id="dataElementsFilterButton" style="width: 20px; height: 20px;">Filter</button>
@@ -141,7 +141,7 @@
 
 			<tr id="indicatorsFilter">
 				<td>
-					<input type="text" id="indicatorsFilterInput" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" />
+					<input type="text" id="indicatorsFilterInput" placeholder="Filter" style="width: 100%; height: 18px; border: 1px inset #888; padding: 1px 0 1px 0;" />
 				</td>
 				<td style="padding: 0; margin: 0; width: 20px; height: 20px;">
 					<button id="indicatorsFilterButton" style="width: 20px; height: 20px;">Filter</button>
