@@ -26,6 +26,20 @@ ul,ol
   padding: 0px;
 }
 
+.ui-widget {
+	font-family: LiberationSansRegular, arial, sans-serif !important;
+	font-size: 11px;
+}
+
+.ui-widget .ui-widget {
+	font-size: 11px;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+	font-family: LiberationSansRegular, arial, sans-serif !important;
+	font-size: 11px;
+}
+
 /*----------------------------------------------------------------------------*/
 /* Header                                                                     */
 /*----------------------------------------------------------------------------*/
