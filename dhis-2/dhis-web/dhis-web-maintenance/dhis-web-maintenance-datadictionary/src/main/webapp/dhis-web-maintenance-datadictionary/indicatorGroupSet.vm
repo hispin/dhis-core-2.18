@@ -22,7 +22,7 @@
 			<table>
 			<table class="listTable" id="listTable">
                 <col/>
-                <col width="110px"/>               
+                <col width="120px"/>               
                 <thead>
 				<tr>
 					<th>$i18n.getString( "name" )</th>

@@ -1002,8 +1002,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="runlevel" value="3" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator"
+	<bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator"
 		class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
@@ -1025,8 +1024,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="skipInTests" value="true" />
 	</bean>
 
-	<bean
-		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject"
 			ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
 		<property name="targetMethod" value="addStartupRoutines" />
