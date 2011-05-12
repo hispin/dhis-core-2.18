@@ -18,6 +18,15 @@
 			position: [900, 60]
 		});
 
+		jQuery("#selectionDialog").parent().bind("resize", function(e) {
+			var dialog = jQuery("#selectionDialog");
+			var indicatorSelector = jQuery("#indicatorSelector");
+			var dataElementSelector = jQuery("#dataElementSelector");
+
+			dataElementSelector.height( dialog.height() - 80 );
+			indicatorSelector.height( dialog.height() - 80 );
+		});
+
 		jQuery(":button").button();
 		jQuery(":submit").button();
 
@@ -122,6 +131,11 @@
 .ui-dialog .ui-dialog-content {
 	padding: 1px;
 }
+
+#indicatorSelector, #dataElementSelector {
+	margin: 2px !important;
+	padding: 2px !important;
+}
 </style>
 
 <h3>$i18n.getString( "dataentryform_management" ) #openHelp( "custom_forms" )</h3>
@@ -186,7 +200,7 @@
 		<table style="width: 100%;">
 			<tr id="dataElementsFilter">
 				<td colspan="2">
-					<input type="text" style="width: 100%; border: 1px solid #888; padding: 1px 0 1px 0;" onkeyup="filterSelectList( 'dataElementSelector', this.value )"/>
+					<input type="text" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" onkeyup="filterSelectList( 'dataElementSelector', this.value )"/>
 				</td>
 			</tr>
 
@@ -207,7 +221,7 @@
 
 			<tr id="indicatorsFilter">
 				<td colspan="2">
-					<input type="text" style="width: 100%; border: 1px solid #888; padding: 1px 0 1px 0;" onkeyup="filterSelectList( 'indicatorSelector', this.value )"/>
+					<input type="text" style="width: 100%; border: 1px inset #888; padding: 1px 0 1px 0;" onkeyup="filterSelectList( 'indicatorSelector', this.value )"/>
 				</td>
 			</tr>
 
