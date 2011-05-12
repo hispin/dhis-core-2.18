@@ -395,6 +395,7 @@
 
 	<bean id="org.hisp.dhis.commons.action.GetIndicatorsAction" class="org.hisp.dhis.commons.action.GetIndicatorsAction" scope="prototype">
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.commons.action.GetOperandsAction" class="org.hisp.dhis.commons.action.GetOperandsAction" scope="prototype">

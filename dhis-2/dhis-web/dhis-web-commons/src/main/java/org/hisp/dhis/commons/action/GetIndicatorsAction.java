@@ -32,6 +32,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -56,6 +59,13 @@ public class GetIndicatorsAction
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -91,6 +101,13 @@ public class GetIndicatorsAction
         this.id = id;
     }
 
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
     private List<Indicator> indicators;
 
     public List<Indicator> getIndicators()
@@ -105,11 +122,7 @@ public class GetIndicatorsAction
     public String execute()
         throws Exception
     {
-        if ( id == null || id == ALL )
-        {
-            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-        }
-        else
+        if ( id != null && id != ALL )
         {
             IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( id );
 
@@ -117,10 +130,24 @@ public class GetIndicatorsAction
             {
                 indicators = new ArrayList<Indicator>( indicatorGroup.getMembers() );
             }
-            else
+        }
+        else if ( dataSetId != null )
+        {
+            DataSet dataset = dataSetService.getDataSet( dataSetId );
+
+            if ( dataset != null )
             {
-                indicators = new ArrayList<Indicator>();
+                indicators = new ArrayList<Indicator>( dataset.getIndicators() );
             }
+        }
+        else
+        {
+            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+        }
+
+        if ( indicators == null )
+        {
+            indicators = new ArrayList<Indicator>();
         }
 
         Collections.sort( indicators, indicatorComparator );
