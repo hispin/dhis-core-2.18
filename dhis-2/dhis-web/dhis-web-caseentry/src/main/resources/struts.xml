@@ -156,6 +156,14 @@
       <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>  
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/visitPlan.js</param>            
     </action>
+	
+    <action name="visitplanSortByAttribute" 
+	  class="org.hisp.dhis.caseentry.action.visitplan.SearchVisitPlanAction">
+	  <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/loadVisitPlan.vm</param>
+      <param name="javascripts">javascript/visitPlan.js</param>  
+	  <param name="stylesheets">/dhis-web-commons/paging/paging.css</param> 
+    </action>
     
     <!-- Report -->   
     

@@ -73,6 +73,7 @@
 <script>
 	
 var isAjax;
+var isShowLoader;
 
 function ajaxPaging( currentPage, pageSize )
 {
@@ -82,10 +83,12 @@ function ajaxPaging( currentPage, pageSize )
 	}
 	else
 	{
-		showLoader();
+		isShowLoader ? showLoader() : lockScreen();
 		var url = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
-		$( '#contentDiv' ).load(url);
-		hideLoader();
+		$( '#contentDiv' ).load( url,
+			function(){
+				isShowLoader ? hideLoader() : unLockScreen();
+		});
 	}
 }
 
@@ -93,7 +96,7 @@ function changePageSize( baseLink )
 {
     var pageSize = jQuery("#sizeOfPage").val();
     
-    if(pageSize < 1)
+    if ( pageSize < 1 )
     {
     	pageSize = 1;
     }
@@ -101,15 +104,17 @@ function changePageSize( baseLink )
 	var currentPage = jQuery("#jumpToPage").val();
 	jQuery.cookie("pageSize", pageSize, {path: "/"});
 	var url = baseLink + 'currentPage=' + currentPage + '&pageSize=' + pageSize;
+	
 	if( isAjax == undefined )
 	{
 		window.location.href = url;
 	}
 	else
 	{
-		showLoader();
-		$( '#contentDiv' ).load(url);
-		hideLoader();
+		isShowLoader ? showLoader() : lockScreen();
+		$( '#contentDiv' ).load( url,
+			function(){ isShowLoader ? hideLoader() : unLockScreen(); }
+		);
 	}
 }
 

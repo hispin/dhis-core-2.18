@@ -27,30 +27,18 @@
 
 package org.hisp.dhis.caseentry.action.visitplan;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
-import org.hisp.dhis.activityplan.Activity;
-import org.hisp.dhis.activityplan.ActivityPlanService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.program.ProgramStageInstance;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
+ * @modifier Dang Duy Hieu
+ * @since 2011-12-05
  */
 public class VisitPlanAction
     implements Action
@@ -59,27 +47,6 @@ public class VisitPlanAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
-    private PatientAttributeValueService patientAttributeValueService;
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
-
     private PatientAttributeService patientAttributeService;
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
@@ -87,76 +54,15 @@ public class VisitPlanAction
         this.patientAttributeService = patientAttributeService;
     }
 
-    private ActivityPlanService activityPlanService;
-
-    public void setActivityPlanService( ActivityPlanService activityPlanService )
-    {
-        this.activityPlanService = activityPlanService;
-    }
-
     // -------------------------------------------------------------------------
-    // Input/output
+    // Output
     // -------------------------------------------------------------------------
-
-    private Integer sortingAttributeId;
-
-    public void setSortingAttributeId( Integer sortingAttributeId )
-    {
-        this.sortingAttributeId = sortingAttributeId;
-    }
-
-    public Integer getSortingAttributeId()
-    {
-        return sortingAttributeId;
-    }
-
-    private PatientAttribute sortingAttribute;
-
-    public PatientAttribute getSortingAttribute()
-    {
-        return sortingAttribute;
-    }
 
     private Collection<PatientAttribute> attributes;
 
     public Collection<PatientAttribute> getAttributes()
     {
         return attributes;
-    }
-
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    private Map<Patient, Set<ProgramStageInstance>> visitsByPatients = new HashMap<Patient, Set<ProgramStageInstance>>();
-
-    public Map<Patient, Set<ProgramStageInstance>> getVisitsByPatients()
-    {
-        return visitsByPatients;
-    }
-
-    private Map<Integer, Collection<PatientAttributeValue>> attributeValueMap = new HashMap<Integer, Collection<PatientAttributeValue>>();
-
-    public Map<Integer, Collection<PatientAttributeValue>> getAttributeValueMap()
-    {
-        return attributeValueMap;
-    }
-
-    private Collection<Patient> sortedPatients = new ArrayList<Patient>();
-
-    public Collection<Patient> getSortedPatients()
-    {
-        return sortedPatients;
-    }
-
-    private Collection<Activity> activities = new ArrayList<Activity>();
-
-    public Collection<Activity> getActivities()
-    {
-        return activities;
     }
 
     // -------------------------------------------------------------------------
@@ -171,66 +77,6 @@ public class VisitPlanAction
         // ---------------------------------------------------------------------
 
         attributes = patientAttributeService.getAllPatientAttributes();
-
-        // ---------------------------------------------------------------------
-        // Get the facility planning to do a visit
-        // ---------------------------------------------------------------------
-
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
-        activities = activityPlanService.getActivitiesByProvider( organisationUnit );
-
-        for ( Activity activity : activities )
-        {
-            if ( visitsByPatients.containsKey( activity.getBeneficiary() ) )
-            {
-                visitsByPatients.get( activity.getBeneficiary() ).add( activity.getTask() );
-            }
-            else
-            {
-                Set<ProgramStageInstance> programStageInstancess = new HashSet<ProgramStageInstance>();
-
-                programStageInstancess.add( activity.getTask() );
-
-                visitsByPatients.put( activity.getBeneficiary(), programStageInstancess );
-            }
-        }
-
-        if ( !visitsByPatients.keySet().isEmpty() )
-        {
-            Collection<Patient> patientsToBeVisted = visitsByPatients.keySet();
-
-            // -------------------------------------------------------------
-            // Get all the attributes of the patients to be visited (in case
-            // users want to make sorting based on attributes
-            // -------------------------------------------------------------
-
-            attributeValueMap = patientAttributeValueService
-                .getPatientAttributeValueMapForPatients( patientsToBeVisted );
-
-            // -------------------------------------------------------------
-            // Sort patients to be visited based on the chosen attribute
-            // -------------------------------------------------------------
-
-            if ( attributes.size() > 0 )
-            {
-                sortingAttribute = attributes.iterator().next();
-            }
-
-            if ( sortingAttributeId != null )
-            {
-                sortingAttribute = patientAttributeService.getPatientAttribute( sortingAttributeId );
-            }
-
-            if ( sortingAttribute != null )
-            {
-                sortedPatients = patientService.sortPatientsByAttribute( patientsToBeVisted, sortingAttribute );
-            }
-            else
-            {
-                sortedPatients = patientsToBeVisted;
-            }
-        }
 
         return SUCCESS;
     }

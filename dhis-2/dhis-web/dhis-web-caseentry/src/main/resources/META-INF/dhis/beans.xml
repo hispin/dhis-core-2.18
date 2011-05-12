@@ -239,6 +239,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.caseentry.action.visitplan.VisitPlanAction"
 		class="org.hisp.dhis.caseentry.action.visitplan.VisitPlanAction"
 		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.visitplan.SearchVisitPlanAction"
+		class="org.hisp.dhis.caseentry.action.visitplan.SearchVisitPlanAction"
+		scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
