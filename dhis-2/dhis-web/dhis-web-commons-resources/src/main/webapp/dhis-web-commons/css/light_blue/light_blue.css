@@ -47,6 +47,20 @@ a:visited
   color:#3b73b8;
 }
 
+.ui-widget {
+	font-family: LiberationSansRegular, arial, sans-serif !important;
+	font-size: 11px !important;
+}
+
+.ui-widget .ui-widget {
+	font-size: 11px !important;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+	font-family: LiberationSansRegular, arial, sans-serif !important;
+	font-size: 11px !important;
+}
+
 /*----------------------------------------------------------------------------*/
 /* Header                                                                     */
 /*----------------------------------------------------------------------------*/

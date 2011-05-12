@@ -2,14 +2,14 @@
 <html>
   <head>
     <title>DHIS 2</title>
-    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}">
-    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/theme/jquery-ui-1.8.6.css">	
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/theme/ui.thickbox.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/theme/jquery.cluetip.css">
-	
-    <link type="image/png" rel="icon" href="../images/favicon.png">    
-    
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.8.12.custom.css" />	
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/ui.thickbox.css" />
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/jquery.cluetip.css" />
+    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}" />
+    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css" />
+
+    <link type="image/png" rel="icon" href="../images/favicon.png" />
+
     #parse( "settings.vm" )
         
     #foreach ( $style in $stylesheets )
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>	
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.min.js"></script>		
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.block.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.8.12.custom.min.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/ui.thickbox.min.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
