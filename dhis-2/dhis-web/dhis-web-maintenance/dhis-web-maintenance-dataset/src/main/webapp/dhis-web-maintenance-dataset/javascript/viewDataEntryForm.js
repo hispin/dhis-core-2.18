@@ -9,9 +9,9 @@ $(document).ready(function() {
 	leftBar.hideAnimated();
 
 	$("#selectionDialog").dialog({
-		minWidth: 560,
-		minHeight: 300,
-		position: [($("body").width() - 560) - 50, 50]
+		minWidth: 500,
+		minHeight: 263,
+		position: [($("body").width() - 500) - 50, 50]
 	});
 
 	$("#selectionDialog").parent().bind("resize", function(e) {
@@ -19,8 +19,14 @@ $(document).ready(function() {
 		var indicatorSelector = $("#indicatorSelector");
 		var dataElementSelector = $("#dataElementSelector");
 
-		dataElementSelector.height( dialog.height() - 71 );
-		indicatorSelector.height( dialog.height() - 71 );
+		// TODO look into this.. firefox does not treat the box-model the same as webkit... 
+		// 		should be fixable by setting fixed paddings/margin somewhere!
+		var adjustment = 63;
+		if($.browser.webkit) adjustment = 67;
+		else if($.browser.mozilla) adjustment = 63;
+		
+		dataElementSelector.height( dialog.height() - adjustment );
+		indicatorSelector.height( dialog.height() - adjustment );
 	});
 
 	$(":button").button();
