@@ -152,7 +152,7 @@ function insertIndicator() {
 	if( $option.length !== 0 ) {
 		var id = $option.data("id");
 		var title = $option.val();
-		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorid="' + id + '" style="width:10em;text-align:center;" readonly="readonly" />';
+		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorid="' + id + '" style="width:7em;text-align:center;" readonly="readonly" />';
 
 		if(!checkExisted("indicator" + id)) {
 			oEditor.insertHtml( template )
@@ -191,13 +191,13 @@ function insertDataElement() {
 			id = boolDataEntryId;
 			html = "<input title=\"" + titleValue
 					+ "\" value=\"" + displayName + "\" id=\"" + boolDataEntryId
-					+ "\" style=\"width:10em;text-align:center\"/>";
+					+ "\" style=\"width:7em;text-align:center\"/>";
 		} 
 		else {
 			id = dataEntryId;
 			html = "<input title=\"" + titleValue
 					+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId
-					+ "\" style=\"width:10em;text-align:center\"/>";
+					+ "\" style=\"width:7em;text-align:center\"/>";
 		}
 	
 		if (!checkExisted(id)) {
