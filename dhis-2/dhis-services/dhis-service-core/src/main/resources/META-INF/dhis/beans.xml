@@ -995,17 +995,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="runlevel" value="3" />
 	</bean>
 
-	<bean id="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader"
-		class="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader">
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="name" value="MultiDimensionExpressionUpgrader" />
-		<property name="runlevel" value="3" />
-		<property name="skipInTests" value="true" />
-	</bean>
-
 	<bean id="org.hisp.dhis.startup.TableCreator" class="org.hisp.dhis.startup.TableCreator">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="statementBuilder" ref="statementBuilder" />
@@ -1018,14 +1007,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		<property name="runlevel" value="5" />
-		<property name="skipInTests" value="true" />
-	</bean>
-
-	<bean id="org.hisp.dhis.dataelement.UuidPopulator" class="org.hisp.dhis.dataelement.UuidPopulator">
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="runlevel" value="5" />
 		<property name="skipInTests" value="true" />
 	</bean>
@@ -1056,9 +1037,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 					<ref local="org.hisp.dhis.period.PeriodTypePopulator" />
 					<ref local="org.hisp.dhis.startup.TableCreator" />
 					<ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator" />
-					<ref local="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader" />
 					<ref local="org.hisp.dhis.dataset.DataSetShortNamePopulator" />
-					<ref local="org.hisp.dhis.dataelement.UuidPopulator" />
 					<ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
 					<ref local="org.hisp.dhis.dataentryform.DataEntryFormPopulator" />
 				</list>
