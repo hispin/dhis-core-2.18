@@ -19,8 +19,8 @@ $(document).ready(function() {
 		var indicatorSelector = $("#indicatorSelector");
 		var dataElementSelector = $("#dataElementSelector");
 
-		dataElementSelector.height( dialog.height() - 80 );
-		indicatorSelector.height( dialog.height() - 80 );
+		dataElementSelector.height( dialog.height() - 71 );
+		indicatorSelector.height( dialog.height() - 71 );
 	});
 
 	$(":button").button();
