@@ -45,6 +45,8 @@ public class DefaultReportLocationManager
     private File REPORT;
 
     private File REPORT_TEMP;
+    
+    private File REPORT_TEMPLATE;
 
     // -------------------------------------------------------------------------
     // Dependency
@@ -124,14 +126,11 @@ public class DefaultReportLocationManager
             return null;
         }
 
-        File templateDirectory = new File( REPORT, pathConfig );
+        REPORT_TEMPLATE = new File( REPORT, pathConfig );
+        
+        REPORT_TEMPLATE.mkdirs();
 
-        if ( !templateDirectory.exists() )
-        {
-            templateDirectory.mkdirs();
-        }
-
-        return templateDirectory;
+        return REPORT_TEMPLATE;
     }
 
     public boolean isFileTypeSupported( String extension, String contentType )
