@@ -75,7 +75,7 @@
 			jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', {
 				expression: getFieldValue('expression')
 			}, function( json ){
-				if( json.response == 'success')
+				if( json.response == 'success' || json.response == 'error' )
 				{
 					jQuery( "#formulaText").html( json.message );
 				}else{
