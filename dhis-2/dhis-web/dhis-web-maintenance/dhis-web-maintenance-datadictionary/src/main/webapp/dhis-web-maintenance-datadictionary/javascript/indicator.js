@@ -6,7 +6,6 @@ function indicatorTypeChanged()
 	if( eval(type) )
 	{
 		setFieldValue('denominator','1');
-		setInnerHTML('warning', "<i style='color:red'>" + i18n_warning_choose_indicator_type_as_number + "</i>")
 	}
 	else
 	{
@@ -18,8 +17,6 @@ function indicatorTypeChanged()
 		{
 			setFieldValue('denominator',getFieldValue('denominatorFormula'));
 		}
-		
-		setInnerHTML('warning',"");
 	}	
 }
 
