@@ -96,7 +96,7 @@
             "core/Color.js",
             "core/GeoStat.js",
             "core/GeoStat/Choropleth.js",
-            //"core/GeoStat/ProportionalSymbol.js",
+            "core/GeoStat/Point.js",
             "core/GeoStat/Symbol.js",
             //"core/Routing.js",
             "core/Util.js",
@@ -119,9 +119,9 @@
             //"widgets/data/LayerStoreMediator.js",
             //"widgets/data/GridRowFeatureMediator.js",
             "widgets/geostat/Choropleth.js",
+            "widgets/geostat/Point.js",
             "widgets/geostat/Symbol.js"
-            //"widgets/geostat/Mapping.js"
-            //"widgets/geostat/ProportionalSymbol.js"
+            //"widgets/geostat/Mapping.js",
             //"widgets/tree/LayerTree.js",
             //"widgets/tree/LayerTreeExtra.js",
             //"widgets/toolbar/Toolbar.js",

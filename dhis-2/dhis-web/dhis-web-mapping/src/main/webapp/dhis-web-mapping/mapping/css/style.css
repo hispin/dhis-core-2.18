@@ -278,37 +278,15 @@ a.x-menu-item-custom {
 .window-info {
 	padding:0 0 8px 0;
 	font:bold 11px arial;
-	color:#444;
-}
-.window-info-grey {
-	padding:5px 0px 0px 8px;
-	font:normal 11px lucida sans unicode,arial;
-	color:#333;
-    background-color:#f8f8f8;
+	color:#222;
 }
 .window-p {
     padding:4px 0;
-}
-.window-field-label-first {
-	padding:0 0 3px 3px;
-	font:normal 11px lucida sans unicode,ubuntu,arial;
-	color:#777;
 }
 .window-field-label {
 	padding:6px 0 3px 4px;
 	font:normal 11px lucida sans unicode,ubuntu,arial;
 	color:#777;	
-}
-.window-field-nolabel {
-	padding:14px 0 0 0;
-}
-.window-button {
-	padding:8px 0 0 0;
-}
-.window-orgunit-text {
-	padding:6px 6px 6px 8px;
-	font:normal 11px lucida sans unicode,ubuntu,arial;
-	color:#333;
 }
 #window-favorites-title {
 	padding:0 0 3px 21px;

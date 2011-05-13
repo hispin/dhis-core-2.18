@@ -101,6 +101,12 @@ mapfish.GeoStat = OpenLayers.Class({
             choropleth.classify(false);
         }
         else if (G.vars.activePanel.isPoint()) {
+            if (!point.formValidation.validateForm.call(point)) {
+                G.vars.mask.hide();
+            }
+            point.classify(false);
+        }
+        else if (G.vars.activePanel.isSymbol()) {
             if (!symbol.formValidation.validateForm.call(symbol)) {
                 G.vars.mask.hide();
             }
@@ -234,7 +240,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
             choropleth.imageLegend = imageLegend;
         }
         else if (G.vars.activePanel.isPoint()) {
-            symbol.imageLegend = imageLegend;
+            point.imageLegend = imageLegend;
         }
         
         return new mapfish.GeoStat.Classification(bins);
@@ -281,11 +287,11 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     classify: function(method, nbBins, bounds) {
         var mlt = G.vars.activePanel.isPolygon() ?
             choropleth.legend.value : G.vars.activePanel.isPoint() ?
-                symbol.legend.value : G.conf.map_legend_type_automatic;
+                point.legend.value : G.conf.map_legend_type_automatic;
     
 		if (mlt == G.conf.map_legend_type_automatic) {
 			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
-				var str = G.vars.activePanel.isPolygon() ? choropleth.form.findField('bounds').getValue() : symbol.form.findField('bounds').getValue();
+				var str = G.vars.activePanel.isPolygon() ? choropleth.form.findField('bounds').getValue() : point.form.findField('bounds').getValue();
 				
 				for (var i = 0; i < str.length; i++) {
 					str = str.replace(' ','');
@@ -311,7 +317,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                     choropleth.form.findField('bounds').setValue(newInput);
                 }
                 else {
-                    symbol.form.findField('bounds').setValue(newInput);
+                    point.form.findField('bounds').setValue(newInput);
                 }
 				
 				for (var k = 0; k < bounds.length; k++) {
@@ -326,7 +332,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 			}
 		}
 		else if (mlt == G.conf.map_legend_type_predefined) {
-			bounds = G.vars.activePanel.isPolygon() ? choropleth.bounds : symbol.bounds;
+			bounds = G.vars.activePanel.isPolygon() ? choropleth.bounds : point.bounds;
 
 			if (bounds[0] > this.minVal) {
 				bounds.unshift(this.minVal);
@@ -334,7 +340,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                     choropleth.colorInterpolation.unshift(new mapfish.ColorRgb(240,240,240));
                 }
                 else {
-                    symbol.colorInterpolation.unshift(new mapfish.ColorRgb(240,240,240));
+                    point.colorInterpolation.unshift(new mapfish.ColorRgb(240,240,240));
                 }
 			}
 
@@ -344,7 +350,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                     choropleth.colorInterpolation.push(new mapfish.ColorRgb(240,240,240));
                 }
                 else {
-                    symbol.colorInterpolation.push(new mapfish.ColorRgb(240,240,240));
+                    point.colorInterpolation.push(new mapfish.ColorRgb(240,240,240));
                 }
 			}
 			

@@ -1,4 +1,12 @@
-package org.hisp.dhis.mapping.action;
+package org.hisp.dhis.commons.action;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+
+import com.opensymphony.xwork2.Action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -26,36 +34,15 @@ package org.hisp.dhis.mapping.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-import java.util.Collection;
-
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
-import org.hisp.dhis.system.util.FilterUtils;
-
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Jan Henrik Overland
- * @version $Id$
  */
-public class GetGeoJsonAction
+public class GetOrganisationUnitGroupsByGroupSetAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
@@ -68,70 +55,38 @@ public class GetGeoJsonAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer parentId;
+    private Integer id;
 
-    public void setParentId( Integer id )
+    public void setId( Integer id )
     {
-        this.parentId = id;
-    }
-
-    private Integer level;
-
-    public void setLevel( Integer level )
-    {
-        this.level = level;
-    }
-
-    private Boolean symbol;
-
-    public void setSymbol( Boolean symbol )
-    {
-        this.symbol = symbol;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<OrganisationUnit> object;
+    private List<OrganisationUnitGroup> organisationUnitGroups;
 
-    public Collection<OrganisationUnit> getObject()
+    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
-        return object;
+        return organisationUnitGroups;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
-
-        level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent ) : level;
-
-        object = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
-
-        FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
-
-        if ( symbol != null )
+        if ( id != null )
         {
-            OrganisationUnitGroupSet typeGroupSet = organisationUnitGroupService
-                .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE );
-            
-            for ( OrganisationUnit organisationUnit : object )
-            {
-                if ( organisationUnit.getFeatureType() != null
-                    && organisationUnit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-                {
-                    organisationUnit.setType( organisationUnit.getGroupNameInGroupSet( typeGroupSet ) );
-                }
-            }
-            
-            return OrganisationUnit.RESULTTYPE_SYMBOL;
+            organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
+                .getOrganisationUnitGroupSet( id ).getOrganisationUnitGroups() );
         }
 
-        return object.size() > 0 ? object.iterator().next().getFeatureType() : NONE;
+        return SUCCESS;
     }
 }
