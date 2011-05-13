@@ -20,7 +20,7 @@
     <script type="text/javascript">
 		var dateFormat = '$encoder.jsEscape($i18n.getString( 'format.date.label.jquery' ) , "'")';
 	</script>    
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery-1.6.1.min.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.ext.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>	
