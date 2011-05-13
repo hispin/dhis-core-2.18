@@ -65,8 +65,6 @@ public class RemoveEnrollmentSelectAction
 
     private Integer patientId;
 
-    private Integer programInstanceId;
-
     private Collection<ProgramInstance> programInstances;
 
     private Collection<ProgramAttribute> programAttributes;
@@ -109,11 +107,6 @@ public class RemoveEnrollmentSelectAction
         this.patientId = patientId;
     }
 
-    public void setProgramInstanceId( Integer programInstanceId )
-    {
-        this.programInstanceId = programInstanceId;
-    }
-
     public Collection<ProgramInstance> getProgramInstances()
     {
         return programInstances;
@@ -137,6 +130,8 @@ public class RemoveEnrollmentSelectAction
     public String execute()
         throws Exception
     {
+        patient = patientService.getPatient( patientId );
+        
         programAttributes = programAttributeService.getAllProgramAttributes();
 
         // ---------------------------------------------------------------------
@@ -144,8 +139,6 @@ public class RemoveEnrollmentSelectAction
         // ---------------------------------------------------------------------
 
         programInstances = new ArrayList<ProgramInstance>();
-
-        patient = patientService.getPatient( patientId );
 
         Collection<Program> programs = programService.getAllPrograms();
 
@@ -158,18 +151,8 @@ public class RemoveEnrollmentSelectAction
             {
                 programInstances.add( instances.iterator().next() );
             }
-
         }
-
-        // ---------------------------------------------------------------------
-        // Get selected programInstance
-        // ---------------------------------------------------------------------
-
-        if ( programInstanceId != null )
-        {
-            programInstance = programInstanceService.getProgramInstance( programInstanceId );
-        }
-
+        
         return SUCCESS;
     }
 }

@@ -41,7 +41,6 @@
     <action name="searchPatient" class="org.hisp.dhis.caseentry.action.caseentry.SearchPatientAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/listPatient.vm</param>
-      <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>     
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>     
     </action>
     

@@ -1,23 +1,22 @@
 <script>
-	jQuery(document).ready(	function(){
+	jQuery('#relationshipSelectForm').ready(	function(){
 		
 		jQuery('name').focus();
 			
-		validation( 'updatePatientIdentifierTypeForm', function(form){
+		validation( 'relationshipSelectForm', function(form){
 			form.submit();
 		}); 
 		
-		checkValueIsExist( "name", "validatePatientIdentifierType.action", {id:getFieldValue('id')});
 	});		
 </script>
 <div>
-    <input type="button" value="$i18n.getString( 'back_to_search' )" onclick="window.location.href='patient.action'" style="width:10em"/>
+    <input type="button" value="$i18n.getString( 'back_to_search' )" onclick="onClickRelationshipBackBtn()" style="width:10em"/>
 </div>
 
 <h3>$i18n.getString( "adding_new_relationship_for" )</h3>
 
 <form id="relationshipSelectForm" name="relationshipSelectForm" method="post" action="showAddRelationshipForm.action" onsubmit="return validateSearchPartner()">
-<input type="hidden" id="id" name="id" value="$patient.id"/>
+<input type="hidden" id="patientId" name="patientId" value="$patient.id"/>
 
 <table>
 <tr>
@@ -59,7 +58,7 @@
             </tr>
             <tr>  
                 <td>
-                    <select id="relationshipTypeId" name="relationshipTypeId" onchange="document.getElementById( 'relationshipSelectForm' ).submit();" #if( $relationshipTypes.size() == 0 ) disabled="disabled" #end>
+                    <select id="relationshipTypeId" name="relationshipTypeId" >
                         <option value="">[$i18n.getString( "select_relationship" )]</option>
                         #foreach( $relationshipType in $relationshipTypes )                        
                             <option value="$relationshipType.id:$encoder.htmlEncode( $relationshipType.aIsToB )" #if( $relationshipTypeId && "$relationshipType.id:$encoder.htmlEncode( $relationshipType.aIsToB )" == $relationshipTypeId ) selected="selected" #end>$encoder.htmlEncode( $relationshipType.aIsToB )</option>
@@ -80,7 +79,7 @@
                     </select> 
                     <em title="$i18n.getString( 'required' )" class="required">*</em>
                     <input type="text" id="searchText" name="searchText" maxlength="30"/>        
-                    <input type="submit" value="$i18n.getString( 'search' )"/>
+                    <input type="button" value="$i18n.getString( 'search' )" onclick="validateSearchPartner('$patient.id')"/>
                 </td> 
             </tr>                  
             <tr>  

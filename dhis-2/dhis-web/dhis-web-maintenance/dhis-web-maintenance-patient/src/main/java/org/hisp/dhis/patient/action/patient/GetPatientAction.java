@@ -114,18 +114,18 @@ public class GetPatientAction
 
     public String execute()
         throws Exception
-    { 
+    {
         patient = patientService.getPatient( id );
-        
+
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
-        
+
         identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        
+
         identiferMap = new HashMap<Integer, String>();
 
         PatientIdentifierType idType = null;
         Patient representative = patient.getRepresentative();
-        
+
         if ( patient.isUnderAge() && representative != null )
         {
             for ( PatientIdentifier representativeIdentifier : representative.getIdentifiers() )
@@ -133,12 +133,12 @@ public class GetPatientAction
                 if ( representativeIdentifier.getIdentifierType() != null
                     && representativeIdentifier.getIdentifierType().isRelated() )
                 {
-                    identiferMap.put( representativeIdentifier.getIdentifierType().getId(),
-                        representativeIdentifier.getIdentifier() );
+                    identiferMap.put( representativeIdentifier.getIdentifierType().getId(), representativeIdentifier
+                        .getIdentifier() );
                 }
             }
         }
-       
+
         for ( PatientIdentifier identifier : patient.getIdentifiers() )
         {
             idType = identifier.getIdentifierType();
@@ -157,9 +157,11 @@ public class GetPatientAction
                 }
             }
             else
+            {
                 systemIdentifier = identifier.getIdentifier();
+            }
         }
-        
+
         for ( PatientAttribute patientAttribute : patient.getAttributes() )
         {
             patientAttributeValueMap.put( patientAttribute.getId(), PatientAttributeValue.UNKNOWN );
@@ -167,7 +169,7 @@ public class GetPatientAction
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
             .getPatientAttributeValues( patient );
-        
+
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
             if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute()
@@ -188,7 +190,7 @@ public class GetPatientAction
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
 
         attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
-        
+
         return SUCCESS;
 
     }

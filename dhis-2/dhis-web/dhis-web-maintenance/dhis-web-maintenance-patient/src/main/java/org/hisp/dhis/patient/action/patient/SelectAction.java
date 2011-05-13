@@ -27,7 +27,11 @@
 
 package org.hisp.dhis.patient.action.patient;
 
+import java.util.Collection;
+
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,6 +53,24 @@ public class SelectAction
         this.selectionManager = selectionManager;
     }
 
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input/output
+    // -------------------------------------------------------------------------
+
+    private Collection<PatientAttribute> patientAttributes;
+
+    public Collection<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -57,6 +79,8 @@ public class SelectAction
         throws Exception
     {
         selectionManager.clearSelectedOrganisationUnits();
+
+        patientAttributes = patientAttributeService.getAllPatientAttributes();
 
         return SUCCESS;
     }

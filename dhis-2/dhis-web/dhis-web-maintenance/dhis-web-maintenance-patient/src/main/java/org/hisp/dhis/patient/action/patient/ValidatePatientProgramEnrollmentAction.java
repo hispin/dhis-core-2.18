@@ -32,8 +32,9 @@ import java.util.Date;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.state.SelectedStateManager;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.validation.ValidationCriteria;
 
 import com.opensymphony.xwork2.Action;
@@ -49,11 +50,18 @@ public class ValidatePatientProgramEnrollmentAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private PatientService patientService;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setPatientService( PatientService patientService )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.patientService = patientService;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     private I18nFormat format;
@@ -66,6 +74,20 @@ public class ValidatePatientProgramEnrollmentAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+    private Integer patientId;
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
+
+    private Integer programId;
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
+    }
 
     private String enrollmentDate;
 
@@ -102,9 +124,9 @@ public class ValidatePatientProgramEnrollmentAction
     public String execute()
         throws Exception
     {
-        Patient patient = selectedStateManager.getSelectedPatient();
+        Patient patient = patientService.getPatient( patientId );
 
-        Program program = selectedStateManager.getSelectedProgram();
+        Program program = programService.getProgram( programId );
 
         ValidationCriteria criteria = program.isValid( patient );
 

@@ -29,17 +29,16 @@ package org.hisp.dhis.patient.action.patient;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * @version $ID : GetPatientsByNameAction.java Dec 23, 2010 9:14:34 AM $
  */
 public class GetPatientsByNameAction
-    implements Action
+    extends ActionPagingSupport<Patient>
 {
     // -------------------------------------------------------------------------
     // Dependency
@@ -54,6 +53,8 @@ public class GetPatientsByNameAction
     private String fullName;
 
     private List<Patient> patients;
+
+    private Integer total;
 
     // -------------------------------------------------------------------------
     // Getter && Setter
@@ -72,6 +73,11 @@ public class GetPatientsByNameAction
     public List<Patient> getPatients()
     {
         return patients;
+    }
+
+    public Integer getTotal()
+    {
+        return total;
     }
 
     // -------------------------------------------------------------------------
@@ -104,7 +110,12 @@ public class GetPatientsByNameAction
             }
         }
 
-        patients = new ArrayList<Patient>( patientService.getPatientsByNames( firstName + " " + middleName + " " + lastName ) );
+        String fullName = firstName + " " + middleName + " " + lastName;
+        total = patientService.countGetPatientsByName( fullName );
+        this.paging = createPaging( total );
+
+        patients = new ArrayList<Patient>( patientService.getPatientsByNames( fullName, paging.getStartPos(), paging
+            .getPageSize() ) );
 
         return SUCCESS;
     }

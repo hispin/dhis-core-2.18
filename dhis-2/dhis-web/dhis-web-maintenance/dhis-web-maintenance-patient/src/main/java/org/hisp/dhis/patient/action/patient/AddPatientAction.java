@@ -110,25 +110,9 @@ public class AddPatientAction
     private Integer representativeId;
 
     private Integer relationshipTypeId;
-
-    // -------------------------------------------------------------------------
-    // OutPut
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
-
+    
+    private String message;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -141,7 +125,7 @@ public class AddPatientAction
 
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        patient = new Patient();
+        Patient patient = new Patient();
 
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
@@ -313,14 +297,21 @@ public class AddPatientAction
         // Save patient
         // -------------------------------------------------------------------------
 
-        id = patientService.createPatient( patient, representativeId, relationshipTypeId, patientAttributeValues );
+        Integer id = patientService.createPatient( patient, representativeId, relationshipTypeId, patientAttributeValues );
 
+        message = id + "";
+        
         return SUCCESS;
     }
 
     // -----------------------------------------------------------------------------
     // Getter/Setter
     // -----------------------------------------------------------------------------
+
+    public String getMessage()
+    {
+        return message;
+    }
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {

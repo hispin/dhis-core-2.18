@@ -3,25 +3,30 @@
 // Add Relationship Patient
 // -----------------------------------------------------------------------------
 
+function showAddRelationshipPatient( patientId )
+{
+	hideById( 'selectDiv' );
+	hideById( 'searchPatientDiv' );
+	hideById( 'listPatientDiv' );
+	hideById( 'listRelationshipDiv' );
+	
+	jQuery('#loaderDiv').show();
+	jQuery('#addRelationshipDiv').load('showAddRelationshipPatient.action',
+		{
+			id:patientId
+		}, function()
+		{
+			showById('addRelationshipDiv');
+			jQuery('#loaderDiv').hide();
+		});
+}
+
 function validateAddRelationshipPatient()
 {
-	var params = '&checkedDuplicate='+checkedDuplicate 
-				+'&fullName=' + getFieldValue( 'fullName' ) 
-				+'&gender=' + getFieldValue( 'gender' ) 
-				+'&dobType=' + getFieldValue( 'dobType' ) 
-				+'&birthDate=' + getFieldValue( 'birthDate' ) 
-				+'&ageType=' + getFieldValue( 'ageType' )
-				+'&age=' + getFieldValue( 'age' ) 
-				+'&genre=' + getFieldValue('gender') 
-				+'&underAge=' + jQuery("#underAge").is(":checked")
-				+'&relationshipId=' + getFieldValue('relationshipId')
-				+'&relationshipTypeId=' + getFieldValue('relationshipTypeId')
-				+ getIdParams();
-	
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addRelationshipPatientCompleted ); 
-	request.sendAsPost( params );	
+	request.sendAsPost( getParamsForDiv('addRelationshipDiv') );	
     request.send( "validateAddRelationshipPatient.action" );        
 
     return false;
@@ -35,7 +40,7 @@ function addRelationshipPatientCompleted( messageElement )
     if ( type == 'success' )
     {
     	removeDisabledIdentifier();
-    	document.getElementById('addRelationshipPatientForm').submit();
+    	addRelationshipPatient();
     }
     else if ( type == 'error' )
     {
@@ -48,8 +53,25 @@ function addRelationshipPatientCompleted( messageElement )
     else if( type == 'duplicate' )
     {
     	if( !checkedDuplicate )
+		{
     		showListPatientDuplicate(messageElement, true);
+		}
     }
+}
+
+function addRelationshipPatient()
+{
+	jQuery('#loaderDiv').show();
+	$.ajax({
+      type: "POST",
+      url: 'addRelationshipPatient.action',
+      data: getParamsForDiv('addRelationshipDiv'),
+      success: function( json ) {
+		setMessage( i18n_save_success );
+		jQuery('#loaderDiv').hide();
+      }
+     });
+    return false;
 }
 
 //remove value of all the disabled identifier fields
@@ -191,3 +213,6 @@ function bdOnchange()
 	jQuery("#age").val("")
 	jQuery("#birthDate").rules("add",{required:true});
 }
+
+
+

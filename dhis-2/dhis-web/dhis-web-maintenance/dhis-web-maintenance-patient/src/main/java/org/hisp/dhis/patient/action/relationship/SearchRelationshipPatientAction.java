@@ -31,24 +31,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.relationship.Relationship;
-import org.hisp.dhis.relationship.RelationshipService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ SearchRelationshipAction.java May 13, 2011 2:38:12 PM $
+ * 
  */
-public class ShowRelationshipListAction
+public class SearchRelationshipPatientAction
     implements Action
 {
-    private static final String RELATIONSHIP_LIST = "relationshiplist";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -60,6 +58,13 @@ public class ShowRelationshipListAction
         this.patientService = patientService;
     }
 
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
     private PatientAttributeValueService patientAttributeValueService;
 
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
@@ -67,57 +72,96 @@ public class ShowRelationshipListAction
         this.patientAttributeValueService = patientAttributeValueService;
     }
 
-    private RelationshipService relationshipService;
-
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
-    }
-    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer patientId;
 
-    public void setId( Integer id )
+    public void setPatientId( Integer patientId )
     {
-        this.id = id;
+        this.patientId = patientId;
     }
 
-    private Patient patient;
+    private String searchText;
 
-    public Patient getPatient()
+    public void setSearchText( String searchText )
     {
-        return patient;
-    }
-    
-    Collection<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
-
-    public Collection<PatientAttributeValue> getPatientAttributeValues()
-    {
-        return patientAttributeValues;
+        this.searchText = searchText;
     }
 
-    Collection<Relationship> relationships;
-
-    public Collection<Relationship> getRelationships()
+    public String getSearchText()
     {
-        return relationships;
+        return searchText;
     }
+
+    private Integer searchingAttributeId;
+
+    public Integer getSearchingAttributeId()
+    {
+        return searchingAttributeId;
+    }
+
+    public void setSearchingAttributeId( Integer searchingAttributeId )
+    {
+        this.searchingAttributeId = searchingAttributeId;
+    }
+
+    private Collection<Patient> patients = new ArrayList<Patient>();
+
+    public Collection<Patient> getPatients()
+    {
+        return patients;
+    }
+
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Input/Output
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( id );
-        
-        patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        Patient patient = patientService.getPatient( patientId );
 
-        relationships = relationshipService.getRelationshipsForPatient( patient );
+        if ( searchingAttributeId != null && searchText != null )
+        {
+            searchText = searchText.trim();
+
+            if ( searchText.length() > 0 )
+            {
+                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
+
+                Collection<PatientAttributeValue> matching = patientAttributeValueService.searchPatientAttributeValue(
+                    patientAttribute, searchText );
+
+                for ( PatientAttributeValue patientAttributeValue : matching )
+                {
+                    patients.add( patientAttributeValue.getPatient() );
+                }
+
+                patients.remove( patient );
+
+                return SUCCESS;
+            }
+
+        }
+
+        if ( searchText != null )
+        {
+            searchText = searchText.trim();
+
+            if ( searchText.length() > 0 )
+            {
+                patients = patientService.getPatientsByNames( searchText );
+
+                patients.remove( patient );
+
+                return SUCCESS;
+            }
+        }
 
         return SUCCESS;
     }
+
 }

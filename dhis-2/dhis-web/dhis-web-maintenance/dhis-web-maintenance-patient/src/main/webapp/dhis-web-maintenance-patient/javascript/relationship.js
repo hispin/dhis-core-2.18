@@ -114,9 +114,19 @@ function removeRelationshipType( relationshipTypeId, aIsToB, bIsToA )
 // Add Relationship
 //------------------------------------------------------------------------------
 
-function showAddRelationship()
+function showAddRelationship( patientId )
 {
-	window.location = "showAddRelationshipForm.action";
+	hideById('listRelationshipDiv');
+	
+	jQuery('#loaderDiv').show();
+	jQuery('#addRelationshipDiv').load('showAddRelationshipForm.action',
+		{
+			patientId:patientId
+		}, function()
+		{
+			showById('addRelationshipDiv');
+			jQuery('#loaderDiv').hide();
+		});
 }
 
 //-----------------------------------------------------------------------------
@@ -125,14 +135,11 @@ function showAddRelationship()
 
 function validateSearchPartner()
 {	
-	
-	var url = 'validateSearch.action?' +
-			'searchText=' + getFieldValue( 'searchText' );	
-	
 	var request = new Request();
 	request.setResponseTypeXML( 'message' );
 	request.setCallbackSuccess( searchValidationCompleted );    
-	request.send( url );        
+	request.sendAsPost(getParamsForDiv('relationshipSelectForm'));
+	request.send( 'validateSearch.action' );        
 
 	return false;
 }
@@ -144,8 +151,31 @@ function searchValidationCompleted( messageElement )
 	
 	if( type == 'success' )
 	{
-		var form = document.getElementById( 'relationshipSelectForm' );        
-		form.submit();
+		jQuery('#loaderDiv').show();
+		jQuery("#relationshipSelectForm :input").each(function()
+			{
+				jQuery(this).attr('disabled', 'disabled');
+			});
+		$.ajax({
+			type: "GET",
+			url: 'searchRelationshipPatient.action',
+			data: getParamsForDiv('relationshipSelectForm'),
+			success: function( json ) {
+				clearListById('availablePartnersList');
+				for ( i in json.patients ) 
+				{
+					addOptionById( 'availablePartnersList', json.patients[i].id, json.patients[i].fullName );
+				} 
+				
+				jQuery("#relationshipSelectForm :input").each(function()
+					{
+						jQuery(this).removeAttr('disabled');
+					});
+					
+				jQuery('#loaderDiv').hide();
+			}
+		});
+		return false;
 	}
 	else if( type == 'error' )
 	{
@@ -159,8 +189,7 @@ function searchValidationCompleted( messageElement )
 
 function addRelationship() 
 {
-	var relationshipType = document.getElementById( 'relationshipTypeId' );
-	var relationshipTypeId = relationshipType.options[relationshipType.selectedIndex].value;
+	var relationshipTypeId = getFieldValue( 'relationshipTypeId' );
 	
 	var partnerList = document.getElementById( 'availablePartnersList' );
 	var partnerId = -1;
@@ -188,10 +217,12 @@ function addRelationship()
 	var relName = relationshipTypeId.substr( relationshipTypeId.indexOf(':') + 1, relationshipTypeId.length );
 	
 	var url = 'saveRelationship.action?' + 
-		'partnerId=' + partnerId + 
+		'patientId=' + getFieldValue('patientId') + 
+		'&partnerId=' + partnerId + 
 		'&relationshipTypeId=' + relTypeId +
 		'&relationshipName=' + relName ;
 	
+	jQuery('#loaderDiv').show();
 	var request = new Request();
 	request.setResponseTypeXML( 'message' );
 	request.setCallbackSuccess( addRelationshipCompleted );    
@@ -208,7 +239,7 @@ function addRelationshipCompleted( messageElement )
 	
 	if( type == 'success' )
 	{
-		window.location = "getRelationshipList.action";
+		setMessage( i18n_save_success );
 	}	
 	else if( type == 'error' )
 	{
@@ -216,8 +247,9 @@ function addRelationshipCompleted( messageElement )
 	}
 	else if( type == 'input' )
 	{
-		setHeaderMessage( message );
+		setMessage( message );
 	}
+	jQuery('#loaderDiv').hide();
 }
 
 //------------------------------------------------------------------------------
@@ -406,13 +438,4 @@ function removeRepresentativeCompleted( messageElement )
 	{
 		setHeaderMessage( message );
 	}
-}
-
-//----------------------------------------------------
-// Add new relationship with new patient
-// ---------------------------------------------------
-
-function showAddRelationshipPatient()
-{
-	window.location = "showAddRelationshipPatient.action";
 }

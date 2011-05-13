@@ -63,8 +63,6 @@ public class ShowAddRelationshipPatientAction
     
     private PatientService patientService;
 
-    private SelectedStateManager selectedStateManager;
-
     private PatientAttributeService patientAttributeService;
     
     private PatientAttributeGroupService patientAttributeGroupService;
@@ -79,6 +77,8 @@ public class ShowAddRelationshipPatientAction
     // Input/Output
     // -------------------------------------------------------------------------
 
+    private Integer id;
+    
     private Collection<PatientAttribute> noGroupAttributes;
    
     private Collection<PatientAttributeGroup> attributeGroups;
@@ -93,15 +93,14 @@ public class ShowAddRelationshipPatientAction
     
     private Map<Integer, String> attributeMap;
     
-    private Integer id;
-    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        
+        patient = patientService.getPatient( id.intValue() );
+    
         identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes(); 
        
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
@@ -109,20 +108,6 @@ public class ShowAddRelationshipPatientAction
         attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
         
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
-        
-        if( id == null )
-        {
-            patient = selectedStateManager.getSelectedPatient();
-        }
-        else 
-        {
-            patient = patientService.getPatient( id.intValue() );
-        }
-        
-        if( patient == null )
-        {
-            return ERROR;
-        }
         
         identiferMap = new HashMap<Integer, String>();
 
@@ -150,11 +135,6 @@ public class ShowAddRelationshipPatientAction
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
-    
-    public Integer getId()
-    {
-        return id;
-    }
 
     public void setId( Integer id )
     {
@@ -198,11 +178,6 @@ public class ShowAddRelationshipPatientAction
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-    
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
     }
     
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )

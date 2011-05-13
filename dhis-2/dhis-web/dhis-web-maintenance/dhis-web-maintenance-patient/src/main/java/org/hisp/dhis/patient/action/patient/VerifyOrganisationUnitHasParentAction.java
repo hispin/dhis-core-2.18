@@ -61,6 +61,14 @@ public class VerifyOrganisationUnitHasParentAction
         this.orgunitId = orgunitId;
     }
 
+    public String getMessage()
+    {
+        return message;
+    }
+
+    private String message;
+    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -68,6 +76,8 @@ public class VerifyOrganisationUnitHasParentAction
     public String execute()
         throws Exception
     {
+        message = "";
+        
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgunitId );
 
         if ( organisationUnit == null )
@@ -80,6 +90,8 @@ public class VerifyOrganisationUnitHasParentAction
             return INPUT;
         }
 
+        message = organisationUnit.getName();
+        
         return SUCCESS;
     }
 }

@@ -18,12 +18,24 @@ function dobTypeOnChange(){
 // Search patients by name
 // ----------------------------------------------------------------------------
 
-function startSearch( )
+function getPatientsByName( )
 {	
 	var fullName = getFieldValue('fullName').replace(/^\s+|\s+$/g,"");
 	if( fullName.length > 0) 
 	{
-		tb_show( i18n_search_result,"getPatientsByName.action?fullName=" + fullName + "&TB_iframe=true&height=400&width=500",null );
+		contentDiv = 'searchPatientsByNameDiv';
+		$('#searchPatientsByNameDiv' ).load("getPatientsByName.action",
+			{
+				fullName: fullName
+			}).dialog({
+				title: i18n_search_result,
+				maximize: true, 
+				closable: true,
+				modal:true,
+				overlay:{ background:'#000000', opacity: 0.8},
+				width: 800,
+				height: 400
+		});
 	}
 	else
 	{
@@ -34,11 +46,6 @@ function startSearch( )
 // ----------------------------------------------------------------------------
 // Show patients
 // ----------------------------------------------------------------------------
-
-function showSearchPatients()
-{
-	tb_show( i18n_child_representative, "#TB_inline?height=350&width=580&inlineId=searchResults",null);	
-}
 
 function isDeathOnChange()
 {
@@ -81,3 +88,23 @@ function filterDE( event, value, fieldName )
 		}
     }	    
 }
+
+// ----------------------------------------------------------------
+// Get Params form Div
+// ----------------------------------------------------------------
+
+function getParamsForDiv( patientDiv)
+{
+	var params = '';
+	jQuery("#" + patientDiv + " :input").each(function()
+		{
+			if( $(this).attr('type') != 'button' )
+			{
+				var elementId = $(this).attr('id');
+				params += elementId + "="+ jQuery(this).val() + "&";
+			}
+		});
+		
+	return params;
+}
+

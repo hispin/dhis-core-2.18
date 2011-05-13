@@ -80,11 +80,11 @@ public class SaveRelationshipAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Patient patient;
-
-    public Patient getPatient()
+    private Integer patientId;
+    
+    public void setPatientId( Integer patientId )
     {
-        return patient;
+        this.patientId = patientId;
     }
 
     private Integer partnerId;
@@ -93,12 +93,7 @@ public class SaveRelationshipAction
     {
         this.partnerId = partnerId;
     }
-
-    public Integer getPartnerId()
-    {
-        return partnerId;
-    }
-
+    
     private Integer relationshipTypeId;
 
     public void setRelationshipTypeId( Integer relationshipTypeId )
@@ -112,7 +107,7 @@ public class SaveRelationshipAction
     {
         this.relationshipName = relationshipName;
     }
-
+    
     private String message;
 
     public String getMessage()
@@ -134,7 +129,7 @@ public class SaveRelationshipAction
     public String execute()
         throws Exception
     {
-        patient = selectedStateManager.getSelectedPatient();
+        Patient patient = patientService.getPatient( patientId );
 
         Patient partner = patientService.getPatient( partnerId );
 
