@@ -10,6 +10,8 @@ G.conf = {
     
     setup: 'gisSetup',
 	thematicMap: 'gisThematicMap',
+	thematicMap2: 'gisThematicMap2',
+    thematicMap3: 'gisThematicMap3',
     overlayRegistration: 'gisOverlay',
 	administration: 'gisAdministration',
 	favorites: 'gisFavoriteMapView',
@@ -89,7 +91,7 @@ G.conf = {
 G.util = {
     
     expandWidget: function(widget) {
-        var collapsed = widget == choropleth ? symbol : choropleth;
+        var collapsed = widget == choropleth ? point : choropleth;
         collapsed.collapse();
         widget.expand();
     },
@@ -406,11 +408,17 @@ G.vars = {
         setPoint: function() {
             this.value = G.conf.thematicMap2;
         },
+        setSymbol: function() {
+            this.value = G.conf.thematicMap3;
+        },
         isPolygon: function() {
             return this.value === G.conf.thematicMap;
         },
         isPoint: function() {
             return this.value === G.conf.thematicMap2;
+        },
+        isSymbol: function() {
+            return this.value === G.conf.thematicMap3;
         }
     }
 };

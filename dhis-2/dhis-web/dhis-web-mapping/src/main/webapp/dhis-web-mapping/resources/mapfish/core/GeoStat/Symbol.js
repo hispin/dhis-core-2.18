@@ -23,111 +23,40 @@
 
 mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
 
-    colors: [
-        new mapfish.ColorRgb(255, 255, 0),
-        new mapfish.ColorRgb(255, 0, 0)
-    ],
-
-    method: mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS,
-
-    numClasses: 5,
-	
-	minSize: 3,
-	
-	maxSize: 20,
-	
-	minVal: null,
-	
-	maxVal: null,
-
-    defaultSymbolizer: {'fillOpacity': 1},
-
     classification: null,
-
-    colorInterpolation: null,
 
     initialize: function(map, options) {
         mapfish.GeoStat.prototype.initialize.apply(this, arguments);
     },
 
     updateOptions: function(newOptions) {
-        var oldOptions = OpenLayers.Util.extend({}, this.options);
         this.addOptions(newOptions);
-        if (newOptions) {
-            this.setClassification();
-        }
-    },
-    
-    createColorInterpolation: function() {
-        var initialColors = this.colors;
-        var numColors = this.classification.bins.length;
-		var mapLegendType = symbol.form.findField('maplegendtype').getValue();
-		
-		if (mapLegendType == G.conf.map_legend_type_automatic) {
-			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
-			for (var i = 0; i < symbol.imageLegend.length && i < this.colorInterpolation.length; i++) {
-				symbol.imageLegend[i].color = this.colorInterpolation[i].toHexString();
-			}
-		}
-		else if (mapLegendType == G.conf.map_legend_type_predefined) {
-			this.colorInterpolation = symbol.colorInterpolation;
-			for (var j = 0; j < symbol.imageLegend.length && j < this.colorInterpolation.length; j++) {
-				symbol.imageLegend[j].color = this.colorInterpolation[j].toHexString();
-			}
-		}
     },
 
-    setClassification: function() {
-        var values = [];
-        for (var i = 0; i < this.layer.features.length; i++) {
-            values.push(this.layer.features[i].attributes.value);
+    applyClassification: function(form) {
+        var panel = Ext.getCmp('groups_p');
+        G.stores.groupsByGroupSet.img = [];
+        for (var i = 0, items = panel.items.items; i < items.length; i++) {
+            G.stores.groupsByGroupSet.img.push(items[i].getRawValue());
         }
         
-        var distOptions = {
-            'labelGenerator' : this.options.labelGenerator
-        };
-        var dist = new mapfish.GeoStat.Distribution(values, distOptions);
-
-		this.minVal = dist.minVal;
-        this.maxVal = dist.maxVal;
-
-        this.classification = dist.classify(
-            this.method,
-            this.numClasses,
-            null
-        );
-
-        this.createColorInterpolation();
-    },
-
-    applyClassification: function(options) {
-        this.updateOptions(options);
-        
-		var calculateRadius = OpenLayers.Function.bind(
-			function(feature) {
-				var value = feature.attributes[this.indicator];
-                var size = (value - this.minVal) / (this.maxVal - this.minVal) *
-					(this.maxSize - this.minSize) + this.minSize;
-                return size || this.minSize;
-            },	this
-		);
-		this.extendStyle(null, {'pointRadius': '${calculateRadius}'}, {'calculateRadius': calculateRadius});
-    
-        var boundsArray = this.classification.getBoundsArray();
-        var rules = new Array(boundsArray.length-1);
-        for (var i = 0; i < boundsArray.length-1; i++) {
-            var rule = new OpenLayers.Rule({
-                symbolizer: {fillColor: this.colorInterpolation[i].toHexString()},
+        var boundsArray = G.stores.groupsByGroupSet.data.items;
+        var rules = new Array(boundsArray.length);
+        for (var i = 0; i < boundsArray.length; i++) {
+            var rule = new OpenLayers.Rule({                
+                symbolizer: {
+                    'pointRadius': 8,
+                    'externalGraphic': '../resources/ext-ux/iconcombo/' + G.stores.groupsByGroupSet.img[i] + '.png'
+                },                
                 filter: new OpenLayers.Filter.Comparison({
-                    type: OpenLayers.Filter.Comparison.BETWEEN,
+                    type: OpenLayers.Filter.Comparison.EQUAL_TO,
                     property: this.indicator,
-                    lowerBoundary: boundsArray[i],
-                    upperBoundary: boundsArray[i + 1]
+                    value: G.stores.groupsByGroupSet.data.items[i].data.name
                 })
             });
             rules[i] = rule;
         }
-
+        
         this.extendStyle(rules);
         mapfish.GeoStat.prototype.applyClassification.apply(this, arguments);
     },
@@ -138,17 +67,19 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
         }
 
         this.legendDiv.update("");
-        for (var i = 0; i < this.classification.bins.length; i++) {
+
+        for (var i = 0; i < G.stores.groupsByGroupSet.data.items.length; i++) {
             var element = document.createElement("div");
-            element.style.backgroundColor = this.colorInterpolation[i].toHexString();
-            element.style.width = "30px";
-            element.style.height = "15px";
+            element.style.backgroundImage = 'url(../resources/ext-ux/iconcombo/' + G.stores.groupsByGroupSet.img[i] + '.png)';
+            element.style.backgroundRepeat = 'no-repeat';
+            element.style.width = "25px";
+            element.style.height = "18px";
             element.style.cssFloat = "left";
-            element.style.marginRight = "10px";
+            element.style.marginLeft = "3px";
             this.legendDiv.appendChild(element);
 
             element = document.createElement("div");
-            element.innerHTML = this.classification.bins[i].label;
+            element.innerHTML = G.stores.groupsByGroupSet.data.items[i].data.name;
             this.legendDiv.appendChild(element);
 
             element = document.createElement("div");

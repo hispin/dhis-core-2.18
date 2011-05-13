@@ -421,6 +421,20 @@
 		</property>
 	</bean>
 
+    <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitGroupsByGroupSetAction" class="org.hisp.dhis.commons.action.GetOrganisationUnitGroupsByGroupSetAction"
+        scope="prototype">
+        <property name="organisationUnitGroupService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        </property>
+    </bean>
+
+    <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitGroupSetsAction" class="org.hisp.dhis.commons.action.GetOrganisationUnitGroupSetsAction"
+        scope="prototype">
+        <property name="organisationUnitGroupService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        </property>
+    </bean>
+
 	<bean id="org.hisp.dhis.commons.action.GetOrganisationUnitLevelsAction" class="org.hisp.dhis.commons.action.GetOrganisationUnitLevelsAction"
 		scope="prototype">
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />

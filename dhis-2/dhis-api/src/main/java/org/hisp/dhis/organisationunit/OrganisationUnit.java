@@ -60,6 +60,7 @@ public class OrganisationUnit
     public static final String FEATURETYPE_MULTIPOLYGON = "MultiPolygon";
     public static final String FEATURETYPE_POLYGON = "Polygon";
     public static final String FEATURETYPE_POINT = "Point";
+    public static final String RESULTTYPE_SYMBOL = "Symbol";
         
     private static final Comparator<OrganisationUnit> COMPARATOR = new OrganisationUnitNameComparator();
     private static final Pattern JSON_COORDINATE_PATTERN = Pattern.compile( "(\\[{3}.*?\\]{3})" );
@@ -320,6 +321,13 @@ public class OrganisationUnit
         }
         
         return null;
+    }
+    
+    public Integer getGroupIdInGroupSet( OrganisationUnitGroupSet groupSet )
+    {
+        final OrganisationUnitGroup group = getGroupInGroupSet( groupSet );
+        
+        return group != null ? group.getId() : null;
     }
     
     public String getGroupNameInGroupSet( OrganisationUnitGroupSet groupSet )

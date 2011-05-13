@@ -325,6 +325,7 @@
             <result name="Point" type="velocity-json">/dhis-web-mapping/geojsonPoint.vm</result>
             <result name="Polygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
             <result name="MultiPolygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
+            <result name="Symbol" type="velocity-json">/dhis-web-mapping/geojsonSymbol.vm</result>
             <result name="none" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
         </action>
 
