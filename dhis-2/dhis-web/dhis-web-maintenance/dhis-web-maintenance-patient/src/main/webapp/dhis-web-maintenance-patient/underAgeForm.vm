@@ -67,198 +67,198 @@ jQuery(document).ready(function()
 
 <!-- TAB Header -->
 <div id="tabs">
-<ul>
-	<li><a href="#tab-1">$i18n.getString("search_existing_person")</a></li>
-	<li><a href="#tab-2">$i18n.getString("add_new_person")</a></li>
-</ul>
+	<ul>
+		<li><a href="#tab-1">$i18n.getString("search_existing_person")</a></li>
+		<li><a href="#tab-2">$i18n.getString("add_new_person")</a></li>
+	</ul>
 
-<!-- Search Person TAB -->
-<div id="tab-1">
-<form id="searchForm" name="searchForm" action="searchPerson.action" action="post" >
-<table>
-	<tr>
-		<td >$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></td>
-		<td >
-			<select name="relationshipTypeId" id="relationshipTypeId">
-				<option value="">[$i18n.getString( "please_select" )]</option>        
-				#foreach ($relationship in $relationshipTypes)
-					<option value="$relationship.id">$!relationship.aIsToB</option>
+	<!-- Search Person TAB -->
+	<div id="tab-1">
+		<form id="searchForm" name="searchForm" action="searchPerson.action" action="post" >
+			<table>
+				<tr>
+					<td >$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></td>
+					<td >
+						<select name="relationshipTypeId" id="relationshipTypeId">
+							<option value="">[$i18n.getString( "please_select" )]</option>        
+							#foreach ($relationship in $relationshipTypes)
+								<option value="$relationship.id">$!relationship.aIsToB</option>
+							#end
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>$i18n.getString("search_by")<em title="$i18n.getString( "required" )" class="required">*</em></td>
+					<td>
+						<select id="searchType" name="searchType" onclick="toggleSearchType(this)">
+							<option value="">[$i18n.getString( "please_select" )]</option>        
+							<option value="identifier">$i18n.getString("identifier")</option>
+							<option value="attribute">$i18n.getString("attribute")</option>
+							<option value="name">$i18n.getString("name")</option>		
+						</select>
+					</td>
+				</tr>
+				<tr id="rowIdentifier" style="display: none">
+					<td>$i18n.getString("identifier_type")</td>
+					<td>
+						<select name="identifierTypeId" id="identifierTypeId" >
+							<option value="">[$i18n.getString( "please_select" )]</option>       
+							#foreach($identifierType in $identifierTypes)
+								<option value="$identifierType.id">$identifierType.name</option>
+							#end
+						</select>
+					</td>
+				</tr>
+				<tr><td colspan="2"></td></tr>
+				<tr id="rowAttribute" style="display: none">
+					<td>$i18n.getString("attribute")</td>
+					<td>
+						<select name="attributeId" id="attributeId" >
+							<option value="">[$i18n.getString( "please_select" )]</option>       
+							#foreach($attribute in $attributes)
+								<option value="$attribute.id">$attribute.name</option>
+							#end
+						</select>
+					</td>
+				</tr>
+				<tr><td colspan="2"></td></tr>
+				<tr>
+					<td>$i18n.getString("search_value")<em title="$i18n.getString( "required" )" class="required">*</em></td>
+					<td><input type="text" name="searchValue" id="searchValue"/></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" value="$i18n.getString('search')"/></td>
+				</tr>
+			</table>
+
+			<div id="listPersons">
+			</div>
+
+		</form>
+	</div>
+
+		<!-- Add Person form TAB -->
+		## Macro for generating the jQuery validation rules 
+		#macro( validate $type $require )
+		  #if( $type == "NUMBER" )
+			{validate:{ number:true #if($require), required:true #end }}
+		  #elseif( $require )
+			{validate:{required:true}}
+		  #end
+		#end
+		<div id="tab-2">
+		<form id="addRepresentativeForm" name="addRepresentativeForm" action="addRepresentative.action" method="post">
+			<table id="formContainer">
+				<tr>
+					<td >$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></td>
+					<td >
+						<select name="relationshipTypeId" id="relationshipTypeId">
+							<option value="">[$i18n.getString( "please_select" )]</option>        
+							#foreach ($relationship in $relationshipTypes)
+								<option value="$relationship.id">$relationship.aIsToB</option>
+							#end
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
+				</tr>
+				<tr>
+					<td><label for="required">$i18n.getString( "full_name" )</label></td>
+					<td class="input-column" >
+						<input type="text" id="fullName" name="fullName" style="width:15em">
+						<img src='../images/magnifier.png' onclick='getPatientsByName();' style="cursor: pointer;">
+					</td>
+				</tr>
+				<tr><td>&nbsp;</td></tr>	
+				<tr>
+					<th colspan="2">$i18n.getString( "demographics" )</th>
+				</tr>
+					
+				<tr>
+					<td><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+					<td>
+						<select id="gender" name="gender" style="min-width:15em">
+							<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
+							<option value="M" >$i18n.getString( "male" )</option>
+							<option value="F">$i18n.getString( "female" )</option>
+							<option value="T">$i18n.getString( "transgender" )</option>
+						</select>
+					</td>		
+				</tr>
+				
+				<tr>
+					<td><label for="dobType">$i18n.getString( "dob_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+					<td>
+						<select id='dobType' name="dobType" style="min-width:15em" onchange="dobTypeOnChange();">
+							<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
+							<option value="V" >$i18n.getString( "verified" )</option>
+							<option value="D" >$i18n.getString( "declared" )</option>
+							<option value="A" >$i18n.getString( "approximated" )</option>
+						</select>
+					</td>
+				   <td></td>
+				</tr>
+				
+				<tr id='birthdaySpan' style="display:none" >
+					<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
+					<td>			
+						<input type="text" id="birthDate" name="birthDate" style="width:13em" onchange="bdOnchange()" >
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr id='ageSpan' style="display:none" >
+					<td><label for="age">$i18n.getString( "age" ) </label><em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
+					<td>
+						<select id="ageType" name="ageType" style="width:8em" >
+							<option value="D"> $i18n.getString('day')</option>
+							<option value="M"> $i18n.getString('month')</option>
+							<option value="Y"> $i18n.getString('year')</option>
+						</select>
+						<input type="text" id="age" name="age"  style="width:6.5em" onchange="ageOnchange()" class="{validate:{number:true, alphanumeric: true}}">
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td><input id="memberValidator" style="display:none" class="{validate:{required:true}}"/></td>
+				</tr>
+				<tr>
+					<td><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
+					<td>
+						<select type="text" id="bloodGroup" name="bloodGroup" style="width:15em" >
+							 <option value="">[$i18n.getString( "please_select" )]</option>
+							<option value="A+">A+</option>
+							<option value="A-">A-</option>
+							<option value="AB+">AB+</option>
+							<option value="AB-">AB-</option>
+							<option value="B+">B+</option>
+							<option value="B-">B-</option>
+							<option value="O+">O+</option>
+							<option value="O-">O-</option>
+						</select>
+					</td>		
+				</tr>
+				<tr><td colspan="2">&nbsp;</td></tr>	
+				<tr><th colspan="2">$i18n.getString( "patient_identifiers" )</th></tr>
+				#foreach ($identifierType in $identifierTypes)
+				<tr>
+						<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+						<td><input type="text" name="iden$identifierType.id" style="width:15em" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}"/></td>	
+				</tr>
 				#end
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>$i18n.getString("search_by")<em title="$i18n.getString( "required" )" class="required">*</em></td>
-		<td>
-			<select id="searchType" name="searchType" onclick="toggleSearchType(this)">
-				<option value="">[$i18n.getString( "please_select" )]</option>        
-				<option value="identifier">$i18n.getString("identifier")</option>
-				<option value="attribute">$i18n.getString("attribute")</option>
-				<option value="name">$i18n.getString("name")</option>		
-			</select>
-		</td>
-	</tr>
-	<tr id="rowIdentifier" style="display: none">
-		<td>$i18n.getString("identifier_type")</td>
-		<td>
-			<select name="identifierTypeId" id="identifierTypeId" >
-				<option value="">[$i18n.getString( "please_select" )]</option>       
-				#foreach($identifierType in $identifierTypes)
-					<option value="$identifierType.id">$identifierType.name</option>
-				#end
-			</select>
-		</td>
-	</tr>
-	<tr><td colspan="2"></td></tr>
-	<tr id="rowAttribute" style="display: none">
-		<td>$i18n.getString("attribute")</td>
-		<td>
-			<select name="attributeId" id="attributeId" >
-				<option value="">[$i18n.getString( "please_select" )]</option>       
-				#foreach($attribute in $attributes)
-					<option value="$attribute.id">$attribute.name</option>
-				#end
-			</select>
-		</td>
-	</tr>
-	<tr><td colspan="2"></td></tr>
-	<tr>
-		<td>$i18n.getString("search_value")<em title="$i18n.getString( "required" )" class="required">*</em></td>
-		<td><input type="text" name="searchValue" id="searchValue"/></td>
-	</tr>
-	<tr>
-		<td colspan="2"><input type="submit" value="$i18n.getString('search')"/></td>
-	</tr>
-</table>
+				<tr><td colspan="2">&nbsp;</td></tr>	
+				<tr>
+					<td colspan="2"><input type="submit" value="$i18n.getString( "add" )" style="width:10em"></td>
+				</tr>
+			</table>
+		</form>
 
-<div id="listPersons">
-</div>
-
-</form>
-</div>
-
-<!-- Add Person form TAB -->
-## Macro for generating the jQuery validation rules 
-#macro( validate $type $require )
-  #if( $type == "NUMBER" )
-  	{validate:{ number:true #if($require), required:true #end }}
-  #elseif( $require )
-  	{validate:{required:true}}
-  #end
-#end
-<div id="tab-2">
-<form id="addRepresentativeForm" name="addRepresentativeForm" action="addRepresentative.action" method="post">
-<table id="formContainer">
-	<tr>
-		<td >$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></td>
-		<td >
-			<select name="relationshipTypeId" id="relationshipTypeId">
-				<option value="">[$i18n.getString( "please_select" )]</option>        
-				#foreach ($relationship in $relationshipTypes)
-					<option value="$relationship.id">$relationship.aIsToB</option>
-				#end
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<th colspan="2">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
-	</tr>
-	<tr>
-		<td><label for="required">$i18n.getString( "full_name" )</label></td>
-		<td class="input-column" >
-			<input type="text" id="fullName" name="fullName" style="width:15em">
-			<img src='../images/magnifier.png' onclick='startSearch();' style="cursor: pointer;">
-		</td>
-	</tr>
-	<tr><td>&nbsp;</td></tr>	
-	<tr>
-		<th colspan="2">$i18n.getString( "demographics" )</th>
-	</tr>
-		
-	<tr>
-		<td><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td>
-			<select id="gender" name="gender" style="min-width:15em">
-				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-				<option value="M" >$i18n.getString( "male" )</option>
-				<option value="F">$i18n.getString( "female" )</option>
-				<option value="T">$i18n.getString( "transgender" )</option>
-			</select>
-		</td>		
-	</tr>
-	
-	<tr>
-		<td><label for="dobType">$i18n.getString( "dob_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td>
-			<select id='dobType' name="dobType" style="min-width:15em" onchange="dobTypeOnChange();">
-				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-				<option value="V" >$i18n.getString( "verified" )</option>
-				<option value="D" >$i18n.getString( "declared" )</option>
-				<option value="A" >$i18n.getString( "approximated" )</option>
-			</select>
-        </td>
-	   <td></td>
-	</tr>
-	
-	<tr id='birthdaySpan' style="display:none" >
-		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
-		<td>			
-			<input type="text" id="birthDate" name="birthDate" style="width:13em" onchange="bdOnchange()" >
-		</td>
-		<td></td>
-	</tr>
-	
-	<tr id='ageSpan' style="display:none" >
-		<td><label for="age">$i18n.getString( "age" ) </label><em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
-		<td>
-			<select id="ageType" name="ageType" style="width:8em" >
-				<option value="D"> $i18n.getString('day')</option>
-				<option value="M"> $i18n.getString('month')</option>
-				<option value="Y"> $i18n.getString('year')</option>
-			</select>
-			<input type="text" id="age" name="age"  style="width:6.5em" onchange="ageOnchange()" class="{validate:{number:true, alphanumeric: true}}">
-		</td>
-		<td></td>
-	</tr>
-	
-	<tr>
-		<td></td>
-		<td><input id="memberValidator" style="display:none" class="{validate:{required:true}}"/></td>
-	</tr>
- 	<tr>
-		<td><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
-		<td>
-			<select type="text" id="bloodGroup" name="bloodGroup" style="width:15em" >
-				 <option value="">[$i18n.getString( "please_select" )]</option>
-				<option value="A+">A+</option>
-				<option value="A-">A-</option>
-				<option value="AB+">AB+</option>
-				<option value="AB-">AB-</option>
-				<option value="B+">B+</option>
-				<option value="B-">B-</option>
-				<option value="O+">O+</option>
-				<option value="O-">O-</option>
-			</select>
-		</td>		
-	</tr>
-	<tr><td colspan="2">&nbsp;</td></tr>	
-	<tr><th colspan="2">$i18n.getString( "patient_identifiers" )</th></tr>
-	#foreach ($identifierType in $identifierTypes)
-	<tr>
-			<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-			<td><input type="text" name="iden$identifierType.id" style="width:15em" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}"/></td>	
-	</tr>
-	#end
-	<tr><td colspan="2">&nbsp;</td></tr>	
-	<tr>
-		<td colspan="2"><input type="submit" value="$i18n.getString( "add" )" style="width:10em"></td>
-	</tr>
-</table>
-</form>
-
-<div id="listPersonsDuplicate">
-</div>
-</div>
+		<div id="listPersonsDuplicate">
+		</div>
+	</div>
 </div>
 <script>
 

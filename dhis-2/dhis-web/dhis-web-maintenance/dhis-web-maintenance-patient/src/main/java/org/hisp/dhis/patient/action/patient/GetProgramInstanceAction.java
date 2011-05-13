@@ -25,75 +25,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.relationship;
+package org.hisp.dhis.patient.action.patient;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.state.SelectedStateManager;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.relationship.Relationship;
-import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ GetProgramInstanceAction.java May 12, 2011 9:58:11 PM $
+ * 
  */
-public class GetRelationshipListAction
+public class GetProgramInstanceAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private ProgramInstanceService programInstanceService;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
-        this.selectedStateManager = selectedStateManager;
-    }
-
-    private PatientAttributeValueService patientAttributeValueService;
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
-
-    private RelationshipService relationshipService;
-
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
+        this.programInstanceService = programInstanceService;
     }
 
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Patient patient;
+    private Integer programInstanceId;
 
-    public Patient getPatient()
+    public void setProgramInstanceId( Integer programInstanceId )
     {
-        return patient;
+        this.programInstanceId = programInstanceId;
     }
 
-    Collection<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
+    private ProgramInstance programInstance;
 
-    public Collection<PatientAttributeValue> getPatientAttributeValues()
+    public ProgramInstance getProgramInstance()
     {
-        return patientAttributeValues;
-    }
-
-    Collection<Relationship> relationships;
-
-    public Collection<Relationship> getRelationships()
-    {
-        return relationships;
+        return programInstance;
     }
 
     // -------------------------------------------------------------------------
@@ -103,12 +76,8 @@ public class GetRelationshipListAction
     public String execute()
         throws Exception
     {
-        patient = selectedStateManager.getSelectedPatient();
-
-        patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
-
-        relationships = relationshipService.getRelationshipsForPatient( patient );
-
+        programInstance = programInstanceService.getProgramInstance( programInstanceId );
+        
         return SUCCESS;
     }
 }

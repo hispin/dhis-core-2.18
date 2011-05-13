@@ -1,5 +1,5 @@
 <div>
-    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="window.location.href='patient.action'" style="width:10em">
+    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="onClickBackBtn();" style="width:10em">
 </div>
 
 <h3>$i18n.getString( "relationship_management" )</h3>
@@ -39,10 +39,10 @@
                 <tr>
                     <td></td> 
                     <td style="text-align:right">
-                        <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:showAddRelationship()">                                                              
+                        <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:showAddRelationship('$patient.id')">                                                              
                     </td>
                     <td style="text-align:right">
-                        <input type="button" value="$i18n.getString( "add_new_patient" )" onclick="javascript:showAddRelationshipPatient()">                                                              
+                        <input type="button" value="$i18n.getString( "add_new_patient" )" onclick="javascript:showAddRelationshipPatient('$patient.id')">                                                              
                     </td>
                 </tr>
           
@@ -51,9 +51,10 @@
                     <th>$i18n.getString( "full_name" )</th>
                     <th style="text-align:center">$i18n.getString( "operations" )</th>
                 </tr>
-                <tbody id="list">                
+                <tbody id="list"> 
+					#set( $mark = false )
                     #foreach( $relationship in $relationships )
-                        <tr id="tr${relationship.id}">
+                        <tr id="tr${relationship.id}" #alternate( $mark ) >
                             #set( $partnerId = false )    
                             #if( $relationship.patientA.id == $patient.id )
                                 #set( $partnerId = $relationship.patientB.id )
@@ -80,6 +81,7 @@
                                 <a href="javascript:removeRelationship( '$relationship.id', '$encoder.jsEncode( $relationship.patientA.getFullName() )', '$encoder.jsEncode( $relationship.relationshipType.aIsToB )', '$encoder.jsEncode( $relationship.patientB.getFullName() )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
                             </td>   						
                         </tr>
+						#set( $mark = !$mark)
                     #end
                 </tbody>
             </table>

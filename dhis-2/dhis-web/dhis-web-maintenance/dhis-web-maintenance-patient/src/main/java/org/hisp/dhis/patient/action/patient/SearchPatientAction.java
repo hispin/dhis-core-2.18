@@ -39,7 +39,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
@@ -62,8 +61,6 @@ public class SearchPatientAction
     // -------------------------------------------------------------------------
 
     private OrganisationUnitSelectionManager selectionManager;
-
-    private SelectedStateManager selectedStateManager;
 
     private PatientService patientService;
 
@@ -124,16 +121,6 @@ public class SearchPatientAction
         this.patientService = patientService;
     }
 
-    public Program getProgram()
-    {
-        return program;
-    }
-
-    public void setProgram( Program program )
-    {
-        this.program = program;
-    }
-
     public Map<Integer, String> getMapPatientOrgunit()
     {
         return mapPatientOrgunit;
@@ -154,19 +141,9 @@ public class SearchPatientAction
         this.searchText = searchText;
     }
 
-    public String getSearchText()
-    {
-        return searchText;
-    }
-
     public void setListAll( Boolean listAll )
     {
         this.listAll = listAll;
-    }
-
-    public Integer getSearchingAttributeId()
-    {
-        return searchingAttributeId;
     }
 
     public void setProgramId( Integer programId )
@@ -189,29 +166,14 @@ public class SearchPatientAction
         return total;
     }
 
-    public Integer getSortPatientAttributeId()
-    {
-        return sortPatientAttributeId;
-    }
-
     public void setSortPatientAttributeId( Integer sortPatientAttributeId )
     {
         this.sortPatientAttributeId = sortPatientAttributeId;
     }
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     public Map<Integer, String> getMapPatientPatientAttr()
     {
         return mapPatientPatientAttr;
-    }
-
-    public void setMapPatientPatientAttr( Map<Integer, String> mapPatientPatientAttr )
-    {
-        this.mapPatientPatientAttr = mapPatientPatientAttr;
     }
 
     // -------------------------------------------------------------------------
@@ -231,12 +193,6 @@ public class SearchPatientAction
         
         if ( listAll != null && listAll )
         {
-            selectedStateManager.clearSearchingAttributeId();
-            selectedStateManager.clearSortingAttributeId();
-            selectedStateManager.clearSearchText();
-            selectedStateManager.clearSelectedProgram();
-            selectedStateManager.setListAll( listAll );
-
             listAllPatient( organisationUnit, sortingPatientAttribute );
 
             return SUCCESS;
@@ -250,18 +206,6 @@ public class SearchPatientAction
         {
             program = programService.getProgram( programId );
 
-            if ( sortPatientAttributeId != null )
-            {
-                selectedStateManager.setSortingAttributeId( sortPatientAttributeId );
-            }
-            else
-            {
-                selectedStateManager.clearSortingAttributeId();
-            }
-            
-            selectedStateManager.setSelectedProgram( program );
-            selectedStateManager.setSearchingAttributeId( searchingAttributeId );
-            
             searchPatientByProgram( organisationUnit, program, sortingPatientAttribute );
 
             return SUCCESS;
@@ -274,93 +218,15 @@ public class SearchPatientAction
         
         if ( searchingPatientAttribute != null && searchText != null )
         {
-            selectedStateManager.clearListAll();
-            selectedStateManager.setSearchingAttributeId( searchingAttributeId );
-
-            if ( sortPatientAttributeId != null )
-            {
-                selectedStateManager.setSortingAttributeId( sortPatientAttributeId );
-            }
-            else
-            {
-                selectedStateManager.clearSortingAttributeId();
-            }
-            
-            if ( programId != null )
-            {
-                selectedStateManager.clearSortingAttributeId();
-            }
-            
-            selectedStateManager.setSearchText( searchText );
-
             searchPatientByAttribute( searchingPatientAttribute, searchText, sortingPatientAttribute );
 
             return SUCCESS;
         }
          
-        if ( searchingPatientAttribute == null && searchText != null )
-        {
-            selectedStateManager.clearListAll();
+        // searchingPatientAttribute == null && searchText != null 
 
-            selectedStateManager.clearSearchingAttributeId();
-
-            if ( sortPatientAttributeId != null )
-            {
-                selectedStateManager.setSortingAttributeId( sortPatientAttributeId );
-            }
-            else
-            {
-                selectedStateManager.clearSortingAttributeId();
-            }
-
-            if ( programId != null )
-            {
-                selectedStateManager.clearSortingAttributeId();
-            }
-            
-            selectedStateManager.setSearchText( searchText );
-
-            searchPatientByAttribute( searchText, sortingPatientAttribute );
-
-            return SUCCESS;
-        }
-
-        // ---------------------------------------------------------------------
-        // Search patients by values into section
-        // ---------------------------------------------------------------------
-
-        listAll = selectedStateManager.getListAll();
-        searchingAttributeId = selectedStateManager.getSearchingAttributeId();
-        sortPatientAttributeId = selectedStateManager.getSortAttributeId();
-        searchText = selectedStateManager.getSearchText();
-        program = selectedStateManager.getSelectedProgram();
-
-        setParamsToSearch();
-
-        if ( listAll )
-        {
-            listAllPatient( organisationUnit, sortingPatientAttribute );
-            return SUCCESS;
-        }
-
-        if ( searchingAttributeId != null && searchingAttributeId == 0 && program != null )
-        {
-            searchPatientByProgram( organisationUnit, program, sortingPatientAttribute );
-            return SUCCESS;
-        }
-
-        if ( searchingAttributeId != null && searchText != null )
-        {
-            searchPatientByAttribute( searchText, sortingPatientAttribute );
-            return SUCCESS;
-        }
-
-        if ( searchingAttributeId == null && searchText != null )
-        {
-            searchPatientByAttribute( searchText, sortingPatientAttribute );
-            return SUCCESS;
-        }
-
+        searchPatientByAttribute( searchText, sortingPatientAttribute );
+       
         return SUCCESS;
     }
 

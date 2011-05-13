@@ -85,8 +85,6 @@ public class RemoveEnrollmentAction
 
     private Collection<Program> programs = new ArrayList<Program>();
 
-    private Patient patient;
-
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -121,11 +119,6 @@ public class RemoveEnrollmentAction
         this.format = format;
     }
 
-    public Patient getPatient()
-    {
-        return patient;
-    }
-
     public Collection<Program> getPrograms()
     {
         return programs;
@@ -146,7 +139,7 @@ public class RemoveEnrollmentAction
 
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
-        patient = programInstance.getPatient();
+        Patient patient = programInstance.getPatient();
 
         Program program = programInstance.getProgram();
 

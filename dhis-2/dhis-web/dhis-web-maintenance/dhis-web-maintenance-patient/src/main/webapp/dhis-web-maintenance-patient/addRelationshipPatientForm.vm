@@ -8,7 +8,7 @@
 #end
 
 <script>
-	jQuery(document).ready(	function(){
+	jQuery('#addRelationshipPatientForm').ready(	function(){
 
 		datePickerValid( 'birthDate' );
 		
@@ -32,11 +32,13 @@
 		});
 	});		
 </script>
+<div>
+    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="onClickRelationshipBackBtn();" style="width:10em">
+</div>
 
 <h3>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h3>
-
-																			
-<form  id="addRelationshipPatientForm" action="addRelationshipPatient.action" method="get">
+																		
+<form  id="addRelationshipPatientForm" action="addRelationshipPatient.action" method="get" >
 <input type="hidden" id="relationshipId"  name="relationshipId" value="$patient.id"/> 
 <table>	
 	<tr>
@@ -58,7 +60,7 @@
 		<td><label for="fullName">$i18n.getString( "full_name" )</label></td>
 		<td class="input-column" >
 			<input type="text" id="fullName" name="fullName" style="width:28em" class="{validate:{required:true, unicodechars:true, rangelength:[7,50]}}">
-			<img src='../images/magnifier.png' onclick='startSearch();' style="cursor: pointer;">
+			<img src='../images/magnifier.png' onclick='getPatientsByName();' style="cursor: pointer;">
 		</td>
 	</tr>
 	<tr><td>&nbsp;</td></tr>	
@@ -236,7 +238,6 @@
 
 <p style="margin-top:10px">
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='patient.action'" style="width:10em"/>
 </p>
 </form> 	
 	

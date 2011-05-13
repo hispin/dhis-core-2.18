@@ -23,7 +23,7 @@
 </script>
 
 <div>
-    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="window.location.href='patient.action'" style="width:10em">
+    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="onClickBackBtn();" style="width:10em">
 </div>
 
 <h3>$i18n.getString( "program_unenrollment" )</h3>
@@ -52,23 +52,26 @@
 
 <hr style="clear:both">
 
-<form id="programEnrollmentForm" name="programEnrollmentForm" method="get" action='showProgramUnEnrollmentForm.action'>
+<form id="programEnrollmentForm" name="programEnrollmentForm" method="post">
+
 <input type="hidden" id="patientId" name="patientId" value="$patient.id">    
+
 <table>    
     <tr>
         <td style="width:180px"><label for="programId">$i18n.getString( "program" )</label></td>
         <td>
-            <select id="programInstanceId" name="programInstanceId" onchange="window.location.href='showProgramUnEnrollmentForm.action?patientId=$patient.id&programInstanceId=' + this.value" style="min-width:200px" >
+            <select id="programInstanceId" name="programInstanceId" onchange="showUnenrollmentForm('$patient.id', jQuery('#programInstanceId :selected').attr('programId') )" style="min-width:200px" >
                 <option value="0">[$i18n.getString( "select" )]</option>
                 #foreach( $instance in $programInstances )
-                    <option value="$instance.id" #if($instance.id == $programInstance.id) selected #end>$encoder.htmlEncode( $instance.program.name )</option>
+                    <option value="$instance.id" programId="$instance.program.id" >$encoder.htmlEncode( $instance.program.name )</option>
                 #end
             </select>
         </td>
     </tr>   
         
 </table>
-#if( $!programInstance )
+
+<div id='unenrollmentFormDiv' style='display:none;'>
 	
 	<table width="100%">
 		<tr>
@@ -135,11 +138,11 @@
 	<table>
 		<tr>
 			<td style="width:180px">
-				<input type="button" value='$i18n.getString( "unenroll" )' onclick="javascript: removeEnrollment();" #if( $!programInstance.enrollmentDate ) #else disabled #end>
+				<input type="button" value='$i18n.getString( "unenroll" )' onclick="javascript:unenrollmentForm( getFieldValue('programInstanceId') );" >
 			</td>                                        
 		</tr>
 	</table>
-#end
+</div>
 
 </form>
 

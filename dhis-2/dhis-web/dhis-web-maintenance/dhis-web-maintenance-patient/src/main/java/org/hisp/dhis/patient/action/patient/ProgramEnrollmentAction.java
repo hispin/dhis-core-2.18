@@ -30,13 +30,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.state.SelectedStateManager;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
-
 
 import com.opensymphony.xwork2.Action;
 
@@ -50,96 +49,72 @@ public class ProgramEnrollmentAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private SelectedStateManager selectedStateManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-    
+    private PatientService patientService;
+
     private ProgramService programService;
+
+    private ProgramInstanceService programInstanceService;
+
+    // -------------------------------------------------------------------------
+    // Input/Output
+    // -------------------------------------------------------------------------
+
+    private Integer patientId;
+
+    private Integer programId;
+
+    private Patient patient;
+
+    private Program program;
+    
+    private ProgramInstance programInstance;
+
+    private Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
+
+    // -------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
 
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
     }
 
-    private ProgramInstanceService programInstanceService;
-
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
-    }    
-
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
     }
 
-    public Integer getId()
+    public void setPatientId( Integer patientId )
     {
-        return id;
+        this.patientId = patientId;
     }
-
-    private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
-
-    private Integer programId;
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
-    public Integer getProgramId()
-    {
-        return programId;
-    }
-
-    private Integer programInstanceId;
-
-    public Integer getProgramInstanceId()
-    {
-        return programInstanceId;
-    }
-
-    public void setProgramInstanceId( Integer programInstanceId )
-    {
-        this.programInstanceId = programInstanceId;
-    }   
-
-    private Collection<Program> programs = new ArrayList<Program>();
-
-    public Collection<Program> getPrograms()
-    {
-        return programs;
-    }    
-    
-
-    private ProgramInstance programInstance;
 
     public ProgramInstance getProgramInstance()
     {
         return programInstance;
     }
 
-    public void setProgramInstance( ProgramInstance programInstance )
+    public Patient getPatient()
     {
-        this.programInstance = programInstance;
+        return patient;
     }
-    
-    private Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
+    }
 
     public Collection<ProgramStageInstance> getProgramStageInstances()
     {
@@ -152,15 +127,11 @@ public class ProgramEnrollmentAction
 
     public String execute()
         throws Exception
-    {    
-        
-        patient = selectedStateManager.getSelectedPatient();
+    {
 
-        Program program = selectedStateManager.getSelectedProgram();
-        
-        programId = program.getId();       
+        patient = patientService.getPatient( patientId );
 
-        programs = programService.getAllPrograms();
+        program = programService.getProgram( programId );
 
         // ---------------------------------------------------------------------
         // Load active ProgramInstance, completed = false
@@ -172,10 +143,10 @@ public class ProgramEnrollmentAction
         if ( programInstances.iterator().hasNext() )
         {
             programInstance = programInstances.iterator().next();
-            
+
             programStageInstances = programInstance.getProgramStageInstances();
         }
-        
+
         return SUCCESS;
     }
 }

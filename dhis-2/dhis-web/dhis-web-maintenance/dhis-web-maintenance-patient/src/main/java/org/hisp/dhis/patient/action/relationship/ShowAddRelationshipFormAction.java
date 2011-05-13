@@ -37,9 +37,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.state.SelectedStateManager;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 
@@ -70,13 +67,6 @@ public class ShowAddRelationshipFormAction
         this.selectionManager = selectionManager;
     }
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     private PatientService patientService;
 
     public void setPatientService( PatientService patientService )
@@ -91,16 +81,16 @@ public class ShowAddRelationshipFormAction
         this.patientAttributeService = patientAttributeService;
     }
 
-    private PatientAttributeValueService patientAttributeValueService;
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
-
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+    private Integer patientId;
+    
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
 
     private OrganisationUnit organisationUnit;
 
@@ -119,13 +109,6 @@ public class ShowAddRelationshipFormAction
     public void setPatient( Patient patient )
     {
         this.patient = patient;
-    }
-
-    private Collection<Patient> patients = new ArrayList<Patient>();
-
-    public Collection<Patient> getPatients()
-    {
-        return patients;
     }
 
     Collection<PatientAttribute> patientAttributes;
@@ -154,82 +137,20 @@ public class ShowAddRelationshipFormAction
         return relationshipTypes;
     }
 
-    private String searchText;
-
-    public void setSearchText( String searchText )
-    {
-        this.searchText = searchText;
-    }
-
-    public String getSearchText()
-    {
-        return searchText;
-    }
-
-    private Integer searchingAttributeId;
-
-    public Integer getSearchingAttributeId()
-    {
-        return searchingAttributeId;
-    }
-
-    public void setSearchingAttributeId( Integer searchingAttributeId )
-    {
-        this.searchingAttributeId = searchingAttributeId;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-
-        patient = selectedStateManager.getSelectedPatient();
-
-        relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
+        patient = patientService.getPatient( patientId );
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        
+        relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
-
-        if ( searchingAttributeId != null && searchText != null )
-        {
-            searchText = searchText.trim();
-
-            if ( searchText.length() > 0 )
-            {
-                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
-
-                Collection<PatientAttributeValue> matching = patientAttributeValueService.searchPatientAttributeValue(
-                    patientAttribute, searchText );
-
-                for ( PatientAttributeValue patientAttributeValue : matching )
-                {
-                    patients.add( patientAttributeValue.getPatient() );
-                }
-
-                patients.remove( patient );
-
-                return SUCCESS;
-            }
-
-        }
-
-        if ( searchText != null )
-        {
-            searchText = searchText.trim();
-
-            if ( searchText.length() > 0 )
-            {
-                patients = patientService.getPatientsByNames( searchText );
-
-                patients.remove( patient );
-
-                return SUCCESS;
-            }
-        }
-
+        
         return SUCCESS;
     }
 }

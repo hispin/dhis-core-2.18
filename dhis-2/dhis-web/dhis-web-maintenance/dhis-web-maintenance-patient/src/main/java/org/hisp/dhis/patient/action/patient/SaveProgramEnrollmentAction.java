@@ -33,7 +33,6 @@ import java.util.Date;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -84,13 +83,6 @@ public class SaveProgramEnrollmentAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -102,23 +94,31 @@ public class SaveProgramEnrollmentAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer patientId;
 
-    public void setId( Integer id )
+    public void setPatientId( Integer patientId )
     {
-        this.id = id;
+        this.patientId = patientId;
     }
-
-    public Integer getId()
+    
+    private Integer programId;
+    
+    public void setProgramId( Integer programId )
     {
-        return id;
+        this.programId = programId;
     }
-
+    
     private Patient patient;
 
     public Patient getPatient()
     {
         return patient;
+    }
+    private Program program;
+    
+    public Program getProgram()
+    {
+        return program;
     }
 
     private ProgramInstance programInstance;
@@ -126,30 +126,6 @@ public class SaveProgramEnrollmentAction
     public ProgramInstance getProgramInstance()
     {
         return programInstance;
-    }
-
-    private Integer programId;
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
-    public Integer getProgramId()
-    {
-        return programId;
-    }
-
-    private Integer programInstanceId;
-
-    public Integer getProgramInstanceId()
-    {
-        return programInstanceId;
-    }
-
-    public void setProgramInstanceId( Integer programInstanceId )
-    {
-        this.programInstanceId = programInstanceId;
     }
 
     private String enrollmentDate;
@@ -166,25 +142,11 @@ public class SaveProgramEnrollmentAction
         this.dateOfIncident = dateOfIncident;
     }
 
-    private Collection<Program> programs = new ArrayList<Program>();
-
-    public Collection<Program> getPrograms()
-    {
-        return programs;
-    }
-
     private Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
     public Collection<ProgramStageInstance> getProgramStageInstances()
     {
         return programStageInstances;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
     }
 
     // -------------------------------------------------------------------------
@@ -195,13 +157,9 @@ public class SaveProgramEnrollmentAction
         throws Exception
     {
 
-        patient = selectedStateManager.getSelectedPatient();
+        patient = patientService.getPatient( patientId );
 
-        Program program = selectedStateManager.getSelectedProgram();
-
-        programId = program.getId();
-
-        programs = programService.getAllPrograms();
+        program = programService.getProgram( programId );
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
             false );

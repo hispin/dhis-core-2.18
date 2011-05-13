@@ -29,11 +29,10 @@ package org.hisp.dhis.patient.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
@@ -45,17 +44,15 @@ import com.opensymphony.xwork2.Action;
 public class ProgramEnrollmentSelectAction
     implements Action
 {
-    private static final String PROGRAM_ENROLLMENT_FORM = "enrollmentform";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     private PatientService patientService;
@@ -71,33 +68,16 @@ public class ProgramEnrollmentSelectAction
     {
         this.programService = programService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public void setId( Integer id )
     {
         this.id = id;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    private Integer programId;
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
-    public Integer getProgramId()
-    {
-        return programId;
     }
 
     private Patient patient;
@@ -107,28 +87,11 @@ public class ProgramEnrollmentSelectAction
         return patient;
     }
 
-    public void setPatient( Patient patient )
-    {
-        this.patient = patient;
-    }
-
     private Collection<Program> programs = new ArrayList<Program>();
 
     public Collection<Program> getPrograms()
     {
         return programs;
-    }
-
-    private ProgramInstance programInstance;
-
-    public ProgramInstance getProgramInstance()
-    {
-        return programInstance;
-    }
-
-    public void setProgramInstance( ProgramInstance programInstance )
-    {
-        this.programInstance = programInstance;
     }
 
     // -------------------------------------------------------------------------
@@ -138,67 +101,10 @@ public class ProgramEnrollmentSelectAction
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Validate selected Patient
-        // ---------------------------------------------------------------------
+        patient = patientService.getPatient( id );
 
-        if ( id != null )
-        {
-            patient = patientService.getPatient( id );
-        }
+        programs = programService.getPrograms( selectionManager.getSelectedOrganisationUnit() );
 
-        else if ( id == null )
-        {
-            patient = selectedStateManager.getSelectedPatient();
-        }
-
-        if ( patient == null )
-        {
-            programId = null;
-
-            selectedStateManager.clearSelectedPatient();
-            selectedStateManager.clearSelectedProgram();
-
-            return SUCCESS;
-        }
-
-        selectedStateManager.setSelectedPatient( patient );
-
-        // ---------------------------------------------------------------------
-        // Load Programs
-        // ---------------------------------------------------------------------
-
-        programs = programService.getPrograms( selectedStateManager.getSelectedOrganisationUnit() );
-
-        // ---------------------------------------------------------------------
-        // Validate selected Program
-        // ---------------------------------------------------------------------
-
-        Program selectedProgram;
-
-        if ( programId != null )
-        {
-            selectedProgram = programService.getProgram( programId );
-        }
-        else
-        {
-            selectedProgram = selectedStateManager.getSelectedProgram();
-        }
-
-        if ( selectedProgram != null && programs.contains( selectedProgram ) )
-        {
-            programId = selectedProgram.getId();
-            selectedStateManager.setSelectedProgram( selectedProgram );
-        }
-        else
-        {
-            programId = null;
-
-            selectedStateManager.clearSelectedProgram();
-
-            return SUCCESS;
-        }
-
-        return PROGRAM_ENROLLMENT_FORM;
+        return SUCCESS;
     }
 }
