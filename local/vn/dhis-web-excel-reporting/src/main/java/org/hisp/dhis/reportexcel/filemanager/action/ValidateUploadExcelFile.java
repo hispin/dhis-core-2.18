@@ -156,13 +156,6 @@ public class ValidateUploadExcelFile
 
         File output = new File( templateDirectoryConfig, uploadFileName );
 
-        if ( !output.canWrite() )
-        {
-            message = i18n.getString( "access_denied_to_file" );
-
-            return ERROR;
-        }
-
         if ( output.exists() )
         {
             message = i18n.getString( "override_confirm" );
