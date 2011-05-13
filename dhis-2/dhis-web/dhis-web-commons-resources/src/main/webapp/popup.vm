@@ -4,9 +4,9 @@
     <title>DHIS 2</title>
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/$stylesheet">
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/theme/jquery-ui-1.8.6.css">	
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/theme/ui.thickbox.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/theme/jquery.cluetip.css">
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.8.12.custom.css">	
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/ui.thickbox.css">
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/jquery.cluetip.css">
     	
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
