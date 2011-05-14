@@ -55,6 +55,8 @@ public interface SystemSettingManager
     final String KEY_AGGREGATION_STRATEGY = "aggregationStrategy";
     final String KEY_COMPLETENESS_OFFSET = "completenessOffset";
     final String KEY_PATIENT_EXCEL_TEMPLATE_FILE_NAME = "patientExcelTemplateFileName";
+    final String KEY_DATAMART_TASK = "keyDataMartTask";
+    final String KEY_DATASETCOMPLETENESS_TASK = "keyDataSetCompletenessTask";
     
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
