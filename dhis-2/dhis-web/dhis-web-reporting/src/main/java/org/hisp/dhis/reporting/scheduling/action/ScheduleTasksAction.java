@@ -27,18 +27,13 @@ package org.hisp.dhis.reporting.scheduling.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.ServiceProvider;
-import org.hisp.dhis.completeness.DataSetCompletenessService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartService;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.scheduling.DataMartTask;
-import org.hisp.dhis.system.scheduling.DataSetCompletenessTask;
+import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.scheduling.SchedulingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
 
 import com.opensymphony.xwork2.Action;
+
+import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -50,53 +45,18 @@ public class ScheduleTasksAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private Scheduler scheduler;
+    private SystemSettingManager systemSettingManager;
     
-    public void setScheduler( Scheduler scheduler )
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.scheduler = scheduler;
-    }
-
-    private DataMartService dataMartService;
-
-    public void setDataMartService( DataMartService dataMartService )
-    {
-        this.dataMartService = dataMartService;
+        this.systemSettingManager = systemSettingManager;
     }
     
-    private ServiceProvider<DataSetCompletenessService> serviceProvider;
+    private SchedulingManager schedulingManager;
 
-    public void setServiceProvider( ServiceProvider<DataSetCompletenessService> serviceProvider )
+    public void setSchedulingManager( SchedulingManager schedulingManager )
     {
-        this.serviceProvider = serviceProvider;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-    
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
+        this.schedulingManager = schedulingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -141,31 +101,30 @@ public class ScheduleTasksAction
 
     public String execute()
     {
-        DataMartTask dataMartTask = new DataMartTask( dataMartService, dataElementService, indicatorService, organisationUnitService );
-        DataSetCompletenessTask completenessTask = new DataSetCompletenessTask( serviceProvider.provide( "registration" ), dataSetService, organisationUnitService );
-        
         if ( !statusOnly )
         {
             if ( execute )
             {
-                scheduler.executeTask( dataMartTask );
-                scheduler.executeTask( completenessTask );
+                schedulingManager.executeTasks();
             }
-            else if ( scheduler.getTaskStatus( DataMartTask.class ).equals( Scheduler.STATUS_RUNNING ) )
+            else if ( Scheduler.STATUS_RUNNING.equals( schedulingManager.getTaskStatus() ) )
             {
-                scheduler.stopTask( DataMartTask.class );
-                scheduler.stopTask( DataSetCompletenessTask.class );
+                systemSettingManager.saveSystemSetting( KEY_DATAMART_TASK, new Boolean( false ) );
+                systemSettingManager.saveSystemSetting( KEY_DATASETCOMPLETENESS_TASK, new Boolean( false ) );
+                
+                schedulingManager.stopTasks();
             }
             else
             {
-                scheduler.scheduleTask( dataMartTask, Scheduler.CRON_NIGHTLY_2AM );
-                scheduler.scheduleTask( completenessTask, Scheduler.CRON_NIGHTLY_1AM );
+                systemSettingManager.saveSystemSetting( KEY_DATAMART_TASK, new Boolean( true) );
+                systemSettingManager.saveSystemSetting( KEY_DATASETCOMPLETENESS_TASK, new Boolean( true ) );
+                
+                schedulingManager.scheduleTasks();
             }
         }
-        
-        status = scheduler.getTaskStatus( DataMartTask.class );
-        
-        running = scheduler.getTaskStatus( DataMartTask.class ).equals( Scheduler.STATUS_RUNNING );
+
+        status = schedulingManager.getTaskStatus();        
+        running = Scheduler.STATUS_RUNNING.equals( status );
         
         return SUCCESS;
     }

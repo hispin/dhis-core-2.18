@@ -293,7 +293,34 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="chartService"
       ref="org.hisp.dhis.chart.ChartService"/>
   </bean>
-    
+  
+  <!-- Scheduling -->
+  
+  <bean id="org.hisp.dhis.scheduling.SchedulingManager" 
+	class="org.hisp.dhis.scheduling.DefaultSchedulingManager" init-method="scheduleTasks">
+	<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager"/>
+	<property name="scheduler" ref="scheduler"/>
+	<property name="tasks">
+	  <map>
+	    <entry key="keyDataMartTask" value-ref="dataMartTask"/>
+	    <entry key="keyDataSetCompletenessTask" value-ref="dataSetCompletenessTask"/>
+	  </map>
+	</property>
+  </bean>
+  
+  <bean id="dataMartTask" class="org.hisp.dhis.system.scheduling.DataMartTask" scope="prototype">
+	<constructor-arg ref="org.hisp.dhis.datamart.DataMartService"/>
+	<constructor-arg ref="org.hisp.dhis.dataelement.DataElementService"/>
+	<constructor-arg ref="org.hisp.dhis.indicator.IndicatorService"/>
+	<constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
+  <bean id="dataSetCompletenessTask" class="org.hisp.dhis.system.scheduling.DataSetCompletenessTask" scope="prototype">
+	<constructor-arg ref="registrationDataCompletenessService"/>
+	<constructor-arg ref="org.hisp.dhis.dataset.DataSetService"/>
+	<constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
   <!-- DeletionHandler -->
   
   <bean id="org.hisp.dhis.report.ReportDeletionHandler"
