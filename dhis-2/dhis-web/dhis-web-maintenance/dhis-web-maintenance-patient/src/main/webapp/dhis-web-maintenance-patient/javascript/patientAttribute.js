@@ -62,7 +62,7 @@ ATTRIBUTE_OPTION =
 			});
 			if( $("input","#attrOptionContainer").length < 2)
 			{
-				alert(i118_at_least_2_option);
+				//alert(i18n_at_least_2_option);
 				return false;
 			}else return true;
 		}
@@ -97,7 +97,7 @@ ATTRIBUTE_OPTION =
 	},
 	createInput : function ()
 	{
-		return "<tr><td><input type='text' name='attrOptions' style='width:28em'/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
+		return "<tr><td><input type='text' id='attrOptions' name='attrOptions' style='width:28em'/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
 	}
 }
 
@@ -123,7 +123,7 @@ function addPatientAttribute()
 	$.ajax({
 		type: "POST",
 		url: 'addPatientAttribute.action',
-		data: getParamsForDiv('editPatientAttributeForm'),
+		data: getParamsForDiv('addPatientAttributeForm'),
 		success: function( json ) {
 			if( json.response == 'success')
 			{
@@ -159,15 +159,18 @@ function updatePatientAttribute()
 	$.ajax({
 		type: "POST",
 		url: 'updatePatientAttribute.action',
-		data: getParamsForDiv('editPatientAttributeForm'),
+		data: getParamsForDiv('updatePatientAttributeForm'),
+		dataType: 'json',
 		success: function( json ) {
 			if( json.response == 'success')
 			{
 				onClickBackBtn();
 			}
 		}
-	});
-    return false;
+	}); 
+    
+	return false;
+	
 }
 
 // ------------------------------------------------------------------

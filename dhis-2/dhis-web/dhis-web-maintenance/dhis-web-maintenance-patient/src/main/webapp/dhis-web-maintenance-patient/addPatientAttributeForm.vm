@@ -1,23 +1,30 @@
 <script>
-	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
-	var i18n_field_is_required = '$encoder.jsEscape( $i18n.getString( "field_is_required" ) , "'") ';
 	var isSubmit = true;
-	jQuery("#addPatientAttributeForm").ready( function(){
-			validation( 'addPatientAttributeForm', function(form){
-				if( isSubmit && ATTRIBUTE_OPTION.checkOnSubmit() ) {
-					form.submit(i18n_field_is_required);
+	jQuery(document).ready(	function(){
+
+		validation( 'addPatientAttributeForm', function(form){
+				if( isSubmit )
+				{
+					addPatientAttribute();
 				}
 			}, function(){
-				isSubmit = true;
+				isSubmit = ATTRIBUTE_OPTION.checkOnSubmit();
 				
-				var fields = $("#addPatientAttributeForm").serializeArray();
-				jQuery.each(fields, function(i, field) {
-					if(  field.name.match("^attrOption")=='attrOption' && field.value == ""){
-						setInnerHTML("attrMessage", i18n_field_is_required);
-						isSubmit = false;
-					}
-				});
-			}); 
+				if( isSubmit )
+				{
+					var fields = $("#addPatientAttributeForm").serializeArray();
+					jQuery.each(fields, function(i, field) {
+						if(  field.name.match("^attrOption")=='attrOption' && field.value == ""){
+							setInnerHTML( "attrMessage", i18n_field_is_required );
+							isSubmit = false;
+						}
+					});
+					
+				}else
+				{
+					setInnerHTML( "attrMessage", i18n_at_least_2_option );
+				}
+			});
 			
 		
 		jQuery("#attributeComboRow").hide();
@@ -29,7 +36,7 @@
 <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackBtn();" style="width:10em">
 													
 <h3>$i18n.getString( "add_new_patient_attribute" )</h3>
-<form id="addPatientAttributeForm" method="post">
+<form id="addPatientAttributeForm" name='addPatientAttributeForm' action='addPatientAttribute.action' method="post">
 
 <table id="attrTable"> 
 	<thead>
@@ -103,7 +110,7 @@
      </tbody>
 </table>
 <p>
-    <input type="button" value="$i18n.getString( 'add' )" style="width:10em" onclick="addPatientAttribute();"/>
+    <input type="submit" value="$i18n.getString( 'add' )" style="width:10em" />
 </p>
 
 </form>   
