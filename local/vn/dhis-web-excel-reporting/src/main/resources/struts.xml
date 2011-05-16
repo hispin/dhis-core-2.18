@@ -1201,7 +1201,6 @@
 			<param name="page">/dhis-web-excel-reporting/excelTemplateList.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">
-				javascript/commons.js,
 				javascript/exceltemplate.js,
 				javascript/ajaxfileupload.js			
 			</param>
