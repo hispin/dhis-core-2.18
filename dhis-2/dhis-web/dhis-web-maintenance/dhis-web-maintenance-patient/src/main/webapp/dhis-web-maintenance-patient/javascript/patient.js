@@ -730,7 +730,6 @@ function addPatient()
       url: 'addPatient.action',
       data: getParamsForDiv('addPatientDiv'),
       success: function(json) {
-		var type = json.response;
 		showProgramEnrollmentSelectForm( json.message );
       }
      });
