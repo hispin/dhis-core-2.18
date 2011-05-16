@@ -9,9 +9,9 @@ $(document).ready(function() {
 	leftBar.hideAnimated();
 
 	$("#selectionDialog").dialog({
-		minWidth: 500,
+		minWidth: 530,
 		minHeight: 263,
-		position: [($("body").width() - 500) - 50, 50]
+		position: [($("body").width() - 530) - 50, 50]
 	});
 
 	$("#selectionDialog").parent().bind("resize", function(e) {
