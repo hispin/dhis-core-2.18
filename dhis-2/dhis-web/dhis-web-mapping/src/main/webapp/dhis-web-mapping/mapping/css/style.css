@@ -338,6 +338,16 @@ a.x-menu-item-custom {
     font-family:lucida sans unicode,arial,ubuntu;
 }
 
+/* Ext TabPanel */
+.x-tab-panel-body {
+    border-color:#ffffff;
+    font-family:lucida sans unicode,arial,ubuntu;
+}
+.panel-tab-title {
+    font:normal 11px lucida sans unicode,arial,ubuntu;
+    color:#333;
+}
+
 /* Ext Gridpanel */
 .x-grid3-cell-inner {
     color:#111111;
@@ -359,12 +369,6 @@ a.x-menu-item-custom {
     border-left:0px none;
 }
 
-/* Msg */
-.x-msg-hl {
-	font-weight:bold;
-	color:#444;
-}
-
 /* DHIS Help */
 #help {
 	padding:0px 8px 8px 8px;
@@ -372,18 +376,17 @@ a.x-menu-item-custom {
 #help h3 {
 	padding:8px 0 0 0;
 	font:bold 11px arial;
-	color:#333;
-	letter-spacing:0px;
+	color:#222222;
 }
 #help p {
 	padding:4px 0 4px 0;
 	font:normal 11px lucida sans unicode,arial,ubuntu;
-	color:#333;
+	color:#222222;
 }
 
 /* GIS */
 .thematic-br {
-    padding:8px 0 0 0;
+    padding:7px 0 0 0;
 }
 .menu-item-inline-bg {
     background:url('../../../images/history2_small.png') no-repeat left center;
