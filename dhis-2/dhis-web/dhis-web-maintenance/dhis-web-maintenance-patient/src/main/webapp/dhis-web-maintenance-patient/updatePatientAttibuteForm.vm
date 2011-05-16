@@ -5,9 +5,10 @@
 	var isSubmit = true;
 	
 	jQuery(document).ready(	function(){
+
 			validation( 'updatePatientAttributeForm', function(form){
 				if( isSubmit && ATTRIBUTE_OPTION.checkOnSubmit() ) {
-					form.submit();
+					form.submit(i18n_field_is_required);
 				}
 			}, function(){
 				isSubmit = true;
@@ -19,7 +20,7 @@
 						isSubmit = false;
 					}
 				});
-			}); 
+			});
 			
 			checkValueIsExist( "name", "validatePatientAttribute.action", {id:getFieldValue('id')});
 
@@ -30,7 +31,7 @@
 
 <h3>$i18n.getString( "update_patient_attribute" )</h3>
 
-<form id="updatePatientAttributeForm" name="updatePatientAttributeForm" method="post">
+<form id="updatePatientAttributeForm" name="updatePatientAttributeForm"  action='#' method="post" onsubmit='return updatePatientAttribute();'>
 
 <div style="display:inline">
   <input type="hidden" id="id" name="id" value="$patientAttribute.id">
@@ -117,7 +118,7 @@
   </table>  
 
 <p>
-    <input type="button" value="$i18n.getString( "update" )" style="width:10em" onclick='updatePatientAttribute();'>
+    <input type="submit" value="$i18n.getString( "update" )" style="width:10em" >
 </p>
 
 </form>
