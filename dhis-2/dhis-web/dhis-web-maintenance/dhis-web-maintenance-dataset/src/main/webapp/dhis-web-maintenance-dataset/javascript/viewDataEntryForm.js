@@ -20,15 +20,15 @@ $(document).ready(function() {
 		var dataElementSelector = $("#dataElementSelector");
 
 		/* Great for debugging when size of dialog is changed */
-		// console.log("D: " + dialog.height() + ", DE: " + dataElementSelector.height() + ", I: " + indicatorSelector.height());
+//		console.log("D: " + dialog.height() + ", DE: " + dataElementSelector.height() + ", I: " + indicatorSelector.height());
 
 		// TODO look into this.. firefox does not treat the box-model the same as webkit... 
 		// 		should be fixable by setting fixed paddings/margin somewhere!
 		
-		var adjustment = 65;
-		if($.browser.webkit) adjustment = 66;
-		else if($.browser.mozilla) adjustment = 65;
-		
+		var adjustment = 96;
+		if($.browser.webkit) adjustment = 96;
+		else if($.browser.mozilla) adjustment = 95;
+
 		dataElementSelector.height( dialog.height() - adjustment );
 		indicatorSelector.height( dialog.height() - adjustment );
 	});

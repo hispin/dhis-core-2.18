@@ -31,13 +31,13 @@
 
 (function($) {
   var templates = {
-    button: "<button id='${id}' style='width: 80px; margin-bottom: 4px; margin-top: 4px;'>${text}</button>",
+    wrapper: "<div id='${id}' style='padding: 0; margin: 0; background-color: #eee; border: 1px solid #666;' />",
+    button: "<button id='${id}' style='width: 70px; margin: 4px;'>${text}</button>",
     option: "<option>${text}</option>",
     option_selected: "<option selected='selected'>${text}</option>",
-    wrapper: "<div id='${id}' style='padding: 0; margin: 0;' />",
-    pagesize_input: "<input id='${id}' type='text' style='width: 100px;'/>",
-    filter_input: "<input id='${id}'></input>",
-    select_page: "<select id='${id}'></select>"
+    pagesize_input: "Page size <input id='${id}' type='text' style='width: 50px;'/>",
+    filter_input: "<input id='${id}' placeholder='Filter'></input>",
+    select_page: "Page <select id='${id}'></select>"
   }
 
   var methods = {
@@ -104,6 +104,7 @@
       params.usePaging = true;
 
       var $select = $(this);
+      $select.css("border", "none");
       var id = $(this).attr("id");
       var wrapper_id = id + "_wrapper";
       var select_page_id = id + "_select_page";
