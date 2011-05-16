@@ -1,68 +1,25 @@
-/*
- * Ext JS Library 2.2
- * Copyright(c) 2006-2008, Ext JS, LLC.
- * licensing@extjs.com
- * 
- * http://extjs.com/license
- */
-body {
-	font-family:arial,tahoma,verdana,sans-serif;
+.msg body {
+	font:normal 11px arial,ubuntu;
+    color:#111111;
 	padding:20px;
     padding-top:32px;
     font-size:13px;
 	background-color:#fff !important;
 }
-h1 {
-	font-size:large;
-	margin-bottom:20px;
-}
-h2 {
-	font-size:14px;
-    color:#333;
-    font-weight:bold;
-    margin:10px 0;
-}
-h3 {
-    font:17px;
-    color:#111111;
-    letter-spacing:0px;
-}
-h4 {
-    font-size:16px;
-    color:red;
-    letter-spacing:1px;
-}
-
-.example-info{
-	width:150px;
-	border:1px solid #c3daf9;
-	border-top:1px solid #DCEAFB;
-	border-left:1px solid #DCEAFB;
-	background:#ecf5fe url( info-bg.gif ) repeat-x;
-	font-size:10px;
-	padding:8px;
-}
-pre.code{
-	background: #F8F8F8;
-	border: 1px solid #e8e8e8;
-	padding:10px;
-	margin:10px;
-	margin-left:0px;
-	border-left:5px solid #e8e8e8;
-	font-size: 12px !important;
-	line-height:14px !important;
+.msg .icon {
+    vertical-align:middle;
+    padding:0px 8px 0px 0px;
 }
 .msg .x-box-mc {
-    font-size:12px;
-    color:#111;
-    padding:8px 23px 8px 12px;
+    padding:8px 23px 7px 12px;
+}
+.x-msg-hl {
+	font-weight:bold;
+	color:#222222;
 }
 #msg-div {
     display: table;
     margin-left:auto;
     margin-right:auto;
     z-index:20000;
-}
-.x-grid3-row-body p {
-    margin:5px 5px 10px 5px !important;
 }

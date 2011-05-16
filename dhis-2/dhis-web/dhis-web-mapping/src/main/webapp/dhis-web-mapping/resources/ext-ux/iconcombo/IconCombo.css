@@ -126,15 +126,14 @@
     z-index: -1;
     padding-left: 8px;
 }
-
-.x-form-field-wrap .ux-icon-combo-icon {
-    top: 3px;
-    left: 5px;
-}
 .ux-icon-combo-item {
     background-repeat: no-repeat ! important;
     background-position: 5px 50% ! important;
     color: #f6f6f6;
     height: 16px;
     padding-left: 50px;
+}
+.x-form-field-wrap .ux-icon-combo-icon {
+    top: 3px;
+    left: 5px;
 }
