@@ -36,7 +36,7 @@
     option: "<option>${text}</option>",
     option_selected: "<option selected='selected'>${text}</option>",
     pagesize_input: "Page size <input id='${id}' type='text' style='width: 50px;'/>",
-    filter_input: "<input id='${id}' placeholder='Filter' type='text' style='width: 80%; height: 18px; border: 1px inset #888;' />",
+    filter_input: "<input id='${id}' placeholder='Filter' type='text' style='width: 100%; height: 18px; border: 1px inset #888;' />",
     select_page: "Page <select id='${id}' style='width: 50px;'></select>"
   }
 
@@ -118,16 +118,27 @@
       $select.wrap( $.tmpl(templates.wrapper, { "id": wrapper_id }) );
       var $wrapper = $("#" + wrapper_id);
 
-      var $filter_div = $("<div/>");
-      $filter_div.css({
-          "padding": "2px",
+      var $filter_table = $("<table/>");
+      $filter_table.css({
+          "padding": "1px",
           "width": "100%"
       });
 
-      $filter_div.append( $.tmpl(templates.filter_input, { "id": filter_input_id }) )
-      $filter_div.append( $.tmpl(templates.button, {"id": filter_button_id, "text": "filter" }) );
+      var $filter_tr = $("<tr/>");
+      
+      var $filter_td1 = $("<td/>")
+      var $filter_td2 = $("<td/>")
+      $filter_td2.css("width", "70px");
 
-      $wrapper.prepend( $filter_div );
+      $filter_td1.append( $.tmpl(templates.filter_input, { "id": filter_input_id }) )
+      $filter_td2.append( $.tmpl(templates.button, {"id": filter_button_id, "text": "filter" }) );
+
+      $filter_tr.append($filter_td1);
+      $filter_tr.append($filter_td2);
+
+      $filter_table.append($filter_tr);
+
+      $wrapper.prepend( $filter_table );
 
       $wrapper.append( $.tmpl(templates.select_page, { "id": select_page_id }) )
       $wrapper.append( $.tmpl(templates.button, { "id": previous_button_id, "text":"previous" }) );
