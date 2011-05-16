@@ -49,8 +49,7 @@
             	});
 			},
 			params: {
-				dataSetId: $dataSet.id,
-				pageSize: 10
+				dataSetId: $dataSet.id
 			}
 		});
 	});
