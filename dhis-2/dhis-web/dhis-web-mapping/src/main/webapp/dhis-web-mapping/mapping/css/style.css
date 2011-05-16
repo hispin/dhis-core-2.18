@@ -278,7 +278,7 @@ a.x-menu-item-custom {
 .window-field-label {
 	padding:6px 0 3px 4px;
 	font:normal 11px lucida sans unicode,arial,ubuntu;
-	color:#777;	
+	color:#555555;	
 }
 #window-favorites-title {
 	padding:0 0 3px 21px;
@@ -334,41 +334,29 @@ a.x-menu-item-custom {
 	font:bold 11px arial;
 	color:#111;
 }
-.panel-fieldlabel {
-	padding:5px 0 2px 2px;
-	font:normal 11px lucida sans unicode,arial,ubuntu;
-	color:#777;
-}
-.panel-fieldlabel-first {
-	padding:0px 0 2px 2px;
-	font:normal 11px lucida sans unicode,arial,ubuntu;
-	color:#777;
-}
-.panel-tab-title {
-	font:normal 11px lucida sans unicode,arial,ubuntu;
-	color:#333;
-}
 .x-panel-header {
-    font-family:lucida sans unicode,arial,ubuntu,tahoma;
-}
-
-/* Ext TabPanel */
-.x-tab-panel-body {
-    border-color:#ffffff;
+    font-family:lucida sans unicode,arial,ubuntu;
 }
 
 /* Ext Gridpanel */
 .x-grid3-cell-inner {
-    color:#222222;
+    color:#111111;
     font-size:10px;
     font-family:arial,ubuntu;
 }
 .x-grid3-hd-inner {
     color:#111111;
-    font-family:arial,ubuntu;
+    font: bold 11px arial,ubuntu;
 }
 .sort-asc .x-grid3-sort-icon {
-    margin-left:7px;
+    display:none;
+}
+#featuregrid_gp .x-grid3-header {
+    display:none;
+}
+#featuregrid_gp .x-grid3-row {
+    border-right:0px none;
+    border-left:0px none;
 }
 
 /* Msg */
