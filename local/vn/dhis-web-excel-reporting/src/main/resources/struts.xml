@@ -192,14 +192,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/listDataElementGroup.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">
-				javascript/commons.js,			
-				javascript/dataElementGroup.js
-			</param>
-			<param name="stylesheets">			
-				style/basic.css,
-				style/style.css
-			</param>
+			<param name="javascripts">javascript/dataElementGroup.js</param>
+			<param name="stylesheets">style/basic.css,style/style.css</param>
 		</action>
 
 		<action name="getAllDataElementGroups"
@@ -231,7 +225,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/sortDataElements.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroup.js,javascript/commons.js</param>
+			<param name="javascripts">javascript/dataElementGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
 		</action>
 
@@ -254,7 +248,6 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/organisationUnitGroupListingReport.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/commons.js</param>
 		</action>
 
 		<action name="updateOrgnisationUnitGroupListingReport"
@@ -657,7 +650,6 @@
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
-				javascript/commons.js,
 				javascript/preview.js				
 			</param>
 		</action>
@@ -785,7 +777,6 @@
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">
 				javascript/excelitemgroups.js,
-				javascript/commons.js,
 				../dhis-web-commons/ouwt/ouwt.js</param>
 		</action>
 
@@ -843,7 +834,6 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/import/associateOrgunitGroup.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/commons.js</param>
 		</action>
 
 		<action name="updateOrgnisationUnitGroupForExcelItemGroup"
@@ -953,7 +943,7 @@
 			<param name="page">/dhis-web-excel-reporting/import/excelitems.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">javascript/excelitems.js,javascript/commons.js,../dhis-web-commons/ouwt/ouwt.js</param>
+			<param name="javascripts">javascript/excelitems.js,../dhis-web-commons/ouwt/ouwt.js</param>
 		</action>
 
 		<action name="listExcelItems"
@@ -964,7 +954,6 @@
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">
 				javascript/excelitems.js,
-				javascript/commons.js,
 				../dhis-web-commons/ouwt/ouwt.js
 			</param>
 			<param name="stylesheets">style/style.css</param>
@@ -1050,8 +1039,10 @@
 			<param name="page">/dhis-web-excel-reporting/importDataParams.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,
-				javascript/commons.js,javascript/imports.js,javascript/ajaxfileupload.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,
+				javascript/export.js,
+				javascript/imports.js,
+				javascript/ajaxfileupload.js</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
 
