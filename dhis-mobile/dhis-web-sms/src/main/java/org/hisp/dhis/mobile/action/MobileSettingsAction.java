@@ -137,6 +137,18 @@ public class MobileSettingsAction implements Action
         props.setProperty( "clickatell.api_id" , clickatellApiId);
     }
     
+    private String longNumber;
+
+    public String getLongNumber()
+    {
+        return props.getProperty( "provider.longnumber" );
+    }
+
+    public void setLongNumber( String longNumber )
+    {
+        props.setProperty( "provider.longnumber" , longNumber);
+    }
+    
     private String port;
 
     public String getPort()
@@ -342,6 +354,7 @@ public class MobileSettingsAction implements Action
             props.setProperty( "clickatell.username", "");
             props.setProperty( "clickatell.password", "");
             props.setProperty( "clickatell.api_id", "");
+            props.setProperty( "provider.longnumber", "" );
             props.setProperty( "modem1.port", "COM1" );
             props.setProperty( "modem1.baudrate", "57600" );
             props.setProperty( "modem1.manufacturer", "Generic" );
