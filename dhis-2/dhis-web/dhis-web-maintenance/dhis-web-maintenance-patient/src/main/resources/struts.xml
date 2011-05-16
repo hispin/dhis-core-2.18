@@ -107,11 +107,11 @@
 		<action name="validateSearch"
 			class="org.hisp.dhis.patient.action.relationship.ValidateSearchAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseError.vm</result>
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseInput.vm</result>
+				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -125,11 +125,11 @@
 		<action name="saveRelationship"
 			class="org.hisp.dhis.patient.action.relationship.SaveRelationshipAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseError.vm</result>
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseInput.vm</result>
+				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -143,22 +143,22 @@
 		<action name="saveRepresentative"
 			class="org.hisp.dhis.patient.action.relationship.SaveRepresentativeAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseError.vm</result>
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseInput.vm</result>
+				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="removeRepresentative"
 			class="org.hisp.dhis.patient.action.relationship.RemoveRepresentativeAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseError.vm</result>
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseInput.vm</result>
+				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -176,11 +176,11 @@
 		<action name="validateAddRelationshipPatient"
 			class="org.hisp.dhis.patient.action.relationship.ValidateAddRelationshipPatientAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseError.vm</result>
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseInput.vm</result>
+				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 			<result name="duplicate" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseDuplicate.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
@@ -291,7 +291,7 @@
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_ADD,F_PATIENTATTRIBUTEVALUE_UPDATE,F_PATIENTATTRIBUTEVALUE_DELETE</param>
 			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseError.vm</result>
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 		</action>
 
 		<action name="savePatientAttributeDateValue"
@@ -329,7 +329,8 @@
 		
 		<action name="patientform"
 			class="org.hisp.dhis.patient.action.patient.SearchPatientFormAction">
-			<result name="success" type="velocity-json">/dhis-web-maintenance-patient/responsePrograms.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-patient/responsePrograms.vm</result>
 		</action>
 
 		<action name="searchPatient"
@@ -406,11 +407,11 @@
 		<action name="validatePatient"
 			class="org.hisp.dhis.patient.action.patient.ValidatePatientAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseError.vm</result>
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseInput.vm</result>
+				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 			<result name="duplicate" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseDuplicate.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
@@ -695,7 +696,7 @@
 		<action name="showAddProgramStageForm"
 			class="org.hisp.dhis.patient.action.programstage.ShowAddProgramStageFormAction">
 			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseInput.vm</result>
+				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/addProgramStageForm.vm</param>
@@ -1201,9 +1202,9 @@
 			class="org.hisp.dhis.patient.action.patientimport.ValidateUploadExcelFileAction">
 			<interceptor-ref name="fileUploadStack" />
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseError.vm</result>
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 		</action>
 
 		<action name="importPatient"
