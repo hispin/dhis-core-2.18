@@ -12,25 +12,25 @@
     padding-left: 8px;
 }
 .x-form-field {
-	font:10px lucida sans unicode,ubuntu,arial;
+	font:10px lucida sans unicode,arial,ubuntu;
 }
 .x-form-item label.x-form-item-label {
     padding:3px 3px 3px 4px;
 }
 .x-combo-list {
-	font:10px lucida sans unicode,ubuntu,arial;
+	font:10px lucida sans unicode,arial,ubuntu;
 }
 .x-tree-node {
-	font:10px lucida sans unicode,ubuntu,arial;
+	font:10px lucida sans unicode,arial,ubuntu;
 }
 .x-panel-mc {
-	font:10px lucida sans unicode,ubuntu,arial;
+	font:10px lucida sans unicode,arial,ubuntu;
 }
 .x-tree-node a span, .x-dd-drag-ghost a span {
 	padding:1px 3px 1px 4px;
 }
 .x-tree .x-panel-body {
-	background-color:#F8F8F8;
+	background-color:#FAFAFA;
 }
 #layertree_tp .x-tree-node-leaf .x-tree-node-icon {
     background:url('../../../images/settings_small.png') center center no-repeat;
@@ -50,11 +50,11 @@
     padding:0;
 }
 .ux-mselect-item {
-	font:10px lucida sans unicode,ubuntu,tahoma,arial;
+	font:10px lucida sans unicode,arial,ubuntu;
 	padding:1px 1px 1px 3px;
 }
 .x-box-mc {
-	font-family:ubuntu,arial;
+	font-family:arial,ubuntu;
 	font-weight:normal;
 }
 .loading-indicator {
@@ -97,8 +97,8 @@
 
 /* Ext Label */
 .x-form-item-label {
-	font:normal 11px lucida sans unicode,ubuntu,arial;
-	color:#777;
+	font:normal 11px lucida sans unicode,arial,ubuntu;
+	color:#555;
 }
 
 /* Ext Menu */
@@ -109,7 +109,7 @@ a.x-menu-item-custom {
     background-color:#f1f1f1;
 }
 .x-menu-list-item {
-    font:10px lucida sans unicode,ubuntu,arial;
+    font:10px lucida sans unicode,arial,ubuntu;
 }
 .menu-layeroptions-locate {
     background:url('../../../images/search2.png') center bottom;
@@ -119,9 +119,6 @@ a.x-menu-item-custom {
 }
 .menu-layeroptions-labels {
     background-image:url('../../../images/labels.png');
-}
-.menu-layeroptions-wmslegend {
-    background-image:url('../../../images/wmslegend.png');
 }
 .no-icon-menu .x-menu-item-icon {
     display: none;
@@ -188,7 +185,7 @@ a.x-menu-item-custom {
     width:14px;
 }
 .x-btn button {
-	font:normal 10px lucida sans unicode,ubuntu,arial;
+	font:normal 10px lucida sans unicode,arial,ubuntu;
 }
 .x-btn .icon-zoomin  {
 	background-image:url('../../../images/zoom_in2.png');
@@ -238,17 +235,12 @@ a.x-menu-item-custom {
 .x-btn .icon-labels {
 	background-image:url('../../../images/labels.png');
 }
-.aa_med button {
-	color:#333;
-    padding-bottom:2px;
-}
 .x-btn-noicon .x-btn-small .x-btn-text {
     height:16px;
     padding:0 5px;
 }
 .x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
-    padding-bottom:2px;
-    padding-left:19px;
+    padding-left:18px;
 }
 .x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
     height:15px;
@@ -271,7 +263,7 @@ a.x-menu-item-custom {
 	padding:5px 11px 6px 32px;
 	background:#fbfbfb url('../../../images/loader.gif') no-repeat 5px 2px;
 	line-height:20px;
-	font:normal 10px lucida sans unicode,ubuntu,arial;
+	font:normal 10px lucida sans unicode,arial,ubuntu;
 }
 
 /* Ext Window */
@@ -285,7 +277,7 @@ a.x-menu-item-custom {
 }
 .window-field-label {
 	padding:6px 0 3px 4px;
-	font:normal 11px lucida sans unicode,ubuntu,arial;
+	font:normal 11px lucida sans unicode,arial,ubuntu;
 	color:#777;	
 }
 #window-favorites-title {
@@ -344,20 +336,20 @@ a.x-menu-item-custom {
 }
 .panel-fieldlabel {
 	padding:5px 0 2px 2px;
-	font:normal 11px lucida sans unicode,ubuntu,arial;
+	font:normal 11px lucida sans unicode,arial,ubuntu;
 	color:#777;
 }
 .panel-fieldlabel-first {
 	padding:0px 0 2px 2px;
-	font:normal 11px lucida sans unicode,ubuntu,arial;
+	font:normal 11px lucida sans unicode,arial,ubuntu;
 	color:#777;
 }
 .panel-tab-title {
-	font:normal 11px lucida sans unicode,ubuntu,arial;
+	font:normal 11px lucida sans unicode,arial,ubuntu;
 	color:#333;
 }
 .x-panel-header {
-    font-family:lucida sans unicode,ubuntu,arial,tahoma;
+    font-family:lucida sans unicode,arial,ubuntu,tahoma;
 }
 
 /* Ext TabPanel */
@@ -369,11 +361,11 @@ a.x-menu-item-custom {
 .x-grid3-cell-inner {
     color:#222222;
     font-size:10px;
-    font-family:ubuntu,arial;
+    font-family:arial,ubuntu;
 }
 .x-grid3-hd-inner {
     color:#111111;
-    font-family:ubuntu,arial;
+    font-family:arial,ubuntu;
 }
 .sort-asc .x-grid3-sort-icon {
     margin-left:7px;
@@ -397,7 +389,7 @@ a.x-menu-item-custom {
 }
 #help p {
 	padding:4px 0 4px 0;
-	font:normal 11px lucida sans unicode,ubuntu,arial;
+	font:normal 11px lucida sans unicode,arial,ubuntu;
 	color:#333;
 }
 
