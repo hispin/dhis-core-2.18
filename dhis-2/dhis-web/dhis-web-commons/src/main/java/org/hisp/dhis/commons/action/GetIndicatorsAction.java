@@ -107,6 +107,13 @@ public class GetIndicatorsAction
         this.dataSetId = dataSetId;
     }
 
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+    
     private List<Indicator> indicators;
 
     public List<Indicator> getIndicators()
