@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
+import org.hisp.dhis.mobile.gateway.DhisClickatellGateway;
 import org.hisp.dhis.mobile.sms.utils.Compressor;
 import org.hisp.dhis.mobile.sms.api.SmsInbound;
 import org.hisp.dhis.mobile.sms.api.SmsInboundStoreService;
@@ -60,7 +61,6 @@ import org.smslib.Service;
 import org.smslib.TimeoutException;
 import org.smslib.helper.Logger;
 import org.smslib.http.BulkSmsHTTPGateway;
-import org.smslib.http.ClickatellHTTPGateway;
 import org.smslib.modem.SerialModemGateway;
 
 /*
@@ -286,6 +286,10 @@ public class SmsService
         OutboundMessage outboundMessage = new OutboundMessage( recipient, msg );
         if ( isServiceRunning() )
         {
+            String longNumber = getProperties().getProperty( "provider.longnumber" ).trim();
+            if(longNumber!=null && !longNumber.isEmpty()){
+                outboundMessage.setFrom( longNumber );
+            }
             Service.getInstance().sendMessage( outboundMessage );
             return "MESSAGE SENT SUCCESSFULLY TO: " + recipient;
         } else
@@ -416,6 +420,7 @@ public class SmsService
         {
             // Read the messages from SIM memory location, which are Inbound messages
             Service.getInstance().readMessages( msgList, InboundMessage.MessageClasses.ALL );
+            Logger.getInstance().logInfo( "Total messages read at " + Calendar.getInstance().getTime() + " = " + msgList.size(), null, null );
             if ( msgList.size() > 0 )
             {
                 for ( InboundMessage inMsg : msgList )
@@ -487,7 +492,6 @@ public class SmsService
                     }
                 }
             }
-            Logger.getInstance().logInfo( "Total messages read at " + Calendar.getInstance().getTime() + " = " + msgList.size(), null, null );
         } catch ( Exception e )
         {
             Logger.getInstance().logError( "SMSServer: reading messages exception!", e, null );
@@ -548,7 +552,7 @@ public class SmsService
                         String username = getProperties().getProperty( "clickatell.username" );
                         String password = getProperties().getProperty( "clickatell.password" );
                         String api_id = getProperties().getProperty( "clickatell.api_id" );
-                        ClickatellHTTPGateway gateway = new ClickatellHTTPGateway( "clickatell.http.1", api_id, username, password );
+                        DhisClickatellGateway gateway = new DhisClickatellGateway( "clickatell.http.1", api_id, username, password );
                         gateway.setOutbound( true );
                         gateway.setInbound( true );
                         Service.getInstance().addGateway( gateway );

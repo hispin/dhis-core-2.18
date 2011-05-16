@@ -8,11 +8,13 @@
             #if($gatewayName == "bulksms")
                 <tr><td>Bulksms Username: </td><td><input size="100" name="bulksmsUsername" type="text" value="$!bulksmsUsername" /></td></tr>
                 <tr><td>Bulksms Password: </td><td><input size="100" name="bulksmsPassword" type="text" value="$!bulksmsPassword" /></td></tr>
+                <tr><td>Longnumber: </td><td><input size="100" name="longNumber" type="text" value="$!longNumber" /></td></tr>
             #end
             #if($gatewayName == "clickatell")
                 <tr><td>Clickatell Username: </td><td><input size="100" name="clickatellUsername" type="text" value="$!clickatellUsername" /></td></tr>
                 <tr><td>Clickatell Password: </td><td><input size="100" name="clickatellPassword" type="text" value="$!clickatellPassword" /></td></tr>
                 <tr><td>Clickatell API ID: </td><td><input size="100" name="clickatellApiId" type="text" value="$!clickatellApiId" /></td></tr>
+                <tr><td>Longnumber: </td><td><input size="100" name="longNumber" type="text" value="$!longNumber" /></td></tr>
             #end
             #if($port) <tr><td>Modem Port#: </td><td><input size="100" name="port" type="text" value="$port" /></td></tr>#end
             #if($baudRate) <tr><td>Baudrate: </td><td><input size="100" name="baudRate" type="text" value="$baudRate" /></td></tr>#end
