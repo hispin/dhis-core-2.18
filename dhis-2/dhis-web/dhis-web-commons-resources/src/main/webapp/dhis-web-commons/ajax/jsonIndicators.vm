@@ -11,4 +11,8 @@
     "indicatorTypeId": $!{indicator.indicatorType.id}
   }#if( $velocityCount < $size ),#end
 #end
-] }
+]
+#if( $usePaging ),
+	"paging":#parse( "/dhis-web-commons/ajax/jsonPaging.vm" )
+#end
+}

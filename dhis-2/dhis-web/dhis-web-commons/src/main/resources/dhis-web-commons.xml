@@ -538,6 +538,12 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+        <action name="getDataElementOperands" class="org.hisp.dhis.commons.action.GetDataElementOperandsAction">
+          <result name="success" type="velocity-json">
+            /dhis-web-commons/ajax/jsonDataElementOperands.vm</result>
+          <param name="onExceptionReturn">plainTextError</param>
+        </action>
+
 		<action name="getOperands" class="org.hisp.dhis.commons.action.GetOperandsAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonOperands.vm</result>

@@ -1,3 +1,4 @@
+<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.dhisPaging.js"></script>
 <script type="text/javascript" src="javascript/viewDataEntryForm.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
@@ -11,6 +12,47 @@
 		
 		jQuery('#designTextarea').ckeditor();
 		jQuery("#designTextarea").ckeditorGet().setData('$encoder.jsEscape( $dataEntryValue, "'" )');
+
+		jQuery("#dataElementSelector").dhisPaging({
+			url: "../dhis-web-commons-ajax-json/getDataElementOperands.action",
+			handler: function(element, json) {
+				jQuery.each(json.operands, function(i, item) {
+					var option = jQuery("<option />");
+					option.addClass("dataElementSelectorOption");
+					option.text( item.operandName );
+					option.data( "dataelement-id", item.dataElement.id );
+					option.data( "dataelement-name", item.dataElement.name );
+					option.data( "dataelement-type", item.dataElement.type );
+					option.data( "optioncombo-id", item.categoryOptionCombo.id );
+					option.data( "optioncombo-name", item.categoryOptionCombo.name );
+					option.dblclick(insertDataElement);
+
+                	element.append( option );
+            	});
+			},
+			params: {
+				dataSetId: $dataSet.id
+			}
+		});
+
+		jQuery("#indicatorSelector").dhisPaging({
+			url: "../dhis-web-commons-ajax-json/getIndicators.action",
+			handler: function(element, json) {
+				jQuery.each(json.indicators, function(i, item) {
+					var option = jQuery("<option />");
+					option.addClass("indicatorSelectorOption");
+					option.text( item.name );
+					option.data("id", item.id);
+					option.dblclick(insertIndicator);
+
+                	element.append( option );
+            	});
+			},
+			params: {
+				dataSetId: $dataSet.id,
+				pageSize: 10
+			}
+		});
 	});
 
     var stat = "ADD";
@@ -126,16 +168,7 @@
 
 			<tr id="dataElementsTab">
 				<td colspan="2">
-					<select id="dataElementSelector" multiple="multiple" style="height: 200px; width: 100%;">
-					#foreach( $operand in $operands )
-						<option class="dataElementSelectorOption"
-								data-idx="${velocityCount}"
-								data-dataelement-id="$operand.dataElement.id" data-dataelement-name="$operand.dataElement.name" data-dataelement-type="$operand.dataElement.type"
-								data-optioncombo-id="$operand.categoryOptionCombo.id" data-optioncombo-name="$operand.categoryOptionCombo.name" ondblclick="insertDataElement()">
-							$encoder.htmlEncode( $operand.operandName )
-						</option>
-					#end
-					</select>
+					<select id="dataElementSelector" multiple="multiple" style="height: 200px; width: 100%;"></select>
 				</td>
 			</tr>
 
@@ -150,12 +183,7 @@
 
 			<tr id="indicatorsTab">
 				<td colspan="2">
-					<select id="indicatorSelector" multiple="multiple" style="height: 200px; width: 100%;">
-					#foreach( $indicator in $indicators )
-						<option class="indicatorSelectorOption"
-								data-idx="${velocityCount}" data-id="${indicator.id}" ondblclick="insertIndicator()">$encoder.htmlEncode( $indicator.name )</option>
-					#end
-					</select>
+					<select id="indicatorSelector" multiple="multiple" style="height: 200px; width: 100%;"></select>
 				</td>
 			</tr>
 
