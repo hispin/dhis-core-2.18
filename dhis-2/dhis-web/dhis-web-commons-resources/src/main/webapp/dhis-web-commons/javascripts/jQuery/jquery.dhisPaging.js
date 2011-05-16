@@ -36,8 +36,8 @@
     option: "<option>${text}</option>",
     option_selected: "<option selected='selected'>${text}</option>",
     pagesize_input: "Page size <input id='${id}' type='text' style='width: 50px;'/>",
-    filter_input: "<input id='${id}' placeholder='Filter'></input>",
-    select_page: "Page <select id='${id}'></select>"
+    filter_input: "<input id='${id}' placeholder='Filter' type='text' style='width: 80%; height: 18px; border: 1px inset #888;' />",
+    select_page: "Page <select id='${id}' style='width: 50px;'></select>"
   }
 
   var methods = {
@@ -56,6 +56,7 @@
         var previous_button_id = id + "_previous_button";
         var $previous_button = $("#" + previous_button_id);
         var filter_input_id = id + "_filter_input";
+        var $filter_input = $("#" + filter_input_id);
         var pagesize_input_id = id + "_pagesize_input";
         var $pagesize_input = $("#" + pagesize_input_id);
 
@@ -111,22 +112,34 @@
       var next_button_id = id + "_next_button";
       var previous_button_id = id + "_previous_button";
       var filter_input_id = id + "_filter_input";
+      var filter_button_id = id + "_filter_button";
       var pagesize_input_id = id + "_pagesize_input";
 
       $select.wrap( $.tmpl(templates.wrapper, { "id": wrapper_id }) );
-      $wrapper = $("#" + wrapper_id);
+      var $wrapper = $("#" + wrapper_id);
+
+      var $filter_div = $("<div/>");
+      $filter_div.css({
+          "padding": "2px",
+          "width": "100%"
+      });
+
+      $filter_div.append( $.tmpl(templates.filter_input, { "id": filter_input_id }) )
+      $filter_div.append( $.tmpl(templates.button, {"id": filter_button_id, "text": "filter" }) );
+
+      $wrapper.prepend( $filter_div );
 
       $wrapper.append( $.tmpl(templates.select_page, { "id": select_page_id }) )
-      $select_page = $("#" + select_page_id);
-
       $wrapper.append( $.tmpl(templates.button, { "id": previous_button_id, "text":"previous" }) );
-      $previous_button = $("#" + previous_button_id);
-
       $wrapper.append( $.tmpl(templates.button, { "id": next_button_id, "text":"next" }) );
-      $next_button = $("#" + next_button_id);
-
       $wrapper.append( $.tmpl(templates.pagesize_input, { "id": pagesize_input_id }) );
-      $pagesize_input = $("#" + pagesize_input_id);
+
+      var $filter_input = $("#" + filter_input_id);
+      var $filter_button = $("#" + filter_button_id);
+      var $select_page = $("#" + select_page_id);
+      var $previous_button = $("#" + previous_button_id);
+      var $next_button = $("#" + next_button_id);
+      var $pagesize_input = $("#" + pagesize_input_id);
 
       settings.params = params;
       $select.data("settings", settings);
@@ -148,6 +161,20 @@
           methods.load("" + id);
       });
 
+      $filter_button.click(function() {
+         params.key = $filter_input.val();
+
+         if(params.key.length === 0) {
+             delete params.key;
+         }
+
+         params.currentPage = 1;
+         settings.params = params;
+         $select.data("settings", settings);
+         
+         methods.load("" + id);
+      });
+      
       $select_page.change(function() {
           params.currentPage = +$(this).find(":selected").val();
           settings.params = params;

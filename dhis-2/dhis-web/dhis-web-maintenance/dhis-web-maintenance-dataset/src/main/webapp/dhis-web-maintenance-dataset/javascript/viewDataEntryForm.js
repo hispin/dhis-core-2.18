@@ -24,10 +24,10 @@ $(document).ready(function() {
 
 		// TODO look into this.. firefox does not treat the box-model the same as webkit... 
 		// 		should be fixable by setting fixed paddings/margin somewhere!
-		
-		var adjustment = 96;
-		if($.browser.webkit) adjustment = 96;
-		else if($.browser.mozilla) adjustment = 95;
+
+		var adjustment = 102;
+		if($.browser.webkit) adjustment = 102;
+		else if($.browser.mozilla) adjustment = 102;
 
 		dataElementSelector.height( dialog.height() - adjustment );
 		indicatorSelector.height( dialog.height() - adjustment );
