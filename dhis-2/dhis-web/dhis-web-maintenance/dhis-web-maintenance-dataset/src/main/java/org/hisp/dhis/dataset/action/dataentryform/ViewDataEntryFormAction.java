@@ -27,7 +27,6 @@ package org.hisp.dhis.dataset.action.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -60,13 +59,6 @@ public class ViewDataEntryFormAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DataElementCategoryService dataElementCategoryService;
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     private UserSettingService userSettingService;
@@ -115,20 +107,6 @@ public class ViewDataEntryFormAction
         return autoSave;
     }
 
-    public List<DataElementOperand> operands;
-
-    public List<DataElementOperand> getOperands()
-    {
-        return operands;
-    }
-
-    private Set<Indicator> indicators;
-
-    public Set<Indicator> getIndicators()
-    {
-        return indicators;
-    }
-
     private String dataEntryValue;
 
     public String getDataEntryValue()
@@ -151,13 +129,6 @@ public class ViewDataEntryFormAction
             .getHtmlCode() ) : "";
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
-
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet
-            .getDataElements() ) );
-
-        indicators = dataSet.getIndicators();
-
-        Collections.sort( operands, new DataElementOperandNameComparator() );
 
         return SUCCESS;
     }
