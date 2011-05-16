@@ -10,7 +10,7 @@
 		namespace="/dhis-web-excel-reporting">
 
 		<action name="index" class="org.hisp.dhis.reportexcel.action.NoAction">
-			<result name="success" type="redirect">viewDataEntryStatus.action
+			<result name="success" type="redirect">selectExportReportParam.action
 			</result>
 		</action>
 
