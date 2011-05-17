@@ -22,27 +22,14 @@ function saveConfigurationCompleted( messageElement )
 
 function validateUploadExcelFile()
 {
-	$.ajaxFileUpload
-	(
+	jQuery( "#upload" ).upload( 'validateUploadExcelFile.action',
+		function( data )
 		{
-			url:'validateUploadExcelFile.action',
-			secureuri:false,
-			fileElementId:'upload',
-			dataType: 'xml',
-			success: function (data, status)
-			{
-				data = data.getElementsByTagName('message')[0]; 
-				var type = data.getAttribute("type");
-				if(type=='error'){                    
-					showErrorMessage(data.firstChild.nodeValue);
-				}else{
-					byId('importingParam').submit();
-				} 
-			},
-			error: function (data, status, e)
-			{
+			data = data.getElementsByTagName('message')[0]; 
+			var type = data.getAttribute("type");
 			
-			}
-		}
+			if ( type=='error' ) showErrorMessage(data.firstChild.nodeValue);
+			else byId('importingParam').submit();
+		}, 'xml'
 	);
 }
