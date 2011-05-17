@@ -13,7 +13,7 @@
 			<td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' )</td>
 			<td width="82%">
 				<input type="file" id="upload" name="upload" onChange="enable('uploadButton');">
-				<input name="uploadButton" id="uploadButton" type="button" value="$i18n.getString( 'upload_file' )" onclick="validateUploadExcelImportByXML();" disabled />    
+				<input name="uploadButton" id="uploadButton" type="button" value="$i18n.getString( 'upload_file' )" onclick="validateUploadExcelImportByXML();" disabled />
 			</td>   
 		</tr>
 	</form>
@@ -34,9 +34,9 @@
 	</tr>  
 </table>
 	 
-<hr>
+<hr/>
 
-<br><br>
+<br/><br/>
 	<div id="showValue" style="display:none; width:100%" >		
 		<table>
 			<tr style="vertical-align:bottom;">
@@ -63,10 +63,11 @@
 		</tbody>
 		</table>
 	</div>
-<script language="javascript">	
 	
-	#if ( $!fileExcel && $!organisationUnit )
-		getPeriodsByExcelItemGroup( $("#excelItemGroupId").val() );
-	#end
-</script>
+	<script language="javascript">
+		#if ( $!fileExcel && $!organisationUnit )
+			getPeriodsByExcelItemGroup( $("#excelItemGroupId").val() );
+		#end
+	</script>
+
 </body>

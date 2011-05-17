@@ -1041,8 +1041,7 @@
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
-				javascript/imports.js,
-				javascript/ajaxfileupload.js</param>
+				javascript/imports.js</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
 

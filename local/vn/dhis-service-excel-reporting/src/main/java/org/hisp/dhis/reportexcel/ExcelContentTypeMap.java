@@ -51,6 +51,7 @@ public class ExcelContentTypeMap
 
         xlsContentTypes.add( APPLICATION + "xls" );
         xlsContentTypes.add( APPLICATION + "vnd.ms-excel" );
+        xlsContentTypes.add( APPLICATION + "octet-stream" );
 
         contentTypes.put( "xls", xlsContentTypes );
 
