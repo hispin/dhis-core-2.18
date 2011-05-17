@@ -322,81 +322,52 @@ function nextPeriod() {
 
 function validateUploadExcelImportByJSON(){
 
-	$.ajaxFileUpload
-	(
+	jQuery( "#upload" ).upload( 'validateUploadExcelImport.action',
+		{ 'draft': true },
+		function ( data )
 		{
-			url:'validateUploadExcelImport.action',
-			secureuri:false,
-			fileElementId:'upload',
-			dataType: 'json',
-			success: function (data, status)
-			{
-				if ( typeof( data.response ) != 'undefined' )
-				{
-					if( data.response != 'success' )
-					{
-						setMessage( data.message );
-					}
-					else
-					{
-						uploadExcelImport();
-					}
-				}
-			},
-			error: function (data, status, e)
-			{
-				alert(e);
+			if ( data.response == 'error' )
+			{              
+				setMessage( data.message );
 			}
-		}
+			else
+			{
+				uploadExcelImport();
+			}
+		}, 'json'
 	);
 }
 
 function validateUploadExcelImportByXML(){
 
-	$.ajaxFileUpload
-	(
+	jQuery( "#upload" ).upload( 'validateUploadExcelImport.action',
+		{ 'draft': true },
+		function ( data )
 		{
-			url:'validateUploadExcelImport.action?draft=true',
-			secureuri:false,
-			fileElementId:'upload',
-			dataType: 'xml',
-			success: function (data, status)
-			{
-				data = data.getElementsByTagName('message')[0];
-				var type = data.getAttribute("type");
-				
-				if ( type == 'error' )
-				{              
-					setMessage( data.firstChild.nodeValue );
-				}
-				else
-				{
-					uploadExcelImport();
-				}
-			},
-			error: function (data, status, e)
-			{
-				alert(e);
+			data = data.getElementsByTagName('message')[0];
+			var type = data.getAttribute("type");
+			
+			if ( type == 'error' )
+			{              
+				setMessage( data.firstChild.nodeValue );
 			}
-		}
+			else
+			{
+				uploadExcelImport();
+			}
+		}, 'xml'
 	);
 }
 	
 function uploadExcelImport(){
-
-	$.ajaxFileUpload
-	(
-		{
-			url:'uploadExcelImport.action?draft=true',
-			secureuri:false,
-			fileElementId:'upload',
-			dataType: 'xml',
-			success: function (data, status)
-			{
+	
+	jQuery( "#upload" ).upload( 'uploadExcelImport.action',
+		{ 'draft': true },
+		function( data, e ) {
+			try {
 				window.location.reload();
-			},
-			error: function (data, status, e)
-			{
+			}
+			catch(e) {
 				alert(e);
 			}
 		}
