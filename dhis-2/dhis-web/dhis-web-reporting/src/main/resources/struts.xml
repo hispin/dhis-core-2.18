@@ -379,8 +379,15 @@
       <param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
 	</action>
 	
-	<!-- Export -->
-	
+	<!-- Datamart CSV Export -->
+
+    <action name="weeklyDataValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
+      <result name="success" type="outputStreamResult" />
+      <result name="client-error" type="httpheader" />
+      <param name="requestType">DATAVALUE</param>
+      <param name="periodType">Weekly</param>
+    </action>
+
     <action name="monthlyDataValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
       <result name="success" type="outputStreamResult" />
       <result name="client-error" type="httpheader" />
@@ -400,6 +407,13 @@
       <result name="client-error" type="httpheader" />
       <param name="requestType">DATAVALUE</param>
       <param name="periodType">Yearly</param>
+    </action>
+
+    <action name="weeklyIndicatorValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
+      <result name="success" type="outputStreamResult" />
+      <result name="client-error" type="httpheader" />
+      <param name="requestType">INDICATORVALUE</param>
+      <param name="periodType">Weekly</param>
     </action>
 
     <action name="monthlyIndicatorValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
