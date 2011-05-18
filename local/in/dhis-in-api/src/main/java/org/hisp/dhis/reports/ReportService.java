@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -133,4 +134,13 @@ public interface ReportService
     Map<String, String> getResultDataValueFromAggregateTable( Integer orgunitId, String dataElmentIdsByComma, String periodIdsByComma );
     
     Map<String, String> getAggDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodsByComma );
+    
+    String getDataelementIds( List<Report_inDesign> reportDesignList );
+    
+    String getAggVal( String expression, Map<String, String> aggDeMap );
+
+    Map<String, List<String>> getIndicatorDataValueFromAggregateTable( Integer orgunitId, String indicatorIdsByComma, Integer periodId );
+    
+    double getIndividualIndicatorValue( Indicator indicator, OrganisationUnit orgunit, Date startDate, Date endDate );
+
 }

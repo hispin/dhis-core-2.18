@@ -17,7 +17,7 @@
                 <li><a href = "upwardReportAnalyser.action">GOI Reports</a></li>
             #end
             #if( $auth.hasAccess( "dhis-web-reports", "edReportForm") )
-                <li><a href = "edReportForm.action">ED Report</a></li>
+                <li><a href = "edReportForm.action">Indicator Reports</a></li>
             #end
             #if( $auth.hasAccess( "dhis-web-reports", "routineReportAnalyser") )
                 <li><a href = "routineReportAnalyser.action">Routine Reports</a></li>

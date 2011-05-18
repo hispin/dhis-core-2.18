@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -28,7 +31,13 @@ public class EDReportFormAction
     {
         this.periodService = periodService;
     }
+    
+    private IndicatorService indicatorService ;
 
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
@@ -46,7 +55,14 @@ public class EDReportFormAction
     {
         return simpleDateFormat;
     }
-
+    
+    private List<IndicatorGroup> indicatorGroups;
+    
+    public List<IndicatorGroup> getIndicatorGroups()
+    {
+        return indicatorGroups;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -54,6 +70,11 @@ public class EDReportFormAction
     public String execute()
         throws Exception
     {
+        //Indicator Group
+        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups()) ;
+        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+        
+        //period information
         periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
 
         Iterator<Period> periodIterator = periods.iterator();

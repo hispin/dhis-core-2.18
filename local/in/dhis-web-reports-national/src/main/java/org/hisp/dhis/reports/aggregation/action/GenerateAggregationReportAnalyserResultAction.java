@@ -1,6 +1,7 @@
 package org.hisp.dhis.reports.aggregation.action;
 
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -12,8 +13,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import jxl.CellType;
@@ -144,19 +147,19 @@ public class GenerateAggregationReportAnalyserResultAction
     {
         this.endDate = endDate;
     }
-/*
-    private String aggCB;
 
-    public void setAggCB( String aggCB )
-    {
-        this.aggCB = aggCB;
-    }
-*/
     private String periodTypeId;
 
     public void setPeriodTypeId( String periodTypeId )
     {
         this.periodTypeId = periodTypeId;
+    }
+
+    private String aggData;
+    
+    public void setAggData( String aggData )
+    {
+        this.aggData = aggData;
     }
 
     private String reportModelTB;
@@ -177,18 +180,10 @@ public class GenerateAggregationReportAnalyserResultAction
 
     private Integer monthCount;
     
-    private String aggData;
-    
-    public void setAggData( String aggData )
-    {
-        this.aggData = aggData;
-    }
-    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    public String execute()
-        throws Exception
+    public String execute() throws Exception
     {
         statementManager.initialise();
         
@@ -238,8 +233,11 @@ public class GenerateAggregationReportAnalyserResultAction
         System.out.println( orgUnitList.get( 0 ).getName()+ " : " + selReportObj.getName()+" : Report Generation Start Time is : " + new Date() );
  
         sDate = format.parseDate( startDate );
-
         eDate = format.parseDate( endDate );
+        
+        List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriods( sDate, eDate ) );
+        Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+        String periodIdsByComma = getCommaDelimitedString( periodIds );
 
         Calendar tempStartDate = Calendar.getInstance();
         Calendar tempEndDate = Calendar.getInstance();
@@ -252,15 +250,33 @@ public class GenerateAggregationReportAnalyserResultAction
 
         // Getting DataValues
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
+        String dataElmentIdsByComma = reportService.getDataelementIds( reportDesignList );
+        
         int orgUnitCount = 0;
-
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
         while ( it.hasNext() )
         {
             OrganisationUnit currentOrgUnit = (OrganisationUnit) it.next();
 
-            int count1 = 0;
+            Map<String, String> aggDeMap = new HashMap<String, String>();
+            if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+            {
+                aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( currentOrgUnit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+            {
+                List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
+                List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+                String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
 
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            else if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
+            {
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+currentOrgUnit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            
+            int count1 = 0;
             Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
             while ( reportDesignIterator.hasNext() )
             {
@@ -655,17 +671,18 @@ public class GenerateAggregationReportAnalyserResultAction
                     {
                         if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
-                            tempStr = reportService.getIndividualResultDataValue(deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                            tempStr = reportService.getAggVal( deCodeString, aggDeMap );
+                            //tempStr = reportService.getIndividualResultDataValue(deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
                         } 
                         else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
-                            tempStr = reportService.getResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                            tempStr = reportService.getAggVal( deCodeString, aggDeMap );
+                            //tempStr = reportService.getResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
                         }
                         else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
                         {
-                            List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( sDate, eDate ) );
-                            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
-                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
+                            tempStr = reportService.getAggVal( deCodeString, aggDeMap );
+                            //tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
                         }
                     }
                     else
