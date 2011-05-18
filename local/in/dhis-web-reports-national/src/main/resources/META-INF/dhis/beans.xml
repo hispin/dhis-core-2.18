@@ -173,9 +173,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.reports.ed.action.EDReportFormAction"
         scope="prototype">
         
-        <property name="periodService">
-            <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     </bean>
     
     <bean id="org.hisp.dhis.reports.ed.action.EDReportResultAction"
@@ -183,20 +182,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
         
         <property name="statementManager" ref="statementManager"/>
-        <property name="periodService">
-            <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
-        <property name="organisationUnitService">
-            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-        </property>
-        <property name="indicatorService">
-            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-        </property>
-        <property name="aggregationService">
-            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-        </property>
-        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-        </property>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        
     </bean>
     
     <!-- Auto Reports -->
@@ -1175,6 +1166,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="relationshipTypeService">
             <ref bean="org.hisp.dhis.relationship.RelationshipTypeService"/>
         </property>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
     
     <!-- NBITS : BenificiaryInfo Report -->
@@ -1311,6 +1303,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
-
     
 </beans>

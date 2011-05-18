@@ -517,22 +517,27 @@ function trim( stringToTrim )
 
 
 //-----------------------------------------------------------------------------
-// FormValidations for ED Report
+//FormValidations for ED Report
 //-----------------------------------------------------------------------------
 function formValidationsForEDReport()
 {
 		
-    var startPeriodObj = document.getElementById('selectedStartPeriodId');
-    var endPeriodObj = document.getElementById('selectedEndPeriodId');
+	var startPeriodObj = document.getElementById('selectedStartPeriodId');
+	var endPeriodObj = document.getElementById('selectedEndPeriodId');
+	var indicatorGroupObj = document.getElementById('indicatorGroupId');
 	
-    sDateTxt = startPeriodObj.options[startPeriodObj.selectedIndex].text;
-    sDate = formatDate(new Date(getDateFromFormat(sDateTxt,"MMM-y")),"yyyy-MM-dd");
-    eDateTxt = endPeriodObj.options[endPeriodObj.selectedIndex].text;
-    eDate = formatDate(new Date(getDateFromFormat(eDateTxt,"MMM-y")),"yyyy-MM-dd");
-        
-    if(sDate > eDate) {
-        alert("Starting Date is Greater");return false;
-    }
-
-    return true;
+	sDateTxt = startPeriodObj.options[startPeriodObj.selectedIndex].text;
+	sDate = formatDate(new Date(getDateFromFormat(sDateTxt,"MMM-y")),"yyyy-MM-dd");
+	eDateTxt = endPeriodObj.options[endPeriodObj.selectedIndex].text;
+	eDate = formatDate(new Date(getDateFromFormat(eDateTxt,"MMM-y")),"yyyy-MM-dd");
+ 
+	if(sDate > eDate) 
+	{
+		alert( "Starting Date is Greater" );return false;
+	}
+	else if( indicatorGroupObj.options[indicatorGroupObj.selectedIndex].value == "ALL" )
+	{
+		alert( "Please Select Indicator Group" );return false;
+	}
+	return true;
 } // formValidations Function End

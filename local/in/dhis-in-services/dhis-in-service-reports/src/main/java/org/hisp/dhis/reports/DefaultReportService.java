@@ -1239,7 +1239,7 @@ public String getResultIndicatorValue( String formula, Date startDate, Date endD
 {
     int deFlag1 = 0;
     int deFlag2 = 0;
-		
+                
     try
     {
         Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
@@ -1803,6 +1803,7 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
         }
     }
     
+    
     public Map<String, String> getAggDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
     {
         Map<String, String> aggDeMap = new HashMap<String, String>();
@@ -1833,7 +1834,7 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
             throw new RuntimeException( "Illegal DataElement id", e );
         }
     }
-
+    
     public String getResultDataValueFromAggregateTable( String formula, String periodIdsByComma, Integer orgunitId )
     {
         try
@@ -2024,4 +2025,180 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
         
         return ""+recordCount;
     }
+    
+    public String getDataelementIds( List<Report_inDesign> reportDesignList )
+    {
+        String dataElmentIdsByComma = "-1";
+        for( Report_inDesign report_inDesign : reportDesignList )
+        {
+            String formula = report_inDesign.getExpression();
+            try
+            {
+                Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+                Matcher matcher = pattern.matcher( formula );
+                StringBuffer buffer = new StringBuffer();
+
+                while ( matcher.find() )
+                {
+                    String replaceString = matcher.group();
+
+                    replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                    replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                    int dataElementId = Integer.parseInt( replaceString );
+                    dataElmentIdsByComma += "," + dataElementId;
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                }
+            }
+            catch( Exception e )
+            {
+                
+            }
+        }
+        
+        return dataElmentIdsByComma;
+    }
+
+    public String getAggVal( String expression, Map<String, String> aggDeMap )
+    {
+        try
+        {
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( expression );
+            StringBuffer buffer = new StringBuffer();
+
+            String resultValue = "";
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+
+                replaceString = aggDeMap.get( replaceString );
+                
+                if( replaceString == null )
+                {
+                    replaceString = "0";
+                }
+                
+                matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
+            }
+
+            matcher.appendTail( buffer );
+            
+            double d = 0.0;
+            try
+            {
+                d = MathUtils.calculateExpression( buffer.toString() );
+            }
+            catch ( Exception e )
+            {
+                d = 0.0;
+                resultValue = "";
+            }
+            
+            resultValue = "" + (double) d;
+
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+    }
+    
+    public Map<String, List<String>> getIndicatorDataValueFromAggregateTable( Integer orgunitId, String indicatorIdsByComma, Integer periodId )
+    {
+        Map<String, List<String>> aggIndicatorMap = new HashMap<String, List<String>>();
+        try
+        {
+            String query = "SELECT indicatorid, numeratorvalue, denominatorvalue FROM aggregatedindicatorvalue " +
+                           " WHERE indicatorid IN (" + indicatorIdsByComma + " ) AND "+
+                           " organisationunitid = "+ orgunitId +" AND "+
+                           " periodid = " + periodId;
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {                
+                Integer indicatorId = rs.getInt( 1 );
+                Double aggregatedIndicatorValue = rs.getDouble( 2 );
+                Double aggNumeratorValue = rs.getDouble( 3 );
+                Double aggDenominatorValue = rs.getDouble( 4 );
+                
+                List<String> tempList = new ArrayList<String>();          
+                if( aggregatedIndicatorValue != null )
+                {
+                    tempList.add( ""+aggregatedIndicatorValue );
+                    tempList.add( ""+aggNumeratorValue );
+                    tempList.add( ""+aggDenominatorValue );
+                    
+                    aggIndicatorMap.put( ""+indicatorId, tempList );
+                }
+            }
+            
+            return aggIndicatorMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }
+
+    public double getIndividualIndicatorValue( Indicator indicator, OrganisationUnit orgunit, Date startDate, Date endDate ) 
+    {
+        String numeratorExp = indicator.getNumerator();
+        String denominatorExp = indicator.getDenominator();
+        int indicatorFactor = indicator.getIndicatorType().getFactor();
+        String reportModelTB = "";
+        String numeratorVal = getIndividualResultDataValue( numeratorExp, startDate, endDate, orgunit, reportModelTB  );
+        String denominatorVal = getIndividualResultDataValue( denominatorExp, startDate, endDate, orgunit, reportModelTB );
+    
+        double numeratorValue;
+        try
+        {
+            numeratorValue = Double.parseDouble( numeratorVal );
+        } 
+        catch ( Exception e )
+        {
+            numeratorValue = 0.0;
+        }
+    
+        double denominatorValue;
+        try
+        {
+            denominatorValue = Double.parseDouble( denominatorVal );
+        } 
+        catch ( Exception e )
+        {
+            denominatorValue = 1.0;
+        }
+    
+        double aggregatedValue;
+        try
+        {
+            if( denominatorValue == 0 )
+            {
+                aggregatedValue = 0.0;
+            }
+            else
+            {
+                aggregatedValue = ( numeratorValue / denominatorValue ) * indicatorFactor;
+            }
+        } 
+        catch ( Exception e )
+        {
+            System.out.println( "Exception while calculating Indicator value for Indicaotr " + indicator.getName() );
+            aggregatedValue = 0.0;
+        }
+        
+        return aggregatedValue;
+    }
+
 }

@@ -456,6 +456,10 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart + 6, rowStart, "DataElementShortName", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 7, rowStart, "DataElementType", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 8, rowStart, "DataElementUrl", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 9, rowStart, "DomainType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 10, rowStart, "NumberType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 11, rowStart, "PeriodType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 12, rowStart, "LastUpdated", getCellFormat1() ) );
             }
         }
 
@@ -483,7 +487,50 @@ public class GenerateMetaDataReportResultAction
                     sheet0.addCell( new Label( colStart + 6, rowStart, dataElement.getShortName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 7, rowStart, dataElement.getType(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 8, rowStart, dataElement.getUrl(), wCellformat ) );
+                    
+                    String domainType = new String();
+                    if ( dataElement.getDomainType() != null )
+                    {
+                        domainType = dataElement.getDomainType();
+                    }
+                    else
+                    {
+                        domainType = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 9, rowStart, domainType, wCellformat ) );
+                    
+                    String numberType = new String();
+                    if ( dataElement.getNumberType() != null )
+                    {
+                        numberType = dataElement.getNumberType();
+                    }
+                    else
+                    {
+                        numberType = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 10, rowStart, numberType, wCellformat ) );
 
+                    String periodType = new String();
+                    if ( dataElement.getPeriodType() != null )
+                    {
+                        periodType = dataElement.getPeriodType().getName();
+                    }
+                    else
+                    {
+                        periodType = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 11, rowStart, periodType, wCellformat ) );
+                    
+                    String lastUpdate = new String();
+                    if ( dataElement.getLastUpdated() != null )
+                    {
+                        lastUpdate = dataElement.getLastUpdated().toString();
+                    }
+                    else
+                    {
+                        lastUpdate = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 12, rowStart, lastUpdate, wCellformat ) );
                 }
             }
 
@@ -491,7 +538,7 @@ public class GenerateMetaDataReportResultAction
 
             rowStart++;
         }
-
+        
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
@@ -545,6 +592,10 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart + 6, rowStart, "DataElementShortName", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 7, rowStart, "DataElementType", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 8, rowStart, "DataElementUrl", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 9, rowStart, "DomainType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 10, rowStart, "NumberType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 11, rowStart, "PeriodType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 12, rowStart, "LastUpdated", getCellFormat1() ) );
             }
         }
 
@@ -566,7 +617,7 @@ public class GenerateMetaDataReportResultAction
 
             if ( incID.equalsIgnoreCase( PRINT ) )
             {
-                sheet0.mergeCells( colStart + 1, rowStart, colStart + 8, rowStart );
+                sheet0.mergeCells( colStart + 1, rowStart, colStart + 12, rowStart );
             }
 
             rowStart++;
@@ -596,6 +647,50 @@ public class GenerateMetaDataReportResultAction
                         sheet0.addCell( new Label( colStart + 6, rowStart, dataElement.getShortName(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 7, rowStart, dataElement.getType(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 8, rowStart, dataElement.getUrl(), wCellformat ) );
+                        
+                        String domainType = new String();
+                        if ( dataElement.getDomainType() != null )
+                        {
+                            domainType = dataElement.getDomainType();
+                        }
+                        else
+                        {
+                            domainType = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 9, rowStart, domainType, wCellformat ) );
+                        
+                        String numberType = new String();
+                        if ( dataElement.getNumberType() != null )
+                        {
+                            numberType = dataElement.getNumberType();
+                        }
+                        else
+                        {
+                            numberType = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 10, rowStart, numberType, wCellformat ) );
+
+                        String periodType = new String();
+                        if ( dataElement.getPeriodType() != null )
+                        {
+                            periodType = dataElement.getPeriodType().getName();
+                        }
+                        else
+                        {
+                            periodType = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 11, rowStart, periodType, wCellformat ) );
+                        
+                        String lastUpdate = new String();
+                        if ( dataElement.getLastUpdated() != null )
+                        {
+                            lastUpdate = dataElement.getLastUpdated().toString();
+                        }
+                        else
+                        {
+                            lastUpdate = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 12, rowStart, lastUpdate, wCellformat ) );
                     }
                 }
 
@@ -656,6 +751,11 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart + 6, rowStart, "organisationUnitCode", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 7, rowStart, "organisationUnitUrl", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 8, rowStart, "Last Updated", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 9, rowStart, "Contact Person", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 10, rowStart, "Phone Number", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 11, rowStart, "Email", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 12, rowStart, "Comment", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 13, rowStart, "Coordinates", getCellFormat1() ) );
             }
         }
 
@@ -677,7 +777,7 @@ public class GenerateMetaDataReportResultAction
 
             if ( incID.equalsIgnoreCase( PRINT ) )
             {
-                sheet0.mergeCells( colStart + 1, rowStart, colStart + 8, rowStart );
+                sheet0.mergeCells( colStart + 1, rowStart, colStart + 13, rowStart );
             }
 
             rowStart++;
@@ -748,6 +848,62 @@ public class GenerateMetaDataReportResultAction
                             lastUpdate = "";
                         }
                         sheet0.addCell( new Label( colStart + 8, rowStart, lastUpdate, wCellformat ) );
+                        
+                        String contactPerson = new String();
+                        if ( organisationUnit.getContactPerson() != null )
+                        {
+                            contactPerson = organisationUnit.getContactPerson();
+                        }
+                        else
+                        {
+                            contactPerson = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 9, rowStart, contactPerson, wCellformat ) );
+
+                        String phoneNumber = new String();
+                        if( organisationUnit.getPhoneNumber() != null )
+                        {
+                            phoneNumber = organisationUnit.getPhoneNumber();
+                        }
+                        else
+                        {
+                            phoneNumber = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 10, rowStart, phoneNumber, wCellformat ) );
+                        
+                        String email = new String();
+                        if( organisationUnit.getEmail() != null )
+                        {
+                            email = organisationUnit.getEmail();
+                        }
+                        else
+                        {
+                            email = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 11, rowStart, email, wCellformat ) );
+                        
+                        String comment = new String();
+                        if( organisationUnit.getComment() != null )
+                        {
+                            comment = organisationUnit.getComment();
+                        }
+                        else
+                        {
+                            comment = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 12, rowStart, comment, wCellformat ) );
+                        
+                        String coordinates =  new String();
+                        if( organisationUnit.getCoordinates() != null )
+                        {
+                            coordinates = organisationUnit.getCoordinates();
+                        }
+                        else
+                        {
+                            coordinates = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 13, rowStart, coordinates, wCellformat ) );
+                        
                     }
                     else
                     {
@@ -902,6 +1058,8 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart + 9, rowStart, "Contact Person", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 10, rowStart, "Phone Number", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 11, rowStart, "Email", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 12, rowStart, "Comment", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 13, rowStart, "Coordinates", getCellFormat1() ) );
             }
             else if ( incID.equalsIgnoreCase( SOURCE ) )
             {
@@ -1014,6 +1172,28 @@ public class GenerateMetaDataReportResultAction
                         email = "";
                     }
                     sheet0.addCell( new Label( colStart + 11, rowStart, email, wCellformat ) );
+                    
+                    String comment = new String();
+                    if( ou.getComment() != null )
+                    {
+                        comment = ou.getComment();
+                    }
+                    else
+                    {
+                        comment = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 12, rowStart, comment, wCellformat ) );
+                    
+                    String coordinates =  new String();
+                    if( ou.getCoordinates() != null )
+                    {
+                        coordinates = ou.getCoordinates();
+                    }
+                    else
+                    {
+                        coordinates = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 13, rowStart, coordinates, wCellformat ) );
                 }
                 else if ( incID.equalsIgnoreCase( SOURCE ) )
                 {
@@ -1342,8 +1522,7 @@ public class GenerateMetaDataReportResultAction
                     sheet0.addCell( new Label( colStart + 2, rowStart, dataSet.getShortName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 3, rowStart, dataSet.getCode(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 4, rowStart, dataSet.getAlternativeName(), wCellformat ) );
-                    sheet0
-                        .addCell( new Label( colStart + 5, rowStart, dataSet.getPeriodType().getName(), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 5, rowStart, dataSet.getPeriodType().getName(), wCellformat ) );
                 }
             }
 
@@ -1405,8 +1584,8 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart + 5, rowStart, "ValidationRuleType", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 6, rowStart, "ValidationRuleLeftSideDescription",
                     getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 7, rowStart, "ValidationRuleRightSideDescription",
-                    getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 7, rowStart, "ValidationRuleRightSideDescription", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 8, rowStart, "ValidationRulePeriodType", getCellFormat1() ) );
             }
         }
 
@@ -1435,6 +1614,17 @@ public class GenerateMetaDataReportResultAction
                         wCellformat ) );
                     sheet0.addCell( new Label( colStart + 7, rowStart, validationRule.getRightSide().getDescription(),
                         wCellformat ) );
+                    
+                    String periodType = new String();
+                    if ( validationRule.getPeriodType() != null )
+                    {
+                        periodType = validationRule.getPeriodType().getName();
+                    }
+                    else
+                    {
+                        periodType = "";
+                    }
+                    sheet0.addCell( new Label( colStart + 8, rowStart, periodType, wCellformat ) );
                 }
             }
 
@@ -1497,6 +1687,7 @@ public class GenerateMetaDataReportResultAction
                     getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 7, rowStart, "ValidationRuleRightSideDescription",
                     getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 8, rowStart, "ValidationRulePeriodType", getCellFormat1() ) );
             }
         }
 
@@ -1518,7 +1709,7 @@ public class GenerateMetaDataReportResultAction
 
             if ( incID.equalsIgnoreCase( PRINT ) )
             {
-                sheet0.mergeCells( colStart + 1, rowStart, colStart + 7, rowStart );
+                sheet0.mergeCells( colStart + 1, rowStart, colStart + 8, rowStart );
             }
 
             rowStart++;
@@ -1547,6 +1738,16 @@ public class GenerateMetaDataReportResultAction
                             .getDescription(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 7, rowStart, validationRule.getRightSide()
                             .getDescription(), wCellformat ) );
+                        String periodType = new String();
+                        if ( validationRule.getPeriodType() != null )
+                        {
+                            periodType = validationRule.getPeriodType().getName();
+                        }
+                        else
+                        {
+                            periodType = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 8, rowStart, periodType, wCellformat ) );
                     }
                 }
 

@@ -1,14 +1,22 @@
 package org.hisp.dhis.reports.ed.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,11 +39,11 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
+import org.hisp.dhis.user.CurrentUserService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -48,6 +56,14 @@ import com.opensymphony.xwork2.Action;
 public class EDReportResultAction
     implements Action
 {
+    
+    private final String GENERATEAGGDATA = "generateaggdata";
+
+    private final String USEEXISTINGAGGDATA = "useexistingaggdata";
+
+    private final String USECAPTUREDDATA = "usecaptureddata";
+    
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -63,13 +79,6 @@ public class EDReportResultAction
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     private IndicatorService indicatorService;
@@ -92,6 +101,13 @@ public class EDReportResultAction
     {
         this.reportService = reportService;
     }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }    
 
     // -------------------------------------------------------------------------
     // Getter & Setter
@@ -124,8 +140,23 @@ public class EDReportResultAction
         this.selectedEndPeriodId = selectedEndPeriodId;
     }
 
-    private String raFolderName;
+    private Integer indicatorGroupId;
+    
+    public void setIndicatorGroupId( Integer indicatorGroupId )
+    {
+        this.indicatorGroupId = indicatorGroupId;
+    }
 
+    private String raFolderName;
+    
+    private String aggData;
+    
+    public void setAggData( String aggData )
+    {
+        this.aggData = aggData;
+    }
+    
+    private List<OrganisationUnit> orgUnitList;
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -134,37 +165,20 @@ public class EDReportResultAction
         throws Exception
     {
         statementManager.initialise();
-
+        
+        orgUnitList = new ArrayList<OrganisationUnit>();
         raFolderName = reportService.getRAFolderName();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yy" );
 
-        List<Integer> headerInfo = getInfoFromXMLForEDReport();
-
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
 
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "EDReport", 0 );
-
-        if ( headerInfo == null || headerInfo.size() == 0 )
-        {
-            System.out.println( "There is problem with report xml file, please check" );
-            sheet0.addCell( new Label( 2, 2, "There is problem with report xml file, please check", getCellFormat2() ) );
-            outputReportWorkbook.write();
-            outputReportWorkbook.close();
-
-            fileName = "EDReport.xls";
-            File outputReportFile = new File( outputReportPath );
-            inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
-
-            outputReportFile.deleteOnExit();
-            statementManager.destroy();
-            return SUCCESS;
-        }
-
+        
+        // Period Info
         Period selectedStartPeriod = periodService.getPeriod( selectedStartPeriodId );
         Period selectedEndPeriod = periodService.getPeriod( selectedEndPeriodId );
-
+        
         if ( selectedStartPeriod == null || selectedEndPeriod == null )
         {
             System.out.println( "There is no period with that id" );
@@ -172,7 +186,7 @@ public class EDReportResultAction
             outputReportWorkbook.write();
             outputReportWorkbook.close();
 
-            fileName = "EDReport.xls";
+            fileName = "IndicatorReport.xls";
             File outputReportFile = new File( outputReportPath );
             inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
@@ -181,17 +195,34 @@ public class EDReportResultAction
             return SUCCESS;
         }
 
-        // HardCoded with Bihar State OrgUnitId - 7
-        OrganisationUnit selectedOrgUnit = organisationUnitService.getOrganisationUnit( headerInfo.get( 0 ) );
+        List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriods( selectedStartPeriod.getStartDate(), selectedEndPeriod.getEndDate() ) );
+        Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+        String periodIdsByComma = getCommaDelimitedString( periodIds );
 
-        if ( selectedOrgUnit == null )
+        
+        List<OrganisationUnit> curUserRootOrgUnitList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
+        String orgUnitName = "";
+        
+        if ( curUserRootOrgUnitList != null && curUserRootOrgUnitList.size() > 0 )
         {
-            System.out.println( "There is no orgunit with that id" );
-            sheet0.addCell( new Label( 2, 2, "There is no orgunit with that id", getCellFormat2() ) );
+            for ( OrganisationUnit orgUnit : curUserRootOrgUnitList )
+            {
+                orgUnitName += orgUnit.getName() + ", ";
+                List<OrganisationUnit> childList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
+                Collections.sort( childList, new OrganisationUnitShortNameComparator() );
+                orgUnitList.addAll( childList );
+                orgUnitList.add( orgUnit );
+            }
+        }
+      
+        if ( curUserRootOrgUnitList == null || curUserRootOrgUnitList.size() == 0 )
+        {
+            System.out.println( "There is no orgunit with that User" );
+            sheet0.addCell( new Label( 2, 2, "There is no orgunit with that User", getCellFormat2() ) );
             outputReportWorkbook.write();
             outputReportWorkbook.close();
 
-            fileName = "EDReport.xls";
+            fileName = "IndicatorReport.xls";
             File outputReportFile = new File( outputReportPath );
             inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
@@ -201,13 +232,8 @@ public class EDReportResultAction
             return SUCCESS;
         }
 
-        List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
-        Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
-        orgUnitList.add( selectedOrgUnit );
-
-        // HardCoded with ED IndicatorGroup - 12
-        IndicatorGroup selectedIndicatorGroup = indicatorService.getIndicatorGroup( headerInfo.get( 1 ) );
-
+        IndicatorGroup selectedIndicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
+        
         if ( selectedIndicatorGroup == null )
         {
             System.out.println( "There is no IndicatorGroup with that id" );
@@ -215,7 +241,7 @@ public class EDReportResultAction
             outputReportWorkbook.write();
             outputReportWorkbook.close();
 
-            fileName = "EDReport.xls";
+            fileName = "IndicatorReport.xls";
             File outputReportFile = new File( outputReportPath );
             inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
@@ -226,7 +252,8 @@ public class EDReportResultAction
         }
 
         List<Indicator> indicators = new ArrayList<Indicator>( selectedIndicatorGroup.getMembers() );
-
+        String dataElmentIdsByComma = getDataelementIds( indicators );
+        
         int rowCount = 4;
         int colCount = 0;
 
@@ -243,12 +270,10 @@ public class EDReportResultAction
             sheet0.addCell( new Label( colCount++, rowCount + 1, "Numerator", getCellFormat1() ) );
             sheet0.addCell( new Label( colCount++, rowCount + 1, "Denominator", getCellFormat1() ) );
             sheet0.addCell( new Label( colCount++, rowCount + 1, "Indicator", getCellFormat1() ) );
-
-            // colCount += 3;
         }
 
         // Printing Main Header Info
-        String mainHeaderInfo = "Key Indicator Analysis - " + selectedOrgUnit.getName() + " From : "
+        String mainHeaderInfo = "Indicator Group Name - " + selectedIndicatorGroup.getName() +  " ,OrgUnit Name is "+ orgUnitName + " From : "
             + simpleDateFormat.format( selectedStartPeriod.getStartDate() ) + " To : "
             + simpleDateFormat.format( selectedEndPeriod.getStartDate() );
         sheet0.mergeCells( 0, 1, colCount - 1, 1 );
@@ -259,7 +284,12 @@ public class EDReportResultAction
         for ( OrganisationUnit ou : orgUnitList )
         {
             colCount = 0;
-
+            Map<String, String> aggDeMap = new HashMap<String, String>();
+            if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+            {
+                aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( ou.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            
             if ( slno != orgUnitList.size() )
             {
                 sheet0.addCell( new Number( colCount++, rowCount, slno, getCellFormat2() ) );
@@ -272,12 +302,78 @@ public class EDReportResultAction
 
             for ( Indicator indicator : indicators )
             {
-                Double numValue = aggregationService.getAggregatedNumeratorValue( indicator, selectedStartPeriod
-                    .getStartDate(), selectedEndPeriod.getEndDate(), ou );
-                Double denValue = aggregationService.getAggregatedDenominatorValue( indicator, selectedStartPeriod
-                    .getStartDate(), selectedEndPeriod.getEndDate(), ou );
-                Double indValue = aggregationService.getAggregatedIndicatorValue( indicator, selectedStartPeriod
-                    .getStartDate(), selectedEndPeriod.getEndDate(), ou );
+                Double numValue = 0.0;
+                Double denValue = 0.0;
+                Double indValue = 0.0;
+                
+                if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+                {
+                     numValue = aggregationService.getAggregatedNumeratorValue( indicator, selectedStartPeriod.getStartDate(), selectedEndPeriod.getEndDate(), ou );
+                     denValue = aggregationService.getAggregatedDenominatorValue( indicator, selectedStartPeriod.getStartDate(), selectedEndPeriod.getEndDate(), ou );
+                     indValue = aggregationService.getAggregatedIndicatorValue( indicator, selectedStartPeriod.getStartDate(), selectedEndPeriod.getEndDate(), ou );
+                }
+                else if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
+                {
+                    indValue = reportService.getIndividualIndicatorValue( indicator, ou, selectedStartPeriod.getStartDate(), selectedEndPeriod.getEndDate() );
+                    
+                    String tempStr = reportService.getIndividualResultDataValue( indicator.getNumerator(), selectedStartPeriod.getStartDate(), selectedEndPeriod.getEndDate(), ou, "" );
+                   
+                     try
+                     {
+                         numValue = Double.parseDouble( tempStr );
+                     }
+                     catch ( Exception e )
+                     {
+                         numValue = 0.0;
+                     }
+
+                     tempStr = reportService.getIndividualResultDataValue( indicator.getDenominator(), selectedStartPeriod.getStartDate(), selectedEndPeriod.getEndDate(), ou, "" );
+
+                     try
+                     {
+                         denValue = Double.parseDouble( tempStr );
+                     }
+                     catch ( Exception e )
+                     {
+                         denValue = 0.0;
+                     }
+                }
+                else if ( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+                {
+                    try
+                    {
+                        numValue = Double.parseDouble( reportService.getAggVal( indicator.getNumerator(), aggDeMap ) );
+                    }
+                    catch( Exception e )
+                    {
+                        numValue = 0.0;
+                    }
+                    
+                    try
+                    {
+                        denValue = Double.parseDouble( reportService.getAggVal( indicator.getDenominator(), aggDeMap ) );    
+                    }
+                    catch( Exception e )
+                    {
+                        denValue = 0.0;
+                    }
+
+                    try
+                    {
+                        if( denValue != 0.0 )
+                        {
+                                indValue = ( numValue / denValue ) * indicator.getIndicatorType().getFactor();
+                        }
+                        else
+                        {
+                                indValue = 0.0;
+                        }
+                    }
+                    catch( Exception e )
+                    {
+                        indValue = 0.0;
+                    }
+                }
 
                 if ( indValue == null )
                     indValue = 0.0;
@@ -333,9 +429,15 @@ public class EDReportResultAction
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
-        fileName = "EDReport_" + simpleDateFormat.format( selectedStartPeriod.getStartDate() ) + "_"
-            + simpleDateFormat.format( selectedEndPeriod.getStartDate() ) + ".xls";
+        
+        fileName = "IndicatorReport_" + orgUnitName + "_" + simpleDateFormat.format( selectedStartPeriod.getStartDate() ) + "_" + simpleDateFormat.format( selectedEndPeriod.getStartDate() ) + ".xls";
+        fileName = fileName.replaceAll( " ", "" );
+        fileName = fileName.replaceAll( ",", "_" );
+        
         File outputReportFile = new File( outputReportPath );
+        
+        System.out.println( fileName );
+        
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
         outputReportFile.deleteOnExit();
@@ -446,6 +548,41 @@ public class EDReportResultAction
         wCellformat.setWrap( true );
 
         return wCellformat;
+    }
+    
+    public String getDataelementIds( List<Indicator> indicatorList )
+    {
+        String dataElmentIdsByComma = "-1";
+        for( Indicator indicator : indicatorList )
+        {
+            String formula = indicator.getNumerator() + " + " + indicator.getDenominator();
+            try
+            {
+                Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+                Matcher matcher = pattern.matcher( formula );
+                StringBuffer buffer = new StringBuffer();
+
+                while ( matcher.find() )
+                {
+                    String replaceString = matcher.group();
+
+                    replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                    replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                    int dataElementId = Integer.parseInt( replaceString );
+                    dataElmentIdsByComma += "," + dataElementId;
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                }
+            }
+            catch( Exception e )
+            {
+                
+            }
+        }
+        
+        return dataElmentIdsByComma;
     }
 
 }

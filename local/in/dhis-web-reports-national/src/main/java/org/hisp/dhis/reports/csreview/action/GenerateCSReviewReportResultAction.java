@@ -238,7 +238,7 @@ public class GenerateCSReviewReportResultAction
 
         // Getting DeCodes
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
-        String dataElmentIdsByComma = getDataelementIds( reportDesignList );
+        String dataElmentIdsByComma = reportService.getDataelementIds( reportDesignList );
         //List<String> deCodesList = getDECodes( deCodesXMLFileName );
 
         // Getting Exel Template
