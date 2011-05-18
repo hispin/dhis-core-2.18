@@ -17,7 +17,8 @@
 		   		<li><a href="dataStatusForm.action">$i18n.getString( "ds_regular" )</a></li>
 		   		<li><a href="dataStatusMobileForm.action">$i18n.getString( "ds_mobile" )</a></li>
 				<li><a href="dataStatusOrgnisationunitGroupSetWiseForm.action">$i18n.getString( "orgunit_group_ds" )</a></li>
-				<li><a href="NullReporter.action">$i18n.getString( "nr_null_reporter" )</a></li>	
+				<li><a href="NullReporter.action">$i18n.getString( "nr_null_reporter" )</a></li>
+				<li><a href="dataStatusDataSetWiseForm.action">$i18n.getString( "ds_dataset_wise" )</a></li>	
 	    		<!-- <li><a href="commentsForm.action">Comments</a></li>
 		   		<li><a href="dashBoardMatrixForm.action">DashBoard matrix</a></li> -->
 		   	</ul>		   	

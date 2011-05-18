@@ -32,21 +32,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.comparator.PeriodComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,27 +52,13 @@ public class GenerateNullReporterFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private DataSetService dataSetService;
 
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataElementService = dataElementService;
+        this.dataSetService = dataSetService;
     }
 
-    private PeriodService periodService;
-
-    public void setPeriodService(PeriodService periodService) {
-        this.periodService = periodService;
-    }
-
-    @SuppressWarnings("unused")
-	private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
 
     // -------------------------------------------------------------------------
     // Comparator
@@ -146,35 +127,50 @@ public class GenerateNullReporterFormAction
     {
         return simpleDateFormat;
     }
+    
+    private List<DataSet> dataSetList;
 
+    public List<DataSet> getDataSetList()
+    {
+        return dataSetList;
+    }
+    
+    
     public String execute()
         throws Exception
     {
-        /* DataElements and Groups */
-        dataElements = new ArrayList<DataElement>(dataElementService.getAllDataElements());
-        dataElementGroups = new ArrayList<DataElementGroup>(dataElementService.getAllDataElementGroups());
-
-        Collections.sort( dataElements, new DataElementNameComparator() );
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-
-        /* Monthly Periods */
-        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
+        /* DataSet List */
         
-        Iterator<Period> periodIterator = monthlyPeriods.iterator();
-        while( periodIterator.hasNext() )
+        dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        
+        Iterator<DataSet> dataSetListIterator = dataSetList.iterator();
+        
+        while(dataSetListIterator.hasNext())
         {
-            Period p1 = periodIterator.next();
+             DataSet d = (DataSet) dataSetListIterator.next();
+
             
-            if ( p1.getStartDate().compareTo( new Date() ) > 0 )
-            {
-                periodIterator.remove( );
-            }
-            
+            if ( d.getSources().size() <= 0 )
+                        {
+                dataSetListIterator.remove();
+                        }
+                        else
+                        {                       
+                                // -------------------------------------------------------------------------
+                                // Added to remove Indian Linelisting datasets
+                                // -------------------------------------------------------------------------
+                                
+                                if ( d.getId() == 8 || d.getId() == 9 || d.getId() == 10 || d.getId() == 14
+                                        || d.getId() == 15 || d.getId() == 35 || d.getId() == 36 || d.getId() == 37
+                                        || d.getId() == 38 )
+                                {
+                                        dataSetListIterator.remove();
+                                }       
+                        }
         }
         
-        Collections.sort( monthlyPeriods, new PeriodComparator() );
-        simpleDateFormat = new SimpleDateFormat( "MMM - y" );
-
+        Collections.sort( dataSetList, new DataSetNameComparator() );
+        
         return SUCCESS;
     }
 

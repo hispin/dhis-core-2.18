@@ -373,6 +373,30 @@
 			<param name="stylesheets">css/StylesForTags.css</param>
 		</action>
 		
+		<!-- DataStatus Data Set Wise -->
+		<action name="dataStatusDataSetWiseForm"
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusDataSetWiseFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-dashboard/dataStatusDataSetWiseFront.vm</param>
+			<param name="menu">/dhis-web-dashboard/menuWithTreeForDSDataSetWise.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ds.js,javascript/db.js,javascript/date.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		
+		<action name="dataStatusDataSetWiseResult"
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusDataSetWiseResultAction">
+			<result name="success" type="velocity">/dhis-web-dashboard/dataStatusDataSetWiseResult.vm</result>
+			<param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+		</action>		
+		
+		<action name="getPeriodsForDataSetWise"
+			class="org.hisp.dhis.dataanalyser.ds.action.GetPeriodsForDataSetWiseAction">
+			<result name="success" type="velocity-xml">/dhis-web-dashboard/responsePeriodForDataSetWise.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>				
+
 		<!-- DataStatus For Mobile start-->
 		
         <action name="dataStatusMobileForm"

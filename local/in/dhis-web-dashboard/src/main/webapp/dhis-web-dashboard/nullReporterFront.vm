@@ -10,6 +10,12 @@
 		            var selCategory = "";
 		            var selFacility = "";
                     var selOrgUnitId="NONE";
+                    var dsName = "";
+    				var sDateIndex = 0;
+   				    var eDateIndex = 0;
+    				var sDate = "";
+   				    var eDate = "";
+    				var curPeriodType = "";
 
 			    </script>
 	</head>
@@ -30,11 +36,11 @@
                     </tr>
                     <tr>
 
-    			<td class="NormalB">$i18n.getString( "nr_filter_by_degroup" )<br>
-                            <select id="dataElementGroupId" name="dataElementGroupId" style="width:325px" onchange="getDataElementsWithOutOptionCombo()" >
-                            <option value="$ALL">[ Select DataElementGroup / All ]</option>
-                            #foreach ( $group in $dataElementGroups )
-            			<option value="$group.id" title="$group.name">$group.name</option>
+    			<td class="NormalB">1. $i18n.getString( "ds_dataset_list" ) : <br/>
+                            <select id="selectedDataSet" name="selectedDataSet" onchange="getdSetPeriods()" style="width:300px">
+                           	<!--<option value="$ALL">[ Select DataElementGroup / All ]</option> -->
+                            #foreach ( $dataSet in $dataSetList )
+            					<option value='$dataSet.id' title='$dataSet.name'>$dataSet.name</option>
                             #end
      		            </select>
                     	</td>
@@ -42,31 +48,21 @@
                     	<td class="NormalB"><input type="checkbox" name="includeZeros" id="includeZeros" checked> Count Zero as NULL</td>
                     </tr>
                     <tr>
-    			<td class="NormalB">&nbsp;</td>
+    					<td class="NormalB">&nbsp;</td>
                     	<td class="NormalB">&nbsp;</td>
                     	<td class="NormalB">&nbsp;</td>
                     </tr>
                     <tr>
-    			<td class="NormalB">$i18n.getString( "nr_available_delist" )<br>
-                            <select multiple size="5" id="availableDataElements" name="availableDataElements" style="width:325px; height:160px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">
-                            #foreach ( $element in $dataElements )
-                                <option value="$element.id" title="$element.name">$element.name</option>
-                            #end
-                            </select>
-			</td>
-    			<td class="NormalB" align="center"><br />
-                            <input type="button" value="&gt;" style="width:40px" onclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )"><br>
-                            <input type="button" value="&lt;" style="width:40px" onclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )"><br>
-                            <input type="button" value="&gt;&gt;" style="width:40px" onclick="moveAllById( 'availableDataElements', 'selectedDataElements' )"><br>
-                            <input type="button" value="&lt;&lt;" style="width:40px" onclick="moveAllById( 'selectedDataElements', 'availableDataElements' )">
-                    	</td>
-    			<td class="NormalB">$i18n.getString( "nr_selected_delist" )<br />
-                            <select multiple id="selectedDataElements" name="selectedDataElements" style="width:325px; height:160px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
-                            </select>
-                    	</td>
-  		   </tr>
+    						<td class="NormalB">2. $i18n.getString( "ga_from" )<br />
+                            <select id="sDateLB" name="sDateLB" style="width:200px"></select>
+							</td>
+							<td class="NormalB">&nbsp;</td>
+    						<td class="NormalB">3. $i18n.getString( "ga_to" )<br />
+    						<select id="eDateLB" name="eDateLB" style="width:200px"></select>
+                    		</td>
+  		         </tr>
   		   <tr>
-    		        <td class="NormalB">&nbsp;<br/></td>
+    		       	    <td class="NormalB">&nbsp;<br/></td>
                     	<td class="NormalB">&nbsp;<br/></td>
                     	<td class="NormalB">&nbsp;<br/></td>
                     </tr>
@@ -74,18 +70,16 @@
                         <td>
                             <table>
                                 <tr>
-                                    <td class="NormalB">
-
-                                        <input type="checkbox" id="ouSelCB" name="ouSelCB" onchange="ouSelCBChange()" value="ON" > Selected<br />
-
-                                    </td>
+                                   	   <td class="NormalB">
+                                       `	<input type="checkbox" id="ouSelCB" name="ouSelCB" onchange="ouSelCBChange()" value="ON" > Selected<br />
+                                       </td>
                                 </tr>
                                 <tr>
-                                    <td class="NormalB">
+                                    	<td class="NormalB">
                                         $i18n.getString( "ga_orgunit" ) <br>
-                                        <select name="orgUnitListCB" id="orgUnitListCB" multiple size="7" style="width: 175px;" ondblclick="remOUFunction()" disabled >
-                                        </select>
-                                    </td>
+                                        	<select name="orgUnitListCB" id="orgUnitListCB" multiple size="7" style="width: 175px;" ondblclick="remOUFunction()" disabled >
+                                        	</select>
+                                       </td>
                                     <td class="NormalB">&nbsp;</td>
                                     <td class="NormalB">
                                         OrgUnit Levels:<br>
@@ -99,39 +93,14 @@
                         <td class="NormalB">
                         <table>
                             <tr>
-                    		<td class="NormalB">$i18n.getString( "nr_from" )<br>
-                                    <select id="sDateLB" name="sDateLB">
-                                    #foreach($period in $monthlyPeriods)
-                                        <option value="$period.id">$simpleDateFormat.format($period.startDate)</option>
-                                    #end
-                                    </select>
-
-                    		</td>
-                   		<td align="right" class="NormalB">$i18n.getString( "nr_to" )<br>
-                                    <select id="eDateLB" name="eDateLB">
-                                    #foreach($period in $monthlyPeriods)
-                                        <option value="$period.id">$simpleDateFormat.format($period.endDate)</option>
-                                    #end
-                                    </select>
-
-			  	</td>
+ 								<td class="NormalB"><input type="submit" name="View Null Reporter" value="$i18n.getString( 'nr_viewnullreporter' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000"> </td>
                             </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><input type="submit" name="View Null Reporter" value="$i18n.getString( 'nr_viewnullreporter' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000"> </td>
-                            </tr>
-                           </table>
+							
+                        </table>
                        </td>
                     </tr>
-
                     <tr>
                     	<td class="NormalB" align="center" colspan="3" >
-
                             <input type="hidden" name="ouIDTB" id="ouIDTB">
                     	</td>
                     </tr>
@@ -140,3 +109,6 @@
     </body>
 </body>
 </html>
+<script>
+	getdSetPeriods();
+</script>

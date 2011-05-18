@@ -362,3 +362,169 @@ function getOrgUDetailsRecevied(xmlObject)
     //document.reportForm.ouLevelTB.value = level;
     }    		
 }
+
+
+//Data Status for DataSet wise
+
+function getPeriodsForDataSetWise()
+{
+	var periodTypeList = document.getElementById('periodTypeId');
+	var periodTypeId = periodTypeList.options[periodTypeList.selectedIndex].value;
+	if ( periodTypeId != "NA" ) 
+	{
+		$.post("getPeriodsForDataSetWise.action",
+			{
+				id : periodTypeId
+			},
+			function (data)
+			{
+				getPeriodsForDataSetWiseReceived(data);
+			},'xml');
+	}
+	
+}
+
+function getPeriodsForDataSetWiseReceived(xmlObject)
+{
+	var sDateLBObj = document.getElementById("sDateLB");
+	var eDateLBObj = document.getElementById("eDateLB");
+
+	clearList(sDateLBObj);
+	clearList(eDateLBObj);
+
+	var periods = xmlObject.getElementsByTagName("period");
+	
+	for ( var i = 0; i < periods.length; i++ ) 
+	{
+		var id = periods[i].getElementsByTagName("id")[0].firstChild.nodeValue;
+		var periodName = periods[i].getElementsByTagName("periodname")[0].firstChild.nodeValue;
+
+		$("#sDateLB").append("<option value='"+ id +"'>" + periodName + "</option>");
+		$("#eDateLB").append("<option value='"+ id +"'>" + periodName + "</option>");
+	}
+}
+
+//DataStatus Data set wise Form Validations
+function formValidationsDataStatusDataSetWise()
+{
+	var selOUListLength = document.ChartGenerationDataSetWiseForm.orgUnitListCB.options.length;
+    //var selOUListIndex = document.ChartGenerationDataSetWiseForm.orgUnitListCB.selectedIndex;
+    var periodType     = document.ChartGenerationDataSetWiseForm.periodTypeId.value;
+    var selOUListIndex = document.ChartGenerationDataSetWiseForm.orgUnitListCB.options.length;
+    
+    if( periodType == "NA" )
+    {
+        alert("Please Select Period Type"); return false;
+    }
+    else
+    {
+    	var startPeriodObj = document.getElementById('sDateLB');
+    	var endPeriodObj = document.getElementById('eDateLB');
+
+    	sDateTxt = startPeriodObj.options[startPeriodObj.selectedIndex].text;
+        sDate = formatDate(new Date(getDateFromFormat(sDateTxt,"MMM-y")),"yyyy-MM-dd");
+        eDateTxt = endPeriodObj.options[endPeriodObj.selectedIndex].text;
+        eDate = formatDate(new Date(getDateFromFormat(eDateTxt,"MMM-y")),"yyyy-MM-dd");
+    }
+
+    if(sDateIndex < 0) 
+    {
+        alert("Please Select Starting Period"); return false;
+    }
+    else if(eDateIndex < 0) 
+    {
+        alert("Please Select Ending Period"); return false;
+    }
+    else if(sDate > eDate) 
+    {
+        alert("Starting Date is Greater"); return false;
+    }
+    else if( selOUListIndex <= 0 ) 
+    {
+        alert("Please Select OrganisationUnit(s)"); return false;
+    }
+
+   
+	 var k=0;
+	
+	 for(k=0;k<selOUListIndex;k++)
+	 {
+	 	document.ChartGenerationDataSetWiseForm.orgUnitListCB.options[k].selected = true;
+	 }
+
+    var sWidth = 850;
+    var sHeight = 650;
+    var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
+    var TopPosition=(screen.height)?(screen.height-sHeight)/2:100;
+	
+    window.open('','chartWindow1','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
+		
+    return true;
+
+} 
+//DataStatus Data set wise Form Validations
+//Facility ListBox Change Function
+function facilityChangeDataSetWiseFunction(evt)
+{
+    selFacility = $("select#facilityLB").val();
+    if(selFacility == "children" || selFacility == "immChildren")
+    {
+        var index = document.ChartGenerationDataSetWiseForm.orgUnitListCB.options.length;
+        for(i=0;i<index;i++)
+        {
+            document.ChartGenerationDataSetWiseForm.orgUnitListCB.options[0] = null;
+        }
+    }
+}
+	
+// facilityChangeDataSetWiseFunction end
+
+
+
+
+// Removes slected orgunits from the Organisation List
+	function remOUDataSetWiseFunction()
+	{
+	    var index = document.ChartGenerationDataSetWiseForm.orgUnitListCB.options.length;
+	    var i=0;
+	    for(i=index-1;i>=0;i--)
+	    {
+	        if(document.ChartGenerationDataSetWiseForm.orgUnitListCB.options[i].selected)
+	            document.ChartGenerationDataSetWiseForm.orgUnitListCB.options[i] = null;
+	    }
+	}
+	// remOUFunction end
+
+function getOUDeatilsForDataStatusDataSetWise( orgUnitIds )
+{
+	jQuery.postJSON("getOrgUnitName.action",{
+  	  id : orgUnitIds[0]
+   }, function( json ){
+
+	   var orgUnitId = json.organisationUnit.id;
+	   var orgUnitName = json.organisationUnit.name;
+	   var faciltyLB = document.getElementById("facilityLB");
+	   var facilityIndex =  faciltyLB.selectedIndex;
+	   var orgUnitListCB = document.getElementById("orgUnitListCB");
+	   
+	   if( faciltyLB.options[facilityIndex].value == "children" )
+       {
+           for( i = 0; i< orgUnitListCB.options.length; i++ )
+           {
+        	   orgUnitListCB.options[0] = null;
+           }
+           orgUnitListCB.options[0] = new Option( orgUnitName, orgUnitId, false, false );
+       }
+       else
+       {
+           for( i = 0; i < orgUnitListCB.options.length; i++ )
+           {
+               if( orgUnitId == orgUnitListCB.options[i].value) return;
+           }
+           orgUnitListCB.options[orgUnitListCB.options.length] = new Option( orgUnitName, orgUnitId, false, false );
+       }
+        
+   });
+}
+
+
