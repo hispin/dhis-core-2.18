@@ -1,28 +1,38 @@
 <script>
-	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
-	var i18n_field_is_required = '$encoder.jsEscape( $i18n.getString( "field_is_required" ) , "'") ';
-	var i18n_at_least_2_option = '$encoder.jsEscape( $i18n.getString( "at_least_2_option" ) , "'") ';
 	var isSubmit = true;
-	jQuery(document).ready(	function(){
-			
+	
+	jQuery('#updateProgramAttributeForm').ready(	function(){
+
 			validation( 'updateProgramAttributeForm', function(form){
-				if( isSubmit && ATTRIBUTE_OPTION.checkOnSubmit() ) {
-					form.submit();
+				if( isSubmit )
+				{
+					updateProgramAttribute();
 				}
 			}, function(){
-				isSubmit = true;
-				jQuery.each($('#updateProgramAttributeForm').serializeArray(), function(i, field) {
-					if( field.value == ""){
-						setInnerHTML("attrMessage", i18n_field_is_required);
-						isSubmit = false;
-					}
-				});
-			}); 
+				isSubmit = ATTRIBUTE_OPTION.checkOnSubmit();
+				
+				if( isSubmit )
+				{
+					var fields = $("#updateProgramAttributeForm").serializeArray();
+					jQuery.each(fields, function(i, field) {
+						if(  field.name.match("^attrOption")=='attrOption' && field.value == ""){
+							setInnerHTML( "attrMessage", i18n_field_is_required );
+							isSubmit = false;
+						}
+					});
+					
+				}else
+				{
+					setInnerHTML( "attrMessage", i18n_at_least_2_option );
+				}
+			});
 			
 		checkValueIsExist( "name", "validateProgramAttribute.action", {id:getFieldValue('id')});
 	});		
 </script>
-
+				
+<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackBtn();" style="width:10em">
+<p></p>
 																		
 <h3>$i18n.getString( "update_new_program_attribute" )</h3>
 <form id="updateProgramAttributeForm" action="updateProgramAttribute.action" method="post" >
