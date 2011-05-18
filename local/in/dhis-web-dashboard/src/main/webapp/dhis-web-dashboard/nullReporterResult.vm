@@ -27,7 +27,10 @@
 			#set( $ouList = $nullReportResult.keySet() )
 
                             <table border="1" cellpadding="5" cellspacing="0">
-                                    <tr></tr>
+                                    <tr align="center">
+                                    	<td class="NormalBHeading"><strong>Data Set Name</strong></td>
+                                    	<td class="NormalBHeading" colspan="$size"><strong>$!dataSetName</strong></td>
+                                    </tr>
                                     <tr align="center">
                                         #if( $size == 0)
                                             <td cellspacing="1" class="NormalBHeading" >There is no null value.</th>

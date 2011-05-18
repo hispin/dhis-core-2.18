@@ -587,6 +587,45 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 	
+	<!-- DataStatus Data Set Wise -->
+    <bean id="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusDataSetWiseFormAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusDataSetWiseFormAction"
+		scope="prototype">
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+    </bean>
+	
+    <bean id="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusDataSetWiseResultAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusDataSetWiseResultAction"
+		scope="prototype">
+        <property name="dashBoardService">
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+	
+	
+    <bean id="org.hisp.dhis.dataanalyser.ds.action.GetPeriodsForDataSetWiseAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GetPeriodsForDataSetWiseAction"
+		scope="prototype">
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+    </bean>			
+		
+	
+	
+	
 	<!-- DataStatus For Mobile start  -->
 
 	<bean id="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateDataStatusMobileFormAction"
@@ -872,7 +911,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.nr.action.GenerateNullReporterFormAction"
 		class="org.hisp.dhis.dataanalyser.nr.action.GenerateNullReporterFormAction"
 		scope="prototype">
-        <property name="dataElementService">
+<!--    <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
         </property>
         <property name="periodService">
@@ -880,7 +919,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-        </property>
+        </property>-->
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"></ref>
+			
+		</property>
     </bean>
 	
     <bean id="org.hisp.dhis.dataanalyser.nr.action.GenerateNullReporterResultAction"

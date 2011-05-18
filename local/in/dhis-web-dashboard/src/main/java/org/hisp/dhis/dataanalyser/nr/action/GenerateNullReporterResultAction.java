@@ -3,11 +3,14 @@ package org.hisp.dhis.dataanalyser.nr.action;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -20,16 +23,12 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 
 import com.opensymphony.xwork2.Action;
-
-import java.util.Collections;
-import org.amplecode.quick.StatementManager;
 
 public class GenerateNullReporterResultAction
     implements Action
@@ -305,6 +304,20 @@ public class GenerateNullReporterResultAction
     }
 
     private Map<OrganisationUnit, Integer> ouChildCountMap;
+    
+    private String selectedDataSet;
+    
+    public void setSelectedDataSet( String selectedDataSet )
+    {
+        this.selectedDataSet = selectedDataSet;
+    }
+    
+    private String dataSetName;
+    
+    public String getDataSetName()
+    {
+        return dataSetName;
+    }
 
     // ---------------------------------------------------------------
     // Action Implementation
@@ -312,8 +325,9 @@ public class GenerateNullReporterResultAction
     public String execute()
         throws Exception
     {
-	statementManager.initialise();
+        statementManager.initialise();
         // VelocityContext context = new VelocityContext();
+        System.out.println( "Null Report Generation Start Time is : " + new Date() );
         simpleDateFormat = new SimpleDateFormat( "MMM y" );
 
         nullReportResult = new HashMap<OrganisationUnit, Map<Period, List<DataElement>>>();
@@ -360,8 +374,8 @@ public class GenerateNullReporterResultAction
             maxOuLevel = minOULevel;
         }
 
-        Period startDate = periodService.getPeriod( sDateLB );
-        Period endDate = periodService.getPeriod( eDateLB );
+        //Period startDate = periodService.getPeriod( sDateLB );
+        //Period endDate = periodService.getPeriod( eDateLB );
         List<OrganisationUnit> ouHavingNullValuesWithHigherLevel = new ArrayList<OrganisationUnit>();
         ouHavingNullValuesWithLowerLevel = new ArrayList<OrganisationUnit>();
         ouHavingNullValues = new ArrayList<OrganisationUnit>();
@@ -369,35 +383,32 @@ public class GenerateNullReporterResultAction
 
         dePeriodTypeMap = new HashMap<DataElement, PeriodType>();
         // periodDeListMap = new HashMap<Period, List<DataElement>>();
-
-        for ( String deid : selectedDataElements )
+        
+        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( selectedDataSet ) );
+        dataSetName = dataSet.getName();
+       // Collection<DataElement> dataElements = dataSet.getDataElements();
+        List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements()  );
+        
+        
+        
+        //System.out.println("----------------Data Element  Size is ------- " + dataElementList.size()  );
+        
+        for ( DataElement dataElement : dataElementList )
         {
-            DataElement de1 = dataElementService.getDataElement( Integer.parseInt( deid ) );
-
-            dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-
-            int flag = 0;
-            for ( DataSet ds : dataSetList )
-            {
-                if ( ds.getDataElements().contains( de1 ) )
-                {
-                    dePeriodTypeMap.put( de1, ds.getPeriodType() );
-                    flag = 1;
-                    break;
-                }
-            }
-            if ( flag == 0 )
-            {
-                dePeriodTypeMap.put( de1, new MonthlyPeriodType() );
-            }
-
+            DataElement de1 = dataElementService.getDataElement( dataElement.getId() );
+            dePeriodTypeMap.put( de1, dataSet.getPeriodType() );
             deList.add( de1 );
         }
-
-        periodsColl = new ArrayList<Period>( periodService.getIntersectingPeriods( startDate.getStartDate(), endDate
-            .getEndDate() ) );
+        
+        
+        Period startPeriod = periodService.getPeriod( sDateLB );
+        Period endPeriod = periodService.getPeriod( eDateLB );
+        PeriodType dataSetPeriodType = dataSet.getPeriodType(); 
+        periodsColl = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(), endPeriod.getEndDate() ));
+        
+        //periodsColl = new ArrayList<Period>( periodService.getIntersectingPeriods( startDate.getStartDate(), endDate.getEndDate() ) );
         size = periodsColl.size();
-        // System.out.println("periods size is "+size);
+       // System.out.println("periods size is " + size );
         Collections.sort( periodsColl, new PeriodTypeComparator() );
         periods = new ArrayList<Period>();
 
@@ -414,7 +425,7 @@ public class GenerateNullReporterResultAction
                 for ( DataElement de : deList )
                 {
 
-                    if ( (dePeriodTypeMap.get( de ).equals( p.getPeriodType() )) )
+                    if ( ( dePeriodTypeMap.get( de ).equals( p.getPeriodType() )) )
                     {
                         double aggValue = 0;
                         if ( ouSelCB != null )
@@ -535,14 +546,14 @@ public class GenerateNullReporterResultAction
                         }
                     }
                 }
+               // System.out.println("---------------Size of data element List is  " + resultDeList.size() );
                 if ( resultDeList.size() != 0 )
                 {
                     periodDeListMap.put( p, resultDeList );
                     // nullReportResult.put(curOu, periodDeListMap);
                 }
             }
-            // System.out.println("----------------------- " +
-            // periodDeListMap.size() + " " + curOu );
+            //System.out.println("----------------------- " + periodDeListMap.size() + " " + curOu );
 
             if ( periodDeListMap.size() != 0 )
             {
@@ -585,10 +596,13 @@ public class GenerateNullReporterResultAction
         {
             size = 0;
         }
+        
+        //System.out.println("periods size is " + size );
         Collections.sort( ouHavingNullValues, new OrganisationUnitNameComparator() );
         Collections.sort( periods, new PeriodComparator() );
         Collections.sort( periods, new PeriodTypeComparator() );
-	statementManager.destroy();
+        statementManager.destroy();
+        System.out.println( "Null Report Generation End Time is : " + new Date() );
         return SUCCESS;
     }
 

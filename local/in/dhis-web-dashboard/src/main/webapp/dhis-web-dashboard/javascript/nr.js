@@ -162,16 +162,26 @@ function selButtonFunction(selButton)
 function formValidations()
 {
 	
-	var selDEListSize  = document.ChartGenerationForm.selectedDataElements.options.length;
+	//var selDEListSize  = document.ChartGenerationForm.selectedDataElements.options.length;
 	var orgUnitListCB = document.getElementById("orgUnitListCB");
 	var orgUnitLevelCB = document.getElementById("orgUnitLevelCB");
-        var ouSelCB = document.getElementById("ouSelCB");
-    sDateIndex    = document.ChartGenerationForm.sDateLB.selectedIndex;
-    eDateIndex    = document.ChartGenerationForm.eDateLB.selectedIndex;
-    sDateTxt = document.ChartGenerationForm.sDateLB.options[sDateIndex].text;
-    sDate = formatDate(new Date(getDateFromFormat(sDateTxt,"MMM - y")),"yyyy-MM-dd");
-    eDateTxt = document.ChartGenerationForm.eDateLB.options[eDateIndex].text;
-    eDate = formatDate(new Date(getDateFromFormat(eDateTxt,"MMM - y")),"yyyy-MM-dd");
+    var ouSelCB = document.getElementById("ouSelCB");
+    //sDateIndex    = document.ChartGenerationForm.sDateLB.selectedIndex;
+    //eDateIndex    = document.ChartGenerationForm.eDateLB.selectedIndex;
+    
+    
+	var startPeriodObj = document.getElementById('sDateLB');
+	var endPeriodObj = document.getElementById('eDateLB');
+
+	sDateTxt = startPeriodObj.options[startPeriodObj.selectedIndex].text;
+    sDate = formatDate(new Date(getDateFromFormat(sDateTxt,"MMM-y")),"yyyy-MM-dd");
+    eDateTxt = endPeriodObj.options[endPeriodObj.selectedIndex].text;
+    eDate = formatDate(new Date(getDateFromFormat(eDateTxt,"MMM-y")),"yyyy-MM-dd");
+    
+    //sDateTxt = document.ChartGenerationForm.sDateLB.options[sDateIndex].text;
+    //sDate = formatDate(new Date(getDateFromFormat(sDateTxt,"MMM - y")),"yyyy-MM-dd");
+    //eDateTxt = document.ChartGenerationForm.eDateLB.options[eDateIndex].text;
+    //eDate = formatDate(new Date(getDateFromFormat(eDateTxt,"MMM - y")),"yyyy-MM-dd");
 
     if( ouSelCB.checked)
     {
@@ -183,14 +193,15 @@ function formValidations()
     if(sDateIndex < 0) {alert("Please Select Starting Period");return false;}
     else if(eDateIndex < 0) {alert("Please Select Ending Period");return false;}
     else if(sDate > eDate) {alert("Starting Date is Greater");return false;}
-    else if(selDEListSize <=0 ) {alert("Please Select Dataelements");return false;}
-	
+    //else if(selDEListSize <=0 ) {alert("Please Select Data elements");return false;}
+	/*
 	for(k=0;k<document.ChartGenerationForm.selectedDataElements.options.length;k++)
     	{
     		document.ChartGenerationForm.selectedDataElements.options[k].selected = true;
-        } // for l
-
-        for(k = 0; k < orgUnitListCB.options.length; k++)
+        } 
+	// for l
+	*/
+    for(k = 0; k < orgUnitListCB.options.length; k++)
 	{
 		orgUnitListCB.options[k].selected = true;
 	}
@@ -204,3 +215,68 @@ function formValidations()
   	return true;
 } // formValidations Function End
 
+
+//Getting corresponding Period List for Data Sets Null reporter. 
+function getdSetPeriods()
+{
+
+	var dataSetList = document.getElementById("selectedDataSet");
+    var dataSetId = dataSetList.options[ dataSetList.selectedIndex].value;
+    
+	$.post("getDataSetPeriods.action",
+	{
+		id : dataSetId
+	},
+	function (data)
+	{
+		getdSetPeriodsReceived(data);
+	},'xml');
+ 	
+}
+
+function getdSetPeriodsReceived( xmlObject )
+{	
+	var sDateLB = document.getElementById( "sDateLB" );
+    var eDateLB = document.getElementById( "eDateLB" );
+		
+    var periods = xmlObject.getElementsByTagName( "period" );
+    
+    if ( periods.length <= 0 )
+    {
+    	clearList( sDateLB );
+        clearList( eDateLB );
+    }
+
+    for ( var i = 0; i < periods.length; i++ )
+    {
+        var periodType = periods[ i ].getElementsByTagName( "periodtype" )[0].firstChild.nodeValue;
+		
+        if(i ==0 )
+        {
+            if( periodType == curPeriodType )
+            {
+                break;
+            }
+            else
+            {
+                curPeriodType = periodType;
+                clearList( sDateLB );
+                clearList( eDateLB );
+            }
+        }
+				
+        var id = periods[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
+        var periodName = periods[ i ].getElementsByTagName( "periodname" )[0].firstChild.nodeValue;
+
+        var option1 = document.createElement( "option" );
+        option1.value = id;
+        option1.text = periodName;
+        sDateLB.add( option1, null );
+			
+        var option2 = document.createElement( "option" );
+        option2.value = id;
+        option2.text = periodName;
+        eDateLB.add( option2, null);
+    }
+		
+}
