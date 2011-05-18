@@ -207,3 +207,90 @@ function getConditionDescription()
 			byId('aggregationDescription').innerHTML = data;
 		},'html');
 }
+
+// -----------------------------------------------------------------------------
+// Add Case Aggregation
+// -----------------------------------------------------------------------------
+
+function showAddCaseAggregationForm()
+{
+	hideById('caseAggregationList');
+	jQuery('#loaderDiv').show();
+	jQuery('#editCaseAggregationForm').load('showAddCaseAggregationForm.action',
+	{
+	}, function()
+	{
+		showById('editCaseAggregationForm');
+		jQuery('#loaderDiv').hide();
+	});
+}
+
+function addCaseAggregation()
+{	
+	$.ajax({
+		type: "POST",
+		url: 'addCaseAggregation.action',
+		data: getParamsForDiv('addCaseAggregationForm'),
+		success: function( json ) {
+			if( json.response == 'success')
+			{
+				onClickBackBtn();
+			}
+		}
+	});
+	
+    return false;
+}
+
+// -----------------------------------------------------------------------------
+// Update Case Aggregation
+// -----------------------------------------------------------------------------
+
+function showUpdateCaseAggregationForm( caseAggregationId )
+{
+	hideById('caseAggregationList');
+	jQuery('#loaderDiv').show();
+	jQuery('#editCaseAggregationForm').load('showUpdateCaseAggregationForm.action',
+	{
+		id:caseAggregationId
+	}, function()
+	{
+		showById('editCaseAggregationForm');
+		jQuery('#loaderDiv').hide();
+	});
+}
+
+function updateCaseAggregation()
+{	
+	$.ajax({
+		type: "POST",
+		url: 'updateCaseAggregation.action',
+		data: getParamsForDiv('updateCaseAggregationForm'),
+		success: function( json ) {
+			if( json.response == 'success')
+			{
+				onClickBackBtn();
+			}
+		}
+	});
+	
+    return false;
+}
+
+// ------------------------------------------------------------------
+// Click Back button
+// ------------------------------------------------------------------
+
+function onClickBackBtn()
+{
+	hideById('editCaseAggregationForm');	
+	jQuery('#loaderDiv').show();
+	jQuery('#caseAggregationList').load('caseAggregationList.action',
+	{
+	}, function()
+	{
+		showById('caseAggregationList');
+		jQuery('#loaderDiv').hide();
+	});
+}	
+

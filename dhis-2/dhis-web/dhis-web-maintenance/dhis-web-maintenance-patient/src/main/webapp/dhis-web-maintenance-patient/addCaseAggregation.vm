@@ -1,11 +1,17 @@
 <script>
 	jQuery(document).ready(	function(){
+		
+		jQuery('#description').focus();
+		
 		validation( 'addCaseAggregationForm', function(form){
-			form.submit();
+			addCaseAggregation();
 		}); 
 	});		
 </script>
-															
+				
+<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackBtn();" style="width:10em">
+<p></p>
+																			
 <h3>$i18n.getString( "add_case_aggregation_condition" )</h3>
 <form id="addCaseAggregationForm" action="addCaseAggregation.action" method="post" >
 
@@ -205,9 +211,3 @@
 </table>
 
 </form>
-
-<script>
-	byId('description').focus();
-	getAggDataElements();
-	getProgramStages();
-</script>
