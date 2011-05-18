@@ -101,10 +101,20 @@ function getParamsForDiv( patientDiv)
 			if( $(this).attr('type') != 'button' )
 			{
 				var elementId = $(this).attr('id');
-				params += elementId + "="+ jQuery(this).val() + "&";
+				
+				if( jQuery(this).context.multiple )
+				{
+					for ( var i in jQuery(this).val() )
+					{
+						params += elementId + "="+ jQuery(this).val()[i] + "&";
+					}
+				}else
+				{
+					params += elementId + "="+ jQuery(this).val() + "&";
+				}
 			}
 		});
-		
+	
 	return params;
 }
 

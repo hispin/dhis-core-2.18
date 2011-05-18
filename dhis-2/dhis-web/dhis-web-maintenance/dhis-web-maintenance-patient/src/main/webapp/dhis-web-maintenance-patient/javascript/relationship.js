@@ -21,87 +21,6 @@ function relationshipTypeReceived( relationshipTypeElement )
 }
 
 // -----------------------------------------------------------------------------
-// Add RelationshipType
-// -----------------------------------------------------------------------------
-
-function validateAddRelationshipType()
-{
-	$.postJSON(
-    	    'validateRelationshipType.action',
-    	    {
-    	        "aIsToB": getFieldValue( 'aIsToB' ),
-				"bIsToA": getFieldValue( 'bIsToA' )
-    	    },
-    	    function( json )
-    	    {
-    	    	if ( json.response == "success" )
-    	    	{
-					var form = document.getElementById( 'addRelationshipTypeForm' );        
-					form.submit();
-    	    	}else if ( json.response == "input" )
-    	    	{
-    	    		setHeaderMessage( json.message );
-    	    	}
-    	    	else if ( json.response == "error" )
-    	    	{
-    	    		setHeaderMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
-    	    	}
-    	    }
-    	);
-}
-
-// -----------------------------------------------------------------------------
-// Update RelationshipType
-// -----------------------------------------------------------------------------
-
-function validateUpdateRelationshipType()
-{
-	$.postJSON(
-    	    'validateRelationshipType.action',
-    	    {
-				"id": getFieldValue( 'id' ),
-    	        "aIsToB": getFieldValue( 'aIsToB' ),
-				"bIsToA": getFieldValue( 'bIsToA' )
-    	    },
-    	    function( json )
-    	    {
-    	    	if ( json.response == "success" )
-    	    	{
-					var form = document.getElementById( 'updateRelationshipTypeForm' );        
-					form.submit();
-    	    	}else if ( json.response == "input" )
-    	    	{
-    	    		setHeaderMessage( json.message );
-    	    	}
-    	    	else if ( json.response == "error" )
-    	    	{
-    	    		setHeaderMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
-    	    	}
-    	    }
-    	);
-}
-
-function updateValidationCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if( type == 'success' )
-    {
-    	var form = document.getElementById( 'updateRelationshipTypeForm' );        
-        form.submit();
-    }
-    else if( type == 'error' )
-    {
-        window.alert( i18n_saving_program_failed + ':' + '\n' + message );
-    }
-    else if( type == 'input' )
-    {
-        setHeaderMessage( message );
-    }
-}
-
-// -----------------------------------------------------------------------------
 // Remove RelationshipType
 // -----------------------------------------------------------------------------	
 
@@ -267,38 +186,6 @@ function removeRelationship( relationshipId, patientA, aIsToB, patientB )
     }
 }
 
-
-/*function removeRelationship( relationshipId, patientA, aIsToB, patientB )
-{	
-	
-    var result = window.confirm( i18n_confirm_delete_relationship + '\n\n' + patientA + ' is ' + aIsToB + ' to ' + patientB );
-    
-    if( result )
-    {
-    	var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removeRelationshipCompleted );
-        request.send( 'removeRelationship.action?relationshipId=' + relationshipId );         
-    }
-}
-
-function removeRelationshipCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;    
-    
-    if( type == 'success' )
-	{
-		window.location = "getRelationshipList.action";
-	}	
-	else if( type = 'error' )
-    {
-        setInnerHTML( 'warningField', message );
-        
-        showWarning();
-    }
-}*/
-
 //------------------------------------------------------------------------------
 // Relationship partner
 //------------------------------------------------------------------------------
@@ -439,3 +326,144 @@ function removeRepresentativeCompleted( messageElement )
 		setHeaderMessage( message );
 	}
 }
+
+// -----------------------------------------------------------------------------
+// Add Relationship Type
+// -----------------------------------------------------------------------------
+
+function showAddRelationshipTypeForm()
+{
+	hideById('relationshipTypeList');
+	jQuery('#loaderDiv').show();
+	jQuery('#editRelationshipTypeForm').load('showAddRelationshipTypeForm.action',
+	{
+	}, function()
+	{
+		showById('editRelationshipTypeForm');
+		jQuery('#loaderDiv').hide();
+	});
+}
+
+
+function validateAddRelationshipType()
+{
+	$.postJSON(
+    	    'validateRelationshipType.action',
+    	    {
+    	        "aIsToB": getFieldValue( 'aIsToB' ),
+				"bIsToA": getFieldValue( 'bIsToA' )
+    	    },
+    	    function( json )
+    	    {
+    	    	if ( json.response == "success" )
+    	    	{
+					addRelationshipType();
+    	    	}else if ( json.response == "input" )
+    	    	{
+    	    		setHeaderMessage( json.message );
+    	    	}
+    	    	else if ( json.response == "error" )
+    	    	{
+    	    		setHeaderMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
+    	    	}
+    	    }
+    	);
+}
+
+function addRelationshipType()
+{	
+	$.ajax({
+		type: "POST",
+		url: 'addRelationshipType.action',
+		data: getParamsForDiv('addRelationshipTypeForm'),
+		success: function( json ) {
+			if( json.response == 'success')
+			{
+				onClickBackBtn();
+			}
+		}
+	});
+	
+    return false;
+}
+
+// -----------------------------------------------------------------------------
+// Update Relationship Type
+// -----------------------------------------------------------------------------
+
+function showUpdateRelationshipTypeForm( relationshipTypeId )
+{
+	hideById('relationshipTypeList');
+	jQuery('#loaderDiv').show();
+	jQuery('#editRelationshipTypeForm').load('showUpdateRelationshipTypeForm.action',
+	{
+		id:relationshipTypeId
+	}, function()
+	{
+		showById('editRelationshipTypeForm');
+		jQuery('#loaderDiv').hide();
+	});
+}
+
+
+function validateUpdateRelationshipType()
+{
+	$.postJSON(
+    	    'validateRelationshipType.action',
+    	    {
+				"id": getFieldValue( 'id' ),
+    	        "aIsToB": getFieldValue( 'aIsToB' ),
+				"bIsToA": getFieldValue( 'bIsToA' )
+    	    },
+    	    function( json )
+    	    {
+    	    	if ( json.response == "success" )
+    	    	{
+					updatePatientIdentifierType();
+    	    	}else if ( json.response == "input" )
+    	    	{
+    	    		setMessage( json.message );
+    	    	}
+    	    	else if ( json.response == "error" )
+    	    	{
+    	    		setMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
+    	    	}
+    	    }
+    	);
+}
+
+function updatePatientIdentifierType()
+{	
+	$.ajax({
+		type: "POST",
+		url: 'updateRelationshipType.action',
+		data: getParamsForDiv('updateRelationshipTypeForm'),
+		success: function( json ) {
+			if( json.response == 'success')
+			{
+				onClickBackBtn();
+			}
+		}
+	});
+	
+    return false;
+}
+
+// ------------------------------------------------------------------
+// Click Back button
+// ------------------------------------------------------------------
+
+function onClickBackBtn()
+{
+	hideById('editRelationshipTypeForm');	
+	jQuery('#loaderDiv').show();
+	jQuery('#relationshipTypeList').load('relationshipTypeList.action',
+	{
+	}, function()
+	{
+		showById('relationshipTypeList');
+		jQuery('#loaderDiv').hide();
+	});
+}	
+
+
