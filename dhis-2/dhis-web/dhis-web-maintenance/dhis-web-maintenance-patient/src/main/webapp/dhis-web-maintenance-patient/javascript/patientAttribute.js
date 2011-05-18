@@ -151,7 +151,6 @@ function showUpdatePatientAttributeForm( attributeId )
 		showById('editPatientAttributeForm');
 		jQuery('#loaderDiv').hide();
 	});
-	
 }
 
 function updatePatientAttribute()

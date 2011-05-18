@@ -1,0 +1,67 @@
+
+<h3>$i18n.getString( "relationship_type_management" )</h3>
+
+<table class="mainPageTable">
+  <tr>
+    <td style="vertical-align:top">
+    
+      <table class="listTable">          
+          <col>
+          <col>                    
+          <col width="20">
+          <col width="20">
+          <col width="20">                    		  
+		  <tr>
+		  	<td></td>
+		  	<td></td>
+			<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:showAddRelationshipTypeForm()" style="width:70px"></td>
+		  </tr>
+          <tr>
+            <th>$i18n.getString( "relationship_type" )</th>            
+            <th>$i18n.getString( "description" )</th>
+            <th colspan="3">$i18n.getString( "operations" )</th>
+          </tr>
+
+          <tbody id="list">
+			#set( $mark = false )
+            #foreach( $relationshipType in $relationshipTypes )
+              <tr id="tr${relationshipType.id}" #alternate( $mark ) >
+              
+                <td>$encoder.htmlEncode( $relationshipType.aIsToB )/$encoder.htmlEncode( $relationshipType.bIsToA )</td>
+                
+                <td>$encoder.htmlEncode( $relationshipType.description )</td>               
+                
+                <td style="text-align:center"#alternate( $mark )>
+                  <a href="javascript:showUpdateRelationshipTypeForm('$relationshipType.id')" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+                </td>                
+ 
+                <td style="text-align:center"#alternate( $mark )>
+                  <a href="javascript:removeRelationshipType( '$relationshipType.id', '$encoder.jsEncode( $relationshipType.aIsToB )', '$encoder.jsEncode( $relationshipType.bIsToA )'  )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+                </td>    
+                
+                <td style="text-align:center"#alternate( $mark )>                                      
+                  <a href="javascript:showRelationshipTypeDetails( $relationshipType.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+                </td>           
+                
+              </tr>
+			  #set( $mark = !$mark)
+            #end
+
+          </tbody>
+
+        </table>
+    </td>
+    <td style="width:20em; padding-left:2em; vertical-align:top">
+        <div id="detailsArea" style="display:none; position:absolute; overflow:auto; right: 10px">
+            <div style="float:right;">
+                <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+            </div>              
+            <p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
+            <p><label>$i18n.getString( "a_is_to_b" ):</label><br><span id="aIsToBField"></span></p>
+            <p><label>$i18n.getString( "b_is_to_a" ):</label><br><span id="bIsToAField"></span></p>
+            <p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>                            
+        </div>
+    </td>
+  </tr>
+</table>
+

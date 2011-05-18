@@ -9,6 +9,9 @@
 	});		
 </script>
 
+<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackBtn();" style="width:10em">
+<p></p>
+
 <h3>$i18n.getString( "add_new_relationship_type" )</h3>
 																					
 <form id="addRelationshipTypeForm" name="addRelationshipTypeForm" action="addRelationshipType.action" method="post">
@@ -33,7 +36,6 @@
 
 <p>
     <input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
-    <input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='relationshipType.action'" style="width:10em"/>
 </p>
 
 </form>

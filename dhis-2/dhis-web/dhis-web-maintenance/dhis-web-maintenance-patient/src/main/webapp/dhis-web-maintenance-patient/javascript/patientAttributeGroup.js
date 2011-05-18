@@ -39,15 +39,97 @@ function removePatientAttributeGroup( patientAttributeGroupId, name )
     removeItem( patientAttributeGroupId, name, i18n_confirm_delete, 'removePatientAttributeGroup.action' );
 }
 
-// -----------------------------------------------------------------------------
-// Show and Hide tooltip
-// -----------------------------------------------------------------------------
-
 function patientAttributeGroupAssociation(){
 	selectAllById('selectedAttributeGroups');
     var form = document.getElementById( 'patientAttributeGroupAssociationForm' );        
     form.submit();
 }
+
+// -----------------------------------------------------------------------------
+// Add Attribute-Group
+// -----------------------------------------------------------------------------
+
+function showAddPatientAttributeGroupForm( )
+{
+	hideById('attributeGroupList');
+	jQuery('#loaderDiv').show();
+	jQuery('#editAttributeGroupForm').load('showAddPatientAttributeGroupForm.action',
+	{
+	}, function()
+	{
+		showById('editAttributeGroupForm');
+		jQuery('#loaderDiv').hide();
+	});
+}
+
+function addPatientAttributeGroup()
+{	
+	$.ajax({
+		type: "POST",
+		url: 'addPatientAttributeGroup.action',
+		data: getParamsForDiv('addPatientAttributeGroupForm'),
+		success: function( json ) {
+			if( json.response == 'success')
+			{
+				onClickBackBtn();
+			}
+		}
+	});
+	
+    return false;
+}
+
+// -----------------------------------------------------------------------------
+// Update Attribute-Group
+// -----------------------------------------------------------------------------
+
+function showUpdatePatientAttributeGroupForm( attributeId )
+{
+	hideById('attributeGroupList');
+	jQuery('#loaderDiv').show();
+	jQuery('#editAttributeGroupForm').load('showUpdatePatientAttributeGroupForm.action',
+	{
+		id:attributeId
+	}, function()
+	{
+		showById('editAttributeGroupForm');
+		jQuery('#loaderDiv').hide();
+	});
+}
+
+function updatePatientAttributeGroup()
+{	
+	$.ajax({
+		type: "POST",
+		url: 'updatePatientAttributeGroup.action',
+		data: getParamsForDiv('updatePatientAttributeGroupForm'),
+		success: function( json ) {
+			if( json.response == 'success')
+			{
+				onClickBackBtn();
+			}
+		}
+	});
+	
+    return false;
+}
+
+// ------------------------------------------------------------------
+// Click Back button
+// ------------------------------------------------------------------
+
+function onClickBackBtn()
+{
+	hideById('editAttributeGroupForm');	
+	jQuery('#loaderDiv').show();
+	jQuery('#attributeGroupList').load('patientAttributeGroupList.action',
+	{
+	}, function()
+	{
+		showById('attributeGroupList');
+		jQuery('#loaderDiv').hide();
+	});
+}	
 
 // -----------------------------------------------------------------------------
 // Show and Hide tooltip

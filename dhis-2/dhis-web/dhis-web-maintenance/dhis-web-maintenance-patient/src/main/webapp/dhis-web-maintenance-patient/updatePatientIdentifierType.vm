@@ -1,16 +1,18 @@
 <script>
-	jQuery(document).ready(	function(){
+	jQuery("updatePatientIdentifierTypeForm").ready(	function(){
 		
 		jQuery('name').focus();
 			
 		validation( 'updatePatientIdentifierTypeForm', function(form){
-			form.submit();
+			updatePatientIdentifierType();
 		}); 
 		
 		checkValueIsExist( "name", "validatePatientIdentifierType.action", {id:getFieldValue('id')});
 	});		
 </script>
 
+<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackBtn();" style="width:10em">
+<p></p>
 
 <h3>$i18n.getString( "update_patient_identifier_type" )</h3>
 									
