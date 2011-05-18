@@ -129,7 +129,7 @@ function copySelectedItemToGroupReceived( xmlObject ) {
 		options.add(new Option(name,id), null);
 	}
 	
-	showPopupWindowById( 'copyTo', 450, 110 );
+	showPopupWindowById( 'copyTo', 480, 120 );
 }
 
 function validateCopyExcelItemsToExcelItemGroup() {
