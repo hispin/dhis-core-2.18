@@ -64,8 +64,8 @@
             $select.empty();
             $select_page.empty();
 
-            params.currentPage = json.paging.currentPage;
-            params.numberOfPages = json.paging.numberOfPages;
+            params.currentPage = json.paging.currentPage == 0? 1 : json.paging.currentPage;
+            params.numberOfPages = json.paging.numberOfPages == 0? 1 : json.paging.numberOfPages;
             params.pageSize = json.paging.pageSize;
             params.startPage = json.paging.startPage;
 
