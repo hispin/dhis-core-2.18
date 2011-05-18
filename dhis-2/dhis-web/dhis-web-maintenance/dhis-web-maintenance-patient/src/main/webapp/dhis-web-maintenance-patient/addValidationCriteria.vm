@@ -1,16 +1,19 @@
 <script>
-	jQuery(document).ready(
+	jQuery('#validationCriteriaForm').ready(
 		function()
 		{
 			validation( 'validationCriteriaForm', function( form ){
-				form.submit();			
+				addValidationCriteria();			
 			});
 					
 			checkValueIsExist( "name", "validateValidationCriteria.action");
 		}
 	);	
 </script>																
-
+			
+<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackToCriteriaBtn();" style="width:10em">
+<p></p>
+			
 <h3>$i18n.getString( "add_validation_criteria" )</h3>
 <form id="validationCriteriaForm" action="addValidationCriteria.action" method="post" >
 <table>

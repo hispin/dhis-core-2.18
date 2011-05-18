@@ -1,12 +1,18 @@
 <script>
-	jQuery(document).ready(	function(){
+	jQuery("#updateCaseAggregationForm").ready(	function(){
+	
+		jQuery('#description').focus();
+		
 		validation( 'updateCaseAggregationForm', function(form){
-			form.submit();
+			updateCaseAggregation();
 		}); 
 	});	
 	
 </script>
-														
+					
+<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackBtn();" style="width:10em">
+<p></p>
+																	
 <h3>$i18n.getString( "update_case_aggregation_condition" )</h3>
 
 <form id="updateCaseAggregationForm" action="updateCaseAggregation.action" method="post" >
@@ -126,9 +132,7 @@
 		<td>
 		<fieldset style="border: 1px solid #3f5d8e; ">
 		<legend>$i18n.getString( "case_attributes" )</legend>
-		
 		<table>
-		
 			<tr>
 				<td>
 					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="width:20em; height:14.5em" >
@@ -147,9 +151,7 @@
 		<td>
 		<fieldset style="border: 1px solid #3f5d8e; ">
 		<legend>$i18n.getString( "program_properties" )</legend>
-		
 		<table>
-		
 			<tr>
 				<td>
 					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="width:15em; height:14.5em" >
@@ -209,6 +211,3 @@
 
 </form>
 
-<script>
-	byId('description').focus();
-</script>

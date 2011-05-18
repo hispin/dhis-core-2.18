@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -46,11 +48,11 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
+ * @version $ ShowUpdateCaseAggregationFormAction.java May 18, 2011 10:24:21 AM $
  * 
- * @version ShowCaseAggregationConditionFormAction.java Nov 17, 2010 11:04:46 AM
  */
-public class ShowCaseAggregationConditionFormAction
-    implements Action
+public class ShowUpdateCaseAggregationFormAction 
+implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -62,10 +64,17 @@ public class ShowCaseAggregationConditionFormAction
 
     private PatientAttributeService patientAttributeService;
 
+    private CaseAggregationConditionService aggregationConditionService;
+    
     // -------------------------------------------------------------------------
-    // Output
+    // Input/Output
     // -------------------------------------------------------------------------
-	
+    private Integer id;
+
+    private CaseAggregationCondition caseAggregation;
+
+    private String description;
+    
     private List<PatientAttribute> patientAttributes;
 
     private List<DataElementGroup> dataElementGroups;
@@ -81,6 +90,26 @@ public class ShowCaseAggregationConditionFormAction
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
+    }
+
+    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
+    {
+        this.aggregationConditionService = aggregationConditionService;
+    }
+
+    public CaseAggregationCondition getCaseAggregation()
+    {
+        return caseAggregation;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
     }
 
     public List<Program> getPrograms()
@@ -129,6 +158,10 @@ public class ShowCaseAggregationConditionFormAction
 
         patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
         Collections.sort( patientAttributes, new PatientAttributeComparator() );
+        
+        caseAggregation = aggregationConditionService.getCaseAggregationCondition( id );
+        description = aggregationConditionService.getConditionDescription( caseAggregation.getAggregationExpression() );
+        
 
         return SUCCESS;
     }
