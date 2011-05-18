@@ -4,6 +4,8 @@
 	});
 </script>
 
+<span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
+
 <input type="hidden" id="excelItemGroupId" value="$!excelItemGroup.id"/>
 <h2>$!encoder.htmlEncode($!excelItemGroup.name)</h2>
 <table width="100%">
