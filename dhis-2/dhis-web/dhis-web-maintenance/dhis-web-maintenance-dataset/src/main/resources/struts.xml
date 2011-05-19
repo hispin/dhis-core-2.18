@@ -146,18 +146,6 @@
 
     <action name="indicatorListFilteredByGroup"
       class="org.hisp.dhis.dataset.action.IndicatorListFilteredByGroup">
-      <result name="success" type="chain">dataElementGroupListEditChain</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-
-    <action name="dataElementGroupListEditChain"
-      class="org.hisp.dhis.dataset.action.DataElementGroupListAction">
-      <result name="success" type="chain">indicatorGroupListEditChain</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-
-    <action name="indicatorGroupListEditChain"
-      class="org.hisp.dhis.dataset.action.IndicatorGroupListAction">
       <result name="success" type="chain">getDataSetEditChain</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
