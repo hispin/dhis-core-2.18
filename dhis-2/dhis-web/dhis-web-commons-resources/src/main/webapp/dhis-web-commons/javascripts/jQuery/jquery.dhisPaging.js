@@ -62,7 +62,7 @@
         var pagesize_input_id = id + "_pagesize_input";
         var $pagesize_input = $("#" + pagesize_input_id);
 
-        $.getJSON(settings.source, $.param( settings.params ), function(json) {
+        $.post(settings.source, $.param( settings.params ), function(json) {
             $select.empty();
             $select_page.empty();
 
