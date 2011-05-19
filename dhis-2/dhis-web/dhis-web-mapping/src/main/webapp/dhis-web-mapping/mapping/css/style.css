@@ -68,6 +68,9 @@
 .x-date-inner .x-date-today a {
     border-color:#999999;
 }
+.x-border-layout-ct {
+    background-color: #fcfcfc;
+}
 
 /* OpenLayers (include in lib) */
 /*
@@ -235,6 +238,9 @@ a.x-menu-item-custom {
 .x-btn .icon-labels {
 	background-image:url('../../../images/labels.png');
 }
+.x-btn .icon-measure {
+	background-image:url('../../../images/measure.png');
+}
 .x-btn-noicon .x-btn-small .x-btn-text {
     height:16px;
     padding:0 5px;
@@ -325,6 +331,12 @@ a.x-menu-item-custom {
 #window-locate-title {
 	padding:0 0 3px 21px;
 	background:url('../../../images/search2.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
+#window-measure-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/measure.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
@@ -435,4 +447,8 @@ a.x-menu-item-custom {
     -webkit-border-top-left-radius: 2px;
     -moz-border-radius-topright: 2px;
     -webkit-border-top-right-radius: 2px;
+}
+#measureDistanceDiv {
+    padding:0 0 0 5px;
+    color:#222222;
 }
