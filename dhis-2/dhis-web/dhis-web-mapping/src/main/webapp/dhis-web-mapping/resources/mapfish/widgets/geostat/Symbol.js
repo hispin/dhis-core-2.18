@@ -607,14 +607,24 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 		},
         
         clearForm: function() {
-            var boundary = this.form.findField('boundary')
+            var boundary = this.form.findField('boundary');
             var level = this.form.findField('level');
+            var groupset = this.form.findField('groupset');
+            var panel = Ext.getCmp('groups_p');
             boundary.reset();
             level.reset();
             if (boundary.treePanel && level.levelComboBox) {
                 boundary.treePanel.selectPath(boundary.treePanel.getRootNode().getPath());
                 level.levelComboBox.clearValue();
             }
+            
+            groupset.clearValue();
+            groupset.currentValue = null;
+            
+            panel.removeAll();
+            panel.doLayout();
+            
+            document.getElementById(this.legendDiv).innerHTML = '';            
             
             this.layer.destroyFeatures();
             this.layer.setVisibility(false);
