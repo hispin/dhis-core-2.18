@@ -145,26 +145,6 @@
       <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
-
-<!--     <action name="indicatorListFilteredByGroup" -->
-<!--       class="org.hisp.dhis.dataset.action.IndicatorListFilteredByGroup"> -->
-<!--       <result name="success" type="chain">getDataSetEditChain</result> -->
-<!--       <param name="requiredAuthorities">F_DATASET_UPDATE</param> -->
-<!--     </action> -->
-
-<!--     <action name="getDataSetEditChain" -->
-<!--       class="org.hisp.dhis.dataset.action.GetDataSetAction"> -->
-<!--       <result name="success" type="chain">periodTypeListEditChain</result> -->
-<!--       <param name="requiredAuthorities">F_DATASET_UPDATE</param> -->
-<!--     </action>     -->
-    
-<!--     <action name="periodTypeListEditChain" -->
-<!--       class="org.hisp.dhis.dataset.action.PeriodTypeListAction"> -->
-<!--       <result name="success" type="velocity">/main.vm</result> -->
-<!--       <param name="page">/dhis-web-maintenance-dataset/editDataSet.vm</param> -->
-<!--       <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param> -->
-<!--       <param name="requiredAuthorities">F_DATASET_UPDATE</param> -->
-<!--     </action> -->
     
     <!-- Validation, add, update, and delete -->
     
