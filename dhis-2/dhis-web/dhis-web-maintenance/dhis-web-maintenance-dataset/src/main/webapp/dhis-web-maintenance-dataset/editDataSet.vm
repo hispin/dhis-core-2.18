@@ -1,19 +1,21 @@
 <script type="text/javascript" src="javascript/editDataSet.js"></script>
 <script type="text/javascript">
 	function getRemoveDataElementsList() {
-		var list = [];
-		jQuery("#dataElementsSelectedList").find("option").each(function() {
-			list.push( +jQuery(this).attr("value") );
-		});
+		var list = [
+			#foreach ( $availableDataElement in $dataElements )
+				$availableDataElement.id,
+			#end
+		];
 
 		return list;
 	}
 	
 	function getRemoveIndicatorsList() {
-		var list = [];
-		jQuery("#indicatorsSelectedList").find("option").each(function() {
-			list.push( +jQuery(this).attr("value") );
-		});
+		var list = [
+			#foreach ( $availableIndicator in $indicators )
+				$availableIndicator.id,
+			#end
+		];
 
 		return list;
 	}
