@@ -28,10 +28,12 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
@@ -113,7 +115,37 @@ public class GetIndicatorsAction
     {
         this.key = key;
     }
-    
+
+    private List<Integer> removeDataSets = new ArrayList<Integer>();
+
+    public void setRemoveDataSets( String removeDataSets )
+    {
+        if ( removeDataSets.length() > 0 )
+        {
+            List<String> stringList = Arrays.asList( removeDataSets.split( "," ) );
+
+            for ( String s : stringList )
+            {
+                this.removeDataSets.add( Integer.parseInt( s ) );
+            }
+        }
+    }
+
+    private List<Integer> removeIndicators = new ArrayList<Integer>();
+
+    public void setRemoveIndicators( String removeIndicators )
+    {
+        if ( removeIndicators.length() > 0 )
+        {
+            List<String> stringList = Arrays.asList( removeIndicators.split( "," ) );
+
+            for ( String s : stringList )
+            {
+                this.removeIndicators.add( Integer.parseInt( s ) );
+            }
+        }
+    }
+
     private List<Indicator> indicators;
 
     public List<Indicator> getIndicators()
@@ -156,6 +188,24 @@ public class GetIndicatorsAction
             indicators = new ArrayList<Indicator>();
         }
 
+        if ( removeDataSets.size() > 0 )
+        {
+            for ( Integer id : removeDataSets )
+            {
+                DataSet dataSet = dataSetService.getDataSet( id );
+                indicators.removeAll( dataSet.getDataElements() );
+            }
+        }
+
+        if ( removeIndicators.size() > 0 )
+        {
+            for ( Integer id : removeIndicators )
+            {
+                Indicator indicator = indicatorService.getIndicator( id );
+                indicators.remove( indicator );
+            }
+        }
+        
         Collections.sort( indicators, indicatorComparator );
 
         if ( usePaging )

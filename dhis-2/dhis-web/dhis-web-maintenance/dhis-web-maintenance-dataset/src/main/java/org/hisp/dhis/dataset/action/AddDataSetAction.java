@@ -132,18 +132,18 @@ public class AddDataSetAction
         this.frequencySelect = frequencySelect;
     }
 
-    private Collection<String> selectedList = new HashSet<String>();
+    private Collection<String> dataElementsSelectedList = new HashSet<String>();
 
-    public void setSelectedList( Collection<String> selectedList )
+    public void setDataElementsSelectedList( Collection<String> dataElementsSelectedList )
     {
-        this.selectedList = selectedList;
+        this.dataElementsSelectedList = dataElementsSelectedList;
     }
 
-    private Collection<String> indicatorSelectedList = new HashSet<String>();
+    private Collection<String> indicatorsSelectedList = new HashSet<String>();
 
-    public void setIndicatorSelectedList( Collection<String> indicatorSelectedList )
+    public void setIndicatorsSelectedList( Collection<String> indicatorsSelectedList )
     {
-        this.indicatorSelectedList = indicatorSelectedList;
+        this.indicatorsSelectedList = indicatorsSelectedList;
     }
 
     private boolean mobile;
@@ -177,26 +177,26 @@ public class AddDataSetAction
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
 
         Collection<DataElement> dataElements = new HashSet<DataElement>();
-        
-        for ( String id : selectedList )
+
+        for ( String id : dataElementsSelectedList )
         {
             dataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
 
         Set<Indicator> indicators = new HashSet<Indicator>();
 
-        for ( String id : indicatorSelectedList )
+        for ( String id : indicatorsSelectedList )
         {
             indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
         }
 
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
-        
+
         dataSet.setMobile( mobile );
         dataSet.setVersion( 1 );
         dataSet.setDataElements( dataElements );
         dataSet.setIndicators( indicators );
-        
+
         dataSetService.addDataSet( dataSet );
 
         assignDataSetToUserRole( dataSet );

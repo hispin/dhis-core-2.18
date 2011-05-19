@@ -28,6 +28,7 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -54,20 +55,20 @@ public class GetDataElementsAction
     extends ActionPagingSupport<DataElement>
 {
     private final static int ALL = 0;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private DataElementService dataElementService;
-    
+
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }    
+    }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
@@ -79,13 +80,13 @@ public class GetDataElementsAction
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
-    }    
+    }
 
     // -------------------------------------------------------------------------
     // Comparator
@@ -107,38 +108,68 @@ public class GetDataElementsAction
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
-    }    
-    
+    }
+
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
-    
+
     private Integer id;
 
     public void setId( Integer id )
     {
         this.id = id;
     }
-    
+
     private Integer categoryComboId;
 
     public void setCategoryComboId( Integer categoryComboId )
     {
         this.categoryComboId = categoryComboId;
     }
-    
+
     private Integer dataSetId;
-    
+
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
-    
+
     private String periodTypeName;
 
     public void setPeriodTypeName( String periodTypeName )
     {
         this.periodTypeName = periodTypeName;
+    }
+
+    private List<Integer> removeDataSets = new ArrayList<Integer>();
+
+    public void setRemoveDataSets( String removeDataSets )
+    {
+        if ( removeDataSets.length() > 0 )
+        {
+            List<String> stringList = Arrays.asList( removeDataSets.split( "," ) );
+
+            for ( String s : stringList )
+            {
+                this.removeDataSets.add( Integer.parseInt( s ) );
+            }
+        }
+    }
+
+    private List<Integer> removeDataElements = new ArrayList<Integer>();
+
+    public void setRemoveDataElements( String removeDataElements )
+    {
+        if ( removeDataElements.length() > 0 )
+        {
+            List<String> stringList = Arrays.asList( removeDataElements.split( "," ) );
+
+            for ( String s : stringList )
+            {
+                this.removeDataElements.add( Integer.parseInt( s ) );
+            }
+        }
     }
 
     private boolean aggregate = false;
@@ -147,7 +178,7 @@ public class GetDataElementsAction
     {
         this.aggregate = aggregate;
     }
-    
+
     private List<DataElement> dataElements;
 
     public List<DataElement> getDataElements()
@@ -159,12 +190,13 @@ public class GetDataElementsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         if ( id != null && id != ALL )
         {
             DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( id );
-            
+
             if ( dataElementGroup != null )
             {
                 dataElements = new ArrayList<DataElement>( dataElementGroup.getMembers() );
@@ -173,16 +205,17 @@ public class GetDataElementsAction
         else if ( categoryComboId != null && categoryComboId != ALL )
         {
             DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
-            
+
             if ( categoryCombo != null )
             {
-                dataElements = new ArrayList<DataElement>( dataElementService.getDataElementByCategoryCombo( categoryCombo ) );
+                dataElements = new ArrayList<DataElement>(
+                    dataElementService.getDataElementByCategoryCombo( categoryCombo ) );
             }
         }
         else if ( dataSetId != null )
         {
             DataSet dataset = dataSetService.getDataSet( dataSetId );
-            
+
             if ( dataset != null )
             {
                 dataElements = new ArrayList<DataElement>( dataset.getDataElements() );
@@ -191,7 +224,7 @@ public class GetDataElementsAction
         else if ( periodTypeName != null )
         {
             PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
-            
+
             if ( periodType != null )
             {
                 dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByPeriodType( periodType ) );
@@ -201,12 +234,30 @@ public class GetDataElementsAction
         {
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         }
-        
+
         if ( dataElements == null )
         {
             dataElements = new ArrayList<DataElement>();
         }
-        
+
+        if ( removeDataSets.size() > 0 )
+        {
+            for ( Integer id : removeDataSets )
+            {
+                DataSet dataSet = dataSetService.getDataSet( id );
+                dataElements.removeAll( dataSet.getDataElements() );
+            }
+        }
+
+        if ( removeDataElements.size() > 0 )
+        {
+            for ( Integer id : removeDataElements )
+            {
+                DataElement dataElement = dataElementService.getDataElement( id );
+                dataElements.remove( dataElement );
+            }
+        }
+
         Collections.sort( dataElements, dataElementComparator );
 
         if ( aggregate )
@@ -220,7 +271,7 @@ public class GetDataElementsAction
 
             dataElements = dataElements.subList( paging.getStartPos(), paging.getEndPos() );
         }
-        
+
         displayPropertyHandler.handle( dataElements );
 
         return SUCCESS;
