@@ -253,6 +253,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
 	</bean>
+
+    <bean id="org.hisp.dhis.dataset.action.EditDataSetFormAction"
+      class="org.hisp.dhis.dataset.action.EditDataSetFormAction" scope="prototype">
+      <property name="dataSetService">
+        <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+      </property>
+      <property name="periodService">
+        <ref bean="org.hisp.dhis.period.PeriodService"/>
+      </property>
+    </bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.AddDataSetAction"
 		class="org.hisp.dhis.dataset.action.AddDataSetAction" scope="prototype">

@@ -157,7 +157,7 @@
         </td>       
         <td>
           <select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="min-width:20em;height:20em">
-              #foreach ( $availableDataElement in $dataSetDataElements )
+              #foreach ( $availableDataElement in $dataElements )
                   <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
               #end   
           </select>
@@ -206,7 +206,7 @@
         </td>
         <td>
           <select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="min-width:20em;height:20em">
-              #foreach ( $availableIndicator in $dataSetIndicators )
+              #foreach ( $availableIndicator in $indicators )
                   <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.name )</option>
               #end
           </select>
