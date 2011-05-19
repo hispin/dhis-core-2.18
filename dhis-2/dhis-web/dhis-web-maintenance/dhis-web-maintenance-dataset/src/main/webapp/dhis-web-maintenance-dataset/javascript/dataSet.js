@@ -1,3 +1,127 @@
+
+// --------------------------------------------------------------------------------------------------------------------
+// Methods for moving between two selection boxes
+// --------------------------------------------------------------------------------------------------------------------
+var jqDataElementsSelectedList, jqIndicatorsSelectedList;
+
+function dhisPaging_moveAllSelected(sourceId)
+{
+    jQuery("#" + sourceId).dblclick();
+}
+
+function dhisPaging_moveAll(sourceId)
+{
+    var jqSource = jQuery("#" + sourceId);
+    jqSource.find("option").attr("selected", "selected");
+    jqSource.dblclick();
+}
+
+function dataElementsSelectedList_dblclick(e) {
+    var settings = jQuery("#availableDataElementsList").data("settings");
+
+    jQuery(this).find(":selected").each(function(i) {
+        var jqThis = jQuery(this);
+        var option_id = +jqThis.attr("value");
+        jqThis.remove();
+
+        if( jQuery.isArray(settings.removeDataElements) )
+        {
+            var remove_idx = jQuery.inArray(option_id, settings.removeDataElements);
+            settings.removeDataElements.splice(remove_idx, remove_idx+1);
+        }
+    });
+
+    if(settings.removeDataElements && settings.removeDataElements.length > 0) {
+        settings.params.removeDataElements = settings.removeDataElements.join(",");
+    } else {
+        delete settings.removeDataElements;
+        delete settings.params.removeDataElements;
+    }
+
+    jQuery("#availableDataElementsList").data("settings", settings);
+    jQuery("#availableDataElementsList").dhisPaging("load", "availableDataElementsList");
+}
+
+function availableDataElementsList_dblclick(e) {
+    var settings = jQuery("#availableDataElementsList").data("settings");
+
+    jQuery("#availableDataElementsList").find(":selected").each(function(i) {
+        var jqThis = jQuery(this);
+        var option_id = +jqThis.attr("value");
+
+        jqDataElementsSelectedList.append( this );
+
+        if( jQuery.isArray(settings.removeDataElements) ) {
+            settings.removeDataElements.push(option_id);
+        } else {
+            settings.removeDataElements = [option_id];
+        }
+    });
+
+    if(settings.removeDataElements && settings.removeDataElements.length > 0) {
+        settings.params.removeDataElements = settings.removeDataElements.join(",");
+    } else {
+        delete settings.removeDataElements;
+        delete settings.params.removeDataElements;
+    }
+
+    jQuery("#availableDataElementsList").data("settings", settings);
+    jQuery("#availableDataElementsList").dhisPaging("load", "availableDataElementsList");
+}
+
+function indicatorsSelectedList_dblclick(e) {
+    var settings = jQuery("#availableIndicatorsList").data("settings");
+
+    jQuery(this).find(":selected").each(function(i) {
+        var jqThis = jQuery(this);
+        var option_id = +jqThis.attr("value");
+        jqThis.remove();
+
+        if( jQuery.isArray(settings.removeIndicators) )
+        {
+            var remove_idx = jQuery.inArray(option_id, settings.removeIndicators);
+            settings.removeIndicators.splice(remove_idx, remove_idx+1);
+        }
+    });
+
+    if(settings.removeIndicators && settings.removeIndicators.length > 0) {
+        settings.params.removeIndicators = settings.removeIndicators.join(",");
+    } else {
+        delete settings.removeIndicators;
+        delete settings.params.removeIndicators;
+    }
+
+    jQuery("#availableIndicatorsList").data("settings", settings);
+    jQuery("#availableIndicatorsList").dhisPaging("load", "availableIndicatorsList");
+}
+
+function availableIndicatorsList_dblclick(e) {
+    var settings = jQuery("#availableIndicatorsList").data("settings");
+
+    jQuery("#availableIndicatorsList").find(":selected").each(function(i) {
+        var jqThis = jQuery(this);
+        var option_id = +jqThis.attr("value");
+    
+        jqIndicatorsSelectedList.append( this );
+
+        if( jQuery.isArray(settings.removeIndicators) ) {
+            settings.removeIndicators.push(option_id);
+        } else {
+            settings.removeIndicators = [option_id];
+        }
+    });
+
+    if(settings.removeIndicators && settings.removeIndicators.length > 0) {
+        settings.params.removeIndicators = settings.removeIndicators.join(",");
+    } else {
+        delete settings.removeIndicators;
+        delete settings.params.removeIndicators;
+    }
+
+    jQuery("#availableIndicatorsList").data("settings", settings);
+    jQuery("#availableIndicatorsList").dhisPaging("load", "availableIndicatorsList");
+}
+
 // -----------------------------------------------------------------------------
 // DataSet details form
 // -----------------------------------------------------------------------------

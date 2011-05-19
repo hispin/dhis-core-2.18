@@ -1,5 +1,84 @@
 <script type="text/javascript" src="javascript/editDataSet.js"></script>
 <script type="text/javascript">
+	function getRemoveDataElementsList() {
+		var list = [];
+		jQuery("#dataElementsSelectedList").find("option").each(function() {
+			list.push( +jQuery(this).attr("value") );
+		});
+
+		return list;
+	}
+	
+	function getRemoveIndicatorsList() {
+		var list = [];
+		jQuery("#indicatorsSelectedList").find("option").each(function() {
+			list.push( +jQuery(this).attr("value") );
+		});
+
+		return list;
+	}
+
+	jQuery(function() {
+		jqDataElementsSelectedList = jQuery("#dataElementsSelectedList");
+		jqIndicatorsSelectedList = jQuery("#indicatorsSelectedList");
+
+		jqDataElementsSelectedList.dblclick(dataElementsSelectedList_dblclick);
+		jqIndicatorsSelectedList.dblclick(indicatorsSelectedList_dblclick);
+		jQuery("#availableDataElementsList").dblclick(availableDataElementsList_dblclick);
+		jQuery("#availableIndicatorsList").dblclick(availableIndicatorsList_dblclick);
+
+		removeDataElementsList = getRemoveDataElementsList();
+		removeIndicatorsList = getRemoveIndicatorsList();
+		
+		jQuery("#availableDataElementsList").dhisPaging({
+			source: "../dhis-web-commons-ajax-json/getDataElements.action",
+			iterator: "dataElements",
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			},
+			filter: {
+				source: "../dhis-web-commons-ajax-json/getDataElementGroups.action",
+				label: 'dataelement group',
+				iterator: "dataElementGroups",
+				handler: function(item) {
+					return "<option data-key='id' data-value='" + item.id + "'>" + item.name + "</option>";
+				}
+			},
+			removeDataElements: removeDataElementsList,
+			params: {
+				removeDataElements: removeDataElementsList.join(",")
+			}
+		});
+
+		jQuery("#availableIndicatorsList").dhisPaging({
+			source: "../dhis-web-commons-ajax-json/getIndicators.action",
+			iterator: "indicators",
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			},
+			filter: {
+				source: "../dhis-web-commons-ajax-json/getIndicatorGroups.action",
+				iterator: "indicatorGroups",
+				label: 'indicator group',
+				handler: function(item) {
+					return "<option data-key='id' data-value='" + item.id + "'>" + item.name + "</option>";
+				}
+			},
+			removeIndicators: removeIndicatorsList,
+			params: {
+				removeIndicators: removeIndicatorsList.join(",")
+			}
+		});
+	});
+
 	var previousName = '';
 </script>
 
@@ -42,7 +121,7 @@
   </table>
 
   <table id="dataElementSelectionArea">
-    <col/> ## Available DataElements
+    <col style="width: 450px"/> ## Available DataElements
     <col/> ## Filter
     <col/> ## Selected DataElements
     <thead>
@@ -55,41 +134,29 @@
     <tbody>
     	
       <tr>
-        <td>
-          <select id="dataElementGroupSelect" name="dataElementGroupSelect" style="min-width:20em"
-              onchange="javascript:filterByDataElementGroup( this.options[this.selectedIndex].value )">
-            <option value="ALL" selected="selected">$i18n.getString( "all" )</option>
-            #foreach ( $dataElementGroup in $dataElementGroups )
-              <option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.name )</option>
-            #end
-          </select>
-        </td>
+        <td></td>
         <td>$i18n.getString( "group" )</td>
         <td></td>
       </tr>
       
       <tr>
-        <td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:20em"></td>
+        <td></td>
       	<td>$i18n.getString( "name" )</td>
       	<td></td>        
       </tr>
       
       <tr>
         <td>
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList');">
-              #foreach ( $availableDataElement in $dataElements )
-                  <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
-              #end               
-          </select>
+          <select id="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
         <td>
-            <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="moveSelectedById( 'availableList', 'selectedList');"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="moveSelectedById( 'selectedList', 'availableList');"/><br/>
-            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableList', 'selectedList' );"/><br/>
-            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedList', 'availableList' );"/>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableDataElementsList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'dataElementsSelectedList' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableDataElementsList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'dataElementsSelectedList' );"/>
         </td>       
         <td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'selectedList', 'availableList' );">
+          <select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="min-width:20em;height:20em">
               #foreach ( $availableDataElement in $dataSetDataElements )
                   <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
               #end   
@@ -103,7 +170,7 @@
   <br/>
 
   <table id="indicatorSelectionArea">
-    <col/> ## Available Indicators
+    <col style="width: 450px"/> ## Available Indicators
     <col/> ## Filter
     <col/> ## Selected Indicators
     <thead>
@@ -116,40 +183,29 @@
     <tbody>
       <tr>
         <td>
-          <select id="indicatorGroupSelect" name="indicatorGroupSelect" style="min-width:20em"
-              onchange="javascript:filterByIndicatorGroup( this.options[this.selectedIndex].value )">
-            <option value="ALL" selected="selected">$i18n.getString( "all" )</option>
-            #foreach ( $indicatorGroup in $indicatorGroups )
-              <option value="$indicatorGroup.id">$encoder.htmlEncode( $indicatorGroup.name )</option>
-            #end
-          </select>
         </td>
         <td>$i18n.getString( "group" )</td>
         <td></td>
       </tr>
 
       <tr>
-        <td><input type="text" id="availableIndicatorsFilter" onkeyup="filterList( this.value, 'indicatorAvailableList' )" style="min-width:20em"></td>
+        <td></td>
       	<td>$i18n.getString( "name" )</td>
       	<td></td>        
       </tr>
 
       <tr>
         <td>
-          <select size="15" id="indicatorAvailableList" name="indicatorAvailableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'indicatorAvailableList', 'indicatorSelectedList');">
-              #foreach ( $availableIndicator in $indicators )
-                  <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.name )</option>
-              #end               
-          </select>
+          <select id="availableIndicatorsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
         <td>
-            <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="moveSelectedById( 'indicatorAvailableList', 'indicatorSelectedList');"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="moveSelectedById( 'indicatorSelectedList', 'indicatorAvailableList');"/><br/>
-            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'indicatorAvailableList', 'indicatorSelectedList' );"/><br/>
-            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'indicatorSelectedList', 'indicatorAvailableList' );"/>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableIndicatorsList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'indicatorsSelectedList' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableIndicatorsList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'indicatorsSelectedList' );"/>
         </td>
         <td>
-          <select id="indicatorSelectedList" name="indicatorSelectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'indicatorSelectedList', 'indicatorAvailableList' );">
+          <select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="min-width:20em;height:20em">
               #foreach ( $availableIndicator in $dataSetIndicators )
                   <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.name )</option>
               #end

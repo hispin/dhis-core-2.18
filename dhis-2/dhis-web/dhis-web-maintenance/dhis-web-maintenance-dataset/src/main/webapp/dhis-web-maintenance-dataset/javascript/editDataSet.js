@@ -3,8 +3,8 @@ jQuery(document).ready(function() {
 		form.submit()
 	}, {
 		'beforeValidateHandler' : function() {
-			selectAllById('selectedList');
-			selectAllById('indicatorSelectedList');
+            $("#dataElementsSelectedList").find("option").attr("selected", "selected");
+            $("#indicatorsSelectedList").find("option").attr("selected", "selected");
 		},
 		'rules' : getValidationRules("dataSet")
 	});
