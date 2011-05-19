@@ -35,6 +35,7 @@ import java.util.Map;
 import org.hisp.dhis.caseentry.screen.DataEntryScreenManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
@@ -84,6 +85,8 @@ public class LoadDataEntryAction
     private OrganisationUnitSelectionManager selectionManager;
 
     private ProgramStageDataElementService programStageDataElementService;
+
+    private DataEntryFormService dataEntryFormService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -159,6 +162,11 @@ public class LoadDataEntryAction
         this.programStageDataElementService = programStageDataElementService;
     }
 
+    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
+    {
+        this.dataEntryFormService = dataEntryFormService;
+    }
+
     public void setPatientId( Integer patientId )
     {
         this.patientId = patientId;
@@ -215,7 +223,7 @@ public class LoadDataEntryAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         programStageDataElements = programStage.getProgramStageDataElements();
-        
+
         Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
 
         programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
@@ -262,6 +270,8 @@ public class LoadDataEntryAction
                 customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
                     dataEntryForm.getHtmlCode(), patientDataValues, minMaxMap, "", i18n, programStage,
                     programStageInstance, organisationUnit );
+
+                customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEdit( customDataEntryFormCode );
             }
 
             return SUCCESS;

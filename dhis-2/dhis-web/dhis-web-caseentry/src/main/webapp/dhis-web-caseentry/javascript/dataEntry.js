@@ -133,6 +133,7 @@ function loadDataEntry()
 		return;
 	}
 	
+	enable('executionDate');
 	showLoader();
 	jQuery('#dataEntryFormDiv').load("dataentryform.action",
 		{
@@ -140,15 +141,8 @@ function loadDataEntry()
 			patientId: getFieldValue('patientId'),
 			useDefaultForm: jQuery('#useDefaultForm').find("checked").value
 		}, 
-		function( data ) 
+		function( ) 
 		{
-			enable('listPatientBtn');
-			enable('searchingAttributeId');
-			jQuery('#searchText').removeAttr( 'readonly' );
-			enable('searchBtn');
-		
-			hideById('searchPatientDiv');
-			
 			showById('dataRecordingSelectDiv');
 			if ( getFieldValue('executionDate') =='' )
 			{

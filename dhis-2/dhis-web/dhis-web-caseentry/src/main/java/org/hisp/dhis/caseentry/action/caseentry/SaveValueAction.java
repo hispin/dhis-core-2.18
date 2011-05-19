@@ -289,7 +289,6 @@ public class SaveValueAction
 
         if ( patientDataValue == null )
         {
-
             LOG.debug( "Adding PatientDataValue, value added" );
 
             if ( programStageInstance.getExecutionDate() == null )

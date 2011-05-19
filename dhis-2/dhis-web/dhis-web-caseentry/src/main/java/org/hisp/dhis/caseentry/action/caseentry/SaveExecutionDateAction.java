@@ -94,11 +94,6 @@ public class SaveExecutionDateAction
         return statusCode;
     }
 
-    public void setStatusCode( int statusCode )
-    {
-        this.statusCode = statusCode;
-    }
-
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -115,7 +110,7 @@ public class SaveExecutionDateAction
 
             if ( dateValue != null )
             {
-                programStageInstance.setExecutionDate( format.parseDate( executionDate ) );
+                programStageInstance.setExecutionDate( dateValue );
 
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
