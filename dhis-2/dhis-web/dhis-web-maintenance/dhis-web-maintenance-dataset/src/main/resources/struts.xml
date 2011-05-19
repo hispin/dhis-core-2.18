@@ -129,7 +129,7 @@
     
     <!-- Show add DataSet form chain -->
     
-    <action name="addDataSetForm"
+    <action name="addDataSetForm2"
       class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup">
       <result name="success" type="chain">indicatorListFilteredByGroupChain</result>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
@@ -155,6 +155,13 @@
 
     <action name="periodTypeListAddChain"
       class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataset/addDataSet.vm</param>
+      <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
+    </action>
+
+    <action name="addDataSetForm" class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addDataSet.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param>
