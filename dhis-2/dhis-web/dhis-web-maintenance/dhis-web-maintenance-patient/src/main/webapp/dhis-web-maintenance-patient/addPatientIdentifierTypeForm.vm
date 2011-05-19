@@ -4,19 +4,16 @@
 		jQuery('name').focus();
 		
 		validation( 'addPatientIdentifierTypeForm', function(form){
-			addPatientIdentifierType();
+			form.submit();
 		}); 
 		
 		
 		checkValueIsExist( "name", "validatePatientIdentifierType.action");			
 	});		
 </script>
-	
-<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackBtn();" style="width:10em">
-<p></p>
 
 <h3>$i18n.getString( "add_new_patient_identifier_type" )</h3>
-							
+								
 <form id="addPatientIdentifierTypeForm" name="addPatientIdentifierTypeForm" action="addPatientIdentifierType.action" method="post" >
 
 <table>	
@@ -85,6 +82,7 @@
 		<td></td>
 		<td>
 			<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'" style="width:10em"/>
 		</td>
 	</tr>
 </table>

@@ -1,10 +1,12 @@
 <script>
-	jQuery("#addPatientAttributeGroupForm").ready(	function(){
+	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
+
+	jQuery(document).ready(	function(){
 		
 		jQuery('name').focus();
 		
 		validation( 'addPatientAttributeGroupForm', function(form){
-			addPatientAttributeGroup();
+			form.submit();
 		}, function()
 		{
 			beforeSubmit();
@@ -13,10 +15,7 @@
 		checkValueIsExist( "name", "validatePatientAttributeGroup.action");			
 	});		
 </script>
-
-<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackBtn();" style="width:10em">
-<p></p>
-
+	
 <h3>$i18n.getString( "add_new_patient_attribute_group" )</h3>
 <div id="tooltip"></div>																				
 <form id="addPatientAttributeGroupForm" action="addPatientAttributeGroup.action" method="post" >
@@ -77,6 +76,7 @@
 
 <p>
     <input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+    <input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='patientAttributeGroup.action'" style="width:10em"/>
 </p>
 
 </form>
