@@ -98,14 +98,14 @@
 
 		jQuery("#availableIndicatorsList").find(":selected").each(function(i) {
 			var jqThis = jQuery(this);
-			var option_id = jqThis.attr("value");
+			var option_id = +jqThis.attr("value");
 		
 			jqIndicatorsSelectedList.append( this );
 
 			if( jQuery.isArray(settings.removeIndicators) ) {
-				settings.removeIndicators.push(+option_id);
+				settings.removeIndicators.push(option_id);
 			} else {
-				settings.removeIndicators = [+option_id];
+				settings.removeIndicators = [option_id];
 			}
 		});
 
