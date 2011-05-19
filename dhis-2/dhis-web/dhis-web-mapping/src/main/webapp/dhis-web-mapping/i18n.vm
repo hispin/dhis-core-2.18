@@ -248,5 +248,6 @@ G.i18n = {
     characters: '$encoder.jsEscape($i18n.getString( 'characters' ) , "'")',
     geojson_file: '$encoder.jsEscape($i18n.getString( 'geojson_file' ) , "'")',
     history: '$encoder.jsEscape($i18n.getString( 'history' ) , "'")',
-    api_key: '$encoder.jsEscape($i18n.getString( 'api_key' ) , "'")'
+    api_key: '$encoder.jsEscape($i18n.getString( 'api_key' ) , "'")',
+    measure_distance: '$encoder.jsEscape($i18n.getString( 'measure_distance' ) , "'")'
 };

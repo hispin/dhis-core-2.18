@@ -85,7 +85,34 @@ G.conf = {
     
     defaultLayerOpacity: 0.8,
     
-    defaultLayerZIndex: 10000
+    defaultLayerZIndex: 10000,
+    
+//  Measure
+
+    sketchSymbolizers: {
+        "Point": {
+            pointRadius: 4,
+            graphicName: "square",
+            fillColor: "white",
+            fillOpacity: 1,
+            strokeWidth: 1,
+            strokeOpacity: 1,
+            strokeColor: "#333333"
+        },
+        "Line": {
+            strokeWidth: 2,
+            strokeOpacity: 1,
+            strokeColor: "#444444",
+            strokeDashstyle: "dash"
+        },
+        "Polygon": {
+            strokeWidth: 2,
+            strokeOpacity: 1,
+            strokeColor: "#666666",
+            fillColor: "white",
+            fillOpacity: 0.3
+        }
+    }
 };
 
 G.util = {
@@ -161,7 +188,7 @@ G.util = {
         return tmp.indexOf(dec_sep) > -1 ? tmp.length-tmp.indexOf(dec_sep) - 1 : 0;
     },
 
-    labels: {    
+    labels: {
         getActivatedOpenLayersStyleMap: function(fsize, fweight, fstyle, fcolor) {
             return new OpenLayers.StyleMap({
                 'default' : new OpenLayers.Style(
@@ -222,6 +249,20 @@ G.util = {
             widget.applyValues();
         }
     },
+    
+    measureDistance: {
+        getMeasureStyleMap: function() {
+            var style = new OpenLayers.Style();    
+            style.addRules([new OpenLayers.Rule({symbolizer: G.conf.sketchSymbolizers})]);    
+            return new OpenLayers.StyleMap({"default": style});
+        },
+            
+        handleMeasurements: function(e) {
+            if (e.measure) {
+                document.getElementById('measureDistanceDiv').innerHTML = e.measure.toFixed(2) + ' ' + e.units;
+            }
+        }
+    },            
 
     sortByValue: function(a,b) {
         return b.value-a.value;

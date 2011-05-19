@@ -2496,7 +2496,7 @@
 		iconCls: 'icon-zoomout',
 		tooltip: G.i18n.zoom_out,
         style: 'margin-top:1px',
-		handler:function() {
+		handler: function() {
 			G.vars.map.zoomOut();
 		}
 	});
@@ -2517,7 +2517,7 @@
                 }
             }
         }
-	});
+	});         
     
     var viewHistoryButton = new Ext.Button({
         id: 'viewhistory_b',
@@ -2614,28 +2614,6 @@
 		}
 	});
 	
-	var exportImageButton = new Ext.Button({
-		iconCls: 'icon-image',
-		tooltip: G.i18n.export_map_as_image,
-        style: 'margin-top:1px',
-		handler: function() {
-			if (Ext.isIE) {
-				Ext.message.msg(false, 'SVG not supported by browser');
-				return;
-			}
-            
-            if (!exportImageWindow.hidden) {
-				exportImageWindow.hide();
-			}
-			else {
-                var x = Ext.getCmp('center').x + G.conf.window_position_x;
-                var y = Ext.getCmp('center').y + G.conf.window_position_y;			
-                exportImageWindow.setPosition(x,y);
-				exportImageWindow.show();
-			}
-		}
-	});
-	
 	var predefinedMapLegendSetButton = new Ext.Button({
 		iconCls: 'icon-predefinedlegendset',
 		tooltip: G.i18n.predefined_legend_sets,
@@ -2657,12 +2635,83 @@
 		}
 	});
 	
+	var exportImageButton = new Ext.Button({
+		iconCls: 'icon-image',
+		tooltip: G.i18n.export_map_as_image,
+        style: 'margin-top:1px',
+		handler: function() {
+			if (Ext.isIE) {
+				Ext.message.msg(false, 'SVG not supported by browser');
+				return;
+			}
+            
+            if (!exportImageWindow.hidden) {
+				exportImageWindow.hide();
+			}
+			else {
+                var x = Ext.getCmp('center').x + G.conf.window_position_x;
+                var y = Ext.getCmp('center').y + G.conf.window_position_y;			
+                exportImageWindow.setPosition(x,y);
+				exportImageWindow.show();
+			}
+		}
+	});
+    
+    var measureDistanceButton = new Ext.Button({
+        iconCls: 'icon-measure',
+        tooltip: G.i18n.measure_distance,
+        style: 'margin-top:1px',
+        handler: function() {
+            var control = G.vars.map.getControl('measuredistance');
+            
+            if (!control.active) {
+                control.activate();
+                
+                if (!control.window) {
+                    control.window = new Ext.Window({
+                        title: '<span id="window-measure-title">' + G.i18n.measure_distance + '</span>',
+                        layout: 'fit',
+                        closeAction: 'hide',
+                        width: 150,
+                        height: 90,
+                        items: [
+                            {
+                                xtype: 'panel',
+                                layout: 'anchor',
+                                bodyStyle: 'padding:8px',
+                                items: [
+                                    {html: '<div class="window-info">Total distance</div>'},
+                                    {html: '<div id="measureDistanceDiv"></div>'}
+                                ]
+                            }
+                        ],
+                        listeners: {
+                            'hide': function() {
+                                G.vars.map.getControl('measuredistance').deactivate();
+                            }
+                        }
+                    });
+                }
+                control.window.setPagePosition(Ext.getCmp('east').x - (control.window.width + 15 + 5), Ext.getCmp('center').y + 41);
+                control.window.show();
+                document.getElementById('measureDistanceDiv').innerHTML = '0 km';                
+                control.setImmediate(true);
+                control.geodesic = true;
+                control.activate();
+            }
+            else {
+                control.deactivate();
+                control.window.hide();
+            }
+        }
+    });           
+	
 	var adminButton = new Ext.Button({
 		iconCls: 'icon-admin',
 		tooltip: 'Administrator settings',
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
-		handler: function() {                        
+		handler: function() {          
             if (!adminWindow.hidden) {
                 adminWindow.hide();
             }
@@ -2716,6 +2765,7 @@
 			favoritesButton,
             predefinedMapLegendSetButton,
 			exportImageButton,
+            measureDistanceButton,
 			'-',
             adminButton,
 			helpButton,
@@ -2872,6 +2922,19 @@
     G.vars.map.addControl(new OpenLayers.Control.PanPanel({
         slideFactor: 100
     }));
+    
+    G.vars.map.addControl(new OpenLayers.Control.Measure( OpenLayers.Handler.Path, {
+        id: 'measuredistance',
+        persist: true,
+        handlerOptions: {
+            layerOptions: {styleMap: G.util.measureDistance.getMeasureStyleMap()}
+        }
+    }));
+    
+    G.vars.map.getControl('measuredistance').events.on({
+        "measurepartial": G.util.measureDistance.handleMeasurements,
+        "measure": G.util.measureDistance.handleMeasurements
+    });
     
 	}});
 });
