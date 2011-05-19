@@ -27,7 +27,6 @@ function patientAttributeReceived( patientAttributeElement )
 // -----------------------------------------------------------------------------
 // Remove Patient Attribute
 // -----------------------------------------------------------------------------
-
 function removePatientAttribute( patientAttributeId, name )
 {
 	removeItem( patientAttributeId, name, i18n_confirm_delete, 'removePatientAttribute.action' );	
@@ -100,89 +99,3 @@ ATTRIBUTE_OPTION =
 		return "<tr><td><input type='text' name='attrOptions' style='width:28em'/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
 	}
 }
-
-// ------------------------------------------------------------------
-// Add Patient-attribute
-// ------------------------------------------------------------------
-
-function showAddPatientAttributeForm()
-{
-	hideById('attributeList');
-	jQuery('#loaderDiv').show();
-	jQuery('#editPatientAttributeForm').load('showAddPatientAttributeForm.action',
-	{
-	}, function()
-	{
-		showById('editPatientAttributeForm');
-		jQuery('#loaderDiv').hide();
-	});
-}
-
-function addPatientAttribute()
-{	
-	$.ajax({
-		type: "POST",
-		url: 'addPatientAttribute.action',
-		data: getParamsForDiv('editPatientAttributeForm'),
-		success: function( json ) {
-			if( json.response == 'success')
-			{
-				onClickBackBtn();
-			}
-		}
-	});
-	
-    return false;
-}
-
-// ------------------------------------------------------------------
-// Show Update Patient-attribute
-// ------------------------------------------------------------------
-
-function showUpdatePatientAttributeForm( attributeId )
-{
-	hideById('attributeList');
-	jQuery('#loaderDiv').show();
-	jQuery('#editPatientAttributeForm').load('showUpdatePatientAttributeForm.action',
-	{
-		id:attributeId
-	}, function()
-	{
-		showById('editPatientAttributeForm');
-		jQuery('#loaderDiv').hide();
-	});
-	
-}
-
-function updatePatientAttribute()
-{
-	$.ajax({
-		type: "POST",
-		url: 'updatePatientAttribute.action',
-		data: getParamsForDiv('editPatientAttributeForm'),
-		success: function( json ) {
-			if( json.response == 'success')
-			{
-				onClickBackBtn();
-			}
-		}
-	});
-    return false;
-}
-
-// ------------------------------------------------------------------
-// Click Back button
-// ------------------------------------------------------------------
-
-function onClickBackBtn()
-{
-	hideById('editPatientAttributeForm');	
-	jQuery('#loaderDiv').show();
-	jQuery('#attributeList').load('patientAttributeList.action',
-	{
-	}, function()
-	{
-		showById('attributeList');
-		jQuery('#loaderDiv').hide();
-	});
-}	

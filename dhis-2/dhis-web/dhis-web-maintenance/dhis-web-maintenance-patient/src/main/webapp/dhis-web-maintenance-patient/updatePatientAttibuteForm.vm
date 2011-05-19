@@ -27,11 +27,10 @@
 	});		
 </script>
 
-<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:onClickBackBtn();" style="width:10em">
 
 <h3>$i18n.getString( "update_patient_attribute" )</h3>
 
-<form id="updatePatientAttributeForm" name="updatePatientAttributeForm"  action='#' method="post" onsubmit='return updatePatientAttribute();'>
+<form id="updatePatientAttributeForm" name="updatePatientAttributeForm" action="updatePatientAttribute.action" method="post" >
 
 <div style="display:inline">
   <input type="hidden" id="id" name="id" value="$patientAttribute.id">
@@ -118,7 +117,8 @@
   </table>  
 
 <p>
-    <input type="submit" value="$i18n.getString( "update" )" style="width:10em" >
+    <input type="submit" value="$i18n.getString( "update" )" style="width:10em">
+    <input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patientAttribute.action'" style="width:10em">
 </p>
 
 </form>
