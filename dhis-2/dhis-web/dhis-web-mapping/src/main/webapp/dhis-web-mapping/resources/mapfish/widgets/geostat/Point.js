@@ -1481,6 +1481,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             this.form.findField('radiuslow').reset();
             this.form.findField('radiushigh').reset();
             
+            document.getElementById(this.legendDiv).innerHTML = '';
+            
             this.layer.destroyFeatures();
             this.layer.setVisibility(false);
         }

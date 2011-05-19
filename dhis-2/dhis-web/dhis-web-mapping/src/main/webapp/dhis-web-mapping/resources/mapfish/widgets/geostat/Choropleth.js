@@ -1398,6 +1398,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             this.form.findField('classes').setValue(this.legend.classes);
             this.form.findField('bounds').reset();
             
+            document.getElementById(this.legendDiv).innerHTML = '';
+            
             this.layer.destroyFeatures();
             this.layer.setVisibility(false);
         }

@@ -2451,6 +2451,22 @@
         featureSelection: false,
         legendDiv: 'symbollegend',
         defaults: {width: 130},
+        tools: [
+            {
+                id: 'refresh',
+                qtip: 'Refresh layer',
+                handler: function() {
+                    symbol.classify();
+                }
+            },
+            {
+                id: 'close',
+                qtip: 'Clear layer',
+                handler: function() {
+                    symbol.formValues.clearForm.call(symbol);
+                }
+            }
+        ],
         listeners: {
             'expand': function() {
                 G.vars.activePanel.setSymbol();
