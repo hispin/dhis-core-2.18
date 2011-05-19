@@ -586,15 +586,9 @@
 		<action name="programAttribute"
 			class="org.hisp.dhis.patient.action.program.GetProgramAttributeListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programAttribute.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/programAttribute.js</param>
-		</action>
-		
-		<action name="programAttributeList"
-			class="org.hisp.dhis.patient.action.program.GetProgramAttributeListAction">
-			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programAttributeList.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/programAttribute.js</param>
 		</action>
 
 		<action name="getProgramAttribute"
@@ -613,15 +607,15 @@
 
 		<action name="addProgramAttribute"
 			class="org.hisp.dhis.patient.action.program.AddProgramAttributeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="success" type="redirect">programAttribute.action
+			</result>
 			<param name="requiredAuthorities">F_PROGRAM_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="updateProgramAttribute"
 			class="org.hisp.dhis.patient.action.program.UpdateProgramAttributeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="success" type="redirect">programAttribute.action
+			</result>
 			<param name="requiredAuthorities">F_PROGRAM_ATTRIBUTE_UPDATE</param>
 		</action>
 
@@ -637,17 +631,22 @@
 		</action>
 
 		<action name="showAddProgramAttributeForm" class="org.hisp.dhis.patient.action.NoAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addProgramAttributeForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/programAttribute.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_ATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="showUpdateProgramAttributeForm"
 			class="org.hisp.dhis.patient.action.program.GetProgramAttributeAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramAttributeForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/programAttribute.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_ATTRIBUTE_UPDATE</param>
 		</action>
+
 
 		<action name="validateProgramAttribute"
 			class="org.hisp.dhis.patient.action.program.ValidateProgramAttributeAction">
@@ -960,19 +959,16 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/caseAggregation.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/caseaggregation.js</param>
-		</action>
-		
-		<action name="caseAggregationList"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/caseAggregationList.vm</param>
+			<param name="javascripts">javascript/caseaggregation.js</param>
 		</action>
 
 		<action name="showAddCaseAggregationForm"
 			class="org.hisp.dhis.patient.action.caseaggregation.ShowCaseAggregationConditionFormAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addCaseAggregation.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/commons.js,
+				javascript/caseaggregation.js</param>
 		</action>
 
 		<action name="showUpdateCaseAggregationForm"
@@ -983,7 +979,7 @@
 
 		<action name="updateCaseAggregationFormChain"
 			class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateCaseAggregation.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
 			<param name="javascripts">javascript/commons.js,
