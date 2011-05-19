@@ -55,7 +55,6 @@ public class DefineProgramListForValidationCriteriaAction
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
-   
     private Integer criteriaId;
 
     private Integer[] programIds;
