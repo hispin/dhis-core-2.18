@@ -35,7 +35,7 @@ import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import java.util.Collection;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -59,7 +59,7 @@ import org.junit.Test;
  * @version $Id$
  */
 public class ImportObjectServiceTest
-    extends DhisSpringTest
+    extends DhisTest
 {
     private ImportObjectService importObjectService;
     
@@ -184,6 +184,7 @@ public class ImportObjectServiceTest
         idI = importObjectService.addImportObject( ImportObjectStatus.MATCH, GroupMemberType.DATAELEMENTGROUP, associationC );
     }
     
+    @Override
     public boolean emptyDatabaseAfterTest()
     {
         return true;
