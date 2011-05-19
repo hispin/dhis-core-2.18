@@ -27,7 +27,6 @@ function programAttributeReceived( programAttributeElement )
 // -----------------------------------------------------------------------------
 // Remove Program Attribute
 // -----------------------------------------------------------------------------
-
 function removeProgramAttribute( programAttributeId, name )
 {
 	removeItem( programAttributeId, name, i18n_confirm_delete, 'removeProgramAttribute.action' );	
@@ -62,6 +61,7 @@ ATTRIBUTE_OPTION =
 			});
 			if( $("input","#attrOptionContainer").length < 2)
 			{
+				alert(i18n_at_least_2_option);
 				return false;
 			}else return true;
 		}
@@ -99,92 +99,6 @@ ATTRIBUTE_OPTION =
 	},
 	createInput : function ()
 	{
-		return "<tr><td><input type='text' name='attrOptions' id='attrOptions' style='width:28em'/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
+		return "<tr><td><input type='text' name='attrOptions' style='width:28em'/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
 	}
 }
-
-// -----------------------------------------------------------------------------
-// Add Program Attribute
-// -----------------------------------------------------------------------------
-
-function showAddProgramAttributeForm()
-{
-	hideById('programAttributeList');
-	jQuery('#loaderDiv').show();
-	jQuery('#editProgramAttributeForm').load('showAddProgramAttributeForm.action',
-	{
-	}, function()
-	{
-		showById('editProgramAttributeForm');
-		jQuery('#loaderDiv').hide();
-	});
-}
-
-function addProgramAttribute()
-{	
-	$.ajax({
-		type: "POST",
-		url: 'addProgramAttribute.action',
-		data: getParamsForDiv('addProgramAttributeForm'),
-		success: function( json ) {
-			if( json.response == 'success')
-			{
-				onClickBackBtn();
-			}
-		}
-	});
-	
-    return false;
-}
-
-// -----------------------------------------------------------------------------
-// Update Program Attribute
-// -----------------------------------------------------------------------------
-
-function showUpdateProgramAttributeForm( programAttributeId )
-{
-	hideById('programAttributeList');
-	jQuery('#loaderDiv').show();
-	jQuery('#editProgramAttributeForm').load('showUpdateProgramAttributeForm.action',
-	{
-		id:programAttributeId
-	}, function()
-	{
-		showById('editProgramAttributeForm');
-		jQuery('#loaderDiv').hide();
-	});
-}
-
-function updateProgramAttribute()
-{	
-	$.ajax({
-		type: "POST",
-		url: 'updateProgramAttribute.action',
-		data: getParamsForDiv('updateProgramAttributeForm'),
-		success: function( json ) {
-			if( json.response == 'success')
-			{
-				onClickBackBtn();
-			}
-		}
-	});
-	
-    return false;
-}
-
-// ------------------------------------------------------------------
-// Click Back button
-// ------------------------------------------------------------------
-
-function onClickBackBtn()
-{
-	hideById('editProgramAttributeForm');	
-	jQuery('#loaderDiv').show();
-	jQuery('#programAttributeList').load('programAttributeList.action',
-	{
-	}, function()
-	{
-		showById('programAttributeList');
-		jQuery('#loaderDiv').hide();
-	});
-}	
