@@ -1,30 +1,25 @@
 <script>
+	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
+	var i118_at_least_2_option = '$encoder.jsEscape( $i18n.getString( "at_least_2_option" ) , "'") ';
+	var i18n_field_is_required = '$encoder.jsEscape( $i18n.getString( "field_is_required" ) , "'") ';
 	var isSubmit = true;
 	
 	jQuery(document).ready(	function(){
 
 			validation( 'updatePatientAttributeForm', function(form){
-				if( isSubmit )
-				{
-					updatePatientAttribute();
+				if( isSubmit && ATTRIBUTE_OPTION.checkOnSubmit() ) {
+					form.submit(i18n_field_is_required);
 				}
 			}, function(){
-				isSubmit = ATTRIBUTE_OPTION.checkOnSubmit();
+				isSubmit = true;
 				
-				if( isSubmit )
-				{
-					var fields = $("#addPatientAttributeForm").serializeArray();
-					jQuery.each(fields, function(i, field) {
-						if(  field.name.match("^attrOption")=='attrOption' && field.value == ""){
-							setInnerHTML( "attrMessage", i18n_field_is_required );
-							isSubmit = false;
-						}
-					});
-					
-				}else
-				{
-					setInnerHTML( "attrMessage", i18n_at_least_2_option );
-				}
+				var fields = $("#addPatientAttributeForm").serializeArray();
+				jQuery.each(fields, function(i, field) {
+					if(  field.name.match("^attrOption")=='attrOption' && field.value == ""){
+						setInnerHTML("attrMessage", i18n_field_is_required);
+						isSubmit = false;
+					}
+				});
 			});
 			
 			checkValueIsExist( "name", "validatePatientAttribute.action", {id:getFieldValue('id')});
@@ -36,7 +31,7 @@
 
 <h3>$i18n.getString( "update_patient_attribute" )</h3>
 
-<form id="updatePatientAttributeForm" name="updatePatientAttributeForm" action='updatePatientAttribute.action' method="post" >
+<form id="updatePatientAttributeForm" name="updatePatientAttributeForm"  action='#' method="post" onsubmit='return updatePatientAttribute();'>
 
 <div style="display:inline">
   <input type="hidden" id="id" name="id" value="$patientAttribute.id">
