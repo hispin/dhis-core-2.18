@@ -2664,9 +2664,7 @@
         handler: function() {
             var control = G.vars.map.getControl('measuredistance');
             
-            if (!control.active) {
-                control.activate();
-                
+            if (!control.active) {                
                 if (!control.window) {
                     control.window = new Ext.Window({
                         title: '<span id="window-measure-title">' + G.i18n.measure_distance + '</span>',
@@ -2711,7 +2709,7 @@
 		tooltip: 'Administrator settings',
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
-		handler: function() {          
+		handler: function() {
             if (!adminWindow.hidden) {
                 adminWindow.hide();
             }
