@@ -11,7 +11,8 @@ $(document).ready(function() {
 	$("#selectionDialog").dialog({
 		minWidth: 530,
 		minHeight: 263,
-		position: [($("body").width() - 530) - 50, 50]
+		position: [($("body").width() - 530) - 50, 50],
+		zIndex: 10000
 	});
 
 	$("#selectionDialog").parent().bind("resize", function(e) {
