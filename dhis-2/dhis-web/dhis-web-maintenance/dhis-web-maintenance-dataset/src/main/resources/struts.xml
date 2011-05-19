@@ -129,38 +129,6 @@
     
     <!-- Show add DataSet form chain -->
     
-    <action name="addDataSetForm2"
-      class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup">
-      <result name="success" type="chain">indicatorListFilteredByGroupChain</result>
-      <param name="requiredAuthorities">F_DATASET_ADD</param>
-    </action>
-
-    <action name="indicatorListFilteredByGroupChain"
-      class="org.hisp.dhis.dataset.action.IndicatorListFilteredByGroup">
-      <result name="success" type="chain">dataElementGroupListAddChain</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-
-    <action name="dataElementGroupListAddChain"
-      class="org.hisp.dhis.dataset.action.DataElementGroupListAction">
-      <result name="success" type="chain">indicatorGroupListAddChain</result>
-      <param name="requiredAuthorities">F_DATASET_ADD</param>
-    </action>
-
-    <action name="indicatorGroupListAddChain"
-      class="org.hisp.dhis.dataset.action.IndicatorGroupListAction">
-      <result name="success" type="chain">periodTypeListAddChain</result>
-      <param name="requiredAuthorities">F_DATASET_ADD</param>
-    </action>
-
-    <action name="periodTypeListAddChain"
-      class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataset/addDataSet.vm</param>
-      <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param>
-      <param name="requiredAuthorities">F_DATASET_ADD</param>
-    </action>
-
     <action name="addDataSetForm" class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addDataSet.vm</param>
