@@ -32,11 +32,12 @@
 (function($) {
   var templates = {
     wrapper: "<div id='${id}' style='padding: 0; margin: 0; background-color: #eee; border: 1px solid #666;' />",
-    button: "<button id='${id}' style='width: 70px; margin: 4px;'>${text}</button>",
+    button: "<button id='${id}' type='button' style='width: 70px; margin: 4px;'>${text}</button>",
     option: "<option>${text}</option>",
     option_selected: "<option selected='selected'>${text}</option>",
     pagesize_input: "Page size <input id='${id}' type='text' style='width: 50px;'/>",
     filter_input: "<input id='${id}' placeholder='Filter' type='text' style='width: 100%; height: 18px; border: 1px inset #888;' />",
+    filter_select: "<select id='${id}' style='width: 100%; margin-bottom: 4px; margin-top: 0;'></select>",
     select_page: "Page <select id='${id}' style='width: 50px;'></select>"
   }
 
@@ -57,10 +58,11 @@
         var $previous_button = $("#" + previous_button_id);
         var filter_input_id = id + "_filter_input";
         var $filter_input = $("#" + filter_input_id);
+        var filter_select_id = id + "_filter_select";
         var pagesize_input_id = id + "_pagesize_input";
         var $pagesize_input = $("#" + pagesize_input_id);
 
-        $.getJSON(settings.url, $.param( settings.params ), function(json) {
+        $.getJSON(settings.source, $.param( settings.params ), function(json) {
             $select.empty();
             $select_page.empty();
 
@@ -69,7 +71,10 @@
             params.pageSize = json.paging.pageSize;
             params.startPage = json.paging.startPage;
 
-            settings.handler($select, json);
+            $.each(json[settings.iterator], function(i, item) {
+                var option = jQuery(settings.handler(item));
+                $select.append( option );
+            });
 
             for(var j=1; j<=params.numberOfPages; j++) {
                 if(params.currentPage == j) {
@@ -113,11 +118,59 @@
       var previous_button_id = id + "_previous_button";
       var filter_input_id = id + "_filter_input";
       var filter_button_id = id + "_filter_button";
+      var filter_select_id = id + "_filter_select";
       var pagesize_input_id = id + "_pagesize_input";
 
       $select.wrap( $.tmpl(templates.wrapper, { "id": wrapper_id }) );
       var $wrapper = $("#" + wrapper_id);
 
+      if(settings.filter !== undefined) {
+          $wrapper.prepend( $.tmpl(templates.filter_select, { "id": filter_select_id } ) );
+          
+          if( settings.filter.label !== undefined ) {
+              $wrapper.prepend( "<div style='width: 100%; padding-left: 4px;'>Filter by " + settings.filter.label + ":</div>" );
+          } else {
+              $wrapper.prepend( "<div style='width: 100%; padding-left: 4px;'>Filter by:</div>" );
+          }
+
+          var $filter_select = $("#" + filter_select_id);
+
+          $.getJSON(settings.filter.source, function(json) {
+              $filter_select.empty();
+              $filter_select.append( "<option>All</option>");
+
+              $.each(json[settings.filter.iterator], function(i, item) {
+                  var option = jQuery(settings.filter.handler(item));
+                  $filter_select.append( option );
+              });
+          });
+          
+          $filter_select.bind("change", {"id": id}, function(event) {
+              var $option = $(this).find(":selected");
+              var key = $option.data("key");
+              var value = $option.data("value");
+
+              key = !! key ? key : "";
+              value = !! value ? value : "";
+
+              var settings = $("#" + event.data.id).data("settings");
+
+              if(key !== "") {
+                  settings.params[key] = value;
+                  settings.filter_select_key = key;
+              } else {
+                  if(settings.filter_select_key !== undefined) {
+                      delete settings.params[settings.filter_select_key];
+                      delete settings.filter_select_key;
+                  }
+              }
+
+              settings.params.currentPage = 1;
+              $select.data("settings", settings);
+              methods.load(event.data.id);
+          });
+      }
+      
       var $filter_table = $("<table/>");
       $filter_table.css({
           "padding": "1px",
@@ -214,4 +267,4 @@
       $.error('Method ' +  method + ' does not exist on jQuery.dhisPaging' );
     }  
   };
-})(jQuery);
+})(jQuery, undefined);

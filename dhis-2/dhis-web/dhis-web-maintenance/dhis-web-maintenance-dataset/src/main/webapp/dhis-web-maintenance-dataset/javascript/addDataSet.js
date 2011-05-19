@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
 		form.submit()
 	}, {
 		'beforeValidateHandler' : function() {
-			selectAllById('selectedList');
+			selectAllById('dataElementsSelectedList');
 			selectAllById('indicatorSelectedList');
 		},
 		'rules' : getValidationRules("dataSet")

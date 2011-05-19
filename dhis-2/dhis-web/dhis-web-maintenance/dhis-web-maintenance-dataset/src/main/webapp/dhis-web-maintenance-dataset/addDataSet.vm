@@ -1,5 +1,142 @@
 <script type="text/javascript" src="javascript/addDataSet.js"></script>
 <script type="text/javascript">
+	var jqDataElementsSelectedList, jqIndicatorsSelectedList;
+
+	jQuery(function() {
+		jqDataElementsSelectedList = jQuery("#dataElementsSelectedList");
+		jqIndicatorsSelectedList = jQuery("#indicatorsSelectedList");
+
+		jqDataElementsSelectedList.dblclick(function(e) {
+			var option = jQuery(this).find(":selected");
+			var option_id = +option.attr("value");
+			option.remove();
+
+            var settings = jQuery("#availableDataElementsList").data("settings");
+
+			if( jQuery.isArray(settings.removeDataElements) )
+			{
+				var remove_idx = jQuery.inArray(option_id, settings.removeDataElements);
+				settings.removeDataElements.splice(remove_idx, remove_idx+1);
+
+				if(settings.removeDataElements.length > 0) {
+					settings.params.removeDataElements = settings.removeDataElements.join(",");
+				} else {
+					delete settings.removeDataElements;
+					delete settings.params.removeDataElements;
+				}
+			}
+
+			jQuery("#availableDataElementsList").data("settings", settings);
+            jQuery("#availableDataElementsList").dhisPaging("load", "availableDataElementsList");
+		});
+
+		jqIndicatorsSelectedList.dblclick(function(e) {
+			var option = jQuery(this).find(":selected");
+			var option_id = +option.attr("value");
+			option.remove();
+
+            var settings = jQuery("#availableIndicatorsList").data("settings");
+
+			if( jQuery.isArray(settings.removeIndicators) )
+			{
+				var remove_idx = jQuery.inArray(option_id, settings.removeIndicators);
+				settings.removeIndicators.splice(remove_idx, remove_idx+1);
+
+				if(settings.removeIndicators.length > 0) {
+					settings.params.removeIndicators = settings.removeIndicators.join(",");
+				} else {
+					delete settings.removeIndicators;
+					delete settings.params.removeIndicators;
+				}
+			}
+
+			jQuery("#availableIndicatorsList").data("settings", settings);
+            jQuery("#availableIndicatorsList").dhisPaging("load", "availableIndicatorsList");
+		});
+
+		jQuery("#availableDataElementsList").dhisPaging({
+			source: "../dhis-web-commons-ajax-json/getDataElements.action",
+			iterator: "dataElements",
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				option.dblclick(function(e) {
+					var jqThis = jQuery(this);
+					jqThis.unbind();
+					var option_id = jqThis.attr("value");
+
+					jqDataElementsSelectedList.append( this );
+
+					var settings = jQuery("#availableDataElementsList").data("settings");
+
+					if( jQuery.isArray(settings.removeDataElements) ) {
+						settings.removeDataElements.push(+option_id);
+					} else {
+						settings.removeDataElements = [+option_id];
+					}
+
+					settings.params.removeDataElements = settings.removeDataElements.join(",");
+
+					jQuery("#availableDataElementsList").data("settings", settings);
+					jQuery("#availableDataElementsList").dhisPaging("load", "availableDataElementsList");
+				});
+
+				return option;
+			},
+			filter: {
+				source: "../dhis-web-commons-ajax-json/getDataElementGroups.action",
+				label: 'dataelement group',
+				iterator: "dataElementGroups",
+				handler: function(item) {
+					return "<option data-key='id' data-value='" + item.id + "'>" + item.name + "</option>";
+				}
+			}
+		});
+
+		jQuery("#availableIndicatorsList").dhisPaging({
+			source: "../dhis-web-commons-ajax-json/getIndicators.action",
+			iterator: "indicators",
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				option.dblclick(function(e) {
+					var jqThis = jQuery(this);
+					jqThis.unbind();
+					var option_id = jqThis.attr("value");
+				
+					jqIndicatorsSelectedList.append( this );
+
+					var settings = jQuery("#availableIndicatorsList").data("settings");
+
+					if( jQuery.isArray(settings.removeIndicators) ) {
+						settings.removeIndicators.push(+option_id);
+					} else {
+						settings.removeIndicators = [+option_id];
+					}
+
+					settings.params.removeIndicators = settings.removeIndicators.join(",");
+
+					jQuery("#availableIndicatorsList").data("settings", settings);
+					jQuery("#availableIndicatorsList").dhisPaging("load", "availableIndicatorsList");
+				});
+
+				return option;
+			},
+			filter: {
+				source: "../dhis-web-commons-ajax-json/getIndicatorGroups.action",
+				iterator: "indicatorGroups",
+				label: 'indicator group',
+				handler: function(item) {
+					return "<option data-key='id' data-value='" + item.id + "'>" + item.name + "</option>";
+				}
+			}
+		});
+	});
+
 	var previousName = '';
 </script>
 
@@ -50,7 +187,7 @@
   </table>
 	<br/>&nbsp;
   <table id="dataElementSelectionArea">
-    <col/> ## Available DataElements
+    <col style="width: 450px"/> ## Available DataElements
     <col/> ## Filter
     <col/> ## Selected DataElements
     <thead>
@@ -63,31 +200,20 @@
     <tbody>
       <tr>        
         <td>
-          <select id="dataElementGroupSelect" name="dataElementGroupSelect" style="min-width:25em"
-            onchange="javascript:filterByDataElementGroup( this.options[this.selectedIndex].value )">
-            <option value="ALL" selected="selected">$i18n.getString( "all" )</option>
-            #foreach ( $dataElementGroup in $dataElementGroups )
-              <option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.name )</option>
-            #end
-          </select>
         </td>
         <td>[$i18n.getString( "group" )]</td>
         <td></td>        
       </tr>
       
       <tr>
-      	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:25em"/></td>
+      	<td><!-- <input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:25em"/> --> </td>
       	<td>[$i18n.getString( "name" )]</td>
       	<td></td>
       </tr>
       
       <tr>
         <td>
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList');">
-              #foreach ( $availableDataElement in $dataElements )
-                  <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
-              #end       
-          </select>
+          <select id="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
         <td>
         	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="moveSelectedById( 'availableList', 'selectedList');"/><br/>
@@ -96,8 +222,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedList', 'availableList' );"/>
 		</td>			
         <td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelectedById( 'selectedList', 'availableList' ); disabledSelectedList();">
-          </select>
+        	<select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="min-width:25em;height:20em"></select>
         </td>
       </tr>
     </tbody>
@@ -106,7 +231,7 @@
   <br/>
 
   <table id="indicatorSelectionArea">
-    <col/> ## Available Indicators
+    <col style="width: 450px"/> ## Available Indicators
     <col/> ## Filter
     <col/> ## Selected Indicators
     <thead>
@@ -119,31 +244,20 @@
     <tbody>
       <tr>
         <td>
-          <select id="indicatorGroupSelect" name="indicatorGroupSelect" style="min-width:20em"
-              onchange="javascript:filterByIndicatorGroup( this.options[this.selectedIndex].value )">
-            <option value="ALL" selected="selected">$i18n.getString( "all" )</option>
-            #foreach ( $indicatorGroup in $indicatorGroups )
-              <option value="$indicatorGroup.id">$encoder.htmlEncode( $indicatorGroup.name )</option>
-            #end
-          </select>
         </td>
         <td>$i18n.getString( "group" )</td>
         <td></td>
       </tr>
 
       <tr>
-        <td><input type="text" id="availableIndicatorsFilter" onkeyup="filterList( this.value, 'indicatorAvailableList' )" style="min-width:20em"></td>
+        <td><!-- <input type="text" id="availableIndicatorsFilter" onkeyup="filterList( this.value, 'indicatorAvailableList' )" style="min-width:20em"> --></td>
       	<td>$i18n.getString( "name" )</td>
       	<td></td>        
       </tr>
 
       <tr>
         <td>
-          <select size="15" id="indicatorAvailableList" name="indicatorAvailableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'indicatorAvailableList', 'indicatorSelectedList');">
-              #foreach ( $availableIndicator in $indicators )
-                  <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.name )</option>
-              #end               
-          </select>
+          <select id="availableIndicatorsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
         <td>
             <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="moveSelectedById( 'indicatorAvailableList', 'indicatorSelectedList');"/><br/>
@@ -152,11 +266,7 @@
             <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'indicatorSelectedList', 'indicatorAvailableList' );"/>
         </td>
         <td>
-          <select id="indicatorSelectedList" name="indicatorSelectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'indicatorSelectedList', 'indicatorAvailableList' );">
-              #foreach ( $availableIndicator in $dataSetIndicators )
-                  <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.name )</option>
-              #end
-          </select>
+			<select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="min-width:20em;height:20em"></select>
         </td>
       </tr>
 
