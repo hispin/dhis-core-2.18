@@ -30,10 +30,13 @@ package org.hisp.dhis.web.api.service;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.Model;
 import org.hisp.dhis.web.api.model.ModelList;
@@ -126,12 +129,19 @@ public class DefaultProgramService
             programStage = i18n( i18nService, locale, programStage );
 
             ProgramStage prStg = new ProgramStage();
+
             prStg.setId( programStage.getId() );
+
             prStg.setName( programStage.getName() );
+
             List<DataElement> des = new ArrayList<DataElement>();
 
-            for ( org.hisp.dhis.program.ProgramStageDataElement programStagedataElement : programStage
-                .getProgramStageDataElements() )
+            List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>(
+                programStage.getProgramStageDataElements() );
+
+            Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
+
+            for ( ProgramStageDataElement programStagedataElement : programStageDataElements )
             {
                 programStagedataElement = i18n( i18nService, locale, programStagedataElement );
 
