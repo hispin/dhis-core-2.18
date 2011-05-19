@@ -169,6 +169,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="dataEntryFormService"
+			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 	</bean>
 	
 	<bean
