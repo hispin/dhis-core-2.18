@@ -5,6 +5,8 @@
 #parse( "/dhis-web-commons/loader/loader.vm" )
 
 <div id='editPatientAttributeForm'></div>
+<p></p>
+<span id='message' style='display:none;' onclick="hideById(this.id)"> $i18n.getString( "save_success" )</span>
 
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patient_attribute" ) , "'" )';

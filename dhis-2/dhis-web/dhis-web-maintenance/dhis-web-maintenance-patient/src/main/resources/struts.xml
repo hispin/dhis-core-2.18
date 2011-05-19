@@ -22,19 +22,14 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/relationshipType.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/relationship.js</param>
-		</action>
-		
-		<action name="relationshipTypeList"
-			class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeListAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/relationshipTypeList.vm</param>
+			<param name="javascripts">javascript/relationship.js</param>
 		</action>
 
 		<action name="getRelationshipType"
 			class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseRelationshipType.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="removeRelationshipType"
@@ -46,28 +41,32 @@
 
 		<action name="addRelationshipType"
 			class="org.hisp.dhis.patient.action.relationship.AddRelationshipTypeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="success" type="redirect">relationshipType.action
+			</result>
 			<param name="requiredAuthorities">F_RELATIONSHIPTYPE_ADD</param>
 		</action>
 
 		<action name="showAddRelationshipTypeForm" class="org.hisp.dhis.patient.action.NoAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addRelationshipTypeForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/relationship.js</param>
 			<param name="requiredAuthorities">F_RELATIONSHIPTYPE_ADD</param>
 		</action>
 
 		<action name="showUpdateRelationshipTypeForm"
 			class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateRelationshipTypeForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/relationship.js</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
 		<action name="updateRelationshipType"
 			class="org.hisp.dhis.patient.action.relationship.UpdateRelationshipTypeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="success" type="redirect">relationshipType.action
+			</result>
 			<param name="requiredAuthorities">F_RELATIONSHIPTYPE_UPDATE</param>
 		</action>
 
@@ -816,13 +815,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/patientAttributeGroup.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/patientAttributeGroup.js</param>
-		</action>
-		
-		<action name="patientAttributeGroupList"
-			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/patientAttributeGroupList.vm</param>
+			<param name="javascripts">javascript/patientAttributeGroup.js</param>
 		</action>
 
 		<action name="getPatientAttributeGroup"
@@ -830,6 +823,7 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-maintenance-patient/responsePatientAttributeGroup.vm
 			</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="removePatientAttributeGroup"
@@ -841,29 +835,34 @@
 
 		<action name="addPatientAttributeGroup"
 			class="org.hisp.dhis.patient.action.patientattributegroup.AddPatientAttributeGroupAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="success" type="redirect">patientAttributeGroup.action
+			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="showAddPatientAttributeGroupForm"
 			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributesWithdoutGroupAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addPatientAttributeGroupForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/patientAttributeGroup.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="showUpdatePatientAttributeGroupForm"
 			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updatePatientAttibuteGroupForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/patientAttributeGroup.js</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
 		<action name="updatePatientAttributeGroup"
 			class="org.hisp.dhis.patient.action.patientattributegroup.UpdatePatientAttributeGroupAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="success" type="redirect">patientAttributeGroup.action
+			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
@@ -877,29 +876,14 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
 		<!-- Patient Identifier Type -->
 
-		<action name="patientIdentifierType"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction">
+		<action name="showAddPatientIdentifierTypeForm" class="org.hisp.dhis.patient.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/patientIdentifierType.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/patientIdentifierType.js</param>
-		</action>
-		
-		<action name="patientIdentifierTypeList"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">
-				/dhis-web-maintenance-patient/listPatientIdentifierType.vm</param>
-		</action>
-
-		<action name="showAddPatientIdentifierTypeForm" class="org.hisp.dhis.patient.action.NoAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">
 				/dhis-web-maintenance-patient/addPatientIdentifierTypeForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/patientIdentifierType.js</param>
 			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
 		</action>
 
@@ -916,10 +900,21 @@
 
 		<action name="showUpdatePatientIdentifierTypeForm"
 			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/updatePatientIdentifierType.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/patientIdentifierType.js</param>
 			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_UPDATE</param>
+		</action>
+
+		<action name="patientIdentifierType"
+			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/listPatientIdentifierType.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/patientIdentifierType.js</param>
 		</action>
 
 		<action name="getPatientIdentifierType"
@@ -927,6 +922,7 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-maintenance-patient/responsePatientIdentifierType.vm
 			</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="removePatientIdentifierType"
@@ -940,15 +936,15 @@
 
 		<action name="addPatientIdentifierType"
 			class="org.hisp.dhis.patient.action.patientidentifiertype.AddPatientIdentifierTypeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="success" type="redirect">patientIdentifierType.action
+			</result>
 			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
 		</action>
 
 		<action name="updatePatientIdentifierType"
 			class="org.hisp.dhis.patient.action.patientidentifiertype.UpdatePatientIdentifierTypeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="success" type="redirect">patientIdentifierType.action
+			</result>
 			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_UPDATE</param>
 		</action>
 
