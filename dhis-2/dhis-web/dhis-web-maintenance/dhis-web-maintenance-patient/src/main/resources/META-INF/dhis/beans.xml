@@ -1074,24 +1074,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
 		</property>
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.patient.action.caseaggregation.ShowUpdateCaseAggregationFormAction"
-		class="org.hisp.dhis.patient.action.caseaggregation.ShowUpdateCaseAggregationFormAction"
-		scope="prototype">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>
-		<property name="programService">
-			<ref bean="org.hisp.dhis.program.ProgramService" />
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
-		</property>
-		<property name="aggregationConditionService">
-			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
-		</property>
-	</bean>
 
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.UpdateCaseAggregationConditionAction"

@@ -106,17 +106,11 @@ function getParamsForDiv( patientDiv)
 				{
 					for ( var i in jQuery(this).val() )
 					{
-						if( jQuery(this).val()[i] != null )
-						{
-							params += elementId + "="+ htmlEncode(jQuery(this).val()[i]) + "&";
-						}
+						params += elementId + "="+ jQuery(this).val()[i] + "&";
 					}
 				}else
 				{
-					if( jQuery(this).val() != null )
-					{
-						params += elementId + "="+ htmlEncode(jQuery(this).val()) + "&";
-					}
+					params += elementId + "="+ jQuery(this).val() + "&";
 				}
 			}
 		});
