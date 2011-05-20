@@ -67,12 +67,4 @@ public interface AggregationStore
      * @return collection of DataValues for the given parameters.
      */
     Collection<DataValue> getDataValues( Integer sourceId, Integer dataElementId, Integer optionComboId, Collection<Integer> periodIds );
-    
-    /**
-     * Generates a collection of strings on the form <data element id>-<period id>-<source id>
-     * for each data value in the database.
-     * 
-     * @return A collection of strings.
-     */
-    Collection<String> getDataValueIdentifiers();
 }
