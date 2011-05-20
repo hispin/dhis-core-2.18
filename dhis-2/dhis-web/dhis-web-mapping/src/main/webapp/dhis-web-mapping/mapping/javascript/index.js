@@ -249,15 +249,6 @@
         }
     });
     
-	var wmsCapabilitiesStore = new GeoExt.data.WMSCapabilitiesStore({
-        url: G.conf.path_geoserver + G.conf.ows,
-        autoLoad: false,
-        isLoaded: false,
-        listeners: {
-            'load': G.func.storeLoadListener
-        }
-    });
-    
     var overlayStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
         baseParams: {type: G.conf.map_layer_type_overlay},
@@ -312,7 +303,6 @@
         organisationUnitLevel: organisationUnitLevelStore,
         organisationUnitsAtLevel: organisationUnitsAtLevelStore,
         geojsonFiles: geojsonFilesStore,
-        wmsCapabilities: wmsCapabilitiesStore,
         overlay: overlayStore,
         groupSet: groupSetStore,
         groupsByGroupSet: groupsByGroupSetStore
