@@ -87,6 +87,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		ref="org.hisp.dhis.dataelement.DataElementService"/>
 	<property name="categoryService"
 		ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	<property name="expressionService"
+		ref="org.hisp.dhis.expression.ExpressionService"/>
 	<property name="aggregationCache"
         ref="org.hisp.dhis.aggregation.impl.cache.AggregationCache"/>    
   </bean>
