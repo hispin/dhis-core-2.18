@@ -28,10 +28,8 @@
 package org.hisp.dhis.caseentry.screen;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.program.ProgramStage;
@@ -51,7 +49,7 @@ public interface DataEntryScreenManager
     boolean hasMultiDimensionalDataElement( ProgramStage programStage );
 
     String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
+        Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit );
 
     Collection<ProgramStageDataElement> getProgramStageDataElements( String htmlCode );

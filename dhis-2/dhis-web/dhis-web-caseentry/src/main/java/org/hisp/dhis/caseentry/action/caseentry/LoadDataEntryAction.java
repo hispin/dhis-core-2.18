@@ -37,7 +37,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -80,7 +79,7 @@ public class LoadDataEntryAction
 
     private PatientService patientService;
 
-    private MinMaxDataElementService minMaxDataElementService;
+    // private MinMaxDataElementService minMaxDataElementService;
 
     private OrganisationUnitSelectionManager selectionManager;
 
@@ -122,10 +121,12 @@ public class LoadDataEntryAction
         this.patientService = patientService;
     }
 
-    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
-    {
-        this.minMaxDataElementService = minMaxDataElementService;
-    }
+    //
+    // public void setMinMaxDataElementService( MinMaxDataElementService
+    // minMaxDataElementService )
+    // {
+    // this.minMaxDataElementService = minMaxDataElementService;
+    // }
 
     public void setProgramStageService( ProgramStageService programStageService )
     {
@@ -245,40 +246,20 @@ public class LoadDataEntryAction
             }
 
             // ---------------------------------------------------------------------
-            // Get min/max data-elements
-            // ---------------------------------------------------------------------
-
-            Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
-                organisationUnit, dataElements );
-
-            Map<Integer, MinMaxDataElement> minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements
-                .size() );
-
-            for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
-            {
-                minMaxMap.put( minMaxDataElement.getDataElement().getId(), minMaxDataElement );
-            }
-
-            // ---------------------------------------------------------------------
             // Get data-entry-form
             // ---------------------------------------------------------------------
 
             DataEntryForm dataEntryForm = programStage.getDataEntryForm();
 
-            if ( useDefaultForm != null && !useDefaultForm )
+            if ( !useDefaultForm && dataEntryForm != null)
             {
-                customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
-                    dataEntryForm.getHtmlCode(), patientDataValues, minMaxMap, "", i18n, programStage,
-                    programStageInstance, organisationUnit );
-
-                customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEdit( customDataEntryFormCode );
+              customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
+                    dataEntryForm.getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance,
+                    organisationUnit );
             }
 
             return SUCCESS;
         }
-
-        // customDataEntryFormCode =
-        // programStage.getDataEntryForm().getHtmlCode();
 
         return SUCCESS;
     }

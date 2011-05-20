@@ -88,13 +88,7 @@
     
     <!-- save data-value -->
     
-    <action name="saveDateValue" class="org.hisp.dhis.caseentry.action.caseentry.ValidateValueAction">
-      <result name="success" type="chain">saveDateValueChain</result>
-      <result name="input" type="velocity-xml">/dhis-web-caseentry/status.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>      
-    </action> 
-    
-    <action name="saveDateValueChain" class="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction">
+    <action name="saveDateValue" class="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction">
       <result name="success" type="velocity-xml">status.vm</result>
       <param name="onExceptionReturn">plainTextError</param>      
     </action>
