@@ -1519,6 +1519,7 @@ function selectProgram()
 		return;
 	}
 	
+	contentDiv = 'listPatient';
 	jQuery('#listPatient').load("getDataRecords.action",
 		{
 			programId:getFieldValue('programId'),
@@ -1528,17 +1529,6 @@ function selectProgram()
 		{
 			showById("listPatient");
 		});
-}
-
-function selectPatientAttribute()
-{
-	var programLB = document.getElementById('programId');
-	var selPrgroamId = programLB.options[programLB.selectedIndex].value;
-
-	var patientAttributeLB = document.getElementById('patientAttributeId');
-	var patientAttributeId = patientAttributeLB.options[patientAttributeLB.selectedIndex].value;
-
-	window.location.href='getDataRecords.action?programId='+selPrgroamId+'&sortPatientAttributeId='+patientAttributeId;
 }
 
 function viewPrgramStageRecords( programStageInstanceId ) 
