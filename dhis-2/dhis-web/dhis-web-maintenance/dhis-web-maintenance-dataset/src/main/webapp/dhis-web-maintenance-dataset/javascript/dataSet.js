@@ -11,9 +11,7 @@ function dhisPaging_moveAllSelected(sourceId)
 
 function dhisPaging_moveAll(sourceId)
 {
-    var jqSource = jQuery("#" + sourceId);
-    jqSource.find("option").attr("selected", "selected");
-    jqSource.dblclick();
+    jQuery("#" + sourceId).find("option").attr("selected", "selected").dblclick();
 }
 
 function dataElementsSelectedList_dblclick(e) {
@@ -38,7 +36,6 @@ function dataElementsSelectedList_dblclick(e) {
         delete settings.params.removeDataElements;
     }
 
-    jQuery("#availableDataElementsList").data("settings", settings);
     jQuery("#availableDataElementsList").dhisPaging("load", "availableDataElementsList");
 }
 
@@ -65,7 +62,6 @@ function availableDataElementsList_dblclick(e) {
         delete settings.params.removeDataElements;
     }
 
-    jQuery("#availableDataElementsList").data("settings", settings);
     jQuery("#availableDataElementsList").dhisPaging("load", "availableDataElementsList");
 }
 

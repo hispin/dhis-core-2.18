@@ -111,19 +111,6 @@
       </tr>
     </thead>
     <tbody>
-      <tr>        
-        <td>
-        </td>
-        <td>[$i18n.getString( "group" )]</td>
-        <td></td>
-      </tr>
-      
-      <tr>
-      	<td></td>
-      	<td>[$i18n.getString( "name" )]</td>
-      	<td></td>
-      </tr>
-      
       <tr>
         <td>
           <select id="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
@@ -135,7 +122,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'dataElementsSelectedList' );"/>
 		</td>			
         <td>
-        	<select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="min-width:25em;height:20em"></select>
+        	<select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="height: 100%; width: 100%;"></select>
         </td>
       </tr>
     </tbody>
@@ -157,19 +144,6 @@
     <tbody>
       <tr>
         <td>
-        </td>
-        <td>$i18n.getString( "group" )</td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td></td>
-      	<td>$i18n.getString( "name" )</td>
-      	<td></td>        
-      </tr>
-
-      <tr>
-        <td>
           <select id="availableIndicatorsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
         <td>
@@ -179,7 +153,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'indicatorsSelectedList' );"/>
         </td>
         <td>
-			<select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="min-width:20em;height:20em"></select>
+			<select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="height: 100%; width: 100%;"></select>
         </td>
       </tr>
 

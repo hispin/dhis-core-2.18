@@ -136,18 +136,6 @@
     <tbody>
     	
       <tr>
-        <td></td>
-        <td>$i18n.getString( "group" )</td>
-        <td></td>
-      </tr>
-      
-      <tr>
-        <td></td>
-      	<td>$i18n.getString( "name" )</td>
-      	<td></td>        
-      </tr>
-      
-      <tr>
         <td>
           <select id="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
@@ -158,7 +146,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'dataElementsSelectedList' );"/>
         </td>       
         <td>
-          <select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="min-width:20em;height:20em">
+          <select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="height: 100%; width: 100%;">
               #foreach ( $availableDataElement in $dataElements )
                   <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
               #end   
@@ -185,19 +173,6 @@
     <tbody>
       <tr>
         <td>
-        </td>
-        <td>$i18n.getString( "group" )</td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td></td>
-      	<td>$i18n.getString( "name" )</td>
-      	<td></td>        
-      </tr>
-
-      <tr>
-        <td>
           <select id="availableIndicatorsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
         <td>
@@ -207,7 +182,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'indicatorsSelectedList' );"/>
         </td>
         <td>
-          <select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="min-width:20em;height:20em">
+          <select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="height: 100%; width: 100%;">
               #foreach ( $availableIndicator in $indicators )
                   <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.name )</option>
               #end
