@@ -30,6 +30,7 @@ package org.hisp.dhis.datamart.indicator;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
+import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -147,6 +148,8 @@ public class DefaultIndicatorDataMart
         
         for ( final Period period : periods )
         {
+            int days = daysBetween( period.getStartDate(), period.getEndDate() );
+            
             final PeriodType periodType = period.getPeriodType();
             
             final Collection<DataElementOperand> sumOperands = sumIntAggregator.filterOperands( operands, periodType );
@@ -167,8 +170,8 @@ public class DefaultIndicatorDataMart
                 
                 for ( final Indicator indicator : indicators )
                 {
-                    final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap ) );                    
-                    final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap ) );
+                    final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, days ) );                    
+                    final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap, days ) );
 
                     // ---------------------------------------------------------
                     // AggregatedIndicatorValue

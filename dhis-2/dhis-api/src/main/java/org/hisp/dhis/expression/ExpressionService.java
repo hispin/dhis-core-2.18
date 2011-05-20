@@ -56,9 +56,10 @@ public interface ExpressionService
 
     final String NULL_REPLACEMENT = "0";
     final String SPACE = " ";
-    
-    final String FORMULA_EXPRESSION = "\\[\\d+?.*?\\]"; // [ - one or more digits - any characters - ]
-    final String DAYS_EXPRESSION = "\\[days\\]"; // [days]
+
+    final String FORMULA_EXPRESSION = "\\[.+?\\]";
+    final String OPERAND_EXPRESSION = "\\[\\d+?.*?\\]";
+    final String DAYS_EXPRESSION = "[days]";
     
     /**
      * Adds a new Expression to the database.
@@ -106,12 +107,13 @@ public interface ExpressionService
      * @param nullIfNoValues indicates whether null should be returned if no
      *        DataValues are registered for a DataElement in the expression.
      * @param aggregated indicates whether aggregated or raw data should be
-     *        used when evaluating the expression.
+     *        used when evaluating the expression.     *        
+     * @param days The number to be substituted with the days expression in the formula.
      * @return The value of the given Expression, or null
      *         if no values are registered for a given combination of 
      *         DataElement, Source, and Period.
      */
-    Double getExpressionValue( Expression expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregate );
+    Double getExpressionValue( Expression expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregate, Integer days );
     
     /**
      * Returns all DataElements included in the given expression string.
@@ -192,9 +194,10 @@ public interface ExpressionService
      *        DataValues are registered for a DataElement in the expression.
      * @param aggregated indicates whether aggregated or raw data should be
      *        used when evaluating the expression.
+     * @param days The number to be substituted with the days expression in the formula.
      * @return A numerical expression.
      */    
-    String generateExpression( String expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregated );
+    String generateExpression( String expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregated, Integer days );
 
     /**
      * Generates an expression where the Operand identifiers, consisting of 
@@ -204,6 +207,7 @@ public interface ExpressionService
      * 
      * @param formula The formula to parse.
      * @param valueMap The map containing data element identifiers and aggregated value.
+     * @param days The number to be substituted with the days expression in the formula.
      */
-    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap );
+    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Integer days );
 }

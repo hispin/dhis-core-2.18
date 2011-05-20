@@ -142,12 +142,13 @@
 	<tr>
 		<td valign="top">
 		<textarea id="expression" name="expression" style="width:250px; height:150px" wrap="virtual" onchange="getExpressionText()" class="{validate:{required:true}}"></textarea><br/>
-		<a href="javascript:insertText( 'expression', '(', 'aggregationOperator' )"><img src="../images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"/></a>
-		<a href="javascript:insertText( 'expression', ')', 'aggregationOperator' )"><img src="../images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"/></a>
-		<a href="javascript:insertText( 'expression', '*', 'aggregationOperator' )"><img src="../images/multiply.png" alt="$i18n.getString( 'multiply' )"/></a>
-		<a href="javascript:insertText( 'expression', '/', 'aggregationOperator' )"><img src="../images/divide.png" alt="$i18n.getString( 'divide' )"/></a>
-		<a href="javascript:insertText( 'expression', '+', 'aggregationOperator' )"><img src="../images/plus.png" alt="$i18n.getString( 'plus' )"/></a>
-		<a href="javascript:insertText( 'expression', '-', 'aggregationOperator' )"><img src="../images/minus.png" alt="$i18n.getString( 'minus' )"/></a>
+		<a href="javascript:insertText( 'expression', '(' )"><img src="../images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"/></a>
+		<a href="javascript:insertText( 'expression', ')' )"><img src="../images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"/></a>
+		<a href="javascript:insertText( 'expression', '*' )"><img src="../images/multiply.png" alt="$i18n.getString( 'multiply' )"/></a>
+		<a href="javascript:insertText( 'expression', '/' )"><img src="../images/divide.png" alt="$i18n.getString( 'divide' )"/></a>
+		<a href="javascript:insertText( 'expression', '+' )"><img src="../images/plus.png" alt="$i18n.getString( 'plus' )"/></a>
+		<a href="javascript:insertText( 'expression', '-' )"><img src="../images/minus.png" alt="$i18n.getString( 'minus' )"/></a>
+		<a href="javascript:insertText( 'expression', '[days]' )"><img src="../images/no_of_days.png" title="$i18n.getString( 'no_of_days' )"/></a>
 		</td>
 		<td></td>
 		<td valign="top">

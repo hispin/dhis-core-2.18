@@ -32,6 +32,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import static org.hisp.dhis.expression.ExpressionService.DAYS_EXPRESSION;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -94,6 +95,7 @@ public class ExpressionServiceTest
     private String expressionA;
     private String expressionB;
     private String expressionC;
+    private String expressionD;
     
     private String descriptionA;
     private String descriptionB;
@@ -170,6 +172,7 @@ public class ExpressionServiceTest
         expressionA = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+[" + dataElementIdB + SEPARATOR + categoryOptionComboId + "]";
         expressionB = "[" + dataElementIdC + SEPARATOR + categoryOptionComboId + "]-[" + dataElementIdD + SEPARATOR + categoryOptionComboId + "]";
         expressionC = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+[" + dataElementIdE + "]-10";
+        expressionD = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+" + DAYS_EXPRESSION;
         
         descriptionA = "Expression A";
         descriptionB = "Expression B";
@@ -223,13 +226,13 @@ public class ExpressionServiceTest
     {
         Expression expression = new Expression( expressionA, descriptionA, dataElements );
         
-        Double value = expressionService.getExpressionValue( expression, period, source, false, false );
+        Double value = expressionService.getExpressionValue( expression, period, source, false, false, null );
         
         assertEquals( value, 15.0 );
         
         expression = new Expression( expressionB, descriptionB, dataElements );
 
-        value = expressionService.getExpressionValue( expression, period, source, false, false );
+        value = expressionService.getExpressionValue( expression, period, source, false, false, null );
         
         assertEquals( 0.0, value );
     }
@@ -314,13 +317,9 @@ public class ExpressionServiceTest
     @Test
     public void testGenerateExpression()
     {
-        String expression = expressionService.generateExpression( expressionA, period, source, false, false );
-        
-        assertEquals( "10+5", expression );
-        
-        expression = expressionService.generateExpression( expressionB, period, source, false, false );
-        
-        assertEquals( "0-0", expression );
+        assertEquals( "10+5", expressionService.generateExpression( expressionA, period, source, false, false, null ) );
+        assertEquals( "0-0", expressionService.generateExpression( expressionB, period, source, false, false, null ) );
+        assertEquals( "10+7", expressionService.generateExpression( expressionD, period, source, false, false, 7 ) );
     }
     
     @Test
@@ -330,7 +329,8 @@ public class ExpressionServiceTest
         valueMap.put( new DataElementOperand( dataElementIdA, categoryOptionComboId ), new Double( 12 ) );
         valueMap.put( new DataElementOperand( dataElementIdB, categoryOptionComboId ), new Double( 34 ) );
         
-        assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap ) );        
+        assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, null ) );        
+        assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, 5 ) );
     }
     
     // -------------------------------------------------------------------------
