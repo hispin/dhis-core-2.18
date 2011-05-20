@@ -282,10 +282,6 @@ public class ExpressionServiceTest
     	assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionA ) );
     	assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionB ) );
     	
-    	expressionA = "[" + "foo" + SEPARATOR + categoryOptionComboId + "] + 12";
-    	
-    	assertEquals( ExpressionService.ID_NOT_NUMERIC, expressionService.expressionIsValid( expressionA ) );
-    	
     	expressionA = "[" + dataElementIdA + SEPARATOR + "foo" + "] + 12";
     	
     	assertEquals( ExpressionService.ID_NOT_NUMERIC, expressionService.expressionIsValid( expressionA ) );
@@ -325,6 +321,16 @@ public class ExpressionServiceTest
         expression = expressionService.generateExpression( expressionB, period, source, false, false );
         
         assertEquals( "0-0", expression );
+    }
+    
+    @Test
+    public void testGenerateExpressionMap()
+    {
+        Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+        valueMap.put( new DataElementOperand( dataElementIdA, categoryOptionComboId ), new Double( 12 ) );
+        valueMap.put( new DataElementOperand( dataElementIdB, categoryOptionComboId ), new Double( 34 ) );
+        
+        assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap ) );        
     }
     
     // -------------------------------------------------------------------------

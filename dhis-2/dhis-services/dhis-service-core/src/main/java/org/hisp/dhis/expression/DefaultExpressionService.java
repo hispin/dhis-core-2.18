@@ -378,10 +378,10 @@ public class DefaultExpressionService
         
         if ( expression != null )
         {
-            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
-            
             buffer = new StringBuffer();
 
+            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
+            
             while ( matcher.find() )
             {
                 String match = matcher.group();
@@ -414,6 +414,35 @@ public class DefaultExpressionService
             matcher.appendTail( buffer );
         }
 
+        return buffer != null ? buffer.toString() : null;
+    }
+    
+    public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap )
+    {   
+        StringBuffer buffer = null;
+        
+        if ( expression != null )
+        {
+            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
+            
+            buffer = new StringBuffer();            
+            
+            while ( matcher.find() )
+            {
+                String match = matcher.group();
+                
+                final DataElementOperand operand = DataElementOperand.getOperand( match );
+                
+                Double aggregatedValue = valueMap.get( operand );
+                
+                match = ( aggregatedValue == null ) ? NULL_REPLACEMENT : String.valueOf( aggregatedValue );
+                
+                matcher.appendReplacement( buffer, match );
+            }
+    
+            matcher.appendTail( buffer );
+        }
+        
         return buffer != null ? buffer.toString() : null;
     }
 }
