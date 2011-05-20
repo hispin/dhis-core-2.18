@@ -186,6 +186,11 @@ public class DefaultIndicatorService
         return indicatorStore.getIndicatorCountByName( name );
     }
 
+    public Collection<Indicator> getIndicatorsLikeName( String name )
+    {
+        return i18n( i18nService, indicatorStore.getIndicatorsLikeName( name ) );
+    }
+    
     public Collection<Indicator> getIndicatorsBetween( int first, int max )
     {
         return i18n( i18nService, indicatorStore.getIndicatorsBetween( first, max ) );

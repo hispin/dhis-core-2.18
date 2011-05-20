@@ -161,12 +161,17 @@ public class HibernateIndicatorStore
     {
         return getCount();
     }
-
+    
     public int getIndicatorCountByName( String name )
     {
         return getCountByName( name );
     }
 
+    public Collection<Indicator> getIndicatorsLikeName( String name )
+    {
+        return getLikeName( name );
+    }
+    
     public Collection<Indicator> getIndicatorsBetween( int first, int max )
     {
         return getBetween( first, max );
