@@ -57,7 +57,8 @@ public interface ExpressionService
     final String NULL_REPLACEMENT = "0";
     final String SPACE = " ";
     
-    final String FORMULA_EXPRESSION = "\\[.+?\\]";
+    final String FORMULA_EXPRESSION = "\\[\\d+?.*?\\]"; // [ - one or more digits - any characters - ]
+    final String DAYS_EXPRESSION = "\\[days\\]"; // [days]
     
     /**
      * Adds a new Expression to the database.
@@ -195,4 +196,14 @@ public interface ExpressionService
      */    
     String generateExpression( String expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregated );
 
+    /**
+     * Generates an expression where the Operand identifiers, consisting of 
+     * data element id and category option combo id, are replaced
+     * by the aggregated value for the relevant combination of data element,
+     * period, and source.
+     * 
+     * @param formula The formula to parse.
+     * @param valueMap The map containing data element identifiers and aggregated value.
+     */
+    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap );
 }

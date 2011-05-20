@@ -160,6 +160,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.datamart.indicator.DefaultIndicatorDataMart">
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+	<property name="expressionService"
+	  ref="org.hisp.dhis.expression.ExpressionService"/>
     <property name="sumIntAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
     <property name="averageIntAggregator"
