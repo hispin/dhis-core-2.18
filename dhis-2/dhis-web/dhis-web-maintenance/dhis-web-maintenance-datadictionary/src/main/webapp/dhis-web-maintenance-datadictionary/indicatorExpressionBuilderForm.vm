@@ -87,7 +87,7 @@
 		}
 	}
 	
-	function insertText( inputAreaName, inputText, radioGroupName )
+	function insertText( inputAreaName, inputText )
 	{
 		insertTextCommon( inputAreaName, inputText );	
 
@@ -180,12 +180,13 @@
 	<tr>
 		<td valign="top">
 		<textarea id="expression" name="expression" style="width:250px; height:150px" wrap="virtual" onchange="cleanExpression()" class="{validate:{required:true}}"></textarea><br/>
-		<a href="javascript:insertText( 'expression', '(', 'aggregationOperator' )"><img src="../images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"/></a>
-		<a href="javascript:insertText( 'expression', ')', 'aggregationOperator' )"><img src="../images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"/></a>
-		<a href="javascript:insertText( 'expression', '*', 'aggregationOperator' )"><img src="../images/multiply.png" alt="$i18n.getString( 'multiply' )"/></a>
-		<a href="javascript:insertText( 'expression', '/', 'aggregationOperator' )"><img src="../images/divide.png" alt="$i18n.getString( 'divide' )"/></a>
-		<a href="javascript:insertText( 'expression', '+', 'aggregationOperator' )"><img src="../images/plus.png" alt="$i18n.getString( 'plus' )"/></a>
-		<a href="javascript:insertText( 'expression', '-', 'aggregationOperator' )"><img src="../images/minus.png" alt="$i18n.getString( 'minus' )"/></a>
+		<a href="javascript:insertText( 'expression', '(' )"><img src="../images/left_parent.png" title="$i18n.getString( 'left_brackets' )"/></a>
+		<a href="javascript:insertText( 'expression', ')' )"><img src="../images/right_parent.png" title="$i18n.getString( 'right_brackets' )"/></a>
+		<a href="javascript:insertText( 'expression', '*' )"><img src="../images/multiply.png" title="$i18n.getString( 'multiply' )"/></a>
+		<a href="javascript:insertText( 'expression', '/' )"><img src="../images/divide.png" title="$i18n.getString( 'divide' )"/></a>
+		<a href="javascript:insertText( 'expression', '+' )"><img src="../images/plus.png" title="$i18n.getString( 'plus' )"/></a>
+		<a href="javascript:insertText( 'expression', '-' )"><img src="../images/minus.png" title="$i18n.getString( 'minus' )"/></a>
+		<a href="javascript:insertText( 'expression', '[days]' )"><img src="../images/no_of_days.png" title="$i18n.getString( 'no_of_days' )"/></a>
 		</td>
 		<td></td>
 		<td valign="top">
@@ -193,7 +194,7 @@
 			<input type="text" id="filter" name="filter" style="width:400px">
 			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px"><br/>
 
-			<select id="dataElementId" name="dataElementId" size="7" style="width:510px" ondblclick="insertText( 'expression', this.value, 'aggregationOperator' )">
+			<select id="dataElementId" name="dataElementId" size="7" style="width:510px" ondblclick="insertText( 'expression', this.value )">
 			</select>
 		</td>
 	</tr>

@@ -302,8 +302,8 @@ public class DefaultValidationRuleService
             {
                 if ( validationRule.getPeriodType() != null && validationRule.getPeriodType().equals( period.getPeriodType() ) )
                 {
-                    leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), period, source, true, aggregate );
-                    rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period, source, true, aggregate );
+                    leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), period, source, true, aggregate, null );
+                    rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period, source, true, aggregate, null );
         
                     if ( leftSide != null && rightSide != null )
                     {

@@ -72,7 +72,9 @@ public class DefaultExpressionService
     private static final Log log = LogFactory.getLog( DefaultExpressionService.class );
     
     private final Pattern FORMULA_PATTERN = Pattern.compile( FORMULA_EXPRESSION );
-
+    private final Pattern OPERAND_PATTERN = Pattern.compile( OPERAND_EXPRESSION );
+    private final String DAYS_DESCRIPTION = "[Number of days]";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -145,9 +147,9 @@ public class DefaultExpressionService
     // Business logic
     // -------------------------------------------------------------------------
 
-    public Double getExpressionValue( Expression expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregate )
+    public Double getExpressionValue( Expression expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregate, Integer days )
     {
-        final String expressionString = generateExpression( expression.getExpression(), period, source, nullIfNoValues, aggregate );
+        final String expressionString = generateExpression( expression.getExpression(), period, source, nullIfNoValues, aggregate, days );
 
         return expressionString != null ? calculateExpression( expressionString ) : null;
     }    
@@ -160,7 +162,7 @@ public class DefaultExpressionService
         {
             dataElementsInExpression = new HashSet<DataElement>();
 
-            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
+            final Matcher matcher = OPERAND_PATTERN.matcher( expression );
             
             while ( matcher.find() )
             {
@@ -182,7 +184,7 @@ public class DefaultExpressionService
         
         if ( expression != null )
         {
-            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
+            final Matcher matcher = OPERAND_PATTERN.matcher( expression );
 
             while ( matcher.find() )
             {
@@ -227,7 +229,7 @@ public class DefaultExpressionService
         {
             operandsInExpression = new HashSet<DataElementOperand>();
 
-            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
+            final Matcher matcher = OPERAND_PATTERN.matcher( expression );
 
             while ( matcher.find() )
             {
@@ -253,25 +255,30 @@ public class DefaultExpressionService
         {
             DataElementOperand operand = null;
             
-            try
+            String match = matcher.group();
+            
+            if ( !DAYS_EXPRESSION.equals( match ) )
             {
-                operand = DataElementOperand.getOperand( matcher.group() );
+                try
+                {
+                    operand = DataElementOperand.getOperand( match );
+                }
+                catch ( NumberFormatException ex )
+                {
+                    return ID_NOT_NUMERIC;
+                }
+    
+                if ( !dataElementService.dataElementExists( operand.getDataElementId()  ) )
+                {
+                    return DATAELEMENT_DOES_NOT_EXIST;
+                }
+    
+                if ( !operand.isTotal() && !dataElementService.dataElementCategoryOptionComboExists( operand.getOptionComboId() ) )
+                {
+                    return CATEGORYOPTIONCOMBO_DOES_NOT_EXIST;
+                }
             }
-            catch ( NumberFormatException ex )
-            {
-                return ID_NOT_NUMERIC;
-            }
-
-            if ( !dataElementService.dataElementExists( operand.getDataElementId()  ) )
-            {
-                return DATAELEMENT_DOES_NOT_EXIST;
-            }
-
-            if ( !operand.isTotal() && !dataElementService.dataElementCategoryOptionComboExists( operand.getOptionComboId() ) )
-            {
-                return CATEGORYOPTIONCOMBO_DOES_NOT_EXIST;
-            }
-
+            
             // -----------------------------------------------------------------
             // Replacing the operand with 1.1 in order to later be able to verify
             // that the formula is mathematically valid
@@ -304,25 +311,32 @@ public class DefaultExpressionService
             {
                 String match = matcher.group();
                 
-                final DataElementOperand operand = DataElementOperand.getOperand( match );
-                
-                final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
-                final DataElementCategoryOptionCombo categoryOptionCombo = 
-                    categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
-
-                if ( dataElement == null )
+                if ( DAYS_EXPRESSION.equals( match ) )
                 {
-                    throw new IllegalArgumentException( "Identifier does not reference a data element: "
-                        + operand.getDataElementId() );
+                    match = DAYS_DESCRIPTION;
                 }
-
-                if ( !operand.isTotal() && categoryOptionCombo == null )
+                else
                 {
-                    throw new IllegalArgumentException( "Identifier does not reference a category option combo: "
-                        + operand.getOptionComboId() );
+                    final DataElementOperand operand = DataElementOperand.getOperand( match );
+                    
+                    final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
+                    final DataElementCategoryOptionCombo categoryOptionCombo = 
+                        categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+    
+                    if ( dataElement == null )
+                    {
+                        throw new IllegalArgumentException( "Identifier does not reference a data element: "
+                            + operand.getDataElementId() );
+                    }
+    
+                    if ( !operand.isTotal() && categoryOptionCombo == null )
+                    {
+                        throw new IllegalArgumentException( "Identifier does not reference a category option combo: "
+                            + operand.getOptionComboId() );
+                    }
+    
+                    match = DataElementOperand.getPrettyName( dataElement, categoryOptionCombo );
                 }
-
-                match = DataElementOperand.getPrettyName( dataElement, categoryOptionCombo );
                 
                 matcher.appendReplacement( buffer, match );
             }
@@ -339,7 +353,7 @@ public class DefaultExpressionService
         
         if ( expression != null )
         {
-            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
+            final Matcher matcher = OPERAND_PATTERN.matcher( expression );
             
             buffer = new StringBuffer();
             
@@ -372,7 +386,7 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
     
-    public String generateExpression( String expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregated )
+    public String generateExpression( String expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregated, Integer days )
     {
         StringBuffer buffer = null;
         
@@ -386,27 +400,34 @@ public class DefaultExpressionService
             {
                 String match = matcher.group();
 
-                final DataElementOperand operand = DataElementOperand.getOperand( match );
-                
-                String value = null;
-              
-                if ( aggregated )
+                if ( DAYS_EXPRESSION.equals( match ) ) // Days
                 {
-                    Double aggregatedValue = aggregatedDataValueService.getAggregatedDataValue( operand.getDataElementId(), operand.getOptionComboId(), period.getId(), source.getId() );
-
-                    value = aggregatedValue != null ? String.valueOf( aggregatedValue ) : null;
+                    match = days != null ? String.valueOf( days ) : NULL_REPLACEMENT;
                 }
-                else
+                else // Operand
                 {
-                    value = dataValueService.getValue( operand.getDataElementId(), period.getId(), source.getId(), operand.getOptionComboId() );
+                    final DataElementOperand operand = DataElementOperand.getOperand( match );
+                    
+                    String value = null;
+                  
+                    if ( aggregated )
+                    {
+                        Double aggregatedValue = aggregatedDataValueService.getAggregatedDataValue( operand.getDataElementId(), operand.getOptionComboId(), period.getId(), source.getId() );
+    
+                        value = aggregatedValue != null ? String.valueOf( aggregatedValue ) : null;
+                    }
+                    else
+                    {
+                        value = dataValueService.getValue( operand.getDataElementId(), period.getId(), source.getId(), operand.getOptionComboId() );
+                    }
+                    
+                    if ( value == null && nullIfNoValues )
+                    {
+                        return null;
+                    }
+                    
+                    match = ( value == null ) ? NULL_REPLACEMENT : value;
                 }
-                
-                if ( value == null && nullIfNoValues )
-                {
-                    return null;
-                }
-                
-                match = ( value == null ) ? NULL_REPLACEMENT : value;
                 
                 matcher.appendReplacement( buffer, match );
             }
@@ -417,7 +438,7 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
     
-    public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap )
+    public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Integer days )
     {   
         StringBuffer buffer = null;
         
@@ -431,11 +452,18 @@ public class DefaultExpressionService
             {
                 String match = matcher.group();
                 
-                final DataElementOperand operand = DataElementOperand.getOperand( match );
-                
-                Double aggregatedValue = valueMap.get( operand );
-                
-                match = ( aggregatedValue == null ) ? NULL_REPLACEMENT : String.valueOf( aggregatedValue );
+                if ( DAYS_EXPRESSION.equals( match ) ) // Days
+                {
+                    match = days != null ? String.valueOf( days ) : NULL_REPLACEMENT;
+                }
+                else // Operand
+                {
+                    final DataElementOperand operand = DataElementOperand.getOperand( match );
+                    
+                    Double aggregatedValue = valueMap.get( operand );
+                    
+                    match = ( aggregatedValue == null ) ? NULL_REPLACEMENT : String.valueOf( aggregatedValue );
+                }
                 
                 matcher.appendReplacement( buffer, match );
             }

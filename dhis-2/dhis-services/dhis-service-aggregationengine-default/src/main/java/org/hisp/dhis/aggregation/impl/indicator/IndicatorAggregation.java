@@ -29,6 +29,7 @@ package org.hisp.dhis.aggregation.impl.indicator;
 
 import static org.hisp.dhis.system.util.MathUtils.INVALID;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
+import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -91,11 +92,13 @@ public class IndicatorAggregation
     public Double getAggregatedIndicatorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
+        int days = daysBetween( startDate, endDate );
+        
         double numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), startDate,
-            endDate, organisationUnit ) );
+            endDate, organisationUnit, days ) );
         
         double denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(),
-            startDate, endDate, organisationUnit ) );
+            startDate, endDate, organisationUnit, days ) );
         
         if ( numeratorValue == INVALID || denominatorValue == INVALID || denominatorValue == 0.0 )
         {
@@ -117,21 +120,21 @@ public class IndicatorAggregation
         OrganisationUnit organisationUnit )
     {
         return calculateExpression( generateExpression( indicator.getNumerator(), startDate,
-            endDate, organisationUnit ) );
+            endDate, organisationUnit, daysBetween( startDate, endDate ) ) );
     }
 
     public double getAggregatedDenominatorValue( Indicator indicator, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
         return calculateExpression( generateExpression( indicator.getDenominator(),
-            startDate, endDate, organisationUnit ) );
+            startDate, endDate, organisationUnit, daysBetween( startDate, endDate ) ) );
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
     
-    private String generateExpression( String expression, Date startDate, Date endDate, OrganisationUnit organisationUnit )
+    private String generateExpression( String expression, Date startDate, Date endDate, OrganisationUnit organisationUnit, int days )
     {
         Set<DataElementOperand> operands = expressionService.getOperandsInExpression( expression );
         
@@ -145,6 +148,6 @@ public class IndicatorAggregation
             valueMap.put( operand, aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit ) );            
         }
         
-        return expressionService.generateExpression( expression, valueMap );
+        return expressionService.generateExpression( expression, valueMap, null );
     }
 }
