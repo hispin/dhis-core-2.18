@@ -74,8 +74,6 @@
 
 <hr style="clear:both">
 
-<span id="startMsg" style="font-style:italic; color:blue"> </span>
-
 <script type="text/javascript">  
 	setFieldValue('patientId', '$patient.id');
 </script>

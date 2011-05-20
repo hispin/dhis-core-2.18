@@ -123,6 +123,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.screen.DataEntryScreenManager"
@@ -163,8 +167,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-			<property name="minMaxDataElementService"
-			ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="programStageDataElementService"
@@ -215,8 +217,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction"
 		scope="prototype">
-		<property name="minMaxDataElementService"
-			ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
 		<property name="dataEntryScreenManager"
 			ref="org.hisp.dhis.caseentry.screen.DataEntryScreenManager" />
 		<property name="selectedStateManager"

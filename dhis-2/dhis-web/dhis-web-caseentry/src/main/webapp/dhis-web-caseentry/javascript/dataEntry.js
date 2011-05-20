@@ -81,9 +81,14 @@ function showSelectedDataRecoding( patientId )
 
 function loadProgramStages()
 {
-	if ( getFieldValue('programId') )
-	{
+	hideById('dataEntryFormDiv');
+	clearListById('programStageId');
+	setFieldValue('dueDate', '');
+	setFieldValue('executionDate', '');
 		
+	if ( getFieldValue('programId') == 0 )
+	{
+		return;
 	}
 	jQuery.postJSON( "loadProgramStages.action",
 		{
@@ -123,45 +128,43 @@ function loadProgramStages()
 
 function loadDataEntry()
 {
+	hideById('dataEntryFormDiv');
 	if( getFieldValue('programStageId') == '0' )
 	{
-		disable('listPatientBtn');
-		disable('searchingAttributeId');
-		jQuery('#searchText').removeAttr( 'readonly' );
-		disable('searchBtn');
-			
 		return;
 	}
 	
-	enable('executionDate');
+	// Load data-entry form
 	showLoader();
+	var useDefaultForm = ( jQuery('#useDefaultForm').attr('checked')=='checked')?true:false
+	
 	jQuery('#dataEntryFormDiv').load("dataentryform.action",
 		{
 			programStageId:getFieldValue('programStageId'),
 			patientId: getFieldValue('patientId'),
-			useDefaultForm: jQuery('#useDefaultForm').find("checked").value
+			useDefaultForm: useDefaultForm
 		}, 
-		function( ) 
+		function( )
 		{
-			showById('dataRecordingSelectDiv');
+		}).slideDown('slow', function()
+		{
+			setFieldValue('executionDate', getFieldValue('executionDateValue'));
+			setFieldValue('dueDate', getFieldValue('dueDateValue'));
+			enable('executionDate');
+			enable('validationBtn');
+			enable('completeBtn');
+			enable('useDefaultForm');
+			enable('useCustomForm');
 			if ( getFieldValue('executionDate') =='' )
 			{
-				hideById('dataEntryFormDiv');
+				hideById('entryForm');
 				setInnerHTML('startMsg', i18n_report_date_warning);
 			}
 			else
 			{
-				showById('dataEntryFormDiv');
+				showById('entryForm');
 				setInnerHTML('startMsg', '');
 			}
-			
-			enable('dueDate');
-			enable('executionDate');
-			enable('validationBtn');
-			enable('completeBtn');
-			
-			enable('useDefaultForm');
-			enable('useCustomForm');
 			
 			if( byId('useCustomForm').checked )
 			{
@@ -172,7 +175,7 @@ function loadDataEntry()
 			}
 			
 			hideLoader();
-			hideById('contentDiv');
+			hideById('contentDiv'); 
 		});
 }
 
@@ -395,6 +398,7 @@ function ExecutionDateSaver( programStageInstanceId_, executionDate_, resultColo
         {
             markValue( resultColor );
 			showById('dataEntryFormDiv');
+			showById('entryForm');
         }
         else
         {
@@ -621,7 +625,11 @@ function CheckBoxSaver( dataElementId_, providedByAnotherFacility_, resultColor_
         request.setCallbackSuccess( handleResponseCheckBox );
         request.setCallbackError( handleHttpErrorCheckBox );
         request.setResponseTypeXML( 'status' );
-        request.send( 'saveProvidingFacility.action?dataElementId=' + dataElementId + '&providedByAnotherFacility=' + providedByAnotherFacility );
+        request.send( 'saveProvidingFacility.action?dataElementId=' + dataElementId 
+				+ '&patientId=' + getFieldValue('patientId') 
+				+ '&programStageId=' + getFieldValue('programStageId') 
+				+ '&providedByAnotherFacility=' + providedByAnotherFacility 
+				);
     };
 
     function handleResponseCheckBox( rootElement )
@@ -667,8 +675,11 @@ function CustomCheckBoxSaver( programStageId, dataElementId_, providedByAnotherF
         var request = new Request();
         request.setCallbackSuccess( handleResponseCheckBox );
         request.setCallbackError( handleHttpErrorCheckBox );
-        request.setResponseTypeXML( 'status' );
-        request.send( 'saveProvidingFacility.action?dataElementId=' + dataElementId + '&providedByAnotherFacility=' + providedByAnotherFacility );
+        request.setResponseTypeXML( 'status' ); 
+        request.send( 'saveProvidingFacility.action?dataElementId=' + dataElementId 
+					+ '&patientId=' + getFieldValue('patientId')
+					+ '&programStageId=' + programStageId 
+					+'&providedByAnotherFacility=' + providedByAnotherFacility );
     };
 
     function handleResponseCheckBox( rootElement )

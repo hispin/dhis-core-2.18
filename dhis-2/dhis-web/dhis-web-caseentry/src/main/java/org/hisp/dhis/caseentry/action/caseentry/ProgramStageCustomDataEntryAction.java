@@ -94,12 +94,12 @@ public class ProgramStageCustomDataEntryAction implements Action
         this.dataEntryScreenManager = dataEntryScreenManager;
     }
 
-    private MinMaxDataElementService minMaxDataElementService;
-
-    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
-    {
-        this.minMaxDataElementService = minMaxDataElementService;
-    }
+//    private MinMaxDataElementService minMaxDataElementService;
+//
+//    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
+//    {
+//        this.minMaxDataElementService = minMaxDataElementService;
+//    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -243,19 +243,19 @@ public class ProgramStageCustomDataEntryAction implements Action
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Get the min/max values
-        // ---------------------------------------------------------------------
-
-        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
-            organisationUnit, dataElements );
-
-        Map<Integer, MinMaxDataElement> minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements.size() );
-
-        for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
-        {
-            minMaxMap.put( minMaxDataElement.getDataElement().getId(), minMaxDataElement );
-        }
+//        // ---------------------------------------------------------------------
+//        // Get the min/max values
+//        // ---------------------------------------------------------------------
+//
+//        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
+//            organisationUnit, dataElements );
+//
+//        Map<Integer, MinMaxDataElement> minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements.size() );
+//
+//        for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
+//        {
+//            minMaxMap.put( minMaxDataElement.getDataElement().getId(), minMaxDataElement );
+//        }
 
         // ---------------------------------------------------------------------
         // Get Orgunit & Program, ProgramStage 
@@ -297,7 +297,7 @@ public class ProgramStageCustomDataEntryAction implements Action
             customDataEntryFormExists = true;
             
             customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
-                dataEntryForm.getHtmlCode(), patientDataValues, minMaxMap, disabled,
+                dataEntryForm.getHtmlCode(), patientDataValues, disabled,
                 i18n, programStage, programStageInstance, organisationUnit );
         }
         

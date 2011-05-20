@@ -43,7 +43,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
@@ -157,7 +156,7 @@ public class DefaultDataEntryScreenManager
     }
 
     public String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
+        Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit )
     {
         Map<Integer, Collection<PatientDataValue>> mapDataValue = new HashMap<Integer, Collection<PatientDataValue>>();
@@ -167,13 +166,13 @@ public class DefaultDataEntryScreenManager
         result = populateCustomDataEntryForTextBox( dataEntryFormCode, dataValues, disabled, i18n,
             programStage, programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForBoolean( result, dataValues, minMaxMap, disabled, i18n,
+        result = populateCustomDataEntryForBoolean( result, dataValues, disabled, i18n,
             programStage, programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForMutiDimentionalString( result, dataValues, minMaxMap,
+        result = populateCustomDataEntryForMutiDimentionalString( result, dataValues,
             disabled, i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForDate( result, dataValues, minMaxMap, disabled, i18n,
+        result = populateCustomDataEntryForDate( result, dataValues, disabled, i18n,
             programStage, programStageInstance, organisationUnit, mapDataValue );
 
         result = populateI18nStrings( result, i18n );
@@ -402,7 +401,7 @@ public class DefaultDataEntryScreenManager
     }
 
     private String populateCustomDataEntryForBoolean( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
+        Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
         Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
@@ -651,7 +650,7 @@ public class DefaultDataEntryScreenManager
     }
 
     private String populateCustomDataEntryForMutiDimentionalString( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage,
+        Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
         Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
@@ -885,7 +884,7 @@ public class DefaultDataEntryScreenManager
     }
 
     private String populateCustomDataEntryForDate( String dataEntryFormCode, Collection<PatientDataValue> dataValues,
-        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
+        String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
         OrganisationUnit organisationUnit, Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
 
