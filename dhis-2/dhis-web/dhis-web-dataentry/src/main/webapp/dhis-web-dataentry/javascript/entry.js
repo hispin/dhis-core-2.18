@@ -258,7 +258,7 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
     function handleError( jqXHR, textStatus, errorThrown )
     {
         markValue( COLOR_RED );
-        window.alert( i18n_saving_value_failed_error_code + '\n\n' + textStatus );
+        window.alert( i18n_saving_value_failed_status_code + '\n\n' + textStatus );
     }   
     
     function markValue( color )
