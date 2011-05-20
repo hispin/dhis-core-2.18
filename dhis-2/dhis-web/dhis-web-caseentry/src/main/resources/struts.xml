@@ -59,14 +59,13 @@
     
     <action name="loadProgramStages" class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStagesAction">
       <result name="success" type="velocity-json">/dhis-web-caseentry/responseProgramStages.vm</result>
-      <param name="stylesheets">style/patient.css</param>
     </action>
     
     <action name="dataentryform" class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
-      <param name="javascripts">javascript/customcheckbox/prettyCheckboxes.js</param>
-      <param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css</param>
+      <param name="javascripts">javascript/customcheckbox/prettyCheckboxes.js</param> 
+      <param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css</param>     
     </action>
     
     <action name="completeDataEntry" class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
@@ -111,20 +110,25 @@
       <result name="success" type="velocity">/main.vm</result>     
       <param name="page">/dhis-web-caseentry/multiDataEntrySelect.vm</param>
       <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>      
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js, ../dhis-web-commons/javascripts/date.js</param>      
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js, javascript/dataEntry.js</param>      
+    </action>  
+    
+    <action name="getPrograms" class="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction">
+      <result name="success" type="velocity-json">/dhis-web-caseentry/responsePrograms.vm</result>  
     </action>  
 
 	<action name="getDataRecords" class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
-      <interceptor-ref name="organisationUnitTreeStack"/>            
-      <result name="success" type="velocity">/main.vm</result>
+      <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/dataentryRecords.vm</param>
-      <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>    
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,javascript/customcheckbox/prettyCheckboxes.js, ../dhis-web-commons/javascripts/date.js</param> 
-      <param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css,../dhis-web-commons/paging/paging.css</param>     
+      <param name="javascripts">javascript/customcheckbox/prettyCheckboxes.js</param> 
+      <param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css
+      		,../dhis-web-commons/paging/paging.css</param>     
     </action>
 	
 	<action name="viewProgramStageRecords" class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
-      <result name="success" type="velocity">/dhis-web-caseentry/programStageDataEntryForm.vm</result>      
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
+      <param name="javascripts">javascript/dataEntry.js,../dhis-web-commons/javascripts/date.js</param> 
     </action>
 
     <action name="completeProgramStageDataEntry" class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">

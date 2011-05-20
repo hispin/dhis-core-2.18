@@ -197,25 +197,6 @@ function selectUseCustomDataEntryForm()
 	showById( 'customEntryScreenContainer' );
 }
 
-//--------------------------------------------------------------------------------------------
-// Show multi data-entry-form
-//--------------------------------------------------------------------------------------------
-
-function viewPrgramStageRecords( programStageInstanceId ) 
-{
-	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
-	$('#contentDataRecord').dialog('destroy').remove();
-    $('<div id="contentDataRecord">' ).load(url).dialog({
-        title: 'ProgramStage',
-		maximize: true, 
-		closable: true,
-		modal:true,
-		overlay:{background:'#000000', opacity:0.1},
-		width: 800,
-        height: 400
-    });
-}
-
 //-----------------------------------------------------------------------------
 // Search Patient
 //-----------------------------------------------------------------------------
@@ -867,7 +848,7 @@ function ValueSaver( dataElementId_, value_, providedByAnotherFacility_, resultC
 			params += '&orgunitId=' + getFieldValue('orgunitId');
 			params += '&patientId=' + getFieldValue('patientId');
 			params += '&programStageId=' + getFieldValue('programStageId');
-			
+
         var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
@@ -977,7 +958,7 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
 				params += '&orgunitId=' + getFieldValue('orgunitId');
 				params += '&patientId=' + getFieldValue('patientId');
 				params += '&programStageId=' + getFieldValue('programStageId');
-				
+			
 			request.sendAsPost( params );
             request.send( 'saveValue.action' );
         }
@@ -989,7 +970,7 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
 				params += '&orgunitId=' + getFieldValue('orgunitId');
 				params += '&patientId=' + getFieldValue('patientId');
 				params += '&programStageId=' + getFieldValue('programStageId');
-			
+				
 			request.sendAsPost( params );
             request.send( 'saveValue.action' );
         }
@@ -1254,7 +1235,16 @@ function saveDateCustom(  this_ )
 
 function selectDefaultForm()
 {
-    jQuery('#selectRecordingForm').submit();
+    if( byId('useDefaultForm').checked  )
+	{
+		hideById('customEntryScreenContainer');
+		showById('defaultEntryScreenContainer');
+	}
+	else
+	{
+		hideById('defaultEntryScreenContainer');
+		showById('customEntryScreenContainer');
+	}
 }
 
 function saveValueWithOptionComboId( this_ )
@@ -1484,4 +1474,84 @@ function runValidation()
 	window.open( 'validateProgram.action?orgunitId=' + getFieldValue('orgunitId') 
 							+ '&patientId=' + getFieldValue('patientId') 
 							+ '&programStageId=' + getFieldValue('programStageId') );
+}
+
+
+//------------------------------------------------------
+// Multi Data-entry
+//------------------------------------------------------
+
+function multiDataEntryOrgunitSelected( orgUnits )
+{
+	jQuery.postJSON( "getPrograms.action",
+	{
+	}, 
+	function( json ) 
+	{    
+		enable('programId');
+		enable('patientAttributeId');
+		
+		clearListById('programId');
+		if(json.programs.length == 0)
+		{
+			disable('programId');
+			disable('patientAttributeId');
+		}
+		else
+		{
+			addOptionById( 'programId', "0", i18n_select );
+			
+			for ( var i in json.programs ) 
+			{
+				addOptionById( 'programId', json.programs[i].id, json.programs[i].name );
+			} 
+		}	
+		setFieldValue( 'orgunitName', json.organisationUnit ); 
+		setFieldValue( 'orgunitId', json.organisationUnitId ); 
+	});
+}
+
+function selectProgram()
+{
+	if( getFieldValue('programId') == 0 )
+	{
+		hideById('listPatient');
+		return;
+	}
+	
+	jQuery('#listPatient').load("getDataRecords.action",
+		{
+			programId:getFieldValue('programId'),
+			sortPatientAttributeId: getFieldValue('patientAttributeId')
+		}, 
+		function( )
+		{
+			showById("listPatient");
+		});
+}
+
+function selectPatientAttribute()
+{
+	var programLB = document.getElementById('programId');
+	var selPrgroamId = programLB.options[programLB.selectedIndex].value;
+
+	var patientAttributeLB = document.getElementById('patientAttributeId');
+	var patientAttributeId = patientAttributeLB.options[patientAttributeLB.selectedIndex].value;
+
+	window.location.href='getDataRecords.action?programId='+selPrgroamId+'&sortPatientAttributeId='+patientAttributeId;
+}
+
+function viewPrgramStageRecords( programStageInstanceId ) 
+{
+	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
+	$('#contentDataRecord').dialog('destroy').remove();
+    $('<div id="contentDataRecord">' ).load(url).dialog({
+        title: 'ProgramStage',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 800,
+        height: 400
+    });
 }

@@ -30,27 +30,30 @@ package org.hisp.dhis.caseentry.action.caseentry;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
-public class MultiDataEntrySelectAction
+/**
+ * @author Chau Thu Tran
+ * @version $ GetProgramsByOrgunitAction.java May 20, 2011 11:31:41 AM $
+ * 
+ */
+public class GetProgramsByOrgunitAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     private ProgramService programService;
@@ -60,15 +63,8 @@ public class MultiDataEntrySelectAction
         this.programService = programService;
     }
 
-    private PatientAttributeService patientAttributeService;
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
-
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input/output
     // -------------------------------------------------------------------------
 
     private OrganisationUnit organisationUnit;
@@ -78,30 +74,11 @@ public class MultiDataEntrySelectAction
         return organisationUnit;
     }
 
-    private Integer programId;
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
-    public Integer getProgramId()
-    {
-        return programId;
-    }
-
     private Collection<Program> programs = new ArrayList<Program>();
 
     public Collection<Program> getPrograms()
     {
         return programs;
-    }
-
-    private Collection<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
-
-    public Collection<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
     }
 
     // -------------------------------------------------------------------------
@@ -111,23 +88,10 @@ public class MultiDataEntrySelectAction
     public String execute()
         throws Exception
     {
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
+        programs = programService.getPrograms( organisationUnit );
 
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
-        // ---------------------------------------------------------------------
-        // Load assigned Programs
-        // ---------------------------------------------------------------------
-
-        if( organisationUnit != null )
-        {
-            programs = programService.getPrograms( organisationUnit );
-        }
-        
         return SUCCESS;
     }
 }

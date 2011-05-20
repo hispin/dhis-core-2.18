@@ -33,11 +33,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.caseentry.screen.DataEntryScreenManager;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
@@ -48,7 +45,6 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -79,13 +75,7 @@ public class LoadDataEntryAction
 
     private PatientService patientService;
 
-    // private MinMaxDataElementService minMaxDataElementService;
-
     private OrganisationUnitSelectionManager selectionManager;
-
-    private ProgramStageDataElementService programStageDataElementService;
-
-    private DataEntryFormService dataEntryFormService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -158,16 +148,6 @@ public class LoadDataEntryAction
         return programStageInstance;
     }
 
-    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
-    {
-        this.programStageDataElementService = programStageDataElementService;
-    }
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
-    }
-
     public void setPatientId( Integer patientId )
     {
         this.patientId = patientId;
@@ -224,8 +204,6 @@ public class LoadDataEntryAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         programStageDataElements = programStage.getProgramStageDataElements();
-
-        Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
 
         programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
 
