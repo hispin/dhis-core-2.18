@@ -468,7 +468,7 @@ public class DefaultMappingService
         return mappingStore.addMapView( mapView );
     }
     
-    public void addMapView( String name, boolean system, String featureType, String mapValueType, Integer indicatorGroupId,
+    public void addMapView( String name, boolean system, String mapValueType, Integer indicatorGroupId,
         Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
         Integer periodId, String startDate, String endDate, Integer parentOrganisationUnitId,
         Integer organisationUnitLevel, String mapLegendType, Integer method, Integer classes, String bounds,
@@ -509,7 +509,7 @@ public class DefaultMappingService
 
         MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
         
-        addMapView( new MapView( name, user, featureType, mapValueType, indicatorGroup, indicator, dataElementGroup,
+        addMapView( new MapView( name, user, mapValueType, indicatorGroup, indicator, dataElementGroup,
             dataElement, mapDateType, periodType, period, startDate, endDate, parent, level, mapLegendType, method,
             classes, bounds, colorLow, colorHigh, mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom ) );
     }

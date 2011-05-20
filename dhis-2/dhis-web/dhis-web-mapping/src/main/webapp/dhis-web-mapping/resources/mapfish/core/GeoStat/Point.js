@@ -24,7 +24,7 @@
 mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
 
     colors: [
-        new mapfish.ColorRgb(255, 255, 0),
+        new mapfish.ColorRgb(120, 120, 0),
         new mapfish.ColorRgb(255, 0, 0)
     ],
 
@@ -45,6 +45,8 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
     classification: null,
 
     colorInterpolation: null,
+    
+    widget: null,
 
     initialize: function(map, options) {
         mapfish.GeoStat.prototype.initialize.apply(this, arguments);
@@ -59,20 +61,19 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
     },
     
     createColorInterpolation: function() {
-        var initialColors = this.colors;
         var numColors = this.classification.bins.length;
-		var mapLegendType = point.form.findField('maplegendtype').getValue();
+		var mapLegendType = this.widget.form.findField('maplegendtype').getValue();
 		
 		if (mapLegendType == G.conf.map_legend_type_automatic) {
-			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
-			for (var i = 0; i < point.imageLegend.length && i < this.colorInterpolation.length; i++) {
-				point.imageLegend[i].color = this.colorInterpolation[i].toHexString();
+			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors);
+			for (var i = 0; i < this.widget.imageLegend.length && i < this.colorInterpolation.length; i++) {
+				this.widget.imageLegend[i].color = this.colorInterpolation[i].toHexString();
 			}
 		}
 		else if (mapLegendType == G.conf.map_legend_type_predefined) {
-			this.colorInterpolation = point.colorInterpolation;
-			for (var j = 0; j < point.imageLegend.length && j < this.colorInterpolation.length; j++) {
-				point.imageLegend[j].color = this.colorInterpolation[j].toHexString();
+			this.colorInterpolation = this.widget.colorInterpolation;
+			for (var j = 0; j < this.widget.imageLegend.length && j < this.colorInterpolation.length; j++) {
+				this.widget.imageLegend[j].color = this.colorInterpolation[j].toHexString();
 			}
 		}
     },
@@ -80,11 +81,11 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
     setClassification: function() {
         var values = [];
         for (var i = 0; i < this.layer.features.length; i++) {
-            values.push(this.layer.features[i].attributes.value);
+            values.push(this.layer.features[i].attributes[this.indicator]);
         }
         
         var distOptions = {
-            'labelGenerator' : this.options.labelGenerator
+            'labelGenerator': this.options.labelGenerator
         };
         var dist = new mapfish.GeoStat.Distribution(values, distOptions);
 
@@ -100,7 +101,8 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
         this.createColorInterpolation();
     },
 
-    applyClassification: function(options) {
+    applyClassification: function(options, widget) {
+        this.widget = widget;
         this.updateOptions(options);
         
 		var calculateRadius = OpenLayers.Function.bind(

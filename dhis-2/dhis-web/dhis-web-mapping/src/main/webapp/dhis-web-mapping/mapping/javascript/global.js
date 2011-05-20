@@ -5,6 +5,11 @@ G.conf = {
     path_mapping: '../',
     path_commons: '../../dhis-web-commons-ajax-json/',
     type: '.action',
+    
+//  Layer names
+
+    thematic_layer_1: 'Thematic layer 1',
+    thematic_layer_2: 'Thematic layer 2',
 	
 //	Help strings
     
@@ -86,6 +91,10 @@ G.conf = {
     defaultLayerOpacity: 0.8,
     
     defaultLayerZIndex: 10000,
+    
+    defaultLowRadius: 5,
+    
+    defaultHighRadius: 20,
     
 //  Measure
 

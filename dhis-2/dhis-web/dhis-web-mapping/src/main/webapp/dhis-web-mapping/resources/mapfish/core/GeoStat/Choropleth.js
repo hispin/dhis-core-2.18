@@ -31,12 +31,22 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
     method: mapfish.GeoStat.Distribution.CLASSIFY_BY_QUANTILS,
 
     numClasses: 5,
+	
+	minSize: 3,
+	
+	maxSize: 20,
+	
+	minVal: null,
+	
+	maxVal: null,
 
     defaultSymbolizer: {'fillOpacity': 1},
 
     classification: null,
 
     colorInterpolation: null,
+    
+    widget: null,
 
     initialize: function(map, options) {
         mapfish.GeoStat.prototype.initialize.apply(this, arguments);
@@ -49,65 +59,77 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
             this.setClassification();
         }
     },
-
+    
     createColorInterpolation: function() {
-        var initialColors = this.colors;
         var numColors = this.classification.bins.length;
-		var mapLegendType = choropleth.form.findField('maplegendtype').getValue();
-        
-        if (mapLegendType == G.conf.map_legend_type_automatic) {
-			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
-            for (var i = 0; i < choropleth.imageLegend.length && i < this.colorInterpolation.length; i++) {
-                choropleth.imageLegend[i].color = this.colorInterpolation[i].toHexString();
-            }
+		var mapLegendType = this.widget.form.findField('maplegendtype').getValue();
+		
+		if (mapLegendType == G.conf.map_legend_type_automatic) {
+			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors);
+			for (var i = 0; i < this.widget.imageLegend.length && i < this.colorInterpolation.length; i++) {
+				this.widget.imageLegend[i].color = this.colorInterpolation[i].toHexString();
+			}
 		}
 		else if (mapLegendType == G.conf.map_legend_type_predefined) {
-			this.colorInterpolation = choropleth.colorInterpolation;
-            for (var j = 0; j < choropleth.imageLegend.length && j < this.colorInterpolation.length; j++) {
-                choropleth.imageLegend[j].color = this.colorInterpolation[j].toHexString();
-            }
+			this.colorInterpolation = this.widget.colorInterpolation;
+			for (var j = 0; j < this.widget.imageLegend.length && j < this.colorInterpolation.length; j++) {
+				this.widget.imageLegend[j].color = this.colorInterpolation[j].toHexString();
+			}
 		}
     },
-	
+
     setClassification: function() {
         var values = [];
-        var features = this.layer.features;
-        
-        for (var i = 0; i < features.length; i++) {
-            values.push(features[i].attributes[this.indicator]);
+        for (var i = 0; i < this.layer.features.length; i++) {
+            values.push(this.layer.features[i].attributes[this.indicator]);
         }
-
+        
         var distOptions = {
             'labelGenerator': this.options.labelGenerator
         };
         var dist = new mapfish.GeoStat.Distribution(values, distOptions);
+
+		this.minVal = dist.minVal;
+        this.maxVal = dist.maxVal;
+
         this.classification = dist.classify(
             this.method,
             this.numClasses,
             null
         );
+
         this.createColorInterpolation();
     },
 
-    applyClassification: function(options) {
+    applyClassification: function(options, widget) {
+        this.widget = widget;
         this.updateOptions(options);
+        
+		var calculateRadius = OpenLayers.Function.bind(
+			function(feature) {
+				var value = feature.attributes[this.indicator];
+                var size = (value - this.minVal) / (this.maxVal - this.minVal) *
+					(this.maxSize - this.minSize) + this.minSize;
+                return size || this.minSize;
+            },	this
+		);
+		this.extendStyle(null, {'pointRadius': '${calculateRadius}'}, {'calculateRadius': calculateRadius});
+    
         var boundsArray = this.classification.getBoundsArray();
-        var rules = [];
-
+        var rules = new Array(boundsArray.length-1);
         for (var i = 0; i < boundsArray.length-1; i++) {
-            if (this.colorInterpolation.length > i) {
-                var rule = new OpenLayers.Rule({
-                    symbolizer: {fillColor: this.colorInterpolation[i].toHexString()},
-                    filter: new OpenLayers.Filter.Comparison({
-                        type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: this.indicator,
-                        lowerBoundary: boundsArray[i],
-                        upperBoundary: boundsArray[i + 1]
-                    })
-                });
-                rules.push(rule);
-            }
+            var rule = new OpenLayers.Rule({
+                symbolizer: {fillColor: this.colorInterpolation[i].toHexString()},
+                filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.BETWEEN,
+                    property: this.indicator,
+                    lowerBoundary: boundsArray[i],
+                    upperBoundary: boundsArray[i + 1]
+                })
+            });
+            rules[i] = rule;
         }
+
         this.extendStyle(rules);
         mapfish.GeoStat.prototype.applyClassification.apply(this, arguments);
     },
@@ -117,26 +139,23 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
             return;
         }
 
-        // TODO use css classes instead
         this.legendDiv.update("");
         for (var i = 0; i < this.classification.bins.length; i++) {
-            if (this.colorInterpolation.length > i) {
-                var element = document.createElement("div");
-                element.style.backgroundColor = this.colorInterpolation[i].toHexString();
-                element.style.width = "30px";
-                element.style.height = "15px";
-                element.style.cssFloat = "left";
-                element.style.marginRight = "10px";
-                this.legendDiv.appendChild(element);
+            var element = document.createElement("div");
+            element.style.backgroundColor = this.colorInterpolation[i].toHexString();
+            element.style.width = "30px";
+            element.style.height = "15px";
+            element.style.cssFloat = "left";
+            element.style.marginRight = "10px";
+            this.legendDiv.appendChild(element);
 
-                element = document.createElement("div");
-                element.innerHTML = this.classification.bins[i].label;
-                this.legendDiv.appendChild(element);
+            element = document.createElement("div");
+            element.innerHTML = this.classification.bins[i].label;
+            this.legendDiv.appendChild(element);
 
-                element = document.createElement("div");
-                element.style.clear = "left";
-                this.legendDiv.appendChild(element);
-            }
+            element = document.createElement("div");
+            element.style.clear = "left";
+            this.legendDiv.appendChild(element);
         }
     },
 
