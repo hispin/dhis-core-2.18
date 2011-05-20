@@ -147,20 +147,6 @@ public class GetDataRecordsAction
         return total;
     }
 
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    private Program program;
-
-    public Program getProgram()
-    {
-        return program;
-    }
-
     private Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
     public Collection<ProgramInstance> getProgramInstances()
@@ -203,25 +189,18 @@ public class GetDataRecordsAction
         return patientListByOrgUnit;
     }
 
-    List<Program> programs;
+    private PatientAttribute sortPatientAttribute;
 
-    public List<Program> getPrograms()
+    public PatientAttribute getSortPatientAttribute()
     {
-        return programs;
+        return sortPatientAttribute;
     }
 
-    private Collection<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
+    private Program program;
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public Program getProgram()
     {
-        return patientAttributes;
-    }
-
-    private PatientAttribute sortingAttribute;
-
-    public PatientAttribute getSortingAttribute()
-    {
-        return sortingAttribute;
+        return program;
     }
 
     // -------------------------------------------------------------------------
@@ -231,26 +210,11 @@ public class GetDataRecordsAction
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Patient Attribute List
-        // ---------------------------------------------------------------------
-
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
-
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
-        programs = new ArrayList<Program>( programService.getPrograms( organisationUnit ) );
-
-        if ( programId == 0 )
-        {
-            selectedStateManager.clearSelectedProgram();
-
-            return SUCCESS;
-        }
+        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         program = programService.getProgram( programId );
 
-        selectedStateManager.setSelectedProgram( program );
+        sortPatientAttribute = patientAttributeService.getPatientAttribute( sortPatientAttributeId );
 
         // ---------------------------------------------------------------------
         // Program instances for the selected program
@@ -283,7 +247,7 @@ public class GetDataRecordsAction
                     programInstances.add( programInstance );
 
                     PatientAttributeValue patientAttributeValue = patientAttributeValueService
-                        .getPatientAttributeValue( patient, sortingAttribute );
+                        .getPatientAttributeValue( patient, sortPatientAttribute );
 
                     patinetAttributeValueMap.put( patient, patientAttributeValue );
 
@@ -303,9 +267,7 @@ public class GetDataRecordsAction
 
         if ( sortPatientAttributeId != null )
         {
-            sortingAttribute = patientAttributeService.getPatientAttribute( sortPatientAttributeId );
-
-            patientListByOrgUnit = patientService.sortPatientsByAttribute( patientListByOrgUnit, sortingAttribute );
+            patientListByOrgUnit = patientService.sortPatientsByAttribute( patientListByOrgUnit, sortPatientAttribute );
         }
 
         colorMap = programStageInstanceService.colorProgramStageInstances( programStageInstances );

@@ -38,8 +38,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
@@ -48,6 +46,7 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
@@ -93,13 +92,6 @@ public class ProgramStageCustomDataEntryAction implements Action
     {
         this.dataEntryScreenManager = dataEntryScreenManager;
     }
-
-//    private MinMaxDataElementService minMaxDataElementService;
-//
-//    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
-//    {
-//        this.minMaxDataElementService = minMaxDataElementService;
-//    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -235,7 +227,13 @@ public class ProgramStageCustomDataEntryAction implements Action
     {
            return programStageInstance.getId();
     }
+    
+    private Collection<ProgramStageDataElement> programStageDataElements;
 
+    public Collection<ProgramStageDataElement> getProgramStageDataElements()
+    {
+        return programStageDataElements;
+    }
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -243,20 +241,6 @@ public class ProgramStageCustomDataEntryAction implements Action
     public String execute()
         throws Exception
     {
-//        // ---------------------------------------------------------------------
-//        // Get the min/max values
-//        // ---------------------------------------------------------------------
-//
-//        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
-//            organisationUnit, dataElements );
-//
-//        Map<Integer, MinMaxDataElement> minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements.size() );
-//
-//        for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
-//        {
-//            minMaxMap.put( minMaxDataElement.getDataElement().getId(), minMaxDataElement );
-//        }
-
         // ---------------------------------------------------------------------
         // Get Orgunit & Program, ProgramStage 
         // ---------------------------------------------------------------------
@@ -266,6 +250,8 @@ public class ProgramStageCustomDataEntryAction implements Action
         programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
         
         programStage = programStageInstance.getProgramStage();
+        
+        programStageDataElements = programStage.getProgramStageDataElements();
         
         program = programStage.getProgram();
         
