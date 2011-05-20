@@ -27,8 +27,6 @@ package org.hisp.dhis.aggregation.impl.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.DateUtils.DAYS_IN_YEAR;
-import static org.hisp.dhis.system.util.DateUtils.getDays;
 import static org.hisp.dhis.system.util.MathUtils.INVALID;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 
@@ -46,6 +44,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.util.DateUtils;
 
 /**
  * @author Lars Helge Overland
@@ -106,7 +105,7 @@ public class IndicatorAggregation
         {
             int factor = indicator.getIndicatorType().getFactor();
 
-            double annualizationFactor = getAnnualizationFactor( indicator, startDate, endDate );
+            double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, startDate, endDate );
             
             double aggregatedValue = ( numeratorValue / denominatorValue ) * factor * annualizationFactor;
 
@@ -131,23 +130,6 @@ public class IndicatorAggregation
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    /**
-     * Returns the annualized value.
-     */
-    private double getAnnualizationFactor( Indicator indicator, Date startDate, Date endDate )
-    {
-        double factor = 1.0;
-        
-        if ( indicator.getAnnualized() != null && indicator.getAnnualized() )
-        {
-            long days = getDays( startDate, endDate ) + 1;
-            
-            factor = DAYS_IN_YEAR / days;
-        }
-        
-        return factor;
-    }
     
     private String generateExpression( String expression, Date startDate, Date endDate, OrganisationUnit organisationUnit )
     {
