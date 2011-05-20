@@ -67,6 +67,8 @@ public interface IndicatorService
 
     int getIndicatorCountByName( String name );
     
+    Collection<Indicator> getIndicatorsLikeName( String name );
+    
     Collection<Indicator> getIndicatorsBetweenByName( String name, int first, int max );
     
     int getIndicatorCount();
