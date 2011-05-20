@@ -31,13 +31,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.period.Period;
+
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 /**
  * @author Lars Helge Overland
@@ -130,63 +131,10 @@ public class JdbcAggregationStore
         
         return new ArrayList<DataValue>();
     }
-    
-    public Collection<String> getDataValueIdentifiers()
-    {
-        int min = 0;
-        
-        final int limit = 10000;
-        
-        Collection<String> identifiers = new HashSet<String>();
-        
-        Collection<String> temp = null;
-        
-        while ( ( temp = getDataValueIdentifiers( min, limit ) ).size() > 0 )
-        {
-            identifiers.addAll( temp );
-            
-            min += limit;
-        }
-        
-        return identifiers;
-    }
 
     // ----------------------------------------------------------------------
     // Supportive methods
     // ----------------------------------------------------------------------
-
-    private Collection<String> getDataValueIdentifiers( int min, int limit )
-    {
-        StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            String sql = 
-                "SELECT dataelementid, periodid, sourceid " +
-                "FROM datavalue " +
-                "ORDER BY dataelementid, periodid, sourceid " +
-                "LIMIT " + min + ", " + limit;
-            
-            ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            Collection<String> identifiers = new HashSet<String>();
-            
-            while ( resultSet.next() )
-            {
-                identifiers.add( resultSet.getInt( 1 ) + "-" + resultSet.getInt( 2 ) + "-" + resultSet.getInt( 3 ) );
-            }
-            
-            return identifiers;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get DataValue identifiers", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
     
     private Collection<DataValue> getDataValues( ResultSet resultSet )
     {
@@ -214,22 +162,5 @@ public class JdbcAggregationStore
         {
             throw new RuntimeException( "Failed to transform resultset into collection", ex );
         }
-    }   
-    
-    private String getCommaDelimitedString( Collection<Integer> elements )
-    {
-        if ( elements != null && elements.size() > 0 )
-        {
-            StringBuffer sourceSqlBuffer = new StringBuffer();        
-        
-            for ( Integer element : elements )
-            {
-                sourceSqlBuffer.append( element.toString() + ", " );
-            }
-            
-            return sourceSqlBuffer.substring( 0, sourceSqlBuffer.length() - ", ".length() );
-        }
-        
-        return null;
     }
 }
