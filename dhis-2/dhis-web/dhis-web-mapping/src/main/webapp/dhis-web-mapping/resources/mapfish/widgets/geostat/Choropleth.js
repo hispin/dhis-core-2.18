@@ -1491,7 +1491,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         Ext.getCmp('viewhistory_b').addItem(this);
         
 		var options = {
-            indicator: 'id',
+            indicator: 'value',
             method: this.form.findField('method').getValue(),
             numClasses: this.form.findField('classes').getValue(),
             colors: this.getColors()
