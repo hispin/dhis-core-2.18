@@ -116,10 +116,10 @@ public class MappingStoreTest
     @Test
     public void testAddGetMapView()
     {
-        MapView mapView = new MapView( "MapViewA", new User(), OrganisationUnit.FEATURETYPE_MULTIPOLYGON, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator,
-            new DataElementGroup(), new DataElement(), MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "",
-            organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
-            mapLegendSet, 5, 20, "1", "1", 1 );
+        MapView mapView = new MapView( "MapViewA", new User(), MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
+            indicator, new DataElementGroup(), new DataElement(), MappingService.MAP_DATE_TYPE_FIXED, periodType,
+            period, "", "", organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1,
+            "", "A", "B", mapLegendSet, 5, 20, "1", "1", 1 );
 
         int idA = mappingStore.addMapView( mapView );
 

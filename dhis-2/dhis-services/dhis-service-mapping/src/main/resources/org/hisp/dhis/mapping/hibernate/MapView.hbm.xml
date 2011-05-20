@@ -14,8 +14,6 @@
 
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_mapview_userid" />
 
-    <property name="featureType" />
-
     <property name="mapValueType" />
 
     <many-to-one name="indicatorGroup" class="org.hisp.dhis.indicator.IndicatorGroup" column="indicatorgroupid"

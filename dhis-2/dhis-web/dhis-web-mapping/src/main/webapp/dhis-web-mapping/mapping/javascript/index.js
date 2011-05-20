@@ -29,7 +29,7 @@
     var mapViewStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllMapViews' + G.conf.type,
         root: 'mapViews',
-        fields: [ 'id', 'name', 'userId', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
+        fields: [ 'id', 'name', 'userId', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
             'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
             'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'radiusLow', 'radiusHigh', 'longitude', 'latitude', 'zoom'
@@ -37,40 +37,6 @@
         autoLoad: false,
         isLoaded: false,
         sortInfo: {field: 'userId', direction: 'ASC'},
-        listeners: {
-            'load': G.func.storeLoadListener
-        }
-    });
-    
-    var polygonMapViewStore = new Ext.data.JsonStore({
-        url: G.conf.path_mapping + 'getMapViewsByFeatureType' + G.conf.type,
-        baseParams: {featureType: G.conf.map_feature_type_multipolygon},
-        root: 'mapViews',
-        fields: [ 'id', 'name', 'userId', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
-            'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
-            'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
-            'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'longitude', 'latitude', 'zoom'
-        ],
-        sortInfo: {field: 'userId', direction: 'ASC'},
-        autoLoad: false,
-        isLoaded: false,
-        listeners: {
-            'load': G.func.storeLoadListener
-        }
-    });
-    
-    var pointMapViewStore = new Ext.data.JsonStore({
-        url: G.conf.path_mapping + 'getMapViewsByFeatureType' + G.conf.type,
-        baseParams: {featureType: G.conf.map_feature_type_point},
-        root: 'mapViews',
-        fields: [ 'id', 'name', 'userId', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
-            'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
-            'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
-            'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'radiusLow', 'radiusHigh', 'longitude', 'latitude', 'zoom'
-        ],
-        sortInfo: {field: 'userId', direction: 'ASC'},
-        autoLoad: false,
-        isLoaded: false,
         listeners: {
             'load': G.func.storeLoadListener
         }
@@ -288,8 +254,6 @@
     
     G.stores = {
 		mapView: mapViewStore,
-        polygonMapView: polygonMapViewStore,
-        pointMapView: pointMapViewStore,
         indicatorGroup: indicatorGroupStore,
         indicatorsByGroup: indicatorsByGroupStore,
         indicator: indicatorStore,
@@ -309,7 +273,7 @@
     };
 	
 	/* Thematic layers */
-    polygonLayer = new OpenLayers.Layer.Vector('Polygon layer', {
+    polygonLayer = new OpenLayers.Layer.Vector(G.conf.thematic_layer_1, {
         'visibility': false,
         'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -328,7 +292,7 @@
     polygonLayer.layerType = G.conf.map_layer_type_thematic;
     G.vars.map.addLayer(polygonLayer);
     
-    pointLayer = new OpenLayers.Layer.Vector('Point layer', {
+    pointLayer = new OpenLayers.Layer.Vector(G.conf.thematic_layer_2, {
         'visibility': false,
         'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -490,12 +454,12 @@
 				text: G.i18n.register,
 				handler: function() {
 					var vn = Ext.getCmp('favoritename_tf').getValue();
-                    var params;
-                    
                     if (!vn) {
 						Ext.message.msg(false, G.i18n.form_is_not_complete);
 						return;
 					}
+                    
+                    var params;                    
                     
                     if (G.vars.activePanel.isPolygon()) {
                         if (!choropleth.formValidation.validateForm.apply(choropleth, [true])) {
@@ -1991,11 +1955,11 @@
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: 'Polygon layer'
+                    layer: G.conf.thematic_layer_1
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: 'Point layer'
+                    layer: G.conf.thematic_layer_2
                 },
                 {
                     nodeType: 'gx_layer',
@@ -2365,7 +2329,7 @@
     /* Section: widgets */
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
-		title: '<span class="panel-title">' + G.i18n.polygon_layer + '</span>',
+		title: '<span class="panel-title">Thematic layer 1</span>',
         map: G.vars.map,
         layer: polygonLayer,
         featureSelection: false,
@@ -2402,7 +2366,7 @@
         id: 'point',
         map: G.vars.map,
         layer: pointLayer,
-		title: '<span class="panel-title">' + G.i18n.point_layer + '</span>',
+		title: '<span class="panel-title">Thematic layer 2</span>',
         featureSelection: false,
         legendDiv: 'pointlegend',
         defaults: {width: 130},

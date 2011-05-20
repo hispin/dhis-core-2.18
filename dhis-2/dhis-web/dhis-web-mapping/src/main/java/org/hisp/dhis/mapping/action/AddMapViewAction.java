@@ -67,13 +67,6 @@ public class AddMapViewAction
         this.system = system;
     }
 
-    private String featureType;
-
-    public void setFeatureType( String featureType )
-    {
-        this.featureType = featureType;
-    }
-
     private String mapValueType;
 
     public void setMapValueType( String mapValueType )
@@ -242,7 +235,7 @@ public class AddMapViewAction
     public String execute()
         throws Exception
     {
-        mappingService.addMapView( name, system, featureType, mapValueType, indicatorGroupId, indicatorId,
+        mappingService.addMapView( name, system, mapValueType, indicatorGroupId, indicatorId,
             dataElementGroupId, dataElementId, periodTypeId, periodId, startDate, endDate, parentOrganisationUnitId,
             organisationUnitLevel, mapLegendType, method, classes, bounds, colorLow, colorHigh, mapLegendSetId,
             radiusLow, radiusHigh, longitude, latitude, zoom );
