@@ -27,16 +27,17 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.validator.DateValidator;
+import org.hisp.dhis.indicator.Indicator;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-
-import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
 
 /**
  * @author Lars Helge Overland
@@ -429,4 +430,20 @@ public class DateUtils
         }
     }
 
+    /**
+     * Returns the annualization factor for the given indicator and start-end date interval.
+     */
+    public static double getAnnualizationFactor( Indicator indicator, Date startDate, Date endDate )
+    {
+        double factor = 1.0;
+        
+        if ( indicator.isAnnualized() )
+        {
+            final int daysInPeriod = DateUtils.daysBetween( startDate, endDate ) + 1;
+            
+            factor = DAYS_IN_YEAR / daysInPeriod;
+        }
+        
+        return factor;
+    }
 }

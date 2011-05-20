@@ -28,7 +28,6 @@ package org.hisp.dhis.datamart.indicator;
  */
 
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
-import static org.hisp.dhis.system.util.DateUtils.DAYS_IN_YEAR;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
@@ -177,7 +176,7 @@ public class DefaultIndicatorDataMart
 
                     if ( denominatorValue != 0 && !( omitZeroNumerator && numeratorValue == 0 ) )
                     {
-                        annualizationFactor = getAnnualizationFactor( indicator, period );
+                        annualizationFactor = DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() );
                         
                         factor = indicator.getIndicatorType().getFactor();
                         
@@ -214,21 +213,7 @@ public class DefaultIndicatorDataMart
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
-    public static double getAnnualizationFactor( final Indicator indicator, final Period period )
-    {
-        double factor = 1.0;
         
-        if ( indicator.getAnnualized() != null && indicator.getAnnualized() )
-        {
-            final int daysInPeriod = DateUtils.daysBetween( period.getStartDate(), period.getEndDate() ) + 1;
-            
-            factor = DAYS_IN_YEAR / daysInPeriod;
-        }
-        
-        return factor;
-    }
-    
     public static String getAnnualizationString( final Boolean annualized )
     {
         return ( annualized == null || !annualized ) ? FALSE : TRUE;
