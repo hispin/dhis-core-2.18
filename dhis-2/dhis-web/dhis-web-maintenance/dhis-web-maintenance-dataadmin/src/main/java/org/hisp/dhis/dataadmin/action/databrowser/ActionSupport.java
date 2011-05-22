@@ -49,17 +49,16 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
 public abstract class ActionSupport
-    implements Action
+    extends ActionPagingSupport<Grid>
 {
     protected static final String KEY_DATABROWSERGRID = "dataBrowserGridResults";
 
@@ -203,7 +202,7 @@ public abstract class ActionSupport
 
     public void setSelectedUnitChanger( String selectedUnitChanger )
     {
-        this.selectedUnitChanger = selectedUnitChanger;
+        this.selectedUnitChanger = selectedUnitChanger.trim();
     }
 
     public void setOrgunitid( String orgunitid )
@@ -379,27 +378,20 @@ public abstract class ActionSupport
         return myList;
     }
 
-    public List<MetaValue> getMetaValues()
+    public List<Object> getMetaValues()
     {
-        List<MetaValue> metaValues = new ArrayList<MetaValue>();
-
-        for ( Object object : grid.getColumn( 0 ) )
-        {
-            metaValues.add( (MetaValue) object );
-        }
-
-        return metaValues;
+        return grid.getColumn( 0 );
     }
 
-    public Map<MetaValue, List<Object>> getMetaValueMaps()
+    public Map<Integer, List<Object>> getMetaValueMaps()
     {
-        Map<MetaValue, List<Object>> maps = new Hashtable<MetaValue, List<Object>>();
+        Map<Integer, List<Object>> maps = new Hashtable<Integer, List<Object>>();
 
         for ( List<Object> row : grid.getRows() )
         {
             if ( !row.isEmpty() && row.size() > 1 )
             {
-                maps.put( (MetaValue) row.get( 0 ), row.subList( 1, row.size() ) );
+                maps.put( ((MetaValue) row.get( 0 )).getId(), row.subList( 1, row.size() ) );
             }
         }
 
@@ -431,6 +423,13 @@ public abstract class ActionSupport
             + (mode.equals( "OU" ) == true ? " - " + getParentName() : EMPTY) );
         grid.setSubtitle( i18n.getString( "from_date" ) + ": " + fromDate + " " + i18n.getString( "to_date" ) + ": "
             + toDate + ", " + i18n.getString( "period_type" ) + ": " + i18n.getString( periodTypeId ) );
+    }
+
+    protected void doPaging()
+    {
+        this.paging = this.createPaging( grid.getHeight() );
+
+        grid.limitGrid( paging.getStartPos(), paging.getEndPos() );
     }
 
     private String mappingMode( String mode )

@@ -10,6 +10,7 @@
 <br/><br/>$i18n.getString( "no_data_found" )
 #else
 
+<div id="content">
 <table id="drillDownGrid" class="listTable" border="1">
 	<thead>
 		<tr>
@@ -21,7 +22,7 @@
 
 	<tbody>	
 		#foreach( $meta in $!MetaValues )
-		#set( $list = $!MetaValueMaps.get( $meta ) )
+		#set( $list = $!MetaValueMaps.get( $meta.id ) )
 		<tr>
 			#if ( $mode=="OU" && !$parent && $meta.id )
 			#set ( $URL = "?mode=OU&periodTypeId=$periodTypeId&fromDate=$fromDate&toDate=$toDate&showZeroCheckBox=$!showZeroCheckBox&selectedUnitChanger=$meta.id" )
@@ -44,7 +45,10 @@
 		#end
 	</tbody>
 </table>
-	
+<p></p>
+#parse( "/dhis-web-commons/paging/paging.vm" )
+</div>
+
 <!-- Drill-down menu -->
 
 <div id="drillDownMenu" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">

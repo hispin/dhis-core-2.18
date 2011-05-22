@@ -326,6 +326,18 @@ public class ListGrid
         return this;
     }
     
+    public Grid limitGrid( int startPos, int endPos )
+    {
+        if ( startPos < 0 || endPos < startPos || getHeight() < endPos )
+        {
+            throw new IllegalStateException( "Illegal start / end pos: " + startPos + ", " + endPos + ", " + getHeight() );
+        }
+
+        grid = grid.subList( startPos, endPos );
+
+        return this;
+    }
+    
     public Grid sortGrid( int columnIndex, int order )
     {
         columnIndex = columnIndex - 1;
