@@ -183,8 +183,7 @@ public class JdbcDataAnalysisStore
             "JOIN dataelement AS de ON (dv.dataelementid = de.dataelementid) " +
             "JOIN period AS pe ON (dv.periodid = pe.periodid) " +
             "JOIN periodtype AS pt ON (pe.periodtypeid = pt.periodtypeid) " +
-            "JOIN source AS sr ON (dv.sourceid = sr.sourceid) " +
-            "LEFT JOIN organisationunit AS ou ON (ou.organisationunitid = sr.sourceid) " +
+            "LEFT JOIN organisationunit AS ou ON (ou.organisationunitid = dv.sourceid) " +
             "LEFT JOIN _categoryoptioncomboname AS cc ON (dv.categoryoptioncomboid = cc.categoryoptioncomboid) " +
             "WHERE dv.followup=true";
         
