@@ -172,6 +172,14 @@ public interface Grid
     Grid limitGrid( int limit );
     
     /**
+     * Limits the grid by the given start and end position.
+     * 
+     * @param startPos the start position.
+     * @param endPos the end position.
+     */
+    Grid limitGrid( int startPos, int endPos );
+    
+    /**
      * Sorts the grid ascending on the column at the given columnIndex.
      * 
      * @param columnIndex the column index, starting on 1.
