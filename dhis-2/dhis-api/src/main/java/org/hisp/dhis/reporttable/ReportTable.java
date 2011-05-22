@@ -94,11 +94,7 @@ public class ReportTable
     public static final int NONE = 0;
     
     public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>() {
-        /**
-         * Determines if a de-serialized file is compatible with this class.
-         */
-        private static final long serialVersionUID = 4194194769957136714L;
-    {
+        private static final long serialVersionUID = 4194194769957136714L; {
         put( DATAELEMENT_ID, "Data element ID" );
         put( DATAELEMENT_NAME, "Data element" );
         put( CATEGORYCOMBO_ID, "Category combination ID" );
@@ -117,11 +113,7 @@ public class ReportTable
     } };
     
     public static final Map<Class<? extends NameableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends NameableObject>, String>() {
-        /**
-         * Determines if a de-serialized file is compatible with this class.
-         */
-        private static final long serialVersionUID = 4742098364404485991L;
-    {
+        private static final long serialVersionUID = 4742098364404485991L; {
         put( Indicator.class, INDICATOR_ID );
         put( DataElement.class, DATAELEMENT_ID );
         put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );

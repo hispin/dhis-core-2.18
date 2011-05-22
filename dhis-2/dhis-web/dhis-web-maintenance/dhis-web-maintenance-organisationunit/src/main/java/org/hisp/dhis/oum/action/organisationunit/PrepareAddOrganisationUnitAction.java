@@ -1,7 +1,7 @@
 package org.hisp.dhis.oum.action.organisationunit;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,22 +35,41 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.period.Cal;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Nguyen Dang Quang
+ * @version $Id$
  */
 public class PrepareAddOrganisationUnitAction
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
     private Date defaultDate;
 
@@ -58,12 +77,19 @@ public class PrepareAddOrganisationUnitAction
     {
         return defaultDate;
     }
-    
+
     private List<DataSet> dataSets;
 
     public List<DataSet> getDataSets()
     {
         return dataSets;
+    }
+
+    private List<OrganisationUnitGroupSet> groupSets;
+
+    public List<OrganisationUnitGroupSet> getGroupSets()
+    {
+        return groupSets;
     }
 
     // -------------------------------------------------------------------------
@@ -73,11 +99,16 @@ public class PrepareAddOrganisationUnitAction
     public String execute()
     {
         defaultDate = new Cal().set( 1900, 1, 1 ).time();
-        
+
         dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
+        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService
+            .getCompulsoryOrganisationUnitGroupSetsWithMembers() );
+
         Collections.sort( dataSets, new DataSetNameComparator() );
-        
+
+        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+
         return SUCCESS;
     }
 }

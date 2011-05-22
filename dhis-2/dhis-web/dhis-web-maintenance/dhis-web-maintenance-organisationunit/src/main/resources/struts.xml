@@ -49,7 +49,7 @@
 
 		<action name="addOrganisationUnit"
 			class="org.hisp.dhis.oum.action.organisationunit.AddOrganisationUnitAction">
-			<result name="success" type="redirect">getCompulsoryGroupSet.action?organisationUnitId=${organisationUnitId}
+			<result name="success" type="redirect">organisationUnit.action
 			</result>
 			<param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
 		</action>
