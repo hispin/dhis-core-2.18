@@ -239,6 +239,13 @@
          methods.load("" + id);
       });
       
+      $filter_input.keypress(function(e) {
+          if(e.keyCode == 13) {
+              $filter_button.click();
+              e.preventDefault();
+          }
+      });
+      
       $select_page.change(function() {
           params.currentPage = +$(this).find(":selected").val();
           settings.params = params;
