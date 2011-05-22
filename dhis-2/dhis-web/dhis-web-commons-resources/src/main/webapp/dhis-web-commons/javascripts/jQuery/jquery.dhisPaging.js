@@ -96,9 +96,6 @@
             if(params.currentPage == params.numberOfPages) {
                 $next_button.attr("disabled", "disabled");
             }
-
-            settings.params = params;
-            $select.data("settings", settings);
          });
     },
     init: function(options) {
@@ -166,7 +163,6 @@
               }
 
               settings.params.currentPage = 1;
-              $select.data("settings", settings);
               methods.load(event.data.id);
           });
       }
@@ -211,17 +207,11 @@
 
       $next_button.click(function() {
           params.currentPage = +params.currentPage + 1;
-          settings.params = params;
-          $select.data("settings", settings);
-
           methods.load("" + id);
       });
 
       $previous_button.click(function() {
           params.currentPage = +params.currentPage - 1;
-          settings.params = params;
-          $select.data("settings", settings);
-
           methods.load("" + id);
       });
 
@@ -233,9 +223,6 @@
          }
 
          params.currentPage = 1;
-         settings.params = params;
-         $select.data("settings", settings);
-         
          methods.load("" + id);
       });
       
@@ -248,18 +235,12 @@
       
       $select_page.change(function() {
           params.currentPage = +$(this).find(":selected").val();
-          settings.params = params;
-          $select.data("settings", settings);
-
           methods.load("" + id);
       });
 
       $pagesize_input.change(function() {
          params.pageSize = +$(this).val();
          params.currentPage = 1;
-         settings.params = params;
-         $select.data("settings", settings);
-
          methods.load("" + id);
       });
     }
