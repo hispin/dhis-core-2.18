@@ -52,8 +52,9 @@ public class IdentifiableObjectUtils
         while ( iterator.hasNext() )
         {
             T object = iterator.next();
+            String name = ignoreCase ? object.getName().toLowerCase() : object.getName();
 
-            if ( object.getName().toLowerCase().indexOf( key ) != -1 )
+            if ( name.indexOf( key ) != -1 )
             {
                 objects.add( object );
             }
