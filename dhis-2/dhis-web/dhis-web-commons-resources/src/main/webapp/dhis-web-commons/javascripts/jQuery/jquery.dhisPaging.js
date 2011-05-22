@@ -226,7 +226,7 @@
       });
 
       $filter_button.click(function() {
-         params.key = escape( $filter_input.val() );
+         params.key = $filter_input.val();
 
          if(params.key.length === 0) {
              delete params.key;

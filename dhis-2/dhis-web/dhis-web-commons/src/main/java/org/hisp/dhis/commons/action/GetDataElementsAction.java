@@ -27,13 +27,11 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -48,6 +46,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.system.util.IdentifiableObjectUtils;
 
 /**
  * @author Lars Helge Overland
@@ -150,7 +149,7 @@ public class GetDataElementsAction
     {
         this.key = key;
     }
-    
+
     private List<Integer> removeDataSets = new ArrayList<Integer>();
 
     public void setRemoveDataSets( String removeDataSets )
@@ -267,22 +266,11 @@ public class GetDataElementsAction
             }
         }
 
-        if( key != null )
+        if ( key != null )
         {
-            ListIterator<DataElement> iterator = dataElements.listIterator();
-            key = URLDecoder.decode( key, "UTF-8" ).toLowerCase();
-            
-            while( iterator.hasNext() )
-            {
-                DataElement dataElement = iterator.next();
-                
-                if ( dataElement.getName().toLowerCase().indexOf( key ) == -1)
-                {
-                    iterator.remove();
-                }
-            }
+            dataElements = IdentifiableObjectUtils.filterNameByKey( dataElements, key, true );
         }
-        
+
         Collections.sort( dataElements, dataElementComparator );
 
         if ( aggregate )

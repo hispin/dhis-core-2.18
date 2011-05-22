@@ -27,13 +27,11 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -42,6 +40,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.system.util.IdentifiableObjectUtils;
 
 /**
  * @author Lars Helge Overland
@@ -209,18 +208,7 @@ public class GetIndicatorsAction
 
         if ( key != null )
         {
-            ListIterator<Indicator> iterator = indicators.listIterator();
-            key = URLDecoder.decode( key, "UTF-8" ).toLowerCase();
-
-            while ( iterator.hasNext() )
-            {
-                Indicator indicator = iterator.next();
-
-                if ( indicator.getName().toLowerCase().indexOf( key ) == -1)
-                {
-                    iterator.remove();
-                }
-            }
+            indicators = IdentifiableObjectUtils.filterNameByKey( indicators, key, true );
         }
 
         Collections.sort( indicators, indicatorComparator );
