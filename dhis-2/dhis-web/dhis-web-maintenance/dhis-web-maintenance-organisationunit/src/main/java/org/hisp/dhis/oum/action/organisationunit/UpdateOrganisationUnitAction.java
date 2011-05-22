@@ -1,7 +1,7 @@
 package org.hisp.dhis.oum.action.organisationunit;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,21 +29,27 @@ package org.hisp.dhis.oum.action.organisationunit;
 
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UpdateOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: UpdateOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z
+ *          torgeilo $
  */
 public class UpdateOrganisationUnitAction
     implements Action
@@ -66,18 +72,30 @@ public class UpdateOrganisationUnitAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
+
+    public Integer getOrganisationUnitId()
+    {
+        return id;
+    }
 
     public void setId( Integer id )
     {
@@ -139,7 +157,7 @@ public class UpdateOrganisationUnitAction
     {
         this.coordinates = coordinates;
     }
-    
+
     private String featureType;
 
     public void setFeatureType( String featureType )
@@ -153,7 +171,7 @@ public class UpdateOrganisationUnitAction
     {
         this.url = url;
     }
-    
+
     private String contactPerson;
 
     public void setContactPerson( String contactPerson )
@@ -189,6 +207,20 @@ public class UpdateOrganisationUnitAction
         this.dataSets = dataSets;
     }
 
+    private List<String> orgUnitGroupSets = new ArrayList<String>();
+
+    public void setOrgUnitGroupSets( List<String> orgUnitGroupSets )
+    {
+        this.orgUnitGroupSets = orgUnitGroupSets;
+    }
+
+    private List<String> orgUnitGroups = new ArrayList<String>();
+
+    public void setOrgUnitGroups( List<String> orgUnitGroups )
+    {
+        this.orgUnitGroups = orgUnitGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -201,7 +233,7 @@ public class UpdateOrganisationUnitAction
         coordinates = nullIfEmpty( coordinates );
         featureType = nullIfEmpty( featureType );
         url = nullIfEmpty( url );
-        
+
         contactPerson = nullIfEmpty( contactPerson );
         address = nullIfEmpty( address );
         email = nullIfEmpty( email );
@@ -241,17 +273,42 @@ public class UpdateOrganisationUnitAction
         {
             dataSet.getSources().remove( organisationUnit );
         }
-        
+
         organisationUnit.getDataSets().clear();
-        
+
         for ( String id : dataSets ) // Add selected
         {
             DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
-            dataSet.getSources().add( organisationUnit );
-            dataSetService.updateDataSet( dataSet );
+            
+            if ( dataSet != null )
+            {
+                dataSet.getSources().add( organisationUnit );
+                dataSetService.updateDataSet( dataSet );
+            }
         }
-        
+
         organisationUnitService.updateOrganisationUnit( organisationUnit );
+
+        for ( int i = 0; i < orgUnitGroupSets.size(); i++ )
+        {
+            OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( Integer
+                .parseInt( orgUnitGroupSets.get( i ) ) );
+
+            OrganisationUnitGroup oldGroup = groupSet.getGroup( organisationUnit );
+
+            OrganisationUnitGroup newGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer
+                .parseInt( orgUnitGroups.get( i ) ) );
+
+            if ( oldGroup != null && oldGroup.getMembers().remove( organisationUnit ) )
+            {
+                organisationUnitGroupService.updateOrganisationUnitGroup( oldGroup );
+            }
+
+            if ( newGroup != null && newGroup.getMembers().add( organisationUnit ) )
+            {
+                organisationUnitGroupService.updateOrganisationUnitGroup( newGroup );
+            }
+        }
 
         return SUCCESS;
     }

@@ -181,6 +181,17 @@ public class DefaultOrganisationUnitGroupService
         return groupSets;
     }
 
+    public Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSetsWithMembers()
+    {
+        return FilterUtils.filter( getAllOrganisationUnitGroupSets(), new Filter<OrganisationUnitGroupSet>()
+            {
+                public boolean retain( OrganisationUnitGroupSet object )
+                {
+                    return object.isCompulsory() && object.hasOrganisationUnitGroups();
+                }
+            } );
+    }
+    
     public OrganisationUnitGroup getOrganisationUnitGroup( OrganisationUnitGroupSet groupSet, OrganisationUnit unit )
     {
         for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )

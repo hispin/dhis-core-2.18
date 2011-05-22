@@ -1,7 +1,7 @@
 package org.hisp.dhis.oum.action.organisationunit;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
@@ -53,7 +55,7 @@ public class AddOrganisationUnitAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -68,20 +70,27 @@ public class AddOrganisationUnitAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -127,7 +136,7 @@ public class AddOrganisationUnitAction
     {
         this.coordinates = coordinates;
     }
-    
+
     private String featureType;
 
     public void setFeatureType( String featureType )
@@ -169,12 +178,19 @@ public class AddOrganisationUnitAction
     {
         this.phoneNumber = phoneNumber;
     }
-    
+
     private Collection<String> dataSets = new HashSet<String>();
 
     public void setDataSets( Collection<String> dataSets )
     {
         this.dataSets = dataSets;
+    }
+
+    private Collection<String> selectedGroups = new HashSet<String>();
+
+    public void setSelectedGroups( Collection<String> selectedGroups )
+    {
+        this.selectedGroups = selectedGroups;
     }
 
     // -------------------------------------------------------------------------
@@ -200,7 +216,7 @@ public class AddOrganisationUnitAction
         coordinates = nullIfEmpty( coordinates );
         featureType = nullIfEmpty( featureType );
         url = nullIfEmpty( url );
-        
+
         contactPerson = nullIfEmpty( contactPerson );
         address = nullIfEmpty( address );
         email = nullIfEmpty( email );
@@ -244,10 +260,25 @@ public class AddOrganisationUnitAction
         for ( String id : dataSets )
         {
             DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
-            dataSet.getSources().add( organisationUnit );
-            dataSetService.updateDataSet( dataSet );
+            
+            if ( dataSet != null )
+            {
+                dataSet.getSources().add( organisationUnit );
+                dataSetService.updateDataSet( dataSet );
+            }
         }
-                
+
+        for ( String id : selectedGroups )
+        {
+            OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( id ) );
+            
+            if ( group != null )
+            {
+                group.getMembers().add( organisationUnit );
+                organisationUnitGroupService.updateOrganisationUnitGroup( group );
+            }
+        }
+
         return SUCCESS;
     }
 }

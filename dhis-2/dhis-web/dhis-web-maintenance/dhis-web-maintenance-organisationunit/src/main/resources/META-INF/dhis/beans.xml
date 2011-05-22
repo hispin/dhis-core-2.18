@@ -25,6 +25,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		</property>
+		<property name="organisationUnitGroupService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		</property>
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
@@ -45,6 +48,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		</property>
+		<property name="organisationUnitGroupService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		</property>
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -85,6 +91,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		</property>
+		<property name="organisationUnitGroupService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		</property>
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
@@ -105,6 +114,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="organisationUnitGroupService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		</property>
 	</bean>
 

@@ -1,7 +1,7 @@
 package org.hisp.dhis.oum.action.organisationunit;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,13 +35,17 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: GetOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z
+ *          torgeilo $
  */
 public class GetOrganisationUnitAction
     implements Action
@@ -57,8 +61,15 @@ public class GetOrganisationUnitAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -90,7 +101,7 @@ public class GetOrganisationUnitAction
     }
 
     private List<DataSet> availableDataSets;
-    
+
     public List<DataSet> getAvailableDataSets()
     {
         return availableDataSets;
@@ -101,6 +112,13 @@ public class GetOrganisationUnitAction
     public List<DataSet> getDataSets()
     {
         return dataSets;
+    }
+
+    private List<OrganisationUnitGroupSet> groupSets;
+
+    public List<OrganisationUnitGroupSet> getGroupSets()
+    {
+        return groupSets;
     }
 
     // -------------------------------------------------------------------------
@@ -114,14 +132,20 @@ public class GetOrganisationUnitAction
 
         numberOfChildren = organisationUnit.getChildren().size();
 
-        availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );        
+        availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         availableDataSets.removeAll( organisationUnit.getDataSets() );
-        
+
         dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
 
+        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService
+            .getCompulsoryOrganisationUnitGroupSetsWithMembers() );
+
         Collections.sort( availableDataSets, new DataSetNameComparator() );
+
         Collections.sort( dataSets, new DataSetNameComparator() );
-        
+
+        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+
         return SUCCESS;
     }
 }

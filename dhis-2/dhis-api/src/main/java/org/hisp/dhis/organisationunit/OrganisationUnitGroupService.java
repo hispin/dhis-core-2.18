@@ -176,6 +176,16 @@ public interface OrganisationUnitGroupService
     Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSets();
 
     /**
+     * Returns all compulsory OrganisationUnitGroupSets which have one ore more
+     * members.
+     * 
+     * @return a collection of all OrganisationUnitGroupSets, or an
+     *         empty collection if there are no compulsory
+     *         OrganisationUnitGroupSets.
+     */
+    Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSetsWithMembers();
+
+    /**
      * Returns a Collection of compulsory OrganisationUnitGroupSets whichs groups 
      * the given OrganisationUnit is not a member of.
      * 
