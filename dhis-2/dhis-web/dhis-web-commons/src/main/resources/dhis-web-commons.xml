@@ -445,6 +445,20 @@
 	<package name="dhis-web-commons-ajax-json" extends="dhis-web-commons"
 		namespace="/dhis-web-commons-ajax-json">
 
+        <action name="getUsers" class="org.hisp.dhis.commons.action.GetUsersAction">
+          <result name="success" type="velocity-json">
+            /dhis-web-commons/ajax/jsonUsers.vm
+          </result>
+          <param name="onExceptionReturn">plainTextError</param>
+        </action>
+
+        <action name="getUserGroups" class="org.hisp.dhis.commons.action.GetUserGroupsAction">
+          <result name="success" type="velocity-json">
+            /dhis-web-commons/ajax/jsonUserGroups.vm
+          </result>
+          <param name="onExceptionReturn">plainTextError</param>        
+        </action>
+
 		<action name="getCategoryOptionCombos"
 			class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction">
 			<result name="success" type="velocity-json">
