@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
 	datePickerInRange('fromDate', 'toDate');
 
 	validation2('databrowser', function(form) {
-		validateBeforeSubmit();
+		validateBeforeSubmit(form);
 	}, {
 		'rules' : getValidationRules("dataBrowser")
 	});
