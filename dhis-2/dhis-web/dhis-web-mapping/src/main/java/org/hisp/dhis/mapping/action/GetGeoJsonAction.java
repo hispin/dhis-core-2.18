@@ -129,7 +129,16 @@ public class GetGeoJsonAction
                 }
             }
             
-            return OrganisationUnit.RESULTTYPE_SYMBOL;
+            if ( object.size() > 0 && object.iterator().next().getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
+            {
+                return OrganisationUnit.RESULTTYPE_SYMBOL;
+            }
+            
+            else
+            {
+                object.clear();
+                return NONE;
+            }
         }
 
         return object.size() > 0 ? object.iterator().next().getFeatureType() : NONE;
