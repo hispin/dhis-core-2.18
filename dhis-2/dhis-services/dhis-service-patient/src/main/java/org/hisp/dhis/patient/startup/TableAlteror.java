@@ -29,6 +29,8 @@ package org.hisp.dhis.patient.startup;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Collection;
+import java.util.HashSet;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -101,8 +103,10 @@ public class TableAlteror
         executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null" );
 
         executeSql( "UPDATE dataset SET version = 1 WHERE version is null" );
-        
+
         updateSingleProgramValidation();
+
+        updateStageInProgram();
 
     }
 
@@ -147,16 +151,15 @@ public class TableAlteror
     private void updateSingleProgramValidation()
     {
         StatementHolder holder = statementManager.getHolder();
-        
+
         int optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
-        
+
         try
         {
             Statement statement = holder.getStatement();
 
-            ResultSet isUpdated = statement
-                .executeQuery( "SELECT * FROM INFORMATION_SCHEMA.COLUMNS " +
-                                "WHERE TABLE_NAME = 'programstage_dataelement_validation'" );
+            ResultSet isUpdated = statement.executeQuery( "SELECT * FROM INFORMATION_SCHEMA.COLUMNS "
+                + "WHERE TABLE_NAME = 'programstage_dataelement_validation'" );
 
             if ( isUpdated.next() )
             {
@@ -166,35 +169,110 @@ public class TableAlteror
                 int max = rsCount.getInt( 1 ) + 1;
 
                 ResultSet resultSet = statement
-                .executeQuery( "SELECT pdv.description, pdv.leftprogramstageid, pdv.leftdataelementid, "+
-                                      "pdv.rightprogramstageid, pdv.rightdataelementid, " +
-                                      "pdv.operator, ps.programid "+
-                                "FROM programstage_dataelement_validation pdv "+
-                                "INNER JOIN programstage_dataelements pd "+
-                                       "ON (pdv.leftprogramstageid=pd.dataelementid AND "+
-                                           "pdv.leftdataelementid=pd.programstageid) "+
-                                "INNER JOIN programstage ps "+
-                                        "ON pd.programstageid=ps.programstageid" );
+                    .executeQuery( "SELECT pdv.description, pdv.leftprogramstageid, pdv.leftdataelementid, "
+                        + "pdv.rightprogramstageid, pdv.rightdataelementid, " + "pdv.operator, ps.programid "
+                        + "FROM programstage_dataelement_validation pdv " + "INNER JOIN programstage_dataelements pd "
+                        + "ON (pdv.leftprogramstageid=pd.dataelementid AND "
+                        + "pdv.leftdataelementid=pd.programstageid) " + "INNER JOIN programstage ps "
+                        + "ON pd.programstageid=ps.programstageid" );
 
                 while ( resultSet.next() )
                 {
                     max++;
-                    String leftSide = "[" + resultSet.getString( 2 ) + "." + resultSet.getString( 3 ) + "." + optionCombo + "]";
-                    String rightSide = "[" + resultSet.getString( 4 ) + "." + resultSet.getString( 5 ) + "." + optionCombo + "]";
-                    String operator = resultSet.getInt( 6 ) > 0 ? ">" : ( resultSet.getInt( 6 ) < 0 ) ? "<" : "==";
-                    
+                    String leftSide = "[" + resultSet.getString( 2 ) + "." + resultSet.getString( 3 ) + "."
+                        + optionCombo + "]";
+                    String rightSide = "[" + resultSet.getString( 4 ) + "." + resultSet.getString( 5 ) + "."
+                        + optionCombo + "]";
+                    String operator = resultSet.getInt( 6 ) > 0 ? ">" : (resultSet.getInt( 6 ) < 0) ? "<" : "==";
+
                     String fomular = leftSide + operator + rightSide;
-         
-                    executeSql( "INSERT INTO programvalidation (programvalidationid, description,leftSide, rightSide, programid )" +
-                                "VALUES ( " + max + ",'" + resultSet.getString( 1 )  + "', '" + fomular  + "', '1==1', " + resultSet.getInt( 7 )  + ")" );
+
+                    executeSql( "INSERT INTO programvalidation (programvalidationid, description,leftSide, rightSide, programid )"
+                        + "VALUES ( "
+                        + max
+                        + ",'"
+                        + resultSet.getString( 1 )
+                        + "', '"
+                        + fomular
+                        + "', '1==1', "
+                        + resultSet.getInt( 7 ) + ")" );
                 }
-                
+
                 executeSql( "DROP TABLE programstage_dataelement_validation" );
             }
         }
         catch ( Exception ex )
         {
             log.debug( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    private void updateStageInProgram()
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            Collection<Integer> programIds = getPrograms();
+
+            for ( Integer programId : programIds )
+            {
+                ResultSet resultSet = statement.executeQuery( "SELECT programstageid "
+                    + "FROM programstage WHERE programid = " + programId );
+
+                int index = 1;
+                while ( resultSet.next() )
+                {
+                    executeSql( "UPDATE programstage SET stageinprogram = " + index + " WHERE programstageid = "
+                        + resultSet.getInt( 1 ) );
+                    index++;
+                }
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    private Collection<Integer> getPrograms()
+    {
+        Collection<Integer> result = new HashSet<Integer>();
+
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet rsMax = statement.executeQuery( "SELECT max(stageinprogram), programid "
+                + "FROM programstage GROUP BY programid" );
+
+            while ( rsMax.next() )
+            {
+                if ( rsMax.getInt( 1 ) == 0 )
+                {
+                    result.add( rsMax.getInt( 2 ) );
+                }
+            }
+
+            return result;
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+
+            return null;
         }
         finally
         {

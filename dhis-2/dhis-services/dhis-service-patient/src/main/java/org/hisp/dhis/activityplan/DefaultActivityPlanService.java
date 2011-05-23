@@ -61,6 +61,13 @@ public class DefaultActivityPlanService
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private ActivityPlanStore activityPlanStore;
+    
+    public void setActivityPlanStore( ActivityPlanStore activityPlanStore )
+    {
+        this.activityPlanStore = activityPlanStore;
+    }
+
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
@@ -103,37 +110,6 @@ public class DefaultActivityPlanService
 
     public Collection<Activity> getCurrentActivitiesByProvider( OrganisationUnit organisationUnit )
     {
-        // long time = PeriodType.createCalendarInstance().getTime().getTime();
-        //
-        // List<Activity> items = new ArrayList<Activity>();
-        //
-        // Calendar expiredDate = Calendar.getInstance();
-        //
-        // Collection<ProgramStageInstance> programStageInstances =
-        // programStageInstanceService.get( organisationUnit,
-        // null, null, false );
-        //
-        // for ( ProgramStageInstance programStageInstance :
-        // programStageInstances )
-        // {
-        // expiredDate.setTime( DateUtils.getDateAfterAddition(
-        // programStageInstance.getDueDate(),
-        // programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData()
-        // ) );
-        // // TODO compare with date.before
-        // if ( programStageInstance.getDueDate().getTime() <= time &&
-        // expiredDate.getTimeInMillis() > time )
-        // {
-        // Activity activity = new Activity();
-        // activity.setBeneficiary(
-        // programStageInstance.getProgramInstance().getPatient() );
-        // activity.setTask( programStageInstance );
-        // activity.setDueDate( programStageInstance.getDueDate() );
-        // items.add( activity );
-        // }
-        // }
-        // return items;
-
         long time = PeriodType.createCalendarInstance().getTime().getTime();
 
         List<Activity> items = new ArrayList<Activity>();
@@ -308,6 +284,31 @@ public class DefaultActivityPlanService
 
     }
 
+
+    public Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit, int min, int max )
+    {
+        Collection<Integer> programStageInstanceIds = activityPlanStore.getActivitiesByProvider ( organisationUnit.getId(), min, max);
+
+        Collection<Activity> activities = new ArrayList<Activity>();
+
+        for( Integer id : programStageInstanceIds )
+        {
+            ProgramStageInstance instance = programStageInstanceService.getProgramStageInstance( id );
+            Activity activity = new Activity();
+            activity.setBeneficiary( instance.getProgramInstance().getPatient() );
+            activity.setTask( instance );
+            activity.setDueDate( instance.getDueDate() );
+            activities.add( activity );
+        }
+        
+        return activities;
+    }
+
+    public int countActivitiesByProvider ( OrganisationUnit organisationUnit )
+    {
+        return activityPlanStore.countActivitiesByProvider( organisationUnit.getId() );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

@@ -20,6 +20,8 @@ public interface ActivityPlanService
     String ID = ActivityPlanService.class.getName();
 
     Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit );
+    
+    Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit, int min, int max );
 
     Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit, Collection<Program> programs );
 
@@ -34,5 +36,7 @@ public interface ActivityPlanService
     Collection<Activity> getActivitiesWithInDate( Date startDate, Date endDate );
 
     Collection<Activity> getCurrentActivitiesByProvider( OrganisationUnit organisationUnit );
+    
+    int countActivitiesByProvider ( OrganisationUnit organisationUnit );
 
 }
