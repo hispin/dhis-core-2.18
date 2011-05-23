@@ -1189,10 +1189,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/excelTemplateList.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">
-				javascript/exceltemplate.js,
-				javascript/ajaxfileupload.js			
-			</param>
+			<param name="javascripts">javascript/exceltemplate.js</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 

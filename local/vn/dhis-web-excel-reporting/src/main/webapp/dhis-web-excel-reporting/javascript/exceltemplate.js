@@ -217,44 +217,24 @@ function validateUploadExcelManagement( fileName, columnIndex )
 	return true;
 }
 
-function validateUploadExcelTemplate()
-{
-	$.ajaxFileUpload
-	(
+function validateUploadExcelTemplate(form)
+{        
+	jQuery( "#upload" ).upload( 'validateUploadExcelTemplate.action',
+		function(data)
 		{
-			url:'validateUploadExcelTemplate.action',
-			secureuri:false,
-			fileElementId:'upload',
-			dataType: 'xml',
-			success: function (data, status)
-			{
-				data = data.getElementsByTagName('message')[0];
-				var type = data.getAttribute("type");
-				
-				if ( type == 'error' )
-				{                    
-					setMessage( data.firstChild.nodeValue );
-				}
-				else if ( type == 'input' )
-				{
-					if ( window.confirm( i18n_confirm_override ) )
-					{
-						document.forms['uploadForm'].submit();
-					}
-					else
-					{
-						return;
-					}
-				}
-				else
-				{
-					document.forms['uploadForm'].submit();
-				}
-			},
-			error: function (data, status, e)
-			{
-			
+			data = data.getElementsByTagName('message')[0];
+			var type = data.getAttribute("type");
+
+			if ( type == 'error' )
+			{                    
+				setMessage( data.firstChild.nodeValue );
 			}
+			else if ( type == 'input' )
+			{
+				if ( window.confirm( i18n_confirm_override ) ) form.submit();
+				else return;
+			}
+			else form.submit();
 		}
 	);
 }
