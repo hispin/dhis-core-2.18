@@ -29,7 +29,6 @@ package org.hisp.dhis.dataadmin.action.databrowser;
 
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.util.SessionUtils;
@@ -69,7 +68,7 @@ public class DataBrowserAction
                 .parseInt( selectedUnitChanger ) ) );
         }
 
-        OrganisationUnit selectedUnit = selectionManager.getSelectedOrganisationUnit();
+        selectedUnit = selectionManager.getSelectedOrganisationUnit();
 
         // Checks if the selected unit is a leaf node of tree then
         // We must add parent as the same parameter value
