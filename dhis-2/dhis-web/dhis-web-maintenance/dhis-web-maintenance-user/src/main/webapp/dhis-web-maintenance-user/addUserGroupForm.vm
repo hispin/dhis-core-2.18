@@ -1,60 +1,13 @@
 <script type="text/javascript" src="javascript/addUserGroupForm.js"></script>
 <script type="text/javascript">
-	function groupMembersList_dblclick(e) {
-	    var settings = jQuery("#availableUsersList").data("settings");
-
-	    jQuery(this).find(":selected").each(function(i) {
-	        var jqThis = jQuery(this);
-	        var option_id = +jqThis.attr("value");
-	        jqThis.remove();
-
-	        if( jQuery.isArray(settings.removeUsers) )
-	        {
-	            var remove_idx = jQuery.inArray(option_id, settings.removeUsers);
-	            settings.removeUsers.splice(remove_idx, remove_idx+1);
-	        }
-	    });
-
-	    if(settings.removeUsers && settings.removeUsers.length > 0) {
-	        settings.params.removeUsers = settings.removeUsers.join(",");
-	    } else {
-	        delete settings.removeUsers;
-	        delete settings.params.removeUsers;
-	    }
-
-	    jQuery("#availableUsersList").dhisPaging("load", "availableUsersList");
-	}
-
-	function availableUsersList_dblclick(e) {
-		var jqGroupMembersList = jQuery("#groupMembersList");
-	    var settings = jQuery("#availableUsersList").data("settings");
-
-	    jQuery("#availableUsersList").find(":selected").each(function(i) {
-	        var jqThis = jQuery(this);
-	        var option_id = +jqThis.attr("value");
-
-	        jqGroupMembersList.append( this );
-
-	        if( jQuery.isArray(settings.Users) ) {
-	            settings.removeUsers.push(option_id);
-	        } else {
-	            settings.removeUsers = [option_id];
-	        }
-	    });
-
-	    if(settings.removeUsers && settings.removeUsers.length > 0) {
-	        settings.params.removeUsers = settings.removeUsers.join(",");
-	    } else {
-	        delete settings.removeUsers;
-	        delete settings.params.removeUsers;
-	    }
-	
-	    jQuery("#availableUsersList").dhisPaging("load", "availableUsersList");
-	}
-
 	jQuery(function() {
-		jQuery("#availableUsersList").dblclick(availableUsersList_dblclick);
-		jQuery("#groupMembersList").dblclick(groupMembersList_dblclick);
+		jQuery("#availableUsersList").dblclick(function() {
+			dhisPaging_availableList_dblclick("availableUsersList", "groupMembersList", "removeUsers");
+		});
+
+		jQuery("#groupMembersList").dblclick(function() {
+			dhisPaging_selectedList_dblclick("groupMembersList", "availableUsersList", "removeUsers");
+		});
 	
 		jQuery("#availableUsersList").dhisPaging({
 			source: "../dhis-web-commons-ajax-json/getUsers.action",
