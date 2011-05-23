@@ -144,9 +144,11 @@ public class AddProgramStageAction
 
         Program program = programService.getProgram( id );
 
-        programStage.setProgram( program );
         programStage.setName( name );
         programStage.setDescription( description );
+        programStage.setStageInProgram( program.getProgramStages().size() + 1 );
+        programStage.setProgram( program );
+        
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
 

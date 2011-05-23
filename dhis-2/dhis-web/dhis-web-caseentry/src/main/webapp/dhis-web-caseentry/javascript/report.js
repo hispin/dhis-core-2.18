@@ -25,6 +25,7 @@ function reportValidationCompleted( messageElement )
 {   
     var type = messageElement.getAttribute( 'type' );
 	var message = messageElement.firstChild.nodeValue;
+	hideById( 'contentDiv' );
 	
 	if ( type == 'success' )
 	{
@@ -48,7 +49,7 @@ function loadGeneratedReport()
 	{
 		'startDate': getFieldValue( 'startDate' ),
 		'&endDate': getFieldValue( 'endDate' )
-	}, function() { unLockScreen(); });
+	}, function() { unLockScreen();hideById( 'message' );showById( 'contentDiv' );});
 }
 
 function viewRecords( programStageInstanceId ) 

@@ -151,6 +151,13 @@ public class SearchVisitPlanAction
         return activities;
     }
 
+    private Integer total;
+
+    public Integer getTotal()
+    {
+        return total;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -164,7 +171,12 @@ public class SearchVisitPlanAction
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        activities = activityPlanService.getActivitiesByProvider( organisationUnit );
+        total = activityPlanService.countActivitiesByProvider( organisationUnit );
+
+        this.paging = createPaging( total );
+
+        activities = new ArrayList<Activity>( activityPlanService.getActivitiesByProvider( organisationUnit, paging
+            .getStartPos(), paging.getPageSize() ) );
 
         for ( Activity activity : activities )
         {
@@ -185,11 +197,6 @@ public class SearchVisitPlanAction
         if ( !visitsByPatients.keySet().isEmpty() )
         {
             Collection<Patient> patientsToBeVisited = visitsByPatients.keySet();
-
-            this.paging = this.createPaging( patientsToBeVisited.size() );
-
-            patientsToBeVisited = this.getBlockElement( new ArrayList<Patient>( patientsToBeVisited ), paging
-                .getStartPos(), paging.getEndPos() );
 
             // -------------------------------------------------------------
             // Get all the attributes of the patients to be visited (in case
