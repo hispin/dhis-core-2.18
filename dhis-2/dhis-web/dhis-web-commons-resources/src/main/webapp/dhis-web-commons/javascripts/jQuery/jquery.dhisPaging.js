@@ -29,6 +29,26 @@
  * @author mortenoh
  */
 
+// -----------------------------------------------
+// Support functions
+// -----------------------------------------------
+
+function dhisPaging_moveAllSelected(sourceId)
+{
+    jQuery("#" + sourceId).dblclick();
+}
+
+function dhisPaging_moveAll(sourceId)
+{
+    var jqSource = jQuery("#" + sourceId);
+    jqSource.find("option").attr("selected", "selected");
+    jqSource.dblclick();
+}
+
+// -----------------------------------------------
+// Plugin
+// -----------------------------------------------
+
 (function($) {
   var templates = {
     wrapper: "<div id='${id}' style='padding: 0; margin: 0; background-color: #eee; border: 1px solid #666;' />",

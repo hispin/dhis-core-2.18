@@ -58,11 +58,11 @@ public class UpdateUserGroupAction implements Action
     // Parameters
     // -------------------------------------------------------------------------
 
-    private List<Integer> groupMembers;
+    private List<Integer> groupMembersList;
 
-    public void setGroupMembers( List<Integer> groupMembers )
+    public void setGroupMembersList( List<Integer> groupMembersList )
     {
-        this.groupMembers = groupMembers;
+        this.groupMembersList = groupMembersList;
     }
 
     private String name;
@@ -88,7 +88,7 @@ public class UpdateUserGroupAction implements Action
     {
         Set<User> userList = new HashSet<User>();
 
-        for ( Integer groupMember : groupMembers )
+        for ( Integer groupMember : groupMembersList )
         {
             User user = userService.getUser( groupMember );
             userList.add( user );
