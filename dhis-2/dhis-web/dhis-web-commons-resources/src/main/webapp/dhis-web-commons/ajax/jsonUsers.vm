@@ -2,7 +2,7 @@
 { "users": [
 #foreach( $user in $users )
   {
-    "id": $!{user.id},
+    "id": ${user.id},
     "surname": "$!encoder.jsonEncode( ${user.surname} )",
     "firstname": "$!encoder.jsonEncode( ${user.firstname} )",
     "email": "$!encoder.jsonEncode( ${user.email} )",

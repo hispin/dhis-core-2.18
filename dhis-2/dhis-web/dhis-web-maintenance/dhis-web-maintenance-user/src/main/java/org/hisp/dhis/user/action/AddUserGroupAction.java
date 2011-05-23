@@ -38,7 +38,7 @@ import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
-public class AddUserGroupAction 
+public class AddUserGroupAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -46,7 +46,7 @@ public class AddUserGroupAction
     // -------------------------------------------------------------------------
 
     private UserService userService;
-    
+
     public void setUserService( UserService userService )
     {
         this.userService = userService;
@@ -63,38 +63,39 @@ public class AddUserGroupAction
     // Parameters
     // -------------------------------------------------------------------------
 
-    private List<Integer> groupMembers;
-    
-    public void setGroupMembers( List<Integer> groupMembers )
+    private List<Integer> groupMembersList;
+
+    public void setGroupMembersList( List<Integer> groupMembersList )
     {
-        this.groupMembers = groupMembers;
+        this.groupMembersList = groupMembersList;
     }
-    
+
     private String name;
-    
+
     public void setName( String name )
     {
         this.name = name;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         Set<User> userList = new HashSet<User>();
-        
-        for( Integer groupMember : groupMembers )
+
+        for ( Integer groupMember : groupMembersList )
         {
             User user = userService.getUser( groupMember );
-            userList.add( user ); 
+            userList.add( user );
         }
-        
+
         UserGroup userGroup = new UserGroup( name, userList );
-        
+
         userGroupService.addUserGroup( userGroup );
-        
+
         return SUCCESS;
     }
 }

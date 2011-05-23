@@ -6,7 +6,7 @@ jQuery( document ).ready( function()
 	}, {
 		'beforeValidateHandler' : function()
 		{
-			listValidator( 'memberValidator', 'groupMembers' );
+			listValidator( 'memberValidator', 'groupMembersList' );
 		},
 		'rules' : getValidationRules("userGroup")
 	} );

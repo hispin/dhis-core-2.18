@@ -4,16 +4,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 var jqDataElementsSelectedList, jqIndicatorsSelectedList;
 
-function dhisPaging_moveAllSelected(sourceId)
-{
-    jQuery("#" + sourceId).dblclick();
-}
-
-function dhisPaging_moveAll(sourceId)
-{
-    jQuery("#" + sourceId).find("option").attr("selected", "selected").dblclick();
-}
-
 function dataElementsSelectedList_dblclick(e) {
     var settings = jQuery("#availableDataElementsList").data("settings");
 

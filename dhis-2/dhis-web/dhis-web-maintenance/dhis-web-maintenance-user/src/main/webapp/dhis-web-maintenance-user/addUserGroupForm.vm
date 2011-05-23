@@ -1,4 +1,74 @@
 <script type="text/javascript" src="javascript/addUserGroupForm.js"></script>
+<script type="text/javascript">
+	function groupMembersList_dblclick(e) {
+	    var settings = jQuery("#availableUsersList").data("settings");
+
+	    jQuery(this).find(":selected").each(function(i) {
+	        var jqThis = jQuery(this);
+	        var option_id = +jqThis.attr("value");
+	        jqThis.remove();
+
+	        if( jQuery.isArray(settings.removeUsers) )
+	        {
+	            var remove_idx = jQuery.inArray(option_id, settings.removeUsers);
+	            settings.removeUsers.splice(remove_idx, remove_idx+1);
+	        }
+	    });
+
+	    if(settings.removeUsers && settings.removeUsers.length > 0) {
+	        settings.params.removeUsers = settings.removeUsers.join(",");
+	    } else {
+	        delete settings.removeUsers;
+	        delete settings.params.removeUsers;
+	    }
+
+	    jQuery("#availableUsersList").dhisPaging("load", "availableUsersList");
+	}
+
+	function availableUsersList_dblclick(e) {
+		var jqGroupMembersList = jQuery("#groupMembersList");
+	    var settings = jQuery("#availableUsersList").data("settings");
+
+	    jQuery("#availableUsersList").find(":selected").each(function(i) {
+	        var jqThis = jQuery(this);
+	        var option_id = +jqThis.attr("value");
+
+	        jqGroupMembersList.append( this );
+
+	        if( jQuery.isArray(settings.Users) ) {
+	            settings.removeUsers.push(option_id);
+	        } else {
+	            settings.removeUsers = [option_id];
+	        }
+	    });
+
+	    if(settings.removeUsers && settings.removeUsers.length > 0) {
+	        settings.params.removeUsers = settings.removeUsers.join(",");
+	    } else {
+	        delete settings.removeUsers;
+	        delete settings.params.removeUsers;
+	    }
+	
+	    jQuery("#availableUsersList").dhisPaging("load", "availableUsersList");
+	}
+
+	jQuery(function() {
+		jQuery("#availableUsersList").dblclick(availableUsersList_dblclick);
+		jQuery("#groupMembersList").dblclick(groupMembersList_dblclick);
+	
+		jQuery("#availableUsersList").dhisPaging({
+			source: "../dhis-web-commons-ajax-json/getUsers.action",
+			iterator: "users",
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.surname + ", " + item.firstname );
+				option.attr( "value", item.id );
+
+				return option;
+			}
+		});
+	});
+</script>
 
 <h3>$i18n.getString( "add_user_group" )</h3>
 
@@ -20,45 +90,41 @@
 	<tr><td colspan="2" style="height:15px"></td></tr>
 	</tbody>
 </table>
+
 <table>
+    <col style="width: 450px"/>
+    <col/>
+    <col/>
+
     <tr>
-        <th>$i18n.getString( "available_users" )</th><td></td>
+        <th>$i18n.getString( "available_users" )</th>
+		<th></th>
         <th>$i18n.getString( "group_members" )
             <select id="memberValidator" multiple="multiple" style="display:none"/>
         </th>
     </tr>
-    <tr>        
-        <td><input type="text" id="availableUsersFilter" onkeyup="filterList( this.value, 'availableUsers' )" style="width:25em"/></td>
-        <td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-        <td><input type="text" id="groupMembersFilter" onkeyup="filterList( this.value, 'groupMembers' )" style="width:25em"/></td>
-    </tr>
+
     <tr>
         <td>
-            <select id="availableUsers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'availableUsers', 'groupMembers' )">
-                #foreach( $user in $availableUsers )
-                    <option value="$user.id">$encoder.htmlEncode( $user.name )</option>
-                #end
-            </select>
+            <select id="availableUsersList" name="availableUsersList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
-        
-        <td style="text-align:center">          
-            <input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableUsers', 'groupMembers' )"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'groupMembers', 'availableUsers' )"/><br/>
-            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableUsers', 'groupMembers' )"/><br/>
-            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'groupMembers', 'availableUsers' )"/>
+
+        <td style="text-align:center">
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableUsersList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'groupMembersList' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableUsersList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'groupMembersList' );"/>
         </td>
-    
+
         <td>
-            <select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'groupMembers', 'availableUsers' )" />
+            <select id="groupMembersList" name="groupMembersList" size="2" multiple="multiple" style="height: 100%; width: 100%;"></select>
         </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
 </table>
 
-<p><input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='getAllUserGroups.action'" style="width:10em"/></p>
+<p>
+	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='getAllUserGroups.action'" style="width:10em"/>
+</p>
 
 </form>

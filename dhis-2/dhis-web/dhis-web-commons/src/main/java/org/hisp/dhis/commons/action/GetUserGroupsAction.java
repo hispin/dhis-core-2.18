@@ -64,6 +64,10 @@ public class GetUserGroupsAction
         return userGroups;
     }
 
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
+    
     @Override
     public String execute()
         throws Exception
