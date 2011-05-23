@@ -316,6 +316,14 @@
 
 	<!-- Common actions -->
 
+    <bean id="org.hisp.dhis.commons.action.GetUsersAction" class="org.hisp.dhis.commons.action.GetUsersAction" scope="prototype">
+      <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.commons.action.GetUserGroupsAction" class="org.hisp.dhis.commons.action.GetUserGroupsAction" scope="prototype">
+      <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    </bean>
+
 	<bean id="org.hisp.dhis.commons.action.GetAvailablePeriodsAction" class="org.hisp.dhis.commons.action.GetAvailablePeriodsAction"
 		scope="prototype">
 	</bean>
