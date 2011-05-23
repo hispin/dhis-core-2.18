@@ -410,7 +410,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 								bodyStyle: 'padding:8px; background-color:#ffffff',
                                 labelWidth: G.conf.label_width,
 								items: [
-									{html: '<div class="window-info">Select organisation unit level</div>'},
+									{html: '<div class="window-info">Select point level</div>'},
 									{
 										xtype: 'combo',
 										fieldLabel: G.i18n.level,
