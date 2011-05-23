@@ -10,7 +10,7 @@
 				,errorElement:"td"
 				,submitHandler: function(form)
 				{
-					validateUploadExcelTemplate();
+					validateUploadExcelTemplate(form);
 				}
 			});
 
