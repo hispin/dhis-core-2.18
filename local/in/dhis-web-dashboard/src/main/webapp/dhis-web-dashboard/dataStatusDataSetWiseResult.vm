@@ -77,7 +77,7 @@
 	  				    		<td bgcolor="#C0C0C0"><strong>$periodname</strong></td>
 		    				  #end
 	    				  #end
-    				 </tr> 
+    				 </tr>
 						#foreach($chiildorgUnit in $orgUnitList)
 						#set( $count1 = $minOULevel )
 						#set( $curOrgUnitLevel = $organisationUnitService.getLevelOfOrganisationUnit( $chiildorgUnit ) )
@@ -118,7 +118,7 @@
 						</tr>
 					#end	
 				</table>
-			</div>			      
+			</div>
 			</div>
 		</form>
     </body>

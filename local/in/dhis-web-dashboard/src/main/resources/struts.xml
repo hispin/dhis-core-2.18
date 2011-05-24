@@ -357,21 +357,31 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/dataStatusFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForDS.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ds.js,javascript/db.js,javascript/date.js,javascript/hashtable.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ds.js,javascript/db.js,javascript/date.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
 		
 		<action name="dataStatusResult"
 			class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusResultAction">
-			
-			<result name="success" type="velocity">
-				/dhis-web-dashboard/dataStatusResult.vm</result>
-			<param name="javascripts">
-				javascript/ds.js,javascript/hashtable.js</param>
+			<result name="success" type="velocity">/popup.vm</result>
+			<param name="page">/dhis-web-dashboard/dataStatusResult.vm</param>
+			<param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 		</action>
+		
+	  <!-- Null report for DataEntry Status -->
+	   <action name="nullReportResult"
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateNullReportResultAction">
+			<result name="success" type="velocity">/content.vm</result>   
+			<param name="page">/dhis-web-dashboard/nullReportDataEntryStatusResult.vm</param>
+			<param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+	   </action>		
+			
+		
+		
+		
 		
 		<!-- DataStatus Data Set Wise -->
 		<action name="dataStatusDataSetWiseForm"
