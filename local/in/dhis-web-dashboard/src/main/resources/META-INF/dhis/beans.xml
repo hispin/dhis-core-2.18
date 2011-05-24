@@ -587,6 +587,30 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 	
+	 <!-- Null report for DataEntry Status -->
+    <bean id="org.hisp.dhis.dataanalyser.ds.action.GenerateNullReportResultAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateNullReportResultAction"
+		scope="prototype">
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>		
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>	
+	
+	
+	
+	
+	
 	<!-- DataStatus Data Set Wise -->
     <bean id="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusDataSetWiseFormAction"
 		class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusDataSetWiseFormAction"

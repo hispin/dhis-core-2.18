@@ -1,9 +1,10 @@
 
 <html>
     <head>
-        <title>DataStatus Result</title>
-        <link type="text/css" rel="stylesheet" media="screen" href="css/StylesForTags.css">
-        <script>
+    <title>DataStatus Result</title>
+    <link type="text/css" rel="stylesheet" media="screen" href="css/StylesForTags.css">
+    </link>
+      <script>
             var startDate = "$sDateLB";
             var endDate = "$eDateLB";
             var dsType = "$selectedButton";
@@ -20,13 +21,28 @@
                     evt.target.href = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
                 }
             }
-
             function exportDataStatusResultToWorkBook()
             {
                 document.getElementById('htmlCode').value = document.getElementById('formResult').innerHTML;
                 return true;
             }
-        </script>
+            
+		  function getNullReportInfo( dsId, periodId, selOrgUnit )
+		  {	
+			var url = "nullReportResult.action?dsId="+dsId+"&periodId="+periodId+"&ouId="+selOrgUnit;
+			$('#contentDataRecord').dialog('destroy').remove();
+	   	    $('<div id="contentDataRecord">' ).load(url).dialog({
+	        title: 'Null Report',
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 800,
+	        height: 600
+	    	});
+		 }
+            
+    </script>
     </head>
     <body>
 
@@ -61,6 +77,10 @@
                                 <td bgcolor="#ff0000">&nbsp;</td>
                                 <td align="left">&nbsp;Not Entered ( 0 ) %</td>
                             </tr>
+                            <tr class="TableDataCellStyles">
+                                <td bgcolor="white">&nbsp;</td>
+                                <td align="left">&nbsp;Not Assigned</td>
+                            </tr>                     
                         </table>
                     </div>
 
@@ -92,19 +112,21 @@
 
                                 #set( $dsresultList = $ouMapDataStatusResult.get( $chiildorgUnit ) )
                                 #set( $dataElementCounts = $ouMapDataElementCount.get( $chiildorgUnit ) )
+                                #set( $periodCounts = $periodList )
                                 #set( $count2 = 0 )
                                 #foreach( $result in $dsresultList )
                                     #set( $deCount = $dataElementCounts.get( $count2 ) )
+                                    #set( $periodCount = $periodCounts.get( $count2 ) )
                                     #if( $result < 0 )
                                         <td  bgcolor="white">&nbsp;</td>
                                     #elseif( $result == 0 )
-                                        <td align="center" bgcolor="#ff0000"><font color="#ffffff">$result% #if( $deCount != -1 ) ( $deCount ) #end</font></td>
+                                        <td align="center" bgcolor="#ff0000"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
                                     #elseif( $result > 75 )
-                                        <td align="center" bgcolor="#a0c0a0"><font color="#ffffff">$result% #if( $deCount != -1 ) ( $deCount ) #end</font></td>
+                                        <td align="center" bgcolor="#a0c0a0"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
                                     #elseif( $result > 40 && $result <= 75 )
-                                        <td align="center" bgcolor="#a0a0ff"><font color="#ffffff">$result% #if( $deCount != -1 ) ( $deCount ) #end</font></td>
+                                        <td align="center" bgcolor="#a0a0ff"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
                                     #else
-                                        <td align="center" bgcolor="#905090"><font color="#ffffff">$result% #if( $deCount != -1 ) ( $deCount ) #end</font></td>
+                                        <td align="center" bgcolor="#905090"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
                                     #end
                                     #set( $count2 = $count2 + 1 )
                                 #end

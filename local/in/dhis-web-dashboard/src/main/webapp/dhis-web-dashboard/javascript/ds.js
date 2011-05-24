@@ -527,4 +527,22 @@ function getOUDeatilsForDataStatusDataSetWise( orgUnitIds )
    });
 }
 
+// Null Report for Data Entry Status
+	
+//function getNullReportInfo( dsId, periodId, selOrgUnit )
+//{	
+	//alert("jjjjjjjjjjjj");
+/*var url = "nullReportResult.action?dsId="+dsId+"&periodId="+periodId+"&ouId="+selOrgUnit;
+	$('#contentDataRecord').dialog('destroy').remove();
+    $('<div id="contentDataRecord">' ).load(url).dialog({
+        title: 'Null Report',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 800,
+        height: 400
+    });*/
+//}
+ //evt.target.href = "nullReportResult.action?dsId="+dsId+"&periodId="+periodId+"&ouId="+selOrgUnit;	
 
