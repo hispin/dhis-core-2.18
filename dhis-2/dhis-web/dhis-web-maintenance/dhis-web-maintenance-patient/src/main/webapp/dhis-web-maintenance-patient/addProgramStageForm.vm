@@ -10,15 +10,20 @@ tr.selected{
 
 <script>
 jQuery( function(){
-	validation( 'addProgramStageForm', function( form ){ form.submit() }, function(){
+	validation( 'addProgramStageForm', function( form ){ 
+		form.submit();
+	}, function(){
 		selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );
-		compulsories = jQuery( "#compulsories" );
 		selectedDataElementsValidator.empty();
+		
+		compulsories = jQuery( "#compulsories" );
 		compulsories.empty();
-		jQuery("#selectedList").find("tr").each( function( i, item ){				
+		
+		jQuery("#selectedList").find("tr").each( function( i, item ){ 
 			selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
-			compulsory = jQuery( item ).find( "input[name='compulsory']:first");
-			compulsories.append( "<option value='" + compulsory.attr('checked') + "' selected='true'>" + compulsory.attr('checked') + "</option>" );
+			var compulsory = jQuery( item ).find( "input[name='compulsory']:first");
+			var checked = compulsory.attr('checked') ? true : false;
+			compulsories.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 		});
 	});
 	
@@ -29,7 +34,7 @@ jQuery( function(){
 
 <h3>$i18n.getString( "add_new_program_stage" )</h3>
 																		
-<form id="addProgramStageForm" name="addProgramStageForm" action="addProgramStage.action" method="post">
+<form id="addProgramStageForm" name="addProgramStageForm" action="addProgramStage.action" method="get">
 
 <div style="display:inline">
 	<input type="hidden" id="id" name="id" value="$program.id"/>
@@ -97,15 +102,12 @@ jQuery( function(){
 					<tbody id="selectedList"></tbody>
 				</table>
 			</div>
-			<select id="selectedDataElementsValidator" name="selectedList" multiple="multiple" class="{validate:{required:true}}" style="display:none"></select>
-			<select id="compulsories" name="compulsories" multiple="multiple" style="display:none"></select>
-        </td>
-        
+			</td>
       </tr>
-      
     </tbody>
 </table>
-
+<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="{validate:{required:true}}" style="display:none"></select>
+<select id="compulsories" name='compulsories' multiple="multiple" style="display:none"></select>     
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
 	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action'" style="width:10em"/>
