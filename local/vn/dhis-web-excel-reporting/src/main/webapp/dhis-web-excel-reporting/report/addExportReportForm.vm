@@ -1,8 +1,8 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'addReportExcelForm', function( form ){ form.submit() } );
+		validation( 'addExportReportForm', function( form ){ form.submit() } );
 
-		checkValueIsExist( "name", "validateReportExcelAction.action" );			
+		checkValueIsExist( "name", "validateExportReportAction.action" );			
 		
 		var cache = {},	lastXhr;
 		jQuery( "#group" ).autocomplete({
@@ -14,7 +14,7 @@
 					return;
 				}
 
-				lastXhr = jQuery.postJSON( "getReportExcelGroups.action", request, function( data, status, xhr ) {
+				lastXhr = jQuery.postJSON( "getExportReportGroups.action", request, function( data, status, xhr ) {
 					cache[ term ] = data;
 					if ( xhr === lastXhr ) {
 						response( data );
@@ -25,9 +25,9 @@
 
 	});	
 </script>
-<h3>$i18n.getString('reports') : $i18n.getString('add')</h3>
+<h3>$i18n.getString('export_reports') : $i18n.getString('add')</h3>
 
-<form id="addReportExcelForm" method="POST" action="addReportExcel.action">
+<form id="addExportReportForm" method="POST" action="addExportReport.action">
 	<table>
 		<tr>
 			<td><label for="name">$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -79,7 +79,7 @@
 			<td></td>
 			<td>
 				<input type="submit" value="$i18n.getString('ok')" style="width:150px"/>
-				<input type="button" value="$i18n.getString('cancel')" onclick="window.location = 'listReportExcel.action'" style="width:150px"/>
+				<input type="button" value="$i18n.getString('cancel')" onclick="window.location = 'listAllExportReport.action'" style="width:150px"/>
 			</td>			
 		</tr>	
 	</table>

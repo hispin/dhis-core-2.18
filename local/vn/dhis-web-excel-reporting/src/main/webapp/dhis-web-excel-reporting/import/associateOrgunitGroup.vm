@@ -1,11 +1,11 @@
 <h3>$i18n.getString( 'organisation_unit_group' )</h3>
-<form name="organisationUnitGroupReport" action="updateOrgnisationUnitGroupForExcelItemGroup.action" method="GET">
-<input type="hidden" name="id" id="id" value="$excelItemGroup.id"/>
+<form name="organisationUnitGroupReport" action="updateOrgnisationUnitGroupForImportReport.action" method="GET">
+<input type="hidden" name="id" id="id" value="$importReport.id"/>
 <table>
 	<colgroup>
-  		<col width="325px">
-  		<col width="80px">
- 		<col width="325px">
+  		<col width="325px"/>
+  		<col width="80px"/>
+ 		<col width="325px"/>
 		<col>
   	</colgroup>
 	
@@ -25,9 +25,9 @@
 			</select>
 		</td>
 		<td style="text-align:center">
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableGroups', 'selectedOrganisationUnitGroups' )"><br>
-			<input type="button" value="&lt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveSelectedById( 'selectedOrganisationUnitGroups', 'availableGroups' )"><br>		
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveAllById( 'availableGroups', 'selectedOrganisationUnitGroups' )"><br>
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableGroups', 'selectedOrganisationUnitGroups' )"><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveSelectedById( 'selectedOrganisationUnitGroups', 'availableGroups' )"><br/>		
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveAllById( 'availableGroups', 'selectedOrganisationUnitGroups' )"><br/>
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedOrganisationUnitGroups', 'availableGroups' )">
 		</td>
 		<td>
@@ -38,16 +38,16 @@
 			</select>
 		</td>
 		<td>
-			<a href="javascript:moveSelectedOptionToTop( 'selectedOrganisationUnitGroups' );"><img align="absmiddle" src="../images/move_top.png" style="cursor:pointer;width:20px;"></a><br><br>			
-			<a href="javascript:moveUpSelectedOption( 'selectedOrganisationUnitGroups' );"><img align="absmiddle" src="../images/move_up.png" style="cursor:pointer;width:20px;"></a><br><br>		
-			<a href="javascript:moveDownSelectedOption( 'selectedOrganisationUnitGroups' );"><img align="absmiddle" src="../images/move_down.png" style="cursor:pointer;width:20px;"></a><br><br>		
-			<a href="javascript:moveSelectedOptionToBottom( 'selectedOrganisationUnitGroups' );"><img align="absmiddle" src="../images/move_bottom.png" style="cursor:pointer;width:20px;"></a>			
+			<a href="javascript:moveSelectedOptionToTop( 'selectedOrganisationUnitGroups' );"><img align="absmiddle" src="../images/move_top.png" style="cursor:pointer;width:20px;"/></a><br/><br/>
+			<a href="javascript:moveUpSelectedOption( 'selectedOrganisationUnitGroups' );"><img align="absmiddle" src="../images/move_up.png" style="cursor:pointer;width:20px;"/></a><br/><br/>		
+			<a href="javascript:moveDownSelectedOption( 'selectedOrganisationUnitGroups' );"><img align="absmiddle" src="../images/move_down.png" style="cursor:pointer;width:20px;"/></a><br/><br/>		
+			<a href="javascript:moveSelectedOptionToBottom( 'selectedOrganisationUnitGroups' );"><img align="absmiddle" src="../images/move_bottom.png" style="cursor:pointer;width:20px;"/></a>			
 		</td>
 	</tr>
 	<tr>
 		<td colspan=4>
 			<input type="button" value="$i18n.getString( 'ok')" onClick="submitForm();"/>
-			<input type="button" value="$i18n.getString( 'cancel')" onclick="window.location='listAllExcelItemGroup.action'"/>
+			<input type="button" value="$i18n.getString( 'cancel')" onclick="window.location='listAllImportReport.action'"/>
 		</td>
 	</tr>
 </table>

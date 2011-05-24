@@ -1,37 +1,36 @@
 function previewAdvandReport() 
-{	
-	
-	var params = "reportId=" + byId('report').value + "&periodId=" + byId('period').value + "&organisationGroupId=" + byId("availableOrgunitGroups").value;
+{
+	var params = "exportReportId=" + byId('exportReport').value + "&periodId=" + byId('period').value + "&organisationGroupId=" + byId("availableOrgunitGroups").value;
 	
 	lockScreen();
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'reportXML' );
-	request.setCallbackSuccess( previewReportReceived );
+	request.setCallbackSuccess( previewExportReportReceived );
 	request.sendAsPost( params );
-	request.send( "previewAdvancedReportExcel.action" );	
+	request.send( "previewAdvancedExportReport.action" );	
 }
 
-function previewReport() {
+function previewExportReport() {
 	
-	var report = getFieldValue('report');
-	if(report.length == 0){
-		showErrorMessage(i18n_specify_report);
+	var exportReport = getFieldValue('exportReport');
+	if(exportReport.length == 0){
+		showErrorMessage(i18n_specify_export_report);
 		return;
 	}
 	
 	lockScreen();
 	
-	var url = "previewReportExcel.action?reportId=" + getListValue('report') + "&periodIndex=" + getListValue('period');
+	var url = "previewExportReport.action?exportReportId=" + getListValue('exportReport') + "&periodIndex=" + getListValue('period');
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'reportXML' );
-	request.setCallbackSuccess( previewReportReceived );
+	request.setCallbackSuccess( previewExportReportReceived );
 	request.send( url );	
 	
 }
 
-function previewReportReceived( parentElement ) 
+function previewExportReportReceived( parentElement ) 
 {
 	var aKey 		= new Array();
 	var aMerged 	= new Array();	
@@ -130,8 +129,7 @@ function previewReportReceived( parentElement )
 	
 	enable( 'printExcelReportButton' );
 
-	unLockScreen();	
-	
+	unLockScreen();
 }
 
 function getMergedNumberForEachCell( sKey, aKey, aMerged ) {
@@ -146,7 +144,7 @@ function getMergedNumberForEachCell( sKey, aKey, aMerged ) {
 return 1;
 }
 
-function printReport()
+function printExportReport()
 {
 	var tab = jQuery('#tabs').tabs().data('selected.tabs');	
 	

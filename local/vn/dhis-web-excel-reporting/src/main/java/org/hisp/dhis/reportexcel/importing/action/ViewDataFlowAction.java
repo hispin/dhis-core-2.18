@@ -30,10 +30,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemComparator;
+import org.hisp.dhis.reportexcel.importitem.ExcelItem;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.comparator.ImportItemComparator;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
@@ -46,63 +46,63 @@ import com.opensymphony.xwork2.Action;
 public class ViewDataFlowAction
     implements Action
 {
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private ExcelItemService excelItemService;
+    private ImportItemService importItemService;
+
+    public void setImportItemService( ImportItemService importItemService )
+    {
+        this.importItemService = importItemService;
+    }
 
     private SelectionManager selectionManager;
-
-    // --------------------------------------------------------------------
-    // Inputs && Outputs
-    // --------------------------------------------------------------------
-
-    private Integer excelItemGroupId;
-
-    private ArrayList<ExcelItem> excelItems;
-
-    private File upload;
-
-    private ExcelItemGroup excelItemGroup;
-
-    // --------------------------------------------------------------------
-    // Getters and Setters
-    // --------------------------------------------------------------------
 
     public void setSelectionManager( SelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
     }
 
-    public void setExcelItemService( ExcelItemService excelItemService )
-    {
-        this.excelItemService = excelItemService;
-    }
+    // -------------------------------------------------------------------------
+    // Inputs && Outputs
+    // -------------------------------------------------------------------------
+
+    private Integer importReportId;
+
+    private ExcelItemGroup importReport;
+
+    private ArrayList<ExcelItem> importItems;
+
+    private File upload;
+
+    // -------------------------------------------------------------------------
+    // Getters and Setters
+    // -------------------------------------------------------------------------
 
     public File getUpload()
     {
         return upload;
     }
 
-    public ExcelItemGroup getExcelItemGroup()
+    public ExcelItemGroup getImportReport()
     {
-        return excelItemGroup;
+        return importReport;
     }
 
-    public void setExcelItemGroupId( Integer excelItemGroupId )
+    public void setImportReportId( Integer importReportId )
     {
-        this.excelItemGroupId = excelItemGroupId;
+        this.importReportId = importReportId;
     }
 
-    public ArrayList<ExcelItem> getExcelItems()
+    public ArrayList<ExcelItem> getImportItems()
     {
-        return excelItems;
+        return importItems;
     }
 
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
@@ -110,11 +110,11 @@ public class ViewDataFlowAction
     {
         upload = new File( selectionManager.getUploadFilePath() );
 
-        excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
-        excelItems = new ArrayList<ExcelItem>( excelItemGroup.getExcelItems() );
- 
-        Collections.sort( excelItems, new ExcelItemComparator() );
+        importReport = importItemService.getImportReport( importReportId );
+        importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );
 
-        return excelItemGroup.getType();
+        Collections.sort( importItems, new ImportItemComparator() );
+
+        return importReport.getType();
     }
 }

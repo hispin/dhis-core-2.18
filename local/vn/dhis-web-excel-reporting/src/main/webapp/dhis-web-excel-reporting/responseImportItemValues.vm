@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<excelItemValues>
-#foreach($excelItemValue in $excelItemValues)
-	<excelItemValue>
-		<id>$!excelItemValue.excelItem.id</id>
-		<name>$encoder.xmlEncode($!excelItemValue.excelItem.name)</name>
-		<value>$excelItemValue.value</value>
-	</excelItemValue>
+<importItemValues>
+#foreach($importItemValue in $importItemValues)
+	<importItemValue>
+		<id>$!importItemValue.importItem.id</id>
+		<name>$encoder.xmlEncode($!importItemValue.importItem.name)</name>
+		<value>$importItemValue.value</value>
+	</importItemValue>
 #end
-</excelItemValues>
+</importItemValues>

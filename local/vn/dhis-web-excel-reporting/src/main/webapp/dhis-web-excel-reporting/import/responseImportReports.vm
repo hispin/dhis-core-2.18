@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<excelitemgroups>
-	#foreach($excelItemGroup in $excelItemGroups)
-		<excelitemgroup>
-			<id>$excelItemGroup.id</id>
-			<name>$encoder.xmlEncode( $!excelItemGroup.name )</name>
-			<type>$excelItemGroup.type</type>
-			<periodType>$excelItemGroup.periodType.name</periodType>
-			<excelTemplateFile>$excelItemGroup.excelTemplateFile</excelTemplateFile>
-		</excelitemgroup>
+<importReports>
+	#foreach($importReport in $importReports)
+		<importReport>
+			<id>$importReport.id</id>
+			<name>$encoder.xmlEncode( $!importReport.name )</name>
+			<type>$importReport.type</type>
+			<periodType>$importReport.periodType.name</periodType>
+			<excelTemplateFile>$importReport.excelTemplateFile</excelTemplateFile>
+		</importReport>
 	#end
-</excelitemgroups>
+</importReports>

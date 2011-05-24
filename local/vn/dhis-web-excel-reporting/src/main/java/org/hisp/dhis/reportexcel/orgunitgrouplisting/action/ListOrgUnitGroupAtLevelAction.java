@@ -32,8 +32,8 @@ import java.util.Map;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,11 +48,11 @@ public class ListOrgUnitGroupAtLevelAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -94,11 +94,11 @@ public class ListOrgUnitGroupAtLevelAction
         return organisationUnitLevel;
     }
 
-    private ReportExcelOganiztionGroupListing reportExcel;
+    private ReportExcelOganiztionGroupListing exportReport;
 
-    public ReportExcelOganiztionGroupListing getReportExcel()
+    public ReportExcelOganiztionGroupListing getExportReport()
     {
-        return reportExcel;
+        return exportReport;
     }
 
     // -------------------------------------------------------------------------
@@ -110,11 +110,11 @@ public class ListOrgUnitGroupAtLevelAction
     {
         organisationUnitLevel = organisationUnitService.getOrganisationUnitLevels();
 
-        reportExcel = (ReportExcelOganiztionGroupListing) reportService.getReportExcel( id );
+        exportReport = (ReportExcelOganiztionGroupListing) exportReportService.getExportReport( id );
 
-        availableOrganisationUnitGroups = reportExcel.getOrganisationUnitGroups();
+        availableOrganisationUnitGroups = exportReport.getOrganisationUnitGroups();
         
-        organisationUnitGroupAtLevel = reportExcel.getOrganisationUnitLevels();
+        organisationUnitGroupAtLevel = exportReport.getOrganisationUnitLevels();
 
         return SUCCESS;
     }

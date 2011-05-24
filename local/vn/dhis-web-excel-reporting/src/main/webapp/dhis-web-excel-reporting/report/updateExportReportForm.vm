@@ -1,8 +1,8 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'updateReportExcelForm', function( form ){ form.submit()} );	
+		validation( 'updateExportReportForm', function( form ){ form.submit()} );	
 		
-		checkValueIsExist( "name", "validateReportExcelAction.action", {id: "$report.id"} );
+		checkValueIsExist( "name", "validateExportReportAction.action", {id: "$exportReport.id"} );
 		
 		var cache = {},	lastXhr;
 		jQuery( "#group" ).autocomplete({
@@ -14,7 +14,7 @@
 					return;
 				}
 
-				lastXhr = jQuery.postJSON( "getReportExcelGroups.action", request, function( data, status, xhr ) {
+				lastXhr = jQuery.postJSON( "getExportReportGroups.action", request, function( data, status, xhr ) {
 					cache[ term ] = data;
 					if ( xhr === lastXhr ) {
 						response( data );
@@ -25,21 +25,21 @@
 	});	
 </script>
 
-<h3>$i18n.getString('reports') : $i18n.getString('update')</h3>
+<h3>$i18n.getString('export_reports') : $i18n.getString('update')</h3>
 
-<form id="updateReportExcelForm" method="POST" action="updateReportExcel.action">
-	<input type="hidden" value="$report.id" name="id" id="id"/>
+<form id="updateExportReportForm" method="POST" action="updateExportReport.action">
+	<input type="hidden" value="$exportReport.id" name="id" id="id"/>
 	<table>
 		<tr>
 			<td><label for="name">$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" name="name" id="name" value="$encoder.htmlEncode( $report.name )" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
+			<td><input type="text" name="name" id="name" value="$encoder.htmlEncode( $exportReport.name )" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('excel_template')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>				
 				<select name="excel" style="min-width:20em">
 					#foreach($templateFileName in $mapTemplateFiles.keySet())		
-						#if( $report.excelTemplateFile==$templateFileName)
+						#if( $exportReport.excelTemplateFile==$templateFileName)
 						<option value="$encoder.htmlEncode( $templateFileName )" selected="selected" >$encoder.htmlEncode( $templateFileName )</option>
 						#else
 						<option value="$encoder.htmlEncode( $templateFileName )" >$encoder.htmlEncode( $templateFileName )</option>
@@ -53,7 +53,7 @@
 			<td>
 				<select name="reportType" style="min-width:20em" disabled=true>
 					#foreach( $type in $reportTypes )
-						#if( $report.getReportType()==$type)
+						#if( $exportReport.getReportType()==$type)
 						<option value='$type' selected="selected">$i18n.getString($type)</option>
 						#else
 						<option value='$type'>$i18n.getString($type)</option>
@@ -64,30 +64,30 @@
 		</tr>	
 		<tr>		
 			<td><label>$i18n.getString('group')</label></td>
-			<td><input type="text" id="group" value="$encoder.htmlEncode( $report.group )" name="group" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
+			<td><input type="text" id="group" value="$encoder.htmlEncode( $exportReport.group )" name="group" style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
 		<td>		
 		<tr>
 			<td><label>$i18n.getString('period_postion_row')</label></td>
-			<td><input type="text" name="periodRow" value="$!report.periodRow"  style="width:10em" class="{validate:{required:false,number:true}}"/></td>
+			<td><input type="text" name="periodRow" value="$!exportReport.periodRow"  style="width:10em" class="{validate:{required:false,number:true}}"/></td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('period_postion_column')</label></td>
-			<td><input type="text" name="periodCol" value="$!report.periodColumn" style="width:10em" class="{validate:{required:false,number:true}}"/></td>
+			<td><input type="text" name="periodCol" value="$!exportReport.periodColumn" style="width:10em" class="{validate:{required:false,number:true}}"/></td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('organisation_position_row')</label></td>
-			<td><input type="text" name="organisationRow" value="$!report.organisationRow" style="width:10em" class="{validate:{required:false,number:true}}"/></td>
+			<td><input type="text" name="organisationRow" value="$!exportReport.organisationRow" style="width:10em" class="{validate:{required:false,number:true}}"/></td>
 		</tr>
 
 		<tr>		
 			<td><label>$i18n.getString('organisation_position_column')</label></td>
-			<td><input type="text" name="organisationCol" value="$!report.organisationColumn" style="width:10em" class="{validate:{required:false,number:true}}"/></td>
+			<td><input type="text" name="organisationCol" value="$!exportReport.organisationColumn" style="width:10em" class="{validate:{required:false,number:true}}"/></td>
 		<td>
 		<tr>
 			<td></td>
 			<td>
 				<input type="submit" value="$i18n.getString('ok')" style="width:150px"/>
-				<input type="button" value="$i18n.getString('cancel')" onclick="window.location = 'listReportExcel.action'" style="width:150px"/>
+				<input type="button" value="$i18n.getString('cancel')" onclick="window.location = 'listAllExportReport.action'" style="width:150px"/>
 			</td>			
 		</tr>	
 	</table>

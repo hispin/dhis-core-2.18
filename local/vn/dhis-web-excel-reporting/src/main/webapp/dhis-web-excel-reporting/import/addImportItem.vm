@@ -1,35 +1,35 @@
 <script>
 	jQuery(document).ready(function(){	
-		validation( 'addExcelItemForm', function( form ){ 			
+		validation( 'addImportItemForm', function( form ){ 			
 			form.submit();			
 		});	
-		checkValueIsExist( "name", "validateExcelItem.action" );
+		checkValueIsExist( "name", "validateImportItem.action" );
 		changeItemType();
 	});
 </script>
 
-<h3>$i18n.getString('excel_item') : $i18n.getString('add')</h3>
+<h3>$i18n.getString('import_item') : $i18n.getString('add')</h3>
 
-<form id="addExcelItemForm" name="addExcelItemForm" method="POST" action="addExcelItem.action">
-	<input type="hidden" id="excelItemGroupId" name="excelItemGroupId" value="$!excelItemGroup.id"/>
-	<input type="hidden" id="excelItemGroupType" name="excelItemGroupType" value="$!excelItemGroup.type"/>
+<form id="addImportItemForm" name="addImportItemForm" method="POST" action="addImportItem.action">
+	<input type="hidden" id="importReportId" name="importReportId" value="$!importReport.id"/>
+	<input type="hidden" id="importReportType" name="importReportType" value="$!importReport.type"/>
 	<table>
 		<tr>
-			<th colspan='2'>$i18n.getString('excelitem_group')</th>
+			<th colspan='2'>$i18n.getString('import_report')</th>
 		</tr>
 		<tr>
 			<td>$i18n.getString('name')</td>
-			<td>:$excelItemGroup.name</td>
+			<td>:$importReport.name</td>
 		</tr>
 		<tr>
 			<td>$i18n.getString('import_type')</td>
-			<td>:$excelItemGroup.type</td>
+			<td>:$importReport.type</td>
 		</tr>
 		<tr>
 			<td colspan="2" height="20px"></td>
 		</tr>
 		<tr>
-			<th colspan='2'>$i18n.getString('excel_item')</th>
+			<th colspan='2'>$i18n.getString('import_item')</th>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -57,7 +57,7 @@
 	<tr>
 		<td></td>
 		<td><input type="submit" value="$i18n.getString('ok')" id="okButton"/>
-			<input type="button" value="$i18n.getString('cancel')" onclick="window.location.href = 'listExcelItems.action?excelItemGroupId=$excelItemGroup.id'"/>
+			<input type="button" value="$i18n.getString('cancel')" onclick="window.location.href = 'listImportItems.action?importReportId=$importReport.id'"/>
 		</td>
 	</tr>		
 </table>

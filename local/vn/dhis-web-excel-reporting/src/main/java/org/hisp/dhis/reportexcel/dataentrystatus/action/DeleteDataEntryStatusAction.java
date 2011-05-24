@@ -1,9 +1,5 @@
 package org.hisp.dhis.reportexcel.dataentrystatus.action;
 
-import org.hisp.dhis.reportexcel.ReportExcelService;
-
-import com.opensymphony.xwork2.Action;
-
 /*
  * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
@@ -30,6 +26,11 @@ import com.opensymphony.xwork2.Action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import org.hisp.dhis.reportexcel.ExportReportService;
+
+import com.opensymphony.xwork2.Action;
+
 public class DeleteDataEntryStatusAction
     implements Action
 {
@@ -37,7 +38,7 @@ public class DeleteDataEntryStatusAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -54,19 +55,19 @@ public class DeleteDataEntryStatusAction
         this.dataStatusId = dataStatusId;
     }
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
-        reportService.deleteDataEntryStatus( dataStatusId );
+        exportReportService.deleteDataEntryStatus( dataStatusId );
 
         return SUCCESS;
     }

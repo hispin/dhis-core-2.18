@@ -29,8 +29,8 @@ package org.hisp.dhis.reportexcel.filemanager.action;
 import java.io.File;
 import java.util.Collection;
 
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.utils.FileUtils;
@@ -43,9 +43,9 @@ import org.hisp.dhis.reportexcel.utils.FileUtils;
 public class DeleteExcelTemplateAction
     extends ActionSupport
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportLocationManager reportLocationManager;
 
@@ -54,16 +54,16 @@ public class DeleteExcelTemplateAction
         this.reportLocationManager = reportLocationManager;
     }
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private String fileName;
 
@@ -72,9 +72,9 @@ public class DeleteExcelTemplateAction
         this.fileName = fileName;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
@@ -82,17 +82,17 @@ public class DeleteExcelTemplateAction
     {
         message = "";
 
-        Collection<ReportExcel> reports = reportService.getALLReportExcel();
+        Collection<ReportExcel> exportReports = exportReportService.getAllExportReport();
 
         int i = 0;
 
-        for ( ReportExcel report : reports )
+        for ( ReportExcel exportReport : exportReports )
         {
-            String name = report.getExcelTemplateFile();
+            String name = exportReport.getExcelTemplateFile();
 
             if ( name.equals( fileName ) )
             {
-                message += (i + 1) + ". " + report.getName() + "<br>";
+                message += (i + 1) + ". " + exportReport.getName() + "<br>";
 
                 i++;
             }
@@ -100,7 +100,7 @@ public class DeleteExcelTemplateAction
 
         if ( i > 0 )
         {
-            message = i18n.getString( "report_user_template" ) + "<br>" + message;
+            message = i18n.getString( "exportReport_user_template" ) + "<br>" + message;
 
             return ERROR;
         }

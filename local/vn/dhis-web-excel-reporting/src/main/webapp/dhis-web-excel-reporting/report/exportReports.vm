@@ -1,4 +1,4 @@
-<h3>$i18n.getString('reports') #openHelp( "excelReportingListOfReports" )</h3>
+<h3>$i18n.getString('export_reports') #openHelp( "excelReportingListOfExportReports" )</h3>
 <table width=100%>
 	<tr>
 		<td>
@@ -21,32 +21,32 @@
 		</tr>
 	</thead>	
 	<tbody id="list">	
-	#foreach($report in $reports)
-		<tr id="tr${report.id}">
-			<td>$encoder.htmlEncode( $report.name )</td>
-			<td>$i18n.getString($report.reportType)</td>
+	#foreach($exportReport in $exportReports)
+		<tr id="tr${exportReport.id}">
+			<td>$encoder.htmlEncode( $exportReport.name )</td>
+			<td>$i18n.getString($exportReport.reportType)</td>
 			<td>
-				<a href="downloadFile.action?fileName=$encoder.htmlEncode( $report.excelTemplateFile )" title="download">$encoder.htmlEncode( $report.excelTemplateFile )</a>
+				<a href="downloadFile.action?fileName=$encoder.htmlEncode( $exportReport.excelTemplateFile )" title="download">$encoder.htmlEncode( $exportReport.excelTemplateFile )</a>
 			</td>
 			<td align="left">
-				<a href="openDefineAssociationsForm.action?reportId=$report.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"/></a>
-				<a href="openReportExcelUserRole.action?id=$report.id" title="$i18n.getString( 'update_reportexcel_userrole' )"><img src="images/user_32.png" alt="$i18n.getString( 'update_reportexcel_userrole' )"/></a>				
-				<a href="updateReportExcelForm.action?id=$report.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>				
-				<a href="javascript:removeItem( $report.id, '$report.name', '$i18n.getString( 'confirm_delete' )', 'deleteReportExcel.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-				<a href="javascript:translate( '$report.getClass().getSimpleName()', '$report.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
+				<a href="openDefineAssociationsForm.action?exportReportId=$exportReport.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"/></a>
+				<a href="openExportReportUserRole.action?id=$exportReport.id" title="$i18n.getString( 'update_exportreport_userrole' )"><img src="images/user_32.png" alt="$i18n.getString( 'update_exportreport_userrole' )"/></a>				
+				<a href="updateExportReportForm.action?id=$exportReport.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>				
+				<a href="javascript:removeItem( $exportReport.id, '$exportReport.name', '$i18n.getString( 'confirm_delete' )', 'deleteExportReport.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+				<a href="javascript:translate( '$exportReport.getClass().getSimpleName()', '$exportReport.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
 			</td>
 			<td>	
-				<a href="listReportExcelItemAction.action?reportId=$report.id" title="$i18n.getString( 'report_item' )"><img src="../images/add_section.png" alt="$i18n.getString( 'report_item' )"/></a>
-				#if($report.isOrganisationUnitGroupListing())
-				<a href="openUpdateOrgnisationUnitGroupListingReport.action?id=$report.id" title="$i18n.getString( 'organisation_unit_group' )"><img src="images/group_1.jpg"/></a>
-				<a href="organisationUnitAtLevels.action?id=$report.id" title="$i18n.getString( 'set_organisationunit_group_level' )"><img src="images/organisationunitlevel.png" alt="$i18n.getString( 'set_organisationunit_group_level' )"/></a>				
+				<a href="listExportItemAction.action?exportReportId=$exportReport.id" title="$i18n.getString( 'export_item' )"><img src="../images/add_section.png" alt="$i18n.getString( 'export_item' )"/></a>
+				#if($exportReport.isOrgUnitGroupListing())
+				<a href="openUpdateOrgUnitGroupListingReport.action?id=$exportReport.id" title="$i18n.getString( 'organisation_unit_group' )"><img src="images/group_1.jpg"/></a>
+				<a href="organisationUnitAtLevels.action?id=$exportReport.id" title="$i18n.getString( 'set_organisationunit_group_level' )"><img src="images/organisationunitlevel.png" alt="$i18n.getString( 'set_organisationunit_group_level' )"/></a>				
 				#end
-				#if($report.isCategory())
-					<a href="listDataElementGroupOrder.action?id=$report.id" title="$i18n.getString( 'dataelement_groups' )"><img src="images/group.jpg" alt="$i18n.getString( 'dataelement_groups' )"/></a>				
+				#if($exportReport.isCategory())
+					<a href="listDataElementGroupOrder.action?id=$exportReport.id" title="$i18n.getString( 'dataelement_groups' )"><img src="images/group.jpg" alt="$i18n.getString( 'dataelement_groups' )"/></a>				
 				#end
 				
-				#if($report.isPeriodColumnListing())
-				<a href="periodColumns.action?id=$report.id" title="$i18n.getString( 'period_columns' )"><img src="images/calendar.png"/></a>
+				#if($exportReport.isPeriodColumnListing())
+				<a href="periodColumns.action?id=$exportReport.id" title="$i18n.getString( 'period_columns' )"><img src="images/calendar.png"/></a>
 				#end
 			</td>
 		</tr>		
@@ -58,5 +58,4 @@
 	jQuery(document).ready(function(){	  
 		tableSorter( 'listTable' );	
     });
-	
 </script>

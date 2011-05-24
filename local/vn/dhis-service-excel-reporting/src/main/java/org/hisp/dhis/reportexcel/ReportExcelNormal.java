@@ -64,7 +64,7 @@ public class ReportExcelNormal
     }
 
     @Override
-    public boolean isOrganisationUnitGroupListing()
+    public boolean isOrgUnitGroupListing()
     {
         return false;
     }

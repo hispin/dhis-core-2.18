@@ -36,7 +36,6 @@ import java.util.List;
 public class ReportExcelCategory
     extends ReportExcel
 {
-
     private List<DataElementGroupOrder> dataElementOrders;
 
     // -------------------------------------------------------------------------
@@ -81,7 +80,7 @@ public class ReportExcelCategory
     }
 
     @Override
-    public boolean isOrganisationUnitGroupListing()
+    public boolean isOrgUnitGroupListing()
     {
         return false;
     }

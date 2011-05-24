@@ -1,12 +1,12 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'addExcelItemGroupForm', function( form ){ form.submit() } );
-		checkValueIsExist( "name", "validateExcelItemGroup.action" );
+		validation( 'addImportReportForm', function( form ){ form.submit() } );
+		checkValueIsExist( "name", "validateImportReport.action" );
 	});	
 </script>
-<h3>$i18n.getString('excelitem_group') : $i18n.getString('add')</h3>
+<h3>$i18n.getString('import_report') : $i18n.getString('add')</h3>
 
-<form id="addExcelItemGroupForm" method="POST" action="addExcelItemGroup.action">
+<form id="addImportReportForm" method="POST" action="addImportReport.action">
 <table>
 	<tr>
 		<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -36,7 +36,7 @@
 		<td></td>
 		<td>
 			<input type="submit" value="$i18n.getString('ok')" style="width:120px"/>
-			<input type="button" value="$i18n.getString('cancel')" style="width:120px" onclick="window.location.href='listAllExcelItemGroup.action'"/>
+			<input type="button" value="$i18n.getString('cancel')" style="width:120px" onclick="window.location.href='listAllImportReport.action'"/>
 		</td>
 	</tr>
 </table>

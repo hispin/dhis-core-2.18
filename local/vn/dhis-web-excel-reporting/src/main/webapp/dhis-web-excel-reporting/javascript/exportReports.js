@@ -1,5 +1,5 @@
 //=========================================
-// REPORT EXCEL CATEGORY ACTION
+// EXPORT REPORT CATEGORY ACTION
 //=========================================
 
 /*
@@ -8,7 +8,7 @@
 
 function openAddDataElementGroups( id ) {
 
-	reportId = id;
+	exportReportId = id;
 	getALLDataElementGroups();		
 }
 
@@ -37,22 +37,22 @@ function getALLDataElementGroupsReceived( data ) {
 		var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
 		availableDataElementGroups.options.add(new Option(name, id));			
 	}
-	getReportDataElementGroups(reportId);
+	getReportDataElementGroups(exportReportId);
 }
 /*
-* Get DataElement Order of Report Excel
+* Get DataElement Order of Export Report
 */
 
-function getReportDataElementGroups( id ) {
+function getExportReportDataElementGroups( id ) {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getReportDataElementGroupsReceived );
-	request.send( "getReportExcel.action?id=" + id );	
+    request.setCallbackSuccess( getExportReportDataElementGroupsReceived );
+	request.send( "getExportReport.action?id=" + id );	
 
 }
 
-function getReportDataElementGroupsReceived( data ) {
+function getExportReportDataElementGroupsReceived( data ) {
 
 	var selectedDataElementGroups = document.getElementById('selectedDataElementGroups');
 	selectedDataElementGroups.options.length = 0;
@@ -87,7 +87,7 @@ function getReportDataElementGroupsReceived( data ) {
 
 function updateDataElementGroupOrder() {
 
-	var url = "updateDataElementGroupOrder.action?reportId=" + reportId;
+	var url = "updateDataElementGroupOrder.action?exportReportId=" + exportReportId;
 	var selectedDataElementGroups = document.getElementById('selectedDataElementGroups').options;
 	
 	for( var i = 0 ; i < selectedDataElementGroups.length ; i++ ) {
@@ -99,30 +99,30 @@ function updateDataElementGroupOrder() {
 }
 
 
-function backupReportExcel( id ) {
+function backupExportReport( id ) {
 
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( backupReportExcelReceived );
-	request.send( "backupReportExcel.action?id=" + id );	
+    request.setCallbackSuccess( backupExportReportReceived );
+	request.send( "backupExportReport.action?id=" + id );	
 
 }
 
-function backupReportExcelReceived( data ) {
+function backupExportReportReceived( data ) {
 
 	window.location = "downloadFile.action?outputFormat=application/xml-external-parsed-entity";
 }
 
-function restoreReportExcel() {
+function restoreExportReport() {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( restoreReportExcelReceived );
-	request.send( "restoreReportExcel.action");	
+    request.setCallbackSuccess( restoreExportReportReceived );
+	request.send( "restoreExportReport.action");	
 
 }
 
-function restoreReportExcelReceived( xmlObject ) {
+function restoreExportReportReceived( xmlObject ) {
 
 	var type = xmlObject.getAttribute( 'type' );
 	

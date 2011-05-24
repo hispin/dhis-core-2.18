@@ -1,48 +1,48 @@
 ﻿<script>
 	jQuery(document).ready(function(){	
-		validation( 'reportItem', function( form ){ 			
-			validateUpdateReportExcelItem( form );
+		validation( 'exportItem', function( form ){ 			
+			validateUpdateExportItem( form );
 		});
 	});
 	
-	var category = $reportExcel.isCategory();
+	var category = $exportReport.isCategory();
 	
 </script>
 
-<h3>$i18n.getString( 'update_report_excel_item' )</h3>
+<h3>$i18n.getString( 'update_export_item' )</h3>
 <br>
-<form id="reportItem" name="reportItem" method="post" action="updateReportExcelItem.action">
-	<input type="hidden" id="reportId" name="reportId" value="$reportExcel.id"/>
-	<input type="hidden" id="id" name="id" value="$reportExcelItem.id"/>
-	<input type="hidden" id="currentExpression" name="currentExpression" value="$reportExcelItem.expression"/>
+<form id="exportItem" name="exportItem" method="post" action="updateExportItem.action">
+	<input type="hidden" id="exportReportId" name="exportReportId" value="$exportReport.id"/>
+	<input type="hidden" id="id" name="id" value="$exportItem.id"/>
+	<input type="hidden" id="currentExpression" name="currentExpression" value="$exportItem.expression"/>
 	<table>
 		<tr>
-			<th colspan="2">$i18n.getString( 'report_excel' )</th>
+			<th colspan="2">$i18n.getString( 'export_report' )</th>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('name')</label></td>
-			<td>: $!encoder.htmlEncode($!reportExcel.name)</td>
+			<td>: $!encoder.htmlEncode( $!exportReport.name )</td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('report_type')</label></td>
-			<td>: $i18n.getString( $!reportExcel.getReportType() )</td>
+			<td>: $i18n.getString( $!exportReport.getReportType() )</td>
 		</tr>
 		<tr>
 			<td colspan="2" height="20px"></td>
 		</tr>
 		<tr>
-			<th colspan="2">$i18n.getString( 'report_excel_item' )</th>
+			<th colspan="2">$i18n.getString( 'export_item' )</th>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode($reportExcelItem.name)" style="width:20em" class="{validate:{required:true}}"/></td>
+			<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode($exportItem.name)" style="width:20em" class="{validate:{required:true}}"/></td>
 		</tr>		
 		<tr>
 			<td><label>$i18n.getString('item_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<select type="text" id="itemType" name="itemType" style="min-width:20em" onchange="changeItemType()">					
-					#foreach( $type in $reportExcel.getItemTypes() )
-					<option value='$type' #if($type==$reportExcelItem.getItemType()) selected="selected" #end >$i18n.getString( $type )</option>	
+					#foreach( $type in $exportReport.getItemTypes() )
+					<option value='$type' #if($type==$exportItem.getItemType()) selected="selected" #end >$i18n.getString( $type )</option>	
 					#end	
 				</select>
 			</td>
@@ -52,7 +52,7 @@
 			<td>
 				<select type="text" id="periodType" name="periodType" style="min-width:20em">
 					#foreach( $type in $periodTypes )
-						<option value='$type' #if($type==$reportExcelItem.getPeriodType()) selected="selected" #end>$i18n.getString( $type )</option>	
+						<option value='$type' #if($type==$exportItem.getPeriodType()) selected="selected" #end>$i18n.getString( $type )</option>	
 					#end				
 				</select>
 			</td>
@@ -61,21 +61,21 @@
 			<td><label>$i18n.getString('expression')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>				
 				<input type="button" id="expression-button" value="$i18n.getString('expression')" style="width:20em"/>											
-				<input type="hidden" id="expression" name="expression" value="$reportExcelItem.expression" style="width:15em" class="{validate:{required:true}}"/>				
+				<input type="hidden" id="expression" name="expression" value="$exportItem.expression" style="width:15em" class="{validate:{required:true}}"/>				
 			</td>
 			
 		</tr>	
 		<tr>
 			<td><label>$i18n.getString('sheet_no')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="sheetNo" name="sheetNo" value="$reportExcelItem.sheetNo"  style="width:20em" class="{validate:{required:true,number:true}}"/></td>
+			<td><input type="text" id="sheetNo" name="sheetNo" value="$exportItem.sheetNo"  style="width:20em" class="{validate:{required:true,number:true}}"/></td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('row')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="row" name="row" value="$reportExcelItem.row"  style="width:20em" class="{validate:{required:true,number:true}}"/></td>
+			<td><input type="text" id="row" name="row" value="$exportItem.row"  style="width:20em" class="{validate:{required:true,number:true}}"/></td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('column')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="column" name="column" value="$reportExcelItem.column" style="width:20em" class="{validate:{required:true,number:true}}"/></td>
+			<td><input type="text" id="column" name="column" value="$exportItem.column" style="width:20em" class="{validate:{required:true,number:true}}"/></td>
 		</tr>
 		<tr>
 			<td height="20px"></td>
@@ -84,8 +84,8 @@
 		<tr>
 			<td></td>
 			<td>
-				<input type="submit" value="$i18n.getString('ok')" id="reportItemButton" style="width:100px"/>
-				<input type="button" value="$i18n.getString('cancel')" onclick="window.location='listReportExcelItemAction.action?reportId=$reportExcel.id'" style="width:100px"/>
+				<input type="submit" value="$i18n.getString('ok')" id="exportItemButton" style="width:100px"/>
+				<input type="button" value="$i18n.getString('cancel')" onclick="window.location='listExportItemAction.action?exportReportId=$exportReport.id'" style="width:100px"/>
 			</td>
 		</tr>
 		
@@ -99,5 +99,3 @@
 #parse( "/dhis-web-excel-reporting/report/indicatorExpressionBuilderForm.vm" )
 
 #parse( "/dhis-web-excel-reporting/report/excelFormulaExpressionBuilderForm.vm" )
-
-

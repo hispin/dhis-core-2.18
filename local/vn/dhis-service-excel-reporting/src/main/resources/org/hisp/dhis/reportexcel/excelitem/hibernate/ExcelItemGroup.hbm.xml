@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup"
+	<class name="org.hisp.dhis.reportexcel.importitem.ExcelItemGroup"
 		table="excelitemgroup">
 
 		<id name="id" column="excelitemgroupid">
@@ -20,7 +20,7 @@
 
 		<set name="excelItems" lazy="false" cascade="delete">
 			<key column="excelitemgroupid" />
-			<one-to-many class="org.hisp.dhis.reportexcel.excelitem.ExcelItem" />
+			<one-to-many class="org.hisp.dhis.reportexcel.importitem.ExcelItem" />
 		</set>
 
 		<set name="organisationAssocitions" table="excelgroup_associations"

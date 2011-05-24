@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "generate_report" ) #openHelp( "excelReportingReport" )</h3>
+<h3>$i18n.getString( "generate_export_report" ) #openHelp( "excelReportingExportReport" )</h3>
 <form id="exportForm">
 <table>	
 	<tr>
@@ -8,26 +8,25 @@
 	<tr>
 		<td><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td >
-			<select type="text" id="group" name="group" style="min-width:300px" onchange="getReportExcelsByGroup()" >
+			<select type="text" id="group" name="group" style="min-width:300px" onchange="getExportReportsByGroup()" >
 				#foreach($group in $groups)
-					<option value='$group' #if( $group == $reportGroup ) selected="selected" #end>$encoder.htmlEncode( $group )</option>				
+					<option value='$group' #if( $group == $exportReportGroup ) selected="selected" #end>$encoder.htmlEncode( $group )</option>				
 				#end
 			</select>
 		</td>
     </tr>
 	<tr>
-		<td><label>$i18n.getString('reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label>$i18n.getString('export_reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="report" name="report" style="min-width:300px" >
-
+			<select type="text" id="exportReport" name="exportReport" style="min-width:300px" >
 			</select>
 		</td>
     </tr>
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="<<" onclick="getPreviousPeriod()" id="lastPeriod"/>
-			<input type="button" value=">>"  onclick="getNextPeriod()" id="nextPeriod"/>
+			<input type="button" value="&lt;&lt;" onclick="getPreviousPeriod()" id="lastPeriod"/>
+			<input type="button" value="&gt;&gt;" onclick="getNextPeriod()" id="nextPeriod"/>
 		</td>
     </tr>
 	<tr>
@@ -46,36 +45,32 @@
 </form>
 <hr/>
 <p>
-<input type="button" value='$i18n.getString( "preview_report" )' onclick="previewReport();" style="width:150px"/>
-<input type="button" onClick="generateReportExcel();" value='$i18n.getString( "generate_report" )' style="width:150px"/>
-<input type="button" id="printExcelReportButton" value='$i18n.getString("print")' onclick='printReport()' disabled style="width:150px"/>
+<input type="button" id="previewButton" value="$i18n.getString( 'preview_report' )" onclick="previewExportReport();" style="width:150px"/>
+<input type="button" id="generateExportReport" onclick="generateExportReport();" value='$i18n.getString( "generate_export_report" )' style="width:150px"/>
+<input type="button" id="printExcelReportButton" value='$i18n.getString("print")' onclick='printExportReport()' disabled style="width:150px"/>
 </p>
 <div id="previewDiv"></div>
 
 <script>
 
-	
-
 	var i18n_value_rounded = '$encoder.jsEscape( $i18n.getString("value_rounded"), "'" )';
-	var i18n_specify_report = '$encoder.jsEscape( $i18n.getString("specify_report"), "'" )';
+	var i18n_specify_export_report = '$encoder.jsEscape( $i18n.getString("specify_export_report"), "'" )';
 
 	#if ( $organisationUnit )
 		
 		$(document).ready(function() {
 		
-			getReportExcelsByGroup();
+			getExportReportsByGroup();
 		});
 	
 	#else
 		disable("group");
-		disable("report");
+		disable("exportReport");
 		disable("period");
-		disable("generate_report");
+		disable("generateExportReport");
 		disable("previewButton");
 		disable("nextPeriod");
 		disable("lastPeriod");	
 	#end
-	
-	
 	
 </script>

@@ -28,7 +28,7 @@
 package org.hisp.dhis.reportexcel.periodcolumn.action;
 
 import org.hisp.dhis.reportexcel.PeriodColumn;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 
 /**
@@ -44,7 +44,7 @@ public class GetPeriodColumnAction
     // Dependency
     // -------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
     // -------------------------------------------
     // Input & Output
@@ -59,9 +59,9 @@ public class GetPeriodColumnAction
         return periodColumn;
     }
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     public void setId( Integer id )
@@ -73,7 +73,7 @@ public class GetPeriodColumnAction
     public String execute()
         throws Exception
     {        
-        periodColumn = reportService.getPeriodColumn( id ) ;
+        periodColumn = exportReportService.getPeriodColumn( id ) ;
         
         return SUCCESS;
     }

@@ -36,10 +36,10 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemComparator;
-import org.hisp.dhis.reportexcel.importing.ExcelItemValue;
+import org.hisp.dhis.reportexcel.importing.ImportItemValue;
+import org.hisp.dhis.reportexcel.importitem.ExcelItem;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.importitem.comparator.ImportItemComparator;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -52,46 +52,45 @@ import com.opensymphony.xwork2.Action;
 public class ViewDataCategoryAction
     implements Action
 {
-
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Inputs && Outputs
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private ExcelItemGroup excelItemGroup;
+    private ExcelItemGroup importReport;
 
-    private ArrayList<ExcelItemValue> excelItemValues;
+    private ArrayList<ImportItemValue> importItemValues;
 
     private File upload;
 
-    public String[] excelItemIds;
+    public String[] importItemIds;
 
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getters and Setters
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setUpload( File upload )
     {
         this.upload = upload;
     }
 
-    public void setExcelItemGroup( ExcelItemGroup excelItemGroup )
+    public void setImportReport( ExcelItemGroup importReport )
     {
-        this.excelItemGroup = excelItemGroup;
+        this.importReport = importReport;
     }
 
-    public void setExcelItemIds( String[] excelItemIds )
+    public void setImportItemIds( String[] importItemIds )
     {
-        this.excelItemIds = excelItemIds;
+        this.importItemIds = importItemIds;
     }
 
-    public ArrayList<ExcelItemValue> getExcelItemValues()
+    public ArrayList<ImportItemValue> getImportItemValues()
     {
-        return excelItemValues;
+        return importItemValues;
     }
 
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // --------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public String execute()
     {
@@ -101,41 +100,38 @@ public class ViewDataCategoryAction
 
             HSSFWorkbook wb = new HSSFWorkbook( inputStream );
 
-            ArrayList<ExcelItem> excelItems = new ArrayList<ExcelItem>( excelItemGroup.getExcelItems() );
+            ArrayList<ExcelItem> importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );
 
-            Collections.sort( excelItems, new ExcelItemComparator() );
+            Collections.sort( importItems, new ImportItemComparator() );
 
-            excelItemValues = new ArrayList<ExcelItemValue>();
+            importItemValues = new ArrayList<ImportItemValue>();
 
-            for ( ExcelItem excelItem : excelItems )
+            for ( ExcelItem importItem : importItems )
             {
+                HSSFSheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
 
-                HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
+                int rowBegin = importItem.getRow();
 
-                int rowBegin = excelItem.getRow();
-
-                for ( DataElementGroupOrder dataElementGroup : excelItemGroup.getDataElementOrders() )
+                for ( DataElementGroupOrder dataElementGroup : importReport.getDataElementOrders() )
                 {
-
                     for ( DataElement dataElement : dataElementGroup.getDataElements() )
                     {
-
-                        String value = ExcelUtils.readValueImportingByPOI( rowBegin, excelItem.getColumn(), sheet );
+                        String value = ExcelUtils.readValueImportingByPOI( rowBegin, importItem.getColumn(), sheet );
 
                         ExcelItem item = new ExcelItem();
 
-                        item.setId( excelItem.getId() );
+                        item.setId( importItem.getId() );
 
-                        item.setExpression( excelItem.getExpression().replace( "*",
+                        item.setExpression( importItem.getExpression().replace( "*",
                             String.valueOf( dataElement.getId() ) ) );
 
-                        item.setName( excelItem.getName() + " - " + dataElement.getName() );
+                        item.setName( importItem.getName() + " - " + dataElement.getName() );
 
                         item.setRow( rowBegin );
 
-                        ExcelItemValue excelItemValue = new ExcelItemValue( item, value );
+                        ImportItemValue importItemValue = new ImportItemValue( item, value );
 
-                        excelItemValues.add( excelItemValue );
+                        importItemValues.add( importItemValue );
 
                         rowBegin++;
 
@@ -143,7 +139,7 @@ public class ViewDataCategoryAction
 
                 } // for (DataElement ...
 
-            }// end for (ExcelItem ...
+            }// end for (ImportItem ...
 
             return SUCCESS;
 

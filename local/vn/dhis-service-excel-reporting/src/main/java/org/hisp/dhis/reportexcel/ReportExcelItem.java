@@ -67,7 +67,7 @@ public class ReportExcelItem
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public ReportExcel getReportExcel()
+    public ReportExcel getExportReport()
     {
         return reportExcel;
     }

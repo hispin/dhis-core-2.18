@@ -34,8 +34,8 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.importitem.ImportItemService;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 /**
@@ -45,16 +45,30 @@ import org.hisp.dhis.reportexcel.state.SelectionManager;
 public class GetImportingParamsAction
     extends ActionSupport
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-    private ExcelItemService excelItemService;
+    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    {
+        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+    }
 
     private SelectionManager selectionManager;
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
+    private ImportItemService importItemService;
+
+    public void setImportItemService( ImportItemService importItemService )
+    {
+        this.importItemService = importItemService;
+    }
 
     // -------------------------------------------------------------------------
     // Inputs && Outputs
@@ -62,33 +76,15 @@ public class GetImportingParamsAction
 
     private OrganisationUnit organisationUnit;
 
-    private List<ExcelItemGroup> excelItemGroups;
+    private List<ExcelItemGroup> importReports;
 
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public void setSelectionManager( SelectionManager selectionManager )
+    public List<ExcelItemGroup> getImportReports()
     {
-        this.selectionManager = selectionManager;
-    }
-
-    public void setExcelItemService( ExcelItemService excelItemService )
-    {
-
-        this.excelItemService = excelItemService;
-
-    }
-
-    public List<ExcelItemGroup> getExcelItemGroups()
-    {
-        return excelItemGroups;
-    }
-
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-    {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-
+        return importReports;
     }
 
     public OrganisationUnit getOrganisationUnit()
@@ -141,7 +137,7 @@ public class GetImportingParamsAction
         // Load and sort ExcelItemGroups
         // ---------------------------------------------------------------------
 
-        excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService.getExcelItemGroups( organisationUnit ) );
+        importReports = new ArrayList<ExcelItemGroup>( importItemService.getImportReports( organisationUnit ) );
 
         return SUCCESS;
     }

@@ -3,7 +3,7 @@ function changeItemType()
 	value = getFieldValue( 'itemType' );
 	enable( 'expression-button' );
 	
-	setFieldValue( 'reportItem input[id=expression]', getFieldValue( 'reportItem input[id=currentExpression]') );
+	setFieldValue( 'exportItem input[id=expression]', getFieldValue( 'exportItem input[id=currentExpression]') );
 	
 	if( value == 'dataelement' ){
 		byId('expression-button' ).onclick = deExpressionBuilderForm;
@@ -13,8 +13,8 @@ function changeItemType()
 		byId('expression-button' ).onclick = excelFormulaExpressionBuilderForm ;
 	}else if( value == 'organisation' || value == 'serial' || value == 'dataelement_code' || value == 'dataelement_name' ){
 		disable( 'expression-button' );
-		setFieldValue( 'reportItem input[id=expression]', value );
-		removeValidatorRulesById( 'reportItem input[id=expression]' );
+		setFieldValue( 'exportItem input[id=expression]', value );
+		removeValidatorRulesById( 'exportItem input[id=expression]' );
 		removeValidatorRulesById( 'dataelement textarea[id=formula]' );
 	}
 }
@@ -49,11 +49,11 @@ function getExpression()
 }
 
 
-function validateAddReportExcelItem( form )
+function validateAddExportItem( form )
 {
-	jQuery.postJSON('validationReportExcelItem.action',
+	jQuery.postJSON('validationExportItem.action',
 	{
-		reportId: getFieldValue( 'reportId' ),
+		exportReportId: getFieldValue( 'exportReportId' ),
 		sheetNo: getFieldValue( 'sheetNo' ),
 		row: getFieldValue( 'row' ),
 		column: getFieldValue( 'column' ),
@@ -68,19 +68,19 @@ function validateAddReportExcelItem( form )
 	});
 }
 
-function validateUpdateReportExcelItem( form )
+function validateUpdateExportItem( form )
 {
-	jQuery.postJSON('validationReportExcelItem.action',
+	jQuery.postJSON('validationExportItem.action',
 	{
 		id: getFieldValue( 'id' ),
-		reportId: getFieldValue( 'reportId' ),
+		exportReportId: getFieldValue( 'exportReportId' ),
 		sheetNo: getFieldValue( 'sheetNo' ),
 		row: getFieldValue( 'row' ),
 		column: getFieldValue( 'column' ),
 		name: getFieldValue( 'name' )
 
 	},function( json ){
-		if(json.response == 'success'){					
+		if(json.response == 'success'){
 			form.submit();
 		}else{
 			showErrorMessage( json.message );
@@ -89,15 +89,15 @@ function validateUpdateReportExcelItem( form )
 }
 
 /*
-*	Delete multi report item
+*	Delete multi export item
 */
 
-function deleteMultiReportItem( confirm )
+function deleteMultiExportItem( confirm )
 {
 	if ( window.confirm( confirm ) ) 
 	{			
-		var listRadio = document.getElementsByName( 'reportItemCheck' );
-		var url = "deleteMultiReportItem.action?";
+		var listRadio = document.getElementsByName( 'exportItemCheck' );
+		var url = "deleteMultiExportItem.action?";
 		var j = 0;
 		
 		for( var i=0; i < listRadio.length; i++ )
@@ -106,7 +106,7 @@ function deleteMultiReportItem( confirm )
 			
 			if( item.checked == true )
 			{		
-				url += "ids=" + item.getAttribute( 'reportItemID' );
+				url += "ids=" + item.getAttribute( 'exportItemID' );
 				url += (i < listRadio.length-1) ? "&" : "";
 				j++;
 			}
@@ -132,37 +132,37 @@ function deleteMultiReportItem( confirm )
 }
 
 /**
-*	COPY REPORT ITEM(s) TO ANOTHER REPORTEXCEL
+*	COPY EXPORT_ITEM(s) TO ANOTHER EXPORT_REPORT
 */
-function copySelectedReportItemToReport() {
+function copySelectedExportItemToExportReport() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( copySelectedReportItemToReportReceived );
-	request.send( "getAllReportExcels.action" );
+	request.setCallbackSuccess( copySelectedExportItemToExportReportReceived );
+	request.send( "getAllExportReports.action" );
 }
 
-function copySelectedReportItemToReportReceived( xmlObject ) {
+function copySelectedExportItemToExportReportReceived( xmlObject ) {
 
-	var reports = xmlObject.getElementsByTagName("report");
-	var selectList = document.getElementById("targetReport");
+	var exportReports = xmlObject.getElementsByTagName("exportReport");
+	var selectList = document.getElementById("targetExportReport");
 	var options = selectList.options;
 	
 	options.length = 0;
 	
-	for( var i = 0 ; i < reports.length ; i++ ) {
+	for( var i = 0 ; i < exportReports.length ; i++ ) {
 	
-		var id = reports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
-		var name = reports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
+		var id = exportReports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
+		var name = exportReports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
 		options.add(new Option(name,id), null);
 	}
 	
-	showPopupWindowById( 'copyToReport', 450, 170 );
+	showPopupWindowById( 'copyToExportReport', 450, 170 );
 }
 
 
 /*
-*	Validate Copy Report Items to another ReportExcel
+*	Validate Copy Export Items to another Export Report
 */
 
 sheetId = 0;
@@ -172,7 +172,7 @@ itemsCurTarget = null;
 itemsDuplicated = null;
 warningMessages = "";
 
-function validateCopyReportItemsToReportExcel() {
+function validateCopyExportItemsToExportReport() {
 
 	sheetId	= $( "#targetSheetNo" ).val();
 	
@@ -183,9 +183,9 @@ function validateCopyReportItemsToReportExcel() {
 		message = i18n_input_sheet_no;
 	}
 	
-	if ( byId("targetReport").value == -1 )
+	if ( byId("targetExportReport").value == -1 )
 	{
-		message += "<br/>"+ i18n_choose_report;
+		message += "<br/>"+ i18n_choose_export_report;
 	}
 	
 	if ( message.length > 0 )
@@ -202,27 +202,27 @@ function validateCopyReportItemsToReportExcel() {
 
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( validateCopyReportItemsToReportExcelReceived );
+	request.setCallbackSuccess( validateCopyExportItemsToExportReportReceived );
 	
-	var param = "reportId=" + byId("targetReport").value;
+	var param = "exportReportId=" + byId("targetExportReport").value;
 		param += "&sheetNo=" + sheetId;
 	
 	request.sendAsPost( param );
-	request.send( "getReportExcelItemsBySheet.action" );
+	request.send( "getExportItemsBySheet.action" );
 	
 }
 
-function validateCopyReportItemsToReportExcelReceived( data ) {
+function validateCopyExportItemsToExportReportReceived( data ) {
 
-	var items = data.getElementsByTagName('reportItem');
+	var items = data.getElementsByTagName('exportItem');
 		
 	for (var i = 0 ; i < items.length ; i ++) 
 	{
 		itemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
 	}
 	
-	splitDuplicatedItems( 'reportItemCheck', 'reportItemID', 'reportItemName' );
-	saveCopyReportItemsToReportExcel();
+	splitDuplicatedItems( 'exportItemCheck', 'exportItemID', 'exportItemName' );
+	saveCopyExportItemsToExportReport();
 }
 
 function splitDuplicatedItems( itemCheckID, itemIDAttribute, itemNameAttribute ) {
@@ -263,60 +263,60 @@ function splitDuplicatedItems( itemCheckID, itemIDAttribute, itemNameAttribute )
 	}
 }
 
-function saveCopyReportItemsToReportExcel() {
+function saveCopyExportItemsToExportReport() {
 	
 	warningMessages = " ======= Sheet [" + sheetId + "] ========";
 	
-	// If have ReportItem(s) in Duplicating list
+	// If have ExportItem(s) in Duplicating list
 	// Preparing the warning message
 	if ( itemsDuplicated.length > 0 )
 	{
 		setUpDuplicatedItemsMessage();
 	}
 	
-	// If have also ReportItem(s) in Copying list
+	// If have also ExportItem(s) in Copying list
 	// Do copy and prepare the message notes
 	if ( ItemsSaved.length > 0 )
 	{
-		var url = "copyReportExcelItems.action";
-			url += "?reportId=" + $("#targetReport").val();
+		var url = "copyExportItems.action";
+			url += "?exportReportId=" + $("#targetExportReport").val();
 			url += "&sheetNo=" + sheetId;
 			
 		for (var i in ItemsSaved)
 		{
-			url += "&reportItems=" + ItemsSaved[i];
+			url += "&exportItems=" + ItemsSaved[i];
 		}
 		
 		executeCopyItems( url );
 	}
-	// If have no any ReportItem(s) will be copied
-	// and also have ReportItem(s) in Duplicating list
+	// If have no any ExportItem(s) will be copied
+	// and also have ExportItem(s) in Duplicating list
 	else if ( itemsDuplicated.length > 0 )
 	{
 		setMessage( warningMessages );
 	}
 		
-	hideById('copyToReport'); 
+	hideById('copyToExportReport'); 
 	unLockScreen();
 }
 
 
 /** 
-*	COPY SELECTED REPORTITEM(s) TO EXCEL_ITEM_GROUP
+*	COPY SELECTED EXPORT_ITEM(s) TO IMPORT_REPORT
 */
 
-function copySelectedReportItemToExcelItemGroup() {
+function copySelectedExportItemToImportReport() {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( copySelectedReportItemToExcelItemGroupReceived );
-	request.send( "getAllExcelItemGroup.action" );
+    request.setCallbackSuccess( copySelectedExportItemToImportReportReceived );
+	request.send( "getAllImportReport.action" );
 }
 
-function copySelectedReportItemToExcelItemGroupReceived( xmlObject ) {
+function copySelectedExportItemToImportReportReceived( xmlObject ) {
 	
-	var groups = xmlObject.getElementsByTagName("excelitemgroup");
-	var selectList = document.getElementById("targetExcelItemGroup");
+	var groups = xmlObject.getElementsByTagName("importReport");
+	var selectList = document.getElementById("targetImportReport");
 	var options = selectList.options;
 	
 	options.length = 0;
@@ -328,16 +328,16 @@ function copySelectedReportItemToExcelItemGroupReceived( xmlObject ) {
 		options.add(new Option(name,id), null);
 	}
 	
-	showPopupWindowById("copyToExcelItem", 450,180 );
+	showPopupWindowById("copyToImportItem", 450,180 );
 }
 
 /*
-*	Validate copy Report Items to Excel Item Group
+*	Validate copy Export Items to Import Report
 */
 
-function validateCopyReportItemsToExcelItemGroup() {
+function validateCopyExportItemsToImportReport() {
 
-	sheetId	= $("#targetExcelItemGroupSheetNo").val();
+	sheetId	= $("#targetImportReportSheetNo").val();
 	
 	var message = '';
 	
@@ -346,9 +346,9 @@ function validateCopyReportItemsToExcelItemGroup() {
 		message = i18n_input_sheet_no;
 	}
 	
-	if ( byId("targetExcelItemGroup").value == -1 )
+	if ( byId("targetImportReport").value == -1 )
 	{
-		message += "<br/>" + i18n_choose_report;
+		message += "<br/>" + i18n_choose_import_report;
 	}
 	
 	if ( message.length > 0 )
@@ -365,59 +365,59 @@ function validateCopyReportItemsToExcelItemGroup() {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( validateCopyReportItemsToExcelItemGroupReceived );
-	request.send( "getExcelItemsByGroup.action?excelItemGroupId=" + byId("targetExcelItemGroup").value );
+    request.setCallbackSuccess( validateCopyExportItemsToImportReportReceived );
+	request.send( "getImportItemsByGroup.action?importReportId=" + byId("targetImportReport").value );
 	
 }
 
-function validateCopyReportItemsToExcelItemGroupReceived( xmlObject ) {
+function validateCopyExportItemsToImportReportReceived( xmlObject ) {
 	
-	var items = xmlObject.getElementsByTagName('excelitem');
+	var items = xmlObject.getElementsByTagName('importItem');
 	
 	for (var i = 0 ;  i < items.length ; i ++) {
 	
 		itemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
 	}
 	
-	splitDuplicatedItems( 'reportItemCheck', 'reportItemID', 'reportItemName' );
+	splitDuplicatedItems( 'exportItemCheck', 'exportItemID', 'exportItemName' );
 	
-	saveCopiedReportItemsToExcelItemGroup();
+	saveCopiedExportItemsToImportReport();
 }
 
-function saveCopiedReportItemsToExcelItemGroup() {
+function saveCopiedExportItemsToImportReport() {
 	
 	warningMessages = " ======= Sheet [" + sheetId + "] ========";
 	
-	// If have ReportItem(s) in Duplicating list
+	// If have ExportItem(s) in Duplicating list
 	// preparing the warning message
 	if ( itemsDuplicated.length > 0 )
 	{
 		setUpDuplicatedItemsMessage();
 	}
 	
-	// If have also ReportItem(s) in Copying list
+	// If have also ExportItem(s) in Copying list
 	// do copy and prepare the message notes
 	if ( ItemsSaved.length > 0 )
 	{
-		var url = "copyExcelItems.action";
-			url += "?excelItemGroupId=" + $("#targetExcelItemGroup").val();
+		var url = "copyImportItems.action";
+			url += "?importReportId=" + $("#targetImportReport").val();
 			url += "&sheetNo=" + sheetId;
 			
 		for (var i in ItemsSaved)
 		{
-			url += "&reportItemIds=" + ItemsSaved[i];
+			url += "&exportItemIds=" + ItemsSaved[i];
 		}
 	
 		executeCopyItems( url );
 	}
-	// If have no any ReportItem(s) will be copied
-	// and also have ReportItem(s) in Duplicating list
+	// If have no any ExportItem(s) will be copied
+	// and also have ExportItem(s) in Duplicating list
 	else if ( itemsDuplicated.length > 0 )
 	{
 		setMessage( warningMessages );
 	}
 		
-	hideById("copyToExcelItem");
+	hideById("copyToImportItem");
 	unLockScreen();
 }
 
@@ -531,7 +531,7 @@ function getDataElementsByGroupCompleted( xmlObject ){
 
 
 /**
-* Indicator Report item type
+* Indicator Export item type
 */
 function openIndicatorExpression() {
 
@@ -603,7 +603,7 @@ function openCategoryExpression() {
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( openCategoryExpressionReceived );
-	request.send("getReportExcel.action?id=" + reportId);
+	request.send("getExportReport.action?id=" + exportReportId);
 	
 }
 

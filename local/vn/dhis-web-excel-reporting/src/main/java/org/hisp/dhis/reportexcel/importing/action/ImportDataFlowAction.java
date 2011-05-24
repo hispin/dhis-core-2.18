@@ -27,8 +27,8 @@ package org.hisp.dhis.reportexcel.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.importitem.ImportItemService;
 import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 
 import com.opensymphony.xwork2.Action;
@@ -41,18 +41,28 @@ public class ImportDataFlowAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private ExcelItemService excelItemService;
+    private ImportItemService importItemService;
+
+    public void setImportItemService( ImportItemService importItemService )
+    {
+        this.importItemService = importItemService;
+    }
 
     private PeriodGenericManager periodGenericManager;
+
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
+    {
+        this.periodGenericManager = periodGenericManager;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer excelItemGroupId;
+    private Integer importReportId;
 
     private Integer periodId;
 
@@ -64,14 +74,9 @@ public class ImportDataFlowAction
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-    public void setExcelItemGroupId( Integer excelItemGroupId )
+    public void setImportReportId( Integer importReportId )
     {
-        this.excelItemGroupId = excelItemGroupId;
-    }
-
-    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
-    {
-        this.periodGenericManager = periodGenericManager;
+        this.importReportId = importReportId;
     }
 
     public void setPeriodId( Integer periodId )
@@ -79,15 +84,9 @@ public class ImportDataFlowAction
         this.periodId = periodId;
     }
 
-    public void setExcelItemService( ExcelItemService excelItemService )
-    {
-        this.excelItemService = excelItemService;
-    }
-
     public Integer getSheetId()
     {
         return sheetId;
-
     }
 
     public void setSheetId( Integer sheetId )
@@ -108,15 +107,15 @@ public class ImportDataFlowAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
         periodGenericManager.setSelectedPeriodIndex( periodId );
 
-        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
+        ExcelItemGroup importReport = importItemService.getImportReport( importReportId );
 
-        return excelItemGroup.getType();
+        return importReport.getType();
     }
 
 }

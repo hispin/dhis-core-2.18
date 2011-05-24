@@ -34,7 +34,7 @@ import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -54,7 +54,7 @@ public class ListDataEntryStatusAction
     // Dependency
     // -------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
     private CurrentUserService currentUserService;
 
@@ -87,9 +87,9 @@ public class ListDataEntryStatusAction
         return dataStatus;
     }
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -116,7 +116,7 @@ public class ListDataEntryStatusAction
             dataSets.retainAll( dataSetUserAuthorityGroups );
         }       
 
-        dataStatus = new ArrayList<DataEntryStatus>( reportService.getDataEntryStatusDefaultByDataSets( dataSets ) );
+        dataStatus = new ArrayList<DataEntryStatus>( exportReportService.getDataEntryStatusDefaultByDataSets( dataSets ) );
 
         return SUCCESS;
     }

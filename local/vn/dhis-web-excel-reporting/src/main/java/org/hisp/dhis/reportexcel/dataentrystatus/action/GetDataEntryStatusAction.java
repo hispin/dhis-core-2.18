@@ -27,7 +27,7 @@ package org.hisp.dhis.reportexcel.dataentrystatus.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 
 import com.opensymphony.xwork2.Action;
@@ -43,7 +43,7 @@ public class GetDataEntryStatusAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -67,9 +67,9 @@ public class GetDataEntryStatusAction
         this.id = id;
     }
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -79,7 +79,7 @@ public class GetDataEntryStatusAction
     public String execute()
         throws Exception
     {
-        dataStatus = reportService.getDataEntryStatus( id );
+        dataStatus = exportReportService.getDataEntryStatus( id );
 
         return SUCCESS;
     }

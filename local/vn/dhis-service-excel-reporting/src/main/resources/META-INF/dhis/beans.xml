@@ -4,48 +4,49 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- ReportExcel -->
-	<bean id="org.hisp.dhis.reportexcel.ReportExcelStore"
-		class="org.hisp.dhis.reportexcel.hibernate.HibernateReportExcelStore">
+	<!-- ExportReport -->
+	<bean id="org.hisp.dhis.reportexcel.ExportReportStore"
+		class="org.hisp.dhis.reportexcel.hibernate.HibernateExportReportStore">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.ReportExcelService" class="org.hisp.dhis.reportexcel.DefaultReportExcelService">
-		<property name="reportStore" ref="org.hisp.dhis.reportexcel.ReportExcelStore" />
+	<bean id="org.hisp.dhis.reportexcel.ExportReportService"
+		class="org.hisp.dhis.reportexcel.DefaultExportReportService">
+		<property name="exportReportStore" ref="org.hisp.dhis.reportexcel.ExportReportStore" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- EXCELITEM STORE                                               -->
+	<!-- IMPORTITEM STORE                                               -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore"
-		class="org.hisp.dhis.reportexcel.excelitem.hibernate.HibernateExcelItemStore">
+	<bean id="org.hisp.dhis.reportexcel.importitem.ImportItemStore"
+		class="org.hisp.dhis.reportexcel.importitem.hibernate.HibernateImportItemStore">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 	</bean>
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- EXCELITEM SERVICE                                             -->
+	<!-- IMPORTITEM SERVICE                                             -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemService"
-		class="org.hisp.dhis.reportexcel.excelitem.DefaultExcelItemService">
-		<property name="excelItemStore"
-			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore" />
+	<bean id="org.hisp.dhis.reportexcel.importitem.ImportItemService"
+		class="org.hisp.dhis.reportexcel.importitem.DefaultImportItemService">
+		<property name="importItemStore"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportItemStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 
 
 	<!-- DeletionHandlers -->
 
-	<bean id="org.hisp.dhis.reportexcel.ReportExcelDeletionHandler"
-		class="org.hisp.dhis.reportexcel.ReportExcelDeletionHandler">
-		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+	<bean id="org.hisp.dhis.reportexcel.ExportReportDeletionHandler"
+		class="org.hisp.dhis.reportexcel.ExportReportDeletionHandler">
+		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemDeletionHandler"
-		class="org.hisp.dhis.reportexcel.excelitem.ExcelItemDeletionHandler">
-		<property name="excelItemService"
-			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+	<bean id="org.hisp.dhis.reportexcel.importitem.ImportItemDeletionHandler"
+		class="org.hisp.dhis.reportexcel.importitem.ImportItemDeletionHandler">
+		<property name="importItemService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
 	</bean>
 
 	<!-- DeletionManager -->
@@ -57,8 +58,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="arguments">
 			<list>
 				<list>
-					<ref local="org.hisp.dhis.reportexcel.ReportExcelDeletionHandler" />
-					<ref local="org.hisp.dhis.reportexcel.excelitem.ExcelItemDeletionHandler" />
+					<ref local="org.hisp.dhis.reportexcel.ExportReportDeletionHandler" />
+					<ref local="org.hisp.dhis.reportexcel.importitem.ImportItemDeletionHandler" />
 				</list>
 			</list>
 		</property>

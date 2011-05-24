@@ -1,35 +1,35 @@
 <script>
 	jQuery(document).ready(function(){	
-		validation( 'reportItem', function( form ){
-			validateAddReportExcelItem( form );
+		validation( 'exportItem', function( form ){
+			validateAddExportItem( form );
 		});
 	});
 	
-	var category = $reportExcel.isCategory();
+	var category = $exportReport.isCategory();
 	
 </script>
 
-<h3>$i18n.getString( 'add_report_excel_item' )</h3>
-<br>
-<form id="reportItem" name="reportItem" method="post" action="addReportExcelItem.action">
-	<input type="hidden" id="reportId" name="reportId" value="$!reportExcel.id"/>	
+<h3>$i18n.getString( 'add_export_item' )</h3>
+<br/>
+<form id="exportItem" name="exportItem" method="post" action="addExportItem.action">
+	<input type="hidden" id="exportReportId" name="exportReportId" value="$!exportReport.id"/>	
 	<table>
 		<tr>
-			<th colspan="2">$i18n.getString( 'report_excel' )</th>
+			<th colspan="2">$i18n.getString( 'export_report' )</th>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('name')</label></td>
-			<td>: $!encoder.htmlEncode($!reportExcel.name)</td>
+			<td>: $!encoder.htmlEncode($!exportReport.name)</td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('report_type')</label></td>
-			<td>: $i18n.getString( $!reportExcel.getReportType() )</td>
+			<td>: $i18n.getString( $!exportReport.getReportType() )</td>
 		</tr>
 		<tr>
 			<td colspan="2" height="20px"></td>
 		</tr>
 		<tr>
-			<th colspan="2">$i18n.getString( 'report_excel_item' )</th>
+			<th colspan="2">$i18n.getString( 'export_item' )</th>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -39,7 +39,7 @@
 			<td><label>$i18n.getString('item_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<select type="text" id="itemType" name="itemType" style="min-width:20em" onchange="changeItemType()">					
-					#foreach( $type in $reportExcel.getItemTypes() )
+					#foreach( $type in $exportReport.getItemTypes() )
 					<option value='$type'>$i18n.getString( $type )</option>	
 					#end	
 				</select>
@@ -82,8 +82,8 @@
 		<tr>
 			<td></td>
 			<td>
-				<input type="submit" value="$i18n.getString('ok')" id="reportItemButton" style="width:100px"/>
-				<input type="button" value="$i18n.getString('cancel')" onclick="window.location='listReportExcelItemAction.action?reportId=$reportExcel.id'" style="width:100px"/>
+				<input type="submit" value="$i18n.getString('ok')" id="exportItemButton" style="width:100px"/>
+				<input type="button" value="$i18n.getString('cancel')" onclick="window.location='listExportItemAction.action?exportReportId=$exportReport.id'" style="width:100px"/>
 			</td>
 		</tr>
 		
@@ -97,5 +97,3 @@
 #parse( "/dhis-web-excel-reporting/report/indicatorExpressionBuilderForm.vm" )
 
 #parse( "/dhis-web-excel-reporting/report/excelFormulaExpressionBuilderForm.vm" )
-
-

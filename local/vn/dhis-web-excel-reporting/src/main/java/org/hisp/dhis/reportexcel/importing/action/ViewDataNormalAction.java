@@ -36,8 +36,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
-import org.hisp.dhis.reportexcel.importing.ExcelItemValue;
+import org.hisp.dhis.reportexcel.importing.ImportItemValue;
+import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -57,9 +57,9 @@ public class ViewDataNormalAction
 
     private File upload;
 
-    private List<ExcelItemValue> excelItemValues;
+    private List<ImportItemValue> importItemValues;
 
-    private ArrayList<ExcelItem> excelItems;
+    private ArrayList<ExcelItem> importItems;
     
     private String message;
     
@@ -74,14 +74,14 @@ public class ViewDataNormalAction
         this.upload = upload;
     }
 
-    public void setExcelItems( ArrayList<ExcelItem> excelItems )
+    public void setImportItems( ArrayList<ExcelItem> importItems )
     {
-        this.excelItems = excelItems;
+        this.importItems = importItems;
     }
 
-    public List<ExcelItemValue> getExcelItemValues()
+    public List<ImportItemValue> getImportItemValues()
     {
-        return excelItemValues;
+        return importItemValues;
     }
 
     public String getMessage()
@@ -106,24 +106,24 @@ public class ViewDataNormalAction
 
             Workbook wb = new HSSFWorkbook( inputStream );
 
-            excelItemValues = new ArrayList<ExcelItemValue>();
+            importItemValues = new ArrayList<ImportItemValue>();
 
-            if ( excelItems == null || excelItems.isEmpty() )
+            if ( importItems == null || importItems.isEmpty() )
             {
                 message = i18n.getString( "import_excel_items_cannot_be_empty" );
                 
                 return ERROR;
             }
             
-            for ( ExcelItem excelItem : excelItems )
+            for ( ExcelItem importItem : importItems )
             {
-                Sheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
+                Sheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
 
-                String value = ExcelUtils.readValueImportingByPOI( excelItem.getRow(), excelItem.getColumn(), sheet );
+                String value = ExcelUtils.readValueImportingByPOI( importItem.getRow(), importItem.getColumn(), sheet );
 
-                ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value.trim() );
+                ImportItemValue importItemValue = new ImportItemValue( importItem, value.trim() );
 
-                excelItemValues.add( excelItemvalue );
+                importItemValues.add( importItemValue );
             }
 
             return SUCCESS;

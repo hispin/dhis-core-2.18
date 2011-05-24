@@ -35,6 +35,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 /**
  * @author Chau Thu Tran
+ * @version $Id$
  */
 
 public class ReportExcelOganiztionGroupListing
@@ -96,7 +97,7 @@ public class ReportExcelOganiztionGroupListing
     }
 
     @Override
-    public boolean isOrganisationUnitGroupListing()
+    public boolean isOrgUnitGroupListing()
     {
         return true;
     }

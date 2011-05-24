@@ -1,30 +1,30 @@
 function organisationUnitSelected( orgUnits )
 {	
-	getReportExcelsByGroup();	
+	getExportReportsByGroup();	
 }
 
 selection.setListenerFunction( organisationUnitSelected );
 
-function getReportExcelsByGroup() {
+function getExportReportsByGroup() {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getReportExcelsByGroupReceived );
+    request.setCallbackSuccess( getExportReportsByGroupReceived );
     request.sendAsPost("group=" + byId('group').value);
-	request.send( "getReportExcelsByGroup.action");
+	request.send( "getExportReportsByGroup.action");
 	
 }
 
-function getReportExcelsByGroupReceived( xmlObject ) {
+function getExportReportsByGroupReceived( xmlObject ) {
 
-	clearListById('report');
-	var list = xmlObject.getElementsByTagName("report");
+	clearListById('exportReport');
+	var list = xmlObject.getElementsByTagName("exportReport");
 	
 	for(var i=0;i<list.length;i++){
 		var item = list[i];
 		var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
 		var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-		addOption('report',name,id);	
+		addOption('exportReport',name,id);	
 	}
 	
 	var selectedOrganisationUnit = null;
@@ -34,18 +34,18 @@ function getReportExcelsByGroupReceived( xmlObject ) {
 		selectedOrganisationUnit = xmlObject.getElementsByTagName('organisationUnit')[0].firstChild.nodeValue;	
 		
 		enable("group");
-		enable("report");
+		enable("exportReport");
 		enable("period");
-		enable("generate_report");
+		enable("generateExportReport");
 		enable("previewButton");
 		enable("nextPeriod");
 		enable("lastPeriod");		
 	
 	}catch(e){
 		disable("group");
-		disable("report");
+		disable("exportReport");
 		disable("period");
-		disable("generate_report");
+		disable("generateExportReport");
 		disable("previewButton");
 		disable("nextPeriod");
 		disable("lastPeriod");		
@@ -74,11 +74,11 @@ function responseListPeriodReceived( json )
 	
 }
 
-function generateReportExcel() {
+function generateExportReport() {
 	
-	var report = getFieldValue('report');
-	if(report.length == 0){
-		showErrorMessage( i18n_specify_report );
+	var exportReport = getFieldValue('exportReport');
+	if(exportReport.length == 0){
+		showErrorMessage( i18n_specify_export_report );
 		return;
 	}
 	
@@ -86,16 +86,16 @@ function generateReportExcel() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( generateReportExcelReceived );
+	request.setCallbackSuccess( generateExportReportReceived );
 	
-	var params = "reportId=" + byId('report').value;
+	var params = "exportReportId=" + byId('exportReport').value;
 	params += "&periodIndex=" + byId('period').value;
 	request.sendAsPost(params);
-	request.send( 'generateReportExcel.action');
+	request.send( 'generateExportReport.action');
 	
 }
 
-function generateReportExcelReceived( xmlObject ) {
+function generateExportReportReceived( xmlObject ) {
 
 	var type = xmlObject.getAttribute("type");
 	
@@ -106,41 +106,41 @@ function generateReportExcelReceived( xmlObject ) {
 	}
 }
 
-function getALLReportExcelByGroup() {
+function getALLExportReportByGroup() {
 
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( getALLReportExcelByGroupReceived );
+	request.setCallbackSuccess( getALLExportReportByGroupReceived );
 	request.sendAsPost( "group=" + byId("group").value );
-	request.send( 'getALLReportExcelByGroup.action');
+	request.send( 'getALLExportReportByGroup.action');
 	
 }
 
-function getALLReportExcelByGroupReceived( xmlObject ) {
+function getALLExportReportByGroupReceived( xmlObject ) {
 
-	clearListById('report');
-	var list = xmlObject.getElementsByTagName("report");
+	clearListById('exportReport');
+	var list = xmlObject.getElementsByTagName("exportReport");
 	
 	for(var i=0;i<list.length;i++){
 		var item = list[i];
 		var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
 		var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-		addOption('report',name,id);
+		addOption('exportReport',name,id);
 	}
 }
 
-function generateAdvancedReportExcel() {	
+function generateAdvancedExportReport() {	
 
 	lockScreen();	
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( generateReportExcelReceived );
+	request.setCallbackSuccess( generateExportReportReceived );
 	
-	var params = "reportId=" + byId('report').value;
+	var params = "exportReportId=" + byId('exportReport').value;
 	params += "&periodId=" + byId('period').value;
 	params += "&organisationGroupId=" + byId("availableOrgunitGroups").value;
 	request.sendAsPost(params);
-	request.send( 'generateAdvancedReportExcel.action');
+	request.send( 'generateAdvancedExportReport.action');
 	
 }
