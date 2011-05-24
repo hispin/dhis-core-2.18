@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.system.util.IdentifiableObjectUtils;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.comparator.UserGroupComparator;
@@ -84,7 +85,7 @@ public class GetUserGroupsAction
 
         if ( key != null )
         {
-            filterByKey( key, true );
+            userGroups = IdentifiableObjectUtils.filterNameByKey( userGroups, key, true );
         }
 
         Collections.sort( userGroups, new UserGroupComparator() );
@@ -97,26 +98,5 @@ public class GetUserGroupsAction
         }
 
         return SUCCESS;
-    }
-
-    private void filterByKey( String key, boolean ignoreCase )
-    {
-        ListIterator<UserGroup> iterator = userGroups.listIterator();
-
-        if ( ignoreCase )
-        {
-            key = key.toLowerCase();
-        }
-
-        while ( iterator.hasNext() )
-        {
-            UserGroup userGroup = iterator.next();
-            String name = ignoreCase ? userGroup.getName().toLowerCase() : userGroup.getName();
-
-            if ( name.indexOf( key ) == -1 )
-            {
-                iterator.remove();
-            }
-        }
     }
 }

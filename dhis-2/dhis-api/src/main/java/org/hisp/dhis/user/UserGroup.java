@@ -1,11 +1,13 @@
 package org.hisp.dhis.user;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.NotImplementedException;
+import org.hisp.dhis.common.IdentifiableObject;
+
 public class UserGroup
-    implements Serializable
+    implements IdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -110,5 +112,10 @@ public class UserGroup
     {
         this.members = members;
     }
-    
+
+    @Override
+    public String getUuid()
+    {
+        throw new NotImplementedException();
+    }
 }
