@@ -30,8 +30,10 @@ package org.hisp.dhis.commons.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.comparator.UserGroupComparator;
@@ -57,6 +59,13 @@ public class GetUserGroupsAction
     // Input & Output
     // -------------------------------------------------------------------------
 
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
     private List<UserGroup> userGroups;
 
     public List<UserGroup> getUserGroups()
@@ -67,12 +76,17 @@ public class GetUserGroupsAction
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
-    
+
     @Override
     public String execute()
         throws Exception
     {
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+
+        if ( key != null )
+        {
+            filterByKey( key, true );
+        }
 
         Collections.sort( userGroups, new UserGroupComparator() );
 
@@ -84,5 +98,26 @@ public class GetUserGroupsAction
         }
 
         return SUCCESS;
+    }
+
+    private void filterByKey( String key, boolean ignoreCase )
+    {
+        ListIterator<UserGroup> iterator = userGroups.listIterator();
+
+        if ( ignoreCase )
+        {
+            key = key.toLowerCase();
+        }
+
+        while ( iterator.hasNext() )
+        {
+            UserGroup userGroup = iterator.next();
+            String name = ignoreCase ? userGroup.getName().toLowerCase() : userGroup.getName();
+
+            if ( name.indexOf( key ) == -1 )
+            {
+                iterator.remove();
+            }
+        }
     }
 }
