@@ -1,4 +1,4 @@
-<div class="paging-container">	
+<div class="paging-container">
 	#set ( $baseLink 		= $paging.baseLink )
 	#set ( $pageSize 		= $paging.pageSize )
 	#set ( $currentPage 	= $paging.currentPage )
@@ -15,11 +15,11 @@
 				</td>
 				<td>
 					<span>$i18n.getString("rows_in_page"):</span>
-					<input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onkeyup="changePageSize('$baseLink');">
+					<input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onKeyPress="changePageSize(event,'$baseLink');">
 				</td>
 				<td>
 					<span>$i18n.getString("jump_to_page"):</span>					
-					<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onkeyup="changePageSize('$baseLink');">
+					<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onKeyPress="changePageSize(event,'$baseLink');">
 				</td>
 				<td>
 					<input type="button" id="submitButton" value="$i18n.getString('go')" onclick="changePageSize('$baseLink');">
@@ -33,8 +33,8 @@
 			<div class="paging">
 			#if ($currentPage > 1)
 				#set ( $prev = $currentPage - 1 )
-				<a href="javascript:ajaxPaging( 1,${pageSize} );" class="first" title="First">&laquo;&laquo;</a>
-				<a href="javascript:ajaxPaging( ${prev},${pageSize} );" class="prev" title="Previous">&laquo;</a>
+				<a href="javascript:pagingList( 1,${pageSize} );" class="first" title="First">&laquo;&laquo;</a>
+				<a href="javascript:pagingList( ${prev},${pageSize} );" class="prev" title="Previous">&laquo;</a>
 			#else
 				<span class="first" title="First">&laquo;&laquo;</span>
 				<span class="prev" title="Previous">&laquo;</span>
@@ -47,7 +47,7 @@
 						<span class="seperator">|</span>
 					#end
 					#if( $p != $currentPage )
-						<a href="javascript:ajaxPaging( ${p},${pageSize} );" class="page" title="Page $p">$p</a>
+						<a href="javascript:pagingList( ${p},${pageSize} );" class="page" title="Page $p">$p</a>
 					#else
 						<span class="page" title="Page $p">$p</span>
 					#end
@@ -56,8 +56,8 @@
 			
 			#if ( $currentPage < $numberOfPages )
 				#set ( $next = $currentPage + 1 )
-				<a href="javascript:ajaxPaging(${next},${pageSize} );" class="next" title="Next">&raquo;</a>
-				<a href="javascript:ajaxPaging(${numberOfPages},${pageSize} );" class="last" title="Last">&raquo;&raquo;</a>
+				<a href="javascript:pagingList(${next},${pageSize} );" class="next" title="Next">&raquo;</a>
+				<a href="javascript:pagingList(${numberOfPages},${pageSize} );" class="last" title="Last">&raquo;&raquo;</a>
 			#else
 				<span class="next" title="Next">&raquo; </span>
 				<span class="last" title="Last">&raquo;&raquo;</span>
@@ -76,35 +76,9 @@ var isAjax;
 var contentDiv;
 var isShowLoader;
 
-function ajaxPaging( currentPage, pageSize )
+function pagingList( currentPage, pageSize )
 {
-	if( isAjax == undefined )
-	{
-		window.location.href = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
-	}
-	else
-	{
-		var url = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
-		if( contentDiv == undefined) { $( '#contentDiv' ).load(url); }
-		else { $( '#' + contentDiv ).load(url); }
-	}
-}
-
-function changePageSize( baseLink )
-{
-    var pageSize = jQuery("#sizeOfPage").val();
-    
-    if(pageSize < 1)
-    {
-    	pageSize = 1;
-    }
-    
-	var currentPage = jQuery("#jumpToPage").val();
-	
-	jQuery.cookie("pageSize", pageSize, {path: "/"});
-	
-	var url = baseLink + 'currentPage=' + currentPage + '&pageSize=' + pageSize;
-	
+	var url = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
 	if( isAjax == undefined )
 	{
 		window.location.href = url;
@@ -114,6 +88,47 @@ function changePageSize( baseLink )
 		if( contentDiv == undefined) { $( '#contentDiv' ).load(url); }
 		else { $( '#' + contentDiv ).load(url); }
 	}
+}
+
+function changePageSize( e, baseLink )
+{
+	var key = getKeyCode(e);
+	
+	if ( key==13 )// Enter
+	{
+		// ---------------------------------------------------
+		// validate parametter
+		// ---------------------------------------------------
+		
+		var pageSize = jQuery("#sizeOfPage").val();
+		
+		if ( pageSize < 1)
+		{
+			pageSize = 1;
+		}
+
+		var currentPage = jQuery("#jumpToPage").val();
+		var numberOfPages = eval("$numberOfPages");
+		if ( currentPage > numberOfPages )
+		{
+			currentPage = numberOfPages;
+		}
+		
+		jQuery.cookie("pageSize", pageSize, {path: "/"});
+		
+		// ---------------------------------------------------
+		// Paging
+		// ---------------------------------------------------
+		
+		pagingList( currentPage, pageSize );
+	}
+}
+
+function getKeyCode(e)
+{
+	 if (window.event)
+		return window.event.keyCode;
+	 return (e)? e.which : null;
 }
 
 </script>
