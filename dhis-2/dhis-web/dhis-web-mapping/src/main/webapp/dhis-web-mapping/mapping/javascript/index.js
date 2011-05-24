@@ -137,7 +137,7 @@
     var periodTypeStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllPeriodTypes' + G.conf.type,
         root: 'periodTypes',
-        fields: ['name','displayName'],
+        fields: ['name'],
         autoLoad: false,
         isLoaded: false,
         listeners: {

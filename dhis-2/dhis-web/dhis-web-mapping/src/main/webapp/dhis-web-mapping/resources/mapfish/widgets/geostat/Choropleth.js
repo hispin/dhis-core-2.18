@@ -476,7 +476,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             typeAhead: true,
             editable: false,
             valueField: 'name',
-            displayField: 'displayName',
+            displayField: 'name',
             mode: 'remote',
             forceSelection: true,
             triggerAction: 'all',
