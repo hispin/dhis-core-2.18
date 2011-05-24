@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.comparator.UserGroupComparator;
