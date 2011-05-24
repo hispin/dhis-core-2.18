@@ -4,21 +4,11 @@
 		var jqDataElementsSelectedList = jQuery("#dataElementsSelectedList");
 		var jqIndicatorsSelectedList = jQuery("#indicatorsSelectedList");
 
-		jQuery("#availableDataElementsList").dblclick(function() {
-			dhisPaging_availableList_dblclick("availableDataElementsList", "dataElementsSelectedList", "removeDataElements");		
-		});
+		jQuery("#availableDataElementsList").dblclick(dhisPaging_availableList_dblclick("availableDataElementsList", "dataElementsSelectedList", "removeDataElements"));
+		jqDataElementsSelectedList.dblclick(dhisPaging_selectedList_dblclick("dataElementsSelectedList", "availableDataElementsList", "removeDataElements"));
 
-		jqDataElementsSelectedList.dblclick(function() {
-			dhisPaging_selectedList_dblclick("dataElementsSelectedList", "availableDataElementsList", "removeDataElements");
-		});
-
-		jQuery("#availableIndicatorsList").dblclick(function() {
-			dhisPaging_availableList_dblclick("availableIndicatorsList", "indicatorsSelectedList", "removeIndicators");
-		});
-
-		jqIndicatorsSelectedList.dblclick(function() {
-			dhisPaging_selectedList_dblclick("indicatorsSelectedList", "availableIndicatorsList", "removeIndicators");
-		});
+		jQuery("#availableIndicatorsList").dblclick(dhisPaging_availableList_dblclick("availableIndicatorsList", "indicatorsSelectedList", "removeIndicators"));
+		jqIndicatorsSelectedList.dblclick(dhisPaging_selectedList_dblclick("indicatorsSelectedList", "availableIndicatorsList", "removeIndicators"));
 
 		jQuery("#availableDataElementsList").dhisPaging({
 			source: "../dhis-web-commons-ajax-json/getDataElements.action",
