@@ -1,6 +1,10 @@
 jQuery(document).ready(function() {
 
-	selection.setListenerFunction(organisationUnitModeSelected);
+	selectionTreeSelection.setListenerFunction( organisationUnitModeSelected );
+	selectionTreeSelection.setMultipleSelectionAllowed( false );
+	selectionTree.clearSelectedOrganisationUnits();
+	selectionTree.buildSelectionTree();
+	
 	datePickerInRange('fromDate', 'toDate');
 
 	validation2('databrowser', function(form) {

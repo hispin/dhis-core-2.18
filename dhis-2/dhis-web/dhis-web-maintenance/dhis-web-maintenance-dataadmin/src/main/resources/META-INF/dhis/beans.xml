@@ -128,8 +128,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="organisationUnitGroupService"
@@ -322,5 +322,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
 	</bean>
-		
+	
 </beans>
