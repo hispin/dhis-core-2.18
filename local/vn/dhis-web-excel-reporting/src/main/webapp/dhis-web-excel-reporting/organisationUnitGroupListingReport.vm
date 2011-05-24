@@ -1,12 +1,12 @@
 <h3>$i18n.getString( 'organisation_unit_group' )</h3>
-<form name="organisationUnitGroupReport" action="updateOrgnisationUnitGroupListingReport.action" method="GET">
-<input type="hidden" name="id" value="$reportExcelOganiztionGroupListing.id"/>
+<form name="organisationUnitGroupReport" action="updateOrgUnitGroupListingReport.action" method="GET">
+<input type="hidden" name="id" value="$exportReportOrgUnitGroupListing.id"/>
 <table>
 	<colgroup>
-  		<col width="325px">
-  		<col width="80px">
- 		<col width="325px">
-		<col>
+  		<col width="325px"/>
+  		<col width="80px"/>
+ 		<col width="325px"/>
+		<col/>
   	</colgroup>
 	
   	<tr>
@@ -47,7 +47,7 @@
 	<tr>
 		<td colspan=4>
 			<input type="button" value="$i18n.getString( 'ok')" onclick="submitForm()"/>
-			<input type="button" value="$i18n.getString( 'cancel')" onclick="window.location='listReportExcel.action'"/>
+			<input type="button" value="$i18n.getString( 'cancel')" onclick="window.location='listExportReport.action'"/>
 		</td>
 	</tr>
 </table>

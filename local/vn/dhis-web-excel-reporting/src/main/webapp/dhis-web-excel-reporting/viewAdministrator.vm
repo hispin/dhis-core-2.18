@@ -2,10 +2,10 @@
 
 <ul id="introList">
     #introListImgItem( "getConfiguration.action" "configuration" "systemsettings")
-    #introListImgItem( "listReportExcel.action" "reports" "pivottable")
+    #introListImgItem( "listAllExportReport.action" "export_reports" "pivottable")
 	#introListImgItem( "jcharts.action" "chart" "jchart")
     #introListImgItem( "listDataEntryStatus.action" "data_status" "validationcriteria")
-	#introListImgItem( "listAllExcelItemGroup.action" "excel_item" "program" )
+	#introListImgItem( "listAllImportReport.action" "import_item" "program" )
     #introListImgItem( "listAllExcelTemplates.action" "excel_template_management" , "excel")
 	#introListImgItem( "javascript: cleanUp();" "clean_up" "clean-up")
 </ul>

@@ -5,10 +5,10 @@
 	<tr>
 		<td colspan=2>
 			<input type="button" onclick="openAddDataElementGroupOrder()" value="$i18n.getString('add')" style="width:100px"/>
-			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='listReportExcel.action'" style="width:100px">
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location='listExportReport.action'" style="width:100px">
 		</td>
 		<td width="100px">
-			<input type="button" value="$i18n.getString( "update_order" )" onclick="updateDataElementGroupOrder()" style="width:150px">
+			<input type="button" value="$i18n.getString( 'update_order' )" onclick="updateDataElementGroupOrder()" style="width:150px">
 		</td>
 	</tr>
 	<tr>
@@ -38,9 +38,7 @@
 #end
 </ul> 
 
-
-
-<div id="dataElementGroups">	
+<div id="dataElementGroups">
 <form name="dataElementGroups" id="dataElementGroupsForm" method="POST">
 <input type="hidden" name="id" value="$report.id"/>
 <input type="hidden" name="dataElementGroupOrderId" id="dataElementGroupOrderId"/>
@@ -66,10 +64,10 @@
 			<select id="availableDataElements" name="availableDataElements" multiple size=13 style="width:300px" ondblclick="moveSelectedById('availableDataElements','dataElementIds');"></select>
 			</td>
 			<td width="7%" align="center">
-				<input type="button" value=">" onclick="moveSelectedById('availableDataElements','dataElementIds');" style="width:50px"/><br>
-				<input type="button" value="<" onclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" style="width:50px"/><br>
-				<input type="button" value=">>" onclick="moveAllById('availableDataElements' , 'dataElementIds' );" style="width:50px"/><br>
-				<input type="button" value="<<" onclick="moveAllById('dataElementIds' , 'availableDataElements' );" style="width:50px"/>
+				<input type="button" value="&gt;" onclick="moveSelectedById('availableDataElements','dataElementIds');" style="width:50px"/><br>
+				<input type="button" value="$lt;" onclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" style="width:50px"/><br>
+				<input type="button" value="&gt;&gt;" onclick="moveAllById('availableDataElements' , 'dataElementIds' );" style="width:50px"/><br>
+				<input type="button" value="$lt;$lt;" onclick="moveAllById('dataElementIds' , 'availableDataElements' );" style="width:50px"/>
 			</td>
 			<td width="23%">
 				<select id="dataElementIds" name="dataElementIds" multiple size=13 style="width:300px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' );"/>
@@ -88,8 +86,7 @@
 		<input type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="jQuery('#dataElementGroups').dialog('close')"/>		
 	</p>
 </form>
-</div>	
-
+</div>
 
 <script>
 	var i18n_confirm_delete = '$encoder.jsEscape($i18n.getString( 'confirm_delete' ) , "'")';	
@@ -110,5 +107,3 @@
 	});
 	
 </script>
-
-

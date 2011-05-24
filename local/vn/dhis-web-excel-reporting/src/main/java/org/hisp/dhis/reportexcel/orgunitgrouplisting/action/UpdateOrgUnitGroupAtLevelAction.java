@@ -33,8 +33,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,11 +49,11 @@ public class UpdateOrgUnitGroupAtLevelAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -74,11 +74,11 @@ public class UpdateOrgUnitGroupAtLevelAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer reportId;
+    private Integer exportReportId;
 
-    public void setReportId( Integer reportId )
+    public void setExportReportId( Integer exportReportId )
     {
-        this.reportId = reportId;
+        this.exportReportId = exportReportId;
     }
 
     private Integer orgUnitGroupId;
@@ -102,11 +102,11 @@ public class UpdateOrgUnitGroupAtLevelAction
     public String execute()
         throws Exception
     {
-        ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
-            .getReportExcel( reportId );
+        ReportExcelOganiztionGroupListing exportReport = (ReportExcelOganiztionGroupListing) exportReportService
+            .getExportReport( exportReportId );
 
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels = new HashMap<OrganisationUnitGroup, OrganisationUnitLevel>(
-            reportExcel.getOrganisationUnitLevels() );
+            exportReport.getOrganisationUnitLevels() );
 
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( orgUnitGroupId );
@@ -122,9 +122,9 @@ public class UpdateOrgUnitGroupAtLevelAction
             orgUniGroupAtLevels.remove( organisationUnitGroup );
         }
 
-        reportExcel.setOrganisationUnitLevels( orgUniGroupAtLevels );
+        exportReport.setOrganisationUnitLevels( orgUniGroupAtLevels );
 
-        reportService.updateReportExcel( reportExcel );
+        exportReportService.updateExportReport( exportReport );
 
         return SUCCESS;
     }

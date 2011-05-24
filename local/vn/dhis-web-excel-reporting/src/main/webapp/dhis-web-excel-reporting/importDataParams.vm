@@ -8,7 +8,7 @@
 
 <table width="62%">
 	<h3>$i18n.getString('import_data') #openHelp( "excelReportingImportData" )</h3>
-	<form name="importingParam" id="importingParam" action="uploadExcelImport.action" method="post" enctype="multipart/form-data">   
+	<form name="importingParam" id="importingParam" action="uploadExcelImport.action" method="POST" enctype="multipart/form-data">   
 		<tr>
 			<td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' )</td>
 			<td width="82%">
@@ -18,11 +18,11 @@
 		</tr>
 	</form>
 	<tr>
-		<td>$i18n.getString( 'excelitem_group' )</td>
+		<td>$i18n.getString( 'import_report' )</td>
 		<td>
-			<select type="text" id="excelItemGroupId" name="excelItemGroupId" #if(!$!fileExcel || !$!organisationUnit) disabled #end style="min-width:20em;" onchange="getPeriodsByExcelItemGroup(this.value)">					
-			#foreach($excelItemGroup in $excelItemGroups)
-				<option value="$!excelItemGroup.id">$!encoder.htmlEncode($!excelItemGroup.name)</option>
+			<select type="text" id="importReportId" name="importReportId" #if(!$!fileExcel || !$!organisationUnit) disabled #end style="min-width:20em;" onchange="getPeriodsByImportReport(this.value)">					
+			#foreach($importReport in $importReports)
+				<option value="$!importReport.id">$!encoder.htmlEncode($!importReport.name)</option>
 			#end
 			</select>
 			<input type="button" onClick="javascript: getPreviewImportData();" style="width:100px" value="$i18n.getString('preview')" #if(!$!fileExcel || !$!organisationUnit) disabled #end>
@@ -52,7 +52,7 @@
 				</td>
 			</tr>
 		</table>
-		<table id="showExcelItemValues" width="100%">	
+		<table id="showImportItemValues" width="100%">	
 		<tr>
 			<th width="20px"><input type="checkbox" name="selectAll" id="selectAll" onClick="javascript: selectAll();"/></th>
 			<th>$i18n.getString('report')</th>
@@ -66,7 +66,7 @@
 	
 	<script language="javascript">
 		#if ( $!fileExcel && $!organisationUnit )
-			getPeriodsByExcelItemGroup( $("#excelItemGroupId").val() );
+			getPeriodsByImportReport( $("#importReportId").val() );
 		#end
 	</script>
 

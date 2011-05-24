@@ -1,7 +1,7 @@
 <div id="excelformula" style="display:none">
 	<textarea id="elementSelect" cols="90" rows="15"></textarea>	
-	<br>
-	<br>
+	<br/>
+	<br/>
 	<center>
 		<input type="button" value="$i18n.getString('ok')" onclick="updateExExpression()" style="width:100px"/>		
 		<input type="button" value="$i18n.getString('cancel')" onclick="hideById('excelformula'); unLockScreen();" style="width:100px"/>

@@ -32,7 +32,7 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,9 +47,19 @@ public class UpdateOrgUnitGroupAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
+
+    public void setExportReportService( ExportReportService exportReportService )
+    {
+        this.exportReportService = exportReportService;
+    }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -57,26 +67,12 @@ public class UpdateOrgUnitGroupAction
 
     private Integer id;
 
-    private List<String> selectedOrganisationUnitGroups = new ArrayList<String>();
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
     public void setId( Integer id )
     {
         this.id = id;
     }
+
+    private List<String> selectedOrganisationUnitGroups = new ArrayList<String>();
 
     public void setSelectedOrganisationUnitGroups( List<String> selectedOrganisationUnitGroups )
     {
@@ -90,8 +86,8 @@ public class UpdateOrgUnitGroupAction
     public String execute()
         throws Exception
     {
-        ReportExcelOganiztionGroupListing reportExcelOganiztionGroupListing = (ReportExcelOganiztionGroupListing) reportService
-            .getReportExcel( id );
+        ReportExcelOganiztionGroupListing exportReport = (ReportExcelOganiztionGroupListing) exportReportService
+            .getExportReport( id );
 
         List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
 
@@ -103,9 +99,9 @@ public class UpdateOrgUnitGroupAction
             organisationUnitGroups.add( organisationUnitGroup );
         }
 
-        reportExcelOganiztionGroupListing.setOrganisationUnitGroups( organisationUnitGroups );
+        exportReport.setOrganisationUnitGroups( organisationUnitGroups );
 
-        reportService.updateReportExcel( reportExcelOganiztionGroupListing );
+        exportReportService.updateExportReport( exportReport );
 
         return SUCCESS;
     }

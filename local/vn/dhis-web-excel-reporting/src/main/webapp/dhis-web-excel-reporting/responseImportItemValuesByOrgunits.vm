@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<excelItemValueByOrgUnits>
-#foreach($excelItemValueByOrgUnit in $excelItemValueByOrgUnits)
-	<excelItemValueByOrgUnit>
+<importItemValueByOrgUnits>
+#foreach($importItemValueByOrgUnit in $importItemValueByOrgUnits)
+	<importItemValueByOrgUnit>
 		<orgUnit>
-			<id>$excelItemValueByOrgUnit.organisationUnit.id</id>
-			<name>$excelItemValueByOrgUnit.organisationUnit.name</name>
+			<id>$importItemValueByOrgUnit.organisationUnit.id</id>
+			<name>$importItemValueByOrgUnit.organisationUnit.name</name>
 		</orgUnit>
-		<excelItemValues>
-			#foreach($excelItemValue in $excelItemValueByOrgUnit.excelItemValues)
-			<excelItemValue>
-				<id>$excelItemValue.excelItem.id</id>
-				<name>$encoder.xmlEncode($excelItemValue.excelItem.name)</name>
-				<value>$excelItemValue.value</value>
-			</excelItemValue>
+		<importItemValues>
+			#foreach($importItemValue in $importItemValueByOrgUnit.importItemValues)
+			<importItemValue>
+				<id>$importItemValue.importItem.id</id>
+				<name>$encoder.xmlEncode($importItemValue.importItem.name)</name>
+				<value>$importItemValue.value</value>
+			</importItemValue>
 			#end
-		</excelItemValues>
-	</excelItemValueByOrgUnit>
+		</importItemValues>
+	</importItemValueByOrgUnit>
 #end
-</excelItemValueByOrgUnits>
+</importItemValueByOrgUnits>

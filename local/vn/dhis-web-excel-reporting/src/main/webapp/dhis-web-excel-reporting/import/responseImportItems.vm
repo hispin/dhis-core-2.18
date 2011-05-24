@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<excelItems>
-	#foreach($excelItem in $excelItems)
-		<excelitem>
-			<id>$excelItem.id</id>
-			<name>$encoder.xmlEncode( $excelItem.name )</name>
-			<row>$excelItem.row</row>	
-			<column>$excelItem.column</column>
-			<expression>$encoder.xmlEncode( $excelItem.expression )</expression>
-			<sheetNo>$excelItem.sheetNo</sheetNo>
-		</excelitem>
+<importItems>
+	#foreach($importItem in $importItems)
+		<importItem>
+			<id>$importItem.id</id>
+			<name>$encoder.xmlEncode( $importItem.name )</name>
+			<row>$importItem.row</row>	
+			<column>$importItem.column</column>
+			<expression>$encoder.xmlEncode( $importItem.expression )</expression>
+			<sheetNo>$importItem.sheetNo</sheetNo>
+		</importItem>
 	#end
-</excelItems>
+</importItems>

@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-	<class name="org.hisp.dhis.reportexcel.excelitem.ExcelItem"
+	<class name="org.hisp.dhis.reportexcel.importitem.ExcelItem"
 		table="excelitem">
 
 		<id name="id" column="excelitemid">
@@ -17,16 +17,13 @@
 			<property name="name" column="name" not-null="true" />
 
 			<many-to-one name="excelItemGroup" column="excelItemGroupId"
-				class="org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup"
+				class="org.hisp.dhis.reportexcel.importitem.ExcelItemGroup"
 				foreign-key="fk_exceltitem_group" lazy="false" insert="true" />
 		</properties>
 
 		<property name="expression" column="expression" not-null="true" />
-
 		<property name="row" column="excelrow" not-null="true" />
-
 		<property name="column" column="excelcolumn" not-null="true" />
-
 		<property name="sheetNo" column="sheetNo" not-null="true" />
 
 	</class>

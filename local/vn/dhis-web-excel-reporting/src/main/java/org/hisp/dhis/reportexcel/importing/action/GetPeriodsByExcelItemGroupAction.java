@@ -30,8 +30,8 @@ import java.util.List;
 
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.importitem.ImportItemService;
 import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 
 /**
@@ -48,7 +48,17 @@ public class GetPeriodsByExcelItemGroupAction
 
     private PeriodGenericManager periodGenericManager;
 
-    private ExcelItemService excelItemService;
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
+    {
+        this.periodGenericManager = periodGenericManager;
+    }
+
+    private ImportItemService importItemService;
+
+    public void setImportItemService( ImportItemService importItemService )
+    {
+        this.importItemService = importItemService;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -56,30 +66,16 @@ public class GetPeriodsByExcelItemGroupAction
 
     private List<Period> periods;
 
-    private String excelItemGroupId;
-
-    // -------------------------------------------------------------------------
-    // Getters & Setters
-    // -------------------------------------------------------------------------
-
     public List<Period> getPeriods()
     {
         return periods;
     }
 
-    public void setExcelItemGroupId( String excelItemGroupId )
-    {
-        this.excelItemGroupId = excelItemGroupId;
-    }
+    private String importReportId;
 
-    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
+    public void setImportReportId( String importReportId )
     {
-        this.periodGenericManager = periodGenericManager;
-    }
-
-    public void setExcelItemService( ExcelItemService excelItemService )
-    {
-        this.excelItemService = excelItemService;
+        this.importReportId = importReportId;
     }
 
     // -------------------------------------------------------------------------
@@ -89,16 +85,16 @@ public class GetPeriodsByExcelItemGroupAction
     public String execute()
         throws Exception
     {
-        if ( excelItemGroupId == null || excelItemGroupId.equals( "null" ) )
+        if ( importReportId == null || importReportId.equals( "null" ) )
         {
             message = i18n.getString( "there_is_no_excel_item_group" );
 
             return ERROR;
         }
 
-        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( Integer.parseInt( excelItemGroupId ) );
+        ExcelItemGroup importReport = importItemService.getImportReport( Integer.parseInt( importReportId ) );
 
-        periodGenericManager.setPeriodType( excelItemGroup.getPeriodType().getName() );
+        periodGenericManager.setPeriodType( importReport.getPeriodType().getName() );
 
         periods = periodGenericManager.getPeriodList();
 

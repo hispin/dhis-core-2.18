@@ -30,7 +30,7 @@ package org.hisp.dhis.reportexcel.preview.action;
 import java.io.File;
 import java.io.IOException;
 
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
@@ -53,11 +53,11 @@ public class ExportXMLAction
     // Dependency
     // -------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     private SelectionManager selectionManager;
@@ -108,7 +108,7 @@ public class ExportXMLAction
         {
             this.init();
 
-            xmlStructureResponse = new XMLStructureResponse( this.FILE_XLS.getPath(), this.ENCODING, reportService
+            xmlStructureResponse = new XMLStructureResponse( this.FILE_XLS.getPath(), this.ENCODING, exportReportService
                 .getSheets( selectionManager.getSelectedReportId() ), true, false, true, false, false )
                 .getSTRUCTURE_DATA_RESPONSE();
 

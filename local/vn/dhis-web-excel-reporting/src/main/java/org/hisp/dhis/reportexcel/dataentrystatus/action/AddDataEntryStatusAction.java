@@ -28,7 +28,7 @@ package org.hisp.dhis.reportexcel.dataentrystatus.action;
  */
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 
 import com.opensymphony.xwork2.Action;
@@ -44,9 +44,19 @@ public class AddDataEntryStatusAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
+
+    public void setExportReportService( ExportReportService exportReportService )
+    {
+        this.exportReportService = exportReportService;
+    }
 
     private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -60,15 +70,6 @@ public class AddDataEntryStatusAction
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
@@ -82,7 +83,7 @@ public class AddDataEntryStatusAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
@@ -93,7 +94,7 @@ public class AddDataEntryStatusAction
         dataStatus.setMakeDefault( makeDefault );
         dataStatus.setPeriodType( dataSet.getPeriodType() );
 
-        reportService.saveDataEntryStatus( dataStatus );
+        exportReportService.saveDataEntryStatus( dataStatus );
 
         return SUCCESS;
     }

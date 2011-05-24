@@ -1,9 +1,9 @@
 <h3>$i18n.getString( "generate_advanced_report" ) #openHelp( "excelReportingAdvancedReport" )</h3>
-<table >	
+<table>	
 	<tr>
 		<td ><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="group" name="group" style="width:20em" onchange="getALLReportExcelByGroup()" >
+			<select type="text" id="group" name="group" style="width:20em" onchange="getALLExportReportByGroup()" >
 				#foreach($reportGroup in $reportGroups)
 					<option value='$reportGroup'>$reportGroup</option>				
 				#end
@@ -14,14 +14,14 @@
 		<td><label>$i18n.getString('reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="report" name="report" style="width:20em">
-			
 			</select>
 		</td>
     </tr>
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="<<" onclick="lastPeriod();" /><input type="button" value=">>"  onclick="nextPeriod()"/>
+			<input type="button" value="&lt;&lt;" onclick="lastPeriod();" />
+			<input type="button" value="&gt;&gt;" onclick="nextPeriod()"/>
 		</td>
     </tr>
 	<tr>
@@ -44,30 +44,22 @@
   </tr>
 </table> 
 
-<div id="actions" style="width:200px text-align:right">
+<div id="actions" style="width:200px text-align:right"></div>
 
-</div>
-
-<div id="orgUnitTree">
-
-</div>
+<div id="orgUnitTree"></div>
 
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
 <br/>
 <hr/>
 <p>
-<input type="button" value='$i18n.getString( "preview_report" )' onclick="previewAdvandReport();" />
+	<input type="button" value='$i18n.getString( "preview_report" )' onclick="previewAdvandReport();" />
 
-<input name="generate_report" id="generate_report"  type="button" onClick="generateAdvancedReportExcel();" value='$i18n.getString( "generate_report" )' />
+	<input name="generateExportReport" id="generateExportReport" type="button" onClick="generateAdvancedExportReport();" value='$i18n.getString( "generate_export_report" )' />
 </p>
 
-<div id="previewDiv">
+<div id="previewDiv"></div>
 
-</div>
-
-<span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)">
-
-</span>
+<span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>
 
 <span id="processing" style="display:none;position:fixed;"><img src="../images/ajax-loader-preview.gif" /></span>
 
@@ -75,7 +67,7 @@
 
 	$(document).ready(function() {	
 	
-		getReportExcelsByGroup();		
+		getExportReportsByGroup();		
 	});
 
 </script>

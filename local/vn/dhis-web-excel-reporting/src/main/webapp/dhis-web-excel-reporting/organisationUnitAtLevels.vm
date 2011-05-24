@@ -1,4 +1,4 @@
-<h3>$encoder.htmlEncode($reportExcel.name)</h3>
+<h3>$encoder.htmlEncode($exportReport.name)</h3>
 
 <table width="100%">
 	<tr>
@@ -6,7 +6,7 @@
 			$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
 		</td>
 		<td align="right">
-			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='listReportExcel.action'">
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='listAllExportReport.action'">
 		</td>	
 	</tr>
 </table>	
@@ -27,10 +27,10 @@
 					$encoder.htmlEncode($orgUnitGroup.name)
 				</td>
 				<td>
-					<select id="selectedLevel" onchange="updateOrganisationUnitGroupAtLevel($reportExcel.id, $orgUnitGroup.id, this)" >						
+					<select id="selectedLevel" onchange="updateOrganisationUnitGroupAtLevel($exportReport.id, $orgUnitGroup.id, this)" >						
 						<option #if(!$organisationUnitGroupAtLevel.get($orgUnitGroup)) selected=true #end>$i18n.getString( "default" )</option>						
 						#foreach( $level in $organisationUnitLevel)							
-							<option value="$level.id" #if($organisationUnitGroupAtLevel.get($orgUnitGroup)==$level) selected=true #end>$encoder.htmlEncode($level.name)</option>
+							<option value="$level.id" #if($organisationUnitGroupAtLevel.get($orgUnitGroup)==$level) selected="true" #end>$encoder.htmlEncode($level.name)</option>
 						#end
 					</select>
 				</td>
@@ -44,16 +44,15 @@
 	</tbody>
 </table>
 
-
 <script>
-	function updateOrganisationUnitGroupAtLevel(reportId, orgUnitGroupId, select){
+	function updateOrganisationUnitGroupAtLevel(exportReportId, orgUnitGroupId, select){
 		select.style.backgroundColor = "#FFFFFF";
 		var request = new Request();
 		request.setResponseTypeXML( 'message' );
 		request.setCallbackSuccess( function (message){
 			select.style.backgroundColor = "#D5FFC5";
 		});		
-		request.send( "updateOrganisationUnitGroupAtLevel.action?reportId=" + reportId + "&orgUnitGroupId=" + orgUnitGroupId + "&levelId=" + select.value);		
+		request.send( "updateOrganisationUnitGroupAtLevel.action?exportReportId=" + exportReportId + "&orgUnitGroupId=" + orgUnitGroupId + "&levelId=" + select.value);		
 	}
 	jQuery(document).ready(function(){	
 		tableSorter( 'listTable' );	

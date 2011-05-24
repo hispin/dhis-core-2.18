@@ -27,9 +27,9 @@
 
 package org.hisp.dhis.reportexcel.periodcolumn.action;
 
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.PeriodColumn;
 import org.hisp.dhis.reportexcel.ReportExcelPeriodColumnListing;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 
 /**
@@ -40,17 +40,17 @@ public class SavePeriodColumnAction
     extends ActionSupport
 {
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private Integer reportId;
+    private Integer exportReportId;
 
     private String periodType;
 
@@ -60,23 +60,23 @@ public class SavePeriodColumnAction
 
     private String enddate;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
-    public Integer getReportId()
+    public Integer getExportReportId()
     {
-        return reportId;
+        return exportReportId;
     }
 
-    public void setReportId( Integer reportId )
+    public void setExportReportId( Integer exportReportId )
     {
-        this.reportId = reportId;
+        this.exportReportId = exportReportId;
     }
 
     public void setPeriodType( String periodType )
@@ -99,12 +99,15 @@ public class SavePeriodColumnAction
         this.enddate = enddate;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
-        ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService
-            .getReportExcel( reportId );
+        ReportExcelPeriodColumnListing exportReport = (ReportExcelPeriodColumnListing) exportReportService
+            .getExportReport( exportReportId );
 
         PeriodColumn periodColumn = new PeriodColumn();
         periodColumn.setColumn( column );
@@ -114,9 +117,9 @@ public class SavePeriodColumnAction
 
         periodColumn.setEnddate( format.parseDate( enddate ) );
 
-        reportExcel.addPeriodColumn( periodColumn );
+        exportReport.addPeriodColumn( periodColumn );
 
-        reportService.updateReportExcel( reportExcel );
+        exportReportService.updateExportReport( exportReport );
 
         return SUCCESS;
     }

@@ -33,8 +33,8 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,9 +49,19 @@ public class OpenUpdateOrgUnitGroupAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
+
+    public void setExportReportService( ExportReportService exportReportService )
+    {
+        this.exportReportService = exportReportService;
+    }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -63,15 +73,15 @@ public class OpenUpdateOrgUnitGroupAction
 
     private List<OrganisationUnitGroup> selectedOrganisationUnitGroups;
 
-    private ReportExcelOganiztionGroupListing reportExcelOganiztionGroupListing;
+    private ReportExcelOganiztionGroupListing exportReportOrgUnitGroupListing;
 
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-    public ReportExcelOganiztionGroupListing getReportExcelOganiztionGroupListing()
+    public ReportExcelOganiztionGroupListing getExportReportOrgUnitGroupListing()
     {
-        return reportExcelOganiztionGroupListing;
+        return exportReportOrgUnitGroupListing;
     }
 
     public List<OrganisationUnitGroup> getSelectedOrganisationUnitGroups()
@@ -82,16 +92,6 @@ public class OpenUpdateOrgUnitGroupAction
     public List<OrganisationUnitGroup> getAvailableOrganisationUnitGroups()
     {
         return availableOrganisationUnitGroups;
-    }
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
     }
 
     public void setId( Integer id )
@@ -106,12 +106,12 @@ public class OpenUpdateOrgUnitGroupAction
     public String execute()
         throws Exception
     {
-        this.reportExcelOganiztionGroupListing = (ReportExcelOganiztionGroupListing) reportService.getReportExcel( id );
+        exportReportOrgUnitGroupListing = (ReportExcelOganiztionGroupListing) exportReportService.getExportReport( id );
 
-        this.availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>( this.organisationUnitGroupService
+        availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
             .getAllOrganisationUnitGroups() );
 
-        this.selectedOrganisationUnitGroups = reportExcelOganiztionGroupListing.getOrganisationUnitGroups();
+        selectedOrganisationUnitGroups = exportReportOrgUnitGroupListing.getOrganisationUnitGroups();
 
         availableOrganisationUnitGroups.removeAll( selectedOrganisationUnitGroups );
 

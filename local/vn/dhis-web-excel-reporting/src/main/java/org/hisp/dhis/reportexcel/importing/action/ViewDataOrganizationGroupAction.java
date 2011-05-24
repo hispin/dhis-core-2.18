@@ -40,10 +40,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importing.ExcelItemValue;
-import org.hisp.dhis.reportexcel.importing.ExcelItemValueByOrganisationUnit;
+import org.hisp.dhis.reportexcel.importing.ImportItemValue;
+import org.hisp.dhis.reportexcel.importing.ImportItemValueByOrganisationUnit;
+import org.hisp.dhis.reportexcel.importitem.ExcelItem;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -63,17 +63,22 @@ public class ViewDataOrganizationGroupAction
 
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
+    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    {
+        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+    }
+
     // --------------------------------------------------------------------
     // Inputs && Outputs
     // --------------------------------------------------------------------
 
     private File upload;
 
-    private List<ExcelItemValueByOrganisationUnit> excelItemValueByOrgUnits;
+    private List<ImportItemValueByOrganisationUnit> importItemValueByOrgUnits;
 
-    private ArrayList<ExcelItem> excelItems;
+    private ArrayList<ExcelItem> importItems;
 
-    private ExcelItemGroup excelItemGroup;
+    private ExcelItemGroup importReport;
 
     // --------------------------------------------------------------------
     // Getters and Setters
@@ -84,24 +89,19 @@ public class ViewDataOrganizationGroupAction
         this.upload = upload;
     }
 
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    public void setImportReport( ExcelItemGroup importReport )
     {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+        this.importReport = importReport;
     }
 
-    public void setExcelItemGroup( ExcelItemGroup excelItemGroup )
+    public void setImportItems( ArrayList<ExcelItem> importItems )
     {
-        this.excelItemGroup = excelItemGroup;
+        this.importItems = importItems;
     }
 
-    public void setExcelItems( ArrayList<ExcelItem> excelItems )
+    public List<ImportItemValueByOrganisationUnit> getImportItemValueByOrgUnits()
     {
-        this.excelItems = excelItems;
-    }
-
-    public List<ExcelItemValueByOrganisationUnit> getExcelItemValueByOrgUnits()
-    {
-        return excelItemValueByOrgUnits;
+        return importItemValueByOrgUnits;
     }
 
     // --------------------------------------------------------------------
@@ -118,11 +118,11 @@ public class ViewDataOrganizationGroupAction
 
             HSSFWorkbook wb = new HSSFWorkbook( inputStream );
 
-            excelItemValueByOrgUnits = new ArrayList<ExcelItemValueByOrganisationUnit>();
+            importItemValueByOrgUnits = new ArrayList<ImportItemValueByOrganisationUnit>();
 
             if ( organisationUnit != null )
             {
-                for ( OrganisationUnitGroup organisationUnitGroup : excelItemGroup.getOrganisationUnitGroups() )
+                for ( OrganisationUnitGroup organisationUnitGroup : importReport.getOrganisationUnitGroups() )
                 {
                     List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( getOrganisationUnits(
                         organisationUnitGroup, organisationUnit ) );
@@ -133,40 +133,36 @@ public class ViewDataOrganizationGroupAction
 
                     for ( OrganisationUnit o : organisationUnits )
                     {
-                        ExcelItemValueByOrganisationUnit excelItemValueByOrgUnit = new ExcelItemValueByOrganisationUnit(
+                        ImportItemValueByOrganisationUnit importItemValueByOrgUnit = new ImportItemValueByOrganisationUnit(
                             o );
-                        ArrayList<ExcelItemValue> excelItemValues = new ArrayList<ExcelItemValue>();
+                        ArrayList<ImportItemValue> importItemValues = new ArrayList<ImportItemValue>();
 
-                        for ( ExcelItem excelItem : excelItems )
+                        for ( ExcelItem importItem : importItems )
                         {
-                            HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
+                            HSSFSheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
 
-                            String value = ExcelUtils.readValueImportingByPOI( excelItem.getRow() + row, excelItem
+                            String value = ExcelUtils.readValueImportingByPOI( importItem.getRow() + row, importItem
                                 .getColumn(), sheet );
 
-                            ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value );
-
-                            if ( value.length() == 0 )
+                            if ( value.length() > 0 )
                             {
-                                excelItemvalue.setValue( 0 + "" );
+                                ImportItemValue importItemValue = new ImportItemValue( importItem, value );
+                                importItemValues.add( importItemValue );
                             }
 
-                            excelItemValues.add( excelItemvalue );
-
-                        }// end for (ExcelItem ...
+                        }// end for (ImportItem ...
 
                         row++;
 
-                        excelItemValueByOrgUnit.setExcelItemValues( excelItemValues );
+                        importItemValueByOrgUnit.setImportItemValues( importItemValues );
 
-                        excelItemValueByOrgUnits.add( excelItemValueByOrgUnit );
+                        importItemValueByOrgUnits.add( importItemValueByOrgUnit );
 
                     }// end for (OrganisationUnit ...
 
                 } // end for ( OrganisationUnitGroup ...
 
             }// end if (organisationUnit ...
-
         }
         catch ( Exception ex )
         {
@@ -178,7 +174,6 @@ public class ViewDataOrganizationGroupAction
 
     private Collection<OrganisationUnit> getOrganisationUnits( OrganisationUnitGroup group, OrganisationUnit parentUnit )
     {
-
         List<OrganisationUnit> childrenOrganisationUnits = new ArrayList<OrganisationUnit>( parentUnit.getChildren() );
 
         Collection<OrganisationUnit> organisationUnits = group.getMembers();

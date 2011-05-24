@@ -28,7 +28,7 @@
 package org.hisp.dhis.reportexcel.periodcolumn.action;
 
 import org.hisp.dhis.reportexcel.PeriodColumn;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 
 /**
@@ -39,19 +39,24 @@ public class UpdatePeriodColumnAction
     extends ActionSupport
 {
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
-    // -------------------------------------------
+    public void setExportReportService( ExportReportService exportReportService )
+    {
+        this.exportReportService = exportReportService;
+    }
+
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer id;
 
-    private Integer reportId;
+    private Integer exportReportId;
 
     private String periodType;
 
@@ -61,18 +66,13 @@ public class UpdatePeriodColumnAction
 
     private String enddate;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportId( Integer exportReportId )
     {
-        this.reportService = reportService;
-    }
-
-    public void setReportId( Integer reportId )
-    {
-        this.reportId = reportId;
+        this.exportReportId = exportReportId;
     }
 
     public void setId( Integer id )
@@ -80,9 +80,9 @@ public class UpdatePeriodColumnAction
         this.id = id;
     }
 
-    public Integer getReportId()
+    public Integer getExportReportId()
     {
-        return reportId;
+        return exportReportId;
     }
 
     public void setPeriodType( String periodType )
@@ -105,20 +105,22 @@ public class UpdatePeriodColumnAction
         this.enddate = enddate;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+    
     public String execute()
         throws Exception
-    {  
-
-        PeriodColumn periodColumn = reportService.getPeriodColumn( id );
+    {
+        PeriodColumn periodColumn = exportReportService.getPeriodColumn( id );
         periodColumn.setColumn( column );
         periodColumn.setPeriodType( periodType );
 
         periodColumn.setStartdate( format.parseDate( startdate ) );
 
-        periodColumn.setEnddate( format.parseDate( enddate ) );       
+        periodColumn.setEnddate( format.parseDate( enddate ) );
 
-        reportService.updatePeriodColumn( periodColumn );
+        exportReportService.updatePeriodColumn( periodColumn );
 
         return SUCCESS;
     }

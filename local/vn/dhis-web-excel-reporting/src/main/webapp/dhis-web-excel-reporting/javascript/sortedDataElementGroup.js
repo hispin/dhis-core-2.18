@@ -74,7 +74,7 @@ function getALLDataElementGroupsReceived ( data ){
 function updateDataElementGroupOrder(){
 	
  	var dataElements = document.getElementsByName('dataElementGroupOrder');
-	var url = "updateSortedDataElementGroupOrderForCategory.action?excelItemGroupId=" + $('#id').val();
+	var url = "updateSortedDataElementGroupOrderForCategory.action?importReportId=" + $('#id').val();
 	for(var i=0;i<dataElements.length;i++){			
 		url += "&dataElementGroupOrderId=" + dataElements.item(i).value;
 	}

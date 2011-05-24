@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
@@ -74,11 +74,11 @@ public class ExcelTemplateListAction
         this.selectionManager = selectionManager;
     }
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -187,11 +187,11 @@ public class ExcelTemplateListAction
 
         Collections.sort( templateFiles, new FileNameComparator() );
 
-        Collection<String> reportExcelTemplates = reportService.getALLReportExcelTemplates();
+        Collection<String> exportReportTemplates = exportReportService.getAllExportReportTemplates();
 
         for ( File file : templateFiles )
         {
-            if ( reportExcelTemplates.contains( file.getName() ) )
+            if ( exportReportTemplates.contains( file.getName() ) )
             {
                 mapTemplateFiles.put( file.getName(), true );
             }

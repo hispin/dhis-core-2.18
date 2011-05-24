@@ -28,7 +28,7 @@ package org.hisp.dhis.reportexcel.dataentrystatus.action;
  */
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 
 import com.opensymphony.xwork2.Action;
@@ -45,7 +45,7 @@ public class UpdateDataEntryStatusAction
     // Dependency
     // -------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
     private DataSetService dataSetService;
 
@@ -63,9 +63,9 @@ public class UpdateDataEntryStatusAction
     // Getter & Setter
     // -------------------------------------------------
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     public void setDataStatusId( Integer dataStatusId )
@@ -93,12 +93,12 @@ public class UpdateDataEntryStatusAction
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-        DataEntryStatus dataStatus = reportService.getDataEntryStatus( dataStatusId );
+        DataEntryStatus dataStatus = exportReportService.getDataEntryStatus( dataStatusId );
         dataStatus.setDataSet( dataSet );
         dataStatus.setMakeDefault( makeDefault );
         dataStatus.setPeriodType( dataSet.getPeriodType() );
 
-        reportService.updateDataEntryStatus( dataStatus );
+        exportReportService.updateDataEntryStatus( dataStatus );
 
         return SUCCESS;
     }

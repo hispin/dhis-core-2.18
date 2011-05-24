@@ -73,15 +73,15 @@ public abstract class ReportExcel
         this.organisationAssocitions = new HashSet<OrganisationUnit>();
     }
 
-    public Collection<ReportExcelItem> getReportItemBySheet( Integer sheetNo )
+    public Collection<ReportExcelItem> getExportItemBySheet( Integer sheetNo )
     {
         Set<ReportExcelItem> results = new HashSet<ReportExcelItem>();
 
-        for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
+        for ( ReportExcelItem exportItem : this.reportExcelItems )
         {
-            if ( reportExcelItem.getSheetNo() == sheetNo )
+            if ( exportItem.getSheetNo() == sheetNo )
             {
-                results.add( reportExcelItem );
+                results.add( exportItem );
             }
         }
 
@@ -90,7 +90,7 @@ public abstract class ReportExcel
 
     public abstract boolean isCategory();
 
-    public abstract boolean isOrganisationUnitGroupListing();
+    public abstract boolean isOrgUnitGroupListing();
 
     public abstract boolean isPeriodColumnListing();
 
@@ -157,30 +157,30 @@ public abstract class ReportExcel
     // Support method
     // -------------------------------------------------------------------------
 
-    public boolean reportExcelItemIsExist( String name, int sheetNo )
+    public boolean exportItemIsExist( String name, int sheetNo )
     {
-        return getReportExcelItemByName( name, sheetNo ) != null;
+        return getExportItemByName( name, sheetNo ) != null;
     }
 
     public boolean rowAndColumnIsExist( int sheet, int row, int column )
     {
-        return getReportExcelItemBySheetRowColumn( sheet, row, column ) != null;
+        return getExportItemBySheetRowColumn( sheet, row, column ) != null;
     }
 
-    public ReportExcelItem getReportExcelItemByName( String name, int sheetNo )
+    public ReportExcelItem getExportItemByName( String name, int sheetNo )
     {
-        for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
+        for ( ReportExcelItem exportItem : this.reportExcelItems )
         {
-            if ( reportExcelItem.getName().equalsIgnoreCase( name ) && reportExcelItem.getSheetNo() == sheetNo )
+            if ( exportItem.getName().equalsIgnoreCase( name ) && exportItem.getSheetNo() == sheetNo )
             {
-                return reportExcelItem;
+                return exportItem;
             }
         }
 
         return null;
     }
 
-    public ReportExcelItem getReportExcelItemBySheetRowColumn( int sheet, int row, int column )
+    public ReportExcelItem getExportItemBySheetRowColumn( int sheet, int row, int column )
     {
         for ( ReportExcelItem e : this.reportExcelItems )
         {
@@ -262,9 +262,9 @@ public abstract class ReportExcel
         return reportExcelItems;
     }
 
-    public void setReportExcelItems( Set<ReportExcelItem> reportExcelItems )
+    public void setReportExcelItems( Set<ReportExcelItem> exportItems )
     {
-        this.reportExcelItems = reportExcelItems;
+        this.reportExcelItems = exportItems;
     }
 
     public Set<OrganisationUnit> getOrganisationAssocitions()

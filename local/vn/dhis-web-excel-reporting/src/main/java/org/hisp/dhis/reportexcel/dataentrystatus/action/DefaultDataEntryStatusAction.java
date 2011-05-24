@@ -45,7 +45,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.reportexcel.utils.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
@@ -66,7 +66,7 @@ public class DefaultDataEntryStatusAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
     private CurrentUserService currentUserService;
 
@@ -142,9 +142,9 @@ public class DefaultDataEntryStatusAction
         return dataStatus;
     }
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -184,7 +184,7 @@ public class DefaultDataEntryStatusAction
                 dataSets.retainAll( dataSetUserAuthorityGroups );
             }
 
-            dataStatus = new ArrayList<DataEntryStatus>( reportService.getDataEntryStatusDefaultByDataSets( dataSets ) );
+            dataStatus = new ArrayList<DataEntryStatus>( exportReportService.getDataEntryStatusDefaultByDataSets( dataSets ) );
 
             maps = new HashMap<DataSet, List<DataEntryStatus>>();
 
@@ -207,7 +207,7 @@ public class DefaultDataEntryStatusAction
                     DataEntryStatus dataStatusNew = new DataEntryStatus();
                     dataStatusNew.setPeriod( p );
                     dataStatusNew.setNumberOfDataElement( d.getNumberOfDataElement() );
-                    dataStatusNew.setNumberOfDataValue( reportService.countDataValueOfDataSet( d.getDataSet(),
+                    dataStatusNew.setNumberOfDataValue( exportReportService.countDataValueOfDataSet( d.getDataSet(),
                         organisationUnit, p ) );
 
                     CompleteDataSetRegistration completeDataSetRegistration = completeDataSetRegistrationService

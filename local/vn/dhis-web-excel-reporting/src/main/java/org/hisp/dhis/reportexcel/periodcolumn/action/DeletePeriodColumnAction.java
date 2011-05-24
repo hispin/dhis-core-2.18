@@ -26,8 +26,8 @@
  */
 package org.hisp.dhis.reportexcel.periodcolumn.action;
 
+import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcelPeriodColumnListing;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -38,37 +38,37 @@ import com.opensymphony.xwork2.Action;
 public class DeletePeriodColumnAction
     implements Action
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExportReportService exportReportService;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer id;
 
-    private Integer reportId;
+    private Integer exportReportId;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    public Integer getReportId()
+    public Integer getExportReportId()
     {
-        return reportId;
+        return exportReportId;
     }
 
-    public void setReportId( Integer reportId )
+    public void setExportReportId( Integer exportReportId )
     {
-        this.reportId = reportId;
+        this.exportReportId = exportReportId;
     }
 
-    public void setReportService( ReportExcelService reportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.reportService = reportService;
+        this.exportReportService = exportReportService;
     }
 
     public void setId( Integer id )
@@ -76,16 +76,19 @@ public class DeletePeriodColumnAction
         this.id = id;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
-        ReportExcelPeriodColumnListing report = (ReportExcelPeriodColumnListing) reportService
-            .getReportExcel( reportId );
+        ReportExcelPeriodColumnListing exportReport = (ReportExcelPeriodColumnListing) exportReportService
+            .getExportReport( exportReportId );
 
-        report.deletePeriodColumn( reportService.getPeriodColumn( id ) );
+        exportReport.deletePeriodColumn( exportReportService.getPeriodColumn( id ) );
 
-        reportService.updateReportExcel( report );
+        exportReportService.updateExportReport( exportReport );
 
         return SUCCESS;
     }

@@ -36,11 +36,9 @@ import org.hisp.dhis.reportexcel.PeriodColumn;
  */
 public class PeriodColumnComparator implements Comparator<PeriodColumn>
 {
-
     @Override
     public int compare( PeriodColumn o1, PeriodColumn o2 )
     {        
         return o1.getColumn() - o2.getColumn();
     }
-
 }

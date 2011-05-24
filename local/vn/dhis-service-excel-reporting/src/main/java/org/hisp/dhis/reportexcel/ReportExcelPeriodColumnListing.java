@@ -90,7 +90,7 @@ public class ReportExcelPeriodColumnListing
     }
 
     @Override
-    public boolean isOrganisationUnitGroupListing()
+    public boolean isOrgUnitGroupListing()
     {
         return false;
     }

@@ -46,9 +46,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.importitem.ExcelItem;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.importitem.ImportItemService;
 import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
@@ -78,7 +78,7 @@ public class ImportDataNormalExcelGroupAction
 
     private CurrentUserService currentUserService;
 
-    private ExcelItemService excelItemService;
+    private ImportItemService importItemService;
 
     private SelectionManager selectionManager;
 
@@ -88,9 +88,9 @@ public class ImportDataNormalExcelGroupAction
     // Inputs && Outputs
     // -------------------------------------------------------------------------
 
-    private Integer excelItemGroupId;
+    private Integer importReportId;
 
-    public Integer[] excelItemIds;
+    public Integer[] importItemIds;
 
     // -------------------------------------------------------------------------
     // Getters and Setters
@@ -126,9 +126,9 @@ public class ImportDataNormalExcelGroupAction
         this.currentUserService = currentUserService;
     }
 
-    public void setExcelItemService( ExcelItemService excelItemService )
+    public void setImportItemService( ImportItemService importItemService )
     {
-        this.excelItemService = excelItemService;
+        this.importItemService = importItemService;
     }
 
     public void setDataValueService( DataValueService dataValueService )
@@ -136,14 +136,14 @@ public class ImportDataNormalExcelGroupAction
         this.dataValueService = dataValueService;
     }
 
-    public void setExcelItemGroupId( Integer excelItemGroupId )
+    public void setImportReportId( Integer importReportId )
     {
-        this.excelItemGroupId = excelItemGroupId;
+        this.importReportId = importReportId;
     }
 
-    public void setExcelItemIds( Integer[] excelItemIds )
+    public void setExcelItemIds( Integer[] importItemIds )
     {
-        this.excelItemIds = excelItemIds;
+        this.importItemIds = importItemIds;
     }
 
     public void setDataElementService( DataElementService dataElementService )
@@ -158,13 +158,13 @@ public class ImportDataNormalExcelGroupAction
     public String execute()
         throws Exception
     {
-        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId.intValue() );
+        ExcelItemGroup importItemGroup = importItemService.getImportReport( importReportId.intValue() );
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-        if ( excelItemIds == null )
+        if ( importItemIds == null )
         {
-            message = i18n.getString( "choose_excelItem" );
+            message = i18n.getString( "choose_importItem" );
 
             return ERROR;
         }
@@ -175,31 +175,31 @@ public class ImportDataNormalExcelGroupAction
 
             HSSFWorkbook wb = new HSSFWorkbook( upload );
 
-            Collection<ExcelItem> excelItems = new ArrayList<ExcelItem>();
+            Collection<ExcelItem> importItems = new ArrayList<ExcelItem>();
             
-            if ( excelItemIds != null )
+            if ( importItemIds != null )
             {
-                for ( int i = 0; i < excelItemIds.length; i++ )
+                for ( int i = 0; i < importItemIds.length; i++ )
                 {
-                    excelItems.add( excelItemService.getExcelItem( excelItemIds[i] ) );
+                    importItems.add( importItemService.getImportItem( importItemIds[i] ) );
                 }
             }
             else
             {
-                excelItems = excelItemGroup.getExcelItems();
+                importItems = importItemGroup.getExcelItems();
             }
 
             Period period = periodGenericManager.getSelectedPeriod();
 
-            for ( ExcelItem excelItem : excelItems )
+            for ( ExcelItem importItem : importItems )
             {
-                HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
+                HSSFSheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
                 
-                String value = ExcelUtils.readValueImportingByPOI( excelItem.getRow(), excelItem.getColumn(), sheet );
+                String value = ExcelUtils.readValueImportingByPOI( importItem.getRow(), importItem.getColumn(), sheet );
                 
                 if ( value.length() > 0 )
                 {
-                    DataElementOperand operand = expressionService.getOperandsInExpression( excelItem.getExpression() ).iterator()
+                    DataElementOperand operand = expressionService.getOperandsInExpression( importItem.getExpression() ).iterator()
                         .next();
 
                     DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
@@ -224,10 +224,9 @@ public class ImportDataNormalExcelGroupAction
                         dataValue.setTimestamp( new Date() );
                         dataValue.setStoredBy( storedBy );
                         dataValueService.updateDataValue( dataValue );
-
                     }
                 }
-            }// end for (ExcelItem ...
+            }// end for (ImportItem ...
 
         }// end if (organisationUnit ...
 

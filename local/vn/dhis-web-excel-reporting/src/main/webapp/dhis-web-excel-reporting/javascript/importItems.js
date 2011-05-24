@@ -1,10 +1,10 @@
 // ========================================================================================================================
-// EXCEL ITEM GROUP
+// IMPORT REPORT
 // ========================================================================================================================
 
 function changeItemType()
 {
-	var type = getFieldValue( 'excelItemGroupType' );
+	var type = getFieldValue( 'importReportType' );
 	
 	if( type == 'NORMAL' ){
 		byId('expression-button' ).onclick = openExpressionBuild;
@@ -14,7 +14,7 @@ function changeItemType()
 }
 
 // -----------------------------------------------------------------------
-// Open Expression Form for Normal Excel-Item group
+// Open Expression Form for Normal Import Report
 // -----------------------------------------------------------------------
 
 // Open Expression Form
@@ -50,7 +50,7 @@ function updateNormalExpression()
 }
 
 // -----------------------------------------------------------------------
-// Open Expression Form for Catagory Excel-Item group
+// Open Expression Form for Catagory Import Report
 // -----------------------------------------------------------------------
 
 // Open Expression Form
@@ -96,27 +96,27 @@ function getDataElements( id, target )
 }
 
 // -----------------------------------------------------------------------
-// SAVE COPY EXCEL ITEM(s) TO EXCEL_ITEM_GROUP
+// SAVE COPY IMPORT ITEM(s) TO IMPORT_REPORT
 // -----------------------------------------------------------------------
 
 sheetId = 0;
 noItemsChecked = 0;
-ExcelItemsSaved = null;
-excelItemsCurTarget = null;
-excelItemsDuplicated = null;
+ImportItemsSaved = null;
+importItemsCurTarget = null;
+importItemsDuplicated = null;
 
 function copySelectedItemToGroup() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( copySelectedItemToGroupReceived );
-	request.send( "getAllExcelItemGroup.action" );
+	request.send( "getAllImportReport.action" );
 
 }
 
 function copySelectedItemToGroupReceived( xmlObject ) {
 
-	var reports = xmlObject.getElementsByTagName("excelitemgroup");
+	var reports = xmlObject.getElementsByTagName("importReport");
 	var selectList = document.getElementById("targetGroup");
 	var options = selectList.options;
 	
@@ -132,7 +132,7 @@ function copySelectedItemToGroupReceived( xmlObject ) {
 	showPopupWindowById( 'copyTo', 480, 120 );
 }
 
-function validateCopyExcelItemsToExcelItemGroup() {
+function validateCopyImportItemsToImportReport() {
 
 	sheetId	= byId("targetSheetNo").value;
 	
@@ -145,7 +145,7 @@ function validateCopyExcelItemsToExcelItemGroup() {
 	
 	if ( byId("targetGroup").value == -1 )
 	{
-		message += "<br/>" + i18n_choose_report;
+		message += "<br/>" + i18n_choose_import_report;
 	}
 	
 	if ( message.length > 0 )
@@ -154,41 +154,41 @@ function validateCopyExcelItemsToExcelItemGroup() {
 		return;
 	}
 	
-	excelItemsCurTarget = null;
-	excelItemsDuplicated = null;
+	importItemsCurTarget = null;
+	importItemsDuplicated = null;
 	
-	excelItemsCurTarget = new Array();
-	excelItemsDuplicated = new Array();
+	importItemsCurTarget = new Array();
+	importItemsDuplicated = new Array();
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( validateCopyExcelItemsToExcelItemGroupReceived );
-	request.send( "getExcelItemsByGroup.action?excelItemGroupId=" + byId("targetGroup").value );
+    request.setCallbackSuccess( validateCopyImportItemsToImportReportReceived );
+	request.send( "getImportItemsByGroup.action?importReportId=" + byId("targetGroup").value );
 	
 }
 
-function validateCopyExcelItemsToExcelItemGroupReceived( xmlObject ) {
+function validateCopyImportItemsToImportReportReceived( xmlObject ) {
 	
-	var items = xmlObject.getElementsByTagName('excelitem');
+	var items = xmlObject.getElementsByTagName('importItem');
 	
 	for (var i = 0 ;  i < items.length ; i ++) {
 	
-		excelItemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
+		importItemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
 	}
 	
-	splitDuplicatedExcelItems( 'excelItemChecked', 'excelItemID', 'excelItemName' );
+	splitDuplicatedImportItems( 'importItemChecked', 'importItemID', 'importItemName' );
 	
-	saveCopiedExcelItemsToExcelItemGroup();
+	saveCopiedImportItemsToImportReport();
 }
 
-function splitDuplicatedExcelItems( itemCheckID, itemIDAttribute, itemNameAttribute ) {
+function splitDuplicatedImportItems( itemCheckID, itemIDAttribute, itemNameAttribute ) {
 
 	var flag = -1;
 	var itemsChecked = new Array();
 	var listRadio = document.getElementsByName( itemCheckID );
 
-	ExcelItemsSaved = null;
-	ExcelItemsSaved = new Array();
+	ImportItemsSaved = null;
+	ImportItemsSaved = new Array();
 	
 	for (var i = 0 ; i < listRadio.length ; i++) {
 	
@@ -203,69 +203,69 @@ function splitDuplicatedExcelItems( itemCheckID, itemIDAttribute, itemNameAttrib
 	{
 		flag = i;
 		
-		for (var j in excelItemsCurTarget)
+		for (var j in importItemsCurTarget)
 		{
-			if ( itemsChecked[i].split("#")[1] == excelItemsCurTarget[j] )
+			if ( itemsChecked[i].split("#")[1] == importItemsCurTarget[j] )
 			{
 				flag = -1;
-				excelItemsDuplicated.push( itemsChecked[i].split("#")[1] );
+				importItemsDuplicated.push( itemsChecked[i].split("#")[1] );
 				break;
 			}
 		}
 		if ( flag >= 0 )
 		{
-			ExcelItemsSaved.push( itemsChecked[i].split("#")[0] );
+			ImportItemsSaved.push( itemsChecked[i].split("#")[0] );
 		}
 	}
 }
 
 warningMessages = "";
 
-function saveCopiedExcelItemsToExcelItemGroup() {
+function saveCopiedImportItemsToImportReport() {
 	
 	warningMessages = "";
-	// If have ReportItem(s) in Duplicating list
+	// If have ImportItem(s) in Duplicating list
 	// preparing the warning message
-	if ( excelItemsDuplicated.length > 0 ) {
+	if ( importItemsDuplicated.length > 0 ) {
 
 		warningMessages += 
-		"<b>[" + (excelItemsDuplicated.length) + "/" + (noItemsChecked) + "]</b>:: "
+		"<b>[" + (importItemsDuplicated.length) + "/" + (noItemsChecked) + "]</b>:: "
 		+ i18n_copy_items_duplicated
 		+ "<br/><br/>";
 		
-		for (var i in excelItemsDuplicated) {
+		for (var i in importItemsDuplicated) {
 		
 			warningMessages +=
 			"<b>(*)</b> "
-			+ excelItemsDuplicated[i] 
+			+ importItemsDuplicated[i] 
 			+ "<br/><br/>";
 		}
 		
 		warningMessages += "<br/>";
 	}
 	
-	// If have also ReportItem(s) in Copying list
+	// If have also ImportItem(s) in Copying list
 	// do copy and prepare the message notes
-	if ( ExcelItemsSaved.length > 0 ) {
+	if ( ImportItemsSaved.length > 0 ) {
 	
 		var request = new Request();
 		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( saveCopiedExcelItemsToExcelItemGroupReceived );	
+		request.setCallbackSuccess( saveCopiedImportItemsToImportReportReceived );	
 		
-		var params = "excelItemGroupDestId=" + byId("targetGroup").value;
+		var params = "importReportDestId=" + byId("targetGroup").value;
 			params += "&sheetNo=" + sheetId;
 			
-		for (var i in ExcelItemsSaved)
+		for (var i in importItemsSaved)
 		{
-			params += "&itemIds=" + ExcelItemsSaved[i];
+			params += "&itemIds=" + importItemsSaved[i];
 		}
-			
+		
 		request.sendAsPost(params);
-		request.send( "copyExcelItemsToGroup.action");
+		request.send( "copyImportItemsToImportReport.action");
 	}
-	// If have no any ReportItem(s) will be copied
-	// and also have ReportItem(s) in Duplicating list
-	else if ( excelItemsDuplicated.length > 0 ) {
+	// If have no any ImportItem(s) will be copied
+	// and also have ImportItem(s) in Duplicating list
+	else if ( importItemsDuplicated.length > 0 ) {
 
 		setMessage( warningMessages );
 	}
@@ -274,7 +274,7 @@ function saveCopiedExcelItemsToExcelItemGroup() {
 	unLockScreen();
 }
 
-function saveCopiedExcelItemsToExcelItemGroupReceived( data ) {
+function saveCopiedImportItemsToImportReportReceived( data ) {
 	
 	var type = data.getAttribute("type");
 	
@@ -282,7 +282,7 @@ function saveCopiedExcelItemsToExcelItemGroupReceived( data ) {
 	
 		warningMessages +=
 		" ======= Sheet [" + sheetId + "] ========"
-		+ "<br/><b>[" + (ExcelItemsSaved.length) + "/" + (noItemsChecked) + "]</b>:: "
+		+ "<br/><b>[" + (ImportItemsSaved.length) + "/" + (noItemsChecked) + "]</b>:: "
 		+ i18n_copy_successful
 		+ "<br/>======================<br/><br/>";
 
@@ -299,7 +299,7 @@ function selectedItemsAll() {
     
 	var checked = byId('checkAll').checked;
 	
-	var list = document.getElementsByName('excelItemChecked');
+	var list = document.getElementsByName('importItemChecked');
 	
 	for (var i=0 ;i<list.length; i++)
 	{
