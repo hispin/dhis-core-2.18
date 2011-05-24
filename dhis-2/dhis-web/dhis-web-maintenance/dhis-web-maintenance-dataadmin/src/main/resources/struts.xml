@@ -26,11 +26,12 @@
 		<action name="defineDataSetAssociationsFormChain"
 			class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction">
 			<interceptor-ref name="organisationUnitTreeStack"/>
-			<result name="success" type="velocity">/main.vm </result>
-			<param name="page">
-				/dhis-web-maintenance-dataadmin/collectiveDataLockingForm.vm</param>
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-dataadmin/collectiveDataLockingForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/datasetLockReport.js, javascript/collectiveDataLockingForm.js</param>
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,
+				javascript/datasetLockReport.js,
+				javascript/collectiveDataLockingForm.js</param>
 		</action>
 		
 		<action name="getDataSetsForPeriodType"
@@ -186,8 +187,9 @@
 			<param name="page">
 				/dhis-web-maintenance-dataadmin/dataBrowserForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-			<param name="javascripts"> ../dhis-web-commons/ouwt/ouwt.js,
-				javascript/dataBrowser.js, javascript/dataBrowserForm.js</param>
+			<param name="javascripts"> ../dhis-web-commons/oust/oust.js,
+				javascript/dataBrowser.js,
+				javascript/dataBrowserForm.js</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
 
@@ -436,6 +438,6 @@
 			<param name="javascripts">javascript/sqlView.js</param>
 			<param name="requiredAuthorities">F_SQLVIEW_MANAGEMENT</param>
 		</action>
-		
+
 	</package>
 </struts>

@@ -11,7 +11,7 @@
 
 <h3>$i18n.getString( "data_browser" ) #openHelp( "dataBrowser" )</h3> 
 
-<form id="databrowser" method="get" action="searchResult.action">
+<form id="databrowser" name="databrowser" method="get" action="searchResult.action">
 	<table>	
 		<tr>
 			<td>$i18n.getString( "period_type" )</td>
@@ -75,11 +75,7 @@
 				<td>$i18n.getString( "select_parent_organisation_unit" )</td>
 			</tr>
 			<tr>
-				<td>
-					<div style="border:1px dashed gray; height: 16.5em; overflow:auto; padding:0 3px 3px 0;">
-					#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
-					</div>
-				</td>
+				<td><div id="selectionTree" style="width:325px; height:270px"></div></td>
 			</tr>
 		</table>
 	</div>

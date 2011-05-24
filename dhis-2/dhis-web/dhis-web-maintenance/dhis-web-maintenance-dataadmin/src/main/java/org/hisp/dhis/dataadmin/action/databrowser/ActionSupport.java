@@ -48,7 +48,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -112,11 +112,11 @@ public abstract class ActionSupport
         this.periodService = periodService;
     }
 
-    protected OrganisationUnitSelectionManager selectionManager;
+    protected SelectionTreeManager selectionTreeManager;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.selectionManager = selectionManager;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     // -------------------------------------------------------------------------

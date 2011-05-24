@@ -64,11 +64,11 @@ public class DataBrowserAction
         // If set, change the current selected unit
         if ( selectedUnitChanger != null )
         {
-            selectionManager.setSelectedOrganisationUnit( organisationUnitService.getOrganisationUnit( Integer
+            selectionTreeManager.setSelectedOrganisationUnit( organisationUnitService.getOrganisationUnit( Integer
                 .parseInt( selectedUnitChanger ) ) );
         }
 
-        selectedUnit = selectionManager.getSelectedOrganisationUnit();
+        selectedUnit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
 
         // Checks if the selected unit is a leaf node of tree then
         // We must add parent as the same parameter value
@@ -135,7 +135,7 @@ public class DataBrowserAction
         }
         else if ( mode.equals( "OU" ) )
         {
-            selectedUnit = selectionManager.getSelectedOrganisationUnit();
+            selectedUnit = selectionTreeManager.getSelectedOrganisationUnit();
 
             if ( (drillDownCheckBox != null) && drillDownCheckBox.equals( TRUE ) )
             {
