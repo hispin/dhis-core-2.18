@@ -41,10 +41,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DefaultSmsInboundStoreService implements SmsInboundStoreService
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private SmsInboundStore smsInboundStore;
 
     public void setSmsInboundStore( SmsInboundStore smsInboundStore )
