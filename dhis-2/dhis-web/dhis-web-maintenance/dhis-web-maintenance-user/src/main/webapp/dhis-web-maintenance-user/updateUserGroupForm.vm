@@ -11,13 +11,8 @@
 	}
 
 	jQuery(document).ready(function() {
-		jQuery("#availableUsersList").dblclick(function() {
-			dhisPaging_availableList_dblclick("availableUsersList", "groupMembersList", "removeUsers");
-		});
-
-		jQuery("#groupMembersList").dblclick(function() {
-			dhisPaging_selectedList_dblclick("groupMembersList", "availableUsersList", "removeUsers");
-		});
+		jQuery("#availableUsersList").dblclick(dhisPaging_availableList_dblclick("availableUsersList", "groupMembersList", "removeUsers"));
+		jQuery("#groupMembersList").dblclick(dhisPaging_selectedList_dblclick("groupMembersList", "availableUsersList", "removeUsers"));
 
 		var removeUsersList = getRemoveUsersList(); 
 

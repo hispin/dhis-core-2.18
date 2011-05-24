@@ -51,63 +51,67 @@ function dhisPaging_moveAll(sourceId)
  * 
  */
 function dhisPaging_availableList_dblclick(sourceId, targetId, removeArray) {
-    var jqAvailableList = jQuery("#" + sourceId);
-    var jqSelectedList = jQuery("#" + targetId);
-
-    var settings = jqAvailableList.data("settings");
-
-    jqAvailableList.find(":selected").each(function(i) {
-        var jqThis = jQuery(this);
-        var option_id = +jqThis.attr("value");
-
-        jqSelectedList.append( this );
-
-        if( jQuery.isArray(settings[removeArray]) ) {
-            settings[removeArray].push(option_id);
+    return function() {
+        var jqAvailableList = jQuery("#" + sourceId);
+        var jqSelectedList = jQuery("#" + targetId);
+    
+        var settings = jqAvailableList.data("settings");
+    
+        jqAvailableList.find(":selected").each(function(i) {
+            var jqThis = jQuery(this);
+            var option_id = +jqThis.attr("value");
+    
+            jqSelectedList.append( this );
+    
+            if( jQuery.isArray(settings[removeArray]) ) {
+                settings[removeArray].push(option_id);
+            } else {
+                settings[removeArray] = [option_id];
+            }
+        });
+    
+        if(settings[removeArray] && settings[removeArray].length > 0) {
+            settings.params[removeArray] = settings[removeArray].join(",");
         } else {
-            settings[removeArray] = [option_id];
+            delete settings[removeArray];
+            delete settings.params[removeArray];
         }
-    });
-
-    if(settings[removeArray] && settings[removeArray].length > 0) {
-        settings.params[removeArray] = settings[removeArray].join(",");
-    } else {
-        delete settings[removeArray];
-        delete settings.params[removeArray];
+    
+        jqAvailableList.dhisPaging("load", sourceId);
     }
-
-    jqAvailableList.dhisPaging("load", sourceId);
 }
 
 /*
  *
  */
 function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray) {
-    var jqAvailableList = jQuery("#" + targetId);
-    var jqSelectedList = jQuery("#" + sourceId);
-
-    var settings = jQuery("#" + targetId).data("settings");
-
-    jqSelectedList.find(":selected").each(function(i) {
-        var jqThis = jQuery(this);
-        var option_id = +jqThis.attr("value");
-        jqThis.remove();
-
-        if( jQuery.isArray(settings[removeArray]) )
-        {
-            var remove_idx = jQuery.inArray(option_id, settings[removeArray]);
-            settings[removeArray].splice(remove_idx, remove_idx+1);
+    return function() {
+        var jqAvailableList = jQuery("#" + targetId);
+        var jqSelectedList = jQuery("#" + sourceId);
+    
+        var settings = jQuery("#" + targetId).data("settings");
+    
+        jqSelectedList.find(":selected").each(function(i) {
+            var jqThis = jQuery(this);
+            var option_id = +jqThis.attr("value");
+            jqThis.remove();
+    
+            if( jQuery.isArray(settings[removeArray]) )
+            {
+                var remove_idx = jQuery.inArray(option_id, settings[removeArray]);
+                settings[removeArray].splice(remove_idx, remove_idx+1);
+            }
+        });
+    
+        if(settings[removeArray] && settings[removeArray].length > 0) {
+            settings.params[removeArray] = settings[removeArray].join(",");
+        } else {
+            delete settings[removeArray];
+            delete settings.params[removeArray];
         }
-    });
-
-    if(settings[removeArray] && settings[removeArray].length > 0) {
-        settings.params[removeArray] = settings[removeArray].join(",");
-    } else {
-        delete settings[removeArray];
-        delete settings.params[removeArray];
+    
+        jqAvailableList.dhisPaging("load", targetId);
     }
-
-    jqAvailableList.dhisPaging("load", targetId);
 }
 
 // -----------------------------------------------
