@@ -1,4 +1,22 @@
 <script type="text/javascript" src="javascript/addDataElementGroupForm.js"></script>
+<script type="text/javascript">
+	jQuery(function() {
+		jQuery("#availableDataElementsList").dblclick(dhisPaging_availableList_dblclick("availableDataElementsList", "groupMembers", "removeDataElements"));
+		jQuery("#groupMembers").dblclick(dhisPaging_selectedList_dblclick("groupMembers", "availableDataElementsList", "removeDataElements"));
+	
+		jQuery("#availableDataElementsList").dhisPaging({
+			source: "../dhis-web-commons-ajax-json/getDataElements.action",
+			iterator: "dataElements",
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			}
+		});
+	});
+</script>
 
 <h3>$i18n.getString( "create_new_data_element_group" )</h3>
 
@@ -18,44 +36,39 @@
 </table>
 
 <table>
+    <col style="width: 450px"/>
+    <col/>
+    <col/>
+
 	<tr>
-		<th>$i18n.getString( "available_data_elements" )</th><td></td>
+		<th>$i18n.getString( "available_data_elements" )</th>
+		<th></th>
 		<th>$i18n.getString( "group_members" )
 			<select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
 		</th>
 	</tr>
-	<tr>		
-		<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableDataElements' )" style="width:25em"/></td>
-		<td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-		<td><input type="text" id="groupMembersFilter" onkeyup="filterList( this.value, 'groupMembers' )" style="width:25em"/></td>
-	</tr>
+
 	<tr>
 		<td>
-			<select id="availableDataElements" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'availableDataElements', 'groupMembers' )">
-			    #foreach( $element in $availableDataElements )
-			    	<option value="$element.id">$encoder.htmlEncode( $element.name )</option>
-    			#end
-			</select>
+			<select id="availableDataElementsList" name="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
 		</td>
 		
-		<td style="text-align:center">			
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableDataElements', 'groupMembers' )"/><br/>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveSelectedById( 'groupMembers', 'availableDataElements' )"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableDataElements', 'groupMembers' )"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'groupMembers', 'availableDataElements' )"/>
+		<td style="text-align:center">
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableDataElementsList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'groupMembers' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableDataElementsList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'groupMembers' );"/>
 		</td>
-	
+
 		<td>
-			<select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'groupMembers', 'availableDataElements' )" />
+			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 100%; width: 100%;"></select>
 		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td></td>
-		<td></td>
 	</tr>
 </table>
 
-<p><input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataElementGroup.action'" style="width:10em"/></p>
+<p>
+	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataElementGroup.action'" style="width:10em"/>
+</p>
 
 </form>

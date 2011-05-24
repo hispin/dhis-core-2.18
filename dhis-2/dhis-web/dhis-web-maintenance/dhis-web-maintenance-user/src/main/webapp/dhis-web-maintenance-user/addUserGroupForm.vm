@@ -65,7 +65,7 @@
         </td>
 
         <td>
-            <select id="groupMembersList" name="groupMembersList" size="2" multiple="multiple" style="height: 100%; width: 100%;"></select>
+            <select id="groupMembersList" name="groupMembersList" multiple="multiple" style="height: 100%; width: 100%;"></select>
         </td>
     </tr>
 </table>
