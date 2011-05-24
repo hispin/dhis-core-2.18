@@ -13,15 +13,17 @@ jQuery( function(){
 		form.submit() ;
 	}, function(){
 		selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );
-		compulsories = jQuery( "#compulsories" );
 		selectedDataElementsValidator.empty();
+		
+		compulsories = jQuery( "#compulsories" );
 		compulsories.empty();
+		
 		jQuery("#selectedList").find("tr").each( function( i, item ){ 
 			selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
 			var compulsory = jQuery( item ).find( "input[name='compulsory']:first");
-			compulsories.append( "<option value='" + compulsory.attr('checked') + "' selected='true'>" + compulsory.attr('checked') + "</option>" );
+			var checked = compulsory.attr('checked') ? true : false;
+			compulsories.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 		});
-
 	});
 	
 	checkValueIsExist( "name", "validateProgramStage.action", {id:$programStage.id});	
@@ -105,7 +107,7 @@ jQuery( function(){
 						#foreach ( $programStageDataElement in $programStageDataElements )
 							<tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id" class="selected">
 								<td onclick="select(this)">$encoder.htmlEncode( $programStageDataElement.dataElement.name )</td>
-								<td><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id"/></td>
+								<td><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.compulsory == true ) checked #end /></td>
 							</tr>
 						#end
 					</tbody>
@@ -115,8 +117,8 @@ jQuery( function(){
     </tr>
     </tbody>
 </table>
-<select id="selectedDataElementsValidator" name="selectedList" multiple="multiple" class="{validate:{required:true}}" style="display:none"> </select>
-<select id="compulsories" name="compulsories" multiple="multiple" style="display:none"></select>
+<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="{validate:{required:true}}" style="display:none"> </select>
+<select id="compulsories" name='compulsories' multiple="multiple" style="display:none"></select>
 <p>
 	<input type="submit" value="$i18n.getString( 'update' )" style="width:10em"/>
 	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action'" style="width:10em"/>

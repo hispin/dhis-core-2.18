@@ -118,11 +118,11 @@ public class AddProgramStageAction
         this.minDaysFromStart = minDaysFromStart;
     }
 
-    private List<Integer> selectedList = new ArrayList<Integer>();
+    private List<Integer> selectedDataElementsValidator = new ArrayList<Integer>();
 
-    public void setSelectedList( List<Integer> selectedList )
+    public void setSelectedDataElementsValidator( List<Integer> selectedDataElementsValidator )
     {
-        this.selectedList = selectedList;
+        this.selectedDataElementsValidator = selectedDataElementsValidator;
     }
 
     private List<Boolean> compulsories = new ArrayList<Boolean>();
@@ -154,9 +154,9 @@ public class AddProgramStageAction
 
         programStageService.saveProgramStage( programStage );
 
-        for ( int i = 0; i < this.selectedList.size(); i++ )
+        for ( int i = 0; i < this.selectedDataElementsValidator.size(); i++ )
         {
-            DataElement dataElement = dataElementService.getDataElement( selectedList.get( i ) );
+            DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
             ProgramStageDataElement programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
                 this.compulsories.get( i ) );
             programStageDataElementService.addProgramStageDataElement( programStageDataElement );

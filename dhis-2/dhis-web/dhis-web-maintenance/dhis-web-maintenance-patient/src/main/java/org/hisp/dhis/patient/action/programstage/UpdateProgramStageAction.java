@@ -106,11 +106,11 @@ public class UpdateProgramStageAction
         this.minDaysFromStart = minDaysFromStart;
     }
 
-    private List<Integer> selectedList = new ArrayList<Integer>();
+    private List<Integer> selectedDataElementsValidator = new ArrayList<Integer>();
 
-    public void setSelectedList( List<Integer> selectedList )
+    public void setSelectedDataElementsValidator( List<Integer> selectedDataElementsValidator )
     {
-        this.selectedList = selectedList;
+        this.selectedDataElementsValidator = selectedDataElementsValidator;
     }
 
     private List<Boolean> compulsories = new ArrayList<Boolean>();
@@ -141,9 +141,9 @@ public class UpdateProgramStageAction
         Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>( programStage
             .getProgramStageDataElements() );
 
-        for ( int i = 0; i < this.selectedList.size(); i++ )
+        for ( int i = 0; i < this.selectedDataElementsValidator.size(); i++ )
         {
-            DataElement dataElement = dataElementService.getDataElement( selectedList.get( i ) );
+            DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
 
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
@@ -162,7 +162,6 @@ public class UpdateProgramStageAction
 
                 programStageDataElements.remove( programStageDataElement );
             }
-
         }
 
         for ( ProgramStageDataElement psdeDelete : programStageDataElements )
