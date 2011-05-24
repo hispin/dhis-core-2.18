@@ -217,7 +217,7 @@ function validateUploadExcelManagement( fileName, columnIndex )
 	return true;
 }
 
-function validateUploadExcelTemplate(form)
+function validateUploadExcelTemplate()
 {        
 	jQuery( "#upload" ).upload( 'validateUploadExcelTemplate.action',
 		function(data)
@@ -231,10 +231,24 @@ function validateUploadExcelTemplate(form)
 			}
 			else if ( type == 'input' )
 			{
-				if ( window.confirm( i18n_confirm_override ) ) form.submit();
-				else return;
+				if ( !window.confirm( i18n_confirm_override ) ) return;
+				else uploadExcelTemplate();
 			}
-			else form.submit();
+			else uploadExcelTemplate();
+		}, 'xml'
+	);
+}
+	
+function uploadExcelTemplate()
+{
+	jQuery( "#upload" ).upload( 'uploadExcelTemplate.action',
+		function( data, e ) {
+			try {
+				window.location.reload();
+			}
+			catch(e) {
+				alert(e);
+			}
 		}
 	);
 }

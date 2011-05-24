@@ -156,7 +156,7 @@ public class ValidateUploadExcelFile
 
         File output = new File( templateDirectoryConfig, uploadFileName );
 
-        if ( output.exists() )
+        if ( output != null && output.exists() )
         {
             message = i18n.getString( "override_confirm" );
 
