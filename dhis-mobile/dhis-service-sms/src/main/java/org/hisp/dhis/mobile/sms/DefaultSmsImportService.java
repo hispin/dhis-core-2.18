@@ -60,13 +60,14 @@ import org.smslib.helper.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * The default implementation class of the SmsImportService
- * This class provides implementation of the methods required to import SmsInbound
- * into the datavalues using the datavalueservice of core DHIS2
+ * The default implementation class of the SmsImportService This class provides
+ * implementation of the methods required to import SmsInbound into the
+ * datavalues using the datavalueservice of core DHIS2
  * 
  * @author Saptarshi
  */
-public class DefaultSmsImportService implements SmsImportService
+public class DefaultSmsImportService
+    implements SmsImportService
 {
 
     // -------------------------------------------------------------------------
@@ -117,6 +118,7 @@ public class DefaultSmsImportService implements SmsImportService
     // -------------------------------------------------------------------------
     // Helper Methods
     // -------------------------------------------------------------------------
+    
     public User getUserInfo( String mobileNumber )
     {
         Collection<User> userList = userStore.getUsersByPhoneNumber( mobileNumber );
@@ -131,7 +133,6 @@ public class DefaultSmsImportService implements SmsImportService
     public Period getPeriodInfo( String startDate, String periodTypeId )
         throws Exception
     {
-
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
         List<Period> periods = null;
@@ -140,19 +141,22 @@ public class DefaultSmsImportService implements SmsImportService
         {
             pt = new MonthlyPeriodType();
             periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
-        } else
+        }
+        else
         {
             if ( periodTypeId.equals( "1" ) )
             {
                 pt = new DailyPeriodType();
                 periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
-            } else
+            }
+            else
             {
                 if ( periodTypeId.equals( "6" ) )
                 {
                     pt = new YearlyPeriodType();
                     periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
-                } else
+                }
+                else
                 {
                     if ( periodTypeId.equals( "2" ) )
                     {
@@ -201,6 +205,7 @@ public class DefaultSmsImportService implements SmsImportService
     // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
+    
     @Override
     @Transactional
     public int saveDataValues()
@@ -229,17 +234,19 @@ public class DefaultSmsImportService implements SmsImportService
                         if ( userCredentials != null )
                         {
                             storedBy = userCredentials.getUsername();
-                        } else
+                        }
+                        else
                         {
-                            Logger.getInstance().logError( "User with phone number not found : "
-                                + sms.getOriginator(), null, null );
+                            Logger.getInstance().logError( "User with phone number not found : " + sms.getOriginator(),
+                                null, null );
                             return -1;
                         }
                         List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( curUser.getOrganisationUnits() );
                         if ( units == null || units.size() <= 0 )
                         {
-                            Logger.getInstance().logError( " User with phone number not assigned any organization unit : "
-                                + sms.getOriginator(), null, null );
+                            Logger.getInstance().logError(
+                                " User with phone number not assigned any organization unit : " + sms.getOriginator(),
+                                null, null );
                             return -1;
                         }
                         OrganisationUnit unit = units.get( 0 );
@@ -262,9 +269,11 @@ public class DefaultSmsImportService implements SmsImportService
 
                                 DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
 
-                                optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.valueOf( optStr ) );
+                                optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
+                                    .valueOf( optStr ) );
 
-                                DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
+                                DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period,
+                                    optionCombo );
 
                                 if ( dataValue == null )
                                 {
@@ -274,7 +283,8 @@ public class DefaultSmsImportService implements SmsImportService
                                         dataValueService.addDataValue( dataValue );
                                         saveCount++;
                                     }
-                                } else
+                                }
+                                else
                                 {
                                     dataValue.setValue( dataValues[i] );
                                     dataValue.setStoredBy( storedBy );
@@ -282,25 +292,31 @@ public class DefaultSmsImportService implements SmsImportService
                                     saveCount++;
                                 }
                             }
-                        } else
+                        }
+                        else
                         {
-                            Logger.getInstance().logError( "Incorrect formatted IdLayout file for : DV = "
-                                + dataValues.length + " DE = " + deIds.length, null, null );
+                            Logger.getInstance().logError(
+                                "Incorrect formatted IdLayout file for : DV = " + dataValues.length + " DE = "
+                                    + deIds.length, null, null );
                             return -1;
                         }
 
-                    } else
+                    }
+                    else
                     {
-                        Logger.getInstance().logError( "Unrecognised Phone Numbers : " + sms.getOriginator(), null, null );
+                        Logger.getInstance().logError( "Unrecognised Phone Numbers : " + sms.getOriginator(), null,
+                            null );
                         return -1;
                     }
                 }
-            } else
+            }
+            else
             {
                 Logger.getInstance().logError( "Error finding dataelement ids file: ", null, null );
                 return -1;
             }
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             Logger.getInstance().logError( "Error getting Period!", ex, null );
             return -1;

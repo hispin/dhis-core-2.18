@@ -57,6 +57,7 @@ public class HibernateSmsInboundStore implements SmsInboundStore
     // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
+    
     @Override
     public void saveSms( SmsInbound sms )
     {
