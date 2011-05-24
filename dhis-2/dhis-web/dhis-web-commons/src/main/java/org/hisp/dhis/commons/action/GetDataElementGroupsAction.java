@@ -28,6 +28,7 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,6 +67,21 @@ public class GetDataElementGroupsAction
         this.key = key;
     }
 
+    private List<Integer> removeDataElementGroups = new ArrayList<Integer>();
+
+    public void setRemoveDataElementGroups( String removeDataElementGroups )
+    {
+        if ( removeDataElementGroups.length() > 0 )
+        {
+            List<String> stringList = Arrays.asList( removeDataElementGroups.split( "," ) );
+
+            for ( String s : stringList )
+            {
+                this.removeDataElementGroups.add( Integer.parseInt( s ) );
+            }
+        }
+    }
+
     private List<DataElementGroup> dataElementGroups;
 
     public List<DataElementGroup> getDataElementGroups()
@@ -81,6 +97,15 @@ public class GetDataElementGroupsAction
         throws Exception
     {
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+
+        if ( removeDataElementGroups.size() > 0 )
+        {
+            for ( Integer id : removeDataElementGroups )
+            {
+                DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( id );
+                dataElementGroups.remove( dataElementGroup );
+            }
+        }
 
         if ( key != null )
         {
