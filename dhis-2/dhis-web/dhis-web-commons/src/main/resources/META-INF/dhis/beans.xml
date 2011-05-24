@@ -357,6 +357,11 @@
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.commons.action.GetDataElementGroupSetsAction" class="org.hisp.dhis.commons.action.GetDataElementGroupSetsAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
 	<bean id="org.hisp.dhis.commons.action.GetDataElementNameAction" class="org.hisp.dhis.commons.action.GetDataElementNameAction" scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
@@ -397,6 +402,11 @@
 	</bean>
 
 	<bean id="org.hisp.dhis.commons.action.GetIndicatorGroupSetAction" class="org.hisp.dhis.commons.action.GetIndicatorGroupSetAction"
+		scope="prototype">
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.commons.action.GetIndicatorGroupSetsAction" class="org.hisp.dhis.commons.action.GetIndicatorGroupSetsAction"
 		scope="prototype">
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	</bean>

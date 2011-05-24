@@ -487,6 +487,13 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="getDataElementGroupSets"
+			class="org.hisp.dhis.commons.action.GetDataElementGroupSetsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonDataElementGroupSets.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<action name="getDataElementsNotInGroup" class="org.hisp.dhis.commons.action.GetDataElementsNotInGroupAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonDataElements.vm</result>
@@ -543,6 +550,13 @@
 			class="org.hisp.dhis.commons.action.GetIndicatorGroupSetAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonIndicatorGroupSet.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getIndicatorGroupSets"
+			class="org.hisp.dhis.commons.action.GetIndicatorGroupSetsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonIndicatorGroupSets.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 

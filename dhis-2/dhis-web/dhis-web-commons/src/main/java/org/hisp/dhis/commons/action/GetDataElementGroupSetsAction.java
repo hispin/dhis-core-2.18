@@ -31,18 +31,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupSetNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.util.IdentifiableObjectUtils;
 
 /**
- * @author Tran Thanh Tri
  * @author mortenoh
  */
-public class GetDataElementGroupsAction
-    extends ActionPagingSupport<DataElementGroup>
+public class GetDataElementGroupSetsAction
+    extends ActionPagingSupport<DataElementGroupSet>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +55,7 @@ public class GetDataElementGroupsAction
     }
 
     // -------------------------------------------------------------------------
-    // Input & output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private String key;
@@ -66,11 +65,11 @@ public class GetDataElementGroupsAction
         this.key = key;
     }
 
-    private List<DataElementGroup> dataElementGroups;
+    private List<DataElementGroupSet> dataElementGroupSets;
 
-    public List<DataElementGroup> getDataElementGroups()
+    public List<DataElementGroupSet> getDataElementGroupSets()
     {
-        return dataElementGroups;
+        return dataElementGroupSets;
     }
 
     // -------------------------------------------------------------------------
@@ -80,20 +79,20 @@ public class GetDataElementGroupsAction
     public String execute()
         throws Exception
     {
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
 
         if ( key != null )
         {
-            dataElementGroups = IdentifiableObjectUtils.filterNameByKey( dataElementGroups, key, true );
+            dataElementGroupSets = IdentifiableObjectUtils.filterNameByKey( dataElementGroupSets, key, true );
         }
 
-        Collections.sort( this.dataElementGroups, new DataElementGroupNameComparator() );
+        Collections.sort( dataElementGroupSets, new DataElementGroupSetNameComparator() );
 
         if ( usePaging )
         {
-            this.paging = createPaging( dataElementGroups.size() );
+            this.paging = createPaging( dataElementGroupSets.size() );
 
-            dataElementGroups = dataElementGroups.subList( paging.getStartPos(), paging.getEndPos() );
+            dataElementGroupSets = dataElementGroupSets.subList( paging.getStartPos(), paging.getEndPos() );
         }
 
         return SUCCESS;

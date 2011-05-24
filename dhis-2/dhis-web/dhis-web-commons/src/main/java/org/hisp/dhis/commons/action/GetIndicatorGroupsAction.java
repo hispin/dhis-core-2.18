@@ -35,9 +35,10 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.system.util.IdentifiableObjectUtils;
 
 /**
- * @author Tran Thanh Tri
+ * @author mortenoh
  */
 public class GetIndicatorGroupsAction
     extends ActionPagingSupport<IndicatorGroup>
@@ -54,8 +55,15 @@ public class GetIndicatorGroupsAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
+
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
 
     private List<IndicatorGroup> indicatorGroups;
 
@@ -71,6 +79,11 @@ public class GetIndicatorGroupsAction
     public String execute()
     {
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+
+        if ( key != null )
+        {
+            indicatorGroups = IdentifiableObjectUtils.filterNameByKey( indicatorGroups, key, true );
+        }
 
         Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
 
