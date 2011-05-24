@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.User;
@@ -90,7 +91,7 @@ public class GetUsersAction
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
-    
+
     @Override
     public String execute()
         throws Exception
@@ -105,6 +106,11 @@ public class GetUsersAction
             }
         }
 
+        if ( key != null )
+        {
+            filterByKey( key, true );
+        }
+
         Collections.sort( users, new UserComparator() );
 
         if ( usePaging )
@@ -115,5 +121,26 @@ public class GetUsersAction
         }
 
         return SUCCESS;
+    }
+
+    private void filterByKey( String key, boolean ignoreCase )
+    {
+        ListIterator<User> iterator = users.listIterator();
+
+        if ( ignoreCase )
+        {
+            key = key.toLowerCase();
+        }
+
+        while ( iterator.hasNext() )
+        {
+            User user = iterator.next();
+            String name = ignoreCase ? user.getName().toLowerCase() : user.getName();
+
+            if ( name.indexOf( key ) == -1 )
+            {
+                iterator.remove();
+            }
+        }
     }
 }
