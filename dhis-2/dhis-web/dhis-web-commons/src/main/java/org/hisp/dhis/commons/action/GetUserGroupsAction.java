@@ -30,7 +30,6 @@ package org.hisp.dhis.commons.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.util.IdentifiableObjectUtils;
