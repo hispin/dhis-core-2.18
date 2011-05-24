@@ -31,32 +31,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorGroupSetNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.util.IdentifiableObjectUtils;
 
 /**
- * @author Tran Thanh Tri
  * @author mortenoh
  */
-public class GetDataElementGroupsAction
-    extends ActionPagingSupport<DataElementGroup>
+public class GetIndicatorGroupSetsAction
+    extends ActionPagingSupport<IndicatorGroupSet>
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementService dataElementService;
+    private IndicatorService indicatorService;
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setIndicatorService( IndicatorService indicatorService )
     {
-        this.dataElementService = dataElementService;
+        this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private String key;
@@ -66,34 +65,35 @@ public class GetDataElementGroupsAction
         this.key = key;
     }
 
-    private List<DataElementGroup> dataElementGroups;
+    private List<IndicatorGroupSet> indicatorGroupSets;
 
-    public List<DataElementGroup> getDataElementGroups()
+    public List<IndicatorGroupSet> getIndicatorGroupSets()
     {
-        return dataElementGroups;
+        return indicatorGroupSets;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        indicatorGroupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() );
 
         if ( key != null )
         {
-            dataElementGroups = IdentifiableObjectUtils.filterNameByKey( dataElementGroups, key, true );
+            indicatorGroupSets = IdentifiableObjectUtils.filterNameByKey( indicatorGroupSets, key, true );
         }
 
-        Collections.sort( this.dataElementGroups, new DataElementGroupNameComparator() );
+        Collections.sort( indicatorGroupSets, new IndicatorGroupSetNameComparator() );
 
         if ( usePaging )
         {
-            this.paging = createPaging( dataElementGroups.size() );
+            this.paging = createPaging( indicatorGroupSets.size() );
 
-            dataElementGroups = dataElementGroups.subList( paging.getStartPos(), paging.getEndPos() );
+            indicatorGroupSets = indicatorGroupSets.subList( paging.getStartPos(), paging.getEndPos() );
         }
 
         return SUCCESS;
