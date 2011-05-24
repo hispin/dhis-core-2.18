@@ -1,13 +1,5 @@
 package org.hisp.dhis.commons.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-
-import com.opensymphony.xwork2.Action;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -34,11 +26,22 @@ import com.opensymphony.xwork2.Action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.system.util.IdentifiableObjectUtils;
+
 /**
  * @author Jan Henrik Overland
  */
 public class GetOrganisationUnitGroupSetsAction
-    implements Action
+    extends ActionPagingSupport<OrganisationUnitGroupSet>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -52,8 +55,15 @@ public class GetOrganisationUnitGroupSetsAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
+
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
 
     private List<OrganisationUnitGroupSet> organisationUnitGroupSets;
 
@@ -62,12 +72,30 @@ public class GetOrganisationUnitGroupSetsAction
         return organisationUnitGroupSets;
     }
 
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception
     {
-        organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService
-            .getAllOrganisationUnitGroupSets() );
+        organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>(
+            organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
+
+        if ( key != null )
+        {
+            organisationUnitGroupSets = IdentifiableObjectUtils.filterNameByKey( organisationUnitGroupSets, key, true );
+        }
+
+        Collections.sort( organisationUnitGroupSets, new OrganisationUnitGroupSetNameComparator() );
+
+        if ( usePaging )
+        {
+            this.paging = createPaging( organisationUnitGroupSets.size() );
+
+            organisationUnitGroupSets = organisationUnitGroupSets.subList( paging.getStartPos(), paging.getEndPos() );
+        }
 
         return SUCCESS;
     }
