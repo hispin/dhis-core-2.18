@@ -58,8 +58,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
     legend: false,
 
-	imageLegend: false,
-
 	bounds: false,
 
     mapView: false,
@@ -77,6 +75,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     updateValues: false,
     
     isDrillDown: false,
+
+	imageLegend: [],
     
     initComponent: function() {
     
