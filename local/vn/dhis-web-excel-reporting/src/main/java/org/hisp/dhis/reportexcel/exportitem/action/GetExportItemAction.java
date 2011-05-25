@@ -102,7 +102,7 @@ public class GetExportItemAction
     {
         exportItem = exportReportService.getExportItem( id );
 
-        if ( !exportItem.getExportReport().getReportType().equals( ReportExcel.TYPE.CATEGORY ) )
+        if ( !exportItem.getReportExcel().getReportType().equals( ReportExcel.TYPE.CATEGORY ) )
         {
             textualFormula = expressionService.getExpressionDescription( exportItem.getExpression() );
         }

@@ -70,7 +70,7 @@ public class DeleteExportItemAction
     {
         ReportExcelItem exportReportItem = exportReportService.getExportItem( id );
 
-        ReportExcel exportReport = exportReportItem.getExportReport();
+        ReportExcel exportReport = exportReportItem.getReportExcel();
 
         exportReport.getReportExcelItems().remove( exportReportItem );
 
