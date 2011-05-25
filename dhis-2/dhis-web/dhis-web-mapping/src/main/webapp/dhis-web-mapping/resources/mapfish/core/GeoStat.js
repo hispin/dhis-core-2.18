@@ -197,6 +197,8 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         var bins = [];
         var binCount = [];
         var sortedValues = [];
+        var maxDec = 0;
+        
         for (var i = 0; i < this.values.length; i++) {
             sortedValues.push(this.values[i]);
         }
@@ -217,9 +219,6 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         }
 
         binCount[nbBins - 1] = this.nbVal - mapfish.Util.sum(binCount);
-		
-		var imageLegend = [];
-        var maxDec = 0;
         
         for (var l = 0; l < bounds.length; l++) {
             var dec = G.util.getNumberOfDecimals(bounds[l].toString(), ".");
@@ -232,15 +231,6 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
             bins[m] = new mapfish.GeoStat.Bin(binCount[m], bounds[m], bounds[m + 1], m == (nbBins - 1));
             var labelGenerator = this.labelGenerator || this.defaultLabelGenerator;
             bins[m].label = labelGenerator(bins[m], m, nbBins, maxDec);
-			imageLegend[m] = {};
-			imageLegend[m].label = bins[m].label.replace('&nbsp;&nbsp;', ' ');
-        }
-        
-        if (G.vars.activePanel.isPolygon()) {
-            choropleth.imageLegend = imageLegend;
-        }
-        else if (G.vars.activePanel.isPoint()) {
-            point.imageLegend = imageLegend;
         }
         
         return new mapfish.GeoStat.Classification(bins);

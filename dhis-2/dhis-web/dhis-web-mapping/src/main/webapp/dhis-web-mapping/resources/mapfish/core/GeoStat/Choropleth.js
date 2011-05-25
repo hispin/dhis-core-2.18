@@ -66,9 +66,12 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
         
         this.colorInterpolation = mapLegendType == G.conf.map_legend_type_automatic ?
             mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors) : this.widget.colorInterpolation;
-        
-        for (var i = 0; i < this.widget.imageLegend.length && i < this.colorInterpolation.length; i++) {
-            this.widget.imageLegend[i].color = this.colorInterpolation[i].toHexString();
+
+        for (var i = 0; i < this.classification.bins.length; i++) {
+            this.widget.imageLegend[i] = {
+                label: this.classification.bins[i].label.replace('&nbsp;&nbsp;', ' '),
+                color: this.colorInterpolation[i].toHexString()
+            };
         }
     },
 

@@ -278,17 +278,14 @@ G.util = {
     },
 
     getLegendsJSON: function() {
-        var json = '{';
-        json += '"legends":';
-        json += '[';
+        var json = '{"legends":[';
         for(var i = 0; i < this.imageLegend.length; i++) {
             json += '{';
             json += '"label": "' + this.imageLegend[i].label + '",';
             json += '"color": "' + this.imageLegend[i].color + '"';
             json += i < this.imageLegend.length-1 ? '},' : '}';
         }
-        json += ']';
-        json += '}';
+        json += ']}';        
         return json;
     },
     

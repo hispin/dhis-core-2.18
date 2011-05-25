@@ -683,12 +683,12 @@
                                 svg = G.util.mergeSvg(str1, [str2]);                                
                             }
                             else {
-                                Ext.message.msg(false, 'Point layer not rendered');
+                                Ext.message.msg(false, '<span class="x-msg-hl">' + G.conf.thematic_layer_1 + '</span> not rendered');
                                 return;
                             }
                         }
                         else {
-                            Ext.message.msg(false, 'Polygon layer not rendered');
+                            Ext.message.msg(false, '<span class="x-msg-hl">' + G.conf.thematic_layer_2 + '</span> not rendered');
                             return;
                         }
                     }
@@ -702,7 +702,7 @@
                             svg = document.getElementById(polygonLayer.svgId).parentNode.innerHTML;
                         }
                         else {
-                            Ext.message.msg(false, G.conf.thematic_layer_1 + ' not rendered');
+                            Ext.message.msg(false, '<span class="x-msg-hl">' + G.conf.thematic_layer_1 + '</span> not rendered');
                             return;
                         }
                     }
@@ -716,7 +716,7 @@
                             svg = document.getElementById(pointLayer.svgId).parentNode.innerHTML;
                         }
                         else {
-                            Ext.message.msg(false, G.conf.thematic_layer_2 + ' not rendered');
+                            Ext.message.msg(false, '<span class="x-msg-hl">' + G.conf.thematic_layer_2 + '</span> not rendered');
                             return;
                         }
                     }
@@ -758,7 +758,7 @@
 	/* Section: predefined map legend set */
     var predefinedMapLegendSetWindow = new Ext.Window({
         id: 'predefinedmaplegendset_w',
-        title: '<span id="window-predefinedlegendset-title">'+G.i18n.predefined_legend_sets+'</span>',
+        title: '<span id="window-predefinedlegendset-title">' + G.i18n.predefined_legend_sets + '</span>',
 		layout: 'accordion',
         closeAction: 'hide',
 		width: G.conf.window_width,
