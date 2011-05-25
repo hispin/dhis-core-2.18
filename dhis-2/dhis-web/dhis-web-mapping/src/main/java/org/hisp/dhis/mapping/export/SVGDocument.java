@@ -101,7 +101,7 @@ public class SVGDocument
         else if ( this.layer == 3 ) // Both layers
         {
             String heading = "<g id=\"heading\" style=\"display: block; visibility: visible;\"><text id=\"heading\" x=\"30\" y=\"50\" font-size=\"12\" font-weight=\"bold\"><tspan>"
-                + "Polygons</tspan></text></g>";
+                + "Layer 1</tspan></text></g>";
             
             String indicator_ = "<g id=\"indicator\" style=\"display: block; visibility: visible;\"><text id=\"indicator\" x=\"30\" y=\"65\" font-size=\"12\"><tspan>"
                 + StringEscapeUtils.escapeXml( this.indicator ) + "</tspan></text></g>";
@@ -117,7 +117,7 @@ public class SVGDocument
             }
             
             String heading2 = "<g id=\"heading2\" style=\"display: block; visibility: visible;\"><text id=\"heading2\" x=\"30\" y=\"" + (120 + 15 * this.imageLegendRows) + "\" font-size=\"12\" font-weight=\"bold\"><tspan>"
-                + "Points</tspan></text></g>";
+                + "Layer 2</tspan></text></g>";
             
             String indicator2_ = "<g id=\"indicator2\" style=\"display: block; visibility: visible;\"><text id=\"indicator2\" x=\"30\" y=\"" + (135 + 15 * this.imageLegendRows) + "\" font-size=\"12\"><tspan>"
                 + StringEscapeUtils.escapeXml( this.indicator2 ) + "</tspan></text></g>";

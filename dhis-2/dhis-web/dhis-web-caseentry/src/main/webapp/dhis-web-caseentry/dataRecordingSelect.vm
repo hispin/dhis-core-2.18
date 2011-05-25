@@ -18,7 +18,7 @@
 
 <hr style="clear:both">
 
-<table> 
+<table width='100%'> 
    <tr>
         <td><label for="programId">$i18n.getString( "program" )</label></td>
         <td>
@@ -37,43 +37,19 @@
             <select id="programStageId" name="programStageId" style="min-width:350px" onchange="javascript:loadDataEntry();" >
             </select>
         </td>
-		<td>&nbsp;</td>
-		<td>
-			<label for="dueDate">$i18n.getString( "due_date" ) </label>
-		</td>
-		<td>
-			<input type="text" id="dueDate" name="dueDate" disabled="disabled"/>
-		</td>
-		<td>&nbsp;</td>
-		<td>
-			<label for="executionDate">$i18n.getString( "report_date" ) </label>
-		</td>
-		<td>
-			<input type="text" id="executionDate" name="executionDate" onchange="saveExecutionDate( getFieldValue('programStageInstanceId'), getFieldValue('programStageInstanceName') );" disabled="disabled"/>
-		</td>
-		<script type="text/javascript">
-			datePickerValid('executionDate', false);
-		</script>
     </tr>   
 	<tr>
+		<td></td>
 		<td>
 			<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" style="width:12em" disabled="disabled" >
-		</td>
-		<td>
 			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();", '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );" style="width:12em " disabled="disabled" >
+		</td>
+		<td align='right'>
+			<input type="checkbox" id="useDefaultForm" name="useDefaultForm" value="true" onclick="selectUseDefaultDataEntryForm();" disabled="disabled" />
+			<label>$i18n.getString( "use_default_form" )</label><br>	
+		</td>
 		</td>
 	</tr>
 </table>
-<p align='right'>
-	<input type="checkbox" id="useDefaultForm" name="useDefaultForm" value="true" onclick="selectUseDefaultDataEntryForm();" disabled="disabled" />
-	<label>$i18n.getString( "use_default_form" )</label><br>	
-	
-	<input type="checkbox" id="useCustomForm" name="useCustomForm" checked onclick="selectUseCustomDataEntryForm();" disabled="disabled" />
-	<label>$i18n.getString( "use_custom_form" )</label><br>	
-</p>
 
-<hr style="clear:both">
-
-<script type="text/javascript">  
-	setFieldValue('patientId', '$patient.id');
-</script>
+<input type='hidden' id='patientId' name='patientId' value='$patient.id'>

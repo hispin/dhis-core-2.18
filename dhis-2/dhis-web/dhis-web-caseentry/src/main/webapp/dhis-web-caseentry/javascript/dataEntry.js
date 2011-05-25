@@ -18,7 +18,8 @@ function organisationUnitSelected( orgUnits )
 			jQuery('#searchText').removeAttr( 'readonly' );
 			
 			setFieldValue( 'orgunitName', data.getElementsByTagName( "name" )[0].firstChild.nodeValue );
-			
+			setFieldValue( 'orgunitId', data.getElementsByTagName( "id" )[0].firstChild.nodeValue );
+		
 			hideLoader();
 		},'xml');
 }
@@ -83,8 +84,6 @@ function loadProgramStages()
 {
 	hideById('dataEntryFormDiv');
 	clearListById('programStageId');
-	setFieldValue('dueDate', '');
-	setFieldValue('executionDate', '');
 		
 	if ( getFieldValue('programId') == 0 )
 	{
@@ -136,7 +135,7 @@ function loadDataEntry()
 	
 	// Load data-entry form
 	showLoader();
-	var useDefaultForm = ( jQuery('#useDefaultForm').attr('checked')=='checked')?true:false
+	var useDefaultForm = ( jQuery('#useDefaultForm').attr('checked')== 'checked' ) ? true : false;
 	
 	jQuery('#dataEntryFormDiv').load("dataentryform.action",
 		{
@@ -146,15 +145,8 @@ function loadDataEntry()
 		}, 
 		function( )
 		{
-		}).slideDown('slow', function()
+		}).slideDown('fast', function()
 		{
-			setFieldValue('executionDate', getFieldValue('executionDateValue'));
-			setFieldValue('dueDate', getFieldValue('dueDateValue'));
-			enable('executionDate');
-			enable('validationBtn');
-			enable('completeBtn');
-			enable('useDefaultForm');
-			enable('useCustomForm');
 			if ( getFieldValue('executionDate') =='' )
 			{
 				hideById('entryForm');
@@ -166,13 +158,12 @@ function loadDataEntry()
 				setInnerHTML('startMsg', '');
 			}
 			
-			if( byId('useCustomForm').checked )
-			{
-				selectUseCustomDataEntryForm();
-			}else
-			{
-				selectUseDefaultDataEntryForm();
-			}
+			selectUseDefaultDataEntryForm();
+			
+			enable('executionDate');
+			enable('validationBtn');
+			enable('completeBtn');
+			enable('useDefaultForm');
 			
 			hideLoader();
 			hideById('contentDiv'); 
@@ -185,16 +176,15 @@ function loadDataEntry()
 
 function selectUseDefaultDataEntryForm()
 {
-	byId('useCustomForm').checked = false;
-	hideById( 'customEntryScreenContainer' );
-	showById( 'defaultEntryScreenContainer' );
-}
-
-function selectUseCustomDataEntryForm()
-{
-	byId('useDefaultForm').checked = false;
-	hideById( 'defaultEntryScreenContainer' );
-	showById( 'customEntryScreenContainer' );
+	if( byId('useDefaultForm').checked )
+	{
+		hideById( 'customEntryScreenContainer' );
+		showById( 'defaultEntryScreenContainer' );
+	}else
+	{
+		hideById( 'defaultEntryScreenContainer' );
+		showById( 'customEntryScreenContainer' );
+	}
 }
 
 //-----------------------------------------------------------------------------

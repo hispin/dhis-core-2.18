@@ -447,7 +447,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             typeAhead: true,
             editable: false,
             valueField: 'name',
-            displayField: 'name',
+            displayField: 'displayName',
             mode: 'remote',
             forceSelection: true,
             triggerAction: 'all',
