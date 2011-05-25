@@ -208,55 +208,25 @@ public class SaveDateValueAction
             }
 
             // -----------------------------------------------------------------
-            // Check inputed value :
-            // value >= DueDate - program.minDaysAllowedInputData
+            // Check inputed value:
             // value <= DueDate + program.maxDaysAllowedInputData
             // -----------------------------------------------------------------
 
             Date dueDate = programStageInstance.getDueDate();
 
-            if ( dateValue.before( dueDate ) )
+            long diffMillis = dateValue.getTime() - dueDate.getTime();
+
+            long diffMaxDays = diffMillis / 86400000;
+
+            if ( diffMaxDays > program.getMaxDaysAllowedInputData() )
             {
+                statusCode = 2;
 
-                long diffMillis = dueDate.getTime() - dateValue.getTime();
+                message = i18n.getString( "date_is_less_then_or_equals_plus_no_max_days" ) + " " + " ( "
+                    + i18n.getString( "max_days" ) + " : " + program.getMaxDaysAllowedInputData()
+                    + i18n.getString( "days" ) + " )";
 
-                long diffMinDays = diffMillis / 86400000;
-
-                if ( diffMinDays > program.getMinDaysAllowedInputData() )
-                {
-                    statusCode = 2;
-
-                    message = "- " + i18n.getString( "date_is_greater_then_or_equals_due_date_minus_no_min_days" )
-                        + " " + " ( " + i18n.getString( "min_days" ) + " : ( " + program.getMinDaysAllowedInputData()
-                        + i18n.getString( "days" ) + " )" + "\n" + "- "
-                        + i18n.getString( "date_is_less_then_or_equals_plus_no_max_days" ) + " " + " ( "
-                        + i18n.getString( "max_days" ) + " : " + program.getMaxDaysAllowedInputData()
-                        + i18n.getString( "days" ) + " )";
-
-                    return SUCCESS;
-                }
-
-            }
-            else
-            {
-
-                long diffMillis = dateValue.getTime() - dueDate.getTime();
-
-                long diffMaxDays = diffMillis / 86400000;
-
-                if ( diffMaxDays > program.getMaxDaysAllowedInputData() )
-                {
-                    statusCode = 2;
-
-                    message = "- " + i18n.getString( "date_is_greater_then_or_equals_due_date_minus_no_min_days" )
-                        + " " + " ( " + i18n.getString( "min_days" ) + " : ( " + program.getMinDaysAllowedInputData()
-                        + i18n.getString( "days" ) + " )" + "\n" + "- "
-                        + i18n.getString( "date_is_less_then_or_equals_plus_no_max_days" ) + " " + " ( "
-                        + i18n.getString( "max_days" ) + " : " + program.getMaxDaysAllowedInputData()
-                        + i18n.getString( "days" ) + " )";
-
-                    return SUCCESS;
-                }
+                return SUCCESS;
             }
 
         }

@@ -383,7 +383,7 @@ function ExecutionDateSaver( programStageInstanceId_, executionDate_, resultColo
         }
         else
         {
-            if(executionDate != "")
+            if( executionDate != "")
             {
                 markValue( ERROR );
                 window.alert( i18n_invalid_date );
@@ -1212,14 +1212,15 @@ function saveDateCustom(  this_ )
         }
     }
 	
-	var incidentDate = new Date( jQuery('#incidentDate').val() );
+	var dueDate = new Date( jQuery('#dueDate').val() );
+	
 	var inputtedDate = new Date(jQuery(this_).val());
-	if( inputtedDate < incidentDate )
+	if( inputtedDate < dueDate )
 	{
 		jQuery(this_).css({
                 "background-color":"#ffcc00"
             });
-            window.alert( i18n_date_less_incident_date );
+            window.alert( i18n_date_is_greater_then_or_equals_due_date );
 		  
             jQuery(this_).focus();
 
@@ -1440,6 +1441,7 @@ function doComplete()
 					});
 					
 					hideLoader();
+					hideById('contentDiv');
 				},'xml');
 		}
     }

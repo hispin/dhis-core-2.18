@@ -81,14 +81,7 @@ public class AddProgramAction
     {
         this.dateOfIncidentDescription = dateOfIncidentDescription;
     }
-
-    private Integer minDaysAllowedInputData;
-
-    public void setMinDaysAllowedInputData( Integer minDaysAllowedInputData )
-    {
-        this.minDaysAllowedInputData = minDaysAllowedInputData;
-    }
-
+    
     private Integer maxDaysAllowedInputData;
 
     public void setMaxDaysAllowedInputData( Integer maxDaysAllowedInputData )
@@ -107,10 +100,9 @@ public class AddProgramAction
 
         program.setName( name );
         program.setDescription( description );
-        program.setVersion( new Integer( 1 ) );
+        program.setVersion( 1 );
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
-        program.setMinDaysAllowedInputData( minDaysAllowedInputData );
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         
         programService.saveProgram( program );
