@@ -3,9 +3,6 @@ package org.hisp.dhis.reportexcel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.reportexcel.GenericExcelItem;
-import org.hisp.dhis.reportexcel.ReportExcel;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -67,7 +64,7 @@ public class ReportExcelItem
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public ReportExcel getExportReport()
+    public ReportExcel getReportExcel()
     {
         return reportExcel;
     }
