@@ -706,21 +706,14 @@ function showAddPatientForm()
 	hideById('selectDiv');
 	hideById('searchPatientDiv');
 				
-	if( byId('addPatientDiv').innerHTML == '' )
-	{	
-		jQuery('#loaderDiv').show();
+	jQuery('#loaderDiv').show();
+	jQuery('#addPatientDiv').load('showAddPatientForm.action'
+		, function()
+		{
+			showById('addPatientDiv');
+			jQuery('#loaderDiv').hide();
+		});
 	
-		jQuery('#addPatientDiv').load('showAddPatientForm.action'
-			, function()
-			{
-				showById('addPatientDiv');
-				jQuery('#loaderDiv').hide();
-			});
-	}
-	else
-	{
-		showById('addPatientDiv');
-	}
 }
 
 function addPatient()

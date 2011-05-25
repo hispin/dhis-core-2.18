@@ -49,7 +49,7 @@
 <h3>$i18n.getString( "update_patient" )</h3>
 <p><input type="button" value="$i18n.getString( 'back_to_search' )" onclick="onClickBackBtn();" style="width:10em"/></p>
 
-<form id="updatePatientForm" name="updatePatientForm" action="" method="post" onsubmit='updatePatient();'>
+<form id="updatePatientForm" name="updatePatientForm" action="" method="post" >
 <input type="hidden" id="representativeId" name="representativeId"/> 
 <input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 <div>
@@ -82,7 +82,7 @@
 	<tr>
 		<td><label for="dobType">$i18n.getString( "dob_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td class="input-column" >
-			<select id='dobType' name="dobType" style="width:30.3em" onchange="dobTypeOnChange();" class="{validate:{required:false}}">
+			<select id='dobType' name="dobType" style="width:30.3em" onchange="dobTypeOnChange();" class="{validate:{required:true}}">
 				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 				<option value="V" #if($patient.dobType=='V') selected #end>$i18n.getString( "verified" )</option>
 				<option value="D" #if($patient.dobType=='D') selected #end>$i18n.getString( "declared" )</option>
@@ -178,10 +178,9 @@
 	#set( $identifier = $identiferMap.get( $identifierType.id ) )
 	<tr>
 		<td><label for="bloodGroup">$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-		<td class="input-column" ><input type="text" id="iden$identifierType.id" style="width:30em" name="iden$identifierType.id" class='idfield' value="$identifier" data="{related:$identifierType.related}" #if($identifierType.related && $patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" style="width:30em" /></td>	
+		<td class="input-column" ><input type="text" id="iden$identifierType.id" style="width:30em" name="iden$identifierType.id" value="$identifier" data="{related:$identifierType.related}" #if($identifierType.related && $patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" style="width:30em" /></td>	
 	</tr>
 	#end
-	<tr><td>&nbsp;</td></tr>
 	<tr><td>&nbsp;</td></tr>
 	
 	<!-- ATTRIBUTES IN GROUPS -->
