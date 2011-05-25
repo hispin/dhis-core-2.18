@@ -111,13 +111,6 @@ public class LoadDataEntryAction
         this.patientService = patientService;
     }
 
-    //
-    // public void setMinMaxDataElementService( MinMaxDataElementService
-    // minMaxDataElementService )
-    // {
-    // this.minMaxDataElementService = minMaxDataElementService;
-    // }
-
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;

@@ -137,7 +137,7 @@
     var periodTypeStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllPeriodTypes' + G.conf.type,
         root: 'periodTypes',
-        fields: ['name'],
+        fields: ['name', 'displayName'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -702,7 +702,7 @@
                             svg = document.getElementById(polygonLayer.svgId).parentNode.innerHTML;
                         }
                         else {
-                            Ext.message.msg(false, 'Polygon layer not rendered');
+                            Ext.message.msg(false, G.conf.thematic_layer_1 + ' not rendered');
                             return;
                         }
                     }
@@ -716,7 +716,7 @@
                             svg = document.getElementById(pointLayer.svgId).parentNode.innerHTML;
                         }
                         else {
-                            Ext.message.msg(false, 'Point layer not rendered');
+                            Ext.message.msg(false, G.conf.thematic_layer_2 + ' not rendered');
                             return;
                         }
                     }

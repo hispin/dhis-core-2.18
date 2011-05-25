@@ -63,19 +63,13 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
     createColorInterpolation: function() {
         var numColors = this.classification.bins.length;
 		var mapLegendType = this.widget.form.findField('maplegendtype').getValue();
-		
-		if (mapLegendType == G.conf.map_legend_type_automatic) {
-			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors);
-			for (var i = 0; i < this.widget.imageLegend.length && i < this.colorInterpolation.length; i++) {
-				this.widget.imageLegend[i].color = this.colorInterpolation[i].toHexString();
-			}
-		}
-		else if (mapLegendType == G.conf.map_legend_type_predefined) {
-			this.colorInterpolation = this.widget.colorInterpolation;
-			for (var j = 0; j < this.widget.imageLegend.length && j < this.colorInterpolation.length; j++) {
-				this.widget.imageLegend[j].color = this.colorInterpolation[j].toHexString();
-			}
-		}
+        
+        this.colorInterpolation = mapLegendType == G.conf.map_legend_type_automatic ?
+            mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors) : this.widget.colorInterpolation;
+        
+        for (var i = 0; i < this.widget.imageLegend.length && i < this.colorInterpolation.length; i++) {
+            this.widget.imageLegend[i].color = this.colorInterpolation[i].toHexString();
+        }
     },
 
     setClassification: function() {

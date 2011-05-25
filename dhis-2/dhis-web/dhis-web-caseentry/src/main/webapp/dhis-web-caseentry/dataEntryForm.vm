@@ -1,29 +1,40 @@
 
+<p align='right'>
+	<label for="label2">$i18n.getString( "due_date" ) </label>
+	<input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"/>
+	&nbsp;&nbsp;&nbsp;
+	<label for="label">$i18n.getString( "report_date" ) </label>
+	<input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onChange="saveExecutionDate( getFieldValue('programStageInstanceId'), getFieldValue('programStageInstanceName') );" />
+		<script type="text/javascript">
+			datePickerValid('executionDate', false);
+		</script>
+</p>
+
+<hr style="clear:both">
+
 <span id="startMsg" style="font-style:italic; color:blue"> </span>
 
 <div id='entryForm'>
 	<input type='hidden' id='programStageInstanceId' value='$programStageInstance.id'>
 	<input type='hidden' id='programStageInstanceName' value='$programStageInstance.name'>
 	<input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
-	<input type='hidden' id='dueDateValue' value='$!format.formatDate( $programStageInstance.dueDate )'>
-	<input type='hidden' id='executionDateValue' value='$!format.formatDate( $programStageInstance.executionDate )'>
 	
-	<div id="dragDiv">
-		<table id="listInfo">
-			<tr><td style="text-align:left"><strong>$i18n.getString("org_unit_name") :</strong></td> <td id="orgUnitNameField" style="text-align:right"></td></tr>
-			<tr><td style="text-align:left"><strong>$i18n.getString("program_stage_name") :</strong></td> <td  id="programStageName" style="text-align:right">$programStageInstance.programStage.name</td></tr>
-			<tr><td style="text-align:left"><strong>$i18n.getString("datae_element_name") :</strong></td> <td id="dataelementName" style="text-align:right"></td></tr>
-		</table>
-	</div>
-
 	<div id="customEntryScreenContainer">
 		#if( $customDataEntryFormCode ) 
+			<div id="dragDiv">
+				<table id="listInfo">
+					<tr><td style="text-align:left"><strong>$i18n.getString("org_unit_name") :</strong></td> <td id="orgUnitNameField" style="text-align:right"></td></tr>
+					<tr><td style="text-align:left"><strong>$i18n.getString("program_stage_name") :</strong></td> <td  id="programStageName" style="text-align:right">$programStageInstance.programStage.name</td></tr>
+					<tr><td style="text-align:left"><strong>$i18n.getString("datae_element_name") :</strong></td> <td id="dataelementName" style="text-align:right"></td></tr>
+				</table>
+			</div>
 		   $customDataEntryFormCode
-		#else <span style="font-style:italic; color:blue"> $i18n.getString( "no_custom_data_entry_exist" )</span>
+		#else 
+			<span style="font-style:italic; color:blue"> $i18n.getString( "no_custom_data_entry_exist" )</span>
 		#end
 	</div>
 
-	<div id="defaultEntryScreenContainer">
+	<div id="defaultEntryScreenContainer" style='display:none;'>
 		<table class="mainPageTable">
 			<col id="noCol">
 			<col id="deCol">    
@@ -91,10 +102,10 @@
 						#if ( $patientDataValue.value )        
 							#if( !$patientDataValue.providedByAnotherFacility )
 								$patientDataValue.organisationUnit.name
-								<input  name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+								<input name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
 							#else
 								$i18n.getString("other_facility")
-								<input  name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+								<input name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
 							#end
 						 #else
 							<input name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
@@ -109,7 +120,6 @@
 </div>
 
 <script type="text/javascript"> 
-	//setFieldValue('orgUnitNameField', getFieldValue('orgunitName') );
 	initCustomCheckboxes();
 	DRAG_DIV.init();
 </script>
