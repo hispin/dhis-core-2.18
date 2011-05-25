@@ -8,10 +8,6 @@
   #end
 #end
 
-#if($showMsg == "true" )
-	<table><tr><td>$i18n.getString( "oucode_must_be_valid" )</td></tr><table>
-#else
-
 <script>
 	jQuery(document).ready(	function(){
 
@@ -22,7 +18,7 @@
 				,errorElement:"span"
 				,submitHandler: function(form)
 					{
-						//validateAddPatient();
+						validateAddPatient();
 					}
 				,beforeValidateHandler: function(form)
 					{
@@ -47,7 +43,7 @@
 <h3>$i18n.getString( "add_new_patient" )</h3>	
 <p><input type="button" value="$i18n.getString( 'back_to_search' )" onclick="onClickBackBtn();" style="width:10em"/></p>
 
-<form id="addPatientForm" name="addPatientForm" method="post" onsubmit='validateAddPatient();'>
+<form id="addPatientForm" name="addPatientForm" method="post" >
 <input type="hidden" id="representativeId" name="representativeId"/> 
 <input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 <table>
@@ -155,16 +151,13 @@
 	<tr><th colspan="2" class="heading-column">$i18n.getString( "patient_identifiers" )</th></tr>
 	#foreach ($identifierType in $identifierTypes)
 	<tr>
-		<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
+		<td><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 
         #if($identifierType.format == "State Format")
             <td><input type="hidden" id="iden$identifierType.id" name="iden$identifierType.id"/>
-            #if($organisationUnit.code == "null")
-                #set($organisationUnit.code = "" );
-            #end
 				<table>
 					<tr valign="top">
-						<td><input type="text" id="orgunitcode" name="orgunitcode" disabled="disabled" value="$organisationUnit.code" maxlength="9" size="10"/> <br/> <div class='stateformat'>$i18n.getString('registering_unit')<br>$i18n.getString('code')</div></td>
+						<td><input type="text" id="orgunitcode" name="orgunitcode" disabled="disabled" value="$!organisationUnit.code" maxlength="9" size="10"/> <br/> <div class='stateformat'>$i18n.getString('registering_unit')<br>$i18n.getString('code')</div></td>
 						<td> - <input type="text" id="progcode" name="progcode" maxlength="1" size="6" class='idfield  {validate:{required:$identifierType.mandatory,minlength:1,lettersdigitsonly:true}}' /> <br/> <div class='stateformat'>$i18n.getString('program')<br>$i18n.getString('code')</div></td>
 						<td> - <input type="text" id="yearcode" name="yearcode" maxlength="2" size="6" value="$year" class="{validate:{required:true,minlength:2}}"/> <br/> <div class='stateformat'>$i18n.getString('year')</div></td>
 						<td> - <input type="text" id="benicode" name="benicode" maxlength="4" size="9" class="{validate:{required:true,number:true,minlength:4}}"/> <br/> <div class='stateformat'>$i18n.getString('patient')<br>$i18n.getString('code')</div></td>
@@ -173,7 +166,7 @@
             </td>
         #else
             <td class="input-column">
-			<input type="text" style="width:28em" id="iden$identifierType.id" name="iden$identifierType.id" class='idfield' data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>
+			<input type="text" style="width:28em" id="iden$identifierType.id" name="iden$identifierType.id" data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>
         #end
 
 	</tr>
@@ -256,7 +249,6 @@
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
 </p>
 </form>
-#end
 
 <div id="hiddenModalContent" style="display:none">
 	<style> 

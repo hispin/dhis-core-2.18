@@ -94,17 +94,13 @@ public class ShowAddPatientFormAction
     private OrganisationUnit organisationUnit;
 
     private String year;
-
-    private boolean showMsg;
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-
-        showMsg = false;
         identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
 
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
@@ -113,18 +109,11 @@ public class ShowAddPatientFormAction
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        for ( PatientIdentifierType identifierType : identifierTypes )
-        {
-            if ( identifierType.getFormat() != null && identifierType.getFormat().equals( "State Format" )
-                && identifierType.isMandatory() == true )
-            {
-                if ( organisationUnit.getCode() == null || organisationUnit.getCode().length() < 9 )
-                    showMsg = true;
-            }
-        }
-
+       
         SimpleDateFormat dataFormat = new SimpleDateFormat( "y" );
+        
         year = dataFormat.format( new Date() );
+        
         return SUCCESS;
     }
 
@@ -155,10 +144,5 @@ public class ShowAddPatientFormAction
     public String getYear()
     {
         return year;
-    }
-
-    public boolean isShowMsg()
-    {
-        return showMsg;
     }
 }
