@@ -101,13 +101,6 @@ public class UpdateProgramAction
         this.dateOfIncidentDescription = dateOfIncidentDescription;
     }
 
-    private Integer minDaysAllowedInputData;
-
-    public void setMinDaysAllowedInputData( Integer minDaysAllowedInputData )
-    {
-        this.minDaysAllowedInputData = minDaysAllowedInputData;
-    }
-
     private Integer maxDaysAllowedInputData;
 
     public void setMaxDaysAllowedInputData( Integer maxDaysAllowedInputData )
@@ -128,7 +121,6 @@ public class UpdateProgramAction
         program.setVersion( version );
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
-        program.setMinDaysAllowedInputData( minDaysAllowedInputData );
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
 
         programService.updateProgram( program );

@@ -92,7 +92,7 @@ public class TableAlteror
         executeSql( "UPDATE patientidentifiertype SET type='" + PatientIdentifierType.VALUE_TYPE_TEXT
             + "' WHERE type IS NULL" );
 
-        executeSql( "UPDATE program SET minDaysAllowedInputData=0 WHERE minDaysAllowedInputData IS NULL" );
+        executeSql( "ALTER TABLE program DROP COLUMN minDaysAllowedInputData" );
 
         executeSql( "UPDATE program SET maxDaysAllowedInputData=0 WHERE maxDaysAllowedInputData IS NULL" );
 

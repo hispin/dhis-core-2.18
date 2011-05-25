@@ -50,12 +50,6 @@
 		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$!program.dateOfIncidentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 	  </tr>
-  
-	  <tr>
-		<td><label>$i18n.getString( "no_min_days_allowed_input_data" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="minDaysAllowedInputData" name="minDaysAllowedInputData" value="$!program.minDaysAllowedInputData" style="width:30em" class="{validate:{required:true,number:true}}"></td>
-		<td></td>
-	  </tr>	
 	
 	  <tr>
 		<td><label>$i18n.getString( "no_max_days_allowed_input_data" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>

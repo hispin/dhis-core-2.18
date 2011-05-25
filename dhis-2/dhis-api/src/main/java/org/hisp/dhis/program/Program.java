@@ -75,8 +75,6 @@ public class Program
 
     private Set<ValidationCriteria> patientValidationCriteria = new HashSet<ValidationCriteria>();
 
-    private Integer minDaysAllowedInputData;
-
     private Integer maxDaysAllowedInputData;
     
     // -------------------------------------------------------------------------
@@ -209,16 +207,6 @@ public class Program
     public void setDateOfEnrollmentDescription( String dateOfEnrollmentDescription )
     {
         this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
-    }
-
-    public Integer getMinDaysAllowedInputData()
-    {
-        return minDaysAllowedInputData;
-    }
-
-    public void setMinDaysAllowedInputData( Integer minDaysAllowedInputData )
-    {
-        this.minDaysAllowedInputData = minDaysAllowedInputData;
     }
 
     public Integer getMaxDaysAllowedInputData()

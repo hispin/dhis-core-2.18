@@ -110,7 +110,7 @@ public class GetPatientsByNameAction
             }
         }
 
-        String fullName = firstName + " " + middleName + " " + lastName;
+        String fullName = (firstName + " " + middleName + " " + lastName).trim();
         total = patientService.countGetPatientsByName( fullName );
         this.paging = createPaging( total );
 
