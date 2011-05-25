@@ -28,6 +28,7 @@
 			},
 			removeDataElementGroups: removeDataElementGroupsList,
 			params: {
+				filterNoGroupSet: true,
 				removeDataElementGroups: removeDataElementGroupsList.join(",")
 			}
 		});

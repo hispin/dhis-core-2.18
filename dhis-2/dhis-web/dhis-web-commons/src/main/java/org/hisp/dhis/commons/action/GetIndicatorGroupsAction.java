@@ -28,13 +28,17 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.system.filter.IndicatorGroupWIthoutGroupSetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.IdentifiableObjectUtils;
 
 /**
@@ -65,6 +69,28 @@ public class GetIndicatorGroupsAction
         this.key = key;
     }
 
+    public boolean filterNoGroupSet = false;
+
+    public void setFilterNoGroupSet( boolean filterNoGroupSet )
+    {
+        this.filterNoGroupSet = filterNoGroupSet;
+    }
+
+    private List<Integer> removeIndicatorGroups = new ArrayList<Integer>();
+
+    public void setRemoveIndicatorGroups( String removeIndicatorGroups )
+    {
+        if ( removeIndicatorGroups.length() > 0 )
+        {
+            List<String> stringList = Arrays.asList( removeIndicatorGroups.split( "," ) );
+
+            for ( String s : stringList )
+            {
+                this.removeIndicatorGroups.add( Integer.parseInt( s ) );
+            }
+        }
+    }
+
     private List<IndicatorGroup> indicatorGroups;
 
     public List<IndicatorGroup> getIndicatorGroups()
@@ -79,6 +105,20 @@ public class GetIndicatorGroupsAction
     public String execute()
     {
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+
+        if ( filterNoGroupSet )
+        {
+            FilterUtils.filter( indicatorGroups, new IndicatorGroupWIthoutGroupSetFilter() );
+        }
+
+        if ( removeIndicatorGroups.size() > 0 )
+        {
+            for ( Integer id : removeIndicatorGroups )
+            {
+                IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( id );
+                indicatorGroups.remove( indicatorGroup );
+            }
+        }
 
         if ( key != null )
         {

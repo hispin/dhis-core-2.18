@@ -36,6 +36,8 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.system.filter.DataElementGroupWithoutGroupSetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.IdentifiableObjectUtils;
 
 /**
@@ -65,6 +67,13 @@ public class GetDataElementGroupsAction
     public void setKey( String key )
     {
         this.key = key;
+    }
+
+    public boolean filterNoGroupSet;
+
+    public void setFilterNoGroupSet( boolean filterNoGroupSet )
+    {
+        this.filterNoGroupSet = filterNoGroupSet;
     }
 
     private List<Integer> removeDataElementGroups = new ArrayList<Integer>();
@@ -97,6 +106,11 @@ public class GetDataElementGroupsAction
         throws Exception
     {
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+
+        if ( filterNoGroupSet )
+        {
+            FilterUtils.filter( dataElementGroups, new DataElementGroupWithoutGroupSetFilter() );
+        }
 
         if ( removeDataElementGroups.size() > 0 )
         {
