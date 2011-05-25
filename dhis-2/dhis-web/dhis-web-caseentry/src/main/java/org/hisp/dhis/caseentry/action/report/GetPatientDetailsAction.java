@@ -97,14 +97,6 @@ public class GetPatientDetailsAction
 
     private String systemIdentifier;
 
-    private String benicode;
-
-    private String yearcode;
-
-    private String progcode;
-
-    private String orgunitcode;
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -142,15 +134,6 @@ public class GetPatientDetailsAction
             if ( idType != null )
             {
                 identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
-
-                if ( idType.getFormat().equals( "State Format" ) )
-                {
-                    String iden = identifier.getIdentifier();
-                    benicode = iden.substring( 12, 16 );// abcdefghi1121111
-                    yearcode = iden.substring( 10, 12 );
-                    progcode = iden.substring( 9, 10 );
-                    orgunitcode = iden.substring( 0, 9 );
-                }
             }
             else
             {
@@ -288,26 +271,6 @@ public class GetPatientDetailsAction
     public String getSystemIdentifier()
     {
         return systemIdentifier;
-    }
-
-    public String getBenicode()
-    {
-        return benicode;
-    }
-
-    public String getOrgunitcode()
-    {
-        return orgunitcode;
-    }
-
-    public String getProgcode()
-    {
-        return progcode;
-    }
-
-    public String getYearcode()
-    {
-        return yearcode;
     }
 
 }

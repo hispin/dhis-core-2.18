@@ -51,8 +51,6 @@ public class AddPatientIdentifierTypeAction
 
     private String name;
 
-    private String formater;
-
     private String description;
 
     private Boolean mandatory;
@@ -66,11 +64,6 @@ public class AddPatientIdentifierTypeAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-
-    public void setFormater( String formater )
-    {
-        this.formater = formater;
-    }
 
     public void setName( String name )
     {
@@ -117,7 +110,6 @@ public class AddPatientIdentifierTypeAction
         PatientIdentifierType patientIdentifierType = new PatientIdentifierType();
         patientIdentifierType.setName( name );
         patientIdentifierType.setDescription( description );
-        patientIdentifierType.setFormat( formater == null ? "" : formater );
         patientIdentifierType.setRelated( related.booleanValue() );
         patientIdentifierType.setMandatory( mandatory.booleanValue() );
         patientIdentifierType.setNoChars( noChars );

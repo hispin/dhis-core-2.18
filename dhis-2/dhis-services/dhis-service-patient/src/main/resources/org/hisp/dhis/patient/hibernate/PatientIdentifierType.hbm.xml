@@ -14,8 +14,6 @@
 
     <property name="description" />
 
-    <property name="format" />
-
     <property name="mandatory" not-null="true" />
 
     <property name="related" not-null="true" />

@@ -52,8 +52,6 @@ public class PatientIdentifierType
 
     private String description;
 
-    private String format;
-
     private boolean mandatory;
 
     private boolean related;
@@ -70,11 +68,10 @@ public class PatientIdentifierType
     {
     }
 
-    public PatientIdentifierType( String name, String description, String format )
+    public PatientIdentifierType( String name, String description )
     {
         this.name = name;
         this.description = description;
-        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -142,16 +139,6 @@ public class PatientIdentifierType
     public void setDescription( String description )
     {
         this.description = description;
-    }
-
-    public String getFormat()
-    {
-        return format;
-    }
-
-    public void setFormat( String format )
-    {
-        this.format = format;
     }
 
     public boolean isMandatory()

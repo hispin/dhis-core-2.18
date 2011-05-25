@@ -3,5 +3,4 @@
   <id>$patientIdentifierType.id</id>
   <name>$encoder.xmlEncode( $patientIdentifierType.name )</name>
   <description>$encoder.xmlEncode( $patientIdentifierType.description )</description>  
-  <format>#if($patientIdentifierType.format) $encoder.xmlEncode( $patientIdentifierType.format )#end</format>  
 </patientIdentifierType>

@@ -55,8 +55,6 @@ public class UpdatePatientIdentifierTypeAction
 
     private String description;
 
-    private String formater;
-
     private Boolean mandatory;
 
     private Boolean related;
@@ -99,11 +97,6 @@ public class UpdatePatientIdentifierTypeAction
         this.id = id;
     }
 
-    public void setFormater( String formater )
-    {
-        this.formater = formater;
-    }
-
     public void setMandatory( Boolean mandatory )
     {
         this.mandatory = mandatory;
@@ -126,7 +119,6 @@ public class UpdatePatientIdentifierTypeAction
         {
             identifierType.setName( name );
             identifierType.setDescription( description );
-            identifierType.setFormat( formater == null ? "" : formater );
             identifierType.setMandatory( mandatory.booleanValue() );
             identifierType.setRelated( related.booleanValue() );
             identifierType.setNoChars( noChars );

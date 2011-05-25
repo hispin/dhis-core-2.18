@@ -202,15 +202,7 @@ public class UpdatePatientAction
         {
             for ( PatientIdentifierType identifierType : identifierTypes )
             {
-                if ( identifierType.getFormat() != null && identifierType.getFormat().equals( "State Format" ) )
-                {
-                    value = request.getParameter( "progcode" ) + request.getParameter( "yearcode" )
-                        + request.getParameter( "benicode" );
-                }
-                else
-                {
-                    value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
-                }
+                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
 
                 identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
 
