@@ -110,9 +110,9 @@ public class AddPatientAction
     private Integer representativeId;
 
     private Integer relationshipTypeId;
-    
+
     private String message;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -199,15 +199,9 @@ public class AddPatientAction
         {
             for ( PatientIdentifierType identifierType : identifierTypes )
             {
-                if ( identifierType.getFormat() != null && identifierType.getFormat().equals( "State Format" ) )
-                {
-                    value = organisationUnit.getCode() + request.getParameter( "progcode" )
-                        + request.getParameter( "yearcode" ) + request.getParameter( "benicode" );
-                }
-                else
-                {
-                    value = request.getParameter( PREFIX_IDENTIFIER + identifierType.getId() );
-                }
+
+                value = request.getParameter( PREFIX_IDENTIFIER + identifierType.getId() );
+
                 if ( StringUtils.isNotBlank( value ) )
                 {
                     pIdentifier = new PatientIdentifier();
@@ -297,10 +291,11 @@ public class AddPatientAction
         // Save patient
         // -------------------------------------------------------------------------
 
-        Integer id = patientService.createPatient( patient, representativeId, relationshipTypeId, patientAttributeValues );
+        Integer id = patientService.createPatient( patient, representativeId, relationshipTypeId,
+            patientAttributeValues );
 
         message = id + "";
-        
+
         return SUCCESS;
     }
 

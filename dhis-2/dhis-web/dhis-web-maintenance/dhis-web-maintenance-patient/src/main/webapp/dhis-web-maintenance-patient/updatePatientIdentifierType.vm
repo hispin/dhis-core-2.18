@@ -30,12 +30,6 @@
 	</tr>	
 	
 	<tr>
-		<td><label>$i18n.getString( "identifier_format" ) </label></td> 
-		<td><input type="checkbox" name="formater" id="formater" value="State Format" #if(!$!patientIdentifierType.format.isEmpty()) checked="checked" #end />$i18n.getString('state_format')</td>
-		<td></td>
-	</tr>	
-	
-	<tr>
 		<td width="20em"><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="mandatory" name="mandatory" style="min-width:20em">

@@ -146,15 +146,6 @@ public class GetPatientAction
             if ( idType != null )
             {
                 identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
-
-                if ( idType.getFormat().equals( "State Format" ) )
-                {
-                    String iden = identifier.getIdentifier();
-                    benicode = iden.substring( 12, 16 );
-                    yearcode = iden.substring( 10, 12 );
-                    progcode = iden.substring( 9, 10 );
-                    orgunitcode = iden.substring( 0, 9 );
-                }
             }
             else
             {
