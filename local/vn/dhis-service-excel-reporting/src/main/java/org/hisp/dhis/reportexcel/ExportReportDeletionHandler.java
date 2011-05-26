@@ -43,7 +43,7 @@ public class ExportReportDeletionHandler
 
     private ExportReportService exportReportService;
 
-    public void setReportExcelService( ExportReportService exportReportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
         this.exportReportService = exportReportService;
     }

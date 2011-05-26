@@ -40,7 +40,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.reportexcel.ExportReportDeletionHandler"
 		class="org.hisp.dhis.reportexcel.ExportReportDeletionHandler">
-		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.importitem.ImportItemDeletionHandler"
