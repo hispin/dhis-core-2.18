@@ -37,7 +37,13 @@ G.conf = {
     window_position_x: 55,
     window_position_y: 41,
     
-	emptytext: '',
+//  GUI
+
+    feature_data_style_name: 'color:#000',
+    feature_data_style_value: 'color:#444',
+    feature_data_style_empty: 'color:#555',
+    
+    emptytext: '',
 	labelseparator: '',
 	
 //	DHIS variables
@@ -277,9 +283,9 @@ G.util = {
         return b.value-a.value;
     },
 
-    getLegendsJSON: function() {
+    getLegendsJSON: function() {   
         var json = '{"legends":[';
-        for(var i = 0; i < this.imageLegend.length; i++) {
+        for (var i = 0; i < this.imageLegend.length; i++) {
             json += '{';
             json += '"label": "' + this.imageLegend[i].label + '",';
             json += '"color": "' + this.imageLegend[i].color + '"';

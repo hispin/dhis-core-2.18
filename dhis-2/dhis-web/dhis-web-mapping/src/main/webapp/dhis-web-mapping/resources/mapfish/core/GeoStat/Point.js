@@ -63,15 +63,16 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
     createColorInterpolation: function() {
         var numColors = this.classification.bins.length;
 		var mapLegendType = this.widget.form.findField('maplegendtype').getValue();
+        this.widget.imageLegend = [];
         
         this.colorInterpolation = mapLegendType == G.conf.map_legend_type_automatic ?
             mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors) : this.widget.colorInterpolation;
-
+            
         for (var i = 0; i < this.classification.bins.length; i++) {
-            this.widget.imageLegend[i] = {
+            this.widget.imageLegend.push({
                 label: this.classification.bins[i].label.replace('&nbsp;&nbsp;', ' '),
                 color: this.colorInterpolation[i].toHexString()
-            };
+            });
         }
     },
 
