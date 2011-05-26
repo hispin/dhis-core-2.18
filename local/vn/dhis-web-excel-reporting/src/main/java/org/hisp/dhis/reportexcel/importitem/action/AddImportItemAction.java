@@ -119,7 +119,7 @@ public class AddImportItemAction
         importItem.setColumn( column );
         importItem.setExpression( expression );
         importItem.setSheetNo( sheetNo );
-        importItem.setImportReport( importItemService.getImportReport( importReportId ) );
+        importItem.setExcelItemGroup( importItemService.getImportReport( importReportId ) );
 
         importItemService.addImportItem( importItem );
 

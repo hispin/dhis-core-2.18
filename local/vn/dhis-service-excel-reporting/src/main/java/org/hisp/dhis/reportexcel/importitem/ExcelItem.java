@@ -53,12 +53,12 @@ public class ExcelItem
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public ExcelItemGroup getImportReport()
+    public ExcelItemGroup getExcelItemGroup()
     {
         return excelItemGroup;
     }
 
-    public void setImportReport( ExcelItemGroup excelItemGroup )
+    public void setExcelItemGroup( ExcelItemGroup excelItemGroup )
     {
         this.excelItemGroup = excelItemGroup;
     }
