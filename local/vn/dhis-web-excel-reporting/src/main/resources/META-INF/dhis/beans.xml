@@ -184,16 +184,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- REPORT EXCEL USER ROLE BEAN -->
 
-	<bean id="org.hisp.dhis.reportexcel.action.OpenExportReportUserRoleAction"
-		class="org.hisp.dhis.reportexcel.action.OpenExportReportUserRoleAction"
+	<bean id="org.hisp.dhis.reportexcel.exportreport.action.OpenExportReportUserRoleAction"
+		class="org.hisp.dhis.reportexcel.exportreport.action.OpenExportReportUserRoleAction"
 		scope="prototype">
 		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.action.UpdateExportReportUserRoleAction"
-		class="org.hisp.dhis.reportexcel.action.UpdateExportReportUserRoleAction"
+		id="org.hisp.dhis.reportexcel.exportreport.action.UpdateExportReportUserRoleAction"
+		class="org.hisp.dhis.reportexcel.exportreport.action.UpdateExportReportUserRoleAction"
 		scope="prototype">
 		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />

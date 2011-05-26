@@ -38,7 +38,7 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class GetExcelItemParamAction
+public class GetImportItemParamAction
     implements Action
 {
     // -------------------------------------------------------------------------
