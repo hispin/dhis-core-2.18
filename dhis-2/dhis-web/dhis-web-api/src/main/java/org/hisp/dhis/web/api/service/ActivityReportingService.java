@@ -36,7 +36,7 @@ public interface ActivityReportingService
 
     public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString );
 
-    public ActivityPlan getActivitiesByIdentifier( String keyword );
+    public ActivityPlan getActivitiesByIdentifier( String keyword ) throws NotAllowedException;
 
     public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue )
         throws NotAllowedException;

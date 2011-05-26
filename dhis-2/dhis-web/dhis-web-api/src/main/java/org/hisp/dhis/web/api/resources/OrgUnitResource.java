@@ -194,6 +194,7 @@ public class OrgUnitResource
     @GET
     @Path( "search" )
     public ActivityPlan search( @HeaderParam( "identifier" ) String identifier )
+        throws NotAllowedException
     {
         return activityReportingService.getActivitiesByIdentifier( identifier );
     }
@@ -216,8 +217,7 @@ public class OrgUnitResource
             .toString() );
         orgUnit.setChangeUpdateDataSetLangUrl( getOrgUnitUrlBuilder( uriInfo ).path( "changeLanguageDataSet" )
             .build( unit.getId() ).toString() );
-        orgUnit.setSearchUrl( getOrgUnitUrlBuilder( uriInfo ).path( "search" )
-            .build( unit.getId() ).toString() );
+        orgUnit.setSearchUrl( getOrgUnitUrlBuilder( uriInfo ).path( "search" ).build( unit.getId() ).toString() );
         return orgUnit;
     }
 
