@@ -958,27 +958,19 @@
 		</action>
 
 		<action name="showAddCaseAggregationForm"
-			class="org.hisp.dhis.patient.action.caseaggregation.ShowCaseAggregationConditionFormAction">
+			class="org.hisp.dhis.patient.action.caseaggregation.ShowAddCaseAggregationConditionFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addCaseAggregation.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
-			<param name="javascripts">javascript/commons.js,
-				javascript/caseaggregation.js</param>
+			<param name="javascripts">javascript/commons.js,javascript/caseaggregation.js</param>
 		</action>
 
 		<action name="showUpdateCaseAggregationForm"
-			class="org.hisp.dhis.patient.action.caseaggregation.ShowCaseAggregationConditionFormAction">
-			<result name="success" type="chain">updateCaseAggregationFormChain
-			</result>
-		</action>
-
-		<action name="updateCaseAggregationFormChain"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction">
+			class="org.hisp.dhis.patient.action.caseaggregation.ShowUpdateCaseAggregationConditionFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateCaseAggregation.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
-			<param name="javascripts">javascript/commons.js,
-				javascript/caseaggregation.js</param>
+			<param name="javascripts">javascript/commons.js,javascript/caseaggregation.js</param>
 		</action>
 
 		<action name="addCaseAggregation"
