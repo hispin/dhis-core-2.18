@@ -369,8 +369,7 @@ function updateValidationCompleted( messageElement )
     if ( type == 'success' )
     {
     	removeDisabledIdentifier();
-    	var form = document.getElementById( 'updatePatientForm' );        
-        form.submit();
+    	updatePatient();
     }
     else if ( type == 'error' )
     {
@@ -566,7 +565,7 @@ function showListPatientDuplicate(rootElement, validate)
         				+"</tr>";
         		}
         	}
-        	sPatient += "<tr><td colspan='2'><input type='button' id='"+getElementValue(  patients[i], 'id' )+"' value='"+i18n_edit_this_patient+"' onclick='edit(this)'/></td></tr>";
+        	sPatient += "<tr><td colspan='2'><input type='button' id='"+getElementValue(  patients[i], 'id' )+"' value='"+i18n_edit_this_patient+"' onclick='showUpdatePatientForm(this.id)'/></td></tr>";
         	sPatient += "</table>";
 		}
 		jQuery("#thickboxContainer","#hiddenModalContent").html("").append(sPatient);
@@ -701,7 +700,7 @@ function loadAllPatients()
 function showAddPatientForm()
 {
 	hideById('listPatientDiv');
-	hideById('updatePatientDiv');
+	setInnerHTML('updatePatientDiv', '');
 	
 	hideById('selectDiv');
 	hideById('searchPatientDiv');
@@ -737,7 +736,7 @@ function addPatient()
 function showUpdatePatientForm( patientId )
 {
 	hideById('listPatientDiv');
-	hideById('addPatientDiv');
+	setInnerHTML('addPatientDiv', '');
 	
 	hideById('selectDiv');
 	hideById('searchPatientDiv');
@@ -750,6 +749,7 @@ function showUpdatePatientForm( patientId )
 		{
 			showById('updatePatientDiv');
 			jQuery('#searchPatientsByNameDiv').dialog('close');
+			window.parent.tb_remove();
 			jQuery('#loaderDiv').hide();
 		});
 }

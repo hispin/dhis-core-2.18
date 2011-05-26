@@ -143,7 +143,7 @@ function showListPatientDuplicate(rootElement, validate)
         				+"</tr>";
         		}
         	}
-        	sPatient += "<tr><td colspan='2'><input type='button' id='"+getElementValue(  patients[i], 'id' )+"' value='"+i18n_edit_this_patient+"' onclick='edit(this)'/></td></tr>";
+        	sPatient += "<tr><td colspan='2'><input type='button' id='"+getElementValue(  patients[i], 'id' )+"' value='"+i18n_edit_this_patient+"' onclick='showUpdatePatientForm(this.id)'/></td></tr>";
         	sPatient += "</table>";
 		}
 		jQuery("#thickboxContainer","#hiddenModalContent").html("").append(sPatient);

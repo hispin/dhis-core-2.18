@@ -152,8 +152,23 @@
 	#foreach ($identifierType in $identifierTypes)
 	<tr>
 		<td><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
-        <td class="input-column">
-		<input type="text" style="width:28em" id="iden$identifierType.id" name="iden$identifierType.id" data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>
+
+        #if($identifierType.format == "State Format")
+            <td><input type="hidden" id="iden$identifierType.id" name="iden$identifierType.id"/>
+				<table>
+					<tr valign="top">
+						<td><input type="text" id="orgunitcode" name="orgunitcode" disabled="disabled" value="$!organisationUnit.code" maxlength="9" size="10"/> <br/> <div class='stateformat'>$i18n.getString('registering_unit')<br>$i18n.getString('code')</div></td>
+						<td> - <input type="text" id="progcode" name="progcode" maxlength="1" size="6" class='idfield  {validate:{required:$identifierType.mandatory,minlength:1,lettersdigitsonly:true}}' /> <br/> <div class='stateformat'>$i18n.getString('program')<br>$i18n.getString('code')</div></td>
+						<td> - <input type="text" id="yearcode" name="yearcode" maxlength="2" size="6" value="$year" class="{validate:{required:true,minlength:2}}"/> <br/> <div class='stateformat'>$i18n.getString('year')</div></td>
+						<td> - <input type="text" id="benicode" name="benicode" maxlength="4" size="9" class="{validate:{required:true,number:true,minlength:4}}"/> <br/> <div class='stateformat'>$i18n.getString('patient')<br>$i18n.getString('code')</div></td>
+					</tr>
+				</table>
+            </td>
+        #else
+            <td class="input-column">
+			<input type="text" style="width:28em" id="iden$identifierType.id" name="iden$identifierType.id" data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>
+        #end
+
 	</tr>
 	#end
 	
@@ -244,26 +259,9 @@
 	<span>$i18n.getString( "duplicate_warning" )</span>
 	<input type="button" value="$i18n.getString( 'create_new_patient' )"  id="btnCreateNew"/>
 	
-	<script>function edit(this_){window.parent.tb_remove(); window.parent.location.href="showUpdatePatientForm.action?id="+jQuery(this_).attr("id");}
-	</script>
 	<div id="thickboxContainer"></div>
 </div>
 
 <script>
-	var i18n_patient_identifiers = '$encoder.jsEscape( $i18n.getString( "patient_identifiers" ) , "'")';
-	var i18n_patient_attributes = '$encoder.jsEscape( $i18n.getString( "patient_attributes" ) , "'")';
-	var i18n_patient_fullName = '$encoder.jsEscape( $i18n.getString( "full_name" ) , "'")';
-	var i18n_patient_demographics = '$encoder.jsEscape( $i18n.getString( "demographics" ) , "'")';
-	var i18n_patient_gender = '$encoder.jsEscape( $i18n.getString( "gender" ) , "'")';
-	var i18n_patient_date_of_birth = '$encoder.jsEscape( $i18n.getString( "date_of_birth" ) , "'")';
-	var i18n_patient_age = '$encoder.jsEscape( $i18n.getString( "age" ) , "'")';
-	var i18n_patient_blood_group = '$encoder.jsEscape( $i18n.getString( "blood_group" ) , "'")';
-	var i18n_edit_this_patient = '$encoder.jsEscape( $i18n.getString( "edit_this_patient" ) , "'")';
-	var i18n_no_duplicate_found = '$encoder.jsEscape( $i18n.getString( "no_duplicate_found" ) , "'")';
-	var i18n_patient_system_id = '$encoder.jsEscape( $i18n.getString( "patient_system_id" ) , "'")';
-	var i18n_child_representative = '$encoder.jsEscape( $i18n.getString( "child_representative" ) , "'")';
-	var checkedDuplicate = false;
-    var i18n_oucode_must_have_9_digits = '$encoder.jsEscape( $i18n.getString( "oucode_must_be_valid" ) , "'")';
-	var i18n_no_patients_found = '$encoder.jsEscape( $i18n.getString( "no_patients_found" ) , "'")';
-	var i18n_search_result = '$encoder.jsEscape( $i18n.getString( "search_result" ) , "'")';
+	checkedDuplicate = false;
 </script>

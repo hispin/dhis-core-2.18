@@ -166,10 +166,8 @@
 			class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipPatientAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addRelationshipPatientForm.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/javascripts/jQuery/ui/ui.thickbox.min.js</param>
 			<param name="stylesheets">
-				../dhis-web-commons/javascripts/jQuery/ui/css/theme/thickbox.css</param>
+				../dhis-web-commons/javascripts/jQuery/ui/css/ui.thickbox.css</param>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
@@ -242,7 +240,7 @@
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js
 				,../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js</param>
-			<param name="stylesheets">../dhis-web-commons/javascripts/jQuery/ui/css/theme/jquery.cluetip.css</param>
+			<param name="stylesheets">../dhis-web-commons/javascripts/jQuery/ui/css/jquery.cluetip.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
@@ -316,6 +314,8 @@
 				,javascript/patient.js
 				,javascript/relationship.js
 				,javascript/relationshipPatient.js
+				,../dhis-web-commons/javascripts/jQuery/ui/ui.thickbox.min.js
+				,../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js
 			</param>
 		</action>
 		
@@ -388,12 +388,9 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/updatePatientForm.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/javascripts/jquery/ui/jquery.cluetip.min.js
-			</param>
 			<param name="stylesheets">
-				../dhis-web-commons/javascripts/jquery/ui/css/theme/thickbox.css
-				,../dhis-web-commons/javascripts/jquery/ui/css/theme/jquery.cluetip.css
+				../dhis-web-commons/javascripts/jQuery/ui/css/ui.thickbox.css
+				,../dhis-web-commons/javascripts/jQuery/ui/css/jquery.cluetip.css
 			</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>

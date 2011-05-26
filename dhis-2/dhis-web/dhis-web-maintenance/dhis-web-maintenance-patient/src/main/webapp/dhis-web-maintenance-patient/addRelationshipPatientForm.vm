@@ -248,8 +248,7 @@ div#hiddenModalContent td {padding: 2px 5px}
 </style>
 <span>$i18n.getString( "duplicate_warning" )</span>
 <input type="button" value="$i18n.getString( 'create_new_patient' )"  id="btnCreateNew"/>
-<script>function edit(this_){window.parent.tb_remove(); window.parent.location.href="showUpdatePatientForm.action?id="+jQuery(this_).attr("id");}
-</script>
+
 <div id="thickboxContainer"></div>
 </div>
 

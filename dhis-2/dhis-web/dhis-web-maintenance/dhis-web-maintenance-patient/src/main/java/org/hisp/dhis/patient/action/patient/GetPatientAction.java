@@ -99,15 +99,9 @@ public class GetPatientAction
     private String childContactType;
 
     private String systemIdentifier;
-
-    private String benicode;
-
-    private String yearcode;
-
-    private String progcode;
-
-    private String orgunitcode;
-
+    
+    private Patient representative;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -124,7 +118,7 @@ public class GetPatientAction
         identiferMap = new HashMap<Integer, String>();
 
         PatientIdentifierType idType = null;
-        Patient representative = patient.getRepresentative();
+        representative = patient.getRepresentative();
 
         if ( patient.isUnderAge() && representative != null )
         {
@@ -225,6 +219,11 @@ public class GetPatientAction
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
+    public Patient getRepresentative()
+    {
+        return representative;
+    }
+
     public void setId( int id )
     {
         this.id = id;
@@ -285,23 +284,4 @@ public class GetPatientAction
         return systemIdentifier;
     }
 
-    public String getBenicode()
-    {
-        return benicode;
-    }
-
-    public String getOrgunitcode()
-    {
-        return orgunitcode;
-    }
-
-    public String getProgcode()
-    {
-        return progcode;
-    }
-
-    public String getYearcode()
-    {
-        return yearcode;
-    }
 }
