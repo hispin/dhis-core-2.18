@@ -38,7 +38,7 @@ import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class GetPeriodsByExcelItemGroupAction
+public class GetPeriodsByImportReportAction
     extends ActionSupport
 {
 
