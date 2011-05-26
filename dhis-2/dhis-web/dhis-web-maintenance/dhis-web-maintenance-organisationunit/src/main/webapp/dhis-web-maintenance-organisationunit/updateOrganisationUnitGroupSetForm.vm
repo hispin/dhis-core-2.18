@@ -1,12 +1,53 @@
 <script type="text/javascript" src="javascript/updateOrganisationUnitGroupSetForm.js"></script>
 <script type="text/javascript">
+	function getRemoveOrganisationUnitGroups() {
+		var list = [
+		#foreach ( $group in $selectedGroups )
+			${group.id},
+		#end
+		];
+		
+		return list;	
+	}
+
+	jQuery(function() {
+		jQuery("#availableGroups").dblclick(dhisPaging_availableList_dblclick("availableGroups", "selectedGroups", "removeOrganisationUnitGroups"));
+		jQuery("#selectedGroups").dblclick(dhisPaging_selectedList_dblclick("selectedGroups", "availableGroups", "removeOrganisationUnitGroups"));
+
+		var removeOrganisationUnitGroupsList = getRemoveOrganisationUnitGroups();
+
+		jQuery("#availableGroups").dhisPaging({
+			source: "../dhis-web-commons-ajax-json/getOrganisationUnitGroups.action",
+			iterator: "organisationUnitGroups",
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			},
+			removeOrganisationUnitGroups: removeOrganisationUnitGroupsList,
+			params: {
+				filterNoGroupSet: true,
+				includeOrganisationUnitGroupId: $organisationUnitGroupSet.id,
+				removeOrganisationUnitGroups: removeOrganisationUnitGroupsList.join(",")
+			}
+		});
+
+		checkValueIsExist("name", "validateOrganisationUnitGroupSet.action", {
+			id : $organisationUnitGroupSet.id
+		});
+	});
+
 	var saving_the_org_unit_group_set_failed = '$encoder.jsEscape( $i18n.getString( "saving_the_org_unit_group_set_failed" ) , "'" )';	
 </script>
 
 <h3>$i18n.getString( "edit_org_unit_group_set" ) #openHelp( "ou_groupsets_edit" )</h3>
 
 <form id="updateOrganisationUnitGroupSetForm" action="updateOrganisationUnitGroupSet.action" method="post" >
+
 <input type="hidden" id="id" name="id" value="$organisationUnitGroupSet.id"/>
+
 <table>
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
@@ -39,53 +80,42 @@
 
 <table>
 	<colgroup>
-  		<col width="325px"/>
-  		<col width="80px"/>
- 		<col width="325px"/>
+	    <col style="width: 450px"/>
+	    <col/>
+	    <col/>
   	</colgroup>
 	
   	<tr>
   		<th>$i18n.getString( "available_groups" )</th>
-  		<td></td>
+  		<th></th>
   		<th>$i18n.getString( "selected_groups" )</th>
 	</tr>
-    <tr>       
-        <td><input type="text" onkeyup="filterList( this.value, 'availableGroups' )" style="width:25em"/></td>
-        <td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-        <td><input type="text" onkeyup="filterList( this.value, 'selectedGroups' )" style="width:25em"/></td>
-    </tr>
+
 	<tr>
 		<td>
-			<select multiple size="8" id="availableGroups" name="availableGroups" style="width:100%" ondblclick="moveSelectedById( 'availableGroups', 'selectedGroups' )">
-				#foreach ( $group in $availableGroups )
-    				<option value="$group.id">$group.name</option>
-    			#end
-			</select>
+			<select id="availableGroups" name="availableGroups" multiple="multiple" style="height: 200px; width: 100%;"></select>
 		</td>
+
 		<td style="text-align:center">
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availableGroups', 'selectedGroups' )"/><br/>
-			<input type="button" value="&lt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveSelectedById( 'selectedGroups', 'availableGroups' )"/><br/>		
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveAllById( 'availableGroups', 'selectedGroups' )"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedGroups', 'availableGroups' )"/>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableGroups' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'selectedGroups' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableGroups' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'selectedGroups' );"/>
 		</td>
+
 		<td>
-			<select multiple size="8" id="selectedGroups" name="selectedGroups" style="width:100%" ondblclick="moveSelectedById( 'selectedGroups', 'availableGroups' )">
+			<select id="selectedGroups" name="selectedGroups" multiple="multiple" style="height: 100%; width: 100%;">
 				#foreach ( $group in $selectedGroups )
     				<option value="$group.id">$group.name</option>
     			#end
 			</select>
 		</td>
 	</tr>
-	
-    <tr>
-        <td colspan="3" style="height:15px"></td>
-    </tr>
-	    
-	<tr>
-		<td colspan="3">
-			<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
-			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='organisationUnitGroupSet.action'" style="width:10em"/>
-		</td>		
-	</tr>
 </table>
+
+<p>
+	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='organisationUnitGroupSet.action'" style="width:10em"/>
+</p>
+
 </form>

@@ -3,11 +3,11 @@
 	function getRemoveIndicatorGroups() {
 		var list = [
 		#foreach( $indicatorGroup in $selectedGroups )
-            ${indicatorGroup.id}
+            ${indicatorGroup.id},
         #end
 		];
 
-		return list;	
+		return list;
 	}
 
 	jQuery(document).ready(	function() {
@@ -29,6 +29,7 @@
 			removeIndicatorGroups: removeIndicatorGroupsList,
 			params: {
 				filterNoGroupSet: true,
+				includeIndicatorGroupSetId: $indicatorGroupSet.id,
 				removeIndicatorGroups: removeIndicatorGroupsList.join(",")
 			}
 		});

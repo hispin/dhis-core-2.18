@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.filter.OrganisationUnitGroupWithoutGroupSetFilter;
@@ -61,6 +62,13 @@ public class GetOrganisationUnitGroupsAction
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
+
+    private Integer includeOrganisationUnitGroupId;
+
+    public void setIncludeOrganisationUnitGroupId( Integer includeOrganisationUnitGroupId )
+    {
+        this.includeOrganisationUnitGroupId = includeOrganisationUnitGroupId;
+    }
 
     private String key;
 
@@ -112,6 +120,13 @@ public class GetOrganisationUnitGroupsAction
         if ( filterNoGroupSet )
         {
             FilterUtils.filter( organisationUnitGroups, new OrganisationUnitGroupWithoutGroupSetFilter() );
+
+            if ( includeOrganisationUnitGroupId != null )
+            {
+                OrganisationUnitGroupSet groupSet = organisationUnitGroupService
+                    .getOrganisationUnitGroupSet( includeOrganisationUnitGroupId );
+                organisationUnitGroups.addAll( groupSet.getOrganisationUnitGroups() );
+            }
         }
 
         if ( removeOrganisationUnitGroups.size() > 0 )

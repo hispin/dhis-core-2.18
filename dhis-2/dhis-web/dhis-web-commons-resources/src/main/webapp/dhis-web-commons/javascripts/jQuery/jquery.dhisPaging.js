@@ -33,6 +33,13 @@
 // Support functions
 // -----------------------------------------------
 
+// Array Remove - By John Resig (MIT Licensed)
+Array.remove = function(array, from, to) {
+  var rest = array.slice((to || from) + 1 || array.length);
+  array.length = from < 0 ? array.length + from : from;
+  return array.push.apply(array, rest);
+};
+
 /* perform dblclick action on the sourceId */
 function dhisPaging_moveAllSelected(sourceId)
 {
@@ -99,10 +106,11 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray) {
             if( jQuery.isArray(settings[removeArray]) )
             {
                 var remove_idx = jQuery.inArray(option_id, settings[removeArray]);
-                settings[removeArray].splice(remove_idx, remove_idx+1);
+                Array.remove(settings[removeArray], remove_idx, remove_idx);
+                //settings[removeArray].splice(remove_idx, remove_idx+1);
             }
         });
-    
+
         if(settings[removeArray] && settings[removeArray].length > 0) {
             settings.params[removeArray] = settings[removeArray].join(",");
         } else {

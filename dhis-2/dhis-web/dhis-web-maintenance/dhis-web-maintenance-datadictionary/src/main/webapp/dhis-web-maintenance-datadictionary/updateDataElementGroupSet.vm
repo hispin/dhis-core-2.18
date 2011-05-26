@@ -29,6 +29,7 @@
 			removeDataElementGroups: removeDataElementGroupsList,
 			params: {
 				filterNoGroupSet: true,
+				includeDataElementGroupId: $dataElementGroupSet.id,
 				removeDataElementGroups: removeDataElementGroupsList.join(",")
 			}
 		});
@@ -38,7 +39,9 @@
 <h3>$i18n.getString( "update_dataelementgroupset" ) : $dataElementGroupSet.name</h3>
 
 <form id="updateDataElementGroupSet" action="updateDataElementGroupSet.action" method="post">
+
 <input type=hidden id="id" name="id" value="$dataElementGroupSet.id"/>
+
 <table>
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
