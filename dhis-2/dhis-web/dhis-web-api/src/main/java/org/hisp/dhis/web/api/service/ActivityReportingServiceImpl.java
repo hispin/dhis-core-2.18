@@ -143,6 +143,7 @@ public class ActivityReportingServiceImpl
 
     @Override
     public ActivityPlan getActivitiesByIdentifier( String keyword )
+        throws NotAllowedException
     {
 
         long time = PeriodType.createCalendarInstance().getTime().getTime();
@@ -154,33 +155,46 @@ public class ActivityReportingServiceImpl
         Collection<Patient> patients = patientIdentifierService.getPatientsByIdentifier( keyword, 0,
             patientIdentifierService.countGetPatientsByIdentifier( keyword ) );
 
-        if ( patients != null )
+        // Prevent the case that there are so many result (will hang the mobile
+        // phone ) because user just enter one or two number
+
+        if ( patients.size() > 10 )
         {
-            Iterator<Patient> iterator = patients.iterator();
-
-            while ( iterator.hasNext() )
+            throw NotAllowedException.NEED_MORE_SPECIFIC;
+        }
+        else
+        {
+            if ( patients != null )
             {
-                Patient patient = iterator.next();
+                Iterator<Patient> iterator = patients.iterator();
 
-                List<ProgramStageInstance> programStageInstances = programStageInstanceService
-                    .getProgramStageInstances( patient, false );
-
-                for ( int i = 0; i < programStageInstances.size(); i++ )
+                while ( iterator.hasNext() )
                 {
-                    ProgramStageInstance programStageInstance = programStageInstances.get( i );
+                    Patient patient = iterator.next();
 
-                    expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(),
-                        programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
+                    List<ProgramStageInstance> programStageInstances = programStageInstanceService
+                        .getProgramStageInstances( patient, false );
 
-                    if ( programStageInstance.getDueDate().getTime() <= time && expiredDate.getTimeInMillis() > time )
+                    for ( int i = 0; i < programStageInstances.size(); i++ )
                     {
-                        items.add( getActivity( programStageInstance,
-                            programStageInstance.getDueDate().getTime() < time ) );
+                        ProgramStageInstance programStageInstance = programStageInstances.get( i );
+
+                        expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(),
+                            programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
+
+                        if ( programStageInstance.getDueDate().getTime() <= time
+                            && expiredDate.getTimeInMillis() > time )
+                        {
+                            items.add( getActivity( programStageInstance,
+                                programStageInstance.getDueDate().getTime() < time ) );
+                        }
                     }
                 }
             }
+
+            return new ActivityPlan( items );
         }
-        return new ActivityPlan( items );
+
     }
 
     // -------------------------------------------------------------------------
