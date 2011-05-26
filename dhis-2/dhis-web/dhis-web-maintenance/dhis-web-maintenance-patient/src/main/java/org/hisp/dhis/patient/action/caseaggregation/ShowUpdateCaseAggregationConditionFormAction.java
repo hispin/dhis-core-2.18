@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -46,15 +48,17 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
+ * @version $ ShowUpdateCaseAggregationForm.java May 26, 2011 11:43:19 AM $
  * 
- * @version ShowCaseAggregationConditionFormAction.java Nov 17, 2010 11:04:46 AM
  */
-public class ShowCaseAggregationConditionFormAction
+public class ShowUpdateCaseAggregationConditionFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private CaseAggregationConditionService aggregationConditionService;
 
     public DataElementService dataElementService;
 
@@ -65,9 +69,13 @@ public class ShowCaseAggregationConditionFormAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
-	private Integer id;
-	
+
+    private Integer id;
+
+    private CaseAggregationCondition caseAggregation;
+
+    private String description;
+
     private List<PatientAttribute> patientAttributes;
 
     private List<DataElementGroup> dataElementGroups;
@@ -79,30 +87,10 @@ public class ShowCaseAggregationConditionFormAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-    
-    public Integer getId()
-    {
-        return id;
-    }
 
-    public void setId( Integer id )
+    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
     {
-        this.id = id;
-    }
-	
-    public List<DataElementGroup> getDataElementGroups()
-    {
-        return dataElementGroups;
-    }
-
-    public List<Program> getPrograms()
-    {
-        return programs;
-    }
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
+        this.aggregationConditionService = aggregationConditionService;
     }
 
     public void setDataElementService( DataElementService dataElementService )
@@ -118,6 +106,36 @@ public class ShowCaseAggregationConditionFormAction
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public CaseAggregationCondition getCaseAggregation()
+    {
+        return caseAggregation;
+    }
+
+    public List<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
+    }
+
+    public List<Program> getPrograms()
+    {
+        return programs;
+    }
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
     }
 
     public List<PatientAttribute> getPatientAttributes()
@@ -142,6 +160,9 @@ public class ShowCaseAggregationConditionFormAction
         patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
         Collections.sort( patientAttributes, new PatientAttributeComparator() );
 
+        caseAggregation = aggregationConditionService.getCaseAggregationCondition( id );
+        description = aggregationConditionService.getConditionDescription( caseAggregation.getAggregationExpression() );
+        
         return SUCCESS;
     }
 }
