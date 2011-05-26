@@ -33,9 +33,13 @@ function validateSelectedCategories( form )
 	var url = "validateDataElementCategoryCombo.action?";
 		url += getParamString( "selectedList", "selectedCategories" );
 
-	jQuery.postJSON( url, function( json )
+	jQuery.postJSON( url,{}, function( json )
 	{
-		if( json.response == 'success' ) form.submit();
+		if( json.response == 'success' ) 
+		{
+			form.submit();
+		}
 		else markInvalid( 'selectedCategories', json.message );
 	});
+	
 }
