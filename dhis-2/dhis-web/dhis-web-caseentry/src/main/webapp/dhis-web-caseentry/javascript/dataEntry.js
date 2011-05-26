@@ -1277,69 +1277,6 @@ function initCustomCheckboxes()
     jQuery('input[type=checkbox][name="providedByAnotherFacility"]').prettyCheckboxes();
 }
 
-jQuery(document).ready(function(){
-    var currentFocus;
-    if( jQuery("#entryFormContainer") ) {
-        if( jQuery("#executionDate").val() )
-        {
-            jQuery("#startMsg").hide();
-        }else
-        {
-            toggleContentForReportDate(false);
-        }
-	
-        jQuery("#customEntryScreenContainer td").hover(
-            function(){
-                var childrens = jQuery(this).children("input[name='entryfield'],select[name='entryselect']");
-                
-				if( jQuery(childrens[0]).is(":disabled")) {
-                    DRAG_DIV.showData(jQuery(childrens[0]).metadata({
-                        "type":"attr",
-                        "name":"data"
-                    }));
-                }
-				
-				
-            },
-            function(){
-            }
-            );
-		
-        jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){
-            jQuery(this).focus(function(){
-                currentFocus = this;
-                DRAG_DIV.showData(jQuery(this).metadata({
-                    "type":"attr",
-                    "name":"data"
-                }));
-            });
-            jQuery(this).blur(function(){
-               
-                });
-            jQuery(this).hover(
-                function(){
-                    DRAG_DIV.showData(jQuery(this).metadata({
-                        "type":"attr",
-                        "name":"data"
-                    }));
-                },
-                function()
-                {
-                    if(currentFocus){
-                        DRAG_DIV.showData(jQuery(currentFocus).metadata({
-                            "type":"attr",
-                            "name":"data"
-                        }));
-                    }
-                }
-                );
-            jQuery(this).addClass("inputText");
-        });
-		
-        TOGGLE.init();
-    }
-});
-
 DRAG_DIV = {
     init : function()
     {
@@ -1356,14 +1293,14 @@ DRAG_DIV = {
 		
     showData : function(data)
     {
-        jQuery("#orgUnitName").text(data.orgUnitName);
+        jQuery("#orgUnitNameField").text(data.orgUnitName);
         jQuery("#programStageName").text(data.programStageName);
         jQuery("#dataelementName").text(data.dataElementName);
     },
 		
     resetData : function()
     {
-        jQuery("#orgUnitName").text("");
+        jQuery("#orgUnitNameField").text("");
         jQuery("#programStageName").text("");
         jQuery("#dataelementName").text("");
     }
@@ -1536,4 +1473,68 @@ function viewPrgramStageRecords( programStageInstanceId )
 		width: 800,
         height: 400
     });
+}
+
+function entryFormContainerOnReady()
+{
+	var currentFocus; 
+    if( jQuery("#entryFormContainer") ) {
+        if( jQuery("#executionDate").val() )
+        {
+            jQuery("#startMsg").hide();
+        }else
+        {
+            toggleContentForReportDate(false);
+        }
+		
+        jQuery("#customEntryScreenContainer td").hover(
+            function(){
+                var childrens = jQuery(this).children("input[name='entryfield'],select[name='entryselect']");
+                
+				if( jQuery(childrens[0]).is(":disabled")) {
+                    DRAG_DIV.showData(jQuery(childrens[0]).metadata({
+                        "type":"attr",
+                        "name":"data"
+                    }));
+                }
+				
+				
+            },
+            function(){
+            }
+            );
+		
+        jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){
+            jQuery(this).focus(function(){
+                currentFocus = this;
+                DRAG_DIV.showData(jQuery(this).metadata({
+                    "type":"attr",
+                    "name":"data"
+                }));
+            });
+            jQuery(this).blur(function(){
+               
+                });
+            jQuery(this).hover(
+                function(){
+                    DRAG_DIV.showData(jQuery(this).metadata({
+                        "type":"attr",
+                        "name":"data"
+                    }));
+                },
+                function()
+                {
+                    if(currentFocus){
+                        DRAG_DIV.showData(jQuery(currentFocus).metadata({
+                            "type":"attr",
+                            "name":"data"
+                        }));
+                    }
+                }
+                );
+            jQuery(this).addClass("inputText");
+        });
+		
+        TOGGLE.init();
+    }
 }

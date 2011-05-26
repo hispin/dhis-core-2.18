@@ -1,4 +1,10 @@
+<script>
+jQuery("#entryFormContainer").ready(function(){
+    entryFormContainerOnReady();
+});
+</script>
 
+<div id='entryFormContainer'>
 <p align='right'>
 	<label for="label2">$i18n.getString( "due_date" ) </label>
 	<input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"/>
@@ -118,7 +124,7 @@
 
 	</div>
 </div>
-
+</div>
 <script type="text/javascript"> 
 	initCustomCheckboxes();
 	DRAG_DIV.init();
