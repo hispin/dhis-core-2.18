@@ -30,7 +30,6 @@ package org.hisp.dhis.patient.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.patient.PatientMobileSetting;

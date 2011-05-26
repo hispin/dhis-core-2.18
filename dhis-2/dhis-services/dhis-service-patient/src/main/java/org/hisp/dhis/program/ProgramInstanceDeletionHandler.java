@@ -69,14 +69,21 @@ public class ProgramInstanceDeletionHandler
     {
         this.programStageDEService = programStageDEService;
     }
-    
+
     private ProgramAttributeValueService programAttributeValueService;
 
     public void setProgramAttributeValueService( ProgramAttributeValueService programAttributeValueService )
     {
         this.programAttributeValueService = programAttributeValueService;
     }
-    
+
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -92,54 +99,67 @@ public class ProgramInstanceDeletionHandler
     {
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient );
 
-        // ---------------------------------------------------------------------
-        // Delete Patient data values
-        // ---------------------------------------------------------------------
-        
-        Set<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
-
-        for ( ProgramInstance programInstance : programInstances )
+        if ( programInstances != null )
         {
-            dataValues.addAll( patientDataValueService
-                .getPatientDataValues( programInstance.getProgramStageInstances() ) );
-        }
+            // ---------------------------------------------------------------------
+            // Delete Patient data values
+            // ---------------------------------------------------------------------
 
-        if ( dataValues != null && dataValues.size() > 0 )
-        {
-            for ( PatientDataValue dataValue : dataValues )
-            {
-                patientDataValueService.deletePatientDataValue( dataValue );
-            }
-        }
-        
-        // ---------------------------------------------------------------------
-        // Delete Program attribute values
-        // ---------------------------------------------------------------------
-
-        for ( ProgramInstance programInstance : programInstances )
-        {
-            Collection<ProgramAttributeValue> attributeValues = programAttributeValueService
-                .getProgramAttributeValues( programInstance );
-            
-            for ( ProgramAttributeValue attributeValue : attributeValues )
-            {
-                programAttributeValueService.deleteProgramAttributeValue( attributeValue );
-            }
-
-        }
-
-        // ---------------------------------------------------------------------
-        // Delete Program Instances
-        // ---------------------------------------------------------------------
-        
-        if ( programInstances != null && programInstances.size() > 0 )
-        {
             for ( ProgramInstance programInstance : programInstances )
             {
-                programInstanceService.deleteProgramInstance( programInstance );
+                Set<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
+
+                dataValues.addAll( patientDataValueService.getPatientDataValues( programInstance
+                    .getProgramStageInstances() ) );
+
+                if ( dataValues != null )
+                {
+                    for ( PatientDataValue dataValue : dataValues )
+                    {
+                        patientDataValueService.deletePatientDataValue( dataValue );
+                    }
+                }
+            }
+
+            // ---------------------------------------------------------------------
+            // Delete Program attribute values
+            // ---------------------------------------------------------------------
+
+            for ( ProgramInstance programInstance : programInstances )
+            {
+                Collection<ProgramAttributeValue> attributeValues = programAttributeValueService
+                    .getProgramAttributeValues( programInstance );
+
+                for ( ProgramAttributeValue attributeValue : attributeValues )
+                {
+                    programAttributeValueService.deleteProgramAttributeValue( attributeValue );
+                }
+            }
+
+            // ---------------------------------------------------------------------
+            // Delete Program Stage Instances
+            // ---------------------------------------------------------------------
+
+            for ( ProgramInstance programInstance : programInstances )
+            {
+               Set<ProgramStageInstance> programStageInstances = programInstance.getProgramStageInstances();
+               
+               for ( ProgramStageInstance programStageInstance : programStageInstances )
+               { 
+                   programStageInstanceService.deleteProgramStageInstance( programStageInstance );
+               }
+            }
+            
+            // ---------------------------------------------------------------------
+            // Delete Program Instances
+            // ---------------------------------------------------------------------
+
+            for ( ProgramInstance programInstance : programInstances )
+            {
+                 programInstanceService.deleteProgramInstance( programInstance );
             }
         }
-        
+
     }
 
     @Override
@@ -173,7 +193,7 @@ public class ProgramInstanceDeletionHandler
         // ---------------------------------------------------------------------
         // Delete Program attribute values
         // ---------------------------------------------------------------------
-        
+
         for ( ProgramInstance programInstance : programInstances )
         {
             Collection<ProgramAttributeValue> attributeValues = programAttributeValueService
@@ -185,7 +205,7 @@ public class ProgramInstanceDeletionHandler
             }
 
         }
-        
+
         // ---------------------------------------------------------------------
         // Delete Program Instances
         // ---------------------------------------------------------------------

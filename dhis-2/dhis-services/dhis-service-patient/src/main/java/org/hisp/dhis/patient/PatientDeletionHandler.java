@@ -27,6 +27,8 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -54,6 +56,19 @@ public class PatientDeletionHandler
         return Patient.class.getSimpleName();
     }
 
+    @Override
+    public void deletePatient( Patient patient )
+    {
+        Collection<Patient> representatives = patientService.getRepresentatives(patient);
+        
+        for(Patient representative : representatives )
+        {
+            representative.setRepresentative( null );
+            representative.setUnderAge( false );
+            patientService.updatePatient( representative );
+        }
+    }
+    
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
