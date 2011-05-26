@@ -81,26 +81,6 @@ function validateUpdateRelationshipType()
     	);
 }
 
-function updateValidationCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if( type == 'success' )
-    {
-    	var form = document.getElementById( 'updateRelationshipTypeForm' );        
-        form.submit();
-    }
-    else if( type == 'error' )
-    {
-        window.alert( i18n_saving_program_failed + ':' + '\n' + message );
-    }
-    else if( type == 'input' )
-    {
-        setHeaderMessage( message );
-    }
-}
-
 // -----------------------------------------------------------------------------
 // Remove RelationshipType
 // -----------------------------------------------------------------------------	
