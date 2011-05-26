@@ -512,4 +512,8 @@ public class DefaultPatientService
         return null;
     }
 
+    public Collection<Patient> getRepresentatives( Patient patient )
+    {
+        return patientStore.getRepresentatives( patient );
+    }
 }

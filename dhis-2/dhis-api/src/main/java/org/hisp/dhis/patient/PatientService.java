@@ -191,6 +191,7 @@ public interface PatientService
      */
     Collection<Patient> getPatientsByNames( String name, int min, int max );
     
+    Collection<Patient> getRepresentatives( Patient patient );
     /**
      * Search Patient base on identifier value and get number of result
      * 

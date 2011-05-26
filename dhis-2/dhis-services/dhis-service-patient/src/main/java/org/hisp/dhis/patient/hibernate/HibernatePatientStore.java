@@ -265,4 +265,11 @@ public class HibernatePatientStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @SuppressWarnings("unchecked")
+    public Collection<Patient> getRepresentatives( Patient patient )
+    {
+        String hql = "select distinct p from Patient p where p.representative = :representative order by p.id";
+
+        return getQuery( hql ).setEntity( "representative", patient ).list();
+    }
 }

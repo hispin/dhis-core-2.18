@@ -318,6 +318,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService"/>
 		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
 		<property name="programAttributeValueService" ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueService"/>
+		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.relationship.RelationshipDeletionHandler" 

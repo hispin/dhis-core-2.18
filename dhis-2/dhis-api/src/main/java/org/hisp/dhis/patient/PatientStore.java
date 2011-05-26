@@ -61,6 +61,8 @@ public interface PatientStore
     
     Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, int min, int max );
     
+    Collection<Patient> getRepresentatives( Patient patient );
+    
     int countListPatientByOrgunit(OrganisationUnit organisationUnit);
     
     int countGetPatientsByName( String name );
