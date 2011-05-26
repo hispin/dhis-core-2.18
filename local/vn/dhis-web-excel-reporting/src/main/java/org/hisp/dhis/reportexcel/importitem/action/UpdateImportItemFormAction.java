@@ -42,7 +42,7 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class UpdateExcelItemFormAction
+public class UpdateImportItemFormAction
     implements Action
 {
     // -------------------------------------------------------------------------

@@ -36,7 +36,7 @@ import org.hisp.dhis.reportexcel.action.ActionSupport;
  * @version $Id$
  */
 
-public class DeleteMultiImportItemAction
+public class DeleteMultiExportItemAction
     extends ActionSupport
 {
     // -------------------------------------------------------------------------
