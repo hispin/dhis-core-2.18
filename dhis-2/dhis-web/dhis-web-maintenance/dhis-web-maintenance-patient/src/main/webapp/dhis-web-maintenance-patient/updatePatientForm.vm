@@ -14,7 +14,11 @@
 
 		datePickerValid( 'birthDate' );
 		datePickerValid( 'deathDate' );
-		jQuery("#btnRepresentativeInfo").cluetip({local:"#representativeInfo"});
+		
+		jQuery("#btnRepresentativeInfo").cluetip(
+		{
+			local:"#representativeInfo"
+		});
 		
 		jQuery("#updatePatientForm").validate({
 				 meta:"validate"
@@ -166,7 +170,6 @@
 			<td>$i18n.getString("representative")</td>
 			<td>$!patient.representative.getFullName() 
 				<a title="$i18n.getString('patient_info')" href="#" id="btnRepresentativeInfo" rel="#representativeInfo"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
-				<script>jQuery("#btnRepresentativeInfo").cluetip({width:'350px'});</script>
 		</tr>
 	#end
 	
