@@ -13,9 +13,9 @@
 	jQuery(function() {
 		jQuery("#availableDataElementsList").dblclick(dhisPaging_availableList_dblclick("availableDataElementsList", "groupMembers", "removeDataElements"));
 		jQuery("#groupMembers").dblclick(dhisPaging_selectedList_dblclick("groupMembers", "availableDataElementsList", "removeDataElements"));
-	
+
 		var removeDataElementsList = getRemoveDataElements();
-	
+
 		jQuery("#availableDataElementsList").dhisPaging({
 			source: "../dhis-web-commons-ajax-json/getDataElements.action",
 			iterator: "dataElements",

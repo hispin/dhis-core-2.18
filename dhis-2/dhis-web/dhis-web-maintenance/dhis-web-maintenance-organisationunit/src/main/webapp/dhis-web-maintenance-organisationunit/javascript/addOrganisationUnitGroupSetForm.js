@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
 	validation2('addOrganisationUnitGroupSetForm', function(form) {
-		validateAddOrganisationGroupSet(form)
+	    form.submit();
 	}, {
 		'beforeValidateHandler' : function() {
 			selectAllById('selectedGroups');
