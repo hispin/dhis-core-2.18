@@ -271,7 +271,7 @@
         groupSet: groupSetStore,
         groupsByGroupSet: groupsByGroupSetStore
     };
-	
+    
 	/* Thematic layers */
     polygonLayer = new OpenLayers.Layer.Vector(G.conf.thematic_layer_1, {
         'visibility': false,
@@ -2663,7 +2663,7 @@
 		tooltip: 'Administrator settings',
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
-		handler: function() {
+		handler: function() {        
             if (!adminWindow.hidden) {
                 adminWindow.hide();
             }

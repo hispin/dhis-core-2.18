@@ -76,7 +76,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     isDrillDown: false,
 
-	imageLegend: [],
+	imageLegend: false,
     
     initComponent: function() {
     
@@ -990,9 +990,11 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     createSelectFeatures: function() {
         var scope = this;
         
-        var onHoverSelect = function onHoverSelect(feature) {
+        var onHoverSelect = function onHoverSelect(feature) {  
             if (feature.attributes.name) {
-                document.getElementById('featuredatatext').innerHTML = '<div style="color:black">' + feature.attributes.name + '</div><div style="color:#555">' + feature.attributes.value + '</div>';
+                document.getElementById('featuredatatext').innerHTML =
+                    '<div style="' + G.conf.feature_data_style_name + '">' + feature.attributes.name + '</div>' +
+                    '<div style="' + G.conf.feature_data_style_value + '">' + feature.attributes.value + '</div>';
             }
             else {
                 document.getElementById('featuredatatext').innerHTML = '';
@@ -1001,7 +1003,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         var onHoverUnselect = function onHoverUnselect(feature) {
             if (feature.attributes.name) {
-                document.getElementById('featuredatatext').innerHTML = '<div style="color:#666">' + G.i18n.no_feature_selected + '</div>';
+                document.getElementById('featuredatatext').innerHTML = 
+                    '<div style="' + G.conf.feature_data_style_empty + '">' + G.i18n.no_feature_selected + '</div>';
             }
             else {
                 document.getElementById('featuredatatext').innerHTML = '';
