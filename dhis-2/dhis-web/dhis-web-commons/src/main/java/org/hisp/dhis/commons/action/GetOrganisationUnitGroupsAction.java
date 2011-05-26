@@ -1,14 +1,5 @@
 package org.hisp.dhis.commons.action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
-import org.hisp.dhis.paging.ActionPagingSupport;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -35,8 +26,23 @@ import org.hisp.dhis.paging.ActionPagingSupport;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.system.filter.OrganisationUnitGroupWithoutGroupSetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.system.util.IdentifiableObjectUtils;
+
 /**
  * @author Tran Thanh Tri
+ * @author mortenoh
  */
 public class GetOrganisationUnitGroupsAction
     extends ActionPagingSupport<OrganisationUnitGroup>
@@ -53,8 +59,37 @@ public class GetOrganisationUnitGroupsAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & output
     // -------------------------------------------------------------------------
+
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
+    public boolean filterNoGroupSet;
+
+    public void setFilterNoGroupSet( boolean filterNoGroupSet )
+    {
+        this.filterNoGroupSet = filterNoGroupSet;
+    }
+
+    private List<Integer> removeOrganisationUnitGroups = new ArrayList<Integer>();
+
+    public void setRemoveOrganisationUnitGroups( String removeOrganisationUnitGroups )
+    {
+        if ( removeOrganisationUnitGroups.length() > 0 )
+        {
+            List<String> stringList = Arrays.asList( removeOrganisationUnitGroups.split( "," ) );
+
+            for ( String s : stringList )
+            {
+                this.removeOrganisationUnitGroups.add( Integer.parseInt( s ) );
+            }
+        }
+    }
 
     private List<OrganisationUnitGroup> organisationUnitGroups;
 
@@ -63,12 +98,36 @@ public class GetOrganisationUnitGroupsAction
         return organisationUnitGroups;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception
     {
         organisationUnitGroups = new ArrayList<OrganisationUnitGroup>(
             organisationUnitGroupService.getAllOrganisationUnitGroups() );
+
+        if ( filterNoGroupSet )
+        {
+            FilterUtils.filter( organisationUnitGroups, new OrganisationUnitGroupWithoutGroupSetFilter() );
+        }
+
+        if ( removeOrganisationUnitGroups.size() > 0 )
+        {
+            for ( Integer id : removeOrganisationUnitGroups )
+            {
+                OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
+                    .getOrganisationUnitGroup( id );
+                organisationUnitGroups.remove( organisationUnitGroup );
+            }
+        }
+
+        if ( key != null )
+        {
+            organisationUnitGroups = IdentifiableObjectUtils.filterNameByKey( organisationUnitGroups, key, true );
+        }
 
         Collections.sort( organisationUnitGroups, new OrganisationUnitGroupNameComparator() );
 
