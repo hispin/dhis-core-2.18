@@ -223,17 +223,17 @@ public class ExcelItemGroup
     // Support method
     // -------------------------------------------------------------------------
 
-    public boolean excelItemIsExist( String name )
+    public boolean importItemIsExist( String name )
     {
-        return getExcelItemByName( name ) != null;
+        return getImportItemByName( name ) != null;
     }
 
     public boolean rowAndColumnIsExist( int sheet, int row, int column )
     {
-        return getExcelItemBySheetRowColumn( sheet, row, column ) != null;
+        return getImportItemBySheetRowColumn( sheet, row, column ) != null;
     }
 
-    public ExcelItem getExcelItemByName( String name )
+    public ExcelItem getImportItemByName( String name )
     {
         for ( ExcelItem e : this.excelItems )
         {
@@ -246,7 +246,7 @@ public class ExcelItemGroup
         return null;
     }
 
-    public ExcelItem getExcelItemBySheetRowColumn( int sheet, int row, int column )
+    public ExcelItem getImportItemBySheetRowColumn( int sheet, int row, int column )
     {
         for ( ExcelItem e : this.excelItems )
         {

@@ -117,7 +117,7 @@ public class CopyImportItemToImportReportAction
             importItem.setColumn( itemSource.getColumn() );
             importItem.setExpression( itemSource.getExpression() );
             importItem.setSheetNo( sheetNo );
-            importItem.setImportReport( dest );
+            importItem.setExcelItemGroup( dest );
 
             importItemService.addImportItem( importItem );
         }
