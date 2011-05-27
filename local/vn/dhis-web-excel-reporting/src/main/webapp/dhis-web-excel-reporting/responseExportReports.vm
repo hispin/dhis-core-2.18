@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<reports>	
+<exportReports>	
 	<organisationUnit>$!encoder.xmlEncode($organisationUnit.name)</organisationUnit>
-	#foreach($report in $reports)
-	<report>
-		<id>$report.id</id>
-		<name>$!encoder.xmlEncode($report.name)</name>
-	</report>
+	#foreach($exportReport in $exportReports)
+	<exportReport>
+		<id>$exportReport.id</id>
+		<name>$!encoder.xmlEncode($exportReport.name)</name>
+	</exportReport>
 	#end
-</reports>
+</exportReports>

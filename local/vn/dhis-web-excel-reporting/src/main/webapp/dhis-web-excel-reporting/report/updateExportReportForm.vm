@@ -37,27 +37,21 @@
 		<tr>
 			<td><label>$i18n.getString('excel_template')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>				
-				<select name="excel" style="min-width:20em">
-					#foreach($templateFileName in $mapTemplateFiles.keySet())		
-						#if( $exportReport.excelTemplateFile==$templateFileName)
-						<option value="$encoder.htmlEncode( $templateFileName )" selected="selected" >$encoder.htmlEncode( $templateFileName )</option>
-						#else
-						<option value="$encoder.htmlEncode( $templateFileName )" >$encoder.htmlEncode( $templateFileName )</option>
-						#end
+				<select name="excel" style="min-width:20em" class="{validate:{required:true}}">
+					#foreach($templateFileName in $mapTemplateFiles.keySet())
+						<option value="$encoder.htmlEncode( $templateFileName )" #if( $exportReport.excelTemplateFile==$templateFileName) selected="selected" #end>
+							$encoder.htmlEncode( $templateFileName )
+						</option>
 					#end						
 				</select>	
 			</td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString('report_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label>$i18n.getString('export_report_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
-				<select name="reportType" style="min-width:20em" disabled=true>
+				<select name="exportReportType" style="min-width:20em" disabled="true">
 					#foreach( $type in $reportTypes )
-						#if( $exportReport.getReportType()==$type)
-						<option value='$type' selected="selected">$i18n.getString($type)</option>
-						#else
-						<option value='$type'>$i18n.getString($type)</option>
-						#end
+						<option value='$type' #if( $exportReport.getReportType()==$type) selected="selected" #end>$i18n.getString($type)</option>
 					#end												
 				</select>
 			</td>

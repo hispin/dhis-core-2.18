@@ -5,7 +5,7 @@
 	<tr>
 		<td colspan=2>
 			<input type="button" onclick="openAddDataElementGroupOrder()" value="$i18n.getString('add')" style="width:100px"/>
-			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location='listExportReport.action'" style="width:100px">
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location='listAllExportReport.action'" style="width:100px">
 		</td>
 		<td width="100px">
 			<input type="button" value="$i18n.getString( 'update_order' )" onclick="updateDataElementGroupOrder()" style="width:150px">

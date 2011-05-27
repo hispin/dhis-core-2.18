@@ -1,12 +1,9 @@
-<h3>$i18n.getString( "edit" ) $i18n.getString( "dataset_completed_report" )</h3>
+<h3>$i18n.getString( "edit" ) $i18n.getString( "data_status" )</h3>
 
 <table>
 	<tr>
 		<td>$i18n.getString( 'dataset' )</td>
-		<td>
-			<select id="dataSetId" name="dataSetId">
-			</select>
-		</td>
+		<td><select id="dataSetId" name="dataSetId"></select></td>
 	</tr>
 	<tr>
 		<td>$i18n.getString( 'make_default' )</td>
@@ -17,7 +14,7 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td colspan=2 align=center>
+		<td colspan="2" align="center">
 			<input type="button" value="$i18n.getString( 'ok' )" style="width:100px" onclick="updateDataStatus()"/>
 			<input type="button" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location = 'listDataEntryStatus.action'"/>
 		</td>
@@ -48,7 +45,5 @@
 			dataSets.options.add(option,null);
 			
 		}
-		
-		
 	}
 </script>
