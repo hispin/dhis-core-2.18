@@ -196,7 +196,7 @@
 		</action>
 
 		<action name="showAddOrganisationUnitGroupSetForm"
-			class="org.hisp.dhis.oum.action.organisationunitgroupset.PrepareAddGroupSetAction">
+			class="org.hisp.dhis.oum.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupSetForm.vm</param>
 			<param name="javascripts">javascript/organisationUnitGroupSet.js</param>
