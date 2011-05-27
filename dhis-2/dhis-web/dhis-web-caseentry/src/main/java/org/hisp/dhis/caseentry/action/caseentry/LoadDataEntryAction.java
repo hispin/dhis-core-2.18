@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.caseentry.screen.DataEntryScreenManager;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -41,6 +40,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
@@ -67,7 +67,7 @@ public class LoadDataEntryAction
 
     private ProgramInstanceService programInstanceService;
 
-    private DataEntryScreenManager dataEntryScreenManager;
+    private ProgramDataEntryService programDataEntryService;
 
     private PatientDataValueService patientDataValueService;
 
@@ -85,8 +85,6 @@ public class LoadDataEntryAction
 
     private Integer patientId;
 
-    private Boolean useDefaultForm;
-
     private ProgramStageInstance programStageInstance;
 
     private String customDataEntryFormCode;
@@ -96,6 +94,8 @@ public class LoadDataEntryAction
     private Collection<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
 
     private Map<Integer, PatientDataValue> patientDataValueMap;
+
+    private OrganisationUnit organisationUnit;
 
     // -------------------------------------------------------------------------
     // Getters && Setters
@@ -121,9 +121,9 @@ public class LoadDataEntryAction
         this.programInstanceService = programInstanceService;
     }
 
-    public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
+    public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
     {
-        this.dataEntryScreenManager = dataEntryScreenManager;
+        this.programDataEntryService = programDataEntryService;
     }
 
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
@@ -134,6 +134,11 @@ public class LoadDataEntryAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+    
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
     }
 
     public ProgramStageInstance getProgramStageInstance()
@@ -154,11 +159,6 @@ public class LoadDataEntryAction
     public void setProgramStageId( Integer programStageId )
     {
         this.programStageId = programStageId;
-    }
-
-    public void setUseDefaultForm( Boolean useDefaultForm )
-    {
-        this.useDefaultForm = useDefaultForm;
     }
 
     public String getCustomDataEntryFormCode()
@@ -194,7 +194,7 @@ public class LoadDataEntryAction
         ProgramInstance programInstance = programInstanceService.getProgramInstances( patient,
             programStage.getProgram(), false ).iterator().next();
 
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         programStageDataElements = programStage.getProgramStageDataElements();
 
@@ -222,11 +222,10 @@ public class LoadDataEntryAction
 
             DataEntryForm dataEntryForm = programStage.getDataEntryForm();
 
-            if ( !useDefaultForm && dataEntryForm != null)
+            if ( dataEntryForm != null )
             {
-              customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
-                    dataEntryForm.getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance,
-                    organisationUnit );
+                customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
+                    .getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance, organisationUnit );
             }
 
             return SUCCESS;

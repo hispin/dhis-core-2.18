@@ -80,7 +80,7 @@
     <!-- save value -->
     
     <action name="saveValue" class="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction">
-      <result name="success" type="velocity">status.vm</result>
+      <result name="success" type="velocity-xml">status.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-caseentry/responseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>      
     </action>

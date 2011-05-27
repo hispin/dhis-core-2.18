@@ -18,7 +18,6 @@ function organisationUnitSelected( orgUnits )
 			jQuery('#searchText').removeAttr( 'readonly' );
 			
 			setFieldValue( 'orgunitName', data.getElementsByTagName( "name" )[0].firstChild.nodeValue );
-			setFieldValue( 'orgunitId', data.getElementsByTagName( "id" )[0].firstChild.nodeValue );
 		
 			hideLoader();
 		},'xml');
@@ -130,37 +129,23 @@ function loadDataEntry()
 	hideById('dataEntryFormDiv');
 	if( getFieldValue('programStageId') == '0' )
 	{
+		disable('validationBtn');
+		disable('completeBtn');
 		return;
 	}
 	
 	// Load data-entry form
 	showLoader();
-	var useDefaultForm = ( jQuery('#useDefaultForm').attr('checked')== 'checked' ) ? true : false;
 	
 	jQuery('#dataEntryFormDiv').load("dataentryform.action",
 		{
 			programStageId:getFieldValue('programStageId'),
-			patientId: getFieldValue('patientId'),
-			useDefaultForm: useDefaultForm
+			patientId: getFieldValue('patientId')
 		}, 
 		function( )
 		{
 		}).slideDown('fast', function()
 		{
-			if ( getFieldValue('executionDate') =='' )
-			{
-				hideById('entryForm');
-				setInnerHTML('startMsg', i18n_report_date_warning);
-			}
-			else
-			{
-				showById('entryForm');
-				setInnerHTML('startMsg', '');
-			}
-			
-			selectUseDefaultDataEntryForm();
-			
-			enable('executionDate');
 			enable('validationBtn');
 			enable('completeBtn');
 			enable('useDefaultForm');
@@ -333,7 +318,7 @@ function saveExecutionDate( programStageInstanceId, programStageInstanceName )
     var executionDateSaver = new ExecutionDateSaver( programStageInstanceId, field.value, '#ccffcc' );
     executionDateSaver.save();
 	
-    if( !jQuery("#entryFormContainer").is(":visible") )
+    if( !jQuery("#entryForm").is(":visible") )
     {
         toggleContentForReportDate(true);
     }
@@ -431,11 +416,19 @@ function DateSaver( dataElementId_, value_, providedByAnotherFacility_, resultCo
 
     this.save = function()
     {
+		var params = 'dataElementId=' + dataElementId 
+			params +=  '&value=' + value 
+			params +=  '&providedByAnotherFacility=' + providedByAnotherFacility
+			params += '&orgunitId=' + getFieldValue('orgunitId');
+			params += '&patientId=' + getFieldValue('patientId');
+			params += '&programStageId=' + getFieldValue('programStageId');
+			
         var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
-        request.send( 'saveDateValue.action?dataElementId=' + dataElementId + '&value=' + value + '&providedByAnotherFacility=' + providedByAnotherFacility );
+		request.sendAsPost( params );
+        request.send( 'saveDateValue.action' );
     };
 
     function handleResponse( rootElement )
@@ -511,11 +504,19 @@ function DateSaverCustom( programStageId, dataElementId_, value_, providedByAnot
 
     this.save = function()
     {
+		var params = 'dataElementId=' + dataElementId 
+			params +=  '&value=' + value 
+			params +=  '&providedByAnotherFacility=' + providedByAnotherFacility
+			params += '&orgunitId=' + getFieldValue('orgunitId');
+			params += '&patientId=' + getFieldValue('patientId');
+			params += '&programStageId=' + getFieldValue('programStageId');
+		
         var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
-        request.send( 'saveDateValue.action?dataElementId=' + dataElementId + '&value=' + value + '&providedByAnotherFacility=' + providedByAnotherFacility );
+		request.sendAsPost( params );
+        request.send( 'saveDateValue.action');
     };
 
     function handleResponse( rootElement )
@@ -949,8 +950,10 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
 				params += '&patientId=' + getFieldValue('patientId');
 				params += '&programStageId=' + getFieldValue('programStageId');
 			
-			request.sendAsPost( params );
-            request.send( 'saveValue.action' );
+			request.sendAsPost( params ); 
+			
+			if( type == 'date' ) request.send( 'saveDateValue.action' );
+			else request.send( 'saveValue.action' );
         }
         else
         {	
@@ -962,7 +965,8 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
 				params += '&programStageId=' + getFieldValue('programStageId');
 				
 			request.sendAsPost( params );
-            request.send( 'saveValue.action' );
+			if( type == 'date' ) request.send( 'saveDateValue.action' );
+			else request.send( 'saveValue.action' );
         }
 		
 		
@@ -981,7 +985,7 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
             if(value!="")
             {
                 markValue( ERROR );
-                window.alert( i18n_invalid_date );
+                window.alert( rootElement.getElementsByTagName( "message" )[0].firstChild.nodeValue );
             }
             else
             {
@@ -1189,12 +1193,13 @@ function saveDateCustom(  this_ )
 
     if(jQuery(this_).val()!="")
     { 
-        if( !isValidDate( jQuery(this_).val() ) )
+		var d2 = new Date(jQuery(this_).val() );
+        if( d2 == 'Invalid Date' )
         {
             jQuery(this_).css({
                 "background-color":"#ffcc00"
             });
-            window.alert('Incorrect format for date value. The correct format should be ' + dateFormat.replace('yy', 'yyyy') +' \n\n '+data.dataElementName );
+            window.alert('Incorrect format for date value. The correct format should be ' + dateFormat.replace('yy', 'yyyy') +' \n\n ' + data.dataElementName );
 		  
             jQuery(this_).focus();
 
@@ -1283,7 +1288,7 @@ DRAG_DIV = {
         var dragDiv = jQuery("#dragDiv");
         dragDiv.show();
         var left = screen.width - 500 ;
-        var top = Math.round(jQuery("#startMsg").position().top )  ;
+        var top = Math.round(jQuery("#entryFormContainer").position().top )  ;
         dragDiv.css({
             'left': left+'px',
             'top': top+'px'
@@ -1309,11 +1314,11 @@ function toggleContentForReportDate(show)
 {
     if( show ){
         jQuery("#startMsg").hide();
-        jQuery("#entryFormContainer").show();
+        jQuery("#entryForm").show();
         jQuery("#completeBtn").removeAttr('disabled');
 		jQuery("#validationBtn").removeAttr('disabled');
     }else {
-        jQuery("#entryFormContainer").hide();
+        jQuery("#entryForm").hide();
         jQuery("#completeBtn").attr('disabled', 'disabled');
 		jQuery("#validationBtn").attr('disabled', 'disabled');
         jQuery("#startMsg").show();
@@ -1479,6 +1484,8 @@ function entryFormContainerOnReady()
 {
 	var currentFocus; 
     if( jQuery("#entryFormContainer") ) {
+		
+		selectUseDefaultDataEntryForm();
         if( jQuery("#executionDate").val() )
         {
             jQuery("#startMsg").hide();
@@ -1491,7 +1498,8 @@ function entryFormContainerOnReady()
             function(){
                 var childrens = jQuery(this).children("input[name='entryfield'],select[name='entryselect']");
                 
-				if( jQuery(childrens[0]).is(":disabled")) {
+				if( jQuery(childrens[0]).is(":disabled")) 
+				{
                     DRAG_DIV.showData(jQuery(childrens[0]).metadata({
                         "type":"attr",
                         "name":"data"

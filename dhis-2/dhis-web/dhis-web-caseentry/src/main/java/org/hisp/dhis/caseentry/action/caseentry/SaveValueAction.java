@@ -37,7 +37,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
@@ -121,13 +120,6 @@ public class SaveValueAction
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -241,18 +233,6 @@ public class SaveValueAction
             value = value.trim();
         }
 
-        if ( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_DATE ) && value != null )
-        {
-            Date dateValue = format.parseDate( value );
-
-            if ( dateValue == null )
-            {
-                statusCode = 1;
-
-                return SUCCESS;
-            }
-        }
-
         DataElementCategoryOptionCombo optionCombo = null;
 
         if ( optionComboId == 0 )
@@ -287,15 +267,15 @@ public class SaveValueAction
             }
         }
 
+        if ( programStageInstance.getExecutionDate() == null )
+        {
+            programStageInstance.setExecutionDate( new Date() );
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        }
+        
         if ( patientDataValue == null )
         {
             LOG.debug( "Adding PatientDataValue, value added" );
-
-            if ( programStageInstance.getExecutionDate() == null )
-            {
-                programStageInstance.setExecutionDate( new Date() );
-                programStageInstanceService.updateProgramStageInstance( programStageInstance );
-            }
 
             patientDataValue = new PatientDataValue( programStageInstance, dataElement, optionCombo, organisationUnit,
                 new Date(), value, providedByAnotherFacility );
@@ -305,12 +285,6 @@ public class SaveValueAction
         else
         {
             LOG.debug( "Updating PatientDataValue, value added/changed" );
-
-            if ( programStageInstance.getExecutionDate() == null )
-            {
-                programStageInstance.setExecutionDate( new Date() );
-                programStageInstanceService.updateProgramStageInstance( programStageInstance );
-            }
 
             patientDataValue.setValue( value );
             patientDataValue.setOptionCombo( optionCombo );

@@ -5,5 +5,5 @@
 				<validation>$validation.description</validation>
 		#end
 	</validations>
-	<message>$message</message>
+	<message>$encoder.xmlEncode($message)</message>
 </status>
