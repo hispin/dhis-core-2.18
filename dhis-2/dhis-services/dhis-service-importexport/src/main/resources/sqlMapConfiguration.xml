@@ -26,8 +26,6 @@
     </transactionManager>
 	
     <sqlMap resource="sqlmap/dataElement.sqlmap.xml"/>
-    <sqlMap resource="sqlmap/calculatedDataElementEntry.sqlmap.xml"/>
-    <sqlMap resource="sqlmap/calculatedDataElement.sqlmap.xml"/>
     <sqlMap resource="sqlmap/dataElementGroup.sqlmap.xml"/>
     <sqlMap resource="sqlmap/dataElementGroupMember.sqlmap.xml"/>
     <sqlMap resource="sqlmap/indicator.sqlmap.xml"/>
