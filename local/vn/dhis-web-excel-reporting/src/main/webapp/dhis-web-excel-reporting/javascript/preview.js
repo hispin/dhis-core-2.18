@@ -32,13 +32,13 @@ function previewExportReport() {
 
 function previewExportReportReceived( parentElement ) 
 {
-	var aKey 		= new Array();
-	var aMerged 	= new Array();	
+	var aKey 	= new Array();
+	var aMerged = new Array();	
 	var cells 	= parentElement.getElementsByTagName( 'cell' );
 	
 	for (var i  = 0 ; i < cells.length ; i ++)
 	{	
-		aKey[i]	= cells[i].getAttribute( 'iKey' );
+		aKey[i]		= cells[i].getAttribute( 'iKey' );
 		aMerged[i]	= cells[i].firstChild.nodeValue;
 	}
 
@@ -146,7 +146,6 @@ return 1;
 
 function printExportReport()
 {
-	var tab = jQuery('#tabs').tabs().data('selected.tabs');	
-	
+	var tab = jQuery('#tabs').tabs('option', 'selected');
 	jQuery( "#tabs-" + tab ).jqprint();
 }

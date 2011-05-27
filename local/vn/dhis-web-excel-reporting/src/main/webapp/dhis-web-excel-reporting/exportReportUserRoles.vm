@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "update_exportreport_userrole" )</h3>
+<h3>$i18n.getString( "assign_exportreport_userrole" )</h3>
 
 <form name="userRole" action="updateExportReportUserRole.action" method="POST" onsubmit="selectAllById( 'selectedList' );">
 <input type="hidden" name="id" value="$exportReport.id"/>

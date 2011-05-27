@@ -87,7 +87,7 @@ public class GetPeriodsByImportReportAction
     {
         if ( importReportId == null || importReportId.equals( "null" ) )
         {
-            message = i18n.getString( "there_is_no_excel_item_group" );
+            message = i18n.getString( "there_is_no_import_report" );
 
             return ERROR;
         }
