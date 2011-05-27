@@ -170,10 +170,25 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
                 $select.empty();
                 $select_page.empty();
 
-                params.currentPage = json.paging.currentPage == 0 ? 1 : json.paging.currentPage;
-                params.numberOfPages = json.paging.numberOfPages == 0 ? 1 : json.paging.numberOfPages;
-                params.pageSize = json.paging.pageSize;
-                params.startPage = json.paging.startPage;
+                if (params.usePaging === true) {
+                    params.currentPage = json.paging.currentPage == 0 ? 1 : json.paging.currentPage;
+                    params.numberOfPages = json.paging.numberOfPages == 0 ? 1 : json.paging.numberOfPages;
+                    params.pageSize = json.paging.pageSize;
+                    params.startPage = json.paging.startPage;
+
+                    $("#" + pagesize_input_id).val(params.pageSize);
+
+                    $previous_button.removeAttr("disabled");
+                    $next_button.removeAttr("disabled");
+
+                    if (params.currentPage == params.startPage) {
+                        $previous_button.attr("disabled", "disabled");
+                    }
+
+                    if (params.currentPage == params.numberOfPages) {
+                        $next_button.attr("disabled", "disabled");
+                    }
+                }
 
                 $.each(json[settings.iterator], function(i, item)
                 {
@@ -181,40 +196,30 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
                     $select.append(option);
                 });
 
-                for ( var j = 1; j <= params.numberOfPages; j++) {
-                    if (params.currentPage == j) {
-                        $select_page.append($.tmpl(templates.option_selected, {
-                            "text" : j
-                        }));
-                    } else {
-                        $select_page.append($.tmpl(templates.option, {
-                            "text" : j
-                        }));
+                if (params.usePaging === true) {
+                    for ( var j = 1; j <= params.numberOfPages; j++) {
+                        if (params.currentPage == j) {
+                            $select_page.append($.tmpl(templates.option_selected, {
+                                "text" : j
+                            }));
+                        } else {
+                            $select_page.append($.tmpl(templates.option, {
+                                "text" : j
+                            }));
+                        }
                     }
-                }
-
-                $("#" + pagesize_input_id).val(params.pageSize);
-
-                $previous_button.removeAttr("disabled");
-                $next_button.removeAttr("disabled");
-
-                if (params.currentPage == params.startPage) {
-                    $previous_button.attr("disabled", "disabled");
-                }
-
-                if (params.currentPage == params.numberOfPages) {
-                    $next_button.attr("disabled", "disabled");
                 }
             });
         },
         init : function(options)
         {
             var settings = {}
-            var params = {}
+            var params = {
+                usePaging : false
+            }
 
             $.extend(settings, options);
             $.extend(params, options.params);
-            params.usePaging = true;
 
             var $select = $(this);
             $select.css("border", "none");
@@ -231,11 +236,8 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
             $select.wrap($.tmpl(templates.wrapper, {
                 "id" : wrapper_id
             }));
-            $select.css({
-                "border-bottom" : "1px solid gray",
-                "border-top" : "1px solid gray",
-                "margin-bottom" : "1px"
-            });
+
+            $select.css("border-top", "1px solid gray");
 
             var $wrapper = $("#" + wrapper_id);
 
@@ -320,43 +322,67 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
 
             $wrapper.prepend($filter_table);
 
-            $wrapper.append($.tmpl(templates.select_page, {
-                "id" : select_page_id
-            }))
-            $wrapper.append($.tmpl(templates.button, {
-                "id" : previous_button_id,
-                "text" : "previous"
-            }));
-            $wrapper.append($.tmpl(templates.button, {
-                "id" : next_button_id,
-                "text" : "next"
-            }));
-            $wrapper.append($.tmpl(templates.pagesize_input, {
-                "id" : pagesize_input_id
-            }));
-
             var $filter_input = $("#" + filter_input_id);
             var $filter_button = $("#" + filter_button_id);
-            var $select_page = $("#" + select_page_id);
-            var $previous_button = $("#" + previous_button_id);
-            var $next_button = $("#" + next_button_id);
-            var $pagesize_input = $("#" + pagesize_input_id);
+
+            if (params.usePaging === true) {
+                $select.css({
+                    "border-bottom" : "1px solid gray",
+                    "margin-bottom" : "1px"
+                });
+
+                $wrapper.append($.tmpl(templates.select_page, {
+                    "id" : select_page_id
+                }));
+
+                $wrapper.append($.tmpl(templates.button, {
+                    "id" : previous_button_id,
+                    "text" : "previous"
+                }));
+
+                $wrapper.append($.tmpl(templates.button, {
+                    "id" : next_button_id,
+                    "text" : "next"
+                }));
+
+                $wrapper.append($.tmpl(templates.pagesize_input, {
+                    "id" : pagesize_input_id
+                }));
+
+                var $select_page = $("#" + select_page_id);
+                var $previous_button = $("#" + previous_button_id);
+                var $next_button = $("#" + next_button_id);
+                var $pagesize_input = $("#" + pagesize_input_id);
+
+                $select_page.change(function()
+                {
+                    params.currentPage = +$(this).find(":selected").val();
+                    methods.load("" + id);
+                });
+
+                $next_button.click(function()
+                {
+                    params.currentPage = +params.currentPage + 1;
+                    methods.load("" + id);
+                });
+
+                $previous_button.click(function()
+                {
+                    params.currentPage = +params.currentPage - 1;
+                    methods.load("" + id);
+                });
+
+                $pagesize_input.change(function()
+                {
+                    params.pageSize = +$(this).val();
+                    params.currentPage = 1;
+                    methods.load("" + id);
+                });
+            }
 
             settings.params = params;
             $select.data("settings", settings);
             methods.load("" + id);
-
-            $next_button.click(function()
-            {
-                params.currentPage = +params.currentPage + 1;
-                methods.load("" + id);
-            });
-
-            $previous_button.click(function()
-            {
-                params.currentPage = +params.currentPage - 1;
-                methods.load("" + id);
-            });
 
             $filter_button.click(function()
             {
@@ -376,19 +402,6 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
                     $filter_button.click();
                     e.preventDefault();
                 }
-            });
-
-            $select_page.change(function()
-            {
-                params.currentPage = +$(this).find(":selected").val();
-                methods.load("" + id);
-            });
-
-            $pagesize_input.change(function()
-            {
-                params.pageSize = +$(this).val();
-                params.currentPage = 1;
-                methods.load("" + id);
             });
         }
     }
