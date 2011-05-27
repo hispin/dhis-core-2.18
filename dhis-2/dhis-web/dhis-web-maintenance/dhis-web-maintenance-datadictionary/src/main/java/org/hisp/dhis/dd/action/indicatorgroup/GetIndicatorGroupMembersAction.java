@@ -41,7 +41,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetIndicatorGroupMembersAction.java 6475 2008-11-25 15:42:55Z larshelg $
  */
 public class GetIndicatorGroupMembersAction
     implements Action
@@ -67,7 +66,7 @@ public class GetIndicatorGroupMembersAction
     {
         this.indicatorComparator = indicatorComparator;
     }
-    
+
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
@@ -101,13 +100,6 @@ public class GetIndicatorGroupMembersAction
         return groupMembers;
     }
 
-    private List<Indicator> availableIndicators = new ArrayList<Indicator>();
-
-    public List<Indicator> getAvailableIndicators()
-    {
-        return availableIndicators;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -125,21 +117,9 @@ public class GetIndicatorGroupMembersAction
             groupMembers = new ArrayList<Indicator>( group.getMembers() );
 
             Collections.sort( groupMembers, indicatorComparator );
-            
+
             displayPropertyHandler.handle( groupMembers );
         }
-
-        // ---------------------------------------------------------------------
-        // Get available elements
-        // ---------------------------------------------------------------------
-
-        availableIndicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-
-        availableIndicators.removeAll( groupMembers );
-
-        Collections.sort( availableIndicators, indicatorComparator );
-        
-        displayPropertyHandler.handle( availableIndicators );
 
         return SUCCESS;
     }

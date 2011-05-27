@@ -27,7 +27,6 @@ package org.hisp.dhis.dd.action.dataelementgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,14 +34,11 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-import org.hisp.dhis.system.filter.DataElementGroupWithoutGroupSetFilter;
-import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
  */
 public class OpenUpdateDataElementGroupSetAction
     implements Action
@@ -76,13 +72,6 @@ public class OpenUpdateDataElementGroupSetAction
         return dataElementGroupSet;
     }
 
-    private List<DataElementGroup> availableGroups;
-
-    public List<DataElementGroup> getAvailableGroups()
-    {
-        return availableGroups;
-    }
-    
     private List<DataElementGroup> selectedGroups;
 
     public List<DataElementGroup> getSelectedGroups()
@@ -94,14 +83,6 @@ public class OpenUpdateDataElementGroupSetAction
         throws Exception
     {
         dataElementGroupSet = dataElementService.getDataElementGroupSet( id );       
-
-        availableGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-
-        availableGroups.removeAll( dataElementGroupSet.getMembers() );
-
-        FilterUtils.filter( availableGroups, new DataElementGroupWithoutGroupSetFilter() );
-        
-        Collections.sort( availableGroups, new DataElementGroupNameComparator() );
         
         selectedGroups = dataElementGroupSet.getMembers();
         
