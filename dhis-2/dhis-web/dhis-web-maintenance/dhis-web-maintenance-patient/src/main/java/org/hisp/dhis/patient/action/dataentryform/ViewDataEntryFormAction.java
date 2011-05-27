@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -60,6 +61,13 @@ public class ViewDataEntryFormAction
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
+    }
+
+    private ProgramDataEntryService programDataEntryService;
+    
+    public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
+    {
+        this.programDataEntryService = programDataEntryService;
     }
 
     private ProgramStageService programStageService;
@@ -139,6 +147,14 @@ public class ViewDataEntryFormAction
         programStage = programStageService.getProgramStage( programStageId );
 
         // ---------------------------------------------------------------------
+        // Get data-elements into selected program-stage
+        // ---------------------------------------------------------------------
+
+        dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
+
+        Collections.sort( dataElements, new DataElementNameComparator() );
+
+        // ---------------------------------------------------------------------
         // Get dataEntryForm of selected program-stage
         // ---------------------------------------------------------------------
 
@@ -146,7 +162,7 @@ public class ViewDataEntryFormAction
 
         if ( dataEntryForm != null )
         {
-            dataEntryValue = dataEntryFormService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() );
+            dataEntryValue = programDataEntryService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode(), dataElements );
         }
         else
         {
@@ -169,14 +185,6 @@ public class ViewDataEntryFormAction
 
         existingDataEntryForms.remove( dataEntryForm );     
         
-        // ---------------------------------------------------------------------
-        // Get data-elements into selected program-stage
-        // ---------------------------------------------------------------------
-
-        dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
-
-        Collections.sort( dataElements, new DataElementNameComparator() );
-
         // ---------------------------------------------------------------------
         // Get other program-stages into the program
         // ---------------------------------------------------------------------

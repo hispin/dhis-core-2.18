@@ -811,6 +811,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="programDataEntryService"
+			ref="org.hisp.dhis.program.ProgramDataEntryService" />
 	</bean>
 
 	<bean

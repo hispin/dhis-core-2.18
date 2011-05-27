@@ -28,7 +28,9 @@
 package org.hisp.dhis.program;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -40,7 +42,18 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
  */
 public interface ProgramDataEntryService
 {
+    final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
+    final Pattern SELECT_PATTERN = Pattern.compile( "(<select.*?)[/]?</select>", Pattern.DOTALL );
+    final Pattern IDENTIFIER_PATTERN_TEXTBOX = Pattern.compile( "\"value\\[([\\p{Digit}.]*)\\].value:value\\[([\\p{Digit}.]*)\\].value:value\\[([\\p{Digit}.]*)\\].value\"" );
+    final Pattern IDENTIFIER_PATTERN_OTHERS = Pattern.compile( "\"value\\[([\\p{Digit}.]*)\\].\\S+:value\\[([\\p{Digit}.]*)\\].\\S+\"" );
+
+    //--------------------------------------------------------------------------
+    // ProgramDataEntryService
+    //--------------------------------------------------------------------------
+    
     String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, String disabled,
         I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
         OrganisationUnit organisationUnit );
+    
+    String prepareDataEntryFormForEdit( String htmlCode, Collection<DataElement> dataElements );
 }
