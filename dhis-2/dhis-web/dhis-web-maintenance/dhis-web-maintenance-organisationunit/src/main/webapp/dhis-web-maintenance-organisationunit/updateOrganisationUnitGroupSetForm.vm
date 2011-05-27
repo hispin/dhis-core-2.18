@@ -7,7 +7,7 @@
 		#end
 		];
 		
-		return list;	
+		return list;
 	}
 
 	jQuery(function() {

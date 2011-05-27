@@ -35,14 +35,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
-import org.hisp.dhis.system.filter.OrganisationUnitGroupWithoutGroupSetFilter;
-import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class PrepareUpdateGroupSetAction
     implements Action
@@ -83,13 +80,6 @@ public class PrepareUpdateGroupSetAction
         return selectedGroups;
     }
 
-    private List<OrganisationUnitGroup> availableGroups;
-
-    public List<OrganisationUnitGroup> getAvailableGroups()
-    {
-        return availableGroups;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -102,13 +92,6 @@ public class PrepareUpdateGroupSetAction
         selectedGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSet.getOrganisationUnitGroups() );
 
         Collections.sort( selectedGroups, new OrganisationUnitGroupNameComparator() );
-
-        availableGroups = new ArrayList<OrganisationUnitGroup>( FilterUtils.filter( organisationUnitGroupService
-            .getAllOrganisationUnitGroups(), new OrganisationUnitGroupWithoutGroupSetFilter() ) );
-
-        availableGroups.removeAll( selectedGroups );
-
-        Collections.sort( availableGroups, new OrganisationUnitGroupNameComparator() );
 
         return SUCCESS;
     }
