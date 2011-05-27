@@ -35,6 +35,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -54,6 +56,8 @@ public class DefaultProgramDataEntryService
     private static final String UNKNOW_CLINIC = "unknow_clinic";
 
     private static final String NOTAVAILABLE = "not_available";
+    
+    private static final String DATA_ELEMENT_DOES_NOT_EXIST = "<i>Data element doesn't exist.</i>";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -94,10 +98,17 @@ public class DefaultProgramDataEntryService
         this.programStageDataElementService = programStageDataElementService;
     }
 
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-    
+
     @Override
     public String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues,
         String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
@@ -107,20 +118,31 @@ public class DefaultProgramDataEntryService
 
         String result = "";
 
-        result = populateCustomDataEntryForTextBox( htmlCode, dataValues, disabled, i18n,
-            programStage, programStageInstance, organisationUnit, mapDataValue );
+        result = populateCustomDataEntryForTextBox( htmlCode, dataValues, disabled, i18n, programStage,
+            programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForBoolean( result, dataValues, disabled, i18n,
-            programStage, programStageInstance, organisationUnit, mapDataValue );
+        result = populateCustomDataEntryForBoolean( result, dataValues, disabled, i18n, programStage,
+            programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForMutiDimentionalString( result, dataValues,
-            disabled, i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
+        result = populateCustomDataEntryForMutiDimentionalString( result, dataValues, disabled, i18n, programStage,
+            programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForDate( result, dataValues, disabled, i18n,
-            programStage, programStageInstance, organisationUnit, mapDataValue );
+        result = populateCustomDataEntryForDate( result, dataValues, disabled, i18n, programStage,
+            programStageInstance, organisationUnit, mapDataValue );
 
         result = populateI18nStrings( result, i18n );
 
+        return result;
+    }
+
+    public String prepareDataEntryFormForEdit( String htmlCode , Collection<DataElement> dataElements )
+    {        
+        String result = populateCustomDataEntryForTextBox( htmlCode, dataElements );
+        
+        result = populateCustomDataEntryForCombo( htmlCode, dataElements );
+        
+        result = populateCustomDataEntryForDate( htmlCode, dataElements );
+        
         return result;
     }
 
@@ -128,9 +150,178 @@ public class DefaultProgramDataEntryService
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    private String populateCustomDataEntryForTextBox( String htmlCode , Collection<DataElement> dataElements )
+    {
+        // ---------------------------------------------------------------------
+        // Metadata code to add to HTML before outputting
+        // ---------------------------------------------------------------------
+
+        StringBuffer sb = new StringBuffer();
+
+        // ---------------------------------------------------------------------
+        // Pattern to match data elements in the HTML code
+        // ---------------------------------------------------------------------
+
+        Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
+
+        // ---------------------------------------------------------------------
+        // Iterate through all matching data element fields
+        // ---------------------------------------------------------------------
+
+        while ( inputMatcher.find() )
+        {
+            // -----------------------------------------------------------------
+            // Get HTML input field code
+            // -----------------------------------------------------------------
+
+            String dataElementCode = inputMatcher.group( 1 );
+            
+            String inputHTML = inputMatcher.group();
+            
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_TEXTBOX.matcher( dataElementCode );
+
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
+            {
+                
+                // -------------------------------------------------------------
+                // Get data element ID of data element
+                // -------------------------------------------------------------
+
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
+
+                int optionComboId = Integer.parseInt( identifierMatcher.group( 3 ) );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                
+                DataElementCategoryOptionCombo optionCombo = categoryService
+                    .getDataElementCategoryOptionCombo( optionComboId );
+
+                if ( !dataElements.contains( dataElement ) || optionCombo == null )
+                {
+                    inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
+                }
+                else
+                {
+                    inputMatcher.appendReplacement( sb, inputHTML );
+                }
+
+            }
+        }
+
+        return sb.toString();
+    }
+
+    private String populateCustomDataEntryForCombo( String htmlCode, Collection<DataElement> dataElements)
+    {
+        // ---------------------------------------------------------------------
+        // Metadata code to add to HTML before outputting
+        // ---------------------------------------------------------------------
+
+        StringBuffer sb = new StringBuffer();
+
+        // ---------------------------------------------------------------------
+        // Pattern to match data elements in the HTML code
+        // ---------------------------------------------------------------------
+
+        Matcher inputMatcher = SELECT_PATTERN.matcher( htmlCode );
+
+        // ---------------------------------------------------------------------
+        // Iterate through all matching data element fields
+        // ---------------------------------------------------------------------
+
+        while ( inputMatcher.find() )
+        {
+            String inputHTML = inputMatcher.group();
+            
+            // -----------------------------------------------------------------
+            // Get HTML input field code
+            // -----------------------------------------------------------------
+
+            String dataElementCode = inputMatcher.group( 1 );
+
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
+            {
+                // -------------------------------------------------------------
+                // Get data element ID of data element
+                // -------------------------------------------------------------
+
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
+                
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                
+                if ( !dataElements.contains( dataElement ) )
+                {
+                    inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
+                } 
+                else
+                {
+                    inputMatcher.appendReplacement( sb, inputHTML );
+                }
+            }
+        }
+        
+        return sb.toString();
+    }
+
+    private String populateCustomDataEntryForDate( String htmlCode, Collection<DataElement> dataElements )
+    {
+        // ---------------------------------------------------------------------
+        // Metadata code to add to HTML before outputting
+        // ---------------------------------------------------------------------
+
+        StringBuffer sb = new StringBuffer();
+
+        // ---------------------------------------------------------------------
+        // Pattern to match data elements in the HTML code
+        // ---------------------------------------------------------------------
+
+        Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
+
+        // ---------------------------------------------------------------------
+        // Iterate through all matching data element fields
+        // ---------------------------------------------------------------------
+
+        while ( inputMatcher.find() )
+        {
+            String inputHTML = inputMatcher.group();
+            
+            // -----------------------------------------------------------------
+            // Get HTML input field code
+            // -----------------------------------------------------------------
+
+            String dataElementCode = inputMatcher.group( 1 );
+
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
+            {
+                // -------------------------------------------------------------
+                // Get data element ID of data element
+                // -------------------------------------------------------------
+
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
+                
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                
+                if ( !dataElements.contains( dataElement ) )
+                {
+                    inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
+                } else
+                {
+                    inputMatcher.appendReplacement( sb, inputHTML );
+                }
+            }
+        }
+        
+        return sb.toString();
+    }
+
     private String populateCustomDataEntryForTextBox( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
-        OrganisationUnit organisationUnit, Map<Integer, Collection<PatientDataValue>> mapDataValue )
+        Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage,
+        ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
+        Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
@@ -148,15 +339,8 @@ public class DefaultProgramDataEntryService
         // Pattern to match data elements in the HTML code
         // ---------------------------------------------------------------------
 
-        Pattern dataElementPattern = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-        Matcher dataElementMatcher = dataElementPattern.matcher( dataEntryFormCode );
-
-        // ---------------------------------------------------------------------
-        // Pattern to extract data element ID from data element field
-        // ---------------------------------------------------------------------
-
-        Pattern identifierPattern = Pattern
-            .compile( "\"value\\[([\\p{Digit}.]*)\\].value:value\\[([\\p{Digit}.]*)\\].value:value\\[([\\p{Digit}.]*)\\].value\"" );
+        Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
+        Matcher dataElementMatcher = INPUT_PATTERN.matcher( dataEntryFormCode );
 
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields
@@ -173,7 +357,7 @@ public class DefaultProgramDataEntryService
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
 
-            Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_TEXTBOX.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -204,7 +388,7 @@ public class DefaultProgramDataEntryService
                     dataElement = dataElementMap.get( dataElementId );
                     if ( dataElement == null )
                     {
-                        return i18n.getString( "program_stage_lack_data_elements" );
+                        return i18n.getString( "some_data_element_not_exist" );
                     }
 
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
@@ -372,14 +556,7 @@ public class DefaultProgramDataEntryService
         // Pattern to match data elements in the HTML code
         // ---------------------------------------------------------------------
 
-        Pattern dataElementPattern = Pattern.compile( "(<select.*?)[/]?</select>", Pattern.DOTALL );
-        Matcher dataElementMatcher = dataElementPattern.matcher( dataEntryFormCode );
-
-        // ---------------------------------------------------------------------
-        // Pattern to extract data element ID from data element field
-        // ---------------------------------------------------------------------
-
-        Pattern identifierPattern = Pattern.compile( "value\\[(.*)\\].boolean:value\\[(.*)\\].boolean" );
+        Matcher dataElementMatcher = SELECT_PATTERN.matcher( dataEntryFormCode );
 
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields
@@ -395,7 +572,7 @@ public class DefaultProgramDataEntryService
 
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
-            Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
@@ -422,7 +599,7 @@ public class DefaultProgramDataEntryService
                     dataElement = dataElementMap.get( dataElementId );
                     if ( dataElement == null )
                     {
-                        return i18n.getString( "program_stage_lack_data_elements" );
+                        return i18n.getString( "some_data_element_not_exist" );
                     }
 
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
@@ -439,6 +616,7 @@ public class DefaultProgramDataEntryService
                 {
                     continue;
                 }
+
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------
@@ -474,7 +652,7 @@ public class DefaultProgramDataEntryService
                 {
 
                     patientDataValue = getValue( dataValues, dataElementId );
-                    
+
                     if ( patientDataValue != null )
                     {
                         dataElementValue = patientDataValue.getValue();
@@ -559,7 +737,7 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
                 // 
                 // -----------------------------------------------------------
-                
+
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
                 {
@@ -608,7 +786,7 @@ public class DefaultProgramDataEntryService
         // ---------------------------------------------------------------------
 
         final String jsCodeForCombo = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, dataElementId:$DATAELEMENTID, dataElementName:'$DATAELEMENTNAME', dataElementType:'$DATAELEMENTTYPE', programStageId:$PROGRAMSTAGEID, programStageName: '$PROGRAMSTAGENAME', orgUnitName:'$ORGUNITNAME'}\" onchange=\"saveChoiceCustom( $PROGRAMSTAGEID, $DATAELEMENTID,this)\"";
-        
+
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
         // ---------------------------------------------------------------------
@@ -621,15 +799,7 @@ public class DefaultProgramDataEntryService
         // Pattern to match data elements in the HTML code
         // ---------------------------------------------------------------------
 
-        Pattern dataElementPattern = Pattern.compile( "(<select.*?)[/]?</select>", Pattern.DOTALL );
-        Matcher dataElementMatcher = dataElementPattern.matcher( dataEntryFormCode );
-
-        // ---------------------------------------------------------------------
-        // Pattern to extract data element ID from data element field
-        // ---------------------------------------------------------------------
-
-        Pattern identifierPattern = Pattern
-            .compile( "\"value\\[([\\p{Digit}.]*)\\].combo:value\\[([\\p{Digit}.]*)\\].combo\"" );
+        Matcher dataElementMatcher = SELECT_PATTERN.matcher( dataEntryFormCode );
 
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields
@@ -644,8 +814,8 @@ public class DefaultProgramDataEntryService
             // -----------------------------------------------------------------
 
             String dataElementCode = dataElementMatcher.group( 1 );
-            
-            Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
+
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
 
             String compulsory = "null";
 
@@ -674,7 +844,7 @@ public class DefaultProgramDataEntryService
                     dataElement = dataElementMap.get( dataElementId );
                     if ( dataElement == null )
                     {
-                        return i18n.getString( "program_stage_lack_data_elements" );
+                        return i18n.getString( "some_data_element_not_exist" );
                     }
 
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
@@ -690,7 +860,7 @@ public class DefaultProgramDataEntryService
                 {
                     continue;
                 }
-                
+
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------
@@ -700,7 +870,7 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
                 // Find existing value of data element in data set
                 // -------------------------------------------------------------
-                
+
                 PatientDataValue patientDataValue = null;
                 String dataElementValue = EMPTY;
                 if ( programStageId != programStage.getId() )
@@ -717,7 +887,7 @@ public class DefaultProgramDataEntryService
                     }
 
                     patientDataValue = getValue( patientDataValues, dataElementId );
-                    
+
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
                 else
@@ -729,20 +899,20 @@ public class DefaultProgramDataEntryService
 
                 String appendCode = dataElementCode;
                 appendCode = appendCode.replace( "name=\"entryselect\"", jsCodeForCombo );
-                
+
                 // -------------------------------------------------------------
                 // Insert value of data element in output code
                 // -------------------------------------------------------------
-                
+
                 if ( patientDataValue != null )
                 {
-                   appendCode = appendCode.replace( "id=\"combo[" + patientDataValue.getOptionCombo().getId()
+                    appendCode = appendCode.replace( "id=\"combo[" + patientDataValue.getOptionCombo().getId()
                         + "].combo\"", "id=\"combo[" + patientDataValue.getOptionCombo().getId()
                         + "].combo\" selected=\"selected\"" );
                 }
 
                 appendCode += "</select>";
-                
+
                 // -------------------------------------------------------------
                 // Remove placeholder view attribute from input field
                 // -------------------------------------------------------------
@@ -778,7 +948,7 @@ public class DefaultProgramDataEntryService
                 // disable
                 // If programStagsInstance is completed then disabled it
                 // -----------------------------------------------------------
-               
+
                 disabled = "";
                 if ( programStageId != programStage.getId() || programStageInstance.isCompleted() )
                 {
@@ -789,14 +959,14 @@ public class DefaultProgramDataEntryService
                     // -----------------------------------------------------------
                     // Add ProvidedByOtherFacility checkbox
                     // -----------------------------------------------------------
-                   
+
                     appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
                 }
 
                 // -----------------------------------------------------------
                 // 
                 // -----------------------------------------------------------
-                
+
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
                 {
@@ -841,7 +1011,7 @@ public class DefaultProgramDataEntryService
         // ---------------------------------------------------------------------
 
         final String jsCodeForDate = " name=\"entryfield\" $DISABLED onchange=\"saveDateCustom( this )\" data=\"{compulsory:$COMPULSORY, dataElementId:$DATAELEMENTID, dataElementName:'$DATAELEMENTNAME', dataElementType:'$DATAELEMENTTYPE', programStageId:$PROGRAMSTAGEID, programStageName: '$PROGRAMSTAGENAME', orgUnitName:'$ORGUNITNAME'}\"";
-       
+
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
         // ---------------------------------------------------------------------
@@ -865,9 +1035,6 @@ public class DefaultProgramDataEntryService
         // Pattern to extract data element ID from data element field
         // ---------------------------------------------------------------------
 
-        Pattern identifierPattern = Pattern
-            .compile( "id=\"value\\[([\\p{Digit}.]*)\\].date:value\\[([\\p{Digit}.]*)\\].date\"" );
-
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields
         // ---------------------------------------------------------------------
@@ -879,18 +1046,18 @@ public class DefaultProgramDataEntryService
             // -----------------------------------------------------------------
             // Get HTML input field code
             // -----------------------------------------------------------------
-            
+
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
-           
-            Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
+
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
-               
+
                 int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
@@ -910,7 +1077,7 @@ public class DefaultProgramDataEntryService
                     dataElement = dataElementMap.get( dataElementId );
                     if ( dataElement == null )
                     {
-                        return i18n.getString( "program_stage_lack_data_elements" );
+                        return i18n.getString( "some_data_element_not_exist" );
                     }
 
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
@@ -926,6 +1093,7 @@ public class DefaultProgramDataEntryService
                 {
                     continue;
                 }
+
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------
@@ -953,7 +1121,7 @@ public class DefaultProgramDataEntryService
                     }
 
                     patientDataValue = getValue( patientDataValues, dataElementId );
-                    
+
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
                 else
@@ -981,7 +1149,7 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
 
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
-                
+
                 // -------------------------------------------------------------
                 // Append Javascript code and meta data (type/min/max) for
                 // persisting to output code, and insert value and type for
@@ -990,7 +1158,7 @@ public class DefaultProgramDataEntryService
 
                 String appendCode = dataElementCode + "/>";
                 appendCode = appendCode.replace( "name=\"entryfield\"", jsCodeForDate );
-                
+
                 appendCode += metaDataCode;
 
                 // -------------------------------------------------------------
@@ -998,7 +1166,7 @@ public class DefaultProgramDataEntryService
                 // disable
                 // If programStagsInstance is completed then disabled it
                 // -------------------------------------------------------------
-                
+
                 disabled = "";
                 if ( programStageId != programStage.getId() || programStageInstance.isCompleted() )
                 {
@@ -1011,7 +1179,7 @@ public class DefaultProgramDataEntryService
                     // ---------------------------------------------------------
                     // Add ProvidedByOtherFacility checkbox
                     // ---------------------------------------------------------
-                    
+
                     appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
 
                 }
@@ -1019,7 +1187,7 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
                 // Get Org Unit name
                 // -------------------------------------------------------------
-                
+
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
                 {
@@ -1061,8 +1229,8 @@ public class DefaultProgramDataEntryService
 
         return sb.toString();
     }
-    
-     /**
+
+    /**
      * Returns the value of the PatientDataValue in the Collection of DataValues
      * with the given data element identifier and category option combo id.
      */
