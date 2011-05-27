@@ -38,7 +38,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Kristian
- * @version $Id: PeriodTypeListAction.java 5282 2008-05-28 10:41:06Z larshelg $
  */
 public class PeriodTypeListAction
     implements Action

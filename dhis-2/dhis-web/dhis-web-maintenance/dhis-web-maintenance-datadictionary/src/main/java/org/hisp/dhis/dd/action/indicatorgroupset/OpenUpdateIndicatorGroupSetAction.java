@@ -27,7 +27,6 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,14 +34,11 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
-import org.hisp.dhis.system.filter.IndicatorGroupWIthoutGroupSetFilter;
-import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
  */
 public class OpenUpdateIndicatorGroupSetAction
     implements Action
@@ -76,13 +72,6 @@ public class OpenUpdateIndicatorGroupSetAction
         return indicatorGroupSet;
     }
 
-    private List<IndicatorGroup> availableGroups;
-
-    public List<IndicatorGroup> getAvailableGroups()
-    {
-        return availableGroups;
-    }
-
     private List<IndicatorGroup> selectedGroups;
 
     public List<IndicatorGroup> getSelectedGroups()
@@ -97,14 +86,6 @@ public class OpenUpdateIndicatorGroupSetAction
     public String execute()
     {
         indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
-
-        availableGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
-
-        availableGroups.removeAll( indicatorGroupSet.getMembers() );
-
-        FilterUtils.filter( availableGroups, new IndicatorGroupWIthoutGroupSetFilter() );
-        
-        Collections.sort( availableGroups, new IndicatorGroupNameComparator() );
 
         selectedGroups = indicatorGroupSet.getMembers();
         

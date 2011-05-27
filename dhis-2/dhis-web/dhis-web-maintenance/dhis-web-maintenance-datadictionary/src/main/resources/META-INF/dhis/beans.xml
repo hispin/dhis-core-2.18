@@ -231,15 +231,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
-    <bean
-        id="org.hisp.dhis.dd.action.dataelementgroupset.OpenAddDataElementGroupSetAction"
-        class="org.hisp.dhis.dd.action.dataelementgroupset.OpenAddDataElementGroupSetAction"
-        scope="prototype">
-        <property name="dataElementService">
-            <ref bean="org.hisp.dhis.dataelement.DataElementService" />
-        </property>
-    </bean>
-	
 	<bean
 		id="org.hisp.dhis.dd.action.dataelementgroupset.OpenUpdateDataElementGroupSetAction"
 		class="org.hisp.dhis.dd.action.dataelementgroupset.OpenUpdateDataElementGroupSetAction"
@@ -387,15 +378,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-    <bean
-        id="org.hisp.dhis.dd.action.indicatorgroupset.OpenAddIndicatorGroupSetAction"
-        class="org.hisp.dhis.dd.action.indicatorgroupset.OpenAddIndicatorGroupSetAction"
-        scope="prototype">
-        <property name="indicatorService">
-            <ref bean="org.hisp.dhis.indicator.IndicatorService" />
-        </property>
-    </bean>
-    
 	<bean
 		id="org.hisp.dhis.dd.action.indicatorgroupset.OpenUpdateIndicatorGroupSetAction"
 		class="org.hisp.dhis.dd.action.indicatorgroupset.OpenUpdateIndicatorGroupSetAction"

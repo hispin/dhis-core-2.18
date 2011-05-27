@@ -41,7 +41,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetDataElementGroupMembersAction.java 6475 2008-11-25 15:42:55Z larshelg $
  */
 public class GetDataElementGroupMembersAction
     implements Action
@@ -101,13 +100,6 @@ public class GetDataElementGroupMembersAction
         return groupMembers;
     }
 
-    private List<DataElement> availableDataElements = new ArrayList<DataElement>();
-
-    public List<DataElement> getAvailableDataElements()
-    {
-        return availableDataElements;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -128,18 +120,6 @@ public class GetDataElementGroupMembersAction
             
             displayPropertyHandler.handle( groupMembers );
         }
-
-        // ---------------------------------------------------------------------
-        // Get available elements
-        // ---------------------------------------------------------------------
-
-        availableDataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-
-        availableDataElements.removeAll( groupMembers );
-
-        Collections.sort( availableDataElements, dataElementComparator );
-        
-        displayPropertyHandler.handle( availableDataElements );
 
         return SUCCESS;
     }
