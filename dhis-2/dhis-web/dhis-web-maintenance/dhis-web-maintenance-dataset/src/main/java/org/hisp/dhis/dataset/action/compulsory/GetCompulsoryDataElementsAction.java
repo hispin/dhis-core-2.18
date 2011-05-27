@@ -29,6 +29,7 @@ package org.hisp.dhis.dataset.action.compulsory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -55,7 +56,7 @@ public class GetCompulsoryDataElementsAction
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -68,7 +69,7 @@ public class GetCompulsoryDataElementsAction
     // -------------------------------------------------------------------------
 
     private Integer id;
-        
+
     public Integer getId()
     {
         return id;
@@ -82,7 +83,7 @@ public class GetCompulsoryDataElementsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private List<DataElementOperand> availableOperands;
 
     public List<DataElementOperand> getAvailableOperands()
@@ -106,12 +107,27 @@ public class GetCompulsoryDataElementsAction
         DataSet dataSet = dataSetService.getDataSet( id );
 
         selectedOperands = new ArrayList<DataElementOperand>( dataSet.getCompulsoryDataElementOperands() );
+
+        availableOperands = new ArrayList<DataElementOperand>( dataElementService.getAllGeneratedOperands( dataSet
+            .getDataElements() ) );
         
-        availableOperands = new ArrayList<DataElementOperand>( dataElementService.getAllGeneratedOperands( dataSet.getDataElements() ) );
-        availableOperands.removeAll( selectedOperands );
         
-        Collections.sort( availableOperands, new DataElementOperandNameComparator() );        
+        for ( DataElementOperand selectedOperand : selectedOperands )
+        {
+            Iterator<DataElementOperand> iter = availableOperands.iterator();
         
+            while ( iter.hasNext() )
+            {
+                DataElementOperand item = iter.next();
+                if ( selectedOperand.getPersistedId().equals( item.getOperandId() + "" ))
+                {
+                    iter.remove();
+                }
+            }
+        }
+
+        Collections.sort( availableOperands, new DataElementOperandNameComparator() );
+
         return SUCCESS;
     }
 }
