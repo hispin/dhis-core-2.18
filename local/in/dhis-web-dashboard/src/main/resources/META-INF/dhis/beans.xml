@@ -1079,14 +1079,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
     <bean
-		id="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisResultAction"
-		class="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisResultAction"
-		scope="prototype">
-        <property name="statementManager" ref="statementManager"/>
-		
-        <property name="aggregationService">
-            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-        </property>
+        id="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisResultAction"
+        class="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager"/>      
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
         </property>
@@ -1111,9 +1108,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitGroupService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
         </property>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
     </bean>
 	
-	<!-- OrganisationUnit Profile -->
 	
 	<!-- Ajax -->
 	<!-- GetWeekly Period List for Tabular Analysis -->
@@ -1184,9 +1181,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.GetOrgUnitsAction"
 		class="org.hisp.dhis.dataanalyser.action.GetOrgUnitsAction"
 		scope="prototype">
-        <property name="organisationUnitService">
-            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-        </property>
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
     </bean>
 	
     <bean id="org.hisp.dhis.dataanalyser.action.GetPeriodsAction"
@@ -1283,11 +1279,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.ExportToExcelAction"
 		class="org.hisp.dhis.dataanalyser.action.ExportToExcelAction"
 		scope="prototype">
- <!--   <property name="locationManager">
-            <ref bean="org.hisp.dhis.external.location.LocationManager"/>
-        </property>-->
-		<property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
-		</property>
+		<property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService" />
     </bean>
 	
     <bean id="org.hisp.dhis.dataanalyser.action.GetSortedDataAction"

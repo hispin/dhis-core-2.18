@@ -103,14 +103,6 @@ public class DashBoardService
         this.organisationUnitService = organisationUnitService;
     }
     
-    /*
-    private DBConnection dbConnection;
-
-    public void setDbConnection( DBConnection dbConnection )
-    {
-        this.dbConnection = dbConnection;
-    }
-*/
 
     public List<Period> getMonthlyPeriods( Date start, Date end )
     {

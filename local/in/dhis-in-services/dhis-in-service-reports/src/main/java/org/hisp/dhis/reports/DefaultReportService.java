@@ -1802,7 +1802,74 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
             throw new RuntimeException( "Illegal DataElement id", e );
         }
     }
+
+    public Map<String, String> getResultDataValueFromAggregateTableByPeriodAgg( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
+    {
+        Map<String, String> aggDataMap = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT organisationunitid, dataelementid,categoryoptioncomboid, SUM(value) FROM aggregateddatavalue" +
+                           " WHERE dataelementid IN (" + dataElmentIdsByComma + ") AND "+
+                           " organisationunitid IN ("+ orgUnitIdsByComma +") AND "+
+                           " periodid IN (" + periodIdsByComma +") " +
+                           " GROUP BY organisationunitid,dataelementid,categoryoptioncomboid";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer ouId = rs.getInt( 1 );
+                Integer deId = rs.getInt( 2 );
+                Integer optionComId = rs.getInt( 3 );
+                Double aggregatedValue = rs.getDouble( 4 );
+                if( aggregatedValue != null )
+                {
+                    aggDataMap.put( ouId+":"+deId+":"+optionComId, ""+aggregatedValue );
+                }
+            }
+            
+            return aggDataMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }
+
     
+    public Map<String, String> getResultDataValueFromAggregateTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
+    {
+        Map<String, String> aggDataMap = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT organisationunitid,dataelementid,categoryoptioncomboid,periodid,value FROM aggregateddatavalue " + 
+                            " WHERE organisationunitid IN ("+ orgUnitIdsByComma +") AND "+
+                            " dataelementid IN ("+ dataElmentIdsByComma +") AND "+
+                            " periodid IN ("+ periodIdsByComma +")";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer deId = rs.getInt( 2 );
+                Integer optionComId = rs.getInt( 3 );
+                Integer periodId = rs.getInt( 4 );
+                Double aggregatedValue = rs.getDouble( 5 );
+                if( aggregatedValue != null )
+                {
+                    aggDataMap.put( orgUnitId+":"+deId+":"+optionComId+":"+periodId, ""+aggregatedValue );
+                }
+            }
+            
+            return aggDataMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }
+
     
     public Map<String, String> getAggDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
     {
@@ -1834,6 +1901,104 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
             throw new RuntimeException( "Illegal DataElement id", e );
         }
     }
+
+    public Map<String, String> getAggDataFromDataValueTableByDeAndPeriodwise( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
+    {
+        Map<String, String> aggDataMap = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT dataelementid,categoryoptioncomboid,periodid,SUM(value) FROM datavalue " +
+                           " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                           " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
+                           " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid,periodid";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer deId = rs.getInt( 1 );
+                Integer optionComId = rs.getInt( 2 );
+                Integer periodId = rs.getInt( 3 );
+                Double aggregatedValue = rs.getDouble( 4 );
+                if( aggregatedValue != null )
+                {
+                    aggDataMap.put( deId+":"+optionComId+":"+periodId, ""+aggregatedValue );
+                }
+            }
+            
+            return aggDataMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }    
+
+    public Map<String, String> getDataFromDataValueTableByPeriodAgg( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
+    {
+        Map<String, String> aggDataMap = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT sourceid,dataelementid,categoryoptioncomboid, SUM(value) FROM datavalue " +
+                           " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                           " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
+                           " periodid IN (" + periodIdsByComma +") GROUP BY sourceid,dataelementid,categoryoptioncomboid";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer deId = rs.getInt( 2 );
+                Integer optionComId = rs.getInt( 3 );
+                Double aggregatedValue = rs.getDouble( 4 );
+                if( aggregatedValue != null )
+                {
+                    aggDataMap.put( orgUnitId+":"+deId+":"+optionComId, ""+aggregatedValue );
+                }
+            }
+            
+            return aggDataMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }    
+
+    public Map<String, String> getDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
+    {
+        Map<String, String> aggDataMap = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT sourceid,dataelementid,categoryoptioncomboid,periodid,value FROM datavalue " +
+                           " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                           " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
+                           " periodid IN (" + periodIdsByComma +")";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer deId = rs.getInt( 2 );
+                Integer optionComId = rs.getInt( 3 );
+                Integer periodId = rs.getInt( 4 );
+                Double aggregatedValue = rs.getDouble( 5 );
+                if( aggregatedValue != null )
+                {
+                    aggDataMap.put( orgUnitId+":"+deId+":"+optionComId+":"+periodId, ""+aggregatedValue );
+                }
+            }
+            
+            return aggDataMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }    
+
     
     public String getResultDataValueFromAggregateTable( String formula, String periodIdsByComma, Integer orgunitId )
     {
@@ -2026,6 +2191,41 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
         return ""+recordCount;
     }
     
+    public String getDataelementIdsAsString( List<Indicator> indicatorList )
+    {
+        String dataElmentIdsByComma = "-1";
+        for( Indicator indicator : indicatorList )
+        {
+            String formula = indicator.getNumerator() + " + " + indicator.getDenominator();
+            try
+            {
+                Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+                Matcher matcher = pattern.matcher( formula );
+                StringBuffer buffer = new StringBuffer();
+
+                while ( matcher.find() )
+                {
+                    String replaceString = matcher.group();
+
+                    replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                    replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                    int dataElementId = Integer.parseInt( replaceString );
+                    dataElmentIdsByComma += "," + dataElementId;
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                }
+            }
+            catch( Exception e )
+            {
+                
+            }
+        }
+        
+        return dataElmentIdsByComma;
+    }
+
     public String getDataelementIds( List<Report_inDesign> reportDesignList )
     {
         String dataElmentIdsByComma = "-1";
@@ -2149,8 +2349,8 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
         {
             throw new RuntimeException( "Illegal DataElement id", e );
         }
-    }
-
+    }    
+    
     public double getIndividualIndicatorValue( Indicator indicator, OrganisationUnit orgunit, Date startDate, Date endDate ) 
     {
         String numeratorExp = indicator.getNumerator();
@@ -2199,6 +2399,31 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
         }
         
         return aggregatedValue;
+    }
+
+    public Map<Integer, Integer> getOrgunitLevelMap( )
+    {
+        Map<Integer, Integer> orgUnitLevelMap = new HashMap<Integer, Integer>();
+        try
+        {
+            String query = "SELECT organisationunitid,level FROM _orgunitstructure";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {                
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer level = rs.getInt( 2 );
+                
+                orgUnitLevelMap.put( orgUnitId, level );
+            }
+            
+            return orgUnitLevelMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
     }
 
 }

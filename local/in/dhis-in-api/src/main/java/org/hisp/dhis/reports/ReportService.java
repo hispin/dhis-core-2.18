@@ -128,19 +128,33 @@ public interface ReportService
     String getAggCountForTextData( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
     
     String getCountForTextData( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
+
+    String getDataelementIds( List<Report_inDesign> reportDesignList );
     
+    String getAggVal( String expression, Map<String, String> aggDeMap );
+
+    double getIndividualIndicatorValue( Indicator indicator, OrganisationUnit orgunit, Date startDate, Date endDate );
+    
+    Map<Integer, Integer> getOrgunitLevelMap( );
+    
+    String getDataelementIdsAsString( List<Indicator> indicatorList );
+
     String getResultDataValueFromAggregateTable( String formula, String periodIdsByComma, Integer orgunitId );
     
     Map<String, String> getResultDataValueFromAggregateTable( Integer orgunitId, String dataElmentIdsByComma, String periodIdsByComma );
     
     Map<String, String> getAggDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodsByComma );
-    
-    String getDataelementIds( List<Report_inDesign> reportDesignList );
-    
-    String getAggVal( String expression, Map<String, String> aggDeMap );
 
+    Map<String, String> getResultDataValueFromAggregateTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
+    
     Map<String, List<String>> getIndicatorDataValueFromAggregateTable( Integer orgunitId, String indicatorIdsByComma, Integer periodId );
     
-    double getIndividualIndicatorValue( Indicator indicator, OrganisationUnit orgunit, Date startDate, Date endDate );
+    Map<String, String> getResultDataValueFromAggregateTableByPeriodAgg( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
 
+    Map<String, String> getAggDataFromDataValueTableByDeAndPeriodwise( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
+    
+    Map<String, String> getDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
+    
+    Map<String, String> getDataFromDataValueTableByPeriodAgg( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
+        
 }

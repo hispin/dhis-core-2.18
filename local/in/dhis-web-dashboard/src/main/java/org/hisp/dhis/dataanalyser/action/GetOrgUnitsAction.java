@@ -1,9 +1,15 @@
 package org.hisp.dhis.dataanalyser.action;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.reports.ReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -19,7 +25,14 @@ public class GetOrgUnitsAction implements Action
     {
         this.organisationUnitService = organisationUnitService;
     }
+    
+    private ReportService reportService;
 
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -66,10 +79,6 @@ public class GetOrgUnitsAction implements Action
     public String execute()
         throws Exception
     {
-        /* OrganisationUnit */
-        
-     //   System.out.println("org Id is : " + orgUnitId );
-        
         if ( orgUnitId != null )
         {
             orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
@@ -77,12 +86,31 @@ public class GetOrgUnitsAction implements Action
         
         System.out.println(" orgUnit Id is : " + orgUnit.getId() + " , orgUnit Name is : " + orgUnit.getName() );
         orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
-        //orgUnitLevel = orgUnit.getLevel();
         maxOrgUnitLevel = organisationUnitService.getNumberOfOrganisationalLevels();
         
         // Hardcoded : if it is Tabular Analysis, Null Reporter
         if( type != null && type.equalsIgnoreCase( "ta" ) )
         {
+            
+            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( orgUnit.getId() ) );
+            Map<Integer, Integer> orgunitLevelMap = new HashMap<Integer, Integer>( reportService.getOrgunitLevelMap() );
+        
+            maxOrgUnitLevel = 1;
+            Iterator<OrganisationUnit> ouIterator = orgUnitList.iterator();
+            while ( ouIterator.hasNext() )
+            {
+                OrganisationUnit orgU = ouIterator.next();
+                
+                Integer level = orgunitLevelMap.get( orgU.getId() );
+                if( level == null )
+                    level = organisationUnitService.getLevelOfOrganisationUnit( orgU );
+                if ( level > maxOrgUnitLevel )
+                {
+                    maxOrgUnitLevel = level;
+                }
+            }
+            
+            /*
             for( int i = orgUnitLevel+1; i <= maxOrgUnitLevel; i++ )
             {
                 Collection<OrganisationUnit> tempOrgUnitList = organisationUnitService.getOrganisationUnitsAtLevel( i, orgUnit );
@@ -92,6 +120,7 @@ public class GetOrgUnitsAction implements Action
                     break;
                 }
             }
+            */
         }
         
         return SUCCESS;
