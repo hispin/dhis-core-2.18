@@ -362,11 +362,11 @@ public class EDReportResultAction
                     {
                         if( denValue != 0.0 )
                         {
-                                indValue = ( numValue / denValue ) * indicator.getIndicatorType().getFactor();
+                            indValue = ( numValue / denValue ) * indicator.getIndicatorType().getFactor();
                         }
                         else
                         {
-                                indValue = 0.0;
+                            indValue = 0.0;
                         }
                     }
                     catch( Exception e )

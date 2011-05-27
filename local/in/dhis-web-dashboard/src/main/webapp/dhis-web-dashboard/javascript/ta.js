@@ -1,13 +1,26 @@
 
 
+function ouListSelection()
+{
+	var orgUnitSelListCB = document.getElementById( "orgUnitSelListCB" );
+	var orgUnitSelListCBVal = orgUnitSelListCB.options[ orgUnitSelListCB.selectedIndex ].value;
+
+	if( orgUnitSelListCBVal == "orgUnitGroupRadio" )
+	{
+		getOrgUnitGroups();
+	}
+	else if( orgUnitSelListCBVal == "orgUnitSelectedRadio" )
+	{
+		ouSelCBChange();
+	}
+	else
+	{
+		ouLevelSelected();
+	}
+}
+/*
 function ouradioSelection( evt )
 {
-	//var ouSelCBId = document.getElementById( "ouSelCB" );
-	//if( ouSelCBId.checked )
-	//{
-	//	return;
-	//}
-	
 	var excelItems = byId('ouRadio');
 	
 	if(excelItems.checked && excelItems.getAttribute('value') == "orgUnitGroupRadio")
@@ -23,6 +36,7 @@ function ouradioSelection( evt )
 		ouLevelSelected();
 	}
 }
+*/
 
 function getOrgUnitGroups()
 {
@@ -32,19 +46,17 @@ function getOrgUnitGroups()
   
 	for(var i=0; i < orgUnitGroupIds.length; i++)
 	{
-            
-            var option = document.createElement("option");
-            option.value = orgUnitGroupIds[i];
-            option.text = orgUnitGroupNames[i];
-            option.title = orgUnitGroupNames[i];
-            ouLevelId.add(option, null);
+        var option = document.createElement("option");
+        option.value = orgUnitGroupIds[i];
+        option.text = orgUnitGroupNames[i];
+        option.title = orgUnitGroupNames[i];
+        ouLevelId.add(option, null);
 	}
 }
 
 
 function ouSelCBChange()
 {
-    //var ouSelCBId = document.getElementById( "ouSelCB" );
     var ouListCDId = document.getElementById( "orgUnitListCB" );
     var ouLevelId = document.getElementById( "orgUnitLevelCB" );
 	
@@ -68,9 +80,7 @@ function ouSelCBChange()
     if( selOrgUnitId != null && selOrgUnitId != "NONE" && selOrgUnitId != "")
     {
         getOUDeatilsForTA( selOrgUnitId );
-    }
-    
-	
+    }	
 }
 
 function ouLevelSelected()
@@ -240,17 +250,6 @@ function getDataElements()
     
     if ( dataElementGroupId != null )
     {
-        /* //var url = "getDataElementsForTA.action?id=" + dataElementGroupId + "&deOptionValue=" + deOptionValue;
-        var request = new Request();
-        request.setResponseTypeXML('dataElement');
-        request.setCallbackSuccess(getDataElementsReceived);
-        //request.send(url);
-
-        var requestString = "getDataElementsForTA.action";
-        var params = "id=" + dataElementGroupId + "&deOptionValue=" + deOptionValue;
-        request.sendAsPost( params );
-        request.send( requestString ); */
-		
 		$.post("getDataElementsForTA.action",
 		{
 			id:dataElementGroupId,
@@ -296,18 +295,6 @@ function getIndicators()
 	
     if ( indicatorGroupId != null )
     {
-        /* //var url = "getIndicators.action?id=" + indicatorGroupId;
-		
-        var request = new Request();
-        request.setResponseTypeXML( 'indicator' );
-        request.setCallbackSuccess( getIndicatorsReceived );
-        //request.send( url );
-
-        var requestString = "getIndicators.action";
-        var params = "id=" + indicatorGroupId;
-        request.sendAsPost( params );
-        request.send( requestString ); */
-		
 		$.post("getIndicators.action",
 		{
 			id:indicatorGroupId
@@ -341,10 +328,8 @@ function getIndicatorsReceived( xmlObject )
             availableIndicators.add( option, null );
         }
     }
-	
-// If the list of available indicators is empty, an empty placeholder will be added
-//addOptionPlaceHolder( availableIndicators );
 }
+
 // getting period List
 function getPeriods()
 {
@@ -353,8 +338,6 @@ function getPeriods()
 	
     var yearLB = document.getElementById("yearLB");
     
-    
-   // alert( periodTypeId );
     var periodLB = document.getElementById( "periodLB" );
 	
     periodLB.disabled = false;
@@ -371,8 +354,6 @@ function getPeriods()
     
     else if( periodTypeId == dailyPeriodTypeName )
     {
-       // alert( monthDays.length );
-    	//alert( days.length );
     	for( i= 0; i < days.length; i++ )
         {
             periodLB.options[i] = new Option(days[i],days[i],false,false);
@@ -399,8 +380,6 @@ function getPeriods()
     
     else if( periodTypeId == weeklyPeriodTypeName )
     {
-    	//alert(periodTypeId);
-    	
         if( yearLB.selectedIndex < 0 ) 
         {
             alert("Please select Year(s) First");
@@ -410,15 +389,10 @@ function getPeriods()
         {
         	getWeeks();
         }
-        /*
-    	for( i= 0; i < weeks.length; i++ )
-        {
-    		periodLB.options[i] = new Option(weeks[i],weeks[i],false,false);
-        }
-    	getWeeks();*/
     }
 
 }
+
 //getting weekly Period
 function getWeeklyPeriod()
 {
@@ -431,34 +405,12 @@ function getWeeklyPeriod()
     }
     
 }
-//singleSelectionOption yearList
-/*
-function selectSingleOptionYearList()
-{
-	var periodTypeObj = document.getElementById( 'periodTypeLB' );
-	
-    var periodTypeVal = periodTypeObj.options[ periodTypeObj.selectedIndex ].value;
-    if( periodTypeVal == weeklyPeriodTypeName  )
-    {
-        var yearListObj = document.getElementById('yearLB');
-	
-        for( var i = 0; i < yearListObj.length; i++ )
-        {
-            if( i != yearListObj.selectedIndex )
-            {
-            	yearListObj.options[i].selected = false;
-            }
-        }
-    }
-}
-*/
+
 //get week period Ajax calling
 function getWeeks()
 {
-	//var periodTypeName = weeklyPeriodTypeName;
 	var yearListObj = document.getElementById('yearLB');
 	var yearListval = yearListObj.options[ yearListObj.selectedIndex ].value;
-	//alert(yearListval); 
 	var year = yearListval.split( "-" )[0] ;
 	var yearList = "" ;
 	
@@ -469,13 +421,10 @@ function getWeeks()
     	{
     		yearList += yearLB.options[k].value + ";" ;
     	}
-     //yearLB.add[yearLB.selectedIndex];
     }
-    // alert( "Year List is : " +yearList );
 	
 	$.post("getWeeklyPeriod.action",
 			{
-			 //periodTypeName:weeklyPeriodTypeName,
 				yearList:yearList
 			},
 			function (data)
@@ -483,11 +432,10 @@ function getWeeks()
 				getWeeklyPeriodReceived(data);
 			},'xml');
 }
+
 // week rang received
 function getWeeklyPeriodReceived( xmlObject )
 {	
-	//alert("Inside Result");
-	
 	var periodList = document.getElementById( "periodLB" );
 	
 	clearList( periodList );
@@ -498,37 +446,14 @@ function getWeeklyPeriodReceived( xmlObject )
 	{
 	    var weeklyPeriodName = weeklyperiodList[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
 		
-	        var option = document.createElement( "option" );
-	        option.value = weeklyPeriodName;
-	        option.text = weeklyPeriodName;
-	        option.title = weeklyPeriodName;
-	        periodList.add( option, null );
-	}
-}	
-/*
-function getPeriods()
-{
-	var periodTypeList = document.getElementById( "periodTypeLB" );
-	var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
-	var startDateList = document.getElementById( "sDateLB" );
-	var endDateList = document.getElementById( "eDateLB" );
-	
-	if ( periodTypeId != "NA" )
-	{		
-		var url = "getPeriods.action?id=" + periodTypeId;
-		
-		var request = new Request();
-	    request.setResponseTypeXML( 'period' );
-	    request.setCallbackSuccess( getPeriodsReceived );
-	    request.send( url );
-	}
-	else
-	{
-	    clearList( startDateList );
-	    clearList( endDateList );
+        var option = document.createElement( "option" );
+        option.value = weeklyPeriodName;
+        option.text = weeklyPeriodName;
+        option.title = weeklyPeriodName;
+        periodList.add( option, null );
 	}
 }
-*/
+
 function getPeriodsReceived( xmlObject )
 {	
     var startDateList = document.getElementById( "sDateLB" );
@@ -572,25 +497,16 @@ function getOUDeatilsForTA( orgUnitIds )
 		{
 			getOUDetailsForTARecevied(data);
 		},'xml');
-
-	/*
-    var request = new Request();
-    request.setResponseTypeXML( 'orgunit' );
-    request.setCallbackSuccess( getOUDetailsForTARecevied );
-
-    var requestString = "getOrgUnitDetails.action";
-    var params = "orgUnitId=" + orgUnitIds+"&type=ta";
-    request.sendAsPost( params );
-    request.send( requestString );
-    */ 
 }
 
 function getOUDetailsForTARecevied(xmlObject)
 {
     var ouListCDId = document.getElementById( "orgUnitListCB" );
     var ouLevelId = document.getElementById( "orgUnitLevelCB" );
-    var ouRadioVal = $( "input[name='ouRadio']:checked" ).val();
-		
+    //var ouRadioVal = $( "input[name='ouRadio']:checked" ).val();
+	var orgUnitSelListCB = document.getElementById( "orgUnitSelListCB" );
+	var ouRadioVal = orgUnitSelListCB.options[ orgUnitSelListCB.selectedIndex ].value;
+
     var orgUnits = xmlObject.getElementsByTagName("orgunit");
 
     for ( var i = 0; i < orgUnits.length; i++ )
@@ -628,8 +544,8 @@ function getOUDetailsForTARecevied(xmlObject)
             clearList( ouListCDId );
     		
             ouListCDId.options[ouListCDId.options.length] = new Option(orgUnitName,id,false,false);
-            var selouRadioButton = $( "input[name='ouRadio']:checked" ).val();
-            if( selouRadioButton == "orgUnitGroupRadio" )
+            //var selouRadioButton = $( "input[name='ouRadio']:checked" ).val();
+            if( ouRadioVal == "orgUnitGroupRadio" )
             {
             	getOrgUnitGroups();
             }
@@ -663,7 +579,6 @@ function getorgUnitLevels( ouLevel, maxOULevel )
     if( j == 0 )
     {
     	document.getElementById( "ViewReport" ).disabled = true;
-    	
     }
     else
     {
@@ -691,7 +606,6 @@ function formValidations()
     var selectedServices = document.getElementById("selectedServices");
     var orgUnitListCB = document.getElementById("orgUnitListCB");
     var selOUListLength = document.tabularAnalysisForm.orgUnitListCB.options.length;
-   // alert(selOUListLength);
     var orgUnitLevelCB = document.getElementById("orgUnitLevelCB");
     var yearLB = document.getElementById("yearLB");
     var periodLB = document.getElementById("periodLB");
@@ -699,8 +613,9 @@ function formValidations()
     var aggPeriodCB = document.getElementById("aggPeriodCB");
     var periodTypeList = document.getElementById( "periodTypeLB" );
     var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
-    var ouRadioVal = $( "input[name='ouRadio']:checked" ).val();
-  
+	var orgUnitSelListCB = document.getElementById( "orgUnitSelListCB" );
+	var ouRadioVal = orgUnitSelListCB.options[ orgUnitSelListCB.selectedIndex ].value;
+
     var k=0;
     if( selectedServices.options.length <= 0 ) 
     {
@@ -732,21 +647,11 @@ function formValidations()
 	
     if( ouRadioVal == "orgUnitSelectedRadio" )
     {
-        //if( orgUnitListCB.selectedIndex < 0 ) 
     	if( selOUListLength <= 0 )
         {
             alert( "Please select OrgUnit(s)" );
             return false;
         }
-    	/*
-        else
-        {
-        	for(k=0;k<selOUListLength;k++)
-        	{
-        		document.tabularAnalysisForm.orgUnitListCB.options[k].selected = true;
-        	}
-    	}
-    	*/
     }
     else if( ouRadioVal == "orgUnitGroupRadio" ) 
     { 

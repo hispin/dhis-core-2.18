@@ -749,7 +749,6 @@
 			class="org.hisp.dhis.dataanalyser.action.GetOrgUnitsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseOrgUnit.vm</result>
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
