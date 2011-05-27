@@ -242,75 +242,66 @@ public class DefaultDhis14FileImportService
     @Override
     public void importData( ImportParams params, InputStream inputStream ) throws ImportException
     {
-        
+        importData( params, inputStream, null );
     }
 
     @Override
     public void importData( ImportParams params, InputStream inputStream, ProcessState state )
         throws ImportException
     {
-        try
+        NameMappingUtil.clearMapping();
+
+        importAnalyser = new DefaultImportAnalyser( expressionService );
+
+        if ( !verifyImportFile( params, state ) )
         {
-            NameMappingUtil.clearMapping();
-
-            importAnalyser = new DefaultImportAnalyser( expressionService );
-
-            if ( !verifyImportFile( params, state ) )
-            {
-                return;
-            }
-
-            if ( params.isPreview() )
-            {
-                importObjectService.deleteImportObjects();
-            }
-
-            importDataElements( params, state );
-            importIndicatorTypes( params, state );
-            importIndicators( params, state );
-            importDataElementGroups( params, state );
-            importDataElementGroupMembers( params, state );
-            importIndicatorGroups( params, state );
-            importIndicatorGroupMembers( params, state );
-
-            importDataSets( params, state );
-            importDataSetMembers( params, state );
-
-            importOrganisationUnits( params, state );
-            importOrganisationUnitGroups( params, state );
-            importOrganisationUnitGroupMembers( params, state );
-            importGroupSets( params, state );
-            importGroupSetMembers( params, state );
-            importOrganisationUnitRelationships( params, state );
-
-            importDataSetOrganisationUnitAssociations( params, state );
-
-            if ( params.isDataValues() && !params.isAnalysis() )
-            {
-                importPeriods( params, state );
-                importRoutineDataValues( params, state );
-
-                importOnChangePeriods( params, state );
-                importSemiPermanentDataValues( params, state );
-            }
-
-            if ( params.isAnalysis() )
-            {
-                state.setOutput( importAnalyser.getImportAnalysis() );
-            }
-
-            Dhis14PeriodUtil.clear();
-
-            NameMappingUtil.clearMapping();
-
-            cacheManager.clearCache();
+            return;
         }
-        catch ( Exception ex )
+
+        if ( params.isPreview() )
         {
-            log.error( ex );
-         
-            throw new ImportException( "DHIS14 import failed", ex );
+            importObjectService.deleteImportObjects();
         }
+
+        importDataElements( params, state );
+        importIndicatorTypes( params, state );
+        importIndicators( params, state );
+        importDataElementGroups( params, state );
+        importDataElementGroupMembers( params, state );
+        importIndicatorGroups( params, state );
+        importIndicatorGroupMembers( params, state );
+
+        importDataSets( params, state );
+        importDataSetMembers( params, state );
+
+        importOrganisationUnits( params, state );
+        importOrganisationUnitGroups( params, state );
+        importOrganisationUnitGroupMembers( params, state );
+        importGroupSets( params, state );
+        importGroupSetMembers( params, state );
+        importOrganisationUnitRelationships( params, state );
+
+        importDataSetOrganisationUnitAssociations( params, state );
+
+        if ( params.isDataValues() && !params.isAnalysis() )
+        {
+            importPeriods( params, state );
+            importRoutineDataValues( params, state );
+
+            importOnChangePeriods( params, state );
+            importSemiPermanentDataValues( params, state );
+        }
+
+        if ( params.isAnalysis() )
+        {
+            state.setOutput( importAnalyser.getImportAnalysis() );
+        }
+
+        Dhis14PeriodUtil.clear();
+
+        NameMappingUtil.clearMapping();
+
+        cacheManager.clearCache();
     }
 
     // -------------------------------------------------------------------------

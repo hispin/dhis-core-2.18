@@ -36,6 +36,7 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.DataSetImporter;
+import org.hisp.dhis.period.YearlyPeriodType;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 
@@ -77,7 +78,10 @@ public class DataSetRowHandler
     {
         final DataSet dataSet = (DataSet) object;
         
-        dataSet.getPeriodType().setId( periodTypeMapping.get( dataSet.getPeriodType().getName() ) );
+        Integer periodTypeId = periodTypeMapping.get( dataSet.getPeriodType().getName() );
+        Integer defaultId = periodTypeMapping.get( YearlyPeriodType.NAME );
+        
+        dataSet.getPeriodType().setId( periodTypeId != null ? periodTypeId : defaultId );
         
         importObject( dataSet, params );
     }
