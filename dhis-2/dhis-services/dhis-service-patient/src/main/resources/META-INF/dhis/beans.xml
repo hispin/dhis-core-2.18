@@ -140,6 +140,22 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
    
 	<!-- Service definitions -->
 	
+	<bean id="org.hisp.dhis.program.ProgramDataEntryService"
+		class="org.hisp.dhis.program.DefaultProgramDataEntryService">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="programStageInstanceService">
+			<ref bean="org.hisp.dhis.program.ProgramStageInstanceService" />
+		</property>
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+		<property name="patientDataValueService">
+			<ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		</property>
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.activityplan.ActivityPlanService"
 		class="org.hisp.dhis.activityplan.DefaultActivityPlanService">
 		<property name="patientDataValueService"
@@ -155,7 +171,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	</bean>
 	
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionService"
-    class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationConditionService">
+    	class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationConditionService">
     	<property name="aggregationConditionStore" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore" />
     	<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />     	
         <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />     	

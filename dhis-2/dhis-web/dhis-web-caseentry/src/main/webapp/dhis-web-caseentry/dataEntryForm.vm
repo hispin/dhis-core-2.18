@@ -16,14 +16,16 @@ jQuery("#entryFormContainer").ready(function(){
 		</script>
 </p>
 
+<input type='hidden' id='programStageInstanceId' value='$programStageInstance.id'>
+<input type='hidden' id='programStageInstanceName' value='$programStageInstance.name'>
+<input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
+<input type='hidden' id='orgunitId' value='$organisationUnit.id'>
+	
 <hr style="clear:both">
 
-<span id="startMsg" style="font-style:italic; color:blue"> </span>
+<span id="startMsg" style="font-style:italic; color:blue; display: #if($programStageInstance.executionDate) none #else block #end">$i18n.getString( "report_date_warning" )</span>
 
-<div id='entryForm'>
-	<input type='hidden' id='programStageInstanceId' value='$programStageInstance.id'>
-	<input type='hidden' id='programStageInstanceName' value='$programStageInstance.name'>
-	<input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
+<div id='entryForm' style="display: #if($programStageInstance.executionDate) block #else none #end">
 	
 	<div id="customEntryScreenContainer">
 		#if( $customDataEntryFormCode ) 
@@ -124,6 +126,7 @@ jQuery("#entryFormContainer").ready(function(){
 
 	</div>
 </div>
+
 </div>
 <script type="text/javascript"> 
 	initCustomCheckboxes();
