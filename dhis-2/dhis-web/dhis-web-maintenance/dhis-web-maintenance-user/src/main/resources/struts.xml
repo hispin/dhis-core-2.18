@@ -173,7 +173,7 @@
       /dhis-web-maintenance-user/responseUserGroup.vm</result>
   </action>
 
-  <action name="addUserGroupForm" class="org.hisp.dhis.user.action.AddUserGroupFormAction">
+  <action name="addUserGroupForm" class="org.hisp.dhis.user.action.NoAction">
     <result name="success" type="velocity">/main.vm</result>
     <param name="page">/dhis-web-maintenance-user/addUserGroupForm.vm</param>
     <param name="menu">/dhis-web-maintenance-user/menu.vm</param>

@@ -208,11 +208,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.user.action.AddUserGroupFormAction" class="org.hisp.dhis.user.action.AddUserGroupFormAction"
-		scope="prototype">
-		<property name="userService" ref="org.hisp.dhis.user.UserService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.user.action.AddUserGroupAction" class="org.hisp.dhis.user.action.AddUserGroupAction"
 		scope="prototype">
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
@@ -221,7 +216,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.user.action.EditUserGroupFormAction"
 		class="org.hisp.dhis.user.action.EditUserGroupFormAction" scope="prototype">
-		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
