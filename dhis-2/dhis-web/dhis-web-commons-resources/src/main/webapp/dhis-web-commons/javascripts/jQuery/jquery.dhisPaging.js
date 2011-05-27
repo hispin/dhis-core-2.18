@@ -233,6 +233,7 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
             }));
             $select.css({
                 "border-bottom" : "1px solid gray",
+                "border-top" : "1px solid gray",
                 "margin-bottom" : "1px"
             });
 
