@@ -263,7 +263,7 @@ public class DefaultDataSetService
 
         return dataSetListByPeriodType;
     }
-
+    
     public Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers )
     {
         Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );
@@ -291,13 +291,15 @@ public class DefaultDataSetService
     public Collection<DataSet> getDataSetsForMobile(){
         return i18n( i18nService, dataSetStore.getDataSetsForMobile() );
     }
-    
-    public Collection<DataSet> getMobileDataSetsFromCategoryOption(int categoryOptionId){
-        return dataSetStore.getMobileDataSetsFromCategoryOption(categoryOptionId);
+
+    public Collection<DataSet> getMobileDataSetsFromCategoryOption( int categoryOptionId )
+    {
+        return dataSetStore.getMobileDataSetsFromCategoryOption( categoryOptionId );
     }
-    
-    public Collection<DataSet> getMobileDataSetsFromCategory(int categoryId){
-        return dataSetStore.getMobileDataSetsFromCategory(categoryId);
+
+    public Collection<DataSet> getMobileDataSetsFromCategory( int categoryId )
+    {
+        return dataSetStore.getMobileDataSetsFromCategory( categoryId );
     }
 
     @Override

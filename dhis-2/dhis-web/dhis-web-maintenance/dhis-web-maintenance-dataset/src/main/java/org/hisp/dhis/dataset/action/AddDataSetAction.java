@@ -39,10 +39,6 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
@@ -77,13 +73,6 @@ public class AddDataSetAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
     }
 
     private UserService userService;
@@ -199,25 +188,8 @@ public class AddDataSetAction
 
         dataSetService.addDataSet( dataSet );
 
-        assignDataSetToUserRole( dataSet );
+        userService.assignDataSetToUserRole( dataSet );
 
         return SUCCESS;
-    }
-
-    private void assignDataSetToUserRole( DataSet dataSet )
-    {
-        User currentUser = currentUserService.getCurrentUser();
-
-        if ( !currentUserService.currentUserIsSuper() && currentUser != null )
-        {
-            UserCredentials userCredentials = userService.getUserCredentials( currentUser );
-
-            for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
-            {
-                userAuthorityGroup.getDataSets().add( dataSet );
-
-                userService.updateUserAuthorityGroup( userAuthorityGroup );
-            }
-        }
     }
 }
