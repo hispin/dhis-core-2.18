@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.AuditLogUtil;
 
@@ -217,7 +218,7 @@ public class DefaultUserService
     {
         return userStore.getUsersWithoutOrganisationUnitCountByName( userName );
     }
-
+    
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
     // -------------------------------------------------------------------------
@@ -262,6 +263,33 @@ public class DefaultUserService
         return userStore.getUserRolesBetweenByName( name, first, max );
     }
 
+    public int getUserRoleCount()
+    {
+        return userStore.getUserRoleCount();
+    }
+
+    public int getUserRoleCountByName( String name )
+    {
+        return userStore.getUserRoleCountByName( name );
+    }
+
+    public void assignDataSetToUserRole( DataSet dataSet )
+    {
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( !currentUserService.currentUserIsSuper() && currentUser != null )
+        {
+            UserCredentials userCredentials = getUserCredentials( currentUser );
+
+            for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
+            {
+                userAuthorityGroup.getDataSets().add( dataSet );
+
+                updateUserAuthorityGroup( userAuthorityGroup );
+            }
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // UserCredentials
     // -------------------------------------------------------------------------
@@ -349,19 +377,4 @@ public class DefaultUserService
     {
         return userStore.getUserSetting( user, name );
     }
-
-    // -------------------------------------------------------------------------
-    // UserRole
-    // -------------------------------------------------------------------------
-
-    public int getUserRoleCount()
-    {
-        return userStore.getUserRoleCount();
-    }
-
-    public int getUserRoleCountByName( String name )
-    {
-        return userStore.getUserRoleCountByName( name );
-    }
-
 }

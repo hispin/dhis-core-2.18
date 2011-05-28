@@ -281,9 +281,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="userService">
 			<ref bean="org.hisp.dhis.user.UserService"/>
 		</property>
-		<property name="currentUserService">
-			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
-		</property>
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.UpdateDataSetAction"

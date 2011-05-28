@@ -182,7 +182,7 @@ public class UpdateDataSetAction
 
         if ( dataSet.isMobile() )
         {
-            dataSet.setVersion( dataSet.getVersion() + 1 ); // TODO we should check if anything is actually updated before bumping version and push this to service layer
+            dataSet.setVersion( dataSet.getVersion() + 1 ); // TODO hack
         }
 
         dataSetService.updateDataSet( dataSet );

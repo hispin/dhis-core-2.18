@@ -2,6 +2,7 @@ package org.hisp.dhis.user;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /*
@@ -244,6 +245,12 @@ public interface UserService
      */
     Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max );
 
+    void assignDataSetToUserRole( DataSet dataSet );
+
+    int getUserRoleCount();
+
+    int getUserRoleCountByName( String name );
+    
     // -------------------------------------------------------------------------
     // UserSettings
     // -------------------------------------------------------------------------
@@ -285,14 +292,5 @@ public interface UserService
      * 
      * @param userSetting the UserSetting to delete.
      */
-    void deleteUserSetting( UserSetting userSetting );
-
-    // -------------------------------------------------------------------------
-    // UserRole
-    // -------------------------------------------------------------------------
-
-    int getUserRoleCount();
-
-    int getUserRoleCountByName( String name );
-    
+    void deleteUserSetting( UserSetting userSetting );    
 }
