@@ -70,6 +70,18 @@ public class DataSetDeletionHandler
             }
         }
     }
+    
+    @Override
+    public void deleteSection( Section section )
+    {
+        for ( DataSet dataSet : dataSetService.getAllDataSets() )
+        {
+            if ( dataSet.getSections().remove( section ) )
+            {
+                dataSetService.updateDataSet( dataSet );
+            }
+        }
+    }
 
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )

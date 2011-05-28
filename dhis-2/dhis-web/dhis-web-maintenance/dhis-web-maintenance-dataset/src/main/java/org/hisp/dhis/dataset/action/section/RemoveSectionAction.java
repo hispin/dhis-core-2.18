@@ -76,8 +76,9 @@ public class RemoveSectionAction
         Section section = sectionService.getSection( id );
         
         DataSet dataSet = section.getDataSet();
-        
-        if(dataSet.getMobile() != null && dataSet.getMobile()){
+
+        if ( dataSet.getMobile() != null && dataSet.getMobile() ) //TODO hack
+        {
             dataSet.setVersion( dataSet.getVersion() + 1 );
             dataSetService.updateDataSet( dataSet );
         }
