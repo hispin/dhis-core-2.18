@@ -51,11 +51,11 @@
       <name>Dhis2 External Dependencies Repository</name>
       <url>http://dhis.uio.no/maven/external</url>
     </repository>
-   <repository>
+    <!--
+    <repository>
       <id>jboss-public-repository-group</id>
       <name>JBoss Public Repository Group</name>
       <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-      <!-- <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url> -->
       <layout>default</layout>
       <releases>
         <enabled>true</enabled>
@@ -66,6 +66,7 @@
         <updatePolicy>never</updatePolicy>
       </snapshots>
     </repository>
+    -->
   </repositories>
   
   <issueManagement>
@@ -517,12 +518,6 @@
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-ehcache</artifactId>
         <version>${hibernate.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.hibernate</groupId>
@@ -532,12 +527,7 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
-        <version>1.5.8</version>
-      </dependency>
-      <dependency>
-        <groupId>net.sf.ehcache</groupId>
-        <artifactId>ehcache-core</artifactId>
-        <version>2.4.2</version>
+        <version>1.6.1</version>
       </dependency>
       <dependency>
         <groupId>geronimo-spec</groupId>
@@ -672,6 +662,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.version>3.0.5.RELEASE</spring.version>
     <spring.security.version>3.0.5.RELEASE</spring.security.version>
-    <hibernate.version>3.5.6-Final</hibernate.version>
+    <hibernate.version>3.6.4.Final</hibernate.version>
   </properties>
 </project>
