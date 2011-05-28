@@ -111,8 +111,7 @@ public class AddSectionAction
 
         for ( String id : selectedList )
         {
-            DataElement d = dataElementService.getDataElement( Integer.parseInt( id ) );
-            selectedDataElements.add( d );
+            selectedDataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
 
         section.setDataElements( selectedDataElements );

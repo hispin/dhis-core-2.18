@@ -19,7 +19,7 @@
       <column name="name" not-null="true" unique="true" length="230" />
     </property>
 
-    <set name="children" inverse="true" cascade="save-update,delete-orphan">
+    <set name="children" inverse="true">
       <cache usage="read-write" />
       <key column="parentid" />
       <one-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" />

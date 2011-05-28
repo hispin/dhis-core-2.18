@@ -48,7 +48,7 @@
       <many-to-many column="sourceid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_dataset_organisationunit"/>
     </set>
 
-    <set name="sections" order-by="sortorder" inverse="true" cascade="all">
+    <set name="sections" order-by="sortorder" inverse="true">
       <cache usage="read-write" />
       <key column="datasetid" />
       <one-to-many class="org.hisp.dhis.dataset.Section" />
@@ -58,8 +58,7 @@
 
     <property name="sortOrder" />
 
-    <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm" foreign-key="fk_dataset_dataentryform"
-      cascade="all" />
+    <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm" foreign-key="fk_dataset_dataentryform" cascade="all" />
 
     <property name="mobile" />
 
