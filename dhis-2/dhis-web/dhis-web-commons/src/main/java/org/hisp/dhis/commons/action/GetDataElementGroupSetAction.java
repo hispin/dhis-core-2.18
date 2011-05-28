@@ -34,7 +34,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
  */
 public class GetDataElementGroupSetAction
     implements Action

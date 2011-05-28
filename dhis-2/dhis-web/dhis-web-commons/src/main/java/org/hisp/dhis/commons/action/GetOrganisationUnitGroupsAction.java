@@ -28,13 +28,11 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.filter.OrganisationUnitGroupWithoutGroupSetFilter;
@@ -63,13 +61,6 @@ public class GetOrganisationUnitGroupsAction
     // Input & output
     // -------------------------------------------------------------------------
 
-    private Integer includeOrganisationUnitGroupId;
-
-    public void setIncludeOrganisationUnitGroupId( Integer includeOrganisationUnitGroupId )
-    {
-        this.includeOrganisationUnitGroupId = includeOrganisationUnitGroupId;
-    }
-
     private String key;
 
     public void setKey( String key )
@@ -82,21 +73,6 @@ public class GetOrganisationUnitGroupsAction
     public void setFilterNoGroupSet( boolean filterNoGroupSet )
     {
         this.filterNoGroupSet = filterNoGroupSet;
-    }
-
-    private List<Integer> removeOrganisationUnitGroups = new ArrayList<Integer>();
-
-    public void setRemoveOrganisationUnitGroups( String removeOrganisationUnitGroups )
-    {
-        if ( removeOrganisationUnitGroups.length() > 0 )
-        {
-            List<String> stringList = Arrays.asList( removeOrganisationUnitGroups.split( "," ) );
-
-            for ( String s : stringList )
-            {
-                this.removeOrganisationUnitGroups.add( Integer.parseInt( s ) );
-            }
-        }
     }
 
     private List<OrganisationUnitGroup> organisationUnitGroups;
@@ -120,23 +96,6 @@ public class GetOrganisationUnitGroupsAction
         if ( filterNoGroupSet )
         {
             FilterUtils.filter( organisationUnitGroups, new OrganisationUnitGroupWithoutGroupSetFilter() );
-
-            if ( includeOrganisationUnitGroupId != null )
-            {
-                OrganisationUnitGroupSet groupSet = organisationUnitGroupService
-                    .getOrganisationUnitGroupSet( includeOrganisationUnitGroupId );
-                organisationUnitGroups.addAll( groupSet.getOrganisationUnitGroups() );
-            }
-        }
-
-        if ( removeOrganisationUnitGroups.size() > 0 )
-        {
-            for ( Integer id : removeOrganisationUnitGroups )
-            {
-                OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
-                    .getOrganisationUnitGroup( id );
-                organisationUnitGroups.remove( organisationUnitGroup );
-            }
         }
 
         if ( key != null )

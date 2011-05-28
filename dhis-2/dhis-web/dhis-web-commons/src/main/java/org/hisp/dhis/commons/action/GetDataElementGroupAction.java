@@ -34,8 +34,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetDataElementGroupAction.java 2869 2007-02-20 14:26:09Z
- *          andegje $
  */
 public class GetDataElementGroupAction
     implements Action

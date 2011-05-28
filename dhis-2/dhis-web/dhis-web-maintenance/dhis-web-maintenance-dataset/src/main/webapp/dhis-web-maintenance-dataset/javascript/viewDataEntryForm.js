@@ -9,9 +9,9 @@ $(document).ready(function() {
 	leftBar.hideAnimated();
 
 	$("#selectionDialog").dialog({
-		minWidth: 530,
+		minWidth: 546,
 		minHeight: 263,
-		position: [($("body").width() - 530) - 50, 50],
+		position: [($("body").width() - 546) - 50, 50],
 		zIndex: 10000
 	});
 
@@ -20,8 +20,8 @@ $(document).ready(function() {
 		var indicatorSelector = $("#indicatorSelector");
 		var dataElementSelector = $("#dataElementSelector");
 
-		dataElementSelector.height( dialog.height() - 106 );
-		indicatorSelector.height( dialog.height() - 106 );
+		dataElementSelector.height( dialog.height() - 78 );
+		indicatorSelector.height( dialog.height() - 78 );
 	});
 
 	$(":button").button();

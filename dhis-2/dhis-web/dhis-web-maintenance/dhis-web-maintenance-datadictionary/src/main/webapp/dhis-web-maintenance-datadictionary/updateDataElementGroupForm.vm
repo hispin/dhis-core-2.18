@@ -1,34 +1,16 @@
 <script type="text/javascript" src="javascript/updateDataElementGroupForm.js"></script>
 <script type="text/javascript">
-	function getRemoveDataElements() {
-		var list = [
-		#foreach( $dataElement in $groupMembers )
-			${dataElement.id},
-		#end
-		];
-		
-		return list;
-	}
-
 	jQuery(function() {
-		jQuery("#availableDataElementsList").dblclick(dhisPaging_availableList_dblclick("availableDataElementsList", "groupMembers", "removeDataElements"));
-		jQuery("#groupMembers").dblclick(dhisPaging_selectedList_dblclick("groupMembers", "availableDataElementsList", "removeDataElements"));
-
-		var removeDataElementsList = getRemoveDataElements();
-
-		jQuery("#availableDataElementsList").dhisPaging({
+		jQuery("#availableDataElementsList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getDataElements.action",
 			iterator: "dataElements",
+			connectedTo: 'groupMembers',
 			handler: function(item) {
 				var option = jQuery("<option />");
 				option.text( item.name );
 				option.attr( "value", item.id );
 
 				return option;
-			},
-			removeDataElements: removeDataElementsList,
-			params: {
-				removeDataElements: removeDataElementsList.join(",")
 			}
 		});
 	});
@@ -75,10 +57,10 @@
 		</td>
 
         <td style="text-align:center">          
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableDataElementsList' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'groupMembers' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableDataElementsList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'groupMembers' );"/>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableDataElementsList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'groupMembers' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableDataElementsList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'groupMembers' );"/>
         </td>
 
 		<td>

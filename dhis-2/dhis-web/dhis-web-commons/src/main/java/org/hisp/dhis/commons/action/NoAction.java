@@ -31,7 +31,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id NoAction.java Dang Duy Hieu May 04, 2010$
  */
 public class NoAction
     implements Action

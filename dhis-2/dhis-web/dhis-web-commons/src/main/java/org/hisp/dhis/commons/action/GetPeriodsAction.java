@@ -41,7 +41,6 @@ import org.hisp.dhis.period.comparator.PeriodComparator;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: GetPeriodsAction.java 3272 2007-04-26 22:22:50Z larshelg $
  */
 public class GetPeriodsAction
     extends ActionPagingSupport<Period>

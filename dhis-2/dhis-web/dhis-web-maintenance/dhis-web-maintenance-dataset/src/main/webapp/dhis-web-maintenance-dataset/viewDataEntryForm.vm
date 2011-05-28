@@ -8,11 +8,11 @@
 				  timedCount();
 			  }
 		}
-		
+
 		jQuery('#designTextarea').ckeditor();
 		jQuery("#designTextarea").ckeditorGet().setData('$encoder.jsEscape( $dataEntryValue, "'" )');
 
-		jQuery("#dataElementSelector").dhisPaging({
+		jQuery("#dataElementSelector").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getDataElementOperands.action",
 			iterator: "operands",
 			handler: function(item) {
@@ -32,7 +32,7 @@
 			}
 		});
 
-		jQuery("#indicatorSelector").dhisPaging({
+		jQuery("#indicatorSelector").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getIndicators.action",
 			iterator: "indicators",
 			handler: function(item) {

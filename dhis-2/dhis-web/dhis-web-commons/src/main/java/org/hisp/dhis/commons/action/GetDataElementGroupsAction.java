@@ -28,12 +28,10 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
@@ -63,13 +61,6 @@ public class GetDataElementGroupsAction
     // Input & output
     // -------------------------------------------------------------------------
 
-    private Integer includeDataElementGroupId;
-
-    public void setIncludeDataElementGroupId( Integer includeDataElementGroupId )
-    {
-        this.includeDataElementGroupId = includeDataElementGroupId;
-    }
-
     private String key;
 
     public void setKey( String key )
@@ -82,21 +73,6 @@ public class GetDataElementGroupsAction
     public void setFilterNoGroupSet( boolean filterNoGroupSet )
     {
         this.filterNoGroupSet = filterNoGroupSet;
-    }
-
-    private List<Integer> removeDataElementGroups = new ArrayList<Integer>();
-
-    public void setRemoveDataElementGroups( String removeDataElementGroups )
-    {
-        if ( removeDataElementGroups.length() > 0 )
-        {
-            List<String> stringList = Arrays.asList( removeDataElementGroups.split( "," ) );
-
-            for ( String s : stringList )
-            {
-                this.removeDataElementGroups.add( Integer.parseInt( s ) );
-            }
-        }
     }
 
     private List<DataElementGroup> dataElementGroups;
@@ -118,21 +94,6 @@ public class GetDataElementGroupsAction
         if ( filterNoGroupSet )
         {
             FilterUtils.filter( dataElementGroups, new DataElementGroupWithoutGroupSetFilter() );
-
-            if ( includeDataElementGroupId != null )
-            {
-                DataElementGroupSet groupSet = dataElementService.getDataElementGroupSet( includeDataElementGroupId );
-                dataElementGroups.addAll( groupSet.getMembers() );
-            }
-        }
-
-        if ( removeDataElementGroups.size() > 0 )
-        {
-            for ( Integer id : removeDataElementGroups )
-            {
-                DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( id );
-                dataElementGroups.remove( dataElementGroup );
-            }
         }
 
         if ( key != null )

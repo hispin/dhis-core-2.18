@@ -1,12 +1,10 @@
 <script type="text/javascript" src="javascript/addIndicatorGroupForm.js"></script>
-<script>
+<script type="text/javascript">
 	jQuery(function() {
-		jQuery("#availableIndicatorsList").dblclick(dhisPaging_availableList_dblclick("availableIndicatorsList", "groupMembers", "removeIndicators"));
-		jQuery("#groupMembers").dblclick(dhisPaging_selectedList_dblclick("groupMembers", "availableIndicatorsList", "removeIndicators"));
-
-		jQuery("#availableIndicatorsList").dhisPaging({
+		jQuery("#availableIndicatorsList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getIndicators.action",
 			iterator: "indicators",
+			connectedTo: 'groupMembers',
 			handler: function(item) {
 				var option = jQuery("<option />");
 				option.text( item.name );
@@ -17,6 +15,7 @@
 		});
 	});
 </script>
+
 <h3>$i18n.getString( "create_new_indicator_group" )</h3>
 
 <form id="addIndicatorGroupForm" action="addIndicatorGroup.action" method="post" >
@@ -53,10 +52,10 @@
 		</td>
 		
         <td style="text-align:center">          
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableIndicatorsList' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'groupMembers' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableIndicatorsList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'groupMembers' );"/>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableIndicatorsList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'groupMembers' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableIndicatorsList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'groupMembers' );"/>
         </td>
     
 		<td>

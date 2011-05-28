@@ -39,7 +39,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class GetOrganisationUnitChildrenAction
     extends ActionPagingSupport<OrganisationUnit>

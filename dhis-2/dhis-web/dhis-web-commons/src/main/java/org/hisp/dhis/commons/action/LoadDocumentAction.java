@@ -42,7 +42,6 @@ import org.hisp.dhis.util.StreamActionSupport;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class LoadDocumentAction
     extends StreamActionSupport
