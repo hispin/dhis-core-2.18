@@ -1413,13 +1413,13 @@ function displayDiv( divId, divIds ) {
 
 function relativePeriodsChecked()
 {
-    if ( isChecked( "reportingMonth" ) == true ||
-         isChecked( "monthsThisYear" ) == true ||
-         isChecked( "quartersThisYear" ) == true ||
-         isChecked( "thisYear" ) == true ||
-         isChecked( "monthsLastYear" ) == true ||
-         isChecked( "quartersLastYear" ) == true ||
-         isChecked( "lastYear" ) == true )
+    if ( isChecked( "reportingMonth" ) ||
+         isChecked( "monthsThisYear" ) ||
+         isChecked( "quartersThisYear" ) ||
+         isChecked( "thisYear" ) ||
+         isChecked( "monthsLastYear" ) ||
+         isChecked( "quartersLastYear" ) ||
+         isChecked( "lastYear" ) )
     {
         return true;
     }
