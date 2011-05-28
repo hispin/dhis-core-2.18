@@ -233,13 +233,12 @@ public class AddOrganisationUnitAction
         if ( parent == null )
         {
             // -----------------------------------------------------------------
-            // If no unit is selected, the parent is the parent of the roots in
-            // the tree
+            // If no unit is selected, the parent is the parent of the roots
             // -----------------------------------------------------------------
 
             parent = selectionManager.getRootOrganisationUnitsParent();
         }
-
+        
         // ---------------------------------------------------------------------
         // Create organisation unit
         // ---------------------------------------------------------------------
@@ -255,6 +254,11 @@ public class AddOrganisationUnitAction
         organisationUnit.setEmail( email );
         organisationUnit.setPhoneNumber( phoneNumber );
 
+        if ( parent != null )
+        {
+            parent.getChildren().add( organisationUnit );
+        }
+
         organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
 
         for ( String id : dataSets )
@@ -264,6 +268,7 @@ public class AddOrganisationUnitAction
             if ( dataSet != null )
             {
                 dataSet.getSources().add( organisationUnit );
+                organisationUnit.getDataSets().add( dataSet );
                 dataSetService.updateDataSet( dataSet );
             }
         }
@@ -275,6 +280,7 @@ public class AddOrganisationUnitAction
             if ( group != null )
             {
                 group.getMembers().add( organisationUnit );
+                organisationUnit.getGroups().add( group );
                 organisationUnitGroupService.updateOrganisationUnitGroup( group );
             }
         }

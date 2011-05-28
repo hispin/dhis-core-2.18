@@ -283,6 +283,7 @@ public class UpdateOrganisationUnitAction
             if ( dataSet != null )
             {
                 dataSet.getSources().add( organisationUnit );
+                organisationUnit.getDataSets().add( dataSet );
                 dataSetService.updateDataSet( dataSet );
             }
         }
@@ -301,11 +302,13 @@ public class UpdateOrganisationUnitAction
 
             if ( oldGroup != null && oldGroup.getMembers().remove( organisationUnit ) )
             {
+                organisationUnit.getGroups().remove( oldGroup );
                 organisationUnitGroupService.updateOrganisationUnitGroup( oldGroup );
             }
 
             if ( newGroup != null && newGroup.getMembers().add( organisationUnit ) )
             {
+                organisationUnit.getGroups().add( newGroup );
                 organisationUnitGroupService.updateOrganisationUnitGroup( newGroup );
             }
         }
