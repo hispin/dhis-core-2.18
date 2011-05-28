@@ -1249,43 +1249,20 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	<aop:config>
 
 		<aop:aspect ref="deletionInterceptor">
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.datadictionary.DataDictionaryService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.dataset.DataSetService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.indicator.IndicatorService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.expression.ExpressionService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.minmax.MinMaxDataElementService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.period.PeriodService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitGroupService.delete*(..) )"
-				method="intercept" />
-			<aop:before pointcut="execution( * org.hisp.dhis.user.UserStore.delete*(..) )"
-				method="intercept" />
-			<aop:before pointcut="execution( * org.hisp.dhis.concept.ConceptService.delete*(..) )"
-				method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.datadictionary.DataDictionaryService.delete*(..) )" method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.delete*(..) )" method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryService.delete*(..) )" method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.dataset.DataSetService.delete*(..) )" method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.dataset.SectionService.delete*(..) )" method="intercept" />
+			<aop:before pointcut="execution( * org.hisp.dhis.indicator.IndicatorService.delete*(..) )" method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.expression.ExpressionService.delete*(..) )" method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.minmax.MinMaxDataElementService.delete*(..) )"	method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.delete*(..) )" method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.period.PeriodService.delete*(..) )" method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitService.delete*(..) )" method="intercept" />
+			<aop:before	pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitGroupService.delete*(..) )" method="intercept" />
+			<aop:before pointcut="execution( * org.hisp.dhis.user.UserService.delete*(..) )" method="intercept" />
+			<aop:before pointcut="execution( * org.hisp.dhis.concept.ConceptService.delete*(..) )" method="intercept" />
 		</aop:aspect>
 
 		<aop:aspect ref="statementInterceptor">

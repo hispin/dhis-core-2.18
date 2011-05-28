@@ -115,6 +115,7 @@ public class AddSectionAction
         }
 
         section.setDataElements( selectedDataElements );
+        dataSet.getSections().add( section );
         sectionService.addSection( section );
 
         if ( dataSet.getMobile() != null && dataSet.getMobile() ) // TODO Hack
