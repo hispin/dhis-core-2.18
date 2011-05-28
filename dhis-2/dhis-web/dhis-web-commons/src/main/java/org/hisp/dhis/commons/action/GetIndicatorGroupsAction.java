@@ -28,12 +28,10 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
@@ -62,13 +60,6 @@ public class GetIndicatorGroupsAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer includeIndicatorGroupSetId;
-
-    public void setIncludeIndicatorGroupSetId( Integer includeIndicatorGroupId )
-    {
-        this.includeIndicatorGroupSetId = includeIndicatorGroupId;
-    }
-
     private String key;
 
     public void setKey( String key )
@@ -81,21 +72,6 @@ public class GetIndicatorGroupsAction
     public void setFilterNoGroupSet( boolean filterNoGroupSet )
     {
         this.filterNoGroupSet = filterNoGroupSet;
-    }
-
-    private List<Integer> removeIndicatorGroups = new ArrayList<Integer>();
-
-    public void setRemoveIndicatorGroups( String removeIndicatorGroups )
-    {
-        if ( removeIndicatorGroups.length() > 0 )
-        {
-            List<String> stringList = Arrays.asList( removeIndicatorGroups.split( "," ) );
-
-            for ( String s : stringList )
-            {
-                this.removeIndicatorGroups.add( Integer.parseInt( s ) );
-            }
-        }
     }
 
     private List<IndicatorGroup> indicatorGroups;
@@ -116,21 +92,6 @@ public class GetIndicatorGroupsAction
         if ( filterNoGroupSet )
         {
             FilterUtils.filter( indicatorGroups, new IndicatorGroupWIthoutGroupSetFilter() );
-
-            if ( includeIndicatorGroupSetId != null )
-            {
-                IndicatorGroupSet groupSet = indicatorService.getIndicatorGroupSet( includeIndicatorGroupSetId );
-                indicatorGroups.addAll( groupSet.getMembers() );
-            }
-        }
-
-        if ( removeIndicatorGroups.size() > 0 )
-        {
-            for ( Integer id : removeIndicatorGroups )
-            {
-                IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( id );
-                indicatorGroups.remove( indicatorGroup );
-            }
         }
 
         if ( key != null )

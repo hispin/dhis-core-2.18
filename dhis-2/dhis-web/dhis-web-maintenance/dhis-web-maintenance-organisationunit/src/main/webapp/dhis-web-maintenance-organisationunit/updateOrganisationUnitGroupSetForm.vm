@@ -1,24 +1,10 @@
 <script type="text/javascript" src="javascript/updateOrganisationUnitGroupSetForm.js"></script>
 <script type="text/javascript">
-	function getRemoveOrganisationUnitGroups() {
-		var list = [
-		#foreach ( $group in $selectedGroups )
-			${group.id},
-		#end
-		];
-		
-		return list;
-	}
-
 	jQuery(function() {
-		jQuery("#availableGroups").dblclick(dhisPaging_availableList_dblclick("availableGroups", "selectedGroups", "removeOrganisationUnitGroups"));
-		jQuery("#selectedGroups").dblclick(dhisPaging_selectedList_dblclick("selectedGroups", "availableGroups", "removeOrganisationUnitGroups"));
-
-		var removeOrganisationUnitGroupsList = getRemoveOrganisationUnitGroups();
-
-		jQuery("#availableGroups").dhisPaging({
+		jQuery("#availableGroups").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getOrganisationUnitGroups.action",
 			iterator: "organisationUnitGroups",
+			connectedTo: 'selectedGroups',
 			handler: function(item) {
 				var option = jQuery("<option />");
 				option.text( item.name );
@@ -26,11 +12,8 @@
 
 				return option;
 			},
-			removeOrganisationUnitGroups: removeOrganisationUnitGroupsList,
 			params: {
-				filterNoGroupSet: true,
-				includeOrganisationUnitGroupId: $organisationUnitGroupSet.id,
-				removeOrganisationUnitGroups: removeOrganisationUnitGroupsList.join(",")
+				filterNoGroupSet: true
 			}
 		});
 
@@ -97,10 +80,10 @@
 		</td>
 
 		<td style="text-align:center">
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableGroups' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'selectedGroups' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableGroups' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'selectedGroups' );"/>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableGroups' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedGroups' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableGroups' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedGroups' );"/>
 		</td>
 
 		<td>

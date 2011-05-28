@@ -1,18 +1,10 @@
 <script type="text/javascript" src="javascript/addDataSet.js"></script>
 <script type="text/javascript">
 	jQuery(function() {
-		var jqDataElementsSelectedList = jQuery("#dataElementsSelectedList");
-		var jqIndicatorsSelectedList = jQuery("#indicatorsSelectedList");
-
-		jQuery("#availableDataElementsList").dblclick(dhisPaging_availableList_dblclick("availableDataElementsList", "dataElementsSelectedList", "removeDataElements"));
-		jqDataElementsSelectedList.dblclick(dhisPaging_selectedList_dblclick("dataElementsSelectedList", "availableDataElementsList", "removeDataElements"));
-
-		jQuery("#availableIndicatorsList").dblclick(dhisPaging_availableList_dblclick("availableIndicatorsList", "indicatorsSelectedList", "removeIndicators"));
-		jqIndicatorsSelectedList.dblclick(dhisPaging_selectedList_dblclick("indicatorsSelectedList", "availableIndicatorsList", "removeIndicators"));
-
-		jQuery("#availableDataElementsList").dhisPaging({
+		jQuery("#availableDataElementsList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getDataElements.action",
 			iterator: "dataElements",
+			connectedTo: 'dataElementsSelectedList',
 			handler: function(item) {
 				var option = jQuery("<option />");
 				option.text( item.name );
@@ -30,9 +22,10 @@
 			}
 		});
 
-		jQuery("#availableIndicatorsList").dhisPaging({
+		jQuery("#availableIndicatorsList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getIndicators.action",
 			iterator: "indicators",
+			connectedTo: 'indicatorsSelectedList',
 			handler: function(item) {
 				var option = jQuery("<option />");
 				option.text( item.name );
@@ -117,10 +110,10 @@
           <select id="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
         <td>
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableDataElementsList' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'dataElementsSelectedList' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableDataElementsList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'dataElementsSelectedList' );"/>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableDataElementsList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'dataElementsSelectedList' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableDataElementsList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'dataElementsSelectedList' );"/>
 		</td>			
         <td>
         	<select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="height: 100%; width: 100%;"></select>
@@ -148,10 +141,10 @@
           <select id="availableIndicatorsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
         <td>
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'availableIndicatorsList' );"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisPaging_moveAllSelected( 'indicatorsSelectedList' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisPaging_moveAll( 'availableIndicatorsList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisPaging_moveAll( 'indicatorsSelectedList' );"/>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableIndicatorsList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'indicatorsSelectedList' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableIndicatorsList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'indicatorsSelectedList' );"/>
         </td>
         <td>
 			<select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="height: 100%; width: 100%;"></select>

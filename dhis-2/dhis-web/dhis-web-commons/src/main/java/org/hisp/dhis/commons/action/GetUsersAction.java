@@ -28,7 +28,6 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
@@ -73,21 +72,6 @@ public class GetUsersAction
         return users;
     }
 
-    private List<Integer> removeUsers = new ArrayList<Integer>();
-
-    public void setRemoveUsers( String removeUsers )
-    {
-        if ( removeUsers.length() > 0 )
-        {
-            List<String> stringList = Arrays.asList( removeUsers.split( "," ) );
-
-            for ( String s : stringList )
-            {
-                this.removeUsers.add( Integer.parseInt( s ) );
-            }
-        }
-    }
-
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -97,14 +81,6 @@ public class GetUsersAction
         throws Exception
     {
         users = new ArrayList<User>( userService.getAllUsers() );
-
-        if ( removeUsers.size() > 0 )
-        {
-            for ( Integer id : removeUsers )
-            {
-                users.remove( userService.getUser( id ) );
-            }
-        }
 
         if ( key != null )
         {

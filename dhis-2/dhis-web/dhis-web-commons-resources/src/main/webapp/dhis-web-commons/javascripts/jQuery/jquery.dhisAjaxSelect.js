@@ -40,95 +40,110 @@ Array.remove = function(array, from, to)
     return array.push.apply(array, rest);
 };
 
-/* perform dblclick action on the sourceId */
-function dhisPaging_moveAllSelected(sourceId)
+// http://www.west-wind.com/weblog/posts/2008/Oct/24/Using-jQuery-to-search-Content-and-creating-custom-Selector-Filters
+// adds :containsNoCase to filtering. $(sel).find(":containsNC(key)").do();
+$.expr[":"].containsNC = function(el, i, m)
 {
-    jQuery("#" + sourceId).dblclick();
+    var search = m[3];
+    if (!search)
+        return false;
+    return eval("/" + search + "/i").test($(el).text());
+};
+
+/* perform dblclick action on the sourceId */
+function dhisAjaxSelect_moveAllSelected(sourceId)
+{
+    $("#" + sourceId).dblclick();
 }
 
 /* select all options and perform dblclick action on the sourceId */
-function dhisPaging_moveAll(sourceId)
+function dhisAjaxSelect_moveAll(sourceId)
 {
-    var jqSource = jQuery("#" + sourceId);
+    var jqSource = $("#" + sourceId);
     jqSource.find("option").attr("selected", "selected");
     jqSource.dblclick();
 }
 
-/*
- * @param {String} sourceId Name of source select.
- * @param {String} targetId Name of target select.
- * @param {String} removeArray Name of query parameter to use to remove a set of selected IDs.
- *  This must be supported on the server.
- */
-function dhisPaging_availableList_dblclick(sourceId, targetId, removeArray)
+function dhisAjaxSelect_moveSorted($target, $array)
 {
-    return function()
-    {
-        var jqAvailableList = jQuery("#" + sourceId);
-        var jqSelectedList = jQuery("#" + targetId);
+    if ($target.children().size() === 0) {
+        $target.append($array);
+    } else {
+        var array = $array.get();
+        var array_idx = 0;
+        var current = array.shift();
+        var $children = $target.children();
 
-        var settings = jqAvailableList.data("settings");
+        while (current !== undefined) {
+            var $current = $(current);
 
-        jqAvailableList.find(":selected").each(function(i)
-        {
-            var jqThis = jQuery(this);
-            var option_id = +jqThis.attr("value");
-
-            jqSelectedList.append(this);
-
-            if (jQuery.isArray(settings[removeArray])) {
-                settings[removeArray].push(option_id);
+            if ($children.eq(array_idx).html() > $current.html()) {
+                $(current).insertBefore($children.eq(array_idx));
+                current = array.shift();
             } else {
-                settings[removeArray] = [ option_id ];
+                array_idx++;
             }
-        });
 
-        if (settings[removeArray] && settings[removeArray].length > 0) {
-            settings.params[removeArray] = settings[removeArray].join(",");
-        } else {
-            delete settings[removeArray];
-            delete settings.params[removeArray];
+            if ($children.size() < array_idx) {
+                break;
+            }
         }
 
-        jqAvailableList.dhisPaging("load", sourceId);
+        if (current !== undefined) {
+            $target.append(current);
+        }
+
+        $target.append(array);
     }
 }
 
-/*
- * @param {String} sourceId Name of source select.
- * @param {String} targetId Name of target select.
- * @param {String} removeArray Name of query parameter to use to remove a set of selected IDs.
- *  This must be supported on the server.
- */
-function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
+/* filter a select-target with a given key */
+function dhisAjaxSelect_filter($target, key)
+{
+    var ghost_target_id = $target.attr("id") + '_ghost';
+    var $ghost_target = $("#" + ghost_target_id);
+
+    if ($ghost_target.size() === 0) {
+        $ghost_target = $('<select id="' + ghost_target_id + '" multiple="multiple"></select>');
+        $ghost_target.hide();
+        $ghost_target.appendTo('body');
+    }
+
+    key = key.toLowerCase();
+
+    if (key.length === 0) {
+        dhisAjaxSelect_moveSorted($target, $ghost_target.children());
+    } else {
+        var $target_options = $target.find('option');
+        var $ghost_target_options = $ghost_target.find('option');
+
+        var $ghost_target_matched = $ghost_target_options.filter(':containsNC(' + key + ')');
+        var $target_not_matched = $target_options.filter(':not( :containsNC(' + key + ') )');
+
+        dhisAjaxSelect_moveSorted($ghost_target, $target_not_matched);
+        dhisAjaxSelect_moveSorted($target, $ghost_target_matched);
+    }
+}
+
+function dhisAjaxSelect_availableList_dblclick(sourceId, targetId)
 {
     return function()
     {
-        var jqAvailableList = jQuery("#" + targetId);
-        var jqSelectedList = jQuery("#" + sourceId);
+        var jqAvailableList = $("#" + sourceId);
+        var jqSelectedList = $("#" + targetId);
 
-        var settings = jQuery("#" + targetId).data("settings");
+        dhisAjaxSelect_moveSorted(jqSelectedList, jqAvailableList.find(":selected"));
+    }
+}
 
-        jqSelectedList.find(":selected").each(function(i)
-        {
-            var jqThis = jQuery(this);
-            var option_id = +jqThis.attr("value");
-            jqThis.remove();
+function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
+{
+    return function()
+    {
+        var jqAvailableList = $("#" + targetId);
+        var jqSelectedList = $("#" + sourceId);
 
-            if (jQuery.isArray(settings[removeArray])) {
-                var remove_idx = jQuery.inArray(option_id, settings[removeArray]);
-                Array.remove(settings[removeArray], remove_idx, remove_idx);
-            }
-        });
-
-        if (settings[removeArray] && settings[removeArray].length > 0) {
-            settings.params[removeArray] = settings[removeArray].join(",");
-        } else {
-            delete settings[removeArray];
-            delete settings.params[removeArray];
-        }
-
-        jqAvailableList.dhisPaging("load", targetId);
+        dhisAjaxSelect_moveSorted(jqAvailableList, jqSelectedList.find(":selected"));
     }
 }
 
@@ -143,10 +158,8 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
         button : "<button id='${id}' type='button' style='width: 70px; margin: 4px;'>${text}</button>",
         option : "<option>${text}</option>",
         option_selected : "<option selected='selected'>${text}</option>",
-        pagesize_input : "&nbsp;Page size <input id='${id}' type='text' style='width: 50px;'/>",
         filter_input : "<input id='${id}' placeholder='Filter' type='text' style='width: 100%; height: 18px; border: 1px inset gray;' />",
-        filter_select : "<select id='${id}' style='width: 100%; margin-bottom: 4px; margin-top: 0;'></select>",
-        select_page : "Page <select id='${id}' style='width: 50px;'></select>"
+        filter_select : "<select id='${id}' style='width: 100%; margin-bottom: 4px; margin-top: 0;'></select>"
     }
 
     var methods = {
@@ -159,60 +172,29 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
             var id = $select.attr("id");
             var wrapper_id = id + "_wrapper";
             $wrapper = $("#" + wrapper_id);
-            var select_page_id = id + "_select_page";
-            var $select_page = $("#" + select_page_id);
-            var next_button_id = id + "_next_button";
-            var $next_button = $("#" + next_button_id);
-            var previous_button_id = id + "_previous_button";
-            var $previous_button = $("#" + previous_button_id);
             var filter_input_id = id + "_filter_input";
             var $filter_input = $("#" + filter_input_id);
             var filter_select_id = id + "_filter_select";
-            var pagesize_input_id = id + "_pagesize_input";
-            var $pagesize_input = $("#" + pagesize_input_id);
 
             $.post(settings.source, $.param(settings.params), function(json)
             {
                 $select.empty();
-                $select_page.empty();
-
-                if (params.usePaging === true) {
-                    params.currentPage = json.paging.currentPage == 0 ? 1 : json.paging.currentPage;
-                    params.numberOfPages = json.paging.numberOfPages == 0 ? 1 : json.paging.numberOfPages;
-                    params.pageSize = json.paging.pageSize;
-                    params.startPage = json.paging.startPage;
-
-                    $("#" + pagesize_input_id).val(params.pageSize);
-
-                    $previous_button.removeAttr("disabled");
-                    $next_button.removeAttr("disabled");
-
-                    if (params.currentPage == params.startPage) {
-                        $previous_button.attr("disabled", "disabled");
-                    }
-
-                    if (params.currentPage == params.numberOfPages) {
-                        $next_button.attr("disabled", "disabled");
-                    }
-                }
 
                 $.each(json[settings.iterator], function(i, item)
                 {
-                    var option = jQuery(settings.handler(item));
+                    var option = $(settings.handler(item));
                     $select.append(option);
                 });
 
-                if (params.usePaging === true) {
-                    for ( var j = 1; j <= params.numberOfPages; j++) {
-                        if (params.currentPage == j) {
-                            $select_page.append($.tmpl(templates.option_selected, {
-                                "text" : j
-                            }));
-                        } else {
-                            $select_page.append($.tmpl(templates.option, {
-                                "text" : j
-                            }));
-                        }
+                if (settings.connectedTo) {
+                    var $connectedTo = $('#' + settings.connectedTo);
+
+                    if ($connectedTo) {
+                        $connectedTo.children().each(function()
+                        {
+                            var value = $(this).attr("value");
+                            $select.find("option[value=" + value + "]").remove();
+                        });
                     }
                 }
             });
@@ -220,9 +202,7 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
         init : function(options)
         {
             var settings = {}
-            var params = {
-                usePaging : true
-            }
+            var params = {}
 
             $.extend(settings, options);
             $.extend(params, options.params);
@@ -231,13 +211,9 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
             $select.css("border", "none");
             var id = $(this).attr("id");
             var wrapper_id = id + "_wrapper";
-            var select_page_id = id + "_select_page";
-            var next_button_id = id + "_next_button";
-            var previous_button_id = id + "_previous_button";
             var filter_input_id = id + "_filter_input";
             var filter_button_id = id + "_filter_button";
             var filter_select_id = id + "_filter_select";
-            var pagesize_input_id = id + "_pagesize_input";
 
             $select.wrap($.tmpl(templates.wrapper, {
                 "id" : wrapper_id
@@ -247,7 +223,8 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
 
             var $wrapper = $("#" + wrapper_id);
 
-            if (settings.filter !== undefined) {
+            // if (settings.filter !== undefined) {
+            if (false) {
                 $wrapper.prepend($.tmpl(templates.filter_select, {
                     "id" : filter_select_id
                 }));
@@ -268,7 +245,7 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
 
                     $.each(json[settings.filter.iterator], function(i, item)
                     {
-                        var option = jQuery(settings.filter.handler(item));
+                        var option = $(settings.filter.handler(item));
                         $filter_select.append(option);
                     });
                 });
@@ -296,12 +273,12 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
                         }
                     }
 
-                    settings.params.currentPage = 1;
                     methods.load(event.data.id);
                 });
             }
 
             var $filter_table = $("<table/>");
+
             $filter_table.css({
                 "padding" : "1px",
                 "width" : "100%"
@@ -311,6 +288,7 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
 
             var $filter_td1 = $("<td/>")
             var $filter_td2 = $("<td/>")
+
             $filter_td2.css("width", "70px");
 
             $filter_td1.append($.tmpl(templates.filter_input, {
@@ -331,75 +309,14 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
             var $filter_input = $("#" + filter_input_id);
             var $filter_button = $("#" + filter_button_id);
 
-            if (params.usePaging === true) {
-                $select.css({
-                    "border-bottom" : "1px solid gray",
-                    "margin-bottom" : "1px"
-                });
-
-                $wrapper.append($.tmpl(templates.select_page, {
-                    "id" : select_page_id
-                }));
-
-                $wrapper.append($.tmpl(templates.button, {
-                    "id" : previous_button_id,
-                    "text" : "previous"
-                }));
-
-                $wrapper.append($.tmpl(templates.button, {
-                    "id" : next_button_id,
-                    "text" : "next"
-                }));
-
-                $wrapper.append($.tmpl(templates.pagesize_input, {
-                    "id" : pagesize_input_id
-                }));
-
-                var $select_page = $("#" + select_page_id);
-                var $previous_button = $("#" + previous_button_id);
-                var $next_button = $("#" + next_button_id);
-                var $pagesize_input = $("#" + pagesize_input_id);
-
-                $select_page.change(function()
-                {
-                    params.currentPage = +$(this).find(":selected").val();
-                    methods.load("" + id);
-                });
-
-                $next_button.click(function()
-                {
-                    params.currentPage = +params.currentPage + 1;
-                    methods.load("" + id);
-                });
-
-                $previous_button.click(function()
-                {
-                    params.currentPage = +params.currentPage - 1;
-                    methods.load("" + id);
-                });
-
-                $pagesize_input.change(function()
-                {
-                    params.pageSize = +$(this).val();
-                    params.currentPage = 1;
-                    methods.load("" + id);
-                });
-            }
-
             settings.params = params;
             $select.data("settings", settings);
             methods.load("" + id);
 
             $filter_button.click(function()
             {
-                params.key = $filter_input.val();
-
-                if (params.key.length === 0) {
-                    delete params.key;
-                }
-
-                params.currentPage = 1;
-                methods.load("" + id);
+                key = $filter_input.val();
+                dhisAjaxSelect_filter($select, key);
             });
 
             $filter_input.keypress(function(e)
@@ -409,17 +326,23 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
                     e.preventDefault();
                 }
             });
+
+            if (settings.connectedTo) {
+                $select.dblclick(dhisAjaxSelect_availableList_dblclick($select.attr("id"), settings.connectedTo));
+                $('#' + settings.connectedTo).dblclick(
+                        dhisAjaxSelect_selectedList_dblclick(settings.connectedTo, $select.attr('id')));
+            }
         }
     }
 
-    $.fn.dhisPaging = function(method)
+    $.fn.dhisAjaxSelect = function(method)
     {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {
             return methods.init.apply(this, arguments);
         } else {
-            $.error('Method ' + method + ' does not exist on jQuery.dhisPaging');
+            $.error('Method ' + method + ' does not exist on jQuery.dhisAjaxSelect');
         }
     };
 })(jQuery, undefined);

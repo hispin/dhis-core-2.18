@@ -44,7 +44,6 @@ import org.hisp.dhis.user.UserService;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class GetDataSetsAction
     extends ActionPagingSupport<DataSet>

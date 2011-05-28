@@ -28,7 +28,6 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -50,7 +49,6 @@ import org.hisp.dhis.system.util.IdentifiableObjectUtils;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: GetDataElementsAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class GetDataElementsAction
     extends ActionPagingSupport<DataElement>
@@ -150,36 +148,6 @@ public class GetDataElementsAction
         this.key = key;
     }
 
-    private List<Integer> removeDataSets = new ArrayList<Integer>();
-
-    public void setRemoveDataSets( String removeDataSets )
-    {
-        if ( removeDataSets.length() > 0 )
-        {
-            List<String> stringList = Arrays.asList( removeDataSets.split( "," ) );
-
-            for ( String s : stringList )
-            {
-                this.removeDataSets.add( Integer.parseInt( s ) );
-            }
-        }
-    }
-
-    private List<Integer> removeDataElements = new ArrayList<Integer>();
-
-    public void setRemoveDataElements( String removeDataElements )
-    {
-        if ( removeDataElements.length() > 0 )
-        {
-            List<String> stringList = Arrays.asList( removeDataElements.split( "," ) );
-
-            for ( String s : stringList )
-            {
-                this.removeDataElements.add( Integer.parseInt( s ) );
-            }
-        }
-    }
-
     private boolean aggregate = false;
 
     public void setAggregate( boolean aggregate )
@@ -246,24 +214,6 @@ public class GetDataElementsAction
         if ( dataElements == null )
         {
             dataElements = new ArrayList<DataElement>();
-        }
-
-        if ( removeDataSets.size() > 0 )
-        {
-            for ( Integer id : removeDataSets )
-            {
-                DataSet dataSet = dataSetService.getDataSet( id );
-                dataElements.removeAll( dataSet.getDataElements() );
-            }
-        }
-
-        if ( removeDataElements.size() > 0 )
-        {
-            for ( Integer id : removeDataElements )
-            {
-                DataElement dataElement = dataElementService.getDataElement( id );
-                dataElements.remove( dataElement );
-            }
         }
 
         if ( key != null )
