@@ -115,14 +115,9 @@ function isTrue( elementId )
 
 function organisationUnitReportParamsChecked()
 {
-    if ( isChecked( "paramGrandParentOrganisationUnit" ) == true ||
-         isChecked( "paramParentOrganisationUnit" ) == true ||
-         isChecked( "paramOrganisationUnit" ) == true )
-    {
-        return true;
-    }
-    
-    return false;
+    return ( isChecked( "paramGrandParentOrganisationUnit" ) ||
+         isChecked( "paramParentOrganisationUnit" ) ||
+         isChecked( "paramOrganisationUnit" ) );
 }
 
 function bothOrganisationUnitReportParamsChecked()
@@ -137,7 +132,7 @@ function bothOrganisationUnitReportParamsChecked()
 	{
 		count++;
 	}
-    if( isChecked( "paramOrganisationUnit" ) )
+    if ( isChecked( "paramOrganisationUnit" ) )
     {
         count++;
     }
