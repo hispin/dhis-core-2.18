@@ -137,9 +137,6 @@
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.categoryOptionCombos"
     maxElementsInMemory="500"/>
     
-  <cache name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo.categoryOptions"
-    maxElementsInMemory="500"/>
-  
   <cache name="org.hisp.dhis.dataset.DataSet.dataElements"
     maxElementsInMemory="4000"/>
   
