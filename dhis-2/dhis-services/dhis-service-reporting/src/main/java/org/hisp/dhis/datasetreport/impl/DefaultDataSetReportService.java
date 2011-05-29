@@ -70,7 +70,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.MathUtils;
 
 /**
  * @author Abyot Asalefew
@@ -405,21 +404,18 @@ public class DefaultDataSetReportService
 
             for ( DataElementCategoryOptionCombo optionCombo : orderedOptionCombos )
             {
-                String value = "";
+                Double value = null;
 
                 if ( selectedUnitOnly )
                 {
                     DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
-                    value = (dataValue != null) ? dataValue.getValue() : null;
+                    value = dataValue != null && dataValue.getValue() != null ? Double.parseDouble( dataValue.getValue() ) : null;
                 }
                 else
                 {
-                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                        .getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(), period.getEndDate(), unit )
-                        : aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, unit );
-
-                    value = (aggregatedValue != null) ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) )
-                        : null;
+                    value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                        aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(), period.getEndDate(), unit ) : 
+                        aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, unit );
                 }
 
                 grid.addValue( value );
