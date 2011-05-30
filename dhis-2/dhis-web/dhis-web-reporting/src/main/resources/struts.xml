@@ -115,7 +115,7 @@
     
     <action name="addReport" class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction">
       <result name="success" type="redirect">displayViewReportForm.action</result>
-      <result name="error" type="chain">displayAddReportForm</result>	  
+      <result name="error" type="redirect">displayAddReportForm.action</result>	  
       <interceptor-ref name="fileUploadStack"/>
       <param name="requiredAuthorities">F_REPORT_ADD</param>
     </action>

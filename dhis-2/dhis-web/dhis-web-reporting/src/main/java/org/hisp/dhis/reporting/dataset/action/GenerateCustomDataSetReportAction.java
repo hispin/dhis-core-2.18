@@ -27,9 +27,6 @@ package org.hisp.dhis.reporting.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -131,15 +128,7 @@ public class GenerateCustomDataSetReportAction
     public String execute()
         throws Exception
     {
-        Map<String, String> aggregatedDataValueMap = dataSetReportService.getAggregatedValueMap( selectedDataSet, selectedOrgunit, selectedPeriod,
-            selectedUnitOnly, format );
-
-        Map<Integer, String> aggregatedIndicatorMap = dataSetReportService.getAggregatedIndicatorValueMap( selectedDataSet, selectedOrgunit, selectedPeriod, format );
-        
-        DataEntryForm dataEntryForm = selectedDataSet.getDataEntryForm();
-
-        customDataEntryFormCode = dataSetReportService.prepareReportContent( dataEntryForm.getHtmlCode(),
-            aggregatedDataValueMap, aggregatedIndicatorMap );
+        customDataEntryFormCode = dataSetReportService.getCustomDataSetReport( selectedDataSet, selectedOrgunit, selectedPeriod, selectedUnitOnly, format );
 
         reportingUnit = selectedOrgunit.getName();
 

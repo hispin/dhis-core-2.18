@@ -80,7 +80,7 @@ public class GridUtils
 {
     private static final String EMPTY = "";
     
-    private static final String XLS_DEFAULT_SHEET_NAME = "Sheet 1";
+    private static final String XLS_SHEET_PREFIX = "Sheet ";
     
     private static final WritableCellFormat XLS_FORMAT_TTTLE = new WritableCellFormat( new WritableFont(
         WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
@@ -101,7 +101,29 @@ public class GridUtils
     public static void toPdf( Grid grid, OutputStream out )
     {
         Document document = openDocument( out );
+        
+        toPdfInternal( grid, document );
 
+        closeDocument( document );
+    }
+
+    /**
+     * Writes a PDF representation of the given list of Grids to the given OutputStream.
+     */
+    public static void toPdf( List<Grid> grids, OutputStream out )
+    {
+        Document document = openDocument( out );
+        
+        for ( Grid grid : grids )
+        {
+            toPdfInternal( grid, document );
+        }
+        
+        closeDocument( document );
+    }
+    
+    private static void toPdfInternal( Grid grid, Document document )
+    {
         PdfPTable table = new PdfPTable( grid.getVisibleWidth() );
 
         table.setHeaderRows( 1 );
@@ -128,10 +150,29 @@ public class GridUtils
         }
 
         addTableToDocument( document, table );
-
-        closeDocument( document );
     }
 
+    /**
+     * Writes a XLS (Excel workbook) representation of the given list of Grids to the given OutputStream.
+     */
+    public static void toXls( List<Grid> grids, OutputStream out )
+        throws Exception
+    {
+        WritableWorkbook workbook = Workbook.createWorkbook( out );
+                
+        for ( int i = 0; i < grids.size(); i++ )
+        {
+            Grid grid = grids.get( i );
+            
+            String sheetName = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), XLS_SHEET_PREFIX + ( i + 1 ) ) );
+
+            toXlsInternal( grid, workbook, sheetName, i );
+        }
+
+        workbook.write();
+        workbook.close();        
+    }
+    
     /**
      * Writes a XLS (Excel workbook) representation of the given Grid to the given OutputStream.
      */
@@ -139,10 +180,19 @@ public class GridUtils
         throws Exception
     {
         WritableWorkbook workbook = Workbook.createWorkbook( out );
-
-        String sheetName = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), XLS_DEFAULT_SHEET_NAME ) );
         
-        WritableSheet sheet = workbook.createSheet( sheetName, 0 );
+        String sheetName = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), XLS_SHEET_PREFIX + 1 ) );
+
+        toXlsInternal( grid, workbook, sheetName, 0 );
+
+        workbook.write();
+        workbook.close();
+    }
+    
+    private static void toXlsInternal( Grid grid, WritableWorkbook workbook, String sheetName, int sheetNo )
+        throws Exception
+    {
+        WritableSheet sheet = workbook.createSheet( sheetName, sheetNo );
 
         int rowNumber = 1;
 
@@ -179,10 +229,6 @@ public class GridUtils
 
             rowNumber++;
         }
-
-        workbook.write();
-
-        workbook.close();
     }
 
     /**

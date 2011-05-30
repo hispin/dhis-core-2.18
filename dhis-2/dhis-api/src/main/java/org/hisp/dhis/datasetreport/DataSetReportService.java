@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -71,12 +72,24 @@ public interface DataSetReportService
      * Puts in aggregated datavalues in the custom dataentry form and returns
      * whole report text.
      * 
-     * @param dataEntryFormCode the data entry form HTML code.
+     * @param dataEntryForm the data entry form.
      * @param a map with aggregated data values mapped to data element operands.
      * @return data entry form HTML code populated with aggregated data in the
      *         input fields.
      */
-    String prepareReportContent( String dataEntryFormCode, Map<String, String> dataValues, Map<Integer, String> indicatorValues );
+    String prepareReportContent( DataEntryForm dataEntryForm, Map<String, String> dataValues, Map<Integer, String> indicatorValues );
+    
+    /**
+     * Generates html code for a custom data set report.
+     * 
+     * @param dataSet the data set.
+     * @param unit the organisation unit.
+     * @param period the period.
+     * @param selectedUnitOnly indicates whether to use captured or aggregated data. 
+     * @param format the i18n format.
+     * @return
+     */
+    String getCustomDataSetReport( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format );
     
     /**
      * Generates a Grid representing a data set report with all data elements
@@ -85,7 +98,7 @@ public interface DataSetReportService
      * @param dataSet the data set.
      * @param unit the organisation unit.
      * @param period the period.
-     * @param selectedUnitOnly indicators whether to use captured or aggregated data. 
+     * @param selectedUnitOnly indicates whether to use captured or aggregated data. 
      * @param format the i18n format.
      * @param i18n the i18n object.
      * @return a Grid.
