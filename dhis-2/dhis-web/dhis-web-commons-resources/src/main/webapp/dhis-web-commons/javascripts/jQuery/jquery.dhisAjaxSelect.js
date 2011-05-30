@@ -77,7 +77,13 @@ function dhisAjaxSelect_moveSorted($target, $array)
         while (current !== undefined) {
             var $current = $(current);
 
-            if ($children.eq(array_idx).html() > $current.html()) {
+            var child_html = $children.eq(array_idx).html();
+            var current_html = $current.html();
+            
+            child_html = (child_html !== null) ? child_html.toLowerCase() : child_html;
+            current_html = (current_html !== null) ? current_html.toLowerCase() : current_html;
+
+            if (child_html > current_html) {
                 $(current).insertBefore($children.eq(array_idx));
                 current = array.shift();
             } else {
@@ -275,14 +281,6 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                         });
                     }
                 }
-
-                // TODO temporary hack...
-                function comp(a, b) {
-                    return (a.innerHTML > b.innerHTML) ? 1 : -1;
-                }
-
-                $select.html( $select.children().sort(comp) );
-                // end
             });
         },
         init : function(options)
