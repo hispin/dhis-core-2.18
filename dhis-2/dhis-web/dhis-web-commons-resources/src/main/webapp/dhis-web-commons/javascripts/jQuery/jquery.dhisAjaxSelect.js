@@ -97,25 +97,37 @@ function dhisAjaxSelect_moveSorted($target, $array)
     }
 }
 
-/* filter a select-target with a given key */
-function dhisAjaxSelect_filter($target, key)
+/**
+ * Return ghost for a select. Creates it if necessary.
+ * 
+ * @param $target
+ *            jQuery object to work on
+ */
+function get_ghost_for_select($target)
 {
     var ghost_target_id = $target.attr("id") + '_ghost';
     var $ghost_target = $("#" + ghost_target_id);
 
     if ($ghost_target.size() === 0) {
         $ghost_target = $('<select id="' + ghost_target_id + '" multiple="multiple"></select>');
-        $ghost_target.hide();
+// $ghost_target.hide();
         $ghost_target.appendTo('body');
     }
 
+    return $ghost_target;
+}
+
+/* filter a select-target with a given key */
+function dhisAjaxSelect_filter($target, key)
+{
+    $ghost_target = get_ghost_for_select($target);
     key = key.toLowerCase();
 
     if (key.length === 0) {
         dhisAjaxSelect_moveSorted($target, $ghost_target.children());
     } else {
-        var $target_options = $target.find('option');
-        var $ghost_target_options = $ghost_target.find('option');
+        var $target_options = $target.children();
+        var $ghost_target_options = $ghost_target.children();
 
         var $ghost_target_matched = $ghost_target_options.filter(':containsNC(' + key + ')');
         var $target_not_matched = $target_options.filter(':not( :containsNC(' + key + ') )');
@@ -123,6 +135,85 @@ function dhisAjaxSelect_filter($target, key)
         dhisAjaxSelect_moveSorted($ghost_target, $target_not_matched);
         dhisAjaxSelect_moveSorted($target, $ghost_target_matched);
     }
+}
+
+/**
+ * filter a selector on data-key = value
+ */
+function dhisAjaxSelect_filter_on_kv($target, key, value)
+{
+    $ghost_target = get_ghost_for_select($target);
+
+    if (key.length === 0) {
+        dhisAjaxSelect_moveSorted($target, $ghost_target.children());
+        return;
+    }
+
+    // filter options that do not match on select
+    var $options = $target.children();
+    var array = []; // array of options to move to ghost
+
+    $options.each(function() {
+        var $this = $(this);
+
+        if ( !compare_data_with_kv($this, key, value) ) {
+            array.push($this[0]);
+        }
+    });
+
+    dhisAjaxSelect_moveSorted($ghost_target, $(array));
+
+    // filter options that match on ghost
+    var $ghost_options = $ghost_target.children();
+    var ghost_array = []; // array of options to move to ghost
+
+    $ghost_options.each(function() {
+        var $this = $(this);
+
+        if ( compare_data_with_kv($this, key, value) ) {
+            ghost_array.push($this[0]);
+        }
+    });
+
+    dhisAjaxSelect_moveSorted($target, $(ghost_array));
+
+    // TODO temporary hack...
+    function comp(a, b) { return (a.innerHTML > b.innerHTML) ? 1 : -1; }
+    $target.html( $target.children().sort(comp) );
+    // end
+}
+
+/**
+ * 
+ * @param $target
+ *            jQuery object to work on
+ * @param key
+ *            data-entry key, $target.data(key)
+ * @param value
+ *            value to compare to
+ * @returns {Boolean} true or false after comparing $target.data(key) with value
+ */
+function compare_data_with_kv($target, key, value)
+{
+    var target_value = $target.data(key);
+
+    if(! $.isArray(target_value) ) {
+        var type = typeof(target_value);
+
+        if(type === "number") {
+            target_value = [ target_value.toString() ];
+        } else {
+            target_value = target_value.split(",");
+        }
+    }
+
+    if (target_value) {
+        if ($.inArray(value.toString(), target_value) !== -1) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function dhisAjaxSelect_availableList_dblclick(sourceId, targetId)
@@ -223,8 +314,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
 
             var $wrapper = $("#" + wrapper_id);
 
-            // if (settings.filter !== undefined) {
-            if (false) {
+            if (settings.filter !== undefined) {
                 $wrapper.prepend($.tmpl(templates.filter_select, {
                     "id" : filter_select_id
                 }));
@@ -263,17 +353,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
 
                     var settings = $("#" + event.data.id).data("settings");
 
-                    if (key !== "") {
-                        settings.params[key] = value;
-                        settings.filter_select_key = key;
-                    } else {
-                        if (settings.filter_select_key !== undefined) {
-                            delete settings.params[settings.filter_select_key];
-                            delete settings.filter_select_key;
-                        }
-                    }
-
-                    methods.load(event.data.id);
+                    dhisAjaxSelect_filter_on_kv($("#" + event.data.id), key, value);
                 });
             }
 
