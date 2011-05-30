@@ -173,6 +173,34 @@ public class OrganisationUnit
     // Logic
     // -------------------------------------------------------------------------
     
+    public void addDataSet( DataSet dataSet )
+    {
+        dataSets.add( dataSet );
+        dataSet.getSources().add( this );
+    }
+    
+    public void removeDataSet( DataSet dataSet )
+    {
+        dataSets.remove( dataSet );
+        dataSet.getSources().remove( this );        
+    }
+    
+    public void updateDataSets( Set<DataSet> updates )
+    {
+        for ( DataSet dataSet : new HashSet<DataSet>( dataSets ) )
+        {
+            if ( !updates.contains( dataSet ) )
+            {
+                removeDataSet( dataSet );
+            }
+        }
+        
+        for ( DataSet dataSet : updates )
+        {
+            addDataSet( dataSet );
+        }
+    }
+    
     public List<OrganisationUnit> getSortedChildren()
     {
         List<OrganisationUnit> sortedChildren = new ArrayList<OrganisationUnit>( children );
