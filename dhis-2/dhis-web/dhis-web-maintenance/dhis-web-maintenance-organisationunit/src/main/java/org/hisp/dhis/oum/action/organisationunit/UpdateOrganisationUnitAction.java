@@ -48,8 +48,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UpdateOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z
- *          torgeilo $
  */
 public class UpdateOrganisationUnitAction
     implements Action
@@ -302,13 +300,13 @@ public class UpdateOrganisationUnitAction
 
             if ( oldGroup != null && oldGroup.getMembers().remove( organisationUnit ) )
             {
-                organisationUnit.getGroups().remove( oldGroup );
+                oldGroup.removeOrganisationUnit( organisationUnit );
                 organisationUnitGroupService.updateOrganisationUnitGroup( oldGroup );
             }
 
             if ( newGroup != null && newGroup.getMembers().add( organisationUnit ) )
             {
-                organisationUnit.getGroups().add( newGroup );
+                newGroup.addOrganisationUnit( organisationUnit );
                 organisationUnitGroupService.updateOrganisationUnitGroup( newGroup );
             }
         }

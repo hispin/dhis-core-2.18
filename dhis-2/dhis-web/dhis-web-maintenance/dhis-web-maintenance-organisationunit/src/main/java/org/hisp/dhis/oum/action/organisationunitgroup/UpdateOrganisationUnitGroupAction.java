@@ -39,8 +39,6 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UpdateOrganisationUnitGroupAction.java 1898 2006-09-22
- *          12:06:56Z torgeilo $
  */
 @SuppressWarnings("serial")
 public class UpdateOrganisationUnitGroupAction
@@ -95,7 +93,7 @@ public class UpdateOrganisationUnitGroupAction
 
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
-        organisationUnitGroup.setMembers( new HashSet<OrganisationUnit>( selectedOrganisationUnits ) );
+        organisationUnitGroup.updateOrganisationUnits( new HashSet<OrganisationUnit>( selectedOrganisationUnits ) );
 
         organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
 
