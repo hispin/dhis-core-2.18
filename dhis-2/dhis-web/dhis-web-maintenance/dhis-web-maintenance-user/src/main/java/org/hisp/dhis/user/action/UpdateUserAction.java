@@ -167,7 +167,7 @@ public class UpdateUserAction
         user.setFirstName( firstName );
         user.setEmail( email );
         user.setPhoneNumber( phoneNumber );
-        user.setOrganisationUnits( new HashSet<OrganisationUnit>( units ) );
+        user.updateOrganisationUnits( new HashSet<OrganisationUnit>( units ) );
 
         UserCredentials userCredentials = userService.getUserCredentials( user );
         
