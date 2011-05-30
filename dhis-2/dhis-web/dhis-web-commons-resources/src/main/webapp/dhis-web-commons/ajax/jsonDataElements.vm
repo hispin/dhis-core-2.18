@@ -1,15 +1,19 @@
 #set( $size = $dataElements.size() )
 { "dataElements": [
 #foreach( $dataElement in $dataElements )
+#set( $groups = $dataElement.groups )
+#set( $dataSets = $dataElement.dataSets )
   {
-    "id":  ${dataElement.id} ,
-    "name": "$!encoder.jsonEncode( ${dataElement.name} )",
-    "alternativeName": "$!encoder.jsonEncode( ${dataElement.alternativeNamee} )",
-    "shortName": "$!encoder.jsonEncode( ${dataElement.shortName} )",
-    "code": "$!encoder.jsonEncode( ${dataElement.code} )",
-    "type": "$!{dataElement.type}",
-    "aggregationOperator": "$!{dataElement.aggregationOperator}",
-	"zeroIsSignificant": "$!{dataElement.zeroIsSignificant}"
+	"id":  ${dataElement.id} ,
+	"name": "$!encoder.jsonEncode( ${dataElement.name} )",
+	"alternativeName": "$!encoder.jsonEncode( ${dataElement.alternativeNamee} )",
+	"shortName": "$!encoder.jsonEncode( ${dataElement.shortName} )",
+	"code": "$!encoder.jsonEncode( ${dataElement.code} )",
+	"type": "$!{dataElement.type}",
+	"aggregationOperator": "$!{dataElement.aggregationOperator}",
+	"zeroIsSignificant": "$!{dataElement.zeroIsSignificant}",
+	"dataSets": [ #foreach( $dataSet in $dataSets )${dataSet.id}#if( $velocityCount < $dataSets.size() ),#end#end ],
+	"groups": [ #foreach( $group in $groups )${group.id}#if( $velocityCount < $groups.size() ),#end#end ]
   }#if( $velocityCount < $size ),#end
 #end
 ]

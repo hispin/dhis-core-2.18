@@ -1,6 +1,7 @@
 #set( $size = $indicators.size() )
 { "indicators": [
 #foreach( $indicator in $indicators )
+#set( $groups = $indicator.groups )
   {
     "id": $!{indicator.id},
     "name": "$!encoder.jsonEncode( ${indicator.name} )",
@@ -8,7 +9,8 @@
     "shortName": "$!encoder.jsonEncode( ${indicator.shortName} )",
     "code": "$!encoder.jsonEncode( ${indicator.code} )",
     "annualized": "${indicator.annualized}",
-    "indicatorTypeId": $!{indicator.indicatorType.id}
+    "indicatorTypeId": $!{indicator.indicatorType.id},
+    "groups": [ #foreach( $group in $groups )${group.id}#if( $velocityCount < $groups.size() ),#end#end ]
   }#if( $velocityCount < $size ),#end
 #end
 ]

@@ -18,12 +18,6 @@
 		<!-- Locking -->
 		
 		<action name="displayLockingForm"
-			class="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction">
-			<result name="success" type="chain">
-				defineDataSetAssociationsFormChain</result>			
-		</action>
-		
-		<action name="defineDataSetAssociationsFormChain"
 			class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction">
 			<interceptor-ref name="organisationUnitTreeStack"/>
 			<result name="success" type="velocity">/main.vm</result>
