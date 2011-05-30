@@ -1,7 +1,5 @@
-package org.hisp.dhis.dd.action.indicatorgroup;
-
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +25,8 @@ package org.hisp.dhis.dd.action.indicatorgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.dd.action.indicatorgroup;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,14 +35,17 @@ import java.util.List;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Torgeir Lorange Ostby
+ * @author Chau Thu Tran
+ * @version $ ShowIndicatorGroupEditorAction.java May 30, 2011 2:44:20 PM $
+ * 
  */
-public class GetIndicatorGroupMembersAction
+public class ShowIndicatorGroupEditorAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -79,48 +82,41 @@ public class GetIndicatorGroupMembersAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
+   
+    private List<IndicatorGroup> indicatorGroups;
 
-    private Integer id;
-
-    public void setId( Integer id )
+    public List<IndicatorGroup> getIndicatorGroups()
     {
-        this.id = id;
+        return indicatorGroups;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+    private List<Indicator> indicators;
 
-    private List<Indicator> groupMembers = new ArrayList<Indicator>();
-
-    public List<Indicator> getGroupMembers()
+    public List<Indicator> getIndicators()
     {
-        return groupMembers;
+        return indicators;
     }
-
+    
     // -------------------------------------------------------------------------
+
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        // ---------------------------------------------------------------------
-        // Get group members
-        // ---------------------------------------------------------------------
+        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+        
+        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
 
-        if ( id != null )
-        {
-            IndicatorGroup group = indicatorService.getIndicatorGroup( id.intValue() );
-
-            groupMembers = new ArrayList<Indicator>( group.getMembers() );
-
-            Collections.sort( groupMembers, indicatorComparator );
-
-            displayPropertyHandler.handle( groupMembers );
-        }
-
+        
+        indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+        
+        Collections.sort( indicators, indicatorComparator );
+        
+        displayPropertyHandler.handle( indicators );
+        
         return SUCCESS;
     }
 }
