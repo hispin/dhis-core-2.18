@@ -97,17 +97,7 @@
 		<!-- DataElementGroup Editor -->		
 		
 		<action name="dataElementGroupEditor"
-			class="org.hisp.dhis.commons.action.GetDataElementsAction">
-			<result name="success" type="chain">dataElementGroupEditorChain1</result>			
-		</action>
-		
-		<action name="dataElementGroupEditorChain1"
-			class="org.hisp.dhis.commons.action.GetDataElementGroupsAction">
-			<result name="success" type="chain">dataElementGroupEditorChain2</result>			
-		</action>
-
-		<action name="dataElementGroupEditorChain2"
-			class="org.hisp.dhis.dd.action.NoAction">
+			class="org.hisp.dhis.dd.action.dataelementgroup.ShowDataElementGroupEditorAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditorView.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>	
@@ -185,14 +175,7 @@
 		</action>
 
 		<action name="showUpdateDataElementGroupForm"
-			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction">
-			<result name="success" type="chain">
-				getGroupMembersAndAvailableElements</result>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
-		</action>
-
-		<action name="getGroupMembersAndAvailableElements"
-			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupMembersAction">
+			class="org.hisp.dhis.dd.action.dataelementgroup.ShowUpdateDataElementGroupFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataElementGroupForm.vm</param>
 			<param name="javascripts">javascript/dataElementGroup.js</param>
@@ -326,13 +309,7 @@
 		</action>
 
 		<action name="showUpdateIndicatorForm"
-			class="org.hisp.dhis.dd.action.indicator.GetIndicatorAction">
-			<result name="success" type="chain">getIndicatorTypeList</result>
-			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
-		</action>
-
-		<action name="getIndicatorTypeList"
-			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
+			class="org.hisp.dhis.dd.action.indicator.ShowUpdateIndicatorFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorForm.vm</param>
 			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
@@ -358,17 +335,7 @@
 		<!-- Indicator Group Editor -->
 		
 		<action name="indicatorGroupEditor"
-			class="org.hisp.dhis.commons.action.GetIndicatorGroupsAction">
-			<result name="success" type="chain">indicatorGroupEditorChain1</result>			
-		</action>
-		
-		<action name="indicatorGroupEditorChain1"
-			class="org.hisp.dhis.commons.action.GetIndicatorsAction">
-			<result name="success" type="chain">indicatorGroupEditorChain2</result>			
-		</action>
-
-		<action name="indicatorGroupEditorChain2"
-			class="org.hisp.dhis.dd.action.NoAction">
+			class="org.hisp.dhis.dd.action.indicatorgroup.ShowIndicatorGroupEditorAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupEditorView.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>	
@@ -446,14 +413,7 @@
 		</action>
 
 		<action name="showUpdateIndicatorGroupForm"
-			class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupAction">
-			<result name="success" type="chain">
-				getGroupMembersAndAvailableIndicators</result>
-			<param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
-		</action>
-
-		<action name="getGroupMembersAndAvailableIndicators"
-			class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupMembersAction">
+			class="org.hisp.dhis.dd.action.indicatorgroup.ShowUpdateIndicatorGroupFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupForm.vm</param>
 			<param name="javascripts">javascript/indicatorGroup.js</param>
