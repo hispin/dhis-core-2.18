@@ -31,13 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.comparator.ProgramStageNameComparator;
 
@@ -77,13 +74,6 @@ public class ViewDataEntryFormAction
         this.programStageService = programStageService;
     }
 
-    private ProgramStageDataElementService programStageDataElementService;
-
-    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
-    {
-        this.programStageDataElementService = programStageDataElementService;
-    }
-
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -116,13 +106,6 @@ public class ViewDataEntryFormAction
         return existingDataEntryForms;
     }
 
-    public List<DataElement> dataElements;
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
     private List<ProgramStage> programStages;
 
     public List<ProgramStage> getProgramStages()
@@ -147,14 +130,6 @@ public class ViewDataEntryFormAction
         programStage = programStageService.getProgramStage( programStageId );
 
         // ---------------------------------------------------------------------
-        // Get data-elements into selected program-stage
-        // ---------------------------------------------------------------------
-
-        dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
-
-        Collections.sort( dataElements, new DataElementNameComparator() );
-
-        // ---------------------------------------------------------------------
         // Get dataEntryForm of selected program-stage
         // ---------------------------------------------------------------------
 
@@ -162,7 +137,7 @@ public class ViewDataEntryFormAction
 
         if ( dataEntryForm != null )
         {
-            dataEntryValue = programDataEntryService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode(), dataElements );
+            dataEntryValue = programDataEntryService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() );
         }
         else
         {
