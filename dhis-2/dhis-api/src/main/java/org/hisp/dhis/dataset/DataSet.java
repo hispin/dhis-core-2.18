@@ -27,7 +27,6 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,7 +61,7 @@ public class DataSet
     /**
      * All DataElements associated with this DataSet.
      */
-    private Collection<DataElement> dataElements = new HashSet<DataElement>();
+    private Set<DataElement> dataElements = new HashSet<DataElement>();
 
     /**
      * Indicators associated with this data set. Indicators are used for view and
@@ -177,6 +176,34 @@ public class DataSet
         }
     }
     
+    public void addDataElement( DataElement dataElement )
+    {
+        dataElements.add( dataElement );
+        dataElement.getDataSets().add( this );
+    }
+    
+    public void removeDataElement( DataElement dataElement )
+    {
+        dataElements.remove( dataElement );
+        dataElement.getDataSets().remove( dataElement );
+    }
+    
+    public void updateDataElements( Set<DataElement> updates )
+    {
+        for ( DataElement dataElement : new HashSet<DataElement>( dataElements ) )
+        {
+            if ( !updates.contains( dataElement ) )
+            {
+                removeDataElement( dataElement );
+            }
+        }
+        
+        for ( DataElement dataElement : updates )
+        {
+            addDataElement( dataElement );
+        }
+    }
+    
     public boolean hasDataEntryForm()
     {
         return dataEntryForm != null;
@@ -255,12 +282,12 @@ public class DataSet
         this.periodType = periodType;
     }
 
-    public Collection<DataElement> getDataElements()
+    public Set<DataElement> getDataElements()
     {
         return dataElements;
     }
 
-    public void setDataElements( Collection<DataElement> dataElements )
+    public void setDataElements( Set<DataElement> dataElements )
     {
         this.dataElements = dataElements;
     }

@@ -155,7 +155,7 @@ public class UpdateDataSetAction
             code = null;
         }
 
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        Set<DataElement> dataElements = new HashSet<DataElement>();
 
         for ( String id : dataElementsSelectedList )
         {
@@ -177,7 +177,7 @@ public class UpdateDataSetAction
         dataSet.setShortName( shortName );
         dataSet.setCode( code );
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
-        dataSet.setDataElements( dataElements );
+        dataSet.updateDataElements( dataElements );
         dataSet.setIndicators( indicators );
 
         if ( dataSet.isMobile() )
