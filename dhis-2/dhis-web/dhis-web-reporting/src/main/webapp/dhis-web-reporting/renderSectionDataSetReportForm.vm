@@ -1,11 +1,10 @@
 <style>
-.val
-{
+.val {
   text-align:center;
 }
 </style>
 
-<h3>$i18n.getString('reporting_unit'): $reportingUnit &nbsp; $i18n.getString('reporting_period'): $reportingPeriod</h3>
+<h3>$i18n.getString('reporting_unit'): $encoder.htmlEncode( $selectedOrgunit.name ) &nbsp; $i18n.getString('reporting_period'): $format.formatPeriod( $selectedPeriod )</h3>
 <p><input type="button" value="$i18n.getString( 'back' )" style="width:100px" onclick="javascript:window.location.href='showDataSetReportForm.action'"/></p>
 
 #foreach( $grid in $grids )

@@ -351,42 +351,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction" 
     scope="prototype">
     <property name="selectionTreeManager"
-      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>	
+      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+	<property name="dataSetReportService"
+	  ref="org.hisp.dhis.datasetreport.DataSetReportService"/>
     <property name="dataSetService"
       ref="org.hisp.dhis.dataset.DataSetService"/>
 	<property name="periodService"
 	  ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction" 
-    class="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction" 
-    scope="prototype">
-	<property name="dataSetReportService"
-	  ref="org.hisp.dhis.datasetreport.DataSetReportService"/>
-  </bean>
-    
-  <bean id="org.hisp.dhis.reporting.dataset.action.GenerateSectionDataSetReportAction" 
-    class="org.hisp.dhis.reporting.dataset.action.GenerateSectionDataSetReportAction" 
-    scope="prototype">
-	<property name="dataSetReportService"
-	  ref="org.hisp.dhis.datasetreport.DataSetReportService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction" 
-    class="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction" 
-    scope="prototype">
-	<property name="dataSetReportService"
-	  ref="org.hisp.dhis.datasetreport.DataSetReportService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.de.action.SectionFormAction" class="org.hisp.dhis.de.action.SectionFormAction" scope="prototype">
-	<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
-	<property name="standardCommentsManager" ref="org.hisp.dhis.de.comments.StandardCommentsManager"/>
-	<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
-	<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager"/>
-	<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-  </bean>
-	
+  	
   <!-- Data completeness -->
   
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction"
