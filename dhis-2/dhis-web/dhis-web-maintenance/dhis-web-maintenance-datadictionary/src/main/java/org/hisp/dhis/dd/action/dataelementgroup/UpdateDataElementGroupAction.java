@@ -104,17 +104,14 @@ public class UpdateDataElementGroupAction
             dataElementGroup.setName( name );
         }
 
-        if ( !groupMembers.isEmpty() )
+        Set<DataElement> members = new HashSet<DataElement>();
+
+        for ( String id : groupMembers )
         {
-            Set<DataElement> members = new HashSet<DataElement>();
-
-            for ( String id : groupMembers )
-            {
-                members.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
-            }
-
-            dataElementGroup.updateDataElements( members );
+            members.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
+
+        dataElementGroup.updateDataElements( members );
 
         dataElementService.updateDataElementGroup( dataElementGroup );
 
