@@ -110,7 +110,7 @@ function get_ghost_for_select($target)
 
     if ($ghost_target.size() === 0) {
         $ghost_target = $('<select id="' + ghost_target_id + '" multiple="multiple"></select>');
-// $ghost_target.hide();
+        $ghost_target.hide();
         $ghost_target.appendTo('body');
     }
 
@@ -176,11 +176,6 @@ function dhisAjaxSelect_filter_on_kv($target, key, value)
     });
 
     dhisAjaxSelect_moveSorted($target, $(ghost_array));
-
-    // TODO temporary hack...
-    function comp(a, b) { return (a.innerHTML > b.innerHTML) ? 1 : -1; }
-    $target.html( $target.children().sort(comp) );
-    // end
 }
 
 /**
@@ -258,14 +253,6 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
         {
             var $select = $("#" + select_id);
             var settings = $select.data("settings");
-            var params = settings.params;
-
-            var id = $select.attr("id");
-            var wrapper_id = id + "_wrapper";
-            $wrapper = $("#" + wrapper_id);
-            var filter_input_id = id + "_filter_input";
-            var $filter_input = $("#" + filter_input_id);
-            var filter_select_id = id + "_filter_select";
 
             $.post(settings.source, $.param(settings.params), function(json)
             {
@@ -288,6 +275,14 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                         });
                     }
                 }
+
+                // TODO temporary hack...
+                function comp(a, b) {
+                    return (a.innerHTML > b.innerHTML) ? 1 : -1;
+                }
+
+                $select.html( $select.children().sort(comp) );
+                // end
             });
         },
         init : function(options)
