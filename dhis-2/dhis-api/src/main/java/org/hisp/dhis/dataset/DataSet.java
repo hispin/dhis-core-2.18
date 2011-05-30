@@ -149,6 +149,34 @@ public class DataSet
     // Logic
     // -------------------------------------------------------------------------
 
+    public void addOrganisationUnit( OrganisationUnit unit )
+    {
+        sources.add( unit );
+        unit.getDataSets().add( this );
+    }
+    
+    public void removeOrganisationUnit( OrganisationUnit unit )
+    {
+        sources.remove( unit );
+        unit.getDataSets().remove( this );
+    }
+    
+    public void updateOrganisationUnits( Set<OrganisationUnit> updates )
+    {
+        for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( sources ) )
+        {
+            if ( !updates.contains( unit ) )
+            {
+                removeOrganisationUnit( unit );
+            }
+        }
+        
+        for ( OrganisationUnit unit : updates )
+        {
+            addOrganisationUnit( unit );
+        }
+    }
+    
     public boolean hasDataEntryForm()
     {
         return dataEntryForm != null;

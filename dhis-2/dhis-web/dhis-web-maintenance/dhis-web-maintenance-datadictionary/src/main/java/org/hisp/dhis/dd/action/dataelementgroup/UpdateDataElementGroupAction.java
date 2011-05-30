@@ -73,9 +73,9 @@ public class UpdateDataElementGroupAction
         this.name = name;
     }
 
-    private Set<Integer> groupMembers = new HashSet<Integer>();
+    private Set<String> groupMembers = new HashSet<String>();
 
-    public void setGroupMembers( Set<Integer> groupMembers )
+    public void setGroupMembers( Set<String> groupMembers )
     {
         this.groupMembers = groupMembers;
     }
@@ -108,12 +108,12 @@ public class UpdateDataElementGroupAction
         {
             Set<DataElement> members = new HashSet<DataElement>();
 
-            for ( Integer id : groupMembers )
+            for ( String id : groupMembers )
             {
-                members.add( dataElementService.getDataElement( id  ) );
+                members.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
             }
 
-            dataElementGroup.setMembers( members );
+            dataElementGroup.updateDataElements( members );
         }
 
         dataElementService.updateDataElementGroup( dataElementGroup );

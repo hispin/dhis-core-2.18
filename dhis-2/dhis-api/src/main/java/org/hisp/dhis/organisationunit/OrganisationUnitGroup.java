@@ -78,17 +78,17 @@ public class OrganisationUnitGroup
         unit.getGroups().remove( this );
     }
     
-    public void updateOrganisationUnits( Set<OrganisationUnit> units )
+    public void updateOrganisationUnits( Set<OrganisationUnit> updates )
     {
-        for ( OrganisationUnit unit : members )
+        for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( members ) )
         {
-            if ( !units.contains( unit ) )
+            if ( !updates.contains( unit ) )
             {
                 removeOrganisationUnit( unit );
             }
         }
         
-        for ( OrganisationUnit unit : units )
+        for ( OrganisationUnit unit : updates )
         {
             addOrganisationUnit( unit );
         }

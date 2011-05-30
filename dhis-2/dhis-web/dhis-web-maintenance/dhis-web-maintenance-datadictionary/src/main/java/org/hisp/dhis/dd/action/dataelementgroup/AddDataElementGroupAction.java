@@ -30,7 +30,6 @@ package org.hisp.dhis.dd.action.dataelementgroup;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 
@@ -66,9 +65,9 @@ public class AddDataElementGroupAction
         this.name = name;
     }
 
-    private Set<Integer> groupMembers = new HashSet<Integer>();
+    private Set<String> groupMembers = new HashSet<String>();
 
-    public void setGroupMembers( Set<Integer> groupMembers )
+    public void setGroupMembers( Set<String> groupMembers )
     {
         this.groupMembers = groupMembers;
     }
@@ -92,18 +91,11 @@ public class AddDataElementGroupAction
     {
         dataElementGroup = new DataElementGroup( name );
 
-        if ( !groupMembers.isEmpty() )
+        for ( String id : groupMembers )
         {
-            Set<DataElement> members = new HashSet<DataElement>( groupMembers.size() );
-
-            for ( Integer id : groupMembers )
-            {
-                members.add( dataElementService.getDataElement( id ) );
-            }
-
-            dataElementGroup.setMembers( members );
+            dataElementGroup.addDataElement( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
-
+        
         dataElementService.addDataElementGroup( dataElementGroup );
 
         return SUCCESS;

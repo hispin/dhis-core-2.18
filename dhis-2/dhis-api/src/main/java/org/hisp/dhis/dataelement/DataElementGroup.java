@@ -60,6 +60,38 @@ public class DataElementGroup
     {
         this.name = name;
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addDataElement( DataElement dataElement )
+    {
+        members.add( dataElement );
+        dataElement.getGroups().add( this );
+    }
+    
+    public void removeDataElement( DataElement dataElement )
+    {
+        members.remove( dataElement );
+        dataElement.getGroups().remove( this );
+    }
+    
+    public void updateDataElements( Set<DataElement> updates )
+    {
+        for ( DataElement dataElement : new HashSet<DataElement>( members ) )
+        {
+            if ( !updates.contains( dataElement ) )
+            {
+                removeDataElement( dataElement );
+            }
+        }
+        
+        for ( DataElement dataElement : updates )
+        {
+            addDataElement( dataElement );
+        }
+    }
     
     // -------------------------------------------------------------------------
     // hashCode and equals

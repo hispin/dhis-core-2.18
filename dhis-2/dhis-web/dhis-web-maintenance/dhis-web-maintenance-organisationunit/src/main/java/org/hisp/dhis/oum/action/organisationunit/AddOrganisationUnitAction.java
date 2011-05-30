@@ -33,7 +33,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -257,19 +256,12 @@ public class AddOrganisationUnitAction
             parent.getChildren().add( organisationUnit );
         }
 
-        organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
-
         for ( String id : dataSets )
         {
-            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
-            
-            if ( dataSet != null )
-            {
-                dataSet.getSources().add( organisationUnit );
-                organisationUnit.getDataSets().add( dataSet );
-                dataSetService.updateDataSet( dataSet );
-            }
+            organisationUnit.addDataSet( dataSetService.getDataSet( Integer.parseInt( id ) ) );
         }
+        
+        organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
 
         for ( String id : selectedGroups )
         {
