@@ -174,9 +174,9 @@ public abstract class DataBrowserTest
         dataElementIds.add( dataElementService.addDataElement( dataElementE ) );
         dataElementIds.add( dataElementService.addDataElement( dataElementF ) );
 
-        Collection<DataElement> dataElementsA = new HashSet<DataElement>();
-        Collection<DataElement> dataElementsB = new HashSet<DataElement>();
-        Collection<DataElement> dataElementsC = new HashSet<DataElement>();
+        Set<DataElement> dataElementsA = new HashSet<DataElement>();
+        Set<DataElement> dataElementsB = new HashSet<DataElement>();
+        Set<DataElement> dataElementsC = new HashSet<DataElement>();
 
         // One dataElement
         dataElementsA.add( dataElementA );

@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -174,9 +175,9 @@ public abstract class DataArchiveTest
         dataElementIds.add( dataElementService.addDataElement( dataElementE ) );
         dataElementIds.add( dataElementService.addDataElement( dataElementF ) );
 
-        Collection<DataElement> dataElementsA = new HashSet<DataElement>();
-        Collection<DataElement> dataElementsB = new HashSet<DataElement>();
-        Collection<DataElement> dataElementsC = new HashSet<DataElement>();
+        Set<DataElement> dataElementsA = new HashSet<DataElement>();
+        Set<DataElement> dataElementsB = new HashSet<DataElement>();
+        Set<DataElement> dataElementsC = new HashSet<DataElement>();
 
         // One dataElement
         dataElementsA.add( dataElementA );

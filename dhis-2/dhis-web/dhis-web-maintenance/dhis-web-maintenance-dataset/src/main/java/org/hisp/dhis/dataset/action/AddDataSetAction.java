@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -165,11 +164,11 @@ public class AddDataSetAction
 
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
 
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        DataSet dataSet = new DataSet( name, shortName, code, periodType );
 
         for ( String id : dataElementsSelectedList )
         {
-            dataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
+            dataSet.addDataElement( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
 
         Set<Indicator> indicators = new HashSet<Indicator>();
@@ -179,11 +178,8 @@ public class AddDataSetAction
             indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
         }
 
-        DataSet dataSet = new DataSet( name, shortName, code, periodType );
-
         dataSet.setMobile( mobile );
         dataSet.setVersion( 1 );
-        dataSet.setDataElements( dataElements );
         dataSet.setIndicators( indicators );
 
         dataSetService.addDataSet( dataSet );
