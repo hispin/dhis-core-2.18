@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.program;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -135,13 +136,15 @@ public class DefaultProgramDataEntryService
         return result;
     }
 
-    public String prepareDataEntryFormForEdit( String htmlCode , Collection<DataElement> dataElements )
+    public String prepareDataEntryFormForEdit( String htmlCode )
     {        
-        String result = populateCustomDataEntryForTextBox( htmlCode, dataElements );
+        String result = populateCustomDataEntryForTextBox( htmlCode );
         
-        result = populateCustomDataEntryForCombo( htmlCode, dataElements );
+        result = populateCustomDataEntryForCombo( result );
         
-        result = populateCustomDataEntryForDate( htmlCode, dataElements );
+        result = populateCustomDataEntryForBoolean( result );
+        
+        result = populateCustomDataEntryForDate( result );
         
         return result;
     }
@@ -150,7 +153,7 @@ public class DefaultProgramDataEntryService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String populateCustomDataEntryForTextBox( String htmlCode , Collection<DataElement> dataElements )
+    private String populateCustomDataEntryForTextBox( String htmlCode )
     {
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
@@ -187,12 +190,14 @@ public class DefaultProgramDataEntryService
                 // Get data element ID of data element
                 // -------------------------------------------------------------
 
+                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                ProgramStage programStage = programStageService.getProgramStage( programStageId );
+                Collection<DataElement> dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
+
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 3 ) );
-
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                
                 DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
@@ -208,10 +213,10 @@ public class DefaultProgramDataEntryService
             }
         }
 
-        return sb.toString();
+        return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
     }
-
-    private String populateCustomDataEntryForCombo( String htmlCode, Collection<DataElement> dataElements)
+    
+    private String populateCustomDataEntryForBoolean( String htmlCode )
     {
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
@@ -239,16 +244,18 @@ public class DefaultProgramDataEntryService
 
             String dataElementCode = inputMatcher.group( 1 );
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_BOOLEAN.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
+                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                ProgramStage programStage = programStageService.getProgramStage( programStageId );
+                Collection<DataElement> dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
 
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
-                
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
                 
                 if ( !dataElements.contains( dataElement ) )
@@ -262,10 +269,66 @@ public class DefaultProgramDataEntryService
             }
         }
         
-        return sb.toString();
+        return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
     }
 
-    private String populateCustomDataEntryForDate( String htmlCode, Collection<DataElement> dataElements )
+    private String populateCustomDataEntryForCombo( String htmlCode )
+    {
+        // ---------------------------------------------------------------------
+        // Metadata code to add to HTML before outputting
+        // ---------------------------------------------------------------------
+
+        StringBuffer sb = new StringBuffer();
+
+        // ---------------------------------------------------------------------
+        // Pattern to match data elements in the HTML code
+        // ---------------------------------------------------------------------
+
+        Matcher inputMatcher = SELECT_PATTERN.matcher( htmlCode );
+
+        // ---------------------------------------------------------------------
+        // Iterate through all matching data element fields
+        // ---------------------------------------------------------------------
+
+        while ( inputMatcher.find() )
+        {
+            String inputHTML = inputMatcher.group();
+            
+            // -----------------------------------------------------------------
+            // Get HTML input field code
+            // -----------------------------------------------------------------
+
+            String dataElementCode = inputMatcher.group( 1 );
+
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_COMBO.matcher( dataElementCode );
+
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
+            {
+                // -------------------------------------------------------------
+                // Get data element ID of data element
+                // -------------------------------------------------------------
+                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                ProgramStage programStage = programStageService.getProgramStage( programStageId );
+                Collection<DataElement> dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
+
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                
+                if ( !dataElements.contains( dataElement ) )
+                {
+                    inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
+                } 
+                else
+                {
+                    inputMatcher.appendReplacement( sb, inputHTML );
+                }
+            }
+        }
+        
+        return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
+    }
+
+    private String populateCustomDataEntryForDate( String htmlCode )
     {
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
@@ -293,18 +356,21 @@ public class DefaultProgramDataEntryService
 
             String dataElementCode = inputMatcher.group( 1 );
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_DATE.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
+               
+                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                ProgramStage programStage = programStageService.getProgramStage( programStageId );
+                Collection<DataElement> dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
 
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
-                
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                
+
                 if ( !dataElements.contains( dataElement ) )
                 {
                     inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
@@ -315,7 +381,7 @@ public class DefaultProgramDataEntryService
             }
         }
         
-        return sb.toString();
+        return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
     }
 
     private String populateCustomDataEntryForTextBox( String dataEntryFormCode,
@@ -572,7 +638,7 @@ public class DefaultProgramDataEntryService
 
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_BOOLEAN.matcher( dataElementCode );
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
@@ -815,7 +881,7 @@ public class DefaultProgramDataEntryService
 
             String dataElementCode = dataElementMatcher.group( 1 );
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_COMBO.matcher( dataElementCode );
 
             String compulsory = "null";
 
@@ -1050,7 +1116,7 @@ public class DefaultProgramDataEntryService
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_DATE.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
