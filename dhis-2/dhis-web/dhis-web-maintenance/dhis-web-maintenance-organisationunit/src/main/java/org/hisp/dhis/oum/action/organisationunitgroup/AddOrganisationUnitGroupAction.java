@@ -28,7 +28,6 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  */
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -39,8 +38,6 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AddOrganisationUnitGroupAction.java 1898 2006-09-22 12:06:56Z
- *          torgeilo $
  */
 @SuppressWarnings("serial")
 public class AddOrganisationUnitGroupAction
@@ -86,8 +83,11 @@ public class AddOrganisationUnitGroupAction
 
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
-        organisationUnitGroup.setMembers( new HashSet<OrganisationUnit>( selectedOrganisationUnits ) );
-
+        for ( OrganisationUnit unit : selectedOrganisationUnits )
+        {
+            organisationUnitGroup.addOrganisationUnit( unit );
+        }
+        
         organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
 
         return SUCCESS;

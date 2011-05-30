@@ -46,8 +46,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AddOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z
- *          torgeilo $
  */
 public class AddOrganisationUnitAction
     implements Action
@@ -279,8 +277,7 @@ public class AddOrganisationUnitAction
             
             if ( group != null )
             {
-                group.getMembers().add( organisationUnit );
-                organisationUnit.getGroups().add( group );
+                group.addOrganisationUnit( organisationUnit );
                 organisationUnitGroupService.updateOrganisationUnitGroup( group );
             }
         }
