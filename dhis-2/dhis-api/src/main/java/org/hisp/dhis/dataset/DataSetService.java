@@ -228,6 +228,4 @@ public interface DataSetService
     int getDataSetCount();
     
     Collection<DataSet> getDataSetsBetween(int first, int max );
-
-
 }

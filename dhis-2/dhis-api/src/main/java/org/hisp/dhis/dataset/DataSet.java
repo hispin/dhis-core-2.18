@@ -48,6 +48,10 @@ import org.hisp.dhis.period.PeriodType;
 public class DataSet
     extends AbstractNameableObject
 {
+    public static final String TYPE_DEFAULT = "default";
+    public static final String TYPE_SECTION = "section";
+    public static final String TYPE_CUSTOM = "custom";
+    
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -217,6 +221,21 @@ public class DataSet
     public boolean isMobile()
     {
         return mobile != null && mobile;
+    }
+    
+    public String getDataSetType()
+    {
+        if ( hasDataEntryForm() )
+        {
+            return TYPE_CUSTOM;
+        }
+        
+        if ( hasSections() )
+        {
+            return TYPE_SECTION;
+        }
+        
+        return TYPE_DEFAULT;
     }
     
     // -------------------------------------------------------------------------
