@@ -9,6 +9,7 @@
 				var option = jQuery("<option />");
 				option.text( item.name );
 				option.attr( "value", item.id );
+				option.data('id', item.groups);
 
 				return option;
 			},
@@ -30,6 +31,7 @@
 				var option = jQuery("<option />");
 				option.text( item.name );
 				option.attr( "value", item.id );
+				option.data('id', item.groups);
 
 				return option;
 			},
