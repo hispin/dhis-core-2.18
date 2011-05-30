@@ -27,35 +27,87 @@
 
 package org.hisp.dhis.reporting.dataset.action;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.datasetreport.DataSetReportService;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
+
+import static org.hisp.dhis.dataset.DataSet.*;
 
 /**
  * @author Chau Thu Tran
- * @version $Id GenerateDataSetReportAction.java Mar 09, 2011 9:02:43 AM $
+ * @author Lars Helge Overland
  */
 public class GenerateDataSetReportAction
     implements Action
 {
-    private final static String RESULT_CUSTOM = "customDataSetReport";
-    private final static String RESULT_SECTION = "sectionDataSetReport";
-    private final static String RESULT_DEFAULT = "defaultDataSetReport";
+    private static final String PARAM_PAGE = "page";
+    
+    private static final Map<String, String> VIEW_MAP = new HashMap<String, String>() { {
+        put( TYPE_CUSTOM, "/dhis-web-reporting/renderCustomDataSetReportForm.vm" );
+        put( TYPE_SECTION, "/dhis-web-reporting/renderSectionDataSetReportForm.vm" );
+        put( TYPE_DEFAULT, "/dhis-web-reporting/renderDefaultDataSetReportForm.vm" );
+    } };
     
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private SelectionTreeManager selectionTreeManager;
 
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }
+
+    private DataSetReportService dataSetReportService;
+
+    public void setDataSetReportService( DataSetReportService dataSetReportService )
+    {
+        this.dataSetReportService = dataSetReportService;
+    }
+
     private DataSetService dataSetService;
 
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -63,9 +115,24 @@ public class GenerateDataSetReportAction
 
     private Integer dataSetId;
 
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
     private String periodId;
 
+    public void setPeriodId( String periodId )
+    {
+        this.periodId = periodId;
+    }
+
     private boolean selectedUnitOnly;
+
+    public void setSelectedUnitOnly( boolean selectedUnitOnly )
+    {
+        this.selectedUnitOnly = selectedUnitOnly;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -73,67 +140,44 @@ public class GenerateDataSetReportAction
 
     private OrganisationUnit selectedOrgunit;
 
-    private DataSet selectedDataSet;
-
-    private Period selectedPeriod;
-
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
-    public Integer getDataSetId()
-    {
-        return dataSetId;
-    }
-
-    public boolean isSelectedUnitOnly()
-    {
-        return selectedUnitOnly;
-    }
-
-    public void setSelectedUnitOnly( boolean selectedUnitOnly )
-    {
-        this.selectedUnitOnly = selectedUnitOnly;
-    }
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
     public OrganisationUnit getSelectedOrgunit()
     {
         return selectedOrgunit;
     }
+
+    private DataSet selectedDataSet;
 
     public DataSet getSelectedDataSet()
     {
         return selectedDataSet;
     }
 
+    private Period selectedPeriod;
+
     public Period getSelectedPeriod()
     {
         return selectedPeriod;
     }
 
-    public void setPeriodId( String periodId )
+    private String customDataEntryFormCode;
+
+    public String getCustomDataEntryFormCode()
     {
-        this.periodId = periodId;
+        return customDataEntryFormCode;
     }
 
-    public void setDataSetId( Integer dataSetId )
+    private List<Grid> grids = new ArrayList<Grid>();
+
+    public List<Grid> getGrids()
     {
-        this.dataSetId = dataSetId;
+        return grids;
     }
 
-    public void setDataSetService( DataSetService dataSetService )
+    private Grid grid;
+
+    public Grid getGrid()
     {
-        this.dataSetService = dataSetService;
+        return grid;
     }
 
     // -------------------------------------------------------------------------
@@ -155,11 +199,23 @@ public class GenerateDataSetReportAction
 
         selectedPeriod = periodService.getPeriodByExternalId( periodId );
 
-        if ( selectedDataSet.hasDataEntryForm() )
+        String type = selectedDataSet.getDataSetType();
+        
+        if ( TYPE_CUSTOM.equals( type ) )
         {
-            return RESULT_CUSTOM;
+            customDataEntryFormCode = dataSetReportService.getCustomDataSetReport( selectedDataSet, selectedOrgunit, selectedPeriod, selectedUnitOnly, format );
         }
-
-        return selectedDataSet.hasSections() ? RESULT_SECTION : RESULT_DEFAULT;
+        else if ( TYPE_SECTION.equals( type ) )
+        {
+            grids = dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );            
+        }
+        else
+        {
+            grid = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
+        }
+        
+        ActionContext.getContext().getActionInvocation().getStack().setValue( PARAM_PAGE, VIEW_MAP.get( type ) );
+        
+        return SUCCESS;
     }
 }

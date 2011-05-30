@@ -277,40 +277,11 @@
       <interceptor-ref name="organisationUnitTreeStack"/>       
     </action>	   
         
-    <action name="generateDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction">
-     <result name="customDataSetReport" type="chain">generateCustomDataSetReport</result>
-     <result name="sectionDataSetReport" type="chain">generateSectionDataSetReport</result>
-     <result name="defaultDataSetReport" type="chain">generateDefaultDataSetReport</result>
-     <result name="error" type="chain">showDataSetReportForm</result>
-    </action> 
-    
-    <action name="generateCustomDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <result name="error" type="chain">showDataSetReportForm</result>
-      <param name="page">/dhis-web-reporting/renderCustomDataSetReportForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/util/jquery.jqprint.0.3.js</param>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action>  
-    
-    <action name="generateSectionDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateSectionDataSetReportAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <result name="error" type="chain">showDataSetReportForm</result>
-      <param name="page">/dhis-web-reporting/renderSectionDataSetReportForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/util/jquery.jqprint.0.3.js</param>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action> 
-    
-    <action name="generateDefaultDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <result name="error" type="chain">showDataSetReportForm</result>
-      <param name="page">/dhis-web-reporting/renderDefaultDataSetReportForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/util/jquery.jqprint.0.3.js</param>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action>   
-      
+	<action name="generateDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction">
+	  <result name="success" type="velocity">/main.vm</result> <!-- Page param set in action -->
+	  <param name="menu">/dhis-web-reporting/menu.vm</param>	  
+	</action>
+	
     <!-- Tally Sheet Forms Generator -->
 
     <action name="tallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction">
