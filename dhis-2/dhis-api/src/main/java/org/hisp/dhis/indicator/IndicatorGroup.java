@@ -60,6 +60,38 @@ public class IndicatorGroup
     {
         this.name = name;
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addIndicator( Indicator indicator )
+    {
+        members.add( indicator );
+        indicator.getGroups().remove( this );
+    }
+    
+    public void removeIndicator( Indicator indicator )
+    {
+        members.remove( indicator );
+        indicator.getGroups().remove( this );
+    }
+    
+    public void updateIndicators( Set<Indicator> updates )
+    {
+        for ( Indicator indicator : new HashSet<Indicator>( members ) )
+        {
+            if ( !updates.contains( indicator ) )
+            {
+                removeIndicator( indicator );
+            }
+        }
+        
+        for ( Indicator indicator : updates )
+        {
+            addIndicator( indicator );
+        }
+    }
     
     // -------------------------------------------------------------------------
     // hashCode and equals
