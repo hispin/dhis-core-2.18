@@ -14,16 +14,16 @@ function validateCollectiveDataLockingForm( form )
 		url += getParamString( "selectedPeriods", "selectedPeriods" );
 		url += "&" + getParamString( "selectedDataSets", "selectedDataSets" );
 
-	$.postJSON( url, function( json )
+	$.postJSON( url, {}, function( json )
 	{
 		if ( json.response == "input" )
 		{
 			setHeaderDelayMessage( json.message );
 		}
-		else
+		else if ( json.response == "success" )
 		{
 			selectAllById( "selectedPeriods" );
-			selectAllById( "selectedDataSets" );
+			selectAllById( "selectedDataSets" ); 
 			form.submit();
 		}
 	});
