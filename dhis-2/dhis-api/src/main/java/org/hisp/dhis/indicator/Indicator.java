@@ -77,6 +77,34 @@ public class Indicator
     // Logic
     // -------------------------------------------------------------------------
 
+    public void addIndicatorGroup( IndicatorGroup group )
+    {
+        groups.add( group );
+        group.getMembers().add( this );
+    }
+    
+    public void removeIndicatorGroup( IndicatorGroup group )
+    {
+        groups.remove( group );
+        group.getMembers().remove( this );
+    }
+    
+    public void updateIndicatorGroups( Set<IndicatorGroup> updates )
+    {
+        for ( IndicatorGroup group : new HashSet<IndicatorGroup>( groups ) )
+        {
+            if ( !updates.contains( group ) )
+            {
+                removeIndicatorGroup( group );
+            }
+        }
+        
+        for ( IndicatorGroup group : updates )
+        {
+            addIndicatorGroup( group );
+        }
+    }
+    
     public boolean isAnnualized()
     {
         return annualized != null && annualized;

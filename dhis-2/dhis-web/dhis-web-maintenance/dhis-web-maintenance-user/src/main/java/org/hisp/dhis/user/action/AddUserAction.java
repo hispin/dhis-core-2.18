@@ -175,7 +175,7 @@ public class AddUserAction
         user.setFirstName( firstName );
         user.setEmail( email );
         user.setPhoneNumber( phoneNumber );
-        user.setOrganisationUnits( new HashSet<OrganisationUnit>( orgUnits ) );
+        user.updateOrganisationUnits( new HashSet<OrganisationUnit>( orgUnits ) );
 
         UserCredentials userCredentials = new UserCredentials();
         userCredentials.setUser( user );

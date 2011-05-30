@@ -38,13 +38,10 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id: AssignGroupsForDataElementAction.java 2869 2010-03-27 14:26:09Z Chau Thu Tran $
  */
-
 public class AssignGroupsForDataElementAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -78,32 +75,19 @@ public class AssignGroupsForDataElementAction
     public String execute()
         throws Exception
     {
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
         Set<DataElementGroup> selectedGroups = new HashSet<DataElementGroup>();
 
         for ( Integer id : dataElementGroups )
         {
-            DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( id );
-
-            selectedGroups.add( dataElementGroup );
-
-            dataElementGroup.getMembers().add( dataElement );
-
-            dataElementService.updateDataElementGroup( dataElementGroup );
-
-        }
-        
-        Set<DataElementGroup>removeGroups = new HashSet<DataElementGroup>( dataElementService
-            .getGroupsContainingDataElement( dataElement ) );
-        removeGroups.removeAll( selectedGroups );
-        
-        for ( DataElementGroup removeGroup : removeGroups )
-        {
-            removeGroup.getMembers().remove( dataElement );
-            dataElementService.updateDataElementGroup( removeGroup );
+            selectedGroups.add( dataElementService.getDataElementGroup( id ) );
         }
 
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+        dataElement.updateDataElementGroups( selectedGroups );
+        
+        dataElementService.updateDataElement( dataElement );
+        
         return SUCCESS;
     }
 }

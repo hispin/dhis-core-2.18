@@ -120,6 +120,34 @@ public class User
     // Logic
     // -------------------------------------------------------------------------
 
+    public void addOrganisationUnit( OrganisationUnit unit )
+    {
+        organisationUnits.add( unit );
+        unit.getUsers().add( this );
+    }
+    
+    public void removeOrganisationUnit( OrganisationUnit unit )
+    {
+        organisationUnits.remove( unit );
+        unit.getUsers().remove( this );
+    }
+    
+    public void updateOrganisationUnits( Set<OrganisationUnit> updates )
+    {
+        for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( organisationUnits ) )
+        {
+            if ( !updates.contains( unit ) )
+            {
+                removeOrganisationUnit( unit );
+            }
+        }
+        
+        for ( OrganisationUnit unit : updates )
+        {
+            addOrganisationUnit( unit );
+        }
+    }
+    
     /**
      * Returns the concatenated first name and surname.
      */

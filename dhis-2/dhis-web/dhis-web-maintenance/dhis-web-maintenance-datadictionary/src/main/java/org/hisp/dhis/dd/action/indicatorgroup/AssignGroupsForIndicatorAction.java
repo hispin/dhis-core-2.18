@@ -38,13 +38,10 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id: AssignGroupsForIndicatorAction.java 2869 2010-03-27 15:01:079Z
- *          Chau Thu Tran $
  */
 public class AssignGroupsForIndicatorAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -78,34 +75,19 @@ public class AssignGroupsForIndicatorAction
     public String execute()
         throws Exception
     {
-
-        Indicator indicator = indicatorService.getIndicator( indicatorId );
-
         Set<IndicatorGroup> selectedGroups = new HashSet<IndicatorGroup>();
 
         for ( Integer id : indicatorGroups )
         {
-            IndicatorGroup group = indicatorService.getIndicatorGroup( id );
-
-            selectedGroups.add( group );
-            
-            group.getMembers().add( indicator );
-
-            indicatorService.updateIndicatorGroup( group );
-
+            selectedGroups.add( indicatorService.getIndicatorGroup( id ) );
         }
 
-        Set<IndicatorGroup> removeGroups = new HashSet<IndicatorGroup>( indicatorService
-            .getGroupsContainingIndicator( indicator ) );
-        removeGroups.removeAll( selectedGroups );
+        Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-        for ( IndicatorGroup removeGroup : removeGroups )
-        {
-            removeGroup.getMembers().remove( indicator );
-            indicatorService.updateIndicatorGroup( removeGroup );
-        }
-
+        indicator.updateIndicatorGroups( selectedGroups );
+        
+        indicatorService.updateIndicator( indicator );
+        
         return SUCCESS;
     }
-
 }

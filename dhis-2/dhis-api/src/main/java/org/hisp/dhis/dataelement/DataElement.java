@@ -224,6 +224,34 @@ public class DataElement
     // Logic
     // -------------------------------------------------------------------------
     
+    public void addDataElementGroup( DataElementGroup group )
+    {
+        groups.add( group );
+        group.getMembers().add( this );
+    }
+    
+    public void removeDataElementGroup( DataElementGroup group )
+    {
+        groups.remove( group );
+        group.getMembers().remove( this );
+    }
+    
+    public void updateDataElementGroups( Set<DataElementGroup> updates )
+    {
+        for ( DataElementGroup group : new HashSet<DataElementGroup>( groups ) )
+        {
+            if ( !updates.contains( group ) )
+            {
+                removeDataElementGroup( group );
+            }
+        }
+        
+        for ( DataElementGroup group : updates )
+        {
+            addDataElementGroup( group );
+        }
+    }
+    
     /**
      * Returns the value type. If value type is int and the number type exists,
      * the number type is returned, if the type is int and the number type does
