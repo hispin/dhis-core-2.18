@@ -212,6 +212,14 @@ function getAssignedIndicatorGroups()
 	jQuery.postJSON( "getAssignedIndicatorGroups.action", {
 		indicatorId: id
 	}, function( json ){
+		
+		var availabelGroups_2 = jQuery( "#view_2 #availableGroups" );
+		availabelGroups_2.empty();		
+		for(var index in indicatorGroups)
+		{
+			availabelGroups_2.append( '<option value="' + index + '" selected="selected">' + indicatorGroups[index] + '</option>');
+		}
+			
 		jQuery.each(json.indicatorGroups, function(i, item ){
 			list_2.append('<option value="' + item.id + '">' + item.name + '</option>' );
 			
