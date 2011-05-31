@@ -27,10 +27,17 @@ package org.hisp.dhis.dataset.action.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
@@ -65,6 +72,28 @@ public class ViewDataEntryFormAction
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Comparator
+    // -------------------------------------------------------------------------
+
+    private Comparator<DataElement> dataElementComparator;
+
+    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    {
+        this.dataElementComparator = dataElementComparator;
+    }
+
+    // -------------------------------------------------------------------------
+    // DisplayPropertyHandler
+    // -------------------------------------------------------------------------
+
+    private DisplayPropertyHandler displayPropertyHandler;
+
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
+        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -106,6 +135,13 @@ public class ViewDataEntryFormAction
         return dataEntryValue;
     }
 
+    private List<DataElement> dataElementList;
+
+    public List<DataElement> getDataElementList()
+    {
+        return dataElementList;
+    }
+
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -121,6 +157,13 @@ public class ViewDataEntryFormAction
             .getHtmlCode() ) : "";
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
+
+        
+        dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+
+        Collections.sort( dataElementList, dataElementComparator );
+
+        displayPropertyHandler.handle( dataElementList );
 
         return SUCCESS;
     }
