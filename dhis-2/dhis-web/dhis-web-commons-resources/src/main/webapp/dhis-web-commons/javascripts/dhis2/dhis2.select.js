@@ -64,7 +64,7 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
     caseSensitive = caseSensitive || false;
 
     if (key.length === 0) {
-        dhisAjaxSelect_moveSorted( $select, $select_ghost.children() );
+        dhis2.select.moveSorted( $select, $select_ghost.children() );
     } else {
         var $select_options = $select.children();
         var $select_ghost_options = $select_ghost.children();
@@ -79,8 +79,8 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
             $select_not_matched = $select_options.filter( ':not( :containsNC(' + key + ') )' );
         }
 
-        dhisAjaxSelect_moveSorted( $select_ghost, $select_not_matched );
-        dhisAjaxSelect_moveSorted( $select, $select_ghost_matched );
+        dhis2.select.moveSorted( $select_ghost, $select_not_matched );
+        dhis2.select.moveSorted( $select, $select_ghost_matched );
     }
 }
 
@@ -89,7 +89,7 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
  * assumed to be sorted to start with.
  * 
  * @param $select A jQuery wrapped select which acts as the target
- * @param $array An array of child elements to move
+ * @param $array A jQuery array of child elements to move
  */
 dhis2.select.moveSorted = function ($select, $array)
 {

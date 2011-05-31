@@ -6,10 +6,9 @@
 			iterator: "dataElements",
 			connectedTo: 'dataElementsSelectedList',
 			handler: function(item) {
-				var option = jQuery("<option />");
+				var option = jQuery("<option data-id='" + item.groups + "' />");
 				option.text( item.name );
 				option.attr( "value", item.id );
-				option.data('id', item.groups);
 
 				return option;
 			},
@@ -28,10 +27,9 @@
 			iterator: "indicators",
 			connectedTo: 'indicatorsSelectedList',
 			handler: function(item) {
-				var option = jQuery("<option />");
+				var option = jQuery("<option data-id='" + item.groups + "' />");
 				option.text( item.name );
 				option.attr( "value", item.id );
-				option.data('id', item.groups);
 
 				return option;
 			},
