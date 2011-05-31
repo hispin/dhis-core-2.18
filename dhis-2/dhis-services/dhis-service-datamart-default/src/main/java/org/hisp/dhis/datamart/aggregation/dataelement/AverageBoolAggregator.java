@@ -112,26 +112,16 @@ public class AverageBoolAggregator
     {
         final Map<DataElementOperand, double[]> totalSums = new HashMap<DataElementOperand, double[]>(); // <Operand, [total value, total relevant days]>
         
-        Period period = null;
-        Date currentStartDate = null;
-        Date currentEndDate = null;
-        
-        double duration = 0.0;
-        double value = 0.0;
-        double relevantDays = 0.0;
-
-        int dataValueLevel = 0;
-        
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
-            period = aggregationCache.getPeriod( crossTabValue.getPeriodId() );
+            final Period period = aggregationCache.getPeriod( crossTabValue.getPeriodId() );
             
-            currentStartDate = period.getStartDate();
-            currentEndDate = period.getEndDate();
+            final Date currentStartDate = period.getStartDate();
+            final Date currentEndDate = period.getEndDate();
             
-            duration = getDaysInclusive( currentStartDate, currentEndDate );
+            final double duration = getDaysInclusive( currentStartDate, currentEndDate );
 
-            dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
+            final int dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
             
             if ( duration > 0 )
             {
@@ -139,8 +129,8 @@ public class AverageBoolAggregator
                 {
                     if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel ) )
                     {
-                        value = 0.0;                        
-                        relevantDays = 0.0;
+                        double value = 0.0;                        
+                        double relevantDays = 0.0;
                         
                         if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 ) // Value is within period
                         {
