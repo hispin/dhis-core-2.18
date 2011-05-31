@@ -117,8 +117,6 @@ public class SumBoolAggregator
         double value = 0.0;
         double relevantDays = 0.0;
         double factor = 0.0;
-        double existingValue = 0.0;
-        double existingRelevantDays = 0.0;
 
         int dataValueLevel = 0;
         
@@ -172,11 +170,12 @@ public class SumBoolAggregator
                         }
                         
                         value = value * factor;
-                        
-                        existingValue = totalSums.containsKey( entry.getKey() ) ? totalSums.get( entry.getKey() )[ 0 ] : 0;
-                        existingRelevantDays = totalSums.containsKey( entry.getKey() ) ? totalSums.get( entry.getKey() )[ 1 ] : 0;
 
-                        final double[] values = { ( value + existingValue ), ( relevantDays + existingRelevantDays ) };
+                        final double[] totalSum = totalSums.get( entry.getKey() );
+                        value += totalSum != null ? totalSum[0] : 0;
+                        relevantDays += totalSum != null ? totalSum[1] : 0;
+                        
+                        final double[] values = { value, relevantDays };
                         
                         totalSums.put( entry.getKey(), values );
                     }
@@ -187,9 +186,9 @@ public class SumBoolAggregator
         return totalSums;
     }
 
-    public Collection<DataElementOperand> filterOperands( Collection<DataElementOperand> operands, PeriodType periodType )
+    public Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final PeriodType periodType )
     {
-        Collection<DataElementOperand> filteredOperands = new HashSet<DataElementOperand>();
+        final Collection<DataElementOperand> filteredOperands = new HashSet<DataElementOperand>();
         
         for ( final DataElementOperand operand : operands )
         {

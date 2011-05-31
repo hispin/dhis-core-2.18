@@ -312,7 +312,7 @@ public class DataElementOperand
             operandType = TYPE_TOTAL;
         }
 
-        DataElementOperand operand = new DataElementOperand();
+        final DataElementOperand operand = new DataElementOperand();
         operand.setDataElementId( dataElementId );
         operand.setOptionComboId( categoryOptionComboId );
         operand.setOperandType( operandType );
