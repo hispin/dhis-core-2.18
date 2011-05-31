@@ -12,6 +12,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.importexport.action.imp.ImportAction" scope="prototype">
 		<property name="processCoordinator" ref="processCoordinator" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="configurationManager"
+			ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.importexport.action.imp.GetImportOptionsAction"
@@ -49,6 +51,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="importObjectService"
 			ref="org.hisp.dhis.importexport.ImportObjectService" />
+		<property name="configurationManager"
+			ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.importexport.action.object.DiscardObjectAction"
@@ -56,6 +60,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="importObjectService"
 			ref="org.hisp.dhis.importexport.ImportObjectService" />
+		<property name="configurationManager"
+			ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
 	</bean>
 
 	<bean

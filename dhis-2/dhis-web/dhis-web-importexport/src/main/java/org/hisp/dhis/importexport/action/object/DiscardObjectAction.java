@@ -27,8 +27,12 @@ package org.hisp.dhis.importexport.action.object;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.getCurrentRunningProcessImportFormat;
+
 import java.util.Collection;
 
+import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
+import org.hisp.dhis.importexport.IbatisConfigurationManager;
 import org.hisp.dhis.importexport.ImportObjectService;
 
 import com.opensymphony.xwork2.Action;
@@ -61,7 +65,14 @@ public class DiscardObjectAction
     {
         return message;
     }
-    
+
+    private String importFormat;
+
+    public String getImportFormat()
+    {
+        return importFormat;
+    }
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -73,6 +84,13 @@ public class DiscardObjectAction
         this.importObjectService = importObjectService;
     }
 
+    private IbatisConfigurationManager configurationManager;
+
+    public void setConfigurationManager( IbatisConfigurationManager configurationManager )
+    {
+        this.configurationManager = configurationManager;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -81,21 +99,35 @@ public class DiscardObjectAction
         throws Exception
     {
         int count = 0;
-        
+
         if ( id != null )
         {
             for ( String identifier : id )
             {
                 importObjectService.cascadeDeleteImportObject( Integer.parseInt( identifier ) );
-                
+
                 count++;
             }
-            
+
             message = String.valueOf( count );
-            
+
+            importFormat = getCurrentRunningProcessImportFormat();
+
+            if ( importFormat != null && importFormat.equals( "DHIS14FILE" ) )
+            {
+                try
+                {
+                    configurationManager.getIbatisConfiguration();
+                }
+                catch ( NoConfigurationFoundException ex )
+                {
+                    return "dhis14";
+                }
+            }
+
             return SUCCESS;
         }
-        
+
         return ERROR;
     }
 }
