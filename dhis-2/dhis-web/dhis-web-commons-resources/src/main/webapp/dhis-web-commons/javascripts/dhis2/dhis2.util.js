@@ -48,3 +48,17 @@ dhis2.util.namespace = function( path )
 
     return parent;
 }
+
+/**
+ * adds ':containsNoCase' to filtering. $(sel).find(':containsNC(key)').doSomething();
+ */
+$.expr[":"].containsNC = function( el, i, m )
+{
+    // http://www.west-wind.com/weblog/posts/2008/Oct/24/Using-jQuery-to-search-Content-and-creating-custom-Selector-Filters
+    var search = m[3];
+
+    if (!search)
+        return false;
+
+    return eval( '/' + search + '/i' ).test( $( el ).text() );
+};

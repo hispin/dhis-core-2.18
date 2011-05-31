@@ -67,24 +67,11 @@ dhis2.comparator.htmlComparator = function( a, b )
  */
 dhis2.comparator.htmlNoCaseComparator = function( a, b )
 {
-    if( !! a) {
-        a = a.html();
-        
-        if(!! a) {
-            a = a.toLowerCase();
-        }
-    }
+    a = !!a ? a.html() : a;
+    b = !!b ? b.html() : b;
     
-    if( !! b) {
-        b = b.html();
-        
-        if(!! b) {
-            b = b.toLowerCase();
-        }        
-    }
-    
-// a = !! a ? a.html().toLowerCase() : a.html();
-// b = !! b ? b.html().toLowerCase() : b.html();
+    a = !!a ? a.toLowerCase() : a;
+    b = !!b ? b.toLowerCase() : b;
 
     return dhis2.comparator.defaultComparator( a, b );
 }
