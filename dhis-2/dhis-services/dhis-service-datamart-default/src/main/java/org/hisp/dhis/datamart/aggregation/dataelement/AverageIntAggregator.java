@@ -92,9 +92,6 @@ public class AverageIntAggregator
         
         final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
         
-        double average = 0.0;
-        double existingAverage = 0.0;
-        
         for ( final Integer unitId : unitIds )
         {
             final Collection<CrossTabDataValue> crossTabValues = 
@@ -107,11 +104,11 @@ public class AverageIntAggregator
             {
                 if ( entry.getValue() != null && entry.getValue()[ 1 ] > 0 )
                 {
-                    average = entry.getValue()[ 0 ] / entry.getValue()[ 1 ];
+                    double average = entry.getValue()[ 0 ] / entry.getValue()[ 1 ];
                     
-                    existingAverage = values.containsKey( entry.getKey() ) ? values.get( entry.getKey() ) : 0;
+                    average += values.containsKey( entry.getKey() ) ? values.get( entry.getKey() ) : 0;
                     
-                    values.put( entry.getKey(), average + existingAverage );
+                    values.put( entry.getKey(), average );
                 }
             }
         }  
@@ -124,26 +121,16 @@ public class AverageIntAggregator
     {
         final Map<DataElementOperand, double[]> totalSums = new HashMap<DataElementOperand, double[]>(); // <Operand, [total value, total relevant days]>
 
-        Period period = null;
-        Date currentStartDate = null;
-        Date currentEndDate = null;
-        
-        double value = 0.0;
-        double relevantDays = 0.0;
-        double duration = 0.0;
-        
-        int dataValueLevel = 0;
-        
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
-            period = aggregationCache.getPeriod( crossTabValue.getPeriodId() );
+            final Period period = aggregationCache.getPeriod( crossTabValue.getPeriodId() );
             
-            currentStartDate = period.getStartDate();
-            currentEndDate = period.getEndDate();
+            final Date currentStartDate = period.getStartDate();
+            final Date currentEndDate = period.getEndDate();
 
-            dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
+            final int dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
 
-            duration = getDaysInclusive( currentStartDate, currentEndDate );
+            final double duration = getDaysInclusive( currentStartDate, currentEndDate );
             
             if ( duration > 0 )
             {            
@@ -151,8 +138,8 @@ public class AverageIntAggregator
                 {
                     if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel )  )
                     {
-                        value = 0.0;
-                        relevantDays = 0.0;               
+                        double value = 0.0;
+                        double relevantDays = 0.0;               
                         
                         try
                         {
