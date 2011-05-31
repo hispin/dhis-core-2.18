@@ -44,7 +44,9 @@ import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.importexport.IbatisConfigurationManager;
 import org.hisp.dhis.importexport.ImportInternalProcess;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportStrategy;
@@ -62,17 +64,13 @@ public class ImportAction
     implements Action
 {
     private static final String IMPORT_INTERNAL_PROCESS_ID_POSTFIX = "ImportService";
-    
+
     private static final Log log = LogFactory.getLog( ImportAction.class );
 
-    private static final List<String> ALLOWED_CONTENT_TYPES = getList( 
-        "application/x-zip-compressed", 
-        "application/zip", 
-        "application/x-gzip", 
-        "application/octet-stream", 
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "text/xml" );
-    
+    private static final List<String> ALLOWED_CONTENT_TYPES = getList( "application/x-zip-compressed",
+        "application/zip", "application/x-gzip", "application/octet-stream",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/xml" );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -83,14 +81,21 @@ public class ImportAction
     {
         this.processCoordinator = processCoordinator;
     }
-    
+
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-    
+
+    private IbatisConfigurationManager configurationManager;
+
+    public void setConfigurationManager( IbatisConfigurationManager configurationManager )
+    {
+        this.configurationManager = configurationManager;
+    }
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -101,7 +106,7 @@ public class ImportAction
     // -------------------------------------------------------------------------
     // Input & output report params
     // -------------------------------------------------------------------------
-    
+
     private String type;
 
     public String getType()
@@ -120,21 +125,21 @@ public class ImportAction
     {
         this.incomingRecords = incomingRecords;
     }
-    
+
     private boolean dataValues;
 
     public void setDataValues( boolean dataValues )
     {
         this.dataValues = dataValues;
     }
-    
+
     private boolean skipCheckMatching;
 
     public void setSkipCheckMatching( boolean skipCheckMatching )
     {
         this.skipCheckMatching = skipCheckMatching;
     }
-    
+
     private String lastUpdated;
 
     public void setLastUpdated( String lastUpdated )
@@ -154,12 +159,12 @@ public class ImportAction
     }
 
     private String fileName;
-    
+
     public void setUploadFileName( String fileName )
     {
         this.fileName = fileName;
     }
-    
+
     private String contentType;
 
     public void setUploadContentType( String contentType )
@@ -176,7 +181,14 @@ public class ImportAction
     public String getMessage()
     {
         return message;
-    }    
+    }
+    
+    private String importFormat;
+
+    public String getImportFormat()
+    {
+        return importFormat;
+    }
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -185,8 +197,8 @@ public class ImportAction
     public String execute()
         throws Exception
     {
-        String importFormat = getCurrentRunningProcessImportFormat();
-        
+        importFormat = getCurrentRunningProcessImportFormat();
+
         InputStream in = null;
 
         // ---------------------------------------------------------------------
@@ -198,24 +210,24 @@ public class ImportAction
             if ( file == null )
             {
                 message = i18n.getString( "specify_file" );
-                
+
                 log.warn( "File not specified" );
-                
+
                 return SUCCESS;
             }
-            
+
             // accept zip, gzip or uncompressed xml
             // TODO: check cross-browser content type strings
-            
+
             if ( !ALLOWED_CONTENT_TYPES.contains( contentType ) )
             {
                 message = i18n.getString( "file_type_not_allowed" );
 
                 log.warn( "Content type not allowed: " + contentType );
             }
-            
+
             in = new BufferedInputStream( new FileInputStream( file ) );
-            
+
             log.info( "Content-type: " + contentType + ", filename: " + file.getCanonicalPath() );
         }
 
@@ -224,36 +236,52 @@ public class ImportAction
         // ---------------------------------------------------------------------
 
         ImportParams params = new ImportParams();
-        
+
         ImportStrategy strategy = ImportStrategy.valueOf( incomingRecords );
 
-        params.setType( ImportType.valueOf( type ) );   
+        params.setType( ImportType.valueOf( type ) );
         params.setImportStrategy( strategy );
         params.setDataValues( dataValues );
         params.setSkipCheckMatching( skipCheckMatching );
-        params.setLastUpdated( ( lastUpdated != null && lastUpdated.trim().length() > 0 ) ? DateUtils.getMediumDate( lastUpdated ) : null );
-        
+        params.setLastUpdated( (lastUpdated != null && lastUpdated.trim().length() > 0) ? DateUtils
+            .getMediumDate( lastUpdated ) : null );
+
         // ---------------------------------------------------------------------
         // Process
         // ---------------------------------------------------------------------
-        
+
         String importType = importFormat + IMPORT_INTERNAL_PROCESS_ID_POSTFIX;
-        
+
         String owner = currentUserService.getCurrentUsername();
 
         ProcessExecutor executor = processCoordinator.newProcess( importType, owner );
-        
+
         ImportInternalProcess importProcess = (ImportInternalProcess) executor.getProcess();
-        
+
         importProcess.setImportParams( params );
         importProcess.setInputStream( in );
 
         processCoordinator.requestProcessExecution( executor );
-        
+
         setCurrentRunningProcess( PROCESS_KEY_IMPORT, executor.getId() );
         setCurrentRunningProcessType( type );
         setCurrentImportFileName( fileName );
-        
+
+        // ---------------------------------------------------------------------
+        // Verify import configuration
+        // ---------------------------------------------------------------------
+
+        if ( importFormat != null && importFormat.equals( "DHIS14FILE" ) )
+        {
+            try
+            {
+                configurationManager.getIbatisConfiguration();
+            }
+            catch ( NoConfigurationFoundException ex )
+            {
+                return "dhis14";
+            }
+        }
         return SUCCESS;
     }
 }

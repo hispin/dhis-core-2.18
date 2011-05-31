@@ -48,7 +48,11 @@
     </action>
 		
     <action name="import" class="org.hisp.dhis.importexport.action.imp.ImportAction">
-      <result name="success" type="chain">displayImportForm</result>
+      <result name="dhis14" type="redirect">displayConfigDhis14Form.action</result>
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/importForm.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="javascripts">javascript/import.js,javascript/process.js</param>
       <interceptor-ref name="fileUploadStack"/>
     </action>
     
@@ -113,11 +117,17 @@
     </action>
 		
     <action name="matchObject" class="org.hisp.dhis.importexport.action.object.MatchObjectAction">
-      <result name="success" type="chain">displayPreviewForm</result>
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/previewForm.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="javascripts">javascript/import.js</param>
     </action>
 		
     <action name="discardObject" class="org.hisp.dhis.importexport.action.object.DiscardObjectAction">
-      <result name="success" type="chain">displayPreviewForm</result>
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/previewForm.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="javascripts">javascript/import.js</param>
     </action>
 		
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
