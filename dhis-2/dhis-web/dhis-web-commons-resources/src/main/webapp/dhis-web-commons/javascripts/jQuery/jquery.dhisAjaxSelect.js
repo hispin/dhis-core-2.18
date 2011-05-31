@@ -32,23 +32,6 @@
 // -----------------------------------------------
 // Support functions
 // -----------------------------------------------
-// Array Remove - By John Resig (MIT Licensed)
-Array.remove = function(array, from, to)
-{
-    var rest = array.slice((to || from) + 1 || array.length);
-    array.length = from < 0 ? array.length + from : from;
-    return array.push.apply(array, rest);
-};
-
-// http://www.west-wind.com/weblog/posts/2008/Oct/24/Using-jQuery-to-search-Content-and-creating-custom-Selector-Filters
-// adds :containsNoCase to filtering. $(sel).find(":containsNC(key)").do();
-$.expr[":"].containsNC = function(el, i, m)
-{
-    var search = m[3];
-    if (!search)
-        return false;
-    return eval("/" + search + "/i").test($(el).text());
-};
 
 /* perform dblclick action on the sourceId */
 function dhisAjaxSelect_moveAllSelected(sourceId)
@@ -97,29 +80,10 @@ function dhisAjaxSelect_moveSorted($target, $array)
     }
 }
 
-/**
- * Return ghost for a select. Creates it if necessary.
- * 
- * @param $target jQuery object to work on
- */
-function get_ghost_for_select($target)
-{
-    var ghost_target_id = $target.attr("id") + '_ghost';
-    var $ghost_target = $("#" + ghost_target_id);
-
-    if ($ghost_target.size() === 0) {
-        $ghost_target = $('<select id="' + ghost_target_id + '" multiple="multiple"></select>');
-        $ghost_target.hide();
-        $ghost_target.appendTo('body');
-    }
-
-    return $ghost_target;
-}
-
 /* filter a select-target with a given key */
 function dhisAjaxSelect_filter($target, key)
 {
-    $ghost_target = get_ghost_for_select($target);
+    $ghost_target = dhis2.select.getGhost($target);
     key = key.toLowerCase();
 
     if (key.length === 0) {
@@ -141,7 +105,7 @@ function dhisAjaxSelect_filter($target, key)
  */
 function dhisAjaxSelect_filter_on_kv($target, key, value)
 {
-    $ghost_target = get_ghost_for_select($target);
+    $ghost_target = dhis2.select.getGhost($target);
 
     if (key.length === 0) {
         dhisAjaxSelect_moveSorted($target, $ghost_target.children());

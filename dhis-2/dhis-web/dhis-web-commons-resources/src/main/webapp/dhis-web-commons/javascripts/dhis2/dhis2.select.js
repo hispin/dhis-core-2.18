@@ -26,3 +26,24 @@
  */
 
 dhis2.util.namespace( 'dhis2.select' );
+
+/**
+ * Return a hidden select with id $select + '_ghost'. This is usually used for temporary hiding options, since these
+ * can't be hidden using 'display: none' or other similar techniques.
+ * 
+ * @param $select A jQuery wrapped selector
+ * @returns The ghost for a given select
+ */
+dhis2.select.getGhost = function( $select )
+{
+    var select_ghost_id = $select.attr( 'id' ) + '_ghost';
+    var $select_ghost = $( '#' + select_ghost_id );
+
+    if ($select_ghost.size() === 0) {
+        $select_ghost = $( '<select id="' + select_ghost_id + '" multiple="multiple"></select>' );
+        $select_ghost.hide();
+        $select_ghost.appendTo( 'body' );
+    }
+
+    return $select_ghost;
+}
