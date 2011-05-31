@@ -77,13 +77,7 @@ function dhisAjaxSelect_moveSorted($target, $array)
         while (current !== undefined) {
             var $current = $(current);
 
-            var child_html = $children.eq(array_idx).html();
-            var current_html = $current.html();
-            
-            child_html = (child_html !== null) ? child_html.toLowerCase() : child_html;
-            current_html = (current_html !== null) ? current_html.toLowerCase() : current_html;
-
-            if (child_html > current_html) {
+            if ( dhis2.comparator.htmlNoCaseComparator( $children.eq(array_idx), $current) > 0) {
                 $(current).insertBefore($children.eq(array_idx));
                 current = array.shift();
             } else {
@@ -106,8 +100,7 @@ function dhisAjaxSelect_moveSorted($target, $array)
 /**
  * Return ghost for a select. Creates it if necessary.
  * 
- * @param $target
- *            jQuery object to work on
+ * @param $target jQuery object to work on
  */
 function get_ghost_for_select($target)
 {
@@ -185,13 +178,9 @@ function dhisAjaxSelect_filter_on_kv($target, key, value)
 }
 
 /**
- * 
- * @param $target
- *            jQuery object to work on
- * @param key
- *            data-entry key, $target.data(key)
- * @param value
- *            value to compare to
+ * @param $target jQuery object to work on
+ * @param key data-entry key, $target.data(key)
+ * @param value value to compare to
  * @returns {Boolean} true or false after comparing $target.data(key) with value
  */
 function compare_data_with_kv($target, key, value)
