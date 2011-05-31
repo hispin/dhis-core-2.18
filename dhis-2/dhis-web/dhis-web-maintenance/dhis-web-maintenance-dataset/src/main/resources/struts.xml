@@ -17,15 +17,15 @@
     <!-- Dataset -->
     
     <action name="showMobileDataSet"
-			class="org.hisp.dhis.dataset.action.MobileDataSetListAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-dataset/mobileDatasetList.vm</param>
-			<param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
+	  class="org.hisp.dhis.dataset.action.MobileDataSetListAction">
+	  <result name="success" type="velocity">/main.vm</result>
+	  <param name="page">/dhis-web-maintenance-dataset/mobileDatasetList.vm</param>
+	  <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
 	</action>
 	
 	<action name="updateMobileDataset"
-			class="org.hisp.dhis.dataset.action.UpdateMobileDataSetAction">
-			<result name="success" type="redirect">showMobileDataSet.action</result>
+	  class="org.hisp.dhis.dataset.action.UpdateMobileDataSetAction">
+	  <result name="success" type="redirect">showMobileDataSet.action</result>
 	</action>
     
     <action name="dataSet" class="org.hisp.dhis.dataset.action.DataSetListAction">
@@ -211,11 +211,6 @@
     </action>    
     
     <!-- DataEntryForm -->
-    
-    <action name="viewDataEntryForm"
-      class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction">
-      <result name="success" type="chain">viewDataEntryFormChain</result>
-    </action>
 
     <action name="viewDataEntryForm"
       class="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction">
