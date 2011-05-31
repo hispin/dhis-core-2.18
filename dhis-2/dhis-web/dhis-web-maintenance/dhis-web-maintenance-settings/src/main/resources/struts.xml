@@ -30,31 +30,7 @@
     
     <!-- User settings -->
     
-    <action name="userSettings" class="org.hisp.dhis.settings.action.user.GetAvailableLocalesAction">
-      <result name="success" type="chain">getAvailableLocalesDb</result>
-    </action>
-
-    <action name="getAvailableLocalesDb" class="org.hisp.dhis.settings.action.user.GetAvailableLocalesDbAction">
-      <result name="success" type="chain">getAvailableSortOrders</result>
-    </action>
-
-    <action name="getAvailableSortOrders" class="org.hisp.dhis.settings.action.user.GetAvailableSortOrdersAction">
-      <result name="success" type="chain">getAvailableChartsInDashboard</result>
-    </action>
-
-    <action name="getAvailableChartsInDashboard" class="org.hisp.dhis.settings.action.user.GetAvailableChartsInDashboardAction">
-      <result name="success" type="chain">getAvailableDisplayProperties</result>
-    </action>
-
-    <action name="getAvailableDisplayProperties" class="org.hisp.dhis.settings.action.user.GetAvailableDisplayPropertiesAction">
-      <result name="success" type="chain">getAvailableAutoSaveDataEntryForm</result>
-    </action>
-        
-    <action name="getAvailableAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.GetAvailableAutoSaveDataEntryFormAction">
-     <result name="success" type="chain">getAvailableStylesForm</result>
-    </action>
-    
-    <action name="getAvailableStylesForm" class="org.hisp.dhis.settings.action.user.GetAvailableStylesAction">
+    <action name="userSettings" class="org.hisp.dhis.settings.action.user.GetAvailableUserSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/userSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
