@@ -20,8 +20,8 @@ $(document).ready(function() {
 		var indicatorSelector = $("#indicatorSelector");
 		var dataElementSelector = $("#dataElementSelector");
 
-		dataElementSelector.height( dialog.height() - 78 );
-		indicatorSelector.height( dialog.height() - 78 );
+		dataElementSelector.height( dialog.height() - 93 );
+		indicatorSelector.height( dialog.height() - 93 );
 	});
 
 	$(":button").button();

@@ -160,6 +160,10 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
             var $select = $("#" + select_id);
             var settings = $select.data("settings");
 
+            var loader_id = select_id + '_loader';
+            var $loader = $('#' + loader_id); 
+            $loader.css('visibility', 'visible');
+
             $.post(settings.source, $.param(settings.params), function(json)
             {
                 $select.empty();
@@ -181,6 +185,8 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                         });
                     }
                 }
+
+                $loader.css('visibility', 'hidden');
             });
         },
         init : function(options)
@@ -290,6 +296,10 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
 
             var $filter_input = $("#" + filter_input_id);
             var $filter_button = $("#" + filter_button_id);
+            
+            var loader_id = id + '_loader';
+            $('<img id="' + loader_id + '" src="../images/ajax-loader-bar.gif" />').insertAfter($wrapper);
+            $('#' + loader_id).css('visibility', 'hidden');
 
             settings.params = params;
             $select.data("settings", settings);
