@@ -1439,8 +1439,8 @@ function isNumber( value )
 
 function isInt(value)
 {
-	var regex = /^\d+$/;
-	return regex.test( value );
+	//var regex = /^\d+$/;
+	return ( parseInt(value) == value );
 }
 
 function isPositiveNumber( value )
