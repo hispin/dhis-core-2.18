@@ -42,11 +42,13 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
 import static org.hisp.dhis.dataset.DataSet.*;
+import static org.hisp.dhis.util.SessionUtils.*;
 
 /**
  * @author Chau Thu Tran
@@ -134,6 +136,20 @@ public class GenerateDataSetReportAction
         this.selectedUnitOnly = selectedUnitOnly;
     }
 
+    private boolean useLast;
+
+    public void setUseLast( boolean useLast )
+    {
+        this.useLast = useLast;
+    }
+    
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -185,37 +201,42 @@ public class GenerateDataSetReportAction
     // -------------------------------------------------------------------------
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public String execute()
         throws Exception
     {
         selectedOrgunit = selectionTreeManager.getSelectedOrganisationUnit();
 
-        if ( dataSetId == null || periodId == null || selectedOrgunit == null )
-        {
-            return ERROR;
-        }
-
         selectedDataSet = dataSetService.getDataSet( dataSetId );
 
-        selectedPeriod = periodService.getPeriodByExternalId( periodId );
-
-        String type = selectedDataSet.getDataSetType();
+        if ( periodId != null )
+        {
+            selectedPeriod = periodService.getPeriodByExternalId( periodId );
+        }
         
-        if ( TYPE_CUSTOM.equals( type ) )
+        String dataSetType = selectedDataSet.getDataSetType();
+                
+        if ( TYPE_CUSTOM.equals( dataSetType ) )
         {
             customDataEntryFormCode = dataSetReportService.getCustomDataSetReport( selectedDataSet, selectedOrgunit, selectedPeriod, selectedUnitOnly, format );
         }
-        else if ( TYPE_SECTION.equals( type ) )
+        else if ( TYPE_SECTION.equals( dataSetType ) )
         {
-            grids = dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );            
+            grids = useLast ? (List<Grid>) getSessionVar( KEY_DATASET_REPORT_GRID ) :
+                dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
+            
+            SessionUtils.setSessionVar( SessionUtils.KEY_DATASET_REPORT_GRID, grids );
         }
         else
         {
-            grid = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
+            grid = useLast ? (Grid) getSessionVar( KEY_DATASET_REPORT_GRID ) :
+                dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
+            
+            SessionUtils.setSessionVar( SessionUtils.KEY_DATASET_REPORT_GRID, grid );
         }
+                
+        ActionContext.getContext().getActionInvocation().getStack().setValue( PARAM_PAGE, VIEW_MAP.get( dataSetType ) );
         
-        ActionContext.getContext().getActionInvocation().getStack().setValue( PARAM_PAGE, VIEW_MAP.get( type ) );
-        
-        return SUCCESS;
+        return useLast ? type : SUCCESS;
     }
 }
