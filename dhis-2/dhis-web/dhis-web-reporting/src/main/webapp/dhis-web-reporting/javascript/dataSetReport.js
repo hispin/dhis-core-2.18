@@ -10,7 +10,7 @@ function setSelectedOrganisationUnitIds( ids )
     selectedOrganisationUnitIds = ids;
 }
 
-if ( selectionTreeSelection )
+if ( typeof( selectionTreeSelection ) != "undefined" )
 {
     selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
 }
@@ -41,4 +41,10 @@ function validateDataSetReport()
     }
     
     document.getElementById( "reportForm" ).submit();
+}
+
+function exportDataSetReport( type )
+{
+	var url = "generateDataSetReport.action?useLast=true&dataSetId=" + $( "#dataSetId" ).val() + "&type=" + type;
+	window.location.href = url;
 }

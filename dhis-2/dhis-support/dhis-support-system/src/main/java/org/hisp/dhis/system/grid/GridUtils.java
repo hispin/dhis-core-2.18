@@ -102,7 +102,7 @@ public class GridUtils
     {
         Document document = openDocument( out );
         
-        toPdfInternal( grid, document );
+        toPdfInternal( grid, document, 0F );
 
         closeDocument( document );
     }
@@ -116,23 +116,28 @@ public class GridUtils
         
         for ( Grid grid : grids )
         {
-            toPdfInternal( grid, document );
+            toPdfInternal( grid, document, 40F );
         }
         
         closeDocument( document );
     }
     
-    private static void toPdfInternal( Grid grid, Document document )
+    private static void toPdfInternal( Grid grid, Document document, float spacing )
     {
         PdfPTable table = new PdfPTable( grid.getVisibleWidth() );
 
         table.setHeaderRows( 1 );
-        table.setWidthPercentage( 100f );
+        table.setWidthPercentage( 100F );
         table.setKeepTogether( false );
+        table.setSpacingAfter( spacing );
 
-        table.addCell( resetPaddings( getTitleCell( grid.getTitle(), grid.getVisibleWidth() ), 0, 45, 0, 0 ) );
-        table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getVisibleWidth() ) );
-        table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
+        table.addCell( resetPaddings( getTitleCell( grid.getTitle(), grid.getVisibleWidth() ), 0, 30, 0, 0 ) );
+        
+        if ( StringUtils.isNotEmpty( grid.getSubtitle() ) )
+        {
+            table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getVisibleWidth() ) );
+            table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
+        }        
 
         for ( GridHeader header : grid.getVisibleHeaders() )
         {
