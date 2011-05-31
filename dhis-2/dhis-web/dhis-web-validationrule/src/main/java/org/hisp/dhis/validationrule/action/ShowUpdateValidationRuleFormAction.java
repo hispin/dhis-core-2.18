@@ -1,7 +1,5 @@
-package org.hisp.dhis.validationrule.action;
-
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,27 +25,33 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.validationrule.action;
+
+import static org.hisp.dhis.expression.ExpressionService.VALID;
+
+import java.util.Collection;
+
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 import com.opensymphony.xwork2.Action;
 
-import static org.hisp.dhis.expression.ExpressionService.VALID;
-
 /**
- * @author Margrethe Store
- * @version $Id: GetValidationRuleAction.java 4438 2008-01-26 16:35:24Z abyot $
+ * @author Chau Thu Tran
+ * @version $ ShowUpdateValidationRuleFormAction.java May 31, 2011 10:48:14 AM $
+ * 
  */
-public class GetValidationRuleAction
+public class ShowUpdateValidationRuleFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
-    // -------------------------------------------------------------------------    
-    
+    // -------------------------------------------------------------------------
+
     private ValidationRuleService validationRuleService;
 
     public void setValidationRuleService( ValidationRuleService validationRuleService )
@@ -61,9 +65,16 @@ public class GetValidationRuleAction
     {
         this.expressionService = expressionService;
     }
-    
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     private I18n i18n;
-    
+
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
@@ -72,21 +83,21 @@ public class GetValidationRuleAction
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-    
+
     private int id;
 
     public void setId( int id )
     {
         this.id = id;
-    }   
-    
+    }
+
     private ValidationRule validationRule;
 
     public ValidationRule getValidationRule()
     {
         return validationRule;
     }
-    
+
     private String leftSideTextualExpression;
 
     public String getLeftSideTextualExpression()
@@ -100,32 +111,44 @@ public class GetValidationRuleAction
     {
         return rightSideTextualExpression;
     }
-    
-    private PeriodType periodType;
 
-    public PeriodType getPeriodType()
+    private Collection<PeriodType> periodTypes;
+
+    public Collection<PeriodType> getPeriodTypes()
     {
-        return periodType;
+        return periodTypes;
     }
+
     // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------------------------------------    
-    
-    public String execute() throws Exception
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
     {
-        validationRule = validationRuleService.getValidationRule( id );
+        // ---------------------------------------------------------------------
+        // Get periodTypes
+        // ---------------------------------------------------------------------
         
+        periodTypes = periodService.getAllPeriodTypes();
+        
+        // ---------------------------------------------------------------------
+        // Get validationRule
+        // ---------------------------------------------------------------------
+
+        validationRule = validationRuleService.getValidationRule( id );
+
         String leftSideFormula = validationRule.getLeftSide().getExpression();
         String rightSideFormula = validationRule.getRightSide().getExpression();
-        
+
         String leftSideResult = expressionService.expressionIsValid( leftSideFormula );
         String rightSideResult = expressionService.expressionIsValid( rightSideFormula );
-        
-        leftSideTextualExpression = VALID.equals( leftSideResult ) ? expressionService.getExpressionDescription( leftSideFormula ) : i18n.getString( leftSideResult );
-        rightSideTextualExpression = VALID.equals( rightSideResult ) ? expressionService.getExpressionDescription( rightSideFormula ) : i18n.getString( rightSideResult );
-        
-        periodType = validationRule.getPeriodType();
-        
+
+        leftSideTextualExpression = VALID.equals( leftSideResult ) ? expressionService
+            .getExpressionDescription( leftSideFormula ) : i18n.getString( leftSideResult );
+        rightSideTextualExpression = VALID.equals( rightSideResult ) ? expressionService
+            .getExpressionDescription( rightSideFormula ) : i18n.getString( rightSideResult );
+
         return SUCCESS;
     }
 }
