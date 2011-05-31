@@ -47,3 +47,90 @@ dhis2.select.getGhost = function( $select )
 
     return $select_ghost;
 }
+
+/**
+ * Filter a select on a given key. Options that are not matched, are moved to ghost.
+ * 
+ * NOTE: Both selects should already be in sorted order.
+ * 
+ * @param $select A jQuery wrapped select
+ * @param key {String} Key to search for
+ * @param caseSensitive {Boolean} Case sensitive search (defaults to false, so this parameter only needed if you want
+ *            case sensitive search)
+ */
+dhis2.select.filterWithKey = function( $select, key, caseSensitive )
+{
+    $select_ghost = dhis2.select.getGhost( $select );
+    caseSensitive = caseSensitive || false;
+
+    if (key.length === 0) {
+        dhisAjaxSelect_moveSorted( $select, $select_ghost.children() );
+    } else {
+        var $select_options = $select.children();
+        var $select_ghost_options = $select_ghost.children();
+        var $select_ghost_matched;
+        var $select_not_matched;
+        
+        if(caseSensitive) {
+            $select_ghost_matched = $select_ghost_options.filter( ':contains(' + key + ')' );
+            $select_not_matched = $select_options.filter( ':not( :contains(' + key + ') )' );
+        } else {
+            $select_ghost_matched = $select_ghost_options.filter( ':containsNC(' + key + ')' );
+            $select_not_matched = $select_options.filter( ':not( :containsNC(' + key + ') )' );
+        }
+
+        dhisAjaxSelect_moveSorted( $select_ghost, $select_not_matched );
+        dhisAjaxSelect_moveSorted( $select, $select_ghost_matched );
+    }
+}
+
+/**
+ * Moves an array of child elements into a select, these will be moved in a sorted fashion. Both the select and array is
+ * assumed to be sorted to start with.
+ * 
+ * @param $select A jQuery wrapped select which acts as the target
+ * @param $array An array of child elements to move
+ */
+dhis2.select.moveSorted = function ($select, $array)
+{
+    if ($select.children().size() === 0) {
+        $select.append($array);
+    } else {
+        var array = $array.get();
+        var array_idx = 0;
+        var current = array.shift();
+        var $children = $select.children();
+
+        while (current !== undefined) {
+            var $current = $(current);
+
+            if ( dhis2.comparator.htmlNoCaseComparator( $children.eq(array_idx), $current) > 0) {
+                $(current).insertBefore($children.eq(array_idx));
+                current = array.shift();
+            } else {
+                array_idx++;
+            }
+
+            if ($children.size() < array_idx) {
+                break;
+            }
+        }
+
+        if (current !== undefined) {
+            $select.append(current);
+        }
+
+        $select.append(array);
+    }
+}
+
+/**
+ * Moves an array of child elements into a select.
+ * 
+ * @param $select A jQuery wrapped select which acts as the target
+ * @param $array An array of child elements to move
+ */
+dhis2.select.move = function ($select, $array)
+{
+    $select.append($array);
+}

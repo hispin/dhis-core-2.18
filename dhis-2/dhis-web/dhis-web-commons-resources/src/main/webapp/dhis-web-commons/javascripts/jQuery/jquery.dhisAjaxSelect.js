@@ -47,59 +47,6 @@ function dhisAjaxSelect_moveAll(sourceId)
     jqSource.dblclick();
 }
 
-function dhisAjaxSelect_moveSorted($target, $array)
-{
-    if ($target.children().size() === 0) {
-        $target.append($array);
-    } else {
-        var array = $array.get();
-        var array_idx = 0;
-        var current = array.shift();
-        var $children = $target.children();
-
-        while (current !== undefined) {
-            var $current = $(current);
-
-            if ( dhis2.comparator.htmlNoCaseComparator( $children.eq(array_idx), $current) > 0) {
-                $(current).insertBefore($children.eq(array_idx));
-                current = array.shift();
-            } else {
-                array_idx++;
-            }
-
-            if ($children.size() < array_idx) {
-                break;
-            }
-        }
-
-        if (current !== undefined) {
-            $target.append(current);
-        }
-
-        $target.append(array);
-    }
-}
-
-/* filter a select-target with a given key */
-function dhisAjaxSelect_filter($target, key)
-{
-    $ghost_target = dhis2.select.getGhost($target);
-    key = key.toLowerCase();
-
-    if (key.length === 0) {
-        dhisAjaxSelect_moveSorted($target, $ghost_target.children());
-    } else {
-        var $target_options = $target.children();
-        var $ghost_target_options = $ghost_target.children();
-
-        var $ghost_target_matched = $ghost_target_options.filter(':containsNC(' + key + ')');
-        var $target_not_matched = $target_options.filter(':not( :containsNC(' + key + ') )');
-
-        dhisAjaxSelect_moveSorted($ghost_target, $target_not_matched);
-        dhisAjaxSelect_moveSorted($target, $ghost_target_matched);
-    }
-}
-
 /**
  * filter a selector on data-key = value
  */
@@ -108,7 +55,7 @@ function dhisAjaxSelect_filter_on_kv($target, key, value)
     $ghost_target = dhis2.select.getGhost($target);
 
     if (key.length === 0) {
-        dhisAjaxSelect_moveSorted($target, $ghost_target.children());
+        dhis2.select.moveSorted($target, $ghost_target.children());
         return;
     }
 
@@ -124,7 +71,7 @@ function dhisAjaxSelect_filter_on_kv($target, key, value)
         }
     });
 
-    dhisAjaxSelect_moveSorted($ghost_target, $(array));
+    dhis2.select.moveSorted($ghost_target, $(array));
 
     // filter options that match on ghost
     var $ghost_options = $ghost_target.children();
@@ -138,7 +85,7 @@ function dhisAjaxSelect_filter_on_kv($target, key, value)
         }
     });
 
-    dhisAjaxSelect_moveSorted($target, $(ghost_array));
+    dhis2.select.moveSorted($target, $(ghost_array));
 }
 
 /**
@@ -177,7 +124,7 @@ function dhisAjaxSelect_availableList_dblclick(sourceId, targetId)
         var jqAvailableList = $("#" + sourceId);
         var jqSelectedList = $("#" + targetId);
 
-        dhisAjaxSelect_moveSorted(jqSelectedList, jqAvailableList.find(":selected"));
+        dhis2.select.moveSorted(jqSelectedList, jqAvailableList.find(":selected"));
     }
 }
 
@@ -188,7 +135,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
         var jqAvailableList = $("#" + targetId);
         var jqSelectedList = $("#" + sourceId);
 
-        dhisAjaxSelect_moveSorted(jqAvailableList, jqSelectedList.find(":selected"));
+        dhis2.select.moveSorted(jqAvailableList, jqSelectedList.find(":selected"));
     }
 }
 
@@ -287,18 +234,27 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                 });
 
                 $filter_select.bind("change", {
-                    "id" : id
+                    'id' : id,
+                    'filter_input_id' : filter_input_id
                 }, function(event)
                 {
                     var $option = $(this).find(":selected");
                     var key = $option.data("key");
                     var value = $option.data("value");
+                    var $filter_input = $('#' + event.data.filter_input_id);
 
                     key = !!key ? key : "";
                     value = !!value ? value : "";
 
                     var settings = $("#" + event.data.id).data("settings");
 
+                    if(key.length === 0) {
+                        $filter_input.removeAttr('disabled');
+                    } else {
+                        $filter_input.attr('disabled', 'disabled');
+                        $filter_input.attr('value', '');
+                    }
+                    
                     dhisAjaxSelect_filter_on_kv($("#" + event.data.id), key, value);
                 });
             }
@@ -339,10 +295,10 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
             $select.data("settings", settings);
             methods.load("" + id);
 
-            $filter_button.click(function()
+            $filter_button.bind('click', function(e)
             {
                 key = $filter_input.val();
-                dhisAjaxSelect_filter($select, key);
+                dhis2.select.filterWithKey($select, key);
             });
 
             $filter_input.keypress(function(e)
