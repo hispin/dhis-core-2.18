@@ -180,7 +180,7 @@ public class DefaultExpressionService
     
     public String convertExpression( String expression, Map<Object, Integer> dataElementMapping, Map<Object, Integer> categoryOptionComboMapping )
     {
-        StringBuffer convertedFormula = new StringBuffer();
+        final StringBuffer convertedFormula = new StringBuffer();
         
         if ( expression != null )
         {
@@ -255,7 +255,7 @@ public class DefaultExpressionService
         {
             DataElementOperand operand = null;
             
-            String match = matcher.group();
+            final String match = matcher.group();
             
             if ( !DAYS_EXPRESSION.equals( match ) )
             {
@@ -363,11 +363,11 @@ public class DefaultExpressionService
 
                 if ( operand.isTotal() )
                 {
-                    StringBuilder replace = new StringBuilder();
+                    final StringBuilder replace = new StringBuilder();
                     
-                    DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
+                    final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
                     
-                    DataElementCategoryCombo categoryCombo = dataElement.getCategoryCombo();
+                    final DataElementCategoryCombo categoryCombo = dataElement.getCategoryCombo();
                     
                     for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryCombo.getOptionCombos() )
                     {
@@ -412,7 +412,7 @@ public class DefaultExpressionService
                   
                     if ( aggregated )
                     {
-                        Double aggregatedValue = aggregatedDataValueService.getAggregatedDataValue( operand.getDataElementId(), operand.getOptionComboId(), period.getId(), source.getId() );
+                        final Double aggregatedValue = aggregatedDataValueService.getAggregatedDataValue( operand.getDataElementId(), operand.getOptionComboId(), period.getId(), source.getId() );
     
                         value = aggregatedValue != null ? String.valueOf( aggregatedValue ) : null;
                     }
@@ -460,7 +460,7 @@ public class DefaultExpressionService
                 {
                     final DataElementOperand operand = DataElementOperand.getOperand( match );
                     
-                    Double aggregatedValue = valueMap.get( operand );
+                    final Double aggregatedValue = valueMap.get( operand );
                     
                     match = ( aggregatedValue == null ) ? NULL_REPLACEMENT : String.valueOf( aggregatedValue );
                 }
