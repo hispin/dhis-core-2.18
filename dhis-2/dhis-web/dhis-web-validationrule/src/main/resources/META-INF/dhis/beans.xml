@@ -24,6 +24,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>     
   </bean>
   
+  <bean id="org.hisp.dhis.validationrule.action.ShowUpdateValidationRuleFormAction" 
+    class="org.hisp.dhis.validationrule.action.ShowUpdateValidationRuleFormAction"
+    scope="prototype">
+    <property name="validationRuleService">
+      <ref bean="org.hisp.dhis.validation.ValidationRuleService"/>
+    </property>
+    <property name="expressionService">
+      <ref bean="org.hisp.dhis.expression.ExpressionService"/>
+    </property>
+	<property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
+    </property>     
+  </bean>
+  
   <bean id="org.hisp.dhis.validationrule.action.GetValidationRuleAction" 
     class="org.hisp.dhis.validationrule.action.GetValidationRuleAction"
     scope="prototype">
@@ -84,7 +98,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="selectionManager">
       <ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>
-    </property>    
+    </property> 
+    <property name="validationRuleService">
+      <ref bean="org.hisp.dhis.validation.ValidationRuleService"/>
+    </property>   
   </bean>
   
    <bean id="org.hisp.dhis.validationrule.action.GetPeriodTypesAction"
@@ -135,6 +152,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="validationRuleService">
       <ref bean="org.hisp.dhis.validation.ValidationRuleService"/>
     </property>
+  </bean>
+  
+   <bean id="org.hisp.dhis.validationrule.action.validationrulegroup.ShowUpdateValidationRuleGroupFormAction" 
+    class="org.hisp.dhis.validationrule.action.validationrulegroup.ShowUpdateValidationRuleGroupFormAction"
+    scope="prototype">
+    <property name="validationRuleService">
+      <ref bean="org.hisp.dhis.validation.ValidationRuleService"/>
+    </property>  
   </bean>
   
   <bean id="org.hisp.dhis.validationrule.action.validationrulegroup.UpdateValidationRuleGroupAction"

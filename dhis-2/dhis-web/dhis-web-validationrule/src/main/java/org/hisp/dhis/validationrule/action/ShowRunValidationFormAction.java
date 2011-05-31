@@ -1,7 +1,5 @@
-package org.hisp.dhis.validationrule.action;
-
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,9 +25,10 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.validationrule.action;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -38,15 +37,15 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.comparator.ValidationRuleGroupNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Margrethe Store
- * @version $Id: SetupTreeAction.java 5556 2008-08-20 11:36:20Z abyot $
+ * @author Chau Thu Tran
+ * @version $ ShowRunValidationFormAction.java May 31, 2011 11:30:17 AM $
+ * 
  */
-public class SetupTreeAction
+public class ShowRunValidationFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -79,13 +78,7 @@ public class SetupTreeAction
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-
-    private List<ValidationRuleGroup> validationRuleGroups;
+    } private List<ValidationRuleGroup> validationRuleGroups;
 
     public List<ValidationRuleGroup> getValidationRuleGroups()
     {
@@ -115,10 +108,8 @@ public class SetupTreeAction
         {
             selectionTreeManager.setSelectedOrganisationUnits( selectionManager.getSelectedOrganisationUnits() );
         }
-
+        
         validationRuleGroups = new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() );
-
-        Collections.sort( validationRuleGroups, new ValidationRuleGroupNameComparator() );
 
         return SUCCESS;
     }
