@@ -40,22 +40,10 @@
 		</action>
 		
 		<action name="select" class="org.hisp.dhis.de.action.SelectAction">
-			<result name="customform" type="chain">customform</result>
-			<result name="sectionform" type="chain">sectionform</result>
-			<result name="defaultform" type="chain">defaultform</result>
-			<result name="success" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
-		</action>
-
-		<action name="customform" class="org.hisp.dhis.de.action.FormAction">
-			<result name="success" type="velocity">/dhis-web-dataentry/customForm.vm</result>
-		</action>
-
-		<action name="sectionform" class="org.hisp.dhis.de.action.SectionFormAction">
-			<result name="success" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
-		</action>
-
-		<action name="defaultform"	class="org.hisp.dhis.de.action.FormAction">
-			<result name="success" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
+			<result name="customform" type="velocity">/dhis-web-dataentry/customForm.vm</result>
+			<result name="sectionform" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
+			<result name="defaultform" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
+			<result name="input" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
 		</action>
 
 		<action name="saveValue" class="org.hisp.dhis.de.action.SaveValueAction">
