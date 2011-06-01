@@ -1,6 +1,6 @@
 #parse( "/dhis-web-maintenance-patient/importPatientParams.vm" )
 
-#if($errPatients.keySet().size() > 0 )
+#if( $errPatients.keySet() && $errPatients.keySet().size() > 0 )
 <h4>$i18n.getString( 'not_save_patient' )</h4>  
 <table width=100%>
 	<tr>

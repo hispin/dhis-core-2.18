@@ -29,7 +29,23 @@ function validateUploadExcelFile()
 			var type = data.getAttribute("type");
 			
 			if ( type=='error' ) showErrorMessage(data.firstChild.nodeValue);
-			else byId('importingParam').submit();
+			else uploadExcelImportPatient();
+		}, 'xml'
+	);
+}
+
+function uploadExcelImportPatient()
+{
+	jQuery( "#upload" ).upload( 'importPatient.action',
+		function(data)
+		{
+			data = data.getElementsByTagName('message')[0];
+			if ( data != undefined )
+			{
+				var type = data.getAttribute("type");
+				if ( type=='error' ) alert(data.firstChild.nodeValue);
+			}
+			else window.location.reload();
 		}, 'xml'
 	);
 }

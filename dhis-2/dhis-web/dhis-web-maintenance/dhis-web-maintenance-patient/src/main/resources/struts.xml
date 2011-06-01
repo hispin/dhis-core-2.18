@@ -1183,42 +1183,27 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/importPatientParams.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/importMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/javascripts/ajaxfileupload.js,
-				javascript/import.js</param>
+			<param name="javascripts">javascript/import.js</param>
 		</action>
 
 		<action name="validateUploadExcelFile"
 			class="org.hisp.dhis.patient.action.patientimport.ValidateUploadExcelFileAction">
-			<interceptor-ref name="fileUploadStack" />
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>
-		</action>
-
-		<action name="importPatient"
-			class="org.hisp.dhis.patient.action.patientimport.UploadExcelFileAction">
-			<result name="success" type="chain">importPatientChain
-			</result>
-			<result name="error" type="redirect">importPatientForm.action
-			</result>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
-
-		<action name="importPatientChain"
+		
+		<action name="importPatient"
 			class="org.hisp.dhis.patient.action.patientimport.ImportPatientAction">
-			<result name="success" type="chain">importPatientResult
-			</result>
-			<result name="error" type="redirect">importPatientResult
-			</result>
-		</action>
-
-		<action name="importPatientResult" class="org.hisp.dhis.patient.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/importPatientResult.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/importMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/javascripts/ajaxfileupload.js,
-				javascript/import.js</param>
+			<param name="javascripts">javascript/import.js</param>
+			<interceptor-ref name="fileUploadStack" />
 		</action>
 
 		<!-- Patient Mobile Setting Action -->

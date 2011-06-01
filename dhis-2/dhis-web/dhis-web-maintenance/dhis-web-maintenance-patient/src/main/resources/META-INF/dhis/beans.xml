@@ -1327,11 +1327,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="patientIdentifierService">
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierService" />
-
 		</property>
 		<property name="patientAttributeValueService">
-			<ref
-				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+			<ref bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		</property>
 	</bean>
 
