@@ -136,11 +136,12 @@ function loadDataEntry()
 	
 	// Load data-entry form
 	showLoader();
-	
+	var useDefaultForm = jQuery("#useDefaultForm").attr('checked') ? true : false;
 	jQuery('#dataEntryFormDiv').load("dataentryform.action",
 		{
 			programStageId:getFieldValue('programStageId'),
-			patientId: getFieldValue('patientId')
+			patientId: getFieldValue('patientId'),
+			useDefaultForm : useDefaultForm
 		}, 
 		function( )
 		{
@@ -153,23 +154,6 @@ function loadDataEntry()
 			hideLoader();
 			hideById('contentDiv'); 
 		});
-}
-
-//--------------------------------------------------------------------------------------------
-// Checkbox useDefaultForm is checked
-//--------------------------------------------------------------------------------------------
-
-function selectUseDefaultDataEntryForm()
-{
-	if( byId('useDefaultForm').checked )
-	{
-		hideById( 'customEntryScreenContainer' );
-		showById( 'defaultEntryScreenContainer' );
-	}else
-	{
-		hideById( 'defaultEntryScreenContainer' );
-		showById( 'customEntryScreenContainer' );
-	}
 }
 
 //-----------------------------------------------------------------------------
@@ -1485,7 +1469,6 @@ function entryFormContainerOnReady()
 	var currentFocus; 
     if( jQuery("#entryFormContainer") ) {
 		
-		selectUseDefaultDataEntryForm();
         if( jQuery("#executionDate").val() )
         {
             jQuery("#startMsg").hide();
@@ -1493,24 +1476,6 @@ function entryFormContainerOnReady()
         {
             toggleContentForReportDate(false);
         }
-		
-        jQuery("#customEntryScreenContainer td").hover(
-            function(){
-                var childrens = jQuery(this).children("input[name='entryfield'],select[name='entryselect']");
-                
-				if( jQuery(childrens[0]).is(":disabled")) 
-				{
-                    DRAG_DIV.showData(jQuery(childrens[0]).metadata({
-                        "type":"attr",
-                        "name":"data"
-                    }));
-                }
-				
-				
-            },
-            function(){
-            }
-            );
 		
         jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){
             jQuery(this).focus(function(){
