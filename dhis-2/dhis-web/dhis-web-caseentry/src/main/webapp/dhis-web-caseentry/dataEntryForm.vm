@@ -26,34 +26,40 @@ jQuery("#entryFormContainer").ready(function(){
 <span id="startMsg" style="font-style:italic; color:blue; display: #if($programStageInstance.executionDate) none #else block #end">$i18n.getString( "report_date_warning" )</span>
 
 <div id='entryForm' style="display: #if($programStageInstance.executionDate) block #else none #end">
-	
-	<div id="customEntryScreenContainer">
-		#if( $customDataEntryFormCode ) 
-			<div id="dragDiv">
-				<table id="listInfo">
-					<tr><td style="text-align:left"><strong>$i18n.getString("org_unit_name") :</strong></td> <td id="orgUnitNameField" style="text-align:right"></td></tr>
-					<tr><td style="text-align:left"><strong>$i18n.getString("program_stage_name") :</strong></td> <td  id="programStageName" style="text-align:right">$programStageInstance.programStage.name</td></tr>
-					<tr><td style="text-align:left"><strong>$i18n.getString("datae_element_name") :</strong></td> <td id="dataelementName" style="text-align:right"></td></tr>
-				</table>
-			</div>
-		   $customDataEntryFormCode
-		#else 
-			<span style="font-style:italic; color:blue"> $i18n.getString( "no_custom_data_entry_exist" )</span>
-		#end
-	</div>
+	#if( !$useDefaultForm)
+		<div id="customEntryScreenContainer">
+			#if( $customDataEntryFormCode ) 
+				<div id="dragDiv">
+					<table id="listInfo">
+						<tr><td style="text-align:left"><strong>$i18n.getString("org_unit_name") :</strong></td> <td id="orgUnitNameField" style="text-align:right"></td></tr>
+						<tr><td style="text-align:left"><strong>$i18n.getString("program_stage_name") :</strong></td> <td  id="programStageName" style="text-align:right">$programStageInstance.programStage.name</td></tr>
+						<tr><td style="text-align:left"><strong>$i18n.getString("datae_element_name") :</strong></td> <td id="dataelementName" style="text-align:right"></td></tr>
+					</table>
+				</div>
+			   $customDataEntryFormCode
+			#else 
+				<span style="font-style:italic; color:blue"> $i18n.getString( "no_custom_data_entry_exist" )</span>
+			#end
 
-	<div id="defaultEntryScreenContainer" style='display:none;'>
-		<table class="mainPageTable">
-			<col id="noCol">
-			<col id="deCol">    
-			<col id="entryCol">
-			<col id="facilityCol">       
-			<tr>
-				<th>$i18n.getString( "nr" )</th>
-				<th>$i18n.getString( "data_element" )</th>                   
-				<th>$i18n.getString( "entry" )</th>
-				<th>$i18n.getString( "facility_provided_data" )</th>             
-			</tr>
+			<script type="text/javascript"> 
+				initCustomCheckboxes();
+				DRAG_DIV.init();
+			</script>
+		</div>
+	#else
+		<div id="defaultEntryScreenContainer" >
+
+			<table class="mainPageTable">
+				<col id="noCol">
+				<col id="deCol">    
+				<col id="entryCol">
+				<col id="facilityCol">       
+				<tr>
+					<th>$i18n.getString( "nr" )</th>
+					<th>$i18n.getString( "data_element" )</th>                   
+					<th>$i18n.getString( "entry" )</th>
+					<th>$i18n.getString( "facility_provided_data" )</th>             
+				</tr>
 			#set( $dataElementRowCount = 0 )
 			#set( $mark = 0 )
 			#set( $tabIndex = 1 )
@@ -79,7 +85,7 @@ jQuery("#entryFormContainer").ready(function(){
 						</span>
 					</td>        
 					##type        
-					<td style="display:none"><span id="value[$programStageDataElement.dataElement.id].type" style="display:none">$encoder.htmlEncode( $programStageDataElement.dataElement.getDetailedNumberType() )</span></td>       
+					<td style="display:none"><span id="value[$programStageDataElement.dataElement.id].type" style="display:none">$encoder.htmlEncode( $programStageDataElement.dataElement.type )</span></td>       
 					##entry        
 					<td>        
 						#if( $programStageDataElement.dataElement.type == "bool" )
@@ -96,24 +102,24 @@ jQuery("#entryFormContainer").ready(function(){
 									<option value="$optionValue.id" #if( $patientDataValue.value == $optionValue.id ) selected="selected" #end>$encoder.htmlEncode( $optionValue.name )</option>
 								#end
 							</select>
-						#elseif( $programStageDataElement.dataElement.type == "date" ) 
-							<input type="text" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].date" name="entryfield" value="$!encoder.htmlEncode($patientDataValue.value)" onchange="saveDateValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" tabindex="$tabIndex" >
-								<script type="text/javascript">
-									datePicker('value\\[$programStageDataElement.dataElement.id\\]\\.date', false);
-								</script>  					
+						#elseif( $programStageDataElement.dataElement.type == "date" )
+							<input type="text" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveDateValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" tabindex="$tabIndex" >
+							<script type="text/javascript">
+								datePicker('value\\[$programStageDataElement.dataElement.id\\]\\.date', false);
+							</script>                     
 						#else
 							<input name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].value" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
 						#end
 					</td>   
 					##providedByAnotherFacility                
-					<td>     
+					<td>   
 						#if ( $patientDataValue.value )        
 							#if( !$patientDataValue.providedByAnotherFacility )
 								$patientDataValue.organisationUnit.name
-								<input name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+								<input  name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
 							#else
 								$i18n.getString("other_facility")
-								<input name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+								<input  name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
 							#end
 						 #else
 							<input name="providedByAnotherFacility" id="value[$programStageDataElement.dataElement.id].providedByAnotherFacility" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
@@ -122,13 +128,9 @@ jQuery("#entryFormContainer").ready(function(){
 				</tr>
 				#set( $tabIndex = $tabIndex + 1 )
 			#end
-		</table>
-
-	</div>
+			</table>
+		</div>
+	#end
 </div>
 
 </div>
-<script type="text/javascript"> 
-	initCustomCheckboxes();
-	DRAG_DIV.init();
-</script>

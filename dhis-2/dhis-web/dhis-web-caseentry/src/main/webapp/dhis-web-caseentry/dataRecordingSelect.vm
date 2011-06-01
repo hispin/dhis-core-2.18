@@ -45,7 +45,7 @@
 			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();", '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );" style="width:12em " disabled="disabled" >
 		</td>
 		<td align='right'>
-			<input type="checkbox" id="useDefaultForm" name="useDefaultForm" value="true" onclick="selectUseDefaultDataEntryForm();" disabled="disabled" />
+			<input type="checkbox" id="useDefaultForm" name="useDefaultForm" value="true" onclick="loadDataEntry();" disabled="disabled" />
 			<label>$i18n.getString( "use_default_form" )</label><br>	
 		</td>
 		</td>

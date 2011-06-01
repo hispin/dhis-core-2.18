@@ -32,6 +32,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -45,6 +47,7 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -77,6 +80,8 @@ public class LoadDataEntryAction
 
     private OrganisationUnitSelectionManager selectionManager;
 
+    private ProgramStageDataElementService programStageDataElementService;
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -84,6 +89,8 @@ public class LoadDataEntryAction
     private Integer programStageId;
 
     private Integer patientId;
+
+    private boolean useDefaultForm;
 
     private ProgramStageInstance programStageInstance;
 
@@ -95,6 +102,8 @@ public class LoadDataEntryAction
 
     private Map<Integer, PatientDataValue> patientDataValueMap;
 
+    private Map<Integer, Collection<DataElementCategoryOptionCombo>> optionMap = new HashMap<Integer, Collection<DataElementCategoryOptionCombo>>();
+
     private OrganisationUnit organisationUnit;
 
     // -------------------------------------------------------------------------
@@ -104,6 +113,11 @@ public class LoadDataEntryAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
     }
 
     public void setPatientService( PatientService patientService )
@@ -135,7 +149,17 @@ public class LoadDataEntryAction
     {
         this.selectionManager = selectionManager;
     }
-    
+
+    public Map<Integer, Collection<DataElementCategoryOptionCombo>> getOptionMap()
+    {
+        return optionMap;
+    }
+
+    public boolean isUseDefaultForm()
+    {
+        return useDefaultForm;
+    }
+
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -149,6 +173,11 @@ public class LoadDataEntryAction
     public void setPatientId( Integer patientId )
     {
         this.patientId = patientId;
+    }
+
+    public void setUseDefaultForm( boolean useDefaultForm )
+    {
+        this.useDefaultForm = useDefaultForm;
     }
 
     public void setI18n( I18n i18n )
@@ -203,6 +232,17 @@ public class LoadDataEntryAction
         if ( programStageInstance != null )
         {
             // ---------------------------------------------------------------------
+            // Get CategoryOptions
+            // ---------------------------------------------------------------------
+
+            Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
+
+            for ( DataElement dataElement : dataElements )
+            {
+                optionMap.put( dataElement.getId(), dataElement.getCategoryCombo().getOptionCombos() );
+            }
+
+            // ---------------------------------------------------------------------
             // Get data values
             // ---------------------------------------------------------------------
 
@@ -220,15 +260,17 @@ public class LoadDataEntryAction
             // Get data-entry-form
             // ---------------------------------------------------------------------
 
-            DataEntryForm dataEntryForm = programStage.getDataEntryForm();
-
-            if ( dataEntryForm != null )
+            if ( !useDefaultForm )
             {
-                customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
-                    .getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance, organisationUnit );
-            }
+                DataEntryForm dataEntryForm = programStage.getDataEntryForm();
 
-            return SUCCESS;
+                if ( dataEntryForm != null )
+                {
+                    customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
+                        .getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance,
+                        organisationUnit );
+                }
+            }
         }
 
         return SUCCESS;
