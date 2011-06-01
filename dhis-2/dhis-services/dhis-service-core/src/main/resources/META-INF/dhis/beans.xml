@@ -235,9 +235,20 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="cacheable" value="true"/>
 	</bean>
 	
+	<bean id="org.hisp.dhis.concept.ConceptStore"
+		class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="clazz" value="org.hisp.dhis.concept.Concept"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
 	<bean id="org.hisp.dhis.sequence.SequenceStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="clazz" value="org.hisp.dhis.sequence.Sequence"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.configuration.ConfigurationStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="clazz" value="org.hisp.dhis.configuration.Configuration"/>
 	</bean>
 	
 	<!-- Service definitions -->
@@ -458,21 +469,17 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 	</bean>
 	
+	<bean id="org.hisp.dhis.concept.ConceptService" 
+		class="org.hisp.dhis.concept.DefaultConceptService">
+		<property name="conceptStore" ref="org.hisp.dhis.concept.ConceptStore" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.sequence.SequenceGenerator" class="org.hisp.dhis.sequence.DefaultSequenceGenerator">
 		<property name="sequenceStore" ref="org.hisp.dhis.sequence.SequenceStore"/>
 	</bean>
 	
-	<!-- Concept Name -->
-	
-	<bean id="org.hisp.dhis.concept.ConceptStore"
-		class="org.hisp.dhis.hibernate.HibernateGenericStore">
-		<property name="clazz" value="org.hisp.dhis.concept.Concept"/>
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
-	<bean id="org.hisp.dhis.concept.ConceptService" 
-		class="org.hisp.dhis.concept.DefaultConceptService">
-		<property name="conceptStore" ref="org.hisp.dhis.concept.ConceptStore" />
+	<bean id="org.hisp.dhis.configuration.ConfigurationService" class="org.hisp.dhis.configuration.DefaultConfigurationService">
+		<property name="configurationStore" ref="org.hisp.dhis.configuration.ConfigurationStore"/>
 	</bean>
 	
 	<!-- I18nService -->
