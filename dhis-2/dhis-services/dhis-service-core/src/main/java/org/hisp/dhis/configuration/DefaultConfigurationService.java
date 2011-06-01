@@ -30,10 +30,12 @@ package org.hisp.dhis.configuration;
 import java.util.Iterator;
 
 import org.hisp.dhis.common.GenericStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  */
+@Transactional
 public class DefaultConfigurationService
     implements ConfigurationService
 {
@@ -43,6 +45,10 @@ public class DefaultConfigurationService
     {
         this.configurationStore = configurationStore;
     }
+
+    // -------------------------------------------------------------------------
+    // ConfigurationService implementation
+    // -------------------------------------------------------------------------
     
     @Override
     public void setConfiguration( Configuration configuration )

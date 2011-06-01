@@ -29,6 +29,7 @@ package org.hisp.dhis.configuration;
 
 import java.io.Serializable;
 
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.user.UserGroup;
 
 /**
@@ -46,6 +47,8 @@ public class Configuration
     
     private UserGroup messageRecipients;
 
+    private DataElementGroup infrastructuralDataElements;
+    
     public Configuration()
     {
     }
@@ -68,5 +71,15 @@ public class Configuration
     public void setMessageRecipients( UserGroup messageRecipients )
     {
         this.messageRecipients = messageRecipients;
+    }
+
+    public DataElementGroup getInfrastructuralDataElements()
+    {
+        return infrastructuralDataElements;
+    }
+
+    public void setInfrastructuralDataElements( DataElementGroup infrastructuralDataElements )
+    {
+        this.infrastructuralDataElements = infrastructuralDataElements;
     }
 }

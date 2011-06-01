@@ -12,5 +12,7 @@
 
 	<one-to-one name="messageRecipients" class="org.hisp.dhis.user.UserGroup"/>
 
+	<one-to-one name="infrastructuralDataElements" class="org.hisp.dhis.dataelement.DataElementGroup"/>
+
   </class>
 </hibernate-mapping>
