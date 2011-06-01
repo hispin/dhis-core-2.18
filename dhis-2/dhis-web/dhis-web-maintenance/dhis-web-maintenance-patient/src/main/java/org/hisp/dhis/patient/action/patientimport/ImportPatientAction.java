@@ -81,6 +81,7 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.StreamUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -135,11 +136,32 @@ public class ImportPatientAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private File output;
-
     private HashMap<Integer, Patient> errPatients = new HashMap<Integer, Patient>();
 
     private HashMap<Integer, String> errMessage = new HashMap<Integer, String>();
+
+    private String fileName;
+
+    public void setUploadFileName( String fileName )
+    {
+        this.fileName = fileName;
+    }
+
+    private File upload;
+
+    public void setUpload( File upload )
+    {
+        this.upload = upload;
+    }
+
+    private File output;
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
 
     // -------------------------------------------------------------------------
     // Private Parameters
@@ -275,8 +297,40 @@ public class ImportPatientAction
     public String execute()
         throws Exception
     {
+        if ( upload == null )
+        {
+            message = i18n.getString( "upload_file_null" );
+
+            return ERROR;
+        }
+
+        // ---------------------------------------------------------------------
+        // Get template-file
+        // ---------------------------------------------------------------------
+
+        String path = System.getenv( "DHIS2_HOME" );
+        fileName += (Math.random() * 1000) + ".xls";
+
+        if ( path != null )
+        {
+            path += File.separator + "patienttemp" + File.separator + fileName;
+        }
+        else
+        {
+            path = System.getenv( "user.home" ) + File.separator + "patienttemp" + File.separator + fileName;
+        }
+
+        output = new File( path );
+        StreamUtils.write( upload, output );
+
+        // ---------------------------------------------------------------------
+        // Do import
+        // ---------------------------------------------------------------------
+
         if ( output == null )
         {
+            message = i18n.getString( "upload_file_null" );
+
             return ERROR;
         }
 
@@ -287,6 +341,11 @@ public class ImportPatientAction
             // -----------------------------------------------------------------
 
             readXMLTemplateFile();
+
+            if ( message != null && message.length() > 0 )
+            {
+                return ERROR;
+            }
 
             // -----------------------------------------------------------------
             // Get file which need to import information
@@ -682,7 +741,6 @@ public class ImportPatientAction
 
                 dataValues.add( dataValue );
             }
-
         }
 
         return dataValues;
@@ -782,6 +840,8 @@ public class ImportPatientAction
 
         if ( fileName == null )
         {
+            message = i18n.getString( "configuration_xml_file_null" );
+
             return;
         }
 
@@ -789,13 +849,13 @@ public class ImportPatientAction
 
         if ( path != null )
         {
-            path += File.separator + File.separator + fileName;
+            path += File.separator + fileName;
         }
         else
         {
-            path = System.getenv( "user.home" ) + File.separator + "dhis" + File.separator + fileName;
+            path = System.getenv( "user.home" ) + File.separator + "patienttemp" + File.separator + fileName;
         }
-
+        
         // ---------------------------------------------------------------------
         // Get contents into template-file
         // ---------------------------------------------------------------------
@@ -805,9 +865,10 @@ public class ImportPatientAction
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document doc = docBuilder.parse( new File( path ) );
+
             if ( doc == null )
             {
-                System.out.println( "There is no any definition related XML file in the user home" );
+                message = i18n.getString( "there_is_no_defination_xml_file_in_user_home" );
 
                 return;
             }
@@ -867,15 +928,13 @@ public class ImportPatientAction
                     itemProperty.add( item );
                 }
             }
-
         }
         catch ( Exception t )
         {
             t.printStackTrace();
         }
-
     }
-
+    
     private String readValue( int row, int column, Sheet sheet )
     {
         Cell cell = sheet.getRow( row ).getCell( column );

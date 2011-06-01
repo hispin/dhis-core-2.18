@@ -41,7 +41,9 @@ import com.opensymphony.xwork2.Action;
 public class ValidateUploadExcelFileAction
     implements Action
 {
-    private static final String CONTENT_TYPE = "application/vnd.ms-excel";
+    private static final String CONTENT_TYPE_DEFAULT = "application/vnd.ms-excel";
+
+    private static final String CONTENT_TYPE_OCTET_STREAM = "application/octet-stream";
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -93,7 +95,7 @@ public class ValidateUploadExcelFileAction
             return ERROR;
         }
 
-        if ( !CONTENT_TYPE.contains( uploadContentType ) )
+        if ( !CONTENT_TYPE_DEFAULT.equals( uploadContentType ) && !CONTENT_TYPE_OCTET_STREAM.equals( uploadContentType ) )
         {
             message = i18n.getString( "file_type_not_supported" );
 
