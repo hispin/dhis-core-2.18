@@ -31,7 +31,7 @@ dhis2.util.namespace( 'dhis2.select' );
  * Return a hidden select with id $select + '_ghost'. This is usually used for temporary hiding options, since these
  * can't be hidden using 'display: none' or other similar techniques.
  * 
- * @param $select A jQuery wrapped selector
+ * @param $select {jQuery} The select to ghost
  * @returns The ghost for a given select
  */
 dhis2.select.getGhost = function( $select )
@@ -53,7 +53,7 @@ dhis2.select.getGhost = function( $select )
  * 
  * NOTE: Both selects should already be in sorted order.
  * 
- * @param $select A jQuery wrapped select
+ * @param $select {jQuery} The select to search within
  * @param key {String} Key to search for
  * @param caseSensitive {Boolean} Case sensitive search (defaults to false, so this parameter only needed if you want
  *            case sensitive search)
@@ -70,7 +70,7 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
         var $select_ghost_options = $select_ghost.children();
         var $select_ghost_matched;
         var $select_not_matched;
-        
+
         if(caseSensitive) {
             $select_ghost_matched = $select_ghost_options.filter( ':contains(' + key + ')' );
             $select_not_matched = $select_options.filter( ':not( :contains(' + key + ') )' );
@@ -88,8 +88,8 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
  * Moves an array of child elements into a select, these will be moved in a sorted fashion. Both the select and array is
  * assumed to be sorted to start with.
  * 
- * @param $select A jQuery wrapped select which acts as the target
- * @param $array A jQuery array of child elements to move
+ * @param $select {jQuery} A select which acts as the target
+ * @param $array {jQuery} An array of child elements to move
  */
 dhis2.select.moveSorted = function ($select, $array)
 {
@@ -127,10 +127,30 @@ dhis2.select.moveSorted = function ($select, $array)
 /**
  * Moves an array of child elements into a select.
  * 
- * @param $select A jQuery wrapped select which acts as the target
+ * @param $select {jQuery} Select which acts as the target
  * @param $array An array of child elements to move
  */
 dhis2.select.move = function ($select, $array)
 {
     $select.append($array);
+}
+
+/**
+ * Mark all options in a select as selected.
+ * 
+ * @param $select {jQuery} The select
+ */
+dhis2.select.selectAll = function($select)
+{
+    $select.children().attr('selected', true);
+}
+
+/**
+ * Mark all options as not selected.
+ * 
+ * @param $select {jQuery} The select
+ */
+dhis2.select.selectNone = function($select)
+{
+    $select.children().attr('selected', false);
 }
