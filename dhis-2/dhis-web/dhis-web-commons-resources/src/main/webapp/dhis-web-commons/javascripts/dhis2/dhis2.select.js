@@ -32,6 +32,7 @@ dhis2.util.namespace( 'dhis2.select' );
  * can't be hidden using 'display: none' or other similar techniques.
  * 
  * @param $select {jQuery} The select to ghost
+ * 
  * @returns The ghost for a given select
  */
 dhis2.select.getGhost = function( $select )

@@ -30,8 +30,8 @@ dhis2.util.namespace( 'dhis2.comparator' );
 /**
  * Compares two objects and returns result.
  * 
- * @param a {object}
- * @param b {object}
+ * @param a {object} Object A
+ * @param b {object} Object B
  * 
  * @returns {Number} 1 if a>b, -1 if a>b, 0 if equal
  */
@@ -47,8 +47,8 @@ dhis2.comparator.defaultComparator = function( a, b )
 /**
  * Case sensitive compare of two jQuery objects (based on their innerHTML).
  * 
- * @param a A jQuery wrapped object
- * @param b A jQuery wrapped object
+ * @param a {jQuery} Object A
+ * @param b {jQuery} Object B
  * 
  * @returns {Number} 1 if a>b, -1 if a>b, 0 if equal
  */
@@ -60,8 +60,8 @@ dhis2.comparator.htmlComparator = function( a, b )
 /**
  * Case insensitive compare of two jQuery objects (based on their innerHTML).
  * 
- * @param a A jQuery wrapped object
- * @param b A jQuery wrapped object
+ * @param a {jQuery} Object A
+ * @param b {jQuery} Object B
  * 
  * @returns {Number} 1 if a>b, -1 if a>=b
  */

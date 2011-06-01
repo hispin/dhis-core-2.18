@@ -30,9 +30,11 @@ dhis2.util.namespace( 'dhis2.array' );
 /**
  * Remove part of an array.
  * 
- * @param array {array} Array to remove from
+ * @param array {Array} Array to remove from
  * @param from {Number} Start index
  * @param to {Number} End index
+ * 
+ * @returns {Array} Array without the removed parts
  */
 dhis2.array.remove = function( array, from, to )
 {
