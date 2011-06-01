@@ -20,8 +20,8 @@
     
     <action name="getChart" class="org.hisp.dhis.dashboard.action.GetChartAction">
       <result name="success" type="chart">
-        <param name="width">309</param>
-        <param name="height">309</param>
+        <param name="width">310</param>
+        <param name="height">310</param>
       </result>
     </action>
     
