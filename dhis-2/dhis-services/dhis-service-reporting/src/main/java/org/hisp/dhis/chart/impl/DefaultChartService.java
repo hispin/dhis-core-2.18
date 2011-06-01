@@ -553,7 +553,6 @@ public class DefaultChartService
 
             plot.addRangeMarker( marker );
         }
-
         
         if ( subTitle )
         {
@@ -743,6 +742,10 @@ public class DefaultChartService
         else if ( chart.isDimension( DIMENSION_ORGANISATIONUNIT ) && chart.getAllPeriods().size() > 0 )
         {
             subTitle.setText( format.formatPeriod( chart.getAllPeriods().get( 0 ) ) );
+        }
+        else if ( chart.isDimension( DIMENSION_INDICATOR ) && chart.getIndicators().size() > 0 )
+        {
+            subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
         }
 
         return subTitle;

@@ -377,10 +377,11 @@ public class Chart
 
     public String getTargetLineLabel()
     {
-        if(targetLineLabel == null || targetLineLabel.length() == 0) {
+        if ( targetLineLabel == null || targetLineLabel.trim().length() == 0 )
+        {
             targetLineLabel = "Target Line";
         }
-        
+
         return targetLineLabel;
     }
 
