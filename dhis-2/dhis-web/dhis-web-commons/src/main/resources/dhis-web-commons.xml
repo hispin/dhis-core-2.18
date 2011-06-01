@@ -285,7 +285,14 @@
 		<action name="translate" class="org.hisp.dhis.i18n.action.TranslateAction">
 			<result name="success" type="velocity">/dhis-web-commons/i18n/goback.vm
 			</result>
-			<result name="input" type="chain">i18n</result>
+			<result name="input" type="redirect">
+			 <param name="location">i18n.action</param> 
+             <param name="className">${className}</param> 
+             <param name="objectId">${objectId}</param> 
+             <param name="returnUrl">${returnUrl}</param> 
+             <param name="message">${message}</param> 
+             <param name="parse">false</param>
+			</result>
 		</action>
 
 		<action name="validateAddDuplicatedTranslation"
