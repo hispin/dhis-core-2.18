@@ -1,6 +1,11 @@
 <script type="text/javascript">
 	jQuery(document).ready(function(){		
 		tableSorter( 'listTable' );	
+		
+		jQuery('#add_chart').bind('click', function() {
+			var optionValue = jQuery('#chart_type').find(":selected").attr('value');
+			window.location.href = 'displayAddChartForm.action?dimension=' + optionValue;
+		});
 	});
 
 	var i18n_please_wait = '$encoder.jsEscape( $i18n.getString( "please_wait" ), "'")';
@@ -18,9 +23,12 @@
 				  <tr>
 				  	<td>#filterDiv( "displayViewChartForm" )</td>
                     <td align="right">
-                    	<input type="button" value="$i18n.getString( 'add_period_chart' )" style="width:200px" onclick="window.location.href='displayAddChartForm.action?dimension=period'"><br>
-                    	<input type="button" value="$i18n.getString( 'add_organisation_unit_chart' )" style="width:200px" onclick="window.location.href='displayAddChartForm.action?dimension=organisationUnit'"><br>
-						<input type="button" value="$i18n.getString( 'add_indicator_chart' )" style="width:200px" onclick="window.location.href='displayAddChartForm.action?dimension=indicator'">
+                    	<select id="chart_type">
+                    		<option value='period'>$i18n.getString( 'period_by_indicator_chart' )</option>
+                    		<option value='organisationUnit'>$i18n.getString( 'indicator_by_organisation_unit_chart' )</option>
+                    		<option value='indicator'>$i18n.getString( 'indicator_by_period_chart' )</option>
+                    	</select>
+                    	<button type="button" id="add_chart">$i18n.getString( 'add' )</button>
                     </td>
                 </tr>
 			</table>
