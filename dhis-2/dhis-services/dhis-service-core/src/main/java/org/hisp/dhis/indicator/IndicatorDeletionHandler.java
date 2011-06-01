@@ -94,6 +94,7 @@ public class IndicatorDeletionHandler
         }
     }
 
+    @Override
     public boolean allowDeleteDataElement( DataElement dataElement )
     {
         for ( Indicator indicator : indicatorService.getAllIndicators() )
