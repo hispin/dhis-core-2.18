@@ -72,7 +72,12 @@
     </tr>
     <tr>
         <td><label for="featureType">$i18n.getString( "feature_type" )</label></td>
-        <td><input type="text" id="featureType" name="featureType" value="$!encoder.htmlEncode( $organisationUnit.featureType )" style="width:20em" readonly="readonly"/></td>
+        <td>
+            <select id="featureType" name="featureType" style="min-width:20em">
+                <option value="Polygon" #if( $organisationUnit.featureType == $i18n.getString( "polygon" ) || $organisationUnit.featureType == $i18n.getString( "multipolygon" ) ) selected="selected" #end>$i18n.getString( "polygon" )</option>
+                <option value="Point" #if( $organisationUnit.featureType == $i18n.getString( "point" ) ) selected="selected" #end>$i18n.getString( "point" )</option>
+            </select>
+        </td>
     </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
