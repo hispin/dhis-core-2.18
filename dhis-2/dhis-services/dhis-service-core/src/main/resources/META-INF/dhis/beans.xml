@@ -42,7 +42,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="cacheable" value="true"/>
 	</bean>
 
-	<bean id="org.hisp.dhis.datadictionary.DataDictionaryStore" class="org.hisp.dhis.datadictionary.hibernate.HibernateDataDictionaryStore">
+	<bean id="org.hisp.dhis.datadictionary.DataDictionaryStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.datadictionary.DataDictionary" />
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="cacheable" value="true"/>

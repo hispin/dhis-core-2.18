@@ -302,7 +302,7 @@ function keyPress( event, field )
 {
     var key = event.keyCode || event.charCode || event.which;
     
-    var focusField = ( key == 13 || key == 40 ) ? getNextEntryField( field ) : ( ( key == 38 ) ? getPreviousEntryField( field ) : false );
+    var focusField = ( key == 13 || key == 40 ) ? getNextEntryField( field ) : ( key == 38 ) ? getPreviousEntryField( field ) : false;
     
     if ( focusField )
     {
@@ -314,39 +314,32 @@ function keyPress( event, field )
 
 function getNextEntryField( field )
 {
-	if ( field )
-	{
-		var index = field.getAttribute( 'tabindex' );
-		field = $('input[tabindex="'+(++index)+'"]');
-		
-		while ( field )
-		{
-			if ( field.is(':disabled') || field.is(':hidden') )
-			{
-				field = $('input[tabindex="'+(++index)+'"]');
-			}
-			else return field;
-		}
-	}
+    var fields = $('input[name="entryfield"]');
+
+    var index = field.tabIndex;
+    
+    while (fields[index]) {
+        if (!fields[index].disabled) {
+            return fields[index];
+        }
+        index++;
+    }
 }
 
 function getPreviousEntryField( field )
 {
-	if ( field )
-	{
-		var index = field.getAttribute( 'tabindex' );
-		field = $('input[tabindex="'+(--index)+'"]');
-		
-		while ( field )
-		{
-			if ( field.is(':disabled') || field.is(':hidden') )
-			{
-				field = $('input[tabindex="'+(--index)+'"]');
-			}
-			else return field;
-		}
-	}
+    var fields = $('input[name="entryfield"]');
+    
+    var index = field.tabIndex - 2;
+    
+    while (fields[index]) {
+        if (!fields[index].disabled) {
+            return fields[index];
+        }
+        index--;
+    }
 }
+
 // -----------------------------------------------------------------------------
 // Data completeness
 // -----------------------------------------------------------------------------
