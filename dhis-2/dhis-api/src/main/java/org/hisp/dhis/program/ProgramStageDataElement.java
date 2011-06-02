@@ -58,12 +58,23 @@ public class ProgramStageDataElement
      * programStage
      */
     private boolean compulsory = false;
+    
+    private Integer sortOrder;
 
     public ProgramStageDataElement( ProgramStage programStage, DataElement dataElement, boolean compulsory )
     {
         this.programStage = programStage;
         this.dataElement = dataElement;
         this.compulsory = compulsory;
+    }
+    
+    public ProgramStageDataElement( ProgramStage programStage, DataElement dataElement, boolean compulsory,
+        Integer sortOrder )
+    {
+        this.programStage = programStage;
+        this.dataElement = dataElement;
+        this.compulsory = compulsory;
+        this.sortOrder = sortOrder;
     }
 
     public ProgramStageDataElement()
@@ -98,6 +109,16 @@ public class ProgramStageDataElement
     public void setCompulsory( boolean compulsory )
     {
         this.compulsory = compulsory;
+    }
+    
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
     }
 
     // -------------------------------------------------------------------------
