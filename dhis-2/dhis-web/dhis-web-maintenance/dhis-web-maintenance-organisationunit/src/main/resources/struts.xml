@@ -43,7 +43,7 @@
 			class="org.hisp.dhis.oum.action.organisationunit.PrepareAddOrganisationUnitAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/featureType.js,../dhis-web-commons/ouwt/ouwt.js</param>
+			<param name="javascripts">javascript/shortName.js,../dhis-web-commons/ouwt/ouwt.js</param>
 			<param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
 		</action>
 
@@ -72,7 +72,7 @@
 			class="org.hisp.dhis.oum.action.organisationunit.GetOrganisationUnitAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/featureType.js,../dhis-web-commons/ouwt/ouwt.js</param>
+			<param name="javascripts">javascript/shortName.js,../dhis-web-commons/ouwt/ouwt.js</param>
 			<param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
 		</action>
 

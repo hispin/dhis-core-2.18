@@ -40,7 +40,12 @@
     </tr>
     <tr>
         <td><label for="featureType">$i18n.getString( "feature_type" )</label></td>
-        <td><input type="text" id="featureType" name="featureType" style="width:20em" readonly="readonly"/></td>
+        <td>
+            <select id="featureType" name="featureType" style="min-width:20em">
+                <option value="Polygon">$i18n.getString( "polygon" )</option>
+                <option value="Point">$i18n.getString( "point" )</option>
+            </select>
+        </td>
     </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
