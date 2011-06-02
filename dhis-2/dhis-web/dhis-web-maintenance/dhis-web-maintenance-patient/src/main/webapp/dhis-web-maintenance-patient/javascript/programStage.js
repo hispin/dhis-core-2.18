@@ -89,6 +89,43 @@ function unSelectDataElements()
 	});
 }
 
+//-----------------------------------------------------------------------------
+//Move Table Row Up and Down
+//-----------------------------------------------------------------------------
+
+
+function moveUpDataElement()
+{
+	var selectedList = jQuery("#selectedList");
+	jQuery("#selectedList").find("tr").each( function( i, item ){
+		item = jQuery(item);
+		if( item.hasClass("selected") )
+		{
+			var prev = item.prev('#selectedList tr');
+			if (prev.length == 1) 
+			{ 
+				prev.before(item);
+			}
+		}
+	});
+}
+
+function moveDownDataElement()
+{
+	var selectedList = jQuery("#selectedList");
+	jQuery("#selectedList").find("tr").each( function( i, item ){
+		item = jQuery(item);
+		if( item.hasClass("selected") )
+		{
+			var next = item.next('#selectedList tr');
+			if (next.length == 1) 
+			{ 
+				next.after(item);
+			}
+		}
+	});
+}
+
 function unSelectDataElement( element )
 {
 	element = jQuery(element);	

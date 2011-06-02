@@ -158,7 +158,7 @@ public class AddProgramStageAction
         {
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
             ProgramStageDataElement programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
-                this.compulsories.get( i ) );
+                this.compulsories.get( i ), new Integer( i ) );
             programStageDataElementService.addProgramStageDataElement( programStageDataElement );
         }
 

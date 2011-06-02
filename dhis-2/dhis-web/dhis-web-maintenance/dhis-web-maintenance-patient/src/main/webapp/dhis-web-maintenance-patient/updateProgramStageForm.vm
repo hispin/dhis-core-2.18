@@ -114,6 +114,12 @@ jQuery( function(){
 				</table>
 			</div>
         </td>
+        
+        <td style="width:30px; text-align:center">
+            <a href="javascript:moveUpDataElement()"><img src="../images/move_up.png"/></a><br/><br/>
+            <a href="javascript:moveDownDataElement()"><img src="../images/move_down.png"/></a><br/><br/>
+        </td>  
+        
     </tr>
     </tbody>
 </table>

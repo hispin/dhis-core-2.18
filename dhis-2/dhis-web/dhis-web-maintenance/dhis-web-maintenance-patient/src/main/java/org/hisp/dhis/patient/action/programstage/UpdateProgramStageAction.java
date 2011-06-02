@@ -151,12 +151,14 @@ public class UpdateProgramStageAction
             if ( programStageDataElement == null )
             {
                 programStageDataElement = new ProgramStageDataElement( programStage, dataElement, this.compulsories
-                    .get( i ) );
+                    .get( i ), new Integer( i ) );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
             else
             {
                 programStageDataElement.setCompulsory( this.compulsories.get( i ) );
+                
+                programStageDataElement.setSortOrder( new Integer( i ) );
 
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
 

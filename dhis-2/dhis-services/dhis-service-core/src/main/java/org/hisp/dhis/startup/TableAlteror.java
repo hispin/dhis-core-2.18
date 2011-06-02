@@ -130,6 +130,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicator DROP COLUMN extendeddataelementid" );
         executeSql( "DROP TABLE extendeddataelement" );
         
+        // add sort order for programstage
+        executeSql("ALTER TABLE programstage_dataelements ADD COLUMN sort_order int");
+        
         // ---------------------------------------------------------------------
         // Update tables for dimensional model
         // ---------------------------------------------------------------------

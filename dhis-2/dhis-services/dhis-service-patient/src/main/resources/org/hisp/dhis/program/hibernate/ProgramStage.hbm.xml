@@ -20,7 +20,7 @@
 
     <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_programstage_program" />
 
-    <set name="programStageDataElements" >
+    <set name="programStageDataElements" order-by="sort_order" >
       <key column="programstageid" />
       <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
     </set>
