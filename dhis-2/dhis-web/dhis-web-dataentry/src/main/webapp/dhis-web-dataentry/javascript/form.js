@@ -332,18 +332,21 @@ function getNextEntryField( field )
 
 function getPreviousEntryField( field )
 {
-    var fields = $('input[name="entryfield"]');
-    
-    var index = field.tabIndex - 2;
-    
-    while (fields[index]) {
-        if (!fields[index].disabled) {
-            return fields[index];
-        }
-        index--;
-    }
+	if ( field )
+	{
+		var index = field.getAttribute( 'tabindex' );
+		field = $('input[tabindex="'+(--index)+'"]');
+		
+		while ( field )
+		{
+			if ( field.is(':disabled') || field.is(':hidden') )
+			{
+				field = $('input[tabindex="'+(--index)+'"]');
+			}
+			else return field;
+		}
+	}
 }
-
 // -----------------------------------------------------------------------------
 // Data completeness
 // -----------------------------------------------------------------------------
