@@ -138,7 +138,7 @@ public class GetDataElementListAction
     }
 
     private String key;
-    
+
     public String getKey()
     {
         return key;
@@ -165,7 +165,8 @@ public class GetDataElementListAction
 
             dataDictionaryId = null;
         }
-        else  // Specified, set current data dictionary
+        else
+        // Specified, set current data dictionary
         {
             dataDictionaryModeManager.setCurrentDataDictionary( dataDictionaryId );
         }
@@ -180,23 +181,41 @@ public class GetDataElementListAction
 
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            this.paging = createPaging( dataElementService.getDataElementCountByName( key ) );
-            
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            if ( dataDictionaryId == null )
+            {
+                this.paging = createPaging( dataElementService.getDataElementCountByName( key ) );
+
+                dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetweenByName( key, paging
+                    .getStartPos(), paging.getPageSize() ) );
+            }
+            else
+            {
+                dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataElementsByDictionaryId( key,
+                    dataDictionaryId ) );
+       
+                this.paging = createPaging( dataElements.size() );
+
+                if ( dataElements.size() > 0 )
+                {
+                    dataElements = getBlockElement( dataElements, paging.getStartPos(), paging.getEndPos() );
+                }
+            }
         }
         else if ( dataDictionaryId != null )
         {
-            dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId ) );
-            
+            dataElements = new ArrayList<DataElement>( dataDictionaryService
+                .getDataElementsByDictionaryId( dataDictionaryId ) );           
+
             this.paging = createPaging( dataElements.size() );
-            
-            dataElements = getBlockElement( dataElements, paging.getStartPos(), paging.getPageSize() );
+
+            dataElements = getBlockElement( dataElements, paging.getStartPos(), paging.getEndPos() );
         }
         else
         {
             this.paging = createPaging( dataElementService.getDataElementCount() );
-            
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetween( paging.getStartPos(), paging.getPageSize() ) );
+
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetween( paging.getStartPos(),
+                paging.getPageSize() ) );
         }
 
         Collections.sort( dataElements, dataElementComparator );

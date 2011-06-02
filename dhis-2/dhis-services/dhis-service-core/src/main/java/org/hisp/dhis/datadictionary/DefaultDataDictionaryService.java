@@ -31,9 +31,9 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,9 +50,9 @@ public class DefaultDataDictionaryService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<DataDictionary> dataDictionaryStore;
+    private DataDictionaryStore dataDictionaryStore;
 
-    public void setDataDictionaryStore( GenericIdentifiableObjectStore<DataDictionary> dataDictionaryStore )
+    public void setDataDictionaryStore( DataDictionaryStore dataDictionaryStore )
     {
         this.dataDictionaryStore = dataDictionaryStore;
     }
@@ -109,6 +109,21 @@ public class DefaultDataDictionaryService
     public Collection<DataElement> getDataElementsByDictionaryId( int dictionaryId )
     {
         return i18n( i18nService, dataDictionaryStore.get( dictionaryId ).getDataElements() );
+    }
+
+    public Collection<DataElement> getDataElementsByDictionaryId( String key, int dictionaryId )
+    {
+        return i18n( i18nService, dataDictionaryStore.getDataElements( key, dictionaryId ) );
+    }
+    
+    public Collection<Indicator> getIndicatorsByDictionaryId( int dictionaryId )
+    {
+        return i18n( i18nService, dataDictionaryStore.get( dictionaryId ).getIndicators() );
+    }
+    
+    public Collection<Indicator> getIndicatorsByDictionaryId( String key, int dictionaryId )
+    {
+        return i18n( i18nService, dataDictionaryStore.getIndicators( key, dictionaryId ) );
     }
 
     public int getDataDictionaryCount()
