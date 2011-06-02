@@ -64,52 +64,26 @@ public class JDBCCrossTabStore
 
     public void createCrossTabTable( final Collection<DataElementOperand> operands, String key )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final StringBuffer sql = new StringBuffer( "CREATE TABLE " + TABLE_PREFIX + key + " ( " );
         
-        try
+        sql.append( "periodid INTEGER NOT NULL, " );
+        sql.append( "sourceid INTEGER NOT NULL, " );
+        
+        for ( DataElementOperand operand : operands )
         {
-            final StringBuffer sql = new StringBuffer( "CREATE TABLE " + TABLE_PREFIX + key + " ( " );
-            
-            sql.append( "periodid INTEGER NOT NULL, " );
-            sql.append( "sourceid INTEGER NOT NULL, " );
-            
-            for ( DataElementOperand operand : operands )
-            {
-                sql.append( operand.getColumnName() ).append( " VARCHAR(30), " );
-            }
-            
-            sql.append( "PRIMARY KEY ( periodid, sourceid ) );" );
-            
-            holder.getStatement().executeUpdate( sql.toString() );
+            sql.append( operand.getColumnName() ).append( " VARCHAR(30), " );
         }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to create datavalue crosstab table", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        
+        sql.append( "PRIMARY KEY ( periodid, sourceid ) );" );
+        
+        statementManager.getHolder().executeUpdate( sql.toString() );
     }
     
     public void dropCrossTabTable( String key )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final String sql = "DROP TABLE IF EXISTS " + TABLE_PREFIX + key;
         
-        try
-        {
-            final String sql = "DROP TABLE IF EXISTS " + TABLE_PREFIX + key;
-            
-            holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to drop datavalue crosstab table", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        statementManager.getHolder().executeUpdate( sql );
     }
         
     // -------------------------------------------------------------------------
