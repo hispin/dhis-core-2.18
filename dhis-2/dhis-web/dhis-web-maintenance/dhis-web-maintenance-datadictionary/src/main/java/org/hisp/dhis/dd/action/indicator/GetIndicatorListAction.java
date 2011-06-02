@@ -138,7 +138,7 @@ public class GetIndicatorListAction
     }
 
     private String key;
-
+    
     public String getKey()
     {
         return key;
@@ -162,15 +162,14 @@ public class GetIndicatorListAction
         else if ( dataDictionaryId == -1 ) // All, reset current data dictionary
         {
             dataDictionaryModeManager.setCurrentDataDictionary( null );
-
+            
             dataDictionaryId = null;
         }
-        else
-        // Specified, set current data dictionary
+        else // Specified, set current data dictionary
         {
             dataDictionaryModeManager.setCurrentDataDictionary( dataDictionaryId );
         }
-
+        
         dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() );
 
         Collections.sort( dataDictionaries, new DataDictionaryNameComparator() );
@@ -181,45 +180,25 @@ public class GetIndicatorListAction
 
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            if ( dataDictionaryId == null )
-            {
-                this.paging = createPaging( indicatorService.getIndicatorCountByName( key ) );
-
-                indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetweenByName( key, paging
-                    .getStartPos(), paging.getPageSize() ) );
-            }
-            else
-            {
-                indicators = new ArrayList<Indicator>( dataDictionaryService.getIndicatorsByDictionaryId( key,
-                    dataDictionaryId ) );
-
-                this.paging = createPaging( indicators.size() );
-
-                if( indicators.size() > 0 )
-                {
-                    indicators = getBlockElement( indicators, paging.getStartPos() , paging.getEndPos() );
-                }
-            }
+            this.paging = createPaging( indicatorService.getIndicatorCountByName( key ) );
+            
+            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else if ( dataDictionaryId != null )
         {
-            indicators = new ArrayList<Indicator>( dataDictionaryService.getIndicatorsByDictionaryId( dataDictionaryId ) );
-          
+            indicators = new ArrayList<Indicator>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators() );
+            
             this.paging = createPaging( indicators.size() );
-
-            if ( indicators.size() > 0 )
-            {
-                indicators = getBlockElement( indicators, paging.getStartPos() , paging.getEndPos() );
-            }
+            
+            indicators = getBlockElement( indicators, paging.getStartPage(), paging.getEndPos() );
         }
         else
         {
             this.paging = createPaging( indicatorService.getIndicatorCount() );
-
-            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetween( paging.getStartPos(), paging
-                .getPageSize() ) );
+            
+            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
-
+        
         Collections.sort( indicators, indicatorComparator );
 
         displayPropertyHandler.handle( indicators );

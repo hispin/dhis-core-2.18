@@ -30,7 +30,6 @@ package org.hisp.dhis.datadictionary;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.indicator.Indicator;
 
 /**
  * @author Lars Helge Overland
@@ -97,12 +96,6 @@ public interface DataDictionaryService
      * @return data elements with identifier in the given id.
      */
     Collection<DataElement> getDataElementsByDictionaryId( int dictionaryId );
-    
-    Collection<DataElement> getDataElementsByDictionaryId( String key, int dictionaryId );
-    
-    Collection<Indicator> getIndicatorsByDictionaryId( int dictionaryId );
-    
-    Collection<Indicator> getIndicatorsByDictionaryId( String key, int dictionaryId );
     
     Collection<DataDictionary> getDataDictionarysBetween( int first, int max );
     
