@@ -38,6 +38,8 @@ import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
@@ -59,6 +61,8 @@ import org.hisp.dhis.system.util.DateUtils;
 public class DefaultIndicatorDataMart
     implements IndicatorDataMart
 {
+    private static final Log log = LogFactory.getLog( DefaultIndicatorDataMart.class );
+    
     private static final int DECIMALS = 1;
 
     private static final String TRUE = "true";
@@ -206,6 +210,8 @@ public class DefaultIndicatorDataMart
                     }
                 }
             }
+            
+            log.debug( "Exported indicator values for period: " + period );
         }
         
         batchHandler.flush();

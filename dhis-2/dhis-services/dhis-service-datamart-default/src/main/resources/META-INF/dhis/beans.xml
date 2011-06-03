@@ -40,16 +40,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datamart.dataelement.DataElementDataMart"/>
     <property name="indicatorDataMart"
       ref="org.hisp.dhis.datamart.indicator.IndicatorDataMart"/>
-    <property name="sumIntAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
-    <property name="averageIntAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
-	<property name="averageIntSingleValueAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
-    <property name="sumBoolAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.SumBoolAggregator"/>
-    <property name="averageBoolAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageBoolAggregator"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="indicatorService"
@@ -152,6 +142,16 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
+    <property name="sumIntAggregator"
+      ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
+    <property name="averageIntAggregator"
+      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
+	<property name="averageIntSingleValueAggregator"
+      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
+    <property name="sumBoolAggregator"
+      ref="org.hisp.dhis.datamart.aggregation.dataelement.SumBoolAggregator"/>
+    <property name="averageBoolAggregator"
+      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageBoolAggregator"/>
   </bean>
   
   <!-- IndicatorDataMart -->
