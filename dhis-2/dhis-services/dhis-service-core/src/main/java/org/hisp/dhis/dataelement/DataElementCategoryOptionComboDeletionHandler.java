@@ -88,6 +88,10 @@ public class DataElementCategoryOptionComboDeletionHandler
             String sql = "SELECT COUNT(*) FROM datavalue where categoryoptioncomboid=" + eachOptionCombo.getId();
             
             if( jdbcTemplate.queryForInt( sql ) > 0) return false;
+            
+            sql = "SELECT COUNT(*) FROM expressionoptioncombo where categoryoptioncomboid=" + eachOptionCombo.getId();
+            
+            if( jdbcTemplate.queryForInt( sql ) > 0) return false;
         }
         
         return true;

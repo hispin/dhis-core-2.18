@@ -153,12 +153,15 @@ public class UpdateValidationRuleAction
         validationRule.getLeftSide().setDescription( leftSideDescription );
         validationRule.getLeftSide().setDataElementsInExpression(
             expressionService.getDataElementsInExpression( leftSideExpression ) );
+        validationRule.getLeftSide().setOptionCombosInExpression(
+            expressionService.getOptionCombosInExpression( leftSideExpression ) );
 
         validationRule.getRightSide().setExpression( rightSideExpression );
         validationRule.getRightSide().setDescription( rightSideDescription );
-
         validationRule.getRightSide().setDataElementsInExpression(
             expressionService.getDataElementsInExpression( rightSideExpression ) );
+        validationRule.getRightSide().setOptionCombosInExpression(
+            expressionService.getOptionCombosInExpression( rightSideExpression ) );
 
         PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
         validationRule.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );

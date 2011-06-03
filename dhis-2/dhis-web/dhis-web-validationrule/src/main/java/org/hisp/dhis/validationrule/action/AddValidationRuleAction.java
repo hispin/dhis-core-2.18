@@ -143,12 +143,14 @@ public class AddValidationRuleAction
         leftSide.setExpression( leftSideExpression );
         leftSide.setDescription( leftSideDescription );
         leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSideExpression ) );
+        leftSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( leftSideExpression ) );
         
         Expression rightSide = new Expression();
         
         rightSide.setExpression( rightSideExpression );
         rightSide.setDescription( rightSideDescription );
         rightSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSideExpression ) );
+        rightSide.setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightSideExpression ) );
         
         ValidationRule validationRule = new ValidationRule();
         

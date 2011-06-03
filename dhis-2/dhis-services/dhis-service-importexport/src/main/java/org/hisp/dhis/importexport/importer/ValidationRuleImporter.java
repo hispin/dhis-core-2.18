@@ -83,6 +83,7 @@ public class ValidationRuleImporter
         match.getRightSide().setExpression( object.getRightSide().getExpression() );
         match.getRightSide().setDescription( object.getRightSide().getDescription() );
         match.getRightSide().setDataElementsInExpression( object.getRightSide().getDataElementsInExpression() );
+        match.getRightSide().setOptionCombosInExpression( object.getRightSide().getOptionCombosInExpression() );
         
         expressionService.updateExpression( match.getLeftSide() );
         expressionService.updateExpression( match.getRightSide() );

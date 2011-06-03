@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
 /**
  * An Expression is the expression of e.g. a validation rule. It consist of a
@@ -81,6 +82,11 @@ public class Expression
      */
     private Set<DataElement> dataElementsInExpression;
     
+    /**
+     * A reference to the optionCombos in the Expression.
+     */
+    private Set<DataElementCategoryOptionCombo> optionCombosInExpression;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -98,11 +104,13 @@ public class Expression
      * @param description A description of the Expression.
      * @param dataElementsInExpression A reference to the DataElements in the Expression.
      */
-    public Expression( String expression, String description, Set<DataElement> dataElementsInExpression )
+    public Expression( String expression, String description, Set<DataElement> dataElementsInExpression,
+        Set<DataElementCategoryOptionCombo> optionCombosInExpression )
     {
         this.expression = expression;
         this.description = description;
         this.dataElementsInExpression = dataElementsInExpression;
+        this.optionCombosInExpression = optionCombosInExpression;
     }
 
     // -------------------------------------------------------------------------
@@ -182,6 +190,16 @@ public class Expression
     public void setDataElementsInExpression( Set<DataElement> dataElementsInExpression )
     {
         this.dataElementsInExpression = dataElementsInExpression;
+    }
+
+    public Set<DataElementCategoryOptionCombo> getOptionCombosInExpression()
+    {
+        return optionCombosInExpression;
+    }
+
+    public void setOptionCombosInExpression( Set<DataElementCategoryOptionCombo> optionCombosInExpression )
+    {
+        this.optionCombosInExpression = optionCombosInExpression;
     }
 
     public String getDescription()
