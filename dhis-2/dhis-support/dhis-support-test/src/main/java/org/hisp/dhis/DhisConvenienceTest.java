@@ -743,14 +743,15 @@ public abstract class DhisConvenienceTest
      *        entering into the expression.
      */
     public static Expression createExpression( char uniqueCharacter, String expressionString,
-        Set<DataElement> dataElementsInExpression )
+        Set<DataElement> dataElementsInExpression, Set<DataElementCategoryOptionCombo> optionCombosInExpression )
     {
         Expression expression = new Expression();
 
         expression.setExpression( expressionString );
         expression.setDescription( "Description" + uniqueCharacter );
         expression.setDataElementsInExpression( dataElementsInExpression );
-
+        expression.setOptionCombosInExpression( optionCombosInExpression );
+        
         return expression;
     }
 

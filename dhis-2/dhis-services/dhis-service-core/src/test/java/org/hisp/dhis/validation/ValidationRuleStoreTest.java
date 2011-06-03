@@ -27,12 +27,12 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.expression.Operator.*;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static org.hisp.dhis.expression.Operator.equal_to;
+import static org.hisp.dhis.expression.Operator.greater_than;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -40,6 +40,9 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
@@ -68,6 +71,8 @@ public class ValidationRuleStoreTest
 
     private Set<DataElement> dataElements;
 
+    private Set<DataElementCategoryOptionCombo> optionCombos;
+
     private Expression expressionA;
 
     private Expression expressionB;
@@ -85,6 +90,8 @@ public class ValidationRuleStoreTest
         validationRuleStore = (ValidationRuleStore) getBean( ValidationRuleStore.ID );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
+
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
         expressionService = (ExpressionService) getBean( ExpressionService.ID );
 
@@ -105,8 +112,15 @@ public class ValidationRuleStoreTest
         dataElements.add( dataElementC );
         dataElements.add( dataElementD );
 
-        expressionA = new Expression( "expressionA", "descriptionA", dataElements );
-        expressionB = new Expression( "expressionB", "descriptionB", dataElements );
+        DataElementCategoryCombo categoryCombo = categoryService
+            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
+
+        optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+        optionCombos.add( categoryOptionCombo );
+
+        expressionA = new Expression( "expressionA", "descriptionA", dataElements, optionCombos );
+        expressionB = new Expression( "expressionB", "descriptionB", dataElements, optionCombos );
 
         expressionService.addExpression( expressionB );
         expressionService.addExpression( expressionA );
@@ -127,8 +141,7 @@ public class ValidationRuleStoreTest
     @Test
     public void testSaveValidationRule()
     {
-        ValidationRule validationRule = createValidationRule( 'A', equal_to, expressionA,
-            expressionB, periodType );
+        ValidationRule validationRule = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
 
         int id = validationRuleStore.saveValidationRule( validationRule );
 
@@ -146,8 +159,7 @@ public class ValidationRuleStoreTest
     @Test
     public void testUpdateValidationRule()
     {
-        ValidationRule validationRule = createValidationRule( 'A', equal_to, expressionA,
-            expressionB, periodType );
+        ValidationRule validationRule = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
 
         int id = validationRuleStore.saveValidationRule( validationRule );
 
@@ -176,10 +188,8 @@ public class ValidationRuleStoreTest
     @Test
     public void testDeleteValidationRule()
     {
-        ValidationRule validationRuleA = createValidationRule( 'A', equal_to, expressionA,
-            expressionB, periodType );
-        ValidationRule validationRuleB = createValidationRule( 'B', equal_to, expressionA,
-            expressionB, periodType );
+        ValidationRule validationRuleA = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
+        ValidationRule validationRuleB = createValidationRule( 'B', equal_to, expressionA, expressionB, periodType );
 
         int idA = validationRuleStore.saveValidationRule( validationRuleA );
         int idB = validationRuleStore.saveValidationRule( validationRuleB );
@@ -205,10 +215,8 @@ public class ValidationRuleStoreTest
     @Test
     public void testGetAllValidationRules()
     {
-        ValidationRule validationRuleA = createValidationRule( 'A', equal_to, expressionA,
-            expressionB, periodType );
-        ValidationRule validationRuleB = createValidationRule( 'B', equal_to, expressionA,
-            expressionB, periodType );
+        ValidationRule validationRuleA = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
+        ValidationRule validationRuleB = createValidationRule( 'B', equal_to, expressionA, expressionB, periodType );
 
         validationRuleStore.saveValidationRule( validationRuleA );
         validationRuleStore.saveValidationRule( validationRuleB );
@@ -223,10 +231,8 @@ public class ValidationRuleStoreTest
     @Test
     public void testGetValidationRuleByName()
     {
-        ValidationRule validationRuleA = createValidationRule( 'A', equal_to, expressionA,
-            expressionB, periodType );
-        ValidationRule validationRuleB = createValidationRule( 'B', equal_to, expressionA,
-            expressionB, periodType );
+        ValidationRule validationRuleA = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
+        ValidationRule validationRuleB = createValidationRule( 'B', equal_to, expressionA, expressionB, periodType );
 
         int id = validationRuleStore.saveValidationRule( validationRuleA );
         validationRuleStore.saveValidationRule( validationRuleB );
@@ -254,25 +260,22 @@ public class ValidationRuleStoreTest
         dataElementsD.addAll( dataElementsA );
         dataElementsD.addAll( dataElementsB );
 
-        Expression expression1 = new Expression( "Expression1", "Expression1", dataElementsA );
-        Expression expression2 = new Expression( "Expression2", "Expression2", dataElementsB );
-        Expression expression3 = new Expression( "Expression3", "Expression3", dataElementsC );
+        Expression expression1 = new Expression( "Expression1", "Expression1", dataElementsA, optionCombos );
+        Expression expression2 = new Expression( "Expression2", "Expression2", dataElementsB, optionCombos );
+        Expression expression3 = new Expression( "Expression3", "Expression3", dataElementsC, optionCombos );
 
         expressionService.addExpression( expression1 );
         expressionService.addExpression( expression2 );
         expressionService.addExpression( expression3 );
 
-        ValidationRule ruleA = createValidationRule( 'A', equal_to, expression1, expression3,
-            periodType );
-        ValidationRule ruleB = createValidationRule( 'B', equal_to, expression2, expression3,
-            periodType );
-        ValidationRule ruleC = createValidationRule( 'C', equal_to, expression3, expression3,
-            periodType );
+        ValidationRule ruleA = createValidationRule( 'A', equal_to, expression1, expression3, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', equal_to, expression2, expression3, periodType );
+        ValidationRule ruleC = createValidationRule( 'C', equal_to, expression3, expression3, periodType );
 
         validationRuleStore.saveValidationRule( ruleA );
         validationRuleStore.saveValidationRule( ruleB );
         validationRuleStore.saveValidationRule( ruleC );
-
+        
         Collection<ValidationRule> rules = validationRuleStore.getValidationRulesByDataElements( dataElementsA );
 
         assertNotNull( rules );
@@ -310,20 +313,17 @@ public class ValidationRuleStoreTest
         dataElementsD.addAll( dataElementsA );
         dataElementsD.addAll( dataElementsB );
 
-        Expression expression1 = new Expression( "Expression1", "Expression1", dataElementsA );
-        Expression expression2 = new Expression( "Expression2", "Expression2", dataElementsB );
-        Expression expression3 = new Expression( "Expression3", "Expression3", dataElementsC );
+        Expression expression1 = new Expression( "Expression1", "Expression1", dataElementsA, optionCombos );
+        Expression expression2 = new Expression( "Expression2", "Expression2", dataElementsB, optionCombos );
+        Expression expression3 = new Expression( "Expression3", "Expression3", dataElementsC, optionCombos );
 
         expressionService.addExpression( expression1 );
         expressionService.addExpression( expression2 );
         expressionService.addExpression( expression3 );
 
-        ValidationRule ruleA = createValidationRule( 'A', equal_to, expression1, expression3,
-            periodType );
-        ValidationRule ruleB = createValidationRule( 'B', equal_to, expression2, expression3,
-            periodType );
-        ValidationRule ruleC = createValidationRule( 'C', equal_to, expression3, expression3,
-            periodType );
+        ValidationRule ruleA = createValidationRule( 'A', equal_to, expression1, expression3, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', equal_to, expression2, expression3, periodType );
+        ValidationRule ruleC = createValidationRule( 'C', equal_to, expression3, expression3, periodType );
 
         validationRuleStore.saveValidationRule( ruleA );
         validationRuleStore.saveValidationRule( ruleB );

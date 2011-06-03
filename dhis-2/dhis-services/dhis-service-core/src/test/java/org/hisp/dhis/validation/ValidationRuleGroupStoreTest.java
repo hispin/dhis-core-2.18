@@ -31,8 +31,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-
-import static org.hisp.dhis.expression.Operator.*;
+import static org.hisp.dhis.expression.Operator.equal_to;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -41,6 +40,9 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
@@ -49,30 +51,37 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: ValidationRuleStoreTest.java 3679 2007-10-22 18:25:18Z larshelg $
+ * @version $Id: ValidationRuleStoreTest.java 3679 2007-10-22 18:25:18Z larshelg
+ *          $
  */
 @SuppressWarnings( "unchecked" )
 public class ValidationRuleGroupStoreTest
     extends DhisSpringTest
 {
     private GenericIdentifiableObjectStore<ValidationRule> validationRuleStore;
-    
+
     private GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore;
 
     private ExpressionService expressionService;
-    
+
     private DataElement dataElementA;
+
     private DataElement dataElementB;
+
     private DataElement dataElementC;
+
     private DataElement dataElementD;
 
     private Set<DataElement> dataElements;
 
+    private Set<DataElementCategoryOptionCombo> optionCombos;
+
     private Expression expressionA;
+
     private Expression expressionB;
 
     private PeriodType periodType;
-    
+
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -80,24 +89,26 @@ public class ValidationRuleGroupStoreTest
     @Override
     public void setUpTest()
         throws Exception
-    {       
+    {
         validationRuleStore = (GenericIdentifiableObjectStore<ValidationRule>) getBean( "org.hisp.dhis.validation.ValidationRuleStore" );
-        
+
         validationRuleGroupStore = (GenericIdentifiableObjectStore<ValidationRuleGroup>) getBean( "org.hisp.dhis.validation.ValidationRuleGroupStore" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        expressionService = (ExpressionService) getBean ( ExpressionService.ID );
-        
+
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
+
+        expressionService = (ExpressionService) getBean( ExpressionService.ID );
+
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
         dataElementC = createDataElement( 'C' );
         dataElementD = createDataElement( 'D' );
-        
+
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
         dataElementService.addDataElement( dataElementC );
-        dataElementService.addDataElement( dataElementD );        
+        dataElementService.addDataElement( dataElementD );
 
         dataElements = new HashSet<DataElement>();
 
@@ -105,13 +116,20 @@ public class ValidationRuleGroupStoreTest
         dataElements.add( dataElementB );
         dataElements.add( dataElementC );
         dataElements.add( dataElementD );
-                
-        expressionA = new Expression( "expressionA", "descriptionA", dataElements );
-        expressionB = new Expression( "expressionB", "descriptionB", dataElements );
-        
+
+        DataElementCategoryCombo categoryCombo = categoryService
+            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
+
+        optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+        optionCombos.add( categoryOptionCombo );
+
+        expressionA = new Expression( "expressionA", "descriptionA", dataElements, optionCombos );
+        expressionB = new Expression( "expressionB", "descriptionB", dataElements, optionCombos );
+
         expressionService.addExpression( expressionB );
         expressionService.addExpression( expressionA );
-        
+
         periodType = PeriodType.getAvailablePeriodTypes().iterator().next();
     }
 
@@ -124,24 +142,24 @@ public class ValidationRuleGroupStoreTest
     {
         ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
         ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
-        
+
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );
-        
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         int idA = validationRuleGroupStore.save( groupA );
         int idB = validationRuleGroupStore.save( groupB );
-        
+
         assertEquals( groupA, validationRuleGroupStore.get( idA ) );
         assertEquals( groupB, validationRuleGroupStore.get( idB ) );
     }
@@ -151,35 +169,35 @@ public class ValidationRuleGroupStoreTest
     {
         ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
         ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
-        
+
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );
-        
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         int idA = validationRuleGroupStore.save( groupA );
         int idB = validationRuleGroupStore.save( groupB );
-        
+
         assertEquals( groupA, validationRuleGroupStore.get( idA ) );
         assertEquals( groupB, validationRuleGroupStore.get( idB ) );
-        
+
         ruleA.setName( "UpdatedValidationRuleA" );
         ruleB.setName( "UpdatedValidationRuleB" );
-        
+
         validationRuleGroupStore.update( groupA );
         validationRuleGroupStore.update( groupB );
 
         assertEquals( groupA, validationRuleGroupStore.get( idA ) );
-        assertEquals( groupB, validationRuleGroupStore.get( idB ) );        
+        assertEquals( groupB, validationRuleGroupStore.get( idB ) );
     }
 
     @Test
@@ -187,32 +205,32 @@ public class ValidationRuleGroupStoreTest
     {
         ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
         ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
-        
+
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );
-        
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         int idA = validationRuleGroupStore.save( groupA );
         int idB = validationRuleGroupStore.save( groupB );
-        
+
         assertNotNull( validationRuleGroupStore.get( idA ) );
         assertNotNull( validationRuleGroupStore.get( idB ) );
-        
+
         validationRuleGroupStore.delete( groupA );
 
         assertNull( validationRuleGroupStore.get( idA ) );
         assertNotNull( validationRuleGroupStore.get( idB ) );
-        
+
         validationRuleGroupStore.delete( groupB );
 
         assertNull( validationRuleGroupStore.get( idA ) );
@@ -224,26 +242,26 @@ public class ValidationRuleGroupStoreTest
     {
         ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
         ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
-        
+
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );
-        
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         validationRuleGroupStore.save( groupA );
         validationRuleGroupStore.save( groupB );
-        
+
         Collection<ValidationRuleGroup> groups = validationRuleGroupStore.getAll();
-        
+
         assertEquals( 2, groups.size() );
         assertTrue( groups.contains( groupA ) );
         assertTrue( groups.contains( groupB ) );
@@ -254,26 +272,26 @@ public class ValidationRuleGroupStoreTest
     {
         ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
         ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
-        
+
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );
-        
+
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
+
         rules.add( ruleA );
         rules.add( ruleB );
-        
+
         ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
         ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
+
         groupA.setMembers( rules );
         groupB.setMembers( rules );
-        
+
         validationRuleGroupStore.save( groupA );
         validationRuleGroupStore.save( groupB );
-        
+
         ValidationRuleGroup groupByName = validationRuleGroupStore.getByName( groupA.getName() );
-        
+
         assertEquals( groupA, groupByName );
     }
 }

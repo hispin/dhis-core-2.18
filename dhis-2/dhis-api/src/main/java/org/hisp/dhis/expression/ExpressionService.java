@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -122,6 +123,8 @@ public interface ExpressionService
      * @return A Set of DataElements included in the expression string.
      */
     Set<DataElement> getDataElementsInExpression( String expression );
+    
+    Set<DataElementCategoryOptionCombo> getOptionCombosInExpression( String expression );
     
     /**
      * Returns all operands included in an expression string. The operand is on

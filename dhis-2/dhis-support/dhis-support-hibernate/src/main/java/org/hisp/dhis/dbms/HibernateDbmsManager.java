@@ -73,11 +73,11 @@ public class HibernateDbmsManager
     // -------------------------------------------------------------------------
 
     public void emptyDatabase()
-    {   
+    {
         emptyTable( "translation" );
         emptyTable( "importobject" );
         emptyTable( "importdatavalue" );
-        
+
         emptyTable( "datavalue_audit" );
         emptyTable( "datavalue" );
         emptyTable( "completedatasetregistration" );
@@ -90,13 +90,13 @@ public class HibernateDbmsManager
         emptyTable( "reporttable_organisationunits" );
         emptyTable( "reporttable_displaycolumns" );
         emptyTable( "reporttable" );
-        
+
         emptyTable( "datamartexportdataelements" );
         emptyTable( "datamartexportindicators" );
         emptyTable( "datamartexportorgunits" );
         emptyTable( "datamartexportperiods" );
         emptyTable( "datamartexport" );
-        
+
         emptyTable( "orgunitgroupsetmembers" );
         emptyTable( "orgunitgroupset" );
         emptyTable( "orgunitgroupmembers" );
@@ -111,11 +111,12 @@ public class HibernateDbmsManager
         emptyTable( "validationrule" );
 
         emptyTable( "datasetsource" );
-        emptyTable( "datasetmembers" );        
+        emptyTable( "datasetmembers" );
         emptyTable( "dataset" );
 
         emptyTable( "minmaxdataelement" );
         emptyTable( "expressiondataelement" );
+        emptyTable( "expressionoptioncombo" );
         emptyTable( "calculateddataelement" );
         emptyTable( "dataelementgroupsetmembers" );
         emptyTable( "dataelementgroupset" );
@@ -123,15 +124,10 @@ public class HibernateDbmsManager
         emptyTable( "dataelementgroup" );
         emptyTable( "dataelementaggregationlevels" );
         emptyTable( "dataelement" );
-        emptyTable( "expression" );
         emptyTable( "categoryoptioncombos_categoryoptions" );
         emptyTable( "categorycombos_optioncombos" );
         emptyTable( "categorycombos_categories" );
         emptyTable( "categories_categoryoptions" );
-        emptyTable( "categoryoptioncombo" );
-        emptyTable( "categorycombo" );
-        emptyTable( "dataelementcategory" );
-        emptyTable( "dataelementcategoryoption" );
 
         emptyTable( "organisationunit" );
         emptyTable( "mocksource" );
@@ -144,19 +140,25 @@ public class HibernateDbmsManager
         emptyTable( "indicatorgroup" );
         emptyTable( "indicator" );
         emptyTable( "indicatortype" );
-        
+
+        emptyTable( "expression" );
+        emptyTable( "categoryoptioncombo" );
+        emptyTable( "categorycombo" );
+        emptyTable( "dataelementcategory" );
+        emptyTable( "dataelementcategoryoption" );
+
         dropTable( "aggregateddatavalue" );
-        dropTable( "aggregatedindicatorvalue" );        
-        dropTable( "aggregateddatasetcompleteness" ); 
+        dropTable( "aggregatedindicatorvalue" );
+        dropTable( "aggregateddatasetcompleteness" );
         dropTable( "datavaluecrosstab" );
-        
+
         log.debug( "Cleared database contents" );
-               
+
         cacheManager.clearCache();
-        
+
         log.debug( "Cleared Hibernate cache" );
     }
-    
+
     public void clearSession()
     {
         sessionFactory.getCurrentSession().clear();
@@ -177,7 +179,7 @@ public class HibernateDbmsManager
             log.debug( "Table " + table + " does not exist" );
         }
     }
-    
+
     private void dropTable( String table )
     {
         try

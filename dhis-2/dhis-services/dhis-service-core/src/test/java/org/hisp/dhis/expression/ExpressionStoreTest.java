@@ -39,6 +39,9 @@ import java.util.Set;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Test;
 
@@ -51,20 +54,27 @@ public class ExpressionStoreTest
     extends DhisTest
 {
     private GenericStore<Expression> expressionStore;
-    
-    private int dataElementIdA;    
-    private int dataElementIdB;    
-    private int dataElementIdC;    
+
+    private int dataElementIdA;
+
+    private int dataElementIdB;
+
+    private int dataElementIdC;
+
     private int dataElementIdD;
-    
+
     private String expressionA;
+
     private String expressionB;
-    
+
     private String descriptionA;
+
     private String descriptionB;
-    
+
     private Set<DataElement> dataElements = new HashSet<DataElement>();
-    
+
+    private Set<DataElementCategoryOptionCombo> optionCombos;
+
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -74,25 +84,32 @@ public class ExpressionStoreTest
         throws Exception
     {
         expressionStore = (GenericStore<Expression>) getBean( "org.hisp.dhis.expression.ExpressionStore" );
-        
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
+
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
         DataElement dataElementC = createDataElement( 'C' );
-        DataElement dataElementD = createDataElement( 'D' );        
-        
+        DataElement dataElementD = createDataElement( 'D' );
+
         dataElementIdA = dataElementService.addDataElement( dataElementA );
         dataElementIdB = dataElementService.addDataElement( dataElementB );
         dataElementIdC = dataElementService.addDataElement( dataElementC );
         dataElementIdD = dataElementService.addDataElement( dataElementD );
-        
+
+        DataElementCategoryCombo categoryCombo = categoryService
+            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
+
+        optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+        optionCombos.add( categoryOptionCombo );
+
         expressionA = "[" + dataElementIdA + "] + [" + dataElementIdB + "]";
         expressionB = "[" + dataElementIdC + "] - [" + dataElementIdD + "]";
-        
+
         descriptionA = "Expression A";
         descriptionB = "Expression B";
-                
+
         dataElements.add( dataElementA );
         dataElements.add( dataElementB );
         dataElements.add( dataElementC );
@@ -108,16 +125,16 @@ public class ExpressionStoreTest
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
     @Test
     public void testAddGetExpression()
     {
-        Expression expr = new Expression( expressionA, descriptionA, dataElements );
-        
+        Expression expr = new Expression( expressionA, descriptionA, dataElements, optionCombos );
+
         int id = expressionStore.save( expr );
-        
+
         expr = expressionStore.get( id );
-        
+
         assertEquals( expr.getExpression(), expressionA );
         assertEquals( expr.getDescription(), descriptionA );
         assertEquals( expr.getDataElementsInExpression(), dataElements );
@@ -126,22 +143,22 @@ public class ExpressionStoreTest
     @Test
     public void testUpdateExpression()
     {
-        Expression expr = new Expression( expressionA, descriptionA, dataElements );
-        
+        Expression expr = new Expression( expressionA, descriptionA, dataElements, optionCombos );
+
         int id = expressionStore.save( expr );
-        
+
         expr = expressionStore.get( id );
-        
+
         assertEquals( expr.getExpression(), expressionA );
         assertEquals( expr.getDescription(), descriptionA );
-        
+
         expr.setExpression( expressionB );
         expr.setDescription( descriptionB );
 
         expressionStore.update( expr );
 
         expr = expressionStore.get( id );
-        
+
         assertEquals( expr.getExpression(), expressionB );
         assertEquals( expr.getDescription(), descriptionB );
     }
@@ -149,15 +166,15 @@ public class ExpressionStoreTest
     @Test
     public void testDeleteExpression()
     {
-        Expression exprA = new Expression( expressionA, descriptionA, dataElements );
-        Expression exprB = new Expression( expressionB, descriptionB, dataElements );
-        
+        Expression exprA = new Expression( expressionA, descriptionA, dataElements, optionCombos );
+        Expression exprB = new Expression( expressionB, descriptionB, dataElements, optionCombos );
+
         int idA = expressionStore.save( exprA );
         int idB = expressionStore.save( exprB );
-        
+
         assertNotNull( expressionStore.get( idA ) );
         assertNotNull( expressionStore.get( idB ) );
-        
+
         expressionStore.delete( exprA );
 
         assertNull( expressionStore.get( idA ) );
@@ -172,14 +189,14 @@ public class ExpressionStoreTest
     @Test
     public void testGetAllExpressions()
     {
-        Expression exprA = new Expression( expressionA, descriptionA, dataElements );
-        Expression exprB = new Expression( expressionB, descriptionB, dataElements );
-        
+        Expression exprA = new Expression( expressionA, descriptionA, dataElements, optionCombos );
+        Expression exprB = new Expression( expressionB, descriptionB, dataElements, optionCombos );
+
         expressionStore.save( exprA );
         expressionStore.save( exprB );
-        
+
         Collection<Expression> expressions = expressionStore.getAll();
-                
+
         assertTrue( expressions.size() == 2 );
         assertTrue( expressions.contains( exprA ) );
         assertTrue( expressions.contains( exprB ) );

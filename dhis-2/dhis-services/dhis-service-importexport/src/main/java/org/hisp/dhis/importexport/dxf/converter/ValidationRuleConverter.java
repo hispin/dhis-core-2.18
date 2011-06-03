@@ -180,6 +180,8 @@ public class ValidationRuleConverter
             validationRule.getLeftSide().setDescription( values.get( FIELD_LEFTSIDE_DESCRIPTION ) );
             validationRule.getLeftSide().setDataElementsInExpression(
                 expressionService.getDataElementsInExpression( validationRule.getLeftSide().getExpression() ) );
+            validationRule.getLeftSide().setOptionCombosInExpression(
+                expressionService.getOptionCombosInExpression( validationRule.getLeftSide().getExpression() ) );
 
             validationRule.getRightSide().setExpression(
                 expressionService.convertExpression( values.get( FIELD_RIGHTSIDE_EXPRESSION ), dataElementMapping,
@@ -187,8 +189,9 @@ public class ValidationRuleConverter
             validationRule.getRightSide().setDescription( values.get( FIELD_RIGHTSIDE_DESCRIPTION ) );
             validationRule.getRightSide().setDataElementsInExpression(
                 expressionService.getDataElementsInExpression( validationRule.getRightSide().getExpression() ) );
+            validationRule.getRightSide().setOptionCombosInExpression(
+                expressionService.getOptionCombosInExpression( validationRule.getRightSide().getExpression() ) );
 
-            // TODO Intermediate hack!
             validationRule.setPeriodType( PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME ) );
 
             importObject( validationRule, params );
