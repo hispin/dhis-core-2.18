@@ -314,30 +314,36 @@ function keyPress( event, field )
 
 function getNextEntryField( field )
 {
-    var fields = $('input[name="entryfield"]');
-
-    var index = field.tabIndex;
-    
-    while (fields[index]) {
-        if (!fields[index].disabled) {
-            return fields[index];
-        }
-        index++;
-    }
+	var index = field.getAttribute( 'tabindex' );
+	
+	field = $( 'input[name="entryfield"][tabindex="' + (++index) + '"]' );
+	
+	while ( field )
+	{
+		if ( field.is( ':disabled' ) || field.is( ':hidden' ) ) {
+			field = $( 'input[name="entryfield"][tabindex="' + (++index) + '"]' );
+		}
+		else {
+			return field;
+		}
+	}
 }
 
 function getPreviousEntryField( field )
 {
-    var fields = $('input[name="entryfield"]');
-    
-    var index = field.tabIndex - 2;
-    
-    while (fields[index]) {
-        if (!fields[index].disabled) {
-            return fields[index];
-        }
-        index--;
-    }
+	var index = field.getAttribute( 'tabindex' );
+	
+	field = $( 'input[name="entryfield"][tabindex="' + (--index) + '"]' );
+	
+	while ( field )
+	{
+		if ( field.is( ':disabled' ) || field.is( ':hidden' ) )	{
+			field = $( 'input[name="entryfield"][tabindex="' + (--index) + '"]' );
+		}
+		else {
+			return field;
+		}
+	}
 }
 
 // -----------------------------------------------------------------------------
