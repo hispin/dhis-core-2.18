@@ -28,6 +28,7 @@ package org.hisp.dhis.datavalue;
  */
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -260,7 +261,5 @@ public interface DataValueService
      * @param operands the data element operands to filter.
      * @return the data element operands with registered data values.
      */
-    Collection<DataElementOperand> getOperandsWithDataValues( Collection<DataElementOperand> operands );    
+    Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands );    
 }
-
-

@@ -62,7 +62,7 @@ public class JDBCCrossTabStore
     // CrossTabStore implementation
     // -------------------------------------------------------------------------
 
-    public void createCrossTabTable( final Collection<DataElementOperand> operands, String key )
+    public void createCrossTabTable( List<DataElementOperand> operands, String key )
     {
         final StringBuffer sql = new StringBuffer( "CREATE TABLE " + TABLE_PREFIX + key + " ( " );
         

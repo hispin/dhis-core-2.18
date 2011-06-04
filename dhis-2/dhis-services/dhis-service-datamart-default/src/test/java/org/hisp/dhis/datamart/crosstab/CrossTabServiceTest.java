@@ -31,10 +31,12 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -65,7 +67,7 @@ public class CrossTabServiceTest
     
     private Iterator<Period> generatedPeriods;
 
-    private Collection<DataElementOperand> operands;
+    private List<DataElementOperand> operands;
     private Collection<Integer> periodIds;
     private Collection<Integer> organisationUnitIds;
 
@@ -154,7 +156,7 @@ public class CrossTabServiceTest
             organisationUnitIds.add( organisationUnitService.addOrganisationUnit( organisationUnit ) );
         }
         
-        operands = categoryService.getOperands( dataElements );
+        operands = new ArrayList<DataElementOperand>( categoryService.getOperands( dataElements ) );
         
         for ( DataElement dataElement : dataElements )
         {
