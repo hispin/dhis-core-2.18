@@ -152,16 +152,13 @@ public class DerbyStatementBuilder
     public String getUpdateDestination( int destDataElementId, int destCategoryOptionComboId,
         int sourceDataElementId, int sourceCategoryOptionComboId )
     {
-        return "UPDATE datavalue AS d1 SET dataelementid=" + destDataElementId + ", categoryoptioncomboid="
-            + destCategoryOptionComboId + " " + "WHERE dataelementid=" + sourceDataElementId
-            + " and categoryoptioncomboid=" + sourceCategoryOptionComboId + " " + "AND NOT EXISTS ( "
+        return "UPDATE datavalue AS d1 SET dataelementid=" + destDataElementId + ", categoryoptioncomboid=" + destCategoryOptionComboId + " " 
+            + "WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + " " + "AND NOT EXISTS ( "
             + "SELECT * FROM datavalue AS d2 " + "WHERE d2.dataelementid=" + destDataElementId + " "
             + "AND d2.categoryoptioncomboid=" + destCategoryOptionComboId + " " + "AND d1.periodid=d2.periodid "
             + "AND d1.sourceid=d2.sourceid );";
-
     }
 
-    @Override
     public String getMoveFromSourceToDestination( int destDataElementId, int destCategoryOptionComboId,
         int sourceDataElementId, int sourceCategoryOptionComboId )
     {
@@ -170,207 +167,194 @@ public class DerbyStatementBuilder
             + "WHERE datavalue.periodid=d2.periodid "
             + "AND datavalue.sourceid=d2.sourceid "
             + "AND datavalue.lastupdated<d2.lastupdated "
-            + "AND datavalue.dataelementid="
-            + destDataElementId
-            + " AND datavalue.categoryoptioncomboid="
-            + destCategoryOptionComboId
-            + " "
-            + "AND d2.dataelementid="
-            + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
+            + "AND datavalue.dataelementid=" + destDataElementId + " AND datavalue.categoryoptioncomboid=" + destCategoryOptionComboId + " "
+            + "AND d2.dataelementid=" + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
     }
-    
-    public String getStandardDeviation( int dataElementId, int categoryOptionComboId, int organisationUnitId ){
-    	
-		 return "SELECT STDDEV( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue " +
-	         "WHERE dataelementid='" + dataElementId + "' " +
-	         "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
-	         "AND sourceid='" + organisationUnitId + "'";
-       
-   }
-    
-    public String getAverage( int dataElementId, int categoryOptionComboId, int organisationUnitId ){
-      	 return   "SELECT AVG( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue " +
-              "WHERE dataelementid='" + dataElementId + "' " +
-              "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
-              "AND sourceid='" + organisationUnitId + "'";
-    }
-    
-    public String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
-    		String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound ){
-    	
-    	return  "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
-            "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, " +
-            encode( dataElementName ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " + 
-            encode( organisationUnitName ) + " AS sourcename, cc.categoryoptioncomboname " +
-            "FROM datavalue AS dv " +
-            "JOIN period AS pe USING (periodid) " +
-            "JOIN periodtype AS pt USING (periodtypeid) " +
-            "LEFT JOIN _categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
-            "WHERE dv.dataelementid='" + dataElementId + "' " +
-            "AND dv.categoryoptioncomboid='" + categoryOptionComboId + "' " +
-            "AND dv.periodid IN (" + periodIds + ") " +
-            "AND dv.sourceid='" + organisationUnitId + "' " +
-            "AND ( CAST( dv.value AS " + getDoubleColumnType() + " ) < '" + lowerBound + "' " +
-            "OR CAST( dv.value AS " + getDoubleColumnType() + " ) > '" + upperBound + "' )";
-   }
-    
-   public String archiveData( String startDate, String endDate ){
-        
-        return  "DELETE FROM datavaluearchive AS a " +
-                "USING period AS p " +
-                "WHERE a.periodid=p.periodid " +
-                "AND p.startdate>='" + startDate + "' " +
-                "AND p.enddate<='" + endDate + "'";
-   }
-   
-   public String unArchiveData( String startDate, String endDate ){
-       
-       return  "DELETE FROM datavaluearchive AS a " +
-           "USING period AS p " +
-           "WHERE a.periodid=p.periodid " +
-           "AND p.startdate>='" +  startDate + "' " +
-           "AND p.enddate<='" +  endDate + "'";
-   }
-   
-   public String deleteRegularOverlappingData(){
-       
-       return "DELETE FROM datavalue AS d " +
-           "USING datavaluearchive AS a " +
-           "WHERE d.dataelementid=a.dataelementid " +
-           "AND d.periodid=a.periodid " +
-           "AND d.sourceid=a.sourceid " +
-           "AND d.categoryoptioncomboid=a.categoryoptioncomboid";
 
-   }
-
-   public String deleteArchivedOverlappingData(){
-
-       return "DELETE FROM datavaluearchive AS a " +
-           "USING datavalue AS d " +
-           "WHERE a.dataelementid=d.dataelementid " +
-           "AND a.periodid=d.periodid " +
-           "AND a.sourceid=d.sourceid " +
-           "AND a.categoryoptioncomboid=d.categoryoptioncomboid";
-   }
-
-   public String deleteOldestOverlappingDataValue(){
-       
-       return "DELETE FROM datavalue AS d " +
-           "USING datavaluearchive AS a " +
-           "WHERE d.dataelementid=a.dataelementid " +
-           "AND d.periodid=a.periodid " +
-           "AND d.sourceid=a.sourceid " +
-           "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
-           "AND d.lastupdated<a.lastupdated";
-   }
-   
-   public String deleteOldestOverlappingArchiveData(){
-       
-       return "DELETE FROM datavaluearchive AS a " +
-           "USING datavalue AS d " +
-           "WHERE a.dataelementid=d.dataelementid " +
-           "AND a.periodid=d.periodid " +
-           "AND a.sourceid=d.sourceid " +
-           "AND a.categoryoptioncomboid=d.categoryoptioncomboid " +
-           "AND a.lastupdated<=d.lastupdated";
-   }
-   
-   public String archivePatientData ( String startDate, String endDate )
-   {
-       return "DELETE FROM patientdatavalue AS pdv " 
-               + "USING programstageinstance AS psi ,  programinstance AS pi "
-               + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
-               + "AND pi.programinstanceid = psi.programinstanceid "
-               + "WHERE pi.enddate >= '" + startDate + "' "
-               +    "AND pi.enddate <= '" +  endDate + "';";
-   }
-   
-   public String unArchivePatientData ( String startDate, String endDate )
-   {
-       return "DELETE FROM patientdatavaluearchive AS pdv " 
-               + "USING programstageinstance AS psi ,  programinstance AS pi "
-               + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
-               + "AND pi.programinstanceid = psi.programinstanceid "
-               + "WHERE pi.enddate >= '" + startDate + "' "
-               +    "AND pi.enddate <= '" +  endDate + "';";
-   }
-
-   public String deleteRegularOverlappingPatientData()
-   {
-       return "DELETE FROM patientdatavalue AS d " +
-               "USING patientdatavaluearchive AS a " +
-               "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-               "AND d.dataelementid=a.dataelementid " +
-               "AND d.organisationunitid=a.organisationunitid " +
-               "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
-               "AND d.timestamp<a.timestamp;";
-   }
-   
-   public String deleteArchivedOverlappingPatientData()
-   {
-       return "DELETE FROM patientdatavaluearchive AS a " +
-               "USING patientdatavalue AS d " +
-               "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-               "AND d.dataelementid=a.dataelementid " +
-               "AND d.organisationunitid=a.organisationunitid " +
-               "AND d.categoryoptioncomboid=a.categoryoptioncomboid ";
-   }
-   
-   public String deleteOldestOverlappingPatientDataValue()
-   {
-       return "DELETE FROM patientdatavalue AS d " +
-               "USING patientdatavaluearchive AS a " +
-               "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-               "AND d.dataelementid=a.dataelementid " +
-               "AND d.organisationunitid=a.organisationunitid " +
-               "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
-               "AND d.timestamp<a.timestamp;";
-   }
-   
-   public String deleteOldestOverlappingPatientArchiveData()
-   {
-       return "DELETE FROM patientdatavalue AS d " +
-               "USING patientdatavaluearchive AS a " +
-               "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-               "AND d.dataelementid=a.dataelementid " +
-               "AND d.organisationunitid=a.organisationunitid " +
-               "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
-               "AND a.timestamp<=d.timestamp;";
-   }
-   
-   public String getPatientsByFullName( String fullName )
-   {
-       return "SELECT patientid FROM patient " +
-               "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
-               "like lower('%" + fullName + "%') ";
-   }
-   
-   public String getPatientsByFullName( String fullName, int min, int max )
-   {
-       return "SELECT patientid FROM patient " +
-               "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
-               "like lower('%" + fullName + "%') " +
-               "limit " + max + " OFFSET " + min;
-   }
-   
-   public String countPatientsByFullName( String fullName )
-   {
-       return "SELECT count(patientid) FROM patient " +
-       "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
-       "like lower('%" + fullName + "%')";
-   }
-       public String queryDataElementStructureForOrgUnit()
+    public String getStandardDeviation( int dataElementId, int categoryOptionComboId, int organisationUnitId )
     {
-           StringBuffer sqlsb = new StringBuffer();
-           sqlsb.append( "(SELECT DISTINCT de.dataelementid, (de.name || ' ' || cc.categoryoptioncomboname) AS DataElement " );
-           sqlsb.append( "FROM dataelement AS de " );
-           sqlsb.append( "INNER JOIN categorycombos_optioncombos cat_opts on de.categorycomboid = cat_opts.categorycomboid ");
-           sqlsb.append( "INNER JOIN _categoryoptioncomboname cc on cat_opts.categoryoptioncomboid = cc.categoryoptioncomboid ");
-           sqlsb.append( "ORDER BY DataElement) " );
-           return sqlsb.toString();
+        return "SELECT STDDEV( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue "
+            + "WHERE dataelementid='" + dataElementId + "' " 
+            + "AND categoryoptioncomboid='" + categoryOptionComboId  + "' " 
+            + "AND sourceid='" + organisationUnitId + "'";
+    }
+
+    public String getAverage( int dataElementId, int categoryOptionComboId, int organisationUnitId )
+    {
+        return "SELECT AVG( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue " 
+            + "WHERE dataelementid='" + dataElementId + "' " 
+            + "AND categoryoptioncomboid='" + categoryOptionComboId + "' " 
+            + "AND sourceid='" + organisationUnitId + "'";
+    }
+
+    public String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
+        String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound )
+    {
+        return "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, "
+            + "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, "
+            + encode( dataElementName ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, "
+            + encode( organisationUnitName ) + " AS sourcename, cc.categoryoptioncomboname "
+            + "FROM datavalue AS dv "
+            + "JOIN period AS pe USING (periodid) "
+            + "JOIN periodtype AS pt USING (periodtypeid) "
+            + "LEFT JOIN _categoryoptioncomboname AS cc USING (categoryoptioncomboid) "
+            + "WHERE dv.dataelementid='" + dataElementId + "' "
+            + "AND dv.categoryoptioncomboid='" + categoryOptionComboId + "' "
+            + "AND dv.periodid IN (" + periodIds + ") "
+            + "AND dv.sourceid='" + organisationUnitId + "' "
+            + "AND ( CAST( dv.value AS " + getDoubleColumnType() + " ) < '" + lowerBound + "' "
+            + "OR CAST( dv.value AS " + getDoubleColumnType() + " ) > '" + upperBound + "' )";
+    }
+
+    public String archiveData( String startDate, String endDate )
+    {
+        return "DELETE FROM datavaluearchive AS a " 
+            + "USING period AS p " 
+            + "WHERE a.periodid=p.periodid "
+            + "AND p.startdate>='" + startDate + "' " 
+            + "AND p.enddate<='" + endDate + "'";
+    }
+
+    public String unArchiveData( String startDate, String endDate )
+    {
+        return "DELETE FROM datavaluearchive AS a " 
+            + "USING period AS p " + "WHERE a.periodid=p.periodid "
+            + "AND p.startdate>='" + startDate + "' " 
+            + "AND p.enddate<='" + endDate + "'";
+    }
+
+    public String deleteRegularOverlappingData()
+    {
+        return "DELETE FROM datavalue AS d " 
+            + "USING datavaluearchive AS a "
+            + "WHERE d.dataelementid=a.dataelementid " 
+            + "AND d.periodid=a.periodid " 
+            + "AND d.sourceid=a.sourceid "
+            + "AND d.categoryoptioncomboid=a.categoryoptioncomboid";
+    }
+
+    public String deleteArchivedOverlappingData()
+    {
+        return "DELETE FROM datavaluearchive AS a " 
+            + "USING datavalue AS d "
+            + "WHERE a.dataelementid=d.dataelementid " 
+            + "AND a.periodid=d.periodid " 
+            + "AND a.sourceid=d.sourceid "
+            + "AND a.categoryoptioncomboid=d.categoryoptioncomboid";
+    }
+
+    public String deleteOldestOverlappingDataValue()
+    {
+
+        return "DELETE FROM datavalue AS d " 
+            + "USING datavaluearchive AS a "
+            + "WHERE d.dataelementid=a.dataelementid " 
+            + "AND d.periodid=a.periodid " 
+            + "AND d.sourceid=a.sourceid "
+            + "AND d.categoryoptioncomboid=a.categoryoptioncomboid " + "AND d.lastupdated<a.lastupdated";
+    }
+
+    public String deleteOldestOverlappingArchiveData()
+    {
+
+        return "DELETE FROM datavaluearchive AS a " 
+            + "USING datavalue AS d "
+            + "WHERE a.dataelementid=d.dataelementid " 
+            + "AND a.periodid=d.periodid " + "AND a.sourceid=d.sourceid "
+            + "AND a.categoryoptioncomboid=d.categoryoptioncomboid " 
+            + "AND a.lastupdated<=d.lastupdated";
+    }
+
+    public String archivePatientData( String startDate, String endDate )
+    {
+        return "DELETE FROM patientdatavalue AS pdv " 
+            + "USING programstageinstance AS psi ,  programinstance AS pi "
+            + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
+            + "AND pi.programinstanceid = psi.programinstanceid " + "WHERE pi.enddate >= '" + startDate + "' "
+            + "AND pi.enddate <= '" + endDate + "';";
+    }
+
+    public String unArchivePatientData( String startDate, String endDate )
+    {
+        return "DELETE FROM patientdatavaluearchive AS pdv "
+            + "USING programstageinstance AS psi ,  programinstance AS pi "
+            + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
+            + "AND pi.programinstanceid = psi.programinstanceid " 
+            + "WHERE pi.enddate >= '" + startDate + "' "
+            + "AND pi.enddate <= '" + endDate + "';";
+    }
+
+    public String deleteRegularOverlappingPatientData()
+    {
+        return "DELETE FROM patientdatavalue AS d " 
+            + "USING patientdatavaluearchive AS a "
+            + "WHERE d.programstageinstanceid=a.programstageinstanceid " 
+            + "AND d.dataelementid=a.dataelementid "
+            + "AND d.organisationunitid=a.organisationunitid " 
+            + "AND d.categoryoptioncomboid=a.categoryoptioncomboid "
+            + "AND d.timestamp<a.timestamp;";
+    }
+
+    public String deleteArchivedOverlappingPatientData()
+    {
+        return "DELETE FROM patientdatavaluearchive AS a " 
+            + "USING patientdatavalue AS d "
+            + "WHERE d.programstageinstanceid=a.programstageinstanceid " 
+            + "AND d.dataelementid=a.dataelementid "
+            + "AND d.organisationunitid=a.organisationunitid " 
+            + "AND d.categoryoptioncomboid=a.categoryoptioncomboid ";
+    }
+
+    public String deleteOldestOverlappingPatientDataValue()
+    {
+        return "DELETE FROM patientdatavalue AS d " 
+            + "USING patientdatavaluearchive AS a "
+            + "WHERE d.programstageinstanceid=a.programstageinstanceid " 
+            + "AND d.dataelementid=a.dataelementid "
+            + "AND d.organisationunitid=a.organisationunitid " 
+            + "AND d.categoryoptioncomboid=a.categoryoptioncomboid "
+            + "AND d.timestamp<a.timestamp;";
+    }
+
+    public String deleteOldestOverlappingPatientArchiveData()
+    {
+        return "DELETE FROM patientdatavalue AS d " + "USING patientdatavaluearchive AS a "
+            + "WHERE d.programstageinstanceid=a.programstageinstanceid " + "AND d.dataelementid=a.dataelementid "
+            + "AND d.organisationunitid=a.organisationunitid " + "AND d.categoryoptioncomboid=a.categoryoptioncomboid "
+            + "AND a.timestamp<=d.timestamp;";
+    }
+
+    public String getPatientsByFullName( String fullName )
+    {
+        return "SELECT patientid FROM patient " + "where lower( firstname || ' ' || middleName || ' ' || lastname) "
+            + "like lower('%" + fullName + "%') ";
+    }
+
+    public String getPatientsByFullName( String fullName, int min, int max )
+    {
+        return "SELECT patientid FROM patient " + "where lower( firstname || ' ' || middleName || ' ' || lastname) "
+            + "like lower('%" + fullName + "%') " + "limit " + max + " OFFSET " + min;
+    }
+
+    public String countPatientsByFullName( String fullName )
+    {
+        return "SELECT count(patientid) FROM patient "
+            + "where lower( firstname || ' ' || middleName || ' ' || lastname) " + "like lower('%" + fullName + "%')";
+    }
+
+    public String queryDataElementStructureForOrgUnit()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append( "(SELECT DISTINCT de.dataelementid, (de.name || ' ' || cc.categoryoptioncomboname) AS DataElement " );
+        sb.append( "FROM dataelement AS de " );
+        sb.append( "INNER JOIN categorycombos_optioncombos cat_opts on de.categorycomboid = cat_opts.categorycomboid " );
+        sb.append( "INNER JOIN _categoryoptioncomboname cc on cat_opts.categoryoptioncomboid = cc.categoryoptioncomboid " );
+        sb.append( "ORDER BY DataElement) " );
+        return sb.toString();
 
     }
-           public String queryRawDataElementsForOrgUnitBetweenPeriods(Integer orgUnitId, List<Integer> betweenPeriodIds)
+
+    public String queryRawDataElementsForOrgUnitBetweenPeriods(Integer orgUnitId, List<Integer> betweenPeriodIds)
     {
         StringBuffer sqlsb = new StringBuffer();
 

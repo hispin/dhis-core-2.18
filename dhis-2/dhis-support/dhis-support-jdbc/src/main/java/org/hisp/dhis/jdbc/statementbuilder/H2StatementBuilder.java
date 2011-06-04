@@ -361,21 +361,23 @@ public class H2StatementBuilder
     public String countPatientsByFullName( String fullName )
     {
         return "SELECT count(patientid) FROM patient " +
-        "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
-        "like lower('%" + fullName + "%')";
+            "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
+            "like lower('%" + fullName + "%')";
     }
-        public String queryDataElementStructureForOrgUnit()
+    
+    public String queryDataElementStructureForOrgUnit()
     {
-           StringBuffer sqlsb = new StringBuffer();
-           sqlsb.append( "(SELECT DISTINCT de.dataelementid, (de.name || ' ' || cc.categoryoptioncomboname) AS DataElement " );
-           sqlsb.append( "FROM dataelement AS de " );
-           sqlsb.append( "INNER JOIN categorycombos_optioncombos cat_opts on de.categorycomboid = cat_opts.categorycomboid ");
-           sqlsb.append( "INNER JOIN _categoryoptioncomboname cc on cat_opts.categoryoptioncomboid = cc.categoryoptioncomboid ");
-           sqlsb.append( "ORDER BY DataElement) " );
-           return sqlsb.toString();
-
+        StringBuffer sqlsb = new StringBuffer();
+        sqlsb.append( "(SELECT DISTINCT de.dataelementid, (de.name || ' ' || cc.categoryoptioncomboname) AS DataElement " );
+        sqlsb.append( "FROM dataelement AS de " );
+        sqlsb.append( "INNER JOIN categorycombos_optioncombos cat_opts on de.categorycomboid = cat_opts.categorycomboid ");
+        sqlsb.append( "INNER JOIN _categoryoptioncomboname cc on cat_opts.categoryoptioncomboid = cc.categoryoptioncomboid ");
+        sqlsb.append( "ORDER BY DataElement) " );
+        
+        return sqlsb.toString();
     }
-            public String queryRawDataElementsForOrgUnitBetweenPeriods(Integer orgUnitId, List<Integer> betweenPeriodIds)
+    
+    public String queryRawDataElementsForOrgUnitBetweenPeriods(Integer orgUnitId, List<Integer> betweenPeriodIds)
     {
         StringBuffer sqlsb = new StringBuffer();
 
@@ -400,7 +402,7 @@ public class H2StatementBuilder
     
     public String getActivityPlan( int orgunitId, int min, int max )
     {
-       return  "SELECT psi.programstageinstanceid " +
+        return "SELECT psi.programstageinstanceid " +
                "FROM programstageinstance psi " +
                    "INNER JOIN programinstance pi " +
                        "ON pi.programinstanceid = psi.programinstanceid " +
@@ -408,7 +410,7 @@ public class H2StatementBuilder
                        "ON ps.programstageid=psi.programstageid " +
                    "INNER JOIN program_organisationunits po " +
                        "ON po.programid=pi.programid " +
-                "WHERE pi.completed = FALSE  " +
+               "WHERE pi.completed = FALSE  " +
                        "AND po.organisationunitid = " + orgunitId + " AND psi.completed = FALSE " +
                        "AND ps.stageinprogram in ( SELECT min(ps1.stageinprogram) " +
                            "FROM programstageinstance psi1 " +
@@ -420,7 +422,7 @@ public class H2StatementBuilder
                                "ON po1.programid=pi1.programid " +
                            "WHERE pi1.completed = FALSE  " +
                                "AND po1.organisationunitid = " + orgunitId + " AND psi1.completed = FALSE ) " +
-                "ORDER BY ps.stageinprogram " +
-                "LIMIT " + max + " OFFSET " + min;
+               "ORDER BY ps.stageinprogram " +
+               "LIMIT " + max + " OFFSET " + min;
     }
 }
