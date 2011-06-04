@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -377,9 +378,9 @@ public class HibernateDataValueStore
         return (DataValue) query.uniqueResult();
     }
     
-    public Collection<DataElementOperand> getOperandsWithDataValues( Collection<DataElementOperand> operands )
+    public Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands )
     {
-        final Collection<DataElementOperand> operandsWithData = new ArrayList<DataElementOperand>();
+        final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>();
         
         final StatementHolder holder = statementManager.getHolder();
         

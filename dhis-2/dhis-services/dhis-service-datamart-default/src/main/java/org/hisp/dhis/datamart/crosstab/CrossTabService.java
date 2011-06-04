@@ -28,6 +28,8 @@ package org.hisp.dhis.datamart.crosstab;
  */
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
@@ -46,18 +48,18 @@ public interface CrossTabService
      * @param operands the DataElementOperands.
      * @return the DataElementOperands with data.
      */
-    Collection<DataElementOperand> getOperandsWithData( Collection<DataElementOperand> operands );
+    Set<DataElementOperand> getOperandsWithData( Set<DataElementOperand> operands );
     
     /**
      * Creates and populates the crosstab table. Operands without data will be
      * removed from the operands argument collection.
      * 
-     * @param operands the collection of DataElementOperands.
+     * @param operands the list of DataElementOperands.
      * @param periodIds the collection of Period identifiers.
      * @param organisationUnitIds the collection of OrganisationUnit identifiers.
      * @return a List of random keys for each generated crosstab table. 
      */
-    String populateCrossTabTable( Collection<DataElementOperand> operands, 
+    String populateCrossTabTable( List<DataElementOperand> operands, 
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
 
     /**

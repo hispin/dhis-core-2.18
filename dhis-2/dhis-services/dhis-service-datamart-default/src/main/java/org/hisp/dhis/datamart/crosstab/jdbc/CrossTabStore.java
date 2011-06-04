@@ -28,6 +28,7 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
@@ -49,7 +50,7 @@ public interface CrossTabStore
      * 
      * @param operands the DataElementOperands.
      */
-    void createCrossTabTable( Collection<DataElementOperand> operands, String key );
+    void createCrossTabTable( List<DataElementOperand> operands, String key );
 
     /**
      * Drops the crosstab table.

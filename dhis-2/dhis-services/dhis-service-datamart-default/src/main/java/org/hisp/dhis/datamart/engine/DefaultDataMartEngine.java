@@ -27,6 +27,7 @@ package org.hisp.dhis.datamart.engine;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -192,7 +193,7 @@ public class DefaultDataMartEngine
         // Remove operands without data
         // ---------------------------------------------------------------------
 
-        allOperands = new HashSet<DataElementOperand>( crossTabService.getOperandsWithData( allOperands ) );
+        allOperands = crossTabService.getOperandsWithData( allOperands );
 
         dataElementOperands.retainAll( allOperands );
         indicatorOperands.retainAll( allOperands );
@@ -208,7 +209,7 @@ public class DefaultDataMartEngine
         Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
         Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
 
-        String key = crossTabService.populateCrossTabTable( allOperands, intersectingPeriodIds, childrenIds );
+        String key = crossTabService.populateCrossTabTable( new ArrayList<DataElementOperand>( allOperands ), intersectingPeriodIds, childrenIds );
         
         if ( CollectionUtils.isEmpty( allOperands ) )
         {
@@ -249,7 +250,7 @@ public class DefaultDataMartEngine
         {
             count += dataElementDataMart.exportDataValues( dataElementOperands, periods, organisationUnits, key );
 
-            log.info( "Exported values for data element operands: " + TimeUtils.getHMS() );
+            log.info( "Exported values for data element operands (" + dataElementOperands.size() + "): " + TimeUtils.getHMS() );
         }
 
         // ---------------------------------------------------------------------

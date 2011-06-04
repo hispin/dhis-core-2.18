@@ -30,6 +30,7 @@ package org.hisp.dhis.datavalue;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -198,7 +199,7 @@ public class DefaultDataValueService
         return true;
     }
 
-    public Collection<DataElementOperand> getOperandsWithDataValues( Collection<DataElementOperand> operands )
+    public Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands )
     {
         return dataValueStore.getOperandsWithDataValues( operands );
     }
