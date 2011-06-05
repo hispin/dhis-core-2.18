@@ -29,6 +29,7 @@ package org.hisp.dhis.datamart.crosstab;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -67,6 +68,10 @@ public interface CrossTabService
      */
     void dropCrossTabTable( String key );
     
+    void createAggregatedDataCache( List<DataElementOperand> operands, String key );
+    
+    void dropAggregatedDataCache( String key );
+    
     /**
      * Gets all CrossTabDataValues for the given collection of period ids and source ids.
      * 
@@ -88,4 +93,7 @@ public interface CrossTabService
      */
     Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
         int sourceId, String key );
+    
+    Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
+        int periodId, int sourceId, String key );
 }

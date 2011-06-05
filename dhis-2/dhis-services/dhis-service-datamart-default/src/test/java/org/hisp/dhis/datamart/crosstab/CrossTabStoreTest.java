@@ -51,4 +51,12 @@ public class CrossTabStoreTest
         
         crossTabStore.dropCrossTabTable( key );
     }
+    
+    @Test
+    public void testDropAggregatedDataCache()
+    {
+        crossTabStore.createAggregatedDataCache( operands, key );
+        
+        crossTabStore.dropAggregatedDataCache( key );
+    }
 }
