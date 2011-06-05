@@ -30,6 +30,7 @@ package org.hisp.dhis.datamart.engine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -40,6 +41,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datamart.DataElementOperandList;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.datamart.dataelement.DataElementDataMart;
@@ -54,7 +56,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TimeUtils;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 /**
  * @author Lars Helge Overland
@@ -181,7 +182,7 @@ public class DefaultDataMartEngine
         // ---------------------------------------------------------------------
         
         Collection<DataElementOperand> dataElementOperands = categoryService.getOperands( dataElements );
-        Collection<DataElementOperand> indicatorOperands = categoryService.populateOperands( getOperandsInIndicators( indicators ) );
+        List<DataElementOperand> indicatorOperands = new ArrayList<DataElementOperand>( categoryService.populateOperands( getOperandsInIndicators( indicators ) ) );
         
         Set<DataElementOperand> allOperands = new HashSet<DataElementOperand>();
         allOperands.addAll( dataElementOperands );
@@ -195,13 +196,12 @@ public class DefaultDataMartEngine
 
         allOperands = crossTabService.getOperandsWithData( allOperands );
 
-        dataElementOperands.retainAll( allOperands );
         indicatorOperands.retainAll( allOperands );
         
         log.info( "Number of operands with data: " + allOperands.size() + ", "+ TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
-        // Create and trim crosstabtable
+        // Create crosstabtable
         // ---------------------------------------------------------------------
 
         state.setMessage( "crosstabulating_data" );
@@ -211,13 +211,18 @@ public class DefaultDataMartEngine
 
         String key = crossTabService.populateCrossTabTable( new ArrayList<DataElementOperand>( allOperands ), intersectingPeriodIds, childrenIds );
         
-        if ( CollectionUtils.isEmpty( allOperands ) )
-        {
-            return 0;
-        }
-
         log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
 
+        // ---------------------------------------------------------------------
+        // Create aggregated data cache
+        // ---------------------------------------------------------------------
+
+        DataElementOperandList operandList = new DataElementOperandList( indicatorOperands );
+
+        crossTabService.createAggregatedDataCache( indicatorOperands, key );
+        
+        log.info( "Created aggregated data cache" );
+        
         // ---------------------------------------------------------------------
         // Drop potential indexes
         // ---------------------------------------------------------------------
@@ -246,11 +251,11 @@ public class DefaultDataMartEngine
 
         state.setMessage( "exporting_data_for_data_elements" );
 
-        if ( dataElementOperands.size() > 0 )
+        if ( allOperands.size() > 0 )
         {
-            count += dataElementDataMart.exportDataValues( dataElementOperands, periods, organisationUnits, key );
+            count += dataElementDataMart.exportDataValues( allOperands, periods, organisationUnits, operandList, key );
 
-            log.info( "Exported values for data element operands (" + dataElementOperands.size() + "): " + TimeUtils.getHMS() );
+            log.info( "Exported values for data element operands (" + allOperands.size() + "): " + TimeUtils.getHMS() );
         }
 
         // ---------------------------------------------------------------------
@@ -267,12 +272,14 @@ public class DefaultDataMartEngine
         }
 
         // ---------------------------------------------------------------------
-        // Drop crosstab tables
+        // Drop crosstab table and aggregated data cache
         // ---------------------------------------------------------------------
 
-        crossTabService.dropCrossTabTable( key );
+        crossTabService.dropCrossTabTable( key ); //TODO move before indicator export
         
-        log.info( "Dropped crosstab table: " + TimeUtils.getHMS() );
+        crossTabService.dropAggregatedDataCache( key );
+        
+        log.info( "Dropped crosstab table and aggregated data cache: " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
         // Create potential indexes

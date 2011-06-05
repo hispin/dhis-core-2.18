@@ -140,6 +140,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
+	<property name="inMemoryBatchHandlerFactory" ref="inMemoryBatchHandlerFactory"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
     <property name="sumIntAggregator"
@@ -158,20 +159,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.datamart.indicator.IndicatorDataMart"
     class="org.hisp.dhis.datamart.indicator.DefaultIndicatorDataMart">
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 	<property name="expressionService"
 	  ref="org.hisp.dhis.expression.ExpressionService"/>
-    <property name="sumIntAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
-    <property name="averageIntAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
-	<property name="averageIntSingleValueAggregator"
-      ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
     <property name="systemSettingManager"
       ref="org.hisp.dhis.options.SystemSettingManager"/>
+    <property name="crossTabService"
+      ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
 	<property name="batchHandlerFactory" ref="batchHandlerFactory"/>
   </bean>
     

@@ -29,6 +29,7 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
@@ -40,8 +41,8 @@ import org.hisp.dhis.datamart.CrossTabDataValue;
 public interface CrossTabStore
 {
     final String ID = CrossTabStore.class.getName();
-    final String TABLE_PREFIX = "datavaluecrosstab_";
-    final String TABLE_PREFIX_TRIMMED = "datavaluecrosstabtrimmed_";
+    final String CROSSTAB_TABLE_PREFIX = "crosstab_table_";
+    final String AGGREGATEDDATA_CACHE_PREFIX = "aggregateddata_cache_";
     
     /**
      * Creates a crosstab table where the first column is the period identifier,
@@ -56,6 +57,10 @@ public interface CrossTabStore
      * Drops the crosstab table.
      */
     void dropCrossTabTable( String key );
+    
+    void createAggregatedDataCache( List<DataElementOperand> operands, String key );
+    
+    void dropAggregatedDataCache( String key );
     
     /**
      * Gets all CrossTabDataValues for the given collection of period ids and source ids.
@@ -78,4 +83,6 @@ public interface CrossTabStore
      */
     Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
         int sourceId, String key );
+    
+    Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, int periodId, int sourceId, String key );
 }

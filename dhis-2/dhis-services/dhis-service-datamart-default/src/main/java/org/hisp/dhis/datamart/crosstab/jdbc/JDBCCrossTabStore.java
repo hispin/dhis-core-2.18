@@ -33,7 +33,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -64,7 +66,7 @@ public class JDBCCrossTabStore
 
     public void createCrossTabTable( List<DataElementOperand> operands, String key )
     {
-        final StringBuffer sql = new StringBuffer( "CREATE TABLE " + TABLE_PREFIX + key + " ( " );
+        final StringBuffer sql = new StringBuffer( "CREATE TABLE " + CROSSTAB_TABLE_PREFIX + key + " ( " );
         
         sql.append( "periodid INTEGER NOT NULL, " );
         sql.append( "sourceid INTEGER NOT NULL, " );
@@ -78,14 +80,34 @@ public class JDBCCrossTabStore
         
         statementManager.getHolder().executeUpdate( sql.toString() );
     }
-    
+
     public void dropCrossTabTable( String key )
     {
-        final String sql = "DROP TABLE IF EXISTS " + TABLE_PREFIX + key;
-        
-        statementManager.getHolder().executeUpdate( sql );
+        statementManager.getHolder().executeUpdate( "DROP TABLE IF EXISTS " + CROSSTAB_TABLE_PREFIX + key );
     }
+
+    public void createAggregatedDataCache( List<DataElementOperand> operands, String key )
+    {
+        final StringBuffer sql = new StringBuffer( "CREATE TABLE " + AGGREGATEDDATA_CACHE_PREFIX + key + " ( " );
         
+        sql.append( "periodid INTEGER NOT NULL, " );
+        sql.append( "sourceid INTEGER NOT NULL, " );
+        
+        for ( DataElementOperand operand : operands )
+        {
+            sql.append( operand.getColumnName() ).append( " DOUBLE, " );
+        }
+        
+        sql.append( "PRIMARY KEY ( periodid, sourceid ) );" );
+        
+        statementManager.getHolder().executeUpdate( sql.toString() );
+    }
+    
+    public void dropAggregatedDataCache( String key )
+    {
+        statementManager.getHolder().executeUpdate( "DROP TABLE IF EXISTS " + AGGREGATEDDATA_CACHE_PREFIX + key );
+    }
+    
     // -------------------------------------------------------------------------
     // CrossTabDataValue
     // -------------------------------------------------------------------------
@@ -95,7 +117,7 @@ public class JDBCCrossTabStore
     {
         final StatementHolder holder = statementManager.getHolder();
         
-        final String sql = "SELECT * FROM " + TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
+        final String sql = "SELECT * FROM " + CROSSTAB_TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
             getCommaDelimitedString( periodIds ) + ") AND c.sourceid IN (" + getCommaDelimitedString( sourceIds ) + ")";
         
         try
@@ -119,7 +141,7 @@ public class JDBCCrossTabStore
     {
         final StatementHolder holder = statementManager.getHolder();
 
-        final String sql = "SELECT * FROM " + TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
+        final String sql = "SELECT * FROM " + CROSSTAB_TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
             getCommaDelimitedString( periodIds ) + ") AND c.sourceid = " + sourceId;
 
         try
@@ -131,6 +153,44 @@ public class JDBCCrossTabStore
         catch ( SQLException ex )
         {
             throw new RuntimeException( "Failed to get CrossTabDataValues", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+    
+    public Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
+        int periodId, int sourceId, String key )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        final String sql = "SELECT * FROM " + AGGREGATEDDATA_CACHE_PREFIX + key + " AS a WHERE a.periodid = " + periodId + " AND a.sourceid = " + sourceId;
+        
+        try
+        {
+            final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            if ( resultSet.next() )
+            { 
+                for ( DataElementOperand operand : operands )
+                {       
+                    final Double columnValue = resultSet.getDouble( operand.getColumnName() );
+                    
+                    if ( columnValue != null )
+                    {
+                        valueMap.put( operand, columnValue );
+                    }
+                }
+            }
+            
+            return valueMap;
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get Map", ex );
         }
         finally
         {
@@ -156,9 +216,7 @@ public class JDBCCrossTabStore
             
             for ( DataElementOperand operand : operands )
             {
-                final String columnName = operand.getColumnName();
-                
-                final String columnValue = resultSet.getString( columnName );
+                final String columnValue = resultSet.getString( operand.getColumnName() );
                 
                 if ( columnValue != null )
                 {

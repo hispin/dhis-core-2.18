@@ -37,7 +37,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
+import org.apache.commons.lang.RandomStringUtils;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -48,7 +52,9 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.CrossTabDataValue;
+import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -65,6 +71,8 @@ public class CrossTabServiceTest
 {
     private CrossTabService crossTabService;
     
+    private BatchHandlerFactory batchHandlerFactory;
+    
     private Iterator<Period> generatedPeriods;
 
     private List<DataElementOperand> operands;
@@ -79,6 +87,8 @@ public class CrossTabServiceTest
     public void setUpTest()
     {
         crossTabService = (CrossTabService) getBean( CrossTabService.ID );
+        
+        batchHandlerFactory = (BatchHandlerFactory) getBean( "inMemoryBatchHandlerFactory" );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
@@ -201,6 +211,38 @@ public class CrossTabServiceTest
             {
                 assertEquals( "10", value );
             }
+        }
+    }
+    
+    @Test
+    public void testPopulateAggregatedDataCache()
+    {
+        String key = RandomStringUtils.randomAlphanumeric( 8 );
+        
+        crossTabService.createAggregatedDataCache( operands, key );
+
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( CrossTabStore.AGGREGATEDDATA_CACHE_PREFIX + key ).init();        
+
+        List<Object> valueList = new ArrayList<Object>( operands.size() + 2 );
+        valueList.add( 1 );
+        valueList.add( 1 );
+        
+        for ( int i = 0; i < operands.size(); i++ )
+        {
+            valueList.add( 10.0 );
+        }
+        
+        batchHandler.addObject( valueList );
+        
+        batchHandler.flush();
+        
+        Map<DataElementOperand, Double> valueMap = crossTabService.getAggregatedDataCacheValue( operands, 1, 1, key );
+        
+        for ( DataElementOperand operand : valueMap.keySet() )
+        {
+            assertNotNull( valueMap.get( operand ) );
+            assertEquals( 10.0, valueMap.get( operand ) );
         }
     }
 }
