@@ -246,7 +246,7 @@ public class DefaultDataMartEngine
         log.info( "Deleted existing aggregated data: " + TimeUtils.getHMS() );
         
         // ---------------------------------------------------------------------
-        // Data element export
+        // Export data element values
         // ---------------------------------------------------------------------
 
         state.setMessage( "exporting_data_for_data_elements" );
@@ -259,7 +259,15 @@ public class DefaultDataMartEngine
         }
 
         // ---------------------------------------------------------------------
-        // Indicator export
+        // Drop crosstab table
+        // ---------------------------------------------------------------------
+
+        crossTabService.dropCrossTabTable( key );
+        
+        log.info( "Dropped crosstab table: " + TimeUtils.getHMS()  );
+        
+        // ---------------------------------------------------------------------
+        // Export indicator values
         // ---------------------------------------------------------------------
 
         state.setMessage( "exporting_data_for_indicators" );
@@ -272,14 +280,12 @@ public class DefaultDataMartEngine
         }
 
         // ---------------------------------------------------------------------
-        // Drop crosstab table and aggregated data cache
+        // Drop aggregated data cache
         // ---------------------------------------------------------------------
 
-        crossTabService.dropCrossTabTable( key ); //TODO move before indicator export
-        
         crossTabService.dropAggregatedDataCache( key );
         
-        log.info( "Dropped crosstab table and aggregated data cache: " + TimeUtils.getHMS() );
+        log.info( "Dropped aggregated data cache: " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
         // Create potential indexes
