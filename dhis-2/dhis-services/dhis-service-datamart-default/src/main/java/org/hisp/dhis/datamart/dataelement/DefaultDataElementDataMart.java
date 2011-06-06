@@ -132,8 +132,8 @@ public class DefaultDataElementDataMart
     // DataMart functionality
     // -------------------------------------------------------------------------
     
-    public int exportDataValues( final Collection<DataElementOperand> operands, final Collection<Period> periods, 
-        final Collection<OrganisationUnit> organisationUnits, DataElementOperandList operandList, String key )
+    public int exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
+        Collection<OrganisationUnit> organisationUnits, DataElementOperandList operandList, String key )
     {
         final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
         
@@ -167,27 +167,28 @@ public class DefaultDataElementDataMart
                 valueMap.putAll( sumBoolAggregator.getAggregatedValues( sumBoolOperands, period, unit, level, hierarchy, key ) );
                 valueMap.putAll( averageBoolAggregator.getAggregatedValues( averageBoolOperands, period, unit, level, hierarchy, key ) );
                 
-                //TODO check size of value map
-                
-                for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
+                if ( valueMap.size() > 0 )
                 {
-                    aggregatedValue.clear();
-                    
-                    final double value = getRounded( entry.getValue(), DECIMALS );
-                    
-                    aggregatedValue.setDataElementId( entry.getKey().getDataElementId() );
-                    aggregatedValue.setCategoryOptionComboId( entry.getKey().getOptionComboId() );
-                    aggregatedValue.setPeriodId( period.getId() );
-                    aggregatedValue.setPeriodTypeId( period.getPeriodType().getId() );
-                    aggregatedValue.setOrganisationUnitId( unit.getId() );
-                    aggregatedValue.setLevel( level );
-                    aggregatedValue.setValue( value );
-                    
-                    batchHandler.addObject( aggregatedValue );
-                    
-                    operandList.addValue( entry.getKey(), value );
-                    
-                    count++;
+                    for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
+                    {
+                        aggregatedValue.clear();
+                        
+                        final double value = getRounded( entry.getValue(), DECIMALS );
+                        
+                        aggregatedValue.setDataElementId( entry.getKey().getDataElementId() );
+                        aggregatedValue.setCategoryOptionComboId( entry.getKey().getOptionComboId() );
+                        aggregatedValue.setPeriodId( period.getId() );
+                        aggregatedValue.setPeriodTypeId( period.getPeriodType().getId() );
+                        aggregatedValue.setOrganisationUnitId( unit.getId() );
+                        aggregatedValue.setLevel( level );
+                        aggregatedValue.setValue( value );
+                        
+                        batchHandler.addObject( aggregatedValue );
+                        
+                        operandList.addValue( entry.getKey(), value );
+                        
+                        count++;
+                    }
                 }
                 
                 if ( operandList.hasValues() )
