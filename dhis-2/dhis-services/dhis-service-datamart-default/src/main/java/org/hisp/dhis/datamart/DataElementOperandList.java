@@ -35,6 +35,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 /**
+ * Wrapper class for a list of DataElementOperands which encapsulates logic for
+ * initializing, adding values and checking the state of the list. 
+ * 
  * @author Lars Helge Overland
  */
 public class DataElementOperandList
