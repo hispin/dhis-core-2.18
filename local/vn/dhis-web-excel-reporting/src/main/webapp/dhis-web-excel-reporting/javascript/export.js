@@ -71,28 +71,46 @@ function responseListPeriodReceived( json )
 	jQuery.each( json.periods, function(i, item ){
 		addOption('period', item.name , i );
 	});
-	
 }
 
-function generateExportReport() {
-	
+function validateGenerateReport( isAdvanced )
+{
 	var exportReport = getFieldValue('exportReport');
-	if(exportReport.length == 0){
+
+	if ( exportReport.length == 0 )
+	{
 		showErrorMessage( i18n_specify_export_report );
 		return;
 	}
 	
 	lockScreen();
-	
+
+	jQuery.postJSON( 'validateGenerateReport.action',
+	{
+		'exportReportId': byId('exportReport').value,
+		'periodIndex': byId('period').value
+	},
+	function( json )
+	{
+		if ( json.response == "success" ) {
+			if ( isAdvanced ) {
+				generateAdvancedExportReport();
+			}
+			else generateExportReport();
+		}
+		else {
+			unLockScreen();
+			showWarningMessage( json.message );
+		}
+	});
+}
+
+function generateExportReport() {
+		
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( generateExportReportReceived );
-	
-	var params = "exportReportId=" + byId('exportReport').value;
-	params += "&periodIndex=" + byId('period').value;
-	request.sendAsPost(params);
 	request.send( 'generateExportReport.action');
-	
 }
 
 function generateExportReportReceived( xmlObject ) {
@@ -129,18 +147,10 @@ function getALLExportReportByGroupReceived( xmlObject ) {
 	}
 }
 
-function generateAdvancedExportReport() {	
-
-	lockScreen();	
-	
+function generateAdvancedExportReport()
+{
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( generateExportReportReceived );
-	
-	var params = "exportReportId=" + byId('exportReport').value;
-	params += "&periodId=" + byId('period').value;
-	params += "&organisationGroupId=" + byId("availableOrgunitGroups").value;
-	request.sendAsPost(params);
-	request.send( 'generateAdvancedExportReport.action');
-	
+	request.send( 'generateAdvancedExportReport.action?organisationGroupId='+ byId("availableOrgunitGroups").value );
 }

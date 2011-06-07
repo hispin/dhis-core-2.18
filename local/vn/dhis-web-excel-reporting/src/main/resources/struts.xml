@@ -437,6 +437,14 @@
 
 		<!-- Generate Report Excel use POI -->
 
+		<action name="validateGenerateReport"
+			class="org.hisp.dhis.reportexcel.exporting.action.ValidateGenerateExportReportAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+		</action>
+
 		<action name="generateExportReport"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateExcelReportFlowAction">
 			<result name="CATEGORY" type="redirect">
@@ -649,13 +657,17 @@
 		<action name="generateAdvancedExportReport"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateExcelReportFlowAction">
 			<result name="CATEGORY" type="redirect">
-				generateAdvancedReportCategory.action</result>
+				generateAdvancedReportCategory.action?organisationGroupId=${organisationGroupId}
+			</result>
 			<result name="NORMAL" type="redirect">
-				generateAdvancedReportNormal.action</result>
+				generateAdvancedReportNormal.action?organisationGroupId=${organisationGroupId}
+			</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
-				generateAdvancedReportOrganizationGroupListing.action</result>
+				generateAdvancedReportOrganizationGroupListing.action?organisationGroupId=${organisationGroupId}
+			</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
-				generateAdvancedReportPeriodColumnListing.action</result>
+				generateAdvancedReportPeriodColumnListing.action?organisationGroupId=${organisationGroupId}
+			</result>
 		</action>
 
 		<action name="generateAdvancedReportNormal"
@@ -687,13 +699,17 @@
 		<action name="previewAdvancedExportReport"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateExcelReportFlowAction">
 			<result name="CATEGORY" type="redirect">
-				generatePreviewAdvancedCategory.action</result>
+				generatePreviewAdvancedCategory.action?organisationGroupId=${organisationGroupId}
+			</result>
 			<result name="NORMAL" type="redirect">
-				generatePreviewAdvancedNormal.action</result>
+				generatePreviewAdvancedNormal.action?organisationGroupId=${organisationGroupId}
+			</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
-				generatePreviewAdvancedOrgGroupListing.action</result>
+				generatePreviewAdvancedOrgGroupListing.action?organisationGroupId=${organisationGroupId}
+			</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
-				generatePreviewAdvancedPeriodColumnListing.action</result>
+				generatePreviewAdvancedPeriodColumnListing.action?organisationGroupId=${organisationGroupId}
+			</result>
 		</action>
 
 		<action name="generatePreviewAdvancedCategory"

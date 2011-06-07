@@ -1,33 +1,50 @@
-function previewAdvandReport() 
+function validatePreviewReport( isAdvanced )
 {
-	var params = "exportReportId=" + byId('exportReport').value + "&periodId=" + byId('period').value + "&organisationGroupId=" + byId("availableOrgunitGroups").value;
-	
-	lockScreen();
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'reportXML' );
-	request.setCallbackSuccess( previewExportReportReceived );
-	request.sendAsPost( params );
-	request.send( "previewAdvancedExportReport.action" );	
-}
-
-function previewExportReport() {
-	
 	var exportReport = getFieldValue('exportReport');
-	if(exportReport.length == 0){
-		showErrorMessage(i18n_specify_export_report);
+
+	if ( exportReport.length == 0 )
+	{
+		showErrorMessage( i18n_specify_export_report );
 		return;
 	}
 	
 	lockScreen();
-	
-	var url = "previewExportReport.action?exportReportId=" + getListValue('exportReport') + "&periodIndex=" + getListValue('period');
-	
+
+	jQuery.postJSON( 'validateGenerateReport.action',
+	{
+		'exportReportId': byId('exportReport').value,
+		'periodIndex': byId('period').value
+	},
+	function( json )
+	{
+		if ( json.response == "success" ) {
+			if ( isAdvanced ) {
+				previewAdvandReport();
+			}
+			else previewExportReport();
+		}
+		else {
+			unLockScreen();
+			showWarningMessage( json.message );
+		}
+	});
+}
+
+function previewExportReport() {
+
 	var request = new Request();
 	request.setResponseTypeXML( 'reportXML' );
 	request.setCallbackSuccess( previewExportReportReceived );
-	request.send( url );	
-	
+	request.send( 'previewExportReport.action' );
+}
+
+function previewAdvandReport() 
+{	
+	var request = new Request();
+	request.setResponseTypeXML( 'reportXML' );
+	request.setCallbackSuccess( previewExportReportReceived );
+	request.sendAsPost( params );
+	request.send( "previewAdvancedExportReport.action?organisationGroupId=" + byId("availableOrgunitGroups").value );
 }
 
 function previewExportReportReceived( parentElement ) 

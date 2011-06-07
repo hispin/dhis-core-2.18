@@ -27,19 +27,21 @@ package org.hisp.dhis.reportexcel.exporting.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.File;
+
 import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportLocationManager;
+import org.hisp.dhis.reportexcel.action.ActionSupport;
+import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
-import com.opensymphony.xwork2.Action;
-
 /**
- * @author Tran Thanh Tri
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GenerateExcelReportFlowAction
-    implements Action
+public class ValidateGenerateExportReportAction
+    extends ActionSupport
 {
     // -------------------------------------------------------------------------
     // Dependency
@@ -52,6 +54,13 @@ public class GenerateExcelReportFlowAction
         this.exportReportService = exportReportService;
     }
 
+    private PeriodGenericManager periodGenericManager;
+
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
+    {
+        this.periodGenericManager = periodGenericManager;
+    }
+
     private SelectionManager selectionManager;
 
     public void setSelectionManager( SelectionManager selectionManager )
@@ -59,20 +68,29 @@ public class GenerateExcelReportFlowAction
         this.selectionManager = selectionManager;
     }
 
-    // -------------------------------------------------------------------------
-    // Input && Output
-    // -------------------------------------------------------------------------
+    private ReportLocationManager reportLocationManager;
 
-    private Integer organisationGroupId;
-
-    public void setOrganisationGroupId( Integer organisationGroupId )
+    public void setReportLocationManager( ReportLocationManager reportLocationManager )
     {
-        this.organisationGroupId = organisationGroupId;
+        this.reportLocationManager = reportLocationManager;
     }
 
-    public Integer getOrganisationGroupId()
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
+    private Integer exportReportId;
+
+    public void setExportReportId( Integer exportReportId )
     {
-        return organisationGroupId;
+        this.exportReportId = exportReportId;
+    }
+
+    private Integer periodIndex;
+
+    public void setPeriodIndex( Integer periodIndex )
+    {
+        this.periodIndex = periodIndex;
     }
 
     // -------------------------------------------------------------------------
@@ -82,9 +100,38 @@ public class GenerateExcelReportFlowAction
     public String execute()
         throws Exception
     {
-        ReportExcel exportReport = exportReportService.getExportReport( selectionManager.getSelectedReportId() );
+        ReportExcel exportReport = exportReportService.getExportReport( exportReportId );
+        
+        if ( exportReport == null )
+        {
+            message = i18n.getString( "the_specified_report_is_not_exist" );
 
-        return exportReport.getReportType();
+            return ERROR;
+        }
+        
+        File templateDirectory = reportLocationManager.getReportExcelTemplateDirectory();
+
+        if ( templateDirectory == null || !templateDirectory.exists() )
+        {
+            message = i18n.getString( "template_folder_is_null" );
+
+            return ERROR;
+        }
+
+        File templateFile = new File( templateDirectory, exportReport.getExcelTemplateFile() );
+
+        if ( templateFile == null || !templateFile.exists() )
+        {
+            message = i18n.getString( "template_file_is_not_exist" );
+
+            return ERROR;
+        }
+
+        periodGenericManager.setSelectedPeriodIndex( periodIndex );
+
+        selectionManager.setSelectedReportId( exportReportId );
+
+        return SUCCESS;
     }
 
 }

@@ -141,13 +141,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.exportreport.action.GetExportReportGroupsAction"
 		class="org.hisp.dhis.reportexcel.exportreport.action.GetExportReportGroupsAction"
 		scope="prototype">
-		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.exportreport.action.ListExportReportAction"
 		class="org.hisp.dhis.reportexcel.exportreport.action.ListExportReportAction"
 		scope="prototype">
-		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.exportreport.action.UpdateExportReportAction"
@@ -405,14 +409,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
+		id="org.hisp.dhis.reportexcel.exporting.action.ValidateGenerateExportReportAction"
+		class="org.hisp.dhis.reportexcel.exporting.action.ValidateGenerateExportReportAction"
+		scope="prototype">
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+	</bean>
+	
+	<bean
 		id="org.hisp.dhis.reportexcel.exporting.action.GenerateExcelReportFlowAction"
 		class="org.hisp.dhis.reportexcel.exporting.action.GenerateExcelReportFlowAction"
 		scope="prototype">
-		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 	</bean>
 
 	<bean
@@ -421,26 +438,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="aggregationService"
+			ref="org.hisp.dhis.aggregation.AggregationService" />
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="statementManager" ref="statementManager" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="indicatorService"
+			ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="periodGenericManager"
 			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.datavalue.DataValueService" />
 	</bean>
 
 	<bean
@@ -449,19 +472,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="periodService"
+			ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="aggregationService"
+			ref="org.hisp.dhis.aggregation.AggregationService" />
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="statementManager" ref="statementManager" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="indicatorService"
+			ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="periodGenericManager"
 			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="initPOIStylesManager"
