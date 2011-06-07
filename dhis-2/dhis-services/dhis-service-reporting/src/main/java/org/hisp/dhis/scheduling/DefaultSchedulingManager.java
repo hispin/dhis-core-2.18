@@ -35,6 +35,8 @@ import java.util.Set;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
 
+import static org.hisp.dhis.system.scheduling.Scheduler.*;
+
 /**
  * @author Lars Helge Overland
  */
@@ -72,7 +74,7 @@ public class DefaultSchedulingManager
 
     public void scheduleTasks()
     {
-        scheduler.scheduleTask( getRunnables(), Scheduler.CRON_NIGHTLY_1AM );
+        scheduler.scheduleTask( getRunnables(), CRON_NIGHTLY_1AM );
     }
     
     public void stopTasks()
@@ -90,13 +92,15 @@ public class DefaultSchedulingManager
         return scheduler.getTaskStatus( Runnables.class );
     }
     
-    public Set<String> getRunningTaskKeys()
+    public Set<String> getScheduledTaskKeys()
     {
         final Set<String> keys = new HashSet<String>();
         
         for ( String key : tasks.keySet() )
         {
-            if ( Scheduler.STATUS_RUNNING.equals( scheduler.getTaskStatus( tasks.get( key ).getClass() ) ) )
+            boolean schedule = (Boolean) systemSettingManager.getSystemSetting( key, false );
+            
+            if ( schedule )
             {
                 keys.add( key );
             }
@@ -120,10 +124,6 @@ public class DefaultSchedulingManager
             if ( schedule )
             {
                 runnables.addRunnable( tasks.get( key ) );
-            }
-            else
-            {
-                scheduler.stopTask( tasks.get( key ).getClass() );
             }
         }
         

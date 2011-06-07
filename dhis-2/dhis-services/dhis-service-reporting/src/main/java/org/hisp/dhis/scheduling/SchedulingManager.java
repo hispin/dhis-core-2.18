@@ -42,5 +42,5 @@ public interface SchedulingManager
     
     String getTaskStatus();
     
-    Set<String> getRunningTaskKeys();
+    Set<String> getScheduledTaskKeys();
 }
