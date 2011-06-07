@@ -49,9 +49,7 @@ public class FileUtils
         {
             for ( File f : directory.listFiles() )
             {
-
                 result.add( f.getName() );
-
             }
         }
 

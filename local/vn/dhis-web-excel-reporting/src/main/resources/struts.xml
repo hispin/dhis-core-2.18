@@ -154,15 +154,9 @@
 		</action>
 
 		<action name="updateExportReportForm"
-			class="org.hisp.dhis.reportexcel.exportreport.action.GetExportReportAction">
-			<result name="success" type="chain">updateExportReportFormChain
-			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
-
-		<action name="updateExportReportFormChain"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
+			<result name="error" type="redirect">listAllExportReport.action</result>
 			<param name="page">/dhis-web-excel-reporting/report/updateExportReportForm.vm</param>
 			<param name="javascripts">javascript/exportReports.js</param>			
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
@@ -445,18 +439,14 @@
 
 		<action name="generateExportReport"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateExcelReportFlowAction">
-			<result name="CATEGORY" type="chain">
-				generateReportCategory
-			</result>
-			<result name="NORMAL" type="chain">
-				generateReportNormal
-			</result>
-			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				generateReportOrgGroupListing
-			</result>
-			<result name="PERIOD_COLUMN_LISTING" type="chain">
-				generateReportPeriodColumnListing
-			</result>
+			<result name="CATEGORY" type="redirect">
+				generateReportCategory.action</result>
+			<result name="NORMAL" type="redirect">
+				generateReportNormal.action</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
+				generateReportOrgGroupListing.action</result>
+			<result name="PERIOD_COLUMN_LISTING" type="redirect">
+				generateReportPeriodColumnListing.action</result>
 		</action>
 
 		<action name="generateReportCategory"
@@ -592,45 +582,41 @@
 
 		<action name="previewExportReport"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateExcelReportFlowAction">
-			<result name="CATEGORY" type="chain">
-				generatePreviewCategory
-			</result>
-			<result name="NORMAL" type="chain">
-				generatePreviewNormal
-			</result>
-			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				generatePreviewOrgGroupListing
-			</result>
-			<result name="PERIOD_COLUMN_LISTING" type="chain">
-				generatePreviewPeriodColumnListing
-			</result>
+			<result name="CATEGORY" type="redirect">
+				generatePreviewCategory.action</result>
+			<result name="NORMAL" type="redirect">
+				generatePreviewNormal.action</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
+				generatePreviewOrgGroupListing.action</result>
+			<result name="PERIOD_COLUMN_LISTING" type="redirect">
+				generatePreviewPeriodColumnListing.action</result>
 		</action>
 
 		<action name="generatePreviewCategory"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateReportCategoryAction">
-			<result name="success" type="chain">exportXMLChain
+			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>
 
 		<action name="generatePreviewNormal"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateReportNormalAction">
-			<result name="success" type="chain">exportXMLChain
+			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>
 
 		<action name="generatePreviewOrgGroupListing"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateReportOrgGroupListingAction">
-			<result name="success" type="chain">exportXMLChain
+			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>
 
 		<action name="generatePreviewPeriodColumnListing"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateReportPeriodColumnListingAction">
-			<result name="success" type="chain">exportXMLChain
+			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>
 
-		<action name="exportXMLChain"
+		<action name="exportXML"
 			class="org.hisp.dhis.reportexcel.preview.action.ExportXMLAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseExportReportPreview.vm</result>			
@@ -662,15 +648,14 @@
 
 		<action name="generateAdvancedExportReport"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateExcelReportFlowAction">
-			<result name="CATEGORY" type="chain">
-				generateAdvancedReportCategory
-			</result>
-			<result name="NORMAL" type="chain">generateAdvancedReportNormal
-			</result>
-			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				generateAdvancedReportOrganizationGroupListing</result>
-			<result name="PERIOD_COLUMN_LISTING" type="chain">
-				generateAdvancedReportPeriodColumnListingAction</result>
+			<result name="CATEGORY" type="redirect">
+				generateAdvancedReportCategory.action</result>
+			<result name="NORMAL" type="redirect">
+				generateAdvancedReportNormal.action</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
+				generateAdvancedReportOrganizationGroupListing.action</result>
+			<result name="PERIOD_COLUMN_LISTING" type="redirect">
+				generateAdvancedReportPeriodColumnListing.action</result>
 		</action>
 
 		<action name="generateAdvancedReportNormal"
@@ -685,7 +670,7 @@
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
-		<action name="generateAdvancedReportPeriodColumnListingAction"
+		<action name="generateAdvancedReportPeriodColumnListing"
 			class="org.hisp.dhis.reportexcel.exporting.advance.action.GenerateAdvancedReportPeriodColumnListingAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
@@ -701,41 +686,37 @@
 
 		<action name="previewAdvancedExportReport"
 			class="org.hisp.dhis.reportexcel.exporting.action.GenerateExcelReportFlowAction">
-			<result name="CATEGORY" type="chain">
-				generatePreviewAdvancedCategory
-			</result>
-			<result name="NORMAL" type="chain">
-				generatePreviewAdvancedNormal
-			</result>
-			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				generatePreviewAdvancedOrgGroupListing
-			</result>
-			<result name="PERIOD_COLUMN_LISTING" type="chain">
-				generatePreviewAdvancedPeriodColumnListing
-			</result>
+			<result name="CATEGORY" type="redirect">
+				generatePreviewAdvancedCategory.action</result>
+			<result name="NORMAL" type="redirect">
+				generatePreviewAdvancedNormal.action</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
+				generatePreviewAdvancedOrgGroupListing.action</result>
+			<result name="PERIOD_COLUMN_LISTING" type="redirect">
+				generatePreviewAdvancedPeriodColumnListing.action</result>
 		</action>
 
 		<action name="generatePreviewAdvancedCategory"
 			class="org.hisp.dhis.reportexcel.exporting.advance.action.GenerateAdvancedReportCategoryAction">
-			<result name="success" type="chain">exportXMLChain
+			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>
 
 		<action name="generatePreviewAdvancedNormal"
 			class="org.hisp.dhis.reportexcel.exporting.advance.action.GenerateAdvancedReportNormalAction">
-			<result name="success" type="chain">exportXMLChain
+			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>
 
 		<action name="generatePreviewAdvancedOrgGroupListing"
 			class="org.hisp.dhis.reportexcel.exporting.advance.action.GenerateAdvancedReportOrgGroupListingAction">
-			<result name="success" type="chain">exportXMLChain
+			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>
 
 		<action name="generatePreviewAdvancedPeriodColumnListing"
 			class="org.hisp.dhis.reportexcel.exporting.advance.action.GenerateAdvancedReportPeriodColumnListingAction">
-			<result name="success" type="chain">exportXMLChain
+			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>
 
@@ -787,14 +768,7 @@
 		</action>
 
 		<action name="updateImportReportForm"
-			class="org.hisp.dhis.commons.action.GetPeriodTypesAction">
-			<result name="success" type="chain">updateImportReportFormChain
-			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
-
-		<action name="updateImportReportFormChain"
-			class="org.hisp.dhis.reportexcel.importreport.action.GetImportReportByIdAction">
+			class="org.hisp.dhis.reportexcel.importreport.action.ShowUpdateImportReportFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/import/updateImportReport.vm</param>
 			<param name="javascripts">javascript/importReports.js</param>
@@ -803,9 +777,7 @@
 
 		<action name="updateImportReport"
 			class="org.hisp.dhis.reportexcel.importreport.action.UpdateImportReportAction">
-			<result name="success" type="redirect">
-				listAllImportReport.action
-			</result>
+			<result name="success" type="redirect">listAllImportReport.action</result>
 		</action>
 
 		<action name="validateImportReport"
@@ -959,13 +931,7 @@
 		</action>
 
 		<action name="updateImportItemForm"
-			class="org.hisp.dhis.reportexcel.importitem.action.SetupImportItemFormAction">
-			<result name="success" type="chain">updateImportItemChainForm
-			</result>
-		</action>
-
-		<action name="updateImportItemChainForm"
-			class="org.hisp.dhis.reportexcel.importitem.action.GetImportItemByIdAction">
+			class="org.hisp.dhis.reportexcel.importitem.action.ShowUpdateImportItemFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/import/updateImportItem.vm</param>
 			<param name="javascripts">javascript/importItems.js</param>
@@ -1063,18 +1029,14 @@
 
 		<action name="previewDataFlow"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction">
-			<result name="CATEGORY" type="chain">
-				previewDataCategory
-			</result>
-			<result name="NORMAL" type="chain">
-				previewDataNormal
-			</result>
-			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				previewDataOrganizationGroup
-			</result>
-			<result name="PERIOD_COLUMN_LISTING" type="chain">
-				previewDataNormal
-			</result>
+			<result name="CATEGORY" type="redirect">
+				previewDataCategory.action</result>
+			<result name="NORMAL" type="redirect">
+				previewDataNormal.action</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
+				previewDataOrganizationGroup.action</result>
+			<result name="PERIOD_COLUMN_LISTING" type="redirect">
+				previewDataNormal.action</result>
 		</action>
 
 		<!--  function - Prewiew Data - NORMAL -->
@@ -1086,6 +1048,16 @@
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>		
 		</action>
 
+		<!--  function - Prewiew Data - CATEGORY GROUP  -->
+		<action name="previewDataCategory"
+			class="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction">
+			<result name="success" type="velocity">
+				/dhis-web-excel-reporting/responseImportItemValuesByCategory.vm
+			</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
+		</action>
+		
 		<!--  function - Prewiew Data - ORGANISATION GROUP  -->
 		<action name="previewDataOrganizationGroup"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataOrganizationGroupAction">
@@ -1096,58 +1068,43 @@
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>		
 		</action>
 
-		<!--  function - Prewiew Data - CATEGORY GROUP  -->
-		
-		<action name="previewDataCategory"
-			class="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction">
-			<result name="success" type="velocity">
-				/dhis-web-excel-reporting/responseImportItemValuesByCategory.vm
-			</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>
-		</action>
-
-
+		<!--WORKING HERE-->
 		<action name="importData"
 			class="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction">
-			<result name="CATEGORY" type="chain">
-				importDataCategoryExcelGroup
-			</result>
-			<result name="NORMAL" type="chain">
-				importDataNormalExcelGroup
-			</result>
-			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				importDataExcelOrganizationGroup
-			</result>
-			<result name="PERIOD_COLUMN_LISTING" type="chain">
-				generateExportReportPeriodColumnListingAjax
-			</result>
+			<result name="NORMAL" type="redirect">
+				importDataNormal?importReportId=${importReportId}</result>
+			<result name="CATEGORY" type="redirect">
+				importDataCategory</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
+				importDataOrganizationGroup</result>
+			<result name="PERIOD_COLUMN_LISTING" type="redirect">
+				generateExportReportPeriodColumnListingAjax</result>
 		</action>
 
-		<action name="importDataNormalExcelGroup"
-			class="org.hisp.dhis.reportexcel.importing.action.ImportDataNormalExcelGroupAction">
+		<action name="importDataNormal"
+			class="org.hisp.dhis.reportexcel.importing.action.ImportDataNormalAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 		</action>
 
-		<action name="importDataExcelOrganizationGroup"
-			class="org.hisp.dhis.reportexcel.importing.action.ImportDataExcelOrganizationGroupAction">
+		<action name="importDataCategory"
+			class="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 		</action>
-
-		<action name="importDataCategoryExcelGroup"
-			class="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryExcelGroupAction">
+		
+		<action name="importDataOrganizationGroup"
+			class="org.hisp.dhis.reportexcel.importing.action.ImportDataOrganizationGroupAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 		</action>
-
+		
 		<!-- Period Column -->
 
 		<action name="periodColumns"
@@ -1159,8 +1116,8 @@
 
 		<action name="savePeriodColumn"
 			class="org.hisp.dhis.reportexcel.periodcolumn.action.SavePeriodColumnAction">
-			<result name="success" type="redirect">periodColumns.action?id=${exportReportId}
-			</result>
+			<result name="success" type="redirect">
+				periodColumns.action?id=${exportReportId}</result>
 		</action>
 
 		<action name="updatePeriodColumn"
@@ -1251,17 +1208,7 @@
 		</action>	
 		
 		<action name="addJChartForm"
-			class="org.hisp.dhis.commons.action.GetPeriodTypesAction">
-			<result name="success" type="chain">addJChartFormChain1</result>								
-		</action>
-		
-		<action name="addJChartFormChain1"
-			class="org.hisp.dhis.commons.action.GetIndicatorGroupsAction">
-			<result name="success" type="chain">addJChartFormChain2</result>						
-		</action>	
-		
-		<action name="addJChartFormChain2"
-			class="org.hisp.dhis.reportexcel.action.NoAction">
+			class="org.hisp.dhis.reportexcel.jchart.action.PrepareDataForAddOrUpdateJChartAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/chart/addJChart.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
@@ -1281,17 +1228,7 @@
 		</action>
 		
 		<action name="updateJChartForm"
-			class="org.hisp.dhis.commons.action.GetPeriodTypesAction">
-			<result name="success" type="chain">updateJChartFormChain1</result>								
-		</action>
-		
-		<action name="updateJChartFormChain1"
-			class="org.hisp.dhis.commons.action.GetIndicatorGroupsAction">
-			<result name="success" type="chain">updateJChartFormChain2</result>						
-		</action>	
-		
-		<action name="updateJChartFormChain2"
-			class="org.hisp.dhis.reportexcel.jchart.action.GetJChartAction">
+			class="org.hisp.dhis.reportexcel.jchart.action.PrepareDataForAddOrUpdateJChartAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/chart/updateJChart.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>

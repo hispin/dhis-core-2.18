@@ -87,19 +87,33 @@ public class ExcelTemplateListAction
 
     private String mode;
 
+    private Integer id;
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
+    private ReportExcel exportReport;
+
     private String newFileUploadedOrRenamed;
 
-    private Map<String, Boolean> mapTemplateFiles = new HashMap<String, Boolean>();
-
     private List<String> reportTypes = new ArrayList<String>();
+
+    private Map<String, Boolean> mapTemplateFiles = new HashMap<String, Boolean>();
 
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public ReportExcel getExportReport()
+    {
+        return exportReport;
+    }
 
     public Map<String, Boolean> getMapTemplateFiles()
     {
@@ -149,6 +163,17 @@ public class ExcelTemplateListAction
     public String execute()
         throws Exception
     {
+        if ( id != null )
+        {
+            selectionManager.setSelectedReportId( id );
+
+            exportReport = exportReportService.getExportReport( id );
+        }
+        else
+        {
+            return ERROR;
+        }
+        
         File templateDirectory = reportLocationManager.getReportExcelTemplateDirectory();
 
         if ( templateDirectory == null || !templateDirectory.exists() )

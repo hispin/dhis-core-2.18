@@ -30,6 +30,7 @@ package org.hisp.dhis.reportexcel.importing.action;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.importitem.ImportItemService;
 import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -58,6 +59,13 @@ public class ImportDataFlowAction
         this.periodGenericManager = periodGenericManager;
     }
 
+    private SelectionManager selectionManager;
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -70,9 +78,16 @@ public class ImportDataFlowAction
 
     private Integer orgunitGroupId;
 
+    public String[] importItemIds;
+
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
+
+    public Integer getImportReportId()
+    {
+        return importReportId;
+    }
 
     public void setImportReportId( Integer importReportId )
     {
@@ -104,6 +119,11 @@ public class ImportDataFlowAction
         this.orgunitGroupId = orgunitGroupId;
     }
 
+    public void setImportItemIds( String[] importItemIds )
+    {
+        this.importItemIds = importItemIds;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -112,6 +132,8 @@ public class ImportDataFlowAction
         throws Exception
     {
         periodGenericManager.setSelectedPeriodIndex( periodId );
+
+        selectionManager.setListObject( importItemIds );
 
         ExcelItemGroup importReport = importItemService.getImportReport( importReportId );
 

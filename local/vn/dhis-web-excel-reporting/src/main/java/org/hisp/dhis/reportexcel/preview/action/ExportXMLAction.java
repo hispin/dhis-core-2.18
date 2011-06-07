@@ -49,9 +49,9 @@ public class ExportXMLAction
 
     private static final String ENCODING = "UTF8";
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ExportReportService exportReportService;
 
@@ -67,29 +67,17 @@ public class ExportXMLAction
         this.selectionManager = selectionManager;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input && Output
-    // -------------------------------------------
-
-    private String outputXLS;
-
+    // -------------------------------------------------------------------------
+    
     private String xmlStructureResponse;
 
     private File FILE_XLS;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------
-
-    public String getOutputXLS()
-    {
-        return outputXLS;
-    }
-
-    public void setOutputXLS( String outputXLS )
-    {
-        this.outputXLS = outputXLS;
-    }
 
     public String getXmlStructureResponse()
     {
@@ -134,5 +122,4 @@ public class ExportXMLAction
 
         // inputStream.close();
     }
-
 }
