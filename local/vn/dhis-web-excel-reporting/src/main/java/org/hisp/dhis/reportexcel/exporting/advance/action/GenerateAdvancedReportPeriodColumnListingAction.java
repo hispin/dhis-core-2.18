@@ -59,24 +59,20 @@ public class GenerateAdvancedReportPeriodColumnListingAction
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
 
     private Integer organisationGroupId;
 
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
     public void setOrganisationGroupId( Integer organisationGroupId )
     {
         this.organisationGroupId = organisationGroupId;
-    }
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -102,7 +98,6 @@ public class GenerateAdvancedReportPeriodColumnListingAction
 
             this.generateOutPutFile( exportReportInstance.getPeriodColumns(), exportReportItems, organisationUnitGroup
                 .getMembers(), sheet );
-
         }
 
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
@@ -110,12 +105,11 @@ public class GenerateAdvancedReportPeriodColumnListingAction
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             this.recalculatingFormula( sheet );
-
         }
     }
 
-    private void generateOutPutFile( Collection<PeriodColumn> periodColumns,
-        Collection<ReportExcelItem> exportItems, Set<OrganisationUnit> organisationUnits, Sheet sheet )
+    private void generateOutPutFile( Collection<PeriodColumn> periodColumns, Collection<ReportExcelItem> exportItems,
+        Set<OrganisationUnit> organisationUnits, Sheet sheet )
     {
         for ( ReportExcelItem exportItem : exportItems )
         {

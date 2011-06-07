@@ -49,9 +49,9 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 public class GenerateAdvancedReportNormalAction
     extends AbstractGenerateExcelReportSupport
 {
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
@@ -60,9 +60,9 @@ public class GenerateAdvancedReportNormalAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Input && Output
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer organisationGroupId;
 
@@ -71,9 +71,9 @@ public class GenerateAdvancedReportNormalAction
         this.organisationGroupId = organisationGroupId;
     }
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Override
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     protected void executeGenerateOutputFile( ReportExcel exportReport, Period period )

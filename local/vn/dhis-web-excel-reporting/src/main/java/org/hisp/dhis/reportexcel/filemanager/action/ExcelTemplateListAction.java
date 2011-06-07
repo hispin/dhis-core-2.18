@@ -173,7 +173,7 @@ public class ExcelTemplateListAction
         {
             return ERROR;
         }
-        
+
         File templateDirectory = reportLocationManager.getReportExcelTemplateDirectory();
 
         if ( templateDirectory == null || !templateDirectory.exists() )
@@ -216,14 +216,7 @@ public class ExcelTemplateListAction
 
         for ( File file : templateFiles )
         {
-            if ( exportReportTemplates.contains( file.getName() ) )
-            {
-                mapTemplateFiles.put( file.getName(), true );
-            }
-            else
-            {
-                mapTemplateFiles.put( file.getName(), false );
-            }
+            mapTemplateFiles.put( file.getName(), exportReportTemplates.contains( file.getName() ) );
         }
 
         return SUCCESS;

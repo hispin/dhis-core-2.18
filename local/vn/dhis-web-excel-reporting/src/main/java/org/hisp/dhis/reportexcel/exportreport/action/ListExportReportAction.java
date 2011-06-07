@@ -27,13 +27,19 @@ package org.hisp.dhis.reportexcel.exportreport.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.comparator.ExportReportNameComparator;
+import org.hisp.dhis.reportexcel.utils.ExcelFilenameFilter;
+import org.hisp.dhis.reportexcel.utils.FileUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,9 +61,23 @@ public class ListExportReportAction
         this.exportReportService = exportReportService;
     }
 
+    private ReportLocationManager reportLocationManager;
+
+    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    {
+        this.reportLocationManager = reportLocationManager;
+    }
+
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
+
+    private boolean valid;
+
+    public void setValid( boolean valid )
+    {
+        this.valid = valid;
+    }
 
     private List<ReportExcel> exportReports;
 
@@ -66,13 +86,50 @@ public class ListExportReportAction
         return exportReports;
     }
 
+    private Map<String, Boolean> templateMap = new HashMap<String, Boolean>();
+
+    public Map<String, Boolean> getTemplateMap()
+    {
+        return templateMap;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
+        valid = true;
+        
         exportReports = new ArrayList<ReportExcel>( exportReportService.getAllExportReport() );
+
+        if ( valid )
+        {
+            File templateDirectory = reportLocationManager.getReportExcelTemplateDirectory();
+
+            if ( templateDirectory == null || !templateDirectory.exists() )
+            {
+                return SUCCESS;
+            }
+
+            List<String> templateNames = FileUtils.getListFileName( templateDirectory, new ExcelFilenameFilter() );
+
+            if ( templateNames ==  null || templateNames.isEmpty() )
+            {
+                return SUCCESS;
+            }
+            
+            for ( ReportExcel exportReport : exportReports )
+            {
+                templateMap.put( exportReport.getExcelTemplateFile(), templateNames.contains( exportReport
+                    .getExcelTemplateFile() ) );
+            }
+        }
 
         Collections.sort( exportReports, new ExportReportNameComparator() );
 
         return SUCCESS;
     }
+
 }

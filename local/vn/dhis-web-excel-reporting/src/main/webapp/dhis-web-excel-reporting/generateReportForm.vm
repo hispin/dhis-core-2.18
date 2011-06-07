@@ -45,8 +45,8 @@
 </form>
 <hr/>
 <p>
-<input type="button" id="previewButton" value="$i18n.getString( 'preview_report' )" onclick="previewExportReport();" style="width:150px"/>
-<input type="button" id="generateExportReport" onclick="generateExportReport();" value='$i18n.getString( "generate_export_report" )' style="width:150px"/>
+<input type="button" id="previewButton" value="$i18n.getString( 'preview_report' )" onclick="validatePreviewReport();" style="width:150px"/>
+<input type="button" id="generateExportReport" value='$i18n.getString( "generate_export_report" )' onclick="validateGenerateReport();" style="width:150px"/>
 <input type="button" id="printExcelReportButton" value='$i18n.getString("print")' onclick='printExportReport()' disabled style="width:150px"/>
 </p>
 <div id="previewDiv"></div>
@@ -58,8 +58,8 @@
 
 	#if ( $organisationUnit )
 		
-		$(document).ready(function() {
-		
+		$(document).ready(function()
+		{
 			getExportReportsByGroup();
 		});
 	
