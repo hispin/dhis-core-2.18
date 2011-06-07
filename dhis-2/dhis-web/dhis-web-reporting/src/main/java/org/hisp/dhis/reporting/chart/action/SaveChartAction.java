@@ -35,14 +35,16 @@ import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -69,6 +71,13 @@ public class SaveChartAction
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
 
     private PeriodService periodService;
@@ -167,8 +176,9 @@ public class SaveChartAction
     }
 
     private String targetLineLabel;
-    
-    public void setTargetLineLabel( String targetLineLabel ) {
+
+    public void setTargetLineLabel( String targetLineLabel )
+    {
         this.targetLineLabel = targetLineLabel;
     }
 
@@ -184,6 +194,13 @@ public class SaveChartAction
     public void setSelectedIndicators( List<String> selectedIndicators )
     {
         this.selectedIndicators = selectedIndicators;
+    }
+
+    private List<String> selectedDataElements = new ArrayList<String>();
+
+    public void setSelectedDataElements( List<String> selectedDataElements )
+    {
+        this.selectedDataElements = selectedDataElements;
     }
 
     private List<String> selectedPeriods = new ArrayList<String>();
@@ -258,12 +275,18 @@ public class SaveChartAction
         Chart chart = id == null ? new Chart() : chartService.getChart( id );
 
         List<Indicator> indicators = new ArrayList<Indicator>();
+        List<DataElement> dataElements = new ArrayList<DataElement>();
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
         List<Period> periods = new ArrayList<Period>( periodService.getPeriodsByExternalIds( selectedPeriods ) );
 
         for ( Integer id : getIntegerCollection( selectedIndicators ) )
         {
             indicators.add( indicatorService.getIndicator( id ) );
+        }
+
+        for ( Integer id : getIntegerCollection( selectedDataElements ) )
+        {
+            dataElements.add( dataElementService.getDataElement( id ) );
         }
 
         for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
@@ -286,6 +309,7 @@ public class SaveChartAction
         chart.setTargetLineLabel( targetLineLabel );
         chart.setUserOrganisationUnit( userOrganisationUnit );
         chart.setIndicators( indicators );
+        chart.setDataElements( dataElements );
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
 

@@ -1,11 +1,12 @@
-
 // -----------------------------------------------------------------------------
 // View chart
 // -----------------------------------------------------------------------------
 
 function viewChart( url )
 {
-    window.open( url, "_blank", "directories=no, height=560, width=760, location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes" );
+    window
+            .open(url, "_blank",
+                    "directories=no, height=560, width=760, location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes");
 }
 
 // -----------------------------------------------------------------------------
@@ -14,7 +15,7 @@ function viewChart( url )
 
 function removeChart( chartId, chartTitle )
 {
-	removeItem( chartId, chartTitle, i18n_confirm_delete, "removeChart.action" );
+    removeItem(chartId, chartTitle, i18n_confirm_delete, "removeChart.action");
 }
 
 // -----------------------------------------------------------------------------
@@ -24,19 +25,19 @@ function removeChart( chartId, chartTitle )
 function showChartDetails( chartId )
 {
     var request = new Request();
-    request.setResponseTypeXML( 'chart' );
-    request.setCallbackSuccess( chartReceived );
-    request.send( 'getChart.action?id=' + chartId );
+    request.setResponseTypeXML('chart');
+    request.setCallbackSuccess(chartReceived);
+    request.send('getChart.action?id=' + chartId);
 }
 
 function chartReceived( xmlObject )
 {
-    setInnerHTML( 'titleField', getElementValue( xmlObject, 'title' ) );
-    setInnerHTML( 'dimensionField', getElementValue( xmlObject, 'dimension' ) );
-    setInnerHTML( 'indicatorsField', getElementValue( xmlObject, 'indicators' ) );
-    setInnerHTML( 'periodsField', getElementValue( xmlObject, 'periods' ) );
-    setInnerHTML( 'organisationUnitsField', getElementValue( xmlObject, 'organisationUnits' ) );
-    
+    setInnerHTML('titleField', getElementValue(xmlObject, 'title'));
+    setInnerHTML('dimensionField', getElementValue(xmlObject, 'dimension'));
+    setInnerHTML('indicatorsField', getElementValue(xmlObject, 'indicators'));
+    setInnerHTML('periodsField', getElementValue(xmlObject, 'periods'));
+    setInnerHTML('organisationUnitsField', getElementValue(xmlObject, 'organisationUnits'));
+
     showDetails();
 }
 
@@ -46,74 +47,66 @@ function chartReceived( xmlObject )
 
 function saveChart()
 {
-    if ( validateTargetLine() && validateCollections() )
+    if (validateTargetLine() && validateCollections())
     {
-        var url = "validateChart.action?id=" + getFieldValue( "id" ) + "&title=" + getFieldValue( "title" );
+        var url = "validateChart.action?id=" + getFieldValue("id") + "&title=" + getFieldValue("title");
 
         var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( saveChartReceived );
-        request.send( url );
+        request.setResponseTypeXML('message');
+        request.setCallbackSuccess(saveChartReceived);
+        request.send(url);
     }
 }
 
 function saveChartReceived( messageElement )
 {
-    var type = messageElement.getAttribute( 'type' );
+    var type = messageElement.getAttribute('type');
     var message = messageElement.firstChild.nodeValue;
-    var dimension = document.getElementById( "dimension" ).value;
+    var dimension = document.getElementById("dimension").value;
 
-    if ( type == "input" )
+    if (type == "input")
     {
-        setMessage( message );
-        
+        setMessage(message);
+
         return false;
-    }
-    else if ( type == "success" )
+    } else if (type == "success")
     {
-        selectAllById( "selectedIndicators" );
-        
-        if ( dimension == "period" || dimension == "indicator")
-        {
-            selectAllById( "selectedPeriods" );
-        }
-        else if ( dimension == "organisationUnit" )
-        {        
-            selectAllById( "selectedOrganisationUnits" );
-        }
-        
-        document.getElementById( "chartForm" ).submit();
+        $("#selectedIndicators").children().attr("selected", true);
+        $("#selectedDataElements").children().attr("selected", true);
+        $("#selectedPeriods").children().attr("selected", true);
+        $("#selectedOrganisationUnits").children().attr("selected", true);
+        $('#chartForm').submit();
     }
 }
 
 function selectedChartType()
 {
-	return $("#type").val();
+    return $("#type").val();
 }
 
 function selectedIndicatorsCount()
 {
-	return $("#selectedIndicators option").length;
+    return $("#selectedIndicators option").length;
 }
 
 function validateTargetLine()
 {
     var targetLine = $("#targetLine").attr("checked");
 
-    if( targetLine )
+    if (targetLine)
     {
-        var targetLineValue = $("#targetLineValue").val(); 
-        
-        if( targetLineValue.length == 0)
+        var targetLineValue = $("#targetLineValue").val();
+
+        if (targetLineValue.length == 0)
         {
-            setMessage( i18n_target_line_value_must_be_provided );
+            setMessage(i18n_target_line_value_must_be_provided);
 
             return false;
         }
 
-        if( isNaN( targetLineValue ) )
+        if (isNaN(targetLineValue))
         {
-            setMessage( i18n_target_line_value_must_be_number );
+            setMessage(i18n_target_line_value_must_be_number);
 
             return false;
         }
@@ -124,24 +117,24 @@ function validateTargetLine()
 
 function validateCollections()
 {
-    if ( !hasElements( "selectedIndicators" ) )
+    if (!hasElements("selectedIndicators") && !hasElements("selectedDataElements"))
     {
-        setMessage( i18n_must_select_at_least_one_indicator );
+        setMessage(i18n_must_select_at_least_one_indicator);
 
         return false;
     }
 
-    if ( !hasElements( "selectedOrganisationUnits" ) && !isChecked( "userOrganisationUnit" ) )
+    if (!hasElements("selectedOrganisationUnits") && !isChecked("userOrganisationUnit"))
     {
-        setMessage( i18n_must_select_at_least_one_unit );
+        setMessage(i18n_must_select_at_least_one_unit);
 
         return false;
     }
 
-    if ( !hasElements( "selectedPeriods" ) && !relativePeriodsChecked() )
+    if (!hasElements("selectedPeriods") && !relativePeriodsChecked())
     {
-        setMessage( i18n_must_select_at_least_one_period );
-        
+        setMessage(i18n_must_select_at_least_one_period);
+
         return false;
     }
 

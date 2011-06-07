@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.common.ImportableObject;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -47,11 +48,17 @@ public class Chart
 {
     private static final long serialVersionUID = 2570074075484545534L;
 
-    public static final String DIMENSION_PERIOD = "period";
+    public static final String DIMENSION_PERIOD_INDICATOR = "period";
 
-    public static final String DIMENSION_ORGANISATIONUNIT = "organisationUnit";
+    public static final String DIMENSION_ORGANISATIONUNIT_INDICATOR = "organisationUnit";
 
-    public static final String DIMENSION_INDICATOR = "indicator";
+    public static final String DIMENSION_INDICATOR_PERIOD = "indicator";
+
+    public static final String DIMENSION_PERIOD_DATAELEMENT = "period_dataElement";
+
+    public static final String DIMENSION_ORGANISATIONUNIT_DATAELEMENT = "organisationUnit_dataElement";
+
+    public static final String DIMENSION_DATAELEMENT_PERIOD = "dataElement_period";
 
     public static final String TYPE_BAR = "bar";
 
@@ -96,6 +103,8 @@ public class Chart
     private String targetLineLabel;
 
     private List<Indicator> indicators = new ArrayList<Indicator>();
+
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
 
     private List<Period> periods = new ArrayList<Period>();
 
@@ -393,6 +402,16 @@ public class Chart
     public void setIndicators( List<Indicator> indicators )
     {
         this.indicators = indicators;
+    }
+
+    public void setDataElements( List<DataElement> dataElements )
+    {
+        this.dataElements = dataElements;
+    }
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
     }
 
     public List<Period> getPeriods()

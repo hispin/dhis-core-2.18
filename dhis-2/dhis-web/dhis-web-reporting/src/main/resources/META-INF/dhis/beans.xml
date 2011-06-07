@@ -1,465 +1,325 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-    
-  <bean id="org.hisp.dhis.reporting.action.NoAction"
-    class="org.hisp.dhis.reporting.action.NoAction"/>
+
+  <bean id="org.hisp.dhis.reporting.action.NoAction" class="org.hisp.dhis.reporting.action.NoAction" />
   
   <!-- Document -->
-  
-  <bean id="org.hisp.dhis.reporting.document.action.SaveDocumentAction"
-    class="org.hisp.dhis.reporting.document.action.SaveDocumentAction"
+
+  <bean id="org.hisp.dhis.reporting.document.action.SaveDocumentAction" class="org.hisp.dhis.reporting.document.action.SaveDocumentAction"
     scope="prototype">
-	<property name="locationManager" ref="locationManager"/>
-    <property name="documentService"
-      ref="org.hisp.dhis.document.DocumentService"/>
+    <property name="locationManager" ref="locationManager" />
+    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.document.action.GetDocumentAction"
-    class="org.hisp.dhis.reporting.document.action.GetDocumentAction"
+
+  <bean id="org.hisp.dhis.reporting.document.action.GetDocumentAction" class="org.hisp.dhis.reporting.document.action.GetDocumentAction"
     scope="prototype">
-    <property name="documentService"
-      ref="org.hisp.dhis.document.DocumentService"/>
+    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.document.action.RemoveDocumentAction"
-    class="org.hisp.dhis.reporting.document.action.RemoveDocumentAction"
+
+  <bean id="org.hisp.dhis.reporting.document.action.RemoveDocumentAction" class="org.hisp.dhis.reporting.document.action.RemoveDocumentAction"
     scope="prototype">
-	<property name="locationManager" ref="locationManager"/>
-    <property name="documentService"
-      ref="org.hisp.dhis.document.DocumentService"/>
+    <property name="locationManager" ref="locationManager" />
+    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.document.action.GetAllDocumentsAction"
-    class="org.hisp.dhis.reporting.document.action.GetAllDocumentsAction"
+
+  <bean id="org.hisp.dhis.reporting.document.action.GetAllDocumentsAction" class="org.hisp.dhis.reporting.document.action.GetAllDocumentsAction"
     scope="prototype">
-    <property name="documentService"
-      ref="org.hisp.dhis.document.DocumentService"/>
+    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.document.action.ValidateDocumentAction"
-    class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction"
+
+  <bean id="org.hisp.dhis.reporting.document.action.ValidateDocumentAction" class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction"
     scope="prototype">
-    <property name="documentService"
-      ref="org.hisp.dhis.document.DocumentService"/>
+    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction"
-    class="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction"
+
+  <bean id="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction" class="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction"
     scope="prototype">
-    <property name="currentUserService"
-      ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService"
-      ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="documentService"
-      ref="org.hisp.dhis.document.DocumentService"/>
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
+    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
   
   <!-- Charts -->
-  
-  <bean id="org.hisp.dhis.reporting.chart.action.GenerateChartAction"
-    class="org.hisp.dhis.reporting.chart.action.GenerateChartAction"
+
+  <bean id="org.hisp.dhis.reporting.chart.action.GenerateChartAction" class="org.hisp.dhis.reporting.chart.action.GenerateChartAction"
     scope="prototype">
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-  </bean>    
-    
-  <bean id="org.hisp.dhis.reporting.chart.action.ViewChartAction"
-    class="org.hisp.dhis.reporting.chart.action.ViewChartAction"
-    scope="prototype">
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.chart.action.GetAllChartsAction"
-    class="org.hisp.dhis.reporting.chart.action.GetAllChartsAction"
+
+  <bean id="org.hisp.dhis.reporting.chart.action.ViewChartAction" class="org.hisp.dhis.reporting.chart.action.ViewChartAction"
     scope="prototype">
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
-  </bean>  
-  
-  <bean id="org.hisp.dhis.reporting.chart.action.GetChartAction"
-    class="org.hisp.dhis.reporting.chart.action.GetChartAction"
-    scope="prototype">
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
-  </bean>  
-  
-  <bean id="org.hisp.dhis.reporting.chart.action.GetChartOptionsAction"
-    class="org.hisp.dhis.reporting.chart.action.GetChartOptionsAction"
-    scope="prototype">
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.chart.action.RemoveChartAction"
-    class="org.hisp.dhis.reporting.chart.action.RemoveChartAction"
+
+  <bean id="org.hisp.dhis.reporting.chart.action.GetAllChartsAction" class="org.hisp.dhis.reporting.chart.action.GetAllChartsAction"
     scope="prototype">
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.chart.action.SaveChartAction"
-    class="org.hisp.dhis.reporting.chart.action.SaveChartAction"
+
+  <bean id="org.hisp.dhis.reporting.chart.action.GetChartAction" class="org.hisp.dhis.reporting.chart.action.GetChartAction"
     scope="prototype">
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.chart.action.ValidateChartAction"
-    class="org.hisp.dhis.reporting.chart.action.ValidateChartAction"
+
+  <bean id="org.hisp.dhis.reporting.chart.action.GetChartOptionsAction" class="org.hisp.dhis.reporting.chart.action.GetChartOptionsAction"
     scope="prototype">
-    <property name="chartService"
-      ref="org.hisp.dhis.chart.ChartService"/>
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.reporting.chart.action.RemoveChartAction" class="org.hisp.dhis.reporting.chart.action.RemoveChartAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.reporting.chart.action.SaveChartAction" class="org.hisp.dhis.reporting.chart.action.SaveChartAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.reporting.chart.action.ValidateChartAction" class="org.hisp.dhis.reporting.chart.action.ValidateChartAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>  
   
   <!-- TableCreator -->
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction"
     scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
-	<property name="categoryService"
-	  ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction" class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction"
     scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="categoryService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction"
     scope="prototype">
-        <property name="processCoordinator"
-      ref="processCoordinator"/>
-    <property name="currentUserService"
-      ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="processCoordinator" ref="processCoordinator" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction"
     scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction"
     scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.RemoveTableAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.RemoveTableAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.RemoveTableAction" class="org.hisp.dhis.reporting.tablecreator.action.RemoveTableAction"
     scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetTableAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableAction" class="org.hisp.dhis.reporting.tablecreator.action.GetTableAction"
     scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetStatusAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetStatusAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetStatusAction" class="org.hisp.dhis.reporting.tablecreator.action.GetStatusAction"
     scope="prototype">
-    <property name="processCoordinator"
-      ref="processCoordinator"/>
+    <property name="processCoordinator" ref="processCoordinator" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.ValidateTableAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.ValidateTableAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.ValidateTableAction" class="org.hisp.dhis.reporting.tablecreator.action.ValidateTableAction"
     scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-    
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction" class="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction"
     scope="prototype">
-    <property name="currentUserService"
-      ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService"
-      ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-    
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction" class="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction"
     scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction"
+
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction"
     scope="prototype">
-    <property name="categoryService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
     
   <!-- ReportViewer -->
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
+
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction" class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
     scope="prototype">
-    <property name="reportService"
-      ref="org.hisp.dhis.report.ReportService"/>
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction"
+
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction" class="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction"
     scope="prototype">
-    <property name="reportService"
-      ref="org.hisp.dhis.report.ReportService"/>
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction"
+
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction" class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction"
     scope="prototype">
-    <property name="reportService"
-      ref="org.hisp.dhis.report.ReportService"/>
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.GetReportAction"
+
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportAction" class="org.hisp.dhis.reporting.reportviewer.action.GetReportAction"
     scope="prototype">
-    <property name="reportService"
-      ref="org.hisp.dhis.report.ReportService"/>
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction"
+
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction" class="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction"
     scope="prototype">
-    <property name="reportService"
-      ref="org.hisp.dhis.report.ReportService"/>
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction"
+
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction" class="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction"
     scope="prototype">
-    <property name="currentUserService"
-      ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService"
-      ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="reportService"
-      ref="org.hisp.dhis.report.ReportService"/>
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.RenderReportAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.RenderReportAction"
+
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.RenderReportAction" class="org.hisp.dhis.reporting.reportviewer.action.RenderReportAction"
     scope="prototype">
-	<property name="reportService" 
-	  ref="org.hisp.dhis.report.ReportService"/>
-	<property name="reportTableService"
-	  ref="org.hisp.dhis.reporttable.ReportTableService"/>
-    <property name="statementManager"
-      ref="statementManager"/>
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+    <property name="statementManager" ref="statementManager" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"
+
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction" class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"
     scope="prototype">
-	<property name="reportService" 
-	  ref="org.hisp.dhis.report.ReportService"/>
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
   
   <!-- PivotTable -->
-  
-  <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction"
-    class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction"
+
+  <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction"
     scope="prototype">
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction"
-    class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction"
+
+  <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction"
     scope="prototype">
-    <property name="pivotTableService"
-      ref="org.hisp.dhis.pivottable.PivotTableService"/>
+    <property name="pivotTableService" ref="org.hisp.dhis.pivottable.PivotTableService" />
   </bean>
     
   <!-- DataSet Report -->
-	
-  <bean id="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction"
-	class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction">
-	<property name="dataSetService"
-	  ref="org.hisp.dhis.dataset.DataSetService"/>
+
+  <bean id="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction" class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
-    
-  <bean id="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction" 
-    class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction" 
+
+  <bean id="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction"
     scope="prototype">
-    <property name="selectionTreeManager"
-      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-	<property name="dataSetReportService"
-	  ref="org.hisp.dhis.datasetreport.DataSetReportService"/>
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
-	<property name="periodService"
-	  ref="org.hisp.dhis.period.PeriodService"/>
+    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+    <property name="dataSetReportService" ref="org.hisp.dhis.datasetreport.DataSetReportService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
   	
   <!-- Data completeness -->
-  
-  <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction"
-    class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction"
+
+  <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction"
     scope="prototype">
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction"
-    class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction"
+
+  <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction"
     scope="prototype">
-    <property name="serviceProvider"
-      ref="dataCompletenessServiceProvider"/>
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
-	<property name="periodService"
-	  ref="org.hisp.dhis.period.PeriodService"/>
-	<property name="selectionTreeManager"
-      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    <property name="serviceProvider" ref="dataCompletenessServiceProvider" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
   </bean>
       
   <!-- Tallysheet -->
-  
-  <bean id="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction"
-    class="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction"
+
+  <bean id="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction" class="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction"
     scope="prototype">
-    <property name="dataSetService" 
-      ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction"
-    class="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction"
+  <bean id="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction" class="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction"
     scope="prototype">
-    <property name="tallySheetService"
-      ref="org.hisp.dhis.tallysheet.TallySheetService"/>
-    <property name="selectionTreeManager"
-      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>           
+    <property name="tallySheetService" ref="org.hisp.dhis.tallysheet.TallySheetService" />
+    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
-   
-  <bean id="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction"
-    class="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction"
+
+  <bean id="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction" class="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction"
     scope="prototype">
-    <property name="tallySheetPdfService"
-      ref="org.hisp.dhis.tallysheet.TallySheetPdfService"/>
+    <property name="tallySheetPdfService" ref="org.hisp.dhis.tallysheet.TallySheetPdfService" />
   </bean>
   
   <!-- Organisation Unit Distribution -->
-  
-  <bean id="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction"
-  	class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction"
-  	scope="prototype">
-    <property name="organisationUnitGroupService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-    <property name="distributionService"
-      ref="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService"/>
-    <property name="selectionTreeManager"
-      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+
+  <bean id="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction"
+    scope="prototype">
+    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    <property name="distributionService" ref="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService" />
+    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionChartAction"
-  	class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionChartAction"
-  	scope="prototype">
-    <property name="organisationUnitGroupService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-    <property name="distributionService"
-      ref="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService"/>
-    <property name="selectionTreeManager"
-      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+
+  <bean id="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionChartAction" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionChartAction"
+    scope="prototype">
+    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    <property name="distributionService" ref="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService" />
+    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionOptionsAction"
-  	class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionOptionsAction"
-  	scope="prototype">
-    <property name="organisationUnitGroupService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+
+  <bean id="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionOptionsAction" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionOptionsAction"
+    scope="prototype">
+    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
   </bean>
   
   <!-- Scheduling -->
-  
-  <bean id="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction"
-    class="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction"
+
+  <bean id="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction" class="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction"
     scope="prototype">
-	<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager"/>
-	<property name="schedulingManager" ref="org.hisp.dhis.scheduling.SchedulingManager"/>
+    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="schedulingManager" ref="org.hisp.dhis.scheduling.SchedulingManager" />
   </bean>
   
   <!-- Export -->
-  
-  <bean id="org.hisp.dhis.reporting.exp.ExportDataMartAction"
-	class="org.hisp.dhis.reporting.exp.ExportDataMartAction"
-	scope="prototype">
-	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	<property name="exportPivotViewService" ref="org.hisp.dhis.importexport.synchronous.ExportPivotViewService" />
+
+  <bean id="org.hisp.dhis.reporting.exp.ExportDataMartAction" class="org.hisp.dhis.reporting.exp.ExportDataMartAction"
+    scope="prototype">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="exportPivotViewService" ref="org.hisp.dhis.importexport.synchronous.ExportPivotViewService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.exp.MetaDataExportAction"
-    class="org.hisp.dhis.reporting.exp.MetaDataExportAction"
+  <bean id="org.hisp.dhis.reporting.exp.MetaDataExportAction" class="org.hisp.dhis.reporting.exp.MetaDataExportAction"
     scope="prototype">
     <property name="serviceProvider" ref="exportServiceProvider" />
   </bean>
