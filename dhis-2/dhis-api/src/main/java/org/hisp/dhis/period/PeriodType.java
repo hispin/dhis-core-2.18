@@ -223,9 +223,9 @@ public abstract class PeriodType
      * @param period
      * @return the period as string
      */
-    public abstract String getIsoDate(Period period);
+    public abstract String getIsoDate( Period period );
 
-    public abstract Period createPeriod(String isoDate);
+    public abstract Period createPeriod( String isoDate );
 
     public abstract String getIsoFormat();
     
