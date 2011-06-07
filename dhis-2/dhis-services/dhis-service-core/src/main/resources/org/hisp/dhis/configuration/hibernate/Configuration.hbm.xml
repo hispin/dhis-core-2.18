@@ -15,6 +15,9 @@
 
 	<many-to-one name="infrastructuralDataElements" class="org.hisp.dhis.dataelement.DataElementGroup" 
 		column="infrastructuraldataelementsid" foreign-key="fk_configuration_infrastructural_dataelements"/>
+		
+	<many-to-one name="infrastructuralPeriodType" class="org.hisp.dhis.period.PeriodType"
+		column="infrastructuralperiodtypeid" foreign-key="fk_configuration_infrastructural_periodtype"/>
 
   </class>
 </hibernate-mapping>

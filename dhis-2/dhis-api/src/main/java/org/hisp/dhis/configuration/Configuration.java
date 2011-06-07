@@ -30,6 +30,7 @@ package org.hisp.dhis.configuration;
 import java.io.Serializable;
 
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroup;
 
 /**
@@ -48,6 +49,8 @@ public class Configuration
     private UserGroup messageRecipients;
 
     private DataElementGroup infrastructuralDataElements;
+    
+    private PeriodType infrastructuralPeriodType;
     
     public Configuration()
     {
@@ -81,5 +84,15 @@ public class Configuration
     public void setInfrastructuralDataElements( DataElementGroup infrastructuralDataElements )
     {
         this.infrastructuralDataElements = infrastructuralDataElements;
+    }
+
+    public PeriodType getInfrastructuralPeriodType()
+    {
+        return infrastructuralPeriodType;
+    }
+
+    public void setInfrastructuralPeriodType( PeriodType infrastructuralPeriodType )
+    {
+        this.infrastructuralPeriodType = infrastructuralPeriodType;
     }
 }
