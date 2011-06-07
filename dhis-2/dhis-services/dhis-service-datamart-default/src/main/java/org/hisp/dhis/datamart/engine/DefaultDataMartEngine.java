@@ -221,7 +221,7 @@ public class DefaultDataMartEngine
 
         crossTabService.createAggregatedDataCache( indicatorOperands, key );
         
-        log.info( "Created aggregated data cache" );
+        log.info( "Created aggregated data cache: " + TimeUtils.getHMS() );
         
         // ---------------------------------------------------------------------
         // Drop potential indexes
