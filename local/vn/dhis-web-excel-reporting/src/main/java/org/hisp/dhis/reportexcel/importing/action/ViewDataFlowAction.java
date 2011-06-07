@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,14 +26,8 @@
  */
 package org.hisp.dhis.reportexcel.importing.action;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.importitem.ImportItemService;
-import org.hisp.dhis.reportexcel.importitem.comparator.ImportItemComparator;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
@@ -70,34 +64,9 @@ public class ViewDataFlowAction
 
     private Integer importReportId;
 
-    private ExcelItemGroup importReport;
-
-    private ArrayList<ExcelItem> importItems;
-
-    private File upload;
-
-    // -------------------------------------------------------------------------
-    // Getters and Setters
-    // -------------------------------------------------------------------------
-
-    public File getUpload()
-    {
-        return upload;
-    }
-
-    public ExcelItemGroup getImportReport()
-    {
-        return importReport;
-    }
-
     public void setImportReportId( Integer importReportId )
     {
         this.importReportId = importReportId;
-    }
-
-    public ArrayList<ExcelItem> getImportItems()
-    {
-        return importItems;
     }
 
     // -------------------------------------------------------------------------
@@ -108,12 +77,9 @@ public class ViewDataFlowAction
     public String execute()
         throws Exception
     {
-        upload = new File( selectionManager.getUploadFilePath() );
+        selectionManager.setSelectedReportId( importReportId );
 
-        importReport = importItemService.getImportReport( importReportId );
-        importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );
-
-        Collections.sort( importItems, new ImportItemComparator() );
+        ExcelItemGroup importReport = importItemService.getImportReport( importReportId );
 
         return importReport.getType();
     }

@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportexcel.importing.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +31,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.importing.ImportItemValue;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.importitem.ImportItemService;
 import org.hisp.dhis.reportexcel.importitem.comparator.ImportItemComparator;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -53,39 +58,50 @@ public class ViewDataCategoryAction
     implements Action
 {
     // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private ImportItemService importItemService;
+
+    public void setImportItemService( ImportItemService importItemService )
+    {
+        this.importItemService = importItemService;
+    }
+
+    private SelectionManager selectionManager;
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
+    // -------------------------------------------------------------------------
     // Inputs && Outputs
     // -------------------------------------------------------------------------
 
-    private ExcelItemGroup importReport;
+    private List<ImportItemValue> importItemValues = new ArrayList<ImportItemValue>();
 
-    private ArrayList<ImportItemValue> importItemValues;
+    private String message;
 
-    private File upload;
-
-    public String[] importItemIds;
+    private I18n i18n;
 
     // -------------------------------------------------------------------------
     // Getters and Setters
     // -------------------------------------------------------------------------
 
-    public void setUpload( File upload )
-    {
-        this.upload = upload;
-    }
-
-    public void setImportReport( ExcelItemGroup importReport )
-    {
-        this.importReport = importReport;
-    }
-
-    public void setImportItemIds( String[] importItemIds )
-    {
-        this.importItemIds = importItemIds;
-    }
-
-    public ArrayList<ImportItemValue> getImportItemValues()
+    public List<ImportItemValue> getImportItemValues()
     {
         return importItemValues;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -96,19 +112,26 @@ public class ViewDataCategoryAction
     {
         try
         {
-            FileInputStream inputStream = new FileInputStream( upload );
+            FileInputStream inputStream = new FileInputStream( new File( selectionManager.getUploadFilePath() ) );
 
-            HSSFWorkbook wb = new HSSFWorkbook( inputStream );
+            Workbook wb = new HSSFWorkbook( inputStream );
 
-            ArrayList<ExcelItem> importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );
+            ExcelItemGroup importReport = importItemService.getImportReport( selectionManager.getSelectedReportId() );
+
+            List<ExcelItem> importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );
+
+            if ( importItems == null || importItems.isEmpty() )
+            {
+                message = i18n.getString( "import_excel_items_cannot_be_empty" );
+
+                return ERROR;
+            }
 
             Collections.sort( importItems, new ImportItemComparator() );
 
-            importItemValues = new ArrayList<ImportItemValue>();
-
             for ( ExcelItem importItem : importItems )
             {
-                HSSFSheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
+                Sheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
 
                 int rowBegin = importItem.getRow();
 

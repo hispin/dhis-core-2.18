@@ -27,15 +27,24 @@ package org.hisp.dhis.reportexcel.jchart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.jchart.JChart;
 import org.hisp.dhis.jchart.JChartSevice;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  */
-public class GetJChartAction
+public class PrepareDataForAddOrUpdateJChartAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -47,6 +56,20 @@ public class GetJChartAction
     public void setJchartService( JChartSevice jchartService )
     {
         this.jchartService = jchartService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
@@ -67,14 +90,35 @@ public class GetJChartAction
         return jchart;
     }
 
+    private List<PeriodType> periodTypes;
+
+    public List<PeriodType> getPeriodTypes()
+    {
+        return periodTypes;
+    }
+
+    private List<IndicatorGroup> indicatorGroups;
+
+    public List<IndicatorGroup> getIndicatorGroups()
+    {
+        return indicatorGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
-        jchart = jchartService.getJChart( id );
+        if ( isNotBlank( String.valueOf( id ) ) )
+        {
+            jchart = jchartService.getJChart( id );
+        }
+        
+        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
+
+        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
 
         return SUCCESS;
     }

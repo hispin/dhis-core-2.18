@@ -51,5 +51,9 @@ public interface SelectionManager
     public void setBookmarkType( String type );
     
     public String getBookmarkType();
+    
+    public String[] getListObject();
+    
+    public void setListObject( String[] objects );
 
 }

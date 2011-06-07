@@ -1,7 +1,7 @@
-package org.hisp.dhis.reportexcel.jchart.action;
+package org.hisp.dhis.reportexcel.importreport.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,56 +27,77 @@ package org.hisp.dhis.reportexcel.jchart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.jchart.JChart;
-import org.hisp.dhis.jchart.JChartSevice;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.importitem.ImportItemService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-public class GetJChartAction
+public class ShowUpdateImportReportFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private JChartSevice jchartService;
+    private ImportItemService importItemService;
 
-    public void setJchartService( JChartSevice jchartService )
+    public void setImportItemService( ImportItemService importItemService )
     {
-        this.jchartService = jchartService;
+        this.importItemService = importItemService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input && Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private int id;
 
-    public void setId( Integer id )
+    public void setId( int id )
     {
         this.id = id;
     }
 
-    private JChart jchart;
+    private ExcelItemGroup importReport;
 
-    public JChart getJchart()
+    public ExcelItemGroup getImportReport()
     {
-        return jchart;
+        return importReport;
+    }
+
+    private List<PeriodType> periodTypes;
+
+    public List<PeriodType> getPeriodTypes()
+    {
+        return periodTypes;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
-        jchart = jchartService.getJChart( id );
+        importReport = importItemService.getImportReport( id );
+        
+        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
 
         return SUCCESS;
     }
-
 }

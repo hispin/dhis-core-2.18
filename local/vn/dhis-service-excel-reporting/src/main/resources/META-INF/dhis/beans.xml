@@ -34,8 +34,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.importitem.ImportItemStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
-
-
+	
 	<!-- DeletionHandlers -->
 
 	<bean id="org.hisp.dhis.reportexcel.ExportReportDeletionHandler"

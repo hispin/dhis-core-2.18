@@ -125,8 +125,6 @@ public class GenerateExcelReportGeneric
     // Input & Output
     // -------------------------------------------------------------------------
 
-    protected String outputXLS;
-
     protected InputStream inputStream;
 
     // -------------------------------------------------------------------------
@@ -202,11 +200,6 @@ public class GenerateExcelReportGeneric
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
-
-    public String getOutputXLS()
-    {
-        return outputXLS;
-    }
 
     /**
      * @param i18n the i18n to set

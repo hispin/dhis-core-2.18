@@ -28,15 +28,15 @@ function importData(){
 				params +='&importItemIds=' + importItems[i].value;
 			}
 		}
-	}	
+	}
 	params += '&periodId='+ periodId;
 	request.sendAsPost(params);
 	request.send('importData.action'); 
 }
 
-function importDataCompleted( xmlObject ){
-	
-	setMessage(xmlObject.firstChild.nodeValue);	
+function importDataCompleted( xmlObject )
+{
+	setMessage(xmlObject.firstChild.nodeValue);
 }
 
 // -----------------------------------------------------------------------------

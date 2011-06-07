@@ -46,8 +46,8 @@
 					</select>
 				</td>
 				<td>
-					<input type="button" value="<<" id="lastYear" name="lastYear" onclick="lastPeriod();"  #if(!$!fileExcel || !$!organisationUnit) disabled #end/>
-					<input type="button" value=">>" id="nextYear" name="nextYear" onclick="nextPeriod()" #if(!$!fileExcel || !$!organisationUnit) disabled #end />
+					<input type="button" value="&lt;&lt;" id="lastYear" name="lastYear" onclick="lastPeriod();"  #if(!$!fileExcel || !$!organisationUnit) disabled #end/>
+					<input type="button" value="&gt;&gt;" id="nextYear" name="nextYear" onclick="nextPeriod()" #if(!$!fileExcel || !$!organisationUnit) disabled #end />
 					<input type="button" onClick="javascript: importData();" style="width:100px" value="$i18n.getString('import')" #if(!$!fileExcel || !$!organisationUnit) disabled #end>
 				</td>
 			</tr>

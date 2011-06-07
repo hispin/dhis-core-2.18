@@ -46,6 +46,8 @@ public class DefaultSelectionManager
     private static final String SESSION_KEY_SELECTED_REPORT_ID = "SESSION_KEY_SELECTED_REPORT_ID";
     
     private static final String SESSION_KEY_BOOKMARK_TYPE = "SESSION_KEY_BOOKMARK_TYPE";
+    
+    private static final String SESSION_KEY_LIST_OBJECT = "SESSION_KEY_LIST_OBJECT";
 
     @Override
     public String getDownloadFilePath()
@@ -112,10 +114,21 @@ public class DefaultSelectionManager
     }
 
     @SuppressWarnings( "unchecked" )
-    @Override
     public void setBookmarkType( String type )
     {
         getSession().put( SESSION_KEY_BOOKMARK_TYPE, type );
+    }
+
+    @Override
+    public String[] getListObject()
+    {
+        return (String[]) getSession().get( SESSION_KEY_LIST_OBJECT );
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setListObject( String[] objects )
+    {
+        getSession().put( SESSION_KEY_LIST_OBJECT, objects );
     }
 
 }

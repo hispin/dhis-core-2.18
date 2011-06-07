@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.importing.action;
+package org.hisp.dhis.reportexcel.importitem.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,33 +27,25 @@ package org.hisp.dhis.reportexcel.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.reportexcel.importing.ImportItemValue;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.importitem.ImportItemService;
-import org.hisp.dhis.reportexcel.importitem.comparator.ImportItemComparator;
-import org.hisp.dhis.reportexcel.state.SelectionManager;
-import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
  * @author Dang Duy Hieu
- * @version $Id
+ * @version $Id$
  */
 
-public class ViewDataNormalAction
+public class ShowUpdateImportItemFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -67,84 +59,68 @@ public class ViewDataNormalAction
         this.importItemService = importItemService;
     }
 
-    private SelectionManager selectionManager;
+    private DataElementService dataElementService;
 
-    public void setSelectionManager( SelectionManager selectionManager )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.selectionManager = selectionManager;
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
-    // Inputs && Outputs
+    // Input && Output
     // -------------------------------------------------------------------------
 
-    private List<ImportItemValue> importItemValues = new ArrayList<ImportItemValue>();
+    private Integer importReportId;
 
-    private String message;
-
-    private I18n i18n;
-
-    // -------------------------------------------------------------------------
-    // Getters and Setters
-    // -------------------------------------------------------------------------
-
-    public List<ImportItemValue> getImportItemValues()
+    public void setImportReportId( Integer importReportId )
     {
-        return importItemValues;
+        this.importReportId = importReportId;
     }
 
-    public String getMessage()
+    private Integer importItemId;
+
+    public void setImportItemId( Integer importItemId )
     {
-        return message;
+        this.importItemId = importItemId;
     }
 
-    public void setI18n( I18n i18n )
+    public ExcelItemGroup importReport;
+
+    public ExcelItemGroup getImportReport()
     {
-        this.i18n = i18n;
+        return importReport;
+    }
+
+    private ExcelItem importItem;
+
+    public ExcelItem getImportItem()
+    {
+        return importItem;
+    }
+
+    private List<DataElementGroup> dataElementGroups;
+
+    public List<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
+        throws Exception
     {
-        try
-        {
-            FileInputStream inputStream = new FileInputStream( new File( selectionManager.getUploadFilePath() ) );
+        importReport = importItemService.getImportReport( importReportId );
 
-            Workbook wb = new HSSFWorkbook( inputStream );
+        importItem = importItemService.getImportItem( importItemId );
 
-            ExcelItemGroup importReport = importItemService.getImportReport( selectionManager.getSelectedReportId() );
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
-            List<ExcelItem> importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
-            if ( importItems == null || importItems.isEmpty() )
-            {
-                message = i18n.getString( "import_excel_items_cannot_be_empty" );
-
-                return ERROR;
-            }
-
-            Collections.sort( importItems, new ImportItemComparator() );
-            
-            for ( ExcelItem importItem : importItems )
-            {
-                Sheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
-
-                String value = ExcelUtils.readValueImportingByPOI( importItem.getRow(), importItem.getColumn(), sheet );
-
-                ImportItemValue importItemValue = new ImportItemValue( importItem, value.trim() );
-
-                importItemValues.add( importItemValue );
-            }
-
-            return SUCCESS;
-
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Error while previewing the imported value", ex );
-        }
+        return SUCCESS;
     }
 }
