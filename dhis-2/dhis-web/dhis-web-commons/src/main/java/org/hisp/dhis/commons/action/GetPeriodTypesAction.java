@@ -40,9 +40,9 @@ import org.hisp.dhis.period.PeriodType;
 public class GetPeriodTypesAction
     extends ActionPagingSupport<PeriodType>
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private PeriodService periodService;
 
@@ -51,9 +51,9 @@ public class GetPeriodTypesAction
         this.periodService = periodService;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private List<PeriodType> periodTypes;
 
