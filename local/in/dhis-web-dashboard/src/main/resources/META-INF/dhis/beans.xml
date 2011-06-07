@@ -540,6 +540,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
         <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService" />
     </bean> 
+	
+	<!-- View Comment Related Stuff -->
+	
+	<bean id="org.hisp.dhis.dataanalyser.vc.action.ViewCommentFormAction"
+    	class="org.hisp.dhis.dataanalyser.vc.action.ViewCommentFormAction" 
+		scope="prototype">
+		<property name="selectionTreeManager">
+		  <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+		</property>
+		<property name="currentUserService">
+		  <ref bean="org.hisp.dhis.user.CurrentUserService"/>
+		</property>
+		<property name="selectionManager">
+		  <ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>
+	    </property>    
+    </bean>
+	
+	<bean id="org.hisp.dhis.dataanalyser.vc.action.ValidateViewCommentsAction"
+		class="org.hisp.dhis.dataanalyser.vc.action.ValidateViewCommentsAction"
+		scope="prototype">
+		<property name="selectionTreeManager">
+		  <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+	    </property>
+	</bean>
+	
+	
 		
 	
 	<!-- DataStatus -->
@@ -1285,6 +1311,28 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.GetSortedDataAction"
 		class="org.hisp.dhis.dataanalyser.action.GetSortedDataAction"
 		scope="prototype">
+    </bean>
+	
+	<!--DataStatus Mart module Stuff -->
+	
+	<bean id="org.hisp.dhis.dataanalyser.dsMart.action.GetPeriodTypesAction"
+		class="org.hisp.dhis.dataanalyser.dsMart.action.GetPeriodTypesAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataanalyser.dsMart.action.GetPeriodsForDSMart"
+		class="org.hisp.dhis.dataanalyser.dsMart.action.GetPeriodsForDSMart"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataanalyser.dsMart.action.GetDataSetsForPeriodTypeAction"
+        class="org.hisp.dhis.dataanalyser.dsMart.action.GetDataSetsForPeriodTypeAction"
+        scope="prototype">
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     </bean>
 	
 </beans>
