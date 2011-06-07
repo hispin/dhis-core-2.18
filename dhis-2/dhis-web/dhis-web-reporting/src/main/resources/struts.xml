@@ -4,10 +4,10 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-  <include file="dhis-web-commons.xml"/>
-  	
+  <include file="dhis-web-commons.xml" />
+
   <package name="dhis-web-reporting" extends="dhis-web-commons" namespace="/dhis-web-reporting">
-    
+
     <action name="index" class="org.hisp.dhis.reporting.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/index.vm</param>
@@ -15,27 +15,27 @@
     </action>
     
     <!-- Document -->
-    
+
     <action name="saveDocument" class="org.hisp.dhis.reporting.document.action.SaveDocumentAction">
-      <result name="success" type="redirect">displayViewDocumentForm.action</result>      
-      <interceptor-ref name="fileUploadStack"/>
+      <result name="success" type="redirect">displayViewDocumentForm.action</result>
+      <interceptor-ref name="fileUploadStack" />
       <param name="requiredAuthorities">F_DOCUMENT_ADD</param>
     </action>
-    
+
     <action name="removeDocument" class="org.hisp.dhis.reporting.document.action.RemoveDocumentAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_DOCUMENT_DELETE</param>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="displayViewDocumentForm" class="org.hisp.dhis.reporting.document.action.GetAllDocumentsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewDocumentForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/document.js</param>
-	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
-    
+
     <action name="displayAddDocumentForm" class="org.hisp.dhis.reporting.document.action.GetDocumentAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/addDocumentForm.vm</param>
@@ -43,60 +43,60 @@
       <param name="javascripts">javascript/document.js</param>
       <param name="requiredAuthorities">F_DOCUMENT_ADD</param>
     </action>
-    
+
     <action name="validateDocument" class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="addDocumentToDashboard" class="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <!-- Chart -->
-        
+
     <action name="saveChart" class="org.hisp.dhis.reporting.chart.action.SaveChartAction">
       <result name="success" type="redirect">displayViewChartForm.action</result>
-      <param name="requiredAuthorities">F_CHART_ADD</param>     
+      <param name="requiredAuthorities">F_CHART_ADD</param>
     </action>
-    
+
     <action name="removeChart" class="org.hisp.dhis.reporting.chart.action.RemoveChartAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_CHART_DELETE</param>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="displayAddChartForm" class="org.hisp.dhis.reporting.chart.action.GetChartOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/addChartForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/lists.js,javascript/chart.js</param>
-      <param name="requiredAuthorities">F_CHART_ADD</param>      
+      <param name="requiredAuthorities">F_CHART_ADD</param>
     </action>
-    
+
     <action name="displayViewChartForm" class="org.hisp.dhis.reporting.chart.action.GetAllChartsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewChartForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/chart.js</param>
-	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
-    
+
     <action name="viewChart" class="org.hisp.dhis.reporting.chart.action.ViewChartAction">
       <result name="success" type="chart"></result>
     </action>
-    
+
     <action name="generateChart" class="org.hisp.dhis.reporting.chart.action.GenerateChartAction">
       <result name="success" type="chart"></result>
-    </action>    
-    
+    </action>
+
     <action name="getChart" class="org.hisp.dhis.reporting.chart.action.GetChartAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseChart.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="validateChart" class="org.hisp.dhis.reporting.chart.action.ValidateChartAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-reporting/responseInput.vm</result>
@@ -104,33 +104,33 @@
     </action>
     
     <!-- Report -->
-    
+
     <action name="displayAddReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/addReportForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/report.js</param>
-      <param name="requiredAuthorities">F_REPORT_ADD</param> 	  
-    </action>
-    
-    <action name="addReport" class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction">
-      <result name="success" type="redirect">displayViewReportForm.action</result>
-      <result name="error" type="redirect">displayAddReportForm.action</result>	  
-      <interceptor-ref name="fileUploadStack"/>
       <param name="requiredAuthorities">F_REPORT_ADD</param>
     </action>
-    
+
+    <action name="addReport" class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction">
+      <result name="success" type="redirect">displayViewReportForm.action</result>
+      <result name="error" type="redirect">displayAddReportForm.action</result>
+      <interceptor-ref name="fileUploadStack" />
+      <param name="requiredAuthorities">F_REPORT_ADD</param>
+    </action>
+
     <action name="removeReport" class="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-	  <param name="requiredAuthorities">F_REPORT_DELETE</param>
+      <param name="requiredAuthorities">F_REPORT_DELETE</param>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="createReportTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
       <result name="success" type="redirect">displayViewReportForm.action</result>
       <param name="requiredAuthorities">F_REPORT_VIEW</param>
     </action>
-        
+
     <action name="displayViewReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menuTreeHeight">420</param>
@@ -138,48 +138,48 @@
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/report.js</param>
       <param name="requiredAuthorities">F_REPORT_VIEW</param>
-	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
-        
+
     <action name="addReportToDashboard" class="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="renderReport" class="org.hisp.dhis.reporting.reportviewer.action.RenderReportAction">
-      <result name="success" type="outputStreamResult"/>
+      <result name="success" type="outputStreamResult" />
     </action>
-    
+
     <action name="getReportDesign" class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction">
-      <result name="success" type="outputStreamResult"/>
+      <result name="success" type="outputStreamResult" />
     </action>
     
     <!-- ReportTable -->
-    
-    <action name="displayManageTableForm" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction">      
+
+    <action name="displayManageTableForm" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/table.js</param>
-	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
-    
+
     <action name="removeTable" class="org.hisp.dhis.reporting.tablecreator.action.RemoveTableAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="requiredAuthorities">F_REPORTTABLE_DELETE</param>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="saveTable" class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction">
       <result name="success" type="redirect">displayManageTableForm.action</result>
-	    <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
+      <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
     </action>
-    
+
     <action name="createTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="getReportParams" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/inputReportParamsForm.vm</param>
@@ -187,7 +187,7 @@
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/generateReport.js</param>
       <param name="requiredAuthorities">F_REPORT_VIEW</param>
     </action>
-    
+
     <action name="displayAddTableForm" class="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/addTableForm.vm</param>
@@ -195,95 +195,95 @@
       <param name="javascripts">javascript/table.js,javascript/lists.js</param>
       <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
     </action>
-    
+
     <action name="getTable" class="org.hisp.dhis.reporting.tablecreator.action.GetTableAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseTable.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="getStatus" class="org.hisp.dhis.reporting.tablecreator.action.GetStatusAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseStatus.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="validateTable" class="org.hisp.dhis.reporting.tablecreator.action.ValidateTableAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-reporting/responseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="addReportTableToDashboard" class="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-            
+
     <action name="exportTable" class="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction">
-      <result name="csv" type="gridCsvResult"/>
-      <result name="xls" type="gridXlsResult"/>
-      <result name="pdf" type="gridPdfResult"/>
-      <result name="jasper" type="gridJasperResult"/>
-      <result name="jrxml" type="gridJrxmlResult"/>
+      <result name="csv" type="gridCsvResult" />
+      <result name="xls" type="gridXlsResult" />
+      <result name="pdf" type="gridPdfResult" />
+      <result name="jasper" type="gridJasperResult" />
+      <result name="jrxml" type="gridJrxmlResult" />
       <result name="html" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/reportTableGrid.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>   
-      <param name="javascripts">javascript/generateReport.js</param>   
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="javascripts">javascript/generateReport.js</param>
     </action>
-    
+
     <action name="getCategoryComboDataElements" class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction">
       <result name="success" type="velocity-xml">../dhis-web-commons/ajax/xmlDataElements.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <!-- PivotTable -->
-    
+
     <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewPivotTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/pivot.js,javascript/criteria.js</param>
-      <interceptor-ref name="organisationUnitTreeStack"/>
+      <interceptor-ref name="organisationUnitTreeStack" />
     </action>
-    
+
     <action name="getPivotTable" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction">
       <result name="success" type="velocity-json">/dhis-web-reporting/responsePivotTable.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
         
     <!-- Data Completeness -->
-    
+
     <action name="displayViewDataCompletenessForm" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewDataCompletenessForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataCompleteness.js</param>
     </action>
-    
+
     <action name="getDataCompleteness" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction">
       <result name="input" type="redirect">displayViewDataCompletenessForm.action</result>
-      <result name="csv" type="gridCsvResult"/>
-      <result name="xls" type="gridXlsResult"/>
-      <result name="pdf" type="gridPdfResult"/>
+      <result name="csv" type="gridCsvResult" />
+      <result name="xls" type="gridXlsResult" />
+      <result name="pdf" type="gridPdfResult" />
       <result name="html" type="velocity">/dhis-web-commons/ajax/htmlGrid.vm</result>
     </action> 
     
     <!-- DataSet Report -->
-    
-    <action name="showDataSetReportForm" class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction">      
+
+    <action name="showDataSetReportForm" class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="menuTreeHeight">420</param>	  
+      <param name="menuTreeHeight">420</param>
       <param name="page">/dhis-web-reporting/dataSetReportForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataSetReport.js</param>
-      <interceptor-ref name="organisationUnitTreeStack"/>       
-    </action>	   
-        
-	<action name="generateDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction">
-      <result name="xls" type="gridXlsResult"/>
-      <result name="pdf" type="gridPdfResult"/>
-	  <result name="success" type="velocity">/main.vm</result> <!-- Page param set in action -->
-	  <param name="menu">/dhis-web-reporting/menu.vm</param>	
-      <param name="javascripts">javascript/dataSetReport.js</param>  
-	</action>
+      <interceptor-ref name="organisationUnitTreeStack" />
+    </action>
+
+    <action name="generateDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction">
+      <result name="xls" type="gridXlsResult" />
+      <result name="pdf" type="gridPdfResult" />
+      <result name="success" type="velocity">/main.vm</result> <!-- Page param set in action -->
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="javascripts">javascript/dataSetReport.js</param>
+    </action>
 	
     <!-- Tally Sheet Forms Generator -->
 
@@ -295,7 +295,7 @@
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
       <interceptor-ref name="organisationUnitTreeStack" />
     </action>
-        
+
     <action name="configureTallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menuTreeHeight">420</param>
@@ -304,24 +304,24 @@
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
       <interceptor-ref name="organisationUnitTreeStack" />
     </action>
-        
+
     <action name="generateTallySheetPDF" class="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction">
       <result name="success" type="stream">
-      <param name="contentType">application/pdf</param>
-      <param name="inputName">inputStream</param>
-      <param name="contentDisposition">filename="${fileName}"</param>
-      <param name="bufferSize">1024</param>
+        <param name="contentType">application/pdf</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${fileName}"</param>
+        <param name="bufferSize">1024</param>
       </result>
     </action>
         
     <!-- Organisation Unit Distribution -->
-  
-    <action name="getOrgUnitDistribution" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction">      
-      <result name="csv" type="gridCsvResult"/>
-      <result name="xls" type="gridXlsResult"/>
-      <result name="pdf" type="gridPdfResult"/>
+
+    <action name="getOrgUnitDistribution" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction">
+      <result name="csv" type="gridCsvResult" />
+      <result name="xls" type="gridXlsResult" />
+      <result name="pdf" type="gridPdfResult" />
       <result name="html" type="velocity">/dhis-web-commons/ajax/htmlGrid.vm</result>
-    </action>    
+    </action>
 
     <action name="displayOrgUnitDistribution" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -331,27 +331,27 @@
       <param name="stylesheets">style/dhis-web-reporting.css</param>
       <interceptor-ref name="organisationUnitTreeStack" />
     </action>
-	
-	<action name="getOrgUnitDistributionChart" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionChartAction">
-	  <result name="success" type="chart"></result>
+
+    <action name="getOrgUnitDistributionChart" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionChartAction">
+      <result name="success" type="chart"></result>
     </action>
 	
 	<!-- Scheduling -->
-	
-	<action name="viewScheduledTasks" class="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction">	
+
+    <action name="viewScheduledTasks" class="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewScheduledTasks.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
-	  <param name="statusOnly">true</param>
+      <param name="statusOnly">true</param>
       <param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
-	</action>
-	
-	<action name="scheduleTasks" class="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction">	
+    </action>
+
+    <action name="scheduleTasks" class="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewScheduledTasks.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
-	</action>
+    </action>
 	
 	<!-- Datamart CSV Export -->
 

@@ -43,43 +43,42 @@ import org.jfree.chart.plot.PlotOrientation;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public interface ChartService
 {
     String ID = ChartService.class.getName();
-    
+
     JFreeChart getJFreeChart( int id, I18nFormat format );
-    
-    JFreeChart getJFreeChart( List<Indicator> indicators, List<Period> periods, 
+
+    JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<Period> periods,
         List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format );
-    
-    JFreeChart getJFreeChart( String title, PlotOrientation orientation, 
-        CategoryLabelPositions labelPositions, Map<String, Double> categoryValues );
-    
+
+    JFreeChart getJFreeChart( String title, PlotOrientation orientation, CategoryLabelPositions labelPositions,
+        Map<String, Double> categoryValues );
+
     JFreeChart getJFreeChartHistory( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
         Period lastPeriod, OrganisationUnit organisationUnit, int historyLength, I18nFormat format );
-    
+
     int saveChart( Chart chart );
 
     void saveOrUpdate( Chart chart );
-    
+
     Chart getChart( int id );
-    
+
     void deleteChart( Chart chart );
-    
+
     Collection<Chart> getAllCharts();
-    
+
     Chart getChartByTitle( String name );
-    
+
     Collection<Chart> getCharts( final Collection<Integer> identifiers );
-    
+
     Collection<Chart> getChartsBetween( int first, int max );
-    
+
     Collection<Chart> getChartsBetweenByName( String name, int first, int max );
-    
+
     int getChartCount();
-    
+
     int getChartCountByName( String name );
 
 }

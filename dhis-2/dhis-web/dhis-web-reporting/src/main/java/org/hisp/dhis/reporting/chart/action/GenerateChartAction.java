@@ -27,10 +27,14 @@ package org.hisp.dhis.reporting.chart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -46,7 +50,6 @@ import com.opensymphony.xwork2.Action;
  * Known usage of this class is the pivot table chart functionality.
  * 
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class GenerateChartAction
     implements Action
@@ -68,7 +71,14 @@ public class GenerateChartAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -101,6 +111,13 @@ public class GenerateChartAction
         this.indicatorId = indicatorId;
     }
 
+    private List<String> dataElementsId;
+
+    public void setDataElementsId( List<String> dataElementsId )
+    {
+        this.dataElementsId = dataElementsId;
+    }
+
     private List<String> periodId;
 
     public void setPeriodId( List<String> periodId )
@@ -121,21 +138,21 @@ public class GenerateChartAction
     {
         this.dimension = dimension;
     }
-    
+
     private boolean regression;
 
     public void setRegression( boolean regression )
     {
         this.regression = regression;
     }
-    
+
     private String chartWidth;
 
     public void setChartWidth( String chartWidth )
     {
         this.chartWidth = chartWidth;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -160,7 +177,7 @@ public class GenerateChartAction
     {
         return height;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -169,32 +186,40 @@ public class GenerateChartAction
         throws Exception
     {
         List<Indicator> indicators = new ArrayList<Indicator>();
-        
+
         for ( String id : indicatorId )
         {
             indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
         }
-        
+
+        List<DataElement> dataElements = new ArrayList<DataElement>();
+
+        for ( Integer id : getIntegerCollection( dataElementsId ) )
+        {
+            dataElements.add( dataElementService.getDataElement( id ) );
+        }
+
         List<Period> periods = new ArrayList<Period>();
-        
+
         for ( String id : periodId )
         {
             periods.add( periodService.getPeriod( Integer.parseInt( id ) ) );
         }
-        
+
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-        
+
         for ( String id : organisationUnitId )
         {
             organisationUnits.add( organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) ) );
         }
-        
+
         width = chartWidth != null ? Integer.valueOf( chartWidth ) : 700;
-        
+
         height = 500;
-        
-        chart = chartService.getJFreeChart( indicators, periods, organisationUnits, dimension, regression, format );
-        
+
+        chart = chartService.getJFreeChart( indicators, dataElements, periods, organisationUnits, dimension,
+            regression, format );
+
         return SUCCESS;
     }
 }

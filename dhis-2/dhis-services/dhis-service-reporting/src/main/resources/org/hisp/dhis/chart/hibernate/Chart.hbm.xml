@@ -41,6 +41,13 @@
       <many-to-many column="indicatorid" class="org.hisp.dhis.indicator.Indicator" foreign-key="fk_chart_indicators_indicatorid" />
     </list>
 
+    <list name="dataElements" table="chart_dataelements">
+      <cache usage="read-write" />
+      <key column="chartid" foreign-key="fk_chart_dataelements_chartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="dataelementid" class="org.hisp.dhis.dataelement.DataElement" foreign-key="fk_chart_dataelements_dataelementid" />
+    </list>
+
     <list name="periods" table="chart_periods">
       <cache usage="read-write" />
       <key column="chartid" foreign-key="fk_chart_periods_chartid" />
@@ -52,7 +59,8 @@
       <cache usage="read-write" />
       <key column="chartid" foreign-key="fk_chart_organisationunits_chartid" />
       <list-index column="sort_order" base="0" />
-      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_chart_organisationunits_organisationunitid" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+        foreign-key="fk_chart_organisationunits_organisationunitid" />
     </list>
 
     <component name="relatives">

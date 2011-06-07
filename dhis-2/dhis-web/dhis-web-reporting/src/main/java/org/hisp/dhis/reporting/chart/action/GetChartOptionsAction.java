@@ -35,6 +35,10 @@ import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -55,7 +59,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class GetChartOptionsAction
     implements Action
@@ -78,6 +81,13 @@ public class GetChartOptionsAction
         this.indicatorService = indicatorService;
     }
 
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -91,28 +101,35 @@ public class GetChartOptionsAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
+
     private Comparator<Indicator> indicatorComparator;
 
     public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
     {
         this.indicatorComparator = indicatorComparator;
     }
-    
+
+    private Comparator<DataElement> dataElementComparator;
+
+    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    {
+        this.dataElementComparator = dataElementComparator;
+    }
+
     private Comparator<OrganisationUnit> organisationUnitComparator;
 
     public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
     {
         this.organisationUnitComparator = organisationUnitComparator;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -123,7 +140,7 @@ public class GetChartOptionsAction
     {
         this.id = id;
     }
-    
+
     private String dimension;
 
     public String getDimension()
@@ -134,8 +151,8 @@ public class GetChartOptionsAction
     public void setDimension( String dimension )
     {
         this.dimension = dimension;
-    }    
-    
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -145,7 +162,7 @@ public class GetChartOptionsAction
     public Chart getChart()
     {
         return chart;
-    }    
+    }
 
     private List<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
 
@@ -153,12 +170,26 @@ public class GetChartOptionsAction
     {
         return indicatorGroups;
     }
-    
+
+    private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
+
+    public List<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
+    }
+
     private List<Indicator> availableIndicators;
 
     public List<Indicator> getAvailableIndicators()
     {
         return availableIndicators;
+    }
+
+    private List<DataElement> availableDataElements;
+
+    public List<DataElement> getAvailableDataElements()
+    {
+        return availableDataElements;
     }
 
     private List<Indicator> selectedIndicators;
@@ -167,7 +198,14 @@ public class GetChartOptionsAction
     {
         return selectedIndicators;
     }
-    
+
+    private List<DataElement> selectedDataElements;
+
+    public List<DataElement> getSelectedDataElements()
+    {
+        return selectedDataElements;
+    }
+
     private List<PeriodType> periodTypes = new ArrayList<PeriodType>();
 
     public List<PeriodType> getPeriodTypes()
@@ -181,28 +219,28 @@ public class GetChartOptionsAction
     {
         return availablePeriods;
     }
-    
+
     private List<Period> selectedPeriods;
 
     public List<Period> getSelectedPeriods()
     {
         return selectedPeriods;
     }
-    
+
     private List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>();
 
     public List<OrganisationUnitLevel> getLevels()
     {
         return levels;
     }
-    
+
     private List<OrganisationUnit> availableOrganisationUnits;
 
     public List<OrganisationUnit> getAvailableOrganisationUnits()
     {
         return availableOrganisationUnits;
     }
-    
+
     private List<OrganisationUnit> selectedOrganisationUnits;
 
     public List<OrganisationUnit> getSelectedOrganisationUnits()
@@ -217,45 +255,56 @@ public class GetChartOptionsAction
     public String execute()
     {
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
-        
+
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+
         availableIndicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-        
+
+        availableDataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
-        
+
         availablePeriods = new MonthlyPeriodType().generatePeriods( new Date() );
 
         levels = organisationUnitService.getOrganisationUnitLevels();
-        
+
         availableOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
-        
+
         Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
         Collections.sort( availableIndicators, indicatorComparator );
+        Collections.sort( availableDataElements, dataElementComparator );
         Collections.sort( levels, new OrganisationUnitLevelComparator() );
-        Collections.sort( availableOrganisationUnits, organisationUnitComparator );   
+        Collections.sort( availableOrganisationUnits, organisationUnitComparator );
 
         Collections.reverse( availablePeriods );
         FilterUtils.filter( availablePeriods, new PastAndCurrentPeriodFilter() );
-        
+
         displayPropertyHandler.handle( availableIndicators );
+        displayPropertyHandler.handle( availableDataElements );
         displayPropertyHandler.handle( availableOrganisationUnits );
-        
+
         if ( id != null )
         {
             chart = chartService.getChart( id );
-            
+
             selectedIndicators = chart.getIndicators();
             availableIndicators.removeAll( selectedIndicators );
-            
+
+            selectedDataElements = chart.getDataElements();
+            availableDataElements.removeAll( selectedDataElements );
+
             selectedPeriods = chart.getPeriods();
             availablePeriods.removeAll( selectedPeriods );
-            
+
             selectedOrganisationUnits = chart.getOrganisationUnits();
             availableOrganisationUnits.removeAll( selectedOrganisationUnits );
-            
+
             displayPropertyHandler.handle( selectedIndicators );
+            displayPropertyHandler.handle( selectedDataElements );
             displayPropertyHandler.handle( selectedOrganisationUnits );
         }
-        
+
         return SUCCESS;
     }
 }
