@@ -35,7 +35,7 @@ public class GenerateDataStatusResultAction
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
-    
+
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
@@ -95,14 +95,15 @@ public class GenerateDataStatusResultAction
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
-    @SuppressWarnings("unused")
+
+    @SuppressWarnings( "unused" )
     private Comparator<OrganisationUnit> orgUnitComparator;
 
     public void setOrgUnitComparator( Comparator<OrganisationUnit> orgUnitComparator )
     {
         this.orgUnitComparator = orgUnitComparator;
     }
+
     // ---------------------------------------------------------------
     // Output Parameters
     // ---------------------------------------------------------------
@@ -115,7 +116,7 @@ public class GenerateDataStatusResultAction
     }
 
     private Map<OrganisationUnit, List<Integer>> ouMapDataElementCount;
-    
+
     public Map<OrganisationUnit, List<Integer>> getOuMapDataElementCount()
     {
         return ouMapDataElementCount;
@@ -155,8 +156,6 @@ public class GenerateDataStatusResultAction
     {
         return dataStatusResult;
     }
-    
-
 
     private Map<DataSet, Collection<Period>> dataSetPeriods;
 
@@ -185,7 +184,7 @@ public class GenerateDataStatusResultAction
     {
         return maxOULevel;
     }
-    
+
     // ---------------------------------------------------------------
     // Input Parameters
     // ---------------------------------------------------------------
@@ -203,7 +202,7 @@ public class GenerateDataStatusResultAction
     {
         this.includeZeros = includeZeros;
     }
-    
+
     public String getIncludeZeros()
     {
         return includeZeros;
@@ -322,17 +321,16 @@ public class GenerateDataStatusResultAction
     int orgUnitCount;
 
     private String dataViewName;
-    
+
     private int dataSetMemberCount1;
-    
+
     public int getDataSetMemberCount1()
     {
         return dataSetMemberCount1;
     }
-    
-    
+
     private Integer dataElementCount;
-    
+
     public Integer getDataElementCount()
     {
         return dataElementCount;
@@ -341,18 +339,14 @@ public class GenerateDataStatusResultAction
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
-  //  @SuppressWarnings( { "deprecation", "unchecked" } )
+    // @SuppressWarnings( { "deprecation", "unchecked" } )
     public String execute()
         throws Exception
     {
-        System.out.println("Inside Normal DtaaStatus Reult Action");
         orgUnitCount = 0;
         dataViewName = "";
-        
-        ouMapDataElementCount = new HashMap<OrganisationUnit,List<Integer>>();//Map for DataElement count
-        
-        
-        // Intialization
+
+        ouMapDataElementCount = new HashMap<OrganisationUnit, List<Integer>>();// Map for DataElement count Intialization
         periodNameList = new ArrayList<String>();
         ouMapDataStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
         results = new ArrayList<Integer>();
@@ -381,7 +375,7 @@ public class GenerateDataStatusResultAction
         }
         else
         {
-            //System.out.println( "slectedDataSets is not empty" );
+            // System.out.println( "slectedDataSets is not empty" );
         }
         for ( String ds : selectedDataSets )
         {
@@ -397,7 +391,7 @@ public class GenerateDataStatusResultAction
         if ( facilityLB.equals( "children" ) )
         {
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
-            orgUnitList = getChildOrgUnitTree( selectedOrgUnit );                     
+            orgUnitList = getChildOrgUnitTree( selectedOrgUnit );
         }
         else if ( facilityLB.equals( "immChildren" ) )
         {
@@ -416,7 +410,7 @@ public class GenerateDataStatusResultAction
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
                 Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
-                orgUnitList.addAll( organisationUnits );              
+                orgUnitList.addAll( organisationUnits );
             }
         }
         else
@@ -426,14 +420,14 @@ public class GenerateDataStatusResultAction
             while ( orgUnitIterator.hasNext() )
             {
                 o = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitIterator.next() ) );
-                orgUnitList.add( o );                
-                Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );               
+                orgUnitList.add( o );
+                Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
                 displayPropertyHandler.handle( orgUnitList );
             }
         }
 
-        //Set<OrganisationUnit> dSetSource = selDataSet.getSources();
-        List<OrganisationUnit> dSetSource = new ArrayList<OrganisationUnit>( selDataSet.getSources());
+        // Set<OrganisationUnit> dSetSource = selDataSet.getSources();
+        List<OrganisationUnit> dSetSource = new ArrayList<OrganisationUnit>( selDataSet.getSources() );
         orgUnitInfo = "-1";
         Iterator<OrganisationUnit> ouIt = orgUnitList.iterator();
         while ( ouIt.hasNext() )
@@ -460,24 +454,25 @@ public class GenerateDataStatusResultAction
                 orgUnitInfo += "," + ou.getId();
             }
         }
-       
+
         // Period Related Info
         Period startPeriod = periodService.getPeriod( sDateLB );
         Period endPeriod = periodService.getPeriod( eDateLB );
 
-        PeriodType dataSetPeriodType = selDataSet.getPeriodType(); 
-        periodList = new ArrayList<Period>(periodService.getPeriodsBetweenDates( dataSetPeriodType,
-            startPeriod.getStartDate(), endPeriod.getEndDate() ));
-     
+        PeriodType dataSetPeriodType = selDataSet.getPeriodType();
+        periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod
+            .getStartDate(), endPeriod.getEndDate() ) );
+
         periodInfo = "-1";
         for ( Period p : periodList )
             periodInfo += "," + p.getId();
-        
+
         dataViewName = createDataView( orgUnitInfo, deInfo, periodInfo );
-      
+
         String query = "";
-        query = "SELECT COUNT(*) FROM " + dataViewName + " WHERE dataelementid IN (?) AND sourceid IN (?) AND periodid IN (?)";
-        
+        query = "SELECT COUNT(*) FROM " + dataViewName
+            + " WHERE dataelementid IN (?) AND sourceid IN (?) AND periodid IN (?)";
+
         Collection<DataElement> dataElements = new ArrayList<DataElement>();
         dataElements = selDataSet.getDataElements();
 
@@ -486,17 +481,17 @@ public class GenerateDataStatusResultAction
         {
             dataSetMemberCount1 += de1.getCategoryCombo().getOptionCombos().size();
         }
-       
-        //System.out.println( "DataSet Member Count :"  + dataSetMemberCount1  );
-        
+
+        // System.out.println( "DataSet Member Count :" + dataSetMemberCount1 );
+
         deInfo = getDEInfo( dataElements );
 
         Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
         OrganisationUnit o;
-        //Set<OrganisationUnit> dso = new HashSet<OrganisationUnit>();
-        List<OrganisationUnit> dso = new ArrayList<OrganisationUnit>( selDataSet.getSources());
+        // Set<OrganisationUnit> dso = new HashSet<OrganisationUnit>();
+        List<OrganisationUnit> dso = new ArrayList<OrganisationUnit>( selDataSet.getSources() );
         Iterator<Period> periodIterator;
-        //dso = selDataSet.getSources();
+        // dso = selDataSet.getSources();
 
         while ( orgUnitListIterator.hasNext() )
         {
@@ -508,26 +503,25 @@ public class GenerateDataStatusResultAction
 
             if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( o ) )
                 minOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
-/*
-            List<OrganisationUnit> childOrgUnits = new ArrayList<OrganisationUnit>();
-            
-            if ( !dso.contains( o ) )
-            {
-                childOrgUnits = filterChildOrgUnitsByDataSet( o, dso );
-            }
-            System.out.println( "Size of Child OrgUnit: " + childOrgUnits.size() );
-*/            
+            /*
+             * List<OrganisationUnit> childOrgUnits = new
+             * ArrayList<OrganisationUnit>();
+             * 
+             * if ( !dso.contains( o ) ) { childOrgUnits =
+             * filterChildOrgUnitsByDataSet( o, dso ); } System.out.println(
+             * "Size of Child OrgUnit: " + childOrgUnits.size() );
+             */
             periodIterator = periodList.iterator();
 
             Period p;
 
             double dataStatusPercentatge;
-            
+
             List<Integer> dsResults = new ArrayList<Integer>();
             List<Integer> deCounts = new ArrayList<Integer>();
             while ( periodIterator.hasNext() )
             {
-                System.out.println("Inside period Iterator Loop");
+                System.out.println( "Inside period Iterator Loop" );
                 p = (Period) periodIterator.next();
                 periodInfo = "" + p.getId();
                 dataElementCount = 0;
@@ -539,63 +533,53 @@ public class GenerateDataStatusResultAction
                 }
                 else if ( !dso.contains( o ) )
                 {
-                    System.out.println("Dataset : " + selDataSet.getName() + " not assign to " + o.getName() );
+                    System.out.println( "Dataset : " + selDataSet.getName() + " not assign to " + o.getName() );
                     /*
-                    if( childOrgUnits == null || childOrgUnits.size() <= 0 )
-                    {
-                        dsResults.add( -2 );
-                        continue;
-                    }
-                    
-                    else*/
-                    //{
-                        /*orgUnitInfo = "-1";
-                        orgUnitCount = 0;
-                        getOrgUnitInfo( o, dso );
-    
-                        if ( includeZeros == null )
-                        {
-                            query = "SELECT COUNT(*) FROM " + dataViewName + " WHERE dataelementid IN (" + deInfo
-                                + ") AND sourceid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo
-                                + ") and value <> 0";
-                            
-                        }
-                        else
-                        {
-                            query = "SELECT COUNT(*) FROM " + dataViewName + " WHERE dataelementid IN (" + deInfo
-                                + ") AND sourceid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo + ")";
-                        }
-    
-                        System.out.println("Used Query is :::::::" + query );
-                        SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
-    
-                        if ( sqlResultSet.next() )
-                        {
-                            try
-                            {
-                                //System.out.println( "Result is : \t" + sqlResultSet.getLong( 1 ) );
-                                dataStatusPercentatge = ((double) sqlResultSet.getInt( 1 ) / (double) (dataSetMemberCount1 * orgUnitCount)) * 100.0;
-                                
-                            }
-                            catch ( Exception e )
-                            {
-                                dataStatusPercentatge = 0.0;
-                            }
-                        }
-                        else
-                            dataStatusPercentatge = 0.0;
-    
-                        if ( dataStatusPercentatge > 100.0 )
-                            dataStatusPercentatge = 100;
-    
-                        dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-                        */
-                        //dsResults.add( (int) dataStatusPercentatge );
-                        dsResults.add( -1 );
-                        //dataElementCount = sqlResultSet.getInt( 1 );
-                        deCounts.add( -1 );
-                        continue;
-                    //}
+                     * if( childOrgUnits == null || childOrgUnits.size() <= 0 )
+                     * { dsResults.add( -2 ); continue; }
+                     * 
+                     * else
+                     */
+                    // {
+                    /*
+                     * orgUnitInfo = "-1"; orgUnitCount = 0; getOrgUnitInfo( o,
+                     * dso );
+                     * 
+                     * if ( includeZeros == null ) { query =
+                     * "SELECT COUNT(*) FROM " + dataViewName +
+                     * " WHERE dataelementid IN (" + deInfo +
+                     * ") AND sourceid IN (" + orgUnitInfo +
+                     * ") AND periodid IN (" + periodInfo + ") and value <> 0";
+                     * 
+                     * } else { query = "SELECT COUNT(*) FROM " + dataViewName +
+                     * " WHERE dataelementid IN (" + deInfo +
+                     * ") AND sourceid IN (" + orgUnitInfo +
+                     * ") AND periodid IN (" + periodInfo + ")"; }
+                     * 
+                     * System.out.println("Used Query is :::::::" + query );
+                     * SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet(
+                     * query );
+                     * 
+                     * if ( sqlResultSet.next() ) { try { //System.out.println(
+                     * "Result is : \t" + sqlResultSet.getLong( 1 ) );
+                     * dataStatusPercentatge = ((double) sqlResultSet.getInt( 1
+                     * ) / (double) (dataSetMemberCount1 orgUnitCount)) 100.0;
+                     * 
+                     * } catch ( Exception e ) { dataStatusPercentatge = 0.0; }
+                     * } else dataStatusPercentatge = 0.0;
+                     * 
+                     * if ( dataStatusPercentatge > 100.0 )
+                     * dataStatusPercentatge = 100;
+                     * 
+                     * dataStatusPercentatge = Math.round( dataStatusPercentatge
+                     * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+                     */
+                    // dsResults.add( (int) dataStatusPercentatge );
+                    dsResults.add( -1 );
+                    // dataElementCount = sqlResultSet.getInt( 1 );
+                    deCounts.add( -1 );
+                    continue;
+                    // }
                 }
 
                 orgUnitInfo = "" + o.getId();
@@ -631,12 +615,12 @@ public class GenerateDataStatusResultAction
                     dataStatusPercentatge = 0.0;
                     dataElementCount = -1;
                 }
-                
+
                 if ( dataStatusPercentatge > 100.0 )
                     dataStatusPercentatge = 100;
 
-                dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );                
-                
+                dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+
                 dsResults.add( (int) dataStatusPercentatge );
                 deCounts.add( dataElementCount );
             }
@@ -652,7 +636,8 @@ public class GenerateDataStatusResultAction
             ouLevelNames[i] = "Level" + i;
         }
 
-        List<OrganisationUnitLevel> ouLevels = new ArrayList<OrganisationUnitLevel>( organisationUnitService.getFilledOrganisationUnitLevels() );
+        List<OrganisationUnitLevel> ouLevels = new ArrayList<OrganisationUnitLevel>( organisationUnitService
+            .getFilledOrganisationUnitLevels() );
         for ( OrganisationUnitLevel ouL : ouLevels )
         {
             ouLevelNames[ouL.getLevel()] = ouL.getName();
@@ -674,7 +659,7 @@ public class GenerateDataStatusResultAction
         {
             try
             {
-                deleteDataView( dataViewName );               
+                deleteDataView( dataViewName );
             }
             catch ( Exception e )
             {
@@ -683,8 +668,9 @@ public class GenerateDataStatusResultAction
         }// finally block end
 
         periodNameList = dashBoardService.getPeriodNamesByPeriodType( dataSetPeriodType, periodList );
-        
-        //System.out.println("OrgUnit Size is :" + ouMapDataStatusResult.size() );
+
+        // System.out.println("OrgUnit Size is :" + ouMapDataStatusResult.size()
+        // );
 
         return SUCCESS;
     }
@@ -707,7 +693,7 @@ public class GenerateDataStatusResultAction
     }
 
     public String createDataView( String orgUnitInfo, String deInfo, String periodInfo )
-    {      
+    {
         String dataViewName = "_ds_" + UUID.randomUUID().toString();
         dataViewName = dataViewName.replaceAll( "-", "" );
 
@@ -715,14 +701,14 @@ public class GenerateDataStatusResultAction
 
         try
         {
-            @SuppressWarnings("unused")
+            @SuppressWarnings( "unused" )
             int sqlResult = jdbcTemplate.update( query );
 
             System.out.println( "View " + dataViewName + " dropped Successfully (if exists) " );
-            
+
             query = "CREATE view " + dataViewName + " AS "
-            + " SELECT sourceid,dataelementid,periodid,value FROM datavalue " + " WHERE dataelementid in ("
-            + deInfo + ") AND " + " sourceid in (" + orgUnitInfo + ") AND " + " periodid in (" + periodInfo + ")";
+                + " SELECT sourceid,dataelementid,periodid,value FROM datavalue " + " WHERE dataelementid in ("
+                + deInfo + ") AND " + " sourceid in (" + orgUnitInfo + ") AND " + " periodid in (" + periodInfo + ")";
 
             sqlResult = jdbcTemplate.update( query );
 
@@ -736,7 +722,7 @@ public class GenerateDataStatusResultAction
         finally
         {
             try
-            {              
+            {
             }
             catch ( Exception e )
             {
@@ -753,9 +739,9 @@ public class GenerateDataStatusResultAction
         String query = "DROP VIEW IF EXISTS " + dataViewName;
 
         try
-        {           
-            @SuppressWarnings("unused")
-			int sqlResult = jdbcTemplate.update( query );
+        {
+            @SuppressWarnings( "unused" )
+            int sqlResult = jdbcTemplate.update( query );
             System.out.println( "View " + dataViewName + " dropped Successfully" );
         } // try block end
         catch ( Exception e )
@@ -807,25 +793,17 @@ public class GenerateDataStatusResultAction
             getOrgUnitInfo( child );
         }
     }
-/*
-    private void getOrgUnitInfo( OrganisationUnit organisationUnit, List<OrganisationUnit> dso )
-    {
-        Collection<OrganisationUnit> children = organisationUnit.getChildren();
 
-        Iterator<OrganisationUnit> childIterator = children.iterator();
-        OrganisationUnit child;
-        while ( childIterator.hasNext() )
-        {
-            child = childIterator.next();
-            if ( dso.contains( child ) )
-            {
-                orgUnitInfo += "," + child.getId();
-                orgUnitCount++;
-            }
-            getOrgUnitInfo( child, dso );
-        }
-    }
-*/
+    /*
+     * private void getOrgUnitInfo( OrganisationUnit organisationUnit,
+     * List<OrganisationUnit> dso ) { Collection<OrganisationUnit> children =
+     * organisationUnit.getChildren();
+     * 
+     * Iterator<OrganisationUnit> childIterator = children.iterator();
+     * OrganisationUnit child; while ( childIterator.hasNext() ) { child =
+     * childIterator.next(); if ( dso.contains( child ) ) { orgUnitInfo += "," +
+     * child.getId(); orgUnitCount++; } getOrgUnitInfo( child, dso ); } }
+     */
     private String getDEInfo( Collection<DataElement> dataElements )
     {
         StringBuffer deInfo = new StringBuffer( "-1" );
@@ -836,12 +814,14 @@ public class GenerateDataStatusResultAction
         }
         return deInfo.toString();
     }
-/*    
-    private List<OrganisationUnit> filterChildOrgUnitsByDataSet( OrganisationUnit selectedOrganisationUnit, List<OrganisationUnit> dso )
-    {
-        List<OrganisationUnit> filteredOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedOrganisationUnit.getId() ) );
-        filteredOrganisationUnits.retainAll( dso );
-        return filteredOrganisationUnits;
-    }    
-*/    
+    /*
+     * private List<OrganisationUnit> filterChildOrgUnitsByDataSet(
+     * OrganisationUnit selectedOrganisationUnit, List<OrganisationUnit> dso ) {
+     * List<OrganisationUnit> filteredOrganisationUnits = new
+     * ArrayList<OrganisationUnit>(
+     * organisationUnitService.getOrganisationUnitWithChildren(
+     * selectedOrganisationUnit.getId() ) );
+     * filteredOrganisationUnits.retainAll( dso ); return
+     * filteredOrganisationUnits; }
+     */
 }// class end
