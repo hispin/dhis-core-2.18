@@ -45,7 +45,8 @@ import com.opensymphony.xwork2.Action;
  * @author Brajesh Murari
  * @version $Id$
  */
-public class GetPeriodsForLockAction implements Action
+public class GetPeriodsForLockAction
+    implements Action
 {
     private final static String ALL = "ALL";
 
@@ -66,18 +67,23 @@ public class GetPeriodsForLockAction implements Action
     {
         this.format = format;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
 
     private String name;
 
+    public String getName()
+    {
+        return name;
+    }
+
     public void setName( String name )
     {
         this.name = name;
     }
-    
+
     private List<Period> periods = new ArrayList<Period>();
 
     public List<Period> getPeriods()
@@ -90,40 +96,41 @@ public class GetPeriodsForLockAction implements Action
     // -------------------------------------------------------------------------
 
     public String execute()
-    throws Exception
-	{
-	    if ( name == null || name.equals( ALL ) )
-	    {
+        throws Exception
+    {
+        if ( name == null || name.equals( ALL ) )
+        {
             Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
-            
+
             for ( PeriodType type : periodTypes )
             {
                 periods.addAll( periodService.getPeriodsByPeriodType( type ) );
             }
         }
-	    else
-	    {	     
-		    PeriodType periodType = periodService.getPeriodTypeByName( name );
-			
-	        ArrayList<Period> allPeriodsOfSelectedPeriodType = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) ); 
-	                   
-		    for ( Period p : allPeriodsOfSelectedPeriodType )
-		    {
-		    	if(!(p.getStartDate().compareTo( new Date() ) > 0 ))
-				{
-		    		periods.add(p);
-				}	   
-		    }
-	    }
-	    
-	    for ( Period period : periods )
-	    {
-	        period.setName( format.formatPeriod( period ) );
-	    }
-	    
-	    Collections.sort( periods, new PeriodComparator() );
-	
-	    return SUCCESS;
-	}
-}
+        else
+        {
+            PeriodType periodType = periodService.getPeriodTypeByName( name );
 
+            List<Period> allPeriodsOfSelectedPeriodType = new ArrayList<Period>( periodService
+                .getPeriodsByPeriodType( periodType ) );
+
+            for ( Period p : allPeriodsOfSelectedPeriodType )
+            {
+                if ( !(p.getStartDate().compareTo( new Date() ) > 0) )
+                {
+                    periods.add( p );
+                }
+            }
+        }
+
+        for ( Period period : periods )
+        {
+            period.setName( format.formatPeriod( period ) );
+        }
+
+        Collections.sort( periods, new PeriodComparator() );
+
+        return SUCCESS;
+    }
+
+}

@@ -57,7 +57,8 @@ import org.hisp.dhis.system.util.TextUtils;
  *          larshelg $
  */
 public class HibernateDataElementStore
-    extends HibernateGenericStore<DataElement> implements DataElementStore
+    extends HibernateGenericStore<DataElement>
+    implements DataElementStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -334,7 +335,7 @@ public class HibernateDataElementStore
     {
         return getLikeName( name );
     }
-    
+
     public Collection<DataElement> getDataElementsBetween( int first, int max )
     {
         return getBetween( first, max );
@@ -354,7 +355,7 @@ public class HibernateDataElementStore
     {
         return getCountByName( name );
     }
-    
+
     // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------

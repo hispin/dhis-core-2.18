@@ -41,15 +41,16 @@ import org.hisp.dhis.indicator.IndicatorStore;
  * @author Lars Helge Overland
  * @version $Id: HibernateIndicatorStore.java 3287 2007-05-08 00:26:53Z larshelg $
  */
-public class HibernateIndicatorStore 
-    extends HibernateGenericStore<Indicator> implements IndicatorStore
+public class HibernateIndicatorStore
+    extends HibernateGenericStore<Indicator>
+    implements IndicatorStore
 {
     // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------
 
     public int addIndicator( Indicator indicator )
-    {        
+    {
         Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( indicator );
@@ -79,21 +80,21 @@ public class HibernateIndicatorStore
     public Indicator getIndicator( String uuid )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Criteria criteria = session.createCriteria( Indicator.class );
         criteria.add( Restrictions.eq( "uuid", uuid ) );
-        
+
         return (Indicator) criteria.uniqueResult();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Indicator> getAllIndicators()
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Indicator.class );
         criteria.setCacheable( true );
-        
+
         return criteria.list();
     }
 
@@ -145,7 +146,7 @@ public class HibernateIndicatorStore
     public Collection<Indicator> getIndicatorsWithGroupSets()
     {
         final String hql = "from Indicator d where d.groupSets.size > 0";
-        
+
         return sessionFactory.getCurrentSession().createQuery( hql ).list();
     }
 
@@ -153,7 +154,7 @@ public class HibernateIndicatorStore
     public Collection<Indicator> getIndicatorsWithoutGroups()
     {
         final String hql = "from Indicator d where d.groups.size = 0";
-        
+
         return sessionFactory.getCurrentSession().createQuery( hql ).list();
     }
 
@@ -161,7 +162,7 @@ public class HibernateIndicatorStore
     {
         return getCount();
     }
-    
+
     public int getIndicatorCountByName( String name )
     {
         return getCountByName( name );
@@ -171,7 +172,7 @@ public class HibernateIndicatorStore
     {
         return getLikeName( name );
     }
-    
+
     public Collection<Indicator> getIndicatorsBetween( int first, int max )
     {
         return getBetween( first, max );
@@ -180,5 +181,5 @@ public class HibernateIndicatorStore
     public Collection<Indicator> getIndicatorsBetweenByName( String name, int first, int max )
     {
         return getBetweenByName( name, first, max );
-    }    
+    }
 }
