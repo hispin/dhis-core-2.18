@@ -1,15 +1,16 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		if( jQuery("#targetLine").attr("checked") !== true )
+		if( jQuery("#targetLine").attr("checked") === undefined )
 		{
 			jQuery("#targetLineValue").attr("disabled", "disabled");
 			jQuery("#targetLineLabel").attr("disabled", "disabled");
 		}
 
 		jQuery("#targetLine").change(function() {
-			if(jQuery("#targetLineValue").attr("disabled")) {
+			if( jQuery("#targetLine").attr("checked") !== undefined ) {
 				jQuery("#targetLineValue").removeAttr("disabled");
 				jQuery("#targetLineLabel").removeAttr("disabled");
+				jQuery("#targetLineValue").focus();
 			} else {
 				jQuery("#targetLineValue").attr("disabled", "disabled");
 				jQuery("#targetLineLabel").attr("disabled", "disabled");
