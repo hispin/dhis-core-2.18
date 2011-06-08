@@ -22,7 +22,7 @@
             <table width="100%">
 				  <tr>
 				  	<td>#filterDiv( "displayViewChartForm" )</td>
-                    <td align="right">
+                    <td align="right" style="padding-top: 16px;">
                     	<select id="chart_type">
                     		<option value='period'>$i18n.getString( 'period_by_indicator_chart' )</option>
                     		<option value='period_dataElement'>$i18n.getString( 'period_by_dataelement_chart' )</option>
