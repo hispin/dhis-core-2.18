@@ -71,10 +71,26 @@ function saveChartReceived( messageElement )
         return false;
     } else if (type == "success")
     {
-        $("#selectedIndicators").children().attr("selected", true);
-        $("#selectedDataElements").children().attr("selected", true);
-        $("#selectedPeriods").children().attr("selected", true);
-        $("#selectedOrganisationUnits").children().attr("selected", true);
+        if ($("#selectedIndicators").attr('multiple') !== undefined)
+        {
+            $("#selectedIndicators").children().attr("selected", true);
+        }
+
+        if ($("#selectedDataElements").attr('multiple') !== undefined)
+        {
+            $("#selectedDataElements").children().attr("selected", true);
+        }
+
+        if ($("#selectedPeriods").attr('multiple') !== undefined)
+        {
+            $("#selectedPeriods").children().attr("selected", true);
+        }
+
+        if ($("#selectedOrganisationUnits").attr('multiple') !== undefined)
+        {
+            $("#selectedOrganisationUnits").children().attr("selected", true);
+        }
+
         $('#chartForm').submit();
     }
 }
