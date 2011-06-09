@@ -34,8 +34,7 @@
         </ul>
     </div>
     #if ( $chartId )
-        <img style="cursor:pointer" src="getChart.action?id=${chartId}" 
-            onclick="viewChart( 'getChart.action?id=${chartId}&width=700&height=500' )">
+        <img style="cursor:pointer" src="getChart.action?id=${chartId}" onclick="viewChart( 'getChart.action?id=${chartId}&width=700&height=500' )">
     #else
         <span class="labelText">$i18n.getString( 'this_is_a_chart_area' )</span>
     #end
@@ -60,6 +59,7 @@
 	<td>
 
 <table>
+
 #set( $sizeHalf = $chartAreas.size() / 2 )
 
 #foreach( $chart in $chartAreas )
@@ -79,3 +79,7 @@
 	</td>
 </tr>
 </table>
+
+<div id="chartView" style="display: none; padding: 0; margin: 0;'">
+	<img id='chartImage' src=''></img>
+</div>
