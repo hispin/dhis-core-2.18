@@ -89,9 +89,12 @@ function dhisAjaxSelect_filter_on_kv($target, key, value)
 }
 
 /**
- * @param $target jQuery object to work on
- * @param key data-entry key, $target.data(key)
- * @param value value to compare to
+ * @param $target
+ *            jQuery object to work on
+ * @param key
+ *            data-entry key, $target.data(key)
+ * @param value
+ *            value to compare to
  * @returns {Boolean} true or false after comparing $target.data(key) with value
  */
 function compare_data_with_kv($target, key, value)
@@ -146,7 +149,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
 (function($)
 {
     var templates = {
-        wrapper : "<div id='${id}' style='padding: 0; margin: 0; background-color: #fefefe; border: 1px solid gray;' />",
+        wrapper : "<div id='${id}' style='padding: 0; margin: 0; background-color: #fefefe;' />",
         button : "<button id='${id}' type='button' style='width: 70px; margin: 4px;'>${text}</button>",
         option : "<option>${text}</option>",
         option_selected : "<option selected='selected'>${text}</option>",
@@ -198,18 +201,16 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
             $.extend(params, options.params);
 
             var $select = $(this);
-            $select.css("border", "none");
             var id = $(this).attr("id");
             var wrapper_id = id + "_wrapper";
             var filter_input_id = id + "_filter_input";
             var filter_button_id = id + "_filter_button";
+            var clear_button_id = id + "_clear_button";
             var filter_select_id = id + "_filter_select";
 
             $select.wrap($.tmpl(templates.wrapper, {
                 "id" : wrapper_id
             }));
-
-            $select.css("border-top", "1px solid gray");
 
             var $wrapper = $("#" + wrapper_id);
 
@@ -217,13 +218,6 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                 $wrapper.prepend($.tmpl(templates.filter_select, {
                     "id" : filter_select_id
                 }));
-
-                if (settings.filter.label !== undefined) {
-                    $wrapper.prepend("<div style='width: 100%; padding-left: 4px;'>Filter by " + settings.filter.label
-                            + ":</div>");
-                } else {
-                    $wrapper.prepend("<div style='width: 100%; padding-left: 4px;'>Filter by:</div>");
-                }
 
                 var $filter_select = $("#" + filter_select_id);
 
@@ -277,14 +271,20 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
             var $filter_td1 = $("<td/>")
             var $filter_td2 = $("<td/>")
 
-            $filter_td2.css("width", "70px");
+            $filter_td2.css("width", "158px");
 
             $filter_td1.append($.tmpl(templates.filter_input, {
                 "id" : filter_input_id
             }))
+
             $filter_td2.append($.tmpl(templates.button, {
                 "id" : filter_button_id,
-                "text" : "filter"
+                "text" : "Filter"
+            }));
+            
+            $filter_td2.append($.tmpl(templates.button, {
+                "id" : clear_button_id,
+                "text" : "Clear"
             }));
 
             $filter_tr.append($filter_td1);
@@ -296,7 +296,8 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
 
             var $filter_input = $("#" + filter_input_id);
             var $filter_button = $("#" + filter_button_id);
-            
+            var $clear_button = $("#" + clear_button_id);
+
             var loader_id = id + '_loader';
             $('<img id="' + loader_id + '" src="../images/ajax-loader-bar.gif" />').insertAfter($wrapper);
             $('#' + loader_id).css('visibility', 'hidden');
@@ -311,6 +312,11 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                 dhis2.select.filterWithKey($select, key);
             });
 
+            $clear_button.bind('click', function(e) {
+                $filter_input.val('');
+                dhis2.select.filterWithKey($select, ''); 
+            });
+            
             $filter_input.keypress(function(e)
             {
                 if (e.keyCode == 13) {
