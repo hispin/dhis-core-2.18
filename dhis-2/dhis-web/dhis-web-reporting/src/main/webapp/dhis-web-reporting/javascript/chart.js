@@ -2,11 +2,20 @@
 // View chart
 // -----------------------------------------------------------------------------
 
-function viewChart( url )
+function viewChart( url, size )
 {
-    window
-            .open(url, "_blank",
-                    "directories=no, height=560, width=760, location=no, menubar=no, status=no, toolbar=no, resizable=yes, scrollbars=yes");
+    var width = size === 'wide' ? 1000 : 700;
+    var height = size === 'tall' ? 800 : 500;
+    
+    $('#chartImage').attr('src', url);
+    $('#chartView').dialog({
+       autoOpen: true,
+       modal: true,
+       height: height + 35,
+       width: width,
+       resizable: false,
+       title: 'Viewing Chart'
+    });
 }
 
 // -----------------------------------------------------------------------------
