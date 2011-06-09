@@ -46,7 +46,7 @@ public class Configuration
     
     private int id;
     
-    private UserGroup messageRecipients;
+    private UserGroup feedbackRecipients;
 
     private DataElementGroup infrastructuralDataElements;
     
@@ -66,14 +66,14 @@ public class Configuration
         this.id = id;
     }
 
-    public UserGroup getMessageRecipients()
+    public UserGroup getFeedbackRecipients()
     {
-        return messageRecipients;
+        return feedbackRecipients;
     }
 
-    public void setMessageRecipients( UserGroup messageRecipients )
+    public void setFeedbackRecipients( UserGroup feedbackRecipients )
     {
-        this.messageRecipients = messageRecipients;
+        this.feedbackRecipients = feedbackRecipients;
     }
 
     public DataElementGroup getInfrastructuralDataElements()

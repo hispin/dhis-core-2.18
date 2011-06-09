@@ -4,7 +4,8 @@
 
 <h3>$i18n.getString( "messages" )</h3>
 
-<div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )" onclick="window.location.href='showSendMessage.action'"></div>
+<div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )" onclick="window.location.href='showSendMessage.action'">
+<br><input type="button" value="$i18n.getString( 'new_feedback' )" onclick="window.location.href='showSendFeedback.action'"></div>
 
 <table style="width:90%" class="plainList">
 	<tr>

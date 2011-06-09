@@ -32,8 +32,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -67,6 +69,13 @@ public class DefaultMessageService
     {
         this.currentUserService = currentUserService;
     }
+    
+    private ConfigurationService configurationService;
+
+    public void setConfigurationService( ConfigurationService configurationService )
+    {
+        this.configurationService = configurationService;
+    }
 
     // -------------------------------------------------------------------------
     // MessageService implementation
@@ -85,7 +94,21 @@ public class DefaultMessageService
         
         return saveMessage( message );
     }
-    
+
+    public int sendFeedback( Message message )
+    {
+        UserGroup userGroup = configurationService.getConfiguration().getFeedbackRecipients();
+        
+        int count = 0;
+        
+        if ( userGroup != null && userGroup.getMembers().size() > 0 )
+        {
+            count = sendMessage( message, userGroup.getMembers() );
+        }
+        
+        return count;
+    }
+        
     public int saveMessage( Message message )
     {
         return messageStore.save( message );

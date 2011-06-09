@@ -250,15 +250,13 @@ public class GetAvailableUserSettingsAction
             availableLocales.add( localeManager.getFallbackLocale() );
         }
 
+        Collections.sort( availableLocales, new Comparator<Locale>()
         {
-            Collections.sort( availableLocales, new Comparator<Locale>()
+            public int compare( Locale locale0, Locale locale1 )
             {
-                public int compare( Locale locale0, Locale locale1 )
-                {
-                    return locale0.getDisplayName().compareTo( locale1.getDisplayName() );
-                }
-            } );
-        }
+                return locale0.getDisplayName().compareTo( locale1.getDisplayName() );
+            }
+        } );
 
         currentLocaleDb = localeManager.getCurrentLocale();
 

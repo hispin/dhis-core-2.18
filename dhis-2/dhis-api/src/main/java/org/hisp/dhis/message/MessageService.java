@@ -41,6 +41,8 @@ public interface MessageService
     
     int sendMessage( Message message, Set<User> users );
     
+    int sendFeedback( Message message );
+    
     int saveMessage( Message message );
     
     Message getMessage( int id );

@@ -27,14 +27,20 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.style.StyleManager;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroupService;
+import org.hisp.dhis.user.comparator.UserGroupComparator;
 import org.hisp.dhis.webportal.module.Module;
 import org.hisp.dhis.webportal.module.ModuleManager;
 import org.hisp.dhis.webportal.module.StartableModuleFilter;
@@ -75,6 +81,20 @@ public class GetSystemSettingsAction
         this.styleManager = styleManager;
     }
 
+    private UserGroupService userGroupService;
+
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
+    }
+
+    private ConfigurationService configurationService;
+
+    public void setConfigurationService( ConfigurationService configurationService )
+    {
+        this.configurationService = configurationService;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -106,7 +126,21 @@ public class GetSystemSettingsAction
     {
         return currentStyle;
     }
+
+    private List<UserGroup> userGroups;
+
+    public List<UserGroup> getUserGroups()
+    {
+        return userGroups;
+    }
+
+    private UserGroup feedbackRecipients;
     
+    public UserGroup getFeedbackRecipients()
+    {
+        return feedbackRecipients;
+    }
+
     private Collection<String> aggregationStrategies;
 
     public Collection<String> getAggregationStrategies()
@@ -127,10 +161,16 @@ public class GetSystemSettingsAction
         FilterUtils.filter( modules, startableFilter );
         
         styles = styleManager.getStyles();
-        
+
         currentStyle = styleManager.getCurrentStyle();
-        
+
         aggregationStrategies = systemSettingManager.getAggregationStrategies();
+        
+        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        
+        Collections.sort( userGroups, new UserGroupComparator() );
+        
+        feedbackRecipients = configurationService.getConfiguration().getFeedbackRecipients();
         
         return SUCCESS;
     }

@@ -76,15 +76,15 @@ public class ConfigurationServiceTest
         
         Configuration config = configurationService.getConfiguration();
         
-        assertNull( config.getMessageRecipients() );
+        assertNull( config.getFeedbackRecipients() );
         
-        config.setMessageRecipients( group );
+        config.setFeedbackRecipients( group );
         
         configurationService.setConfiguration( config );
         
         config = configurationService.getConfiguration();
         
-        assertNotNull( config.getMessageRecipients() );
-        assertEquals( group, config.getMessageRecipients() );
+        assertNotNull( config.getFeedbackRecipients() );
+        assertEquals( group, config.getFeedbackRecipients() );
     }
 }

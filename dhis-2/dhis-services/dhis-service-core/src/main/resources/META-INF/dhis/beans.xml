@@ -467,6 +467,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="messageStore" ref="org.hisp.dhis.message.MessageStore"/>
 		<property name="userMessageStore" ref="org.hisp.dhis.message.UserMessageStore"/>
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+		<property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.concept.ConceptService" 
