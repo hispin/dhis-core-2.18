@@ -49,7 +49,7 @@
                 <tr id="tr${chart.id}">
                     <td onclick="showChartDetails( $chart.id )">$encoder.htmlEncode( $chart.title )</td>
                     <td style="text-align:right">
-						<a href="javascript:viewChart( 'viewChart.action?id=$chart.id' )" title="$i18n.getString( "view_chart" )"><img src="../images/start_process.png" alt="$i18n.getString( "view_chart" )"></a>
+						<a href="javascript:viewChart( 'viewChart.action?id=$chart.id', '$chart.size' )" title="$i18n.getString( "view_chart" )"><img src="../images/start_process.png" alt="$i18n.getString( "view_chart" )"></a>
 						<a href="displayAddChartForm.action?id=$chart.id&dimension=$chart.dimension" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeChart" ) )
 						<a href="javascript:removeChart( $chart.id, '$encoder.jsEncode( $chart.title )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
@@ -84,3 +84,7 @@
         </td>       
     </tr>
 </table>
+
+<div id="chartView" style="display: none; padding: 0; margin: 0;'">
+	<img id='chartImage' src=''></img>
+</div>
