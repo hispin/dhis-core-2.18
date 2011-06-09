@@ -78,7 +78,8 @@ function saveChartReceived( messageElement )
         setMessage(message);
 
         return false;
-    } else if (type == "success")
+    } 
+    else if (type == "success")
     {
         if ($("#selectedIndicators").attr('multiple') !== undefined)
         {

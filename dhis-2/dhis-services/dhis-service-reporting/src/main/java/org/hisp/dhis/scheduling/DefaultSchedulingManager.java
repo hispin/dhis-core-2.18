@@ -74,7 +74,7 @@ public class DefaultSchedulingManager
 
     public void scheduleTasks()
     {
-        scheduler.scheduleTask( getRunnables(), CRON_NIGHTLY_1AM );
+        scheduler.scheduleTask( getRunnables(), CRON_NIGHTLY_0AM );
     }
     
     public void stopTasks()

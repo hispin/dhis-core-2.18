@@ -2,10 +2,8 @@ package org.hisp.dhis.system.scheduling;
 
 public interface Scheduler
 {
+    final String CRON_NIGHTLY_0AM = "0 0 0 * * ?";
     final String CRON_NIGHTLY_1AM = "0 0 1 * * ?";
-    final String CRON_NIGHTLY_2AM = "0 0 2 * * ?";
-    final String CRON_NIGHTLY_3AM = "0 0 3 * * ?";
-    final String CRON_NIGHTLY_4AM = "0 0 4 * * ?";
     final String CRON_TEST = "0 * * * * ?";
     
     final String STATUS_RUNNING = "running";
