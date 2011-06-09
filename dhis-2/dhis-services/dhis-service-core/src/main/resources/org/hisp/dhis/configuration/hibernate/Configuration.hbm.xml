@@ -10,8 +10,8 @@
       <generator class="native" />
     </id>
 
-	<many-to-one name="messageRecipients" class="org.hisp.dhis.user.UserGroup" 
-		column="messagerecipientsid" foreign-key="fk_configuration_message_recipients"/>
+	<many-to-one name="feedbackRecipients" class="org.hisp.dhis.user.UserGroup" 
+		column="feedbackrecipientsid" foreign-key="fk_configuration_feedback_recipients"/>
 
 	<many-to-one name="infrastructuralDataElements" class="org.hisp.dhis.dataelement.DataElementGroup" 
 		column="infrastructuraldataelementsid" foreign-key="fk_configuration_infrastructural_dataelements"/>

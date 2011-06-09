@@ -36,8 +36,11 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZER
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.configuration.Configuration;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -64,6 +67,20 @@ public class SetSystemSettingsAction
     public void setStyleManager( StyleManager styleManager )
     {
         this.styleManager = styleManager;
+    }
+
+    private UserGroupService userGroupService;
+
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
+    }
+
+    private ConfigurationService configurationService;
+
+    public void setConfigurationService( ConfigurationService configurationService )
+    {
+        this.configurationService = configurationService;
     }
     
     // -------------------------------------------------------------------------
@@ -133,6 +150,13 @@ public class SetSystemSettingsAction
         this.aggregationStrategy = aggregationStrategy;
     }
     
+    private Integer feedbackRecipients;
+    
+    public void setFeedbackRecipients( Integer feedbackRecipients )
+    {
+        this.feedbackRecipients = feedbackRecipients;
+    }
+
     private Integer completenessOffset;
 
     public void setCompletenessOffset( Integer completenessOffset )
@@ -168,6 +192,10 @@ public class SetSystemSettingsAction
         styleManager.setCurrentStyle( currentStyle );
         systemSettingManager.saveSystemSetting( KEY_AGGREGATION_STRATEGY, aggregationStrategy );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
+        
+        Configuration configuration = configurationService.getConfiguration();
+        configuration.setFeedbackRecipients( userGroupService.getUserGroup( feedbackRecipients ) );
+        configurationService.setConfiguration( configuration );
         
         return SUCCESS;
     }

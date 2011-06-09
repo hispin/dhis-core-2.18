@@ -1,0 +1,26 @@
+
+<h3>$i18n.getString( "create_new_feedback" )</h3>
+
+<form action="sendFeedback.action" method="post">
+
+<table>
+
+<tr>
+<td>$i18n.getString( "subject" )</td>
+<td><input type="text" name="subject" style="width:495px"></td>
+</tr>
+
+<tr>
+<td>$i18n.getString( "text" )</td>
+<td><textarea name="text" style="width:495px;height:200px"></textarea></td>
+</tr>
+
+<tr>
+<td></td>
+<td><input type="submit" value="$i18n.getString( 'send' )" style="width:120px">
+<input type="button" value="$i18n.getString( 'cancel' )"  style="width:120px" onclick="window.location.href='message.action'"></td>
+</tr>
+
+</table>
+
+</form>

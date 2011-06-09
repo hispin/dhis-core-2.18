@@ -9,26 +9,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.settings.action.system.GetSystemSettingsAction"
 		class="org.hisp.dhis.settings.action.system.GetSystemSettingsAction"
 		scope="prototype">
-		<property name="systemSettingManager">
-			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
-		</property>
-		<property name="moduleManager">
-			<ref bean="org.hisp.dhis.webportal.module.ModuleManager" />
-		</property>
-		<property name="styleManager">
-			<ref bean="org.hisp.dhis.options.style.StyleManager" />
-		</property>
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+		<property name="moduleManager" ref="org.hisp.dhis.webportal.module.ModuleManager" />
+		<property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService"/>
+		<property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.settings.action.system.SetSystemSettingsAction"
 		class="org.hisp.dhis.settings.action.system.SetSystemSettingsAction"
 		scope="prototype">
-		<property name="systemSettingManager">
-			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
-		</property>
-		<property name="styleManager">
-			<ref bean="org.hisp.dhis.options.style.StyleManager" />
-		</property>
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+		<property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService"/>
+		<property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService"/>
 	</bean>
 
 	<!-- User settings -->
