@@ -74,7 +74,7 @@ public class ProvideContentAction
     {
         this.userSettingManager = userSettingManager;
     }
-    
+
     private MessageService messageService;
 
     public void setMessageService( MessageService messageService )
@@ -106,7 +106,7 @@ public class ProvideContentAction
     {
         return chartAreas;
     }
-    
+
     private long messageCount;
 
     public long getMessageCount()
@@ -131,14 +131,14 @@ public class ProvideContentAction
         Collections.sort( charts, new ChartTitleComparator() );
 
         int chartsInDashboardCount = userSettingManager.getChartsInDashboard();
-        
+
         for ( int i = 1; i <= chartsInDashboardCount; i++ )
         {
             chartAreas.add( content.get( DashboardManager.CHART_AREA_PREFIX + i ) );
         }
 
         messageCount = messageService.getUnreadMessageCount();
-        
+
         return SUCCESS;
     }
 }
