@@ -57,28 +57,6 @@
         }
     });
     
-    var indicatorsByGroupStore = new Ext.data.JsonStore({
-        url: G.conf.path_mapping + 'getIndicatorsByIndicatorGroup' + G.conf.type,
-        root: 'indicators',
-        fields: ['id', 'name', 'shortName'],
-        idProperty: 'id',
-        sortInfo: {field: 'name', direction: 'ASC'},
-        autoLoad: false,
-        isLoaded: false,
-        listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-                store.each(
-                    function fn(record) {
-                        var name = record.get('name');
-                        name = name.replace('&lt;', '<').replace('&gt;', '>');
-                        record.set('name', name);
-                    }
-                );
-            }
-        }
-    });
-    
 	var indicatorStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllIndicators' + G.conf.type,
         root: 'indicators',
@@ -102,27 +80,6 @@
         }
     });
     
-    var dataElementsByGroupStore = new Ext.data.JsonStore({
-        url: G.conf.path_mapping + 'getDataElementsByDataElementGroup' + G.conf.type,
-        root: 'dataElements',
-        fields: ['id', 'name', 'shortName'],
-        sortInfo: {field: 'name', direction: 'ASC'},
-        autoLoad: false,
-        isLoaded: false,
-        listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-                store.each(
-                    function fn(record) {
-                        var name = record.get('name');
-                        name = name.replace('&lt;', '<').replace('&gt;', '>');
-                        record.set('name', name);
-                    }
-                );
-            }
-        }
-    });
-    
     var dataElementStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllDataElements' + G.conf.type,
         root: 'dataElements',
@@ -140,17 +97,6 @@
         url: G.conf.path_mapping + 'getAllPeriodTypes' + G.conf.type,
         root: 'periodTypes',
         fields: ['name', 'displayName'],
-        autoLoad: false,
-        isLoaded: false,
-        listeners: {
-            'load': G.func.storeLoadListener
-        }
-    });
-        
-    var periodsByTypeStore = new Ext.data.JsonStore({
-        url: G.conf.path_mapping + 'getPeriodsByPeriodType' + G.conf.type,
-        root: 'periods',
-        fields: ['id', 'name'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -279,13 +225,10 @@
     G.stores = {
 		mapView: mapViewStore,
         indicatorGroup: indicatorGroupStore,
-        indicatorsByGroup: indicatorsByGroupStore,
         indicator: indicatorStore,
         dataElementGroup: dataElementGroupStore,
-        dataElementsByGroup: dataElementsByGroupStore,
         dataElement: dataElementStore,
         periodType: periodTypeStore,
-        periodsByType: periodsByTypeStore,
         infrastructuralPeriodType: infrastructuralPeriodTypeStore,
         infrastructuralPeriodsByType: infrastructuralPeriodsByTypeStore,
         predefinedMapLegend: predefinedMapLegendStore,
