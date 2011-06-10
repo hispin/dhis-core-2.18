@@ -70,7 +70,8 @@
                 </div>
                 <p><label>$i18n.getString( "title" ):</label><br><span id="titleField"></span></p>
                 <p><label>$i18n.getString( "dimension" ):</label><br><span id="dimensionField"></span></p>
-                <p><label>$i18n.getString( "indicators" ):</label><br><span id="indicatorsField"></span></p>
+                <p id='indicatorsView'><label>$i18n.getString( "indicators" ):</label><br><span id="indicatorsField"></span></p>
+                <p id='dataElementsView'><label>$i18n.getString( "dataelements" ):</label><br><span id="dataElementsField"></span></p>
                 <p><label>$i18n.getString( "periods" ):</label><br><span id="periodsField"></span></p>
                 <p><label>$i18n.getString( "organisation_units" ):</label><br><span id="organisationUnitsField"></span></p>
             </div>

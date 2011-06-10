@@ -4,6 +4,7 @@
 	<title>$encoder.xmlEncode( $chart.title )</title>
 	<dimension>$encoder.xmlEncode( $chart.dimension )</dimension>
 	<indicators>$chart.indicators.size()</indicators>
+	<dataElements>$chart.dataElements.size()</dataElements>
 	<periods>$chart.periods.size()</periods>
 	<organisationUnits>$chart.organisationUnits.size()</organisationUnits>
 </chart>
