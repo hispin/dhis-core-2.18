@@ -41,9 +41,24 @@ function showChartDetails( chartId )
 
 function chartReceived( xmlObject )
 {
+    var indicators = parseInt( getElementValue(xmlObject, 'indicators') );
+    var dataElements = parseInt( getElementValue(xmlObject, 'dataElements') );
+
     setInnerHTML('titleField', getElementValue(xmlObject, 'title'));
     setInnerHTML('dimensionField', getElementValue(xmlObject, 'dimension'));
-    setInnerHTML('indicatorsField', getElementValue(xmlObject, 'indicators'));
+
+    if( dataElements === 0) {
+        $('#dataElementsView').hide();
+        $('#indicatorsView').show();
+
+        $('#indicatorsField').text( indicators );
+    } else {
+        $('#dataElementsView').show();
+        $('#indicatorsView').hide();
+
+        $('#dataElementsField').text( dataElements );
+    }
+
     setInnerHTML('periodsField', getElementValue(xmlObject, 'periods'));
     setInnerHTML('organisationUnitsField', getElementValue(xmlObject, 'organisationUnits'));
 
