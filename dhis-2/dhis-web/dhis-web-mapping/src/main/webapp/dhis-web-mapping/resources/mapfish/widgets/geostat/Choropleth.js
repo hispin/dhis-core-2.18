@@ -228,6 +228,57 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 listeners: {
                     'load': G.func.storeLoadListener
                 }
+            }),
+            indicatorsByGroup: new Ext.data.JsonStore({
+                url: G.conf.path_mapping + 'getIndicatorsByIndicatorGroup' + G.conf.type,
+                root: 'indicators',
+                fields: ['id', 'name', 'shortName'],
+                idProperty: 'id',
+                sortInfo: {field: 'name', direction: 'ASC'},
+                autoLoad: false,
+                isLoaded: false,
+                listeners: {
+                    'load': function(store) {
+                        store.isLoaded = true;
+                        store.each(
+                            function fn(record) {
+                                var name = record.get('name');
+                                name = name.replace('&lt;', '<').replace('&gt;', '>');
+                                record.set('name', name);
+                            }
+                        );
+                    }
+                }
+            }),
+            dataElementsByGroup: new Ext.data.JsonStore({
+                url: G.conf.path_mapping + 'getDataElementsByDataElementGroup' + G.conf.type,
+                root: 'dataElements',
+                fields: ['id', 'name', 'shortName'],
+                sortInfo: {field: 'name', direction: 'ASC'},
+                autoLoad: false,
+                isLoaded: false,
+                listeners: {
+                    'load': function(store) {
+                        store.isLoaded = true;
+                        store.each(
+                            function fn(record) {
+                                var name = record.get('name');
+                                name = name.replace('&lt;', '<').replace('&gt;', '>');
+                                record.set('name', name);
+                            }
+                        );
+                    }
+                }
+            }),
+            periodsByType: new Ext.data.JsonStore({
+                url: G.conf.path_mapping + 'getPeriodsByPeriodType' + G.conf.type,
+                root: 'periods',
+                fields: ['id', 'name'],
+                autoLoad: false,
+                isLoaded: false,
+                listeners: {
+                    'load': G.func.storeLoadListener
+                }
             })
         };
     },
@@ -329,8 +380,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(cb) {
 						this.form.findField('indicator').clearValue();
-                        G.stores.indicatorsByGroup.setBaseParam('indicatorGroupId', cb.getValue());
-                        G.stores.indicatorsByGroup.load();
+                        this.stores.indicatorsByGroup.setBaseParam('indicatorGroupId', cb.getValue());
+                        this.stores.indicatorsByGroup.load();
                     }
                 }
             }
@@ -349,7 +400,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             selectOnFocus: true,
             width: G.conf.combo_width,
-            store: G.stores.indicatorsByGroup,
+            store: this.stores.indicatorsByGroup,
             currentValue: null,
             keepPosition: false,
             listeners: {
@@ -418,8 +469,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(cb) {
                         this.form.findField('dataelement').clearValue();
-						G.stores.dataElementsByGroup.setBaseParam('dataElementGroupId', cb.getValue());
-                        G.stores.dataElementsByGroup.load();
+						this.stores.dataElementsByGroup.setBaseParam('dataElementGroupId', cb.getValue());
+                        this.stores.dataElementsByGroup.load();
                     }
                 }
             }
@@ -438,7 +489,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             selectOnFocus: true,
             width: G.conf.combo_width,
-            store: G.stores.dataElementsByGroup,
+            store: this.stores.dataElementsByGroup,
             keepPosition: false,
             listeners: {
                 'select': {
@@ -506,8 +557,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(cb) {
                         this.form.findField('period').clearValue();
-                        G.stores.periodsByType.setBaseParam('name', cb.getValue());
-                        G.stores.periodsByType.load();
+                        this.stores.periodsByType.setBaseParam('name', cb.getValue());
+                        this.stores.periodsByType.load();
                     }
                 }
             }
@@ -526,7 +577,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             selectOnFocus: true,
             width: G.conf.combo_width,
-            store: G.stores.periodsByType,
+            store: this.stores.periodsByType,
             keepPosition: false,
             listeners: {
                 'select': {
@@ -1193,7 +1244,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             };
             obj.stores = {
                 valueTypeGroup: G.stores.indicatorGroup,
-                valueType: G.stores.indicatorsByGroup
+                valueType: this.stores.indicatorsByGroup
             };
             obj.mapView = {
                 valueTypeGroup: 'indicatorGroupId',
@@ -1211,7 +1262,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             };
             obj.stores = {
                 valueTypeGroup: G.stores.dataElementGroup,
-                valueType: G.stores.dataElementsByGroup
+                valueType: this.stores.dataElementsByGroup
             };
             obj.mapView = {
                 valueTypeGroup: 'dataElementGroupId',
@@ -1234,7 +1285,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             };
             obj.stores = {
                 c1: G.stores.periodType,
-                c2: G.stores.periodsByType
+                c2: this.stores.periodsByType
             };
             obj.mapView = {
                 c1: 'periodTypeId',
