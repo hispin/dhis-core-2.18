@@ -40,6 +40,8 @@ public class AggregatedMapValue
     
     private int periodId;
     
+    private String dataElementName;
+    
     private double value;
     
     private double factor;
@@ -56,11 +58,12 @@ public class AggregatedMapValue
     {   
     }
     
-    public AggregatedMapValue( int organisationUnitId, String organisationUnitName, int periodId, double value, double factor, double numeratorValue, double denominatorValue )
+    public AggregatedMapValue( int organisationUnitId, String organisationUnitName, int periodId, String dataElementName, double value, double factor, double numeratorValue, double denominatorValue )
     {
         this.organisationUnitId = organisationUnitId;
         this.organisationUnitName = organisationUnitName;
         this.periodId = periodId;
+        this.dataElementName = dataElementName;
         this.value = value;
         this.factor = factor;
         this.numeratorValue = numeratorValue;
@@ -120,6 +123,16 @@ public class AggregatedMapValue
     public void setPeriodId( int periodId )
     {
         this.periodId = periodId;
+    }
+
+    public String getDataElementName()
+    {
+        return dataElementName;
+    }
+
+    public void setDataElementName( String dataElementName )
+    {
+        this.dataElementName = dataElementName;
     }
 
     public double getValue()

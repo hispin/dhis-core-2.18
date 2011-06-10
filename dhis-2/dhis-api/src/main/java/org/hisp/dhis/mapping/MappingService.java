@@ -79,6 +79,8 @@ public interface MappingService
 
     Collection<AggregatedMapValue> getDataElementMapValues( Integer dataElementId, Period period, Date startDate, Date endDate, 
         Integer parentOrganisationUnitId, Integer level );
+    
+    Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId, Integer organisationUnitId );
 
     // -------------------------------------------------------------------------
     // MapLegend

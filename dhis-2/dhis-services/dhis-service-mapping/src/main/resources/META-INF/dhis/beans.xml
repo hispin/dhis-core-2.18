@@ -30,6 +30,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
     <property name="currentUserService"
       ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="configurationService"
+      ref="org.hisp.dhis.configuration.ConfigurationService"/>
   </bean>
 		
   <!-- Store definitions -->

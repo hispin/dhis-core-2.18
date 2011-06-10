@@ -78,6 +78,10 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
 
 	imageLegend: false,
     
+    stores: false,
+    
+    infrastructuralPeriod: false,
+    
     initComponent: function() {
     
         this.initProperties();
@@ -182,6 +186,20 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             isDataElement: function() {
                 return this.value == G.conf.map_value_type_dataelement;
             }
+        };
+        
+        this.stores = {
+            infrastructuralDataElementMapValue: new Ext.data.JsonStore({
+                url: G.conf.path_mapping + 'getInfrastructuralDataElementMapValues' + G.conf.type,
+                root: 'mapValues',
+                fields: ['dataElementName', 'value'],
+                sortInfo: {field: 'dataElementName', direction: 'ASC'},
+                autoLoad: false,
+                isLoaded: false,
+                listeners: {
+                    'load': G.func.storeLoadListener
+                }
+            })
         };
     },
     
@@ -459,8 +477,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(cb) {
                         this.form.findField('period').clearValue();
-                        G.stores.periodsByTypeStore.setBaseParam('name', cb.getValue());
-                        G.stores.periodsByTypeStore.load();
+                        G.stores.periodsByType.setBaseParam('name', cb.getValue());
+                        G.stores.periodsByType.load();
                     }
                 }
             }
@@ -479,7 +497,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             selectOnFocus: true,
             width: G.conf.combo_width,
-            store: G.stores.periodsByTypeStore,
+            store: G.stores.periodsByType,
             keepPosition: false,
             listeners: {
                 'select': {
@@ -983,32 +1001,141 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
         };
         
         var onClickSelect = function onClickSelect(feature) {
-            if (feature.attributes.hasChildrenWithCoordinates) {
-                if (G.vars.locateFeatureWindow) {
-                    G.vars.locateFeatureWindow.destroy();
-                }
-                         
-                scope.updateValues = true;
-                scope.isDrillDown = true;
-                
-                function organisationUnitLevelCallback() {
-                    var names = this.organisationUnitSelection.setValuesOnDrillDown(feature.attributes.id, feature.attributes.name);
-                    this.form.findField('boundary').setValue(names[0]);
-                    this.form.findField('level').setValue(names[1]);
-                    this.loadGeoJson();
+            if (feature.attributes.ft == G.conf.map_feature_type_point) {
+                if (scope.featureInfoWindow) {
+                    scope.featureInfoWindow.destroy();
                 }
                 
-                if (G.stores.organisationUnitLevel.isLoaded) {
-                    organisationUnitLevelCallback.call(scope);
+                function fn() {            
+                    scope.featureInfoWindow = new Ext.Window({
+                        title: '<span class="window-information-title">' + feature.attributes.name + '</span>',
+                        layout: 'table',
+                        width: G.conf.window_width + 178,
+                        height: G.util.getMultiSelectHeight() + 100,
+                        bodyStyle: 'background-color:#fff',
+                        defaults: {
+                            bodyStyle: 'vertical-align:top',
+                            labelSeparator: G.conf.labelseparator,
+                            emptyText: G.conf.emptytext
+                        },
+                        layoutConfig: {
+                            columns: 2
+                        },
+                        items: [
+                            {
+                                xtype: 'panel',
+                                layout: 'anchor',
+                                bodyStyle: 'padding:8px 4px 8px 8px',
+                                width: 160,
+                                items: [
+                                    {html: '<div class="window-info">Type<p style="font-weight:normal">' + feature.attributes.type + '</p></div>'},
+                                    {html: '<div class="window-info">Code<p style="font-weight:normal">' + feature.attributes.code + '</p></div>'},
+                                    {html: '<div class="window-info">Address<p style="font-weight:normal">' + feature.attributes.ad + '</p></div>'},
+                                    {html: '<div class="window-info">Contact person<p style="font-weight:normal">' + feature.attributes.cp + '</p></div>'},
+                                    {html: '<div class="window-info">Email<p style="font-weight:normal">' + feature.attributes.em + '</p></div>'},
+                                    {html: '<div class="window-info">Phone number<p style="font-weight:normal">' + feature.attributes.pn + '</p></div>'}
+                                ]
+                            },
+                            {
+                                xtype: 'form',
+                                bodyStyle: 'padding:8px 8px 8px 4px',
+                                width: G.conf.window_width + 20,
+                                labelWidth: G.conf.label_width,
+                                items: [
+                                    {html: '<div class="window-info">Infrastructural data</div>'},
+                                    {
+                                        xtype: 'combo',
+                                        name: 'period',
+                                        fieldLabel: G.i18n.period,
+                                        typeAhead: true,
+                                        editable: false,
+                                        valueField: 'id',
+                                        displayField: 'name',
+                                        mode: 'remote',
+                                        forceSelection: true,
+                                        triggerAction: 'all',
+                                        selectOnFocus: true,
+                                        width: G.conf.combo_width,
+                                        store: G.stores.infrastructuralPeriodsByType,
+                                        keepPosition: false,
+                                        listeners: {
+                                            'select': function(cb) {
+                                                scope.infrastructuralPeriod = cb.getValue();
+                                                scope.stores.infrastructuralDataElementMapValue.setBaseParam('periodId', cb.getValue());
+                                                scope.stores.infrastructuralDataElementMapValue.setBaseParam('organisationUnitId', feature.attributes.id);
+                                                scope.stores.infrastructuralDataElementMapValue.load();
+                                            }
+                                        }
+                                    },
+                                    {html: '<div style="padding:4px 0 0 0"></div>'},
+                                    {
+                                        xtype: 'grid',
+                                        height: G.util.getMultiSelectHeight(),
+                                        width: 242,
+                                        cm: new Ext.grid.ColumnModel({
+                                            columns: [
+                                                {id: 'dataElementName', header: 'Data element', dataIndex: 'dataElementName', sortable: true, width: 150},
+                                                {id: 'value', header: 'Value', dataIndex: 'value', sortable: true, width: 50}
+                                            ]
+                                        }),
+                                        disableSelection: true,
+                                        viewConfig: {forceFit: true},
+                                        store: scope.stores.infrastructuralDataElementMapValue
+                                    }
+                                ]
+                            }
+                        ]
+                    });
+                    
+                    if (scope.infrastructuralPeriod) {
+                        scope.featureInfoWindow.find('name', 'period')[0].setValue(scope.infrastructuralPeriod);
+                        scope.stores.infrastructuralDataElementMapValue.setBaseParam('periodId', scope.infrastructuralPeriod);
+                        scope.stores.infrastructuralDataElementMapValue.setBaseParam('organisationUnitId', feature.attributes.id);
+                        scope.stores.infrastructuralDataElementMapValue.load();
+                    }
+                    
+                    scope.featureInfoWindow.setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 178 + 15 + 5), Ext.getCmp('center').y + 41);
+                    scope.featureInfoWindow.show();
+                }
+                
+                if (G.stores.infrastructuralPeriodsByType.isLoaded) {
+                    fn();
                 }
                 else {
-                    G.stores.organisationUnitLevel.load({scope: scope, callback: function() {
-                        organisationUnitLevelCallback.call(this);
+                    G.stores.infrastructuralPeriodsByType.setBaseParam('name', G.system.infrastructuralPeriodType);
+                    G.stores.infrastructuralPeriodsByType.load({callback: function() {
+                        fn();
                     }});
                 }
             }
             else {
-                Ext.message.msg(false, G.i18n.no_coordinates_found);
+                if (feature.attributes.hasChildrenWithCoordinates) {
+                    if (G.vars.locateFeatureWindow) {
+                        G.vars.locateFeatureWindow.destroy();
+                    }
+                             
+                    scope.updateValues = true;
+                    scope.isDrillDown = true;
+                    
+                    function organisationUnitLevelCallback() {
+                        var names = this.organisationUnitSelection.setValuesOnDrillDown(feature.attributes.id, feature.attributes.name);
+                        this.form.findField('boundary').setValue(names[0]);
+                        this.form.findField('level').setValue(names[1]);
+                        this.loadGeoJson();
+                    }
+                    
+                    if (G.stores.organisationUnitLevel.isLoaded) {
+                        organisationUnitLevelCallback.call(scope);
+                    }
+                    else {
+                        G.stores.organisationUnitLevel.load({scope: scope, callback: function() {
+                            organisationUnitLevelCallback.call(this);
+                        }});
+                    }
+                }
+                else {
+                    Ext.message.msg(false, G.i18n.no_coordinates_found);
+                }
             }
         };
         
@@ -1078,7 +1205,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             };
             obj.stores = {
                 c1: G.stores.periodType,
-                c2: G.stores.periodsByTypeStore
+                c2: G.stores.periodsByType
             };
             obj.mapView = {
                 c1: 'periodTypeId',
@@ -1481,7 +1608,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                     params: params,
                     scope: this,
                     success: function(r) {
-                        var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
+                        var mapvalues = Ext.util.JSON.decode(r.responseText).mapValues;
                         
                         if (!this.layer.features.length) {
                             Ext.message.msg(false, 'No coordinates found');

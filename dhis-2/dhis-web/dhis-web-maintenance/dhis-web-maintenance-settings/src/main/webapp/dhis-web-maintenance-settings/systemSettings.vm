@@ -51,6 +51,26 @@
 </select>
 </p>
 
+<h4>$i18n.getString( "infrastructural_data_elements" )</h4>
+
+<p>
+<select name="infrastructuralDataElements" style="width:30em">
+    #foreach ( $group in $dataElementGroups )
+    <option value="$group.id" #if( $group.id == $configuration.infrastructuralDataElements.id )selected="selected"#end>$group.name</option>
+    #end
+</select>
+</p>
+
+<h4>$i18n.getString( "infrastructural_period_type" )</h4>
+
+<p>
+<select name="infrastructuralPeriodType" style="width:30em">
+    #foreach ( $type in $periodTypes )
+    <option value="$type.name" #if( $type.name == $configuration.infrastructuralPeriodType.name )selected="selected"#end>$type.name</option>
+    #end
+</select>
+</p>
+
 <h4>$i18n.getString( "feedback_recipients" )</h4>
 
 <p>

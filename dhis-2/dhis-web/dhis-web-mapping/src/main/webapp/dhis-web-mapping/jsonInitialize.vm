@@ -1,4 +1,3 @@
-#set( $baseLaysersSize = $baseLayers.size() )
 #set( $overlaysSize = $overlays.size() )
 {
   "mapView": { 
@@ -37,25 +36,10 @@
     "mapDateType": "$!encoder.jsonEncode( ${mapDateType} )"
   },
   "systemSettings": {
-    "aggregationStrategy": "$!encoder.jsonEncode( ${aggregationStrategy} )"
+    "aggregationStrategy": "$!encoder.jsonEncode( ${aggregationStrategy} )",
+    "infrastructuralDataElements": "$!{infrastructuralDataElements.id}",
+    "infrastructuralPeriodType": "$!{infrastructuralPeriodType.name}"
   },
-  "baseLayers": [
-#foreach( $baseLayer in $baseLayers )
-    {
-      "data": {
-        "id": "$!{baseLayer.id}",
-        "name": "$!encoder.jsonEncode( ${baseLayer.name} )",
-        "type": "$!encoder.jsonEncode( ${baseLayer.type} )",
-        "mapSource": "$!encoder.jsonEncode( ${baseLayer.mapSource} )",
-        "layer": "$!encoder.jsonEncode( ${baseLayer.layer} )",
-        "fillColor": "$!encoder.jsonEncode( ${baseLayer.fillColor} )",
-        "fillOpacity": "$!{baseLayer.fillOpacity}",
-        "strokeColor": "$!encoder.jsonEncode( ${baseLayer.strokeColor} )",
-        "strokeWidth": "$!{baseLayer.strokeWidth}"
-      }
-    }#if( $velocityCount < $baseLaysersSize ),#end
-#end
-  ],
   "overlays": [
 #foreach( $overlay in $overlays )
     {

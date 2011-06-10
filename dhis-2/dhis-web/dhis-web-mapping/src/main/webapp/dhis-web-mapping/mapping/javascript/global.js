@@ -36,6 +36,10 @@ G.conf = {
     window_width: 251,
     window_position_x: 55,
     window_position_y: 41,
+    adminwindow_collapsed: 77,
+    adminwindow_expanded_1: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 171 : 166,
+    adminwindow_expanded_2: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 145 : 143,
+        
     
 //  GUI
 
@@ -497,7 +501,9 @@ G.system = {
         isStartEnd: function() {
             return this.value === G.conf.map_date_type_start_end;
         }
-    }
+    },
+    
+    infrastructuralPeriodType: null
 };
 
 G.func = {

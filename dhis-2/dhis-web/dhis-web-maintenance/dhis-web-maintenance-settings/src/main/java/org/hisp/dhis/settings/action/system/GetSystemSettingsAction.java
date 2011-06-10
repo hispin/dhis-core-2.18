@@ -33,9 +33,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 
+import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.UserGroup;
@@ -55,7 +60,7 @@ public class GetSystemSettingsAction
     implements Action
 {
     private static final Filter<Module> startableFilter = new StartableModuleFilter();
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -66,19 +71,33 @@ public class GetSystemSettingsAction
     {
         this.systemSettingManager = systemSettingManager;
     }
-    
+
     private ModuleManager moduleManager;
 
     public void setModuleManager( ModuleManager moduleManager )
     {
         this.moduleManager = moduleManager;
     }
-    
+
     private StyleManager styleManager;
 
     public void setStyleManager( StyleManager styleManager )
     {
         this.styleManager = styleManager;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     private UserGroupService userGroupService;
@@ -94,24 +113,24 @@ public class GetSystemSettingsAction
     {
         this.configurationService = configurationService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private SortedMap<String, String> flags;
 
     public SortedMap<String, String> getFlags()
     {
         return flags;
     }
-    
+
     private List<Module> modules;
-    
+
     public List<Module> getModules()
     {
         return modules;
-    }        
+    }
 
     private SortedMap<String, String> styles;
 
@@ -119,7 +138,7 @@ public class GetSystemSettingsAction
     {
         return styles;
     }
-    
+
     private String currentStyle;
 
     public String getCurrentStyle()
@@ -135,7 +154,7 @@ public class GetSystemSettingsAction
     }
 
     private UserGroup feedbackRecipients;
-    
+
     public UserGroup getFeedbackRecipients()
     {
         return feedbackRecipients;
@@ -148,30 +167,57 @@ public class GetSystemSettingsAction
         return aggregationStrategies;
     }
 
+    private Configuration configuration;
+
+    public Configuration getConfiguration()
+    {
+        return configuration;
+    }
+
+    private List<DataElementGroup> dataElementGroups;
+
+    public List<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
+    }
+
+    private List<PeriodType> periodTypes;
+
+    public List<PeriodType> getPeriodTypes()
+    {
+        return periodTypes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
-    {    	
-    	flags = systemSettingManager.getFlags();
-        
+    {
+        flags = systemSettingManager.getFlags();
+
         modules = moduleManager.getMenuModules();
-        
+
         FilterUtils.filter( modules, startableFilter );
-        
+
         styles = styleManager.getStyles();
 
         currentStyle = styleManager.getCurrentStyle();
 
         aggregationStrategies = systemSettingManager.getAggregationStrategies();
-        
+
+        configuration = configurationService.getConfiguration();
+
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+
+        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
+
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-        
+
         Collections.sort( userGroups, new UserGroupComparator() );
-        
+
         feedbackRecipients = configurationService.getConfiguration().getFeedbackRecipients();
-        
+
         return SUCCESS;
     }
 }

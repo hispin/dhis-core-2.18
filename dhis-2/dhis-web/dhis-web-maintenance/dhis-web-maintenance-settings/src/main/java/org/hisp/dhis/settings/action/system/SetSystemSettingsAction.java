@@ -27,19 +27,24 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.*;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_SYSTEM_IDENTIFIER;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
@@ -82,13 +87,27 @@ public class SetSystemSettingsAction
     {
         this.configurationService = configurationService;
     }
-    
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private String systemIdentifier;
-    
+
     public void setSystemIdentifier( String systemIdentifier )
     {
         this.systemIdentifier = systemIdentifier;
@@ -113,6 +132,20 @@ public class SetSystemSettingsAction
     public void setStartModule( String startModule )
     {
         this.startModule = startModule;
+    }
+
+    private Integer infrastructuralDataElements;
+
+    public void setInfrastructuralDataElements( Integer infrastructuralDataElements )
+    {
+        this.infrastructuralDataElements = infrastructuralDataElements;
+    }
+
+    private String infrastructuralPeriodType;
+
+    public void setInfrastructuralPeriodType( String infrastructuralPeriodType )
+    {
+        this.infrastructuralPeriodType = infrastructuralPeriodType;
     }
 
     private Boolean omitIndicatorsZeroNumeratorDataMart;
@@ -142,16 +175,16 @@ public class SetSystemSettingsAction
     {
         this.currentStyle = style;
     }
-    
+
     private String aggregationStrategy;
 
     public void setAggregationStrategy( String aggregationStrategy )
     {
         this.aggregationStrategy = aggregationStrategy;
     }
-    
+
     private Integer feedbackRecipients;
-    
+
     public void setFeedbackRecipients( Integer feedbackRecipients )
     {
         this.feedbackRecipients = feedbackRecipients;
@@ -167,7 +200,7 @@ public class SetSystemSettingsAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
         applicationTitle = StringUtils.trimToNull( applicationTitle );
@@ -181,22 +214,41 @@ public class SetSystemSettingsAction
         {
             startModule = null;
         }
-        
+
         systemSettingManager.saveSystemSetting( KEY_SYSTEM_IDENTIFIER, systemIdentifier );
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
-        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
-        systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
+        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART,
+            omitIndicatorsZeroNumeratorDataMart );
+        systemSettingManager
+            .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         styleManager.setCurrentStyle( currentStyle );
         systemSettingManager.saveSystemSetting( KEY_AGGREGATION_STRATEGY, aggregationStrategy );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
-        
+
         Configuration configuration = configurationService.getConfiguration();
-        configuration.setFeedbackRecipients( userGroupService.getUserGroup( feedbackRecipients ) );
+
+        if ( feedbackRecipients != null )
+        {
+            configuration.setFeedbackRecipients( userGroupService.getUserGroup( feedbackRecipients ) );
+        }
+
+        if ( infrastructuralDataElements != null )
+        {
+            configuration.setInfrastructuralDataElements( dataElementService
+                .getDataElementGroup( infrastructuralDataElements ) );
+        }
+
+        if ( infrastructuralPeriodType != null )
+        {
+            configuration.setInfrastructuralPeriodType( periodService.getPeriodTypeByClass( PeriodType
+                .getPeriodTypeByName( infrastructuralPeriodType ).getClass() ) );
+        }
+
         configurationService.setConfiguration( configuration );
-        
+
         return SUCCESS;
     }
 }

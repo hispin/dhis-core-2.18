@@ -1,5 +1,5 @@
 #set( $size = $object.size() )
-{ "mapvalues": [
+{ "mapValues": [
 #foreach( $value in $object )
   {
     "orgUnitId": "$!{value.organisationUnitId}",
