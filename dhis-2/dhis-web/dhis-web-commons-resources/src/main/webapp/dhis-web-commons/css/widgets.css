@@ -207,6 +207,7 @@ div#orgUnitTree a.selected
 {
   color: #000000;
   font-family: LiberationSansBold, arial;
+  font-size: 13px;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -304,6 +305,7 @@ div#detailsArea
 div#detailsArea label 
 {
   font-family: LiberationSansBold, arial;
+  font-size: 13px;
 }
 
 div#warningArea
