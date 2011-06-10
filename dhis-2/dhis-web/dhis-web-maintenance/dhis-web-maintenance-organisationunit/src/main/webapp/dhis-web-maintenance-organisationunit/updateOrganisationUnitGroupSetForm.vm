@@ -65,7 +65,7 @@
 	<colgroup>
 	    <col style="width: 450px"/>
 	    <col/>
-	    <col/>
+	    <col style="width: 450px"/>
   	</colgroup>
 	
   	<tr>
@@ -87,7 +87,7 @@
 		</td>
 
 		<td>
-			<select id="selectedGroups" name="selectedGroups" multiple="multiple" style="height: 100%; width: 100%;">
+			<select id="selectedGroups" name="selectedGroups" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
 				#foreach ( $group in $selectedGroups )
     				<option value="$group.id">$group.name</option>
     			#end

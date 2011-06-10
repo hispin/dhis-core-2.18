@@ -93,10 +93,11 @@
     </tbody>
   </table>
 	<br/>&nbsp;
+
   <table id="dataElementSelectionArea">
-    <col style="width: 450px"/> ## Available DataElements
-    <col/> ## Filter
-    <col/> ## Selected DataElements
+    <col style="width: 450px"/>
+    <col/>
+    <col style="width: 450px"/>
     <thead>
       <tr>
         <th>$i18n.getString( "available_data_elements" )</th>
@@ -116,7 +117,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'dataElementsSelectedList' );"/>
 		</td>			
         <td>
-        	<select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="height: 100%; width: 100%;"></select>
+        	<select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;"></select>
         </td>
       </tr>
     </tbody>
@@ -125,9 +126,9 @@
   <br/>
 
   <table id="indicatorSelectionArea">
-    <col style="width: 450px"/> ## Available Indicators
-    <col/> ## Filter
-    <col/> ## Selected Indicators
+    <col style="width: 450px"/>
+    <col/>
+	<col style="width: 450px"/>
     <thead>
       <tr>
         <th>$i18n.getString( "available_indicators" )</th>
@@ -147,7 +148,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'indicatorsSelectedList' );"/>
         </td>
         <td>
-			<select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="height: 100%; width: 100%;"></select>
+			<select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;"></select>
         </td>
       </tr>
 

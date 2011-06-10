@@ -41,7 +41,7 @@
 <table>
     <col style="width: 450px"/>
     <col/>
-    <col/>
+    <col style="width: 450px"/>
 
 	<tr>
 		<th>$i18n.getString( "available_data_elements" )</th>
@@ -64,7 +64,7 @@
         </td>
 
 		<td>
-			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 100%; width: 100%;">
+			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
 				#foreach( $dataElement in $groupMembers )
 					<option value="$dataElement.id">$encoder.htmlEncode( $dataElement.name )</option>
 				#end
