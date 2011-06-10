@@ -389,6 +389,7 @@ div#menuDropDown3
   border-width: 1px;
   border-color: #c8dbea;
   font-family: LiberationSansBold, arial;
+  font-size: 13px;
   font-weight: normal;
 }
 
@@ -467,6 +468,7 @@ div#menuDropDown3
 {
   font-family: LiberationSansBold, arial;
   color: #3c533c;
+  font-size: 13px;
 }
 
 /*----------------------------------------------------------------------------*/
