@@ -169,7 +169,7 @@
 					<button type="button" id="indicatorsButton">Indicators</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 					<button type="button" id="insertButton">Insert</button>
 				</td>
-				<td style="width: 200px;">
+				<td style="width: 190px;">
 					<span id="message_"></span>
 				</td>
 			</tr>

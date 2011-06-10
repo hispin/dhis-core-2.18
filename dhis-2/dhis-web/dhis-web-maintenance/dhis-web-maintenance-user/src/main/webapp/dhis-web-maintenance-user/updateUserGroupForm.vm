@@ -46,7 +46,7 @@
 <table>
     <col style="width: 450px"/>
     <col/>
-    <col/>
+    <col style="width: 450px"/>
 
     <tr>
         <th>$i18n.getString( "available_users" )</th>
@@ -69,7 +69,7 @@
         </td>
 
         <td>
-        	<select id="groupMembersList" name="groupMembersList" multiple="multiple" style="height: 100%; width: 100%;">
+        	<select id="groupMembersList" name="groupMembersList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
 				#foreach( $user in $groupMembers )
 					<option value="$user.id">$encoder.htmlEncode( $user.surname ), $!encoder.htmlEncode( $user.firstname )</option>
 				#end
