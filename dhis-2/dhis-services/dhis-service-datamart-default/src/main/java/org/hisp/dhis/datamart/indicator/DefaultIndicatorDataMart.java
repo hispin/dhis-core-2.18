@@ -135,36 +135,36 @@ public class DefaultIndicatorDataMart
                 {                
                     for ( final Indicator indicator : indicators )
                     {
-                        final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, days ) );                    
                         final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap, days ) );
-    
-                        // ---------------------------------------------------------
-                        // AggregatedIndicatorValue
-                        // ---------------------------------------------------------
-    
-                        if ( denominatorValue != 0 && !( omitZeroNumerator && numeratorValue == 0 ) )
+
+                        if ( denominatorValue != 0 )
                         {
-                            final double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() );                            
-                            final double factor = indicator.getIndicatorType().getFactor();                            
-                            final double aggregatedValue = ( numeratorValue / denominatorValue ) * factor * annualizationFactor;                            
-                            final double annualizedFactor = factor * annualizationFactor;
-    
-                            indicatorValue.clear();
-                            
-                            indicatorValue.setIndicatorId( indicator.getId() );
-                            indicatorValue.setPeriodId( period.getId() );
-                            indicatorValue.setPeriodTypeId( periodType.getId() );
-                            indicatorValue.setOrganisationUnitId( unit.getId() );
-                            indicatorValue.setLevel( level );
-                            indicatorValue.setAnnualized( getAnnualizationString( indicator.getAnnualized() ) );
-                            indicatorValue.setFactor( annualizedFactor);
-                            indicatorValue.setValue( getRounded( aggregatedValue, DECIMALS ) );
-                            indicatorValue.setNumeratorValue( getRounded( numeratorValue, DECIMALS ) );
-                            indicatorValue.setDenominatorValue( getRounded( denominatorValue, DECIMALS ) );
-                            
-                            batchHandler.addObject( indicatorValue );
-                            
-                            count++;
+                            final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, days ) );
+                         
+                            if ( !( omitZeroNumerator && numeratorValue == 0 ) )
+                            {
+                                final double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() );                            
+                                final double factor = indicator.getIndicatorType().getFactor();                            
+                                final double aggregatedValue = ( numeratorValue / denominatorValue ) * factor * annualizationFactor;                            
+                                final double annualizedFactor = factor * annualizationFactor;
+        
+                                indicatorValue.clear();
+                                
+                                indicatorValue.setIndicatorId( indicator.getId() );
+                                indicatorValue.setPeriodId( period.getId() );
+                                indicatorValue.setPeriodTypeId( periodType.getId() );
+                                indicatorValue.setOrganisationUnitId( unit.getId() );
+                                indicatorValue.setLevel( level );
+                                indicatorValue.setAnnualized( getAnnualizationString( indicator.getAnnualized() ) );
+                                indicatorValue.setFactor( annualizedFactor);
+                                indicatorValue.setValue( getRounded( aggregatedValue, DECIMALS ) );
+                                indicatorValue.setNumeratorValue( getRounded( numeratorValue, DECIMALS ) );
+                                indicatorValue.setDenominatorValue( getRounded( denominatorValue, DECIMALS ) );
+                                
+                                batchHandler.addObject( indicatorValue );
+                                
+                                count++;
+                            }
                         }
                     }
                 }
