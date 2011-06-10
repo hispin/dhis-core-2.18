@@ -57,7 +57,7 @@
             <result name="success" type="velocity-json">
                 /dhis-web-mapping/void.vm</result>
         </action>
-
+        
 		<!-- OrganisationUnit -->
 
 		<action name="getAllOrganisationUnitLevels"
@@ -104,6 +104,12 @@
             class="org.hisp.dhis.mapping.action.GetDataElementMapValuesAction">
             <result name="success" type="velocity-json">
                 /dhis-web-mapping/jsonminAggregatedMapValues.vm</result>
+        </action>
+        
+        <action name="getInfrastructuralDataElementMapValues"
+            class="org.hisp.dhis.mapping.action.GetInfrastructuralDataElementMapValuesAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/jsonInfrastructuralAggregatedMapValues.vm</result>
         </action>
 
 		<!-- MapLegend -->
@@ -286,6 +292,12 @@
 
         <!-- DataElement -->
 
+        <action name="getAllDataElementGroupSets"
+            class="org.hisp.dhis.mapping.action.GetAllDataElementGroupSetsAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/jsonDataElementGroupSets.vm</result>
+        </action>
+
         <action name="getAllDataElementGroups"
             class="org.hisp.dhis.mapping.action.GetAllDataElementGroupsAction">
             <result name="success" type="velocity-json">
@@ -325,7 +337,6 @@
             <result name="Point" type="velocity-json">/dhis-web-mapping/geojsonPoint.vm</result>
             <result name="Polygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
             <result name="MultiPolygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
-            <result name="Symbol" type="velocity-json">/dhis-web-mapping/geojsonSymbol.vm</result>
             <result name="none" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
         </action>
 

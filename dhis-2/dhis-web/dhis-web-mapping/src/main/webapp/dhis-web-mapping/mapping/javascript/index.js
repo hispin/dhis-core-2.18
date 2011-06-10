@@ -1,4 +1,4 @@
-﻿Ext.onReady( function() {    
+﻿Ext.onReady( function() {
     Ext.BLANK_IMAGE_URL = '../resources/ext-ux/theme/gray-extend/gray-extend/s.gif';
 	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed(true);},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed(false);}});
 	Ext.QuickTips.init();
@@ -22,6 +22,8 @@
             G.user.initOverlays = init.overlays;
             G.user.isAdmin = init.security.isAdmin;
             G.system.aggregationStrategy = init.systemSettings.aggregationStrategy;
+            G.system.infrastructuralDataElements = init.systemSettings.infrastructuralDataElements;
+            G.system.infrastructuralPeriodType = init.systemSettings.infrastructuralPeriodType;
             G.system.mapDateType.value = G.system.aggregationStrategy == G.conf.aggregation_strategy_batch ?
 				G.conf.map_date_type_fixed : init.userSettings.mapDateType;
 
@@ -156,6 +158,28 @@
         }
     });
     
+    var infrastructuralPeriodTypeStore = new Ext.data.JsonStore({
+        url: G.conf.path_mapping + 'getAllPeriodTypes' + G.conf.type,
+        root: 'periodTypes',
+        fields: ['name', 'displayName'],
+        autoLoad: false,
+        isLoaded: false,
+        listeners: {
+            'load': G.func.storeLoadListener
+        }
+    });
+        
+    var infrastructuralPeriodsByTypeStore = new Ext.data.JsonStore({
+        url: G.conf.path_mapping + 'getPeriodsByPeriodType' + G.conf.type,
+        root: 'periods',
+        fields: ['id', 'name'],
+        autoLoad: false,
+        isLoaded: false,
+        listeners: {
+            'load': G.func.storeLoadListener
+        }
+    });
+    
 	var predefinedMapLegendStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllMapLegends' + G.conf.type,
         root: 'mapLegends',
@@ -261,7 +285,9 @@
         dataElementsByGroup: dataElementsByGroupStore,
         dataElement: dataElementStore,
         periodType: periodTypeStore,
-        periodsByTypeStore: periodsByTypeStore,
+        periodsByType: periodsByTypeStore,
+        infrastructuralPeriodType: infrastructuralPeriodTypeStore,
+        infrastructuralPeriodsByType: infrastructuralPeriodsByTypeStore,
         predefinedMapLegend: predefinedMapLegendStore,
         predefinedMapLegendSet: predefinedMapLegendSetStore,
         organisationUnitLevel: organisationUnitLevelStore,
@@ -579,7 +605,7 @@
 	/* Section: export map */
 	var exportImageWindow = new Ext.Window({
         id: 'exportimage_w',
-        title: '<span id="window-image-title">Image export</span>',
+        title: '<span id="window-image-title">Export image</span>',
         layout: 'fit',
         closeAction: 'hide',
 		width: G.conf.window_width,
@@ -1641,143 +1667,6 @@
             }
         ]
     });
-            
-    /* Section: base layers */
-    var baselayersWindow = new Ext.Window({
-        id: 'baselayers_w',
-        title: '<span id="window-maplayer-title">' + G.i18n.baselayers + '</span>',
-		layout: 'fit',
-        closeAction: 'hide',
-		width: G.conf.window_width,
-        height: 229,
-        items: [
-            {
-                xtype: 'form',
-                bodyStyle: 'padding:8px',
-                items: [
-                    {html: '<div class="window-info">Register new base layer</div>'},
-                    {
-                        xtype: 'textfield',
-                        id: 'maplayerbaselayersname_tf',
-                        emptytext: G.conf.emptytext,
-                        labelSeparator: G.conf.labelseparator,
-                        fieldLabel: G.i18n.display_name,
-                        width: G.conf.combo_width_fieldset,
-                        autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
-                    },
-                    {
-                        xtype: 'textfield',
-                        id: 'maplayerbaselayersurl_tf',
-                        emptytext: G.conf.emptytext,
-                        labelSeparator: G.conf.labelseparator,
-                        fieldLabel: G.i18n.url,
-                        width: G.conf.combo_width_fieldset,
-                    },
-                    {
-                        xtype: 'textfield',
-                        id: 'maplayerbaselayerslayer_tf',
-                        emptytext: G.conf.emptytext,
-                        labelSeparator: G.conf.labelseparator,
-                        fieldLabel: G.i18n.layer,
-                        width: G.conf.combo_width_fieldset,
-                    },
-                    {html: '<div class="window-p"></div>'},
-                    {html: '<div class="window-info">Delete overlay</div>'},
-                    {
-                        xtype: 'combo',
-                        id: 'maplayerbaselayers_cb',
-                        editable: false,
-                        valueField: 'id',
-                        displayField: 'name',
-                        mode: 'remote',
-                        forceSelection: true,
-                        triggerAction: 'all',
-                        emptytext: G.conf.emptytext,
-                        labelSeparator: G.conf.labelseparator,
-                        fieldLabel: G.i18n.baselayer,
-                        width: G.conf.combo_width_fieldset,                
-                        store: G.stores.baseLayer
-                    }
-                ]
-            }
-        ],
-        bbar: [
-            '->',
-            {
-				xtype: 'button',
-				id: 'newmaplayerbaselayers_b',
-				text: G.i18n.register,
-				iconCls: 'icon-add',
-				handler: function() {
-					var mlbn = Ext.getCmp('maplayerbaselayersname_tf').getValue();
-					var mlbu = Ext.getCmp('maplayerbaselayersurl_tf').getValue();
-					var mlbl = Ext.getCmp('maplayerbaselayerslayer_tf').getValue();
-					
-					if (!mlbn || !mlbu || !mlbl) {
-						Ext.message.msg(false, G.i18n.form_is_not_complete);
-						return;
-					}
-					
-                    if (G.stores.baseLayer.find('name', mlbn) !== -1) {
-                        Ext.message.msg(false, G.i18n.name + ' <span class="x-msg-hl">' + mlbn + '</span> ' + G.i18n.is_already_in_use);
-                        return;
-                    }
-					
-                    Ext.Ajax.request({
-                        url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
-                        method: 'POST',
-                        params: {name: mlbn, type: G.conf.map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0},
-                        success: function(r) {
-                            Ext.message.msg(true, G.i18n.baselayer + '<span class="x-msg-hl"> ' + mlbn + '</span> ' + G.i18n.registered);                            
-                            G.vars.map.addLayers([
-                                new OpenLayers.Layer.WMS(mlbn, mlbu, {layers: mlbl})
-                            ]);
-
-                            G.stores.baseLayer.load();
-                            Ext.getCmp('maplayerbaselayersname_tf').reset();
-                            Ext.getCmp('maplayerbaselayersurl_tf').reset();
-                            Ext.getCmp('maplayerbaselayerslayer_tf').reset();
-                        }
-                    });
-				}
-			},
-            {
-                xtype: 'button',
-                id: 'deletemaplayerbaselayers_b',
-                text: G.i18n.delete_,
-                iconCls: 'icon-remove',
-                handler: function() {
-                    var ml = Ext.getCmp('maplayerbaselayers_cb').getValue();
-                    var mln = Ext.getCmp('maplayerbaselayers_cb').getRawValue();
-                    
-                    if (!ml) {
-                        Ext.message.msg(false, G.i18n.please_select_a_baselayer);
-                        return;
-                    }
-                    
-                    Ext.Ajax.request({
-                        url: G.conf.path_mapping + 'deleteMapLayer' + G.conf.type,
-                        method: 'POST',
-                        params: {id: ml},
-                        success: function(r) {
-                            Ext.message.msg(true, G.i18n.baselayer + ' <span class="x-msg-hl">' + mln + '</span> '+G.i18n.deleted);
-                            G.stores.baseLayer.load({callback: function() {
-                                Ext.getCmp('maplayerbaselayers_cb').clearValue();
-                                var names = G.stores.baseLayer.collect('name');
-                                
-                                for (var i = 0; i < names.length; i++) {
-                                    G.vars.map.getLayersByName(names[i])[0].setVisibility(false);
-                                }
-                                
-                                G.vars.map.getLayersByName(mln)[0].destroy(false);
-                            }});
-                        }
-                    });
-                    
-                }
-            }
-        ]
-    });
 
     /* Section: administrator settings */
     var adminWindow = new Ext.Window({
@@ -1786,8 +1675,8 @@
         layout: 'accordion',
         closeAction: 'hide',
         width: G.conf.window_width,
-        height: 145,
-        minHeight: 77,
+        height: G.conf.adminwindow_expanded_1,
+        minHeight: G.conf.adminwindow_collapsed,
         items: [
             {
                 title: 'Google Maps',
@@ -1857,11 +1746,13 @@
                     }
                 ],
                 listeners: {
-                    expand: function() {
-                        adminWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 170 : 166);
+                    expand: {
+                        fn: function() {
+                            adminWindow.setHeight(G.conf.adminwindow_expanded_1);
+                        }
                     },
                     collapse: function() {
-                        adminWindow.setHeight(77);
+                        adminWindow.setHeight(G.conf.adminwindow_collapsed);
                     }
                 }
             },
@@ -1920,17 +1811,17 @@
                 ],
                 listeners: {
                     expand: function() {
-                        adminWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 145 : 143);
+                        adminWindow.setHeight(G.conf.adminwindow_expanded_2);
                     },
                     collapse: function() {
-                        adminWindow.setHeight(77);
+                        adminWindow.setHeight(G.conf.adminwindow_collapsed);
                     }
                 }
-            }            
+            }
         ],
         listeners: {
             afterrender: function() {
-                adminWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 170 : 166);
+                adminWindow.setHeight(G.conf.adminwindow_expanded_1);
             }
         }
     });
@@ -2050,7 +1941,7 @@
                                         id: 'locatefeature_tf',
                                         emptyText: G.conf.emptytext,
                                         labelSeparator: G.conf.labelseparator,
-                                        fieldLabel: G.i18n.feature_filter,
+                                        fieldLabel: 'Text filter',
                                         width: G.conf.combo_width_fieldset,
                                         enableKeyEvents: true,
                                         listeners: {
@@ -2663,7 +2554,9 @@
 		tooltip: 'Administrator settings',
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
-		handler: function() {        
+		handler: function() {
+console.log(G.stores.infrastructuralDataElementMapValue);
+return;            
             if (!adminWindow.hidden) {
                 adminWindow.hide();
             }

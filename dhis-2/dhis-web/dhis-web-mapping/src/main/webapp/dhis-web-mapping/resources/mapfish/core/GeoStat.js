@@ -167,8 +167,8 @@ mapfish.GeoStat = OpenLayers.Class({
 
 mapfish.GeoStat.Distribution = OpenLayers.Class({
 
-    labelGenerator: function(bin, binIndex, nbBins, maxDec) {
-        return this.defaultLabelGenerator(bin, binIndex, nbBins, maxDec);
+    labelGenerator: function(bin, binIndex, nbBins) {
+        return this.defaultLabelGenerator(bin, binIndex, nbBins);
     },
 
     values: null,
@@ -187,9 +187,9 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         this.maxVal = this.nbVal ? mapfish.Util.max(this.values) : 0;
     },
 
-    defaultLabelGenerator: function(bin, binIndex, nbBins, maxDec) {
-        lower = parseFloat(bin.lowerBound).toFixed(maxDec);
-        upper = parseFloat(bin.upperBound).toFixed(maxDec);
+    defaultLabelGenerator: function(bin, binIndex, nbBins) {
+        lower = parseFloat(bin.lowerBound).toFixed(1);
+        upper = parseFloat(bin.upperBound).toFixed(1);
         return lower + ' - ' + upper + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
     },
 
@@ -197,7 +197,6 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         var bins = [];
         var binCount = [];
         var sortedValues = [];
-        var maxDec = 0;
         
         for (var i = 0; i < this.values.length; i++) {
             sortedValues.push(this.values[i]);
@@ -219,18 +218,11 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         }
 
         binCount[nbBins - 1] = this.nbVal - mapfish.Util.sum(binCount);
-        
-        for (var l = 0; l < bounds.length; l++) {
-            var dec = G.util.getNumberOfDecimals(bounds[l].toString(), ".");
-            maxDec = dec > maxDec ? dec : maxDec;
-        }
-        
-        maxDec = maxDec > 3 ? 3 : maxDec;
 		
         for (var m = 0; m < nbBins; m++) {
             bins[m] = new mapfish.GeoStat.Bin(binCount[m], bounds[m], bounds[m + 1], m == (nbBins - 1));
             var labelGenerator = this.labelGenerator || this.defaultLabelGenerator;
-            bins[m].label = labelGenerator(bins[m], m, nbBins, maxDec);
+            bins[m].label = labelGenerator(bins[m], m, nbBins);
         }
         
         return new mapfish.GeoStat.Classification(bins);

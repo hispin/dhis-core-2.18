@@ -34,10 +34,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.comparator.MapLayerNameComparator;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
@@ -65,6 +69,20 @@ public class InitializeAction
     public void setUserSettingService( UserSettingService userSettingService )
     {
         this.userSettingService = userSettingService;
+    }
+    
+    private ConfigurationService configurationService;
+    
+    public void setConfigurationService( ConfigurationService configurationService )
+    {
+        this.configurationService = configurationService;
+    }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
@@ -109,6 +127,20 @@ public class InitializeAction
     {
         return overlays;
     }
+    
+    private DataElementGroup infrastructuralDataElements;
+
+    public DataElementGroup getInfrastructuralDataElements()
+    {
+        return infrastructuralDataElements;
+    }
+    
+    private PeriodType infrastructuralPeriodType;
+
+    public PeriodType getInfrastructuralPeriodType()
+    {
+        return infrastructuralPeriodType;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -135,7 +167,11 @@ public class InitializeAction
         
         overlays = new ArrayList<MapLayer>( mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_OVERLAY ) );
         
-        Collections.sort( overlays, new MapLayerNameComparator() );        
+        Collections.sort( overlays, new MapLayerNameComparator() );
+
+        infrastructuralDataElements = configurationService.getConfiguration().getInfrastructuralDataElements();
+        
+        infrastructuralPeriodType = configurationService.getConfiguration().getInfrastructuralPeriodType();
 
         return SUCCESS;
     }

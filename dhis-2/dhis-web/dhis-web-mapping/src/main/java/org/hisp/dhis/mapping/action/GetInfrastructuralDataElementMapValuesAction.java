@@ -29,13 +29,11 @@ package org.hisp.dhis.mapping.action;
 
 import java.util.Collection;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
-import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.DateUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,52 +41,45 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class GetGeoJsonAction
+public class GetInfrastructuralDataElementMapValuesAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
+    private MappingService mappingService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setMappingService( MappingService mappingService )
     {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
+        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer parentId;
+    private Integer periodId;
 
-    public void setParentId( Integer id )
+    public void setPeriodId( Integer periodId )
     {
-        this.parentId = id;
+        this.periodId = periodId;
     }
 
-    private Integer level;
+    private Integer organisationUnitId;
 
-    public void setLevel( Integer level )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
-        this.level = level;
+        this.organisationUnitId = organisationUnitId;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<OrganisationUnit> object;
+    private Collection<AggregatedMapValue> object;
 
-    public Collection<OrganisationUnit> getObject()
+    public Collection<AggregatedMapValue> getObject()
     {
         return object;
     }
@@ -100,31 +91,8 @@ public class GetGeoJsonAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
+        object = mappingService.getInfrastructuralDataElementMapValues( periodId, organisationUnitId );
 
-        level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent ) : level;
-
-        object = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
-
-        FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
-        
-        String returnType = object.size() > 0 ? object.iterator().next().getFeatureType() : NONE;
-
-        if ( returnType.equals( OrganisationUnit.FEATURETYPE_POINT  ) )
-        {
-            OrganisationUnitGroupSet typeGroupSet = organisationUnitGroupService
-                .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE );
-            
-            for ( OrganisationUnit organisationUnit : object )
-            {
-                if ( organisationUnit.getFeatureType() != null
-                    && organisationUnit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-                {
-                    organisationUnit.setType( organisationUnit.getGroupNameInGroupSet( typeGroupSet ) );
-                }
-            }
-        }
-
-        return returnType;
+        return SUCCESS;
     }
 }

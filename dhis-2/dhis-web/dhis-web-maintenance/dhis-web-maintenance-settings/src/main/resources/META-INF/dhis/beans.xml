@@ -9,11 +9,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.settings.action.system.GetSystemSettingsAction"
 		class="org.hisp.dhis.settings.action.system.GetSystemSettingsAction"
 		scope="prototype">
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
-		<property name="moduleManager" ref="org.hisp.dhis.webportal.module.ModuleManager" />
-		<property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
-		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService"/>
-		<property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService"/>
+        <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager"/>
+        <property name="moduleManager" ref="org.hisp.dhis.webportal.module.ModuleManager"/>
+        <property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager"/>
+        <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService"/>
+        <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService"/>
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.settings.action.system.SetSystemSettingsAction"
@@ -23,6 +25,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService"/>
 		<property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService"/>
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
 	</bean>
 
 	<!-- User settings -->

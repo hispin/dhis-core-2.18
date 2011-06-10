@@ -340,6 +340,12 @@ a.x-menu-item-custom {
 	font:bold 11px arial;
 	color:#111;
 }
+.window-information-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/information2.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
 
 /* Ext Panel */
 .panel-title {
@@ -361,14 +367,27 @@ a.x-menu-item-custom {
 }
 
 /* Ext Gridpanel */
+td.x-grid3-hd-over, td.sort-desc, td.sort-asc, td.x-grid3-hd-menu-open {
+    border-left-color:#eeeeee;
+}
+.x-grid3-header-offset {
+    padding-left:0px;
+}
 .x-grid3-cell-inner {
     color:#111111;
     font-size:10px;
     font-family:arial,ubuntu;
 }
 .x-grid3-hd-inner {
-    color:#111111;
-    font: bold 11px arial,ubuntu;
+    color:#0a0a0a;
+    font: 11px arial,ubuntu;
+}
+.x-grid3-row {
+    border-color:#ffffff;
+    border-bottom-color:#eeeeee;
+}
+.x-grid3-row-over {
+    color:red;
 }
 .sort-asc .x-grid3-sort-icon {
     display:none;
@@ -376,9 +395,10 @@ a.x-menu-item-custom {
 #featuregrid_gp .x-grid3-header {
     display:none;
 }
-#featuregrid_gp .x-grid3-row {
-    border-right:0px none;
-    border-left:0px none;
+
+/* Ext TableLayout */
+.x-table-layout-cell {
+    vertical-align:top;
 }
 
 /* DHIS Help */

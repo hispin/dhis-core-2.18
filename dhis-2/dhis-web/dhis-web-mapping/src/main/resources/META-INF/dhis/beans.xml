@@ -14,8 +14,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.mapping.action.InitializeAction"
         class="org.hisp.dhis.mapping.action.InitializeAction"
         scope="prototype">
-        <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+        <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+        <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />      
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     </bean>
 
 	<!-- OrganisationUnit -->
@@ -74,6 +76,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.mapping.action.SetMapSystemSettingsAction"
         scope="prototype">
         <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+        <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />        
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        
     </bean>
 
     <bean id="org.hisp.dhis.mapping.action.DeleteMapSystemSettingsAction"
@@ -94,6 +99,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.mapping.action.GetDataElementMapValuesAction" scope="prototype">
         <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.mapping.action.GetInfrastructuralDataElementMapValuesAction"
+        class="org.hisp.dhis.mapping.action.GetInfrastructuralDataElementMapValuesAction" scope="prototype">
+        <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
     </bean>
 
 	<!-- MapLegend -->
@@ -255,6 +265,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
     <!-- DataElement -->
+
+    <bean id="org.hisp.dhis.mapping.action.GetAllDataElementGroupSetsAction"
+        class="org.hisp.dhis.mapping.action.GetAllDataElementGroupSetsAction"
+        scope="prototype">
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    </bean>
 
     <bean id="org.hisp.dhis.mapping.action.GetAllDataElementGroupsAction"
         class="org.hisp.dhis.mapping.action.GetAllDataElementGroupsAction"
