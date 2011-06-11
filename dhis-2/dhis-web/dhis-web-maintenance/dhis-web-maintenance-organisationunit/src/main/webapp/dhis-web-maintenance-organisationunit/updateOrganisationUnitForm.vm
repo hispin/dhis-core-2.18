@@ -66,7 +66,7 @@
 		<td><textarea id="comment" name="comment" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.comment )</textarea></td>
 	</tr>
     <tr>
-        <td><label for="coordinates">$i18n.getString( "coordinates" )</label></td>
+        <td><label for="coordinates">$i18n.getString( "coordinates_latitude_longitude" )</label></td>
         <!-- onkeyup="setFeatureType(document.updateOrganisationUnitForm.featureType, this.value)" -->
         <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.coordinates )</textarea></td>
     </tr>
