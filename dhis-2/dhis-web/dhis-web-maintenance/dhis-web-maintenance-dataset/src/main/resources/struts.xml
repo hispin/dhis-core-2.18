@@ -53,11 +53,13 @@
 			<param name="page">/dhis-web-maintenance-dataset/addSection.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
 			<param name="javascripts">javascript/section.js</param>
+			<param name="requiredAuthorities">F_SECTION_ADD</param>
 		</action>
 
 		<action name="addSection"
 			class="org.hisp.dhis.dataset.action.section.AddSectionAction">
 			<result name="success" type="redirect">section.action</result>
+			<param name="requiredAuthorities">F_SECTION_ADD</param>
 		</action>
 
 		<action name="validateSection"
@@ -79,16 +81,19 @@
 			<param name="page">/dhis-web-maintenance-dataset/editSection.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
 			<param name="javascripts">javascript/section.js</param>
+			<param name="requiredAuthorities">F_SECTION_UPDATE</param>
 		</action>
 
 		<action name="updateSection"
 			class="org.hisp.dhis.dataset.action.section.UpdateSectionAction">
 			<result name="success" type="redirect">section.action</result>
+			<param name="requiredAuthorities">F_SECTION_UPDATE</param>
 		</action>
 
 		<action name="removeSection"
 			class="org.hisp.dhis.dataset.action.section.RemoveSectionAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_SECTION_DELETE</param>
 		</action>
 
 		<action name="greySection"
@@ -97,12 +102,14 @@
 			<param name="page">/dhis-web-maintenance-dataset/greySection.vm</param>
 			<param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
 			<param name="javascripts">javascript/dataSet.js,javascript/section.js</param>
+			<param name="requiredAuthorities">F_SECTION_UPDATE</param>
 		</action>
 
 		<action name="saveSectionGreyStatus"
 			class="org.hisp.dhis.dataset.action.section.SaveSectionGreyStatusAction">
 			<result name="success" type="velocity">status.vm</result>
 			<result name="onExceptionReturn">plainTextError</result>
+			<param name="requiredAuthorities">F_SECTION_UPDATE</param>
 		</action>
 
 		<action name="showSortSectionForm"
