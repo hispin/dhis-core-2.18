@@ -66,9 +66,9 @@ public class JdbcAggregationStore
     {
         if ( sourceIds != null && sourceIds.size() > 0 && periodIds != null && periodIds.size() > 0 )
         {
-            StatementHolder holder = statementManager.getHolder();
+            final StatementHolder holder = statementManager.getHolder();
             
-            String categoryOptionComboCriteria = optionComboId != null ? "AND categoryoptioncomboid = " + optionComboId + " " : "";
+            final String categoryOptionComboCriteria = optionComboId != null ? "AND categoryoptioncomboid = " + optionComboId + " " : "";
             
             try
             {
@@ -80,7 +80,7 @@ public class JdbcAggregationStore
                     "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
                     "AND sourceid IN ( " + getCommaDelimitedString( sourceIds ) + " )";                 
                 
-                ResultSet resultSet = holder.getStatement().executeQuery( sql );
+                final ResultSet resultSet = holder.getStatement().executeQuery( sql );
                 
                 return getDataValues( resultSet );             
             }
@@ -101,9 +101,9 @@ public class JdbcAggregationStore
     {
         if ( periodIds != null && periodIds.size() > 0 )
         {
-            StatementHolder holder = statementManager.getHolder();
+            final StatementHolder holder = statementManager.getHolder();
 
-            String categoryOptionComboCriteria = optionComboId != null ? "AND categoryoptioncomboid = " + optionComboId + " " : "";
+            final String categoryOptionComboCriteria = optionComboId != null ? "AND categoryoptioncomboid = " + optionComboId + " " : "";
             
             try
             {
@@ -115,7 +115,7 @@ public class JdbcAggregationStore
                     "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
                     "AND sourceid = " + sourceId;
 
-                ResultSet resultSet = holder.getStatement().executeQuery( sql );
+                final ResultSet resultSet = holder.getStatement().executeQuery( sql );
                 
                 return getDataValues( resultSet );
             }
@@ -140,15 +140,15 @@ public class JdbcAggregationStore
     {
         try
         {
-            Collection<DataValue> list = new ArrayList<DataValue>();
+            final Collection<DataValue> list = new ArrayList<DataValue>();
             
             while ( resultSet.next() )
             {
-                Period period = new Period();
+                final Period period = new Period();
                 
                 period.setId( Integer.parseInt( resultSet.getString( 1 ) ) );
                 
-                DataValue dataValue = new DataValue();
+                final DataValue dataValue = new DataValue();
                 
                 dataValue.setPeriod( period );
                 dataValue.setValue( resultSet.getString( 2 ) );

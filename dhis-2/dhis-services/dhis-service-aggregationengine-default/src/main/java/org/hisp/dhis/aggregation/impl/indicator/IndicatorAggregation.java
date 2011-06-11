@@ -93,27 +93,30 @@ public class IndicatorAggregation
         OrganisationUnit organisationUnit )
     {
         int days = daysBetween( startDate, endDate );
+
+        double denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(),
+            startDate, endDate, organisationUnit, days ) );
+        
+        if ( denominatorValue == INVALID || denominatorValue == 0.0 )
+        {
+            return null;
+        }
         
         double numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), startDate,
             endDate, organisationUnit, days ) );
         
-        double denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(),
-            startDate, endDate, organisationUnit, days ) );
-        
-        if ( numeratorValue == INVALID || denominatorValue == INVALID || denominatorValue == 0.0 )
+        if ( numeratorValue == INVALID )
         {
             return null;
         }
-        else
-        {
-            int factor = indicator.getIndicatorType().getFactor();
+        
+        int factor = indicator.getIndicatorType().getFactor();
 
-            double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, startDate, endDate );
-            
-            double aggregatedValue = ( numeratorValue / denominatorValue ) * factor * annualizationFactor;
+        double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, startDate, endDate );
+        
+        double aggregatedValue = ( numeratorValue / denominatorValue ) * factor * annualizationFactor;
 
-            return aggregatedValue;
-        }
+        return aggregatedValue;
     }
 
     public double getAggregatedNumeratorValue( Indicator indicator, Date startDate, Date endDate,
