@@ -1,12 +1,14 @@
 package org.hisp.dhis.user;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.AuditLogUtil;
+import org.springframework.transaction.annotation.Transactional;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -39,6 +41,7 @@ import org.hisp.dhis.system.util.AuditLogUtil;
  * @author Chau Thu Tran
  * @version $Id$
  */
+@Transactional
 public class DefaultUserService
     implements UserService
 {
@@ -319,9 +322,9 @@ public class DefaultUserService
         return userStore.getUserCredentials( user );
     }
 
-    public UserCredentials getUserCredentialsByUsername( String userName )
+    public UserCredentials getUserCredentialsByUsername( String username )
     {
-        return userStore.getUserCredentialsByUsername( userName );
+        return userStore.getUserCredentialsByUsername( username );
     }
 
     public Collection<UserCredentials> getUsersBetween( int first, int max )
@@ -329,9 +332,9 @@ public class DefaultUserService
         return userStore.getUsersBetween( first, max );
     }
 
-    public Collection<UserCredentials> getUsersBetweenByName( String userName, int first, int max )
+    public Collection<UserCredentials> getUsersBetweenByName( String username, int first, int max )
     {
-        return userStore.getUsersBetweenByName( userName, first, max );
+        return userStore.getUsersBetweenByName( username, first, max );
     }
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
@@ -339,14 +342,21 @@ public class DefaultUserService
         return userStore.getUsersWithoutOrganisationUnitBetween( first, max );
     }
 
-    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String userName, int first, int max )
+    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String username, int first, int max )
     {
-        return userStore.getUsersWithoutOrganisationUnitBetweenByName( userName, first, max );
+        return userStore.getUsersWithoutOrganisationUnitBetweenByName( username, first, max );
     }
 
-    public Collection<UserCredentials> searchUsersByName( String userName )
+    public Collection<UserCredentials> searchUsersByName( String username )
     {
-        return userStore.searchUsersByName( userName );
+        return userStore.searchUsersByName( username );
+    }
+    
+    public void setLastLogin( String username )
+    {
+        UserCredentials credentials = getUserCredentialsByUsername( username );
+        credentials.setLastLogin( new Date() );
+        updateUserCredentials( credentials );        
     }
 
     // -------------------------------------------------------------------------

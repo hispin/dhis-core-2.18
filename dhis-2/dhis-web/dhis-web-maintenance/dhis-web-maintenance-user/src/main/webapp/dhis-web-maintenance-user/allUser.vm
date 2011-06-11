@@ -1,4 +1,4 @@
-<script type="text/javascript" src="javascripts/allUser.js"></script>
+<script type="text/javascript" src="javascript/allUser.js"></script>
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_user" ) , "'")';
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
@@ -72,7 +72,8 @@
 				<p><label>$i18n.getString( "firstName" ):</label><br/><span id="firstNameField"></span></p>
 				<p><label>$i18n.getString( "email" ):</label><br/><span id="emailField"></span></p>
                 <p><label>$i18n.getString( "phone_number" ):</label><br/><span id="phoneNumberField"></span></p>
-				<p><label>$i18n.getString( "number_of_orgunit" ):</label><br/><span id="numberOrgunitField"></span></p>					
+				<p><label>$i18n.getString( "number_of_orgunit" ):</label><br/><span id="numberOrgunitField"></span></p>
+				<p><label>$i18n.getString( "last_login"):</label><br/><span id="lastLoginField"></span></p>
 			</div>
 			
 			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">

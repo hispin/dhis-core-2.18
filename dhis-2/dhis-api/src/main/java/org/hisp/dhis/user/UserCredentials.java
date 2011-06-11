@@ -28,6 +28,7 @@ package org.hisp.dhis.user;
  */
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -61,6 +62,8 @@ public class UserCredentials
     private String password;
 
     private Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
+    
+    private Date lastLogin;
 
     // -------------------------------------------------------------------------
     // Logic
@@ -147,6 +150,16 @@ public class UserCredentials
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
+    
     public String getPassword()
     {
         return password;
@@ -187,13 +200,13 @@ public class UserCredentials
         this.username = username;
     }
 
-    public int getId()
+    public Date getLastLogin()
     {
-        return id;
+        return lastLogin;
     }
 
-    public void setId( int id )
+    public void setLastLogin( Date lastLogin )
     {
-        this.id = id;
+        this.lastLogin = lastLogin;
     }
 }

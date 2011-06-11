@@ -27,8 +27,8 @@ package org.hisp.dhis.security.listener;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.useraudit.UserAuditService;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
@@ -42,13 +42,27 @@ import org.springframework.util.Assert;
 public class AuthenticationListener
     implements ApplicationListener<ApplicationEvent>
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private UserAuditService userAuditService;
     
-    @Required
     public void setUserAuditService( UserAuditService userAuditService )
     {
         this.userAuditService = userAuditService;
     }
+    
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
+    // -------------------------------------------------------------------------
+    // ApplicationListener implementation
+    // -------------------------------------------------------------------------
 
     public void onApplicationEvent( ApplicationEvent applicationEvent )
     {        
@@ -58,7 +72,11 @@ public class AuthenticationListener
         {
             AuthenticationSuccessEvent event = (AuthenticationSuccessEvent) applicationEvent;
             
-            userAuditService.registerLoginSuccess( ((UserDetails) event.getAuthentication().getPrincipal()).getUsername() );
+            String username = ((UserDetails) event.getAuthentication().getPrincipal()).getUsername();
+            
+            userAuditService.registerLoginSuccess( username );
+            
+            userService.setLastLogin( username );
         }
         else if ( applicationEvent instanceof AbstractAuthenticationFailureEvent )
         {

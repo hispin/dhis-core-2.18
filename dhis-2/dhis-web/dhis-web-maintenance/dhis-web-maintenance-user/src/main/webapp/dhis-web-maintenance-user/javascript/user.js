@@ -45,6 +45,9 @@ function userReceived( userElement )
 	var numberOrgunit = getElementValue( userElement, 'numberOrgunit' );
 	setInnerHTML( 'numberOrgunitField', numberOrgunit ? numberOrgunit : '[' + i18n_none + ']' );
 	
+	var lastLogin = getElementValue( userElement, 'lastLogin' );;
+	setInnerHTML( 'lastLoginField', lastLogin ? lastLogin : '[' + i18n_none + ']' );
+	
     showDetails();
 }
 
