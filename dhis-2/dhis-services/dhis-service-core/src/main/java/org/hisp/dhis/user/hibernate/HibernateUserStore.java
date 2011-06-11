@@ -46,13 +46,11 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserStore;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Nguyen Hong Duc
  * @version $Id: HibernateUserStore.java 6530 2008-11-28 15:02:47Z eivindwa $
  */
-@Transactional
 public class HibernateUserStore
     implements UserStore
 {
@@ -434,12 +432,15 @@ public class HibernateUserStore
     private Collection<UserCredentials> findByName( Collection<UserCredentials> users, String key )
     {
         List<UserCredentials> returnList = new ArrayList<UserCredentials>();
-
+        
         for ( UserCredentials user : users )
         {
-            if ( user.getUsername().toLowerCase().contains( key.toLowerCase() ) )
+            if ( user != null )
             {
-                returnList.add( user );
+                if ( user.getUsername().toLowerCase().contains( key.toLowerCase() ) )
+                {
+                    returnList.add( user );
+                }
             }
         }
 

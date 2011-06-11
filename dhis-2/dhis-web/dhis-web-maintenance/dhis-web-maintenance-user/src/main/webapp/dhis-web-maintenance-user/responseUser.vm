@@ -6,4 +6,5 @@
   <email>$!encoder.xmlEncode( $userCredentials.user.email )</email>
   <phoneNumber>$!encoder.xmlEncode( $userCredentials.user.phoneNumber )</phoneNumber>
   <numberOrgunit>$userCredentials.user.organisationUnits.size()</numberOrgunit>
+  <lastLogin>$!format.formatDate( $!userCredentials.lastLogin )</lastLogin>
 </user>

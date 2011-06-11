@@ -161,6 +161,14 @@ public interface UserService
     Collection<UserCredentials> getAllUserCredentials();
 
     /**
+     * Updates the last login date of UserCredentials with the given username
+     * with the current date.
+     *   
+     * @param username the username of the UserCredentials.
+     */
+    void setLastLogin( String username );
+    
+    /**
      * Deletes a UserCredentials.
      * 
      * @param userCredentials the UserCredentials.

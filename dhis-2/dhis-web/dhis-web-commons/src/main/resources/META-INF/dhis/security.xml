@@ -51,6 +51,7 @@
 
   <bean id="authenticationListener" class="org.hisp.dhis.security.listener.AuthenticationListener">
     <property name="userAuditService" ref="org.hisp.dhis.useraudit.UserAuditService" />
+	<property name="userService" ref="org.hisp.dhis.user.UserService"/>
   </bean>
 
   <!-- Security : AccessProvider -->
