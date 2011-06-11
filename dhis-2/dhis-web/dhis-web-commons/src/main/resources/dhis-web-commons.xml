@@ -29,6 +29,8 @@
 				class="org.hisp.dhis.result.VelocityXMLResult" />
 			<result-type name="velocity-json"
 				class="org.hisp.dhis.result.VelocityJsonResult" />
+			<result-type name="velocity-javascript"
+				class="org.hisp.dhis.result.VelocityJavascriptResult" />
 			<result-type name="outputStreamResult"
 				class="org.hisp.dhis.result.OutputStreamResult" />
 			<result-type name="gridCsvResult"
@@ -311,7 +313,7 @@
 		</action>
 
 		<action name="i18nJavaScriptSupport" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="velocity">/dhis-web-commons/i18n/i18n.vm
+			<result name="success" type="velocity-javascript">/dhis-web-commons/i18n/i18n.vm
 			</result>
 		</action>
 
