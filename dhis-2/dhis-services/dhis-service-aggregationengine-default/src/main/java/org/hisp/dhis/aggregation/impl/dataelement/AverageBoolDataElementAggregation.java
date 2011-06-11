@@ -110,9 +110,9 @@ public class AverageBoolDataElementAggregation
 
         for ( DataValue dataValue : dataValues )
         {
-            Period currentPeriod = aggregationCache.getPeriod( dataValue.getPeriod().getId() );
-            Date currentStartDate = currentPeriod.getStartDate();
-            Date currentEndDate = currentPeriod.getEndDate();
+            final Period currentPeriod = aggregationCache.getPeriod( dataValue.getPeriod().getId() );
+            final Date currentStartDate = currentPeriod.getStartDate();
+            final Date currentEndDate = currentPeriod.getEndDate();
 
             long relevantDays = 0;
 
