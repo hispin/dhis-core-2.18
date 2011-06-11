@@ -34,6 +34,9 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.system.filter.UserAuthorityGroupSubsetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -72,6 +75,13 @@ public class SetupTreeAction
     {
         this.userService = userService;
     } 
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -115,9 +125,10 @@ public class SetupTreeAction
 
     public String execute()
         throws Exception
-    {   
-
+    {
         userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
+        
+        FilterUtils.filter( userAuthorityGroups, new UserAuthorityGroupSubsetFilter( currentUserService.getCurrentUser() ) );
         
         if ( id != null )
         {

@@ -63,6 +63,8 @@ public class User
     
     private String phoneNumber;
 
+    private UserCredentials userCredentials;
+    
     /**
      * All OrgUnits where the user could belong
      * 
@@ -225,6 +227,16 @@ public class User
     public void setPhoneNumber( String phoneNumber )
     {
         this.phoneNumber = phoneNumber;
+    }
+
+    public UserCredentials getUserCredentials()
+    {
+        return userCredentials;
+    }
+
+    public void setUserCredentials( UserCredentials userCredentials )
+    {
+        this.userCredentials = userCredentials;
     }
 
     public Collection<OrganisationUnit> getOrganisationUnits()
