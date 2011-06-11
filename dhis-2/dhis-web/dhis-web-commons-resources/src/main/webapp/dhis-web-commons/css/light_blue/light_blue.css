@@ -132,8 +132,8 @@ img#menuSeparator5
 {
   height: 47px;
   width: 98px;
-  font-family: LiberationSansBold, arial;
-  font-size: 11px;
+  font-family: LiberationSansRegular, arial;
+  font-size: 13px;
   color: #ffffff;
   text-align: center;
   line-height: 45px;
@@ -167,12 +167,12 @@ div#menuLink4
 span#headerText
 {
   position: absolute;
-  top: 13px;
+  top: 14px;
   left: 253px;
-  font-family: LiberationSansRegular, arial;
+  font-family: LiberationSansBold, arial;
   font-weight: lighter;
   color: white;
-  font-size: 12pt;
+  font-size: 16px;
 }
 
 div#popupHeader 
