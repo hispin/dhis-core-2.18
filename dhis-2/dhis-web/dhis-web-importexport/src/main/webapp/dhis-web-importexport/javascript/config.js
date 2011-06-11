@@ -20,7 +20,7 @@ function configDhis14Received( messageElement )
     
     if ( type == "input" )
     {
-        setMessage( message );
+        setHeaderMessage( message );
     }
     else
     {
