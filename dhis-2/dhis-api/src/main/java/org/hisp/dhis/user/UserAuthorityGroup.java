@@ -38,7 +38,8 @@ import org.hisp.dhis.dataset.DataSet;
  */
 public class UserAuthorityGroup
 {
-
+    public static final String AUTHORITY_ALL = "ALL";
+    
     private int id;
 
     /**

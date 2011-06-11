@@ -23,6 +23,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager">
 			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService" />
+		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.user.action.DeleteCurrentUserAction"
@@ -90,6 +93,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager">
 			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService" />
+		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.user.action.ValidateUserAction" class="org.hisp.dhis.user.action.ValidateUserAction"
@@ -109,6 +115,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="userService">
 			<ref bean="org.hisp.dhis.user.UserService" />
+		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService" />
 		</property>
 	</bean>
 

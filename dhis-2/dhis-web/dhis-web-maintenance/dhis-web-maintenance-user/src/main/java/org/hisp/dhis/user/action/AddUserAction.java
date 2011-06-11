@@ -35,6 +35,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.security.PasswordManager;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -79,6 +80,13 @@ public class AddUserAction
     public void setPasswordManager( PasswordManager passwordManager )
     {
         this.passwordManager = passwordManager;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -153,6 +161,8 @@ public class AddUserAction
     public String execute()
         throws Exception
     {
+        UserCredentials currentUserCredentials = currentUserService.getCurrentUser() != null ? currentUserService.getCurrentUser().getUserCredentials() : null;
+        
         // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
@@ -185,8 +195,14 @@ public class AddUserAction
         for ( String id : selectedList )
         {
             UserAuthorityGroup group = userService.getUserAuthorityGroup( Integer.parseInt( id ) );
-            userCredentials.getUserAuthorityGroups().add( group );
+            
+            if ( currentUserCredentials != null && currentUserCredentials.canIssue( group ) )
+            {
+                userCredentials.getUserAuthorityGroups().add( group );
+            }
         }
+        
+        user.setUserCredentials( userCredentials );
 
         userService.addUser( user );
         userService.addUserCredentials( userCredentials );

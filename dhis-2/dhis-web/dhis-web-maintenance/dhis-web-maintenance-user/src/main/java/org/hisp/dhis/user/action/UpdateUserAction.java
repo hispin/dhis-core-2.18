@@ -36,6 +36,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.security.PasswordManager;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -81,7 +82,14 @@ public class UpdateUserAction
     {
         this.selectionManager = selectionManager;
     }
-    
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -142,6 +150,8 @@ public class UpdateUserAction
     public String execute()
         throws Exception
     {
+        UserCredentials currentUserCredentials = currentUserService.getCurrentUser() != null ? currentUserService.getCurrentUser().getUserCredentials() : null;
+        
         // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
@@ -177,7 +187,12 @@ public class UpdateUserAction
 
         for ( String id : selectedList )
         {
-            authorityGroups.add( userService.getUserAuthorityGroup( Integer.parseInt( id ) ) );
+            UserAuthorityGroup group = userService.getUserAuthorityGroup( Integer.parseInt( id ) );
+            
+            if ( currentUserCredentials != null && currentUserCredentials.canIssue( group ) )
+            {
+                authorityGroups.add( group );
+            }
         }
         
         if ( rawPassword != null )

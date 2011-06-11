@@ -61,6 +61,48 @@ public class UserCredentials
     private String password;
 
     private Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns a set of the aggregated authorities for all user authority groups
+     * of this user credentials.
+     */
+    public Set<String> getAllAuthorities()
+    {
+        Set<String> authorities = new HashSet<String>();
+        
+        for ( UserAuthorityGroup group : userAuthorityGroups )
+        {
+            authorities.addAll( group.getAuthorities() );
+        }
+        
+        return authorities;
+    }
+    
+    /**
+     * Indicates whether this user credentials can issue the given user authority
+     * group. First the given authority group must not be null. Second this 
+     * user credentials must not contain the given authority group. Third
+     * the authority group must be a subset of the aggregated user authorities
+     * of this user credentials, or this user credentials must have the ALL
+     * authority.
+     * 
+     * @param group the user authority group.
+     */
+    public boolean canIssue( UserAuthorityGroup group )
+    {
+        if ( group == null || userAuthorityGroups.contains( group ) )
+        {
+            return false;
+        }
+                
+        final Set<String> authorities = getAllAuthorities();
+        
+        return ( authorities.contains( UserAuthorityGroup.AUTHORITY_ALL ) || authorities.containsAll( group.getAuthorities() ) );
+    }
     
     // -------------------------------------------------------------------------
     // hashCode and equals
