@@ -163,7 +163,6 @@
     <result name="success" type="velocity">/main.vm</result>
     <param name="page">/dhis-web-maintenance-user/userGroupList.vm</param>
     <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
-    <param name="stylesheets">css/receiveImportPage.css</param>
     <param name="javascripts">javascript/user.js</param>
 	<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
   </action>
@@ -178,20 +177,17 @@
     <param name="page">/dhis-web-maintenance-user/addUserGroupForm.vm</param>
     <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
     <param name="javascripts">javascript/user.js</param>
-    <param name="stylesheets">css/receiveImportPage.css</param>
   </action>
 
   <action name="addUserGroup" class="org.hisp.dhis.user.action.AddUserGroupAction">
     <param name="javascripts">javascript/user.js</param>
-    <result name="success" type="redirect">
-      getAllUserGroups.action</result>
+    <result name="success" type="redirect">getAllUserGroups.action</result>
   </action>
 
   <action name="editUserGroupForm" class="org.hisp.dhis.user.action.EditUserGroupFormAction">
     <result name="success" type="velocity">/main.vm</result>
     <param name="page">/dhis-web-maintenance-user/updateUserGroupForm.vm</param>
     <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
-    <param name="stylesheets">css/receiveImportPage.css</param>
   </action>
 
   <action name="updateUserGroup" class="org.hisp.dhis.user.action.UpdateUserGroupAction">

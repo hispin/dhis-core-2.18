@@ -30,7 +30,7 @@ function runValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {
-    	setWaitMessage( "Analysing data, please wait..." );
+    	setWaitMessage( "Analysing data, please wait" );
     	
     	startDate = getFieldValue( 'startDate' );
     	endDate = getFieldValue( 'endDate' );
