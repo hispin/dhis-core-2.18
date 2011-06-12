@@ -32,6 +32,7 @@ import static org.hisp.dhis.system.util.MathUtils.isEqual;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.common.AggregatedValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
@@ -113,7 +114,7 @@ public class StdDevOutlierAnalysisService
     {
         Double stdDev = dataAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, organisationUnit );
 
-        if ( !isEqual( stdDev, 0.0 ) ) // No values found or no outliers exist when 0.0
+        if ( !isEqual( stdDev, AggregatedValue.ZERO ) ) // No values found or no outliers exist when 0.0
         {
             Double avg = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, organisationUnit );
 
