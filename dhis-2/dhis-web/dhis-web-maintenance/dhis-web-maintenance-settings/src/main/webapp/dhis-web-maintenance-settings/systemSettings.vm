@@ -3,9 +3,13 @@
 
 <form id="systemSettingForm" method="post" action="setSystemSettings.action">
 
+<!-- TODO temporarily disabled
+
 <h4>$i18n.getString( "system_identifier" ) ($i18n.getString( "can_be_set_once" ))</h4>
 
 <p><input type="text" name="systemIdentifier" style="width:30em" maxlength="40" value="$!keySystemIdentifier"#if( $keySystemIdentifier ) disabled="disabled"#end/></p>
+
+-->
 
 <h4>$i18n.getString( "application_title" )</h4>
 

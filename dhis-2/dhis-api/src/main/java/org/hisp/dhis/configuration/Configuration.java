@@ -31,6 +31,7 @@ import java.io.Serializable;
 
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.user.UserGroup;
 
 /**
@@ -44,6 +45,8 @@ public class Configuration
      */
     private static final long serialVersionUID = 936186436040704261L;
     
+    private static final PeriodType DEFAULT_INFRASTRUCTURAL_PERIODTYPE = new YearlyPeriodType();
+    
     private int id;
     
     private UserGroup feedbackRecipients;
@@ -55,7 +58,20 @@ public class Configuration
     public Configuration()
     {
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public PeriodType getInfrastructuralPeriodTypeDefaultIfNull()
+    {
+        return infrastructuralPeriodType != null ? infrastructuralPeriodType : DEFAULT_INFRASTRUCTURAL_PERIODTYPE;
+    }
     
+    // -------------------------------------------------------------------------
+    // Set and get methods
+    // -------------------------------------------------------------------------
+
     public int getId()
     {
         return id;
