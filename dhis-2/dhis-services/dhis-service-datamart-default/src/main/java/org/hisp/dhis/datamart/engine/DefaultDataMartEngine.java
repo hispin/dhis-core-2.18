@@ -154,6 +154,8 @@ public class DefaultDataMartEngine
     public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState state )
     {
+        log.info( "Data mart export process started" );
+        
         int count = 0;
 
         TimeUtils.start();
@@ -298,7 +300,7 @@ public class DefaultDataMartEngine
             log.info( "Created indexes: " + TimeUtils.getHMS() );
         }
         
-        log.info( "Export process completed: " + TimeUtils.getHMS() );
+        log.info( "Data mart export process completed: " + TimeUtils.getHMS() );
 
         TimeUtils.stop();
 

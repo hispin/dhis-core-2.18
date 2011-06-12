@@ -193,7 +193,7 @@ public class MathUtils
     
     /**
      * Tests whether the two decimal numbers are equal with a tolerance of 0.01.
-     * If one or both of the numbers are null, false is retured.
+     * If one or both of the numbers are null, false is returned.
      * 
      * @param d1 the first value.
      * @param d2 the second value.
@@ -206,6 +206,18 @@ public class MathUtils
             return false;
         }
         
+        return Math.abs( d1 - d2 ) < TOLERANCE;
+    }
+    
+    /**
+     * Tests whether the two decimal numbers are equal with a tolerance of 0.01.
+     * 
+     * @param d1 the first value.
+     * @param d2 the second value.
+     * @return true if the two decimal numbers are equal with a tolerance of 0.01.
+     */
+    public static boolean isEqual( double d1, double d2 )
+    {
         return Math.abs( d1 - d2 ) < TOLERANCE;
     }
     

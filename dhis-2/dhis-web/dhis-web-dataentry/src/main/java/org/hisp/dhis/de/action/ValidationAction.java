@@ -210,7 +210,7 @@ public class ValidationAction
                     minmaxs );
             }
     
-            log.info( "Number of outlier values: " + dataValues.size() );
+            log.debug( "Number of outlier values: " + dataValues.size() );
     
             // ---------------------------------------------------------------------
             // Validation rule analysis
@@ -218,7 +218,7 @@ public class ValidationAction
     
             results = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, orgUnit ) );
     
-            log.info( "Number of validation violations: " + results.size() );
+            log.debug( "Number of validation violations: " + results.size() );
     
             if ( results.size() > 0 )
             {

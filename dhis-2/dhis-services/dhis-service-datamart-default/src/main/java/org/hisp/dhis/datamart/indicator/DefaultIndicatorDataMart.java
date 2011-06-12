@@ -31,6 +31,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZER
 import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
+import static org.hisp.dhis.system.util.MathUtils.isEqual;
 
 import java.util.Collection;
 import java.util.Map;
@@ -137,11 +138,11 @@ public class DefaultIndicatorDataMart
                     {
                         final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap, days ) );
 
-                        if ( denominatorValue != 0 )
+                        if ( !isEqual( denominatorValue, 0d ) )
                         {
                             final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, days ) );
                          
-                            if ( !( omitZeroNumerator && numeratorValue == 0 ) )
+                            if ( !( omitZeroNumerator && isEqual( numeratorValue, 0d ) ) )
                             {
                                 final double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() );                            
                                 final double factor = indicator.getIndicatorType().getFactor();                            
