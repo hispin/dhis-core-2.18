@@ -27,38 +27,41 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import junit.framework.TestCase;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: MathUtil.java 4712 2008-03-12 10:32:45Z larshelg $
  */
-public class TimeUtilsTest
-    extends TestCase
+public class Clock
+    extends StopWatch
 {
-    public void testStopWatch()
-        throws Exception
+    private static final Log log = LogFactory.getLog( Clock.class );
+    
+    private static final String SEPARATOR = ": ";
+    
+    public Clock()
     {
-        TimeUtils.start();
-        
-        Thread.sleep( 100 );
-        
-        TimeUtils.markMillis( "Split Millis" );
-        
-        Thread.sleep( 400 );
-        
-        TimeUtils.markHMS( "Split HMS" );
-        
-        TimeUtils.stop();
+        super();
     }
     
-    public void testStopWatchAbort()
-        throws Exception
+    public Clock startClock()
     {
-        TimeUtils.start();
+        this.start();
         
-        Thread.sleep( 100 );
+        return this;
+    }
+    
+    public Clock logTime( String message )
+    {
+        super.split();
         
-        TimeUtils.start();
+        String time = DurationFormatUtils.formatDurationHMS( super.getSplitTime() ); 
+        
+        log.info( message + SEPARATOR + time );
+        
+        return this;
     }
 }

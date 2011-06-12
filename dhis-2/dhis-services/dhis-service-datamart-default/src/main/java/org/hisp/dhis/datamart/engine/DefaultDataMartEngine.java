@@ -33,8 +33,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.dataelement.DataElement;
@@ -53,8 +51,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConversionUtils;
-import org.hisp.dhis.system.util.TimeUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -63,8 +61,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataMartEngine
     implements DataMartEngine
 {
-    private static final Log log = LogFactory.getLog( DefaultDataMartEngine.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -154,12 +150,10 @@ public class DefaultDataMartEngine
     public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState state )
     {
-        log.info( "Data mart export process started" );
-        
         int count = 0;
 
-        TimeUtils.start();
-
+        Clock clock = new Clock().startClock().logTime( "Data mart export process started" );
+        
         // ---------------------------------------------------------------------
         // Get objects
         // ---------------------------------------------------------------------
@@ -190,7 +184,7 @@ public class DefaultDataMartEngine
         allOperands.addAll( dataElementOperands );
         allOperands.addAll( indicatorOperands );
 
-        log.info( "Filtered data elements, number of operands: " + allOperands.size() + ", " + TimeUtils.getHMS() );
+        clock.logTime( "Filtered data elements, number of operands: " + allOperands.size() );
 
         // ---------------------------------------------------------------------
         // Remove operands without data
@@ -200,7 +194,7 @@ public class DefaultDataMartEngine
 
         indicatorOperands.retainAll( allOperands );
         
-        log.info( "Number of operands with data: " + allOperands.size() + ", "+ TimeUtils.getHMS() );
+        clock.logTime( "Number of operands with data: " + allOperands.size() );
 
         // ---------------------------------------------------------------------
         // Create crosstabtable
@@ -213,7 +207,7 @@ public class DefaultDataMartEngine
 
         String key = crossTabService.populateCrossTabTable( new ArrayList<DataElementOperand>( allOperands ), intersectingPeriodIds, childrenIds );
         
-        log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
+        clock.logTime( "Populated crosstab table" );
 
         // ---------------------------------------------------------------------
         // Create aggregated data cache
@@ -223,7 +217,7 @@ public class DefaultDataMartEngine
 
         crossTabService.createAggregatedDataCache( indicatorOperands, key );
         
-        log.info( "Created aggregated data cache: " + TimeUtils.getHMS() );
+        clock.logTime( "Created aggregated data cache" );
         
         // ---------------------------------------------------------------------
         // Drop potential indexes
@@ -233,19 +227,17 @@ public class DefaultDataMartEngine
         
         aggregatedDataValueService.dropIndex( true, isIndicators );
         
-        log.info( "Dropped potential indexes: " + TimeUtils.getHMS() );
+        clock.logTime( "Dropped potential indexes" );
         
         // ---------------------------------------------------------------------
         // Delete existing aggregated data
         // ---------------------------------------------------------------------
 
-        state.setMessage( "deleting_existing_aggregated_data" );
-
         aggregatedDataValueService.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
 
         aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
 
-        log.info( "Deleted existing aggregated data: " + TimeUtils.getHMS() );
+        clock.logTime( "Deleted existing aggregated data" );
         
         // ---------------------------------------------------------------------
         // Export data element values
@@ -257,7 +249,7 @@ public class DefaultDataMartEngine
         {
             count += dataElementDataMart.exportDataValues( allOperands, periods, organisationUnits, operandList, key );
 
-            log.info( "Exported values for data element operands (" + allOperands.size() + "): " + TimeUtils.getHMS() );
+            clock.logTime( "Exported values for data element operands (" + allOperands.size() + ")" );
         }
 
         // ---------------------------------------------------------------------
@@ -266,7 +258,7 @@ public class DefaultDataMartEngine
 
         crossTabService.dropCrossTabTable( key );
         
-        log.info( "Dropped crosstab table: " + TimeUtils.getHMS()  );
+        clock.logTime( "Dropped crosstab table" );
         
         // ---------------------------------------------------------------------
         // Export indicator values
@@ -278,7 +270,7 @@ public class DefaultDataMartEngine
         {
             count += indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits, indicatorOperands, key );
 
-            log.info( "Exported values for indicators (" + indicators.size() + "): " + TimeUtils.getHMS() );
+            clock.logTime( "Exported values for indicators (" + indicators.size() + ")" );
         }
 
         // ---------------------------------------------------------------------
@@ -287,7 +279,7 @@ public class DefaultDataMartEngine
 
         crossTabService.dropAggregatedDataCache( key );
         
-        log.info( "Dropped aggregated data cache: " + TimeUtils.getHMS() );
+        clock.logTime( "Dropped aggregated data cache" );
 
         // ---------------------------------------------------------------------
         // Create potential indexes
@@ -297,14 +289,12 @@ public class DefaultDataMartEngine
         {
             aggregatedDataValueService.createIndex( true, isIndicators );
             
-            log.info( "Created indexes: " + TimeUtils.getHMS() );
+            clock.logTime( "Created indexes" );
         }
-        
-        log.info( "Data mart export process completed: " + TimeUtils.getHMS() );
-
-        TimeUtils.stop();
 
         aggregationCache.clearCache();
+
+        clock.logTime( "Data mart export process completed" );
 
         return count;
     }
