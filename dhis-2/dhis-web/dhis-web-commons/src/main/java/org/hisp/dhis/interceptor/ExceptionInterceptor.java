@@ -40,6 +40,8 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
 
+import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+
 /**
  * This interceptor will intercept exceptions and redirect to appropriate
  * exception results / pages defined in the global-results section in the XWork 
@@ -105,7 +107,7 @@ public class ExceptionInterceptor
         catch ( Exception e )
         {
             // -----------------------------------------------------------------
-            // Save exception etc. to value stack
+            // Save exception to value stack
             // -----------------------------------------------------------------
 
             Map<String, Object> parameterMap = new HashMap<String, Object>( 3 );
@@ -119,7 +121,7 @@ public class ExceptionInterceptor
 
             Map<?, ?> params = actionInvocation.getProxy().getConfig().getParams();
             String exceptionResultName = (String) params.get( EXCEPTION_RESULT_KEY );
-
+                      
             if ( e instanceof AccessDeniedException || e instanceof InsufficientAuthenticationException )
             {
                 if ( EXCEPTION_RESULT_PLAIN_TEXT.equals( exceptionResultName ) )
@@ -129,20 +131,17 @@ public class ExceptionInterceptor
                 
                 return EXCEPTION_RESULT_ACCESS_DENIED; // Access denied as nice page
             }
+ 
+            boolean ignore = ignoredExceptions.contains( e.getClass().getName() );
 
-            if ( e != null && !ignoredExceptions.contains( e.getClass().getName() ) )
+            if ( !ignore )
             {
                 LOG.error( "Error while executing action", e );
             }
 
-            if ( exceptionResultName != null )
-            {
-                return exceptionResultName;
-            }
-            else
-            {
-                return EXCEPTION_RESULT_DEFAULT;
-            }
+            exceptionResultName = defaultIfEmpty( exceptionResultName, EXCEPTION_RESULT_DEFAULT );
+            
+            return ignore ? EXCEPTION_RESULT_PLAIN_TEXT : exceptionResultName;
         }
     }
 }
