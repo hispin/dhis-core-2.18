@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.AggregatedValue;
 import org.hisp.dhis.dataanalysis.DataAnalysisStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -81,7 +82,7 @@ public class DefaultMinMaxValuesGenerationService
                     Double stdDev = dataAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo,
                         organisationUnit );
 
-                    if ( !isEqual( stdDev, 0.0 ) ) // No values found or no
+                    if ( !isEqual( stdDev, AggregatedValue.ZERO ) ) // No values found or no
                     {
                         Double avg = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, organisationUnit );
 
