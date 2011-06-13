@@ -426,12 +426,12 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	</bean>
 
 	<bean id="org.hisp.dhis.user.CurrentUserService" class="org.hisp.dhis.user.DefaultCurrentUserService">
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.user.UserSettingService" class="org.hisp.dhis.user.DefaultUserSettingService">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.user.UserService" class="org.hisp.dhis.user.DefaultUserService">
@@ -1172,17 +1172,17 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	</bean>
 
 	<bean id="org.hisp.dhis.user.UserDeletionHandler" class="org.hisp.dhis.user.UserDeletionHandler">
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler"
 		class="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler">
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.user.UserCredentialsDeletionHandler"
 		class="org.hisp.dhis.user.UserCredentialsDeletionHandler">
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.user.UserSettingDeletionHandler" 
@@ -1194,8 +1194,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">
 		<property name="categoryService" 
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<!--property name="conceptService"
-			ref="org.hisp.dhis.concept.ConceptService" /-->
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler"

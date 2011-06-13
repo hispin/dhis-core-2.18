@@ -28,11 +28,13 @@ package org.hisp.dhis.user;
  */
 
 import org.hisp.dhis.security.spring.AbstractSpringSecurityCurrentUserService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: DefaultCurrentUserService.java 5708 2008-09-16 14:28:32Z larshelg $
  */
+@Transactional
 public class DefaultCurrentUserService
     extends AbstractSpringSecurityCurrentUserService
 {
@@ -42,13 +44,13 @@ public class DefaultCurrentUserService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    public UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
-
+    
     // -------------------------------------------------------------------------
     // CurrentUserService implementation
     // -------------------------------------------------------------------------
@@ -62,7 +64,7 @@ public class DefaultCurrentUserService
             return null;
         }
 
-        UserCredentials userCredentials = userStore.getUserCredentialsByUsername( username );
+        UserCredentials userCredentials = userService.getUserCredentialsByUsername( username );
 
         if ( userCredentials == null )
         {
@@ -81,7 +83,7 @@ public class DefaultCurrentUserService
             return false;
         }
 
-        UserCredentials userCredentials = userStore.getUserCredentialsByUsername( username );
+        UserCredentials userCredentials = userService.getUserCredentialsByUsername( username );
 
         if ( userCredentials == null )
         {

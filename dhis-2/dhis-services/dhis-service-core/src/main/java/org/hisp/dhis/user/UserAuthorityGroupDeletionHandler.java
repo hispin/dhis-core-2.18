@@ -41,13 +41,13 @@ public class UserAuthorityGroupDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
-
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -61,11 +61,11 @@ public class UserAuthorityGroupDeletionHandler
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
-        for ( UserAuthorityGroup group : userStore.getAllUserAuthorityGroups() )
+        for ( UserAuthorityGroup group : userService.getAllUserAuthorityGroups() )
         {
             if ( group.getDataSets().remove( dataSet ) )
             {
-                userStore.updateUserAuthorityGroup( group );
+                userService.updateUserAuthorityGroup( group );
             }
         }
     }
@@ -73,11 +73,11 @@ public class UserAuthorityGroupDeletionHandler
     @Override
     public void deleteUserCredentials( UserCredentials credentials )
     {
-        for ( UserAuthorityGroup group : userStore.getAllUserAuthorityGroups() )
+        for ( UserAuthorityGroup group : userService.getAllUserAuthorityGroups() )
         {
             if ( group.getMembers().remove( credentials ) )
             {
-                userStore.updateUserAuthorityGroup( group );
+                userService.updateUserAuthorityGroup( group );
             }
         }
     }
