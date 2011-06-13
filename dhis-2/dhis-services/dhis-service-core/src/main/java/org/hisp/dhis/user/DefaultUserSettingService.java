@@ -30,10 +30,13 @@ package org.hisp.dhis.user;
 import java.io.Serializable;
 import java.util.Collection;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: DefaultUserSettingService.java 5724 2008-09-18 14:37:01Z larshelg $
  */
+@Transactional
 public class DefaultUserSettingService
     implements UserSettingService
 {
