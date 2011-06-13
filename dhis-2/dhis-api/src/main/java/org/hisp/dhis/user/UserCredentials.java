@@ -97,14 +97,19 @@ public class UserCredentials
      */
     public boolean canIssue( UserAuthorityGroup group )
     {
-        if ( group == null || userAuthorityGroups.contains( group ) )
+        if ( group == null )
         {
             return false;
         }
-                
+
         final Set<String> authorities = getAllAuthorities();
         
-        return ( authorities.contains( UserAuthorityGroup.AUTHORITY_ALL ) || authorities.containsAll( group.getAuthorities() ) );
+        if ( authorities.contains( UserAuthorityGroup.AUTHORITY_ALL ) )
+        {
+            return true;
+        }
+        
+        return !userAuthorityGroups.contains( group ) && authorities.containsAll( group.getAuthorities() );
     }
     
     // -------------------------------------------------------------------------
