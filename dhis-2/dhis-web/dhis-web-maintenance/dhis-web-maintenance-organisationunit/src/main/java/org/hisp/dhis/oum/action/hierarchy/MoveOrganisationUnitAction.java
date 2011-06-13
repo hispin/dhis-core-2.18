@@ -87,26 +87,19 @@ public class MoveOrganisationUnitAction
         // Get parent
         // ---------------------------------------------------------------------
 
-        OrganisationUnit newParent;
-
-        if ( newParentOrganisationUnitId != null )
-        {
-            newParent = organisationUnitService.getOrganisationUnit( newParentOrganisationUnitId.intValue() );
-        }
-        else
-        {
-            newParent = selectionManager.getRootOrganisationUnitsParent();
-        }
+        OrganisationUnit newParent = newParentOrganisationUnitId != null ? 
+        organisationUnitService.getOrganisationUnit( newParentOrganisationUnitId ) :
+        selectionManager.getRootOrganisationUnitsParent();
 
         // ---------------------------------------------------------------------
-        // Update unit to move
+        // Update parent
         // ---------------------------------------------------------------------
 
-        OrganisationUnit unitToMove = organisationUnitService.getOrganisationUnit( organisationUnitToMoveId.intValue() );
+        OrganisationUnit unitToMove = organisationUnitService.getOrganisationUnit( organisationUnitToMoveId );
 
-        unitToMove.setParent( newParent );
-
-        organisationUnitService.updateOrganisationUnit( unitToMove, true );
+        unitToMove.updateParent( newParent );
+        
+        organisationUnitService.updateOrganisationUnit( unitToMove );
 
         return SUCCESS;
     }
