@@ -40,7 +40,7 @@ function selectedOrganisationUnitXML__( xml )
 	<tbody>
 		<tr>
 			<td>
-				<div style="width:100%;background-image:url(../images/ajax-loader-circle.gif);background-repeat:no-repeat">	
+				<div style="width:100%">	
 					<div id="selectionTreeContainer" style="display:none;">
 						<input type="button" value="$i18n.getString( 'select_at_level' )" onclick="selectOrganisationUnitAtLevel()" style="width:10em"/>
 						<select id="levelList" name="levelList" style="width:10em"/>
