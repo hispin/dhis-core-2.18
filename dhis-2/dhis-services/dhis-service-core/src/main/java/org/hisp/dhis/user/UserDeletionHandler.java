@@ -43,11 +43,11 @@ public class UserDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
     
     // -------------------------------------------------------------------------
@@ -63,11 +63,11 @@ public class UserDeletionHandler
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-        for ( User user : userStore.getAllUsers() )
+        for ( User user : userService.getAllUsers() )
         {
             if ( user.getOrganisationUnits().remove( unit ) )
             {
-                userStore.updateUser( user );
+                userService.updateUser( user );
             }
         }
     }
@@ -75,7 +75,8 @@ public class UserDeletionHandler
     @Override
     public boolean allowDeleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
     {
-        Collection<UserCredentials> userCredentials = userStore.getAllUserCredentials();
+        Collection<UserCredentials> userCredentials = userService.getAllUserCredentials();
+        
         for( UserCredentials uc : userCredentials )
         {
             if( uc != null && uc.getUserAuthorityGroups() != null )

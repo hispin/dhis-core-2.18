@@ -40,13 +40,13 @@ public class UserCredentialsDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
-
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -59,11 +59,11 @@ public class UserCredentialsDeletionHandler
     @Override
     public void deleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
     {
-        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
+        for ( UserCredentials credentials : userService.getAllUserCredentials() )
         {
             if ( credentials.getUserAuthorityGroups().remove( authorityGroup ) )
             {
-                userStore.updateUserCredentials( credentials );
+                userService.updateUserCredentials( credentials );
             }
         }
     }
