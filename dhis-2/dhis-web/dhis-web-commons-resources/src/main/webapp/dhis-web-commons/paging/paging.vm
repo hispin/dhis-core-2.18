@@ -86,7 +86,15 @@ function pagingList( currentPage, pageSize )
 	else
 	{
 		if( contentDiv == undefined) { $( '#contentDiv' ).load(url); }
-		else { $( '#' + contentDiv ).load(url); }
+		else {
+			var index = url.indexOf('?');
+			var link = url.substring(0, index);
+			var data = url.substring(index + 1);
+			jQuery.postUTF8( link , data, function(html)
+			{
+				setInnerHTML(contentDiv, html);
+			});
+		}
 	}
 }
 

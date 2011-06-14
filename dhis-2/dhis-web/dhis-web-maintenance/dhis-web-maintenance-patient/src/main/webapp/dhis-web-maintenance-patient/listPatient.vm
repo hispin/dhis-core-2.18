@@ -4,7 +4,6 @@
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>
-		   <span id='titleInfo'></span>
 		   <span id='searchTextInfo'></span>
 		</td>
 	</tr>	
@@ -145,15 +144,14 @@
 	jQuery(document).ready(function(){	
 		tableSorter( 'patientList' );
 		
-		if( byId('searchingAttributeId').value == 0 )
+		if( byId('searchingAttributeId').value == '0' )
 		{
-			setInnerHTML( 'titleInfo', i18n_list_all_patient );
-			setInnerHTML( 'searchTextInfo', getFieldValue('searchText'));
+			var  programName = byId('programId').options[byId('programId').selectedIndex].text;
+			setInnerHTML( 'searchTextInfo', i18n_list_patients_by_program + programName );
 		}
-		else
+		else 
 		{
-			setInnerHTML( 'titleInfo', i18n_list_patients_by_program );
-			setInnerHTML( 'searchTextInfo', getFieldValue('programId') );
+			setInnerHTML( 'searchTextInfo', getFieldValue('searchText'));
 		}
 	});
 	
