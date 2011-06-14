@@ -16,8 +16,8 @@ function clearArea( area )
 
 function viewChart( url )
 {
-    var width = 700;
-    var height = 500;
+    var width = 700 + 20;
+    var height = 500 + 20;
 
     $('#chartImage').attr('src', url);
     $('#chartView').dialog({

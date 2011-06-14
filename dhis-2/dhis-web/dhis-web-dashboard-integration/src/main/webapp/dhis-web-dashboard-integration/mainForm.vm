@@ -81,5 +81,5 @@
 </table>
 
 <div id="chartView" style="display: none; padding: 0; margin: 0;'">
-	<img id='chartImage' src=''></img>
+	<img id="chartImage" src="" style="padding: 10px;"></img>
 </div>
