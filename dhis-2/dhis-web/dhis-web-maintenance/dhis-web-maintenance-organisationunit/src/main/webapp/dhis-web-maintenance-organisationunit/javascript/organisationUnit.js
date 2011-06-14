@@ -54,5 +54,5 @@ function organisationUnitReceived( unitElement )
 
 function removeOrganisationUnit( unitId, unitName )
 {
-	removeItem( unitId, unitName, confirm_to_delete_org_unit, 'removeOrganisationUnit.action' );
+	removeItem( unitId, unitName, confirm_to_delete_org_unit, 'removeOrganisationUnit.action', subtree.refreshTree );
 }

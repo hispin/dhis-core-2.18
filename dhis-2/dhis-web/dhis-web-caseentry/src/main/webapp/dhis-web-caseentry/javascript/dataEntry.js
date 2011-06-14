@@ -700,7 +700,7 @@ function saveValue( dataElementId, dataElementName )
 
                 return;
             }
-			else if (  type == 'number' && !isNumber( field.value ))
+			else if (  type == 'number' && !isRealNumber( field.value ))
             {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
@@ -709,19 +709,19 @@ function saveValue( dataElementId, dataElementName )
 
                 return;
             } 
-			else if (  type == 'positiveNumber' && !isPositiveNumber( field.value ))
+			else if (  type == 'positiveNumber' && !isPositiveInt( field.value ))
             {
                 field.style.backgroundColor = '#ffcc00';
-                window.alert( i18n_value_must_positive_number + '\n\n' + dataElementName );
+                window.alert( i18n_value_must_positive_integer + '\n\n' + dataElementName );
                 field.select();
                 field.focus();
 
                 return;
             } 
-			else if (  type == 'negativeNumber' && !isNegativeNumber( field.value ))
+			else if (  type == 'negativeNumber' && !isNegativeInt( field.value ))
             {
                 field.style.backgroundColor = '#ffcc00';
-                window.alert( i18n_value_must_negative_number + '\n\n' + dataElementName );
+                window.alert( i18n_value_must_negative_integer + '\n\n' + dataElementName );
                 field.select();
                 field.focus();
 

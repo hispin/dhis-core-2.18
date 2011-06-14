@@ -111,19 +111,19 @@ function saveValueInternal( dataElementId, optionComboId, dataElementName )
             	window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
                 return alertField( field );
             }  
-            else if ( type == 'number' && !isNumber( field.value ) )
+            else if ( type == 'number' && !isRealNumber( field.value ) )
             {
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
                 return alertField( field );
             } 
-			else if ( type == 'positiveNumber' && !isPositiveNumber( field.value ) )
+			else if ( type == 'positiveNumber' && !isPositiveInt( field.value ) )
             {
-                window.alert( i18n_value_must_positive_number + '\n\n' + dataElementName );
+                window.alert( i18n_value_must_positive_integer + '\n\n' + dataElementName );
                 return alertField( field );
             } 
-			else if ( type == 'negativeNumber' && !isNegativeNumber( field.value ) )
+			else if ( type == 'negativeNumber' && !isNegativeInt( field.value ) )
             {
-                window.alert( i18n_value_must_negative_number + '\n\n' + dataElementName );
+                window.alert( i18n_value_must_negative_integer + '\n\n' + dataElementName );
                 return alertField( field );
             }
             else if ( isZeroNumber( field.value ) && significantZeros.indexOf( dataElementId ) == -1 )

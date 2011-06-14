@@ -70,9 +70,9 @@ public class DataElement
 
     public static final String VALUE_TYPE_NUMBER = "number";
     
-    public static final String VALUE_TYPE_POSITIVE_NUMBER = "positiveNumber";
+    public static final String VALUE_TYPE_POSITIVE_INT = "positiveNumber";
     
-    public static final String VALUE_TYPE_NEGATIVE_NUMBER = "negativeNumber";
+    public static final String VALUE_TYPE_NEGATIVE_INT = "negativeNumber";
     
     
     public static final String VALUE_TYPE_BOOL = "bool";
