@@ -28,10 +28,8 @@
 package org.hisp.dhis.program;
 
 import java.util.Collection;
-import java.util.Set;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.validation.ValidationCriteria;
 
@@ -45,13 +43,6 @@ public class ProgramDeletionHandler
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
 
     private ProgramService programService;
 
@@ -71,27 +62,28 @@ public class ProgramDeletionHandler
     }
 
     @Override
-    public void deletePatient( Patient patient )
-    {
-        Set<Program> programs = patient.getPrograms();
-
-        if ( programs != null )
-        {
-            patient.setPrograms( null );
-
-            patientService.updatePatient( patient );
-        }
-    }
-
-    @Override
     public void deleteValidationCriteria( ValidationCriteria validationCriteria )
     {
         Collection<Program> programs = programService.getPrograms( validationCriteria );
-        
-        for(Program program : programs){
+
+        for ( Program program : programs )
+        {
             program.getPatientValidationCriteria().remove( validationCriteria );
             programService.updateProgram( program );
         }
+    }
+    
+    @Override
+    public void deleteOrganisationUnit( OrganisationUnit unit )
+    {
+        Collection<Program> programs = programService.getAllPrograms();
         
+        for ( Program program : programs )
+        {
+            if ( program.getOrganisationUnits().remove( unit ) )
+            {
+                programService.updateProgram( program );
+            }
+        }
     }
 }

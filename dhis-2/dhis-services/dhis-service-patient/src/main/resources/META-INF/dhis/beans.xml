@@ -352,7 +352,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	
 	<bean id="org.hisp.dhis.program.ProgramDeletionHandler" 
 		class="org.hisp.dhis.program.ProgramDeletionHandler">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService"/>
 	</bean>
 	
