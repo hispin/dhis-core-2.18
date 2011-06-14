@@ -268,7 +268,8 @@ public class GetChartOptionsAction
 
         levels = organisationUnitService.getOrganisationUnitLevels();
 
-        availableOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+        availableOrganisationUnits = new ArrayList<OrganisationUnit>(
+            organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
 
         Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
