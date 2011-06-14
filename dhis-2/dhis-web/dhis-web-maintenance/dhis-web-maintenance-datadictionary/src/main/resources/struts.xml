@@ -267,7 +267,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js,javascript/denum.js</param>
+			<param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js</param>
 			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
@@ -297,7 +297,7 @@
 			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/indicator.js</param>
 			<param name="requiredAuthorities">F_INDICATOR_ADD</param>
 		</action>
 
@@ -312,7 +312,7 @@
 			class="org.hisp.dhis.dd.action.indicator.ShowUpdateIndicatorFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
+			<param name="javascripts">javascript/shortName.js,javascript/indicator.js</param>
 			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
 		</action>
 
