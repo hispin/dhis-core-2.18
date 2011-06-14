@@ -200,7 +200,7 @@ function DataDictionary()
 		this.params = params;
 		this.jQuerySelectionString = jQuerySelectionString;
 
-		jQuery.getJSON(	'../dhis-web-commons-ajax-json/getOperands.action',
+		jQuery.postJSON(	'../dhis-web-commons-ajax-json/getOperands.action',
 			this.params,
 			function( json )
 			{
