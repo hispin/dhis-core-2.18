@@ -806,7 +806,7 @@ function hideLoader()
  * @param action
  *            the server action url for deleting the item.
  */
-function removeItem( itemId, itemName, confirmation, action )
+function removeItem( itemId, itemName, confirmation, action, success )
 {                
     var result = window.confirm( confirmation + "\n\n" + itemName );
     
@@ -827,6 +827,11 @@ function removeItem( itemId, itemName, confirmation, action )
 	                jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
 	                jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
 					jQuery( "table.listTable tbody" ).trigger("update");
+  
+					if ( success && typeof( success) == "function" )
+					{
+						success.call();
+					}
   
 					showSuccessMessage( i18n_delete_success );
     	    	}
@@ -1431,16 +1436,36 @@ function relativePeriodsChecked()
 // Math methods
 // -----------------------------------------------------------------------------
 
+function isInt(value)
+{
+	var regex = /^(0|-?[1-9]\d*)$/;
+	return regex.test( value );
+}
+
+function isPositiveInt( value )
+{
+	var regex = /^[1-9]\d*$/;
+	return regex.test( value );
+}
+
+function isNegativeInt( value )
+{
+	var regex = /^-[1-9]\d*$/;
+	return regex.test( value );
+}
+
+function isRealNumber( value )
+{
+	var regex = /^-?[0-9]*\.?[0-9]+$/;
+	return regex.test( value );
+}
+
+// Recommended in using this method
+// which same as name one from Ext
 function isNumber( value )
 {
 	var regex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
 	return regex.test( value );
-}
-
-function isInt(value)
-{
-	//var regex = /^\d+$/;
-	return ( parseInt(value) == value );
 }
 
 function isPositiveNumber( value )
