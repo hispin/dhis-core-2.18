@@ -58,7 +58,8 @@ a:visited
 	font-size: 11px;
 }
 
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button 
+{
 	font-family: LiberationSansRegular, arial, sans-serif !important;
 	font-size: 11px;
 }
@@ -438,7 +439,7 @@ div#menuDropDown3
   background-color: #dfe9f4;
 }
 
-.bold
+.bold, .bold td
 {
   font-family: LiberationSansBold, arial;
 }

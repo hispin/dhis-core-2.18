@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "create_new_message" )</h3>
+<h3>$i18n.getString( "write_new_message" )</h3>
 
 <form action="sendMessage.action" method="post">
 
