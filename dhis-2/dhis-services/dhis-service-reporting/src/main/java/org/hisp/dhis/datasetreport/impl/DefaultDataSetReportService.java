@@ -303,7 +303,6 @@ public class DefaultDataSetReportService
             // -----------------------------------------------------------------
 
             List<DataElement> dataElements = new ArrayList<DataElement>( section.getDataElements() );
-            Collections.sort( dataElements, new DataElementNameComparator() );
             FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
 
             for ( DataElement dataElement : dataElements )
