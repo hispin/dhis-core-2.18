@@ -47,12 +47,14 @@ a:visited
   color:#3b73b8;
 }
 
-.ui-widget {
+.ui-widget 
+{
 	font-family: LiberationSansRegular, arial, sans-serif !important;
 	font-size: 11px;
 }
 
-.ui-widget .ui-widget {
+.ui-widget .ui-widget 
+{
 	font-size: 11px;
 }
 
