@@ -291,7 +291,11 @@
 			<select id="organisationUnitLevel" name="organisationUnitLevel" style="min-width:640px" onchange="getOrganisationUnits()">
 				<option value="$ALL">[ $i18n.getString( "select_organisationunit_level_all" ) ]</option>
 				#foreach ( $level in $levels )
+					#if( $velocityCount == 1)
+					<option value="$level.level" selected="selected">$encoder.htmlEncode( $level.name )</option>
+					#else
 					<option value="$level.level">$encoder.htmlEncode( $level.name )</option>
+					#end
 				#end
 			</select>
 		</td>
