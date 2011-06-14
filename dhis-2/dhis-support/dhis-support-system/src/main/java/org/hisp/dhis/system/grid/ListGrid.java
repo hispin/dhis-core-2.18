@@ -318,7 +318,12 @@ public class ListGrid
     
     public Grid limitGrid( int limit )
     {
-        if ( limit > 0 )
+        if ( limit < 0 )
+        {
+            throw new IllegalStateException( "Illegal limit: " + limit );
+        }
+        
+        if ( limit > 0 && limit <= getHeight() )
         {
             grid = grid.subList( 0, limit );
         }
@@ -328,7 +333,7 @@ public class ListGrid
     
     public Grid limitGrid( int startPos, int endPos )
     {
-        if ( startPos < 0 || endPos < startPos || getHeight() < endPos )
+        if ( startPos < 0 || endPos < startPos || endPos > getHeight() )
         {
             throw new IllegalStateException( "Illegal start / end pos: " + startPos + ", " + endPos + ", " + getHeight() );
         }

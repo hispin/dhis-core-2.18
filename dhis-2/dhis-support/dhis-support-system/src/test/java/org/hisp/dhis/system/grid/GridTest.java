@@ -237,6 +237,36 @@ public class GridTest
     }
     
     @Test
+    public void testLimitShortList()
+    {
+        assertEquals( 4, grid.getRows().size() );
+        
+        grid.limitGrid( 6 );
+        
+        assertEquals( 4, grid.getRows().size() );
+
+        grid.limitGrid( 4 );
+        
+        assertEquals( 4, grid.getRows().size() );
+    }
+    
+    @Test
+    public void testLimits()
+    {
+        assertEquals( 4, grid.getRows().size() );
+        
+        grid.limitGrid( 1, 3 );
+        
+        assertEquals( 2, grid.getRows().size() );
+
+        List<Object> rowA = grid.getRow( 0 );
+        assertTrue( rowA.contains( 21 ) );
+
+        List<Object> rowB = grid.getRow( 1 );        
+        assertTrue( rowB.contains( 31 ) );        
+    }
+    
+    @Test
     public void testSortA()
     {
         Grid grid = new ListGrid();
