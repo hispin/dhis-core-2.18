@@ -254,16 +254,6 @@ function searchPatients()
 		});
 }
 
-/* function searchPatientsbyBackBtn()
-{
-	showLoader();
-	
-	var url  = 'searchPatient.action';
-	$('#listPatientDiv').load(url);
-	
-	hideLoader();
-} */
-
 // -----------------------------------------------------------------------------
 // Disable form
 // -----------------------------------------------------------------------------
@@ -688,6 +678,7 @@ function loadAllPatients()
 	jQuery('#listPatientDiv').load('searchPatient.action?listAll=true',
 		function(){
 			showById('listPatientDiv');
+			setInnerHTML( 'searchTextInfo', i18n_list_all_patient );
 			jQuery('#loaderDiv').hide();
 		});
 	hideLoader();
