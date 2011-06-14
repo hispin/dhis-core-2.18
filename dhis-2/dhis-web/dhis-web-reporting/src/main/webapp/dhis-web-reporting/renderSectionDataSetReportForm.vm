@@ -1,6 +1,9 @@
 <style>
-.val {
-  text-align:center;
+.gridTable th, .gridTable td
+{
+  text-align: center;
+  width: 90px;
+  line-height: 170%;
 }
 </style>
 
@@ -20,11 +23,11 @@
 <h3>$!encoder.htmlEncode( $grid.title )</h3>
 <h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
 
-<table class="listTable">
+<table class="listTable gridTable">
 <thead>
 <tr>
 #foreach( $header in $grid.getVisibleHeaders() )
-<th #if( !$header.meta )style="text-align:center"#end>$!encoder.htmlEncode( $header.name )</th>
+<th #if( $header.meta )style="text-align:left"#end>$!encoder.htmlEncode( $header.name )</th>
 #end
 </tr>
 </thead>
@@ -34,7 +37,7 @@
 <tr>
 #foreach( $col in $row )
 #set( $index = ( $velocityCount - 1 ) )
-#if( $grid.getVisibleHeaders().get( $index ).meta )<td>$!encoder.htmlEncode( $col )</td>#else <td class="val">$!format.formatValue( $col )</td>#end
+#if( $grid.getVisibleHeaders().get( $index ).meta )<td style="text-align:left">$!encoder.htmlEncode( $col )</td>#else <td>$!format.formatValue( $col )</td>#end
 #end
 </tr>
 #end

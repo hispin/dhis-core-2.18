@@ -3,11 +3,7 @@
 {
   text-align: center;
   width: 150px;
-}
-
-.gridLeft td
-{
-  text-align: left;
+  line-height: 170%;
 }
 </style>
 
