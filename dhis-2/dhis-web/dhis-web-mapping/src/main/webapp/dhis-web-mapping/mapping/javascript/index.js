@@ -2498,8 +2498,6 @@
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
 		handler: function() {
-console.log(G.stores.infrastructuralDataElementMapValue);
-return;            
             if (!adminWindow.hidden) {
                 adminWindow.hide();
             }
