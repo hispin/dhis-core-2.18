@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "create_new_feedback" )</h3>
+<h3>$i18n.getString( "write_new_feedback" )</h3>
 
 <form action="sendFeedback.action" method="post">
 

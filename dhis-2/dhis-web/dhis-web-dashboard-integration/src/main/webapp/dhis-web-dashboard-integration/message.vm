@@ -4,8 +4,11 @@
 
 <h3>$i18n.getString( "messages" )</h3>
 
-<div style="margin-bottom:15px"><input type="button" value="$i18n.getString( 'new_message' )" onclick="window.location.href='showSendMessage.action'">
-<br><input type="button" value="$i18n.getString( 'new_feedback' )" onclick="window.location.href='showSendFeedback.action'"></div>
+<div style="margin-bottom:15px">
+#if( $auth.hasAccess( "dhis-web-dashboard-integration", "sendMessage" ) )
+<input type="button" style="width:130px" value="$i18n.getString( 'write_message' )" onclick="window.location.href='showSendMessage.action'"><br>
+#end
+<input type="button" style="width:130px" value="$i18n.getString( 'write_feedback' )" onclick="window.location.href='showSendFeedback.action'"></div>
 
 <table style="width:90%" class="plainList">
 	<tr>
@@ -15,7 +18,7 @@
 		<th>$i18n.getString( "operations" )</th>
 	</tr>
 	#foreach( $message in $messages )
-	<tr id="tr${message.id}" #if( !$message.read )class="unread"#end>
+	<tr id="tr${message.id}" #if( !$message.read )class="unread bold"#end>
 		<td style="width:200px" onclick="read( '${message.id}' )">$encoder.htmlEncode( $message.message.sender.name )</td>
 		<td onclick="read( '${message.id}' )">$encoder.htmlEncode( $message.message.subject )</td>
 		<td onclick="read( '${message.id}' )" style="width:80px">$format.formatDate( $message.messageDate )</td>
