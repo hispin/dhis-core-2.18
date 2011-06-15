@@ -1141,6 +1141,26 @@
             </result>
         </action>
 -->     
-        
+       
+		<!-- Linelisting Web-Portal Reports -->
+		<action name="linelistingWebPortalReportAnalyser"
+			class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/linelstingWebPortalReportAnalyserFront.vm</param>
+			<param name="menu">/dhis-web-reports/menuWithTreeForLineListingWebPortalReport.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+			<param name="requiredAuthorities">F_REPORT_LINELIST</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		<action name="generateLinelistingWebPortalReport"
+			class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserResultAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${fileName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>		 
     </package>
 </struts>

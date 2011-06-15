@@ -1304,4 +1304,54 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
     
+	
+	<!-- Linelisting web-Portal Reports -->
+	<bean
+		id="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserFormAction"
+		class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserFormAction"
+		scope="prototype">
+		
+		<property name="periodService">
+			<ref bean="org.hisp.dhis.period.PeriodService"/>
+		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserResultAction"
+		class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserResultAction"
+		scope="prototype">
+		
+		<property name="statementManager" ref="statementManager"/>
+		
+		<property name="dataElementCategoryOptionComboService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		</property>
+		<property name="periodService">
+			<ref bean="org.hisp.dhis.period.PeriodService"/>
+		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+		</property>
+<!--		<property name="indicatorService">
+			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="aggregationService">
+			<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+		</property>-->
+<!--		<property name="dataValueService">
+			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+		</property>-->
+		<property name="reportService">
+			<ref bean="org.hisp.dhis.reports.ReportService"/>
+		</property>
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		
+	</bean>	
+	
 </beans>
