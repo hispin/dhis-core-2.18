@@ -7,7 +7,7 @@
 			connectedTo: 'groupMembersList',
 			handler: function(item) {
 				var option = jQuery("<option />");
-				option.text( item.surname + ", " + item.firstname );
+				option.text( item.surname + ", " + item.firstName );
 				option.attr( "value", item.id );
 
 				return option;

@@ -7,7 +7,7 @@
 			connectedTo: 'groupMembersList',
 			handler: function(item) {
 				var option = jQuery("<option />");
-				option.text( item.surname + ", " + item.firstname );
+				option.text( item.surname + ", " + item.firstName );
 				option.attr( "value", item.id );
 
 				return option;
@@ -71,7 +71,7 @@
         <td>
         	<select id="groupMembersList" name="groupMembersList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
 				#foreach( $user in $groupMembers )
-					<option value="$user.id">$encoder.htmlEncode( $user.surname ), $!encoder.htmlEncode( $user.firstname )</option>
+					<option value="$user.id">$encoder.htmlEncode( $user.surname ), $!encoder.htmlEncode( $user.firstName )</option>
 				#end
         	</select>
         </td>
