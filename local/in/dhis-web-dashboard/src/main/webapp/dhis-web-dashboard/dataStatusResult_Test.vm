@@ -8,22 +8,16 @@
             var startDate = "$sDateLB";
             var endDate = "$eDateLB";
             var dsType = "$selectedButton";
-            var includeZeros = "$includeZeros";
 
             function getImmChildInfo( evt, dsId, selOrgUnit )
             {
-            	//alert("DataStatus : " + dsId + ":" + selOrgUnit );
                 immChildOption = "yes";
                 if( document.getElementById('includeZeros').checked )
                 {
-                    //alert("inside include zero : " + immChildOption );
-                    //var urlForImmChild = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
-                    //alert( urlForImmChild );
                     evt.target.href = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
                 }
                 else
                 {
-                    alert("inside include zero null");
                     evt.target.href = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
                 }
             }
@@ -117,22 +111,22 @@
                                 #end
 
                                 #set( $dsresultList = $ouMapDataStatusResult.get( $chiildorgUnit ) )
-                                #set( $dataElementCounts = $ouMapDataElementCount.get( $chiildorgUnit ) )
-                                #set( $periodCounts = $periodList )
+                                ##set( $dataElementCounts = $ouMapDataElementCount.get( $chiildorgUnit ) )
+                                ##set( $periodCounts = $periodList )
                                 #set( $count2 = 0 )
                                 #foreach( $result in $dsresultList )
-                                    #set( $deCount = $dataElementCounts.get( $count2 ) )
-                                    #set( $periodCount = $periodCounts.get( $count2 ) )
-                                    #if( $result < 0 )
+                                    ##set( $deCount = $dataElementCounts.get( $count2 ) )
+                                    ##set( $periodCount = $periodCounts.get( $count2 ) )
+                                    #if( !$result )
                                         <td  bgcolor="white">&nbsp;</td>
-                                    #elseif( $result == 0 )
-                                        <td align="center" bgcolor="#ff0000"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
-                                    #elseif( $result > 75 )
-                                        <td align="center" bgcolor="#a0c0a0"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
-                                    #elseif( $result > 40 && $result <= 75 )
-                                        <td align="center" bgcolor="#a0a0ff"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                    #elseif( $result.percentage == 0 )
+                                        <td align="center" bgcolor="#ff0000"><font color="#ffffff">$result.percentage%  ( $result.registrations ) </font></td>
+                                    #elseif( $result.percentage > 75 )
+                                        <td align="center" bgcolor="#a0c0a0"><font color="#ffffff">$result.percentage%  ( $result.registrations )</font></td>
+                                    #elseif( $result.percentage > 40 && $result.percentage <= 75 )
+                                        <td align="center" bgcolor="#a0a0ff"><font color="#ffffff">$result.percentage%  ( $result.registrations ) </font></td>
                                     #else
-                                        <td align="center" bgcolor="#905090"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                        <td align="center" bgcolor="#905090"><font color="#ffffff">$result.percentage%  ( $result.registrations ) </font></td>
                                     #end
                                     #set( $count2 = $count2 + 1 )
                                 #end

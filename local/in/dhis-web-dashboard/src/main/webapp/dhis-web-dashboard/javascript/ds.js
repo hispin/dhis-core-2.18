@@ -9,7 +9,7 @@ function remOUFunction()
             document.ChartGenerationForm.orgUnitListCB.options[i] = null;
     }
 }// remOUFunction end
-
+/*
 function getImmChildInfo(evt, dsId, selOrgUnit)
 {
 
@@ -19,7 +19,7 @@ function getImmChildInfo(evt, dsId, selOrgUnit)
     		
     evt.target.href = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit;
 }
-
+*/
 function getImmChildInfo1(evt, dsId, selOrgUnit)
 {
 
@@ -142,8 +142,19 @@ function textvalue(summary)
         
         else
         {
-            document.ChartGenerationForm.action = "dataStatusResult.action";
-            document.ChartGenerationForm.submit();
+            var dataEntryStatus = document.getElementById("usingDataEntryStatus").checked;
+        	//alert( dataEntryStatus );
+        	if ( dataEntryStatus == true )
+        	{
+        		document.ChartGenerationForm.action = "dataEntryStatusResult.action";
+                document.ChartGenerationForm.submit();
+        	}
+        	else
+        	{
+               	document.ChartGenerationForm.action = "dataStatusResult.action";
+                document.ChartGenerationForm.submit();
+        	}
+ 
         }
     }
   	 

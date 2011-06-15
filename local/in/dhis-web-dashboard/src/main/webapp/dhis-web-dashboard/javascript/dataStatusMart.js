@@ -1,3 +1,43 @@
+
+// J query validation
+jQuery(document).ready(function()
+{
+    validation2('dataStatusMartForm', function( form )
+    {
+        validateDataEntryStatusForm(form);
+    },
+    {
+        'beforeValidateHandler' : function() {
+            $("#selectedPeriods option").each(function() { $(this).attr("selected", "true"); });
+            $("#selectedDataSets option").each(function() { $(this).attr("selected", "true"); });
+        },
+        'rules' : getValidationRules("dataLocking")
+    });
+});
+
+// for Validation of form
+function validateDataEntryStatusForm( form )
+{
+	var url = "validateDataEntryStatus.action?";
+		url += getParamString( "selectedPeriods", "selectedPeriods" );
+		url += "&" + getParamString( "selectedDataSets", "selectedDataSets" );
+
+	$.postJSON( url, {}, function( json )
+	{
+		if ( json.response == "input" )
+		{
+			setHeaderDelayMessage( json.message );
+		}
+		else if ( json.response == "success" )
+		{
+			selectAllById( "selectedPeriods" );
+			selectAllById( "selectedDataSets" ); 
+			form.submit();
+		}
+	});
+}
+
+
 function getPeriods()
 {
 	var periodTypeList = byId("periodTypeId");
@@ -24,7 +64,7 @@ function getPeriods()
 		});
 	}
 	
-	enable("lock");
+	enable("calculate");
 	enable("unlock");
 	enable("availablePeriods");
 	

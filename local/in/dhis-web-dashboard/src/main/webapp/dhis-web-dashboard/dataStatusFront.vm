@@ -52,11 +52,11 @@
                 <select id="eDateLB" name="eDateLB" style="width:300px"></select>
             </td>
             <td class="NormalB">
-                <input type="checkbox" name="includeZeros" id="includeZeros" checked> Include Zero
+                <input type="checkbox" name="includeZeros" id="includeZeros" checked> Include Zero &nbsp;&nbsp; <input type="checkbox" name="usingDataEntryStatus" id="usingDataEntryStatus" > Data Entry Status
                 <br/><br/>
-                <input type="button" name="ViewStatus" value="View DataStatus" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('DataStatus')"/><br/><br/>
-                <input type="button" name="ViewGroupWise" value="View By Data Element Group" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('GroupWiseStatus')"/><br/><br/>
-                <input type="button" name="ViewSummary" value="View DataSummary" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('SummaryStatus')"/><br/><br/>
+                <input type="button" name="ViewStatus" value="View DataStatus - Data Set" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('DataStatus')"/><br/><br/>
+                <input type="button" name="ViewGroupWise" value="View DataStatus - Data Element Group" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('GroupWiseStatus')"/><br/><br/>
+                <input type="button" name="ViewSummary" value="View DataSummary - Data Set" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('SummaryStatus')"/><br/><br/>
                 <input type="button" name="LastUpdatedStatus" value="User Details" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('LastUpdatedStatus')"/><br/><br/>
                 <input type="button" name="ValidationStatus" value="Validation Status" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('ValidationStatus')"/>
             </td>

@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "data_locking_form" ) #openHelp( "dataLocking" )</h3>
+<h3>$i18n.getString( "data_status_mart" )</h3>
 	
 <form id="dataStatusMartForm" name="dataStatusMartForm" action="calculateDataStatus.action" method="POST">
 	<input type="hidden" id="selectForDataStatusMart" name="selectForDataStatusMart"/>
@@ -6,7 +6,7 @@
 		<tr>
 			<td valign="top">
 				<table valign="top">
-					<tr><th>$i18n.getString( "period_type" )</th></tr>
+					<tr><th>$i18n.getString( "period_type" )</th><td></td><td><input type="checkbox" name="includeZeros" id="includeZeros" checked> Include Zero</td></tr>
 					<tr>
 						<td>
 							<select id="periodTypeId" name="periodTypeId" style="min-width:325px" onchange="getPeriods()">
@@ -61,12 +61,12 @@
 	</table>
 	<table>
 		<tr>
-			<td>#organisationUnitSelectionTree( true, true, false )</td>										
+			<td>#organisationUnitSelectionTree( false, true, false )</td>										
 		</tr>
 		<tr></tr>
 		<tr>
 			<td>
-				<input type="submit" id="lock" name="lock" value="$i18n.getString( 'calculate' )" style="width:10em" disabled="true" />
+				<input type="submit" id="calculate" name="calculate" value="$i18n.getString( 'calculate' )" style="width:10em" disabled="true" />
 				###if( $auth.hasAccess( "dhis-web-maintenance-dataadmin", "collectiveDataLockingForUnlocking") )
 					##<input type="submit" id="unlock" name="unlock" onclick="setClickedButtonElementValue( false )" value="$i18n.getString( 'unlock' )" style="width:10em" disabled="true"/>
 			##	#end	
