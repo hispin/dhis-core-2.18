@@ -199,7 +199,8 @@ public class GenerateGroupWiseDataStatusResultAction
     {
         return maxOULevel;
     }
-
+    
+    
     // ---------------------------------------------------------------
     // Input Parameters
     // ---------------------------------------------------------------
@@ -227,6 +228,11 @@ public class GenerateGroupWiseDataStatusResultAction
     }
 
     private String immChildOption;
+
+    public String getImmChildOption()
+    {
+        return immChildOption;
+    }
 
     public void setImmChildOption( String immChildOption )
     {
@@ -339,12 +345,33 @@ public class GenerateGroupWiseDataStatusResultAction
     {
         return dsSize;
     }
-    
+/*    
     private List<Integer> dataElementCount;
     
     public List<Integer> getDataElementCount()
     {
         return dataElementCount;
+    }
+*/
+    private Integer dataElementCount;
+    
+    public Integer getDataElementCount()
+    {
+        return dataElementCount;
+    }
+    
+    private Map<DataElementGroup, Map<OrganisationUnit, List<Integer>>> ouGroupMapDeMapCount;
+    
+    public Map<DataElementGroup, Map<OrganisationUnit, List<Integer>>> getOuGroupMapDeMapCount()
+    {
+        return ouGroupMapDeMapCount;
+    }
+    
+    private Map<OrganisationUnit, List<Integer>> ouMapDataElementCount;
+    
+    public Map<OrganisationUnit, List<Integer>> getOuMapDataElementCount()
+    {
+        return ouMapDataElementCount;
     }
     
     // ---------------------------------------------------------------
@@ -365,7 +392,9 @@ public class GenerateGroupWiseDataStatusResultAction
         deMapGroupCount = new HashMap<DataElementGroup, Integer>(); // dataelement Group Count
         
         results = new ArrayList<Integer>();
-        dataElementCount = new ArrayList<Integer>();
+        
+        ouGroupMapDeMapCount = new HashMap<DataElementGroup,Map<OrganisationUnit, List<Integer>>>();
+        //dataElementCount = new ArrayList<Integer>();
         
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
@@ -537,7 +566,7 @@ public class GenerateGroupWiseDataStatusResultAction
             OrganisationUnit o;
             Set<OrganisationUnit> dso = new HashSet<OrganisationUnit>();
             Iterator<Period> periodIterator;
-
+            ouMapDataElementCount = new HashMap<OrganisationUnit,List<Integer>>();//Map for DataElement count
             while ( orgUnitListIterator.hasNext() )
             {
                 o = orgUnitListIterator.next();
@@ -556,21 +585,24 @@ public class GenerateGroupWiseDataStatusResultAction
               //  @SuppressWarnings("unused")
                // Collection dataValueResult;
                 double dataStatusPercentatge;
-                int tempDataElementCount = 0;
-
+                //int tempDataElementCount = 0;
+                List<Integer> deCounts = new ArrayList<Integer>();
                 while ( periodIterator.hasNext() )
                 {
                     p = (Period) periodIterator.next();
                     periodInfo = "" + p.getId();
-
+                    dataElementCount = 0;
+                    
                     if ( dso == null )
                     {
                         results.add( -1 );
-                        dataElementCount.add( -1 );
+                        //dataElementCount.add( -1 );
+                        deCounts.add( -1 );
                         continue;
                     }
                     else if ( !dso.contains( o ) )
                     {
+                        /*
                         orgUnitInfo = "-1";
                         orgUnitCount = 0;
                         getOrgUnitInfo( o, dso );
@@ -610,9 +642,11 @@ public class GenerateGroupWiseDataStatusResultAction
 
                         tempDataElementCount = sqlResultSet.getInt( 1 );
                         dataElementCount.add( tempDataElementCount );
-                        
-                        results.add( (int) dataStatusPercentatge );
-                        dataElementCount.add( -1 );
+                        */
+                        //results.add( (int) dataStatusPercentatge );
+                        //dataElementCount.add( -1 );
+                        results.add( -1 );
+                        deCounts.add( -1 );
                         continue;
                     }
 
@@ -635,27 +669,37 @@ public class GenerateGroupWiseDataStatusResultAction
                     {
                         try
                         {
+                            dataElementCount = sqlResultSet.getInt( 1 );
                             dataStatusPercentatge = ((double) sqlResultSet.getInt( 1 ) / (double) deGroupMemberCount1) * 100.0;
                         }
                         catch ( Exception e )
                         {
                             dataStatusPercentatge = 0.0;
+                            dataElementCount = -1;
                         }
                     }
                     else
+                    {   
                         dataStatusPercentatge = 0.0;
+                        dataElementCount = -1;
+                        
+                    }
+ 
 
                     if ( dataStatusPercentatge > 100.0 )
                         dataStatusPercentatge = 100;
 
                     dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
                     
-                    tempDataElementCount = sqlResultSet.getInt( 1 );
-                    dataElementCount.add( tempDataElementCount );
+                    //tempDataElementCount = sqlResultSet.getInt( 1 );
+                   // dataElementCount.add( tempDataElementCount );
+                    deCounts.add( dataElementCount );
                     
                     results.add( (int) dataStatusPercentatge );
                 }
+                ouMapDataElementCount.put( o, deCounts );
             }
+            ouGroupMapDeMapCount.put( deg, ouMapDataElementCount );
         }
 
         // For Level Names
@@ -818,7 +862,7 @@ public class GenerateGroupWiseDataStatusResultAction
             getOrgUnitInfo( child );
         }
     }
-
+/*
     private void getOrgUnitInfo( OrganisationUnit organisationUnit, Set<OrganisationUnit> dso )
     {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
@@ -836,7 +880,7 @@ public class GenerateGroupWiseDataStatusResultAction
             getOrgUnitInfo( child, dso );
         }
     }
-
+*/
     private String getDEInfo( Collection<DataElement> dataElements )
     {
         StringBuffer deInfo = new StringBuffer( "-1" );

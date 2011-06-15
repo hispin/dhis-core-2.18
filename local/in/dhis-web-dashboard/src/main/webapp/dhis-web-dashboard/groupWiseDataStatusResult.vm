@@ -69,6 +69,7 @@
                     #foreach($dataElementGroup in $dataElementGroups)
             <br><br>
                         #set( $deGroupCount = $deMapGroupCount.get($dataElementGroup) )
+                        #set( $ouMapDeCount = $ouGroupMapDeMapCount.get($dataElementGroup) )
                         <div align="left" class="NormalB">Data Element Group : $dataElementGroup.name  ( $!deGroupCount )</div>
                         <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">       
                               <tr class="TableHeadingCellStyles" align="center">
@@ -93,21 +94,25 @@
                                           #set($count1 = $count1 + 1)
                                       #end
                                           #set($periods = $dataSetPeriods.get($selDataSet))
+                                          #set( $dataElementCounts = $ouMapDeCount.get( $chiildorgUnit ) )
+                                          #set($count3 = 0)
                                           #foreach($period in $periods)
                                               #set($result = $results.get($count2))
-                                              #set($dataElement = $dataElementCount.get($count2))
+                                              ##set($dataElement = $dataElementCount.get($count2))
+                                              #set( $deCount = $dataElementCounts.get( $count3 ) )
                             
                             #if($result < 0) 
                                 <td  bgcolor="white">&nbsp;</td>
                                               #elseif($result == 0)
-                                                  <td align="center" bgcolor="#ff0000"><font color="#ffffff">$result% #if( $dataElement != -1 ) ( $dataElement )  #end</font></td>
+                                                  <td align="center" bgcolor="#ff0000"><font color="#ffffff">$result% #if( $deCount != -1 ) ( $deCount )  #end</font></td>
                                               #elseif($result > 75)
-                                                  <td align="center" bgcolor="#a0c0a0"><font color="#ffffff">$result% #if( $dataElement != -1 ) ( $dataElement )  #end</font></td>
+                                                  <td align="center" bgcolor="#a0c0a0"><font color="#ffffff">$result% #if( $deCount != -1 ) ( $deCount )  #end</font></td>
                                               #elseif($result > 40 && $result <= 75 )
-                                                  <td align="center" bgcolor="#a0a0ff"><font color="#ffffff">$result% #if( $dataElement != -1 ) ( $dataElement )  #end</font></td>
+                                                  <td align="center" bgcolor="#a0a0ff"><font color="#ffffff">$result% #if( $deCount != -1 ) ( $deCount )  #end</font></td>
                                               #else
-                                                  <td align="center" bgcolor="#905090"><font color="#ffffff">$result% #if( $dataElement != -1 ) ( $dataElement )  #end</font></td>
+                                                  <td align="center" bgcolor="#905090"><font color="#ffffff">$result% #if( $deCount != -1 ) ( $deCount )  #end</font></td>
                                               #end
+                                              #set($count3 = $count3 + 1)
                                               #set($count2 = $count2 + 1)
                                           #end
                                       </tr>

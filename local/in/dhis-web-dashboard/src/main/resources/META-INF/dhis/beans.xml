@@ -611,6 +611,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
+<!--		<property name="serviceProvider" ref="dataCompletenessServiceProvider"/>-->
     </bean>
 	
 	 <!-- Null report for DataEntry Status -->
@@ -672,7 +673,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
     </bean>			
-		
+
+	
+
+			
 	
 	
 	
@@ -1334,5 +1338,57 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     </bean>
+	
+	<!-- Data Entry Status -->
+	
+    <bean id="org.hisp.dhis.dataanalyser.ds.action.DataEntryStatusSaveAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.DataEntryStatusSaveAction"
+		scope="prototype">
+        <property name="currentUserService">
+            <ref bean="org.hisp.dhis.user.CurrentUserService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="dataEntryStatusService">
+            <ref bean="org.hisp.dhis.dataentrystatus.DataEntryStatusService"/>
+        </property>
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"></ref>
+		</property>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>		
+	<!-- Data Entry Status Validation -->
+    <bean id="org.hisp.dhis.dataanalyser.dsMart.action.ValidateDataEntryStatusAction"
+		class="org.hisp.dhis.dataanalyser.dsMart.action.ValidateDataEntryStatusAction"
+		scope="prototype">
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"></ref>
+		</property>
+    </bean>			
+		
+	<!-- Data Entry Status -->
+	
+    <bean id="org.hisp.dhis.dataanalyser.dsMart.action.GenerateDataEntryStatusResultAction"
+		class="org.hisp.dhis.dataanalyser.dsMart.action.GenerateDataEntryStatusResultAction"
+		scope="prototype">
+        <property name="dashBoardService">
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>	
 	
 </beans>

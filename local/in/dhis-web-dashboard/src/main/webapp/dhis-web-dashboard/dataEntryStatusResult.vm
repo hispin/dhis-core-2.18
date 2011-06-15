@@ -1,4 +1,3 @@
-
 <html>
     <head>
     <title>DataStatus Result</title>
@@ -8,23 +7,23 @@
             var startDate = "$sDateLB";
             var endDate = "$eDateLB";
             var dsType = "$selectedButton";
-            var includeZeros = "$includeZeros";
-
+			var includeZeros = "$includeZeros";
+		
             function getImmChildInfo( evt, dsId, selOrgUnit )
             {
-            	//alert("DataStatus : " + dsId + ":" + selOrgUnit );
+                //alert("Data Entry Status : " + dsId + ":" + selOrgUnit + ":" + includeZeros );
                 immChildOption = "yes";
                 if( document.getElementById('includeZeros').checked )
                 {
                     //alert("inside include zero : " + immChildOption );
-                    //var urlForImmChild = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
+                   // var urlForImmChild = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
                     //alert( urlForImmChild );
-                    evt.target.href = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
+                    evt.target.href = "dataEntryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
                 }
                 else
                 {
-                    alert("inside include zero null");
-                    evt.target.href = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
+               	    alert("inside include zero null");
+                    evt.target.href = "dataEntryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
                 }
             }
             function exportDataStatusResultToWorkBook()
@@ -52,8 +51,8 @@
     </head>
     <body>
 
-        #if( "$!ouMapDataStatusResult" == "" || $ouMapDataStatusResult.isEmpty() || $ouMapDataStatusResult.size() == 0 )
-            <div align="center" class="NormalB">Selected OrgUnit and its Children are Not assigned to $selDataSet.name</div>
+        #if( "$!ouMapDataEntryStatusResult" == "" || $ouMapDataEntryStatusResult.isEmpty() || $ouMapDataEntryStatusResult.size() == 0 )
+            <div align="center" class="NormalB">Data Entry Status Mart is not Generated for the Selected Options</div>
         #else
             <form id="form1" name="form1" action="exportDataStatusToExcel.action" method="post" onsubmit="return exportDataStatusResultToWorkBook()" target="_newtab">
                 <input type="hidden" name="htmlCode" id="htmlCode" />
@@ -84,14 +83,18 @@
                                 <td align="left">&nbsp;Not Entered ( 0 ) %</td>
                             </tr>
                             <tr class="TableDataCellStyles">
-                                <td bgcolor="white">&nbsp;</td>
+                                <td bgcolor="blue">&nbsp;</td>
                                 <td align="left">&nbsp;Not Assigned</td>
-                            </tr>                     
+                            </tr>
+                            <tr class="TableDataCellStyles">
+                                <td bgcolor="white">&nbsp;</td>
+                                <td align="left">&nbsp;Data Not Mart</td>
+                            </tr>                                                                    
                         </table>
                     </div>
 
                     <br><br>
-                    <div align="left" class="NormalB">DataSet : $selDataSet.name ( $dataSetMemberCount1 )</div>
+                    <div align="left" class="NormalB">DataSet : $dataSetName ( $totalDataElementCount )</div>
                     <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">
                         <tr class="TableHeadingCellStyles" align="center">
                             #foreach($levelName in $levelNames)
@@ -116,23 +119,33 @@
                                     #set($count1 = $count1 + 1)
                                 #end
 
-                                #set( $dsresultList = $ouMapDataStatusResult.get( $chiildorgUnit ) )
-                                #set( $dataElementCounts = $ouMapDataElementCount.get( $chiildorgUnit ) )
-                                #set( $periodCounts = $periodList )
+                                ##set( $dsresultList = $ouMapDataStatusResult.get( $chiildorgUnit ) )
+                                ##set( $dataElementCounts = $ouMapDataElementCount.get( $chiildorgUnit ) )
+                                ##set( $periodCounts = $periodList )
+                                
                                 #set( $count2 = 0 )
-                                #foreach( $result in $dsresultList )
-                                    #set( $deCount = $dataElementCounts.get( $count2 ) )
-                                    #set( $periodCount = $periodCounts.get( $count2 ) )
-                                    #if( $result < 0 )
-                                        <td  bgcolor="white">&nbsp;</td>
+                                #foreach( $period in $periodList )
+                                	#set( $result = -1 )
+                                	#set( $result = $ouMapDataEntryStatusResult.get( "$chiildorgUnit.id:$period.id" ) )
+                                	#set( $deCount = $ouMapDataElementCount.get( "$chiildorgUnit.id:$period.id" ) )
+                                	
+                                    ##set( $result = $dsresultList.get( $count2 ) )
+                                    ##set( $deCount = $dataElementCounts.get( $count2 ) )
+                                    
+                                    ##set( $deCount = $dataElementCounts.get( $count2 ) )
+                                    ##set( $periodCount = $periodCounts.get( $count2 ) )
+                                    #if( !$dataSetSources.contains( $chiildorgUnit ) )
+                                        <td  bgcolor="blue">&nbsp;</td>
+                                    #elseif( $result < 0 )
+                                    	<td  bgcolor="white">&nbsp;</td>
                                     #elseif( $result == 0 )
-                                        <td align="center" bgcolor="#ff0000"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                        <td align="center" bgcolor="#ff0000"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$period.id','$chiildorgUnit.id')">$result%  ( $deCount ) </a></font></td>
                                     #elseif( $result > 75 )
-                                        <td align="center" bgcolor="#a0c0a0"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                        <td align="center" bgcolor="#a0c0a0"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$period.id','$chiildorgUnit.id')">$result%  ( $deCount ) </a></font></td>
                                     #elseif( $result > 40 && $result <= 75 )
-                                        <td align="center" bgcolor="#a0a0ff"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                        <td align="center" bgcolor="#a0a0ff"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$period.id','$chiildorgUnit.id')">$result%  ( $deCount ) </a></font></td>
                                     #else
-                                        <td align="center" bgcolor="#905090"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                        <td align="center" bgcolor="#905090"><font color="#ffffff"><a href="javascript:getNullReportInfo('$selDataSet.id','$period.id','$chiildorgUnit.id')">$result%  ( $deCount ) </a></font></td>
                                     #end
                                     #set( $count2 = $count2 + 1 )
                                 #end
