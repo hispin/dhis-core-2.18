@@ -28,10 +28,12 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -70,6 +72,8 @@ public class GetValidationRulesAction
     public String execute()
     {
         validationRules = new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() );
+
+        Collections.sort( validationRules, new ValidationRuleNameComparator() );
 
         return SUCCESS;
     }

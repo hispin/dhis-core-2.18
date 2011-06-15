@@ -110,16 +110,6 @@ public class ShowUpdateValidationRuleGroupFormAction
 
         Collections.sort( groupMembers, new ValidationRuleNameComparator() );
 
-        // ---------------------------------------------------------------------
-        // Get available ValidationRules
-        // ---------------------------------------------------------------------
-
-        availableValidationRules = new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() );
-
-        availableValidationRules.removeAll( groupMembers );
-
-        Collections.sort( availableValidationRules, new ValidationRuleNameComparator() );
-
         return SUCCESS;
     }
 

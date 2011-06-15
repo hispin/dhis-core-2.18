@@ -96,7 +96,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
       
-    <action name="showAddValidationRuleGroupForm" class="org.hisp.dhis.validationrule.action.validationrulegroup.GetValidationRuleGroupMembersAction">
+    <action name="showAddValidationRuleGroupForm" class="org.hisp.dhis.validationrule.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-validationrule/addValidationRuleGroupForm.vm</param>
       <param name="javascripts">javascript/validationRuleGroup.js, javascript/addValidationRuleGroupForm.js</param>
