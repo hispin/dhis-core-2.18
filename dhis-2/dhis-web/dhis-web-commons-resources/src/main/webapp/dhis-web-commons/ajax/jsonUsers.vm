@@ -4,7 +4,7 @@
   {
     "id": ${user.id},
     "surname": "$!encoder.jsonEncode( ${user.surname} )",
-    "firstname": "$!encoder.jsonEncode( ${user.firstName} )",
+    "firstName": "$!encoder.jsonEncode( ${user.firstName} )",
     "email": "$!encoder.jsonEncode( ${user.email} )",
     "phoneNumber": "$!encoder.jsonEncode( ${user.phoneNumber} )"
   }#if( $velocityCount < $size ),#end
