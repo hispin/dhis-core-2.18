@@ -272,7 +272,7 @@ public class DefaultReportService
         {
             dataElementid = 1020;
         }
-        else if ( lltype.equalsIgnoreCase( "lldeath-l4DECodes.xml" ) || lltype.equalsIgnoreCase( "lldeath-l5DECodes.xml" ) || lltype.equalsIgnoreCase( "lldeath-l6DECodes.xml" ) )
+        else if ( lltype.equalsIgnoreCase( "lldeath-l4DECodes.xml" ) || lltype.equalsIgnoreCase( "lldeath-l5DECodes.xml" ) || lltype.equalsIgnoreCase( "lldeath-l6DECodes.xml" ) || lltype.equalsIgnoreCase( "monthly_SCWebPortalDECodes.xml" ) )
         {
            dataElementid = 1027;
         }
