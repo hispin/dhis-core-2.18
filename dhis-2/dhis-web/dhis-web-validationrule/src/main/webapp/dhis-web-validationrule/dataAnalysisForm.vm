@@ -1,5 +1,18 @@
 <script type="text/javascript">
 	jQuery(document).ready(function(){
+		jQuery("#availableDataSets").dhisAjaxSelect({
+			source: "../dhis-web-commons-ajax-json/getDataSets.action",
+			iterator: "dataSets",
+			connectedTo: 'dataSets',
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			}
+		});
+
 		datePickerInRange( 'fromDate' , 'toDate' );	
 	});
 
@@ -33,35 +46,33 @@
     </tr>
  </table>
  
- <table>
+<table style="margin-top: 15px; margin-bottom: 15px;">
+    <col style="width: 450px"/>
+    <col/>
+    <col style="width: 450px"/>
+
 	<tr>
 		<th style="min-width:325px;">$i18n.getString( "available_data_sets" )</th>
-		<td></td>
+		<th></th>
 		<th style="min-width:325px;">$i18n.getString( "selected_data_sets" )</th>
 	</tr>
+
 	<tr>
 		<td>
-			<select id="availableDataSets" name="availableDataSets" multiple="multiple" style="min-width:325px" size="8" ondblclick="moveSelectedById( 'availableDataSets', 'dataSets' )">
-			#foreach ( $dataSet in $dataSets )
-				<option value="$dataSet.id">$encoder.htmlEncode( "$dataSet.name" )</option>
-			#end
-			</select>
+            <select id="availableDataSets" name="availableDataSets" multiple="multiple" style="height: 200px; width: 100%;"></select>
 		</td>
-		<td align="center">
-			<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'availableDataSets', 'dataSets' )"><br>
-			<input type="button" value="&lt;" title="$i18n.getString( 'move_all' )" style="width:40px" onclick="moveSelectedById( 'dataSets', 'availableDataSets' )"><br>		
-			<input type="button" value="&gt;&gt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveAllById( 'availableDataSets', 'dataSets' )"><br>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString( 'remove_all' )" style="width:40px" onclick="moveAllById( 'dataSets', 'availableDataSets' )">
-		</td>
+
+        <td style="text-align:center">
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableDataSets' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'dataSets' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableDataSets' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'dataSets' );"/>
+        </td>
+
 		<td>
-			<select id="dataSets" name="dataSets" multiple="multiple" style="min-width:325px" size="8" ondblclick="moveSelectedById( 'dataSets', 'availableDataSets' )">
-			</select>
+            <select id="dataSets" name="dataSets" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px">
 		</td>
 	</tr>
-    <tr>
-        <td colspan="3" style="height:10px">
-        </td>
-    </tr>
 </table>
 
 <table>
