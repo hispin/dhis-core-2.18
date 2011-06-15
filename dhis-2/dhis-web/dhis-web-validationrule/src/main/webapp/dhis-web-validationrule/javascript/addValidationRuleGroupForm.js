@@ -11,6 +11,4 @@ jQuery(document).ready(function() {
 	});
 
 	checkValueIsExist("name", "validateValidationRuleGroup.action");
-
-	initLists();
 });
