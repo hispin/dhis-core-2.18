@@ -308,11 +308,6 @@
     <property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
   </bean>
 
-  <bean id="org.hisp.dhis.about.action.SendFeedbackAction" class="org.hisp.dhis.about.action.SendFeedbackAction"
-    scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-  </bean>
-
   <bean id="org.hisp.dhis.help.action.GetHelpContentAction" class="org.hisp.dhis.help.action.GetHelpContentAction"
     scope="prototype">
     <property name="helpManager" ref="org.hisp.dhis.options.help.HelpManager" />
