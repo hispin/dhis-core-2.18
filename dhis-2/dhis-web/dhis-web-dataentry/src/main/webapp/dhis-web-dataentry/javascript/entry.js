@@ -106,32 +106,36 @@ function saveValueInternal( dataElementId, optionComboId, dataElementName )
     {
         if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
         {
-            if ( type == 'int' && !isInt( field.value ) )
+			if ( isValidZeroNumber( field.value ) )
+            {
+                // If value is 0 and zero is not significant for data element, then skip value				
+				if ( significantZeros.indexOf( dataElementId ) == -1 )
+				{
+					window.alert( i18n_field_unallowed_save_zero + '\n\n' + dataElementName );
+					return alertField( field );
+				}
+				
+				field.value = isPureZero( field.value ) ? "0" : "0.0";
+            }
+			else if ( type == 'int' && !isInt( field.value ) && ( field.value.length >= 255 ) )
             {
             	window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
                 return alertField( field );
             }  
-            else if ( type == 'number' && !isRealNumber( field.value ) )
+            else if ( type == 'number' && !isRealNumber( field.value ) && ( field.value.length >= 255 ) )
             {
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
                 return alertField( field );
             } 
-			else if ( type == 'positiveNumber' && !isPositiveInt( field.value ) )
+			else if ( type == 'positiveNumber' && !isPositiveInt( field.value ) && ( field.value.length >= 255 ) )
             {
                 window.alert( i18n_value_must_positive_integer + '\n\n' + dataElementName );
                 return alertField( field );
             } 
-			else if ( type == 'negativeNumber' && !isNegativeInt( field.value ) )
+			else if ( type == 'negativeNumber' && !isNegativeInt( field.value ) && ( field.value.length >= 255 ) )
             {
                 window.alert( i18n_value_must_negative_integer + '\n\n' + dataElementName );
                 return alertField( field );
-            }
-            else if ( isZeroNumber( field.value ) && significantZeros.indexOf( dataElementId ) == -1 )
-            {
-                // If value is 0 and zero is not significant for data element, then skip value
-                
-                field.style.backgroundColor = COLOR_GREEN;
-                return;
             }
             else
             {
@@ -164,7 +168,7 @@ function saveValueInternal( dataElementId, optionComboId, dataElementName )
                         return;
                     }
                 }
-            }       
+            }      
         }
     }
 
