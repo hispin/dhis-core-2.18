@@ -67,6 +67,12 @@
 		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {aggregationOperator: aggregationOperator, usePaging: true, key: key, includeTotals: true} );
 
 		checkAggregationOperator();
+	}
+
+	function clearSearchText()
+	{
+		jQuery( "#indicator-expression-container input[id=filter]").val("");
+		getOperandsPage();
 	}	
 	
 	function getExpressionText()
@@ -191,8 +197,9 @@
 		<td></td>
 		<td valign="top">
 			<label>$encoder.htmlEncode( $i18n.getString( "filter_by_name" ) )</label><br/>
-			<input type="text" id="filter" name="filter" style="width:400px">
-			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px"><br/>
+			<input type="text" id="filter" name="filter" style="width:370px">
+			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px">
+			<input type="button" value="$i18n.getString( 'clear' )" onclick="clearSearchText();" style="width:60px"><br/>
 
 			<select id="dataElementId" name="dataElementId" size="7" style="width:510px" ondblclick="insertText( 'expression', this.value )">
 			</select>
