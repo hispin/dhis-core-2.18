@@ -124,13 +124,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.validationrule.action.validationrulegroup.GetValidationRuleGroupMembersAction" class="org.hisp.dhis.validationrule.action.validationrulegroup.GetValidationRuleGroupMembersAction"
-    scope="prototype">
-    <property name="validationRuleService">
-      <ref bean="org.hisp.dhis.validation.ValidationRuleService" />
-    </property>
-  </bean>
-
   <bean id="org.hisp.dhis.validationrule.action.validationrulegroup.RemoveValidationRuleGroupAction" class="org.hisp.dhis.validationrule.action.validationrulegroup.RemoveValidationRuleGroupAction"
     scope="prototype">
     <property name="validationRuleService">
