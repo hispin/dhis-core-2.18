@@ -488,12 +488,12 @@ public class DefaultCaseAggregationConditionService
 
     private String getConditionForPatientAttribute( int attributeId, int orgunitId, String startDate, String endDate )
     {
-        return "distinct(pi.patientid) FROM programstageinstance as psi "
+        return "SELECT distinct(pi.patientid) FROM programstageinstance as psi "
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
             + "INNER JOIN patientattributevalue as pav ON pav.patientid = pi.patientid "
-            + "WHERE pa.patientattributevalueid = " + attributeId + " " + " AND pd.organisationunitid = " + orgunitId
+            + "WHERE pav.patientattributeid = " + attributeId + " " + " AND pd.organisationunitid = " + orgunitId
             + " " + " AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
             + "AND pav.value ";
     }
