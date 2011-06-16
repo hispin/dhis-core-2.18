@@ -154,6 +154,8 @@
 				<td>
 					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="width:15em; height:14.5em" >
 						<option value="[PP:enrollmentdate - dateofincident]">$i18n.getString( "enrolldate_minus_incidentdate" )</option>
+						<option value="[PP:enrollmentdate]">$i18n.getString( "date_of_enrollment" )</option>
+						<option value="[PP:incidentdate]">$i18n.getString( "date_of_incident" )</option>
 					</select>
 				</td>
 			</tr>
