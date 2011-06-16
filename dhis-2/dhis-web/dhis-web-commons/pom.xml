@@ -22,7 +22,7 @@
           <execution>
             <phase>generate-resources</phase>
             <configuration>
-              <tasks>
+              <target>
                 <tstamp>
                   <format property="now" pattern="yyyy-MM-dd HH:mm:ss"/>
                 </tstamp>
@@ -32,7 +32,7 @@
                 </exec>
                 <echo file="${project.build.outputDirectory}/build.properties"
                   message="build.version = ${project.version}&#10;build.time = ${now}&#10;build.revision = ${revision}&#10;"/>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>
