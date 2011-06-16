@@ -627,10 +627,6 @@
       <param name="menu">/dhis-web-commons/about/menu.vm</param>
     </action>
 
-    <action name="sendFeedback" class="org.hisp.dhis.about.action.SendFeedbackAction">
-      <result name="success" type="redirect">about.action</result>
-    </action>
-
     <action name="help" class="org.hisp.dhis.commons.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/about/help.vm</param>
