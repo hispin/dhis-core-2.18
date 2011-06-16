@@ -204,6 +204,12 @@ function DataDictionary()
 			this.params,
 			function( json )
 			{
+				if( json.operands.length == 0 )
+				{
+					setInnerHTML( 'formulaText', "<i style='color:red'>No dataelements to select</i>" );
+					return;
+				}
+				
 				jQuery.each( json.operands, function(i, item){					
 					target.append('<option value="[' + item.operandId + ']">' + item.operandName + '</option>');
 				});
