@@ -284,7 +284,7 @@ public class DefaultDataEntryFormService
                     return "Category option combo with id: " + optionComboId + " does not exist";
                 }
 
-                String dataElementValueType = dataElement.getType();
+                String dataElementValueType = dataElement.getDetailedNumberType();
 
                 String dataElementValue = getValue( dataValues, dataElementId, optionComboId );
 
