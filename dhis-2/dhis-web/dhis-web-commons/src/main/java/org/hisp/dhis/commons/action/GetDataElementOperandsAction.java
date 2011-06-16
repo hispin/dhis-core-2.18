@@ -29,6 +29,7 @@ package org.hisp.dhis.commons.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -113,6 +114,21 @@ public class GetDataElementOperandsAction
         else
         {
             operands = new ArrayList<DataElementOperand>();
+        }
+
+        if ( key != null )
+        {
+            Iterator<DataElementOperand> iterator = operands.iterator();
+
+            while ( iterator.hasNext() )
+            {
+                DataElementOperand operand = iterator.next();
+
+                if ( operand.getOperandName().toLowerCase().indexOf( key.toLowerCase() ) == -1 )
+                {
+                    iterator.remove();
+                }
+            }
         }
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
