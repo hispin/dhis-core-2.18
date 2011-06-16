@@ -1436,27 +1436,57 @@ function relativePeriodsChecked()
 // Math methods
 // -----------------------------------------------------------------------------
 
+/** 
+ * Allow Zero likes 0 and 0.0x
+ * In which, x is Multiple leading zero.
+ */
+function isValidZeroNumber( value )
+{
+	var regex = /^0(?:\.0*)?$/;
+	return regex.test( value );
+}
+
+/**
+ * For example: Zero without decimal sign.
+ */
+function isPureZero( value )
+{
+	return (value.indexOf(".") == -1);
+}
+
+/**
+ * Allow only integers or a single Zero. No thousands seperators
+ */
 function isInt(value)
 {
 	var regex = /^(0|-?[1-9]\d*)$/;
 	return regex.test( value );
 }
 
+/**
+ * Allow only positive integers, not Zero and no thousands seperators
+ */
 function isPositiveInt( value )
 {
 	var regex = /^[1-9]\d*$/;
 	return regex.test( value );
 }
 
+/**
+ * Allow only negative integers, not Zero and no thousands seperators
+ */
 function isNegativeInt( value )
 {
 	var regex = /^-[1-9]\d*$/;
 	return regex.test( value );
 }
 
+/**
+ * Allow any real number,optionally with a sign, no thousands seperators and a single decimal point.
+ */
 function isRealNumber( value )
 {
-	var regex = /^-?[0-9]*\.?[0-9]+$/;
+	var regex = /^-?(0|[1-9]\d*)(\.\d+)?$/;
 	return regex.test( value );
 }
 
