@@ -91,7 +91,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dashboard-integration/readMessage.vm</param>
       <param name="menu">/dhis-web-dashboard-integration/menu.vm</param>
-      <param name="javascripts">javascript/message.js</param>
+      <param name="javascripts">javascript/readMessage.js</param>
       <param name="stylesheets">style/dashboard.css</param>
     </action>
     
@@ -105,9 +105,14 @@
 	  <param name="onExceptionReturn">plainTextError</param>
     </action>
     
-    <action name="removeMessageRedirect"  class="org.hisp.dhis.dashboard.message.action.RemoveMessageAction">
+    <action name="removeMessageRedirect" class="org.hisp.dhis.dashboard.message.action.RemoveMessageAction">
       <result name="success" type="redirect">message.action</result>
     </action>
     
+	<action name="getUserInfo" class="org.hisp.dhis.commons.action.GetUserAction">
+	  <result name="success" type="velocity">/dhis-web-dashboard-integration/getUserInfo.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
+	</action>
+	
   </package>
 </struts>
