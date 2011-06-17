@@ -120,22 +120,22 @@ function saveValueInternal( dataElementId, optionComboId, dataElementName )
 				
 				field.value = (field.value.indexOf(".") == -1) ? "0" : "0.0";
             }
-			else if ( type == 'int' && ( !isInt( field.value ) || ( field.value.length >= 255 ) ) )
+			else if ( type == 'int' && ( !isInt( field.value ) || ( field.value.length > 255 ) ) )
             {
             	window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
                 return alertField( field );
             }  
-            else if ( type == 'number' && ( !isRealNumber( field.value ) || ( field.value.length >= 255 ) ) )
+            else if ( type == 'number' && ( !isRealNumber( field.value ) || ( field.value.length > 255 ) ) )
             {
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
                 return alertField( field );
             } 
-			else if ( type == 'positiveNumber' && ( !isPositiveInt( field.value ) || ( field.value.length >= 255 ) ) )
+			else if ( type == 'positiveNumber' && ( !isPositiveInt( field.value ) || ( field.value.length > 255 ) ) )
             {
                 window.alert( i18n_value_must_positive_integer + '\n\n' + dataElementName );
                 return alertField( field );
             } 
-			else if ( type == 'negativeNumber' && ( !isNegativeInt( field.value ) || ( field.value.length >= 255 ) ) )
+			else if ( type == 'negativeNumber' && ( !isNegativeInt( field.value ) || ( field.value.length > 255 ) ) )
             {
                 window.alert( i18n_value_must_negative_integer + '\n\n' + dataElementName );
                 return alertField( field );
