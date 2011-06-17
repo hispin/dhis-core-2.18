@@ -28,10 +28,13 @@ package org.hisp.dhis.survey.action;
  */
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyService;
 
@@ -44,7 +47,7 @@ import com.opensymphony.xwork2.Action;
 public class GetSurveyAction
     implements Action
 {
-    private int surveyId;
+
 
     private Survey survey;
 
@@ -63,20 +66,33 @@ public class GetSurveyAction
     {
         this.surveyService = surveyService;
     }
+    
+    private IndicatorService indicatorService;
 
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+
+    
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
 
-    public int getSurveyId()
+    private Integer surveyId;
+    
+
+    public void setSurveyId( Integer surveyId )
+    {
+        this.surveyId = surveyId;
+    }
+    
+    
+    public Integer getSurveyId()
     {
         return surveyId;
     }
 
-    public void setSurveyId( int surveyId )
-    {
-        this.surveyId = surveyId;
-    }
 
     public Survey getSurvey()
     {
@@ -104,7 +120,38 @@ public class GetSurveyAction
     {
         return description;
     }
+    
+    // -------------------------------------------------------------------------
+    // Getters & Setters
+    // -------------------------------------------------------------------------
 
+    private List<IndicatorGroup> indicatorGroups;
+    
+    public List<IndicatorGroup> getIndicatorGroups()
+    {
+        return indicatorGroups;
+    }
+    
+    private String indicatorGroupId;
+    
+    public void setIndicatorGroupId( String indicatorGroupId )
+    {
+        this.indicatorGroupId = indicatorGroupId;
+    }
+    
+    private String selectedIndicators[];
+    
+    public void setSelectedIndicators( String[] selectedIndicators )
+    {
+        this.selectedIndicators = selectedIndicators;
+    }
+
+    private List<Indicator> indicators;
+    
+    public List<Indicator> getIndicators()
+    {
+        return indicators;
+    }
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -116,12 +163,52 @@ public class GetSurveyAction
     	
     	surveyIndicators = new ArrayList<Indicator>( survey.getIndicators() );
     	
+    	indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+    	
         //Collections.sort( surveyIndicators, dataElementComparator );       
                 	
         //displayPropertyHandler.handle( dataSetDataElements );
 
         //dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
-        
+    	
+    	
+        if (  indicatorGroupId == null || indicatorGroupId.equalsIgnoreCase( "ALL" ) )
+        {
+                indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+        }
+        else
+        {
+                IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer.parseInt( indicatorGroupId ) );
+
+                indicators = new ArrayList<Indicator>( indicatorGroup.getMembers() );
+        }
+       // System.out.println("\n\n +++ \n selectedIndicators list  is  : " + selectedIndicators + " ,selectedIndicators list size is : "  + selectedIndicators.length );
+        if ( selectedIndicators != null && selectedIndicators.length > 0 )
+        {
+            Iterator<Indicator> iter = indicators.iterator();
+
+            while ( iter.hasNext() )
+            {
+                Indicator indicator = iter.next();
+                //System.out.println("\n\n +++ \n Indicator Id is   : " + indicator.getId() + " , Indicator name is :" + indicator.getName() );
+                
+                for ( int i = 0; i < selectedIndicators.length; i++ )
+                {
+                    //System.out.println("\n\n +++ \n Indicator Id is   : " + indicator.getId() + " , Indicator name is :" + indicator.getName() );
+                    if ( indicator.getId() == Integer.parseInt( selectedIndicators[i] ) )
+                    {
+                        iter.remove();
+                    }
+                }
+            }
+        }
+
+        if ( surveyId != null )
+        {
+                Survey survey = surveyService.getSurvey( surveyId );
+
+                indicators.removeAll( survey.getIndicators() );
+        }
         return SUCCESS;
     }
 }

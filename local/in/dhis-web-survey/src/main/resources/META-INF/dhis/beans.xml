@@ -83,7 +83,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.survey.SurveyService"/>
     </property>
    </bean>
-
+<!--
 	<bean
     id="org.hisp.dhis.survey.action.IndicatorGroupListAction"
     class="org.hisp.dhis.survey.action.IndicatorGroupListAction"
@@ -92,7 +92,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
     </property>	
 	</bean>
-	
+-->		
 	<bean
     id="org.hisp.dhis.survey.action.IndicatorListFilteredByGroup"
     class="org.hisp.dhis.survey.action.IndicatorListFilteredByGroup"
@@ -104,7 +104,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.survey.SurveyService"/>
     </property>	
 	</bean>
-	
+
 	<bean
     id="org.hisp.dhis.survey.action.DelSurveyAction"
     class="org.hisp.dhis.survey.action.DelSurveyAction"
@@ -144,9 +144,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
 	  <property name="surveyService">
       <ref bean="org.hisp.dhis.survey.SurveyService"/>
-    </property>	
+    </property>
+	<property name="indicatorService">
+      <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+    </property>
 	</bean>
-	
+<!--	
 	<bean
     id="org.hisp.dhis.survey.action.GetNumberOfLevelsAction"
     class="org.hisp.dhis.survey.action.GetNumberOfLevelsAction"
@@ -164,7 +167,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>	
 	</bean>
-	
+-->	
 	<bean
     id="org.hisp.dhis.survey.action.SetupAssociationsTreeAction"
     class="org.hisp.dhis.survey.action.SetupAssociationsTreeAction"
@@ -176,7 +179,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.survey.SurveyService"/>
     </property>	
 	</bean>
-	
+<!--	
 	<bean
     id="org.hisp.dhis.survey.action.UnselectAllAction"
     class="org.hisp.dhis.survey.action.UnselectAllAction"
@@ -194,7 +197,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>	
 	</bean>
-	
+-->	
 	<bean
     id="org.hisp.dhis.survey.action.UpdateSurveyAction"
     class="org.hisp.dhis.survey.action.UpdateSurveyAction"
@@ -381,12 +384,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- DeTarget Association -->
 	
-	<bean id="org.hisp.dhis.detarget.action.GetNumberOfLevelsAction"
+<!--	<bean id="org.hisp.dhis.detarget.action.GetNumberOfLevelsAction"
     class="org.hisp.dhis.detarget.action.GetNumberOfLevelsAction" scope="prototype">
       <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     </property>     
-    </bean>	
+    </bean>	-->
 	
 	<bean id="org.hisp.dhis.detarget.action.SetupAssociationsTreeAction"
     class="org.hisp.dhis.detarget.action.SetupAssociationsTreeAction"
@@ -409,8 +412,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="deTargetService">
       <ref bean="org.hisp.dhis.detarget.DeTargetService"/>
     </property>
-	<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
-	</property>
+<!--<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+	</property>-->
     </bean>
 	
 	<!-- Edit DeTarget Form  -->

@@ -27,9 +27,7 @@ package org.hisp.dhis.survey.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
@@ -82,17 +80,26 @@ public class DefineSurveyAssociationsAction
         throws Exception
     {
     	
-        Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits(); 
+        Survey survey = surveyService.getSurvey( surveyId ); 
         
-        Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();        
+        survey.updateOrganisationUnits( new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() ) );
         
-        getUnitsInTheTree( rootUnits, unitsInTheTree );          
+        surveyService.updateSurvey( survey );
+        
+        //Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits(); 
+        
+       // Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();        
+        
+        //getUnitsInTheTree( rootUnits, unitsInTheTree );          
 	
+        /*
         Survey survey = surveyService.getSurvey( surveyId );    	
     	
     	Set<OrganisationUnit> assignedSources = survey.getSources();
     	
-    	assignedSources.removeAll( unitsInTheTree );        
+    	assignedSources.removeAll( assignedSources );
+    	
+    	//assignedSources.removeAll( unitsInTheTree );        
 
     	Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
     	
@@ -101,14 +108,14 @@ public class DefineSurveyAssociationsAction
     	survey.setSources( assignedSources );
     	
     	surveyService.updateSurvey( survey );
-        
+        */
         return SUCCESS;
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+/*    
     private void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
     {
     	for( OrganisationUnit root : rootUnits )
@@ -117,4 +124,5 @@ public class DefineSurveyAssociationsAction
     		getUnitsInTheTree( root.getChildren(), unitsInTheTree );    		
         }
     }
+    */
 }

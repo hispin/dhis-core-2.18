@@ -109,6 +109,8 @@ public class IndicatorListFilteredByGroup
     public String execute()
         throws Exception
     {
+        //System.out.println("\n\n +++ \n indicatorGroupId   is  : " + indicatorGroupId ); 
+        
         if (  indicatorGroupId == null || indicatorGroupId.equalsIgnoreCase( "ALL" ) )
         {
         	indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
