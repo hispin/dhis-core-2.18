@@ -397,24 +397,27 @@
 
   <package name="dhis-web-commons-ajax-json" extends="dhis-web-commons" namespace="/dhis-web-commons-ajax-json">
 
+    <action name="getUser" class="org.hisp.dhis.commons.action.GetUserAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonUser.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <action name="getUsers" class="org.hisp.dhis.commons.action.GetUsersAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonUsers.vm
-          </result>
+        /dhis-web-commons/ajax/jsonUsers.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="getUserGroups" class="org.hisp.dhis.commons.action.GetUserGroupsAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonUserGroups.vm
-          </result>
+        /dhis-web-commons/ajax/jsonUserGroups.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="getValidationRules" class="org.hisp.dhis.commons.action.GetValidationRulesAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonValidationRules.vm
-          </result>
+        /dhis-web-commons/ajax/jsonValidationRules.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 

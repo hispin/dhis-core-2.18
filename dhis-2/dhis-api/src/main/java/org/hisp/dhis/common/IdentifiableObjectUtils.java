@@ -1,4 +1,4 @@
-package org.hisp.dhis.commons.action;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,57 +27,40 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataelement.DataElementGroupSet;
-import org.hisp.dhis.dataelement.DataElementService;
-
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
- * @author Tran Thanh Tri
+ * @author Lars Helge Overland
  */
-public class GetDataElementGroupSetAction
-    implements Action
+public class IdentifiableObjectUtils
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
+    private static final String SEPARATOR_JOIN = ", ";
+        
+    /**
+     * Joins the names of the IdentifiableObjects in the given list and separates 
+     * them with a comma and space. Returns null if the given list is null or has 
+     * no elements.
+     * 
+     * @param objects the list of IdentifiableObjects.
+     * @return the joined string.
+     */
+    public static String join( Collection<? extends IdentifiableObject> objects )
     {
-        this.dataElementService = dataElementService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    private DataElementGroupSet dataElementGroupSet;
-
-    public DataElementGroupSet getDataElementGroupSet()
-    {
-        return dataElementGroupSet;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-    {
-        if ( id != null )
+        if ( objects != null && objects.size() > 0 )
         {
-            dataElementGroupSet = dataElementService.getDataElementGroupSet( id );
+            Iterator<? extends IdentifiableObject> iterator = objects.iterator();
+            
+            StringBuilder builder = new StringBuilder( iterator.next().getName() );
+            
+            while ( iterator.hasNext() )
+            {
+                builder.append( SEPARATOR_JOIN ).append( iterator.next().getName() );
+            }
+            
+            return builder.toString();
         }
-
-        return SUCCESS;
+        
+        return null;
     }
 }

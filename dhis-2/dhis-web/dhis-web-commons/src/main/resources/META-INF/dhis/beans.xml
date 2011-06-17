@@ -258,10 +258,10 @@
     </property>
   </bean>
 
-	<!-- Security import -->
+  <!-- Security import -->
   <import resource="security.xml" />
 
-	<!-- i18n -->
+  <!-- i18n -->
 
   <bean id="org.hisp.dhis.i18n.action.I18nAction" class="org.hisp.dhis.i18n.action.I18nAction" scope="prototype">
     <property name="i18nService">
@@ -296,7 +296,7 @@
     </property>
   </bean>
 
-	<!-- About -->
+  <!-- About -->
 
   <bean id="org.hisp.dhis.about.action.AboutAction" class="org.hisp.dhis.about.action.AboutAction" scope="prototype">
     <property name="locationManager" ref="locationManager" />
@@ -320,7 +320,13 @@
 
   <!-- Common actions -->
 
-  <bean id="org.hisp.dhis.commons.action.GetUsersAction" class="org.hisp.dhis.commons.action.GetUsersAction" scope="prototype">
+  <bean id="org.hisp.dhis.commons.action.GetUserAction" class="org.hisp.dhis.commons.action.GetUserAction" 
+	scope="prototype">
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.commons.action.GetUsersAction" class="org.hisp.dhis.commons.action.GetUsersAction" 
+	scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 

@@ -1,0 +1,10 @@
+{ "user":
+  {
+    "id": ${user.id},
+    "surname": "$!encoder.jsonEncode( ${user.surname} )",
+    "firstName": "$!encoder.jsonEncode( ${user.firstName} )",
+    "email": "$!encoder.jsonEncode( ${user.email} )",
+    "phoneNumber": "$!encoder.jsonEncode( ${user.phoneNumber} )",
+    "organisationUnits": "$!encoder.jsonEncode( ${user.organisationUnitsName} )"
+  }
+}

@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
@@ -173,6 +174,11 @@ public class User
     public boolean hasOrganisationUnit()
     {
         return !CollectionUtils.isEmpty( organisationUnits );
+    }
+    
+    public String getOrganisationUnitsName()
+    {
+        return IdentifiableObjectUtils.join( organisationUnits );
     }
     
     // -------------------------------------------------------------------------
