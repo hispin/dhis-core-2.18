@@ -1,3 +1,4 @@
+
 function setAreaItem( area, item )
 {
     $.get( "setAreaItem.action", {
@@ -24,13 +25,13 @@ function viewChart( url )
     var width = 700 + 20;
     var height = 500 + 20;
 
-    $( '#chartImage' ).attr( 'src', url );
-    $( '#chartView' ).dialog( {
+    $( "#chartImage" ).attr( "src", url );
+    $( "#chartView" ).dialog( {
         autoOpen : true,
         modal : true,
         height : height + 35,
         width : width,
         resizable : false,
-        title : 'Viewing Chart'
+        title : "Viewing Chart"
     } );
 }

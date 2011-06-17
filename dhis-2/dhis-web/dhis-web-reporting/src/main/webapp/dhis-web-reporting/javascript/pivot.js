@@ -178,7 +178,20 @@ function viewChart( chartIndicators, chartDimension )
   
   hideDropDown();
   
-  window.open( url, "_blank", "directories=no, height=550, width=" + chartWidth + ", location=no, menubar=no, status=no, toolbar=no, scrollbars=no" );
+  openChartDialog( url, chartWidth );  
+}
+
+function openChartDialog( url, width )
+{
+    $( "#chartImage" ).attr( "src", url );
+    $( "#chartView" ).dialog( {
+        autoOpen : true,
+        modal : true,
+        height : 570,
+        width : width,
+        resizable : false,
+        title : "Chart"
+    } );
 }
 
 /**
