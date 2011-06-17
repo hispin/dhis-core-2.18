@@ -1,0 +1,80 @@
+<script type="text/javascript" src="javascript/bulkSMS.js"></script>
+
+<script type="text/javascript" language="javascript">
+function Select()
+{
+##alert("Size= "+$availableOrganisationUnitGroups.size());
+
+##alert(document.theForm.availableOrganisationUnitGroups.selectedIndex);
+document.theForm.selectedIdString.value=document.theForm.selectedIdString.value +","+ document.theForm.availableOrganisationUnitGroups.options[document.theForm.availableOrganisationUnitGroups.selectedIndex].value;
+##alert("....>"+document.theForm.selectedIdString.value);
+}
+</script>
+
+
+<style type="text/css">
+    .statusBar{
+        color: white;
+        padding: 5px 5px;
+        margin: -16px 0 20px -20px;
+        font-weight: bold;
+        background-color: #8FABC7;
+    }
+</style>
+
+<div class="statusBar" #if ($smsServiceStatus)style="background-color: olive"#end>
+    #if ($smsServiceStatus)
+    <form method="post">SMS Service: Started
+        <input type="submit" name="statAction" value="Stop" />
+    </form>
+    #else
+    <form method="post">SMS Service: Not Started
+        <input type="submit" name="statAction" value="Start" />
+    </form>
+    #end
+</div>
+
+<h1>Send Bulk SMS</h1>
+<div>
+    <form method="post" name="theForm">
+    <textarea ID="selectedIdString" name="selectedIdString" style="display:none;"></textarea>
+    <INPUT TYPE=CHECKBOX NAME="texttype" ID="p" VALUE="p" onClick="checkCheckBox()"/>Predefined Text <BR>
+        <select size="1" id="availableDataElements" disabled=true name="availableDataElements" style="min-width:400px">
+            #foreach ( $group in $availableDataElements )
+                <option value="$unit.id">$unit.name</option>
+            #end
+        </select><BR><BR>
+         Enter Text<BR>
+    <textarea name="message" ID="message" cols="70" rows="5" style="width: 397px; height: 97px;"></textarea><BR><BR>
+    User Groups<BR>
+        <select multiple id="availableOrganisationUnitGroups" name="availableOrganisationUnitGroups" style="min-width:400px" onClick="Select();moveSelectedById( 'availableOrganisationUnitGroups', 'selectedOrganisationUnitGroups' );">
+            #foreach ( $group in $availableOrganisationUnitGroups )
+                <option value="$group.id">$group.name</option>
+            #end
+        </select><BR><BR>
+        Selected Groups</BR>
+        <select multiple id="selectedOrganisationUnitGroups" name="selectedOrganisationUnitGroups" style="min-width:400px">
+            #foreach ( $group in $selectedOrganisationUnitGroups )
+                <option value="$group.id">$group.name</option>
+            #end
+        </select><BR><BR>
+   ## </form>
+    
+    #if ($smsServiceStatus)
+    ##<form method="post" >
+        <BUTTON type="submit" name="send" value="Send" onClick="validateSend();">Send</BUTTON>
+    ##</form>
+    #else
+    ##<form method="post">
+        <BUTTON type="submit" name="send" value="Send" onClick="validateSend();">Send</BUTTON>
+    
+    #end
+</form>
+
+
+</div>
+<p>
+<span id="result" style="#if($result.trim().equals("")) none#else background-color:yellow;
+border:3px; padding:.3em;#end">  $result
+
+</span>

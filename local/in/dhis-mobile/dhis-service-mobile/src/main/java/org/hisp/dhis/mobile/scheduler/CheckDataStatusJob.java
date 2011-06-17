@@ -108,7 +108,11 @@ public class CheckDataStatusJob  extends QuartzJobBean
             String groupName = "datastatusgroup"+count;
             for( OrganisationUnit orgUnit : orgUnitList )
             {
-                List<User> users = new ArrayList<User>( userStore.getUsersByOrganisationUnit( orgUnit ) );
+                //List<User> users = new ArrayList<User>( userStore.getUsersByOrganisationUnit( orgUnit ) );
+                /**
+                 * need to change this to get phone numbers from organisaitonunit instead user
+                 */
+                List<User> users = new ArrayList<User>( );
                 for( User user : users )
                 {
                     if( user.getPhoneNumber() != null && !user.getPhoneNumber().trim().equalsIgnoreCase( "" ) )
@@ -160,7 +164,10 @@ public class CheckDataStatusJob  extends QuartzJobBean
         {
             OrganisationUnit orgUnit = orgUnitIterator.next();
             
-            if( !dataSetService.getDataSetsBySource( orgUnit ).contains( dataSet ) )
+            /**
+             *  need to fix this as the method has been changed
+             */
+            //if( !dataSetService.getDataSetsBySource( orgUnit ).contains( dataSet ) )
             {
                 orgUnitIterator.remove();
             }

@@ -1170,7 +1170,7 @@ public class DefaultMobileImportService
                     return "Phone number is not registered to any facility. Please contact admin";
                 }
 
-                List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
+                List<OrganisationUnit> sources = new ArrayList<OrganisationUnit>( curUser.getOrganisationUnits() );
 
                 if ( sources == null || sources.size() <= 0 )
                 {
@@ -1181,7 +1181,7 @@ public class DefaultMobileImportService
                     return "Phone number is not registered to any facility. Please contact admin";
                 }
                 
-                Source source = sources.get( 0 );
+                OrganisationUnit source = sources.get( 0 );
 
                 Period period = getPeriodInfo( mobImportParameters.getStartDate(), mobImportParameters.getPeriodType() );
 
