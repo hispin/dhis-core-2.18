@@ -12,4 +12,20 @@
 <input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='message.action'" style="width:120px">
 </div>
 
-<div id="senderInfo"></div>
+<div id="senderInfo" style="display:none">
+<h3>$message.message.sender.name</h3>
+<table>
+<tr>
+<td><label>$i18n.getString( "email" ):</label></td>
+<td>$!encoder.htmlEncode( ${message.message.sender.email} )</td>
+</tr>
+<tr>
+<td><label>$i18n.getString( "phone_number" ):</label></td>
+<td>$!encoder.htmlEncode( ${message.message.sender.phoneNumber} )</td>
+</tr>
+<tr>
+<td><label>$i18n.getString( "organisation_units" ):</label></td>
+<td>$!encoder.htmlEncode( ${message.message.sender.organisationUnitsName} )</td>
+</tr>
+</table>
+</div>

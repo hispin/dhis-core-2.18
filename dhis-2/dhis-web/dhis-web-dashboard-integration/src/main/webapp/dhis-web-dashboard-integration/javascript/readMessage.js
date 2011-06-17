@@ -13,7 +13,5 @@ $( document ).ready( function() {
 
 function showSenderInfo( id )
 {
-	$( "#senderInfo" ).load( "getUserInfo.action", { id:id }, function() {
-		dialog.dialog( "open" );
-	} );
+	dialog.dialog( "open" );
 }

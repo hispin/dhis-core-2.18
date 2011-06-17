@@ -109,10 +109,5 @@
       <result name="success" type="redirect">message.action</result>
     </action>
     
-	<action name="getUserInfo" class="org.hisp.dhis.commons.action.GetUserAction">
-	  <result name="success" type="velocity">/dhis-web-dashboard-integration/getUserInfo.vm</result>
-	  <param name="onExceptionReturn">plainTextError</param>
-	</action>
-	
   </package>
 </struts>
