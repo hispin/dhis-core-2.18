@@ -66,7 +66,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
     
     <!-- Report Association -->
-    <bean
+<!--    <bean
         id="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction"
         class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction"
         scope="prototype">
@@ -76,7 +76,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitGroupService"
             ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
         </property>
-    </bean>
+    </bean>-->
     <bean
         id="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction"
         class="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction"
@@ -96,9 +96,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
         </property>
-        
     </bean>
-    <bean id="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction"
+<!--    <bean id="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction"
         class="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction"
         scope="prototype">
         <property name="selectionTreeManager"
@@ -138,7 +137,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitGroupService"
             ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
         </property>
-    </bean>
+    </bean>-->
     
     <!-- Report Deletion -->
     <bean id="org.hisp.dhis.reports.reportmanagement.action.DelReportAction"
