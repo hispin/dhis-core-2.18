@@ -140,6 +140,37 @@ public class Survey implements Serializable
         return "[" + name + "]";
     }
     
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addOrganisationUnit( OrganisationUnit unit )
+    {
+        sources.add( unit );
+    }
+    
+    public void removeOrganisationUnit( OrganisationUnit unit )
+    {
+        sources.remove( unit );
+    }
+    
+    public void updateOrganisationUnits( Set<OrganisationUnit> updates )
+    {
+        for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( sources ) )
+        {
+            if ( !updates.contains( unit ) )
+            {
+                removeOrganisationUnit( unit );
+            }
+        }
+        
+        for ( OrganisationUnit unit : updates )
+        {
+            addOrganisationUnit( unit );
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
