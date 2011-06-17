@@ -18,30 +18,38 @@
 		
 		<!-- Edit Survey Form  -->
 		
-		<action name="editSurveyForm"
+<!--		<action name="editSurveyForm"
 			class="org.hisp.dhis.survey.action.IndicatorListFilteredByGroup">
 			<result name="success" type="chain">
 				<param name="actionName">indicatorGroupListEditChain</param>
-			</result>
+			</result>-->
 			<!--<param name="requiredAuthorities">F_SURVEY_UPDATE</param>-->
-		</action>
+<!--		</action>-->
 		
-		<action name="indicatorGroupListEditChain"
+<!--		<action name="indicatorGroupListEditChain"
 			class="org.hisp.dhis.survey.action.IndicatorGroupListAction">
 			<result name="success" type="chain">
 				<param name="actionName">getSurveyEditChain</param>
-			</result>
+			</result>-->
 			<!--<param name="requiredAuthorities">F_SURVEY_UPDATE</param>-->
-		</action>
-		
+<!--		</action>-->
+<!--		
 		<action name="getSurveyEditChain"
 			class="org.hisp.dhis.survey.action.GetSurveyAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-survey/editSurvey.vm</param>
-			<param name="javascripts">
-				javascript/survey.js,javascript/IndicatorList.js </param>
+			<param name="javascripts">javascript/survey.js,javascript/IndicatorList.js </param>-->
 			<!--<param name="requiredAuthorities">F_SURVEY_UPDATE</param>-->
-		</action>
+<!--		</action>-->
+		
+		<action name="editSurveyForm"
+			class="org.hisp.dhis.survey.action.GetSurveyAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-survey/editSurvey.vm</param>
+			<param name="javascripts">javascript/survey.js,javascript/IndicatorList.js </param>
+			<!--<param name="requiredAuthorities">F_SURVEY_UPDATE</param>-->
+		</action>		
+		
 		
 		<action name="updateSurvey"
 			class="org.hisp.dhis.survey.action.UpdateSurveyAction">
@@ -95,71 +103,69 @@
 		
 		<action name="filterAvailableIndicatorsByIndicatorGroup"
 			class="org.hisp.dhis.survey.action.IndicatorListFilteredByGroup">
-			<result name="success" type="velocity-xml">
-				/dhis-web-survey/responseIndicatorGroup.vm</result>
+			<result name="success" type="velocity-xml">/dhis-web-survey/responseIndicatorGroup.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="javascripts">javascript/survey.js</param>
 		</action>
 		
 		<!-- Survry Association -->
 		
-		<action name="defineSurveyAssociationsForm"
+<!--		<action name="defineSurveyAssociationsForm"
 			class="org.hisp.dhis.survey.action.GetNumberOfLevelsAction">
 			<result name="success" type="chain">
-				defineSurveyAssociationsFormChain</result>
+				defineSurveyAssociationsFormChain</result>-->
 			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
-		</action>
+<!--		</action>-->
 		
-		<action name="defineSurveyAssociationsFormChain"
+<!--		<action name="defineSurveyAssociationsFormChain"
+			class="org.hisp.dhis.survey.action.SetupAssociationsTreeAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-survey/surveyAssociations.vm</param>
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/IndicatorList.js,javascript/associations.js</param>-->
+			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
+<!--		</action>-->
+
+		<action name="defineSurveyAssociationsForm"
 			class="org.hisp.dhis.survey.action.SetupAssociationsTreeAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-survey/surveyAssociations.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/IndicatorList.js,javascript/associations.js</param>
 			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
-		</action>
+		</action>		
 		
+				
 		<action name="defineSurveyAssociations"
 			class="org.hisp.dhis.survey.action.DefineSurveyAssociationsAction">
 			<result name="success" type="redirect">index.action</result>
-			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
 		</action>
 		
-		<action name="selectLevel"
+<!--		<action name="selectLevel"
 			class="org.hisp.dhis.survey.action.SelectLevelAction">
-			<result name="success" type="chain">
-				getNumberOfLevelsSelectLevelChain</result>
-			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
+			<result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
 		</action>
 		
 		<action name="unselectLevel"
 			class="org.hisp.dhis.survey.action.UnselectLevelAction">
-			<result name="success" type="chain">
-				getNumberOfLevelsSelectLevelChain</result>
-			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
+			<result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
 		</action>
 		
 		<action name="unselectAll"
 			class="org.hisp.dhis.survey.action.UnselectAllAction">
-			<result name="success" type="chain">
-				getNumberOfLevelsSelectLevelChain</result>
-			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
+			<result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
 		</action>
 		
 		<action name="getNumberOfLevelsSelectLevelChain"
 			class="org.hisp.dhis.survey.action.GetNumberOfLevelsAction">
 			<result name="success" type="chain">getSurveySelectLevelChain</result>
-			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
 		</action>
 		
 		<action name="getSurveySelectLevelChain"
 			class="org.hisp.dhis.survey.action.GetSurveyAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-survey/surveyAssociations.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/oust/oust.js,javascript/IndicatorsList.js,javascript/associations.js</param>
-			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/IndicatorsList.js,javascript/associations.js</param>
 		</action>
-		
+-->		
 		<action name="getSurvey"
 			class="org.hisp.dhis.survey.action.GetSurveyAction">
 			<result name="success" type="velocity-xml">/dhis-web-survey/responseSurveyObject.vm</result>
@@ -345,20 +351,29 @@
 		
 		<!-- DeTarget Association -->
         
-       <action name="defineDeTargetAssociationsForm"
+<!--       <action name="defineDeTargetAssociationsForm"
             class="org.hisp.dhis.detarget.action.GetNumberOfLevelsAction">
-            <result name="success" type="chain">defineDeTargetAssociationsFormChain</result>
+            <result name="success" type="chain">defineDeTargetAssociationsFormChain</result>-->
             <!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
-        </action>
+<!--        </action>-->
         
-        <action name="defineDeTargetAssociationsFormChain"
+<!--        <action name="defineDeTargetAssociationsFormChain"
+            class="org.hisp.dhis.detarget.action.SetupAssociationsTreeAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-survey/deTargetAssociations.vm</param>
+            <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>-->
+            <!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
+<!--        </action> -->
+
+		
+        <action name="defineDeTargetAssociationsForm"
             class="org.hisp.dhis.detarget.action.SetupAssociationsTreeAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-survey/deTargetAssociations.vm</param>
             <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
             <!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
-        </action>
-        
+        </action>		
+		        
         <action name="defineDeTargetAssociations"
             class="org.hisp.dhis.detarget.action.DefineDeTargetAssociationsAction">
             <result name="success" type="redirect">deTargetManagement.action</result>
