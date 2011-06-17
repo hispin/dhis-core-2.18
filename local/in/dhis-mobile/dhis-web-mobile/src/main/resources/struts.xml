@@ -6,17 +6,17 @@
     <!-- use the DHIS web portal default -->
     <include file="dhis-web-commons.xml"/>
     <package name="dhis-web-mobile" extends="dhis-web-commons"
-        namespace="/dhis-web-mobile">
-        
-        <!-- Pages -->
+		namespace="/dhis-web-mobile">
+		
+		<!-- Pages -->
         <action name="index"
-            class="org.hisp.dhis.mobile.action.MobileHomePageAction">
+			class="org.hisp.dhis.mobile.action.MobileHomePageAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-mobile/welcome.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
         </action>
         <action name="receiveImport"
-            class="org.hisp.dhis.mobile.action.ReceiveImportPageAction">
+			class="org.hisp.dhis.mobile.action.ReceiveImportPageAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-mobile/receiveImportPage.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
@@ -38,7 +38,7 @@
         
         <action name="sendBulkSMSThirdParty" class="org.hisp.dhis.mobile.action.SendBulkSMSThirdPartyAction">
             <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-mobile/sendBulkSMSPage.vm</param>
+            <param name="page">/dhis-web-mobile/sendBulkSMSPageThirdParty.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
             <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
         </action>
@@ -51,61 +51,61 @@
             <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
         </action>
         <action name="mobileSettings"
-            class="org.hisp.dhis.mobile.action.MobileSettingsAction">
+			class="org.hisp.dhis.mobile.action.MobileSettingsAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-mobile/mobileSettingsPage.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
             <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
         </action>
-        
+		
         <action name="receiveAllMessages"
-            class="org.hisp.dhis.mobile.action.ReceiveMessagesPageAction">
+			class="org.hisp.dhis.mobile.action.ReceiveMessagesPageAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-mobile/inbox.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
             <param name="stylesheets">css/receiveImportPage.css</param>
         </action>
-        
+		
         <action name="getAllDraftMessages"
-            class="org.hisp.dhis.mobile.action.DraftPageAction">
+			class="org.hisp.dhis.mobile.action.DraftPageAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-mobile/draft.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
             <param name="stylesheets">css/receiveImportPage.css</param>
         </action>
-        
-        
-        <!-- Create Mobile Application -->
+		
+		
+		<!-- Create Mobile Application -->
         <action name="createMobileApp"
-            class="org.hisp.dhis.mobile.app.action.CreateMobileAppAction">
+			class="org.hisp.dhis.mobile.app.action.CreateMobileAppAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-mobile/createMobileAppPage.vm</param>
             <param name="menu">/dhis-web-mobile/menu.vm</param>
         </action>
-        
+		
         <action name="getDataElements"
-            class="org.hisp.dhis.mobile.app.action.GetDataElementsAction">
+			class="org.hisp.dhis.mobile.app.action.GetDataElementsAction">
             <result name="success" type="velocity">
-                /dhis-web-mobile/dataElementsResponse.vm
+				/dhis-web-mobile/dataElementsResponse.vm
             </result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
-        
+		
         <action name="splashUpload"
-            class="org.hisp.dhis.mobile.app.action.SplashUploadAction">
+			class="org.hisp.dhis.mobile.app.action.SplashUploadAction">
             <result name="success" type="velocity">
-                /dhis-web-mobile/splashUploadResponse.vm
+				/dhis-web-mobile/splashUploadResponse.vm
             </result>
             <param name="onExceptionReturn">plainTextError</param>
             <interceptor-ref name="fileUploadStack">
                 <param name="allowedTypes">image/png</param>
             </interceptor-ref>
         </action>
-        
+		
         <action name="jarGenerator"
-            class="org.hisp.dhis.mobile.app.action.JarGeneratorAction">
+			class="org.hisp.dhis.mobile.app.action.JarGeneratorAction">
             <result name="success" type="chain">createMobileApp</result>
         </action>
-        
+		
     </package>
 </struts>
