@@ -59,7 +59,6 @@
             <result name="input" type="velocity-xml">/dhis-web-reports/responseReportManagementInput.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
-        
         <!-- Get Report details -->
         <action name="getReport"
             class="org.hisp.dhis.reports.reportmanagement.action.GetReportAction">
@@ -68,7 +67,7 @@
         </action>
         
         <!-- Report Association -->
-        <action name="defineReportAssociationsForm"
+<!--    <action name="defineReportAssociationsForm"
             class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction">
             <result name="success" type="chain">defineReportAssociationsFormChain</result>
         </action>
@@ -78,8 +77,14 @@
             <param name="menu">/dhis-web-reports/menu.vm</param>
             <param name="page">/dhis-web-reports/reportAssociations.vm</param>
             <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
-        </action>
-        
+        </action>-->
+        <action name="defineReportAssociationsForm"
+            class="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="menu">/dhis-web-reports/menu.vm</param>
+            <param name="page">/dhis-web-reports/reportAssociations.vm</param>
+            <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
+		</action>		
         <!-- Report Association save -->
         <action name="defineReportAssociations"
             class="org.hisp.dhis.reports.reportmanagement.action.DefineReportAssociationsAction">
@@ -87,33 +92,33 @@
         </action>
         
         <!-- Report Association Remove All -->
-        <action name="unselectAll"
+<!--        <action name="unselectAll"
             class="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction">
             <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-        </action>
+        </action>-->
         
         <!-- Report Association select/unselect All at Level -->
-        <action name="selectLevel"
+<!--        <action name="selectLevel"
             class="org.hisp.dhis.reports.reportmanagement.action.SelectLevelAction">
             <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
         </action>
         <action name="unselectLevel"
             class="org.hisp.dhis.reports.reportmanagement.action.UnselectLevelAction">
             <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-        </action>
+        </action>-->
         
         <!-- Report Association select/unselect All at Group -->
-        <action name="selectgroup"
+<!--        <action name="selectgroup"
             class="org.hisp.dhis.reports.reportmanagement.action.SelectGroupAction">
             <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
         </action>
         <action name="unselectgroup"
             class="org.hisp.dhis.reports.reportmanagement.action.UnselectGroupAction">
             <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-        </action>
+        </action>-->
         
         <!-- Chain for Associations -->
-        <action name="getNumberOfLevelsSelectLevelChain"
+<!--        <action name="getNumberOfLevelsSelectLevelChain"
             class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction">
             <result name="success" type="chain">getReportSelectLevelChain</result>
         </action>
@@ -123,7 +128,7 @@
             <param name="menu">/dhis-web-reports/menu.vm</param>
             <param name="page">/dhis-web-reports/reportAssociations.vm</param>
             <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
-        </action>
+        </action>-->
         
         <!-- Report Deletion -->
         <action name="delReport"

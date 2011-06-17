@@ -1,8 +1,6 @@
 package org.hisp.dhis.reports.reportmanagement.action;
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
@@ -56,6 +54,16 @@ public class DefineReportAssociationsAction
     public String execute()
         throws Exception
     {
+        Report_in report = reportService.getReport( reportId );
+       
+
+        report.updateOrganisationUnits( new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() ) );
+        
+        reportService.updateReport( report );
+
+        
+        /*
+        
         Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
 
         Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();
@@ -75,7 +83,7 @@ public class DefineReportAssociationsAction
         report.setSources( assignedSources );
 
         reportService.updateReport( report );
-
+        */
         return SUCCESS;
     }
 
@@ -83,6 +91,7 @@ public class DefineReportAssociationsAction
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    /*
     private void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
     {
         for ( OrganisationUnit root : rootUnits )
@@ -91,4 +100,5 @@ public class DefineReportAssociationsAction
             getUnitsInTheTree( root.getChildren(), unitsInTheTree );
         }
     }
+    */
 }
