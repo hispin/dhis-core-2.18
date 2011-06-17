@@ -142,7 +142,7 @@ public class SendBulkSMSAction
                         if ( availableOrganisationUnitGroups.get( j ).getId() == parseInt )
                         {
 
-                            //System.out.println( "  -" + availableOrganisationUnitGroups.get( j ).getMembers().size() );
+                            System.out.println( "  -" + availableOrganisationUnitGroups.get( j ).getMembers().size() );
                             Iterator itr = availableOrganisationUnitGroups.get( j ).getMembers().iterator();
                             while ( itr.hasNext() )
                             {
@@ -151,7 +151,7 @@ public class SendBulkSMSAction
                                 {
                                     phonenos.add( temp.getPhoneNumber() );
                                 }
-                                //  System.out.println( "       phone=" + temp.getPhoneNumber() );
+                                 System.out.println( "       phone=" + temp.getPhoneNumber() );
                             }
 
                         }

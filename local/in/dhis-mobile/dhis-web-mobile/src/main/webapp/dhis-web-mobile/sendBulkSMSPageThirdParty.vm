@@ -22,17 +22,6 @@ document.theForm.selectedIdString.value=document.theForm.selectedIdString.value 
     }
 </style>
 
-<div class="statusBar" #if ($smsServiceStatus)style="background-color: olive"#end>
-    #if ($smsServiceStatus)
-    <form method="post">SMS Service: Started
-        <input type="submit" name="statAction" value="Stop" />
-    </form>
-    #else
-    <form method="post">SMS Service: Not Started
-        <input type="submit" name="statAction" value="Start" />
-    </form>
-    #end
-</div>
 
 <h1>Send Bulk SMS</h1>
 <div>
@@ -43,7 +32,7 @@ document.theForm.selectedIdString.value=document.theForm.selectedIdString.value 
             #foreach ( $group in $availableDataElements )
                 <option value="$unit.id">$unit.name</option>
             #end
-        </select><BR><BR>
+       </select><BR><BR>
          Enter Text<BR>
     <textarea name="message" ID="message" cols="70" rows="5" style="width: 397px; height: 97px;"></textarea><BR><BR>
     User Groups<BR>
@@ -60,15 +49,8 @@ document.theForm.selectedIdString.value=document.theForm.selectedIdString.value 
         </select><BR><BR>
    ## </form>
     
-    #if ($smsServiceStatus)
-    ##<form method="post" >
         <BUTTON type="submit" name="send" value="Send" onClick="validateSend();">Send</BUTTON>
-    ##</form>
-    #else
-    ##<form method="post">
-        <BUTTON type="submit" name="send" value="Send" disabled onClick="validateSend();">Send</BUTTON>
-    
-    #end
+
 </form>
 
 
