@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-services</artifactId>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>dhis-service-mobile</artifactId>
@@ -51,6 +51,7 @@
 			<artifactId>smslib-all</artifactId>
 			<version>3.4.5</version>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -61,6 +62,7 @@
 			<artifactId>slf4j-jdk14</artifactId>
 			<version>1.5.11</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.rxtx</groupId>
 			<artifactId>rxtx</artifactId>
