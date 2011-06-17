@@ -156,7 +156,6 @@
 		<action name="updateExportReportForm"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<result name="error" type="redirect">listAllExportReport.action</result>
 			<param name="page">/dhis-web-excel-reporting/report/updateExportReportForm.vm</param>
 			<param name="javascripts">javascript/exportReports.js</param>			
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
@@ -627,9 +626,9 @@
 		<action name="exportXML"
 			class="org.hisp.dhis.reportexcel.preview.action.ExportXMLAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseExportReportPreview.vm</result>			
+				/dhis-web-excel-reporting/responseExportReportPreview.vm</result>
 			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>			
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 		</action>
 
 		<!--  GERERATE ADVANCE -->

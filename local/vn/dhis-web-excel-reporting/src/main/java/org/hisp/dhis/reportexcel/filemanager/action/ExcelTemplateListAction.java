@@ -169,10 +169,6 @@ public class ExcelTemplateListAction
 
             exportReport = exportReportService.getExportReport( id );
         }
-        else
-        {
-            return ERROR;
-        }
 
         File templateDirectory = reportLocationManager.getReportExcelTemplateDirectory();
 
