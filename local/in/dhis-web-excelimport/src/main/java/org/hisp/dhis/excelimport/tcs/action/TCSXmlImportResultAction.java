@@ -141,6 +141,8 @@ public class TCSXmlImportResultAction implements Action
     int insertCount = 0;
     int updateCount = 0;
     int facilityCount = 0;
+    int importFacilityCount = 0;
+    String missingFacilities = "";
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -165,9 +167,11 @@ public class TCSXmlImportResultAction implements Action
             if( importTCSData() !=0 )
             {
                 message += "<br>Importing has been done successfully for the file : "+ fileName;
-                message += "<br>Total number of Facilities that are imported : "+ facilityCount;
+                message += "<br>Total number of Facilities for Importing : "+ facilityCount;
+                message += "<br>Total number of Facilities that are Imported : "+ importFacilityCount;
                 message += "<br>Total new records that are imported : "+insertCount;
                 message += "<br>Total records that are updated : "+updateCount;
+                message += "<br>Missing Facilities in DHIS : "+missingFacilities;
             }
         }
         catch( Exception e )
@@ -220,12 +224,26 @@ public class TCSXmlImportResultAction implements Action
             
             String orgUnitCode = tcsDataValue.getOrgunitCode();
             Integer orgUnitId = getOrgUnitIdByCode( orgUnitCode );
-            
+
+            if( orgUnitId == null )
+            {
+                if( !facilityCode.equals( orgUnitCode ) )
+                {
+                        facilityCode = orgUnitCode;
+                    facilityCount++;
+                        missingFacilities += orgUnitCode+", ";
+                }
+                
+                continue;
+            }
+
             if( !facilityCode.equals( orgUnitCode ) )
             {
                 facilityCode = orgUnitCode;
                 facilityCount++;
+                importFacilityCount++;
             }
+
             
             String tcsPeriod = tcsDataValue.getTscPeriod();
             String selMonth = monthMap.get( tcsPeriod.split( "-" )[0] );

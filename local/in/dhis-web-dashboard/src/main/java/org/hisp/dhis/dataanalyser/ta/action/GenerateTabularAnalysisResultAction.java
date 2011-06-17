@@ -37,7 +37,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,6 +51,7 @@ import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
+import jxl.format.VerticalAlignment;
 import jxl.write.Label;
 import jxl.write.Number;
 import jxl.write.WritableCellFormat;
@@ -75,7 +75,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -305,6 +304,7 @@ public class GenerateTabularAnalysisResultAction
     List<Indicator> indicatorList;
     List<String> serviceTypeList;
     Map<Integer, List<Integer>> periodMap;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -520,7 +520,6 @@ public class GenerateTabularAnalysisResultAction
         // calling diffrent functions       
         if ( orgUnitSelListCB.equalsIgnoreCase( ORGUNITSELECTED ) )
         {
-            System.out.println( ORGUNITSELECTED + " Report Generation Start Time is : \t" + new Date() );
             if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) && aggPeriodCB == null )
             {
                 System.out.println("Inside generateSelectedOrgUnitData_UseCapturedData_Periodwise method");
@@ -536,6 +535,21 @@ public class GenerateTabularAnalysisResultAction
                 System.out.println("Inside generateSelectedOrgUnitData_GenerateAggregateData_AggPeriods method");
                 generateSelectedOrgUnitData_GenerateAggregateData_AggPeriods();
             }
+            else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) && aggPeriodCB == null )
+            {
+                System.out.println("Inside generateSelectedOrgUnitData_GenerateAggregateData_Periodwise method");
+                generateSelectedOrgUnitData_GenerateAggregateData_Periodwise();
+            }
+            else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) && aggPeriodCB == null )
+            {
+                System.out.println("Inside generateSelectedOrgUnitData_UseExisting_Periodwise method");
+                generateSelectedOrgUnitData_UseExisting_Periodwise();
+            }
+            else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) && aggPeriodCB != null )
+            {
+                System.out.println("Inside generateSelectedOrgUnitData_UseExisting_AggPeriods method");
+                generateSelectedOrgUnitData_UseExisting_AggPeriods();
+            }
             else
             {
                 generateOrgUnitSelected();
@@ -543,12 +557,44 @@ public class GenerateTabularAnalysisResultAction
         }
         else if ( orgUnitSelListCB.equalsIgnoreCase( ORGUNITGRP ) )
         {
-            System.out.println( ORGUNITGRP + " Report Generation Start Time is : \t" + new Date() );
-            generateOrgUnitGroup();
+            if ( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) && aggPeriodCB == null )
+            {
+                System.out.println("Inside generateOrgUnitGroupData_UseExisting_Periodwise method");
+                generateOrgUnitGroupData_UseExisting_Periodwise();
+            }
+            else if ( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) && aggPeriodCB != null )
+            {
+                System.out.println("Inside generateOrgUnitGroupData_UseExisting_AggPeriods method");
+                generateOrgUnitGroupData_UseExisting_AggPeriods();
+            }
+            else if ( aggData.equalsIgnoreCase( GENERATEAGGDATA ) && aggPeriodCB == null )
+            {
+                System.out.println("Inside generateOrgUnitGroupData_GenerateAggregateData_Periodwise method");
+                generateOrgUnitGroupData_GenerateAggregateData_Periodwise();
+            }
+            else if ( aggData.equalsIgnoreCase( GENERATEAGGDATA ) && aggPeriodCB != null )
+            {
+                System.out.println("Inside generateOrgUnitGroupData_GenerateAggregateData_AggPeriods method");
+                generateOrgUnitGroupData_GenerateAggregateData_AggPeriods();
+            }
+            else if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) && aggPeriodCB == null )
+            {
+                System.out.println("Inside generateOrgUnitGroupData_UseCapturedData_Periodwise method");
+                generateOrgUnitGroupData_UseCapturedData_Periodwise();
+            }
+            else if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) && aggPeriodCB != null )
+            {
+                System.out.println("Inside generateOrgUnitGroupData_UseCapturedData_AggPeriods method");
+                generateOrgUnitGroupData_UseCapturedData_AggPeriods();
+            }
+            else
+            {
+                System.out.println( ORGUNITGRP + " Report Generation Start Time is : \t" + new Date() );
+                generateOrgUnitGroup();
+            }
         }
         else if ( orgUnitSelListCB.equalsIgnoreCase( ORGUNITLEVEL ) )
         {
-            System.out.println( ORGUNITLEVEL + " Report Generation Start Time is : \t" + new Date() );
             if ( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) && aggPeriodCB == null )
             {
                 System.out.println("Inside generateOrgUnitLevelData_UseExisting_Periodwise method");
@@ -636,7 +682,7 @@ public class GenerateTabularAnalysisResultAction
     }
 
     // -------------------------------------------------------------------------
-    // Method for getting Selected OrgUnit(s) data in Excel Sheet 
+    // Method for getting OrgUnit Level wise data in Excel Sheet 
     //     - UseCapturedData - Period Aggregation 
     // -------------------------------------------------------------------------
     public void generateOrgUnitLevelData_UseCapturedData_AggPeriods() throws Exception
@@ -857,7 +903,225 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();
     }
 
+    // -------------------------------------------------------------------------
+    // Method for getting OrgUnit Group wise data in Excel Sheet 
+    //     - UseCapturedData - Period Aggregation 
+    // -------------------------------------------------------------------------
+    public void generateOrgUnitGroupData_UseCapturedData_AggPeriods() throws Exception
+    {
+        int headerRow = 0;
+        int headerCol = 0;
+
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
+
+        sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
+
+        selOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+        selOUList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
+
+        OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitLevelCB );
+        List<OrganisationUnit> orgUnitList1 = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
+
+        selOUList.retainAll( orgUnitList1 );
+        
+        int minOULevel = 1;
+        int maxOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
+
+        int c1 = headerCol + 1;
+
+        for( int i = minOULevel; i <= maxOULevel; i++ )
+        {
+            sheet0.addCell( new Label( c1, headerRow, "Level- "+i, getCellFormat1() ) );
+            c1++;
+        }
+
+        Map<Integer, Integer> orgunitLevelMap = new HashMap<Integer, Integer>( reportService.getOrgunitLevelMap() );
+
+        /* Service Info */
+        Indicator selIndicator = new Indicator();
+        DataElement selDataElement = new DataElement();
+        DataElementCategoryOptionCombo selDecoc = new DataElementCategoryOptionCombo();
+        int flag = 0;
+
+        List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, selOUList ) );
+        orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+        
+        Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getDataFromDataValueTableByPeriodAgg( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
     
+        /* Calculation Part */
+        int rowCount = 1;
+        int colCount = 0;
+        for( OrganisationUnit ou : selOUList )
+        {
+            System.out.println("Entered into orgunitloop :"+new Date());
+            sheet0.addCell( new Number( headerCol, headerRow + rowCount, rowCount, getCellFormat2() ) );
+            
+            Integer level = orgunitLevelMap.get( ou.getId() );
+            if( level == null )
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            
+            colCount = 1 + level - minOULevel;
+            sheet0.addCell( new Label( colCount, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
+
+            OrganisationUnit orgUnit = new OrganisationUnit();
+            orgUnit = ou;
+            int count1=1;
+            while( orgUnit.getParent() != null )
+            {
+                orgUnit = orgUnit.getParent();
+                sheet0.addCell( new Label( colCount-count1, headerRow + rowCount, orgUnit.getName(), getCellFormat2() ) );
+                count1++;
+            }
+
+            colCount = c1;
+            int deListCount = 0;
+            int indListCount = 0;
+            int serviceListCount = 0;
+            for( String serviceType : serviceTypeList )
+            {
+                String tempStr = "";
+                Double indValue = 0.0;
+                Double dataValue = 0.0;
+                
+                if ( serviceType.equalsIgnoreCase( "I" ) )
+                {
+                    Double numValue = 0.0;
+                    Double denValue = 0.0;
+
+                    flag = 1;
+                    selIndicator = indicatorList.get( indListCount );
+                    indListCount++;
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.addCell( new Label( colCount, headerRow, selIndicator.getName(), getCellFormat1() ) );
+                    }
+                    
+                    try
+                    {
+                        numValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getNumerator(), aggDataMap, ou.getId() ) );
+                    }
+                    catch( Exception e )
+                    {
+                    }
+                    
+                    try
+                    {
+                        denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
+                    }
+                    catch( Exception e )
+                    {
+                    }
+                    
+                    try
+                    {
+                        if( denValue != 0.0 )
+                        {
+                            indValue = ( numValue / denValue ) * selIndicator.getIndicatorType().getFactor();
+                        }
+                        else
+                        {
+                            indValue = 0.0;
+                        }
+                    }
+                    catch( Exception e )
+                    {
+                        indValue = 0.0;
+                    }
+                    
+                    indValue = Math.round( indValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                }
+                else
+                {
+                    flag = 2;
+                    selDataElement = dataElementList.get( deListCount );
+                    deListCount++;
+                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    {
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( selectedServices.get( serviceListCount ).split( ":" )[2] ) );
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
+                        }
+                        
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+selDecoc.getId() );
+                            if( tempStr != null )
+                            {
+                                try
+                                {
+                                    dataValue = Double.parseDouble( tempStr );
+                                }
+                                catch( Exception e )
+                                {
+                                    dataValue = 0.0;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataValue = 0.0;
+                        }
+                    }
+                    else
+                    {
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow, selDataElement.getName(), getCellFormat1() ) );
+                        }
+                        List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( selDataElement.getCategoryCombo().getOptionCombos() );
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            for( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                            {
+                                tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+optionCombo.getId() );
+                                if( tempStr != null )
+                                {
+                                    try
+                                    {
+                                        dataValue += Double.parseDouble( tempStr );
+                                    }
+                                    catch( Exception e )
+                                    {
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataValue = 0.0;
+                        }
+                    }
+                }
+
+                if ( flag == 1 )
+                {
+                    sheet0.addCell( new Number( colCount, headerRow + rowCount, indValue, getCellFormat2() ) );
+                }
+                else
+                {
+                    sheet0.addCell( new Number( colCount, headerRow + rowCount, dataValue, getCellFormat2() ) );
+                }
+
+                colCount++;
+                serviceListCount++;
+            }// Service loop end
+            rowCount++;
+        }// Orgunit loop end
+        
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "TabularAnalysis.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+    
+        outputReportFile.deleteOnExit();
+    }
+
     // -------------------------------------------------------------------------
     // Method for getting Selected OrgUnit(s) data in Excel Sheet 
     //     - UseCapturedData - Period wise 
@@ -1143,11 +1407,9 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();
     }
 
-    
     // -------------------------------------------------------------------------
     // Methods for getting OrgUnitSelected wise List in Excel Sheet
     // -------------------------------------------------------------------------
-
     public void generateOrgUnitSelected()
         throws Exception
     {
@@ -1541,7 +1803,6 @@ public class GenerateTabularAnalysisResultAction
     // -------------------------------------------------------------------------
     // Methods for getting OrgUnitGroup wise List in Excel Sheet
     // -------------------------------------------------------------------------
-
     public void generateOrgUnitGroup()
         throws Exception
     {
@@ -1569,19 +1830,8 @@ public class GenerateTabularAnalysisResultAction
 
         selOUList.retainAll( orgUnitList1 );
 
-        //Collections.sort( selOUList, new OrganisationUnitNameComparator() );
-        // displayPropertyHandler.handle( selOUList );
-
         int minOULevel = 1;
         int maxOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
-        
-        
-        /*
-        if ( orgUnitLevelCB != null )
-        {
-            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOrgUnit );
-        }
-        */
         
         int c1 = headerCol + 1;
 
@@ -1599,11 +1849,6 @@ public class GenerateTabularAnalysisResultAction
         {
             sheet0.addCell( new Number( headerCol, headerRow + 1 + rowCount, rowCount, getCellFormat2() ) );
             colCount = 1 + organisationUnitService.getLevelOfOrganisationUnit( ou ) - minOULevel;
-            // System.out.println(colCount + " : " + minOULevel + " : " +
-            // organisationUnitService.getLevelOfOrganisationUnit( ou ));
-
-            // sheet0.mergeCells( colCount, headerRow+1+rowCount, colCount,
-            // headerRow+1+rowCount+ouChildCountMap.get( ou ));
             sheet0.addCell( new Label( colCount, rowCount + 1, ou.getName(), getCellFormat2() ) );
             
             OrganisationUnit orgUnit = new OrganisationUnit();
@@ -1615,16 +1860,7 @@ public class GenerateTabularAnalysisResultAction
                 sheet0.addCell( new Label( colCount-count1, rowCount + 1, orgUnit.getName(), getCellFormat2() ) );
                 count1++;
             }
-            
-            
-            /*
-             * 
-             * OrganisationUnit parentOu = ou; for(int i =
-             * maxOuLevel-minOULevel+1; i >= minOULevel-1; i-- ) {
-             * 
-             * { parentOu = parentOu.getParent(); sheet0.addCell( new Label( i,
-             * headerRow+rowCount, parentOu.getName(), getCellFormat2() ) ); } }
-             */
+
             /* Service Info */
             Indicator selIndicator = new Indicator();
             DataElement selDataElement = new DataElement();
@@ -1921,7 +2157,6 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();
 
     }
-
 
     // -------------------------------------------------------------------------
     // Method for getting OrgUnit Level wise data in Excel Sheet 
@@ -2239,6 +2474,317 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();
     }
 
+    // -------------------------------------------------------------------------
+    // Method for getting OrgUnit Group wise data in Excel Sheet 
+    //     - UseCapturedData - Period wise 
+    // -------------------------------------------------------------------------
+    public void generateOrgUnitGroupData_UseCapturedData_Periodwise() throws Exception
+    {
+        int startRow = 0;
+        int headerRow = 0;
+        int headerCol = 0;
+
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
+
+        sheet0.mergeCells( headerCol, headerRow, headerCol, headerRow + 1 );
+        sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
+
+        selOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+        selOUList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
+        
+        OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitLevelCB );
+        List<OrganisationUnit> orgUnitList1 = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
+
+        selOUList.retainAll( orgUnitList1 );
+
+        int minOULevel = 1;
+        int maxOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
+        int c1 = headerCol + 1;
+
+        for( int i = minOULevel; i <= maxOULevel; i++ )
+        {
+            sheet0.mergeCells( c1, headerRow, c1, headerRow + 1 );
+            sheet0.addCell( new Label( c1, headerRow, "Level- "+i, getCellFormat1() ) );
+            c1++;
+        }
+
+        Map<Integer, Integer> orgunitLevelMap = new HashMap<Integer, Integer>( reportService.getOrgunitLevelMap() );
+    
+        /* Service Info */
+        Indicator selIndicator = new Indicator();
+        DataElement selDataElement = new DataElement();
+        DataElementCategoryOptionCombo selDecoc = new DataElementCategoryOptionCombo();
+        int flag = 0;
+
+        List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, selOUList ) );
+        orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+        
+        Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getDataFromDataValueTable( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
+    
+        /* Calculation Part */
+        int rowCount = 1;
+        int colCount = 0;
+        for( OrganisationUnit ou : selOUList )
+        {
+            System.out.println("Entered into orgunitloop :"+new Date());
+            sheet0.addCell( new Number( headerCol, headerRow + 1 + rowCount, rowCount, getCellFormat2() ) );
+            
+            Integer level = orgunitLevelMap.get( ou.getId() );
+            if( level == null )
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            
+            colCount = 1 + level - minOULevel;
+            sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
+            
+            OrganisationUnit orgUnit = new OrganisationUnit();
+            orgUnit = ou;
+            int count1=1;
+            while( orgUnit.getParent() != null )
+            {
+                orgUnit = orgUnit.getParent();
+                sheet0.addCell( new Label( colCount-count1, headerRow + rowCount + 1, orgUnit.getName(), getCellFormat2() ) );
+                count1++;
+            }
+
+            colCount = c1;
+            int deListCount = 0;
+            int indListCount = 0;
+            int serviceListCount = 0;
+            for( String serviceType : serviceTypeList )
+            {
+                if ( serviceType.equalsIgnoreCase( "I" ) )
+                {
+                    flag = 1;
+                    selIndicator = indicatorList.get( indListCount );
+                    indListCount++;
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                        sheet0.addCell( new Label( colCount, startRow, selIndicator.getName(), getCellFormat1() ) );
+                    }
+                }
+                else
+                {
+                    flag = 2;
+                    selDataElement = dataElementList.get( deListCount );
+                    deListCount++;
+                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    {
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( selectedServices.get( serviceListCount ).split( ":" )[2] ) );
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
+                        }
+                    }
+                    else
+                    {
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName(), getCellFormat1() ) );
+                        }
+                    }
+                }
+
+                int periodCount = 0;
+                for ( Date sDate : selStartPeriodList )
+                {
+                    Date eDate = selEndPeriodList.get( periodCount );
+                
+                    Collection<Integer> periodIds = new ArrayList<Integer>( periodMap.get( periodCount ) );
+                    System.out.println( periodIds );
+
+                    double pwdvAggValue = 0.0;
+                    double pwdAggIndValue = 0.0;
+
+                    String tempStr = "";
+                    if ( flag == 1 )
+                    {
+                        Double numValue = 0.0;
+                        Double denValue = 0.0;
+                        Double indValue = 0.0;
+                        for( Integer periodId : periodIds )
+                        {
+                            try
+                            {
+                                numValue += Double.parseDouble( getAggVal( selIndicator.getNumerator(), aggDataMap, ou.getId(), periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                            
+                            try
+                            {
+                                denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                        }
+                        
+                        try
+                        {
+                            if( denValue != 0.0 )
+                            {
+                                indValue = ( numValue / denValue ) * selIndicator.getIndicatorType().getFactor();
+                            }
+                            else
+                            {
+                                indValue = 0.0;
+                            }
+                        }
+                        catch( Exception e )
+                        {
+                            indValue = 0.0;
+                        }
+
+                        pwdAggIndValue = indValue;
+                        pwdAggIndValue = Math.round( pwdAggIndValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                        tempStr = "" + pwdAggIndValue;
+                    }
+                    else if ( flag == 2 )
+                    {
+                        if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                        {
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( Integer periodId : periodIds )
+                                {
+                                    tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+selDecoc.getId()+":"+periodId );
+                                    if( tempStr != null )
+                                    {
+                                        try
+                                        {
+                                            pwdvAggValue += Double.parseDouble( tempStr );
+                                        }
+                                        catch( Exception e )
+                                        {
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                if ( tempPeriod != null )
+                                {
+                                    DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, selDecoc );
+
+                                    if ( dataValue != null && dataValue.getValue() != null )
+                                    {
+                                        tempStr = dataValue.getValue();
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                                else
+                                {
+                                    tempStr = " ";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( selDataElement.getCategoryCombo().getOptionCombos() );
+
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                                {
+                                    for( Integer periodId : periodIds )
+                                    {
+                                        tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+optionCombo.getId()+":"+periodId );
+                                        if( tempStr != null )
+                                        {
+                                            try
+                                            {
+                                                pwdvAggValue += Double.parseDouble( tempStr );
+                                            }
+                                            catch( Exception e )
+                                            {
+                                            }
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                                while ( optionComboIterator.hasNext() )
+                                {
+                                    DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                                    PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                    Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                    if( tempPeriod != null )
+                                    {
+                                        DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, decoc1 );
+
+                                        if ( dataValue != null )
+                                        {
+                                            tempStr += dataValue.getValue() + " : ";
+                                        }
+                                        else
+                                        {
+                                            tempStr = "  ";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.addCell( new Label( colCount, startRow + 1, periodNames.get( periodCount ), getCellFormat1() ) );
+                    }
+
+                    if ( flag == 1 )
+                    {
+                        sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, pwdAggIndValue, getCellFormat2() ) );
+                    }
+                    else
+                    {
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, (int) pwdvAggValue, getCellFormat2() ) );
+                        }
+                        else
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, tempStr, getCellFormat2() ) );
+                        }
+                    }
+
+                    colCount++;
+                    periodCount++;
+                }// Period Loop
+                serviceListCount++;
+            }// Service loop end
+            rowCount++;
+        }// Orgunit loop end
+        
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "TabularAnalysis.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+    
+        outputReportFile.deleteOnExit();
+    }
 
     // -------------------------------------------------------------------------
     // Method for getting Selected OrgUnit(s) data in Excel Sheet 
@@ -2432,7 +2978,6 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();
     }
 
-    
     // -------------------------------------------------------------------------
     // Method for getting Selected OrgUnit(s) data in Excel Sheet 
     //     - GenerateAggregatedData - Aggregation of Periods 
@@ -2625,7 +3170,6 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();    
     }
 
-    
     // -------------------------------------------------------------------------
     // Method for getting OrgUnit Level wise data in Excel Sheet 
     //     - GenerateAggregatedData - Aggregation of Periods 
@@ -2850,6 +3394,225 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();    
     }
 
+    // -------------------------------------------------------------------------
+    // Method for getting OrgUnit Group wise data in Excel Sheet 
+    //     - GenerateAggregatedData - Aggregation of Periods 
+    // -------------------------------------------------------------------------
+    public void generateOrgUnitGroupData_GenerateAggregateData_AggPeriods() throws Exception
+    {
+        int headerRow = 0;
+        int headerCol = 0;
+
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
+
+        sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
+
+        selOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+        selOUList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
+
+        OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitLevelCB );
+        List<OrganisationUnit> orgUnitList1 = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
+
+        selOUList.retainAll( orgUnitList1 );
+        
+        int minOULevel = 1;
+        int maxOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
+
+        int c1 = headerCol + 1;
+
+        for( int i = minOULevel; i <= maxOULevel; i++ )
+        {
+            sheet0.addCell( new Label( c1, headerRow, "Level- "+i, getCellFormat1() ) );
+            c1++;
+        }
+
+        Map<Integer, Integer> orgunitLevelMap = new HashMap<Integer, Integer>( reportService.getOrgunitLevelMap() );
+
+        /* Service Info */
+        Indicator selIndicator = new Indicator();
+        DataElement selDataElement = new DataElement();
+        DataElementCategoryOptionCombo selDecoc = new DataElementCategoryOptionCombo();
+        int flag = 0;
+
+        /* Calculation Part */
+        int rowCount = 1;
+        int colCount = 0;
+        for( OrganisationUnit ou : selOUList )
+        {
+            System.out.println("Entered into orgunitloop :"+new Date());
+            sheet0.addCell( new Number( headerCol, headerRow + rowCount, rowCount, getCellFormat2() ) );
+            
+            Integer level = orgunitLevelMap.get( ou.getId() );
+            if( level == null )
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            
+            colCount = 1 + level - minOULevel;
+            sheet0.addCell( new Label( colCount, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
+
+            OrganisationUnit orgUnit = new OrganisationUnit();
+            orgUnit = ou;
+            int count1=1;
+            while( orgUnit.getParent() != null )
+            {
+                orgUnit = orgUnit.getParent();
+                sheet0.addCell( new Label( colCount-count1, headerRow + rowCount, orgUnit.getName(), getCellFormat2() ) );
+                count1++;
+            }
+
+            List<OrganisationUnit> ouChildList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( ou.getId() ) );
+            List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, ouChildList ) );
+            orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+            Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getAggDataFromDataValueTable( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
+            
+            colCount = c1;
+            int deListCount = 0;
+            int indListCount = 0;
+            int serviceListCount = 0;
+            for( String serviceType : serviceTypeList )
+            {
+                String tempStr = "";
+                Double indValue = 0.0;
+                Double dataValue = 0.0;
+                
+                if ( serviceType.equalsIgnoreCase( "I" ) )
+                {
+                    Double numValue = 0.0;
+                    Double denValue = 0.0;
+
+                    flag = 1;
+                    selIndicator = indicatorList.get( indListCount );
+                    indListCount++;
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.addCell( new Label( colCount, headerRow, selIndicator.getName(), getCellFormat1() ) );
+                    }
+                    
+                    try
+                    {
+                        numValue = Double.parseDouble( reportService.getAggVal( selIndicator.getNumerator(), aggDataMap ) );
+                    }
+                    catch( Exception e )
+                    {
+                    }
+                    
+                    try
+                    {
+                        denValue = Double.parseDouble( reportService.getAggVal( selIndicator.getDenominator(), aggDataMap ) );
+                    }
+                    catch( Exception e )
+                    {
+                    }
+                    
+                    try
+                    {
+                        if( denValue != 0.0 )
+                        {
+                            indValue = ( numValue / denValue ) * selIndicator.getIndicatorType().getFactor();
+                        }
+                        else
+                        {
+                            indValue = 0.0;
+                        }
+                    }
+                    catch( Exception e )
+                    {
+                        indValue = 0.0;
+                    }
+                    
+                    indValue = Math.round( indValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                }
+                else
+                {
+                    flag = 2;
+                    selDataElement = dataElementList.get( deListCount );
+                    deListCount++;
+                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    {
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( selectedServices.get( serviceListCount ).split( ":" )[2] ) );
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
+                        }
+                        
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            tempStr = aggDataMap.get( selDataElement.getId()+"."+selDecoc.getId() );
+                            if( tempStr != null )
+                            {
+                                try
+                                {
+                                    dataValue = Double.parseDouble( tempStr );
+                                }
+                                catch( Exception e )
+                                {
+                                    dataValue = 0.0;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataValue = 0.0;
+                        }
+                    }
+                    else
+                    {
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow, selDataElement.getName(), getCellFormat1() ) );
+                        }
+                        List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( selDataElement.getCategoryCombo().getOptionCombos() );
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            for( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                            {
+                                tempStr = aggDataMap.get( selDataElement.getId()+"."+optionCombo.getId() );
+                                if( tempStr != null )
+                                {
+                                    try
+                                    {
+                                        dataValue += Double.parseDouble( tempStr );
+                                    }
+                                    catch( Exception e )
+                                    {
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataValue = 0.0;
+                        }
+                    }
+                }
+
+                if ( flag == 1 )
+                {
+                    sheet0.addCell( new Number( colCount, headerRow + rowCount, indValue, getCellFormat2() ) );
+                }
+                else
+                {
+                    sheet0.addCell( new Number( colCount, headerRow + rowCount, dataValue, getCellFormat2() ) );
+                }
+
+                colCount++;
+                serviceListCount++;
+            }// Service loop end
+            rowCount++;
+        }// Orgunit loop end
+        
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "TabularAnalysis.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+    
+        outputReportFile.deleteOnExit();    
+    }
+    
     // -------------------------------------------------------------------------
     // Method for getting OrgUnit Level wise data in Excel Sheet 
     //     - GenerateAggregatedData - Periodwise 
@@ -3165,7 +3928,603 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();
     }
     
+    // -------------------------------------------------------------------------
+    // Method for getting OrgUnit Group wise data in Excel Sheet 
+    //     - GenerateAggregatedData - Periodwise 
+    // -------------------------------------------------------------------------
+    public void generateOrgUnitGroupData_GenerateAggregateData_Periodwise() throws Exception
+    {
+        int startRow = 0;
+        int headerRow = 0;
+        int headerCol = 0;
 
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
+
+        sheet0.mergeCells( headerCol, headerRow, headerCol, headerRow + 1 );
+        sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
+
+        selOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+        selOUList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
+
+        OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitLevelCB );
+        List<OrganisationUnit> orgUnitList1 = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
+
+        selOUList.retainAll( orgUnitList1 );
+
+        int minOULevel = 1;
+        int maxOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
+
+        int c1 = headerCol + 1;
+
+        for( int i = minOULevel; i <= maxOULevel; i++ )
+        {
+            sheet0.mergeCells( c1, headerRow, c1, headerRow + 1 );
+            sheet0.addCell( new Label( c1, headerRow, "Level- "+i, getCellFormat1() ) );
+            c1++;
+        }
+
+        Map<Integer, Integer> orgunitLevelMap = new HashMap<Integer, Integer>( reportService.getOrgunitLevelMap() );
+
+        /* Service Info */
+        Indicator selIndicator = new Indicator();
+        DataElement selDataElement = new DataElement();
+        DataElementCategoryOptionCombo selDecoc = new DataElementCategoryOptionCombo();
+        int flag = 0;
+
+        /* Calculation Part */
+        int rowCount = 1;
+        int colCount = 0;
+        for( OrganisationUnit ou : selOUList )
+        {
+            System.out.println( ou.getName() +" : "+ new Date());
+            sheet0.addCell( new Number( headerCol, headerRow + 1 + rowCount, rowCount, getCellFormat2() ) );
+            
+            Integer level = orgunitLevelMap.get( ou.getId() );
+            if( level == null )
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            
+            colCount = 1 + level - minOULevel;
+            sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
+            
+            OrganisationUnit orgUnit = new OrganisationUnit();
+            orgUnit = ou;
+            int count1=1;
+            while( orgUnit.getParent() != null )
+            {
+                orgUnit = orgUnit.getParent();
+                sheet0.addCell( new Label( colCount-count1, headerRow + rowCount + 1, orgUnit.getName(), getCellFormat2() ) );
+                count1++;
+            }
+
+            List<OrganisationUnit> ouChildList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( ou.getId() ) );
+            List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, ouChildList ) );
+            orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+            Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getAggDataFromDataValueTableByDeAndPeriodwise( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
+            
+            colCount = c1;
+            int deListCount = 0;
+            int indListCount = 0;
+            int serviceListCount = 0;
+            for( String serviceType : serviceTypeList )
+            {
+                if ( serviceType.equalsIgnoreCase( "I" ) )
+                {
+                    flag = 1;
+                    selIndicator = indicatorList.get( indListCount );
+                    indListCount++;
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                        sheet0.addCell( new Label( colCount, startRow, selIndicator.getName(), getCellFormat1() ) );
+                    }
+                }
+                else
+                {
+                    flag = 2;
+                    selDataElement = dataElementList.get( deListCount );
+                    deListCount++;
+                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    {
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( selectedServices.get( serviceListCount ).split( ":" )[2] ) );
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
+                        }
+                    }
+                    else
+                    {
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName(), getCellFormat1() ) );
+                        }
+                    }
+                }
+
+                int periodCount = 0;
+                for ( Date sDate : selStartPeriodList )
+                {
+                    Date eDate = selEndPeriodList.get( periodCount );
+                
+                    Collection<Integer> periodIds = new ArrayList<Integer>( periodMap.get( periodCount ) );
+
+                    double pwdvAggValue = 0.0;
+                    double pwdAggIndValue = 0.0;
+
+                    String tempStr = "";
+                    if ( flag == 1 )
+                    {
+                        Double numValue = 0.0;
+                        Double denValue = 0.0;
+                        Double indValue = 0.0;
+                        for( Integer periodId : periodIds )
+                        {
+                            try
+                            {
+                                numValue += Double.parseDouble( getAggValByPeriod( selIndicator.getNumerator(), aggDataMap, periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                            
+                            try
+                            {
+                                denValue += Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                        }
+                        
+                        try
+                        {
+                            if( denValue != 0.0 )
+                            {
+                                indValue = ( numValue / denValue ) * selIndicator.getIndicatorType().getFactor();
+                            }
+                            else
+                            {
+                                indValue = 0.0;
+                            }
+                        }
+                        catch( Exception e )
+                        {
+                            indValue = 0.0;
+                        }
+
+                        pwdAggIndValue = indValue;
+                        pwdAggIndValue = Math.round( pwdAggIndValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                        tempStr = "" + pwdAggIndValue;
+                    }
+                    else if ( flag == 2 )
+                    {
+                        if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                        {
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( Integer periodId : periodIds )
+                                {
+                                    tempStr = aggDataMap.get( selDataElement.getId()+":"+selDecoc.getId()+":"+periodId );
+                                    if( tempStr != null )
+                                    {
+                                        try
+                                        {
+                                            pwdvAggValue += Double.parseDouble( tempStr );
+                                        }
+                                        catch( Exception e )
+                                        {
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                if ( tempPeriod != null )
+                                {
+                                    DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, selDecoc );
+
+                                    if ( dataValue != null && dataValue.getValue() != null )
+                                    {
+                                        tempStr = dataValue.getValue();
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                                else
+                                {
+                                    tempStr = " ";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( selDataElement.getCategoryCombo().getOptionCombos() );
+
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                                {
+                                    for( Integer periodId : periodIds )
+                                    {
+                                        tempStr = aggDataMap.get( selDataElement.getId()+":"+optionCombo.getId()+":"+periodId );
+                                        if( tempStr != null )
+                                        {
+                                            try
+                                            {
+                                                pwdvAggValue += Double.parseDouble( tempStr );
+                                            }
+                                            catch( Exception e )
+                                            {
+                                            }
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                                while ( optionComboIterator.hasNext() )
+                                {
+                                    DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                                    PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                    Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                    if( tempPeriod != null )
+                                    {
+                                        DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, decoc1 );
+
+                                        if ( dataValue != null )
+                                        {
+                                            tempStr += dataValue.getValue() + " : ";
+                                        }
+                                        else
+                                        {
+                                            tempStr = "  ";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.addCell( new Label( colCount, startRow + 1, periodNames.get( periodCount ), getCellFormat1() ) );
+                    }
+
+                    if ( flag == 1 )
+                    {
+                        sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, pwdAggIndValue, getCellFormat2() ) );
+                    }
+                    else
+                    {
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, (int) pwdvAggValue, getCellFormat2() ) );
+                        }
+                        else
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, tempStr, getCellFormat2() ) );
+                        }
+                    }
+
+                    colCount++;
+                    periodCount++;
+                }// Period Loop
+                serviceListCount++;
+            }// Service loop end
+            rowCount++;
+        }// Orgunit loop end
+        
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "TabularAnalysis.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+    
+        outputReportFile.deleteOnExit();
+    }
+
+    // -------------------------------------------------------------------------
+    // Method for getting Selected OrgUnit data in Excel Sheet 
+    //     - GenerateAggregatedData - Periodwise 
+    // -------------------------------------------------------------------------
+    public void generateSelectedOrgUnitData_GenerateAggregateData_Periodwise() throws Exception
+    {
+        int startRow = 0;
+        int headerRow = 0;
+        int headerCol = 0;
+
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
+
+        sheet0.mergeCells( headerCol, headerRow, headerCol, headerRow + 1 );
+        sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
+
+        for ( String ouStr : orgUnitListCB )
+        {
+            OrganisationUnit ou = organisationUnitService.getOrganisationUnit( Integer.parseInt( ouStr ) );
+            selOUList.add( ou );
+        }
+
+        int c1 = headerCol + 1;
+        sheet0.mergeCells( c1, headerRow, c1, headerRow + 1 );
+        sheet0.addCell( new Label( c1, headerRow, "Facility", getCellFormat1() ) );
+        c1++;
+        
+        /* Service Info */
+        Indicator selIndicator = new Indicator();
+        DataElement selDataElement = new DataElement();
+        DataElementCategoryOptionCombo selDecoc = new DataElementCategoryOptionCombo();
+        int flag = 0;
+
+        /* Calculation Part */
+        int rowCount = 1;
+        int colCount = 0;
+        for( OrganisationUnit ou : selOUList )
+        {
+            System.out.println( ou.getName() +" : "+ new Date());
+            sheet0.addCell( new Number( headerCol, headerRow + 1 + rowCount, rowCount, getCellFormat2() ) );
+            sheet0.addCell( new Label( 1, rowCount + 1, ou.getName(), getCellFormat2() ) );
+
+            List<OrganisationUnit> ouChildList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( ou.getId() ) );
+            List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, ouChildList ) );
+            orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+            Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getAggDataFromDataValueTableByDeAndPeriodwise( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
+            
+            colCount = c1;
+            int deListCount = 0;
+            int indListCount = 0;
+            int serviceListCount = 0;
+            for( String serviceType : serviceTypeList )
+            {
+                if ( serviceType.equalsIgnoreCase( "I" ) )
+                {
+                    flag = 1;
+                    selIndicator = indicatorList.get( indListCount );
+                    indListCount++;
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                        sheet0.addCell( new Label( colCount, startRow, selIndicator.getName(), getCellFormat1() ) );
+                    }
+                }
+                else
+                {
+                    flag = 2;
+                    selDataElement = dataElementList.get( deListCount );
+                    deListCount++;
+                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    {
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( selectedServices.get( serviceListCount ).split( ":" )[2] ) );
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
+                        }
+                    }
+                    else
+                    {
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName(), getCellFormat1() ) );
+                        }
+                    }
+                }
+
+                int periodCount = 0;
+                for ( Date sDate : selStartPeriodList )
+                {
+                    Date eDate = selEndPeriodList.get( periodCount );
+                
+                    Collection<Integer> periodIds = new ArrayList<Integer>( periodMap.get( periodCount ) );
+
+                    double pwdvAggValue = 0.0;
+                    double pwdAggIndValue = 0.0;
+
+                    String tempStr = "";
+                    if ( flag == 1 )
+                    {
+                        Double numValue = 0.0;
+                        Double denValue = 0.0;
+                        Double indValue = 0.0;
+                        for( Integer periodId : periodIds )
+                        {
+                            try
+                            {
+                                numValue += Double.parseDouble( getAggValByPeriod( selIndicator.getNumerator(), aggDataMap, periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                            
+                            try
+                            {
+                                denValue += Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                        }
+                        
+                        try
+                        {
+                            if( denValue != 0.0 )
+                            {
+                                indValue = ( numValue / denValue ) * selIndicator.getIndicatorType().getFactor();
+                            }
+                            else
+                            {
+                                indValue = 0.0;
+                            }
+                        }
+                        catch( Exception e )
+                        {
+                            indValue = 0.0;
+                        }
+
+                        pwdAggIndValue = indValue;
+                        pwdAggIndValue = Math.round( pwdAggIndValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                        tempStr = "" + pwdAggIndValue;
+                    }
+                    else if ( flag == 2 )
+                    {
+                        if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                        {
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( Integer periodId : periodIds )
+                                {
+                                    tempStr = aggDataMap.get( selDataElement.getId()+":"+selDecoc.getId()+":"+periodId );
+                                    if( tempStr != null )
+                                    {
+                                        try
+                                        {
+                                            pwdvAggValue += Double.parseDouble( tempStr );
+                                        }
+                                        catch( Exception e )
+                                        {
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                if ( tempPeriod != null )
+                                {
+                                    DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, selDecoc );
+
+                                    if ( dataValue != null && dataValue.getValue() != null )
+                                    {
+                                        tempStr = dataValue.getValue();
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                                else
+                                {
+                                    tempStr = " ";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( selDataElement.getCategoryCombo().getOptionCombos() );
+
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                                {
+                                    for( Integer periodId : periodIds )
+                                    {
+                                        tempStr = aggDataMap.get( selDataElement.getId()+":"+optionCombo.getId()+":"+periodId );
+                                        if( tempStr != null )
+                                        {
+                                            try
+                                            {
+                                                pwdvAggValue += Double.parseDouble( tempStr );
+                                            }
+                                            catch( Exception e )
+                                            {
+                                            }
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                                while ( optionComboIterator.hasNext() )
+                                {
+                                    DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                                    PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                    Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                    if( tempPeriod != null )
+                                    {
+                                        DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, decoc1 );
+
+                                        if ( dataValue != null )
+                                        {
+                                            tempStr += dataValue.getValue() + " : ";
+                                        }
+                                        else
+                                        {
+                                            tempStr = "  ";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.addCell( new Label( colCount, startRow + 1, periodNames.get( periodCount ), getCellFormat1() ) );
+                    }
+
+                    if ( flag == 1 )
+                    {
+                        sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, pwdAggIndValue, getCellFormat2() ) );
+                    }
+                    else
+                    {
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, (int) pwdvAggValue, getCellFormat2() ) );
+                        }
+                        else
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, tempStr, getCellFormat2() ) );
+                        }
+                    }
+
+                    colCount++;
+                    periodCount++;
+                }// Period Loop
+                serviceListCount++;
+            }// Service loop end
+            rowCount++;
+        }// Orgunit loop end
+        
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "TabularAnalysis.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+    
+        outputReportFile.deleteOnExit();
+    }
+    
     // -------------------------------------------------------------------------
     // Method for getting OrgUnit Level wise data in Excel Sheet 
     //     - UseExistingData - Periodwise 
@@ -3486,6 +4845,606 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();
     }
 
+    // -------------------------------------------------------------------------
+    // Method for getting OrgUnit Group wise data in Excel Sheet 
+    //     - UseExistingData - Periodwise 
+    // -------------------------------------------------------------------------
+    public void generateOrgUnitGroupData_UseExisting_Periodwise() throws Exception
+    {
+        int startRow = 0;
+        int headerRow = 0;
+        int headerCol = 0;
+
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
+
+        sheet0.mergeCells( headerCol, headerRow, headerCol, headerRow + 1 );
+        sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
+
+        selOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+        selOUList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
+        OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitLevelCB );
+        List<OrganisationUnit> orgUnitList1 = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
+        selOUList.retainAll( orgUnitList1 );
+        
+        int minOULevel = 1;
+        int maxOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
+
+        int c1 = headerCol + 1;
+
+        for( int i = minOULevel; i <= maxOULevel; i++ )
+        {
+            sheet0.mergeCells( c1, headerRow, c1, headerRow + 1 );
+            sheet0.addCell( new Label( c1, headerRow, "Level- "+i, getCellFormat1() ) );
+            c1++;
+        }
+
+        Map<Integer, Integer> orgunitLevelMap = new HashMap<Integer, Integer>( reportService.getOrgunitLevelMap() );
+    
+        /* Service Info */
+        Indicator selIndicator = new Indicator();
+        DataElement selDataElement = new DataElement();
+        DataElementCategoryOptionCombo selDecoc = new DataElementCategoryOptionCombo();
+        int flag = 0;
+
+        List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, selOUList ) );
+        orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+        
+        System.out.println( "Before getting aggdatamap "+new Date() );
+        Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getResultDataValueFromAggregateTable( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
+        System.out.println( "Before getting aggdatamap "+new Date() );
+    
+        /* Calculation Part */
+        int rowCount = 1;
+        int colCount = 0;
+        for( OrganisationUnit ou : selOUList )
+        {
+            System.out.println("Entered into orgunitloop :"+new Date());
+            sheet0.addCell( new Number( headerCol, headerRow + 1 + rowCount, rowCount, getCellFormat2() ) );
+            
+            Integer level = orgunitLevelMap.get( ou.getId() );
+            if( level == null )
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            
+            colCount = 1 + level - minOULevel;
+            sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
+            
+            OrganisationUnit orgUnit = new OrganisationUnit();
+            orgUnit = ou;
+            int count1=1;
+            while( orgUnit.getParent() != null )
+            {
+                orgUnit = orgUnit.getParent();
+                sheet0.addCell( new Label( colCount-count1, rowCount + 1, orgUnit.getName(), getCellFormat2() ) );
+                count1++;
+            }
+
+            colCount = c1;
+            int deListCount = 0;
+            int indListCount = 0;
+            int serviceListCount = 0;
+            for( String serviceType : serviceTypeList )
+            {
+                if ( serviceType.equalsIgnoreCase( "I" ) )
+                {
+                    flag = 1;
+                    selIndicator = indicatorList.get( indListCount );
+                    indListCount++;
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                        sheet0.addCell( new Label( colCount, startRow, selIndicator.getName(), getCellFormat1() ) );
+                    }
+                }
+                else
+                {
+                    flag = 2;
+                    selDataElement = dataElementList.get( deListCount );
+                    deListCount++;
+                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    {
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( selectedServices.get( serviceListCount ).split( ":" )[2] ) );
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
+                        }
+                    }
+                    else
+                    {
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName(), getCellFormat1() ) );
+                        }
+                    }
+                }
+
+                int periodCount = 0;
+                for ( Date sDate : selStartPeriodList )
+                {
+                    Date eDate = selEndPeriodList.get( periodCount );
+                
+                    Collection<Integer> periodIds = new ArrayList<Integer>( periodMap.get( periodCount ) );
+                    System.out.println( periodIds );
+
+                    double pwdvAggValue = 0.0;
+                    double pwdAggIndValue = 0.0;
+
+                    String tempStr = "";
+                    if ( flag == 1 )
+                    {
+                        Double numValue = 0.0;
+                        Double denValue = 0.0;
+                        Double indValue = 0.0;
+                        for( Integer periodId : periodIds )
+                        {
+                            try
+                            {
+                                numValue += Double.parseDouble( getAggVal( selIndicator.getNumerator(), aggDataMap, ou.getId(), periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                            
+                            try
+                            {
+                                denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                        }
+                        
+                        try
+                        {
+                            if( denValue != 0.0 )
+                            {
+                                indValue = ( numValue / denValue ) * selIndicator.getIndicatorType().getFactor();
+                            }
+                            else
+                            {
+                                indValue = 0.0;
+                            }
+                        }
+                        catch( Exception e )
+                        {
+                            indValue = 0.0;
+                        }
+
+                        pwdAggIndValue = indValue;
+                        pwdAggIndValue = Math.round( pwdAggIndValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                        tempStr = "" + pwdAggIndValue;
+                    }
+                    else if ( flag == 2 )
+                    {
+                        if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                        {
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( Integer periodId : periodIds )
+                                {
+                                    tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+selDecoc.getId()+":"+periodId );
+                                    if( tempStr != null )
+                                    {
+                                        try
+                                        {
+                                            pwdvAggValue += Double.parseDouble( tempStr );
+                                        }
+                                        catch( Exception e )
+                                        {
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                if ( tempPeriod != null )
+                                {
+                                    DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, selDecoc );
+
+                                    if ( dataValue != null && dataValue.getValue() != null )
+                                    {
+                                        tempStr = dataValue.getValue();
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                                else
+                                {
+                                    tempStr = " ";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( selDataElement.getCategoryCombo().getOptionCombos() );
+
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                                {
+                                    for( Integer periodId : periodIds )
+                                    {
+                                        tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+optionCombo.getId()+":"+periodId );
+                                        if( tempStr != null )
+                                        {
+                                            try
+                                            {
+                                                pwdvAggValue += Double.parseDouble( tempStr );
+                                            }
+                                            catch( Exception e )
+                                            {
+                                            }
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                                while ( optionComboIterator.hasNext() )
+                                {
+                                    DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                                    PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                    Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                    if( tempPeriod != null )
+                                    {
+                                        DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, decoc1 );
+
+                                        if ( dataValue != null )
+                                        {
+                                            tempStr += dataValue.getValue() + " : ";
+                                        }
+                                        else
+                                        {
+                                            tempStr = "  ";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.addCell( new Label( colCount, startRow + 1, periodNames.get( periodCount ), getCellFormat1() ) );
+                    }
+
+                    if ( flag == 1 )
+                    {
+                        sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, pwdAggIndValue, getCellFormat2() ) );
+                    }
+                    else
+                    {
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, (int) pwdvAggValue, getCellFormat2() ) );
+                        }
+                        else
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, tempStr, getCellFormat2() ) );
+                        }
+                    }
+
+                    colCount++;
+                    periodCount++;
+                }// Period Loop
+                serviceListCount++;
+            }// Service loop end
+            rowCount++;
+        }// Orgunit loop end
+        
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "TabularAnalysis.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+    
+        outputReportFile.deleteOnExit();
+    }
+    
+    // -------------------------------------------------------------------------
+    // Method for getting Selected OrgUnit Data in Excel Sheet 
+    //     - UseExistingData - Periodwise 
+    // -------------------------------------------------------------------------
+    public void generateSelectedOrgUnitData_UseExisting_Periodwise() throws Exception
+    {
+        int startRow = 0;
+        int headerRow = 0;
+        int headerCol = 0;
+
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
+
+        sheet0.mergeCells( headerCol, headerRow, headerCol, headerRow + 1 );
+        sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
+
+        for ( String ouStr : orgUnitListCB )
+        {
+            OrganisationUnit ou = organisationUnitService.getOrganisationUnit( Integer.parseInt( ouStr ) );
+            selOUList.add( ou );
+        }
+
+        int c1 = headerCol + 1;
+        sheet0.mergeCells( c1, headerRow, c1, headerRow + 1 );
+        sheet0.addCell( new Label( c1, headerRow, "Facility", getCellFormat1() ) );
+        c1++;
+
+        /* Service Info */
+        Indicator selIndicator = new Indicator();
+        DataElement selDataElement = new DataElement();
+        DataElementCategoryOptionCombo selDecoc = new DataElementCategoryOptionCombo();
+        int flag = 0;
+
+        List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, selOUList ) );
+        orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+        
+        System.out.println( "Before getting aggdatamap "+new Date() );
+        Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getResultDataValueFromAggregateTable( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
+        System.out.println( "Before getting aggdatamap "+new Date() );
+    
+        /* Calculation Part */
+        int rowCount = 1;
+        int colCount = 0;
+        for( OrganisationUnit ou : selOUList )
+        {
+            System.out.println(ou.getName() + " : " +new Date());
+            sheet0.addCell( new Number( headerCol, headerRow + 1 + rowCount, rowCount, getCellFormat2() ) );
+            sheet0.addCell( new Label( 1, rowCount + 1, ou.getName(), getCellFormat2() ) );
+            
+            colCount = c1;
+            int deListCount = 0;
+            int indListCount = 0;
+            int serviceListCount = 0;
+            for( String serviceType : serviceTypeList )
+            {
+                if ( serviceType.equalsIgnoreCase( "I" ) )
+                {
+                    flag = 1;
+                    selIndicator = indicatorList.get( indListCount );
+                    indListCount++;
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                        sheet0.addCell( new Label( colCount, startRow, selIndicator.getName(), getCellFormat1() ) );
+                    }
+                }
+                else
+                {
+                    flag = 2;
+                    selDataElement = dataElementList.get( deListCount );
+                    deListCount++;
+                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    {
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( selectedServices.get( serviceListCount ).split( ":" )[2] ) );
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
+                        }
+                    }
+                    else
+                    {
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName(), getCellFormat1() ) );
+                        }
+                    }
+                }
+
+                int periodCount = 0;
+                for ( Date sDate : selStartPeriodList )
+                {
+                    Date eDate = selEndPeriodList.get( periodCount );
+                
+                    Collection<Integer> periodIds = new ArrayList<Integer>( periodMap.get( periodCount ) );
+                    System.out.println( periodIds );
+
+                    double pwdvAggValue = 0.0;
+                    double pwdAggIndValue = 0.0;
+
+                    String tempStr = "";
+                    if ( flag == 1 )
+                    {
+                        Double numValue = 0.0;
+                        Double denValue = 0.0;
+                        Double indValue = 0.0;
+                        for( Integer periodId : periodIds )
+                        {
+                            try
+                            {
+                                numValue += Double.parseDouble( getAggVal( selIndicator.getNumerator(), aggDataMap, ou.getId(), periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                            
+                            try
+                            {
+                                denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                            }
+                            catch( Exception e )
+                            {
+                            }
+                        }
+                        
+                        try
+                        {
+                            if( denValue != 0.0 )
+                            {
+                                indValue = ( numValue / denValue ) * selIndicator.getIndicatorType().getFactor();
+                            }
+                            else
+                            {
+                                indValue = 0.0;
+                            }
+                        }
+                        catch( Exception e )
+                        {
+                            indValue = 0.0;
+                        }
+
+                        pwdAggIndValue = indValue;
+                        pwdAggIndValue = Math.round( pwdAggIndValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                        tempStr = "" + pwdAggIndValue;
+                    }
+                    else if ( flag == 2 )
+                    {
+                        if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                        {
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( Integer periodId : periodIds )
+                                {
+                                    tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+selDecoc.getId()+":"+periodId );
+                                    if( tempStr != null )
+                                    {
+                                        try
+                                        {
+                                            pwdvAggValue += Double.parseDouble( tempStr );
+                                        }
+                                        catch( Exception e )
+                                        {
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                if ( tempPeriod != null )
+                                {
+                                    DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, selDecoc );
+
+                                    if ( dataValue != null && dataValue.getValue() != null )
+                                    {
+                                        tempStr = dataValue.getValue();
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                                else
+                                {
+                                    tempStr = " ";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( selDataElement.getCategoryCombo().getOptionCombos() );
+
+                            if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                for( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                                {
+                                    for( Integer periodId : periodIds )
+                                    {
+                                        tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+optionCombo.getId()+":"+periodId );
+                                        if( tempStr != null )
+                                        {
+                                            try
+                                            {
+                                                pwdvAggValue += Double.parseDouble( tempStr );
+                                            }
+                                            catch( Exception e )
+                                            {
+                                            }
+                                        }
+                                    }
+                                }
+                                tempStr = "" + (int) pwdvAggValue;
+                            }
+                            else
+                            {
+                                Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                                while ( optionComboIterator.hasNext() )
+                                {
+                                    DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                                    PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                                    Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
+                                    if( tempPeriod != null )
+                                    {
+                                        DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, decoc1 );
+
+                                        if ( dataValue != null )
+                                        {
+                                            tempStr += dataValue.getValue() + " : ";
+                                        }
+                                        else
+                                        {
+                                            tempStr = "  ";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        tempStr = " ";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.addCell( new Label( colCount, startRow + 1, periodNames.get( periodCount ), getCellFormat1() ) );
+                    }
+
+                    if ( flag == 1 )
+                    {
+                        sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, pwdAggIndValue, getCellFormat2() ) );
+                    }
+                    else
+                    {
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            sheet0.addCell( new Number( colCount, headerRow + 1 + rowCount, (int) pwdvAggValue, getCellFormat2() ) );
+                        }
+                        else
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, tempStr, getCellFormat2() ) );
+                        }
+                    }
+
+                    colCount++;
+                    periodCount++;
+                }// Period Loop
+                serviceListCount++;
+            }// Service loop end
+            rowCount++;
+        }// Orgunit loop end
+        
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "TabularAnalysis.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+    
+        outputReportFile.deleteOnExit();
+    }
     
     // -------------------------------------------------------------------------
     // Method for getting OrgUnit Level wise data in Excel Sheet 
@@ -3713,6 +5672,421 @@ public class GenerateTabularAnalysisResultAction
         outputReportFile.deleteOnExit();    
     }
 
+    // -------------------------------------------------------------------------
+    // Method for getting OrgUnit Group wise data in Excel Sheet 
+    //     - UseExistingData - Aggregation of Periods
+    // -------------------------------------------------------------------------
+    public void generateOrgUnitGroupData_UseExisting_AggPeriods() throws Exception
+    {
+        int headerRow = 0;
+        int headerCol = 0;
+
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
+
+        sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
+
+        selOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+        selOUList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
+
+        OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitLevelCB );
+        List<OrganisationUnit> orgUnitList1 = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
+
+        selOUList.retainAll( orgUnitList1 );
+
+        int minOULevel = 1;
+        int maxOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
+
+        int c1 = headerCol + 1;
+
+        for( int i = minOULevel; i <= maxOULevel; i++ )
+        {
+            sheet0.addCell( new Label( c1, headerRow, "Level- "+i, getCellFormat1() ) );
+            c1++;
+        }
+
+        Map<Integer, Integer> orgunitLevelMap = new HashMap<Integer, Integer>( reportService.getOrgunitLevelMap() );
+
+
+        /* Service Info */
+        Indicator selIndicator = new Indicator();
+        DataElement selDataElement = new DataElement();
+        DataElementCategoryOptionCombo selDecoc = new DataElementCategoryOptionCombo();
+        int flag = 0;
+
+        List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, selOUList ) );
+        orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+        
+        System.out.println( "Before getting aggdatamap "+new Date() );
+        Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getResultDataValueFromAggregateTableByPeriodAgg( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
+        System.out.println( "After getting aggdatamap "+new Date() );
+    
+        /* Calculation Part */
+        int rowCount = 1;
+        int colCount = 0;
+        for( OrganisationUnit ou : selOUList )
+        {
+            System.out.println("Entered into orgunitloop :"+new Date());
+            sheet0.addCell( new Number( headerCol, headerRow + rowCount, rowCount, getCellFormat2() ) );
+            
+            Integer level = orgunitLevelMap.get( ou.getId() );
+            if( level == null )
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            
+            colCount = 1 + level - minOULevel;
+            sheet0.addCell( new Label( colCount, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
+            
+            OrganisationUnit orgUnit = new OrganisationUnit();
+            orgUnit = ou;
+            int count1=1;
+            while( orgUnit.getParent() != null )
+            {
+                orgUnit = orgUnit.getParent();
+                sheet0.addCell( new Label( colCount-count1, headerRow + rowCount, orgUnit.getName(), getCellFormat2() ) );
+                count1++;
+            }
+
+            colCount = c1;
+            int deListCount = 0;
+            int indListCount = 0;
+            int serviceListCount = 0;
+            for( String serviceType : serviceTypeList )
+            {
+                String tempStr = "";
+                Double indValue = 0.0;
+                Double dataValue = 0.0;
+                
+                if ( serviceType.equalsIgnoreCase( "I" ) )
+                {
+                    Double numValue = 0.0;
+                    Double denValue = 0.0;
+
+                    flag = 1;
+                    selIndicator = indicatorList.get( indListCount );
+                    indListCount++;
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.addCell( new Label( colCount, headerRow, selIndicator.getName(), getCellFormat1() ) );
+                    }
+                    
+                    try
+                    {
+                        numValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getNumerator(), aggDataMap, ou.getId() ) );
+                    }
+                    catch( Exception e )
+                    {
+                    }
+                    
+                    try
+                    {
+                        denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
+                    }
+                    catch( Exception e )
+                    {
+                    }
+                    
+                    try
+                    {
+                        if( denValue != 0.0 )
+                        {
+                            indValue = ( numValue / denValue ) * selIndicator.getIndicatorType().getFactor();
+                        }
+                        else
+                        {
+                            indValue = 0.0;
+                        }
+                    }
+                    catch( Exception e )
+                    {
+                        indValue = 0.0;
+                    }
+                    
+                    indValue = Math.round( indValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                }
+                else
+                {
+                    flag = 2;
+                    selDataElement = dataElementList.get( deListCount );
+                    deListCount++;
+                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    {
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( selectedServices.get( serviceListCount ).split( ":" )[2] ) );
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
+                        }
+                        
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+selDecoc.getId() );
+                            if( tempStr != null )
+                            {
+                                try
+                                {
+                                    dataValue = Double.parseDouble( tempStr );
+                                }
+                                catch( Exception e )
+                                {
+                                    dataValue = 0.0;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataValue = 0.0;
+                        }
+                    }
+                    else
+                    {
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow, selDataElement.getName(), getCellFormat1() ) );
+                        }
+                        List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( selDataElement.getCategoryCombo().getOptionCombos() );
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            for( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                            {
+                                tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+optionCombo.getId() );
+                                if( tempStr != null )
+                                {
+                                    try
+                                    {
+                                        dataValue += Double.parseDouble( tempStr );
+                                    }
+                                    catch( Exception e )
+                                    {
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataValue = 0.0;
+                        }
+                    }
+                }
+
+                if ( flag == 1 )
+                {
+                    sheet0.addCell( new Number( colCount, headerRow + rowCount, indValue, getCellFormat2() ) );
+                }
+                else
+                {
+                    sheet0.addCell( new Number( colCount, headerRow + rowCount, dataValue, getCellFormat2() ) );
+                }
+
+                colCount++;
+                serviceListCount++;
+            }// Service loop end
+            rowCount++;
+        }// Orgunit loop end
+        
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "TabularAnalysis.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+    
+        outputReportFile.deleteOnExit();    
+    }
+    
+    // -------------------------------------------------------------------------
+    // Method for getting Selected OrgUnit data in Excel Sheet 
+    //     - UseExistingData - Aggregation of Periods
+    // -------------------------------------------------------------------------
+    public void generateSelectedOrgUnitData_UseExisting_AggPeriods() throws Exception
+    {
+        int headerRow = 0;
+        int headerCol = 0;
+
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
+
+        sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
+        
+        for ( String ouStr : orgUnitListCB )
+        {
+            OrganisationUnit ou = organisationUnitService.getOrganisationUnit( Integer.parseInt( ouStr ) );
+            selOUList.add( ou );
+        }
+
+        int c1 = headerCol + 1;
+        sheet0.addCell( new Label( c1, headerRow, "Facility", getCellFormat1() ) );
+        c1++;
+
+        /* Service Info */
+        Indicator selIndicator = new Indicator();
+        DataElement selDataElement = new DataElement();
+        DataElementCategoryOptionCombo selDecoc = new DataElementCategoryOptionCombo();
+        int flag = 0;
+
+        List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, selOUList ) );
+        orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+        
+        System.out.println( "Before getting aggdatamap "+new Date() );
+        Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getResultDataValueFromAggregateTableByPeriodAgg( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
+        System.out.println( "After getting aggdatamap "+new Date() );
+    
+        /* Calculation Part */
+        int rowCount = 1;
+        int colCount = 0;
+        for( OrganisationUnit ou : selOUList )
+        {
+            System.out.println("Entered into orgunitloop :"+new Date());
+            sheet0.addCell( new Number( headerCol, headerRow + rowCount, rowCount, getCellFormat2() ) );
+            sheet0.addCell( new Label( headerCol+1, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
+
+            colCount = c1;
+            int deListCount = 0;
+            int indListCount = 0;
+            int serviceListCount = 0;
+            for( String serviceType : serviceTypeList )
+            {
+                String tempStr = "";
+                Double indValue = 0.0;
+                Double dataValue = 0.0;
+                
+                if ( serviceType.equalsIgnoreCase( "I" ) )
+                {
+                    Double numValue = 0.0;
+                    Double denValue = 0.0;
+
+                    flag = 1;
+                    selIndicator = indicatorList.get( indListCount );
+                    indListCount++;
+                    if ( rowCount == 1 )
+                    {
+                        sheet0.addCell( new Label( colCount, headerRow, selIndicator.getName(), getCellFormat1() ) );
+                    }
+                    
+                    try
+                    {
+                        numValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getNumerator(), aggDataMap, ou.getId() ) );
+                    }
+                    catch( Exception e )
+                    {
+                    }
+                    
+                    try
+                    {
+                        denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
+                    }
+                    catch( Exception e )
+                    {
+                    }
+                    
+                    try
+                    {
+                        if( denValue != 0.0 )
+                        {
+                            indValue = ( numValue / denValue ) * selIndicator.getIndicatorType().getFactor();
+                        }
+                        else
+                        {
+                            indValue = 0.0;
+                        }
+                    }
+                    catch( Exception e )
+                    {
+                        indValue = 0.0;
+                    }
+                    
+                    indValue = Math.round( indValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                }
+                else
+                {
+                    flag = 2;
+                    selDataElement = dataElementList.get( deListCount );
+                    deListCount++;
+                    if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
+                    {
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( selectedServices.get( serviceListCount ).split( ":" )[2] ) );
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
+                        }
+                        
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+selDecoc.getId() );
+                            if( tempStr != null )
+                            {
+                                try
+                                {
+                                    dataValue = Double.parseDouble( tempStr );
+                                }
+                                catch( Exception e )
+                                {
+                                    dataValue = 0.0;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataValue = 0.0;
+                        }
+                    }
+                    else
+                    {
+                        if ( rowCount == 1 )
+                        {
+                            sheet0.addCell( new Label( colCount, headerRow, selDataElement.getName(), getCellFormat1() ) );
+                        }
+                        List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( selDataElement.getCategoryCombo().getOptionCombos() );
+                        if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                        {
+                            for( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                            {
+                                tempStr = aggDataMap.get( ou.getId()+":"+selDataElement.getId()+":"+optionCombo.getId() );
+                                if( tempStr != null )
+                                {
+                                    try
+                                    {
+                                        dataValue += Double.parseDouble( tempStr );
+                                    }
+                                    catch( Exception e )
+                                    {
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataValue = 0.0;
+                        }
+                    }
+                }
+
+                if ( flag == 1 )
+                {
+                    sheet0.addCell( new Number( colCount, headerRow + rowCount, indValue, getCellFormat2() ) );
+                }
+                else
+                {
+                    sheet0.addCell( new Number( colCount, headerRow + rowCount, dataValue, getCellFormat2() ) );
+                }
+
+                colCount++;
+                serviceListCount++;
+            }// Service loop end
+            rowCount++;
+        }// Orgunit loop end
+        
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "TabularAnalysis.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+    
+        outputReportFile.deleteOnExit();    
+    }
     
     // -------------------------------------------------------------------------
     // Method for getting OrgUnit Level wise List in Excel Sheet
@@ -3925,24 +6299,6 @@ public class GenerateTabularAnalysisResultAction
                                             }
                                         }
                                     }
-                                    
-                                    /*
-                                    Map<String, String> aggDeMap = new HashMap<String, String>();
-                                    aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( ou.getId(), ""+selDataElement.getId(), periodIdsByComma ) );
-                                    tempStr = aggDeMap.get(selDataElement.getId()+"."+selDecoc.getId());
-                                    
-                                    if( tempStr != null )
-                                    {
-                                        try
-                                        {
-                                            tempAggVal = Double.parseDouble( tempStr );
-                                        }
-                                        catch( Exception e )
-                                        {
-                                            tempAggVal = null;
-                                        }
-                                    }
-                                    */
                                 }
 
                                 if ( tempAggVal == null )
@@ -4023,25 +6379,6 @@ public class GenerateTabularAnalysisResultAction
                                     }
                                     pwdvAggValue += tempAggVal;
                                     System.out.println( ou.getName()+" : "+selDataElement.getName()+" : "+pwdvAggValue );
-                                    /*
-                                    Map<String, String> aggDeMap = new HashMap<String, String>();
-                                        System.out.println(ou.getId()+ " : " + selDataElement.getName() + periodIdsByComma );
-                                        aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( ou.getId(), ""+selDataElement.getId(), periodIdsByComma ) );
-                                        for( String aggDe : aggDeMap.keySet() )
-                                        {
-                                                String temp = aggDeMap.get( aggDe );
-                                                try
-                                                {
-                                                        tempAggVal = Double.parseDouble( temp );
-                                                }
-                                                catch( Exception e )
-                                                {
-                                                        tempAggVal = 0.0;
-                                                }
-                                                pwdvAggValue += tempAggVal;
-                                        }
-                                        */
-
                                 }
 
                                 tempStr = "" + (int) pwdvAggValue;
@@ -4178,6 +6515,7 @@ public class GenerateTabularAnalysisResultAction
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat.setAlignment( Alignment.CENTRE );
         wCellformat.setBackground( Colour.GRAY_25 );
+        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
         wCellformat.setWrap( true );
 
         return wCellformat;
@@ -4189,6 +6527,7 @@ public class GenerateTabularAnalysisResultAction
 
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat.setAlignment( Alignment.CENTRE );
+        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
         wCellformat.setWrap( true );
 
         return wCellformat;
@@ -4356,6 +6695,5 @@ public class GenerateTabularAnalysisResultAction
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
     }
-
     
 }// class end
