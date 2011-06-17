@@ -1447,14 +1447,6 @@ function isValidZeroNumber( value )
 }
 
 /**
- * For example: Zero without decimal sign.
- */
-function isPureZero( value )
-{
-	return (value.indexOf(".") == -1);
-}
-
-/**
  * Allow only integers or a single Zero. No thousands seperators
  */
 function isInt(value)

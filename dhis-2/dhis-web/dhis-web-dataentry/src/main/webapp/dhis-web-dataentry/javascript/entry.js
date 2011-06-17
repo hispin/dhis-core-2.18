@@ -97,7 +97,7 @@ function saveValue( dataElementId, optionComboId, dataElementName )
 function saveValueInternal( dataElementId, optionComboId, dataElementName )
 {
     var field = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
-    var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;   
+    var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
     
     field.style.backgroundColor = COLOR_YELLOW;
@@ -111,28 +111,31 @@ function saveValueInternal( dataElementId, optionComboId, dataElementName )
                 // If value is 0 and zero is not significant for data element, then skip value				
 				if ( significantZeros.indexOf( dataElementId ) == -1 )
 				{
-					window.alert( i18n_field_unallowed_save_zero + '\n\n' + dataElementName );
-					return alertField( field );
+					field.style.backgroundColor = COLOR_GREEN;
+					field.value = '';
+					field.select();
+					field.focus();
+					return false;
 				}
 				
-				field.value = isPureZero( field.value ) ? "0" : "0.0";
+				field.value = (field.value.indexOf(".") == -1) ? "0" : "0.0";
             }
-			else if ( type == 'int' && !isInt( field.value ) && ( field.value.length >= 255 ) )
+			else if ( type == 'int' && ( !isInt( field.value ) || ( field.value.length >= 255 ) ) )
             {
             	window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
                 return alertField( field );
             }  
-            else if ( type == 'number' && !isRealNumber( field.value ) && ( field.value.length >= 255 ) )
+            else if ( type == 'number' && ( !isRealNumber( field.value ) || ( field.value.length >= 255 ) ) )
             {
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
                 return alertField( field );
             } 
-			else if ( type == 'positiveNumber' && !isPositiveInt( field.value ) && ( field.value.length >= 255 ) )
+			else if ( type == 'positiveNumber' && ( !isPositiveInt( field.value ) || ( field.value.length >= 255 ) ) )
             {
                 window.alert( i18n_value_must_positive_integer + '\n\n' + dataElementName );
                 return alertField( field );
             } 
-			else if ( type == 'negativeNumber' && !isNegativeInt( field.value ) && ( field.value.length >= 255 ) )
+			else if ( type == 'negativeNumber' && ( !isNegativeInt( field.value ) || ( field.value.length >= 255 ) ) )
             {
                 window.alert( i18n_value_must_negative_integer + '\n\n' + dataElementName );
                 return alertField( field );
