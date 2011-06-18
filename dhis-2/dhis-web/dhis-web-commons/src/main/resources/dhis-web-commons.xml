@@ -403,6 +403,12 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <action name="getUserRoles" class="org.hisp.dhis.commons.action.GetUserRolesAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonUserRoles.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <action name="getUsers" class="org.hisp.dhis.commons.action.GetUsersAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonUsers.vm</result>

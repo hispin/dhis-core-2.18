@@ -320,13 +320,16 @@
 
   <!-- Common actions -->
 
-  <bean id="org.hisp.dhis.commons.action.GetUserAction" class="org.hisp.dhis.commons.action.GetUserAction" 
-	scope="prototype">
+  <bean id="org.hisp.dhis.commons.action.GetUserAction" class="org.hisp.dhis.commons.action.GetUserAction" scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
-  <bean id="org.hisp.dhis.commons.action.GetUsersAction" class="org.hisp.dhis.commons.action.GetUsersAction" 
-	scope="prototype">
+  <bean id="org.hisp.dhis.commons.action.GetUserRolesAction" class="org.hisp.dhis.commons.action.GetUserRolesAction"
+    scope="prototype">
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.commons.action.GetUsersAction" class="org.hisp.dhis.commons.action.GetUsersAction" scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
