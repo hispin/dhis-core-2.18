@@ -100,7 +100,7 @@
     	
       <tr>
         <td>
-          <select id="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
+          <select id="availableDataElementsList" name="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
         <td>
         	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableDataElementsList' );"/><br/>

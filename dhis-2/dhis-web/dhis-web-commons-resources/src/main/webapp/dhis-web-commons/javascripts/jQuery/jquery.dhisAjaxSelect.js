@@ -174,7 +174,10 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                 $.each(json[settings.iterator], function(i, item)
                 {
                     var option = $(settings.handler(item));
-                    $select.append(option);
+
+                    if(option !== undefined) {
+                        $select.append(option);
+                    }
                 });
 
                 if (settings.connectedTo) {

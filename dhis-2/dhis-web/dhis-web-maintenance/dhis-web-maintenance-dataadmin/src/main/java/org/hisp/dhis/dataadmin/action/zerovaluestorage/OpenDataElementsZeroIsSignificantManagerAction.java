@@ -32,16 +32,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id$
  */
 
 public class OpenDataElementsZeroIsSignificantManagerAction
@@ -62,13 +59,6 @@ public class OpenDataElementsZeroIsSignificantManagerAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<DataElement> ignoreZeroValueDataElements;
-
-    public List<DataElement> getIgnoreZeroValueDataElements()
-    {
-        return ignoreZeroValueDataElements;
-    }
-
     private List<DataElement> zeroDataValueElements;
 
     public List<DataElement> getZeroDataValueElements()
@@ -76,30 +66,14 @@ public class OpenDataElementsZeroIsSignificantManagerAction
         return zeroDataValueElements;
     }
 
-    private List<DataElementGroup> dataElementGroups;
-
-    public List<DataElementGroup> getDataElementGroups()
-    {
-        return dataElementGroups;
-    }
-
     @Override
     public String execute()
         throws Exception
     {
-        ignoreZeroValueDataElements = new ArrayList<DataElement>( dataElementService
-            .getDataElementsByZeroIsSignificant( false ) );
-
-        Collections.sort( ignoreZeroValueDataElements, new DataElementNameComparator() );
-
         zeroDataValueElements = new ArrayList<DataElement>( dataElementService
             .getDataElementsByZeroIsSignificant( true ) );
 
         Collections.sort( zeroDataValueElements, new DataElementNameComparator() );
-
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
         return SUCCESS;
     }
