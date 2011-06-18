@@ -1,4 +1,4 @@
-package org.hisp.dhis.commons.action;
+package org.hisp.dhis.user.comparator;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,62 +27,28 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
 
-import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.comparator.UserRoleComparator;
 
 /**
  * @author mortenoh
  */
-public class GetUserRolesAction
-    extends ActionPagingSupport<UserAuthorityGroup>
+public class UserRoleComparator
+    implements Comparator<UserAuthorityGroup>
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
+    public int compare( UserAuthorityGroup ur0, UserAuthorityGroup ur1 )
     {
-        this.userService = userService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-
-    private List<UserAuthorityGroup> userRoles;
-
-    public List<UserAuthorityGroup> getUserRoles()
-    {
-        return this.userRoles;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        userRoles = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
-
-        Collections.sort( userRoles, new UserRoleComparator() );
-
-        if ( usePaging )
+        if ( ur0 == null )
         {
-            this.paging = createPaging( userRoles.size() );
-
-            userRoles = userRoles.subList( paging.getStartPos(), paging.getEndPos() );
+            return 1;
         }
 
-        return SUCCESS;
-    }
+        if ( ur1 == null )
+        {
+            return -1;
+        }
 
+        return ur0.getName().compareTo( ur1.getName() );
+    }
 }
