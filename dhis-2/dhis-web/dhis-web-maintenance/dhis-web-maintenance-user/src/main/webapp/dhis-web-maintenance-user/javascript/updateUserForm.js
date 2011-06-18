@@ -6,9 +6,9 @@ jQuery(document).ready(function()
 
     validation2('updateUserForm', function( form )
     {
+        jQuery("#selectedList").children().attr("selected", true);
         form.submit()
-    },
-    {
+    }, {
         'beforeValidateHandler' : function()
         {
             listValidator('roleValidator', 'selectedList');
