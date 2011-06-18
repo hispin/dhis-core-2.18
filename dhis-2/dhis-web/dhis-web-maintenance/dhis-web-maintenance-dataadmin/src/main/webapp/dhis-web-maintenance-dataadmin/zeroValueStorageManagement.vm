@@ -21,23 +21,6 @@
 			}
 		});
 	});
-
-/*
-	function getSaveZeroDataElements( value )
-	{		
-		jQuery.postJSON('../dhis-web-commons-ajax-json/getDataElements.action', {id: value },
-		function( json ) {
-			var ignoreZeroValueDataElements = jQuery("#ignoreZeroValueDataElements");
-			ignoreZeroValueDataElements.empty();
-			jQuery.each( json.dataElements, function(i, item) {
-				if( item.zeroIsSignificant == 'false' )
-				{
-					ignoreZeroValueDataElements.append( "<option value='" + item.id + "'>" + item.name + "</option>");
-				}
-			});
-		});
-	}
-*/	
 </script>
 
 <h3>$i18n.getString( "zero_storage_management" ) #openHelp( "zeroValueStorage" )</h3>
