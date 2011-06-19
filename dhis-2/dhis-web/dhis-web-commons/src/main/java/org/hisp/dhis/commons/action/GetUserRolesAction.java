@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.system.filter.UserAuthorityGroupSubsetFilter;
+import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -83,7 +83,7 @@ public class GetUserRolesAction
     {
         userRoles = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
 
-        FilterUtils.filter( userRoles, new UserAuthorityGroupSubsetFilter( currentUserService.getCurrentUser() ) );
+        FilterUtils.filter( userRoles, new UserAuthorityGroupCanIssueFilter( currentUserService.getCurrentUser() ) );
 
         Collections.sort( userRoles, new UserRoleComparator() );
 

@@ -34,6 +34,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
@@ -120,10 +122,11 @@ public class GetUserListAction
             userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
+        FilterUtils.filter( userCredentialsList, new UserCredentialsCanUpdateFilter( currentUserService.getCurrentUser() ) );
+        
         Collections.sort( userCredentialsList, new UsernameComparator() );
-        User currentUser = userService.getUser( currentUserService.getCurrentUser().getId() );
 
-        currentUserName = currentUser.getUserCredentials().getUsername();
+        currentUserName = currentUserService.getCurrentUsername();
         
         return SUCCESS;
     }

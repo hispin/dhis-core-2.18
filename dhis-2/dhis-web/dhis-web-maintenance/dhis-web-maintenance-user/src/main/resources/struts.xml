@@ -21,7 +21,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/user.vm</param>  
       <param name="menu">/dhis-web-maintenance-user/orgunitMenu.vm</param>
-	  <!-- <param name="menuTreeHeight">404</param>-->
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/user.js,javascript/filterTable.js</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
 	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
