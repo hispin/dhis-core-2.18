@@ -39,7 +39,7 @@ dhis2.util.namespace( 'dhis2.array' );
 dhis2.array.remove = function( array, from, to )
 {
     // Array Remove - By John Resig (MIT Licensed)
-    var rest = array.slice( (to || from) + 1 || array.length );
+    var rest = array.slice( ( to || from ) + 1 || array.length );
     array.length = from < 0 ? array.length + from : from;
 
     return array.push.apply( array, rest );
