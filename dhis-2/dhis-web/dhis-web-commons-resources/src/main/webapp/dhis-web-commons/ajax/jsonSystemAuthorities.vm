@@ -1,0 +1,12 @@
+#set( $size = $systemAuthorities.size() )
+{ "systemAuthorities": [
+#foreach( $systemAuthority in $systemAuthorities )
+  {
+    "name": "$!encoder.jsonEncode( ${systemAuthority} )"
+  }#if( $velocityCount < $size ),#end
+#end
+]
+#if( $usePaging ),
+	"paging":#parse( "/dhis-web-commons/ajax/jsonPaging.vm" )
+#end
+}

@@ -339,6 +339,11 @@
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
   </bean>
 
+  <bean id="org.hisp.dhis.commons.action.GetSystemAuthoritiesAction" class="org.hisp.dhis.commons.action.GetSystemAuthoritiesAction"
+    scope="prototype">
+    <property name="authoritiesProvider" ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
+  </bean>
+
   <bean id="org.hisp.dhis.commons.action.GetValidationRulesAction" class="org.hisp.dhis.commons.action.GetValidationRulesAction"
     scope="prototype">
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
