@@ -522,12 +522,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         };
         
         var onClickSelect = function onClickSelect(feature) {
-            if (feature.attributes.ft == G.conf.map_feature_type_point) {
+            if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_point_class_name) {
                 if (scope.featureInfoWindow) {
                     scope.featureInfoWindow.destroy();
                 }
                 
-                function fn() {  
+                function fn() {
                     var cssCls = G.stores.groupsByGroupSet.img[G.stores.groupsByGroupSet.find('name', feature.attributes.type)] + '-title';            
                     scope.featureInfoWindow = new Ext.Window({
                         title: '<span class="' + cssCls + '">' + feature.attributes.name + '</span>',
