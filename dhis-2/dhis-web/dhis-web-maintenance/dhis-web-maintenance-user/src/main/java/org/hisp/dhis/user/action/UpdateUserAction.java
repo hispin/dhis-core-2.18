@@ -181,19 +181,19 @@ public class UpdateUserAction
 
         UserCredentials userCredentials = userService.getUserCredentials( user );
         
-        Set<UserAuthorityGroup> authorityGroups = userCredentials.getUserAuthorityGroups();
+        Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
         
-        authorityGroups.clear();
-
         for ( String id : selectedList )
         {
             UserAuthorityGroup group = userService.getUserAuthorityGroup( Integer.parseInt( id ) );
             
             if ( currentUserCredentials != null && currentUserCredentials.canIssue( group ) )
             {
-                authorityGroups.add( group );
+                userAuthorityGroups.add( group );
             }
         }
+        
+        userCredentials.setUserAuthorityGroups( userAuthorityGroups );
         
         if ( rawPassword != null )
         {
