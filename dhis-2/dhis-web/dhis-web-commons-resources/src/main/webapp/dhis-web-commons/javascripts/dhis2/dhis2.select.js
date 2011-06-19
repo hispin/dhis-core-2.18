@@ -158,3 +158,33 @@ dhis2.select.selectNone = function($select)
 {
     $select.children().attr('selected', false);
 }
+
+/**
+ * Sort options in a select. Based on their html() content. This version is case
+ * sensitive.
+ * 
+ * @param $options Array of the options to sort
+ * 
+ * @return Sorted array of options
+ */
+dhis2.select.sort = function($options)
+{
+    return $.makeArray($options).sort(function(a, b) {
+        return dhis2.comparator.htmlComparator( $(a), $(b) );
+    });
+}
+
+/**
+ * Sort options in a select. Based on their html() content. This version is case
+ * insensitive
+ * 
+ * @param $options Array of the options to sort
+ * 
+ * @return Sorted array of options
+ */
+dhis2.select.sortNC = function($options)
+{
+    return $($.makeArray($options).sort(function(a, b) {
+        return dhis2.comparator.htmlNoCaseComparator( $(a), $(b) );
+    }) );
+}
