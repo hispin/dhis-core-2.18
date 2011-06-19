@@ -28,6 +28,7 @@ package org.hisp.dhis.user;
  */
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -110,6 +111,25 @@ public class UserCredentials
         }
         
         return !userAuthorityGroups.contains( group ) && authorities.containsAll( group.getAuthorities() );
+    }
+    
+    /**
+     * Indicates whether this user credentials can issue all of the user authority
+     * groups in the given collection.
+     * 
+     * @param groups the collection of user authority groups.
+     */
+    public boolean canIssueAll( Collection<UserAuthorityGroup> groups )
+    {
+        for ( UserAuthorityGroup group : groups )
+        {
+            if ( !canIssue( group ) )
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
     
     // -------------------------------------------------------------------------

@@ -29,32 +29,31 @@ package org.hisp.dhis.system.filter;
 
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 
 /**
  * @author Lars Helge Overland
  */
-public class UserAuthorityGroupSubsetFilter
-    implements Filter<UserAuthorityGroup>
+public class UserCredentialsCanUpdateFilter
+    implements Filter<UserCredentials>
 {
     private UserCredentials userCredentials;
     
-    protected UserAuthorityGroupSubsetFilter()
+    protected UserCredentialsCanUpdateFilter()
     {
     }
     
-    public UserAuthorityGroupSubsetFilter( User user )
+    public UserCredentialsCanUpdateFilter( User user )
     {
         if ( user != null && user.getUserCredentials() != null )
         {
             this.userCredentials = user.getUserCredentials();
         }
     }
-
+    
     @Override
-    public boolean retain( UserAuthorityGroup group )
+    public boolean retain( UserCredentials credentials )
     {
-        return userCredentials != null && userCredentials.canIssue( group );
+        return userCredentials != null && credentials != null && userCredentials.canIssueAll( credentials.getUserAuthorityGroups() );
     }
 }

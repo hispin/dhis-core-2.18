@@ -38,7 +38,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-
   <bean id="org.hisp.dhis.user.action.GetUserAction" class="org.hisp.dhis.user.action.GetUserAction" scope="prototype">
     <property name="userService">
       <ref bean="org.hisp.dhis.user.UserService" />
@@ -52,6 +51,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="selectionManager">
       <ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+    </property>
+    <property name="currentUserService">
+      <ref bean="org.hisp.dhis.user.CurrentUserService" />
     </property>
   </bean>
 
