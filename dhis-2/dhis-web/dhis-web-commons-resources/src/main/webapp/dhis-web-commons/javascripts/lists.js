@@ -15,7 +15,7 @@ function deleteValue( theSel, theIndex ) {
 
 /**
  * Moves selected options in the source list to the target list.
- *
+ * 
  * @param fromListId the id of the source list.
  * @param targetListId the id of the target list.
  */
@@ -27,7 +27,7 @@ function moveSelectedById( fromListId, targetListId ) {
 
 /**
  * Moves selected options in the source list to the target list.
- *
+ * 
  * @param fromList the source list.
  * @param targetList the target list.
  */
@@ -60,7 +60,7 @@ function moveSelected( fromList, targetList ) {
 
 /**
  * Moves all elements in a list to the target list
- *
+ * 
  * @param fromListId the id of the source list.
  * @param targetListId the id of target list.
  */
@@ -70,7 +70,7 @@ function moveAllById( fromListId, targetListId ) {
 
 /**
  * Clears the list.
- *
+ * 
  * @param listId the id of the list.
  */
 function clearListById( listId ) {
@@ -80,6 +80,7 @@ function clearListById( listId ) {
 
 /**
  * Clears the list.
+ * 
  * @param list the list.
  */
 function clearList( list ) {
@@ -88,7 +89,7 @@ function clearList( list ) {
 
 /**
  * Tests whether the list contains the value.
- *
+ * 
  * @param listId the id of the list.
  * @param value the value.
  */
@@ -99,7 +100,7 @@ function listContainsById( listId, value, text ) {
 
 /**
  * Tests whether the list contains the value.
- *
+ * 
  * @param list the list.
  * @param value the value.
  */
@@ -122,6 +123,7 @@ function listContains( list, value, text ) {
 
 /**
  * Marks all elements in a list as selected.
+ * 
  * @param listId the id of the list.
  */
 function selectAllById( listId ) {
@@ -130,6 +132,7 @@ function selectAllById( listId ) {
 
 /**
  * Marks all elements in a list as selected.
+ * 
  * @param list the list.
  */
 function selectAll( list ) {
@@ -138,6 +141,7 @@ function selectAll( list ) {
 
 /**
  * Marks all elements in a list as not selected.
+ * 
  * @param listId the id of the list.
  */
 function deselectAllById( listId ) {
@@ -147,6 +151,7 @@ function deselectAllById( listId ) {
 
 /**
  * Marks all elements in a list as not selected.
+ * 
  * @param list the list.
  */
 function deselectAll( list ) {
@@ -178,6 +183,7 @@ function addOptionById( listId, optionValue, optionText )
 
 /**
  * Removes the selected option from a select list.
+ * 
  * @param listId the id of the list.
  */
 function removeSelectedOption( listId ) {
@@ -191,6 +197,7 @@ function removeSelectedOption( listId ) {
 
 /**
  * Moves the selected option in a select list up one position.
+ * 
  * @param listId the id of the list.
  */
 function moveUpSelectedOption( listId ){
@@ -201,7 +208,8 @@ function moveUpSelectedOption( listId ){
                 var precedingOption = new Option( list.options[ i - 1 ].text, list.options[ i - 1 ].value );
                 var currentOption = new Option( list.options[ i ].text, list.options[ i ].value );
 
-                list.options[ i - 1 ] = currentOption; // Swapping place in the list
+                list.options[ i - 1 ] = currentOption; // Swapping place in the
+                                                        // list
                 list.options[ i - 1 ].selected = true;
                 list.options[ i ] = precedingOption;
             }
@@ -211,7 +219,7 @@ function moveUpSelectedOption( listId ){
 
 /**
  * Moves the selected option in a list down one position.
- *
+ * 
  * @param listId the id of the list.
  */
 function moveDownSelectedOption( listId ) {
@@ -219,11 +227,13 @@ function moveDownSelectedOption( listId ) {
 
     for ( var i = list.options.length - 1; i >= 0; i-- ) {
         if ( list.options[ i ].selected ) {
-            if ( i < list.options.length - 1 ) { // Cannot move down the option at the bottom
+            if ( i < list.options.length - 1 ) { // Cannot move down the
+                                                    // option at the bottom
                 var subsequentOption = new Option( list.options[ i + 1 ].text, list.options[ i + 1 ].value );
                 var currentOption = new Option( list.options[ i ].text, list.options[ i ].value );
 
-                list.options[ i + 1 ] = currentOption; // Swapping place in the list
+                list.options[ i + 1 ] = currentOption; // Swapping place in the
+                                                        // list
                 list.options[ i + 1 ].selected = true;
                 list.options[ i ] = subsequentOption;
             }
@@ -233,7 +243,7 @@ function moveDownSelectedOption( listId ) {
 
 /**
  * Moves the selected options to the top of the list.
- *
+ * 
  * @param listId the id of the list.
  */
 function moveSelectedOptionToTop( listId ) {
@@ -250,7 +260,8 @@ function moveSelectedOptionToTop( listId ) {
         }
     }
 
-    // Move options in main list down a number of positions equal to selected options
+    // Move options in main list down a number of positions equal to selected
+    // options
 
     list.options.length = listLength;
 
@@ -269,7 +280,7 @@ function moveSelectedOptionToTop( listId ) {
 
 /**
  * Moves the selected options to the bottom of the list.
- *
+ * 
  * @param listId the id of the list.
  */
 function moveSelectedOptionToBottom( listId ) {
@@ -295,10 +306,11 @@ function moveSelectedOptionToBottom( listId ) {
 }
 
 /**
- * Creates a hidden select list used for temporarily storing
- * options for filtering
- *
- * TODO: avoid performance hit on page with many selects, by checking use of filterList method
+ * Creates a hidden select list used for temporarily storing options for
+ * filtering
+ * 
+ * TODO: avoid performance hit on page with many selects, by checking use of
+ * filterList method
  */
 $(document).ready(function() {
     $("select").each(function(i,o){
@@ -312,12 +324,12 @@ $(document).ready(function() {
 /**
  * Filters out options in a select list that don't match the filter string by
  * hiding them.
- *
+ * 
  * @param filter the filter string.
  * @param listId the id of the list to filter.
  */
 function filterList( filter, listId ) {
-    //Fastest cross-browser way to filter
+    // Fastest cross-browser way to filter
     $("#"+listId+" option").filter(function(i) {
         var toMatch = $(this).text().toString().toLowerCase();
         var filterLower = filter.toString().toLowerCase();
@@ -334,14 +346,16 @@ function filterList( filter, listId ) {
     $("#"+listId).empty().html(sortedVals);
     $("#"+listId).val('--');
 
-    /* For FF only - no performance issues
-    $("#" + listId).find('option').hide();
-    $("#" + listId).find('option:Contains("' + filter + '")').show();*/
+    /*
+     * For FF only - no performance issues $("#" +
+     * listId).find('option').hide(); $("#" + listId).find('option:Contains("' +
+     * filter + '")').show();
+     */
 }
 
 /**
  * Clears a filter and resets the filtered select list.
- *
+ * 
  * @param filterId the id of the filter input box.
  * @param listId the id of the list reset after being filtered.
  */
@@ -352,7 +366,7 @@ function clearFilter( filterId, listId ) {
 
 /**
  * Check if list has option.
- *
+ * 
  * @param obj is list object
  */
 function hasOptions( obj ) {
@@ -364,7 +378,7 @@ function hasOptions( obj ) {
 
 /**
  * Sort list by name.
- *
+ * 
  * @param id is id of list
  * @param type is type for sort ASC:ascending && DES: desending
  */

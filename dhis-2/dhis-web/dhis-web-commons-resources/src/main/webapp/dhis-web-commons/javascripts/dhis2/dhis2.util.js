@@ -41,7 +41,8 @@ dhis2.util.namespace = function( path )
     var parent = window;
     var currentPart = '';
 
-    for ( var i = 0, length = parts.length; i < length; i++) {
+    for ( var i = 0, length = parts.length; i < length; i++ )
+    {
         currentPart = parts[i];
         parent[currentPart] = parent[currentPart] || {};
         parent = parent[currentPart];
@@ -51,14 +52,15 @@ dhis2.util.namespace = function( path )
 }
 
 /**
- * adds ':containsNoCase' to filtering. $(sel).find(':containsNC(key)').doSomething();
+ * adds ':containsNoCase' to filtering.
+ * $(sel).find(':containsNC(key)').doSomething();
  */
 $.expr[":"].containsNC = function( el, i, m )
 {
     // http://www.west-wind.com/weblog/posts/2008/Oct/24/Using-jQuery-to-search-Content-and-creating-custom-Selector-Filters
     var search = m[3];
 
-    if (!search)
+    if ( !search )
         return false;
 
     return eval( '/' + search + '/i' ).test( $( el ).text() );

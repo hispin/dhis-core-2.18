@@ -28,8 +28,9 @@
 dhis2.util.namespace( 'dhis2.select' );
 
 /**
- * Return a hidden select with id $select + '_ghost'. This is usually used for temporary hiding options, since these
- * can't be hidden using 'display: none' or other similar techniques.
+ * Return a hidden select with id $select + '_ghost'. This is usually used for
+ * temporary hiding options, since these can't be hidden using 'display: none'
+ * or other similar techniques.
  * 
  * @param $select {jQuery} The select to ghost
  * 
@@ -50,14 +51,15 @@ dhis2.select.getGhost = function( $select )
 }
 
 /**
- * Filter a select on a given key. Options that are not matched, are moved to ghost.
+ * Filter a select on a given key. Options that are not matched, are moved to
+ * ghost.
  * 
  * NOTE: Both selects should already be in sorted order.
  * 
  * @param $select {jQuery} The select to search within
  * @param key {String} Key to search for
- * @param caseSensitive {Boolean} Case sensitive search (defaults to false, so this parameter only needed if you want
- *            case sensitive search)
+ * @param caseSensitive {Boolean} Case sensitive search (defaults to false, so
+ *            this parameter only needed if you want case sensitive search)
  */
 dhis2.select.filterWithKey = function( $select, key, caseSensitive )
 {
@@ -86,8 +88,9 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
 }
 
 /**
- * Moves an array of child elements into a select, these will be moved in a sorted fashion. Both the select and array is
- * assumed to be sorted to start with.
+ * Moves an array of child elements into a select, these will be moved in a
+ * sorted fashion. Both the select and array is assumed to be sorted to start
+ * with.
  * 
  * @param $select {jQuery} A select which acts as the target
  * @param $array {jQuery} An array of child elements to move
