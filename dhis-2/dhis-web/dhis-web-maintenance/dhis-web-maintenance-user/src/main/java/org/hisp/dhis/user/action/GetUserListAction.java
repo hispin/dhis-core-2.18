@@ -122,9 +122,8 @@ public class GetUserListAction
 
         Collections.sort( userCredentialsList, new UsernameComparator() );
         User currentUser = userService.getUser( currentUserService.getCurrentUser().getId() );
-        UserCredentials userCredentials = userService.getUserCredentials( currentUser );
 
-        currentUserName = userCredentials.getUsername();
+        currentUserName = currentUser.getUserCredentials().getUsername();
         
         return SUCCESS;
     }
