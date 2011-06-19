@@ -15,7 +15,7 @@
 		});
 
 		jQuery("#availableListAuthority").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getSystemAuthorities.action",
+			source: "getSystemAuthorities.action",
 			iterator: 'systemAuthorities',
 			connectedTo: 'selectedListAuthority',
 			handler: function(item) {

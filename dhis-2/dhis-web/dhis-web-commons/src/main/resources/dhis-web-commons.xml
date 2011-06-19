@@ -421,12 +421,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="getSystemAuthorities" class="org.hisp.dhis.commons.action.GetSystemAuthoritiesAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonSystemAuthorities.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <action name="getValidationRules" class="org.hisp.dhis.commons.action.GetValidationRulesAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonValidationRules.vm</result>
