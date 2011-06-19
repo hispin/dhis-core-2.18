@@ -327,6 +327,7 @@
   <bean id="org.hisp.dhis.commons.action.GetUserRolesAction" class="org.hisp.dhis.commons.action.GetUserRolesAction"
     scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.commons.action.GetUsersAction" class="org.hisp.dhis.commons.action.GetUsersAction" scope="prototype">
