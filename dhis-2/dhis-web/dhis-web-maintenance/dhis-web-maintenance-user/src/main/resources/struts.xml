@@ -204,6 +204,13 @@
 	  <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
 	  <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
+    <!-- Json Actions -->
+    <action name="getSystemAuthorities" class="org.hisp.dhis.user.action.GetSystemAuthoritiesAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-maintenance-user/ajax/jsonSystemAuthorities.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
   </package>
 </struts>
