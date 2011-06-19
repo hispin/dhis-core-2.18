@@ -10,8 +10,7 @@ var _loading_circle_html = "<img src='../images/ajax-loader-circle.gif'>";
 /**
  * Go back using the document.referrer.
  * 
- * @param defaultUrl
- *            if there is not document.referrer, use this url
+ * @param defaultUrl if there is not document.referrer, use this url
  */
 function referrerBack( defaultUrl ) {
 	if(document.referrer !== undefined && document.referrer != "") {
@@ -27,10 +26,8 @@ function referrerBack( defaultUrl ) {
 /**
  * Redirects to the translate GUI.
  * 
- * @param className
- *            the name of the object class.
- * @param objectId
- *            the identifier of the object.
+ * @param className the name of the object class.
+ * @param objectId the identifier of the object.
  */
 function translate( className, objectId )
 {
@@ -43,8 +40,7 @@ function translate( className, objectId )
  * Gets help content for the given id. Opens the right bar and puts the content
  * inside. Reads data from an underlying docbook file.
  * 
- * @param id
- *            the content id, refers to the section id in the docbook file.
+ * @param id the content id, refers to the section id in the docbook file.
  */
 function getHelpContent( id )
 {
@@ -69,8 +65,7 @@ function hideHelpContent()
 /**
  * Filters values in a html table with tbody id "list".
  * 
- * @param filter
- *            the filter.
+ * @param filter the filter.
  */
 function filterValues( filter, columnIndex )
 {
@@ -101,8 +96,7 @@ function filterValues( filter, columnIndex )
  * Returns the value of the selected option in the list with the given
  * identifier.
  * 
- * @param listId
- *            the list identifier.
+ * @param listId the list identifier.
  */
 function getListValue( listId )
 {
@@ -115,8 +109,7 @@ function getListValue( listId )
 /**
  * Hides the document element with the given identifier.
  * 
- * @param id
- *            the element identifier.
+ * @param id the element identifier.
  */
 function hideById( id )
 {
@@ -126,8 +119,7 @@ function hideById( id )
 /**
  * Shows the document element with the given identifier.
  * 
- * @param id
- *            the element identifier.
+ * @param id the element identifier.
  */
 function showById( id )
 {
@@ -137,8 +129,7 @@ function showById( id )
 /**
  * Returns true if the element with the given identifier has text, false if not.
  * 
- * @param inputId
- *            the identifier of the input element.
+ * @param inputId the identifier of the input element.
  */
 function hasText( inputId )
 {
@@ -154,8 +145,7 @@ function trim( string )
  * Returns true if the element with the given identifier is checked, false if
  * not or if it does not exist.
  * 
- * @param checkboxId
- *            the identifier of the checkbox element.
+ * @param checkboxId the identifier of the checkbox element.
  */
 function isChecked( checkboxId )
 {
@@ -267,8 +257,7 @@ function disableParent( elementId )
  * Returns true if the element with the given identifier has selected elements
  * associated with it, false if not.
  * 
- * @param listId
- *            the identifier of the list element.
+ * @param listId the identifier of the list element.
  */
 function hasElements( listId )
 {
@@ -278,8 +267,7 @@ function hasElements( listId )
 /**
  * Returns true if the element with the given identifier exists, false if not.
  * 
- * @param elementId
- *            the identifier of the element.
+ * @param elementId the identifier of the element.
  */
 function isNotNull( elementId )
 {
@@ -289,8 +277,7 @@ function isNotNull( elementId )
 /**
  * HTML encodes the given string.
  * 
- * @param str
- *            the input string.
+ * @param str the input string.
  * @return the HTML encoded string.
  */
 function htmlEncode( str )
@@ -326,10 +313,8 @@ function htmlEncode( str )
 /**
  * Gets the value for the element with the given name from the DOM object.
  * 
- * @param parentElement
- *            the DOM object.
- * @param childElementName
- *            the name of the element.
+ * @param parentElement the DOM object.
+ * @param childElementName the name of the element.
  */
 function getElementValue( parentElement, childElementName )
 {
@@ -341,10 +326,8 @@ function getElementValue( parentElement, childElementName )
 /**
  * Gets the attribute value from the given DOM element.
  * 
- * @param parentElement
- *            the DOM object.
- * @param attributeName
- *            the name of the attribute.
+ * @param parentElement the DOM object.
+ * @param attributeName the name of the attribute.
  */
 function getElementAttribute( parentElement, childElementName, childAttributeName )
 {
@@ -356,8 +339,7 @@ function getElementAttribute( parentElement, childElementName, childAttributeNam
 /**
  * Gets the value from the given DOM element.
  * 
- * @param rootElement
- *            the DOM object.
+ * @param rootElement the DOM object.
  */
 function getRootElementValue( rootElement )
 {
@@ -370,10 +352,8 @@ function getRootElementValue( rootElement )
  * Gets the value of the attribute with the given name from the given DOM
  * element.
  * 
- * @param rootElement
- *            the DOM object.
- * @param attributeName
- *            the name of the attribute.
+ * @param rootElement the DOM object.
+ * @param attributeName the name of the attribute.
  */
 function getRootElementAttribute( rootElement, attributeName )
 {
@@ -383,10 +363,8 @@ function getRootElementAttribute( rootElement, attributeName )
 /**
  * Sets a value on the given element.
  * 
- * @param fieldId
- *            the identifier of the element.
- * @param value
- *            the value to set.
+ * @param fieldId the identifier of the element.
+ * @param value the value to set.
  */
 function setInnerHTML( fieldId, value )
 {
@@ -396,8 +374,7 @@ function setInnerHTML( fieldId, value )
 /**
  * Gets a value from the given element and HTML encodes it.
  * 
- * @param fieldId
- *            the identifier of the element.
+ * @param fieldId the identifier of the element.
  * @return the HTML encoded value of the element with the given identifier.
  */
 function getInnerHTML( fieldId )
@@ -408,10 +385,8 @@ function getInnerHTML( fieldId )
 /**
  * Sets a value on the given element.
  * 
- * @param fieldId
- *            the identifier of the element.
- * @param value
- *            the value to set.
+ * @param fieldId the identifier of the element.
+ * @param value the value to set.
  */
 function setFieldValue( fieldId, value )
 {
@@ -421,8 +396,7 @@ function setFieldValue( fieldId, value )
 /**
  * Gets a value from the given element and HTML encodes it.
  * 
- * @param fieldId
- *            the identifier of the element.
+ * @param fieldId the identifier of the element.
  * @return the HTML encoded value of the element with the given identifier.
  */
 function getFieldValue( fieldId )
@@ -438,8 +412,7 @@ function getFieldValue( fieldId )
 /**
  * Gets a value from the given element and HTML encodes it.
  * 
- * @param fieldId
- *            the identifier of the element.
+ * @param fieldId the identifier of the element.
  * @return the type of the element with the given identifier.
  */
 function getTypeById( fieldId, attribute )
@@ -450,8 +423,7 @@ function getTypeById( fieldId, attribute )
 /**
  * get value of input radio with name
  * 
- * @param radioName
- *            name of input radio
+ * @param radioName name of input radio
  */
 function getRadioValue( radioName )
 {
@@ -470,8 +442,7 @@ function getRadioValue( radioName )
 /**
  * set value for input radio with name
  * 
- * @param radioName
- *            name of input radio
+ * @param radioName name of input radio
  */
 function setRadioValue( radioName, value )
 {
@@ -491,8 +462,7 @@ function setRadioValue( radioName, value )
 /**
  * Shows the message span and sets the message as text.
  * 
- * @param message
- *            the message.
+ * @param message the message.
  */
 function setMessage( message )
 {
@@ -507,8 +477,7 @@ function setMessage( message )
  * Shows the message span and sets the message as text together with a wait
  * animation.
  * 
- * @param message
- *            the message.
+ * @param message the message.
  */
 function setWaitMessage( message )
 {
@@ -526,8 +495,7 @@ function hideMessage()
 /**
  * Slides down the header message div and sets the message as text.
  * 
- * @param message
- *            the message.
+ * @param message the message.
  */
 function setHeaderMessage( message )
 {
@@ -538,8 +506,7 @@ function setHeaderMessage( message )
 /**
  * Updates the text in the header message div with the message.
  * 
- * @param message
- *            the message.
+ * @param message the message.
  */
 function updateHeaderMessage( message )
 {
@@ -550,8 +517,7 @@ function updateHeaderMessage( message )
  * Slides down the header message div and sets the message as text together with
  * a wait animation.
  * 
- * @param message
- *            the message.
+ * @param message the message.
  */
 function setHeaderWaitMessage( message )
 {
@@ -562,8 +528,7 @@ function setHeaderWaitMessage( message )
 /**
  * Updates the text in the header message div with the message.
  * 
- * @param message
- *            the message.
+ * @param message the message.
  */
 function updateHeaderWaitMessage( message )
 {
@@ -619,8 +584,7 @@ function hideHeaderMessage()
 /**
  * Slides down the info message div and sets the message as text.
  * 
- * @param message
- *            the message.
+ * @param message the message.
  */
 function setInfo( message )
 {
@@ -674,8 +638,7 @@ function hideWarning()
 /**
  * Convenience method for getting a document element.
  * 
- * @param id
- *            id of the element to get.
+ * @param id id of the element to get.
  */
 function byId( elementId )
 {
@@ -685,10 +648,8 @@ function byId( elementId )
 /**
  * Toggles visibility for an element.
  * 
- * @param id
- *            the identifier of the element.
- * @param display
- *            boolean indicator.
+ * @param id the identifier of the element.
+ * @param display boolean indicator.
  */
 function toggleByIdAndFlag( id, display )
 {
@@ -705,8 +666,7 @@ function toggleByIdAndFlag( id, display )
 /**
  * Toggles visibility for an element.
  * 
- * @param id
- *            the identifier of the element.
+ * @param id the identifier of the element.
  */
 function toggleById( id )
 {
@@ -754,10 +714,8 @@ function addOptionToList( list, optionValue, optionText )
  * Returns a query string on the form <paramName>=<listValue> based on the
  * options in the list with the given identifier.
  * 
- * @param listId
- *            the list identifier.
- * @param paramName
- *            the name of the query param.
+ * @param listId the list identifier.
+ * @param paramName the name of the query param.
  * @return a query string.
  */
 function getQueryStringFromList( listId, paramName )
@@ -797,14 +755,10 @@ function hideLoader()
  * Deletes and removes an item from a table. The table row to be removed must
  * have an identifier on the form "tr[itemId]".
  * 
- * @param itemId
- *            the item identifier.
- * @param itemName
- *            the item name.
- * @param message
- *            the confirmation message.
- * @param action
- *            the server action url for deleting the item.
+ * @param itemId the item identifier.
+ * @param itemName the item name.
+ * @param message the confirmation message.
+ * @param action the server action url for deleting the item.
  */
 function removeItem( itemId, itemName, confirmation, action, success )
 {                
@@ -847,8 +801,7 @@ function removeItem( itemId, itemName, confirmation, action, success )
 /**
  * Create jQuery datepicker for input text with id * *
  * 
- * @param id
- *            the id of input field which you want enter date *
+ * @param id the id of input field which you want enter date *
  */
 function datePicker( id )
 {
@@ -913,8 +866,7 @@ function datePickerjQuery( jQueryString )
 /**
  * Create jQuery datepicker for input text with id * *
  * 
- * @param id
- *            the id of input field which you want enter date *
+ * @param id the id of input field which you want enter date *
  */
 function datePickerValid( id, today )
 {
@@ -948,10 +900,8 @@ function datePickerValid( id, today )
 /**
  * Create jQuery datepicker for start date and end ate text with id * *
  * 
- * @param startdate
- *            the id of input field which you want enter start date *
- * @param enddate
- *            the id of input field which you want enter end date *
+ * @param startdate the id of input field which you want enter start date *
+ * @param enddate the id of input field which you want enter end date *
  */
 function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrentEndDate )
 {
@@ -998,8 +948,7 @@ function getCurrentDate()
 /**
  * Create input table id become sortable table * *
  * 
- * @param tableId
- *            the id of table you want to sort * *
+ * @param tableId the id of table you want to sort * *
  */
 
 function tableSorter( tableId, sortList )
@@ -1075,18 +1024,17 @@ function insertTextCommon( inputAreaName, inputText )
 
 /**
  * Create validator for fileds in form *
- *
+ * 
  * this should replace validation() at some point, but theres just to much code
  * depending on the old version for now.
  * 
  * See http://bassistance.de/jquery-plugins/jquery-plugin-validation/ for more
  * information about jquery.validate.
  * 
- * @param formId form to validate 
+ * @param formId form to validate
  * @param submitHandler the submitHandler to use
  * @param kwargs A dictionary of optional arguments, currently supported are:
- * 		beforeValidateHandler
- * 		rules
+ *            beforeValidateHandler rules
  */
 function validation2(formId, submitHandler, kwargs)
 {
@@ -1152,12 +1100,9 @@ function validation( formId, submitHandler, beforeValidateHandler )
 /**
  * Add validation rule remote for input field
  * 
- * @param inputId
- *            is id for input field
- * @param url
- *            is ajax request url
- * @param params
- *            is array of param will send to server by ajax request
+ * @param inputId is id for input field
+ * @param url is ajax request url
+ * @param params is array of param will send to server by ajax request
  */
 function checkValueIsExist( inputId, url, params )
 {
@@ -1195,10 +1140,8 @@ function remoteValidate( input , url, params )
 /**
  * Add any validator Rules for input
  * 
- * @param inputId
- *            is id for input field
- * @param rules
- *            is array of rule
+ * @param inputId is id for input field
+ * @param rules is array of rule
  * @note: input field must have name same with id
  */
 function addValidatorRulesById( inputId, rules )
@@ -1214,10 +1157,8 @@ function addValidatorRules( input, rules )
 /**
  * Remove validator Rules for input
  * 
- * @param inputId
- *            is id for input field
- * @param rules
- *            is array of rule you want to remove
+ * @param inputId is id for input field
+ * @param rules is array of rule you want to remove
  * @note: input field must have name same with id
  */
 function removeValidatorRulesById( inputId, rules )
@@ -1251,10 +1192,8 @@ function listValidator( validatorId, selectedListId )
  * Show message at the top-right of screen, this message will hide automatic
  * after 3 second if you don't set time
  * 
- * @param message
- *            is message
- * @param time
- *            is time the message will hide after showed. Default is 3 second,
+ * @param message is message
+ * @param time is time the message will hide after showed. Default is 3 second,
  *            set time is 0 if you don't want to hide this message
  */
 function showErrorMessage( message, time )
@@ -1266,10 +1205,8 @@ function showErrorMessage( message, time )
  * Show message at the top-right of screen, this message will hide automatic
  * after 3 second if you don't set time
  * 
- * @param message
- *            is message
- * @param time
- *            is time the message will hide after showed. Default is 3 second,
+ * @param message is message
+ * @param time is time the message will hide after showed. Default is 3 second,
  *            set time is 0 if you don't want to hide this message
  */
 function showSuccessMessage( message, time )
@@ -1281,10 +1218,8 @@ function showSuccessMessage( message, time )
  * Show message at the top-right of screen, this message will hide automatic
  * after 3 second if you don't set time
  * 
- * @param message
- *            is message
- * @param time
- *            is time the message will hide after showed. Default is 3 second,
+ * @param message is message
+ * @param time is time the message will hide after showed. Default is 3 second,
  *            set time is 0 if you don't want to hide this message
  */
 function showWarningMessage( message, time )
@@ -1436,9 +1371,8 @@ function relativePeriodsChecked()
 // Math methods
 // -----------------------------------------------------------------------------
 
-/** 
- * Allow Zero likes 0 and 0.0x
- * In which, x is Multiple leading zero.
+/**
+ * Allow Zero likes 0 and 0.0x In which, x is Multiple leading zero.
  */
 function isValidZeroNumber( value )
 {
@@ -1474,7 +1408,8 @@ function isNegativeInt( value )
 }
 
 /**
- * Allow any real number,optionally with a sign, no thousands seperators and a single decimal point.
+ * Allow any real number,optionally with a sign, no thousands seperators and a
+ * single decimal point.
  */
 function isRealNumber( value )
 {

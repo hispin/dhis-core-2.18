@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
+/**
  * @author mortenoh
  */
 
@@ -89,12 +89,9 @@ function dhisAjaxSelect_filter_on_kv($target, key, value)
 }
 
 /**
- * @param $target
- *            jQuery object to work on
- * @param key
- *            data-entry key, $target.data(key)
- * @param value
- *            value to compare to
+ * @param $target jQuery object to work on
+ * @param key data-entry key, $target.data(key)
+ * @param value value to compare to
  * @returns {Boolean} true or false after comparing $target.data(key) with value
  */
 function compare_data_with_kv($target, key, value)
