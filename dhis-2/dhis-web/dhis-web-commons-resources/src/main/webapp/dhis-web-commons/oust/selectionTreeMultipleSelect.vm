@@ -29,7 +29,7 @@ function selectedOrganisationUnitXML__( xml )
 }
 </script>
 
-<table cellspacing=0 width="495px">
+<table cellspacing=0 width="535px">
 	<thead>
 		<tr>
 			<th colspan="2">$i18n.getString( "organisation_unit_selection_tree" )			
