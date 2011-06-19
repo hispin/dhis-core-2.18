@@ -67,14 +67,14 @@ public class SetupTreeAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
-    }  
+    }
 
     private UserService userService;
 
     public void setUserService( UserService userService )
     {
         this.userService = userService;
-    } 
+    }
 
     private CurrentUserService currentUserService;
 
@@ -127,9 +127,10 @@ public class SetupTreeAction
         throws Exception
     {
         userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
-        
-        FilterUtils.filter( userAuthorityGroups, new UserAuthorityGroupSubsetFilter( currentUserService.getCurrentUser() ) );
-        
+
+        FilterUtils.filter( userAuthorityGroups,
+            new UserAuthorityGroupSubsetFilter( currentUserService.getCurrentUser() ) );
+
         if ( id != null )
         {
             User user = userService.getUser( id );
@@ -138,8 +139,8 @@ public class SetupTreeAction
             {
                 selectionTreeManager.setSelectedOrganisationUnits( user.getOrganisationUnits() );
             }
-            
-            userCredentials = userService.getUserCredentials( userService.getUser( id ) );            
+
+            userCredentials = userService.getUserCredentials( userService.getUser( id ) );
 
             userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );
         }
@@ -149,8 +150,8 @@ public class SetupTreeAction
             {
                 selectionTreeManager.setSelectedOrganisationUnits( selectionManager.getSelectedOrganisationUnits() );
             }
-        }       
-        
+        }
+
         return SUCCESS;
     }
 }
