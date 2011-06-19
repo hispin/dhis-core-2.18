@@ -2,7 +2,10 @@
 { "systemAuthorities": [
 #foreach( $systemAuthority in $systemAuthorities )
   {
-    "name": "$!encoder.jsonEncode( ${systemAuthority} )"
+  	#set( $name = $i18n.getString( "${systemAuthority}") )
+
+  	"id": "$!encoder.jsonEncode( ${systemAuthority} )",
+    "name": "$!encoder.jsonEncode( $name )"
   }#if( $velocityCount < $size ),#end
 #end
 ]
