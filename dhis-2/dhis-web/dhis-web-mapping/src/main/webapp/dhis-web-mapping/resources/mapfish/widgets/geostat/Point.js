@@ -1052,12 +1052,12 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
         };
         
         var onClickSelect = function onClickSelect(feature) {
-            if (feature.attributes.ft == G.conf.map_feature_type_point) {
+            if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_point_class_name) {
                 if (scope.featureInfoWindow) {
                     scope.featureInfoWindow.destroy();
                 }
                 
-                function fn() {            
+                function fn() {
                     scope.featureInfoWindow = new Ext.Window({
                         title: '<span class="window-information-title">' + feature.attributes.name + '</span>',
                         layout: 'table',
