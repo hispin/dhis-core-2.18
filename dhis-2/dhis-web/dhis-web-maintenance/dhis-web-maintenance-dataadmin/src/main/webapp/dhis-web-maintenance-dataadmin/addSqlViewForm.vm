@@ -9,15 +9,15 @@
 			<th colspan="2">$i18n.getString( "details" )</th>
 		</tr>
 		<tr>
-			<td><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><input type="text" id="name" name="name" style="width:25em" /></td>
 		</tr>
 		<tr>
-			<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><textarea id="description" name="description" style="width:25em; height:6em"></textarea></td>
 		</tr>
 		<tr>
-			<td><label for="sql_statement">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="sql_statement">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><textarea type="text" id="sqlquery" name="sqlquery" style="width:80em;height:20em">SELECT </textarea></td>
 		</tr>
 		<tr>
