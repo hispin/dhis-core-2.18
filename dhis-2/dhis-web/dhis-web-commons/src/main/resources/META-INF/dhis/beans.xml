@@ -397,6 +397,11 @@
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
+  <bean id="org.hisp.dhis.commons.action.GetDataElementCategoriesAction" class="org.hisp.dhis.commons.action.GetDataElementCategoriesAction"
+    scope="prototype">
+    <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+
   <bean id="org.hisp.dhis.commons.action.GetDataSetAction" class="org.hisp.dhis.commons.action.GetDataSetAction"
     scope="prototype">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
