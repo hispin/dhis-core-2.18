@@ -51,8 +51,7 @@ function sqlViewDetailsReceived( viewElement )
     setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
     setInnerHTML( 'sqlQueryField', getElementValue( viewElement, 'sqlquery' ) );
     	
-	showPopupWindowById('detailsInfo', 400, 200);
-	jQuery("#detailsInfo").css('background-color', '#DCE0EF' );
+	showDetails();
 }
 
 /**
