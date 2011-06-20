@@ -1,4 +1,25 @@
 <script type="text/javascript" src="javascript/editSection.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(	function(){
+		jQuery("#availableList").dhisAjaxSelect({
+			source: "../dhis-web-commons-ajax-json/getSectionDataElements.action",
+			iterator: 'dataElements',
+			sortSelected: false,
+			connectedTo: 'selectedList',
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			},
+			params: {
+				'dataSetId': $dataSet.id,
+				'categoryComboId': $categoryCombo.id
+			}
+		});
+	});
+</script>
 
 <h3>$i18n.getString( "edit_section" )</h3>
 
@@ -32,69 +53,51 @@
   </table>
 
   <table id="dataElementSelectionArea">
-    <col/> ## Available DataElements
-	<col/> ## Actions
-    <col/> ## Selected DataElements
+    <col style="width: 450px"/>
+    <col/>
+    <col style="width: 450px"/>
+    <col/>
+
     <thead>
       <tr>                
         <th>$i18n.getString( "available_data_elements" )</th>
-		<th>$i18n.getString( "filter" )</th>
+		<th></th>
 		<th>$i18n.getString( "selected_data_elements" )</th>
       </tr>
     </thead>
+
     <tbody>
-      
-	  <tr>        
-        <td>
-          <select id="dataElementGroupSelect" name="dataElementGroupSelect" style="min-width:26.5em"
-            onchange="javascript:filterByDataElementGroupForSection( this.options[this.selectedIndex].value )">
-            <option value="ALL" selected="selected">$i18n.getString( "all" )</option>
-            #foreach ( $dataElementGroup in $dataElementGroups )
-            <option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.name )</option>
-            #end
-          </select>
-        </td>
-        <td align="center">[$i18n.getString( "group" )]</td>
-        <td></td>        
-      </tr>
-      
-      <tr>
-      	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:26em"/></td>
-      	<td align="center">[$i18n.getString( "name" )]</td>
-      	<td></td>
-      </tr>
-	  
       <tr>
         <td>
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelected( this, byId( 'selectedList' ) )">
-            #foreach ( $availableDataElement in $dataElementOfDataSet )
-              <option value="$availableDataElement.id"> $availableDataElement.name</option>
-            #end
-          </select>
+			<select id="availableList" name="availableList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
-        <td>
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="moveSelectedById( 'availableList', 'selectedList');"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="moveSelectedById( 'selectedList', 'availableList');"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveAllById( 'availableList', 'selectedList' );"/><br/>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedList', 'availableList' );"/>
-		</td>
+
+        <td style="text-align:center">
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedList' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedList' );"/>
+        </td>
+
 		<td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelected( this, byId( 'availableList' ) )">
+			<select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
             #foreach ( $dataElement in $section.dataElements )
               <option value="$dataElement.id">$dataElement.name</option>
             #end
-          </select>
+			</select>
         </td> 
+
         <td style="width:30px; text-align:center">
             <a href="javascript:moveUpSelectedOption( 'selectedList' )"><img src="../images/move_up.png"/></a><br/><br/>
             <a href="javascript:moveDownSelectedOption( 'selectedList' )"><img src="../images/move_down.png"/></a><br/><br/>
         </td>       
+
       </tr>
 
       <tr>
-        <td colspan="3">
-          <input type="submit" name="save" value="$i18n.getString( 'save' )"/><input type="button"
-            onclick="window.location.href='section.action'" value="$i18n.getString( 'cancel' )"/>
+        <td colspan="4">
+          <input type="submit" name="save" value="$i18n.getString( 'save' )" />
+          <input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( 'cancel' )" />
         </td>
       </tr>
     </tbody>
