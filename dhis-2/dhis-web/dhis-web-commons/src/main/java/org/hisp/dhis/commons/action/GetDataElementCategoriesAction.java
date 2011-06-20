@@ -76,6 +76,13 @@ public class GetDataElementCategoriesAction
 
         Collections.sort( dataElementCategories, new DataElementCategoryNameComparator() );
 
+        if ( usePaging )
+        {
+            this.paging = createPaging( dataElementCategories.size() );
+
+            dataElementCategories = dataElementCategories.subList( paging.getStartPos(), paging.getEndPos() );
+        }
+
         return SUCCESS;
     }
 

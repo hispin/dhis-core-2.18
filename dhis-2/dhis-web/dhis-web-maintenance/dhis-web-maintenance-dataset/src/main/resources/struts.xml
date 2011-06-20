@@ -14,7 +14,7 @@
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
     </action>
 
-		<!-- Dataset -->
+	<!-- Dataset -->
 
     <action name="showMobileDataSet" class="org.hisp.dhis.dataset.action.MobileDataSetListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -34,7 +34,7 @@
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
-		<!-- Section -->
+	<!-- Section -->
 
     <action name="section" class="org.hisp.dhis.dataset.action.section.SectionListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -110,7 +110,7 @@
       <result name="success" type="redirect">section.action</result>
     </action>
 
-		<!-- Sort order -->
+	<!-- Sort order -->
 
     <action name="showSortDataSetForm" class="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -130,7 +130,7 @@
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
-		<!-- Show edit DataSet form -->
+	<!-- Show edit DataSet form -->
 
     <action name="editDataSetForm" class="org.hisp.dhis.dataset.action.EditDataSetFormAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -139,7 +139,7 @@
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
 
-		<!-- Validation, add, update, and delete -->
+	<!-- Validation, add, update, and delete -->
 
     <action name="validateDataSet" class="org.hisp.dhis.dataset.action.ValidateDataSetAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
@@ -164,7 +164,7 @@
       <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
 
-		<!-- Filter -->
+	<!-- Filter -->
 
     <action name="filterAvailableDataElementsByDataElementGroup" class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseDataElementGroup.vm</result>
@@ -181,7 +181,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-		<!-- DataSet association -->
+	<!-- DataSet association -->
 
     <action name="defineDataSetAssociationsForm" class="org.hisp.dhis.dataset.action.GetDataSetAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -194,7 +194,7 @@
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
 
-		<!-- DataEntryForm -->
+	<!-- DataEntryForm -->
 
     <action name="viewDataEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -234,7 +234,7 @@
       <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js</param>
     </action>
 
-		<!-- Compulsory data elements -->
+	<!-- Compulsory data elements -->
 
     <action name="displayCompulsoryDataElementsForm" class="org.hisp.dhis.dataset.action.compulsory.GetCompulsoryDataElementsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -245,7 +245,7 @@
       <result name="success" type="redirect">dataSet.action</result>
     </action>
 
-		<!-- Dataset Editor -->
+	<!-- Dataset Editor -->
 
     <action name="displayEditorForm" class="org.hisp.dhis.dataset.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
