@@ -98,11 +98,13 @@
       <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
       <param name="javascripts">javascript/role.js,javascript/filterTable.js</param>
 	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+      <param name="requiredAuthorities">F_USERROLE_LIST</param>
     </action>
     
     <action name="getRole" class="org.hisp.dhis.user.action.GetRoleAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseRole.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_USERROLE_LIST</param>
     </action>
     
     <action name="removeRole" class="org.hisp.dhis.user.action.RemoveRoleAction">
@@ -148,7 +150,6 @@
     <!--Delete current user-->
     
     <action name="deleteCurrentUser" class="org.hisp.dhis.user.action.DeleteCurrentUserAction">
-      <!--<result name="error" type="velocity">/dhis-web-maintenance-user/responseError.vm</result>-->
       <result name="input" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/deleteCurrentUser.vm</param>
       <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
@@ -164,6 +165,7 @@
     <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
     <param name="javascripts">javascript/user.js</param>
 	<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    <param name="requiredAuthorities">F_USER_GRUP_LIST</param>
   </action>
 
   <action name="getUserGroup" class="org.hisp.dhis.user.action.GetUserGroupAction">
@@ -176,26 +178,29 @@
     <param name="page">/dhis-web-maintenance-user/addUserGroupForm.vm</param>
     <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
     <param name="javascripts">javascript/user.js</param>
+    <param name="requiredAuthorities">F_USER_GRUP_ADD</param>
   </action>
 
   <action name="addUserGroup" class="org.hisp.dhis.user.action.AddUserGroupAction">
     <param name="javascripts">javascript/user.js</param>
     <result name="success" type="redirect">getAllUserGroups.action</result>
+    <param name="requiredAuthorities">F_USER_GRUP_ADD</param>
   </action>
 
   <action name="editUserGroupForm" class="org.hisp.dhis.user.action.EditUserGroupFormAction">
     <result name="success" type="velocity">/main.vm</result>
     <param name="page">/dhis-web-maintenance-user/updateUserGroupForm.vm</param>
     <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
+    <param name="requiredAuthorities">F_USER_GRUP_UPDATE</param>
   </action>
 
   <action name="updateUserGroup" class="org.hisp.dhis.user.action.UpdateUserGroupAction">
-    <result name="success" type="redirect">
-      getAllUserGroups.action</result>
+    <result name="success" type="redirect">getAllUserGroups.action</result>
   </action>
 
   <action name="removeUserGroup" class="org.hisp.dhis.user.action.RemoveUserGroupAction">  
-    <result name="success" type="velocity">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>    
+    <result name="success" type="velocity">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+    <param name="requiredAuthorities">F_USER_GRUP_DELETE</param>  
   </action>
   
     <action name="validateUserGroup" class="org.hisp.dhis.user.action.ValidateUserGroupAction">
