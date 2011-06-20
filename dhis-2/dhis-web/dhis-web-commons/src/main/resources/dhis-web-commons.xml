@@ -475,6 +475,12 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <action name="getSectionDataElements" class="org.hisp.dhis.commons.action.GetSectionDataElementsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonDataElements.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <action name="getDataElementCategories" class="org.hisp.dhis.commons.action.GetDataElementCategoriesAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonDataElementCategories.vm</result>
