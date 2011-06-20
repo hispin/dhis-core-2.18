@@ -100,8 +100,6 @@ public class GetDataElementCategoryComboListAction
         defaultCombo = dataElementCategoryService
             .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
-        Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
-
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryComboCountByName( key ) );
@@ -114,6 +112,8 @@ public class GetDataElementCategoryComboListAction
             
             dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getDataElementCategoryCombosBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
+
+        Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
         
         return SUCCESS;
     }
