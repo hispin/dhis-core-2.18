@@ -39,7 +39,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 public class GetSectionDataElementsAction
@@ -62,7 +61,7 @@ public class GetSectionDataElementsAction
     {
         this.categoryService = categoryService;
     }
-    
+
     private Comparator<DataElement> dataElementComparator;
 
     public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
