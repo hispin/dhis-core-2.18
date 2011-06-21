@@ -36,7 +36,6 @@ import java.io.FileFilter;
 public class ExcelFileFilter
     implements FileFilter
 {
-
     @Override
     public boolean accept( File file )
     {

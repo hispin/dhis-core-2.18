@@ -101,13 +101,12 @@ function previewExportReportReceived( parentElement )
 
 				if ( _index == _number )
 				{
-					var _colspan 	= 1;
 					var _sData		= getElementValue( _cols[j], 'data' );
 					var _align		= getElementAttribute( _cols[j], 'format', 'align' );
 				
 					// If this cell is merged - Key's form: Sheet#Row#Col
 					_sPattern 		=  _orderSheet + "#" + i + "#" + _number;
-					_colspan 		= getMergedNumberForEachCell( _sPattern, aKey, aMerged );
+					var _colspan 	= getMergedNumberForEachCell( aKey, _sPattern, aMerged );
 					
 					// Jumping for <For Loop> AND <Empty Cells>
 					j 		= Number(j) + Number(_colspan);
@@ -115,7 +114,7 @@ function previewExportReportReceived( parentElement )
 					
 					_sHTML += "<td align='" + _align + "' colspan='" + _colspan + "' ";
 					
-					if ( !isNaN(_sData) && (_sData != "") )
+					if ( (_sData != "") && !isNaN(_sData) )
 					{
 						_sHTML += "class='formatNumberPreview' "
 							   + "title='" + i18n_value_rounded;
@@ -149,16 +148,16 @@ function previewExportReportReceived( parentElement )
 	unLockScreen();
 }
 
-function getMergedNumberForEachCell( sKey, aKey, aMerged ) {
+function getMergedNumberForEachCell( aKey, sKey, aMerged ) {
 
 	for (var i = 0 ; i < aKey.length ; i ++)
 	{
-		if ( sKey == aKey[i] )
+		if ( aKey[i] == sKey )
 		{
 			return Number(aMerged[i]);
 		}
 	}
-return 1;
+	return 1;
 }
 
 function printExportReport()
