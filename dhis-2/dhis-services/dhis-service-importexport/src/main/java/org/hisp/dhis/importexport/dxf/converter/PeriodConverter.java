@@ -133,10 +133,18 @@ public class PeriodConverter
             
             PeriodType periodType = new MonthlyPeriodType();
             period.setPeriodType( periodType );
+
+            Integer periodTypeId = periodTypeMapping.get( values.get( FIELD_PERIOD_TYPE ) );
             
-            if ( values.get( FIELD_PERIOD_TYPE ) != null && values.get( FIELD_PERIOD_TYPE ).equalsIgnoreCase( "relative" ) )
+            if ( periodTypeId != null )
             {
-                continue; // Backwards compatibility
+                period.getPeriodType().setId( periodTypeId );                
+            }
+            else
+            {
+                log.warn( "Unknow period type, falling back to Monthly: " + values.get( FIELD_PERIOD_TYPE ) );
+                
+                period.getPeriodType().setId( periodTypeMapping.get( MonthlyPeriodType.NAME ) );
             }
             
             period.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
