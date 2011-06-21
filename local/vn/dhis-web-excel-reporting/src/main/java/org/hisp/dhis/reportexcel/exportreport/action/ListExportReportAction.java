@@ -38,7 +38,7 @@ import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.comparator.ExportReportNameComparator;
-import org.hisp.dhis.reportexcel.utils.ExcelFilenameFilter;
+import org.hisp.dhis.reportexcel.utils.ExcelFileFilter;
 import org.hisp.dhis.reportexcel.utils.FileUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -101,7 +101,7 @@ public class ListExportReportAction
         throws Exception
     {
         valid = true;
-        
+
         exportReports = new ArrayList<ReportExcel>( exportReportService.getAllExportReport() );
 
         if ( valid )
@@ -113,17 +113,17 @@ public class ListExportReportAction
                 return SUCCESS;
             }
 
-            List<String> templateNames = FileUtils.getListFileName( templateDirectory, new ExcelFilenameFilter() );
+            List<File> templateFiles = FileUtils.getListFile( templateDirectory, new ExcelFileFilter() );
 
-            if ( templateNames ==  null || templateNames.isEmpty() )
+            if ( templateFiles == null || templateFiles.isEmpty() )
             {
                 return SUCCESS;
             }
-            
+
             for ( ReportExcel exportReport : exportReports )
             {
-                templateMap.put( exportReport.getExcelTemplateFile(), templateNames.contains( exportReport
-                    .getExcelTemplateFile() ) );
+                templateMap.put( exportReport.getExcelTemplateFile(), templateFiles.contains( new File(
+                    templateDirectory, exportReport.getExcelTemplateFile() ) ) );
             }
         }
 

@@ -32,9 +32,10 @@ import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Tran Thanh Tri
@@ -55,16 +56,6 @@ public class FileUtils
         }
 
         return result;
-    }
-
-    public static List<String> getListFileName( File directory, FilenameFilter filenameFilter )
-    {
-        if ( directory != null )
-        {
-            return Arrays.asList( directory.list( filenameFilter ) );
-        }
-
-        return new ArrayList<String>();
     }
 
     public static List<File> getListFile( File directory, FileFilter fileFilter )

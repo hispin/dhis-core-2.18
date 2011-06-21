@@ -30,7 +30,7 @@
 				#if( $exist )
 					<a href="downloadFile.action?fileName=$encoder.htmlEncode( $exportReport.excelTemplateFile )" title="download">$encoder.htmlEncode( $exportReport.excelTemplateFile )</a>
 				#else
-					$encoder.htmlEncode( $exportReport.excelTemplateFile ) <img src="../images/warning.png" alt="$i18n.getString( 'missing_template' )"/>
+					$encoder.htmlEncode( $exportReport.excelTemplateFile ) <img src="../images/warning.png" alt="$i18n.getString( 'missing_template' )" title="$i18n.getString( 'missing_template' )"/>
 				#end
 			</td>
 			<td align="left">
