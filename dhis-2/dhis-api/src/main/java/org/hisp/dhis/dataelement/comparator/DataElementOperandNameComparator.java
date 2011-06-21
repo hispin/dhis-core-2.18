@@ -40,6 +40,6 @@ public class DataElementOperandNameComparator
     @Override
     public int compare( DataElementOperand o0, DataElementOperand o1 )
     {
-        return o0.getOperandName().compareTo( o1.getOperandName() );
+        return o0.getOperandName().compareToIgnoreCase( o1.getOperandName() );
     }
 }
