@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
 
 import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -83,4 +84,15 @@ public class DataElementDeletionHandler
         }
     }
 
+    @Override
+    public void deleteDataSet( DataSet dataSet )
+    {
+        for ( DataElement dataElement : dataElementService.getAllDataElements() )
+        {
+            if ( dataElement.getDataSets().remove( dataSet ) )
+            {
+                dataElementService.updateDataElement( dataElement );
+            }
+        }
+    }
 }
