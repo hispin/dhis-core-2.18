@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.program;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -190,10 +189,6 @@ public class DefaultProgramDataEntryService
                 // Get data element ID of data element
                 // -------------------------------------------------------------
 
-                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                ProgramStage programStage = programStageService.getProgramStage( programStageId );
-                Collection<DataElement> dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
-
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
@@ -201,7 +196,7 @@ public class DefaultProgramDataEntryService
                 DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
-                if ( !dataElements.contains( dataElement ) || optionCombo == null )
+                if ( dataElement == null || optionCombo == null )
                 {
                     inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
                 }
@@ -251,14 +246,11 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
-                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                ProgramStage programStage = programStageService.getProgramStage( programStageId );
-                Collection<DataElement> dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
-
+              
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
                 
-                if ( !dataElements.contains( dataElement ) )
+                if ( dataElement == null )
                 {
                     inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
                 } 
@@ -307,14 +299,11 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
-                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                ProgramStage programStage = programStageService.getProgramStage( programStageId );
-                Collection<DataElement> dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
-
+                
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
                 
-                if ( !dataElements.contains( dataElement ) )
+                if ( dataElement == null )
                 {
                     inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
                 } 
@@ -363,15 +352,11 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
-               
-                int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                ProgramStage programStage = programStageService.getProgramStage( programStageId );
-                Collection<DataElement> dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
-
+                
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                if ( !dataElements.contains( dataElement ) )
+                if ( dataElement == null )
                 {
                     inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
                 } else
