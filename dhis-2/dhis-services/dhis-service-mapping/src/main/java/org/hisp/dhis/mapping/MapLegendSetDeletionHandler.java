@@ -27,6 +27,7 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -80,5 +81,17 @@ public class MapLegendSetDeletionHandler
                 mappingService.updateMapLegendSet( legendSet );
             }
         }
-    }    
+    }
+    
+    @Override
+    public void deleteDataElement( DataElement dataElement )
+    {
+        for ( MapLegendSet legendSet : mappingService.getAllMapLegendSets() )
+        {
+            if ( legendSet.getDataElements().remove( dataElement ) )
+            {
+                mappingService.updateMapLegendSet( legendSet );
+            }
+        }
+    }
 }

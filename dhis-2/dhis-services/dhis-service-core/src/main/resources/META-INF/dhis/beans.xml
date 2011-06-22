@@ -1153,6 +1153,12 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
+	<bean id="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler"
+		class="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
 	<bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"
 		class="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler">
 		<property name="organisationUnitGroupService"
@@ -1229,6 +1235,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 					<ref local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" />
 					<ref local="org.hisp.dhis.datavalue.DataValueDeletionHandler" />
 					<ref local="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler" />
+					<ref local="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler" />
 					<ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" />
 					<ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" />
 					<ref local="org.hisp.dhis.user.UserDeletionHandler" />
