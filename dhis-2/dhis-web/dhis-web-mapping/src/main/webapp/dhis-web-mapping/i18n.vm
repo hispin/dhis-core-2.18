@@ -63,7 +63,7 @@ G.i18n = {
     predefined: '$encoder.jsEscape($i18n.getString( 'predefined' ) , "'")',	
     equal_intervals: '$encoder.jsEscape($i18n.getString( 'equal_intervals' ) , "'")',	
     equal_group_count: '$encoder.jsEscape($i18n.getString( 'equal_group_count' ) , "'")',	
-    fixed_breaks: '$encoder.jsEscape($i18n.getString( 'fixed_breaks' ) , "'")',	
+    fixed_intervals: '$encoder.jsEscape($i18n.getString( 'fixed_intervals' ) , "'")',	
     administrator: '$encoder.jsEscape($i18n.getString( 'administrator' ) , "'")',	
     map_source: '$encoder.jsEscape($i18n.getString( 'map_source' ) , "'")',	
     base_coordinate: '$encoder.jsEscape($i18n.getString( 'base_coordinate' ) , "'")',	

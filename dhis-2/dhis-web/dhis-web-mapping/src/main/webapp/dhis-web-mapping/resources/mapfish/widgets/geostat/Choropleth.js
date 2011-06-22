@@ -767,7 +767,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 data: [
 					[2, G.i18n.equal_intervals],
 					[3, G.i18n.equal_group_count],
-					[1, G.i18n.fixed_breaks]
+					[1, G.i18n.fixed_intervals]
 				]
             }),
             listeners: {
