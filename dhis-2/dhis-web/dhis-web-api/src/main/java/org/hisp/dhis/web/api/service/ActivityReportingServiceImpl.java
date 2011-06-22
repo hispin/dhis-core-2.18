@@ -155,12 +155,15 @@ public class ActivityReportingServiceImpl
         Collection<Patient> patients = patientIdentifierService.getPatientsByIdentifier( keyword, 0,
             patientIdentifierService.countGetPatientsByIdentifier( keyword ) );
 
-        // Prevent the case that there are so many result (will hang the mobile
-        // phone ) because user just enter one or two number
+        // Make sure user input full beneficiary identifier number
 
-        if ( patients.size() > 10 )
+        if ( patients.size() > 1 )
         {
             throw NotAllowedException.NEED_MORE_SPECIFIC;
+        }
+        else if ( patients.size() == 0 )
+        {
+            throw NotAllowedException.NO_BENEFICIARY_FOUND;
         }
         else
         {
@@ -191,7 +194,6 @@ public class ActivityReportingServiceImpl
                     }
                 }
             }
-
             return new ActivityPlan( items );
         }
 
