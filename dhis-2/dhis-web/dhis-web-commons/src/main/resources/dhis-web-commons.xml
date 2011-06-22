@@ -678,7 +678,6 @@
     <action name="showUpdateUserAccountForm" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/useraccount/updateUserAccountForm.vm</param>
-      <param name="javascripts">/dhis-web-commons/useraccount/userAccount.js</param>
     </action>
 
     <action name="updateUserAccount" class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">
