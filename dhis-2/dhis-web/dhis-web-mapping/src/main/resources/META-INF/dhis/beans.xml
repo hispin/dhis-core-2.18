@@ -50,6 +50,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
+    <bean id="org.hisp.dhis.mapping.action.UpdateOrganisationUnitCoordinatesAction"
+        class="org.hisp.dhis.mapping.action.UpdateOrganisationUnitCoordinatesAction"
+        scope="prototype">
+        <property name="organisationUnitService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
+
     <!-- UserSetting -->
 
     <bean id="org.hisp.dhis.mapping.action.GetMapUserSettingsAction"
