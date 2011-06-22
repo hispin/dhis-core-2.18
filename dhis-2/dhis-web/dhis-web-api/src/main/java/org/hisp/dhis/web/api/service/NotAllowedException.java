@@ -45,7 +45,9 @@ public class NotAllowedException
 
     public static final NotAllowedException NO_USER = new NotAllowedException( "NO_USER", "No user is logged in." );
     
-    public static final NotAllowedException NEED_MORE_SPECIFIC = new NotAllowedException( "NEED_MORE_SPECIFIC", "So many result. Please be more specific" );
+    public static final NotAllowedException NEED_MORE_SPECIFIC = new NotAllowedException( "NEED_MORE_SPECIFIC");
+    
+    public static final NotAllowedException NO_BENEFICIARY_FOUND = new NotAllowedException( "NO_BENEFICIARY_FOUND");
     
     private String reason;
 
