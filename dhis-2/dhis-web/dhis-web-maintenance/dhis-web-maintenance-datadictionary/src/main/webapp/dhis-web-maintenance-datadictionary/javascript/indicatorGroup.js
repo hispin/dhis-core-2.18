@@ -1,4 +1,3 @@
-
 function showIndicatorGroupDetails( indicatorGroupId )
 {
     var request = new Request();
@@ -21,5 +20,5 @@ function indicatorGroupReceived( indicatorGroupElement )
 
 function removeIndicatorGroup( indicatorGroupId, indicatorGroupName )
 {
-	removeItem( indicatorGroupId, indicatorGroupName, i18n_confirm_delete, 'removeIndicatorGroup.action' );
+    removeItem( indicatorGroupId, indicatorGroupName, i18n_confirm_delete, 'removeIndicatorGroup.action' );
 }

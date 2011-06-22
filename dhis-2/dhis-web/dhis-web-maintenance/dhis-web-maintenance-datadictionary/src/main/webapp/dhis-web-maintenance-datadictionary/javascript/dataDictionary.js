@@ -1,4 +1,3 @@
-
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
@@ -14,13 +13,13 @@ function showDataDictionaryDetails( dataDictionaryId )
 function dataDictionaryReceived( dataDictionaryElement )
 {
     setInnerHTML( 'nameField', getElementValue( dataDictionaryElement, 'name' ) );
-    
+
     var description = getElementValue( dataDictionaryElement, 'description' );
     setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
-    
+
     var region = getElementValue( dataDictionaryElement, 'region' );
     setInnerHTML( 'regionField', region ? region : '[' + i18n_none + ']' );
-    
+
     showDetails();
 }
 
@@ -29,12 +28,12 @@ function dataDictionaryReceived( dataDictionaryElement )
 // -----------------------------------------------------------------------------
 
 function dataDictionaryChanged( list )
-{    	
-	var id = list.options[list.selectedIndex].value;
-	
-	var url = "setCurrentDataDictionary.action?id=" + id;
-	
-	window.location.href = url;
+{
+    var id = list.options[list.selectedIndex].value;
+
+    var url = "setCurrentDataDictionary.action?id=" + id;
+
+    window.location.href = url;
 }
 
 // -----------------------------------------------------------------------------
@@ -43,5 +42,5 @@ function dataDictionaryChanged( list )
 
 function removeDataDictionary( dataDictionaryId, dataDictionaryName )
 {
-	removeItem( dataDictionaryId, dataDictionaryName, i18n_confirm_delete, 'removeDataDictionary.action' );
+    removeItem( dataDictionaryId, dataDictionaryName, i18n_confirm_delete, 'removeDataDictionary.action' );
 }

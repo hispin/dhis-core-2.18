@@ -1,4 +1,3 @@
-
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
@@ -33,28 +32,24 @@ function removeConcept( conceptId, conceptName )
 
 function validateAddUpdateConcept( mode )
 {
-	var name = $("#name").val();
+    var name = $( "#name" ).val();
 
-	$.getJSON(
-		"validateAddUpdateConcept.action",
-		{
-			"name": name,
-			"mode": mode
-		},
-		function( json )
-		{
-			if ( json.response == "success" )
-			{	
-				if ( mode == "add" )
-				{
-					byId("addConceptForm").submit(); return;
-				}
-				byId("updateConceptForm").submit();
-			}
-			else if ( json.response == "input" )
-			{
-				setHeaderDelayMessage( json.message );
-			}
-		}
-	);
+    $.getJSON( "validateAddUpdateConcept.action", {
+        "name" : name,
+        "mode" : mode
+    }, function( json )
+    {
+        if ( json.response == "success" )
+        {
+            if ( mode == "add" )
+            {
+                byId( "addConceptForm" ).submit();
+                return;
+            }
+            byId( "updateConceptForm" ).submit();
+        } else if ( json.response == "input" )
+        {
+            setHeaderDelayMessage( json.message );
+        }
+    } );
 }
