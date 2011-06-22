@@ -107,7 +107,7 @@
 	<tr>
         <td><label for="selectionTree">$i18n.getString( "organisation_unit" )</label></td>
 		<td colspan="3">
-			#organisationUnitSelectionTree( false, true, false )
+			#organisationUnitSelectionTree( false, true, true )
 		</td>
 	</tr>
 	<tr>
