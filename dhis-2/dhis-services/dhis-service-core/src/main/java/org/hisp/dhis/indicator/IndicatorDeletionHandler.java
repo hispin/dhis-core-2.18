@@ -93,6 +93,18 @@ public class IndicatorDeletionHandler
             }
         }
     }
+    
+    @Override
+    public void deleteIndicatorGroup( IndicatorGroup group )
+    {
+        for ( Indicator indicator : indicatorService.getAllIndicators() )
+        {
+            if ( indicator.getGroups().remove( group ) )
+            {
+                indicatorService.updateIndicator( indicator );
+            }
+        }
+    }
 
     @Override
     public boolean allowDeleteDataElement( DataElement dataElement )
@@ -115,5 +127,5 @@ public class IndicatorDeletionHandler
         }
 
         return true;
-    }
+    }    
 }

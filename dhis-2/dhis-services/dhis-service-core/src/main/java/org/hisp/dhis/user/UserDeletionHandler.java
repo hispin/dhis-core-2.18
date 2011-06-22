@@ -27,8 +27,6 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -75,21 +73,20 @@ public class UserDeletionHandler
     @Override
     public boolean allowDeleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
     {
-        Collection<UserCredentials> userCredentials = userService.getAllUserCredentials();
-        
-        for( UserCredentials uc : userCredentials )
+        for ( UserCredentials credentials : userService.getAllUserCredentials() )
         {
-            if( uc != null && uc.getUserAuthorityGroups() != null )
+            if ( credentials != null && credentials.getUserAuthorityGroups() != null )
             {
-                for( UserAuthorityGroup role : uc.getUserAuthorityGroups())
+                for (  UserAuthorityGroup role : credentials.getUserAuthorityGroups())
                 {
-                    if( role.getId() == authorityGroup.getId())
+                    if ( role.equals( authorityGroup ) )
                     {
                         return false;
                     }
                 }
             }
         }
+        
         return true;
     }
 }

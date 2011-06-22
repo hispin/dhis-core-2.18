@@ -28,6 +28,7 @@ package org.hisp.dhis.dataset;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -65,6 +66,18 @@ public class DataSetDeletionHandler
         for ( DataSet dataSet : dataSetService.getAllDataSets() )
         {
             if ( dataSet.getDataElements().remove( dataElement ) )
+            {
+                dataSetService.updateDataSet( dataSet );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteIndicator( Indicator indicator )
+    {
+        for ( DataSet dataSet : dataSetService.getAllDataSets() )
+        {
+            if ( dataSet.getIndicators().remove( indicator ) )
             {
                 dataSetService.updateDataSet( dataSet );
             }

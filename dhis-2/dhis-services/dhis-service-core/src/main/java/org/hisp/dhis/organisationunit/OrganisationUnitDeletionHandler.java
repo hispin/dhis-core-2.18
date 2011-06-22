@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataelement;
+package org.hisp.dhis.organisationunit;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,34 +27,25 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
-
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class DataElementDeletionHandler
+public class OrganisationUnitDeletionHandler
     extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementService dataElementService;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.dataElementService = dataElementService;
-    }
-
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -64,46 +55,41 @@ public class DataElementDeletionHandler
     @Override
     public String getClassName()
     {
-        return DataElement.class.getSimpleName();
+        return OrganisationUnit.class.getSimpleName();
     }
-
-    @Override
-    public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
-    {
-        DataElementCategoryCombo default_ = categoryService
-            .getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
-
-        for ( DataElement dataElement : dataElementService.getAllDataElements() )
-        {
-            if ( dataElement.getCategoryCombo().equals( categoryCombo ) )
-            {
-                dataElement.setCategoryCombo( default_ );
-
-                dataElementService.updateDataElement( dataElement );
-            }
-        }
-    }
-
+    
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
-        for ( DataElement dataElement : dataElementService.getAllDataElements() )
+        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
         {
-            if ( dataElement.getDataSets().remove( dataSet ) )
+            if ( unit.getDataSets().remove( dataSet ) )
             {
-                dataElementService.updateDataElement( dataElement );
+                organisationUnitService.updateOrganisationUnit( unit );
             }
         }
     }
-
+    
     @Override
-    public void deleteDataElementGroup( DataElementGroup group )
+    public void deleteUser( User user )
     {
-        for ( DataElement dataElement : dataElementService.getAllDataElements() )
+        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
         {
-            if ( dataElement.getGroups().remove( dataElement ) )
+            if ( unit.getUsers().remove( user ) )
             {
-                dataElementService.updateDataElement( dataElement );
+                organisationUnitService.updateOrganisationUnit( unit );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
+    {
+        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
+        {
+            if ( unit.getGroups().remove( group ) )
+            {
+                organisationUnitService.updateOrganisationUnit( unit );
             }
         }
     }
