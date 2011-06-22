@@ -84,6 +84,12 @@
 				/dhis-web-mapping/jsonOrganisationUnitChildren.vm</result>
 		</action>
 
+        <action name="updateOrganisationUnitCoordinates"
+            class="org.hisp.dhis.mapping.action.UpdateOrganisationUnitCoordinatesAction">
+            <result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+            </result>
+        </action>
+
         <!-- OrganisationUnitLevel -->
 
         <action name="getOrganisationUnitLevels"

@@ -123,6 +123,12 @@ a.x-menu-item-custom {
 .menu-layeroptions-labels {
     background-image:url('../../../images/labels.png');
 }
+.menu-featureoptions-info {
+    background-image:url('../../../images/information2.png');
+}
+.menu-featureoptions-relocate {
+    background-image:url('../../../images/relocate.png');
+}
 .no-icon-menu .x-menu-item-icon {
     display: none;
 }
@@ -235,6 +241,9 @@ a.x-menu-item-custom {
 .x-btn .icon-assign {
 	background-image:url('../../../images/accept.png');
 }
+.x-btn .icon-cancel {
+	background-image:url('../../../images/cancel2.png');
+}
 .x-btn .icon-labels {
 	background-image:url('../../../images/labels.png');
 }
@@ -343,6 +352,12 @@ a.x-menu-item-custom {
 .window-information-title {
 	padding:0 0 3px 21px;
 	background:url('../../../images/information2.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
+.window-relocate-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/relocate.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }

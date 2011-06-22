@@ -1952,7 +1952,7 @@
                             }
                         }
                     });
-                    locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                    locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - (locateFeatureWindow.width + 15), Ext.getCmp('center').y + 41);
                     locateFeatureWindow.show();
                 }
                 else {
@@ -2076,8 +2076,7 @@
                                 }
                             ]
                         });
-                        
-                        item.labelWindow.setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                        item.labelWindow.setPagePosition(Ext.getCmp('east').x - (item.labelWindow.width + 15), Ext.getCmp('center').y + 41);                        
                         item.labelWindow.show();
                     }
                 }
@@ -2153,7 +2152,7 @@
                 text: 'Overlays',
                 iconCls: 'icon-overlay',
                 handler: function() {
-                    Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                    Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (Ext.getCmp('overlays_w').width + 15), Ext.getCmp('center').y + 41);
                     Ext.getCmp('overlays_w').show();
                 }
             }
@@ -2175,7 +2174,7 @@
                 qtip: 'Refresh layer',
                 handler: function() {
                     choropleth.updateValues = true;
-                    choropleth.classify();
+                    choropleth.loadGeoJson();
                 }
             },
             {
@@ -2210,7 +2209,7 @@
                 qtip: 'Refresh layer',
                 handler: function() {
                     point.updateValues = true;
-                    point.classify();
+                    point.loadGeoJson();
                 }
             },
             {
@@ -2244,7 +2243,7 @@
                 id: 'refresh',
                 qtip: 'Refresh layer',
                 handler: function() {
-                    symbol.classify();
+                    symbol.loadGeoJson();
                 }
             },
             {
@@ -2478,7 +2477,7 @@
                         }
                     });
                 }
-                control.window.setPagePosition(Ext.getCmp('east').x - (control.window.width + 15 + 5), Ext.getCmp('center').y + 41);
+                control.window.setPagePosition(Ext.getCmp('east').x - (control.window.width + 15), Ext.getCmp('center').y + 41);
                 control.window.show();
                 document.getElementById('measureDistanceDiv').innerHTML = '0 km';                
                 control.setImmediate(true);
@@ -2681,6 +2680,36 @@
                 G.vars.map.events.register('addlayer', null, function(e) {
                     var svg = document.getElementsByTagName('svg');
                     e.layer.svgId = svg[svg.length-1].id;
+                });
+                
+                G.vars.map.events.register('mousemove', null, function(e) {
+                    G.vars.mouseMove.x = e.clientX;
+                    G.vars.mouseMove.y = e.clientY;
+                });
+                
+                G.vars.map.events.register('click', null, function(e) {
+                    if (G.vars.relocate.active) {
+                        var mp = document.getElementById('mouseposition');
+                        var coordinates = '[' + mp.childNodes[1].data + ',' + mp.childNodes[4].data + ']';
+                        var center = Ext.getCmp('center').x;
+	
+                        Ext.Ajax.request({
+                            url: G.conf.path_mapping + 'updateOrganisationUnitCoordinates' + G.conf.type,
+                            method: 'POST',
+                            params: {id: G.vars.relocate.feature.attributes.id, coordinates: coordinates},
+                            success: function(r) {
+                                G.vars.relocate.active = false;
+                                G.vars.relocate.widget.featureOptions.coordinate.destroy();
+                                                                
+                                G.vars.relocate.feature.move({x: parseFloat(e.clientX - center), y: parseFloat(e.clientY - 28)});
+                                document.getElementById('OpenLayers.Map_3_OpenLayers_ViewPort').style.cursor = 'auto';
+                                Ext.message.msg(true, '<span class="x-msg-hl">' + G.vars.relocate.feature.attributes.name + 
+                                    ' </span>relocated to ' +
+                                    '[<span class="x-msg-hl">' + mp.childNodes[1].data + '</span>,' + 
+                                    '<span class="x-msg-hl">' + mp.childNodes[4].data + '</span>]');
+                            }
+                        });
+                    }
                 });
                 
                 document.getElementById('featuredatatext').innerHTML = '<div style="color:#666">' + G.i18n.no_feature_selected + '</div>';
