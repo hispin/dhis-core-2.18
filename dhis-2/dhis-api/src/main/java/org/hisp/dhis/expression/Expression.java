@@ -61,6 +61,8 @@ public class Expression
     public static final String SEPARATOR = ".";
     public static final String EXP_OPEN = "[";
     public static final String EXP_CLOSE = "]";
+    public static final String PAR_OPEN = "(";
+    public static final String PAR_CLOSE = ")";
     
     /**
      * The unique identifier for this Expression.

@@ -30,6 +30,8 @@ package org.hisp.dhis.expression;
 import static org.hisp.dhis.expression.Expression.EXP_CLOSE;
 import static org.hisp.dhis.expression.Expression.EXP_OPEN;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import static org.hisp.dhis.expression.Expression.PAR_OPEN;
+import static org.hisp.dhis.expression.Expression.PAR_CLOSE;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 
 import java.util.Collection;
@@ -396,7 +398,7 @@ public class DefaultExpressionService
 
                 if ( operand.isTotal() )
                 {
-                    final StringBuilder replace = new StringBuilder();
+                    final StringBuilder replace = new StringBuilder( PAR_OPEN );
 
                     final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
 
@@ -408,7 +410,7 @@ public class DefaultExpressionService
                             categoryOptionCombo.getId() ).append( EXP_CLOSE ).append( "+" );
                     }
 
-                    replace.deleteCharAt( replace.length() - 1 );
+                    replace.deleteCharAt( replace.length() - 1 ).append( PAR_CLOSE );
 
                     matcher.appendReplacement( buffer, replace.toString() );
                 }
