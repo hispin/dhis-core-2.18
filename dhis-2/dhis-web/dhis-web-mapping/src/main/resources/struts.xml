@@ -40,12 +40,6 @@
         
         <!-- SystemSetting -->
 
-        <action name="getMapSystemSettings"
-            class="org.hisp.dhis.mapping.action.GetMapSystemSettingsAction">
-            <result name="success" type="velocity-javascript">
-                /dhis-web-mapping/jsGoogleKey.vm</result>
-        </action>
-
         <action name="setMapSystemSettings"
             class="org.hisp.dhis.mapping.action.SetMapSystemSettingsAction">
             <result name="success" type="velocity-json">

@@ -300,26 +300,20 @@
     G.vars.map.addLayer(symbolLayer);
     
     /* Init base layers */
-    if (G_NORMAL_MAP && G_HYBRID_MAP) {
-        var gm_normal = new OpenLayers.Layer.Google("Google Normal", {
-            type: G_NORMAL_MAP,
-            sphericalMercator: true,
-            maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-            numZoomLevels: 21
-        });
+    if (window.google) {
+        var gmap = new OpenLayers.Layer.Google(
+            "Google Streets", // the default
+            {numZoomLevels: 20, animationEnabled: false}
+        );        
+        gmap.layerType = G.conf.map_layer_type_baselayer;
+        G.vars.map.addLayer(gmap);
         
-        gm_normal.layerType = G.conf.map_layer_type_baselayer;
-        G.vars.map.addLayer(gm_normal);
-        
-        var gm_hybrid = new OpenLayers.Layer.Google("Google Hybrid", {
-            type: G_HYBRID_MAP,
-            sphericalMercator: true,
-            maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-            numZoomLevels: 21
-        });
-        
-        gm_hybrid.layerType = G.conf.map_layer_type_baselayer;
-        G.vars.map.addLayer(gm_hybrid);
+        var ghyb = new OpenLayers.Layer.Google(
+            "Google Hybrid",
+            {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20, animationEnabled: true}
+        );        
+        ghyb.layerType = G.conf.map_layer_type_baselayer;
+        G.vars.map.addLayer(ghyb);
     }
 	
     var osm = new OpenLayers.Layer.OSM.Osmarender("OpenStreetMap");
@@ -1622,84 +1616,6 @@
         minHeight: G.conf.adminwindow_collapsed,
         items: [
             {
-                title: 'Google Maps',
-                items: [
-                    {   
-                        xtype: 'form',
-                        bodyStyle: 'padding:8px',
-                        labelWidth: G.conf.label_width,
-                        items: [
-                            {html: '<div class="window-info">Update Google Maps API key</div>'},
-                            {
-                                xtype: 'textfield',
-                                id: 'googlemapsapikey_tf',
-                                fieldLabel: G.i18n.api_key,
-                                labelSeparator: G.conf.labelseparator,
-                                width: G.conf.combo_width_fieldset,
-                                minListWidth: G.conf.combo_width_fieldset
-                            }
-                        ]
-                    },
-                    {
-                        xtype: 'form',
-                        items: [
-                            {
-                                xtype: 'toolbar',
-                                style: 'padding-top:4px',
-                                items: [
-                                    '->',
-                                    {
-                                        xtype: 'button',
-                                        text: G.i18n.update,
-                                        iconCls: 'icon-assign',
-                                        handler: function() {
-                                            if (!Ext.getCmp('googlemapsapikey_tf').getValue()) {
-                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
-                                                return;
-                                            }
-                                            
-                                            Ext.Ajax.request({
-                                                url: G.conf.path_mapping + 'setMapSystemSettings' + G.conf.type,
-                                                method: 'POST',
-                                                params: {googleKey: Ext.getCmp('googlemapsapikey_tf').getValue()},
-                                                success: function(r) {
-                                                    window.location.reload();
-                                                }
-                                            });                                                
-                                        }
-                                    },
-                                    {
-                                        xtype: 'button',
-                                        text: 'Use localhost',
-                                        iconCls: 'icon-remove',
-                                        handler: function() {
-                                            Ext.Ajax.request({
-                                                url: G.conf.path_mapping + 'deleteMapSystemSettings' + G.conf.type,
-                                                method: 'POST',
-                                                params: {googleKey: true},
-                                                success: function() {
-                                                    window.location.reload();
-                                                }
-                                            });
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ],
-                listeners: {
-                    expand: {
-                        fn: function() {
-                            adminWindow.setHeight(G.conf.adminwindow_expanded_1);
-                        }
-                    },
-                    collapse: function() {
-                        adminWindow.setHeight(G.conf.adminwindow_collapsed);
-                    }
-                }
-            },
-            {
                 title: 'Date',
                 items: [
                     {
@@ -1754,7 +1670,7 @@
                 ],
                 listeners: {
                     expand: function() {
-                        adminWindow.setHeight(G.conf.adminwindow_expanded_2);
+                        adminWindow.setHeight(G.conf.adminwindow_expanded_1);
                     },
                     collapse: function() {
                         adminWindow.setHeight(G.conf.adminwindow_collapsed);
@@ -2651,6 +2567,8 @@
             'afterrender': function() {
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_overlay, G.conf.defaultLayerOpacity);
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_thematic, G.conf.defaultLayerOpacity);
+                symbolLayer.setOpacity(1);
+                
                 
                 var svg = document.getElementsByTagName('svg');
                 
