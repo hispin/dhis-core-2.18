@@ -1,7 +1,7 @@
 
-
+##if( $flage == 0 )
 #parse( "/dhis-web-survey/select.vm" )
-
+#if( $flage == 1 )
 <table class="mainPageTable">
 	<col id="noCol" width="25">
 	<col id="indCol">	
@@ -43,7 +43,7 @@
 	#set( $tabIndex = $tabIndex + 1 )
 #end
 </table>
-
+#end
 
 
 
