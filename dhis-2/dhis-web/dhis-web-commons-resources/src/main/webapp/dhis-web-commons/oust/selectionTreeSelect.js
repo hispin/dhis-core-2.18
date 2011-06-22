@@ -2,7 +2,7 @@ var selectedOrganisationUnitList__;
 
 function addSelectedOrganisationUnit__( id )
 {
-	selectedOrganisationUnitList__.append('<option value="' + id + ' selected="selected">' + id + '</option>');
+	selectedOrganisationUnitList__.append('<option value="' + id + '" selected="selected">' + id + '</option>');
 }
 
 function selectOrganisationUnit__( ids )
@@ -11,7 +11,7 @@ function selectOrganisationUnit__( ids )
 
 	jQuery.each(ids, function( i, item )
 	{
-		selectedOrganisationUnitList__.append('<option value="' + item + ' selected="selected">' + item	+ '</option>');
+		selectedOrganisationUnitList__.append('<option value="' + item + '" selected="selected">' + item	+ '</option>');
 	});
 	
 	byId('treeSelectedId').selectedIndex = 0;
