@@ -30,13 +30,18 @@ package org.hisp.dhis.survey.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyService;
 import org.hisp.dhis.survey.comparator.SurveyNameComparator;
 import org.hisp.dhis.survey.state.SelectedStateManager;
+import org.hisp.dhis.surveydatavalue.SurveyDataValue;
+import org.hisp.dhis.surveydatavalue.SurveyDataValueService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -66,7 +71,14 @@ public class SelectAction
     {
         this.surveyService = surveyService;
     }
-
+//Extra Code    
+    private SurveyDataValueService surveyDataValueService;
+    
+    public void setSurveyDataValueService ( SurveyDataValueService surveyDataValueService )
+    {
+        this.surveyDataValueService = surveyDataValueService;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -101,8 +113,48 @@ public class SelectAction
     {
         this.selectedSurveyId = selectedSurveyId;
     }
+    
+ /*   
+    private String page;
+    
+    public String getPage()
+    {
+        return page;
+    }
 
-       
+    public void setPage( String page )
+    {
+        this.page = page;
+    }
+
+*/    
+    private int flage;
+    
+    public int getFlage()
+    {
+        return flage;
+    }
+
+    public void setFlage( int flage )
+    {
+        this.flage = flage;
+    }
+
+    // Extra code    
+    private Map<Integer, SurveyDataValue> dataValueMap;
+
+    public Map<Integer, SurveyDataValue> getDataValueMap()
+    {
+        return dataValueMap;
+    }
+ 
+    private List<Indicator> orderedIndicators = new ArrayList<Indicator>();
+
+    public List<Indicator> getOrderedIndicators()
+    {
+        return orderedIndicators;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -121,7 +173,8 @@ public class SelectAction
             selectedSurveyId = null;
  
             selectedStateManager.clearSelectedSurvey();     
-
+            
+            //flage = 0;
             return SUCCESS;
         }
 
@@ -136,20 +189,26 @@ public class SelectAction
         // ---------------------------------------------------------------------
         // Validate selected DataSet
         // ---------------------------------------------------------------------
+        
+        
 
+        
         Survey selectedSurvey;
 
         if ( selectedSurveyId != null )
         {
+            //flage = 0;
             selectedSurvey = surveyService.getSurvey( selectedSurveyId );
         }
         else
         {
+            //flage = 0;
             selectedSurvey = selectedStateManager.getSelectedSurvey();
         }
 
         if ( selectedSurvey != null && surveys.contains( selectedSurvey ) )
         {
+            //flage = 0;
             selectedSurveyId = selectedSurvey.getId();
             selectedStateManager.setSelectedSurvey( selectedSurvey );
         }
@@ -158,12 +217,60 @@ public class SelectAction
             selectedSurveyId = null;
             
             selectedStateManager.clearSelectedSurvey();
-
+            //flage = 0;
+            //page = "/dhis-web-survey/select.vm";
             return SUCCESS;
         }
+
+        //Extra code
+        getSurveyDataEntryForm();
+        //return defaultform;
+        flage = 1;
+       // page = "/dhis-web-survey/form.vm";
+        return "defaultform";
         
-        
-        
-        return "defaultform";        
     }
+    
+
+    //Extra method   
+    public String getSurveyDataEntryForm() throws Exception
+    {
+       
+        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+
+        Survey survey = selectedStateManager.getSelectedSurvey();
+      
+        List<Indicator> indicators = new ArrayList<Indicator>(survey.getIndicators());        
+
+        if ( indicators.size() == 0 )
+        {
+            return SUCCESS;
+        }  
+
+        // ---------------------------------------------------------------------
+        // Get the DataValues and create a map
+        // ---------------------------------------------------------------------
+
+        Collection<SurveyDataValue> dataValues = surveyDataValueService.getSurveyDataValues( organisationUnit, survey );
+        
+        dataValueMap = new HashMap<Integer, SurveyDataValue>( dataValues.size() );
+
+        for ( SurveyDataValue dataValue : dataValues )
+        {
+            dataValueMap.put( dataValue.getIndicator().getId(), dataValue );
+        }
+   
+        // ---------------------------------------------------------------------
+        // Working on the display of indicators
+        // ---------------------------------------------------------------------
+
+        orderedIndicators = indicators;
+        
+        //displayPropertyHandler.handle( orderedDataElements );
+        
+        return SUCCESS;
+    }
+    
+    
+    
 }
