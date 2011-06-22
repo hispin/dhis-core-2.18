@@ -25,6 +25,7 @@ import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
+import jxl.format.Colour;
 import jxl.format.VerticalAlignment;
 import jxl.write.Formula;
 import jxl.write.Label;
@@ -219,10 +220,14 @@ public class GenerateOuWiseProgressReportResultAction
             orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
             Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
             
+            orgUnitList.add( selectedOrgUnit );
+            
+            /*
             if( orgUnitList == null || orgUnitList.size() == 0 )
             {
                 orgUnitList.add( selectedOrgUnit );
             }
+            */
         }
 
         System.out.println( selectedOrgUnit.getName()+ " : " + selReportObj.getName()+" : Report Generation Start Time is : " + new Date() );
@@ -232,7 +237,7 @@ public class GenerateOuWiseProgressReportResultAction
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
-        WritableFont arialBold = new WritableFont( WritableFont.ARIAL, 10, WritableFont.BOLD );
+        
         WritableCellFormat wCellformat = new WritableCellFormat();
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat.setAlignment( Alignment.CENTRE );
@@ -381,11 +386,25 @@ public class GenerateOuWiseProgressReportResultAction
 
                     try
                     {
-                        sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), wCellformat ) );
+                        if( orgUnitCount == orgUnitList.size()-1 )
+                        {
+                            sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), getCellFormat1() ) );
+                        }
+                        else
+                        {
+                            sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), wCellformat ) );
+                        }
                     }
                     catch( Exception e )
                     {
-                        sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                        if( orgUnitCount == orgUnitList.size()-1 )
+                        {
+                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, getCellFormat1() ) );
+                        }
+                        else
+                        {
+                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                        }
                     }
                 }
                 
@@ -397,6 +416,7 @@ public class GenerateOuWiseProgressReportResultAction
         // ---------------------------------------------------------------------
         // Writing Total Values
         // ---------------------------------------------------------------------
+        /*
         WritableCellFormat totalCellformat = new WritableCellFormat( arialBold );
         totalCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
         totalCellformat.setAlignment( Alignment.CENTRE );
@@ -445,7 +465,7 @@ public class GenerateOuWiseProgressReportResultAction
                 totalSheet.addCell( new Formula( tempColNo+orgUnitCount, tempRowNo, tempFormula, totalCellformat ) );    
             }
         }
-
+*/
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
@@ -463,6 +483,21 @@ public class GenerateOuWiseProgressReportResultAction
 
         return SUCCESS;
     }
+    
+    public WritableCellFormat getCellFormat1() throws Exception
+    {
+        WritableFont arialBold = new WritableFont( WritableFont.ARIAL, 10, WritableFont.BOLD );
+        WritableCellFormat wCellformat = new WritableCellFormat( arialBold );
+        
+        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        wCellformat.setAlignment( Alignment.CENTRE );
+        wCellformat.setBackground( Colour.GRAY_25 );
+        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+        wCellformat.setWrap( true );
+
+        return wCellformat;
+    }
+    
     
     private String getAggVal( String expression, Map<String, String> aggDeMap )
     {
