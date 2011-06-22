@@ -73,12 +73,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
     <!-- SystemSetting -->
 
-    <bean id="org.hisp.dhis.mapping.action.GetMapSystemSettingsAction"
-        class="org.hisp.dhis.mapping.action.GetMapSystemSettingsAction"
-        scope="prototype">
-        <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
-    </bean>
-
     <bean id="org.hisp.dhis.mapping.action.SetMapSystemSettingsAction"
         class="org.hisp.dhis.mapping.action.SetMapSystemSettingsAction"
         scope="prototype">
