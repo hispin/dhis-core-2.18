@@ -29,12 +29,16 @@ package org.hisp.dhis.patient.action.dataentryform;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.comparator.ProgramStageNameComparator;
 
@@ -61,7 +65,7 @@ public class ViewDataEntryFormAction
     }
 
     private ProgramDataEntryService programDataEntryService;
-    
+
     public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
     {
         this.programDataEntryService = programDataEntryService;
@@ -72,6 +76,35 @@ public class ViewDataEntryFormAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
+    }
+
+    private ProgramStageDataElementService programStageDataElementService;
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Comparator
+    // -------------------------------------------------------------------------
+
+    private Comparator<DataElement> dataElementComparator;
+
+    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    {
+        this.dataElementComparator = dataElementComparator;
+    }
+
+    // -------------------------------------------------------------------------
+    // DisplayPropertyHandler
+    // -------------------------------------------------------------------------
+
+    private DisplayPropertyHandler displayPropertyHandler;
+
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
+        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -119,7 +152,14 @@ public class ViewDataEntryFormAction
     {
         return dataEntryValue;
     }
-    
+
+    private List<DataElement> dataElements;
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -143,7 +183,7 @@ public class ViewDataEntryFormAction
         {
             dataEntryValue = "";
         }
-        
+
         // ---------------------------------------------------------------------
         // Get existing Data Entry Forms
         // ---------------------------------------------------------------------
@@ -158,8 +198,8 @@ public class ViewDataEntryFormAction
         existingDataEntryForms = new ArrayList<DataEntryForm>( dataEntryFormService
             .listDisctinctDataEntryFormByProgramStageIds( listAssociationIds ) );
 
-        existingDataEntryForms.remove( dataEntryForm );     
-        
+        existingDataEntryForms.remove( dataEntryForm );
+
         // ---------------------------------------------------------------------
         // Get other program-stages into the program
         // ---------------------------------------------------------------------
@@ -169,6 +209,16 @@ public class ViewDataEntryFormAction
         programStages.remove( programStage );
 
         Collections.sort( programStages, new ProgramStageNameComparator() );
+
+        // ---------------------------------------------------------------------
+        // Get selected program-stage
+        // ---------------------------------------------------------------------
+
+        dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
+        
+        Collections.sort( dataElements, dataElementComparator );
+        
+        displayPropertyHandler.handle( dataElements );
 
         return SUCCESS;
     }
