@@ -12,7 +12,7 @@
 <table>
   <tr>
     <th colspan="2">$i18n.getString('available_dataset')</th>
-    <td rowspan="2">#organisationUnitSelectionTree( false, true, false ) </td>
+    <td rowspan="2">#organisationUnitSelectionTree( false, true, true ) </td>
   </tr>
   <tr>
     <td colspan="2" rowspan="2">
@@ -28,7 +28,7 @@
   	<td>
 	  	<input type="submit" id="saveButton" onclick="javascipt: isGenerate = true;" style="width:10em" value="$i18n.getString( 'generate' )">
 		<input type="submit" id="removeButton" onclick="javascipt: isGenerate = false;" style="width:10em" value="$i18n.getString( 'remove' )"/>
-		<input type="button" style="width:10em" onClick="window.location.href='index.action'" value="$i18n.getString( 'cancel' )"/>
+		<input type="button" style="width:10em" onClick="window.location.href='index.action'" value="$i18n.getString( 'back' )"/>
 	</td>
   </tr>
 </table>
