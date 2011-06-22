@@ -100,14 +100,28 @@ public class SemiPermanentDataValueRowHandler
     {
         final Dhis14SemiPermanentDataValue dhis14Value = (Dhis14SemiPermanentDataValue) object;
 
+        final Integer dataElementId = dataElementMapping.get( dhis14Value.getDataElementId() );
+        final Integer organisationUnitId = organisationUnitMapping.get( dhis14Value.getOrganisationUnitId() );
+
+        if ( dataElementId == null )
+        {
+            log.warn( "Data element does not exist for identifier: " + dhis14Value.getDataElementId() );
+            return;
+        }
+        if ( organisationUnitId == null )
+        {
+            log.warn( "Organisation unit does not exist for identifier: " + dhis14Value.getOrganisationUnitId() );
+            return;
+        }
+        
         final Period period = new Period();
         
         period.setPeriodType( dhis14Value.getPeriodType() );
         period.setStartDate( dhis14Value.getStartDate() );
         period.setEndDate( dhis14Value.getEndDate() );
         
-        element.setId( dataElementMapping.get( dhis14Value.getDataElementId() ) );
-        source.setId( organisationUnitMapping.get( dhis14Value.getOrganisationUnitId() ) );        
+        element.setId( dataElementId );
+        source.setId( organisationUnitId );        
         period.setId( periodMapping.get( period ) );
         
         value.setDataElement( element );

@@ -103,6 +103,26 @@ public class RoutineDataValueRowHandler
     {
         final Dhis14RoutineDataValue dhis14Value = (Dhis14RoutineDataValue) object;
         
+        final Integer dataElementId = dataElementMapping.get( dhis14Value.getDataElementId() );
+        final Integer periodId = periodMapping.get( dhis14Value.getPeriodId() );
+        final Integer organisationUnitId = organisationUnitMapping.get( dhis14Value.getOrganisationUnitId() );
+        
+        if ( dataElementId == null )
+        {
+            log.warn( "Data element does not exist for identifier: " + dhis14Value.getDataElementId() );
+            return;
+        }        
+        if ( periodId == null )
+        {
+            log.warn( "Period does not exist for identifier: " + dhis14Value.getPeriodId() );
+            return;
+        }        
+        if ( organisationUnitId == null )
+        {
+            log.warn( "Organisation unit does not exist for identifier: " + dhis14Value.getOrganisationUnitId() );
+            return;
+        }
+        
         element.setId( dataElementMapping.get( dhis14Value.getDataElementId() ) );
         period.setId( periodMapping.get( dhis14Value.getPeriodId() ) );
         source.setId( organisationUnitMapping.get( dhis14Value.getOrganisationUnitId() ) );
