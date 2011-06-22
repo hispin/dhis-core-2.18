@@ -36,6 +36,7 @@ import org.hisp.dhis.importexport.dhis14.util.Dhis14PeriodUtil;
 import org.hisp.dhis.importexport.importer.PeriodImporter;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.YearlyPeriodType;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 
@@ -74,8 +75,11 @@ public class OnChangePeriodRowHandler
     public void handleRow( Object object )
     {
         final Period period = (Period) object;
+
+        Integer periodTypeId = periodTypeMapping.get( period.getPeriodType().getName() );
+        Integer defaultId = periodTypeMapping.get( YearlyPeriodType.NAME );
         
-        period.getPeriodType().setId( periodTypeMapping.get( period.getPeriodType().getName() ) ); // Could be onchange or other
+        period.getPeriodType().setId( periodTypeId != null ? periodTypeId : defaultId ); // Could be onchange or other
         
         if ( Dhis14PeriodUtil.periodIsUnique( period ) )
         {
