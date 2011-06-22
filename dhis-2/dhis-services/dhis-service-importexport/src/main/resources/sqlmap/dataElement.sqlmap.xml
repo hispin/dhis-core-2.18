@@ -32,7 +32,7 @@
 	</select>
 	
 	<select id="getDataElements" resultMap="dataElementResultMap">
-		SELECT * FROM DataElement WHERE Calculated = 0
+		SELECT * FROM DataElement
 	</select>
 	
 	<select id="getDataElementName" parameterClass="java.lang.Integer" resultClass="java.lang.String">
