@@ -1,109 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Dashboard -->
-  
-  <bean id="org.hisp.dhis.dashboard.action.ProvideContentAction"
-    class="org.hisp.dhis.dashboard.action.ProvideContentAction"
+
+  <bean id="org.hisp.dhis.dashboard.action.ProvideContentAction" class="org.hisp.dhis.dashboard.action.ProvideContentAction"
     scope="prototype">
-    <property name="manager" ref="org.hisp.dhis.dashboard.DashboardManager"/>
+    <property name="manager" ref="org.hisp.dhis.dashboard.DashboardManager" />
     <property name="userSettingManager" ref="org.hisp.dhis.options.UserSettingManager" />
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService"/>
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dashboard.action.SetAreaItemAction"
-    class="org.hisp.dhis.dashboard.action.SetAreaItemAction"
+  <bean id="org.hisp.dhis.dashboard.action.SetAreaItemAction" class="org.hisp.dhis.dashboard.action.SetAreaItemAction"
     scope="prototype">
-    <property name="manager" ref="org.hisp.dhis.dashboard.DashboardManager"/>
+    <property name="manager" ref="org.hisp.dhis.dashboard.DashboardManager" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.action.ClearAreaAction"
-    class="org.hisp.dhis.dashboard.action.ClearAreaAction"
+
+  <bean id="org.hisp.dhis.dashboard.action.ClearAreaAction" class="org.hisp.dhis.dashboard.action.ClearAreaAction"
     scope="prototype">
-    <property name="manager" ref="org.hisp.dhis.dashboard.DashboardManager"/>
+    <property name="manager" ref="org.hisp.dhis.dashboard.DashboardManager" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.action.GetChartAction"
-    class="org.hisp.dhis.dashboard.action.GetChartAction"
+
+  <bean id="org.hisp.dhis.dashboard.action.GetChartAction" class="org.hisp.dhis.dashboard.action.GetChartAction"
     scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService"/>
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.action.RemoveReportAction"
-    class="org.hisp.dhis.dashboard.action.RemoveReportAction"
+
+  <bean id="org.hisp.dhis.dashboard.action.RemoveReportAction" class="org.hisp.dhis.dashboard.action.RemoveReportAction"
     scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService"/>
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.action.RemoveDocumentAction"
-    class="org.hisp.dhis.dashboard.action.RemoveDocumentAction"
+
+  <bean id="org.hisp.dhis.dashboard.action.RemoveDocumentAction" class="org.hisp.dhis.dashboard.action.RemoveDocumentAction"
     scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="documentService" ref="org.hisp.dhis.document.DocumentService"/>
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
+    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.action.RemoveReportTableAction"
-    class="org.hisp.dhis.dashboard.action.RemoveReportTableAction"
+
+  <bean id="org.hisp.dhis.dashboard.action.RemoveReportTableAction" class="org.hisp.dhis.dashboard.action.RemoveReportTableAction"
     scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.action.RemoveMapViewAction"
-    class="org.hisp.dhis.dashboard.action.RemoveMapViewAction"
+
+  <bean id="org.hisp.dhis.dashboard.action.RemoveMapViewAction" class="org.hisp.dhis.dashboard.action.RemoveMapViewAction"
     scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService"/>
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
   
   <!-- Message -->
-  
-  <bean id="org.hisp.dhis.dashboard.message.action.GetMessagesAction"
-    class="org.hisp.dhis.dashboard.message.action.GetMessagesAction"
+
+  <bean id="org.hisp.dhis.dashboard.message.action.GetMessagesAction" class="org.hisp.dhis.dashboard.message.action.GetMessagesAction"
     scope="prototype">
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.message.action.SendMessageAction"
-    class="org.hisp.dhis.dashboard.message.action.SendMessageAction"
+
+  <bean id="org.hisp.dhis.dashboard.message.action.SendMessageAction" class="org.hisp.dhis.dashboard.message.action.SendMessageAction"
     scope="prototype">
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.message.action.SendFeedbackAction"
-    class="org.hisp.dhis.dashboard.message.action.SendFeedbackAction"
+
+  <bean id="org.hisp.dhis.dashboard.message.action.SendFeedbackAction" class="org.hisp.dhis.dashboard.message.action.SendFeedbackAction"
     scope="prototype">
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.message.action.ReadMessageAction"
-    class="org.hisp.dhis.dashboard.message.action.ReadMessageAction"
+
+  <bean id="org.hisp.dhis.dashboard.message.action.ReadMessageAction" class="org.hisp.dhis.dashboard.message.action.ReadMessageAction"
     scope="prototype">
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>    
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.message.action.UnreadMessageAction"
-    class="org.hisp.dhis.dashboard.message.action.UnreadMessageAction"
+
+  <bean id="org.hisp.dhis.dashboard.message.action.UnreadMessageAction" class="org.hisp.dhis.dashboard.message.action.UnreadMessageAction"
     scope="prototype">
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>    
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.message.action.RemoveMessageAction"
-    class="org.hisp.dhis.dashboard.message.action.RemoveMessageAction"
+
+  <bean id="org.hisp.dhis.dashboard.message.action.RemoveMessageAction" class="org.hisp.dhis.dashboard.message.action.RemoveMessageAction"
     scope="prototype">
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService"/>    
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
-  
+
 </beans>

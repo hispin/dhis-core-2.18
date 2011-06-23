@@ -1,126 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<!-- System settings -->
 
-	<bean id="org.hisp.dhis.settings.action.system.GetSystemSettingsAction"
-		class="org.hisp.dhis.settings.action.system.GetSystemSettingsAction"
-		scope="prototype">
-        <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager"/>
-        <property name="moduleManager" ref="org.hisp.dhis.webportal.module.ModuleManager"/>
-        <property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager"/>
-        <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService"/>
-        <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService"/>
-        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
-        <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.system.GetSystemSettingsAction" class="org.hisp.dhis.settings.action.system.GetSystemSettingsAction"
+    scope="prototype">
+    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="moduleManager" ref="org.hisp.dhis.webportal.module.ModuleManager" />
+    <property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+  </bean>
 
-	<bean id="org.hisp.dhis.settings.action.system.SetSystemSettingsAction"
-		class="org.hisp.dhis.settings.action.system.SetSystemSettingsAction"
-		scope="prototype">
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
-		<property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
-		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService"/>
-		<property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService"/>
-        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
-        <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.system.SetSystemSettingsAction" class="org.hisp.dhis.settings.action.system.SetSystemSettingsAction"
+    scope="prototype">
+    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+  </bean>
 
 	<!-- User settings -->
 
-	<bean
-		id="org.hisp.dhis.settings.action.user.GetAvailableUserSettingsAction"
-		class="org.hisp.dhis.settings.action.user.GetAvailableUserSettingsAction"
-		scope="prototype">
-		<property name="resourceBundleManager">
-			<ref bean="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" />
-		</property>
-		<property name="i18nService">
-			<ref bean="org.hisp.dhis.i18n.I18nService" />
-		</property>
-		<property name="localeManager">
-			<ref bean="org.hisp.dhis.i18n.locale.LocaleManager" />
-		</property>
-		<property name="sortOrderManager">
-			<ref bean="org.hisp.dhis.options.sortorder.SortOrderManager" />
-		</property>
-		<property name="userSettingManager">
-			<ref bean="org.hisp.dhis.options.UserSettingManager" />
-		</property>
-		<property name="displayPropertyManager">
-			<ref bean="org.hisp.dhis.options.displayproperty.DisplayPropertyManager" />
-		</property>
-		<property name="userSettingService">
-			<ref bean="org.hisp.dhis.user.UserSettingService" />
-		</property>
-		<property name="styleManager">
-			<ref bean="org.hisp.dhis.options.style.StyleManager" />
-		</property>
-		<property name="userStyleManager">
-			<ref bean="org.hisp.dhis.options.style.UserStyleManager" />
-		</property>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.user.GetAvailableUserSettingsAction" class="org.hisp.dhis.settings.action.user.GetAvailableUserSettingsAction"
+    scope="prototype">
+    <property name="resourceBundleManager">
+      <ref bean="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" />
+    </property>
+    <property name="i18nService">
+      <ref bean="org.hisp.dhis.i18n.I18nService" />
+    </property>
+    <property name="localeManager">
+      <ref bean="org.hisp.dhis.i18n.locale.LocaleManager" />
+    </property>
+    <property name="sortOrderManager">
+      <ref bean="org.hisp.dhis.options.sortorder.SortOrderManager" />
+    </property>
+    <property name="userSettingManager">
+      <ref bean="org.hisp.dhis.options.UserSettingManager" />
+    </property>
+    <property name="displayPropertyManager">
+      <ref bean="org.hisp.dhis.options.displayproperty.DisplayPropertyManager" />
+    </property>
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
+    </property>
+    <property name="styleManager">
+      <ref bean="org.hisp.dhis.options.style.StyleManager" />
+    </property>
+    <property name="userStyleManager">
+      <ref bean="org.hisp.dhis.options.style.UserStyleManager" />
+    </property>
+  </bean>
 
-	<bean id="org.hisp.dhis.settings.action.user.SetCurrentLocaleAction"
-		class="org.hisp.dhis.settings.action.user.SetCurrentLocaleAction"
-		scope="prototype">
-		<property name="localeManager">
-			<ref bean="org.hisp.dhis.i18n.locale.LocaleManager" />
-		</property>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.user.SetCurrentLocaleAction" class="org.hisp.dhis.settings.action.user.SetCurrentLocaleAction"
+    scope="prototype">
+    <property name="localeManager">
+      <ref bean="org.hisp.dhis.i18n.locale.LocaleManager" />
+    </property>
+  </bean>
 
-	<bean id="org.hisp.dhis.settings.action.user.SetCurrentLocaleDbAction"
-		class="org.hisp.dhis.settings.action.user.SetCurrentLocaleDbAction"
-		scope="prototype">
-		<property name="localeManager">
-			<ref bean="org.hisp.dhis.i18n.locale.LocaleManagerDb" />
-		</property>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.user.SetCurrentLocaleDbAction" class="org.hisp.dhis.settings.action.user.SetCurrentLocaleDbAction"
+    scope="prototype">
+    <property name="localeManager">
+      <ref bean="org.hisp.dhis.i18n.locale.LocaleManagerDb" />
+    </property>
+  </bean>
 
-	<bean id="org.hisp.dhis.settings.action.user.SetCurrentSortOrderAction"
-		class="org.hisp.dhis.settings.action.user.SetCurrentSortOrderAction"
-		scope="prototype">
-		<property name="sortOrderManager">
-			<ref bean="org.hisp.dhis.options.sortorder.SortOrderManager" />
-		</property>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.user.SetCurrentSortOrderAction" class="org.hisp.dhis.settings.action.user.SetCurrentSortOrderAction"
+    scope="prototype">
+    <property name="sortOrderManager">
+      <ref bean="org.hisp.dhis.options.sortorder.SortOrderManager" />
+    </property>
+  </bean>
 
-	<bean
-		id="org.hisp.dhis.settings.action.user.SetCurrentChartsInDashboardAction"
-		class="org.hisp.dhis.settings.action.user.SetCurrentChartsInDashboardAction"
-		scope="prototype">
-		<property name="userSettingManager">
-			<ref bean="org.hisp.dhis.options.UserSettingManager" />
-		</property>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.user.SetCurrentChartsInDashboardAction" class="org.hisp.dhis.settings.action.user.SetCurrentChartsInDashboardAction"
+    scope="prototype">
+    <property name="userSettingManager">
+      <ref bean="org.hisp.dhis.options.UserSettingManager" />
+    </property>
+  </bean>
 
-	<bean
-		id="org.hisp.dhis.settings.action.user.SetCurrentDisplayPropertyAction"
-		class="org.hisp.dhis.settings.action.user.SetCurrentDisplayPropertyAction"
-		scope="prototype">
-		<property name="displayPropertyManager">
-			<ref bean="org.hisp.dhis.options.displayproperty.DisplayPropertyManager" />
-		</property>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.user.SetCurrentDisplayPropertyAction" class="org.hisp.dhis.settings.action.user.SetCurrentDisplayPropertyAction"
+    scope="prototype">
+    <property name="displayPropertyManager">
+      <ref bean="org.hisp.dhis.options.displayproperty.DisplayPropertyManager" />
+    </property>
+  </bean>
 
-	<bean
-		id="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction"
-		class="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction"
-		scope="prototype">
-		<property name="userSettingService">
-			<ref bean="org.hisp.dhis.user.UserSettingService" />
-		</property>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction" class="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction"
+    scope="prototype">
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
+    </property>
+  </bean>
 
-	<bean id="org.hisp.dhis.settings.action.user.SetCurrentStyleAction"
-		class="org.hisp.dhis.settings.action.user.SetCurrentStyleAction"
-		scope="prototype">
-		<property name="userStyleManager">
-			<ref bean="org.hisp.dhis.options.style.UserStyleManager" />
-		</property>
-	</bean>
+  <bean id="org.hisp.dhis.settings.action.user.SetCurrentStyleAction" class="org.hisp.dhis.settings.action.user.SetCurrentStyleAction"
+    scope="prototype">
+    <property name="userStyleManager">
+      <ref bean="org.hisp.dhis.options.style.UserStyleManager" />
+    </property>
+  </bean>
 
 </beans>

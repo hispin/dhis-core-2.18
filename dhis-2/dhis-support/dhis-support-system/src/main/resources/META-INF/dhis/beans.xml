@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-  
-  <bean id="org.hisp.dhis.system.startup.StartupRoutineExecutor" class="org.hisp.dhis.system.startup.DefaultStartupRoutineExecutor"/>
-  
-  <bean id="processCoordinator" class="org.amplecode.cave.process.SpringProcessCoordinator" destroy-method="close"/>
+
+  <bean id="org.hisp.dhis.system.startup.StartupRoutineExecutor" class="org.hisp.dhis.system.startup.DefaultStartupRoutineExecutor" />
+
+  <bean id="processCoordinator" class="org.amplecode.cave.process.SpringProcessCoordinator" destroy-method="close" />
 
   <bean id="deletionInterceptor" class="org.hisp.dhis.system.deletion.DeletionInterceptor">
-	<property name="deletionManager" ref="deletionManager"/>
+    <property name="deletionManager" ref="deletionManager" />
   </bean>
-  
-  <bean id="deletionManager" class="org.hisp.dhis.system.deletion.DefaultDeletionManager"/>
-  
+
+  <bean id="deletionManager" class="org.hisp.dhis.system.deletion.DefaultDeletionManager" />
+
   <bean id="databaseInfoProvider" class="org.hisp.dhis.system.database.HibernateDatabaseInfoProvider" init-method="init">
-	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
+    <property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider" />
   </bean>
-  
+
   <bean id="taskScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
-    <property name="poolSize" value="10"/>
+    <property name="poolSize" value="10" />
   </bean>
-    
+
   <bean id="scheduler" class="org.hisp.dhis.system.scheduling.SpringScheduler">
-    <property name="taskScheduler" ref="taskScheduler"/>
-    <property name="taskExecutor" ref="taskScheduler"/>
+    <property name="taskScheduler" ref="taskScheduler" />
+    <property name="taskExecutor" ref="taskScheduler" />
   </bean>
-  
+
 </beans>

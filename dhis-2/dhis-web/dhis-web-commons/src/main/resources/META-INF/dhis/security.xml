@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:sec="http://www.springframework.org/schema/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <sec:global-method-security jsr250-annotations="disabled" pre-post-annotations="disabled" secured-annotations="disabled" />
+  <sec:global-method-security jsr250-annotations="disabled" pre-post-annotations="disabled"
+    secured-annotations="disabled" />
 
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
     <sec:form-login default-target-url="/" always-use-default-target="false"
       login-processing-url="/dhis-web-commons-security/login.action" authentication-failure-url="/dhis-web-commons/security/loginfailed.html"
-      login-page="/dhis-web-commons/security/login.html" authentication-success-handler-ref="defaultAuthenticationSuccessHandler"/>
+      login-page="/dhis-web-commons/security/login.html" authentication-success-handler-ref="defaultAuthenticationSuccessHandler" />
     <sec:http-basic />
     <sec:logout logout-url="/dhis-web-commons-security/logout.action" />
 
@@ -28,7 +30,8 @@
   <bean id="defaultAuthenticationSuccessHandler" class="org.hisp.dhis.security.DefaultAuthenticationSuccessHandler" />
 
   <!-- Security : Action -->
-  <bean id="restrictOrganisationUnitsAction" class="org.hisp.dhis.security.action.RestrictOrganisationUnitsAction" scope="prototype">
+  <bean id="restrictOrganisationUnitsAction" class="org.hisp.dhis.security.action.RestrictOrganisationUnitsAction"
+    scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
@@ -51,7 +54,7 @@
 
   <bean id="authenticationListener" class="org.hisp.dhis.security.listener.AuthenticationListener">
     <property name="userAuditService" ref="org.hisp.dhis.useraudit.UserAuditService" />
-	<property name="userService" ref="org.hisp.dhis.user.UserService"/>
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <!-- Security : AccessProvider -->
@@ -135,13 +138,13 @@
   <!-- Security : Interceptor -->
 
   <bean id="loginInterceptor" class="org.hisp.dhis.security.intercept.LoginInterceptor">
-  	<property name="actions">
-  		<list>
-  			<ref bean="restrictOrganisationUnitsAction" />
-  		</list>
-  	</property>
+    <property name="actions">
+      <list>
+        <ref bean="restrictOrganisationUnitsAction" />
+      </list>
+    </property>
   </bean>
-  
+
   <bean id="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor" class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor">
     <property name="accessDecisionManager" ref="accessDecisionManager" />
     <property name="authenticationManager" ref="authenticationManager" />
