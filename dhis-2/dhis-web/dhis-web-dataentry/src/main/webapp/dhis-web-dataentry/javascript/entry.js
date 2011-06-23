@@ -6,6 +6,7 @@
 var COLOR_GREEN = '#b9ffb9';
 var COLOR_YELLOW = '#fffe8c';
 var COLOR_RED = '#ff8a8a';
+var COLOR_ORANGE = '#ff6600';
 
 var FORMULA_PATTERN = /\[.+?\]/g;
 var SEPARATOR = '.';
@@ -152,7 +153,7 @@ function saveValueInternal( dataElementId, optionComboId, dataElementName )
 
                 if ( value < min )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, COLOR_RED );
+                    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, COLOR_ORANGE );
                     valueSaver.save();
                     
                     window.alert( i18n_value_of_data_element_less + '\n\n' + dataElementName );
@@ -162,7 +163,7 @@ function saveValueInternal( dataElementId, optionComboId, dataElementName )
 
                 if ( value > max )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, COLOR_RED );
+                    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, COLOR_ORANGE );
                     valueSaver.save();
                     
                     window.alert( i18n_value_of_data_element_greater + '\n\n' + dataElementName);
