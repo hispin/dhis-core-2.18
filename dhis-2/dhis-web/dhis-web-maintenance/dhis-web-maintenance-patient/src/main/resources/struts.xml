@@ -704,7 +704,7 @@
 
 		<action name="addProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.AddProgramStageAction">
-			<result name="success" type="redirect">programStage.action
+			<result name="success" type="redirect">programStage.action?id=${id}
 			</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
