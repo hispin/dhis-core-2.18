@@ -1217,6 +1217,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                         {
                             text: 'Relocate',
                             iconCls: 'menu-featureoptions-relocate',
+                            disabled: !G.user.isAdmin,
                             handler: function(item) {
                                 G.vars.relocate.active = true;
                                 G.vars.relocate.widget = scope;

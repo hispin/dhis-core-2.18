@@ -2090,7 +2090,7 @@
                 qtip: 'Refresh layer',
                 handler: function() {
                     choropleth.updateValues = true;
-                    choropleth.loadGeoJson();
+                    choropleth.classify();
                 }
             },
             {
@@ -2125,7 +2125,7 @@
                 qtip: 'Refresh layer',
                 handler: function() {
                     point.updateValues = true;
-                    point.loadGeoJson();
+                    point.classify();
                 }
             },
             {
@@ -2159,7 +2159,7 @@
                 id: 'refresh',
                 qtip: 'Refresh layer',
                 handler: function() {
-                    symbol.loadGeoJson();
+                    symbol.classify();
                 }
             },
             {
