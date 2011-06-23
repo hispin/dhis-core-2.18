@@ -67,17 +67,31 @@ public class PeriodUtil
 
         if ( periodType instanceof WeeklyPeriodType )
         {
-            int dashIndex = periodName.indexOf( '-' );
-
-            if ( dashIndex < 0 )
+        	String pattern = "yyyy-MM-dd";
+            SimpleDateFormat formatter = new SimpleDateFormat( pattern );
+            Date date;
+            try
             {
-                return null;
+                date = formatter.parse( periodName );
             }
-
-            int week = Integer.parseInt( periodName.substring( 0, dashIndex ) );
-            int year = Integer.parseInt( periodName.substring( dashIndex + 1, periodName.length() ) );
-
-            return periodType.createPeriod(year + "W" + week);
+            catch ( ParseException e )
+            {
+                throw new IllegalArgumentException( "Couldn't make a period of type " + periodType.getName()
+                    + " and name " + periodName, e );
+            }
+            return periodType.createPeriod( date );
+            
+//            int dashIndex = periodName.indexOf( '-' );
+//
+//            if ( dashIndex < 0 )
+//            {
+//                return null;
+//            }
+//
+//            int week = Integer.parseInt( periodName.substring( 0, dashIndex ) );
+//            int year = Integer.parseInt( periodName.substring( dashIndex + 1, periodName.length() ) );
+//
+//            return periodType.createPeriod(year + "W" + week);
         }
 
         if ( periodType instanceof MonthlyPeriodType )
