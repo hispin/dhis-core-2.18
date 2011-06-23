@@ -16,8 +16,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
         <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-        <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />      
-        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
     </bean>
 
 	<!-- OrganisationUnit -->

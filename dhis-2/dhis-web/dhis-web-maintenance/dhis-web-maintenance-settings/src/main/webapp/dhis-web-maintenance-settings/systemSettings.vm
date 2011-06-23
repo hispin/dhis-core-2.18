@@ -70,7 +70,7 @@
 <p>
 <select name="infrastructuralPeriodType" style="width:30em">
     #foreach ( $type in $periodTypes )
-    <option value="$type.name" #if( $type.name == $configuration.infrastructuralPeriodType.name )selected="selected"#end>$type.name</option>
+    <option value="$type.name" #if( $type.name == $configuration.infrastructuralPeriodTypeDefaultIfNull.name )selected="selected"#end>$type.name</option>
     #end
 </select>
 </p>
