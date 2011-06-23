@@ -4,11 +4,10 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-  <include file="dhis-web-commons.xml"/>
-  
-  <package name="dhis-web-maintenance-settings" extends="dhis-web-commons"
-    namespace="/dhis-web-maintenance-settings">
-        
+  <include file="dhis-web-commons.xml" />
+
+  <package name="dhis-web-maintenance-settings" extends="dhis-web-commons" namespace="/dhis-web-maintenance-settings">
+
     <action name="index" class="org.hisp.dhis.settings.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/index.vm</param>
@@ -16,26 +15,26 @@
     </action>
     
     <!-- System settings -->
-    
+
     <action name="systemSettings" class="org.hisp.dhis.settings.action.system.GetSystemSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/systemSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
-    
+
     <action name="setSystemSettings" class="org.hisp.dhis.settings.action.system.SetSystemSettingsAction">
       <result name="success" type="redirect">systemSettings.action</result>
     </action>
     
     <!-- User settings -->
-    
+
     <action name="userSettings" class="org.hisp.dhis.settings.action.user.GetAvailableUserSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/userSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
     </action>
-	
+
     <action name="setCurrentLocale" class="org.hisp.dhis.settings.action.user.SetCurrentLocaleAction">
       <result name="success" type="redirect">userSettings.action</result>
     </action>
@@ -43,7 +42,7 @@
     <action name="setCurrentLocaleDb" class="org.hisp.dhis.settings.action.user.SetCurrentLocaleDbAction">
       <result name="success" type="redirect">userSettings.action</result>
     </action>
-	
+
     <action name="setCurrentSortOrder" class="org.hisp.dhis.settings.action.user.SetCurrentSortOrderAction">
       <result name="success" type="redirect">userSettings.action</result>
     </action>
@@ -54,15 +53,15 @@
 
     <action name="setCurrentDisplayProperty" class="org.hisp.dhis.settings.action.user.SetCurrentDisplayPropertyAction">
       <result name="success" type="redirect">userSettings.action</result>
-    </action>    
-        
+    </action>
+
     <action name="setAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction">
       <result name="success" type="redirect">userSettings.action</result>
-    </action>        
-    
+    </action>
+
     <action name="setCurrentStyle" class="org.hisp.dhis.settings.action.user.SetCurrentStyleAction">
       <result name="success" type="redirect">userSettings.action</result>
-    </action>    
-    
+    </action>
+
   </package>
 </struts>

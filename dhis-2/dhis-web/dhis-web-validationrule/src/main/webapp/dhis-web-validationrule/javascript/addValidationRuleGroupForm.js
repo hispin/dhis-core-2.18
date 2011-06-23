@@ -1,14 +1,17 @@
-jQuery(document).ready(function() {
-	jQuery("#name").focus();
+jQuery( document ).ready( function()
+{
+    jQuery( "#name" ).focus();
 
-	validation2('addValidationRuleGroupForm', function(form) {
-		form.submit()
-	}, {
-		'beforeValidateHandler' : function() {
-			selectAllById('groupMembers')
-		},
-		'rules' : getValidationRules("validationRuleGroup")
-	});
+    validation2( 'addValidationRuleGroupForm', function( form )
+    {
+        form.submit()
+    }, {
+        'beforeValidateHandler' : function()
+        {
+            selectAllById( 'groupMembers' )
+        },
+        'rules' : getValidationRules( "validationRuleGroup" )
+    } );
 
-	checkValueIsExist("name", "validateValidationRuleGroup.action");
-});
+    checkValueIsExist( "name", "validateValidationRuleGroup.action" );
+} );

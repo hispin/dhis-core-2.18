@@ -1,252 +1,328 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="org.hisp.dhis.options.sortorder.SortOrderManager"
-	class="org.hisp.dhis.options.sortorder.DefaultSortOrderManager" init-method="init">
-	<property name="userSettingService"
-      ref="org.hisp.dhis.user.UserSettingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.options.displayproperty.DisplayPropertyManager"
-	class="org.hisp.dhis.options.displayproperty.DefaultDisplayPropertyManager">
-	<property name="userSettingService"
-      ref="org.hisp.dhis.user.UserSettingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.options.datadictionary.DataDictionaryModeManager"
-    class="org.hisp.dhis.options.datadictionary.DefaultDataDictionaryModeManager">
-    <property name="userSettingService"
-      ref="org.hisp.dhis.user.UserSettingService"/>
-  </bean>
-	
-  <bean id="org.hisp.dhis.options.SystemSettingStore"
-    class="org.hisp.dhis.hibernate.HibernateGenericStore">
-    <property name="clazz" value="org.hisp.dhis.options.SystemSetting"/>
-    <property name="sessionFactory" ref="sessionFactory"/>
-    <property name="cacheable" value="true"/>
+  <bean id="org.hisp.dhis.options.sortorder.SortOrderManager" class="org.hisp.dhis.options.sortorder.DefaultSortOrderManager"
+    init-method="init">
+    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
   </bean>
 
-  <bean id="org.hisp.dhis.options.SystemSettingManager"
-    class="org.hisp.dhis.options.setting.DefaultSystemSettingManager"> 
-    <property name="systemSettingStore" 
-      ref="org.hisp.dhis.options.SystemSettingStore"/>
+  <bean id="org.hisp.dhis.options.displayproperty.DisplayPropertyManager" class="org.hisp.dhis.options.displayproperty.DefaultDisplayPropertyManager">
+    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.options.datadictionary.DataDictionaryModeManager" class="org.hisp.dhis.options.datadictionary.DefaultDataDictionaryModeManager">
+    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.options.SystemSettingStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.options.SystemSetting" />
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
+  </bean>
+
+  <bean id="org.hisp.dhis.options.SystemSettingManager" class="org.hisp.dhis.options.setting.DefaultSystemSettingManager">
+    <property name="systemSettingStore" ref="org.hisp.dhis.options.SystemSettingStore" />
     <property name="flags">
       <map>
         <entry>
-          <key><value>armenia</value></key>
+          <key>
+            <value>armenia</value>
+          </key>
           <value>armenia.png</value>
         </entry>
         <entry>
-          <key><value>bangladesh</value></key>
+          <key>
+            <value>bangladesh</value>
+          </key>
           <value>bangladesh.png</value>
         </entry>
         <entry>
-          <key><value>bening</value></key>
+          <key>
+            <value>bening</value>
+          </key>
           <value>benin.png</value>
         </entry>
         <entry>
-          <key><value>botswana</value></key>
+          <key>
+            <value>botswana</value>
+          </key>
           <value>botswana.png</value>
         </entry>
         <entry>
-          <key><value>burkina_faso</value></key>
+          <key>
+            <value>burkina_faso</value>
+          </key>
           <value>burkina_faso.png</value>
         </entry>
         <entry>
-          <key><value>cambodia</value></key>
+          <key>
+            <value>cambodia</value>
+          </key>
           <value>cambodia.png</value>
         </entry>
         <entry>
-          <key><value>ethiopia</value></key>
+          <key>
+            <value>ethiopia</value>
+          </key>
           <value>ethiopia.png</value>
         </entry>
         <entry>
-          <key><value>gambia</value></key>
+          <key>
+            <value>gambia</value>
+          </key>
           <value>gambia.png</value>
         </entry>
         <entry>
-          <key><value>ghana</value></key>
+          <key>
+            <value>ghana</value>
+          </key>
           <value>ghana.png</value>
         </entry>
         <entry>
-          <key><value>guinea</value></key>
+          <key>
+            <value>guinea</value>
+          </key>
           <value>guinea.png</value>
         </entry>
         <entry>
-          <key><value>guinea_bissau</value></key>
+          <key>
+            <value>guinea_bissau</value>
+          </key>
           <value>guinea_bissau.png</value>
         </entry>
         <entry>
-          <key><value>india</value></key>
+          <key>
+            <value>india</value>
+          </key>
           <value>india.png</value>
         </entry>
         <entry>
-          <key><value>indonesia</value></key>
+          <key>
+            <value>indonesia</value>
+          </key>
           <value>indionesia.png</value>
         </entry>
         <entry>
-          <key><value>irc</value></key>
+          <key>
+            <value>irc</value>
+          </key>
           <value>irc.png</value>
         </entry>
         <entry>
-          <key><value>ivory_coast</value></key>
+          <key>
+            <value>ivory_coast</value>
+          </key>
           <value>ivory_coast.png</value>
         </entry>
         <entry>
-          <key><value>kenya</value></key>
+          <key>
+            <value>kenya</value>
+          </key>
           <value>kenya.png</value>
         </entry>
         <entry>
-          <key><value>lesotho</value></key>
+          <key>
+            <value>lesotho</value>
+          </key>
           <value>lesotho.png</value>
         </entry>
         <entry>
-          <key><value>liberia</value></key>
+          <key>
+            <value>liberia</value>
+          </key>
           <value>liberia.png</value>
         </entry>
         <entry>
-          <key><value>malawi</value></key>
+          <key>
+            <value>malawi</value>
+          </key>
           <value>malawi.png</value>
         </entry>
         <entry>
-          <key><value>mali</value></key>
+          <key>
+            <value>mali</value>
+          </key>
           <value>mali.png</value>
         </entry>
         <entry>
-          <key><value>mozambique</value></key>
+          <key>
+            <value>mozambique</value>
+          </key>
           <value>mozambique.png</value>
         </entry>
         <entry>
-          <key><value>namibia</value></key>
+          <key>
+            <value>namibia</value>
+          </key>
           <value>namibia.png</value>
         </entry>
         <entry>
-          <key><value>nigeria</value></key>
+          <key>
+            <value>nigeria</value>
+          </key>
           <value>nigeria.png</value>
         </entry>
         <entry>
-          <key><value>norway</value></key>
+          <key>
+            <value>norway</value>
+          </key>
           <value>norway.png</value>
         </entry>
         <entry>
-          <key><value>philippines</value></key>
+          <key>
+            <value>philippines</value>
+          </key>
           <value>philippines.png</value>
         </entry>
         <entry>
-          <key><value>rwanda</value></key>
+          <key>
+            <value>rwanda</value>
+          </key>
           <value>rwanda.png</value>
         </entry>
         <entry>
-          <key><value>senegal</value></key>
+          <key>
+            <value>senegal</value>
+          </key>
           <value>senegal.png</value>
         </entry>
         <entry>
-          <key><value>sierra_leone</value></key>
+          <key>
+            <value>sierra_leone</value>
+          </key>
           <value>sierra_leone.png</value>
         </entry>
         <entry>
-          <key><value>sierra_leone_coat_of_arms</value></key>
+          <key>
+            <value>sierra_leone_coat_of_arms</value>
+          </key>
           <value>sierra_leone_coat_of_arms.png</value>
         </entry>
         <entry>
-          <key><value>south_africa</value></key>
+          <key>
+            <value>south_africa</value>
+          </key>
           <value>south_africa.png</value>
         </entry>
         <entry>
-          <key><value>south_africa_department_of_health</value></key>
+          <key>
+            <value>south_africa_department_of_health</value>
+          </key>
           <value>south_africa_department_of_health.png</value>
         </entry>
         <entry>
-          <key><value>sri_lanka</value></key>
+          <key>
+            <value>sri_lanka</value>
+          </key>
           <value>sri_lanka.png</value>
         </entry>
         <entry>
-          <key><value>swaziland</value></key>
+          <key>
+            <value>swaziland</value>
+          </key>
           <value>swaziland.png</value>
         </entry>
         <entry>
-          <key><value>tajikistan</value></key>
+          <key>
+            <value>tajikistan</value>
+          </key>
           <value>tajikistan.png</value>
         </entry>
         <entry>
-          <key><value>tanzania</value></key>
+          <key>
+            <value>tanzania</value>
+          </key>
           <value>tanzania.png</value>
         </entry>
         <entry>
-          <key><value>togo</value></key>
+          <key>
+            <value>togo</value>
+          </key>
           <value>togo.png</value>
         </entry>
         <entry>
-          <key><value>uganda</value></key>
+          <key>
+            <value>uganda</value>
+          </key>
           <value>uganda.png</value>
         </entry>
         <entry>
-          <key><value>vietnam</value></key>
+          <key>
+            <value>vietnam</value>
+          </key>
           <value>vietnam.png</value>
         </entry>
         <entry>
-          <key><value>zambia</value></key>
+          <key>
+            <value>zambia</value>
+          </key>
           <value>zambia.png</value>
         </entry>
         <entry>
-          <key><value>zanzibar</value></key>
+          <key>
+            <value>zanzibar</value>
+          </key>
           <value>zanzibar.png</value>
-        </entry>   
+        </entry>
         <entry>
-          <key><value>who</value></key>
+          <key>
+            <value>who</value>
+          </key>
           <value>who.png</value>
-        </entry>        
+        </entry>
       </map>
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.options.style.StyleManager"
-    class="org.hisp.dhis.options.style.DefaultStyleManager">
-    <property name="systemSettingManager"
-      ref="org.hisp.dhis.options.SystemSettingManager"/>
-    <property name="defaultStyle" value="light_blue"/>
+  <bean id="org.hisp.dhis.options.style.StyleManager" class="org.hisp.dhis.options.style.DefaultStyleManager">
+    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="defaultStyle" value="light_blue" />
     <property name="styles">
       <map>
         <entry>
-          <key><value>light_blue</value></key>
+          <key>
+            <value>light_blue</value>
+          </key>
           <value>light_blue/light_blue.css</value>
         </entry>
         <entry>
-          <key><value>blue</value></key>
+          <key>
+            <value>blue</value>
+          </key>
           <value>blue/blue.css</value>
         </entry>
-		<entry>
-          <key><value>green</value></key>
+        <entry>
+          <key>
+            <value>green</value>
+          </key>
           <value>green/green.css</value>
         </entry>
         <entry>
-          <key><value>vietnam</value></key>
+          <key>
+            <value>vietnam</value>
+          </key>
           <value>vietnam/vietnam.css</value>
         </entry>
         <entry>
-          <key><value>india</value></key>
+          <key>
+            <value>india</value>
+          </key>
           <value>india/india.css</value>
         </entry>
       </map>
     </property>
   </bean>
-  
-  <bean id="org.hisp.dhis.options.style.UserStyleManager"
-    class="org.hisp.dhis.options.style.DefaultUserStyleManager">
-    <property name="userSettingService"
-      ref="org.hisp.dhis.user.UserSettingService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.options.help.HelpManager"
-	class="org.hisp.dhis.options.help.DefaultHelpManager"/>
 
-  <bean id="org.hisp.dhis.options.UserSettingManager"
-    class="org.hisp.dhis.options.setting.DefaultUserSettingManager"> 
-    <property name="userSettingService"
-      ref="org.hisp.dhis.user.UserSettingService"/>
+  <bean id="org.hisp.dhis.options.style.UserStyleManager" class="org.hisp.dhis.options.style.DefaultUserStyleManager">
+    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.options.help.HelpManager" class="org.hisp.dhis.options.help.DefaultHelpManager" />
+
+  <bean id="org.hisp.dhis.options.UserSettingManager" class="org.hisp.dhis.options.setting.DefaultUserSettingManager">
+    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
   </bean>
 
 </beans>

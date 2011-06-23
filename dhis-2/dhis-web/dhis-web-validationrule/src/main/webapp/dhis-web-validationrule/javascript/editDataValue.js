@@ -105,9 +105,9 @@ function markValueForFollowupReceived( messageElement )
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Saver object (modified version of dataentry/javascript/general.js)
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 function ValueSaver( dataElementId_, periodId_, sourceId_, categoryOptionComboId_, value_, valueId_, resultColor_, selectedOption_ )
 {

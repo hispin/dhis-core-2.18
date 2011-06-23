@@ -30,7 +30,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.web.api.resources.OrgUnitResource" class="org.hisp.dhis.web.api.resources.OrgUnitResource"
     scope="prototype">
     <property name="facilityReportingService" ref="org.hisp.dhis.web.api.service.FacilityReportingService" />
@@ -50,7 +50,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-	<property name="modelMapping" ref="org.hisp.dhis.web.api.service.ModelMapping" />
+    <property name="modelMapping" ref="org.hisp.dhis.web.api.service.ModelMapping" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.service.ActivityReportingService" class="org.hisp.dhis.web.api.service.ActivityReportingServiceImpl">
@@ -61,20 +61,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="patientMobileSettingService" ref="org.hisp.dhis.patient.PatientMobileSettingService" />
     <property name="activityPlanService" ref="org.hisp.dhis.activityplan.ActivityPlanService" />
-	<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
+    <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.service.IProgramService" class="org.hisp.dhis.web.api.service.DefaultProgramService">
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
-	<property name="modelMapping" ref="org.hisp.dhis.web.api.service.ModelMapping" />
+    <property name="modelMapping" ref="org.hisp.dhis.web.api.service.ModelMapping" />
   </bean>
 
   <!-- Jax-RS providers for (de-)serialization, exception mapping, json configuration -->
 
   <bean id="org.hisp.dhis.web.api.mapping.DataSerializableProvider" class="org.hisp.dhis.web.api.mapping.DataStreamSerializableProvider"
     scope="singleton" />
-	
+
   <bean id="org.hisp.dhis.web.api.mapping.DataSetValueConsumer" class="org.hisp.dhis.web.api.mapping.DataSetValueConsumer"
     scope="singleton" />
 

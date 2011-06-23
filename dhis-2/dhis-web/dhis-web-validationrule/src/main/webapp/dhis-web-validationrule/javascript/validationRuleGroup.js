@@ -1,4 +1,3 @@
-
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
@@ -26,7 +25,7 @@ function validationRuleGroupReceived( xmlObject )
 
 function removeValidationRuleGroup( validationRuleGroupId, validationRuleGroupName )
 {
-	removeItem( validationRuleGroupId, validationRuleGroupName, i18n_confirm_delete, 'removeValidationRuleGroup.action' );
+    removeItem( validationRuleGroupId, validationRuleGroupName, i18n_confirm_delete, 'removeValidationRuleGroup.action' );
 }
 
 // -----------------------------------------------------------------------------
@@ -38,12 +37,13 @@ function initLists()
     var id;
     for ( id in groupMembers )
     {
-        $("#groupMembers").append( $( "<option></option>" ).attr( "value",id ).text( groupMembers[id] )) ;
+        $( "#groupMembers" ).append( $( "<option></option>" ).attr( "value", id ).text( groupMembers[id] ) );
     }
 
     for ( id in availableValidationRules )
     {
-        $("#availableValidationRules").append( $( "<option></option>" ).attr( "value",id ).text( availableValidationRules[id] )) ;
+        $( "#availableValidationRules" ).append(
+                $( "<option></option>" ).attr( "value", id ).text( availableValidationRules[id] ) );
     }
 }
 
@@ -51,13 +51,13 @@ function filterGroupMembers()
 {
     var filter = document.getElementById( 'groupMembersFilter' ).value;
     var list = document.getElementById( 'groupMembers' );
-    
+
     list.options.length = 0;
-    
+
     for ( var id in groupMembers )
     {
         var value = groupMembers[id];
-        
+
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
             list.add( new Option( value, id ), null );
@@ -69,13 +69,13 @@ function filterAvailableValidationRules()
 {
     var filter = document.getElementById( 'availableValidationRulesFilter' ).value;
     var list = document.getElementById( 'availableValidationRules' );
-    
+
     list.options.length = 0;
-    
+
     for ( var id in availableValidationRules )
     {
         var value = availableValidationRules[id];
-        
+
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
             list.add( new Option( value, id ), null );
@@ -94,10 +94,10 @@ function addGroupMembers()
         list.options[list.selectedIndex].selected = false;
 
         groupMembers[id] = availableValidationRules[id];
-        
-        delete availableValidationRules[id];        
+
+        delete availableValidationRules[id];
     }
-    
+
     filterGroupMembers();
     filterAvailableValidationRules();
 }
@@ -113,10 +113,10 @@ function removeGroupMembers()
         list.options[list.selectedIndex].selected = false;
 
         availableValidationRules[id] = groupMembers[id];
-        
-        delete groupMembers[id];        
+
+        delete groupMembers[id];
     }
-    
+
     filterGroupMembers();
     filterAvailableValidationRules();
 }
