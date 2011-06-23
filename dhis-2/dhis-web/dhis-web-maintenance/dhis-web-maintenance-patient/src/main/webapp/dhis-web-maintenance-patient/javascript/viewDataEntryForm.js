@@ -247,7 +247,7 @@ function insertDataElement( source, associationId )
 		jQuery.each( categoryOptionCombos, function(i, item ){
 			optionComboName = item.name;
 			optionComboId = item.id;
-			var titleValue = "-- " + dataElementId + ". "+ dataElementName+" " + optionComboId + ". " + optionComboName+" ("+dataElementType+") --";
+			var titleValue = "-- " + dataElementId + ". " + dataElementName + " " + optionComboId + ". " + optionComboName+" ("+dataElementType+") --";
 			var displayName = dispName + " - " + optionComboName + " ]";
 			var dataEntryId = "value[" + associationId + "].value:value[" + dataElementId + "].value:value[" + optionComboId + "].value";
 			selectString += "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:10em;text-align:center\"/><br/>";
