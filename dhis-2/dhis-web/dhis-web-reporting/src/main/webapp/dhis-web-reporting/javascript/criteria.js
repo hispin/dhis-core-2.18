@@ -1,37 +1,35 @@
-
 // -------------------------------------------------------------------------
 // Public methods
 // -------------------------------------------------------------------------
 
 function toggleDataType()
-{	
-  $( "#indicatorGroupDiv" ).toggle();
-  $( "#dataElementGroupDiv" ).toggle();
+{
+    $( "#indicatorGroupDiv" ).toggle();
+    $( "#dataElementGroupDiv" ).toggle();
 }
 
 function showCriteria()
 {
-  $( "div#criteria" ).show( "fast" );
+    $( "div#criteria" ).show( "fast" );
 }
 
 function hideCriteria()
 {
-  $( "div#criteria" ).hide( "fast" );
+    $( "div#criteria" ).hide( "fast" );
 }
 
 function showPivot()
 {
-  $( "div#pivot" ).show( "fast" );
+    $( "div#pivot" ).show( "fast" );
 }
 
 function hidePivot()
 {
-  $( "div#pivot" ).hide( "fast" );
+    $( "div#pivot" ).hide( "fast" );
 }
 
 function hideDivs()
 {
-  hideCriteria();
-  hidePivot();
+    hideCriteria();
+    hidePivot();
 }
-

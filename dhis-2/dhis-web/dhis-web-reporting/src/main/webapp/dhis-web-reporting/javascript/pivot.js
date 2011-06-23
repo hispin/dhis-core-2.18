@@ -1,4 +1,3 @@
-
 // -----------------------------------------------------------------------------
 // Global variables
 // -----------------------------------------------------------------------------
@@ -6,7 +5,8 @@
 var indicators = []; // Array->associative array (id,name)
 var periods = []; // Array->associative array (id,name)
 var orgunits = []; // Array->associative array (id,name)
-var data = []; // Associative array [(indicator-period-orgunit), (indicatorValue)]
+var data = []; // Associative array [(indicator-period-orgunit),
+                // (indicatorValue)]
 
 var sizes = []; // Associative array (dimension, size)
 
@@ -33,73 +33,68 @@ var currentDataType = DATA_TYPE_INDICATOR;
  */
 function organisationUnitSelected( orgunits )
 {
-	organisationUnitId = orgunits ? orgunits[0] : null;
+    organisationUnitId = orgunits ? orgunits[0] : null;
 }
 
 /**
- * This method is called from the UI and is responsible for retrieving data from 
+ * This method is called from the UI and is responsible for retrieving data from
  * the server and setting the global variables.
  */
 function getData()
 {
-  if ( organisationUnitId == -1 )
-  {
-	setHeaderDelayMessage( i18n_selected_organisation_unit );
-  }
-  else
-  {
-	  clearGlobalVariables();
-	  
-	  var dataType = $( "#dataType" ).val();
-	  var indicatorGroupId = $( "#indicatorGroup" ).val();
-	  var dataElementGroupId = $( "#dataElementGroup" ).val();
-	  var startDate = $( "#startDate" ).val();
-	  var endDate = $( "#endDate" ).val();
-	  var periodTypeName = $( "#periodType" ).val();
-	  
-	  document.getElementById( "dataLabel" ).innerHTML = i18n_start_date + ": " + startDate + 
-		", " + i18n_end_date + ": " + endDate + ", " + i18n_period_type + ": " + periodTypeName;
-	  
-	  var url = "getPivotTable.action";
-	  
-	  var groupId = dataType == DATA_TYPE_INDICATOR ? indicatorGroupId : dataElementGroupId;
-	  
-	  currentDataType = dataType;
-	  
-	  hideDivs();
-	  
-	  showLoader();
-	  
-	  $.getJSON(
-		url,
-		{
-		  "dataType": dataType,
-		  "groupId": groupId,
-		  "periodTypeName": periodTypeName, 
-		  "startDate": startDate, 
-		  "endDate": endDate, 
-		  "organisationUnitId": organisationUnitId 
-		},
-		function( json ) 
-		{
-		  var pivot = json.pivotTable;
-		  
-		  indicators = pivot.indicators;
-		  periods = pivot.periods;
-		  orgunits = pivot.organisationUnits;
-		  
-		  sizes["indicator"] = pivot.sizeIndicators;
-		  sizes["period"] = pivot.sizePeriods;
-		  sizes["orgunit"] = pivot.sizeOrganisationUnits;
-		  
-		  data = pivot.indicatorValues[0];
-		  
-		  hideLoader();
-		  
-		  generateTable();
-		}
-	  );
-  }
+    if ( organisationUnitId == -1 )
+    {
+        setHeaderDelayMessage( i18n_selected_organisation_unit );
+    } else
+    {
+        clearGlobalVariables();
+
+        var dataType = $( "#dataType" ).val();
+        var indicatorGroupId = $( "#indicatorGroup" ).val();
+        var dataElementGroupId = $( "#dataElementGroup" ).val();
+        var startDate = $( "#startDate" ).val();
+        var endDate = $( "#endDate" ).val();
+        var periodTypeName = $( "#periodType" ).val();
+
+        document.getElementById( "dataLabel" ).innerHTML = i18n_start_date + ": " + startDate + ", " + i18n_end_date
+                + ": " + endDate + ", " + i18n_period_type + ": " + periodTypeName;
+
+        var url = "getPivotTable.action";
+
+        var groupId = dataType == DATA_TYPE_INDICATOR ? indicatorGroupId : dataElementGroupId;
+
+        currentDataType = dataType;
+
+        hideDivs();
+
+        showLoader();
+
+        $.getJSON( url, {
+            "dataType" : dataType,
+            "groupId" : groupId,
+            "periodTypeName" : periodTypeName,
+            "startDate" : startDate,
+            "endDate" : endDate,
+            "organisationUnitId" : organisationUnitId
+        }, function( json )
+        {
+            var pivot = json.pivotTable;
+
+            indicators = pivot.indicators;
+            periods = pivot.periods;
+            orgunits = pivot.organisationUnits;
+
+            sizes["indicator"] = pivot.sizeIndicators;
+            sizes["period"] = pivot.sizePeriods;
+            sizes["orgunit"] = pivot.sizeOrganisationUnits;
+
+            data = pivot.indicatorValues[0];
+
+            hideLoader();
+
+            generateTable();
+        } );
+    }
 }
 
 /**
@@ -107,13 +102,13 @@ function getData()
  */
 function pivotData()
 {
-  pivotIndicator = document.getElementById( "indicatorBox" ).checked;
-  pivotPeriod = document.getElementById( "periodBox" ).checked;
-  pivotOrgunit = document.getElementById( "orgunitBox" ).checked;
-  
-  hideDivs();
-  
-  generateTable();
+    pivotIndicator = document.getElementById( "indicatorBox" ).checked;
+    pivotPeriod = document.getElementById( "periodBox" ).checked;
+    pivotOrgunit = document.getElementById( "orgunitBox" ).checked;
+
+    hideDivs();
+
+    generateTable();
 }
 
 /**
@@ -121,64 +116,63 @@ function pivotData()
  */
 function viewChart( chartIndicators, chartDimension )
 {
-  var chartWidth = 750;
-    
-  var url = "generateChart.action";
-    
-  if ( chartIndicators == "single" && chartDimension == "period" )
-  {
-    url += "?indicatorId=" + currentIndicator + "&organisationUnitId=" + currentOrgunit + "&dimension=period&regression=true";
-    
-    for ( p in periods )
+    var chartWidth = 750;
+
+    var url = "generateChart.action";
+
+    if ( chartIndicators == "single" && chartDimension == "period" )
     {
-      url += "&periodId=" + periods[p].id;
-    }
-  }
-  else if ( chartIndicators == "single" && chartDimension == "orgunit" )
-  {
-    url += "?indicatorId=" + currentIndicator + "&periodId=" + currentPeriod + "&dimension=organisationUnit&regression=false";
-    
-    for ( o in orgunits )
+        url += "?indicatorId=" + currentIndicator + "&organisationUnitId=" + currentOrgunit
+                + "&dimension=period&regression=true";
+
+        for ( p in periods )
+        {
+            url += "&periodId=" + periods[p].id;
+        }
+    } else if ( chartIndicators == "single" && chartDimension == "orgunit" )
     {
-      url += "&organisationUnitId=" + orgunits[o].id;
-    }
-  }
-  else if ( chartIndicators == "all" && chartDimension == "period" )
-  {
-    url += "?organisationUnitId=" + currentOrgunit + "&dimension=period&regression=false&chartWidth=950";
-    
-    for ( i in indicators )
+        url += "?indicatorId=" + currentIndicator + "&periodId=" + currentPeriod
+                + "&dimension=organisationUnit&regression=false";
+
+        for ( o in orgunits )
+        {
+            url += "&organisationUnitId=" + orgunits[o].id;
+        }
+    } else if ( chartIndicators == "all" && chartDimension == "period" )
     {
-      url += "&indicatorId=" + indicators[i].id;
-    }
-    
-    for ( p in periods )
+        url += "?organisationUnitId=" + currentOrgunit + "&dimension=period&regression=false&chartWidth=950";
+
+        for ( i in indicators )
+        {
+            url += "&indicatorId=" + indicators[i].id;
+        }
+
+        for ( p in periods )
+        {
+            url += "&periodId=" + periods[p].id;
+        }
+
+        chartWidth = 1000;
+    } else if ( chartIndicators == "all" && chartDimension == "orgunit" )
     {
-      url += "&periodId=" + periods[p].id;
+        url += "?periodId=" + currentPeriod + "&dimension=organisationUnit&regression=false&chartWidth=950";
+
+        for ( i in indicators )
+        {
+            url += "&indicatorId=" + indicators[i].id;
+        }
+
+        for ( o in orgunits )
+        {
+            url += "&organisationUnitId=" + orgunits[o].id;
+        }
+
+        chartWidth = 1000;
     }
-    
-    chartWidth = 1000;
-  }
-  else if ( chartIndicators == "all" && chartDimension == "orgunit" )
-  {
-    url += "?periodId=" + currentPeriod + "&dimension=organisationUnit&regression=false&chartWidth=950";
-    
-    for ( i in indicators )
-    {
-      url += "&indicatorId=" + indicators[i].id;
-    }
-    
-    for ( o in orgunits )
-    {
-      url += "&organisationUnitId=" + orgunits[o].id;
-    }
-    
-    chartWidth = 1000;
-  }
-  
-  hideDropDown();
-  
-  openChartDialog( url, chartWidth );  
+
+    hideDropDown();
+
+    openChartDialog( url, chartWidth );
 }
 
 function openChartDialog( url, width )
@@ -203,14 +197,15 @@ function openChartDialog( url, width )
  */
 function viewChartMenu( indicatorId, periodId, orgunitId )
 {
-  if ( currentDataType == DATA_TYPE_INDICATOR ) // Currently indicators only supported
-  {
-    currentIndicator = indicatorId;
-    currentPeriod = periodId;
-    currentOrgunit = orgunitId;
-  
-    showDropDown( "pivotMenu" );
-  }
+    if ( currentDataType == DATA_TYPE_INDICATOR ) // Currently indicators only
+                                                    // supported
+    {
+        currentIndicator = indicatorId;
+        currentPeriod = periodId;
+        currentOrgunit = orgunitId;
+
+        showDropDown( "pivotMenu" );
+    }
 }
 
 /**
@@ -218,8 +213,8 @@ function viewChartMenu( indicatorId, periodId, orgunitId )
  */
 function loadListeners()
 {
-  var table = document.getElementById( "pivotTable" ); 
-  table.addEventListener( "click", setPosition, false );
+    var table = document.getElementById( "pivotTable" );
+    table.addEventListener( "click", setPosition, false );
 }
 
 // -----------------------------------------------------------------------------
@@ -227,279 +222,283 @@ function loadListeners()
 // -----------------------------------------------------------------------------
 
 /**
-* This method sets the position of the pivot menu, and is registered as a 
-* callback function for mouse click events.
-*/
+ * This method sets the position of the pivot menu, and is registered as a
+ * callback function for mouse click events.
+ */
 function setPosition( e )
 {
-  var left = e.pageX + "px";
-  var top = e.pageY + "px";
-  
-  var pivotMenu = document.getElementById( "pivotMenu" );
-  
-  pivotMenu.style.left = left;
-  pivotMenu.style.top = top;
+    var left = e.pageX + "px";
+    var top = e.pageY + "px";
+
+    var pivotMenu = document.getElementById( "pivotMenu" );
+
+    pivotMenu.style.left = left;
+    pivotMenu.style.top = top;
 }
 
 /**
  * This method is responsible for generating the pivot table.
  */
 function generateTable()
-{   
-  var columnIndicators = pivotIndicator ? indicators : [null];
-  var columnPeriods = pivotPeriod ? periods : [null];
-  var columnOrgunits = pivotOrgunit ? orgunits : [null];
-  
-  var rowIndicators = pivotIndicator ? [null] : indicators;
-  var rowPeriods = pivotPeriod ? [null] : periods;
-  var rowOrgunits = pivotOrgunit ? [null] : orgunits;
+{
+    var columnIndicators = pivotIndicator ? indicators : [ null ];
+    var columnPeriods = pivotPeriod ? periods : [ null ];
+    var columnOrgunits = pivotOrgunit ? orgunits : [ null ];
 
-  var table = document.getElementById( "pivotTable" );
+    var rowIndicators = pivotIndicator ? [ null ] : indicators;
+    var rowPeriods = pivotPeriod ? [ null ] : periods;
+    var rowOrgunits = pivotOrgunit ? [ null ] : orgunits;
 
-  clearTable( table );
-  
-  var columns = getColumns( columnIndicators, columnPeriods, columnOrgunits );
-  var rows = getRows( rowIndicators, rowPeriods, rowOrgunits );
-  
-  var columnDimensions = getColumnDimensions();
-  var rowDimensions = getRowDimensions();
-  
-  var colSpans = getSpans( columnDimensions );
-  var rowSpans = getSpans( rowDimensions );
+    var table = document.getElementById( "pivotTable" );
 
-  var html = "<tr>";
+    clearTable( table );
 
-  // ---------------------------------------------------------------------------
-  // Column headers
-  // ---------------------------------------------------------------------------
+    var columns = getColumns( columnIndicators, columnPeriods, columnOrgunits );
+    var rows = getRows( rowIndicators, rowPeriods, rowOrgunits );
 
-  for ( d in columnDimensions )
-  {
-    for ( rowDimension in rowDimensions ) // Make space for row header
+    var columnDimensions = getColumnDimensions();
+    var rowDimensions = getRowDimensions();
+
+    var colSpans = getSpans( columnDimensions );
+    var rowSpans = getSpans( rowDimensions );
+
+    var html = "<tr>";
+
+    // ---------------------------------------------------------------------------
+    // Column headers
+    // ---------------------------------------------------------------------------
+
+    for ( d in columnDimensions )
     {
-      html += "<td class='row'></td>"; 
-    }
-    
-    var dimension = columnDimensions[d];
-    var colSpan = colSpans[dimension];
-    
-    for ( c in columns )
-    {
-      var modulus = c % colSpan;
-      
-      if ( modulus == 0 )
-      {
-        html += "<td class='column' colspan='" + colSpan + "'>" + columns[c][dimension]  + "</td>";
-      }
-    }
-    
-    html += "</tr>";
-  }
-  
-  // ---------------------------------------------------------------------------
-  // Rows
-  // ---------------------------------------------------------------------------
+        for ( rowDimension in rowDimensions ) // Make space for row header
+        {
+            html += "<td class='row'></td>";
+        }
 
-  for ( r in rows )
-  {
-    html += "<tr>";    
-    
-    for ( d in rowDimensions ) // Row headers
-    {
-      var dimension = rowDimensions[d];
-      var rowSpan = rowSpans[dimension];
-      var modulus = r % rowSpan;
-      
-      if ( modulus == 0 )
-      {
-        html += "<td class='row' rowspan='" + rowSpan + "'>" + rows[r][dimension] + "</td>";
-      }
+        var dimension = columnDimensions[d];
+        var colSpan = colSpans[dimension];
+
+        for ( c in columns )
+        {
+            var modulus = c % colSpan;
+
+            if ( modulus == 0 )
+            {
+                html += "<td class='column' colspan='" + colSpan + "'>" + columns[c][dimension] + "</td>";
+            }
+        }
+
+        html += "</tr>";
     }
-    
-    for ( c in columns ) // Values
+
+    // ---------------------------------------------------------------------------
+    // Rows
+    // ---------------------------------------------------------------------------
+
+    for ( r in rows )
     {
-      var value = getValue( columns[c], rows[r] );
-      
-      var ids = mergeArrays( columns[c], rows[r] );
-      
-      html += "<td class='cell' onclick='viewChartMenu( \"" + ids.indicatorId + "\", \"" + ids.periodId + "\", \"" + ids.orgunitId + "\" )'>" + value + "</td>";
+        html += "<tr>";
+
+        for ( d in rowDimensions ) // Row headers
+        {
+            var dimension = rowDimensions[d];
+            var rowSpan = rowSpans[dimension];
+            var modulus = r % rowSpan;
+
+            if ( modulus == 0 )
+            {
+                html += "<td class='row' rowspan='" + rowSpan + "'>" + rows[r][dimension] + "</td>";
+            }
+        }
+
+        for ( c in columns ) // Values
+        {
+            var value = getValue( columns[c], rows[r] );
+
+            var ids = mergeArrays( columns[c], rows[r] );
+
+            html += "<td class='cell' onclick='viewChartMenu( \"" + ids.indicatorId + "\", \"" + ids.periodId
+                    + "\", \"" + ids.orgunitId + "\" )'>" + value + "</td>";
+        }
+
+        html += "</tr>";
     }
-    
-    html += "</tr>";
-  }
-  
-  table.innerHTML = html;
-  
-  hidePivot();
+
+    table.innerHTML = html;
+
+    hidePivot();
 }
 
 /**
-* @param dimensions array -> dimensions
-*
-* @return associative array ( dimension, span )
-*/
+ * @param dimensions array -> dimensions
+ * 
+ * @return associative array ( dimension, span )
+ */
 function getSpans( dimensions )
 {
-  var spans = [];
-  
-  var lastIndex = ( dimensions.length - 1 );
-  
-  var span = 1;
-  
-  for ( var i=lastIndex; i>=0; i-- )
-  {
-    var dimension = dimensions[i];
-    
-    spans[dimension] = span;
-    
-    var dimensionSize = sizes[dimension];
-    
-    span = ( span * dimensionSize );
-  }
-  
-  return spans;
+    var spans = [];
+
+    var lastIndex = ( dimensions.length - 1 );
+
+    var span = 1;
+
+    for ( var i = lastIndex; i >= 0; i-- )
+    {
+        var dimension = dimensions[i];
+
+        spans[dimension] = span;
+
+        var dimensionSize = sizes[dimension];
+
+        span = ( span * dimensionSize );
+    }
+
+    return spans;
 }
 
 /**
-* @param columnIndicators array -> associative array ( indicatorId, indicatorName )
-* @param columnPeriods array -> associative array ( periodId, periodName )
-* @param columnOrgunits array -> associative array ( orgunitId, orgunitName )
-*
-* @return array -> associative array ( indicatorId, indicator, periodId, period, orgunitId, orgunit )
-*/
+ * @param columnIndicators array -> associative array ( indicatorId,
+ *            indicatorName )
+ * @param columnPeriods array -> associative array ( periodId, periodName )
+ * @param columnOrgunits array -> associative array ( orgunitId, orgunitName )
+ * 
+ * @return array -> associative array ( indicatorId, indicator, periodId,
+ *         period, orgunitId, orgunit )
+ */
 function getColumns( columnIndicators, columnPeriods, columnOrgunits )
 {
-  var columns = [];
-  var columnsIndex = 0;
+    var columns = [];
+    var columnsIndex = 0;
 
-  for ( var i=0; i<columnIndicators.length; i++ )
-  {
-    for ( var j=0; j<columnPeriods.length; j++ )
+    for ( var i = 0; i < columnIndicators.length; i++ )
     {
-      for ( var k=0; k<columnOrgunits.length; k++ )
-      {
-        var column = [];
-        
-        if ( columnIndicators[i] != null )
+        for ( var j = 0; j < columnPeriods.length; j++ )
         {
-          column["indicatorId"] = columnIndicators[i].id;
-          column["indicator"] = columnIndicators[i].name;
+            for ( var k = 0; k < columnOrgunits.length; k++ )
+            {
+                var column = [];
+
+                if ( columnIndicators[i] != null )
+                {
+                    column["indicatorId"] = columnIndicators[i].id;
+                    column["indicator"] = columnIndicators[i].name;
+                }
+
+                if ( columnPeriods[j] != null )
+                {
+                    column["periodId"] = columnPeriods[j].id;
+                    column["period"] = columnPeriods[j].name;
+                }
+
+                if ( columnOrgunits[k] != null )
+                {
+                    column["orgunitId"] = columnOrgunits[k].id;
+                    column["orgunit"] = columnOrgunits[k].name;
+                }
+
+                columns[columnsIndex++] = column;
+            }
         }
-        
-        if ( columnPeriods[j] != null )
-        {
-          column["periodId"] = columnPeriods[j].id;
-          column["period"] = columnPeriods[j].name;
-        }
-        
-        if ( columnOrgunits[k] != null )
-        {
-          column["orgunitId"] = columnOrgunits[k].id;
-          column["orgunit"] = columnOrgunits[k].name;
-        }
-        
-        columns[columnsIndex++] = column;     
-      }
     }
-  }
-  
-  return columns;
+
+    return columns;
 }
 
 /**
-* @param rowIndicators array -> associative array ( indicatorId, indicatorName )
-* @param rowPeriods array -> associative array ( periodId, periodName )
-* @param rowOrgunits array -> associative array ( orgunitId, orgunitName )
-*
-* @return array -> associative array ( indicatorId, indicator, periodId, period, orgunitId, orgunit )
-*/
+ * @param rowIndicators array -> associative array ( indicatorId, indicatorName )
+ * @param rowPeriods array -> associative array ( periodId, periodName )
+ * @param rowOrgunits array -> associative array ( orgunitId, orgunitName )
+ * 
+ * @return array -> associative array ( indicatorId, indicator, periodId,
+ *         period, orgunitId, orgunit )
+ */
 function getRows( rowIndicators, rowPeriods, rowOrgunits )
 {
-  var rows = [];
-  var rowsIndex = 0;
+    var rows = [];
+    var rowsIndex = 0;
 
-  for ( var i=0; i<rowIndicators.length; i++ )
-  {
-    for ( var j=0; j<rowPeriods.length; j++ )
+    for ( var i = 0; i < rowIndicators.length; i++ )
     {
-      for ( var k=0; k<rowOrgunits.length; k++ )
-      {
-        var row = [];
-        
-        if ( rowIndicators[i] != null )
+        for ( var j = 0; j < rowPeriods.length; j++ )
         {
-          row["indicatorId"] = rowIndicators[i].id;
-          row["indicator"] = rowIndicators[i].name;
+            for ( var k = 0; k < rowOrgunits.length; k++ )
+            {
+                var row = [];
+
+                if ( rowIndicators[i] != null )
+                {
+                    row["indicatorId"] = rowIndicators[i].id;
+                    row["indicator"] = rowIndicators[i].name;
+                }
+
+                if ( rowPeriods[j] != null )
+                {
+                    row["periodId"] = rowPeriods[j].id;
+                    row["period"] = rowPeriods[j].name;
+                }
+
+                if ( rowOrgunits[k] != null )
+                {
+                    row["orgunitId"] = rowOrgunits[k].id;
+                    row["orgunit"] = rowOrgunits[k].name;
+                }
+
+                rows[rowsIndex++] = row;
+            }
         }
-        
-        if ( rowPeriods[j] != null )
-        {
-          row["periodId"] = rowPeriods[j].id;
-          row["period"] = rowPeriods[j].name;
-        }
-        
-        if ( rowOrgunits[k] != null )
-        {
-          row["orgunitId"] = rowOrgunits[k].id;
-          row["orgunit"] = rowOrgunits[k].name;
-        }
-        
-        rows[rowsIndex++] = row;
-      }
     }
-  }
-  
-  return rows;
+
+    return rows;
 }
 
 /**
-* @return array -> dimension
-*/
+ * @return array -> dimension
+ */
 function getColumnDimensions()
 {
-  var dimensions = [];
-   
-  if ( pivotIndicator )
-  {
-    dimensions[dimensions.length] = "indicator";
-  }
-  
-  if ( pivotPeriod )
-  {
-    dimensions[dimensions.length] = "period";
-  }
-  
-  if ( pivotOrgunit )
-  {
-    dimensions[dimensions.length] = "orgunit";
-  }
-  
-  return dimensions;
+    var dimensions = [];
+
+    if ( pivotIndicator )
+    {
+        dimensions[dimensions.length] = "indicator";
+    }
+
+    if ( pivotPeriod )
+    {
+        dimensions[dimensions.length] = "period";
+    }
+
+    if ( pivotOrgunit )
+    {
+        dimensions[dimensions.length] = "orgunit";
+    }
+
+    return dimensions;
 }
 
 /**
-* @return array -> dimension
-*/
+ * @return array -> dimension
+ */
 function getRowDimensions()
 {
-  var dimensions = [];
-   
-  if ( !pivotIndicator )
-  {
-    dimensions[dimensions.length] = "indicator";
-  }
-  
-  if ( !pivotPeriod )
-  {
-    dimensions[dimensions.length] = "period";
-  }
-  
-  if ( !pivotOrgunit )
-  {
-    dimensions[dimensions.length] = "orgunit";
-  }
-  
-  return dimensions;
+    var dimensions = [];
+
+    if ( !pivotIndicator )
+    {
+        dimensions[dimensions.length] = "indicator";
+    }
+
+    if ( !pivotPeriod )
+    {
+        dimensions[dimensions.length] = "period";
+    }
+
+    if ( !pivotOrgunit )
+    {
+        dimensions[dimensions.length] = "orgunit";
+    }
+
+    return dimensions;
 }
 
 /**
@@ -510,12 +509,12 @@ function getRowDimensions()
  */
 function mergeArrays( array1, array2 )
 {
-  for ( a2 in array2 )
-  {
-    array1[a2] = array2[a2];
-  }
-  
-  return array1;
+    for ( a2 in array2 )
+    {
+        array1[a2] = array2[a2];
+    }
+
+    return array1;
 }
 
 /**
@@ -526,13 +525,13 @@ function mergeArrays( array1, array2 )
  */
 function getValue( column, row )
 {
-  var key = mergeArrays( column, row );
-  
-  var keyString = key.indicatorId + "-" + key.periodId + "-" + key.orgunitId;
-  
-  var value = data[keyString];
-   
-  return value != null ? value : "";
+    var key = mergeArrays( column, row );
+
+    var keyString = key.indicatorId + "-" + key.periodId + "-" + key.orgunitId;
+
+    var value = data[keyString];
+
+    return value != null ? value : "";
 }
 
 /**
@@ -540,10 +539,10 @@ function getValue( column, row )
  */
 function clearTable( table )
 {
-  while ( table.rows.length >  0 )
-  {
-    table.deleteRow( 0 );
-  }
+    while ( table.rows.length > 0 )
+    {
+        table.deleteRow( 0 );
+    }
 }
 
 /**
@@ -551,9 +550,9 @@ function clearTable( table )
  */
 function clearGlobalVariables()
 {
-  indicators.length = 0;
-  periods.length = 0;
-  orgunits.length = 0;
-  data.length = 0;
-  sizes.length = 0;
+    indicators.length = 0;
+    periods.length = 0;
+    orgunits.length = 0;
+    data.length = 0;
+    sizes.length = 0;
 }
