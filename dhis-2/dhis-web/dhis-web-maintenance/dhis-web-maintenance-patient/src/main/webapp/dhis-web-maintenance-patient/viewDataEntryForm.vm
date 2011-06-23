@@ -104,7 +104,7 @@
     <tr>
         <td align="right">
             <input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:100px"/>
-            <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location='programStage.action?id=$!programStageId'">            
+            <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location='programStage.action?id=$!programStage.program.id'">            
 			#if( $!dataEntryForm )
 			<input type="button" name="delete" value="$i18n.getString( 'delete' )" style="width:100px" onclick="deleteDataEntryForm( $programStage.id )" />
 			#end
