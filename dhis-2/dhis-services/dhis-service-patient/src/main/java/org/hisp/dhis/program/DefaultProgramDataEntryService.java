@@ -56,8 +56,12 @@ public class DefaultProgramDataEntryService
     private static final String UNKNOW_CLINIC = "unknow_clinic";
 
     private static final String NOTAVAILABLE = "not_available";
-    
-    private static final String DATA_ELEMENT_DOES_NOT_EXIST = "<i>Data element doesn't exist.</i>";
+
+    private static final String DATA_ELEMENT_DOES_NOT_EXIST = "[ Data element doesn't exist ]";
+
+    private static final String EMPTY_VALUE_TAG = "value=\"\"";
+
+    private static final String EMPTY_TITLE_TAG = "title=\"\"";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -136,15 +140,15 @@ public class DefaultProgramDataEntryService
     }
 
     public String prepareDataEntryFormForEdit( String htmlCode )
-    {        
+    {
         String result = populateCustomDataEntryForTextBox( htmlCode );
-        
+
         result = populateCustomDataEntryForCombo( result );
-        
+
         result = populateCustomDataEntryForBoolean( result );
-        
+
         result = populateCustomDataEntryForDate( result );
-        
+
         return result;
     }
 
@@ -177,14 +181,15 @@ public class DefaultProgramDataEntryService
             // -----------------------------------------------------------------
 
             String dataElementCode = inputMatcher.group( 1 );
-            
+
             String inputHTML = inputMatcher.group();
-            
+            inputHTML = inputHTML.replace( ">", "" );
+
             Matcher identifierMatcher = IDENTIFIER_PATTERN_TEXTBOX.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
-                
+
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
@@ -196,23 +201,29 @@ public class DefaultProgramDataEntryService
                 DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
-                if ( dataElement == null || optionCombo == null )
-                {
-                    inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
-                }
-                else
-                {
-                    inputMatcher.appendReplacement( sb, inputHTML );
-                }
+                String displayValue = (dataElement == null || optionCombo == null) ? "value=\""
+                    + DATA_ELEMENT_DOES_NOT_EXIST + "\"" : "value=\"[ " + dataElement.getName() + " "
+                    + optionCombo.getName() + " ]\"";
+                inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
+                    : inputHTML + " " + displayValue;
 
+                String displayTitle = (dataElement == null || optionCombo == null) ? "title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
+                    : "title=\"-- ID:" + dataElement.getId() + " - Name:" + dataElement.getShortName() + " - "
+                        + optionComboId + " - " + optionCombo.getName() + " - Type:" + dataElement.getType() + "\"";
+                inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
+                    : inputHTML + " " + displayTitle;
+
+                inputHTML = inputHTML + ">";
+                
+                inputMatcher.appendReplacement( sb, inputHTML );
             }
         }
 
         inputMatcher.appendTail( sb );
-        
-        return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
+
+        return (sb.toString().isEmpty()) ? htmlCode : sb.toString();
     }
-    
+
     private String populateCustomDataEntryForBoolean( String htmlCode )
     {
         // ---------------------------------------------------------------------
@@ -234,6 +245,7 @@ public class DefaultProgramDataEntryService
         while ( inputMatcher.find() )
         {
             String inputHTML = inputMatcher.group();
+            inputHTML = inputHTML.replace( ">", "" );
             
             // -----------------------------------------------------------------
             // Get HTML input field code
@@ -248,24 +260,30 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
-              
+
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+                String displayValue = (dataElement == null) ? "value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
+                    : "value=\"[ " + dataElement.getName() + " ]\"";
+                inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
+                    : inputHTML + " " + displayValue;
+
+                String displayTitle = (dataElement == null) ? "title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\"" : "title=\"-- ID:"
+                    + dataElement.getId() + " - Name:" + dataElement.getShortName() + " - Type:"
+                    + dataElement.getType() + "\"";
+                inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
+                    : inputHTML + " " + displayTitle;
+
+                inputHTML = inputHTML + ">";
                 
-                if ( dataElement == null )
-                {
-                    inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
-                } 
-                else
-                {
-                    inputMatcher.appendReplacement( sb, inputHTML );
-                }
+                inputMatcher.appendReplacement( sb, inputHTML );
             }
         }
-        
+
         inputMatcher.appendTail( sb );
-        
-        return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
+
+        return (sb.toString().isEmpty()) ? htmlCode : sb.toString();
     }
 
     private String populateCustomDataEntryForCombo( String htmlCode )
@@ -290,6 +308,8 @@ public class DefaultProgramDataEntryService
         {
             String inputHTML = inputMatcher.group();
             
+            inputHTML = inputHTML.replace( ">", "" );
+            
             // -----------------------------------------------------------------
             // Get HTML input field code
             // -----------------------------------------------------------------
@@ -303,24 +323,30 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
-                
+
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+                String displayValue = (dataElement == null) ? "value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
+                    : "value=\"[ " + dataElement.getName() + " ]\"";
+                inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
+                    : inputHTML + " " + displayValue;
+
+                String displayTitle = (dataElement == null) ? "title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\"" : "title=\"-- ID:"
+                    + dataElement.getId() + " - Name:" + dataElement.getShortName() + " - Type:"
+                    + dataElement.getType() + "\"";
+                inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
+                    : inputHTML + " " + displayTitle;
+
+                inputHTML = inputHTML + ">";
                 
-                if ( dataElement == null )
-                {
-                    inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
-                } 
-                else
-                {
-                    inputMatcher.appendReplacement( sb, inputHTML );
-                }
+                inputMatcher.appendReplacement( sb, inputHTML );
             }
         }
-        
+
         inputMatcher.appendTail( sb );
-        
-        return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
+
+        return (sb.toString().isEmpty()) ? htmlCode : sb.toString();
     }
 
     private String populateCustomDataEntryForDate( String htmlCode )
@@ -345,6 +371,8 @@ public class DefaultProgramDataEntryService
         {
             String inputHTML = inputMatcher.group();
             
+            inputHTML = inputHTML.replace( ">", "" );
+            
             // -----------------------------------------------------------------
             // Get HTML input field code
             // -----------------------------------------------------------------
@@ -358,23 +386,30 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
-                
+
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                if ( dataElement == null )
-                {
-                    inputMatcher.appendReplacement( sb, DATA_ELEMENT_DOES_NOT_EXIST );
-                } else
-                {
-                    inputMatcher.appendReplacement( sb, inputHTML );
-                }
+                String displayValue = (dataElement == null) ? "value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
+                    : "value=\"[ " + dataElement.getName() + " ]\"";
+                inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
+                    : inputHTML + " " + displayValue;
+
+                String displayTitle = (dataElement == null ) ? "title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
+                    : "title=\"-- ID:" + dataElement.getId() + " - Name:" + dataElement.getShortName() + " - "
+                       + " - Type:" + dataElement.getType() + "\"";
+                inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
+                    : inputHTML + " " + displayTitle;
+                
+                inputHTML = inputHTML + ">";
+                
+                inputMatcher.appendReplacement( sb, inputHTML );
             }
         }
-        
+
         inputMatcher.appendTail( sb );
-        
-        return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
+
+        return (sb.toString().isEmpty()) ? htmlCode : sb.toString();
     }
 
     private String populateCustomDataEntryForTextBox( String dataEntryFormCode,

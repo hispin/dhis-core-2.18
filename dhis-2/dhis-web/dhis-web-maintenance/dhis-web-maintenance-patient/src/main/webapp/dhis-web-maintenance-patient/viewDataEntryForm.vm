@@ -138,12 +138,12 @@
 		</tr>
 		<tr>
 			<td>
-				<b>$i18n.getString( "view_as" )</b><br>
+				<!-- <b>$i18n.getString( "view_as" )</b><br>
 				<select name="viewBySelector" id="viewBySelector" style="width:150px">		
 					<option value="deid">$i18n.getString( "id" )</option>
 					<option value="dename">$i18n.getString( "name" )</option>
 					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
-				</select>
+				</select> -->
 				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#dataElementSelection', '$programStage.id')"/>
 			</td>
 			<td>
@@ -180,12 +180,12 @@
 		</tr>
 		<tr>
 			<td>
-				<b>$i18n.getString( "view_as" )</b><br>
+				<!-- <b>$i18n.getString( "view_as" )</b><br>
 				<select name="viewBySelector" id="viewBySelector" style="width:150px">		
 					<option value="deid">$i18n.getString( "id" )</option>
 					<option value="dename">$i18n.getString( "name" )</option>
 					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
-				</select>
+				</select> -->
 				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#otherProgramStageDataElements', byId('programStageIds').value )"/>
 			</td>
 			<td>
