@@ -50,8 +50,8 @@
         </select>
     </td>
     <td>
-        <a href="#" onclick="moveUpSelectedOption( 'selectedOrganisationUnits' )"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
-        <a href="#" onclick="moveDownSelectedOption( 'selectedOrganisationUnits' )"><img src="../images/move_down.png" border="0" alt=""></a>        
+        <img src="../images/move_up.png" style="cursor: pointer;" border="0" alt="" onclick="moveUpSelectedOption( 'selectedOrganisationUnits' )" /><br/><br/>
+        <img src="../images/move_down.png" style="cursor: pointer;" border="0" alt="" onclick="moveDownSelectedOption( 'selectedOrganisationUnits' )" />        
     </td>
 </tr>
 <tr>
