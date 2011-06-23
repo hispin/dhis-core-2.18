@@ -1,4 +1,3 @@
-
 // -----------------------------------------------------------------------------
 // Validation
 // ----------------------------------------------------------------------------
@@ -10,16 +9,16 @@ function setSelectedOrganisationUnitIds( ids )
     selectedOrganisationUnitIds = ids;
 }
 
-if ( typeof( selectionTreeSelection ) != "undefined" )
+if ( typeof ( selectionTreeSelection ) != "undefined" )
 {
     selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
 }
 
 function getPeriods( periodTypeList, availableList, selectedList, timespan )
 {
-	$( "#periodId" ).removeAttr( "disabled" );
-	
-	getAvailablePeriods( periodTypeList, availableList, selectedList, timespan );
+    $( "#periodId" ).removeAttr( "disabled" );
+
+    getAvailablePeriods( periodTypeList, availableList, selectedList, timespan );
 }
 
 function validateDataSetReport()
@@ -39,12 +38,12 @@ function validateDataSetReport()
         setMessage( i18n_select_organisation_unit );
         return false;
     }
-    
+
     document.getElementById( "reportForm" ).submit();
 }
 
 function exportDataSetReport( type )
 {
-	var url = "generateDataSetReport.action?useLast=true&dataSetId=" + $( "#dataSetId" ).val() + "&type=" + type;
-	window.location.href = url;
+    var url = "generateDataSetReport.action?useLast=true&dataSetId=" + $( "#dataSetId" ).val() + "&type=" + type;
+    window.location.href = url;
 }
