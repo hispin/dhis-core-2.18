@@ -1,3 +1,7 @@
+<script type="text/javascript">
+	var i18n_no_response_from_server = '$encoder.jsEscape( $i18n.getString( "no_response_from_server" ) , "'")'; 
+</script>
+
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <hr style="clear:both">
 <input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()" style="width:120px"#if( $registration ) disabled="disabled"#end>
