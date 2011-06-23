@@ -229,6 +229,23 @@ function removePatient( patientId, fullName )
 // Search Patient
 //-----------------------------------------------------------------------------
 
+function searchPatientsOnKeyUp( event )
+{
+	var key = getKeyCode( event );
+	
+	if ( key==13 )// Enter
+	{
+		searchPatients();
+	}
+}
+
+function getKeyCode(e)
+{
+	 if (window.event)
+		return window.event.keyCode;
+	 return (e)? e.which : null;
+}
+
 function searchPatients()
 {
 	hideById( 'listPatientDiv' );

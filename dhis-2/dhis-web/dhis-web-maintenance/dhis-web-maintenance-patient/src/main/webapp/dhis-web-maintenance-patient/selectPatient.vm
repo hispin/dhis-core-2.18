@@ -35,7 +35,7 @@
 			  <em title="$i18n.getString( "required" )" class="required">*</em></label>
 			</td>		
 			<td>
-				<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText" >
+				<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );'>
 				<select id="programId" name='programId' style="display:none; width:20.2em" ></select>
 			</td>		
 			<td><input type="button" value='$i18n.getString( "search" )' onclick='searchPatients();'></td>
