@@ -40,12 +40,6 @@
         
         <!-- SystemSetting -->
 
-        <action name="setMapSystemSettings"
-            class="org.hisp.dhis.mapping.action.SetMapSystemSettingsAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-mapping/void.vm</result>
-        </action>
-
         <action name="deleteMapSystemSettings"
             class="org.hisp.dhis.mapping.action.DeleteMapSystemSettingsAction">
             <result name="success" type="velocity-json">
