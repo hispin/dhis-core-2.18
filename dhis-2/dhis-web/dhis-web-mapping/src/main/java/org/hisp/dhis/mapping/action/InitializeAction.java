@@ -40,7 +40,6 @@ import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.comparator.MapLayerNameComparator;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -78,13 +77,6 @@ public class InitializeAction
         this.configurationService = configurationService;
     }
     
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -171,7 +163,7 @@ public class InitializeAction
 
         infrastructuralDataElements = configurationService.getConfiguration().getInfrastructuralDataElements();
         
-        infrastructuralPeriodType = configurationService.getConfiguration().getInfrastructuralPeriodType();
+        infrastructuralPeriodType = configurationService.getConfiguration().getInfrastructuralPeriodTypeDefaultIfNull();
 
         return SUCCESS;
     }
