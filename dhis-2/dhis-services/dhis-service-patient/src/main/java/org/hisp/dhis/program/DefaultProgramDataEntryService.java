@@ -208,6 +208,8 @@ public class DefaultProgramDataEntryService
             }
         }
 
+        inputMatcher.appendTail( sb );
+        
         return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
     }
     
@@ -260,6 +262,8 @@ public class DefaultProgramDataEntryService
                 }
             }
         }
+        
+        inputMatcher.appendTail( sb );
         
         return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
     }
@@ -314,6 +318,8 @@ public class DefaultProgramDataEntryService
             }
         }
         
+        inputMatcher.appendTail( sb );
+        
         return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
     }
 
@@ -365,6 +371,8 @@ public class DefaultProgramDataEntryService
                 }
             }
         }
+        
+        inputMatcher.appendTail( sb );
         
         return ( sb.toString().isEmpty() ) ? htmlCode : sb.toString();
     }
