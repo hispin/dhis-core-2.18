@@ -328,7 +328,6 @@
       <param name="page">/dhis-web-reporting/viewOrgUnitDistribution.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/orgUnitDistribution.js</param>
-      <param name="stylesheets">style/dhis-web-reporting.css</param>
       <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
