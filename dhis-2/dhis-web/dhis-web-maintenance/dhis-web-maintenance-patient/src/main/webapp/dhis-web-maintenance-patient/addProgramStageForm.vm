@@ -43,7 +43,7 @@ jQuery( function(){
 <table>
 	<tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" maxlength="30" style="width:30em" class="{validate:{required:true,minlength:4}}"/></td>
+		<td><input type="text" id="name" name="name" maxlength="160" style="width:30em" class="{validate:{required:true,,rangelength:[4,160]}}"/></td>
 	</tr>	
 	
 	<tr>
