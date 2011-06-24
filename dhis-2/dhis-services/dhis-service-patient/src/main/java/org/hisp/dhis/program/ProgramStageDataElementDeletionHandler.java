@@ -30,6 +30,7 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 import java.util.Set;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -58,7 +59,7 @@ public class ProgramStageDataElementDeletionHandler
     @Override
     public String getClassName()
     {
-        return ProgramInstance.class.getSimpleName();
+        return ProgramStageDataElement.class.getSimpleName();
     }
 
     @Override
@@ -100,6 +101,23 @@ public class ProgramStageDataElementDeletionHandler
             }
         }
 
+    }
+    
+    @Override
+    public boolean allowDeleteDataElement ( DataElement dataElement )
+    {
+        Collection<ProgramStageDataElement> psDataElements = programStageDEService.getAllProgramStageDataElements();
+        for ( ProgramStageDataElement psDataElement :  psDataElements )
+        {
+            Collection<DataElement> dataElements = programStageDEService.getListDataElement( psDataElement.getProgramStage() );
+
+            if ( dataElements.contains( dataElement ) )
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
 }
