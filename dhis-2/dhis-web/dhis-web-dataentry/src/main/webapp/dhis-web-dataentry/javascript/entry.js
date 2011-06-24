@@ -62,10 +62,7 @@ function generateExpression( expression )
     for ( k in matcher )
     {
         var match = matcher[k];
-        var operand = match.replace( /[\[\]]/g, '' ); // Remove brackets from
-                                                        // expression to
-                                                        // simplify extraction
-                                                        // of identifiers
+        var operand = match.replace( /[\[\]]/g, '' ); // Remove brackets from expression to simplify extraction of identifiers
 
         var dataElementId = operand.substring( 0, operand.indexOf( SEPARATOR ) );
         var categoryOptionComboId = operand.substring( operand.indexOf( SEPARATOR ) + 1, operand.length );
