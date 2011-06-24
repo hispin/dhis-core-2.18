@@ -904,7 +904,7 @@
 		<action name="addImportItem"
 			class="org.hisp.dhis.reportexcel.importitem.action.AddImportItemAction">			
 			<result name="success" type="redirect">
-				listImportItems.action?importReport=${importReport}</result>
+				listImportItems.action?importReportId=${importReportId}</result>
 		</action>
 
 		<action name="deleteImportItem"
@@ -956,7 +956,7 @@
 		<action name="updateImportItem"
 			class="org.hisp.dhis.reportexcel.importitem.action.UpdateImportItemAction">
 			<result name="success" type="redirect">
-				listImportItems.action?importReport=${importReport}</result>
+				listImportItems.action?importReportId=${importReportId}</result>
 		</action>
 
 		<action name="validateImportItem"
@@ -1298,7 +1298,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/chart/drawJChartParams.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">				
+			<param name="javascripts">
 				chart/js/highcharts.js,
 				chart/js/modules/exporting.js
 			</param>

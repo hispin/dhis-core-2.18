@@ -64,7 +64,7 @@ public class DefaultImportItemService
     }
 
     // -------------------------------------------------------------------------
-    // Excelitem group Services
+    // Import Report Services
     // -------------------------------------------------------------------------
 
     public int addImportReport( ExcelItemGroup importReport )
