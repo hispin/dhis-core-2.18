@@ -249,5 +249,15 @@ G.i18n = {
     geojson_file: '$encoder.jsEscape($i18n.getString( 'geojson_file' ) , "'")',
     history: '$encoder.jsEscape($i18n.getString( 'history' ) , "'")',
     api_key: '$encoder.jsEscape($i18n.getString( 'api_key' ) , "'")',
-    measure_distance: '$encoder.jsEscape($i18n.getString( 'measure_distance' ) , "'")'
+    measure_distance: '$encoder.jsEscape($i18n.getString( 'measure_distance' ) , "'")',
+    low_point_size: '$encoder.jsEscape($i18n.getString( 'low_point_size' ) , "'")',
+    high_point_size: '$encoder.jsEscape($i18n.getString( 'high_point_size' ) , "'")',
+    system: '$encoder.jsEscape($i18n.getString( 'system' ) , "'")',
+    width: '$encoder.jsEscape($i18n.getString( 'width' ) , "'")',
+    height: '$encoder.jsEscape($i18n.getString( 'height' ) , "'")',
+    text_filter: '$encoder.jsEscape($i18n.getString( 'text_filter' ) , "'")',
+    font_size: '$encoder.jsEscape($i18n.getString( 'font_size' ) , "'")',
+    bold_: '$encoder.jsEscape($i18n.getString( 'bold_' ) , "'")',
+    italic: '$encoder.jsEscape($i18n.getString( 'italic' ) , "'")',
+    level: '$encoder.jsEscape($i18n.getString( 'level' ) , "'")'
 };

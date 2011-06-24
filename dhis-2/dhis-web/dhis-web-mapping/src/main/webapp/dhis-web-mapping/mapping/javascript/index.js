@@ -380,7 +380,7 @@
                         xtype: 'checkbox',
                         id: 'favoritesystem_chb',
                         disabled: !G.user.isAdmin,
-                        fieldLabel: 'System',
+                        fieldLabel: G.i18n.system,
                         labelSeparator: G.conf.labelseparator,
                         editable: false
                     },
@@ -569,7 +569,7 @@
                     {
                         xtype: 'combo',
                         id: 'exportimagewidth_cb',
-                        fieldLabel: 'Width',
+                        fieldLabel: G.i18n.width,
                         labelSeparator: G.conf.labelseparator,
                         editable: false,
                         valueField: 'width',
@@ -587,7 +587,7 @@
                     {
                         xtype: 'combo',
                         id: 'exportimageheight_cb',
-                        fieldLabel: 'Height',
+                        fieldLabel: G.i18n.height,
                         labelSeparator: G.conf.labelseparator,
                         editable: false,
                         valueField: 'height',
@@ -1800,7 +1800,7 @@
                                         id: 'locatefeature_tf',
                                         emptyText: G.conf.emptytext,
                                         labelSeparator: G.conf.labelseparator,
-                                        fieldLabel: 'Text filter',
+                                        fieldLabel: G.i18n.text_filter,
                                         width: G.conf.combo_width_fieldset,
                                         enableKeyEvents: true,
                                         listeners: {
@@ -1899,7 +1899,7 @@
                                         {
                                             xtype: 'numberfield',
                                             id: 'labelfontsize_nf',
-                                            fieldLabel: 'Font size',
+                                            fieldLabel: G.i18n.font_size,
                                             labelSeparator: G.conf.labelseparator,
                                             width: G.conf.combo_number_width_small,
                                             enableKeyEvents: true,
@@ -1920,7 +1920,7 @@
                                         {
                                             xtype: 'checkbox',
                                             id: 'labelstrong_chb',
-                                            fieldLabel: '<b>Bold</b>',
+                                            fieldLabel: '<b>' + G.i18n.bold_ + '</b>',
                                             labelSeparator: G.conf.labelseparator,
                                             listeners: {
                                                 'check': function(chb, checked) {
@@ -1935,7 +1935,7 @@
                                         {
                                             xtype: 'checkbox',
                                             id: 'labelitalic_chb',
-                                            fieldLabel: '<i>Italic</i>',
+                                            fieldLabel: '<i>' + G.i18n.italic + '</i>',
                                             labelSeparator: G.conf.labelseparator,
                                             listeners: {
                                                 'check': function(chb, checked) {

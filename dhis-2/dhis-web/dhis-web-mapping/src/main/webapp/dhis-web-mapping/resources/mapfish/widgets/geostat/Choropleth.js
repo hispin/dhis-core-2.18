@@ -874,7 +874,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'numberfield',
             name: 'radiuslow',
-            fieldLabel: 'Low point size',
+            fieldLabel: G.i18n.low_point_size,
             width: G.conf.combo_number_width_small,
             allowDecimals: false,
             allowNegative: false,
@@ -893,7 +893,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'numberfield',
             name: 'radiushigh',
-            fieldLabel: 'High point size',
+            fieldLabel: G.i18n.high_point_size,
             width: G.conf.combo_number_width_small,
             allowDecimals: false,
             allowNegative: false,
@@ -996,7 +996,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 										selectOnFocus: true,
 										emptyText: G.conf.emptytext,
 										labelSeparator: G.conf.labelseparator,
-										fieldLabel: 'Level',
+										fieldLabel: G.i18n.level,
 										width: G.conf.combo_width_fieldset,
 										minListWidth: G.conf.combo_width_fieldset,
 										store: G.stores.organisationUnitLevel,

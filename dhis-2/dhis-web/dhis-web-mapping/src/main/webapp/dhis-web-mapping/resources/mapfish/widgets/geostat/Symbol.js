@@ -442,7 +442,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 										selectOnFocus: true,
 										emptyText: G.conf.emptytext,
 										labelSeparator: G.conf.labelseparator,
-										fieldLabel: 'Level',
+                                        fieldLabel: G.i18n.level,
 										width: G.conf.combo_width_fieldset,
 										minListWidth: G.conf.combo_width_fieldset,
 										store: G.stores.organisationUnitLevel,
