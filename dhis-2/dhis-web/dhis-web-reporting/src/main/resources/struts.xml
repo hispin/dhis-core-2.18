@@ -128,7 +128,6 @@
 
     <action name="createReportTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
       <result name="success" type="redirect">displayViewReportForm.action</result>
-      <param name="requiredAuthorities">F_REPORT_VIEW</param>
     </action>
 
     <action name="displayViewReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction">
@@ -137,7 +136,6 @@
       <param name="page">/dhis-web-reporting/viewReportForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/report.js</param>
-      <param name="requiredAuthorities">F_REPORT_VIEW</param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
@@ -185,7 +183,6 @@
       <param name="page">/dhis-web-reporting/inputReportParamsForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/generateReport.js</param>
-      <param name="requiredAuthorities">F_REPORT_VIEW</param>
     </action>
 
     <action name="displayAddTableForm" class="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction">
