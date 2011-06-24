@@ -27,7 +27,6 @@ package org.hisp.dhis.reportexcel.importitem.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ImportItemService;
@@ -59,18 +58,9 @@ public class ValidateImportItemAction
 
     private Integer id;
 
-    private String message;
-
-    private I18n i18n;
-
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
-
-    public String getMessage()
-    {
-        return message;
-    }
 
     public void setId( Integer id )
     {
