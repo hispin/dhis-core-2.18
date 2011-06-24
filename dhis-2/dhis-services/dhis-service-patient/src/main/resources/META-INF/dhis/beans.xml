@@ -371,6 +371,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="programStageDEService" ref="org.hisp.dhis.program.ProgramStageDataElementService"/>
 	</bean>
 	
+	<bean id="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" class="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler">
+    	<property name="jdbcTemplate" ref="jdbcTemplate" />
+  	</bean>
+  	
+  	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler" class="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler">
+    	<property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+  	</bean>
+  
 	<!-- Startup -->
 	
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror" >
@@ -414,11 +422,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			  <ref local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler"/>
 			  <ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler"/>
 			  <ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler"/>
+			  <ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler"/>
 			  
 			  <ref local="org.hisp.dhis.program.ProgramDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"/>
 			  <ref local="org.hisp.dhis.programattributevalue.ProgramAttributeValueDeletionHandler"/>
+			  
+			  <ref local="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler"/>
 			</list>
 		  </list>
 		</property>
@@ -478,6 +489,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		      method="intercept"/>
 		  <aop:before 
 		      pointcut="execution( * org.hisp.dhis.validation.ValidationCriteriaService.delete*(..) )" 
+		      method="intercept"/>
+		      
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.caseaggregation.CaseAggregationConditionService.delete*(..) )" 
 		      method="intercept"/>
 	    </aop:aspect>
       

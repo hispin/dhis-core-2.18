@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,27 +25,46 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseaggregation;
+package org.hisp.dhis.patientdatavalue;
 
-import java.util.Collection;
-
-import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Chau Thu Tran
+ * @version $ PatientDataValueDeletionHandler.java Jun 24, 2011 1:10:46 PM $
  * 
- * @version PatientAggregationExpressionStore.java Nov 18, 2010 9:27:59 AM
  */
-public interface CaseAggregationConditionStore
-    extends GenericStore<CaseAggregationCondition>
+public class PatientDataValueDeletionHandler
+    extends DeletionHandler
 {
-    String ID = CaseAggregationConditionStore.class.getName();
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo);
-   
-    Collection<CaseAggregationCondition> get( DataElement dataElement );
-    
-    Collection<Integer> executeSQL( String sql );
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    // -------------------------------------------------------------------------
+    // DeletionHandler implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    protected String getClassName()
+    {
+        return PatientDataValue.class.getSimpleName();
+    }
+
+    @Override
+    public boolean allowDeleteDataElement( DataElement dataElement )
+    {
+        String sql = "SELECT COUNT(*) FROM patientdatavalue where dataelementid=" + dataElement.getId();
+        
+        return jdbcTemplate.queryForInt( sql ) == 0;
+    }
 }

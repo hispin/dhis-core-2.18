@@ -167,6 +167,12 @@ public class DefaultCaseAggregationConditionService
     {
         return aggregationConditionStore.get( dataElement, optionCombo );
     }
+    
+    @Override
+    public Collection<CaseAggregationCondition> getCaseAggregationCondition( DataElement dataElement )
+    {
+        return aggregationConditionStore.get( dataElement );
+    }
 
     @Override
     public double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,

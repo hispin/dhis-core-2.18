@@ -54,6 +54,8 @@ public interface CaseAggregationConditionService
     Collection<CaseAggregationCondition> getAllCaseAggregationCondition( );
    
     CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement, DataElementCategoryOptionCombo optionCombo);
+    
+    Collection<CaseAggregationCondition> getCaseAggregationCondition( DataElement dataElement );
 
     
     double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
