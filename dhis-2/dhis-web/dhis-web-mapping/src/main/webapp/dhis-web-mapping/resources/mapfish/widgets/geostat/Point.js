@@ -911,7 +911,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
 								xtype: 'panel',
 								bodyStyle: 'padding:8px; background-color:#ffffff',
 								items: [
-									{html: '<div class="window-info">Select outer boundary</div>'},
+									{html: '<div class="window-info">' + G.i18n.select_outer_boundary + '</div>'},
 									{
 										xtype: 'treepanel',
 										bodyStyle: 'background-color:#ffffff',
@@ -954,7 +954,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
 								bodyStyle: 'padding:8px; background-color:#ffffff',
                                 labelWidth: G.conf.label_width,
 								items: [
-									{html: '<div class="window-info">Select organisation unit level</div>'},
+									{html: '<div class="window-info">' + G.i18n.select_organisation_unit_level + '</div>'},
 									{
 										xtype: 'combo',
 										fieldLabel: G.i18n.level,
@@ -967,7 +967,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
 										selectOnFocus: true,
 										emptyText: G.conf.emptytext,
 										labelSeparator: G.conf.labelseparator,
-                                        fieldLabel: G.i18n.level,
+										fieldLabel: G.i18n.level,
 										width: G.conf.combo_width_fieldset,
 										minListWidth: G.conf.combo_width_fieldset,
 										store: G.stores.organisationUnitLevel,
@@ -996,7 +996,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
 										return;
 									}
 									if (node.attributes.level > this.form.findField('level').levelComboBox.getValue()) {
-										Ext.message.msg(false, 'Level is higher than boundary level');
+										Ext.message.msg(false, G.i18n.level_is_higher_that_boundary_level);
 										return;
 									}
                                     
@@ -1086,12 +1086,12 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                                     bodyStyle: 'padding:8px 4px 8px 8px',
                                     width: 160,
                                     items: [
-                                        {html: '<div class="window-info">Type<p style="font-weight:normal">' + feature.attributes.type + '</p></div>'},
-                                        {html: '<div class="window-info">Code<p style="font-weight:normal">' + feature.attributes.code + '</p></div>'},
-                                        {html: '<div class="window-info">Address<p style="font-weight:normal">' + feature.attributes.ad + '</p></div>'},
-                                        {html: '<div class="window-info">Contact person<p style="font-weight:normal">' + feature.attributes.cp + '</p></div>'},
-                                        {html: '<div class="window-info">Email<p style="font-weight:normal">' + feature.attributes.em + '</p></div>'},
-                                        {html: '<div class="window-info">Phone number<p style="font-weight:normal">' + feature.attributes.pn + '</p></div>'}
+                                        {html: '<div class="window-info">' + G.i18n.type + '<p style="font-weight:normal">' + feature.attributes.type + '</p></div>'},
+                                        {html: '<div class="window-info">' + G.i18n.code + '<p style="font-weight:normal">' + feature.attributes.code + '</p></div>'},
+                                        {html: '<div class="window-info">' + G.i18n.address + '<p style="font-weight:normal">' + feature.attributes.ad + '</p></div>'},
+                                        {html: '<div class="window-info">' + G.i18n.contact_person + '<p style="font-weight:normal">' + feature.attributes.cp + '</p></div>'},
+                                        {html: '<div class="window-info">' + G.i18n.email + '<p style="font-weight:normal">' + feature.attributes.em + '</p></div>'},
+                                        {html: '<div class="window-info">' + G.i18n.phone_number + '<p style="font-weight:normal">' + feature.attributes.pn + '</p></div>'}
                                     ]
                                 },
                                 {
@@ -1100,7 +1100,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                                     width: G.conf.window_width + 20,
                                     labelWidth: G.conf.label_width,
                                     items: [
-                                        {html: '<div class="window-info">Infrastructural data</div>'},
+                                        {html: '<div class="window-info">' + G.i18n.infrastructural_data + '</div>'},
                                         {
                                             xtype: 'combo',
                                             name: 'period',
@@ -1170,7 +1170,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                                     xtype: 'panel',
                                     bodyStyle: 'padding:8px',
                                     items: [
-                                        {html: 'Please select the new location on the map..'}
+                                        {html: G.i18n.select_new_location_on_map}
                                     ]
                                 }
                             ],
@@ -1200,7 +1200,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                     },
                     items: [
                         {
-                            text: 'Show information sheet',
+                            text: G.i18n.show_information_sheet,
                             iconCls: 'menu-featureoptions-info',
                             handler: function(item) {
                                 if (G.stores.infrastructuralPeriodsByType.isLoaded) {
@@ -1215,7 +1215,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                             }
                         },
                         {
-                            text: 'Relocate',
+                            text: G.i18n.relocate,
                             iconCls: 'menu-featureoptions-relocate',
                             disabled: !G.user.isAdmin,
                             handler: function(item) {
@@ -1595,7 +1595,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
     formValues: {
 		getAllValues: function() {
 			return {
-				mapValueType: this.form.findField('mapvaluetype').getValue(),
+                mapValueType: this.form.findField('mapvaluetype').getValue(),
                 indicatorGroupId: this.valueType.isIndicator() ? this.form.findField('indicatorgroup').getValue() : null,
                 indicatorId: this.valueType.isIndicator() ? this.form.findField('indicator').getValue() : null,
 				indicatorName: this.valueType.isIndicator() ? this.form.findField('indicator').getRawValue() : null,
@@ -1608,23 +1608,23 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                 periodName: G.system.mapDateType.isFixed() ? this.form.findField('period').getRawValue() : null,
                 startDate: G.system.mapDateType.isStartEnd() ? this.form.findField('startdate').getRawValue() : null,
                 endDate: G.system.mapDateType.isStartEnd() ? this.form.findField('enddate').getRawValue() : null,
-				parentOrganisationUnitId: this.organisationUnitSelection.parent.id,
+                parentOrganisationUnitId: this.organisationUnitSelection.parent.id,
                 parentOrganisationUnitLevel: this.organisationUnitSelection.parent.level,
                 parentOrganisationUnitName: this.organisationUnitSelection.parent.name,
-				organisationUnitLevel: this.organisationUnitSelection.level.level,
+                organisationUnitLevel: this.organisationUnitSelection.level.level,
                 organisationUnitLevelName: this.organisationUnitSelection.level.name,
-				mapLegendType: this.form.findField('maplegendtype').getValue(),
-				method: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('method').getValue() : null,
-				classes: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('classes').getValue() : null,
-				bounds: this.legend.value == G.conf.map_legend_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
-				colorLow: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('startcolor').getValue() : null,
-				colorHigh: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('endcolor').getValue() : null,
+                mapLegendType: this.form.findField('maplegendtype').getValue(),
+                method: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('method').getValue() : null,
+                classes: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('classes').getValue() : null,
+                bounds: this.legend.value == G.conf.map_legend_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
+                colorLow: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('startcolor').getValue() : null,
+                colorHigh: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('endcolor').getValue() : null,
                 mapLegendSetId: this.legend.value == G.conf.map_legend_type_predefined ? this.form.findField('maplegendset').getValue() : null,
 				radiusLow: this.form.findField('radiuslow').getValue(),
 				radiusHigh: this.form.findField('radiushigh').getValue(),
-				longitude: G.vars.map.getCenter().lon,
-				latitude: G.vars.map.getCenter().lat,
-				zoom: parseFloat(G.vars.map.getZoom())
+                longitude: G.vars.map.getCenter().lon,
+                latitude: G.vars.map.getCenter().lat,
+                zoom: parseFloat(G.vars.map.getZoom())
 			};
 		},
         
@@ -1785,8 +1785,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
     
     onRender: function(ct, position) {
         mapfish.widgets.geostat.Point.superclass.onRender.apply(this, arguments);
-        
-        var coreOptions = {
+
+		var coreOptions = {
             'layer': this.layer,
             'format': this.format,
             'url': this.url,
