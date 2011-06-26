@@ -2,7 +2,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dpt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	#foreach( $header in $grid.getHeaders() )
-	<field name="${header.column}" class="${header.type}"/>
+	<field name="${encoder.xmlEncode( ${header.column} )}" class="${header.type}"/>
 	#end
 	<background>
 		<band splitType="Stretch"/>
@@ -14,7 +14,7 @@
 				<textElement textAlignment="Center">
 					<font size="24"/>
 				</textElement>
-				<text><![CDATA[${grid.title}]]></text>
+				<text><![CDATA[${encoder.xmlEncode( ${grid.title} )}]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="12" y="67" width="253" height="20"/>
@@ -51,9 +51,9 @@
 					#foreach( $header in $grid.getHeaders() )
 					#if ( !$header.meta )
 					<categorySeries>
-						<seriesExpression><![CDATA["${header.name}"]]></seriesExpression>
+						<seriesExpression><![CDATA["${encoder.xmlEncode( ${header.name} )}"]]></seriesExpression>
 						<categoryExpression><![CDATA[""]]></categoryExpression>
-						<valueExpression><![CDATA[${dollar}F{${header.column}}]]></valueExpression>
+						<valueExpression><![CDATA[${dollar}F{${encoder.xmlEncode( ${header.column} )}}]]></valueExpression>
 					</categorySeries>
 					#end
 					#end
@@ -90,7 +90,7 @@
 				<textElement #if( !$header.meta )textAlignment="Center"#end>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[${header.name}]]></text>
+				<text><![CDATA[${encoder.xmlEncode( ${header.name} )}]]></text>
 			</staticText>
 			#set( $x = ( $x + $offset ) )
 			#end
@@ -109,7 +109,7 @@
 				<textElement #if( !$header.meta )textAlignment="Center"#end>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="${header.type}"><![CDATA[${dollar}F{${header.column}}]]></textFieldExpression>
+				<textFieldExpression class="${header.type}"><![CDATA[${dollar}F{${encoder.xmlEncode( ${header.column} )}}]]></textFieldExpression>
 			</textField>			
 			#set( $x = ( $x + $offset ) )
 			#end

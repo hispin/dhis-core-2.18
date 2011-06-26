@@ -1,4 +1,4 @@
-package org.hisp.dhis.encoding.velocity;
+package org.hisp.dhis.system.util;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,39 +27,45 @@ package org.hisp.dhis.encoding.velocity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.velocity.VelocityContext;
-import org.hisp.dhis.system.util.Encoder;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: EncoderVelocityContext.java 5824 2008-10-07 18:00:24Z larshelg
- *          $
+ * @author Lars Helge Overland
  */
-public class EncoderVelocityContext
-    extends VelocityContext
+public class Encoder
 {
-    public static final String KEY = "encoder";
-
-    private static final Encoder ENCODER = new Encoder();
-
-    // -------------------------------------------------------------------------
-    // Override VelocityContext methods
-    // -------------------------------------------------------------------------
-
-    @Override
-    public Object internalGet( String key )
+    public String htmlEncode( Object object )
     {
-        if ( KEY.equals( key ) )
-        {
-            return ENCODER;
-        }
-
-        return super.internalGet( key );
+        return object != null ? StringEscapeUtils.escapeHtml( String.valueOf( object ) ) : null;
+    }
+    
+    public String htmlEncode( String object )
+    {
+        return StringEscapeUtils.escapeHtml( object );
     }
 
-    @Override
-    public boolean containsKey( Object key )
+    public String xmlEncode( String object )
     {
-        return KEY.equals( key ) || super.containsKey( key );
+        return StringEscapeUtils.escapeXml( object );
+    }
+
+    public String jsEncode( String object )
+    {
+        return StringEscapeUtils.escapeJavaScript( object );
+    }
+
+    /**
+     * Assumes " is used as quote char and not used inside values and does
+     * not escape '.
+     */
+    public String jsonEncode( String object )
+    {
+        return StringEscapeUtils.escapeJava( object );
+    }
+
+    @Deprecated
+    public String jsEscape( String object, String quoteChar )
+    {
+        return jsEncode( object );
     }
 }
