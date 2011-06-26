@@ -67,6 +67,7 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.util.CodecUtils;
+import org.hisp.dhis.system.util.Encoder;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 
@@ -91,7 +92,10 @@ public class GridUtils
     private static final WritableCellFormat XLS_FORMAT_TEXT = new WritableCellFormat( new WritableFont( WritableFont.ARIAL,
         11, WritableFont.NO_BOLD, false ) );
 
+    private static final Encoder ENCODER = new Encoder();
+    
     private static final String KEY_GRID = "grid";
+    private static final String KEY_ENCODER = "encoder";
     private static final String TEMPLATE = "grid.vm";
     private static final String RESOURCE_LOADER_NAME = "class";
 
@@ -317,6 +321,7 @@ public class GridUtils
         final VelocityContext context = new VelocityContext();
         
         context.put( KEY_GRID, grid );
+        context.put( KEY_ENCODER, ENCODER );
         
         velocity.getTemplate( TEMPLATE ).merge( context, writer );
     }
