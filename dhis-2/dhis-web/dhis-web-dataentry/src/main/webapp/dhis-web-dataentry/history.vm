@@ -16,6 +16,13 @@
 <h3>
     $encoder.htmlEncode( $dataElementHistory.dataElement.name )
     $encoder.htmlEncode( $dataElementHistory.optionCombo.name )
+    #if ( $dataValue && $dataValue.isFollowup() )
+        <img id="followup" src="../images/marked_large.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
+	#elseif ( $dataValue )
+        <img id="followup" src="../images/unmarked_large.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
+	#else
+	    <img id="followup" src="../images/unmarked_large.png"/>
+	#end
 </h3>
 
 <table>
@@ -34,17 +41,6 @@
 			    </select>
 			    <input id="value[$dataElementHistory.dataElement.id:$dataElementHistory.optionCombo.id].comment" type="text" value="$!encoder.htmlEncode( $dataValue.comment )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ))
 			        onblur="commentLeft()" #else disabled="disabled" #end style="width:100% #if( !$dataValue.comment || $standardComments.contains( $dataValue.comment )) ;display:none #end"/>
-			#end
-
-			<br/><br/>
-			<h4>$i18n.getString( "followup" )</h4>
-			
-		    #if ( $dataValue && $dataValue.isFollowup() )
-                <img id="followup" src="../images/marked_large.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
-			#elseif ( $dataValue )
-                <img id="followup" src="../images/unmarked_large.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
-			#else
-			    <img id="followup" src="../images/unmarked_large.png"/>
 			#end
 		</td>
 		<!-- Column 2 - Min-max -->

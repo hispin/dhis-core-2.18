@@ -105,15 +105,6 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, valu
     }
 }
 
-function isInt(value)
-{
-	if( ((value) == parseInt(value)) && !isNaN(parseInt(value)) ) {
-		return true;
-	} else {
-		  return false;
-	} 
-}
-
 function removeMinMaxLimit()
 {
 	$( '#minLimit' ).val( '' );
