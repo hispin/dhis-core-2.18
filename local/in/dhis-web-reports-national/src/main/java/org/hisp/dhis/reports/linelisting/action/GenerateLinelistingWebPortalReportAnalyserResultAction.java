@@ -474,6 +474,8 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
         
         // Getting DataValues
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
+        List<Report_inDesign> reportDesignListLLDeath = reportService.getReportDesign( deCodesXMLFileName );
+        List<Report_inDesign> reportDesignListLLMaternalDeath = reportService.getReportDesign( deCodesXMLFileName );
         int orgUnitCount = 0;
         
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
@@ -572,26 +574,23 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                     if( sType.equalsIgnoreCase( "dataelement" ) )
                     {
                         tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
-                       
                     } 
                     else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
                     {
                         tempStr = reportService.getBooleanDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB);
-                        
                     }
                     else
                     {
-                       
                         tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
-                        //System.out.println( tempStr );
-                                             
                     }
                 }
         
                 int tempRowNo = report_inDesign.getRowno();
                 int tempColNo = report_inDesign.getColno();
-                int sheetNo = report_inDesign.getSheetno();
+                int sheetNo =   report_inDesign.getSheetno();
                 WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
+                
+               // System.out.println( ",Temp Row no is : " + tempRowNo + ", Temp Col No is : " + tempColNo );
                 
                 if ( tempStr == null || tempStr.equals( " " ) )
                 {
@@ -601,9 +600,10 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                     wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
                     wCellformat.setWrap( true );
                     wCellformat.setAlignment( Alignment.CENTRE );
-        
+                    
                     sheet0.addCell( new Blank( tempColNo, tempRowNo, wCellformat ) );
-                } 
+                }
+                
                 else
                 {
                     if ( reportModelTB.equalsIgnoreCase( "DYNAMIC-ORGUNIT" ) )
@@ -632,7 +632,8 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                             tempRowNo += orgUnitCount;
                         }
                     }
-    
+                    
+                    //System.out.println( ",Temp Row no is : " + tempRowNo + ", Temp Col No is : " + tempColNo + ", Data Value is : "  + tempStr );
                     WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
     
                     CellFormat cellFormat = cell.getCellFormat();
@@ -640,7 +641,9 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                     wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
                     wCellformat.setWrap( true );
                     wCellformat.setAlignment( Alignment.CENTRE );
-    
+                    
+                   // System.out.println( ",Temp Row no is : " + tempRowNo + ", Temp Col No is : " + tempColNo );
+                    
                     if ( cell.getType() == CellType.LABEL )
                     {
                         Label l = (Label) cell;
@@ -674,7 +677,7 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
         Iterator<Integer> itlldeath = llrecordNos.iterator();
         int recordCount = 0;
         int currentRowNo = 0;
-        while ( itlldeath.hasNext() || flag == 1 )
+        while ( itlldeath.hasNext() )
         {
             Integer recordNo = -1;
             if ( flag == 0 )
@@ -684,7 +687,7 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
             flag = 0;
 
             //Iterator<String> it1 = deCodesList.iterator();
-            Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
+            Iterator<Report_inDesign> reportDesignIterator = reportDesignListLLDeath.iterator();
             int count1 = 0;
             while ( reportDesignIterator.hasNext() )
             {
@@ -741,11 +744,13 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                     }
                     else
                     {
-                        tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                        //tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                         //System.out.println( tempStr );
                     }
                 }
                tempLLDeathRowNo = report_inDesign.getRowno();
+               int tempRowNo = report_inDesign.getRowno();
+               //int tempRowNo = 136;
                currentRowNo = tempLLDeathRowNo;
                int tempColNo = report_inDesign.getColno();
                int sheetNo = report_inDesign.getSheetno();
@@ -813,11 +818,12 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
 
                             tempLLDeathRowNo += recordCount;
                             currentRowNo += recordCount;
+                            tempRowNo += recordCount;
                         }
 
-                        WritableCell cell = sheet0.getWritableCell( tempColNo, tempLLDeathRowNo );
+                       // WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
 
-                        CellFormat cellFormat = cell.getCellFormat();
+                        //CellFormat cellFormat = cell.getCellFormat();
 
                         WritableCellFormat wCellformat = new WritableCellFormat();
 
@@ -825,7 +831,7 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                         wCellformat.setWrap( true );
                         wCellformat.setAlignment( Alignment.CENTRE );
                         wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
-                        
+/*                        
                         if ( cell.getType() == CellType.LABEL )
                         {
                             Label l = (Label) cell;
@@ -833,7 +839,7 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                             l.setCellFormat( cellFormat );
                         } 
                         
-                        /*
+ */                       /*
                         if ( cellFormat != null )
                         {
                             try
@@ -848,46 +854,46 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                             //System.out.println( "In Pre-Formatted: " + tempStr );
                         }
                         */
-                        else
-                        {
+                        //else
+                        //{
                             if ( sType.equalsIgnoreCase( "lldeathdataelementage" ) )
                             {
-                                System.out.println( "In Side lldeathdataelementage" );
+                                //System.out.println( "In Side lldeathdataelementage" );
                                 String tstr = resMapForDeath.get( tempLLDeathValuStr.trim() );
                                 
-                                System.out.println( ",LL Death Map is : " + tstr + ", temp str is : " + tempLLDeathValuStr.trim() );
+                                //System.out.println( ",LL Death Map is : " + tstr + ", temp str is : " + tempLLDeathValuStr.trim() );
                                 if ( tstr != null )
                                 {
                                     tempStr1  = tstr.split( ":" )[0].trim();
                                     tempStr2  = tstr.split( ":" )[1].trim();
-                                    System.out.println( "tempStr1 is : " + tempStr1 + ", tempStr2 is : " + tempStr2 );
+                                    //System.out.println( "tempStr1 is : " + tempStr1 + ", tempStr2 is : " + tempStr2 );
                                 }
                                 try
                                 {
-                                    sheet0.addCell( new Label( tempColNo-1, tempLLDeathRowNo, tempStr1, getCellFormat1() ) );
-                                    sheet0.addCell( new Label( tempColNo, tempLLDeathRowNo, tempStr2, getCellFormat1() ) );
+                                    sheet0.addCell( new Label( tempColNo-1, tempRowNo, tempStr1, getCellFormat1() ) );
+                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr2, getCellFormat1() ) );
                                 }
                                 catch( Exception e )
                                 {
-                                    System.out.println( "In Side lldeathdataelementage Exception" );
-                                    sheet0.addCell( new Label( tempColNo, tempLLDeathRowNo, tempStr1, getCellFormat1() ) );
+                                    //System.out.println( "In Side lldeathdataelementage Exception" );
+                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr1, getCellFormat1() ) );
                                 }
                             }                           
-                           else
+                           else if ( sType.equalsIgnoreCase( "lldeathdataelement" ) )
                            {
                                 try
                                 {
-                                    sheet0.addCell( new Number( tempColNo, tempLLDeathRowNo, Integer.parseInt( tempStr ), getCellFormat1() ) );
+                                    sheet0.addCell( new Number( tempColNo, tempRowNo, Integer.parseInt( tempStr ), getCellFormat1() ) );
                                 }
                                 catch( Exception e )
                                 {
-                                    sheet0.addCell( new Label( tempColNo, tempLLDeathRowNo, tempStr, getCellFormat1() ) );
+                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, getCellFormat1() ) );
                                 }
                             }
 
 
                             //System.out.println( "In Cur-Formatted: " + tempStr );
-                        }
+                        //}
                     }
 
                     // }
@@ -897,6 +903,8 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
             recordCount++;
            // System.out.println("End Row no for ll Death Death is  : " + recordCount );
         }// outer while loop end
+        
+        
         //int tempRowNollm = currentRowNo+1;
         //System.out.println("Temp Row No is   : " + tempLLDeathRowNo );
         //int tempRowNollm = recordCount + tempLLDeathRowNo;
@@ -916,7 +924,7 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
             flagmdeath = 1;
         Iterator<Integer> itllmaternaldeath = llMaternalDeathrecordNos.iterator();
         int maternalDeathRecordCount = 0;
-        while ( itllmaternaldeath.hasNext() || flagmdeath == 1 )
+        while ( itllmaternaldeath.hasNext() )
         {
             Integer maternalDeathRecordNo = -1;
             if ( flagmdeath == 0 )
@@ -926,7 +934,7 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
             flagmdeath = 0;
 
             //Iterator<String> it1 = deCodesList.iterator();
-            Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
+            Iterator<Report_inDesign> reportDesignIterator = reportDesignListLLMaternalDeath.iterator();
             int count1 = 0;
             while ( reportDesignIterator.hasNext() )
             {
@@ -981,15 +989,17 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                     {
                         tempStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, maternalDeathRecordNo );
                     }
-                    
+                    /*
                     else
                     {
                         tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                         //System.out.println( tempStr );
                     }
+                    */
                 }
                //testRowNo = report_inDesign.getRowno() + recordCount ;
                int tempRowNo1 = report_inDesign.getRowno();
+               //int tempRowNo1 = 136;
                int tempColNo = report_inDesign.getColno();
                int sheetNo = report_inDesign.getSheetno();
                WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
@@ -1055,9 +1065,9 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                             tempRowNo1 += maternalDeathRecordCount + recordCount;
                         }
 
-                        WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo1 );
+                       // WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo1 );
 
-                        CellFormat cellFormat = cell.getCellFormat();
+                        //CellFormat cellFormat = cell.getCellFormat();
 
                         WritableCellFormat wCellformat = new WritableCellFormat();
 
@@ -1066,13 +1076,14 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                         wCellformat.setAlignment( Alignment.CENTRE );
                         wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
                         
+                       /*
                         if ( cell.getType() == CellType.LABEL )
                         {
                             Label l = (Label) cell;
                             l.setString( tempStr );
                             l.setCellFormat( cellFormat );
                         } 
-                        
+                        */
                         /*
                         if ( cellFormat != null )
                         {
@@ -1088,19 +1099,20 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
                             //System.out.println( "In Pre-Formatted: " + tempStr );
                         }
                         */
-                        else
-                        {
-                            try
+                       // else
+                        //{
+                            if ( sType.equalsIgnoreCase( "llmaternaldeathdataelement" ) )
                             {
-                                sheet0.addCell( new Number( tempColNo, tempRowNo1, Integer.parseInt( tempStr ), getCellFormat1() ) );
+                                try
+                                {
+                                    sheet0.addCell( new Number( tempColNo, tempRowNo1, Integer.parseInt( tempStr ), getCellFormat1() ) );
+                                }
+                                catch( Exception e )
+                                {
+                                    sheet0.addCell( new Label( tempColNo, tempRowNo1, tempStr, getCellFormat1() ) );
+                                }
                             }
-                            catch( Exception e )
-                            {
-                                sheet0.addCell( new Label( tempColNo, tempRowNo1, tempStr, getCellFormat1() ) );
-                            }
-
-                            //System.out.println( "In Cur-Formatted: " + tempStr );
-                        }
+                       // }
                     }
 
                     // }
@@ -1110,29 +1122,8 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
             maternalDeathRecordCount++;
         }// outer while loop end
         
-        //int tempRowNollmm = maternalDeathRecordCount;
-        //System.out.println("Start Row no for ll maternal Death from XML file  is  : " + testRowNo  );
-        //System.out.println("Row No after 3rd loop : " + tempRowNollmm );
-        
-        /*
-         * ActionContext ctx = ActionContext.getContext(); HttpServletResponse
-         * res = (HttpServletResponse) ctx.get(
-         * ServletActionContext.HTTP_RESPONSE );
-         * 
-         * res.setContentType("application/vnd.ms-excel");
-         */
-       
         
         int noOfRecords = llrecordNos.size();
-
-        /*
-        WritableSheet sheet0 = outputReportWorkbook.getSheet( 0 );
-
-        sheet0.addCell( new Label( 25, 1, "" + currentOrgUnit.getId(), getCellFormat1() ) );
-        sheet0.addCell( new Label( 25, 2, "" + selectedPeriod.getId(), getCellFormat1() ) );
-        sheet0.addCell( new Label( 25, 3, "" + noOfRecords, getCellFormat1() ) );
-        sheet0.addCell( new Label( 25, 4, "" + reportList, getCellFormat1() ) );
-        */
       
         System.out.println("Current org unit id : " + currentOrgUnit.getId() + ": Selected Period is : " + selectedPeriod.getId() + ": No of Record :" + noOfRecords + ": Report List : " + reportList);
 
@@ -1418,5 +1409,3 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction implements A
     
     
 }
-
-
