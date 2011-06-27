@@ -70,8 +70,9 @@ implements Action
     public String execute()
         throws Exception
     {
-        reportTypeName = ReportType.RT_LINELIST;
-
+        //reportTypeName = ReportType.RT_LINELIST;
+        
+        reportTypeName = ReportType.RT_LINELIST_WEB_PORTAL;
         /* Monthly Periods */
         monthlyPeriodType = new MonthlyPeriodType();
 
