@@ -133,12 +133,15 @@ public class OrganisationUnitConverter
                 writer.openElement( FIELD_FEATURE, ATTRIBUTE_TYPE, unit.getFeatureType() );                
                 for ( CoordinatesTuple tuple : unit.getCoordinatesAsList() )
                 {
-                    writer.openElement( FIELD_COORDINATES_TUPLE );                    
-                    for ( String coordinates : tuple.getCoordinatesTuple() )
-                    {
-                        writer.writeElement( FIELD_COORDINATES, coordinates );
-                    }                    
-                    writer.closeElement();
+                    if (tuple.getNumberOfCoordinates() > 0) {
+                        writer.openElement( FIELD_COORDINATES_TUPLE );
+
+                        for ( String coordinates : tuple.getCoordinatesTuple() )
+                        {
+                            writer.writeElement( FIELD_COORDINATES, coordinates );
+                        }
+                        writer.closeElement();
+                    }
                 }
                 writer.closeElement();
                 
