@@ -17,32 +17,25 @@
     $encoder.htmlEncode( $dataElementHistory.dataElement.name )
     $encoder.htmlEncode( $dataElementHistory.optionCombo.name )
     #if ( $dataValue && $dataValue.isFollowup() )
-        <img id="followup" src="../images/marked_large.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
+        <img id="followup" src="../images/marked.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
 	#elseif ( $dataValue )
-        <img id="followup" src="../images/unmarked_large.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
+        <img id="followup" src="../images/unmarked.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
 	#else
-	    <img id="followup" src="../images/unmarked_large.png"/>
+	    <img id="followup" src="../images/unmarked.png"/>
 	#end
 </h3>
 
 <table>
 	<tr>		
-		<!-- Column 1 - Comment and Followup -->
+		<!-- Column 1 - Comment -->
 		<td valign="top">			
 			<h4>$i18n.getString( "dataelement_comment" )</h4>
 			#if( $showComment == 'true' )
-			##comment
-			    <select id="value[$dataElementHistory.dataElement.id:$dataElementHistory.optionCombo.id].comments" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ) ) onchange="commentSelected()" #else disabled="disabled" #end #if( $dataValue.comment && !$standardComments.contains( $dataValue.comment ) ) style="display:none; width:100%" #end#if( $locked ) disabled="disabled"#end>
-			        <option value="">[$i18n.getString( "no_comment" )]</option>
-			        <option value="custom">[$i18n.getString( "custom_comment" )]</option>
-			        #foreach( $comment in $standardComments )
-			            <option value="$encoder.htmlEncode( $comment )" #if( $encoder.htmlEncode( $comment ) == $encoder.htmlEncode( $dataValue.comment ) ) selected="selected" #end>$encoder.htmlEncode( $comment )</option>
-			        #end
-			    </select>
-			    <input id="value[$dataElementHistory.dataElement.id:$dataElementHistory.optionCombo.id].comment" type="text" value="$!encoder.htmlEncode( $dataValue.comment )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ))
-			        onblur="commentLeft()" #else disabled="disabled" #end style="width:100% #if( !$dataValue.comment || $standardComments.contains( $dataValue.comment )) ;display:none #end"/>
+			<textarea id="commentTextArea" style="height:130px;width:240px">$!encoder.htmlEncode( $dataValue.comment )</textarea><br>
+			<input type="button" value="$i18n.getString( 'save_comment' )" style="width:130px" onclick="saveComment()">
 			#end
 		</td>
+		
 		<!-- Column 2 - Min-max -->
         <td valign="top">       
             <h4>$encoder.htmlEncode( $i18n.getString( "min_max_limits" ) )</h4>
@@ -110,4 +103,4 @@
 
 </table>
 
-<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( 'close' ) )" onclick="javascript:self.close()"/></p>
+<p><input type="button" style="width:130px" value="$encoder.htmlEncode( $i18n.getString( 'close' ) )" onclick="javascript:self.close()"></p>

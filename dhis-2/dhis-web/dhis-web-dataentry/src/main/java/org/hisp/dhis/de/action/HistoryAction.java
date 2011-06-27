@@ -38,7 +38,6 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.de.comments.StandardCommentsManager;
 import org.hisp.dhis.de.history.DataElementHistory;
 import org.hisp.dhis.de.history.HistoryRetriever;
 import org.hisp.dhis.de.state.SelectedStateManager;
@@ -95,13 +94,6 @@ public class HistoryAction
         this.selectedStateManager = selectedStateManager;
     }
     
-    private StandardCommentsManager standardCommentsManager;
-
-    public void setStandardCommentsManager( StandardCommentsManager standardCommentsManager )
-    {
-        this.standardCommentsManager = standardCommentsManager;
-    }
-
     private DataValueAuditService dataValueAuditService;
 
     public void setDataValueAuditService( DataValueAuditService dataValueAuditService )
@@ -206,12 +198,6 @@ public class HistoryAction
         dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
 
         dataElementHistory = historyRetriever.getHistory( dataElement, optionCombo, organisationUnit, period, HISTORY_LENGTH );
-        
-        // ---------------------------------------------------------------------
-        // Make the standard comments available
-        // ---------------------------------------------------------------------
-
-        standardComments = standardCommentsManager.getStandardComments();
         
         if ( dataElementHistory == null )
         {
