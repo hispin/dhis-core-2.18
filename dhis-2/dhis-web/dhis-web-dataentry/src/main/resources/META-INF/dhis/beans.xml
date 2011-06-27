@@ -5,11 +5,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.de.action.EmptyAction" class="org.hisp.dhis.de.action.EmptyAction" />
 
-  <bean id="org.hisp.dhis.de.comments.StandardCommentsManager" class="org.hisp.dhis.de.comments.DefaultStandardCommentsManager"
-    init-method="init">
-    <property name="standardCommentsFile" value="standard_comments.xml" />
-  </bean>
-
   <bean id="org.hisp.dhis.de.history.HistoryRetriever" class="org.hisp.dhis.de.history.DefaultHistoryRetriever">
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
@@ -58,7 +53,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="standardCommentsManager" ref="org.hisp.dhis.de.comments.StandardCommentsManager" />
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
@@ -103,7 +97,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="standardCommentsManager" ref="org.hisp.dhis.de.comments.StandardCommentsManager" />
     <property name="dataValueAuditService" ref="org.hisp.dhis.datavalue.DataValueAuditService" />
   </bean>
 

@@ -58,7 +58,6 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.de.comments.StandardCommentsManager;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
@@ -124,13 +123,6 @@ public class SelectAction
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
-    }
-
-    private StandardCommentsManager standardCommentsManager;
-
-    public void setStandardCommentsManager( StandardCommentsManager standardCommentsManager )
-    {
-        this.standardCommentsManager = standardCommentsManager;
     }
 
     private MinMaxDataElementService minMaxDataElementService;
@@ -592,12 +584,6 @@ public class SelectAction
 
             dataValueMap.put( deId.toString() + ':' + ocId.toString(), dataValue );
         }
-
-        // ---------------------------------------------------------------------
-        // Make the standard comments available
-        // ---------------------------------------------------------------------
-
-        standardComments = standardCommentsManager.getStandardComments();
 
         // ---------------------------------------------------------------------
         // Make the DataElement types available
