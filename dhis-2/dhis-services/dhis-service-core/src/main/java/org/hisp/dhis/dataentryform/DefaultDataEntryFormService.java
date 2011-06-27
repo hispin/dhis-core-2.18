@@ -185,16 +185,17 @@ public class DefaultDataEntryFormService
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
-                DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
-                String optionComboName = optionCombo != null ? optionCombo.getName() : "";
+                DataElementCategoryOptionCombo categegoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+                String optionComboName = categegoryOptionCombo != null ? categegoryOptionCombo.getName() : "[ Category option combo does not exist ]";
 
                 // -------------------------------------------------------------
                 // Insert name of data element operand as value and title
                 // -------------------------------------------------------------
 
-                StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
+                StringBuilder title = dataElement != null ? 
+                    new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
                     append( dataElement.getName() ).append( " - " ).append( optionComboId ).append( " - " ).
-                    append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" );
+                    append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" ) : new StringBuilder();
                 
                 String displayValue = dataElement != null ? "value=\"[ " + dataElement.getName() + " " + optionComboName + " ]\"" : "[ Data element does not exist ]";
                 String displayTitle = dataElement != null ? title.toString() : "[ Data element does not exist ]";
