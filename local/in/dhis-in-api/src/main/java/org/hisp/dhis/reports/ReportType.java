@@ -36,6 +36,8 @@ public class ReportType
 
     public final static String RT_LINELIST = "Linelisting";
     
+    public final static String RT_LINELIST_WEB_PORTAL = "Linelisting Web Portal";
+    
     public final static String RT_GOI = "GOI";
     
     public final static String RT_FEEDBACK = "Feedback";
@@ -79,6 +81,8 @@ public class ReportType
         reportTypes.add( RT_ADVANCED_REPORT );
         
         reportTypes.add( RT_BULK_REPORT );
+        
+        reportTypes.add( RT_LINELIST_WEB_PORTAL );
         
         return reportTypes;
     }

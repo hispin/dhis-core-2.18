@@ -195,6 +195,8 @@ public class Report_inDesign implements Serializable
     public final String ST_DATAELEMENT_NO_REPEAT = "dataelementnorepeat";
     public final String ST_LLDATAELEMENT = "lldataelement";
     public final String ST_INDICATOR = "indicator";
+    public final String ST_LLDEATHDATAELEMENTAGE = "lldeathdataelementage";
+    public final String ST_LLMATERNALDEATHDATAELEMENTAGE = "llmaternaldeathdataelement";
     
     // Constants for ptype
     public final String PT_CMCY = "CMCY";
