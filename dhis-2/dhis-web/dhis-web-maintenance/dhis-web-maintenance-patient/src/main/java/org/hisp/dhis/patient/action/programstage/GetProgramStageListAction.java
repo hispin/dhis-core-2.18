@@ -28,12 +28,16 @@
 package org.hisp.dhis.patient.action.programstage;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.program.comparator.ProgramNameComparator;
+import org.hisp.dhis.program.comparator.ProgramStageNameComparator;
+import org.hisp.dhis.program.comparator.ProgramStageOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -78,26 +82,26 @@ public class GetProgramStageListAction
         this.id = id;
     }
 
-    private Collection<ProgramStage> associations = new ArrayList<ProgramStage>();
+    private List<ProgramStage> associations;
 
-    public Collection<ProgramStage> getAssociations()
+    public List<ProgramStage> getAssociations()
     {
         return associations;
     }
 
-    public void setAssociations( Collection<ProgramStage> associations )
+    public void setAssociations( List<ProgramStage> associations )
     {
         this.associations = associations;
     }
 
-    private Collection<Program> programs = new ArrayList<Program>();
+    private List<Program> programs;
 
-    public Collection<Program> getPrograms()
+    public List<Program> getPrograms()
     {
         return programs;
     }
 
-    public void setPrograms( Collection<Program> programs )
+    public void setPrograms( List<Program> programs )
     {
         this.programs = programs;
     }
@@ -109,17 +113,23 @@ public class GetProgramStageListAction
     public String execute()
         throws Exception
     {
-        programs = programService.getAllPrograms();
+        programs = new ArrayList<Program>( programService.getAllPrograms() );
+
+        Collections.sort( programs, new ProgramNameComparator() );
 
         if ( id != null )
         {
             Program program = programService.getProgram( id );
 
-            associations = program.getProgramStages();
+            associations = new ArrayList<ProgramStage>( program.getProgramStages() );
+
+            Collections.sort( associations, new ProgramStageOrderComparator() );
         }
         else
         {
-            associations = programStageService.getAllProgramStages();
+            associations = new ArrayList<ProgramStage>( programStageService.getAllProgramStages() );
+
+            Collections.sort( associations, new ProgramStageNameComparator() );
         }
 
         return SUCCESS;

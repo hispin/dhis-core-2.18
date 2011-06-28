@@ -720,7 +720,7 @@
 
 		<action name="updateProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageAction">
-			<result name="success" type="redirect">programStage.action
+			<result name="success" type="redirect">programStage.action?id=${programId}
 			</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_UPDATE</param>
 		</action>

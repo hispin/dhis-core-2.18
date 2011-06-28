@@ -120,6 +120,13 @@ public class UpdateProgramStageAction
         this.compulsories = compulsories;
     }
 
+    private int programId;
+
+    public int getProgramId()
+    {
+        return programId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -128,12 +135,12 @@ public class UpdateProgramStageAction
         throws Exception
     {
         ProgramStage programStage = programStageService.getProgramStage( id );
-
+        
         programStage.setName( name );
 
         programStage.setDescription( description );
 
-        minDaysFromStart = (minDaysFromStart == null ) ? 0 : minDaysFromStart;
+        minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
 
         programStageService.updateProgramStage( programStage );
@@ -157,7 +164,7 @@ public class UpdateProgramStageAction
             else
             {
                 programStageDataElement.setCompulsory( this.compulsories.get( i ) );
-                
+
                 programStageDataElement.setSortOrder( new Integer( i ) );
 
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
@@ -170,6 +177,8 @@ public class UpdateProgramStageAction
         {
             programStageDataElementService.deleteProgramStageDataElement( psdeDelete );
         }
+        
+        programId = programStage.getProgram().getId();
 
         return SUCCESS;
     }

@@ -116,7 +116,7 @@ jQuery( function(){
 <select id="compulsories" name='compulsories' multiple="multiple" style="display:none"></select>     
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action'" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action?id=$program.id'" style="width:10em"/>
 </p>
 
 </form> 	
