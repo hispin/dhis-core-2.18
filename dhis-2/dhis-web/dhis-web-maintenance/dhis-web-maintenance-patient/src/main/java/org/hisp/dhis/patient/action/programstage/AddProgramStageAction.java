@@ -87,14 +87,14 @@ public class AddProgramStageAction
 
     private int id;
 
-    public int getId()
-    {
-        return id;
-    }
-
     public void setId( int id )
     {
         this.id = id;
+    }
+
+    public int getId()
+    {
+        return id;
     }
 
     private String name;
@@ -148,7 +148,7 @@ public class AddProgramStageAction
         programStage.setDescription( description );
         programStage.setStageInProgram( program.getProgramStages().size() + 1 );
         programStage.setProgram( program );
-        
+
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
 
