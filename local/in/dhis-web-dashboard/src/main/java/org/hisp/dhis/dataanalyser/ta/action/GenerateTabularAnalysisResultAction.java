@@ -690,8 +690,16 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+        
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -912,8 +920,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -1132,8 +1149,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -1419,10 +1445,19 @@ public class GenerateTabularAnalysisResultAction
         int headerCol = 0;
 
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER )
-            .getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER )
+        //    .getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
         
@@ -1812,10 +1847,19 @@ public class GenerateTabularAnalysisResultAction
 
         System.out.println( "inside the generateOrgUnitGroup" );
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER )
-            .getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+       // String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER )
+       //     .getValue();
+       // String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+       //     + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -2168,8 +2212,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -2484,8 +2537,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -2795,8 +2857,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -2987,8 +3058,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -3179,8 +3259,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -3403,8 +3492,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -3623,8 +3721,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -3938,8 +4045,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -4250,8 +4366,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -4535,8 +4660,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -4855,8 +4989,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -5168,8 +5311,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -5455,8 +5607,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -5681,8 +5842,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -5903,8 +6073,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -6098,8 +6277,17 @@ public class GenerateTabularAnalysisResultAction
         int headerRow = 0;
         int headerCol = 0;
 
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 

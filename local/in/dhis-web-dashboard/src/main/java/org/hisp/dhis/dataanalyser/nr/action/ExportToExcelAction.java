@@ -22,28 +22,14 @@ public class ExportToExcelAction implements Action
     {
         return inputStream;
     }
-/*
-    private String contentType;
 
-    public String getContentType()
-    {
-        return contentType;
-    }
-*/
     private String fileName;
 
     public String getFileName()
     {
         return fileName;
     }
-/*
-    private int bufferSize;
 
-    public int getBufferSize()
-    {
-        return bufferSize;
-    }
-*/
     private String htmlCode;
     
     public void setHtmlCode( String htmlCode )
@@ -60,12 +46,9 @@ public class ExportToExcelAction implements Action
 
         fileName = "NullReporterResult.xls";
 
-        //String zipFilePath = "c:/MonthlySC.xls";
-        //inputStream = new BufferedInputStream( new FileInputStream(zipFilePath) , 1024 );
         inputStream = new BufferedInputStream( new ByteArrayInputStream( htmlCode.getBytes("UTF-8") ) );
         
         return SUCCESS;
     }
-
 
 }

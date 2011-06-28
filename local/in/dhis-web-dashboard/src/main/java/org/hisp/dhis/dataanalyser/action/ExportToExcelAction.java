@@ -38,21 +38,7 @@ public class ExportToExcelAction implements Action
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-/*
-    private LocationManager locationManager;
 
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
- */  
-    private ConfigurationService configurationService;
-
-    public void setConfigurationService( ConfigurationService configurationService )
-    {
-        this.configurationService = configurationService;
-    }
-    
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -68,7 +54,6 @@ public class ExportToExcelAction implements Action
     String[] categories1;
 
     String[] categories2;
-
     
     private InputStream inputStream;
 
@@ -77,30 +62,12 @@ public class ExportToExcelAction implements Action
         return inputStream;
     }
 
-    /*
-    private String contentType;
-
-    public String getContentType()
-    {
-        return contentType;
-    }
-    */
-
     private String fileName;
 
     public String getFileName()
     {
         return fileName;
     }
-
-    /*
-    private int bufferSize;
-
-    public int getBufferSize()
-    {
-        return bufferSize;
-    }
-    */
 
     private String viewSummary;
     
@@ -146,11 +113,6 @@ public class ExportToExcelAction implements Action
 
         initialzeAllLists(series1S, series2S, categories1S, categories2S);
         
-        if(objData1 == null || objData2 == null || series1 == null || series2 == null || categories1 == null || categories2 == null )
-                System.out.println("Session Objects are null");
-        else
-                System.out.println("Session Objects are not null");
-        
         data1 = convertDoubleTodouble( objData1 );
         data2 = convertDoubleTodouble( objData2 );
         
@@ -159,17 +121,14 @@ public class ExportToExcelAction implements Action
         else if(chartDisplayOption.equalsIgnoreCase("desend")) { sortByDesscending(); }
         else if(chartDisplayOption.equalsIgnoreCase("alphabet")) { sortByAlphabet(); }          
                 
-        //File outputReportFile = locationManager.getFileForWriting( UUID.randomUUID().toString() + ".xls", "db", "output" );
-        
-        
-     //   String outputReportFile = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue()
-     //   + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-          String outputReportFile = System.getenv( "DHIS2_HOME" ) + File.separator + configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue()
-          + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        String outputReportFile = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportFile );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportFile += File.separator + UUID.randomUUID().toString() + ".xls";
        
-       // System.out.println("Env Variable is  :" + System.getenv( "DHIS2_HOME" ) );
-       // System.out.println("Complete path is :" + outputReportFile );
-        
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File(outputReportFile) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "ChartOutput", 0 );
         
@@ -183,7 +142,6 @@ public class ExportToExcelAction implements Action
         {
             tempRow1 -= objData1.length;
         }
-
                 
         int count1 = 0;
         int count2 = 0;
@@ -217,7 +175,6 @@ public class ExportToExcelAction implements Action
                         cell1 = sheet0.getWritableCell(tempCol1, tempRow1);
                         cellFormat1 = cell1.getCellFormat();
 
-
                         if (cell1.getType() == CellType.LABEL)
                         {
                             Label l = (Label) cell1;
@@ -250,7 +207,6 @@ public class ExportToExcelAction implements Action
                         tempCol1 = 1;
                     }
                 
-                
                     if(k==count2)
                     {
                         tempCol1 = 0;
@@ -281,7 +237,6 @@ public class ExportToExcelAction implements Action
                     else
                     {
                         sheet0.addCell( new Number( tempCol1, tempRow1, data1[j][k], wCellformat1 ) );
-                        //sheet0.addCell( new Number( tempCol1, tempRow1, ""+data1[j][k], wCellformat1) );
                     }
                     tempCol1++;                
                 }
@@ -303,10 +258,8 @@ public class ExportToExcelAction implements Action
                 
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
-
         return SUCCESS;
     }
-    
     
     public void initialzeAllLists(String[]series1S, String[] series2S, String[] categories1S, String[] categories2S)
     {
@@ -318,38 +271,35 @@ public class ExportToExcelAction implements Action
         
         for(i = 0; i < series1S.length; i++)
         {
-                series1[i] = series1S[i];
+            series1[i] = series1S[i];
         }
 
         for(i = 0; i < series2S.length; i++)
         {
-                series2[i] = series2S[i];
+            series2[i] = series2S[i];
         }
         
         for(i = 0; i < categories1S.length; i++)
         {
-                categories1[i] = categories1S[i];
+            categories1[i] = categories1S[i];
         }
         
         for(i = 0; i < categories2S.length; i++)
         {
-                categories2[i] = categories2S[i];
+            categories2[i] = categories2S[i];
         }
         
     }
     
     public double[][] convertDoubleTodouble( Double[][] objData )
     {
-        //System.out.println("Before Sorting : ");
         double[][] data = new double[objData.length][objData[0].length];
         for ( int i = 0; i < objData.length; i++ )
         {
             for ( int j = 0; j < objData[0].length; j++ )
             {
                 data[i][j] = objData[i][j].doubleValue();
-                //System.out.print(categories1[j]+": "+data[i][j]+", ");                
             }
-            //System.out.println("");
         }
 
         return data;
@@ -359,138 +309,69 @@ public class ExportToExcelAction implements Action
     {
         for(int i=0; i < categories1.length-1 ; i++)
         {
-                for(int j=0; j < categories1.length-1-i; j++)
+            for(int j=0; j < categories1.length-1-i; j++)
+            {
+                if(data1[0][j] > data1[0][j+1])
                 {
-                        if(data1[0][j] > data1[0][j+1])
-                        {
-                                for(int k=0; k<series1.length; k++)
-                                {
-                                        double temp1 = data1[k][j];
-                                        data1[k][j] = data1[k][j+1];
-                                        data1[k][j+1] = temp1;                                          
-                                }
-                                
-                                String temp2 = categories1[j];
-                                categories1[j] = categories1[j+1];
-                                categories1[j+1] = temp2;
-                        }
+                    for(int k=0; k<series1.length; k++)
+                    {
+                        double temp1 = data1[k][j];
+                        data1[k][j] = data1[k][j+1];
+                        data1[k][j+1] = temp1;                                          
+                    }
+                        
+                    String temp2 = categories1[j];
+                    categories1[j] = categories1[j+1];
+                    categories1[j+1] = temp2;
                 }
+            }
         }
-        
-        /*
-        for(int i=0; i < categories2.length-1 ; i++)
-        {
-                for(int j=0; j < categories2.length-1-i; j++)
-                {
-                        if(data2[0][j] > data2[0][j+1])
-                        {
-                                for(int k=0; k<series2.length; k++)
-                                {
-                                        double temp1 = data2[k][j];
-                                        data2[k][j] = data2[k][j+1];
-                                        data2[k][j+1] = temp1;                                          
-                                }
-                                
-                                String temp2 = categories2[j];
-                                categories2[j] = categories2[j+1];
-                                categories2[j+1] = temp2;
-                        }
-                }
-        }
-        */
-        
     }
 
     public void sortByDesscending()
     {
         for(int i=0; i < categories1.length-1 ; i++)
         {
-                for(int j=0; j < categories1.length-1-i; j++)
+            for(int j=0; j < categories1.length-1-i; j++)
+            {
+                if(data1[0][j] < data1[0][j+1])
                 {
-                        if(data1[0][j] < data1[0][j+1])
-                        {
-                                for(int k=0; k<series1.length; k++)
-                                {
-                                        double temp1 = data1[k][j];
-                                        data1[k][j] = data1[k][j+1];
-                                        data1[k][j+1] = temp1;                                          
-                                }
-                                
-                                String temp2 = categories1[j];
-                                categories1[j] = categories1[j+1];
-                                categories1[j+1] = temp2;
-                        }
+                    for(int k=0; k<series1.length; k++)
+                    {
+                        double temp1 = data1[k][j];
+                        data1[k][j] = data1[k][j+1];
+                        data1[k][j+1] = temp1;                                          
+                    }
+                        
+                    String temp2 = categories1[j];
+                    categories1[j] = categories1[j+1];
+                    categories1[j+1] = temp2;
                 }
+            }
         }
-        
-        /*
-        for(int i=0; i < categories2.length-1 ; i++)
-        {
-                for(int j=0; j < categories2.length-1-i; j++)
-                {
-                        if(data2[0][j] < data2[0][j+1])
-                        {
-                                for(int k=0; k<series2.length; k++)
-                                {
-                                        double temp1 = data2[k][j];
-                                        data2[k][j] = data2[k][j+1];
-                                        data2[k][j+1] = temp1;                                          
-                                }
-                                
-                                String temp2 = categories2[j];
-                                categories2[j] = categories2[j+1];
-                                categories2[j+1] = temp2;
-                        }
-                }
-        }
-        */
     }   
     
     public void sortByAlphabet()
+    {
+        for(int i=0; i < categories1.length-1 ; i++)
         {
-                for(int i=0; i < categories1.length-1 ; i++)
+            for(int j=0; j < categories1.length-1-i; j++)
+            {
+                if(categories1[j].compareToIgnoreCase(categories1[j+1]) > 0)
                 {
-                        for(int j=0; j < categories1.length-1-i; j++)
-                        {
-                                if(categories1[j].compareToIgnoreCase(categories1[j+1]) > 0)
-                                {
-                                        for(int k=0; k<series1.length; k++)
-                                        {
-                                        double temp1 = data1[k][j];
-                                        data1[k][j] = data1[k][j+1];
-                                        data1[k][j+1] = temp1;                                          
-                                        }
-                                        
-                                        String temp2 = categories1[j];
-                                        categories1[j] = categories1[j+1];
-                                        categories1[j+1] = temp2;
-                                }
-                        }
+                    for(int k=0; k<series1.length; k++)
+                    {
+                        double temp1 = data1[k][j];
+                        data1[k][j] = data1[k][j+1];
+                        data1[k][j+1] = temp1;                                          
+                    }
+                        
+                    String temp2 = categories1[j];
+                    categories1[j] = categories1[j+1];
+                    categories1[j+1] = temp2;
                 }
-
-                /*
-                for(int i=0; i < categories2.length-1 ; i++)
-                {
-                        for(int j=0; j < categories2.length-1-i; j++)
-                        {
-                                if(categories2[j].compareToIgnoreCase(categories2[j+1]) > 0)
-                                {
-                                        for(int k=0; k<series2.length; k++)
-                                        {
-                                        double temp1 = data2[k][j];
-                                        data2[k][j] = data2[k][j+1];
-                                        data2[k][j+1] = temp1;                                          
-                                        }
-                                        
-                                        String temp2 = categories2[j];
-                                        categories2[j] = categories2[j+1];
-                                        categories2[j+1] = temp2;
-                                }
-                        }
-                }
-                */
-        
+            }
+        }
     }
-
 
 }

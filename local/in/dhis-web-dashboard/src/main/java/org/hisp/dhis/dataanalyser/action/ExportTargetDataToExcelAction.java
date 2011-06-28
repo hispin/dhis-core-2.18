@@ -26,7 +26,6 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.config.ConfigurationService;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.survey.Survey;
 
@@ -40,13 +39,6 @@ public class ExportTargetDataToExcelAction implements Action
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ConfigurationService configurationService;
-
-    public void setConfigurationService( ConfigurationService configurationService )
-    {
-        this.configurationService = configurationService;
-    }
-    
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -111,17 +103,17 @@ public class ExportTargetDataToExcelAction implements Action
         
         initialzeAllLists( series1S, series2S, categories1S, categories2S );
         
-        if( objData1 == null || objData2 == null || series1 == null || series2 == null || categories1 == null || categories2 == null )
-            System.out.println("Session Objects are null");
-        else
-            System.out.println("Session Objects are not null");
-        
         data1 = convertDoubleTodouble( objData1 );
         
         data2 = convertDoubleTodouble( objData2 );
         
-        String outputReportFile = System.getenv( "DHIS2_HOME" ) + File.separator + configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue()
-          + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        String outputReportFile = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportFile );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportFile += File.separator + UUID.randomUUID().toString() + ".xls";
                
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File(outputReportFile) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TargetChartOutput", 0 );
@@ -162,8 +154,6 @@ public class ExportTargetDataToExcelAction implements Action
          
          tempRow1 = tempRow1+1;
         
-         //int tempRowValue = 0;
-         
          for(int j=0; j< series1.length; j++)
          {
              tempCol1 = 0;

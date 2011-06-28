@@ -36,7 +36,9 @@ public class Configuration_IN
     
     public static final String DEFAULT_MYSQLPATH = "C:/DHIS2/mysql/bin/";
     public static final String DEFAULT_BACKUPDATAPATH = "C:/dhisdata/";
-    public static final String DEFAULT_REPORTFOLDER = "ra_national"; 
+    public static final String DEFAULT_REPORTFOLDER = "ra_national";
+    
+    public static final String DEFAULT_TEMPFOLDER = "temp";
 
     private int id;
     
