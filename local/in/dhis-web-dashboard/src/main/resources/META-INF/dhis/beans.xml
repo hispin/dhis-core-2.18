@@ -79,24 +79,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.ExportDataElementToExcelAction"
         class="org.hisp.dhis.dataanalyser.action.ExportDataElementToExcelAction"
         scope="prototype">
-
-        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
-        </property>
     </bean>
+
 	<!-- DrillDown periodToOrgUnit Child/GroupMember dataElements-->
 	<bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartDataElementResultAction" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartDataElementResultAction" scope="prototype">
 		<property name="statementManager" ref="statementManager"/>
-		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService">
-		</property>
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService">
-		</property>
-		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
-		</property>
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
-		</property>
-		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
-		</property>
+		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
+	
 	<!-- DrillDown OrgUnitToPeriod Child/GroupMember dataElements -->
 	<bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownOrgUnitToPeriodChartDataElementResultAction" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownOrgUnitToPeriodChartDataElementResultAction" scope="prototype">
 		
@@ -167,13 +161,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.ExportIndicatorToExcelAction"
         class="org.hisp.dhis.dataanalyser.action.ExportIndicatorToExcelAction"
         scope="prototype">
-
-        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
-        </property>
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
-		</property>
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
-		</property>
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     </bean>
 <!-- DrillDown periodToOrgUnit Child/GroupMember dataElements -->
     <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartIndicatorResultAction" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartIndicatorResultAction" scope="prototype">
@@ -332,13 +321,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.ExportAnnualDataToExcelAction"
         class="org.hisp.dhis.dataanalyser.action.ExportAnnualDataToExcelAction"
         scope="prototype">
-
-        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
-        </property>
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
-        </property>
-        <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
-        </property>
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+        <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     </bean> 
 	
 	
@@ -490,19 +474,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.ExportSurveyDataToExcelAction"
         class="org.hisp.dhis.dataanalyser.action.ExportSurveyDataToExcelAction"
         scope="prototype">
-
-        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
-        </property>
-		<property name="surveyService" ref="org.hisp.dhis.survey.SurveyService">
-		</property>
-		<property name="surveyDataValueService" ref="org.hisp.dhis.surveydatavalue.SurveyDataValueService">
-		</property>
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
-		</property>
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
-		</property>
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
-        </property>
+		<property name="surveyService" ref="org.hisp.dhis.survey.SurveyService" />
+		<property name="surveyDataValueService" ref="org.hisp.dhis.surveydatavalue.SurveyDataValueService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     </bean> 
 	
 	<!-- Target Analyser -->
@@ -538,7 +514,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.ExportTargetDataToExcelAction"
         class="org.hisp.dhis.dataanalyser.action.ExportTargetDataToExcelAction"
         scope="prototype">
-        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService" />
     </bean> 
 	
 	<!-- View Comment Related Stuff -->
@@ -1309,7 +1284,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.ExportToExcelAction"
 		class="org.hisp.dhis.dataanalyser.action.ExportToExcelAction"
 		scope="prototype">
-		<property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService" />
     </bean>
 	
     <bean id="org.hisp.dhis.dataanalyser.action.GetSortedDataAction"
