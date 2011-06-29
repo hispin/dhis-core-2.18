@@ -27,11 +27,8 @@ package org.hisp.dhis.reportexcel.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -40,11 +37,10 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.importing.ImportDataGeneric;
-import org.hisp.dhis.reportexcel.importitem.ExcelItem;
-import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
  * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 
@@ -52,45 +48,20 @@ public class ImportDataNormalAction
     extends ImportDataGeneric
 {
     // -------------------------------------------------------------------------
-    // Inputs && Outputs
-    // -------------------------------------------------------------------------
-
-    private Integer importReportId;
-
-    public void setImportReportId( Integer importReportId )
-    {
-        this.importReportId = importReportId;
-    }
-
-    // -------------------------------------------------------------------------
     // Override the abstract method
     // -------------------------------------------------------------------------
 
     public void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds, Workbook wb )
     {
-        Collection<ExcelItem> importItems = new ArrayList<ExcelItem>();
-
-        if ( importItemIds != null )
+        String value = null;
+        
+        for ( int i = 0; i < importItemIds.length; i++ )
         {
-            for ( int i = 0; i < importItemIds.length; i++ )
-            {
-                importItems.add( importItemService.getImportItem( importItemIds[i] ) );
-            }
-        }
-        else
-        {
-            importItems = importItemService.getImportReport( importReportId ).getExcelItems();
-        }
-
-        for ( ExcelItem importItem : importItems )
-        {
-            Sheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
-
-            String value = ExcelUtils.readValueImportingByPOI( importItem.getRow(), importItem.getColumn(), sheet );
+            value = importItemIds[i].split( "_" )[1];
 
             if ( value.length() > 0 )
             {
-                DataElementOperand operand = expressionService.getOperandsInExpression( importItem.getExpression() )
+                DataElementOperand operand = expressionService.getOperandsInExpression( importItemIds[i].split( "_" )[0] )
                     .iterator().next();
 
                 DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );

@@ -28,11 +28,8 @@ package org.hisp.dhis.reportexcel.preview.action;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
-
-import org.hisp.dhis.reportexcel.utils.StringUtils;
 
 import jxl.Cell;
 import jxl.CellType;
@@ -41,7 +38,10 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.format.CellFormat;
 import jxl.format.Colour;
+import jxl.format.Font;
 import jxl.format.Pattern;
+
+import org.hisp.dhis.reportexcel.utils.StringUtils;
 
 /**
  * Simple demo class which uses the api to present the contents of an excel 97
@@ -57,25 +57,18 @@ public class XMLStructureResponse
     /**
      * The encoding to write
      */
-    private StringBuffer STRUCTURE_DATA_RESPONSE = new StringBuffer( 200000 );
+    private StringBuffer xml = new StringBuffer( 200000 );
 
     /**
-     * The encoding to write
-     */
-    private String ENCODING;
-
-    /**
-     * The workbook we are reading from
+     * The workbook we are reading from a given file
      */
     private Workbook WORKBOOK;
-
-    private String PATH_FILE_NAME;
 
     private boolean bWRITE_VERSION;
 
     private boolean bWRITE_DTD;
 
-    private static final String PREFIX_VERSION_XML = "<?xml version=\"1.0\"  encoding=\"UTF-8\"?>";
+    private static final String XML_VERSION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
     private static final String DOCTYPE_NORMAL = "<!DOCTYPE WORKBOOK SYSTEM \"WORKBOOK.dtd\">";
 
@@ -89,14 +82,13 @@ public class XMLStructureResponse
 
     private static final String MERGEDCELL_CLOSETAG = "</MergedCells>";
 
-    private static final String PRINT_END_LINE = "\n";
-
-    // ------------------------------------------------
-    // Get & Set methods //
-    // ------------------------------------------------
-    public String getSTRUCTURE_DATA_RESPONSE()
+    // -------------------------------------------------------------------------
+    // Get & Set methods
+    // -------------------------------------------------------------------------
+    
+    protected String getXml()
     {
-        return STRUCTURE_DATA_RESPONSE.toString();
+        return xml.toString();
     }
 
     private void cleanUpForResponse()
@@ -115,27 +107,15 @@ public class XMLStructureResponse
      * @exception java.io.IOException
      */
 
-    public XMLStructureResponse()
-    {
-    }
-
-    public XMLStructureResponse( String pathFileName, String enc, Collection<Integer> collectSheets, boolean bFormat,
-        boolean bDetailed, boolean bWriteDescription, boolean bWriteVersion, boolean bWriteDTD )
-
+    public XMLStructureResponse( String pathFileName, Collection<Integer> collectSheets, boolean bWriteDTD,
+        boolean bWriteVersion, boolean bFormat, boolean bDetailed, boolean bWriteDescription )
         throws Exception
     {
         this.cleanUpForResponse();
 
-        this.ENCODING = enc;
         this.bWRITE_DTD = bWriteDTD;
         this.bWRITE_VERSION = bWriteVersion;
-        this.PATH_FILE_NAME = pathFileName;
         this.WORKBOOK = Workbook.getWorkbook( new File( pathFileName ) );
-
-        if ( this.ENCODING == null || !this.ENCODING.equals( "UnicodeBig" ) )
-        {
-            this.ENCODING = "UTF8";
-        }
 
         if ( bFormat )
         {
@@ -155,55 +135,45 @@ public class XMLStructureResponse
     {
         if ( this.bWRITE_VERSION )
         {
-            STRUCTURE_DATA_RESPONSE.append( PREFIX_VERSION_XML );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            xml.append( XML_VERSION );
         }
 
         if ( this.bWRITE_DTD )
         {
-            STRUCTURE_DATA_RESPONSE.append( DOCTYPE_NORMAL );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            xml.append( DOCTYPE_NORMAL );
         }
 
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-        STRUCTURE_DATA_RESPONSE.append( WORKBOOK_OPENTAG );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        xml.append( WORKBOOK_OPENTAG );
 
         for ( Integer sheet : collectSheets )
         {
             Sheet s = WORKBOOK.getSheet( sheet - 1 );
 
-            STRUCTURE_DATA_RESPONSE.append( "  <sheet id=\"" + sheet + "\">" );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-            STRUCTURE_DATA_RESPONSE.append( "    <name><![CDATA[" + s.getName() + "]]></name>" );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            xml.append( "<sheet id='" + sheet + "'>" );
+            xml.append( "<name><![CDATA[" + s.getName() + "]]></name>" );
 
             Cell[] row = null;
 
             for ( int i = 0; i < s.getRows(); i++ )
             {
-                STRUCTURE_DATA_RESPONSE.append( "    <row number=\"" + i + "\">" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                xml.append( "<row number='" + i + "'>" );
+
                 row = s.getRow( i );
 
                 for ( int j = 0; j < row.length; j++ )
                 {
                     if ( row[j].getType() != CellType.EMPTY )
                     {
-                        STRUCTURE_DATA_RESPONSE.append( "      <col number=\"" + j + "\">" );
-                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" + row[j].getContents() + "]]>" );
-                        STRUCTURE_DATA_RESPONSE.append( "</col>" );
-                        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                        xml.append( "<col number='" + j + "'>" );
+                        xml.append( "<![CDATA[" + row[j].getContents() + "]]>" );
+                        xml.append( "</col>" );
                     }
                 }
-                STRUCTURE_DATA_RESPONSE.append( "    </row>" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                xml.append( "</row>" );
             }
-            STRUCTURE_DATA_RESPONSE.append( "  </sheet>" );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            xml.append( "</sheet>" );
         }
-        STRUCTURE_DATA_RESPONSE.append( WORKBOOK_CLOSETAG );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        xml.append( WORKBOOK_CLOSETAG );
     }
 
     /**
@@ -217,59 +187,47 @@ public class XMLStructureResponse
     private void writeFormattedXML( Collection<Integer> collectSheets, boolean bDetailed, boolean bWriteDescription )
         throws Exception
     {
-        FileInputStream fis = new FileInputStream( this.PATH_FILE_NAME );
-        org.apache.poi.ss.usermodel.Workbook hssfwb = new org.apache.poi.hssf.usermodel.HSSFWorkbook( fis );
-
         if ( bWriteDescription )
         {
-            this.writeXMLDescription( collectSheets );
+            this.writeXMLMergedDescription( collectSheets );
         }
 
         if ( this.bWRITE_VERSION )
         {
-            STRUCTURE_DATA_RESPONSE.append( PREFIX_VERSION_XML );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            xml.append( XML_VERSION );
         }
 
         if ( this.bWRITE_DTD )
         {
-            STRUCTURE_DATA_RESPONSE.append( DOCTYPE_FORMAT );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            xml.append( DOCTYPE_FORMAT );
         }
 
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-        STRUCTURE_DATA_RESPONSE.append( WORKBOOK_OPENTAG );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        xml.append( WORKBOOK_OPENTAG );
 
         for ( Integer sheet : collectSheets )
         {
-            writeBySheetNo( hssfwb, (sheet - 1), bDetailed );
+            writeBySheetNo( sheet, bDetailed );
         }
 
-        STRUCTURE_DATA_RESPONSE.append( WORKBOOK_CLOSETAG );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        xml.append( WORKBOOK_CLOSETAG );
     }
 
     // -------------------------------------------------------------------------
     // Sub-methods
     // -------------------------------------------------------------------------
 
-    private void writeBySheetNo( org.apache.poi.ss.usermodel.Workbook wb, int sheetNo, boolean bDetailed )
+    private void writeBySheetNo( int sheetNo, boolean bDetailed )
     {
-        Sheet s = WORKBOOK.getSheet( sheetNo );
+        Sheet s = WORKBOOK.getSheet( sheetNo - 1 );
 
-        STRUCTURE_DATA_RESPONSE.append( "  <sheet id=\"" + (sheetNo + 1) + "\">" );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-        STRUCTURE_DATA_RESPONSE.append( "    <name><![CDATA[" + s.getName() + "]]></name>" );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        xml.append( "<sheet id='" + (sheetNo) + "'>" );
+        xml.append( "<name><![CDATA[" + s.getName() + "]]></name>" );
 
         Cell[] cell = null;
-        CellFormat format = null;
 
         for ( int i = 0; i < s.getRows(); i++ )
         {
-            STRUCTURE_DATA_RESPONSE.append( "    <row index=\"" + i + "\">" );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            xml.append( "<row index='" + i + "'>" );
 
             cell = s.getRow( i );
 
@@ -277,121 +235,97 @@ public class XMLStructureResponse
             {
                 // Remember that empty cells can contain format
                 // information
-                if ( (cell[j].getType() != CellType.EMPTY) || (cell[j].getCellFormat() != null) )
+                if ( !cell[j].getType().equals( CellType.EMPTY ) || (cell[j].getCellFormat() != null) )
                 {
-                    STRUCTURE_DATA_RESPONSE.append( "      <col no=\"" + j + "\">" );
-                    STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-                    STRUCTURE_DATA_RESPONSE.append( "        <data>" );
+                    xml.append( "<col no='" + j + "'><data>" );
+                    xml.append( "<![CDATA[" + StringUtils.applyPatternDecimalFormat( cell[j].getContents() )
+                        + "]]></data>" );
 
-                    STRUCTURE_DATA_RESPONSE.append( "<![CDATA["
-                        + StringUtils.applyPatternDecimalFormat( cell[j].getContents() ) + "]]>" );
+                    this.readingDetailsFormattedCell( cell[j], bDetailed );
 
-                    STRUCTURE_DATA_RESPONSE.append( "</data>" );
-                    STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-
-                    this.readingDetailsFormattedCell( format, cell[j], bDetailed );
-
-                    STRUCTURE_DATA_RESPONSE.append( "      </col>" );
-                    STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                    xml.append( "</col>" );
                 }
             }
-            STRUCTURE_DATA_RESPONSE.append( "    </row>" );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            xml.append( "</row>" );
         }
-        STRUCTURE_DATA_RESPONSE.append( "  </sheet>" );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        xml.append( "</sheet>" );
     }
 
-    private void readingDetailsFormattedCell( jxl.format.CellFormat format, jxl.Cell objCell, boolean bDetailed )
+    private void readingDetailsFormattedCell( Cell objCell, boolean bDetailed )
     {
         // The format information
-        format = objCell.getCellFormat();
-        jxl.format.Font font = null;
+        CellFormat format = objCell.getCellFormat();
+        Font font = null;
 
         if ( format != null )
         {
-            STRUCTURE_DATA_RESPONSE.append( "        <format align=\""
-                + StringUtils.convertAlignmentString( format.getAlignment().getDescription() ) + "\"" );
+            xml.append( "<format align='" + StringUtils.convertAlignmentString( format.getAlignment().getDescription() )
+                + "'" );
 
             if ( bDetailed )
             {
-                STRUCTURE_DATA_RESPONSE.append( "  valign=\"" + format.getVerticalAlignment().getDescription() + "\"" );
-                STRUCTURE_DATA_RESPONSE.append( ">" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                xml.append( " valign='" + format.getVerticalAlignment().getDescription() + "'>" );
 
                 // The font information
                 font = format.getFont();
 
-                STRUCTURE_DATA_RESPONSE.append( "          <font point_size=\"" + font.getPointSize() + "\"" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-                STRUCTURE_DATA_RESPONSE.append( "                bold_weight=\"" + font.getBoldWeight() + "\"" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-                STRUCTURE_DATA_RESPONSE.append( "                italic=\"" + font.isItalic() + "\"" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-                STRUCTURE_DATA_RESPONSE.append( "                underline=\""
-                    + font.getUnderlineStyle().getDescription() + "\"" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-                STRUCTURE_DATA_RESPONSE.append( "                colour=\"" + font.getColour().getDescription() + "\"" );
-                STRUCTURE_DATA_RESPONSE.append( " />" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                xml.append( "<font point_size='" + font.getPointSize() + "'" );
+                xml.append( " bold_weight='" + font.getBoldWeight() + "'" );
+                xml.append( " italic='" + font.isItalic() + "'" );
+                xml.append( " underline='" + font.getUnderlineStyle().getDescription() + "'" );
+                xml.append( " colour='" + font.getColour().getDescription() + "'" );
+                xml.append( " />" );
 
                 // The cell background information
                 if ( format.getBackgroundColour() != Colour.DEFAULT_BACKGROUND || format.getPattern() != Pattern.NONE )
                 {
-                    STRUCTURE_DATA_RESPONSE.append( "          <background colour=\""
-                        + format.getBackgroundColour().getDescription() + "\"" );
-                    STRUCTURE_DATA_RESPONSE.append( " />" );
-                    STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                    xml.append( "<background colour='" + format.getBackgroundColour().getDescription() + "'" );
+                    xml.append( " />" );
                 }
 
                 // The cell number/date format
                 if ( !format.getFormat().getFormatString().equals( "" ) )
                 {
-                    STRUCTURE_DATA_RESPONSE.append( "          <format_string string=\"" );
-                    STRUCTURE_DATA_RESPONSE.append( format.getFormat().getFormatString() );
-                    STRUCTURE_DATA_RESPONSE.append( "\" />" );
-                    STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                    xml.append( "<format_string string='" );
+                    xml.append( format.getFormat().getFormatString() );
+                    xml.append( "' />" );
                 }
-                STRUCTURE_DATA_RESPONSE.append( "        </format>" );
+                xml.append( "</format>" );
             }
             else
             {
-                STRUCTURE_DATA_RESPONSE.append( "/>" );
+                xml.append( "/>" );
             }
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
         }
     }
 
     // -------------------------------------------------------------------------
     // Get the merged cell's information
     // -------------------------------------------------------------------------
-    private void writeXMLDescription( Collection<Integer> collectSheets )
+    private void writeXMLMergedDescription( Collection<Integer> collectSheets )
         throws IOException
     {
         // Get the Range of the Merged Cells //
         if ( this.bWRITE_VERSION )
         {
-            STRUCTURE_DATA_RESPONSE.append( PREFIX_VERSION_XML );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE + PRINT_END_LINE );
+            xml.append( XML_VERSION );
         }
 
         // Open the main Tag //
-        STRUCTURE_DATA_RESPONSE.append( MERGEDCELL_OPENTAG );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        xml.append( MERGEDCELL_OPENTAG );
 
         for ( Integer sheet : collectSheets )
         {
-            writeBySheetNo( sheet - 1 );
+            writeBySheetNo( sheet );
         }
 
         // Close the main Tag //
-        STRUCTURE_DATA_RESPONSE.append( MERGEDCELL_CLOSETAG );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        xml.append( MERGEDCELL_CLOSETAG );
     }
 
     private void writeBySheetNo( int sheetNo )
     {
-        Sheet sheet = WORKBOOK.getSheet( sheetNo );
+        Sheet sheet = WORKBOOK.getSheet( sheetNo - 1 );
         Range[] aMergedCell = sheet.getMergedCells();
 
         int iColTopLeft = 0;
@@ -406,11 +340,9 @@ public class XMLStructureResponse
 
             if ( iColTopLeft != iColBottomRight )
             {
-                STRUCTURE_DATA_RESPONSE.append( "  <cell" + " iKey=\"" + (sheetNo + 1) + "#" + iRowTopLeft + "#"
-                    + iColTopLeft + "\">" + (iColBottomRight - iColTopLeft + 1) + "</cell>" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                xml.append( "<cell " + "iKey='" + (sheetNo) + "#" + iRowTopLeft + "#" + iColTopLeft + "'>"
+                    + (iColBottomRight - iColTopLeft + 1) + "</cell>" );
             }
         }
     }
-
 }

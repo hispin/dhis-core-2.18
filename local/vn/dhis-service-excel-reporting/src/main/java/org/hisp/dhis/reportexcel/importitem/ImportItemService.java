@@ -42,6 +42,8 @@ public interface ImportItemService
     public ExcelItem getImportItem( int id );
     
     public ExcelItem getImportItem( String name );
+    
+    public Collection<Integer> getAllSheet();
 
     // -------------------------------------------------------------------------
     // DataElement Order

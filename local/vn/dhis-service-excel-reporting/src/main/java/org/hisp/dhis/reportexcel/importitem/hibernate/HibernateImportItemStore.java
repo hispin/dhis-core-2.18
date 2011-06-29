@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodStore;
@@ -15,7 +16,7 @@ import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.importitem.ImportItemStore;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -190,7 +191,6 @@ public class HibernateImportItemStore
     @SuppressWarnings( "unchecked" )
     public Collection<ExcelItemGroup> getImportReports( OrganisationUnit organisationUnit )
     {
-
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( ExcelItemGroup.class );
@@ -225,5 +225,15 @@ public class HibernateImportItemStore
         Session session = sessionFactory.getCurrentSession();
 
         session.delete( getDataElementGroupOrder( id ) );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<Integer> getSheets()
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( ExcelItem.class );
+
+        return criteria.setProjection( Projections.distinct( Projections.property( "sheetNo" ) ) ).list();
     }
 }

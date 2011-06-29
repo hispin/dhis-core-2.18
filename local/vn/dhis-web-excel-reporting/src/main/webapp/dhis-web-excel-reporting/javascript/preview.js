@@ -1,3 +1,16 @@
+/**
+ * Global variables
+ */
+
+isImport = false;
+idTemp = null;
+importlist = null;
+importItemIds = new Array();
+
+// ----------------------------------------------------------------------
+// Methods
+// ----------------------------------------------------------------------
+
 function validatePreviewReport( isAdvanced )
 {
 	var exportReport = getFieldValue('exportReport');
@@ -80,7 +93,7 @@ function previewExportReportReceived( parentElement )
 		
 		contentsHTML += '<div id="tabs-' + s + '">';
 
-		_sHTML = "<table class='formatTablePreview'>";
+		_sHTML = "<table class='ui-widget-content'>";
 		
 		for (var i = 0 ; i < _rows.length ; i ++)
 		{
@@ -91,12 +104,13 @@ function previewExportReportReceived( parentElement )
 			
 			for (var j 	= 0 ; j < _cols.length ; )
 			{
-				var _number	= getRootElementAttribute( _cols[j], 'no' );
+				var _number	 = getRootElementAttribute( _cols[j], 'no' );
+				var keyId = getRootElementAttribute( _cols[j], 'id' );
 				
 				// Printing out the unformatted cells
 				for (; _index < _number ; _index ++)
 				{
-					_sHTML += "<td/>";
+					_sHTML += "<td class='ui-widget-content'/>";
 				}
 
 				if ( _index == _number )
@@ -113,16 +127,17 @@ function previewExportReportReceived( parentElement )
 					_index 	= Number(_index) + Number(_colspan);
 					
 					_sHTML += "<td align='" + _align + "' colspan='" + _colspan + "' ";
+					_sHTML += "class='ui-widget-content";
 					
-					if ( (_sData != "") && !isNaN(_sData) )
+					if ( keyId && keyId.length > 0 )
 					{
-						_sHTML += "class='formatNumberPreview' "
-							   + "title='" + i18n_value_rounded;
+						_sHTML += " ui-unselected' id='" + keyId;
 					}
-					else
+					else if ( !isImport && parseFloat(_sData) )
 					{
-						_sHTML += "class='formatStringPreview" ;
+						_sHTML += " ui-normal' title='" + i18n_value_rounded + "'";
 					}
+					
 					_sHTML += "'>" + _sData + "</td>";
 				}
 			}
@@ -133,23 +148,54 @@ function previewExportReportReceived( parentElement )
 		contentsHTML += _sHTML;
 		contentsHTML += '</div>';
 	}
-	titleHTML += '</ul>';
 	
+	titleHTML += '</ul>';
 	tabsHTML += titleHTML;
 	tabsHTML += contentsHTML;	
 	tabsHTML += '</div>';
 	
 	jQuery( '#previewDiv' ).html( tabsHTML );
-	
-	jQuery('#tabs').tabs({ collapsible : true });
-	
+	jQuery( '#tabs' ).tabs({ collapsible : true });
 	enable( 'printExcelReportButton' );
-
+	applyStyleIntoPreview();
 	unLockScreen();
 }
 
-function getMergedNumberForEachCell( aKey, sKey, aMerged ) {
+function applyStyleIntoPreview()
+{
+	importlist = jQuery( 'table.ui-widget-content tr > td.ui-unselected' );
+	
+	if ( importlist.length > 0 )
+	{
+		importlist.mouseover(function()
+		{
+			jQuery(this).addClass( 'ui-mouseover' );
+		});
 
+		importlist.mouseout(function()
+		{
+			jQuery(this).removeClass( 'ui-mouseover' );
+		});
+
+		importlist.click(function()
+		{
+			idTemp = jQuery(this).attr( 'id' ) + "_" + jQuery(this).html();
+			
+			if ( jQuery.inArray(idTemp, importItemIds) != -1 )
+			{
+				importItemIds = jQuery.grep( importItemIds, function(value) {
+					return value != idTemp
+				});
+			}
+			else importItemIds.push( idTemp );
+			
+			jQuery(this).toggleClass( 'ui-selected' );
+		});
+	}
+}
+
+function getMergedNumberForEachCell( aKey, sKey, aMerged )
+{
 	for (var i = 0 ; i < aKey.length ; i ++)
 	{
 		if ( aKey[i] == sKey )

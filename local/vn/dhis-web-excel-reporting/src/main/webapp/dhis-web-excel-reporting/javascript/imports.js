@@ -7,263 +7,86 @@ selection.setListenerFunction( organisationUnitSelected );
 // IMPORT DATA FROM EXCEL FILE INTO DATABASE
 // -----------------------------------------------------------------------------
 
-function importData(){
-	
-	var importReportId = byId('importReportId').value;	
-	var periodId = byId('period').value;
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( importDataCompleted );
-	
-	// URL
-	var params = 'importReportId='+importReportId;
-	// USER choose exportItem
-	var preview = byId('showValue').style.display;
-	
-	if(preview == 'block'){
-		var importItems = document.getElementsByName('importItems');
-		for(var i=0;i<importItems.length;i++){
-			if(importItems[i].checked ){
-				params +='&importItemIds=' + importItems[i].value;
-			}
-		}
-	}
-	params += '&periodId='+ periodId;
-	request.sendAsPost(params);
-	request.send('importData.action'); 
-}
-
-function importDataCompleted( xmlObject )
+function importData()
 {
-	setMessage(xmlObject.firstChild.nodeValue);
+	if ( importItemIds && importItemIds.length > 0 )
+	{
+		lockScreen();
+		var params = 'importData.action?';
+		
+		for ( var i = 0 ; i < importItemIds.length ; i ++ )
+		{
+			params += 'importItemIds=' + importItemIds[i];
+			params += (i < importItemIds.length-1) ? "&" : "";
+		}
+		
+		jQuery.postJSON( params,
+		{
+			importReportId: byId('importReportId').value,
+			periodId: byId('period').value
+		}, function( json ) {
+			unLockScreen();
+			showSuccessMessage( json.message );
+		});
+	}
+	else showWarningMessage( i18n_choose_import_item );
 }
 
 // -----------------------------------------------------------------------------
 // PREVIEW DATA FLOW
+// @param isImport This is a global variable which declared in preview.js
 // -----------------------------------------------------------------------------
 
 function getPreviewImportData(){	
 	
+	lockScreen();
+	
+	isImport = true;
+	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( getExportItemValuesReceived );
+	request.setCallbackSuccess( previewExportReportReceived );
 	request.send( "previewDataFlow.action?importReportId=" + byId("importReportId").value );
 	
 }
 
-function getExportItemValuesReceived( xmlObject ){
+isToggled = true;
 
-	if(xmlObject.getElementsByTagName('importItemValueByOrgUnit').length > 0 ){
-		previewOrganisation(xmlObject);
-	}
-	else if(xmlObject.getElementsByTagName('importItemValueByCategory').length > 0 ){
-		previewCategory(xmlObject);
-	}
-	else{
-		previewNormal(xmlObject);
-	}
-}
-
-
-// -----------------------------------------------------------------------------
-// PREVIEW DATA - NORMAL
-// -----------------------------------------------------------------------------
-
-function previewNormal( xmlObject ){
-	
-	byId('selectAll').checked = false;
-	var availableDiv = byId('showValue');
-	availableDiv.style.display = 'block';
-	
-	var availableObjectList = xmlObject.getElementsByTagName('importItemValue');
-	
-	var myTable = byId('showImportItemValues');
-	var tBody = myTable.getElementsByTagName('tbody')[0];
-	
-	for(var i = byId("showImportItemValues").rows.length; i > 1;i--)
+function selectAllData( _this )
+{
+	if ( isToggled )
 	{
-		byId("showImportItemValues").deleteRow(i -1);
-	}
-
-	for(var i=0;i<availableObjectList.length;i++){
+		jQuery( _this ).val( i18n_unselect_all );
 		
-		// get values
-		var itemValue = availableObjectList.item(i);
-		// add new row
-		var newTR = document.createElement('tr');
-		// create new column
-		var newTD2 = document.createElement('td');
-		newTD2.innerHTML = itemValue.getElementsByTagName('name')[0].firstChild.nodeValue;
-		// create new column
-		var newTD3 = document.createElement('td');
-		var value = 0;
-		if( itemValue.getElementsByTagName('value')[0].firstChild != null ) {
-			value = itemValue.getElementsByTagName('value')[0].firstChild.nodeValue;
-		}
-		newTD3.innerHTML = value;
-		// create new column
-		var newTD1 = document.createElement('td');
-		var id = itemValue.getElementsByTagName('id')[0].firstChild.nodeValue;
-		if(value!=0){
-			newTD1.innerHTML= "<input type='checkbox' name='importItems' onChange='javascript: checkAllSelect(this);' id='importItems' value='" + id + "'>" ;
-		}
-		
-		newTR.appendChild (newTD1);
-		newTR.appendChild (newTD2);
-		newTR.appendChild (newTD3);
-		// add row into the table
-		tBody.appendChild(newTR);
-	}
-}
-
-function checkAllSelect(checkBox){
-	if(!checkBox.checked){
-		byId('selectAll').checked = false;
-	}
-}
-
-// -----------------------------------------------------------------------------
-// PREVIEW DATA - ORGANISATION
-// -----------------------------------------------------------------------------
-
-function previewOrganisation( xmlObject ){
-	
-	// show preview table
-	byId('selectAll').checked = false;
-	var availableDiv = byId('showValue');
-	availableDiv.style.display = 'block';
-	
-	var availableObjectList = xmlObject.getElementsByTagName('importItemValueByOrgUnit');
-	var myTable = byId('showImportItemValues');
-	var tBody = myTable.getElementsByTagName('tbody')[0];
-	
-	for(var i = byId("showImportItemValues").rows.length; i > 1;i--)
-	{
-		myTable.deleteRow(i -1);
-	}
-	
-	for(var i=0;i<availableObjectList.length;i++){
-		
-		// get item into XML
-		var itemValue = availableObjectList.item(i);
-		
-		// Add new row which contains to Organisation's name
-		var newTR = document.createElement('tr');
-		var newTD = document.createElement('td');
-		newTD.colSpan = 3;
-		var nameOrgUnit= itemValue.getElementsByTagName('orgUnit')[0];
-		newTD.innerHTML = "<b>" + nameOrgUnit.getElementsByTagName('name')[0].firstChild.nodeValue + "</b>";
-		var orgunitId =  nameOrgUnit.getElementsByTagName('id')[0].firstChild.nodeValue;
-		newTR.appendChild (newTD);
-		// add row into the table
-		tBody.appendChild(newTR);
-		
-		// get values
-		var valueList = itemValue.getElementsByTagName('importItemValue');
-		for(var j=0;j<valueList.length;j++) {
-		
-			// get itemValue into XML
-			itemValue = valueList.item(j);
-			// add new row which contains to value
-			var newTR = document.createElement('tr');
-			// create new column
-			var newTD2 = document.createElement('td');
-			newTD2.innerHTML = itemValue.getElementsByTagName('name')[0].firstChild.nodeValue;
-			// create new column
-			var newTD3 = document.createElement('td');
-			var value = 0;
-			if( itemValue.getElementsByTagName('value')[0].firstChild != null ) {
-				value = itemValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+		for ( var i = 0 ; i < importlist.length ; i ++ )
+		{
+			importlist[i].className = 'ui-selected';
+			
+			idTemp = jQuery(importlist[i]).attr( 'id' ) + "_" + jQuery(importlist[i]).html();
+			
+			if ( jQuery.inArray(idTemp, importItemIds) != -1 )
+			{
+				importItemIds = jQuery.grep( importItemIds, function(value) {
+					return value != idTemp
+				});
 			}
-			//var value = itemValue.getElementsByTagName('value')[0].firstChild.nodeValue;
-			newTD3.innerHTML = value;
-			// create new column
-			var newTD1 = document.createElement('td');
-			var id = itemValue.getElementsByTagName('id')[0].firstChild.nodeValue;
-			if(value!=0){
-				newTD1.innerHTML= "<input type='checkbox' name='importItems' id='importItems' value='" + orgunitId + "-" + i + "-" + id + "'>" ;
-			}
-			
-			newTR.appendChild (newTD1);
-			newTR.appendChild (newTD2);
-			newTR.appendChild (newTD3);
-			// add row into the table
-			tBody.appendChild(newTR);
-			
-			
-		}// end for Get values
-			
-	}// end for availableObjectList
-}
-
-
-// -----------------------------------------------------------------------------
-// PREVIEW DATA - CATEGORY
-// -----------------------------------------------------------------------------
-
-function previewCategory( xmlObject ){
-	
-	byId('selectAll').checked = false;
-	var availableDiv = byId('showValue');
-	availableDiv.style.display = 'block';
-	
-	var availableObjectList = xmlObject.getElementsByTagName('importItemValueByCategory');
-	
-	var myTable = byId('showImportItemValues');
-	var tBody = myTable.getElementsByTagName('tbody')[0];
-	
-	for(var i = byId("showImportItemValues").rows.length; i > 1;i--)
+			else importItemIds.push( idTemp );
+		}
+	}
+	else
 	{
-		byId("showImportItemValues").deleteRow(i -1);
-	}
-
-	for(var i=0;i<availableObjectList.length;i++){
+		jQuery( _this ).val( i18n_select_all );
 		
-		// get values
-		var itemValue = availableObjectList.item(i);
-		// add new row
-		var newTR = document.createElement('tr');
-		// create new column
-		var newTD2 = document.createElement('td');
-		newTD2.innerHTML = itemValue.getElementsByTagName('name')[0].firstChild.nodeValue;
-		// create new column
-		var newTD3 = document.createElement('td');
-		var value = 0;
-		if( itemValue.getElementsByTagName('value')[0].firstChild != null ) {
-			value = itemValue.getElementsByTagName('value')[0].firstChild.nodeValue;
-		}
-
-		newTD3.innerHTML = value;
-		
-		// create new column
-		var newTD1 = document.createElement('td');
-		var id = itemValue.getElementsByTagName('id')[0].firstChild.nodeValue;
-		var row = itemValue.getElementsByTagName('row')[0].firstChild.nodeValue;
-		var expression = itemValue.getElementsByTagName('expression')[0].firstChild.nodeValue
-		if(value!=0){
-			newTD1.innerHTML= "<input type='checkbox' name='importItems' id='importItems' value='" + id + "-" + row + "-" + expression + "'>" ;
+		for ( var i = 0 ; i < importlist.length ; i ++ )
+		{
+			importlist[i].className = 'ui-unselected';
 		}
 		
-		newTR.appendChild (newTD1);
-		newTR.appendChild (newTD2);
-		newTR.appendChild (newTD3);
-		// add row into the table
-		tBody.appendChild(newTR);
+		importItemIds.length = 0;
 	}
+	
+	isToggled = !isToggled;	
 }
-
-
-function selectAll(){
-	 
-	var select = byId('selectAll').checked;
-	
-	var exportItems = document.getElementsByName('importItems');
-	
-	for(var i=0;i<exportItems.length;i++){
-		exportItems[i].checked = select;
-	 }
- }
 
 // --------------------------------------------------------------------
 // PERIOD TYPE
@@ -271,50 +94,9 @@ function selectAll(){
 
 function getPeriodsByImportReport( importReportId ) {
 	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'getPeriodsByImportReport.action?importReportId=' + importReportId);
-}
-
-function responseListPeriodReceived( xmlObject ) {
-
-	clearListById('period');
+	var url = 'getPeriodsByImportReport.action';
 	
-	var type = xmlObject.getAttribute( 'type' );
-
-	if ( (type != undefined) && (type == 'error') )
-	{
-		setHeaderDelayMessage( xmlObject.firstChild.nodeValue );
-	}
-	else
-	{
-		var list = xmlObject.getElementsByTagName('period');
-		
-		for ( var i = 0; i < list.length; i++ )
-		{
-			item = list[i];
-			var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-			
-			addOption('period', name, i);
-		}
-	}
-}
-
-function lastPeriod() {
-
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'previousPeriodsGeneric.action' ); 
-}
-
-function nextPeriod() {
-
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'nextPeriodsGeneric.action' ); 
+	jQuery.postJSON( url, {'importReportId':importReportId}, responseListPeriodReceived );
 }
 
 function validateUploadExcelImportByJSON(){
