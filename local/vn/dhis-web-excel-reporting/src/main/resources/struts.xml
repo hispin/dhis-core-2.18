@@ -983,7 +983,7 @@
 
 		<action name="copyImportItems"
 			class="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemAction">
-			<result name="success" type="velocity-xml">
+			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
@@ -1021,16 +1021,19 @@
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
+				javascript/preview.js,
 				javascript/imports.js</param>
-			<param name="stylesheets">style/style.css</param>
+			<param name="stylesheets">
+				style/style.css,
+				style/previewStyle.css</param>
 		</action>
 
 		<action name="getPeriodsByImportReport"
 			class="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByImportReportAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlPeriods.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
 
 		<action name="openImportReportAssociations"
@@ -1057,8 +1060,8 @@
 		<!--  function - Prewiew Data - NORMAL -->
 		<action name="previewDataNormal"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataNormalAction">
-			<result name="success" type="velocity">
-				/dhis-web-excel-reporting/responseImportItemValues.vm</result>			
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseExportReportPreview.vm</result>			
 			<result name="error" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>		
 		</action>
@@ -1067,7 +1070,7 @@
 		<action name="previewDataCategory"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction">
 			<result name="success" type="velocity">
-				/dhis-web-excel-reporting/responseImportItemValuesByCategory.vm
+				/dhis-web-excel-reporting/responseExportReportPreview.vm
 			</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>
@@ -1087,37 +1090,37 @@
 		<action name="importData"
 			class="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction">
 			<result name="NORMAL" type="redirect">
-				importDataNormal?importReportId=${importReportId}</result>
+				importDataNormal.action</result>
 			<result name="CATEGORY" type="redirect">
-				importDataCategory</result>
+				importDataCategory.action</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
-				importDataOrganizationGroup</result>
+				importDataOrganizationGroup.action</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
-				generateExportReportPeriodColumnListingAjax</result>
+				generateExportReportPeriodColumnListingAjax.action</result>
 		</action>
 
 		<action name="importDataNormal"
 			class="org.hisp.dhis.reportexcel.importing.action.ImportDataNormalAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
 
 		<action name="importDataCategory"
 			class="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
 		
 		<action name="importDataOrganizationGroup"
 			class="org.hisp.dhis.reportexcel.importing.action.ImportDataOrganizationGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
 		
 		<!-- Period Column -->

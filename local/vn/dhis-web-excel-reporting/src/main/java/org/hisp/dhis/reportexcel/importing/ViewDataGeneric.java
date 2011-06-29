@@ -1,7 +1,7 @@
-package org.hisp.dhis.reportexcel.preview.action;
+package org.hisp.dhis.reportexcel.importing;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,51 +27,62 @@ package org.hisp.dhis.reportexcel.preview.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hisp.dhis.reportexcel.ExportReportService;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.reportexcel.importitem.ExcelItem;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.importitem.ImportItemService;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * Simple demo class which uses the api to present the contents of an excel 97
- * spreadsheet as an XML document, using a workbook and output stream of your
- * choice
- * 
  * @author Dang Duy Hieu
- * @version $Id$
+ * @version $Id
  */
-public class ExportXMLAction
+
+public abstract class ViewDataGeneric
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private ExportReportService exportReportService;
+    protected ImportItemService importItemService;
 
-    public void setExportReportService( ExportReportService exportReportService )
+    public void setImportItemService( ImportItemService importItemService )
     {
-        this.exportReportService = exportReportService;
+        this.importItemService = importItemService;
     }
 
-    private SelectionManager selectionManager;
+    protected SelectionManager selectionManager;
 
     public void setSelectionManager( SelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
 
-    private String xmlStructureResponse;
+    private String message;
 
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
+    public String getMessage()
+    {
+        return message;
+    }
+
+    protected String xmlStructureResponse;
 
     public String getXmlStructureResponse()
     {
@@ -83,20 +94,34 @@ public class ExportXMLAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws IOException
     {
         try
         {
-            xmlStructureResponse = new XMLStructureResponse( selectionManager.getDownloadFilePath(),
-                exportReportService.getSheets( selectionManager.getSelectedReportId() ), false, false, true, false,
-                true ).getXml();
+            ExcelItemGroup importReport = importItemService.getImportReport( selectionManager.getSelectedReportId() );
+
+            List<ExcelItem> importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );
+
+            if ( importItems == null || importItems.isEmpty() )
+            {
+                message = i18n.getString( "import_excel_items_cannot_be_empty" );
+
+                return ERROR;
+            }
+
+            executeViewData( importReport, importItems );
 
             return SUCCESS;
+
         }
-        catch ( Exception e )
+        catch ( Exception ex )
         {
-            System.out.println( e.toString() );
-            return ERROR;
+            throw new RuntimeException( "Error while previewing the imported value", ex );
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Abstract method
+    // -------------------------------------------------------------------------
+
+    public abstract void executeViewData( ExcelItemGroup importReport, List<ExcelItem> importItems );
 }

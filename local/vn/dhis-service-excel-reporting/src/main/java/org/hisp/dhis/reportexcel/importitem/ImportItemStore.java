@@ -28,7 +28,7 @@ public interface ImportItemStore
     public Collection<ExcelItemGroup> getImportReports( OrganisationUnit organisationUnit );
 
     // -------------------------------------------------------------------------
-    // Excelitem services
+    // Import Item services
     // -------------------------------------------------------------------------
 
     public int addImportItem( ExcelItem importItem );
@@ -42,6 +42,8 @@ public interface ImportItemStore
     public ExcelItem getImportItem( int id );
 
     public ExcelItem getImportItem( String name );
+    
+    public Collection <Integer> getSheets();
 
     // -------------------------------------------------------------------------
     // DataElement Order

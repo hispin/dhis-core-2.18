@@ -103,7 +103,7 @@ public class AddExportItemAction
         this.exportReportId = exportReportId;
     }
 
-    public Integer getReportId()
+    public Integer getExportReportId()
     {
         return exportReportId;
     }

@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportexcel.importitem;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -93,6 +93,11 @@ public class DefaultImportItemService
         return i18n( i18nService, importItemStore.getImportReport( id ) );
     }
 
+    public ExcelItemGroup getImportReport( String name )
+    {
+        return importItemStore.getImportReport( name );
+    }
+
     public void updateImportReport( ExcelItemGroup importReport )
     {
         importItemStore.updateImportReport( importReport );
@@ -120,7 +125,6 @@ public class DefaultImportItemService
 
     public void deleteImportItem( int id )
     {
-
         i18nService.removeObject( importItemStore.getImportItem( id ) );
 
         importItemStore.deleteImportItem( id );
@@ -128,13 +132,11 @@ public class DefaultImportItemService
 
     public Collection<ExcelItem> getAllImportItem()
     {
-
         return i18n( i18nService, importItemStore.getAllImportItem() );
     }
 
     public void updateImportItem( ExcelItem excelItem )
     {
-
         importItemStore.updateImportItem( excelItem );
 
         i18nService.verify( excelItem );
@@ -142,8 +144,17 @@ public class DefaultImportItemService
 
     public ExcelItem getImportItem( int id )
     {
-
         return i18n( i18nService, importItemStore.getImportItem( id ) );
+    }
+
+    public ExcelItem getImportItem( String name )
+    {
+        return importItemStore.getImportItem( name );
+    }
+
+    public Collection<Integer> getAllSheet()
+    {
+        return importItemStore.getSheets();
     }
 
     // -------------------------------------------------------------------------
@@ -164,15 +175,4 @@ public class DefaultImportItemService
     {
         importItemStore.deleteDataElementGroupOrder( id );
     }
-
-    public ExcelItem getImportItem( String name )
-    {
-        return importItemStore.getImportItem( name );
-    }
-
-    public ExcelItemGroup getImportReport( String name )
-    {
-        return importItemStore.getImportReport( name );
-    }
-
 }

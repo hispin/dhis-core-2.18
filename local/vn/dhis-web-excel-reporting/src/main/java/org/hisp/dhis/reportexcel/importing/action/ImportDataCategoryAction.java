@@ -29,7 +29,6 @@ package org.hisp.dhis.reportexcel.importing.action;
 
 import java.util.Date;
 
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -38,11 +37,10 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.importing.ImportDataGeneric;
-import org.hisp.dhis.reportexcel.importitem.ExcelItem;
-import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
  * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 
@@ -57,21 +55,13 @@ public class ImportDataCategoryAction
     {
         for ( int i = 0; i < importItemIds.length; i++ )
         {
-            int importItemId = Integer.parseInt( importItemIds[i].split( "-" )[0] );
-
-            int rowIndex = Integer.parseInt( importItemIds[i].split( "-" )[1] );
-
-            String expression = importItemIds[i].split( "-" )[2];
-
-            ExcelItem importItem = importItemService.getImportItem( importItemId );
-
-            Sheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
-
-            String value = ExcelUtils.readValueImportingByPOI( rowIndex, importItem.getColumn(), sheet );
-
-            addDataValue( expression, value, organisationUnit, period );
+            addDataValue( importItemIds[i].split( "-" )[0], importItemIds[i].split( "-" )[1], organisationUnit, period );
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive method
+    // -------------------------------------------------------------------------
 
     private void addDataValue( String expression, String value, OrganisationUnit organisationUnit, Period period )
     {

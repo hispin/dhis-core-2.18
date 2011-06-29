@@ -41,7 +41,6 @@ import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 public class GetPeriodsByImportReportAction
     extends ActionSupport
 {
-
     // -------------------------------------------------------------------------
     // Dependences
     // -------------------------------------------------------------------------

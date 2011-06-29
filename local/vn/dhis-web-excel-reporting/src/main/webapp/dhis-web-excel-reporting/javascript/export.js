@@ -56,21 +56,28 @@ function getExportReportsByGroupReceived( xmlObject ) {
 
 function getPreviousPeriod() 
 {
-	jQuery.postJSON('previousPeriodsGeneric.action', responseListPeriodReceived );	
+	jQuery.postJSON('previousPeriodsGeneric.action', {}, responseListPeriodReceived );
 }
 
 function getNextPeriod() 
 {
-	jQuery.postJSON('nextPeriodsGeneric.action', responseListPeriodReceived );	
+	jQuery.postJSON('nextPeriodsGeneric.action', {}, responseListPeriodReceived );	
 }
 
 function responseListPeriodReceived( json ) 
-{	
-	clearListById('period');
-	
-	jQuery.each( json.periods, function(i, item ){
-		addOption('period', item.name , i );
-	});
+{
+	if ( json.response == "error" )
+	{
+		setHeaderDelayMessage( json.message );
+	}
+	else
+	{
+		clearListById('period');
+		
+		jQuery.each( json.periods, function(i, item ){
+			addOption('period', item.name , i );
+		});
+	}
 }
 
 function validateGenerateReport( isAdvanced )
