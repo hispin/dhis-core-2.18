@@ -227,7 +227,12 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="clazz" value="org.hisp.dhis.configuration.Configuration" />
   </bean>
-	
+  
+  <bean id="org.hisp.dhis.constant.ConstantStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="sessionFactory" ref="sessionFactory" />
+	<property name="clazz" value="org.hisp.dhis.constant.Constant" />
+  </bean>
+  
 	<!-- Service definitions -->
 
   <bean id="org.hisp.dhis.dataelement.DataElementOperandService" class="org.hisp.dhis.dataelement.DefaultDataElementOperandService">
@@ -431,7 +436,11 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.configuration.ConfigurationService" class="org.hisp.dhis.configuration.DefaultConfigurationService">
     <property name="configurationStore" ref="org.hisp.dhis.configuration.ConfigurationStore" />
   </bean>
-	
+
+  <bean id="org.hisp.dhis.constant.ConstantService" class="org.hisp.dhis.constant.DefaultConstantService">
+    <property name="constantStore" ref="org.hisp.dhis.constant.ConstantStore" />
+  </bean>
+
 	<!-- I18nService -->
 
   <bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">

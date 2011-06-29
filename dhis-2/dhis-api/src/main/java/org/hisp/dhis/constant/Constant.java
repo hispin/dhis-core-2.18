@@ -1,4 +1,4 @@
-package org.hisp.dhis.sqlview;
+package org.hisp.dhis.constant;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,53 +27,99 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id SqlViewService.java July 06, 2010$
+ * @version $Id Constant.java June 29, 2011$
  */
-public interface SqlViewService
+public class Constant
+    extends AbstractIdentifiableObject
 {
-    String ID = SqlViewService.class.getName();
-
-    // -------------------------------------------------------------------------
-    // SqlView
-    // -------------------------------------------------------------------------
-
-    int saveSqlView( SqlView sqlView );
-
-    void deleteSqlView( SqlView sqlView );
-
-    void updateSqlView( SqlView sqlView );
-
-    SqlView getSqlView( int viewId );
-
-    SqlView getSqlView( String viewName );
-
-    Collection<SqlView> getAllSqlViews();
-
-    String makeUpForQueryStatement( String query );
-
-    String setUpViewTableName( String input );
-
-    // -------------------------------------------------------------------------
-    // SqlView Expanded
-    // -------------------------------------------------------------------------
-
-    Collection<String> getAllSqlViewNames();
-
-    boolean isViewTableExists( String viewTableName );
-
-    boolean createAllViewTables();
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     
-    boolean createViewTable( SqlView sqlViewInstance );
-
-    void dropViewTable( String viewName );
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
     
-    void dropAllSqlViewTables();
+    // -------------------------------------------------------------------------
+    // Variables
+    // -------------------------------------------------------------------------
 
-    SqlViewTable getDataSqlViewTable( String viewTableName );
+    private Double value;
 
-    String testSqlGrammar( String sql );
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public Constant()
+    {
+    }
+
+    public Constant( String name )
+    {
+        this.name = name;
+    }
+
+    public Constant( String name, Double value )
+    {
+        this.name = name;
+        this.value = value;
+    }
+
+    // -------------------------------------------------------------------------
+    // hashCode, equals and toString
+    // -------------------------------------------------------------------------
+
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( o == null )
+        {
+            return false;
+        }
+
+        if ( !(o instanceof Constant) )
+        {
+            return false;
+        }
+
+        final Constant other = (Constant) o;
+
+        return name.equals( other.getName() );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[" + name + "]";
+    }
+
+    // -------------------------------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------------------------------
+
+    public Double getValue()
+    {
+        return value;
+    }
+
+    public void setValue( Double value )
+    {
+        this.value = value;
+    }
 }

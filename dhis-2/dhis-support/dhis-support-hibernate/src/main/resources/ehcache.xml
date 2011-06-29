@@ -122,6 +122,9 @@
   
   <cache name="org.hisp.dhis.dashboard.DashboardContent"
     maxElementsInMemory="1000"/>
+	
+  <cache name="org.hisp.dhis.constant.Constant"
+    maxElementsInMemory="1000"/>
   
   <!-- Hibernate Associations -->
   
