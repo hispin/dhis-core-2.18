@@ -1,4 +1,4 @@
-package org.hisp.dhis.sqlview;
+package org.hisp.dhis.constant;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -31,49 +31,37 @@ import java.util.Collection;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id SqlViewService.java July 06, 2010$
+ * @version $Id ConstantService.java June 29, 2011$
  */
-public interface SqlViewService
+public interface ConstantService
 {
-    String ID = SqlViewService.class.getName();
+    String ID = ConstantService.class.getName();
 
     // -------------------------------------------------------------------------
-    // SqlView
+    // Concept
     // -------------------------------------------------------------------------
 
-    int saveSqlView( SqlView sqlView );
+    int saveConstant( Constant constant );
 
-    void deleteSqlView( SqlView sqlView );
+    void deleteConstant( Constant constant );
 
-    void updateSqlView( SqlView sqlView );
+    void updateConstant( Constant constant );
 
-    SqlView getSqlView( int viewId );
+    Constant getConstant( int constantId );
 
-    SqlView getSqlView( String viewName );
+    Constant getConstantByName( String constantName );
 
-    Collection<SqlView> getAllSqlViews();
-
-    String makeUpForQueryStatement( String query );
-
-    String setUpViewTableName( String input );
-
-    // -------------------------------------------------------------------------
-    // SqlView Expanded
-    // -------------------------------------------------------------------------
-
-    Collection<String> getAllSqlViewNames();
-
-    boolean isViewTableExists( String viewTableName );
-
-    boolean createAllViewTables();
+    Collection<Constant> getAllConstants();
     
-    boolean createViewTable( SqlView sqlViewInstance );
-
-    void dropViewTable( String viewName );
+    // -------------------------------------------------------------------------
+    // Constant expanding
+    // -------------------------------------------------------------------------
     
-    void dropAllSqlViewTables();
-
-    SqlViewTable getDataSqlViewTable( String viewTableName );
-
-    String testSqlGrammar( String sql );
+    Collection<Constant> getConstantsBetween( int first, int max );
+    
+    Collection<Constant> getConstantsBetweenByName( String name, int first, int max );
+    
+    int getConstantCount();
+    
+    int getConstantCountByName( String name );    
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.sqlview;
+package org.hisp.dhis.constant;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -26,54 +26,85 @@ package org.hisp.dhis.sqlview;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 import java.util.Collection;
+
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id SqlViewService.java July 06, 2010$
+ * @version $Id DefaultConstantService.java July 29, 2011$
  */
-public interface SqlViewService
+@Transactional
+public class DefaultConstantService
+    implements ConstantService
 {
-    String ID = SqlViewService.class.getName();
-
     // -------------------------------------------------------------------------
-    // SqlView
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    int saveSqlView( SqlView sqlView );
+    private GenericIdentifiableObjectStore<Constant> constantStore;
 
-    void deleteSqlView( SqlView sqlView );
-
-    void updateSqlView( SqlView sqlView );
-
-    SqlView getSqlView( int viewId );
-
-    SqlView getSqlView( String viewName );
-
-    Collection<SqlView> getAllSqlViews();
-
-    String makeUpForQueryStatement( String query );
-
-    String setUpViewTableName( String input );
+    public void setConstantStore( GenericIdentifiableObjectStore<Constant> constantStore )
+    {
+        this.constantStore = constantStore;
+    }
 
     // -------------------------------------------------------------------------
-    // SqlView Expanded
+    // Constant
     // -------------------------------------------------------------------------
 
-    Collection<String> getAllSqlViewNames();
+    public int saveConstant( Constant constant )
+    {
+        return constantStore.save( constant );
+    }
 
-    boolean isViewTableExists( String viewTableName );
+    public void updateConstant( Constant constant )
+    {
+        constantStore.update( constant );
+    }
 
-    boolean createAllViewTables();
+    public void deleteConstant( Constant constant )
+    {
+        constantStore.delete( constant );
+    }
+
+    public Constant getConstant( int constantId )
+    {
+        return constantStore.get( constantId );
+    }
+
+    public Constant getConstantByName( String constantName )
+    {
+        return constantStore.getByName( constantName );
+    }
+
+    public Collection<Constant> getAllConstants()
+    {
+        return constantStore.getAll();
+    }
+
+    // -------------------------------------------------------------------------
+    // Constant expanding
+    // -------------------------------------------------------------------------
     
-    boolean createViewTable( SqlView sqlViewInstance );
+    public int getConstantCount()
+    {
+        return constantStore.getCount();
+    }
 
-    void dropViewTable( String viewName );
-    
-    void dropAllSqlViewTables();
+    public int getConstantCountByName( String name )
+    {
+        return constantStore.getCountByName( name );
+    }
 
-    SqlViewTable getDataSqlViewTable( String viewTableName );
+    public Collection<Constant> getConstantsBetween( int first, int max )
+    {
+        return constantStore.getBetween( first, max );
+    }
 
-    String testSqlGrammar( String sql );
+    public Collection<Constant> getConstantsBetweenByName( String name, int first, int max )
+    {
+        return constantStore.getBetweenByName( name, first, max );
+    }
 }
