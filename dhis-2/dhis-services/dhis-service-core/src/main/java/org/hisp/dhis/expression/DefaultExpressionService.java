@@ -29,9 +29,9 @@ package org.hisp.dhis.expression;
 
 import static org.hisp.dhis.expression.Expression.EXP_CLOSE;
 import static org.hisp.dhis.expression.Expression.EXP_OPEN;
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
-import static org.hisp.dhis.expression.Expression.PAR_OPEN;
 import static org.hisp.dhis.expression.Expression.PAR_CLOSE;
+import static org.hisp.dhis.expression.Expression.PAR_OPEN;
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 
 import java.util.Collection;
@@ -45,6 +45,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -75,10 +77,7 @@ public class DefaultExpressionService
     private static final Log log = LogFactory.getLog( DefaultExpressionService.class );
 
     private final Pattern FORMULA_PATTERN = Pattern.compile( FORMULA_EXPRESSION );
-
     private final Pattern OPERAND_PATTERN = Pattern.compile( OPERAND_EXPRESSION );
-
-    private final String DAYS_DESCRIPTION = "[Number of days]";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -96,6 +95,13 @@ public class DefaultExpressionService
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
+    }
+    
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
     }
 
     private DataValueService dataValueService;
@@ -214,6 +220,8 @@ public class DefaultExpressionService
     public String convertExpression( String expression, Map<Object, Integer> dataElementMapping,
         Map<Object, Integer> categoryOptionComboMapping )
     {
+        //TODO constants
+        
         final StringBuffer convertedFormula = new StringBuffer();
 
         if ( expression != null )
@@ -231,13 +239,13 @@ public class DefaultExpressionService
 
                 if ( mappedDataElementId == null )
                 {
-                    log.info( "Data element identifier refers to non-existing object: " + operand.getDataElementId() );
+                    log.warn( "Data element identifier refers to non-existing object: " + operand.getDataElementId() );
 
                     match = NULL_REPLACEMENT;
                 }
                 else if ( !operand.isTotal() && mappedCategoryOptionComboId == null )
                 {
-                    log.info( "Category option combo identifer refers to non-existing object: "
+                    log.warn( "Category option combo identifer refers to non-existing object: "
                         + operand.getOptionComboId() );
 
                     match = NULL_REPLACEMENT;
@@ -292,7 +300,29 @@ public class DefaultExpressionService
 
             final String match = matcher.group();
 
-            if ( !DAYS_EXPRESSION.equals( match ) )
+            if ( DAYS_EXPRESSION.equals( match ) )
+            {
+                // Ignore
+            }
+            else if ( match.matches( CONSTANT_EXPRESSION ) )
+            {
+                Integer id = null;
+                
+                try
+                {
+                    id = Integer.parseInt( stripConstantExpression( match ) );
+                }
+                catch ( NumberFormatException ex )
+                {
+                    return ID_NOT_NUMERIC;
+                }
+                
+                if ( constantService.getConstant( id ) == null )
+                {
+                    return CONSTANT_DOES_NOT_EXIST;
+                }                    
+            }
+            else
             {
                 try
                 {
@@ -349,6 +379,19 @@ public class DefaultExpressionService
                 if ( DAYS_EXPRESSION.equals( match ) )
                 {
                     match = DAYS_DESCRIPTION;
+                }
+                else if ( match.matches( CONSTANT_EXPRESSION ) )
+                {
+                    final Integer id = Integer.parseInt( stripConstantExpression( match ) );
+                    
+                    final Constant constant = constantService.getConstant( id );
+                    
+                    if ( constant == null )
+                    {
+                        throw new IllegalArgumentException( "Identifier does not reference a constant: " + id );
+                    }
+                    
+                    match = constant.getName();
                 }
                 else
                 {
@@ -436,10 +479,16 @@ public class DefaultExpressionService
             while ( matcher.find() )
             {
                 String match = matcher.group();
-
+                
                 if ( DAYS_EXPRESSION.equals( match ) ) // Days
                 {
                     match = days != null ? String.valueOf( days ) : NULL_REPLACEMENT;
+                }
+                else if ( match.matches( CONSTANT_EXPRESSION ) ) // Constant
+                {
+                    final Constant constant = constantService.getConstant( Integer.parseInt( stripConstantExpression( match ) ) );
+                    
+                    match = constant != null ? String.valueOf( constant.getValue() ) : NULL_REPLACEMENT; 
                 }
                 else // Operand
                 {
@@ -465,7 +514,7 @@ public class DefaultExpressionService
                         return null;
                     }
 
-                    match = (value == null) ? NULL_REPLACEMENT : value;
+                    match = value != null ? value : NULL_REPLACEMENT;
                 }
 
                 matcher.appendReplacement( buffer, match );
@@ -477,7 +526,7 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
 
-    public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Integer days )
+    public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<Integer, Double> constantMap, Integer days )
     {
         StringBuffer buffer = null;
 
@@ -495,13 +544,19 @@ public class DefaultExpressionService
                 {
                     match = days != null ? String.valueOf( days ) : NULL_REPLACEMENT;
                 }
+                else if ( match.matches( CONSTANT_EXPRESSION ) ) // Constant
+                {
+                    final Double constant = constantMap.get( Integer.parseInt( stripConstantExpression( match ) ) );
+                    
+                    match = constant != null ? String.valueOf( constant ) : NULL_REPLACEMENT;
+                }
                 else // Operand
                 {
                     final DataElementOperand operand = DataElementOperand.getOperand( match );
 
                     final Double aggregatedValue = valueMap.get( operand );
 
-                    match = (aggregatedValue == null) ? NULL_REPLACEMENT : String.valueOf( aggregatedValue );
+                    match = aggregatedValue != null ? String.valueOf( aggregatedValue ) : NULL_REPLACEMENT;
                 }
 
                 matcher.appendReplacement( buffer, match );
@@ -511,5 +566,10 @@ public class DefaultExpressionService
         }
 
         return buffer != null ? buffer.toString() : null;
+    }
+    
+    private static final String stripConstantExpression( String match )
+    {
+        return match != null ? match.replaceAll( "[\\[C\\]]", "" ) : null;
     }
 }

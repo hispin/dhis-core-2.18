@@ -28,6 +28,7 @@ package org.hisp.dhis.constant;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Dang Duy Hieu
@@ -52,6 +53,8 @@ public interface ConstantService
     Constant getConstantByName( String constantName );
 
     Collection<Constant> getAllConstants();
+    
+    Map<Integer, Double> getConstantMap();
     
     // -------------------------------------------------------------------------
     // Constant expanding

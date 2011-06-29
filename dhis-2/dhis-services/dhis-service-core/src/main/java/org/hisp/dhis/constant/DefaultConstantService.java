@@ -27,6 +27,8 @@ package org.hisp.dhis.constant;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +84,18 @@ public class DefaultConstantService
     public Collection<Constant> getAllConstants()
     {
         return constantStore.getAll();
+    }
+    
+    public Map<Integer, Double> getConstantMap()
+    {
+        Map<Integer, Double> map = new HashMap<Integer, Double>();
+        
+        for ( Constant constant : getAllConstants() )
+        {
+            map.put( constant.getId(), constant.getValue() );
+        }
+        
+        return map;
     }
 
     // -------------------------------------------------------------------------

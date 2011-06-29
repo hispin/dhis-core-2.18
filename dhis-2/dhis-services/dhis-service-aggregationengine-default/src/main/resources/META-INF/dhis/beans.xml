@@ -57,6 +57,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="aggregationCache" ref="org.hisp.dhis.aggregation.impl.cache.AggregationCache" />
+	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
   </bean>
 
 </beans>

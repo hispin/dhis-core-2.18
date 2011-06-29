@@ -124,7 +124,7 @@
     maxElementsInMemory="1000"/>
 	
   <cache name="org.hisp.dhis.constant.Constant"
-    maxElementsInMemory="1000"/>
+    maxElementsInMemory="200"/>
   
   <!-- Hibernate Associations -->
   

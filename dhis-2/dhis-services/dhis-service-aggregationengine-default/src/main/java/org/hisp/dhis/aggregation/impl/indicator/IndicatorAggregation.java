@@ -27,9 +27,9 @@ package org.hisp.dhis.aggregation.impl.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 import static org.hisp.dhis.system.util.MathUtils.INVALID;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
-import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.aggregation.impl.cache.AggregationCache;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -84,7 +85,14 @@ public class IndicatorAggregation
     {
         this.categoryService = categoryService;
     }
-    
+
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
+
     // -------------------------------------------------------------------------
     // Indicator aggregation
     // -------------------------------------------------------------------------
@@ -139,6 +147,8 @@ public class IndicatorAggregation
     
     private String generateExpression( String expression, Date startDate, Date endDate, OrganisationUnit organisationUnit, int days )
     {
+        Map<Integer, Double> constantMap = constantService.getConstantMap();
+        
         Set<DataElementOperand> operands = expressionService.getOperandsInExpression( expression );
         
         Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
@@ -151,6 +161,6 @@ public class IndicatorAggregation
             valueMap.put( operand, aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit ) );            
         }
         
-        return expressionService.generateExpression( expression, valueMap, null );
+        return expressionService.generateExpression( expression, valueMap, constantMap, null );
     }
 }

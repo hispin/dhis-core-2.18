@@ -41,6 +41,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -104,6 +106,8 @@ public class ExpressionServiceTest
 
     private int categoryOptionComboId;
 
+    private int constantIdA;
+
     private String expressionA;
 
     private String expressionB;
@@ -111,11 +115,13 @@ public class ExpressionServiceTest
     private String expressionC;
 
     private String expressionD;
+    
+    private String expressionE;
 
     private String descriptionA;
 
     private String descriptionB;
-
+    
     private Set<DataElement> dataElements = new HashSet<DataElement>();
 
     private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
@@ -134,6 +140,8 @@ public class ExpressionServiceTest
 
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
+        constantService = (ConstantService) getBean( ConstantService.ID );
+        
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
@@ -188,12 +196,15 @@ public class ExpressionServiceTest
 
         organisationUnitService.addOrganisationUnit( source );
 
+        constantIdA = constantService.saveConstant( new Constant( "ConstantA", 2.0 ) );
+        
         expressionA = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+[" + dataElementIdB + SEPARATOR
             + categoryOptionComboId + "]";
         expressionB = "[" + dataElementIdC + SEPARATOR + categoryOptionComboId + "]-[" + dataElementIdD + SEPARATOR
             + categoryOptionComboId + "]";
         expressionC = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+[" + dataElementIdE + "]-10";
         expressionD = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+" + DAYS_EXPRESSION;
+        expressionE = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]*[C" + constantIdA + "]";
 
         descriptionA = "Expression A";
         descriptionB = "Expression B";
@@ -249,13 +260,25 @@ public class ExpressionServiceTest
 
         Double value = expressionService.getExpressionValue( expression, period, source, false, false, null );
 
-        assertEquals( value, 15.0 );
+        assertEquals( value, 15.0, 0.1 );
 
         expression = new Expression( expressionB, descriptionB, dataElements, optionCombos );
 
         value = expressionService.getExpressionValue( expression, period, source, false, false, null );
 
-        assertEquals( 0.0, value );
+        assertEquals( 0.0, value, 0.1 );
+
+        expression = new Expression( expressionD, descriptionB, dataElements, optionCombos );
+
+        value = expressionService.getExpressionValue( expression, period, source, false, false, 5 );
+
+        assertEquals( 15.0, value, 0.1 );
+
+        expression = new Expression( expressionE, descriptionB, dataElements, optionCombos );
+
+        value = expressionService.getExpressionValue( expression, period, source, false, false, null );
+
+        assertEquals( 20.0, value, 0.1 );
     }
 
     @Test
@@ -306,6 +329,9 @@ public class ExpressionServiceTest
     {
         assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionA ) );
         assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionB ) );
+        assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionC ) );
+        assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionD ) );
+        assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionE ) );
 
         expressionA = "[" + dataElementIdA + SEPARATOR + "foo" + "] + 12";
 
@@ -327,6 +353,14 @@ public class ExpressionServiceTest
         expressionA = "12 x 4";
 
         assertEquals( ExpressionService.EXPRESSION_NOT_WELL_FORMED, expressionService.expressionIsValid( expressionA ) );
+        
+        expressionA = "12 + [Cfoo]";
+
+        assertEquals( ExpressionService.ID_NOT_NUMERIC, expressionService.expressionIsValid( expressionA ) );
+
+        expressionA = "12 + [C999999]";
+
+        assertEquals( ExpressionService.CONSTANT_DOES_NOT_EXIST, expressionService.expressionIsValid( expressionA ) );
     }
 
     @Test
@@ -335,6 +369,14 @@ public class ExpressionServiceTest
         String description = expressionService.getExpressionDescription( expressionA );
 
         assertEquals( "DataElementA+DataElementB", description );
+        
+        description = expressionService.getExpressionDescription( expressionD );
+        
+        assertEquals( description, "DataElementA+" + ExpressionService.DAYS_DESCRIPTION );
+
+        description = expressionService.getExpressionDescription( expressionE );
+        
+        assertEquals( description, "DataElementA*ConstantA" );
     }
 
     @Test
@@ -343,6 +385,7 @@ public class ExpressionServiceTest
         assertEquals( "10+5", expressionService.generateExpression( expressionA, period, source, false, false, null ) );
         assertEquals( "0-0", expressionService.generateExpression( expressionB, period, source, false, false, null ) );
         assertEquals( "10+7", expressionService.generateExpression( expressionD, period, source, false, false, 7 ) );
+        assertEquals( "10*2.0", expressionService.generateExpression( expressionE, period, source, false, false, null ) );
     }
 
     @Test
@@ -351,9 +394,13 @@ public class ExpressionServiceTest
         Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
         valueMap.put( new DataElementOperand( dataElementIdA, categoryOptionComboId ), new Double( 12 ) );
         valueMap.put( new DataElementOperand( dataElementIdB, categoryOptionComboId ), new Double( 34 ) );
+        
+        Map<Integer, Double> constantMap = new HashMap<Integer, Double>();
+        constantMap.put( constantIdA, 2.0 );
 
-        assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, null ) );
-        assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, 5 ) );
+        assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, constantMap, null ) );
+        assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, constantMap, 5 ) );
+        assertEquals( "12.0*2.0", expressionService.generateExpression( expressionE, valueMap, constantMap, null ) );
     }
 
     // -------------------------------------------------------------------------
