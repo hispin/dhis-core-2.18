@@ -129,20 +129,24 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_ACTIVE, String.valueOf( unit.isActive() ) );
                 writer.writeElement( FIELD_COMMENT, unit.getComment() );
                 writer.writeElement( FIELD_GEO_CODE, unit.getGeoCode() );
+
+                writer.openElement( FIELD_FEATURE, ATTRIBUTE_TYPE, unit.getFeatureType() );
                 
-                writer.openElement( FIELD_FEATURE, ATTRIBUTE_TYPE, unit.getFeatureType() );                
                 for ( CoordinatesTuple tuple : unit.getCoordinatesAsList() )
                 {
-                    if (tuple.getNumberOfCoordinates() > 0) {
+                    if ( tuple.hasCoordinates() )
+                    {
                         writer.openElement( FIELD_COORDINATES_TUPLE );
-
+                        
                         for ( String coordinates : tuple.getCoordinatesTuple() )
                         {
                             writer.writeElement( FIELD_COORDINATES, coordinates );
                         }
+                        
                         writer.closeElement();
                     }
                 }
+
                 writer.closeElement();
                 
                 writer.writeElement( FIELD_LAST_UPDATED, DateUtils.getMediumDateString( unit.getLastUpdated(), EMPTY ) );
@@ -198,13 +202,16 @@ public class OrganisationUnitConverter
                 if ( unit.getFeatureType() != null )
                 {
                     List<CoordinatesTuple> list = new ArrayList<CoordinatesTuple>();
+                    
                     while ( reader.moveToStartElement( FIELD_COORDINATES_TUPLE, FIELD_FEATURE ) )
                     {
                         CoordinatesTuple tuple = new CoordinatesTuple();
+                        
                         while ( reader.moveToStartElement( FIELD_COORDINATES, FIELD_COORDINATES_TUPLE ) )
                         {
                             tuple.addCoordinates( reader.getElementValue() );
                         }
+                        
                         list.add( tuple );
                     }
                     

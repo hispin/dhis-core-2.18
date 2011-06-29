@@ -275,21 +275,24 @@ public class OrganisationUnit
     {
         StringBuilder builder = new StringBuilder();
         
-        if ( list != null && list.size() > 0 )
+        if ( CoordinatesTuple.hasCoordinates( list ) )
         {
             builder.append( "[" );
             
             for ( CoordinatesTuple tuple : list )
             {
-                builder.append( "[[" );
-
-                for ( String coordinates : tuple.getCoordinatesTuple() )
+                if ( tuple.hasCoordinates() )
                 {
-                    builder.append( "[" + coordinates + "]," );
+                    builder.append( "[[" );
+    
+                    for ( String coordinates : tuple.getCoordinatesTuple() )
+                    {
+                        builder.append( "[" + coordinates + "]," );
+                    }
+                    
+                    builder.deleteCharAt( builder.lastIndexOf( "," ) );            
+                    builder.append( "]]," );
                 }
-                
-                builder.deleteCharAt( builder.lastIndexOf( "," ) );            
-                builder.append( "]]," );
             }
             
             builder.deleteCharAt( builder.lastIndexOf( "," ) );
