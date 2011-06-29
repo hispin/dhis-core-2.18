@@ -41,6 +41,7 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
@@ -97,6 +98,13 @@ public class DefaultIndicatorDataMart
     {
         this.crossTabService = crossTabService;
     }
+    
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
 
     private BatchHandlerFactory batchHandlerFactory;
 
@@ -120,6 +128,8 @@ public class DefaultIndicatorDataMart
         
         final AggregatedIndicatorValue indicatorValue = new AggregatedIndicatorValue();
         
+        final Map<Integer, Double> constantMap = constantService.getConstantMap();
+        
         for ( final Period period : periods )
         {
             int days = daysBetween( period.getStartDate(), period.getEndDate() );
@@ -136,11 +146,11 @@ public class DefaultIndicatorDataMart
                 {                
                     for ( final Indicator indicator : indicators )
                     {
-                        final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap, days ) );
+                        final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap, constantMap, days ) );
 
                         if ( !isEqual( denominatorValue, 0d ) )
                         {
-                            final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, days ) );
+                            final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, constantMap, days ) );
                          
                             if ( !( omitZeroNumerator && isEqual( numeratorValue, 0d ) ) )
                             {

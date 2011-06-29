@@ -54,13 +54,17 @@ public interface ExpressionService
     final String DATAELEMENT_DOES_NOT_EXIST = "data_element_does_not_exist";
     final String CATEGORYOPTIONCOMBO_DOES_NOT_EXIST = "category_option_combo_does_not_exist";
     final String EXPRESSION_NOT_WELL_FORMED = "expression_not_well_formed";
+    final String CONSTANT_DOES_NOT_EXIST = "constant_does_not_exist";
 
+
+    final String DAYS_DESCRIPTION = "[Number of days]";
     final String NULL_REPLACEMENT = "0";
     final String SPACE = " ";
 
     final String FORMULA_EXPRESSION = "\\[.+?\\]";
     final String OPERAND_EXPRESSION = "\\[\\d+?.*?\\]";
     final String DAYS_EXPRESSION = "[days]";
+    final String CONSTANT_EXPRESSION = "\\[C(\\d+?)\\]";
     
     /**
      * Adds a new Expression to the database.
@@ -212,5 +216,5 @@ public interface ExpressionService
      * @param valueMap The map containing data element identifiers and aggregated value.
      * @param days The number to be substituted with the days expression in the formula.
      */
-    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Integer days );
+    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<Integer, Double> constantMap, Integer days );
 }

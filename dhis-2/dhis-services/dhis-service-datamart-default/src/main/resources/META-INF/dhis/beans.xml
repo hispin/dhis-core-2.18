@@ -110,6 +110,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
     <property name="crossTabService" ref="org.hisp.dhis.datamart.crosstab.CrossTabService" />
+	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
   </bean>
     
