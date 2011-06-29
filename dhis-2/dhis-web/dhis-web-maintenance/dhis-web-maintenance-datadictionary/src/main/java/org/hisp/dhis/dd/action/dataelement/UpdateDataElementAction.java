@@ -138,7 +138,14 @@ public class UpdateDataElementAction
     {
         this.numberType = numberType;
     }
+    
+    private String valueType;
 
+    public void setValueType( String valueType )
+    {
+        this.valueType = valueType;
+    }
+    
     private String aggregationOperator;
 
     public void setAggregationOperator( String aggregationOperator )
@@ -215,6 +222,7 @@ public class UpdateDataElementAction
         dataElement.setDescription( description );
         dataElement.setActive( active );
         dataElement.setDomainType( domainType );
+        dataElement.setType( valueType );
         dataElement.setNumberType( numberType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
