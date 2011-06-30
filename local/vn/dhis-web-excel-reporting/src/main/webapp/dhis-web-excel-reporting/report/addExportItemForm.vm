@@ -22,7 +22,7 @@
 			<td>: $!encoder.htmlEncode($!exportReport.name)</td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString('report_type')</label></td>
+			<td><label>$i18n.getString('export_report_type')</label></td>
 			<td>: $i18n.getString( $!exportReport.getReportType() )</td>
 		</tr>
 		<tr>

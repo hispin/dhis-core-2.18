@@ -13,7 +13,7 @@
 		<td><input type="text" id="name" name="name"  style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}"/></td>
 	</tr>
 	<tr>
-		<td><label>$i18n.getString('import_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label>$i18n.getString('import_report_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="type" name="type" style="min-width:20em">
 				<option value='NORMAL'>$i18n.getString('NORMAL')</option>					
@@ -23,7 +23,7 @@
 		</td>
 	</tr>	
 	<tr>
-		<td><label>$i18n.getString('periodType')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label>$i18n.getString('period_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em">
 				#foreach ( $periodType in $periodTypes )
