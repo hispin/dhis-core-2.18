@@ -29,6 +29,7 @@ package org.hisp.dhis.system.deletion;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -582,7 +583,6 @@ public abstract class DeletionHandler
     {
     }
     
-    
     public boolean allowDeletePatientDataValue( PatientDataValue patientDataValue )
     {
         return true;
@@ -607,6 +607,15 @@ public abstract class DeletionHandler
     }
 
     public void deleteProgramAttributeValue( ProgramAttributeValue programAttributeValue )
+    {
+    }
+    
+    public boolean allowDeleteConstant( Constant constant )
+    {
+        return true;
+    }
+    
+    public void deleteConstant( Constant constant )
     {
     }
 }

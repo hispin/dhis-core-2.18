@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  */
 
 import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -48,6 +49,13 @@ public class DataElementCategoryDeletionHandler
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
+    }
+
+    private ConceptService conceptService;
+
+    public void setConceptService( ConceptService conceptService )
+    {
+        this.conceptService = conceptService;
     }
 
     // -------------------------------------------------------------------------
@@ -82,6 +90,8 @@ public class DataElementCategoryDeletionHandler
     @Override
     public void deleteConcept( Concept concept )
     {
+        Concept conceptDefault = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
+
         for ( DataElementCategory category : categoryService.getAllDataElementCategories() )
         {
             Concept categoryConcept = category.getConcept();
@@ -90,7 +100,7 @@ public class DataElementCategoryDeletionHandler
             {
                 if ( categoryConcept.equals( concept ) )
                 {
-                    category.setConcept( null );
+                    category.setConcept( conceptDefault );
                     categoryService.updateDataElementCategory( category );
                 }
             }
