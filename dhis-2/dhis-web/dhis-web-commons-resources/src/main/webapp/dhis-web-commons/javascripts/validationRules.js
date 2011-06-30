@@ -361,5 +361,14 @@ var validationRules = {
         "description" : {
             "rangelength" : [ 2, 160 ]
         }
+    },
+    "constant" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [ 2, 230 ]
+        },
+        "value" : {
+            "required" : true
+        }
     }
 }

@@ -1,7 +1,7 @@
-package org.hisp.dhis.constant;
+package org.hisp.dhis.dataadmin.action.constant;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,99 +27,84 @@ package org.hisp.dhis.constant;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.constant.comparator.ConstantNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id Constant.java June 29, 2011$
+ * @version $Id$
  */
-public class Constant
-    extends AbstractIdentifiableObject
+public class GetConstantListAction
+    extends ActionPagingSupport<Constant>
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private List<Constant> constants;
+
+    public List<Constant> getConstants()
+    {
+        return constants;
+    }
+
+    private String key;
     
-    // -------------------------------------------------------------------------
-    // Variables
-    // -------------------------------------------------------------------------
-
-    private double value;
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public Constant()
+    public String getKey()
     {
+        return key;
     }
 
-    public Constant( String name )
+    public void setKey( String key )
     {
-        this.name = name;
-    }
-
-    public Constant( String name, double value )
-    {
-        this.name = name;
-        this.value = value;
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
+    // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
-    public int hashCode()
+    public String execute()
     {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
+        if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            return true;
+            this.paging = createPaging( constantService.getConstantCountByName( key ) );
+            
+            constants = new ArrayList<Constant>( constantService.getConstantsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
-
-        if ( o == null )
+        else
         {
-            return false;
+            this.paging = createPaging( constantService.getConstantCount() );
+            
+            constants = new ArrayList<Constant>( constantService.getConstantsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
+        
+        Collections.sort( constants, new ConstantNameComparator() );
 
-        if ( !(o instanceof Constant) )
-        {
-            return false;
-        }
-
-        final Constant other = (Constant) o;
-
-        return name.equals( other.getName() );
+        return SUCCESS;
     }
 
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public double getValue()
-    {
-        return value;
-    }
-
-    public void setValue( double value )
-    {
-        this.value = value;
-    }
 }

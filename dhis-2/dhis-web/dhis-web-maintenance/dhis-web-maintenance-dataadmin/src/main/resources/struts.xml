@@ -385,5 +385,66 @@
       <param name="requiredAuthorities">F_SQLVIEW_MANAGEMENT</param>
     </action>
 
+	<!-- Constant Name -->
+
+    <action name="getConstant" class="org.hisp.dhis.dataadmin.action.constant.GetConstantAction">
+      <result name="success" type="velocity-xml">
+        /dhis-web-maintenance-dataadmin/responseConstant.vm</result>
+    </action>
+
+    <action name="constant" class="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">
+        /dhis-web-maintenance-dataadmin/constant.vm</param>
+      <param name="requiredAuthorities">F_CONSTANT_MANAGEMENT</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="showAddConstantForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">
+        /dhis-web-maintenance-dataadmin/addConstantForm.vm</param>
+      <param name="requiredAuthorities">F_CONSTANT_ADD</param>
+    </action>
+
+    <action name="addConstant" class="org.hisp.dhis.dataadmin.action.constant.AddConstantAction">
+      <result name="success" type="redirect">constant.action</result>
+      <result name="error" type="redirect">index.action</result>
+      <param name="requiredAuthorities">F_CONSTANT_ADD</param>
+    </action>
+
+    <action name="showUpdateConstantForm" class="org.hisp.dhis.dataadmin.action.constant.GetConstantAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">
+        /dhis-web-maintenance-dataadmin/updateConstantForm.vm</param>
+      <param name="requiredAuthorities">F_CONSTANT_UPDATE</param>
+    </action>
+
+    <action name="updateConstant" class="org.hisp.dhis.dataadmin.action.constant.UpdateConstantAction">
+      <result name="success" type="redirect">constant.action</result>
+      <result name="error" type="redirect">index.action</result>
+      <param name="requiredAuthorities">F_CONSTANT_UPDATE</param>
+    </action>
+
+    <action name="validateConstant" class="org.hisp.dhis.dataadmin.action.constant.ValidateConstantAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
+    <action name="removeConstant" class="org.hisp.dhis.dataadmin.action.constant.RemoveConstantAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_CONSTANT_DELETE</param>
+    </action>
+	
   </package>
 </struts>

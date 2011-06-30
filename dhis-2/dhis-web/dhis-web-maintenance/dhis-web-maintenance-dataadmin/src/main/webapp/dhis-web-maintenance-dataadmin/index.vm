@@ -23,4 +23,5 @@ jQuery(function() {
     #introListImgItem( "displayPruneOrganisationUnitForm.action" "organisation_unit_pruning" "organisationunitpruning" )
 	#introListImgItem( "getMinMaxValidationParams.action" "min_max_value_generation" "minmaxvaluegeneration" ) 
     #introListImgItem( "showCache.action" "cache_statistics" "cachestatistics" )
+    #introListImgItem( "constant.action" "constant" "constant" )
 </ul>

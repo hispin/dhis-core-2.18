@@ -246,5 +246,43 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
   </bean>
+  
+  	<!-- Constant Name -->
+
+  <bean id="org.hisp.dhis.dataadmin.action.constant.AddConstantAction" 
+	class="org.hisp.dhis.dataadmin.action.constant.AddConstantAction"
+    scope="prototype">
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.constant.UpdateConstantAction"
+	class="org.hisp.dhis.dataadmin.action.constant.UpdateConstantAction"
+    scope="prototype">
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.constant.ValidateConstantAction"
+	class="org.hisp.dhis.dataadmin.action.constant.ValidateConstantAction"
+    scope="prototype">
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.constant.RemoveConstantAction"
+	class="org.hisp.dhis.dataadmin.action.constant.RemoveConstantAction"
+    scope="prototype">
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.constant.GetConstantAction"
+	class="org.hisp.dhis.dataadmin.action.constant.GetConstantAction"
+    scope="prototype">
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction"
+	class="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction"
+    scope="prototype">
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+  </bean>
 
 </beans>
