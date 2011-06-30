@@ -79,7 +79,7 @@ public class GetConstantAction
     public String execute()
     {
         constant = constantService.getConstant( id );
-System.out.println("\n\n constant : " + constant.getValue() );
+        
         return SUCCESS;
     }
 }

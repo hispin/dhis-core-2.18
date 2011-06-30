@@ -43,7 +43,7 @@ public class PaginatedListTest
     @Test
     public void testNextPage()
     {
-        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C" ), 2 );
+        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C" ) ).setPageSize( 2 );
         
         List<String> page = list.nextPage();
         
@@ -66,7 +66,7 @@ public class PaginatedListTest
     @Test
     public void testGetPageEmpty()
     {
-        PaginatedList<String> list = new PaginatedList<String>( new ArrayList<String>(), 2 );
+        PaginatedList<String> list = new PaginatedList<String>( new ArrayList<String>() ).setPageSize( 2 );
         
         List<String> page = list.nextPage();
         
@@ -76,15 +76,15 @@ public class PaginatedListTest
     @Test
     public void testPageCount()
     {
-        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C" ), 2 );
+        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C" ) ).setPageSize( 2 );
         
         assertEquals( 2, list.pageCount() );
         
-        list = new PaginatedList<String>( Arrays.asList( "A", "B", "C", "D" ), 2 );
+        list = new PaginatedList<String>( Arrays.asList( "A", "B", "C", "D" ) ).setPageSize( 2 );
         
         assertEquals( 2, list.pageCount() );
 
-        list = new PaginatedList<String>( Arrays.asList( "A", "B", "C", "D", "E" ), 2 );
+        list = new PaginatedList<String>( Arrays.asList( "A", "B", "C", "D", "E" ) ).setPageSize( 2 );
         
         assertEquals( 3, list.pageCount() );
     }
@@ -92,7 +92,7 @@ public class PaginatedListTest
     @Test
     public void testReset()
     {
-        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C" ), 2 );
+        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C" ) ).setPageSize( 2 );
         
         assertTrue( list.nextPage().contains( "A" ) );
         
@@ -100,4 +100,40 @@ public class PaginatedListTest
 
         assertTrue( list.nextPage().contains( "A" ) );        
     }
+    
+    @Test
+    public void testSetNumberOfPages()
+    {
+        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C", "D", "E" ) ).setNumberOfPages( 3 );
+        
+        assertEquals( 3, list.pageCount() );
+        
+        assertEquals( 2, list.nextPage().size() );
+    }
+    
+    @Test
+    public void testNextPageNumberOfPages()
+    {
+        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C", "D", "E" ) ).setNumberOfPages( 2 );
+        
+        List<String> page = list.nextPage();
+        
+        assertNotNull( page );
+        assertEquals( 3, page.size() );
+        assertTrue( page.contains( "A" ) );
+        assertTrue( page.contains( "B" ) );
+        assertTrue( page.contains( "C" ) );
+        
+        page = list.nextPage();
+        
+        assertNotNull( page );
+        assertEquals( 2, page.size() );
+        assertTrue( page.contains( "D" ) );
+        assertTrue( page.contains( "E" ) );
+        
+        page = list.nextPage();
+        
+        assertNull( page );
+    }
+    
 }

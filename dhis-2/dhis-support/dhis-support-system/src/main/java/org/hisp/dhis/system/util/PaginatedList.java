@@ -42,14 +42,37 @@ public class PaginatedList<T>
      */
     private static final long serialVersionUID = 6296545460322554660L;
 
-    private final int pageSize;
+    public static final int DEFAULT_PAGE_SIZE = 10;
+    
+    private int pageSize;
 
     private int fromIndex = 0;
     
-    public PaginatedList( Collection<? extends T> collection, int pageSize )
+    public PaginatedList( Collection<? extends T> collection )
     {
         super( collection );
+        this.pageSize = DEFAULT_PAGE_SIZE;
+    }
+    
+    /**
+     * Sets page size.
+     */
+    public PaginatedList<T> setPageSize( int pageSize )
+    {
         this.pageSize = pageSize;
+        
+        return this;
+    }
+    
+    /**
+     * Sets the number of pages. The page size will be calculated and set in
+     * order to provide the appropriate total number of pages.
+     */
+    public PaginatedList<T> setNumberOfPages( int pages )
+    {
+        this.pageSize = (int) Math.ceil( (double) size() / pages );
+        
+        return this;
     }
     
     /**
