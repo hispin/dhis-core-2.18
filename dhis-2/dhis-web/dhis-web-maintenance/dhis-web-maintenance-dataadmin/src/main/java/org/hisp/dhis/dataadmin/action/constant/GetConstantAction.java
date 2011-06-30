@@ -1,4 +1,4 @@
-package org.hisp.dhis.constant;
+package org.hisp.dhis.dataadmin.action.constant;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,99 +27,59 @@ package org.hisp.dhis.constant;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id Constant.java June 29, 2011$
+ * @version $Id$
  */
-public class Constant
-    extends AbstractIdentifiableObject
+public class GetConstantAction
+    implements Action
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    
     // -------------------------------------------------------------------------
-    // Variables
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private double value;
+    private ConstantService constantService;
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public Constant()
+    public void setConstantService( ConstantService constantService )
     {
-    }
-
-    public Constant( String name )
-    {
-        this.name = name;
-    }
-
-    public Constant( String name, double value )
-    {
-        this.name = name;
-        this.value = value;
+        this.constantService = constantService;
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
+    // Input
     // -------------------------------------------------------------------------
 
-    @Override
-    public int hashCode()
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof Constant) )
-        {
-            return false;
-        }
-
-        final Constant other = (Constant) o;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
-    // Getter & Setter
+    // Output
     // -------------------------------------------------------------------------
 
-    public double getValue()
+    private Constant constant;
+
+    public Constant getConstant()
     {
-        return value;
+        return constant;
     }
 
-    public void setValue( double value )
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
     {
-        this.value = value;
+        constant = constantService.getConstant( id );
+System.out.println("\n\n constant : " + constant.getValue() );
+        return SUCCESS;
     }
 }

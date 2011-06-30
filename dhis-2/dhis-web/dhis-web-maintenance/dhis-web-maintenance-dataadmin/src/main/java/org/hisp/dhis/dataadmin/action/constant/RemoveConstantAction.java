@@ -1,7 +1,7 @@
-package org.hisp.dhis.constant;
+package org.hisp.dhis.dataadmin.action.constant;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,99 +27,83 @@ package org.hisp.dhis.constant;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.i18n.I18n;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id Constant.java June 29, 2011$
+ * @version $Id$
  */
-public class Constant
-    extends AbstractIdentifiableObject
+public class RemoveConstantAction
+    implements Action
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    
     // -------------------------------------------------------------------------
-    // Variables
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private double value;
+    private ConstantService constantService;
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public Constant()
+    public void setConstantService( ConstantService constantService )
     {
-    }
-
-    public Constant( String name )
-    {
-        this.name = name;
-    }
-
-    public Constant( String name, double value )
-    {
-        this.name = name;
-        this.value = value;
+        this.constantService = constantService;
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
+    // I18n
     // -------------------------------------------------------------------------
 
-    @Override
-    public int hashCode()
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
     {
-        return name.hashCode();
+        this.i18n = i18n;
     }
 
-    @Override
-    public boolean equals( Object o )
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        if ( this == o )
+        this.id = id;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+    {
+        try
         {
-            return true;
+            constantService.deleteConstant( constantService.getConstant( id ) );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+
+                return ERROR;
+            }
         }
 
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof Constant) )
-        {
-            return false;
-        }
-
-        final Constant other = (Constant) o;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public double getValue()
-    {
-        return value;
-    }
-
-    public void setValue( double value )
-    {
-        this.value = value;
+        return SUCCESS;
     }
 }

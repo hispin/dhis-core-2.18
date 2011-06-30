@@ -1,7 +1,7 @@
-package org.hisp.dhis.constant;
+package org.hisp.dhis.dataadmin.action.constant;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,100 +26,116 @@ package org.hisp.dhis.constant;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.i18n.I18n;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id Constant.java June 29, 2011$
+ * @version $Id$
  */
-public class Constant
-    extends AbstractIdentifiableObject
+public class ValidateConstantAction
+    implements Action
 {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    
     // -------------------------------------------------------------------------
-    // Variables
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private double value;
+    private ConstantService constantService;
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public Constant()
+    public void setConstantService( ConstantService constantService )
     {
+        this.constantService = constantService;
     }
 
-    public Constant( String name )
+    // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private String name;
+
+    public void setName( String name )
     {
         this.name = name;
     }
 
-    public Constant( String name, double value )
-    {
-        this.name = name;
-        this.value = value;
-    }
+    private String value;
 
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof Constant) )
-        {
-            return false;
-        }
-
-        final Constant other = (Constant) o;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public double getValue()
-    {
-        return value;
-    }
-
-    public void setValue( double value )
+    public void setValue( String value )
     {
         this.value = value;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+    {
+        if ( name != null )
+        {
+            Constant match = constantService.getConstantByName( name );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "name_in_used" );
+
+                return ERROR;
+            }
+        }
+
+        if ( value != null )
+        {
+            try
+            {
+                double valueTemp = Double.parseDouble( value );
+
+                if ( Double.isNaN( valueTemp ) || Double.isInfinite( valueTemp ) )
+                {
+                    message = i18n.getString( "value_must_be_double" );
+
+                    return ERROR;
+                }
+            }
+            catch ( NumberFormatException nfe )
+            {
+                message = i18n.getString( "value_must_be_double" );
+
+                return ERROR;
+            }
+        }
+
+        return SUCCESS;
     }
 }
