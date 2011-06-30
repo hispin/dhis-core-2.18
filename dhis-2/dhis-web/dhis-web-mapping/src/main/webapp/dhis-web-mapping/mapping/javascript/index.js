@@ -606,7 +606,7 @@
                     {
                         xtype: 'checkbox',
                         id: 'exportimageincludelegend_chb',
-                        fieldLabel: G.i18n.legend,
+                        fieldLabel: G.i18n.legend_,
                         labelSeparator: '',				
                         isFormField: true,
                         checked: true
@@ -728,7 +728,7 @@
         items: [
             {
                 id: 'newpredefinedmaplegend_p',
-                title: G.i18n.legend,
+                title: G.i18n.legend_,
                 items: [
                     {
                         xtype: 'form',
@@ -784,7 +784,7 @@
                                 selectOnFocus: true,
                                 emptyText: G.conf.emptytext,
                                 labelSeparator: G.conf.labelseparator,
-                                fieldLabel: G.i18n.legend,
+                                fieldLabel: G.i18n.legend_,
                                 width: G.conf.combo_width_fieldset,
                                 minListWidth: G.conf.combo_width_fieldset,
                                 store: G.stores.predefinedMapLegend

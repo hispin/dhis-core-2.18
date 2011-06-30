@@ -1,6 +1,8 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		getImportStatus();
+        
+        jQuery("#type").bind("change", setSubmitButtonText);
 	});
 
 	var i18n_done = '$encoder.jsEscape( $i18n.getString( "done" ), "'" )';
@@ -9,6 +11,10 @@
 	var i18n_hide_advanced_options = '$encoder.jsEscape( $i18n.getString( "hide_advanced_options" ), "'" )';
 	var i18n_completed = '$encoder.jsEscape( $i18n.getString( "completed" ), "'" )';
 	var i18n_current_import_file = '$encoder.jsEscape( $i18n.getString( "current_import_file" ), "'" )';
+    
+    function setSubmitButtonText(event) {
+        jQuery("#submit").val(jQuery(this).find("option:selected").html());
+    }
 </script>
 
 <h3>$i18n.getString( "$importFormat" ) $i18n.getString( "import" ) #openHelp( "import" )</h3>
@@ -125,7 +131,7 @@
 		
 	<tr>
 		<td colspan="2">
-			<input type="button" value="$i18n.getString( 'import' )" onclick="submitImportForm()" style="width:50%"><input 
+			<input id="submit" type="button" value="$i18n.getString( 'import' )" onclick="submitImportForm()" style="width:50%"><input 
 				type="button" id="optionButton" value="$i18n.getString( 'show_advanced_options' )" onclick="showAdvancedOptions()" style="width:50%">
 		</td>
   	</tr>
