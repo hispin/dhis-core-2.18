@@ -30,8 +30,8 @@
 		<td align="right">		
 			<input type="button" onclick="window.location='addExportItemForm.action?exportReportId=$exportReport.id'" value="$i18n.getString('add')" style="width:150px"/><br>
 			<input type="button" onclick="window.location='listAllExportReport.action'" value="$i18n.getString('cancel')" style="width:150px"/><br>
-			<input type="button" onclick="copySelectedExportItemToExportReport()" value="$i18n.getString('copy_selected_item_to_exportreport')" style="width:150px"/><br>
-			<input type="button" onclick="copySelectedExportItemToImportReport()" value="$i18n.getString('copy_selected_item_to_importreport')" style="width:150px"/><br>
+			<input type="button" onclick="copySelectedExportItemToExportReport()" value="$i18n.getString('copy_export_item_to_exportreport')" style="width:150px"/><br>
+			<input type="button" onclick="copySelectedExportItemToImportReport()" value="$i18n.getString('copy_export_item_to_importreport')" style="width:150px"/><br>
 			<input type="button" onclick="deleteMultiExportItem( '$i18n.getString( 'confirm_delete' )')" value="$i18n.getString('remove')" style="width:150px"/>
 		</td>
 	</tr>
