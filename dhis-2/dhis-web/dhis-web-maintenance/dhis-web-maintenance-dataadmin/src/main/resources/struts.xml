@@ -392,6 +392,12 @@
         /dhis-web-maintenance-dataadmin/responseConstant.vm</result>
     </action>
 
+    <action name="getConstants" class="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction">
+      <result name="success" type="velocity-json">
+		/dhis-web-maintenance-dataadmin/jsonConstants.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
     <action name="constant" class="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>

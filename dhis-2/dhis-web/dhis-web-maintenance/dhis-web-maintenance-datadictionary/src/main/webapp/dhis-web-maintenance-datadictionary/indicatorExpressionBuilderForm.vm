@@ -1,4 +1,8 @@
 <script type="text/javascript">
+
+	var i18n_no_constant_to_select = '$encoder.jsEscape( $i18n.getString( "no_constant_to_select" ) , "'")';
+	var i18n_no_dataelement_to_select = '$encoder.jsEscape( $i18n.getString( "no_dataelement_to_select" ) , "'")';
+
 	jQuery( document ).ready( function(){
 		validator = validation( 'indicator-expression-form', insertExpression );
 
@@ -11,6 +15,7 @@
 			height: 500
 		});
 		
+		getConstantsPage();
 		getOperandsPage();
 	});	
 
@@ -56,6 +61,25 @@
 		
 		dialog.dialog("option", "title", "$i18n.getString( 'edit_denominator' )");
 		dialog.dialog( "open");
+	}
+	
+	function getConstantsPage()
+	{
+		var target = jQuery( "#indicator-expression-container select[id=constantId]" );
+		target.children().remove();
+		
+		jQuery.postJSON( '../dhis-web-maintenance-dataadmin/getConstants.action', {},
+			function( json ) {
+				if ( json.constants.length == 0 )
+				{
+					setInnerHTML( 'constantHeader', "<i style='color:red'>"+i18n_no_constant_to_select+"</i>" );
+					return;
+				}
+				
+				jQuery.each( json.constants, function(i, item) {
+					target.append( '<option value="[C'+item.constantId+']">'+item.constantName+'</option>' );
+				});
+			});
 	}
 	
 	function getOperandsPage()
@@ -154,15 +178,17 @@
 
 <div id="indicator-expression-container">
 <form id="indicator-expression-form">
-<table width="800" style="text-align:left">
+<table width="780" style="text-align:left">
 	<colgroup>
 		<col width="250"/>
-		<col width="20"/>
-		<col width="530"/>
+		<col width="10"/>
+		<col width="150"/>
+		<col width="300"/>
 	</colgroup>
 	<tr>
 		<th colspan="2">$i18n.getString( "description" )</th>
-		<th>$i18n.getString( "aggregation_operator" )</th>
+		<th colspan="2">$i18n.getString( "aggregation_operator" )</th>
+		<th id="constantHeader">$i18n.getString( "constants" )</th>
 	</tr>
 	<tr>
 		<td>
@@ -175,10 +201,17 @@
 			<input type="radio" name="aggregationOperator" value="average" onclick="getOperandsPage()"/>
 			$i18n.getString( "average" )
 		</td>
+		<td></td>
+		<td>
+			<select id="constantId" name="constantId" size="3" style="width:300px" ondblclick="insertText( 'expression', this.value )">
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="3"></td>
 	</tr>
+</table>
+<table width="800" style="text-align:left">
 	<tr>
 		<th colspan="2">$i18n.getString( "formula" )</th>
 		<th>$i18n.getString( "list_of_data_elements" )</th>
@@ -201,7 +234,7 @@
 			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px">
 			<input type="button" value="$i18n.getString( 'clear' )" onclick="clearSearchText();" style="width:60px"><br/>
 
-			<select id="dataElementId" name="dataElementId" size="7" style="width:510px" ondblclick="insertText( 'expression', this.value )">
+			<select id="dataElementId" name="dataElementId" size="7" style="width:500px" ondblclick="insertText( 'expression', this.value )">
 			</select>
 		</td>
 	</tr>
