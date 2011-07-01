@@ -30,6 +30,8 @@ package org.hisp.dhis.indicator;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -93,7 +95,7 @@ public class IndicatorDeletionHandler
             }
         }
     }
-    
+
     @Override
     public void deleteIndicatorGroup( IndicatorGroup group )
     {
@@ -112,14 +114,14 @@ public class IndicatorDeletionHandler
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
             Set<DataElement> daels = expressionService.getDataElementsInExpression( indicator.getNumerator() );
-            
+
             if ( daels != null && daels.contains( dataElement ) )
             {
                 return false;
             }
-            
+
             daels = expressionService.getDataElementsInExpression( indicator.getDenominator() );
-            
+
             if ( daels != null && daels.contains( dataElement ) )
             {
                 return false;
@@ -127,5 +129,31 @@ public class IndicatorDeletionHandler
         }
 
         return true;
-    }    
+    }
+
+    @Override
+    public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
+    {
+        for ( Indicator indicator : indicatorService.getAllIndicators() )
+        {
+            Set<DataElementCategoryOptionCombo> optionCombos = expressionService.getOptionCombosInExpression( indicator
+                .getNumerator() );
+            optionCombos.retainAll( categoryCombo.getOptionCombos() );
+
+            if ( optionCombos != null && optionCombos.size() > 0 )
+            {
+                return false;
+            }
+
+            optionCombos = expressionService.getOptionCombosInExpression( indicator.getDenominator() );
+            optionCombos.retainAll( categoryCombo.getOptionCombos() );
+
+            if ( optionCombos != null && optionCombos.size() > 0 )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
