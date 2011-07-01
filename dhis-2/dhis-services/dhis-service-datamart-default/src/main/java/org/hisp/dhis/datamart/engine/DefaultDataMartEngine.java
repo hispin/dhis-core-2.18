@@ -176,7 +176,7 @@ public class DefaultDataMartEngine
         // ---------------------------------------------------------------------
         
         Collection<DataElementOperand> dataElementOperands = categoryService.getOperands( dataElements );
-        List<DataElementOperand> indicatorOperands = new ArrayList<DataElementOperand>( categoryService.populateOperands( getOperandsInIndicators( indicators ) ) );
+        List<DataElementOperand> indicatorOperands = new ArrayList<DataElementOperand>( categoryService.populateOperands( expressionService.getOperandsInIndicators( indicators ) ) );
         
         Set<DataElementOperand> allOperands = new HashSet<DataElementOperand>();
         allOperands.addAll( dataElementOperands );
@@ -293,25 +293,5 @@ public class DefaultDataMartEngine
         aggregationCache.clearCache();
 
         clock.logTime( "Data mart export process completed" );
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Set<DataElementOperand> getOperandsInIndicators( Collection<Indicator> indicators )
-    {
-        final Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
-        
-        for ( Indicator indicator : indicators )
-        {
-            Set<DataElementOperand> temp = expressionService.getOperandsInExpression( indicator.getExplodedNumerator() );
-            operands.addAll( temp != null ? temp : new HashSet<DataElementOperand>() );
-            
-            temp = expressionService.getOperandsInExpression( indicator.getExplodedDenominator() );            
-            operands.addAll( temp != null ? temp : new HashSet<DataElementOperand>() );
-        }
-        
-        return operands;
     }
 }

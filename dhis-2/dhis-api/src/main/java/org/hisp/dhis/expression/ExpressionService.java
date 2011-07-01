@@ -34,6 +34,7 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -217,4 +218,13 @@ public interface ExpressionService
      * @param days The number to be substituted with the days expression in the formula.
      */
     String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<Integer, Double> constantMap, Integer days );
+    
+    /**
+     * Returns all Operands included in the formulas for the given collection of
+     * Indicators. Requires that the explodedNumerator and explodedDenominator
+     * properties have been populated.
+     * 
+     * @param indicators the collection of Indicators.
+     */
+    Set<DataElementOperand> getOperandsInIndicators( Collection<Indicator> indicators );
 }

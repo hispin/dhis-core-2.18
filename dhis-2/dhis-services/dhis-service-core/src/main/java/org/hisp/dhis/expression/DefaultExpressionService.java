@@ -54,6 +54,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.MathUtils;
@@ -566,6 +567,22 @@ public class DefaultExpressionService
         }
 
         return buffer != null ? buffer.toString() : null;
+    }
+
+    public Set<DataElementOperand> getOperandsInIndicators( Collection<Indicator> indicators )
+    {
+        final Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
+        
+        for ( Indicator indicator : indicators )
+        {
+            Set<DataElementOperand> temp = getOperandsInExpression( indicator.getExplodedNumerator() );
+            operands.addAll( temp != null ? temp : new HashSet<DataElementOperand>() );
+            
+            temp = getOperandsInExpression( indicator.getExplodedDenominator() );            
+            operands.addAll( temp != null ? temp : new HashSet<DataElementOperand>() );
+        }
+        
+        return operands;
     }
     
     private static final String stripConstantExpression( String match )
