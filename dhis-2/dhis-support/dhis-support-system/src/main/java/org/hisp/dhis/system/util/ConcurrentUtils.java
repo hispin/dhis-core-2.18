@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.dataelement;
+package org.hisp.dhis.system.util;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -30,16 +30,28 @@ package org.hisp.dhis.datamart.dataelement;
 import java.util.Collection;
 import java.util.concurrent.Future;
 
-import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.DataElementOperandList;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
-
 /**
  * @author Lars Helge Overland
  */
-public interface DataElementDataMart
+public class ConcurrentUtils
 {
-    Future<?> exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
-        Collection<OrganisationUnit> organisationUnits, DataElementOperandList operandList, String key );
+    /**
+     * Blocks and waits for all Futures in the given collection to complete.
+     * 
+     * @param futures the collection of Futures.
+     */
+    public static void waitForCompletion( Collection<Future<?>> futures )
+    {
+        for ( Future<?> future : futures )
+        {
+            try
+            {
+                future.get();
+            }
+            catch ( Exception ex )
+            {
+                throw new RuntimeException( ex );
+            }
+        }
+    }
 }

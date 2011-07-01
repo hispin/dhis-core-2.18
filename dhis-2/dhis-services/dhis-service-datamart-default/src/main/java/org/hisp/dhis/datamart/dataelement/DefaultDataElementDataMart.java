@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Future;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
@@ -50,6 +51,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * @author Lars Helge Overland
@@ -132,7 +134,8 @@ public class DefaultDataElementDataMart
     // DataMart functionality
     // -------------------------------------------------------------------------
     
-    public void exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
+    @Async
+    public Future<?> exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
         Collection<OrganisationUnit> organisationUnits, DataElementOperandList operandList, String key )
     {
         final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
@@ -199,5 +202,7 @@ public class DefaultDataElementDataMart
         batchHandler.flush();
         
         cacheHandler.flush();
+
+        return null;
     }
 }
