@@ -46,8 +46,7 @@ public interface DataMartEngine
      * @param useIndexes indicates whether to create indexes on the data mart tables
      *        after the export process.
      * @param processState the state object.
-     * @return the number of values exported to the data mart tables.
      */
-    int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+    void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState processState );
 }

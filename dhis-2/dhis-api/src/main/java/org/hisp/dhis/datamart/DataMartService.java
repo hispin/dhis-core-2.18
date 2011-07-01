@@ -48,7 +48,7 @@ public interface DataMartService
      * @id the DataMartExport identifier.
      * @return the number of exported values.
      */
-    int export( int id );
+    void export( int id );
 
     /**
      * Exports to data mart for the given arguments.
@@ -57,9 +57,8 @@ public interface DataMartService
      * @param indicatorIds the indicator identifiers.
      * @param periodIds the period identifiers.
      * @param organisationUnitIds the organisation unit identifiers.
-     * @return the number of exported values.
      */
-    int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+    void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     /**
@@ -70,9 +69,8 @@ public interface DataMartService
      * @param periodIds the period identifiers.
      * @param organisationUnitIds the organisation unit identifiers.
      * @param relatives the RelativePeriods.
-     * @return the number of exported values.
      */
-    int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+    void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives );
 
     /**
@@ -85,9 +83,8 @@ public interface DataMartService
      * @param relatives the RelativePeriods.
      * @param useIndexes indicates whether to create indexes on the data mart tables
      *        after the export process.
-     * @return the number of exported values.
      */
-    int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+    void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives, boolean useIndexes );
     
     // ----------------------------------------------------------------------

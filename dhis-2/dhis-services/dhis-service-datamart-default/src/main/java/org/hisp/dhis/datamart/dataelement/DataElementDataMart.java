@@ -39,6 +39,6 @@ import org.hisp.dhis.period.Period;
  */
 public interface DataElementDataMart
 {
-    int exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
+    void exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
         Collection<OrganisationUnit> organisationUnits, DataElementOperandList operandList, String key );
 }

@@ -136,4 +136,20 @@ public class PaginatedListTest
         assertNull( page );
     }
     
+    @Test
+    public void testGetPages()
+    {
+        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C", "D", "E" ) ).setPageSize( 2 );
+        
+        List<List<String>> pages = list.getPages();
+
+        assertNotNull( pages );
+        assertEquals( 3, pages.size() );
+        
+        List<String> page = pages.get( 0 );
+        assertNotNull( page );
+        assertEquals( 2, page.size() );
+        assertTrue( page.contains( "A" ) );
+        assertTrue( page.contains( "B" ) );
+    }
 }

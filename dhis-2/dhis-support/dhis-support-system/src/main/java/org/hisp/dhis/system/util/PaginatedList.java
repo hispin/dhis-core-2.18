@@ -117,4 +117,21 @@ public class PaginatedList<T>
         
         return m == 0 ? r : ( r + 1 );
     }
+    
+    /**
+     * Returns a list of all pages.
+     */
+    public List<List<T>> getPages()
+    {
+        List<List<T>> pages = new ArrayList<List<T>>();
+        
+        List<T> page = new ArrayList<T>();
+        
+        while ( ( page = nextPage() ) != null )
+        {
+            pages.add( page );
+        }
+        
+        return pages;
+    }
 }

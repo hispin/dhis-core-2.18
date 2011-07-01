@@ -147,11 +147,9 @@ public class DefaultDataMartEngine
     // -------------------------------------------------------------------------
 
     @Transactional
-    public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+    public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState state )
     {
-        int count = 0;
-
         Clock clock = new Clock().startClock().logTime( "Data mart export process started" );
         
         // ---------------------------------------------------------------------
@@ -247,7 +245,7 @@ public class DefaultDataMartEngine
 
         if ( allOperands.size() > 0 )
         {
-            count += dataElementDataMart.exportDataValues( allOperands, periods, organisationUnits, operandList, key );
+            dataElementDataMart.exportDataValues( allOperands, periods, organisationUnits, operandList, key );
 
             clock.logTime( "Exported values for data element operands (" + allOperands.size() + ")" );
         }
@@ -268,7 +266,7 @@ public class DefaultDataMartEngine
 
         if ( isIndicators )
         {
-            count += indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits, indicatorOperands, key );
+            indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits, indicatorOperands, key );
 
             clock.logTime( "Exported values for indicators (" + indicators.size() + ")" );
         }
@@ -295,8 +293,6 @@ public class DefaultDataMartEngine
         aggregationCache.clearCache();
 
         clock.logTime( "Data mart export process completed" );
-
-        return count;
     }
 
     // -------------------------------------------------------------------------
