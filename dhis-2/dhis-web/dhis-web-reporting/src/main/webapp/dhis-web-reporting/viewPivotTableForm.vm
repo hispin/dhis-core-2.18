@@ -139,7 +139,7 @@ div#pivotMenu
 <label>$i18n.getString( "period_type" )</label>
 <select id="periodType" style="width:250px">
   #foreach( $type in $periodTypes )
-  <option value="${type.name}" #if( $type.name == "Monthly" )selected="selected"#end>$encoder.htmlEncode( $type.name )</option>
+  <option value="${type.name}" #if( $type.name == "Monthly" )selected="selected"#end>$i18n.getString(  $type.name )</option>
   #end
 </select>
 </div>

@@ -43,7 +43,7 @@
 			<select id="periodTypeId" style="min-width:223px" onchange="getPeriods( 'periodTypeId', 'periodId', 'periodId', '0' )">
 				<option value="0">[ $i18n.getString( "select_period_type" ) ]</option>
 				#foreach ( $type in $periodTypes )
-					<option value="$type.name">$type.name</option>
+					<option value="$type.name">$i18n.getString( $type.name )</option>
 				#end
 			</select>
 
