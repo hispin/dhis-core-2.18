@@ -92,7 +92,7 @@ public class GetConceptListAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implemantation
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
