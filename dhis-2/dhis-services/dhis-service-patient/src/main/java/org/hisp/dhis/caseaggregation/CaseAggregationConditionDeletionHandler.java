@@ -30,6 +30,8 @@ package org.hisp.dhis.caseaggregation;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -75,16 +77,43 @@ public class CaseAggregationConditionDeletionHandler
 
         conditions = aggregationConditionService.getAllCaseAggregationCondition();
 
-        for( CaseAggregationCondition condition : conditions )
+        for ( CaseAggregationCondition condition : conditions )
         {
-            Collection<DataElement> dataElements = aggregationConditionService.getDataElementsInCondition( condition.getAggregationExpression() );
-            
+            Collection<DataElement> dataElements = aggregationConditionService.getDataElementsInCondition( condition
+                .getAggregationExpression() );
+
             if ( dataElements != null && dataElements.contains( dataElement ) )
             {
                 return false;
             }
         }
-        
+
+        return true;
+    }
+
+    @Override
+    public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
+    {
+        Collection<CaseAggregationCondition> conditions = aggregationConditionService.getAllCaseAggregationCondition();
+
+        for ( CaseAggregationCondition condition : conditions )
+        {
+            if( categoryCombo.getOptionCombos().contains( condition.getOptionCombo() ) )
+            {
+                return false;
+            }
+            
+            Collection<DataElementCategoryOptionCombo> optionCombos = aggregationConditionService
+                .getOptionCombosInCondition( condition.getAggregationExpression() );
+
+            optionCombos.retainAll( categoryCombo.getOptionCombos() );
+
+            if ( optionCombos != null && optionCombos.size() > 0 )
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 

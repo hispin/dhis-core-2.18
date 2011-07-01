@@ -66,5 +66,7 @@ public interface CaseAggregationConditionService
     
     Collection<DataElement> getDataElementsInCondition( String aggregationExpression );
     
+    Collection<DataElementCategoryOptionCombo> getOptionCombosInCondition( String aggregationExpression );
+    
     String getConditionDescription( String condition );
 }
