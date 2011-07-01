@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.ProcessState;
@@ -52,7 +53,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.Clock;
+import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.PaginatedList;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -61,6 +64,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataMartEngine
     implements DataMartEngine
 {
+    private static final int THREAD_NO = 2;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -150,7 +155,7 @@ public class DefaultDataMartEngine
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState state )
     {
-        Clock clock = new Clock().startClock().logTime( "Data mart export process started" );
+        Clock clock = new Clock().startClock().logTime( "Data mart export process started" + " 2" );
         
         // ---------------------------------------------------------------------
         // Get objects
@@ -211,8 +216,6 @@ public class DefaultDataMartEngine
         // Create aggregated data cache
         // ---------------------------------------------------------------------
 
-        DataElementOperandList operandList = new DataElementOperandList( indicatorOperands );
-
         crossTabService.createAggregatedDataCache( indicatorOperands, key );
         
         clock.logTime( "Created aggregated data cache" );
@@ -243,10 +246,19 @@ public class DefaultDataMartEngine
 
         state.setMessage( "exporting_data_for_data_elements" );
 
+        List<List<Period>> periodPages = new PaginatedList<Period>( periods ).setNumberOfPages( THREAD_NO ).getPages();
+        
         if ( allOperands.size() > 0 )
         {
-            dataElementDataMart.exportDataValues( allOperands, periods, organisationUnits, operandList, key );
+            List<Future<?>> futures = new ArrayList<Future<?>>();
+            
+            for ( List<Period> periodPage : periodPages )
+            {
+                futures.add( dataElementDataMart.exportDataValues( allOperands, periodPage, organisationUnits, new DataElementOperandList( indicatorOperands ), key ) );
+            }
 
+            ConcurrentUtils.waitForCompletion( futures );
+            
             clock.logTime( "Exported values for data element operands (" + allOperands.size() + ")" );
         }
 
@@ -266,8 +278,15 @@ public class DefaultDataMartEngine
 
         if ( isIndicators )
         {
-            indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits, indicatorOperands, key );
+            List<Future<?>> futures = new ArrayList<Future<?>>();
 
+            for ( List<Period> periodPage : periodPages )
+            {
+                futures.add( indicatorDataMart.exportIndicatorValues( indicators, periodPage, organisationUnits, indicatorOperands, key ) );
+            }
+
+            ConcurrentUtils.waitForCompletion( futures );
+            
             clock.logTime( "Exported values for indicators (" + indicators.size() + ")" );
         }
 
