@@ -79,13 +79,6 @@ public class ValidateConstantAction
         this.name = name;
     }
 
-    private String value;
-
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -110,27 +103,6 @@ public class ValidateConstantAction
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_used" );
-
-                return ERROR;
-            }
-        }
-
-        if ( value != null )
-        {
-            try
-            {
-                double valueTemp = Double.parseDouble( value );
-
-                if ( Double.isNaN( valueTemp ) || Double.isInfinite( valueTemp ) )
-                {
-                    message = i18n.getString( "value_must_be_double" );
-
-                    return ERROR;
-                }
-            }
-            catch ( NumberFormatException nfe )
-            {
-                message = i18n.getString( "value_must_be_double" );
 
                 return ERROR;
             }
