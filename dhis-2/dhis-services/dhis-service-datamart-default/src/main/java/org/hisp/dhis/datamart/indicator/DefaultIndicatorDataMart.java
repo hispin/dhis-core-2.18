@@ -117,13 +117,11 @@ public class DefaultIndicatorDataMart
     // IndicatorDataMart implementation
     // -------------------------------------------------------------------------
     
-    public int exportIndicatorValues( final Collection<Indicator> indicators, final Collection<Period> periods, 
+    public void exportIndicatorValues( final Collection<Indicator> indicators, final Collection<Period> periods, 
         final Collection<OrganisationUnit> organisationUnits, final Collection<DataElementOperand> operands, String key )
     {
         final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class ).init();
 
-        int count = 0;
-        
         final boolean omitZeroNumerator = (Boolean) systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false );
         
         final AggregatedIndicatorValue indicatorValue = new AggregatedIndicatorValue();
@@ -173,8 +171,6 @@ public class DefaultIndicatorDataMart
                                 indicatorValue.setDenominatorValue( getRounded( denominatorValue, DECIMALS ) );
                                 
                                 batchHandler.addObject( indicatorValue );
-                                
-                                count++;
                             }
                         }
                     }
@@ -185,8 +181,6 @@ public class DefaultIndicatorDataMart
         }
         
         batchHandler.flush();
-        
-        return count;
     }
     
     // -------------------------------------------------------------------------

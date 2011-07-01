@@ -132,7 +132,7 @@ public class DefaultDataElementDataMart
     // DataMart functionality
     // -------------------------------------------------------------------------
     
-    public int exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
+    public void exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
         Collection<OrganisationUnit> organisationUnits, DataElementOperandList operandList, String key )
     {
         final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
@@ -140,8 +140,6 @@ public class DefaultDataElementDataMart
         final BatchHandler<Object> cacheHandler = inMemoryBatchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).setTableName( AGGREGATEDDATA_CACHE_PREFIX + key ).init();
         
         final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
-        
-        int count = 0;
         
         final AggregatedDataValue aggregatedValue = new AggregatedDataValue();
         
@@ -186,8 +184,6 @@ public class DefaultDataElementDataMart
                         batchHandler.addObject( aggregatedValue );
                         
                         operandList.addValue( entry.getKey(), value );
-                        
-                        count++;
                     }
                 }
                 
@@ -203,7 +199,5 @@ public class DefaultDataElementDataMart
         batchHandler.flush();
         
         cacheHandler.flush();
-        
-        return count;
     }
 }

@@ -39,6 +39,6 @@ import org.hisp.dhis.period.Period;
  */
 public interface IndicatorDataMart
 {
-    int exportIndicatorValues( Collection<Indicator> indicators, Collection<Period> periods, 
+    void exportIndicatorValues( Collection<Indicator> indicators, Collection<Period> periods, 
         Collection<OrganisationUnit> organisationUnits, Collection<DataElementOperand> operands, String key );
 }
