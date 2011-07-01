@@ -155,7 +155,7 @@ public class DefaultDataMartEngine
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState state )
     {
-        Clock clock = new Clock().startClock().logTime( "Data mart export process started" + " 2" );
+        Clock clock = new Clock().startClock().logTime( "Data mart export process started" );
         
         // ---------------------------------------------------------------------
         // Get objects

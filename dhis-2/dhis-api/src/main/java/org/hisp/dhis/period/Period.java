@@ -231,7 +231,7 @@ public class Period
     @Override
     public String toString()
     {
-        return "[" + id + " " + periodType.getName() + ": " + startDate + " - " + endDate + "]";
+        return "[" + periodType.getName() + ": " + startDate + " - " + endDate + "]";
     }
 
     // -------------------------------------------------------------------------
@@ -266,6 +266,5 @@ public class Period
     public void setStartDate( Date startDate )
     {
         this.startDate = startDate;
-    }   
-    
+    }    
 }
