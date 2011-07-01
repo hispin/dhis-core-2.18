@@ -167,7 +167,7 @@ public class DefaultCaseAggregationConditionService
     {
         return aggregationConditionStore.get( dataElement, optionCombo );
     }
-    
+
     @Override
     public Collection<CaseAggregationCondition> getCaseAggregationCondition( DataElement dataElement )
     {
@@ -299,6 +299,39 @@ public class DefaultCaseAggregationConditionService
         }
 
         return dataElements;
+    }
+
+    @Override
+    public Collection<DataElementCategoryOptionCombo> getOptionCombosInCondition( String aggregationExpression )
+    {
+        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
+            + "[0-9]+" + SEPARATOR_ID + "[0-9]+" + "\\]";
+
+        Collection<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+
+        // ---------------------------------------------------------------------
+        // parse expressions
+        // ---------------------------------------------------------------------
+
+        Pattern pattern = Pattern.compile( regExp );
+
+        Matcher matcher = pattern.matcher( aggregationExpression );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+            String[] ids = info[1].split( SEPARATOR_ID );
+
+            int optionComboId = Integer.parseInt( ids[2] );
+            DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+
+            optionCombos.add( optionCombo );
+        }
+
+        return optionCombos;
     }
 
     // -------------------------------------------------------------------------
@@ -499,8 +532,8 @@ public class DefaultCaseAggregationConditionService
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
             + "INNER JOIN patientattributevalue as pav ON pav.patientid = pi.patientid "
-            + "WHERE pav.patientattributeid = " + attributeId + " " + " AND pd.organisationunitid = " + orgunitId
-            + " " + " AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
+            + "WHERE pav.patientattributeid = " + attributeId + " " + " AND pd.organisationunitid = " + orgunitId + " "
+            + " AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
             + "AND pav.value ";
     }
 
