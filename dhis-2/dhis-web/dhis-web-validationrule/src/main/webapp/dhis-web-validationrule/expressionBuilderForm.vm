@@ -12,12 +12,13 @@
 			height:500,
 			title: "$i18n.getString( 'expression' )"
 		});
+		
+		getConstantsPage();
+		getOperandsPage();
 	});
 	
 	function editLeftExpression()
 	{		
-		getOperandsPage();
-		
 		left = true;
 		
 		var leftSideDescription = getFieldValue( 'leftSideDescription' );
@@ -33,8 +34,6 @@
 	
 	function editRightExpression()
 	{
-		getOperandsPage();
-		
 		left = false;
 		
 		var rightSideDescription = getFieldValue( 'rightSideDescription' );
@@ -46,6 +45,25 @@
 		setInnerHTML( 'formulaText', rightSideTextualExpression );
 		
 		dialog.dialog("open");
+	}
+	
+	function getConstantsPage()
+	{
+		var target = jQuery( "#expression-container select[id=constantId]" );
+		target.children().remove();
+		
+		jQuery.postJSON( '../dhis-web-maintenance-dataadmin/getConstants.action', {},
+			function( json ) {
+				if ( json.constants.length == 0 )
+				{
+					setInnerHTML( 'constantHeader', "<i style='color:red'>"+i18n_no_constant_to_select+"</i>" );
+					return;
+				}
+				
+				jQuery.each( json.constants, function(i, item) {
+					target.append( '<option value="[C'+item.constantId+']">'+item.constantName+'</option>' );
+				});
+			});
 	}
 	
 	function getOperandsPage()
@@ -69,10 +87,11 @@
 			jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', {
 				expression: getFieldValue('expression')
 			}, function( json ){
-				if( json.response == 'success')
+				if( json.response == 'success' || json.response == 'error' )
 				{
 					jQuery( "#formulaText").html( json.message );
-				}else{
+				}
+				else {
 					jQuery( "#formulaText").html( '' );
 				}
 			});
@@ -120,6 +139,7 @@
 	
 	var i18n_description_not_null = '$encoder.jsEscape( $i18n.getString( "description_not_null" ) , "'")';
 	var i18n_expression_not_null = '$encoder.jsEscape( $i18n.getString( "expression_not_null" ) , "'")';
+	var i18n_no_constant_to_select = '$encoder.jsEscape( $i18n.getString( "no_constant_to_select" ) , "'")';
 </script>
 
 <div id="expression-container">
@@ -131,12 +151,17 @@
 		<col width="500"/>
 	</colgroup>
 	<tr>
-		<th colspan="3">$i18n.getString( "description" )</th>		
+		<th colspan="2">$i18n.getString( "description" )</th>		
+		<th>$i18n.getString( "constants" )</th>		
 	</tr>
 	<tr>
-		<td colspan="3">
+		<td colspan="2">
 			<input type="text" id="description" name="description" style="width:250px" class="{validate:{required:true}}"/>
-		</td>		
+		</td>
+		<td>
+			<select id="constantId" name="constantId" size="3" style="min-width:450px" ondblclick="insertText( 'expression', this.value )">
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="3"></td>
