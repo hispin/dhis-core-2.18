@@ -1,4 +1,4 @@
-package org.hisp.dhis.security.hibernate;
+package org.hisp.dhis.security;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -31,12 +31,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
@@ -47,14 +44,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Creates and returns org.acegisecurity.userdetails.UserDetails objects based
- * on requests from the Acegi framework. The returned UserDetails objects
- * contain the username, password and authorities of the requested users.
- * 
  * @author Torgeir Lorange Ostby
- * @version $Id: HibernateUserDetailsService.java 3109 2007-03-19 17:05:21Z torgeilo $
  */
-public class HibernateUserDetailsService
+public class DefaultUserDetailsService
     implements UserDetailsService
 {
     public static final String ID = UserDetailsService.class.getName();
@@ -63,11 +55,11 @@ public class HibernateUserDetailsService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
+    private UserService userService;
+    
+    public void setUserService( UserService userService )
     {
-        this.sessionFactory = sessionFactory;
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -78,7 +70,12 @@ public class HibernateUserDetailsService
     public final UserDetails loadUserByUsername( String username )
         throws UsernameNotFoundException, DataAccessException
     {
-        UserCredentials credentials = loadUserCredentials( username );
+        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
+
+        if ( credentials == null )
+        {
+            throw new UsernameNotFoundException( "Username does not exist" );
+        }
 
         return new User( credentials.getUsername(), credentials.getPassword(), true,
             true, true, true, getGrantedAuthorities( credentials ) );
@@ -101,23 +98,5 @@ public class HibernateUserDetailsService
         }
 
         return authorities;
-    }
-
-    private UserCredentials loadUserCredentials( String username )
-        throws UsernameNotFoundException
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( UserCredentials.class );
-        criteria.add( Restrictions.eq( "username", username ) );
-
-        UserCredentials userCredentials = (UserCredentials) criteria.uniqueResult();
-
-        if ( userCredentials == null )
-        {
-            throw new UsernameNotFoundException( "Username doesn't exist" );
-        }
-
-        return userCredentials;
     }
 }

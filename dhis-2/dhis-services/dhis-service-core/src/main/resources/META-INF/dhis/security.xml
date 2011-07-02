@@ -8,8 +8,8 @@
   <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
   <bean id="usernameSaltSource" class="org.hisp.dhis.security.DefaultUsernameSaltSource" />
 
-  <bean id="userDetailsService" class="org.hisp.dhis.security.hibernate.HibernateUserDetailsService">
-    <property name="sessionFactory" ref="sessionFactory" />
+  <bean id="userDetailsService" class="org.hisp.dhis.security.DefaultUserDetailsService">
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <bean id="org.hisp.dhis.security.PasswordManager" class="org.hisp.dhis.security.spring.SpringSecurityPasswordManager">
