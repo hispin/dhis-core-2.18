@@ -44,12 +44,9 @@
         <version>6.1.26</version>
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
-          <systemProperties>
-            <systemProperty>
-              <name>org.mortbay.jetty.Request.maxFormContentSize</name>
-              <value>10000000</value>
-            </systemProperty>
-          </systemProperties>
+          <systemPropertyVariables>
+            <org.mortbay.jetty.Request.maxFormContentSize>10000000</org.mortbay.jetty.Request.maxFormContentSize>
+          </systemPropertyVariables>
           <contextPath>/</contextPath>
         </configuration>
       </plugin>
