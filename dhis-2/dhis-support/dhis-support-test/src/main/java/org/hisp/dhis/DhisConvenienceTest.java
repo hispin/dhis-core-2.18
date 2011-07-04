@@ -39,6 +39,7 @@ import java.util.Set;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
@@ -962,6 +963,22 @@ public abstract class DhisConvenienceTest
         return concept;
     }
 
+    
+    /**
+     * @param uniqueCharacter A unique character to identify the object.
+     * @param value The value for constant
+     * 
+     * @return a constant instance
+     */
+    protected static Constant createConstant( char uniqueCharacter, double value )
+    {
+        Constant constant = new Constant();
+        
+        constant.setName( "Constant" + uniqueCharacter );
+        constant.setValue( value );
+        
+        return constant;
+    }
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
