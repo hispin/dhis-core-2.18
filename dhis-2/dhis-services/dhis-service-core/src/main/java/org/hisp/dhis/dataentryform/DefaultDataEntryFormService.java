@@ -62,6 +62,7 @@ public class DefaultDataEntryFormService
 {    
     private static final String EMPTY_VALUE_TAG = "value=\"\"";
     private static final String EMPTY_TITLE_TAG = "title=\"\"";
+    private static final String STYLE_TAG = "style=\"";
     private static final String TAG_CLOSE = "/>";
     private static final String EMPTY = "";
     
@@ -331,7 +332,9 @@ public class DefaultDataEntryFormService
                 // persisting to output code, and insert value and type for
                 // fields
                 // -------------------------------------------------------------
-
+                
+                String backgroundColor = "style=\"";
+                
                 String appendCode = "";
 
                 if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) )
@@ -367,6 +370,14 @@ public class DefaultDataEntryFormService
                     if ( dataElement.getType().equals( VALUE_TYPE_INT ) )
                     {
                         appendCode += historyCode;
+                        if ( minMaxDataElement != null && !dataElementValue.equals( EMPTY ) )
+                        {
+                            double value = Double.parseDouble( dataElementValue );
+                            if ( value < minMaxDataElement.getMin() || value > minMaxDataElement.getMax() )
+                            {
+                                backgroundColor = "style=\"background-color:#ff6600;";
+                            }
+                        }
                     }
 
                     appendCode += TAG_CLOSE;
@@ -380,6 +391,7 @@ public class DefaultDataEntryFormService
                 inputHtml = inputHtml.replace( "$DATAELEMENTTYPE", dataElementValueType );
                 inputHtml = inputHtml.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
                 inputHtml = inputHtml.replace( "$DISABLED", disabled );
+                inputHtml = inputHtml.replace( STYLE_TAG, backgroundColor );
 
                 if ( minMaxDataElement == null )
                 {
