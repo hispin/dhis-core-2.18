@@ -875,6 +875,22 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="showSortPatientAttributeGroup"
+			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/sortPatientAttributeGroupForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/patientAttributeGroup.js</param>
+			<param name="stylesheets">style/basic.css</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+		</action>
+		
+		<action name="savePatientAttributeGroupSortOrder"
+			class="org.hisp.dhis.patient.action.patientattributegroup.SavePatientAttributeGroupSortOrderAction">
+			<result name="success" type="redirect">patientAttributeGroup.action</result>
+		</action>
+		
 		<!-- Patient Identifier Type -->
 
 		<action name="showAddPatientIdentifierTypeForm" class="org.hisp.dhis.patient.action.NoAction">

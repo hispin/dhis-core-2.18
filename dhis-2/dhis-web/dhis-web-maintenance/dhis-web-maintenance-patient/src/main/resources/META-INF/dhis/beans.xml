@@ -918,6 +918,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.SavePatientAttributeGroupSortOrderAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.SavePatientAttributeGroupSortOrderAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	</bean>
+	
+	<bean
 		id="org.hisp.dhis.patient.action.patientattributegroup.UpdatePatientAttributeGroupAction"
 		class="org.hisp.dhis.patient.action.patientattributegroup.UpdatePatientAttributeGroupAction"
 		scope="prototype">

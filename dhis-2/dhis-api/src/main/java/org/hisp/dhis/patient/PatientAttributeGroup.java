@@ -48,6 +48,8 @@ public class PatientAttributeGroup
 
     private String description;
 
+    private Integer sortOrder;
+    
     private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
     // -------------------------------------------------------------------------
@@ -141,5 +143,13 @@ public class PatientAttributeGroup
         this.attributes = attributes;
     }
 
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
 
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
 }

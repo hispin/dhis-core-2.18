@@ -28,8 +28,11 @@
 package org.hisp.dhis.patient.action.patient;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -39,6 +42,7 @@ import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -87,14 +91,14 @@ public class ShowAddPatientFormAction
 
     private Collection<PatientAttribute> noGroupAttributes;
 
-    private Collection<PatientAttributeGroup> attributeGroups;
+    private List<PatientAttributeGroup> attributeGroups;
 
     private Collection<PatientIdentifierType> identifierTypes;
 
     private OrganisationUnit organisationUnit;
 
     private String year;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -105,15 +109,16 @@ public class ShowAddPatientFormAction
 
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
 
-        attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
+        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
+            .getAllPatientAttributeGroups() );
+        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-       
         SimpleDateFormat dataFormat = new SimpleDateFormat( "y" );
-        
+
         year = dataFormat.format( new Date() );
-        
+
         return SUCCESS;
     }
 
@@ -126,7 +131,7 @@ public class ShowAddPatientFormAction
         return identifierTypes;
     }
 
-    public Collection<PatientAttributeGroup> getAttributeGroups()
+    public List<PatientAttributeGroup> getAttributeGroups()
     {
         return attributeGroups;
     }

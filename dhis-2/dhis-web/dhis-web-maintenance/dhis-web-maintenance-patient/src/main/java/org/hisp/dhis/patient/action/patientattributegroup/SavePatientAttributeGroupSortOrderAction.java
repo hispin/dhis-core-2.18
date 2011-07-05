@@ -28,47 +28,43 @@
 package org.hisp.dhis.patient.action.patientattributegroup;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeGroupService;
-import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.program.ProgramStage;
 
 import com.opensymphony.xwork2.Action;
 
-
 /**
  * @author Chau Thu Tran
- * @version $Id$
+ * @version $ SavePatientAttributeGroupSortOrderAction.java Jul 5, 2011 11:07:38 AM $
+ * 
  */
-public class GetPatientAttributeGroupListAction
-    implements Action
+public class SavePatientAttributeGroupSortOrderAction
+implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private PatientAttributeGroupService patientAttributeGroupService;
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private List<PatientAttributeGroup> patientAttributeGroups = new ArrayList<PatientAttributeGroup>();
-
-    // -------------------------------------------------------------------------
-    // Getter && Setter
-    // -------------------------------------------------------------------------
-    
     public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
     {
         this.patientAttributeGroupService = patientAttributeGroupService;
     }
 
-    public List<PatientAttributeGroup> getPatientAttributeGroups()
+    // -------------------------------------------------------------------------
+    // Input/Output
+    // -------------------------------------------------------------------------
+
+    private List<Integer> patientAttributeGroupIds = new ArrayList<Integer>();
+
+    public void setPatientAttributeGroupIds( List<Integer> patientAttributeGroupIds )
     {
-        return patientAttributeGroups;
+        this.patientAttributeGroupIds = patientAttributeGroupIds;
     }
 
     // -------------------------------------------------------------------------
@@ -76,13 +72,23 @@ public class GetPatientAttributeGroupListAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        patientAttributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
-            .getAllPatientAttributeGroups() );
+        int sortOrder = 1;
 
-        Collections.sort( patientAttributeGroups, new PatientAttributeGroupSortOrderComparator() );
+        List<PatientAttributeGroup> groups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupIds.size() );
 
+        for ( Integer patientAttributeGroupId : patientAttributeGroupIds )
+        {
+            PatientAttributeGroup patientAttributeGroup = patientAttributeGroupService.getPatientAttributeGroup( patientAttributeGroupId );
+
+            groups.add( patientAttributeGroup );
+
+            patientAttributeGroup.setSortOrder( sortOrder++ );
+
+            patientAttributeGroupService.updatePatientAttributeGroup( patientAttributeGroup );
+        }
+        
         return SUCCESS;
     }
+
 }

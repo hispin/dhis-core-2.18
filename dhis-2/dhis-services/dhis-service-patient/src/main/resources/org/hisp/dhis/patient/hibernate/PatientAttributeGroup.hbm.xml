@@ -13,7 +13,9 @@
     <property name="name" not-null="true" unique="true" length="160" />
 
     <property name="description" />
-
+  
+  	<property name="sortOrder" />
+  
     <list name="attributes" table="patientattributegroupmembers">
       <key column="patientattributegroupid" />
       <list-index column="sort_order" base="1" />

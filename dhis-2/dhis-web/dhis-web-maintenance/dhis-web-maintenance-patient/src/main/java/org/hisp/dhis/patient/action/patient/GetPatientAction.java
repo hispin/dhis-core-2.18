@@ -26,8 +26,11 @@
  */
 package org.hisp.dhis.patient.action.patient;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.patient.Patient;
@@ -40,6 +43,7 @@ import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
@@ -88,7 +92,7 @@ public class GetPatientAction
 
     private Collection<PatientAttribute> noGroupAttributes;
 
-    private Collection<PatientAttributeGroup> attributeGroups;
+    private List<PatientAttributeGroup> attributeGroups;
 
     private Collection<PatientIdentifierType> identifierTypes;
 
@@ -174,7 +178,9 @@ public class GetPatientAction
 
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
 
-        attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
+        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
+            .getAllPatientAttributeGroups() );
+        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
 
         return SUCCESS;
 
@@ -254,7 +260,7 @@ public class GetPatientAction
         return noGroupAttributes;
     }
 
-    public Collection<PatientAttributeGroup> getAttributeGroups()
+    public List<PatientAttributeGroup> getAttributeGroups()
     {
         return attributeGroups;
     }
