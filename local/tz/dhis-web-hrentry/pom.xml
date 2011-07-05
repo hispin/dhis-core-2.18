@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-hr</artifactId>
-			<version>2.4-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 	
 		<dependency>
@@ -57,6 +57,7 @@
 			<artifactId>xpp3</artifactId>
 		</dependency>
 	</dependencies>
+
 	<properties>
 		<rootDir>../../</rootDir>
 	</properties>
