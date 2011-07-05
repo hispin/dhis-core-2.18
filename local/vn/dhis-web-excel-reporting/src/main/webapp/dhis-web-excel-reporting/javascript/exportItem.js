@@ -1,3 +1,36 @@
+// ---------------------------------------------------------------------------
+// Dialog
+// ---------------------------------------------------------------------------
+
+function setUpDialog( elementId, title, width, height )
+{
+	var dialog = jQuery( '#'+elementId ).dialog({
+		title: title,
+		modal: true,
+		autoOpen: false,
+		minWidth: width,
+		minHeight: height,
+		width: width,
+		height: height
+	});
+	
+	return dialog;
+}
+
+function openDialog( _dialog )
+{
+	_dialog.dialog( 'open' );
+}
+
+function closeDialog( _dialog )
+{
+	_dialog.dialog( 'close' );
+}
+
+// ---------------------------------------------------------------------------------
+// Methods
+// ---------------------------------------------------------------------------------
+
 function changeItemType()
 {
 	value = getFieldValue( 'itemType' );
@@ -157,7 +190,7 @@ function copySelectedExportItemToExportReportReceived( xmlObject ) {
 		options.add(new Option(name,id), null);
 	}
 	
-	showPopupWindowById( 'copyToExportReport', 450, 170 );
+	openDialog( dialog1 );
 }
 
 
@@ -296,8 +329,7 @@ function saveCopyExportItemsToExportReport() {
 		setMessage( warningMessages );
 	}
 		
-	hideById('copyToExportReport'); 
-	unLockScreen();
+	closeDialog( dialog1 );
 }
 
 
@@ -328,7 +360,7 @@ function copySelectedExportItemToImportReportReceived( xmlObject ) {
 		options.add(new Option(name,id), null);
 	}
 	
-	showPopupWindowById("copyToImportItem", 450,180 );
+	openDialog( dialog2 );
 }
 
 /*
@@ -417,8 +449,7 @@ function saveCopiedExportItemsToImportReport() {
 		setMessage( warningMessages );
 	}
 		
-	hideById("copyToImportItem");
-	unLockScreen();
+	closeDialog( dialog2 );
 }
 
 function setUpDuplicatedItemsMessage()

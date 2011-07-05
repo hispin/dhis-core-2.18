@@ -373,7 +373,7 @@
 		</action>
 
 		<action name="getAllExportReports"
-			class="org.hisp.dhis.reportexcel.action.ListExportReportAction">
+			class="org.hisp.dhis.reportexcel.exportreport.action.ListExportReportAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseExportReports.vm</result>
 		</action>

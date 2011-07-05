@@ -1,3 +1,28 @@
+function setUpDialog( elementId, title, width, height )
+{
+	var dialog = jQuery( '#'+elementId ).dialog({
+		title: title,
+		modal: true,
+		autoOpen: false,
+		minWidth: width,
+		minHeight: height,
+		width: width,
+		height: height
+	});
+	
+	return dialog;
+}
+
+function openDialog( _dialog )
+{
+	_dialog.dialog( 'open' );
+}
+
+function closeDialog( _dialog )
+{
+	_dialog.dialog( 'close' );
+}
+
 // ========================================================================================================================
 // IMPORT REPORT
 // ========================================================================================================================
@@ -24,7 +49,7 @@ function openExpressionBuild() {
 	dataDictionary.loadDataElementGroups( "#divExpression select[id=dataElementGroup]" );
 	dataDictionary.loadAllDataElements( "#divExpression select[id=availableDataElements]" );
 	
-	showPopupWindowById( 'divExpression', 600, 300 );
+	openDialog( divExpressionDialog );
 }
 
 // Insert operand into the Formular textbox
@@ -45,8 +70,8 @@ function updateNormalExpression()
 {
 	expression = jQuery( '#divExpression textarea[id=formula]' ).val();
 	setFieldValue( 'expression', getFieldValue('formula' ) );
-	hideById('divExpression'); 
-	unLockScreen();
+	
+	closeDialog( divExpressionDialog );
 }
 
 // -----------------------------------------------------------------------
@@ -60,7 +85,7 @@ function caExpressionBuilderForm()
 	dataDictionary.loadAllDataElements( "#divCategory select[id=availableDataElements]" );
 	
 	setFieldValue( 'divCategory textarea[id=formula]', getFieldValue('expression') );
-	showPopupWindowById( 'divCategory', 600, 320 );				
+	openDialog( divCategoryDialog );
 }
 
 // Insert operand into the Formular textbox
@@ -75,8 +100,7 @@ function updateCaExpression()
 {
 	expression = jQuery( '#divCategory textarea[id=formula]' ).val();
 	setFieldValue( 'expression', expression );
-	hideById('divCategory'); 
-	unLockScreen();
+	closeDialog( divCategoryDialog );
 }
 
 // Get option combos for selected dataelement
@@ -129,7 +153,7 @@ function copySelectedItemToGroupReceived( xmlObject ) {
 		options.add(new Option(name,id), null);
 	}
 	
-	showPopupWindowById( 'copyTo', 480, 120 );
+	openDialog( dialog1 );
 }
 
 function validateCopyImportItemsToImportReport() {
@@ -164,7 +188,6 @@ function validateCopyImportItemsToImportReport() {
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( validateCopyImportItemsToImportReportReceived );
 	request.send( "getImportItemsByGroup.action?importReportId=" + byId("targetGroup").value );
-	
 }
 
 function validateCopyImportItemsToImportReportReceived( xmlObject ) {
@@ -270,8 +293,7 @@ function saveCopiedImportItemsToImportReport() {
 		setMessage( warningMessages );
 	}
 		
-	hideById('copyTo'); 
-	unLockScreen();
+	closeDialog( dialog1 );
 }
 
 function saveCopiedImportItemsToImportReportReceived( data ) {

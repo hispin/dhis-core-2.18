@@ -1,10 +1,11 @@
 <script>
-	var deExpressionValidator = null;
 	
 	jQuery(document).ready(function(){
 		deExpressionValidator = validation( 'dataelement-form', function(){
 			updateDeExpression();
 		});
+		
+		deExpressionDialog = setUpDialog( 'dataelement', i18n_expression, 800, 430 );
 		
 		#if( !$exportReport.isCategory() )
 		remoteValidate( jQuery( "#dataelement textarea[id=formula]" ), '../dhis-web-commons-ajax-json/getExpressionText.action' );
@@ -12,6 +13,9 @@
 		
 		changeItemType();
 	});
+
+	var deExpressionValidator = null;
+	var deExpressionDialog = null;
 	
 </script>
 
@@ -55,7 +59,7 @@
 	<center>
 		<input type="submit" value="$i18n.getString('ok')" style="width:100px"/>
 		<input type="button" value="$i18n.getString('clean')" onclick="cleanFormula()" style="width:100px"/>
-		<input type="button" value="$i18n.getString('cancel')" onclick="hideById('dataelement'); unLockScreen();" style="width:100px"/>
+		<input type="button" value="$i18n.getString('cancel')" onclick="closeDialog( deExpressionDialog )" style="width:100px"/>
 	</center>
 	</form>
 </div>
@@ -65,24 +69,20 @@
 	{
 		expression = jQuery( '#dataelement textarea[id=formula]' ).val();
 		setFieldValue( 'expression', expression );
-		hideById('dataelement'); 
-		unLockScreen();
+		closeDialog( deExpressionDialog );
 	}
 	
 	function deExpressionBuilderForm()
 	{
-		#if($exportReport.isCategory()) 
+		#if ( $exportReport.isCategory() ) 
 		getDataElementCategoryOptionCombos();
 		#else
 		dataDictionary.loadDataElementGroups("#dataelement select[id=groupSelect]") ;	
 		#end
 		
 		setFieldValue( 'dataelement textarea[id=formula]', getFieldValue('expression') );
-		#if(!$exportReport.isCategory()) 
-		showPopupWindowById( 'dataelement', 800, 430 );	
-		#else
-		showPopupWindowById( 'dataelement', 800, 350 );	
-		#end	
+		
+		openDialog( deExpressionDialog );
 	}
 	
 	function getDataElements( id, target )
@@ -109,8 +109,6 @@
 			jQuery.each( json.dataElementCategoryOptionCombos, function(i, item ){
 				select.append( "<option value='" + item.id + "'>" + item.name + "</option>" );
 			});
-			
 		});
 	}
-	
 </script>
