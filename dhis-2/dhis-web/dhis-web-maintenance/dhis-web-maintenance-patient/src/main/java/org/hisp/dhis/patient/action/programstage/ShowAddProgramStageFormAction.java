@@ -28,10 +28,13 @@ package org.hisp.dhis.patient.action.programstage;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -61,6 +64,28 @@ public class ShowAddProgramStageFormAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Comparator
+    // -------------------------------------------------------------------------
+
+    private Comparator<DataElement> dataElementComparator;
+
+    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    {
+        this.dataElementComparator = dataElementComparator;
+    }
+
+    // -------------------------------------------------------------------------
+    // DisplayPropertyHandler
+    // -------------------------------------------------------------------------
+
+    private DisplayPropertyHandler displayPropertyHandler;
+
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
+        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -108,6 +133,10 @@ public class ShowAddProgramStageFormAction
 
         dataElements = new ArrayList<DataElement>( dataElementService
             .getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
+
+        Collections.sort( dataElements, dataElementComparator );
+
+        displayPropertyHandler.handle( dataElements );
 
         return SUCCESS;
     }
