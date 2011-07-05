@@ -28,15 +28,19 @@
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-hr</artifactId>	 
-		</dependency>    
+			<version>2.4-SNAPSHOT</version>			
+		</dependency>
+
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-core</artifactId>  
 		</dependency>
+
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-web-commons</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-web-commons-resources</artifactId>
