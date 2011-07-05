@@ -45,7 +45,7 @@
 
 <div id="validationResults">
 
-<table class="listTable" style="width:100%">
+<table class="listTable" id="validationRuleList" style="width:100%">
 	<colgroup>
 	    <col>
 	    <col>
@@ -60,12 +60,12 @@
 		<tr>
 			<th>$i18n.getString( "organisation_unit" )</th>
 			<th>$i18n.getString( "period" )</th>
-			<th>$i18n.getString( "left_side_description" )</th>
-			<th>$i18n.getString( "value" )</th>
-			<th>$i18n.getString( "operator" )</th>
-			<th>$i18n.getString( "value" )</th>
-			<th>$i18n.getString( "right_side_description" )</th>
-			<th>$i18n.getString( "details" )</th>
+			<th class="{sorter: false}">$i18n.getString( "left_side_description" )</th>
+			<th class="{sorter: false}">$i18n.getString( "value" )</th>
+			<th class="{sorter: false}">$i18n.getString( "operator" )</th>
+			<th class="{sorter: false}">$i18n.getString( "value" )</th>
+			<th class="{sorter: false}">$i18n.getString( "right_side_description" )</th>
+			<th class="{sorter: false}">$i18n.getString( "details" )</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -119,3 +119,9 @@
 </div>
 
 #end
+
+<script type="text/javascript">
+	jQuery(document).ready(function(){	
+		tableSorter( 'validationRuleList' );
+	});
+</script>
