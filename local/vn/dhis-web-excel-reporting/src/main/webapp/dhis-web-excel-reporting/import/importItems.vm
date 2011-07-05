@@ -1,7 +1,19 @@
 ﻿<script>
 	jQuery(document).ready(function(){
 		tableSorter( 'listTable', [[1,0]] );
+		
+		dialog1 = setUpDialog( 'copyToImportReport', i18n_expression, 500, 170 );
 	});
+	
+	var i18n_copy_successful = '$encoder.jsEscape( $i18n.getString( "copy_successful" ) , "'")';
+	var i18n_copy_items_duplicated = '$encoder.jsEscape( $i18n.getString( "copy_items_duplicated" ) , "'")';
+	var i18n_copy_items = '$encoder.jsEscape( $i18n.getString( "copy_items" ) , "'")';
+	var i18n_input_sheet_no = '$encoder.jsEscape( $i18n.getString( "input_sheet_no" ) , "'")';
+	var i18n_choose_export_report = '$encoder.jsEscape( $i18n.getString( "choose_export_report" ) , "'")';
+	var i18n_choose_import_report = '$encoder.jsEscape( $i18n.getString( "choose_import_report" ) , "'")';
+	var i18n_expression = '$encoder.jsEscape( $i18n.getString( "expression" ) , "'")';
+	var dialog1 = null;
+	var dialog2 = null;
 </script>
 
 <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
@@ -15,7 +27,7 @@
 		</td>
 		<td align="right">	
 			<input type="button" onclick="window.location.href='addImportItemForm.action?importReportId=$importReport.id' " value="$i18n.getString('add')" style="width:150px"/> <br>
-			<input type="button" onclick="copySelectedItemToGroup()" value="$i18n.getString('copy_selected_item_to')" style="width:150px"/><br>
+			<input type="button" onclick="copySelectedItemToGroup()" value="$i18n.getString('copy_import_item_to_importreport')" style="width:150px"/><br>
 			<input type="button" onclick="window.location='listAllImportReport.action'" value="$i18n.getString('cancel')" style="width:150px"/>
 		</td>
 	</tr>
@@ -52,35 +64,29 @@
     </tbody>
 </table>
 
-<div id="copyTo" style="display:none;">
-<p></p>
-<table width="100%">
-	<tr>
-		<td style="width: 150px;"><label>$i18n.getString('reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td>
-			<select id="targetGroup" style="max-width:30em;min-width:30em;">
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td><label>$i18n.getString('sheet_no')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input id="targetSheetNo" type="text"/></td>
-	</tr>	
-</table>
-<p align="center">
-<input type="button" value="$i18n.getString('ok')" onclick="validateCopyImportItemsToImportReport();" style="width:100px"/>
-<input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyTo'); unLockScreen();" style="width:100px"/>
-</p>
+<div id="copyToImportReport">
+	<p></p>
+	<table width="100%">
+		<tr>
+			<td style="width: 150px;"><label>$i18n.getString('reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td>
+				<select id="targetGroup" style="max-width:30em;min-width:30em;">
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><label>$i18n.getString('sheet_no')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><input id="targetSheetNo" type="text"/></td>
+		</tr>	
+	</table>
+	<p align="center">
+		<input type="button" value="$i18n.getString('ok')" onclick="validateCopyImportItemsToImportReport();" style="width:100px"/>
+		<input type="button" value="$i18n.getString('cancel')" onclick="closeDialog( dialog1 );" style="width:100px"/>
+	</p>
 </div>
 
 <script type="text/javascript">
-    var i18n_copy_successful = '$encoder.jsEscape( $i18n.getString( "copy_successful" ) , "'")';
-	var i18n_copy_items_duplicated = '$encoder.jsEscape( $i18n.getString( "copy_items_duplicated" ) , "'")';
-	var i18n_copy_items = '$encoder.jsEscape( $i18n.getString( "copy_items" ) , "'")';
-	var i18n_input_sheet_no = '$encoder.jsEscape( $i18n.getString( "input_sheet_no" ) , "'")';
-	var i18n_choose_export_report = '$encoder.jsEscape( $i18n.getString( "choose_export_report" ) , "'")';
-	var i18n_choose_import_report = '$encoder.jsEscape( $i18n.getString( "choose_import_report" ) , "'")';
-	
+
 	function importItemSelect( checked )
 	{
 		if( checked ) checkALL( "input[type=checkbox][name=importItemChecked]" );

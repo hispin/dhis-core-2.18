@@ -1,10 +1,19 @@
-<div id="excelformula" style="display:none">
+<script>
+
+	jQuery(document).ready(function(){
+		excelFormulaDialog = setUpDialog( 'excelformula', i18n_expression, 600, 350 );
+	});
+	
+	var excelFormulaDialog = null;
+</script>
+
+<div id="excelformula">
 	<textarea id="elementSelect" cols="90" rows="15"></textarea>	
 	<br/>
 	<br/>
 	<center>
 		<input type="button" value="$i18n.getString('ok')" onclick="updateExExpression()" style="width:100px"/>		
-		<input type="button" value="$i18n.getString('cancel')" onclick="hideById('excelformula'); unLockScreen();" style="width:100px"/>
+		<input type="button" value="$i18n.getString('cancel')" onclick="closeDialog( excelFormulaDialog )" style="width:100px"/>
 	</center>
 </div>
 
@@ -12,15 +21,13 @@
 	function updateExExpression()
 	{
 		expression = jQuery( '#excelformula textarea[id=elementSelect]' ).val();		
-		hideById('excelformula'); 
-		unLockScreen();
+		closeDialog( excelFormulaDialog );
 	}
 	
 	function excelFormulaExpressionBuilderForm()
 	{		
 		setFieldValue( 'excelformula textarea[id=elementSelect]', getFieldValue('expression') );
-		
-		showPopupWindowById( 'excelformula', 500, 290 );
+		openDialog( excelFormulaDialog );
 	}	
 	
 </script>

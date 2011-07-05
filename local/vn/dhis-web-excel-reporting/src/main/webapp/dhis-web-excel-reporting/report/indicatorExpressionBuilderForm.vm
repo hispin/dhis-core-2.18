@@ -1,4 +1,14 @@
-<div id="indicator" style="display:none">
+<script>
+
+	jQuery(document).ready(function(){
+		inExpressionDialog = setUpDialog( 'indicator', i18n_expression, 550, 350 );
+	});
+	
+	var inExpressionDialog = null;
+	var i18n_expression = '$encoder.jsEscape( $i18n.getString( "expression" ) , "'")';
+</script>
+
+<div id="indicator">
 	<table width="100%">
 		<tr>			
 			<th>$i18n.getString( "indicator" )</th>
@@ -10,39 +20,31 @@
 			</td>			
 		</tr>	
 	</table>
-	<br>
-	<br>
+	<br/>
+	<br/>
 	<center>
 		<input type="button" value="$i18n.getString('ok')" onclick="updateInExpression()" style="width:100px"/>		
-		<input type="button" value="$i18n.getString('cancel')" onclick="closeInExpression()" style="width:100px"/>
+		<input type="button" value="$i18n.getString('cancel')" onclick="closeDialog( inExpressionDialog )" style="width:100px"/>
 	</center>
 </div>
 
 <script>
+	
+	function inExpressionBuilderForm()
+	{
+		dataDictionary.loadIndicatorGroups( "#indicator select[id=groupSelect]");
+		openDialog( inExpressionDialog );
+	}
+	
 	function updateInExpression()
 	{
 		expression = jQuery( '#indicator select[id=elementSelect]' ).val();
 		setFieldValue( 'expression', '[' + expression + ']');
-		closeInExpression();
+		closeDialog( inExpressionDialog );
 	}
 	
-	
-	function inExpressionBuilderForm()
-	{
-		loadIndicatorGroups( "#indicator select[id=groupSelect]");		
-		
-		showPopupWindowById( 'indicator', 550, 350 );
-	}
-		
 	function getIndicators( id, target)
 	{
-		loadIndicatorsByGroup( id, target );
+		dataDictionary.loadIndicatorsByGroup( id, target );
 	}
-	
-	function closeInExpression()
-	{
-		hideById('indicator');
-		unLockScreen();
-	}
-	
 </script>

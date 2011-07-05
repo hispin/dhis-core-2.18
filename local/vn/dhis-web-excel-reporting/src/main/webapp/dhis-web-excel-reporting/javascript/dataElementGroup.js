@@ -102,7 +102,7 @@ function updateSortedDataElement(){
 
 function updateDataElementGroupOrder(){
 	var dataElements = document.getElementsByName('dataElementGroupOrder');
-	var url = "updateSortDataElementGroupOrder.action?reportId=" + reportId;
+	var url = "updateSortDataElementGroupOrder.action?exportReportId=" + reportId;
 	for(var i=0;i<dataElements.length;i++){			
 		url += "&dataElementGroupOrderId=" + dataElements.item(i).value;
 	}

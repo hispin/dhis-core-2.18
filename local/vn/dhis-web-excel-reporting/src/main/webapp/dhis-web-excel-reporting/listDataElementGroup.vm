@@ -20,7 +20,7 @@
 
 
 <ul id="sortable"> 
-#foreach($group in $report.dataElementOrders)
+#foreach($group in $exportReport.dataElementOrders)
 	<li class="ui-state-default" name="dataElementGroupOrder" value="$group.id" title="$i18n.getString( 'sort_order_help' )">		
 		<table cellspacing="0" cellpadding="0" width="100%">
 			<tr>
@@ -40,7 +40,7 @@
 
 <div id="dataElementGroups">
 <form name="dataElementGroups" id="dataElementGroupsForm" method="POST">
-<input type="hidden" name="id" value="$report.id"/>
+<input type="hidden" name="id" value="$exportReport.id"/>
 <input type="hidden" name="dataElementGroupOrderId" id="dataElementGroupOrderId"/>
 	<table>
 		<tr>
@@ -65,9 +65,9 @@
 			</td>
 			<td width="7%" align="center">
 				<input type="button" value="&gt;" onclick="moveSelectedById('availableDataElements','dataElementIds');" style="width:50px"/><br>
-				<input type="button" value="$lt;" onclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" style="width:50px"/><br>
+				<input type="button" value="&lt;" onclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" style="width:50px"/><br>
 				<input type="button" value="&gt;&gt;" onclick="moveAllById('availableDataElements' , 'dataElementIds' );" style="width:50px"/><br>
-				<input type="button" value="$lt;$lt;" onclick="moveAllById('dataElementIds' , 'availableDataElements' );" style="width:50px"/>
+				<input type="button" value="&lt;&lt;" onclick="moveAllById('dataElementIds' , 'availableDataElements' );" style="width:50px"/>
 			</td>
 			<td width="23%">
 				<select id="dataElementIds" name="dataElementIds" multiple size=13 style="width:300px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' );"/>
@@ -91,7 +91,7 @@
 <script>
 	var i18n_confirm_delete = '$encoder.jsEscape($i18n.getString( 'confirm_delete' ) , "'")';	
 	var i18n_name_is_null = '$encoder.jsEscape($i18n.getString( 'i18n_name_is_null' ) , "'")';		
-	var reportId = $report.id;
+	var reportId = $exportReport.id;
 	$(function() {
 		$("#sortable").sortable({
 			placeholder: 'ui-state-highlight'
