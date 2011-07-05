@@ -7,11 +7,6 @@
 	position:absolute;
 }
 
-.stateformat {
-	color:red;
-	text-align:center;
-}
-
 .heading-column { width : 30.5em;}
 td.input-column { width : 30.5em;}
 td.input-column input, td.input-column select { width: 28.5em;}

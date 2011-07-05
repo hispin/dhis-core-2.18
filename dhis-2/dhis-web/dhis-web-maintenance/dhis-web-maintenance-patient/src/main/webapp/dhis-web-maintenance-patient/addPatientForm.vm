@@ -151,24 +151,9 @@
 	<tr><th colspan="2" class="heading-column">$i18n.getString( "patient_identifiers" )</th></tr>
 	#foreach ($identifierType in $identifierTypes)
 	<tr>
-		<td><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
-
-        #if($identifierType.format == "State Format")
-            <td><input type="hidden" id="iden$identifierType.id" name="iden$identifierType.id"/>
-				<table>
-					<tr valign="top">
-						<td><input type="text" id="orgunitcode" name="orgunitcode" disabled="disabled" value="$!organisationUnit.code" maxlength="9" size="10"/> <br/> <div class='stateformat'>$i18n.getString('registering_unit')<br>$i18n.getString('code')</div></td>
-						<td> - <input type="text" id="progcode" name="progcode" maxlength="1" size="6" class='idfield  {validate:{required:$identifierType.mandatory,minlength:1,lettersdigitsonly:true}}' /> <br/> <div class='stateformat'>$i18n.getString('program')<br>$i18n.getString('code')</div></td>
-						<td> - <input type="text" id="yearcode" name="yearcode" maxlength="2" size="6" value="$year" class="{validate:{required:true,minlength:2}}"/> <br/> <div class='stateformat'>$i18n.getString('year')</div></td>
-						<td> - <input type="text" id="benicode" name="benicode" maxlength="4" size="9" class="{validate:{required:true,number:true,minlength:4}}"/> <br/> <div class='stateformat'>$i18n.getString('patient')<br>$i18n.getString('code')</div></td>
-					</tr>
-				</table>
-            </td>
-        #else
+		<td><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
             <td class="input-column">
 			<input type="text" style="width:28em" id="iden$identifierType.id" name="iden$identifierType.id" data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>
-        #end
-
 	</tr>
 	#end
 	
