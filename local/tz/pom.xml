@@ -5,7 +5,7 @@
 
 	<groupId>org.hisp.dhis</groupId>
 	<artifactId>dhis-local-tz</artifactId>
-	<version>1.0</version>
+	<version>2.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Local Tanzania Modules</name>
 
