@@ -31,12 +31,9 @@
 		
 		var expression = getFieldValue( 'numerator' );
 		var description = getFieldValue( 'numeratorDescription' );
-		var aggregationOperator = getFieldValue( 'numeratorAggregationOperator' );
 		setFieldValue( 'indicator-expression-container textarea[id=expression]', expression );
 		setFieldValue( 'indicator-expression-container input[id=description]', description );
-		setRadioValue( 'aggregationOperator', aggregationOperator );
 		
-		checkAggregationOperator();
 		getExpressionText();
 		
 		dialog.dialog("option", "title", "$i18n.getString( 'edit_numerator' )");
@@ -51,12 +48,9 @@
 		
 		var expression = getFieldValue( 'denominator' );
 		var description = getFieldValue( 'denominatorDescription' );
-		var aggregationOperator = getFieldValue( 'denominatorAggregationOperator' );
 		setFieldValue( 'indicator-expression-container textarea[id=expression]', expression );
 		setFieldValue( 'indicator-expression-container input[id=description]', description );
-		setRadioValue( 'aggregationOperator', aggregationOperator );
 		
-		checkAggregationOperator();
 		getExpressionText();
 		
 		dialog.dialog("option", "title", "$i18n.getString( 'edit_denominator' )");
@@ -70,27 +64,17 @@
 		
 		jQuery.postJSON( '../dhis-web-maintenance-dataadmin/getConstants.action', {},
 			function( json ) {
-				if ( json.constants.length == 0 )
-				{
-					setInnerHTML( 'constantHeader', "<i style='color:red'>"+i18n_no_constant_to_select+"</i>" );
-					return;
-				}
-				
 				jQuery.each( json.constants, function(i, item) {
-					target.append( '<option value="[C'+item.constantId+']">'+item.constantName+'</option>' );
+					target.append( '<option value="[C'+item.constantId+']">' + item.constantName + '</option>' );
 				});
 			});
 	}
 	
 	function getOperandsPage()
-	{
-		var aggregationOperator = getRadioValue( 'aggregationOperator' );
-		
+	{	
 		var key = getFieldValue( "indicator-expression-container input[id=filter]");
 
-		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {aggregationOperator: aggregationOperator, usePaging: true, key: key, includeTotals: true} );
-
-		checkAggregationOperator();
+		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {usePaging: true, key: key, includeTotals: true} );
 	}
 
 	function clearSearchText()
@@ -119,28 +103,14 @@
 	
 	function insertText( inputAreaName, inputText )
 	{
-		insertTextCommon( inputAreaName, inputText );	
-
-		checkAggregationOperator();
+		insertTextCommon( inputAreaName, inputText );
 		
 		getExpressionText();
 	}
 	
 	function cleanExpression()
-	{
-		checkAggregationOperator();
-		
+	{		
 		getExpressionText();
-	}
-	
-	function checkAggregationOperator()
-	{
-		if ( hasText('expression') ) {
-			disableGroup( "input[name=aggregationOperator]" );
-		}
-		else {
-			enableGroup( "input[name=aggregationOperator]" );
-		}
 	}
 	
 	function closeExpressionBuilder()
@@ -152,21 +122,18 @@
 	{
 		var expression = getFieldValue( 'indicator-expression-container textarea[id=expression]' );
 		var description = getFieldValue( 'indicator-expression-container input[id=description]' );
-		var aggregationOperator = getRadioValue( 'aggregationOperator' );
 		
-		jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', 
+		jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action',
 			{expression: expression},
 			function( json ) {
-				if( json.response == 'error') markInvalid( 'indicator-expression-container textarea[id=expression]' , json.message );
-				else {								
-					if( numerator ){								
+				if( json.response == 'error') markInvalid( 'indicator-expression-container textarea[id=expression]', json.message );
+				else {
+					if( numerator ){
 						setFieldValue( 'numerator', expression );
 						setFieldValue( 'numeratorDescription', description );
-						setFieldValue( 'numeratorAggregationOperator', aggregationOperator );			
 					}else{
 						setFieldValue( 'denominator', expression );
 						setFieldValue( 'denominatorDescription', description );
-						setFieldValue( 'denominatorAggregationOperator', aggregationOperator );									
 					}
 					
 					closeExpressionBuilder();
@@ -183,23 +150,14 @@
 		<col width="250"/>
 		<col width="10"/>
 		<col width="150"/>
-		<col width="300"/>
 	</colgroup>
 	<tr>
 		<th colspan="2">$i18n.getString( "description" )</th>
-		<th colspan="2">$i18n.getString( "aggregation_operator" )</th>
 		<th id="constantHeader">$i18n.getString( "constants" )</th>
 	</tr>
 	<tr>
 		<td>
 			<input type="text" id="description" name="description" style="width:250px" class="{validate:{required:true}}"/>
-		</td>
-		<td></td>
-		<td>
-			<input type="radio" name="aggregationOperator" checked="true" value="sum" onclick="getOperandsPage()"/>	
-			$i18n.getString( "sum" )<br/>
-			<input type="radio" name="aggregationOperator" value="average" onclick="getOperandsPage()"/>
-			$i18n.getString( "average" )
 		</td>
 		<td></td>
 		<td>
@@ -210,8 +168,6 @@
 	<tr>
 		<td colspan="3"></td>
 	</tr>
-</table>
-<table width="800" style="text-align:left">
 	<tr>
 		<th colspan="2">$i18n.getString( "formula" )</th>
 		<th>$i18n.getString( "list_of_data_elements" )</th>
