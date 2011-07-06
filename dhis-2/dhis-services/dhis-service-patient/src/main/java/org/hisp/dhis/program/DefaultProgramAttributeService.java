@@ -89,6 +89,5 @@ public class DefaultProgramAttributeService
     public Collection<ProgramAttribute> getProgramAttributeByValueType( String valueType )
     {
         return programAttributeStore.getByValueType( valueType );
-    }
-    
+    }    
 }

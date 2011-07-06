@@ -159,7 +159,6 @@ public class ProgramInstanceDeletionHandler
                  programInstanceService.deleteProgramInstance( programInstance );
             }
         }
-
     }
 
     @Override
@@ -218,5 +217,4 @@ public class ProgramInstanceDeletionHandler
             }
         }
     }
-
 }

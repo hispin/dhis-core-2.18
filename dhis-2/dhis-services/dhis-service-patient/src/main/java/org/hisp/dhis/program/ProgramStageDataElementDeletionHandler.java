@@ -74,6 +74,7 @@ public class ProgramStageDataElementDeletionHandler
         for ( ProgramStage programStage : programStages )
         {
             Collection<ProgramStageDataElement> dataElements = programStageDEService.get( programStage );
+            
             if ( dataElements != null && dataElements.size() > 0 )
             {
                 for ( ProgramStageDataElement dataElement : dataElements )
@@ -100,7 +101,6 @@ public class ProgramStageDataElementDeletionHandler
                 programStageDEService.deleteProgramStageDataElement( dataElement );
             }
         }
-
     }
     
     @Override
@@ -119,5 +119,4 @@ public class ProgramStageDataElementDeletionHandler
         
         return true;
     }
-
 }

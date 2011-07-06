@@ -192,5 +192,4 @@ public class DefaultPatientDataValueService
     {
         return patientDataValueStore.get( patient, dataElements, startDate, endDate );
     }
-
 }
