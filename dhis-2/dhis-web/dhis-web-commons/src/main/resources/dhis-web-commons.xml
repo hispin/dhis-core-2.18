@@ -607,6 +607,12 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <action name="getConstants" class="org.hisp.dhis.commons.action.GetConstantsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonConstants.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
     <action name="getExpressionText" class="org.hisp.dhis.commons.action.GetExpressionTextAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
