@@ -52,7 +52,7 @@
 		var target = jQuery( "#expression-container select[id=constantId]" );
 		target.children().remove();
 		
-		jQuery.postJSON( '../dhis-web-maintenance-dataadmin/getConstants.action', {},
+		jQuery.postJSON( '../dhis-web-commons-ajax-json/getConstants.action', {},
 			function( json ) {
 				if ( json.constants.length == 0 )
 				{

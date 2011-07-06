@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataadmin.action.constant;
+package org.hisp.dhis.commons.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -42,7 +42,7 @@ import org.hisp.dhis.paging.ActionPagingSupport;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetConstantListAction
+public class GetConstantsAction
     extends ActionPagingSupport<Constant>
 {
     /**

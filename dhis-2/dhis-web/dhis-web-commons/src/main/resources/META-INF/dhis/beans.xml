@@ -531,6 +531,11 @@
     <property name="locationManager" ref="locationManager" />
     <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
+  
+  <bean id="org.hisp.dhis.commons.action.GetConstantsAction" class="org.hisp.dhis.commons.action.GetConstantsAction"
+    scope="prototype">
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+  </bean>
 
   <bean id="org.hisp.dhis.commons.action.NoAction" class="org.hisp.dhis.commons.action.NoAction" />
 

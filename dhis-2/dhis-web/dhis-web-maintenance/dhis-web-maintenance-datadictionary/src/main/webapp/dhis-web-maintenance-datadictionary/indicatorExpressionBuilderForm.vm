@@ -62,7 +62,7 @@
 		var target = jQuery( "#indicator-expression-container select[id=constantId]" );
 		target.children().remove();
 		
-		jQuery.postJSON( '../dhis-web-maintenance-dataadmin/getConstants.action', {},
+		jQuery.postJSON( '../dhis-web-commons-ajax-json/getConstants.action', {},
 			function( json ) {
 				jQuery.each( json.constants, function(i, item) {
 					target.append( '<option value="[C'+item.constantId+']">' + item.constantName + '</option>' );
