@@ -12,7 +12,7 @@
 			minWidth: 820,
 			minHeight: 500,
 			width: 820,
-			height: 500
+			height: 540
 		});
 		
 		getConstantsPage();
@@ -149,11 +149,11 @@
 	<colgroup>
 		<col width="250"/>
 		<col width="10"/>
-		<col width="150"/>
+		<col/>
 	</colgroup>
 	<tr>
 		<th colspan="2">$i18n.getString( "description" )</th>
-		<th id="constantHeader">$i18n.getString( "constants" )</th>
+		<th>$i18n.getString( "constants" )</th>
 	</tr>
 	<tr>
 		<td>
@@ -161,7 +161,7 @@
 		</td>
 		<td></td>
 		<td>
-			<select id="constantId" name="constantId" size="3" style="width:300px" ondblclick="insertText( 'expression', this.value )">
+			<select id="constantId" name="constantId" size="3" style="width:500px" ondblclick="insertText( 'expression', this.value )">
 			</select>
 		</td>
 	</tr>
@@ -190,7 +190,7 @@
 			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px">
 			<input type="button" value="$i18n.getString( 'clear' )" onclick="clearSearchText();" style="width:60px"><br/>
 
-			<select id="dataElementId" name="dataElementId" size="7" style="width:500px" ondblclick="insertText( 'expression', this.value )">
+			<select id="dataElementId" name="dataElementId" size="8" style="width:500px" ondblclick="insertText( 'expression', this.value )">
 			</select>
 		</td>
 	</tr>
