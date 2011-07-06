@@ -27,6 +27,7 @@ package org.hisp.dhis.system.deletion;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
@@ -616,6 +617,15 @@ public abstract class DeletionHandler
     }
     
     public void deleteConstant( Constant constant )
+    {
+    }
+    
+    public boolean allowDeleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
+    {
+        return true;
+    }
+    
+    public void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
     {
     }
 }
