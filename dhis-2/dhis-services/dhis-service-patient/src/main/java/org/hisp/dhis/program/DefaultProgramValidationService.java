@@ -192,6 +192,5 @@ implements ProgramValidationService
         parser.parseExpression( description.toString() );
 
         return ( parser.getValue() == 1.0 );
-    }
-    
+    }    
 }

@@ -475,7 +475,6 @@ public class DefaultProgramDataEntryService
 
                     ProgramStage otherProgramStage = programStageService.getProgramStage( programStageId );
                     programStageName = otherProgramStage != null ? otherProgramStage.getName() : "N/A";
-
                 }
                 else
                 {
@@ -494,11 +493,13 @@ public class DefaultProgramDataEntryService
                 {
                     continue;
                 }
+                
                 if ( !DataElement.VALUE_TYPE_INT.equals( dataElement.getType() )
                     && !DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() ) )
                 {
                     continue;
                 }
+                
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------
@@ -1275,7 +1276,6 @@ public class DefaultProgramDataEntryService
                     // ---------------------------------------------------------
 
                     appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
-
                 }
 
                 // -------------------------------------------------------------
@@ -1296,23 +1296,14 @@ public class DefaultProgramDataEntryService
                 }
 
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
-
                 appendCode = appendCode.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
-
                 appendCode = appendCode.replace( "$PROGRAMSTAGENAME", programStageName );
-
                 appendCode = appendCode.replace( "$ORGUNITNAME", orgUnitName );
-
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
-
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
-
                 appendCode = appendCode.replace( "$DISABLED", disabled );
-
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
-
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
-
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
                 dataElementMatcher.appendReplacement( sb, appendCode );
@@ -1447,5 +1438,4 @@ public class DefaultProgramDataEntryService
 
         return result;
     }
-
 }
