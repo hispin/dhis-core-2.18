@@ -54,11 +54,11 @@
                     	<td align="center">$count1</td>
 	                    <td align="left">$dataElementName</td>
 	                    #if( !$dataElementValue )
-	                    	<td align="center" bgcolor="#ff0000"><font color="#ffffff">&nbsp;</font></td>
+	                    	<td align="center" bgcolor="#ff0000"><font color="#000000">&nbsp;</font></td>
 	                    #elseif( $dataElementValue == "0" )
-	                    	<td align="center" bgcolor="#a0c0a0"><font color="#ffffff">$dataElementValue</font></td>
+	                    	<td align="center" bgcolor="#a0c0a0"><font color="#000000">$dataElementValue</font></td>
 	                    #else
-	                    	<td align="center" bgcolor="a0a0ff"><font color="#ffffff">$dataElementValue</font></td>
+	                    	<td align="center" bgcolor="a0a0ff"><font color="#000000">$dataElementValue</font></td>
 	                    #end	
                          #set( $count1 = $count1 + 1 )
 					</tr>
