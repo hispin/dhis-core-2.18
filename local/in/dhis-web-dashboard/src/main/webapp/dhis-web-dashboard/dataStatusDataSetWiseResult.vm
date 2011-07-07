@@ -81,13 +81,15 @@
 						#foreach($chiildorgUnit in $orgUnitList)
 						#set( $count1 = $minOULevel )
 						#set( $curOrgUnitLevel = $organisationUnitService.getLevelOfOrganisationUnit( $chiildorgUnit ) )
-						#set( $orgunitCount = $ouMapForChildDSAssociation.get( $chiildorgUnit ) )
+						##set( $orgunitCount = $ouMapForChildDSAssociation.get( $chiildorgUnit ) )
+						#set( $orgunitChildCount = $ouMaporgChildCount.get( $chiildorgUnit ) )
 						##set( $orgunitColor = $ouDataSetMapColor.get( $chiildorgUnit ) )
 						
 						<tr class="TableHeadingCellStyles">
 							#foreach( $levelName in $levelNames )
 								#if( $count1 == $curOrgUnitLevel )
-									<td>$chiildorgUnit.name #if( $orgunitCount !=-1 ) ( $orgunitCount ) #end</td>
+									<!--<td>$chiildorgUnit.name #if( $orgunitCount !=-1 ) ( $orgunitCount ) #end</td>-->
+									<td>$chiildorgUnit.name  ( $orgunitChildCount ) </td>
 								#else
 									<td>&nbsp;</td>
 								#end
