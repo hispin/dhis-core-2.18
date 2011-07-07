@@ -238,7 +238,18 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
     {
         return ouDataSetMapColor;
     }
+    
+    private Map<OrganisationUnit, Integer> ouMaporgChildCount;
+    
+    public Map<OrganisationUnit, Integer> getOuMaporgChildCount()
+    {
+        return ouMaporgChildCount;
+    }
 
+    public void setOuMaporgChildCount( Map<OrganisationUnit, Integer> ouMaporgChildCount )
+    {
+        this.ouMaporgChildCount = ouMaporgChildCount;
+    }
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -259,6 +270,8 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
         //dsMapSummaryStatusResult = new HashMap<DataSet, Map<OrganisationUnit, List<Integer>>>();
         
         ouDataSetMapColor = new HashMap<OrganisationUnit, List<Integer>>();
+        ouMaporgChildCount = new HashMap<OrganisationUnit, Integer>();
+        
         
         // Period Related Info
         PeriodType periodType = periodService.getPeriodTypeByName( periodTypeId );
@@ -332,7 +345,14 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
         Iterator<DataSet> dsIterator = dataSetList.iterator();
         while( dsIterator.hasNext() )
         {
-            DataSet dSet = dsIterator.next();
+            DataSet dSet = (DataSet) dsIterator.next();
+            
+            // Remove Line Listing data sets
+            if ( dSet.getId() == 8 || dSet.getId() == 9 || dSet.getId() == 10 || dSet.getId() == 14 || dSet.getId() == 15 || dSet.getId() == 35 || dSet.getId() == 36 || dSet.getId() == 37 || dSet.getId() == 38 )
+            {
+                dsIterator.remove();
+                continue;
+            }       
             //List<Source> dso = new ArrayList<Source>( dSet.getSources() );
             List<OrganisationUnit> dso = new ArrayList<OrganisationUnit>( dSet.getSources() );
 
@@ -369,6 +389,10 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
             while ( orgUnitListIterator.hasNext() )
             {
                 OrganisationUnit orgUnit = orgUnitListIterator.next();
+                
+                ouMaporgChildCount.put( orgUnit, orgUnit.getChildren().size() );
+                //orgUnit.getChildren().size();
+                
                 orgUnitInfo = "" + orgUnit.getId();
                 if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( orgUnit ) )
                     maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
