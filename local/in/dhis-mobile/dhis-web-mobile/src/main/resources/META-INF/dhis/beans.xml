@@ -62,6 +62,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.mobile.action.SendBulkSMSAction"
           class="org.hisp.dhis.mobile.action.SendBulkSMSAction"
           scope="prototype">
+          <!--  <property name="dataElementService" ref="org.hisp.dhis.dataelement.DefaultDataElementService" />    -->
         <property name="orgUnitGrpService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
         <property name="smsService" ref="org.hisp.dhis.mobile.SmsService" />
     </bean>

@@ -6,6 +6,7 @@ package org.hisp.dhis.mobile;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -41,8 +42,8 @@ public class BulkSMSHttpInterface
 //        FileReader bulkSMSconfig= new FileReader( "BulkSMS.conf");
         properties = new Properties();
 
-        properties.load( new FileReader( System.getenv( "DHIS2_HOME" ) + "BulkSMS.conf" ) );
-
+        properties.load( new FileReader( System.getenv( "DHIS2_HOME" ) + File.separator+"SMSServer.conf" ) );
+System.out.println(System.getenv( "DHIS2_HOME" ) + File.separator+"SMSServer.conf");
         username = getUsername();
         password = getPassword();
         senderName = getSenderName();

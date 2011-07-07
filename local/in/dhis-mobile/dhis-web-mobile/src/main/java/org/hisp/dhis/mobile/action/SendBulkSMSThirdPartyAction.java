@@ -10,10 +10,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DefaultDataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DefaultSectionService;
 import org.hisp.dhis.mobile.BulkSMSHttpInterface;
 import org.hisp.dhis.mobile.SmsService;
 import org.hisp.dhis.mobile.api.SendSMS;
@@ -30,6 +35,14 @@ import org.smslib.http.BulkSmsHTTPGateway;
 public class SendBulkSMSThirdPartyAction
     implements Action
 {
+    
+     DefaultDataElementService dataElementService;
+
+    public void setDataElementService( DefaultDataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
 
     SmsService smsService;
 
@@ -82,6 +95,7 @@ public class SendBulkSMSThirdPartyAction
         return availableOrganisationUnitGroups;
     }
 
+    
     String message;
 
     public void setMessage( String message )
@@ -109,6 +123,31 @@ public class SendBulkSMSThirdPartyAction
     {
         return result;
     }
+    public List<String> availableDataElements;
+
+    public List<String> getAvailableDataElements()
+    {
+        return availableDataElements;
+    }
+    
+public int countavailableDataElements;
+
+    public void setAvailableDataElements( List<String> availableDataElements )
+    {
+        this.availableDataElements = availableDataElements;
+    }
+public String isMessageDisabled;
+
+    public void setIsMessageDisabled( String isMessageDisabled )
+    {
+        this.isMessageDisabled = isMessageDisabled;
+    }
+    public String selectedAvailableDataElements;
+
+    public void setSelectedAvailableDataElements( String selectedAvailableDataElements )
+    {
+        this.selectedAvailableDataElements = selectedAvailableDataElements;
+    }
 
     @Override
     public String execute()
@@ -117,9 +156,21 @@ public class SendBulkSMSThirdPartyAction
         //selectedOrganisationUnitGroup=new ArrayList<OrganisationUnitGroup>();
 
         availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>( orgUnitGrpService.getAllOrganisationUnitGroups() );
-        System.out.println( "size(bulksmsmaction)==" + availableOrganisationUnitGroups.size() );
+        System.out.println( "size(bulksmsmaction)==" + availableOrganisationUnitGroups.size() );   
         Collections.sort( availableOrganisationUnitGroups, new OrganisationUnitGroupNameComparator() );
-
+Iterator it=orgUnitGrpService.getAllOrganisationUnitGroups().iterator();
+while(it.hasNext()){
+System.out.println(it.next());
+}
+//dataElementService=new DefaultDataElementService();
+//System.out.println("------------------------------------->"+dataElementService.getDataElementGroupCount());
+         // DataElementGroup dataElementGrp=dataElementService.getDataElementGroupByName( "MObile Daily");  
+      
+          availableDataElements=new ArrayList<String>();
+       // availableDataElements.add(">>"+  dataElementGrp.getMembers().size());
+     //   availableDataElements.add( "do you like this service?");
+       // availableDataElements.add( "randomly answer this question as yes or no");
+        
         conn = new BulkSMSHttpInterface();
         phonenos = new ArrayList<String>();
 
@@ -136,13 +187,13 @@ public class SendBulkSMSThirdPartyAction
                     System.out.println( "strArrid=" + strArr[i] );
                     int parseInt = Integer.parseInt( strArr[i] );
 
-
+//13321
                     for ( int j = 0; j < availableOrganisationUnitGroups.size(); j++ )
                     {
                         if ( availableOrganisationUnitGroups.get( j ).getId() == parseInt )
                         {
 
-                            //System.out.println( "  -" + availableOrganisationUnitGroups.get( j ).getMembers().size() );
+                            System.out.println( "  -" + availableOrganisationUnitGroups.get( j ).getMembers().size() );
                             Iterator itr = availableOrganisationUnitGroups.get( j ).getMembers().iterator();
                             while ( itr.hasNext() )
                             {
@@ -151,14 +202,30 @@ public class SendBulkSMSThirdPartyAction
                                 {
                                     phonenos.add( temp.getPhoneNumber() );
                                 }
-                                //  System.out.println( "       phone=" + temp.getPhoneNumber() );
+                                 System.out.println( "id="+temp.getUuid()+"       phone=" + temp.getPhoneNumber() );
                             }
 
                         }
                     }
                 }
             }
-
+// System.out.print( countavailableDataElements+" "+availableDataElements.get( 1)+" "+isMessageDisabled+"sel="+selectedAvailableDataElements+"<----" );
+            if (isMessageDisabled.equals( "true") )
+            {
+            message=selectedAvailableDataElements;
+           // System.out.print( "sdsd---------------------"+countavailableDataElements);
+            }
+            
+            if (message.isEmpty()){
+            result="No Message Selected/Written";
+            return SUCCESS;
+            }
+            else if (phonenos.isEmpty()){
+            result="No Phone Numbers Found";
+            return SUCCESS;
+            
+            }
+            
             // fill in the sendSMS fields...
             List<SendSMS> sendSMSList = new ArrayList();
             SendSMS tempSendSMS;
@@ -181,28 +248,21 @@ public class SendBulkSMSThirdPartyAction
             result =smsService.sendMessages( sendSMSListForTesting ); 
              */
 
-            // for third party=
-            if ( phonenos.size() > 0 )
-            {
-                result = conn.sendMessages( message, phonenos );
-                System.out.println( result );
 
-                String temp = conn.checkBalance();
-                result += "Balance=" + temp;
-            } else
-            {
-                result = "no numbers found";
-            }
-
-            /*
-            // for gsm modem
-            if (!sendSMSList.isEmpty()){
-            result=smsService.sendMessages(sendSMSList);
             
-            }else result="no numbers found";
-             */
+            // for third party=
+            result= conn.sendMessages( message, phonenos);
+            System.out.println(result);
+            
+            String temp=conn.checkBalance();
+            result+="Balance="+temp;
+            
 
 
+                System.out.println(message);
+        /*    // for gsm modem
+                result = smsService.sendMessages( sendSMSList );
+          */
             /* for testing...
             if (message.startsWith( "group") )
             result=     sendGroupMessage();
