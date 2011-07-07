@@ -44,7 +44,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -258,10 +257,10 @@ public class DefaultCaseAggregationConditionService
             DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
             int categoryOptionId = Integer.parseInt( ids[2] );
-            DataElementCategory category = categoryService.getDataElementCategory( categoryOptionId );
+            DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionId );
 
             matcher.appendReplacement( decription, "[" + programStage.getName() + SEPARATOR_ID + dataElement.getName()
-                + SEPARATOR_ID + category.getName() + "]" );
+                 + optionCombo.getName() + "]" );
         }
 
         matcher.appendTail( decription );

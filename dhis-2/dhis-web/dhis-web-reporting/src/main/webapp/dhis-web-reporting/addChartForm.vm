@@ -28,17 +28,17 @@
 
 #macro ( getHeader )
 	#if ( $dimension == "period" )
-		$i18n.getString( "create_indicator_by_period_chart" )
+	    $i18n.getString( "create_period_by_indicator_chart" )
 	#elseif( $dimension == "period_dataElement" )
-		$i18n.getString( "create_dataelement_by_period_chart" )
+	    $i18n.getString( "create_period_by_dataelement_chart" )
 	#elseif ( $dimension == "organisationUnit" )
 	    $i18n.getString( "create_indicator_by_organisation_unit_chart" )
 	#elseif ( $dimension == "organisationUnit_dataElement" )
 	    $i18n.getString( "create_dataelement_by_organisation_unit_chart" )
 	#elseif ( $dimension == "indicator" )
-	    $i18n.getString( "create_period_by_indicator_chart" )
+		$i18n.getString( "create_indicator_by_period_chart" )
 	#elseif ( $dimension == "dataElement_period" )
-	    $i18n.getString( "create_period_by_dataelement_chart" )
+		$i18n.getString( "create_dataelement_by_period_chart" )
 	#end
 #end
 
