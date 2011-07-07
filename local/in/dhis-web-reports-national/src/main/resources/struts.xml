@@ -542,8 +542,7 @@
         <action name="specialReportForm"
             class="org.hisp.dhis.reports.orgunitgroupsetreport.action.GenerateOrgunitGroupsetReportsFormAction">
             <result name="success" type="velocity">/main.vm</result>
-            <param name="page">
-                /dhis-web-reports/OrgunitGroupsetReportForm.vm</param>
+            <param name="page">/dhis-web-reports/OrgunitGroupsetReportForm.vm</param>
             <param name="menu">/dhis-web-reports/menu.vm</param>
             <param name="javascripts">
                 ../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
@@ -566,10 +565,8 @@
             class="org.hisp.dhis.reports.ranking.action.GenarateRankingReportFormAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-reports/rankingReportForm.vm</param>
-            <param name="menu">
-                /dhis-web-reports/menuWithTreeForRankingReport.vm</param>
-            <param name="javascripts">
-                ../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForRankingReport.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
         </action>
@@ -631,10 +628,8 @@
         <action name="mobileReportAnalyser"
             class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction">
             <result name="success" type="velocity">/main.vm</result>
-            <param name="page">
-                /dhis-web-reports/mobileReportAnalysisFront.vm</param>
-            <param name="menu">
-                /dhis-web-reports/menuWithTreeForMobileReport.vm</param>
+            <param name="page">/dhis-web-reports/mobileReportAnalysisFront.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForMobileReport.vm</param>
             <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/datasetLockReport.js,javascript/reportManagement.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
@@ -649,7 +644,7 @@
                 <param name="bufferSize">1024</param>S </result>
         </action>
         
-        <!-- CS Review Reports Start -->
+        <!-- CS Review Report -->
         <action name="csReviewReportForm"
             class="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportFormAction">
             <result name="success" type="velocity">/main.vm</result>
@@ -669,6 +664,26 @@
             </result>
         </action>
 
+		<!-- Linelisting Web-Portal Reports -->
+		<action name="linelistingWebPortalReportAnalyser"
+			class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/linelstingWebPortalReportAnalyserFront.vm</param>
+			<param name="menu">/dhis-web-reports/menuWithTreeForLineListingWebPortalReport.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+			<param name="requiredAuthorities">F_REPORT_LINELIST_PORTAL</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		<action name="generateLinelistingWebPortalReport"
+			class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserResultAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${fileName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
 
 <!-- NBITS Reports Section -->        
         <!-- ActivityPlan Reports -->
@@ -773,8 +788,6 @@
             </result>
         </action>
 
-
-        
         <!-- AJAX Requests -->
         <action name="getDataElements"
             class="org.hisp.dhis.reports.action.GetDataElementsAction">
@@ -797,375 +810,22 @@
         
         <action name="getProgressReports"
             class="org.hisp.dhis.reports.action.GetProgressReportsAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseReport.vm</result>
-            <param name="javascripts">
-                ../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
+            <result name="success" type="velocity-xml">/dhis-web-reports/responseReport.vm</result>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
-        
+
         <action name="getOrgUnitGroups"
             class="org.hisp.dhis.reports.action.GetOrgUnitGroupsAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseOrgUnitGroup.vm</result>
+            <result name="success" type="velocity-xml">/dhis-web-reports/responseOrgUnitGroup.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
-        
+
         <action name="getOrgUnitDetails"
             class="org.hisp.dhis.reports.action.GetOrgUnitsAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseOrgUnit.vm</result>
+            <result name="success" type="velocity-xml">/dhis-web-reports/responseOrgUnit.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
-        
-        <!-- ReportTable -->
-<!--        
-        <action name="displayManageTableForm"
-            class="org.hisp.dhis.reports.tablecreator.action.GetAllTablesAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-reports/viewTableForm.vm</param>
-            <param name="menu">/dhis-web-reports/menu.vm</param>
-            <param name="javascripts">javascript/table.js</param>
-        </action>
-        
-        <action name="removeTable"
-            class="org.hisp.dhis.reports.tablecreator.action.RemoveTableAction">
-            <result name="success" type="redirect">
-                displayManageTableForm.action</result>
-            <param name="requiredAuthorities">F_REPORTTABLE_DELETE</param>
-        </action>
-        
-        <action name="saveTable"
-            class="org.hisp.dhis.reports.tablecreator.action.SaveTableAction">
-            <result name="success" type="redirect">
-                displayManageTableForm.action</result>
-            <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
-        </action>
-        
-        <action name="createTable"
-            class="org.hisp.dhis.reports.tablecreator.action.CreateTableAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseSuccess.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-            <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
-        </action>
-        
-        <action name="getReportParams"
-            class="org.hisp.dhis.reports.tablecreator.action.GetReportParamsAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-reports/inputReportParamsForm.vm</param>
-            <param name="menu">/dhis-web-reports/menu.vm</param>
-            <param name="javascripts">
-                javascript/report.js,javascript/table.js,javascript/reportParams.js</param>
-            <param name="requiredAuthorities">F_REPORT_VIEW</param>
-        </action>
-        
-        <action name="displayAddTableForm"
-            class="org.hisp.dhis.reports.tablecreator.action.GetTableOptionsAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-reports/addTableForm.vm</param>
-            <param name="menu">/dhis-web-reports/menu.vm</param>
-            <param name="javascripts">
-                javascript/table.js,javascript/lists.js</param>
-            <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
-        </action>
-        
-        <action name="getTable"
-            class="org.hisp.dhis.reports.tablecreator.action.GetTableAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseTable.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="getStatus"
-            class="org.hisp.dhis.reports.tablecreator.action.GetStatusAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseStatus.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="validateTable"
-            class="org.hisp.dhis.reports.tablecreator.action.ValidateTableAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseSuccess.vm</result>
-            <result name="input" type="velocity-xml">
-                /dhis-web-reports/responseInput.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
--->     
-        <!-- dataset report -->
-<!--        
-        <action name="dataSetReport"
-            class="org.hisp.dhis.commons.action.NoAction">
-            <result name="success" type="redirect">
-                showDataSetReportForm.action</result>
-        </action>
-        
-        <action name="showDataSetReportForm"
-            class="org.hisp.dhis.reports.dataset.action.SelectReportAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="menuTreeHeight">420</param>
-            <param name="page">/dhis-web-reports/dataSetReportForm.vm</param>
-            <param name="menu">/dhis-web-reports/menuForDatasetReport.vm</param>
-            <param name="javascripts">
-                ../dhis-web-commons/oust/oust.js,javascript/dataSetReport.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        
-        <action name="nextPeriods"
-            class="org.hisp.dhis.reports.dataset.action.NextPeriodsAction">
-            <result name="success" type="redirect">
-                showDataSetReportForm.action</result>
-        </action>
-        
-        <action name="previousPeriods"
-            class="org.hisp.dhis.reports.dataset.action.PreviousPeriodsAction">
-            <result name="success" type="redirect">
-                showDataSetReportForm.action</result>
-        </action>
-        
-        <action name="createDataSetReportDataSource"
-            class="org.hisp.dhis.reports.dataset.action.GenerateDataSetReportDataSourceAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseSuccess.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="generateDefaultDataSetReport"
-            class="org.hisp.dhis.reports.dataset.action.GenerateDefaultDataSetReportAction">
-            <result name="success" type="stream">
-                <param name="contentType">application/pdf</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="${fileName}"</param>
-                <param name="bufferSize">1024</param>
-            </result>
-            <param name="preview">false</param>
-            <result name="error" type="chain">showDataSetReportForm</result>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        
-        <action name="getDataSetReportTypeForPreview"
-            class="org.hisp.dhis.reports.dataset.action.GetDataSetReportTypeAction">
-            <result name="customreport" type="chain">
-                previewCustomDataSetReport</result>
-            <result name="defaultreport" type="chain">
-                previewDefaultDataSetReport</result>
-            <result name="error" type="chain">showDataSetReportForm</result>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        
-        <action name="previewCustomDataSetReport"
-            class="org.hisp.dhis.reports.dataset.action.GenerateCustomDataSetReportAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="menuTreeHeight">420</param>
-            <result name="error" type="chain">showQuickReportForm</result>
-            <param name="page">
-                /dhis-web-reports/previewCustomDataSetReportForm.vm</param>
-            <param name="javascripts">javascript/dataSetReport.js</param>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        
-        <action name="previewDefaultDataSetReport"
-            class="org.hisp.dhis.reports.dataset.action.GenerateDefaultDataSetReportAction">
-            <result name="success" type="chain">
-                previewDefaultDataSetHtmlReport</result>
-            <result name="error" type="chain">showDataSetReportForm</result>
-            <param name="preview">true</param>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        
-        <action name="previewDefaultDataSetHtmlReport"
-            class="org.hisp.dhis.reports.dataset.action.PreviewReportAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="menuTreeHeight">420</param>
-            <param name="page">
-                /dhis-web-reports/previewDefaultDataSetReportForm.vm</param>
-            <param name="javascripts">javascript/dataSetReport.js</param>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        
-        <action name="returnToViewDataSetReport"
-            class="org.hisp.dhis.reports.dataset.action.GetViewFormStateAction">
-            <result name="success" type="chain">showDataSetReportForm</result>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        
-        <action name="createDataSetReportDataSource"
-            class="org.hisp.dhis.reports.dataset.action.GenerateDataSetReportDataSourceAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseSuccess.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="getDataSetReportTypeForPDF"
-            class="org.hisp.dhis.reports.dataset.action.GetDataSetReportTypeAction">
-            <result name="customreport" type="chain">
-                generateCustomDataSetReport</result>
-            <result name="defaultreport" type="chain">
-                generateDefaultDataSetReport</result>
-            <result name="error" type="chain">showDataSetReportForm</result>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        
-        <action name="generateCustomDataSetReport"
-            class="org.hisp.dhis.reports.dataset.action.GenerateCustomDataSetReportAction">
-            <result name="success" type="velocity">/popup.vm</result>
-            <result name="error" type="chain">showDataSetReportForm</result>
-            <param name="page">
-                /dhis-web-reports/previewCustomDataSetReportForm.vm</param>
-            <param name="javascripts">javascript/dataSetReport.js</param>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        
-        <action name="exportDataSetReportToExcel"
-            class="org.hisp.dhis.reports.action.ExportToExcelAction">
-            <result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">
-                    attachment;filename="${fileName}"</param>
-                <param name="bufferSize">1024</param>
-            </result>
-        </action>
--->     
-        <!-- pivot table -->
-<!--        
-        <action name="displayPivotTableForm"
-            class="org.hisp.dhis.reports.action.NoAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-reports/viewPivotTableForm.vm</param>
-            <param name="menu">
-                /dhis-web-reports/menuWithTreeForPivotTable.vm</param>
-            <param name="javascripts">
-                ../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/pivot.js,javascript/criteria.js</param>
-        </action>
-        
-        <action name="getPivotTable"
-            class="org.hisp.dhis.reports.pivottable.action.GetPivotTableAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-reports/responsePivotTable.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="getOrganisationUnitLevels"
-            class="org.hisp.dhis.reports.pivottable.action.GetOrganisationUnitLevelsAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-reports/responseOrganisationUnitLevel.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="getPeriodTypes"
-            class="org.hisp.dhis.reports.pivottable.action.GetPeriodTypesAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-reports/responsePeriodType.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="getIndicatorGroups"
-            class="org.hisp.dhis.reports.pivottable.action.GetIndicatorGroupsAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-reports/responseIndicatorGroup.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
--->     
-        <!-- charts -->
-<!--        
-        <action name="createChart"
-            class="org.hisp.dhis.reports.chart.action.CreateChartAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseSuccess.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="saveChart"
-            class="org.hisp.dhis.reports.chart.action.SaveChartAction">
-            <result name="success" type="redirect">
-                displayViewChartForm.action</result>
-            <param name="requiredAuthorities">F_CHART_ADD</param>
-        </action>
-        
-        <action name="removeChart"
-            class="org.hisp.dhis.reports.chart.action.RemoveChartAction">
-            <result name="success" type="redirect">
-                displayViewChartForm.action</result>
-            <param name="requiredAuthorities">F_CHART_DELETE</param>
-        </action>
-        
-        <action name="displayAddChartForm"
-            class="org.hisp.dhis.reports.chart.action.GetChartOptionsAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-reports/addChartForm.vm</param>
-            <param name="menu">/dhis-web-reports/menu.vm</param>
-            <param name="javascripts">
-                javascript/lists.js,javascript/chart.js</param>
-            <param name="requiredAuthorities">F_CHART_ADD</param>
-        </action>
-        
-        <action name="displayViewChartForm"
-            class="org.hisp.dhis.reports.chart.action.GetAllChartsAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-reports/viewChartForm.vm</param>
-            <param name="menu">/dhis-web-reports/menu.vm</param>
-            <param name="javascripts">javascript/chart.js</param>
-        </action>
-        
-        <action name="viewChart"
-            class="org.hisp.dhis.reports.chart.action.ViewChartAction">
-            <result name="success" type="chart"></result>
-        </action>
-        
-        <action name="generateChart"
-            class="org.hisp.dhis.reports.chart.action.GenerateChartAction">
-            <result name="success" type="chart"></result>
-        </action>
-        
-        <action name="getChart"
-            class="org.hisp.dhis.reports.chart.action.GetChartAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseChart.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="validateChart"
-            class="org.hisp.dhis.reports.chart.action.ValidateChartAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-reports/responseSuccess.vm</result>
-            <result name="input" type="velocity-xml">
-                /dhis-web-reports/responseInput.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
-        
-        <action name="exportPivotTableResultToExcel"
-            class="org.hisp.dhis.reports.action.ExportToExcelAction">
-            <result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">
-                    attachment;filename="${fileName}"</param>
-                <param name="bufferSize">1024</param>
-            </result>
-        </action>
--->     
-       
-		<!-- Linelisting Web-Portal Reports -->
-		<action name="linelistingWebPortalReportAnalyser"
-			class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-reports/linelstingWebPortalReportAnalyserFront.vm</param>
-			<param name="menu">/dhis-web-reports/menuWithTreeForLineListingWebPortalReport.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
-			<param name="stylesheets">css/StylesForTags.css</param>
-			<param name="requiredAuthorities">F_REPORT_LINELIST</param>
-			<interceptor-ref name="organisationUnitTreeStack"/>
-		</action>
-		<action name="generateLinelistingWebPortalReport"
-			class="org.hisp.dhis.reports.linelisting.action.GenerateLinelistingWebPortalReportAnalyserResultAction">
-			<result name="success" type="stream">
-				<param name="contentType">application/vnd.ms-excel</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">filename="${fileName}"</param>
-				<param name="bufferSize">1024</param>
-			</result>
-		</action>		 
+
     </package>
 </struts>
