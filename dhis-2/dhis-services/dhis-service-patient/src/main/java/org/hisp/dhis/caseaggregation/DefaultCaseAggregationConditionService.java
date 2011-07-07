@@ -259,6 +259,12 @@ public class DefaultCaseAggregationConditionService
             int categoryOptionId = Integer.parseInt( ids[2] );
             DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionId );
 
+            if( programStage == null || dataElement == null || optionCombo == null )
+            {
+                return "Invalid condition";
+            
+            }
+            
             matcher.appendReplacement( decription, "[" + programStage.getName() + SEPARATOR_ID + dataElement.getName()
                  + optionCombo.getName() + "]" );
         }
