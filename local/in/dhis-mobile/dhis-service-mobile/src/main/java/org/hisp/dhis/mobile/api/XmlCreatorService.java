@@ -136,9 +136,16 @@ public class XmlCreatorService extends Thread
             writer.write( "<timeStamp>" + sendTime + "</timeStamp>\n" );
             for ( int i = 0; i < elementIds.length; i++ )
             {
-                if ( ( dataValues.length - 1 ) < i || dataValues[i].isEmpty() )
+                if ( ( dataValues.length - 1 ) < i )
                 {
-                } 
+                }
+                else if( dataValues[i].isEmpty() )
+                {
+                    writer.write( "<dataValue>\n" );
+                    writer.write( "<dataElement>" + elementIds[i] + "</dataElement>\n" );
+                    writer.write( "<value> </value>\n" );
+                    writer.write( "</dataValue>\n" );
+                }
                 else
                 {
                     writer.write( "<dataValue>\n" );

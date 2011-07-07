@@ -27,6 +27,7 @@
 package org.hisp.dhis.mobile.api;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
@@ -54,4 +55,6 @@ public interface MobileImportService
     public void importPendingFiles();
     
     public void readAllMessages();
+    
+        public void importInteractionMessage( String smsText, String sender, Date sendTime );
 }

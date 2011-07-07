@@ -340,10 +340,46 @@ public class SmsService implements MessageService
         return status;
     }
 
+        public String sendMessagesToPort( List<SendSMS> sendSMSList ,int dest,int src)
+    {
+        int successCount = 0;
+        int failCount = 0;
+        String status = null;
+        for ( int i = 0; i < sendSMSList.size(); i++ )
+        {
+            //System.out.println("Successfully sent : "+ successCount +" Failed : " + failCount);
+            status = sendMessageToPort( sendSMSList.get( i ).getSenderInfo(), sendSMSList.get( i ).getSendingMessage(),dest,src );
+            if ( status.equalsIgnoreCase( "SUCCESS" ) )
+            {
+                successCount++;
+            } else
+            {
+                if ( status.equalsIgnoreCase( "MODEMERROR" ) )
+                {
+                    getService().getLogger().logError( "Modem Stops Responding...Till then successfully sent : " + successCount, null, null );
+                    //System.out.println("Successfully sent : "+ successCount +" Failed : " + failCount);
+                    System.out.println( "modem is not responding....waiting for it to respond..." );
+                    // return "Modem Stops Responding...Till then successfully sent : "+successCount; 
+                    i--;
+                } else
+                {
+                    if ( status.equals( "SERVICE NOT RUNNING" ) )
+                    {
+                        return "SERVICE NOT RUNNING";
+                    }
+                }
+            }
+        }
+
+        return status;
+    }
+
     @Override
     public String sendMessage( String recipient, String msg )
     {
         OutboundMessage message = new OutboundMessage( recipient, msg );
+        message.setDstPort(16000);
+        message.setSrcPort(0);
         if ( getServiceStatus() )
         {
             try
@@ -381,6 +417,50 @@ public class SmsService implements MessageService
         }
     }
 
+    public String sendMessageToPort( String recipient, String msg,int dest,int src )
+    {
+        
+        OutboundMessage message = new OutboundMessage( recipient, msg );
+        message.setDstPort( dest);
+        message.setSrcPort( src );
+        if ( getServiceStatus() )
+        {
+            try
+            {
+                if ( serv.sendMessage( message ) )
+                {
+                    getService().getLogger().logInfo( "Message Sent to: " + recipient, null, null );
+                    return "SUCCESS";
+                } else
+                {
+                    getService().getLogger().logError( "Timeout error in sending message to: " + recipient, null, null );
+                    return "MODEMERROR";
+                }
+            } catch ( TimeoutException ex )
+            {
+                getService().getLogger().logError( "Timeout error in sending message", ex, null );
+                return "ERROR";
+            } catch ( GatewayException ex )
+            {
+                getService().getLogger().logError( "Gateway Exception in sending message", ex, null );
+                return "ERROR";
+            } catch ( IOException ex )
+            {
+                getService().getLogger().logError( "IO Exception in sending message", ex, null );
+                return "ERROR";
+            } catch ( InterruptedException ex )
+            {
+                getService().getLogger().logError( "Interrupted Exception in sending message", ex, null );
+                return "ERROR";
+            }
+        } else
+        {
+            getService().getLogger().logError( "Service not running", null, null );
+            return "SERVICE NOT RUNNING";
+        }
+    }
+
+    
     @Override
     public void processMessage( Object message )
     {
@@ -391,9 +471,17 @@ public class SmsService implements MessageService
             InboundBinaryMessage binaryMsg = (InboundBinaryMessage) message;
             byte[] compressedData = binaryMsg.getDataBytes();
             String unCompressedText = new String( Compressor.decompress( compressedData ), "UTF-8" );
-
             String sender = binaryMsg.getOriginator();
             Date sendTime = binaryMsg.getDate();
+
+            
+            if(unCompressedText.startsWith("i"))
+            {
+                mobileImportService.importInteractionMessage(unCompressedText, sender, sendTime);
+            }
+            
+            else
+            {
 
             // Creating XML File
             getService().getLogger().logInfo( "Creating XML file...", null, null );
@@ -428,6 +516,8 @@ public class SmsService implements MessageService
             //getService().getLogger().logInfo( "Saved Report. Sending Acknowledgement to " + sender, null, null );
             //sendAck( sender, "REPORT", unCompressedText );
             //sendMessage( sender, statusMessage );
+            
+            }
 
         } catch ( UnsupportedEncodingException uneex )
         {
@@ -464,6 +554,7 @@ public class SmsService implements MessageService
             }
             getService().getLogger().logInfo( "---Message Processing Finished---", null, null );
         }
+        
     }
 
     @Override
