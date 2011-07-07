@@ -2,7 +2,7 @@
 <script type="text/javascript">
 	jQuery(function() {
 		jQuery("#availableList").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getDataElements.action",
+			source: "../dhis-web-commons-ajax-json/getDataElements.action?domain=patient",
 			iterator: "dataElements",
 			connectedTo: 'selectedDataElementsValidator',
 			handler: function(item) {
@@ -71,9 +71,6 @@ tr.selected{
       <tr>
         <td>
             <select size="15" id="availableList" name='availableList' multiple="multiple" style="width:30em;height:20em" ondblclick="selectDataElements()">
-                #foreach ( $dataElement in $dataElements )
-                    <option value="$dataElement.id">$encoder.htmlEncode( $dataElement.name )</option>
-                #end                
             </select>
         </td>
         <td valign="top" align="center">         

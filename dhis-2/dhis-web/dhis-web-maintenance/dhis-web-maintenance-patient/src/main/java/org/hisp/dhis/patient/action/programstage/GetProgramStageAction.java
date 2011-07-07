@@ -61,35 +61,6 @@ public class GetProgramStageAction
         this.programStageService = programStageService;
     }
 
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -120,13 +91,6 @@ public class GetProgramStageAction
         return programStageDataElements;
     }
 
-    private List<DataElement> dataElements;
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -137,22 +101,6 @@ public class GetProgramStageAction
         programStage = programStageService.getProgramStage( id );
 
         programStageDataElements = programStage.getProgramStageDataElements();
-
-        dataElements = new ArrayList<DataElement>( dataElementService
-            .getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
-
-        for ( ProgramStageDataElement psde : programStageDataElements )
-        {
-            dataElements.remove( psde.getDataElement() );
-        }
-
-        // ---------------------------------------------------------------------
-        // Sorted available dataelements
-        // ---------------------------------------------------------------------
-        
-        Collections.sort( dataElements, dataElementComparator );
-
-        displayPropertyHandler.handle( dataElements );
 
         return SUCCESS;
     }

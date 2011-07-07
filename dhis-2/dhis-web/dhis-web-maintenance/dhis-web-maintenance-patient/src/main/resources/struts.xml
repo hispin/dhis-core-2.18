@@ -691,7 +691,7 @@
 		</action>
 
 		<action name="showAddProgramStageForm"
-			class="org.hisp.dhis.patient.action.programstage.ShowAddProgramStageFormAction">
+			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="input" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 			<result name="success" type="velocity">/main.vm</result>
