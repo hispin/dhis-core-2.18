@@ -22,7 +22,7 @@
 					<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onKeyPress="changePageSize(event,'$baseLink');">
 				</td>
 				<td>
-					<input type="button" id="submitButton" value="$i18n.getString('go')" onclick="changePageSize('$baseLink');">
+					<input type="button" id="submitButton" value="$i18n.getString('go')" onclick="changePageSize(event,'$baseLink');">
 				</td>				
 			</tr>		
 			<tr>
@@ -102,7 +102,7 @@ function changePageSize( e, baseLink )
 {
 	var key = getKeyCode(e);
 	
-	if ( key==13 )// Enter
+	if ( key==13 || key==1 )// Enter
 	{
 		// ---------------------------------------------------
 		// validate parametter
