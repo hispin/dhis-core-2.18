@@ -29,7 +29,9 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -51,6 +53,7 @@ import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -98,7 +101,7 @@ public class LoadDataEntryAction
 
     private I18n i18n;
 
-    private Collection<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
+    private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
 
     private Map<Integer, PatientDataValue> patientDataValueMap;
 
@@ -195,7 +198,7 @@ public class LoadDataEntryAction
         return customDataEntryFormCode;
     }
 
-    public Collection<ProgramStageDataElement> getProgramStageDataElements()
+    public List<ProgramStageDataElement> getProgramStageDataElements()
     {
         return programStageDataElements;
     }
@@ -225,7 +228,9 @@ public class LoadDataEntryAction
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        programStageDataElements = programStage.getProgramStageDataElements();
+        programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
+
+        Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
 
