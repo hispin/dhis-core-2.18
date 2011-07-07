@@ -57,6 +57,12 @@
         <td><label for="title">$i18n.getString( "title" )</label></td>
         <td><input type="text" id="title" name="title" style="width:300px" value="$!chart.title"></td>
     </tr>
+
+    <tr>
+        <td><label for="hideSubtitle">$i18n.getString( "hide_subtitle" )</label></td>
+        <td><input type="checkbox" id="hideSubtitle" name="hideSubtitle" value="true"#if( $!chart.hideSubtitle ) checked#end></td>
+    </tr>
+
     <tr>
     	<td><label for="type">$i18n.getString( "chart_type" )</label></td>
     	<td>

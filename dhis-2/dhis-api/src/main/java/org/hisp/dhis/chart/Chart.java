@@ -41,7 +41,6 @@ import org.hisp.dhis.period.RelativePeriods;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class Chart
     implements Serializable, ImportableObject
@@ -97,6 +96,8 @@ public class Chart
     private Boolean regression;
 
     private Boolean targetLine;
+
+    private Boolean hideSubtitle;
 
     private Double targetLineValue;
 
@@ -392,6 +393,21 @@ public class Chart
         }
 
         return targetLineLabel;
+    }
+
+    public void setHideSubtitle( Boolean hideSubtitle )
+    {
+        this.hideSubtitle = hideSubtitle;
+    }
+
+    public Boolean getHideSubtitle()
+    {
+        if ( hideSubtitle == null )
+        {
+            return Boolean.FALSE;
+        }
+
+        return hideSubtitle;
     }
 
     public List<Indicator> getIndicators()
