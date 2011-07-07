@@ -162,6 +162,13 @@ public class GetDataElementsAction
         return dataElements;
     }
 
+    public String domain;
+
+    public void setDomain( String domain )
+    {
+        this.domain = domain;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -184,8 +191,8 @@ public class GetDataElementsAction
 
             if ( categoryCombo != null )
             {
-                dataElements = new ArrayList<DataElement>(
-                    dataElementService.getDataElementByCategoryCombo( categoryCombo ) );
+                dataElements = new ArrayList<DataElement>( dataElementService
+                    .getDataElementByCategoryCombo( categoryCombo ) );
             }
         }
         else if ( dataSetId != null )
@@ -205,6 +212,11 @@ public class GetDataElementsAction
             {
                 dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByPeriodType( periodType ) );
             }
+        }
+        else if ( domain != null )
+        {
+            dataElements = new ArrayList<DataElement>( dataElementService
+                .getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
         }
         else
         {

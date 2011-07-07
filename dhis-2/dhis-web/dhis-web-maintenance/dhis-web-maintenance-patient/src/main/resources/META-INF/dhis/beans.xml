@@ -737,7 +737,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 	<bean
@@ -761,14 +760,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.programstage.ShowAddProgramStageFormAction"
-		class="org.hisp.dhis.patient.action.programstage.ShowAddProgramStageFormAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 	<bean
