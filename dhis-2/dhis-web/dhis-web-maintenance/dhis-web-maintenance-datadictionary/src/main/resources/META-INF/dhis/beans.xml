@@ -512,12 +512,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction"
     scope="prototype">
-    <property name="dataElementService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementService" />
-    </property>
-    <property name="indicatorService">
-      <ref bean="org.hisp.dhis.indicator.IndicatorService" />
-    </property>
     <property name="dataDictionaryService">
       <ref bean="org.hisp.dhis.datadictionary.DataDictionaryService" />
     </property>

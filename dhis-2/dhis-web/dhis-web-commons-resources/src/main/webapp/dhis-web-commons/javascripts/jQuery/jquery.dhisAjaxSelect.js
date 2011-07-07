@@ -240,7 +240,12 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                 $.getJSON(settings.filter.source, function(json)
                 {
                     $filter_select.empty();
-                    $filter_select.append("<option>All</option>");
+                    
+                    if( settings.filter.label !== undefined ) {
+                        $filter_select.append("<option>[ All / " + settings.filter.label + " ]</option>");
+                    } else {
+                        $filter_select.append("<option>[ All ]</option>");
+                    }
 
                     $.each(json[settings.filter.iterator], function(i, item)
                     {
