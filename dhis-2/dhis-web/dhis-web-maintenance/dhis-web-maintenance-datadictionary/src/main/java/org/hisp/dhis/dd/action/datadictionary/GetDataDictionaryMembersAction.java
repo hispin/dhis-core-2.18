@@ -35,16 +35,13 @@ import java.util.List;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class GetDataDictionaryMembersAction
     implements Action
@@ -53,20 +50,6 @@ public class GetDataDictionaryMembersAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-    
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }    
-    
     private DataDictionaryService dataDictionaryService;
 
     public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
@@ -125,13 +108,6 @@ public class GetDataDictionaryMembersAction
         return selectedDataElements;
     }
 
-    private List<DataElement> availableDataElements = new ArrayList<DataElement>();
-
-    public List<DataElement> getAvailableDataElements()
-    {
-        return availableDataElements;
-    }
-
     private List<Indicator> selectedIndicators = new ArrayList<Indicator>();
 
     public List<Indicator> getSelectedIndicators()
@@ -139,13 +115,6 @@ public class GetDataDictionaryMembersAction
         return selectedIndicators;
     }
     
-    private List<Indicator> availableIndicators = new ArrayList<Indicator>();
-
-    public List<Indicator> getAvailableIndicators()
-    {
-        return availableIndicators;
-    }
-
     private DataDictionary dataDictionary;
 
     public DataDictionary getDataDictionary()
@@ -175,20 +144,6 @@ public class GetDataDictionaryMembersAction
             Collections.sort( selectedIndicators, indicatorComparator );            
             displayPropertyHandler.handle( selectedIndicators );
         }
-        
-        // ---------------------------------------------------------------------
-        // Get available elements
-        // ---------------------------------------------------------------------
-
-        availableDataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );        
-        availableDataElements.removeAll( selectedDataElements );
-        Collections.sort( availableDataElements, dataElementComparator );        
-        displayPropertyHandler.handle( availableDataElements );
-        
-        availableIndicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );        
-        availableIndicators.removeAll( selectedIndicators );        
-        Collections.sort( availableIndicators, indicatorComparator );        
-        displayPropertyHandler.handle( availableIndicators );
         
         return SUCCESS;
     }

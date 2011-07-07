@@ -102,12 +102,14 @@
         <td>
           <select id="availableDataElementsList" name="availableDataElementsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
+
         <td>
         	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableDataElementsList' );"/><br/>
             <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'dataElementsSelectedList' );"/><br/>
 			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableDataElementsList' );"/><br/>
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'dataElementsSelectedList' );"/>
         </td>       
+
         <td>
           <select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;">
               #foreach ( $availableDataElement in $dataElements )
