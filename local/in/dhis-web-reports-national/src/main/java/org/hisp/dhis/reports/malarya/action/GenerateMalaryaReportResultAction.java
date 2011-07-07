@@ -53,8 +53,8 @@ import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.CellFormat;
 import jxl.write.Formula;
-import jxl.write.Number;
 import jxl.write.Label;
+import jxl.write.Number;
 import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
@@ -63,6 +63,7 @@ import jxl.write.WritableWorkbook;
 import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -369,9 +370,17 @@ extends ActionSupport
 
         String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
             + "template" + File.separator + reportFileNameTB;
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator  + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         //System.out.println("RA FOLDER IS : \t" + raFolderName);
         
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );

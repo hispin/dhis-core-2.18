@@ -33,7 +33,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,6 +59,7 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -423,8 +423,16 @@ public class ActivePlanReportsResultAction
         */
         
         inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
-        outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
 
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+        
         //generatFeedbackReport();
         generateActivityPlanReport();
 
