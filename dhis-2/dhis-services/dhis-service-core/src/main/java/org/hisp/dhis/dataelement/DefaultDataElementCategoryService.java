@@ -280,8 +280,6 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryOptionComboStore.getByUuid( uuid );
     }
 
-
-    
     public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos(
         final Collection<Integer> identifiers )
     {
