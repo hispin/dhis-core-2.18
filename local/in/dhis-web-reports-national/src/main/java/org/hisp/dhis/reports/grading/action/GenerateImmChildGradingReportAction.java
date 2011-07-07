@@ -38,6 +38,7 @@ import jxl.write.WritableWorkbook;
 import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -329,8 +330,17 @@ public class GenerateImmChildGradingReportAction extends ActionSupport
 
         String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template" + File.separator + "Grading.xls";
 
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName +  File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName +  File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
 
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
+        
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );

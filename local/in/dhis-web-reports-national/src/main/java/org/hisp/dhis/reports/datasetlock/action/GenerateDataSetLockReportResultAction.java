@@ -20,9 +20,9 @@ import jxl.write.Label;
 import jxl.write.Number;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook; //import jxl.write.WriteException;
-//import jxl.write.biff.RowsExceededException;
+import jxl.write.WritableWorkbook;
 
+import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
@@ -172,8 +172,16 @@ public class GenerateDataSetLockReportResultAction
         dataSet = dataSetService.getDataSet( dataSets );
         dSetSource = dataSet.getSources();
 
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         sheet0 = outputReportWorkbook.createSheet( "DataSetLockedReport", 0 );
         // Cell Format
