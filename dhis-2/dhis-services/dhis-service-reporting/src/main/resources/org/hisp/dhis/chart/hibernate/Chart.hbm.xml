@@ -22,6 +22,8 @@
 
     <property name="hideLegend" />
 
+    <property name="hideSubtitle" />
+
     <property name="verticalLabels" />
 
     <property name="horizontalPlotOrientation" />

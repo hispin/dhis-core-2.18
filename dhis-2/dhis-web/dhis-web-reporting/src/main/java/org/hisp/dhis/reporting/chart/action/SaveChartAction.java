@@ -112,6 +112,13 @@ public class SaveChartAction
         this.title = title;
     }
 
+    private boolean hideSubtitle;
+
+    public void setHideSubtitle( boolean hideSubtitle )
+    {
+        this.hideSubtitle = hideSubtitle;
+    }
+
     private String type;
 
     public void setType( String type )
@@ -297,6 +304,7 @@ public class SaveChartAction
         Collections.sort( periods, new AscendingPeriodComparator() );
 
         chart.setTitle( title );
+        chart.setHideSubtitle( hideSubtitle );
         chart.setType( type );
         chart.setSize( size );
         chart.setDimension( dimension );

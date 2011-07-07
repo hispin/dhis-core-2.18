@@ -219,7 +219,7 @@ public class DefaultChartService
         chart.setFormat( format );
         chart.init();
 
-        return getJFreeChart( chart, true );
+        return getJFreeChart( chart, !chart.getHideSubtitle() );
     }
 
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<Period> periods,
