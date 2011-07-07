@@ -3,21 +3,20 @@ var operandToEliminate = 0;
 var operandToKeep = 0;
 
 function initLists()
-{	
-	$.getJSON( 
-        "../dhis-web-commons-ajax-json/getOperands.action",
-        {},
-        function( json )
-        {
-        	var operands = json.operands;
-        	
-        	for ( var i = 0; i < operands.length; i++ )
-        	{
-        	   $( "#operandList" ).append( "<option value='" + 
-        	       operands[i].operandId + "'>" + operands[i].operandName + "</option>" );
-        	}
+{
+    $("#operandList").dhisAjaxSelect({
+        source: "../dhis-web-commons-ajax-json/getOperands.action",
+        iterator: "operands",
+        handler: function(item) {
+            var option = jQuery("<option />");
+            option.text( item.operandName );
+            option.attr( "value", item.operandId );
+
+            return option;
         }
-    );
+    });
+    
+    $("#operandList").bind('click', operandSelected);
 }
 
 function operandSelected()

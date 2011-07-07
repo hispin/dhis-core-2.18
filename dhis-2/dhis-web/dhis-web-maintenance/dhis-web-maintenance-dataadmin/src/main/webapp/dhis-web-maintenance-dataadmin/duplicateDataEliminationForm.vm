@@ -10,10 +10,8 @@
 
 <h3>$i18n.getString( "duplicate_data_elimination" ) #openHelp( "duplicateDataElimination" )</h3>
 
-<div>
-	<label>$i18n.getString( "filter" ):</label><br/>
-	<input type="text" style="width:294px" onkeyup="filterList( this.value, 'operandList' )"/><br/>
-	<select id="operandList" size="6" style="width:400px" onclick="operandSelected()"></select>
+<div style="width: 450px;">
+	<select id="operandList" name="operandList" multiple="multiple" style="height: 150px; width: 100%;"></select>
 </div>
 
 <br/>
