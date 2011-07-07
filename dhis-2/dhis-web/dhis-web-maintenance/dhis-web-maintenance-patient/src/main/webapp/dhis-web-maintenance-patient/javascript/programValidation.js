@@ -8,7 +8,11 @@ jQuery(document).ready(	function(){
 	
 	if( isSingle || getFieldValue('rightSide') == '1==1')
 	{
-		hideById('rightSideDiv');
+		hideById('rightLabel');
+		hideById('rightStage');
+		hideById('rightSideDE');
+		hideById('rightSide');
+		hideById('rightStageDescriptionFieldset');
 		setFieldValue('rightSide','1==1');
 	}
 });
@@ -49,11 +53,24 @@ function removeProgramValidation( programValidationId, name )
 // Insert items data-element
 //-----------------------------------------------------------------
 
-function insertDataElement( element, target )
+function insertDataElement( element, target, decriptionDiv )
 {
 	byId(target).value += " " + element.options[element.selectedIndex].value + " ";
+	
+	getValidationDescription( decriptionDiv, target );
 }
 
+function getValidationDescription( decriptionDiv, sideDiv )
+{
+	$.post("getCaseAggregationDescription.action",
+		{
+			condition: getFieldValue( sideDiv )
+		},
+		function (data)
+		{
+			byId( decriptionDiv ).innerHTML = data;
+		},'html');
+}
 
 //------------------------------------------------------------------------------
 // Get DataElements of Program-Stage into left-side

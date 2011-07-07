@@ -1,3 +1,4 @@
+<script type="text/javascript" src="javascript/addProgramValidationForm.js"></script>
 <h3>$i18n.getString( "add_program_validation" )</h3>
 
 <form id='programValidationForm' name='programValidationForm' method='post' action='addProgramValidation.action'>
@@ -25,50 +26,61 @@
 	<tr>
 		<td width="20em">
 			<label>$i18n.getString('left_side')</label>
-			
-			<br>
+		</td>
+		<td>
+			<label id='rightLabel'>$i18n.getString('right_side')</label>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<select style="width:30.2em" id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();">
 				<option value=''>[$i18n.getString( "please_select" )]</option>
 				#foreach($stage in $program.programStages)
 				<option value='$stage.id'>$stage.name</option>
 				#end
 			</select>
-			<br>
-			<select style="width:30.2em" id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide');" >
-			</select>
-			<br>
-			<textarea rows='5' style="width:30em" id='leftSide' name='leftSide' class="{validate:{required:true,minlength:4}}"></textarea>
-			
 		</td>
-		<td width="20em">
-			<div id='rightSideDiv'>
-			
-				<label>$i18n.getString('right_side')</label>
-				
-				<br>
-				<select style="width:30.2em" id='rightStage' name='rightStage' onchange="getRightPrgramStageDataElements();">
-					<option value=''>[$i18n.getString( "please_select" )]</option>
-					#foreach($stage in $program.programStages)
-					<option value='$stage.id'>$stage.name</option>
+		<td>
+			<select style="width:30.2em" id='rightStage' name='rightStage' onchange="getRightPrgramStageDataElements();">
+				<option value=''>[$i18n.getString( "please_select" )]</option>
+				#foreach($stage in $program.programStages)
+				<option value='$stage.id'>$stage.name</option>
 					#end
-				</select>
-				<br>
-				<select style="width:30.2em" id='rightSideDE' name='rightSideDE' size='7' ondblclick="insertDataElement(this, 'rightSide');">
-				</select>
-				<br>
-				<textarea rows='5' style="width:30em" id='rightSide' name='rightSide' class="{validate:{required:true,minlength:4}}"></textarea>
-		
-			</div>
-			
+			</select>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			</td>
-		<td>			
-			</td>
+			<select style="width:30.2em" id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide', 'leftStageDescription');" >
+			</select>
+		</td>
+		<td>
+			<select style="width:30.2em" id='rightSideDE' name='rightSideDE' size='7' ondblclick="insertDataElement(this, 'rightSide', 'rightStageDescription' );">
+			</select>
+		</td>
 	</tr>
-	
+	<tr>	
+		<td>
+			<textarea rows='5' style="width:30em" id='leftSide' name='leftSide' class="{validate:{required:true,minlength:4}}" onkeyup="getValidationDescription('leftStageDescription', 'leftSide')"></textarea>
+		</td>
+		<td>
+			<textarea rows='5' style="width:30em" id='rightSide' name='rightSide' class="{validate:{required:true,minlength:4}}" onkeyup="getValidationDescription('rightStageDescription', 'rightSide')"></textarea>
+		</td>
+	</tr>
+	<tr>	
+		<td>
+			<fieldset style="border: 1px solid #3f5d8e; ">
+				<legend>$i18n.getString( "description" )</legend>
+				<div id='leftStageDescription' style="width:29em"></div>
+			</fieldset>
+		</td>
+		<td>
+			<fieldset style="border: 1px solid #3f5d8e; " id='rightStageDescriptionFieldset'>
+				<legend>$i18n.getString( "description" )</legend>
+				<div id='rightStageDescription' style="width:29em;"></div>
+			</fieldset>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<input type='submit' value="$i18n.getString( "add" )" style="width:10em">

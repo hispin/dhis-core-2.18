@@ -4,5 +4,5 @@
 	<description>$encoder.htmlEncode($validation.description)</description>
 	<leftSide>$encoder.htmlEncode($validation.leftSide)</leftSide>
 	<rightSide>$encoder.htmlEncode($validation.rightSide)</rightSide>
-	<program>$encoder.htmlEncode($validation.rightSide.name)</program>
+	<program>$encoder.htmlEncode($validation.program.name)</program>
 </validation>

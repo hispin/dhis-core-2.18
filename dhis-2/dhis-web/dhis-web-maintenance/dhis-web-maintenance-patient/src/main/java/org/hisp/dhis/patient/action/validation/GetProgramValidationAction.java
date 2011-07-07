@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.patient.action.validation;
 
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationService;
 
@@ -45,6 +46,8 @@ public class GetProgramValidationAction
 
     private ProgramValidationService programValidationService;
 
+    private CaseAggregationConditionService aggregationConditionService;
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -53,6 +56,20 @@ public class GetProgramValidationAction
 
     private ProgramValidation validation;
 
+    private String leftDescription;
+
+    public String getLeftDescription()
+    {
+        return leftDescription;
+    }
+
+    private String rightDescription;
+
+    public String getRightDescription()
+    {
+        return rightDescription;
+    }
+
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
@@ -60,6 +77,11 @@ public class GetProgramValidationAction
     public void setProgramValidationService( ProgramValidationService programValidationService )
     {
         this.programValidationService = programValidationService;
+    }
+
+    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
+    {
+        this.aggregationConditionService = aggregationConditionService;
     }
 
     public void setValidationId( Integer validationId )
@@ -81,6 +103,9 @@ public class GetProgramValidationAction
         throws Exception
     {
         validation = programValidationService.getProgramValidation( validationId );
+
+        leftDescription = aggregationConditionService.getConditionDescription( validation.getLeftSide() );
+        rightDescription = aggregationConditionService.getConditionDescription( validation.getRightSide() );
 
         return SUCCESS;
     }
