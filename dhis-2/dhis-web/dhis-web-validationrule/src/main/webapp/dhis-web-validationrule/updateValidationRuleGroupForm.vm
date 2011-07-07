@@ -29,7 +29,7 @@
     </tr>
 
     <tr>
-        <td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><label for="name">$i18n.getString( "name" )</label></td>
         <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $validationRuleGroup.name )" style="width:20em"></td>
     </tr>
 
