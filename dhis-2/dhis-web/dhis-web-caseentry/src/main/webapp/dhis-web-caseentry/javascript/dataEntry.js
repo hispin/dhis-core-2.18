@@ -1401,6 +1401,7 @@ function runValidation()
 
 function multiDataEntryOrgunitSelected( orgUnits )
 {
+	hideById("listPatient");
 	jQuery.postJSON( "getPrograms.action",
 	{
 	}, 
