@@ -83,6 +83,15 @@ public class HibernatePatientDataValueStore
             .uniqueResult();
     }
 
+    public PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement,
+        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit )
+    {
+        return (PatientDataValue) getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ),
+            Restrictions.eq( "dataElement", dataElement ), Restrictions.eq( "optionCombo", optionCombo ),
+            Restrictions.eq( "organisationUnit", organisationUnit ) )
+            .uniqueResult();
+    }
+    
     @SuppressWarnings( "unchecked" )
     public Collection<PatientDataValue> get( ProgramStageInstance programStageInstance )
     {

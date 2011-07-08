@@ -105,9 +105,10 @@ public class UpdateProgramValidationAction
 
         programId = validation.getProgram().getId();
 
-        validation.setDescription( description );
-        validation.setLeftSide( leftSide );
-        validation.setRightSide( rightSide );
+        validation.setDescription( description.trim() );
+        validation.setLeftSide( leftSide.trim() );
+        validation.setRightSide( rightSide.trim() );
+        
         programValidationService.updateProgramValidation( validation );
 
         return SUCCESS;

@@ -36,6 +36,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
@@ -48,7 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class DefaultProgramValidationService
-implements ProgramValidationService
+    implements ProgramValidationService
 {
     private ProgramValidationStore validationStore;
 
@@ -60,6 +62,8 @@ implements ProgramValidationService
 
     private PatientDataValueService valueService;
 
+    private DataElementCategoryService categoryService;
+
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
@@ -67,6 +71,11 @@ implements ProgramValidationService
     public void setValidationStore( ProgramValidationStore validationStore )
     {
         this.validationStore = validationStore;
+    }
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     public void setProgramStageService( ProgramStageService programStageService )
@@ -136,7 +145,7 @@ implements ProgramValidationService
         // ---------------------------------------------------------------------
 
         boolean resultRight = runExpression( validation.getRightSide(), programInstance );
-        
+
         return (resultLeft == resultRight);
 
     }
@@ -149,8 +158,8 @@ implements ProgramValidationService
     private boolean runExpression( String expression, ProgramInstance programInstance )
     {
         final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
-                    + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
-        
+            + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
+
         StringBuffer description = new StringBuffer();
 
         Pattern pattern = Pattern.compile( regExp );
@@ -170,12 +179,15 @@ implements ProgramValidationService
 
             int dataElementId = Integer.parseInt( ids[1] );
             DataElement dataElement = dataElementService.getDataElement( dataElementId );
-            
+
+            int optionComboId = Integer.parseInt( ids[2] );
+            DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+
             ProgramStageInstance stageInstance = stageInstanceService.getProgramStageInstance( programInstance,
                 programStage );
 
-            PatientDataValue dataValue = valueService.getPatientDataValue( stageInstance, dataElement, programInstance
-                .getPatient().getOrganisationUnit() );
+            PatientDataValue dataValue = valueService.getPatientDataValue( stageInstance, dataElement, optionCombo,
+                programInstance.getPatient().getOrganisationUnit() );
 
             if ( dataValue == null )
             {
@@ -191,6 +203,6 @@ implements ProgramValidationService
 
         parser.parseExpression( description.toString() );
 
-        return ( parser.getValue() == 1.0 );
-    }    
+        return (parser.getValue() == 1.0);
+    }
 }

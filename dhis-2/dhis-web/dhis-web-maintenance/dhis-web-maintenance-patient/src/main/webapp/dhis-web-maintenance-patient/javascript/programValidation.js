@@ -3,18 +3,6 @@ jQuery(document).ready(	function(){
 	validation( 'programValidationForm', function( form ){			
 		form.submit();
 	});
-	
-	var isSingle = eval(jQuery.getUrlVars('value')['single']);
-	
-	if( isSingle || getFieldValue('rightSide') == '1==1')
-	{
-		hideById('rightLabel');
-		hideById('rightStage');
-		hideById('rightSideDE');
-		hideById('rightSide');
-		hideById('rightStageDescriptionFieldset');
-		setFieldValue('rightSide','1==1');
-	}
 });
 
 // -----------------------------------------------------------------------------
@@ -55,10 +43,20 @@ function removeProgramValidation( programValidationId, name )
 
 function insertDataElement( element, target, decriptionDiv )
 {
-	byId(target).value += " " + element.options[element.selectedIndex].value + " ";
+	var value = " " + element.options[element.selectedIndex].value + " ";
+	
+	insertTextCommon( target, value );
 	
 	getValidationDescription( decriptionDiv, target );
 }
+
+function insertOperator( decriptionDiv, target, value )
+{
+	insertTextCommon( target, ' ' + value + ' ' );
+	
+	getValidationDescription( decriptionDiv, target );
+}
+
 
 function getValidationDescription( decriptionDiv, sideDiv )
 {
@@ -68,8 +66,14 @@ function getValidationDescription( decriptionDiv, sideDiv )
 		},
 		function (data)
 		{
-			byId( decriptionDiv ).innerHTML = data;
+			setInnerHTML( decriptionDiv, data );
 		},'html');
+}
+
+function clearValidation( target, decriptionDiv )
+{
+	setFieldValue( target,'' );
+	setInnerHTML( decriptionDiv, '' );
 }
 
 //------------------------------------------------------------------------------

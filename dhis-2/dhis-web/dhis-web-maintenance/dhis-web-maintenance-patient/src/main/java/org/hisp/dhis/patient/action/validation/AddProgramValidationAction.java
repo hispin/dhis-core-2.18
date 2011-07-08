@@ -110,9 +110,9 @@ public class AddProgramValidationAction
     {
         ProgramValidation validation = new ProgramValidation();
 
-        validation.setDescription( description );
-        validation.setLeftSide( leftSide );
-        validation.setRightSide( rightSide );
+        validation.setDescription( description.trim() );
+        validation.setLeftSide( leftSide.trim() );
+        validation.setRightSide( rightSide.trim() );
 
         Program program = programService.getProgram( programId );
         validation.setProgram( program );
