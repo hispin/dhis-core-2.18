@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportexcel.exporting.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.exporting.action;
 
 import java.util.Collection;
 
@@ -51,7 +52,7 @@ public class GenerateReportNormalAction
         throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        
+
         ReportExcelNormal exportReportInstance = (ReportExcelNormal) exportReport;
 
         this.installReadTemplateFile( exportReportInstance, period, organisationUnit );
@@ -72,7 +73,7 @@ public class GenerateReportNormalAction
             this.recalculatingFormula( sheet );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive method
     // -------------------------------------------------------------------------
@@ -88,15 +89,19 @@ public class GenerateReportNormalAction
 
                 ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
                     ExcelUtils.NUMBER, sheet, this.csNumber );
-
             }
-
-            if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ) )
+            else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ) )
             {
                 double value = getIndicatorValue( reportItem, organisationUnit );
 
                 ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
                     ExcelUtils.NUMBER, sheet, this.csNumber );
+            }
+            else
+            // EXCEL FORMULA
+            {
+                ExcelUtils.writeFormulaByPOI( reportItem.getRow(), reportItem.getColumn(), reportItem.getExpression(),
+                    sheet, this.csFormula );
             }
         }
     }

@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportexcel.exporting.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.exporting.action;
 
 import java.util.Collection;
 
@@ -84,8 +85,6 @@ public class GenerateReportCategoryAction
     {
         for ( ReportExcelItem reportItem : exportReportItems )
         {
-            int iRow = 0;
-            int iCol = 0;
             int rowBegin = reportItem.getRow();
 
             for ( DataElementGroupOrder dataElementGroup : exportReport.getDataElementOrders() )
@@ -123,11 +122,6 @@ public class GenerateReportCategoryAction
                         ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( serial ),
                             ExcelUtils.NUMBER, sheet, this.csTextSerial );
                     }
-                    else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.FORMULA_EXCEL ) )
-                    {
-                        ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                            .checkingExcelFormula( reportItem.getExpression(), iRow, iCol ), sheet, this.csFormula );
-                    }
                     else
                     {
                         ReportExcelItem newReportItem = new ReportExcelItem();
@@ -150,7 +144,6 @@ public class GenerateReportCategoryAction
                     }
                     rowBegin++;
                     serial++;
-                    iRow++;
                 }
 
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) )
