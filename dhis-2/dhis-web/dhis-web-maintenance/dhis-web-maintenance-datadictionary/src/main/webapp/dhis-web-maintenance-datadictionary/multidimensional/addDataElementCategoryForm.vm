@@ -29,6 +29,7 @@
 			{name: value }, function(json) {
 				if( json.response == 'success' ){					
 					addOption( 'categoryOptionNames', value, value );
+					setFieldValue( 'categoryOptionName', '' );
 				}else{
 					markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
 				}

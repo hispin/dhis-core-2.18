@@ -53,6 +53,7 @@
 	function updateCategoryOptionNameReceived(xmlObject){
 		var categoryOptions = byId('categoryOptions');
 		categoryOptions[categoryOptions.selectedIndex].text = byId('categoryOptionName').value;
+		setFieldValue( 'categoryOptionName', '' );
 		showSuccessMessage( i18n_option_rename_successfully );
 	}
 </script>
