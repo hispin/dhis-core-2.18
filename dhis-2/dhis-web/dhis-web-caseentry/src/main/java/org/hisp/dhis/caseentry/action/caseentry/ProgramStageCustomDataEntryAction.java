@@ -259,12 +259,7 @@ public class ProgramStageCustomDataEntryAction implements Action
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
         
-        selectedStateManager.setSelectedPatient( patient );
-        
-        selectedStateManager.setSelectedProgram( program );
-
-        selectedStateManager.setSelectedProgramStage( programStage );
-
+        selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
         Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues(
              programStageInstance );
