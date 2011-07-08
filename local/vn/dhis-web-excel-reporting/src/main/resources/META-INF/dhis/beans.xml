@@ -351,6 +351,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.exportitem.action.ValidationFormulaAction"
+		class="org.hisp.dhis.reportexcel.exportitem.action.ValidationFormulaAction"
+		scope="prototype"/>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.exportitem.action.DeleteExportItemAction"

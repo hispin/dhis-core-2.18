@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportexcel.exporting.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.exporting.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,13 +72,13 @@ public class GenerateReportOrgGroupListingAction
     // -------------------------------------------------------------------------
     // Override
     // -------------------------------------------------------------------------
-    
+
     @Override
     protected void executeGenerateOutputFile( ReportExcel exportReport, Period period )
         throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        
+
         ReportExcelOganiztionGroupListing exportReportInstance = (ReportExcelOganiztionGroupListing) exportReport;
 
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels = new HashMap<OrganisationUnitGroup, OrganisationUnitLevel>(
@@ -106,7 +107,7 @@ public class GenerateReportOrgGroupListingAction
     // -------------------------------------------------------------------------
     // Supportive method
     // -------------------------------------------------------------------------
-    
+
     private void generateOutPutFile( ReportExcelOganiztionGroupListing exportReport,
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels,
         Collection<ReportExcelItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
@@ -114,8 +115,6 @@ public class GenerateReportOrgGroupListingAction
 
         for ( ReportExcelItem reportItem : exportReportItems )
         {
-            int iRow = 0;
-            int iCol = 0;
             int chapperNo = 0;
             int firstRow = reportItem.getRow();
             int rowBegin = firstRow + 1;
@@ -193,15 +192,9 @@ public class GenerateReportOrgGroupListingAction
                         ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( value ),
                             ExcelUtils.NUMBER, sheet, this.csNumber );
                     }
-                    else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.FORMULA_EXCEL ) )
-                    {
-                        ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                            .checkingExcelFormula( reportItem.getExpression(), iRow, iCol ), sheet, this.csFormula );
-                    }
 
                     rowBegin++;
                     serial++;
-                    iRow++;
                 }
 
                 if ( (reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) || reportItem
@@ -215,7 +208,6 @@ public class GenerateReportOrgGroupListingAction
 
                     totalFormula += columnName + beginChapter + ",";
                 }
-
             }
 
             if ( (reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) || reportItem

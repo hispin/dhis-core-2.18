@@ -81,16 +81,15 @@ function getExpression()
 	});		
 }
 
-
 function validateAddExportItem( form )
 {
 	jQuery.postJSON('validationExportItem.action',
 	{
 		exportReportId: getFieldValue( 'exportReportId' ),
+		name: getFieldValue( 'name' ),
 		sheetNo: getFieldValue( 'sheetNo' ),
 		row: getFieldValue( 'row' ),
-		column: getFieldValue( 'column' ),
-		name: getFieldValue( 'name' )
+		column: getFieldValue( 'column' )
 
 	},function( json ){
 		if(json.response == 'success'){					
@@ -107,10 +106,10 @@ function validateUpdateExportItem( form )
 	{
 		id: getFieldValue( 'id' ),
 		exportReportId: getFieldValue( 'exportReportId' ),
+		name: getFieldValue( 'name' ),
 		sheetNo: getFieldValue( 'sheetNo' ),
 		row: getFieldValue( 'row' ),
-		column: getFieldValue( 'column' ),
-		name: getFieldValue( 'name' )
+		column: getFieldValue( 'column' )
 
 	},function( json ){
 		if(json.response == 'success'){

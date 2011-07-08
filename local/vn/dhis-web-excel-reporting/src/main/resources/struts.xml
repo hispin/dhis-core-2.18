@@ -314,6 +314,15 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="validationFormula"
+			class="org.hisp.dhis.reportexcel.exportitem.action.ValidationFormulaAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<action name="addExportItemForm"
 			class="org.hisp.dhis.reportexcel.exportitem.action.SetupExportItemFormAction">
 			<result name="success" type="velocity">/main.vm</result>

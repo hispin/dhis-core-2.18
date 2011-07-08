@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportexcel.utils;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,6 +41,11 @@ import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+import org.apache.poi.hssf.usermodel.HSSFEvaluationWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.FormulaParser;
+import org.apache.poi.ss.formula.FormulaParsingWorkbook;
+
 /**
  * @author Tran Thanh Tri
  * @author Chau Thu Tran
@@ -52,6 +57,8 @@ public class ExcelUtils
     private static Pattern pattern = null;
 
     private static Matcher matcher = null;
+
+    private static FormulaParsingWorkbook evaluationWorkbook = HSSFEvaluationWorkbook.create( new HSSFWorkbook() );
 
     private static final String PATTERN_FOR_ROW = "(\\d{1,})";
 
@@ -74,7 +81,7 @@ public class ExcelUtils
     public static final String NUMBER = "NUMBER";
 
     public static final String EXTENSION_XLS = ".xls";
-    
+
     // -------------------------------------------------------------------------
     //
     // -------------------------------------------------------------------------
@@ -452,6 +459,20 @@ public class ExcelUtils
         }
 
         return string_formula;
+    }
+
+    public static boolean isValidFormula( String formula )
+    {
+        try
+        {
+            FormulaParser.parse( formula, evaluationWorkbook );
+        }
+        catch ( Exception e )
+        {
+            return false;
+        }
+
+        return true;
     }
 
     // -------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportexcel;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -116,7 +116,6 @@ public class ReportExcelOganiztionGroupListing
         types.add( ReportExcelItem.TYPE.ORGANISATION );
         types.add( ReportExcelItem.TYPE.INDICATOR );
         types.add( ReportExcelItem.TYPE.SERIAL );
-        types.add( ReportExcelItem.TYPE.FORMULA_EXCEL );
 
         return types;
     }

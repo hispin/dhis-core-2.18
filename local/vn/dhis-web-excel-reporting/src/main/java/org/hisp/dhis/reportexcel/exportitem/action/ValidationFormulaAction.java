@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel;
+package org.hisp.dhis.reportexcel.exportitem.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -26,63 +26,44 @@ package org.hisp.dhis.reportexcel;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
+
+import static org.hisp.dhis.reportexcel.utils.ExcelUtils.isValidFormula;
+
+import org.hisp.dhis.reportexcel.action.ActionSupport;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-
-public class ReportExcelNormal
-    extends ReportExcel
+public class ValidationFormulaAction
+    extends ActionSupport
 {
     // -------------------------------------------------------------------------
-    // Constructors
+    // Input
     // -------------------------------------------------------------------------
 
-    public ReportExcelNormal()
+    private String formula;
+
+    public void setFormula( String formula )
     {
-        super();
+        this.formula = formula;
     }
 
-    @Override
-    public String getReportType()
-    {
-        return ReportExcel.TYPE.NORMAL;
-    }
 
-    @Override
-    public boolean isCategory()
-    {
-        return false;
-    }
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-    @Override
-    public boolean isNormal()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isOrgUnitGroupListing()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isPeriodColumnListing()
-    {
-        return false;
-    }
-
-    @Override
-    public List<String> getItemTypes()
-    {
-        List<String> types = new ArrayList<String>();
-        types.add( ReportExcelItem.TYPE.DATAELEMENT );
-        types.add( ReportExcelItem.TYPE.INDICATOR );
-        types.add( ReportExcelItem.TYPE.FORMULA_EXCEL );
-
-        return types;
+    public String execute()
+        throws Exception
+    {       
+        if ( formula != null && !isValidFormula( formula ) )
+        {
+            message = i18n.getString( "formula_is_invalid" );
+            
+            return ERROR;
+        }
+        
+        return SUCCESS;
     }
 }

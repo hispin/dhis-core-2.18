@@ -12,16 +12,29 @@
 	<br/>
 	<br/>
 	<center>
-		<input type="button" value="$i18n.getString('ok')" onclick="updateExExpression()" style="width:100px"/>		
+		<input type="button" value="$i18n.getString('ok')" onclick="validateFormula()" style="width:100px"/>		
 		<input type="button" value="$i18n.getString('cancel')" onclick="closeDialog( excelFormulaDialog )" style="width:100px"/>
 	</center>
 </div>
 
-<script>
-	function updateExExpression()
+<script>		
+	
+	var expression = null;
+	
+	function validateFormula()
 	{
-		expression = jQuery( '#excelformula textarea[id=elementSelect]' ).val();		
-		closeDialog( excelFormulaDialog );
+		expression = getFieldValue( 'excelformula textarea[id=elementSelect]' );
+	
+		jQuery.postJSON('validationFormula.action',
+		{
+			formula: expression
+		},function( json ) {
+			if ( json.response == 'success' ) {
+				setFieldValue( 'expression', expression );
+				closeDialog( excelFormulaDialog );
+			}
+			else showErrorMessage( json.message );
+		});
 	}
 	
 	function excelFormulaExpressionBuilderForm()

@@ -26,9 +26,9 @@
 			$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 2)" style="width:300px;"/>
 		</td>
 		<td align="right">	
-			<input type="button" onclick="window.location.href='addImportItemForm.action?importReportId=$importReport.id' " value="$i18n.getString('add')" style="width:150px"/> <br>
-			<input type="button" onclick="copySelectedItemToGroup()" value="$i18n.getString('copy_import_item_to_importreport')" style="width:150px"/><br>
-			<input type="button" onclick="window.location='listAllImportReport.action'" value="$i18n.getString('cancel')" style="width:150px"/>
+			<input type="button" onclick="window.location.href='addImportItemForm.action?importReportId=$importReport.id' " value="$i18n.getString('add')" style="width:200px"/> <br>
+			<input type="button" onclick="copySelectedItemToGroup()" value="$i18n.getString('copy_import_item_to_importreport')" style="width:200px"/><br>
+			<input type="button" onclick="window.location='listAllImportReport.action'" value="$i18n.getString('cancel')" style="width:200px"/>
 		</td>
 	</tr>
 </table>
