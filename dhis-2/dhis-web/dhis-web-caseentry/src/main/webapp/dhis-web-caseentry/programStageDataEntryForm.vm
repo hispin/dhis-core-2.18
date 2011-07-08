@@ -7,10 +7,6 @@ jQuery("#entryFormContainer").ready(function(){
 
 <form id="dataEntryFormDiv" name="dataEntryFormDiv" method="post" action="selectDataRecording.action">
 
-<input type="hidden" id="patientId" name="patientId" value="$patient.id">
-<input type="hidden" id="programStageId" name="programStageId" value="$programStageInstance.programStage.id">
-<input type="hidden" id="programStageInstanceId" name="programStageInstanceId" value="$programStageInstance.id">
-
 <table class="mainPageTable"> 
     <tr>            
         <td>

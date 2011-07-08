@@ -34,8 +34,12 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -48,10 +52,19 @@ public class DefaultSelectedStateManager
     implements SelectedStateManager
 {
     public static final String SESSION_KEY_SELECTED_PATIENT_ID = "selected_patient_id";
+
+    public static final String SESSION_KEY_SELECTED_PROGRAM_INSTANCE_ID = "selected_program_instance_id";
+
+    public static final String SESSION_KEY_SELECTED_PROGRAM_STAGE_INSTANCE_ID = "selected_program_stage_instance_id";
+
     public static final String SESSION_KEY_SELECTED_PROGRAM_ID = "selected_program_id";
+
     public static final String SESSION_KEY_SELECTED_PROGRAMSTAGE_ID = "selected_program_stage_id";
+
     public static final String SESSION_KEY_LISTALL = "list_all_value";
+
     public static final String SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID = "selected_searching_attribute_id";
+
     public static final String SESSION_KEY_SPECIFIED_SEARCH_TEXT = "specified_search_text";
 
     // -------------------------------------------------------------------------
@@ -86,6 +99,20 @@ public class DefaultSelectedStateManager
         this.programStageService = programStageService;
     }
 
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -115,6 +142,50 @@ public class DefaultSelectedStateManager
     public void clearSelectedPatient()
     {
         getSession().remove( SESSION_KEY_SELECTED_PATIENT_ID );
+    }
+
+    public void setSelectedProgramInstance( ProgramInstance programInstance )
+    {
+        getSession().put( SESSION_KEY_SELECTED_PROGRAM_INSTANCE_ID, programInstance.getId() );
+    }
+
+    public ProgramInstance getSelectedProgramInstance()
+    {
+        Integer id = (Integer) getSession().get( SESSION_KEY_SELECTED_PROGRAM_INSTANCE_ID );
+
+        if ( id == null )
+        {
+            return null;
+        }
+
+        return programInstanceService.getProgramInstance( id );
+    }
+
+    public void clearSelectedProgramInstance()
+    {
+        getSession().remove( SESSION_KEY_SELECTED_PROGRAM_INSTANCE_ID );
+    }
+
+    public void setSelectedProgramStageInstance( ProgramStageInstance programStageInstance )
+    {
+        getSession().put( SESSION_KEY_SELECTED_PROGRAM_STAGE_INSTANCE_ID, programStageInstance.getId() );
+    }
+
+    public ProgramStageInstance getSelectedProgramStageInstance()
+    {
+        Integer id = (Integer) getSession().get( SESSION_KEY_SELECTED_PROGRAM_STAGE_INSTANCE_ID );
+
+        if ( id == null )
+        {
+            return null;
+        }
+
+        return programStageInstanceService.getProgramStageInstance( id );
+    }
+
+    public void clearSelectedProgramStageInstance()
+    {
+        getSession().remove( SESSION_KEY_SELECTED_PROGRAM_STAGE_INSTANCE_ID );
     }
 
     public void setSelectedProgram( Program program )

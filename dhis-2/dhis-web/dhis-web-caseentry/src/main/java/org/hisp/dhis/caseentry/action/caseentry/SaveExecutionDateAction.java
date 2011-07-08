@@ -31,6 +31,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -57,6 +58,13 @@ public class SaveExecutionDateAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    private SelectedStateManager selectedStateManager;
+
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -75,18 +83,6 @@ public class SaveExecutionDateAction
         this.executionDate = executionDate;
     }
 
-    private int programStageInstanceId;
-
-    public void setProgramStageInstanceId( int programStageInstanceId )
-    {
-        this.programStageInstanceId = programStageInstanceId;
-    }
-
-    public int getProgramStageInstanceId()
-    {
-        return programStageInstanceId;
-    }
-
     private int statusCode;
 
     public int getStatusCode()
@@ -101,8 +97,7 @@ public class SaveExecutionDateAction
     public String execute()
         throws Exception
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService
-            .getProgramStageInstance( programStageInstanceId );
+        ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
 
         if ( executionDate != null )
         {

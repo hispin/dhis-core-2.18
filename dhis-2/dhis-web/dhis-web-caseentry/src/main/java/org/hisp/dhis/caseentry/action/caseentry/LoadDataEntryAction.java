@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -71,27 +72,21 @@ public class LoadDataEntryAction
 
     private ProgramStageService programStageService;
 
-    private ProgramInstanceService programInstanceService;
-
     private ProgramDataEntryService programDataEntryService;
 
     private PatientDataValueService patientDataValueService;
 
     private ProgramStageInstanceService programStageInstanceService;
 
-    private PatientService patientService;
-
-    private OrganisationUnitSelectionManager selectionManager;
-
     private ProgramStageDataElementService programStageDataElementService;
+
+    private SelectedStateManager selectedStateManager;
 
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
 
     private Integer programStageId;
-
-    private Integer patientId;
 
     private boolean useDefaultForm;
 
@@ -123,19 +118,14 @@ public class LoadDataEntryAction
         this.programStageDataElementService = programStageDataElementService;
     }
 
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
     }
 
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
-        this.programInstanceService = programInstanceService;
+        this.selectedStateManager = selectedStateManager;
     }
 
     public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
@@ -146,11 +136,6 @@ public class LoadDataEntryAction
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
-    }
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
     }
 
     public Map<Integer, Collection<DataElementCategoryOptionCombo>> getOptionMap()
@@ -171,11 +156,6 @@ public class LoadDataEntryAction
     public ProgramStageInstance getProgramStageInstance()
     {
         return programStageInstance;
-    }
-
-    public void setPatientId( Integer patientId )
-    {
-        this.patientId = patientId;
     }
 
     public void setUseDefaultForm( boolean useDefaultForm )
@@ -219,14 +199,11 @@ public class LoadDataEntryAction
         // Get program-stage-instance
         // ---------------------------------------------------------------------
 
-        Patient patient = patientService.getPatient( patientId );
-
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        ProgramInstance programInstance = programInstanceService.getProgramInstances( patient,
-            programStage.getProgram(), false ).iterator().next();
+        ProgramInstance programInstance = selectedStateManager.getSelectedProgramInstance();
 
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
 
@@ -236,6 +213,8 @@ public class LoadDataEntryAction
 
         if ( programStageInstance != null )
         {
+            selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
+
             // ---------------------------------------------------------------------
             // Get CategoryOptions
             // ---------------------------------------------------------------------

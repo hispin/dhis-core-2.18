@@ -27,25 +27,15 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.Collection;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -69,20 +59,6 @@ public class SaveProvidingFacilityAction
         this.selectedStateManager = selectedStateManager;
     }
 
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
-    }
-
-    private ProgramStageInstanceService programStageInstanceService;
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -97,37 +73,9 @@ public class SaveProvidingFacilityAction
         this.patientDataValueService = patientDataValueService;
     }
 
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
-    private ProgramStageService programStageService;
-
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
-
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-
-    private Integer patientId;
-
-    public void setPatientId( Integer patientId )
-    {
-        this.patientId = patientId;
-    }
-
-    private Integer programStageId;
-
-    public void setProgramStageId( Integer programStageId )
-    {
-        this.programStageId = programStageId;
-    }
 
     private boolean providedByAnotherFacility;
 
@@ -164,19 +112,7 @@ public class SaveProvidingFacilityAction
     {
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
-        Patient patient = patientService.getPatient( patientId );
-
-        ProgramStage programStage = programStageService.getProgramStage( programStageId );
-
-        Program program = programStage.getProgram();
-
-        Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient, program,
-            false );
-
-        ProgramInstance programInstance = progamInstances.iterator().next();
-
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
-            programInstance, programStage );
+        ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 

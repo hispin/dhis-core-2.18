@@ -32,8 +32,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -54,13 +54,6 @@ public class LoadProgramStagesAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
 
     private ProgramService programService;
 
@@ -83,16 +76,16 @@ public class LoadProgramStagesAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    private SelectedStateManager selectedStateManager;
+
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
-
-    private Integer patientId;
-
-    public void setPatientId( Integer patientId )
-    {
-        this.patientId = patientId;
-    }
 
     private Integer programId;
 
@@ -129,12 +122,13 @@ public class LoadProgramStagesAction
     public String execute()
         throws Exception
     {
-        Patient patient = patientService.getPatient( patientId );
+        Patient patient = selectedStateManager.getSelectedPatient( );
 
         Program program = programService.getProgram( programId );
 
         programInstance = programInstanceService.getProgramInstances( patient, program, false ).iterator().next();
-
+        selectedStateManager.setSelectedProgramInstance( programInstance);
+        
         colorMap = programStageInstanceService.colorProgramStageInstances( programInstance.getProgramStageInstances() );
 
         programStages = program.getProgramStages();

@@ -16,11 +16,8 @@ jQuery("#entryFormContainer").ready(function(){
 		</script>
 </p>
 
-<input type='hidden' id='programStageInstanceId' value='$programStageInstance.id'>
-<input type='hidden' id='programStageInstanceName' value='$programStageInstance.name'>
 <input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
-<input type='hidden' id='orgunitId' value='$organisationUnit.id'>
-	
+
 <hr style="clear:both">
 
 <span id="startMsg" style="font-style:italic; color:blue; display: #if($programStageInstance.executionDate) none #else block #end">$i18n.getString( "report_date_warning" )</span>
