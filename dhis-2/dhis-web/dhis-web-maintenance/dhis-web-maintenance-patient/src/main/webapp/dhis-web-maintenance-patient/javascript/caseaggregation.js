@@ -148,14 +148,14 @@ function getPrgramStageDataElementsCompleted( dataelementElement )
 
 function insertInfo( element )
 {
-	byId('aggregationCondition').value += " " + element.options[element.selectedIndex].value + " ";
+	insertTextCommon('aggregationCondition', element.options[element.selectedIndex].value );
 	getConditionDescription();
 }
 
 
 function insertOperator( value )
 {
-	byId('aggregationCondition').value += " " + value + " ";
+	insertTextCommon('aggregationCondition', ' ' + value + ' ' );
 	getConditionDescription();
 }
 
