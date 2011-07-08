@@ -461,7 +461,9 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction
         currentOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
         System.out.println( "orgunit" + currentOrgUnit.getName() + ",Start Date " + sDate + ",End Date " + eDate
             + " XML File : " + deCodesXMLFileName + ",selected period is " + selectedPeriod.getId() );
-        llrecordNos = reportService.getLinelistingRecordNos( currentOrgUnit, selectedPeriod, deCodesXMLFileName );
+        //llrecordNos = reportService.getLinelistingRecordNos( currentOrgUnit, selectedPeriod, deCodesXMLFileName );
+        
+        llrecordNos = getLinelistingDeathRecordNos( currentOrgUnit, selectedPeriod );
 
         // Getting DataValues
         dataValueList = new ArrayList<String>();
@@ -965,7 +967,9 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction
         // Line Listing Matarnal Death DataElements
 
         List<Integer> llMaternalDeathrecordNos = new ArrayList<Integer>();
-        llMaternalDeathrecordNos = getLinelistingMateralanRecordNos( currentOrgUnit, selectedPeriod, deCodesXMLFileName );
+        //llMaternalDeathrecordNos = getLinelistingMateralanRecordNos( currentOrgUnit, selectedPeriod, deCodesXMLFileName );
+        
+        llMaternalDeathrecordNos = getLinelistingMateralanRecordNos( currentOrgUnit, selectedPeriod );
         System.out.println( "Line Listing Maternal Death Record Count is :" + llMaternalDeathrecordNos.size() );
 
         // int testRowNo = 0;
@@ -1417,8 +1421,8 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction
         }// finally block end
     }
 
-    public List<Integer> getLinelistingMateralanRecordNos( OrganisationUnit organisationUnit, Period period,
-        String lltype )
+    /*
+    public List<Integer> getLinelistingMateralanRecordNos( OrganisationUnit organisationUnit, Period period, String lltype )
     {
         List<Integer> recordNosList = new ArrayList<Integer>();
 
@@ -1426,7 +1430,7 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction
 
         int dataElementid = 1032;
 
-        if ( lltype.equalsIgnoreCase( "monthly_SCWebPortalDECodes.xml" ) )
+        if ( lltype.equalsIgnoreCase( "monthly_SCWebPortalDECodes.xml" ) || lltype.equalsIgnoreCase( "monthly_CHCWebPortalDECodes.xml" ) || lltype.equalsIgnoreCase( "monthly_DHWebPortalDECodes.xml" ) || lltype.equalsIgnoreCase( "monthly_PHCWebPortalDECodes.xml" ) || lltype.equalsIgnoreCase( "monthly_SDHWebPortalDECodes.xml" ) )
         {
             dataElementid = 1032;
         }
@@ -1452,5 +1456,71 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction
 
         return recordNosList;
     }
+*/
+   
+    public List<Integer> getLinelistingMateralanRecordNos( OrganisationUnit organisationUnit, Period period )
+    {
+        List<Integer> recordNosList = new ArrayList<Integer>();
 
+        String query = "";
+
+        int dataElementid = 1032;
+
+        try
+        {
+            query = "SELECT recordno FROM lldatavalue WHERE dataelementid = " + dataElementid + " AND periodid = "
+                + period.getId() + " AND sourceid = " + organisationUnit.getId();
+
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+
+            while ( rs1.next() )
+            {
+                recordNosList.add( rs1.getInt( 1 ) );
+            }
+
+            Collections.sort( recordNosList );
+        }
+        catch ( Exception e )
+        {
+            System.out.println( "SQL Exception : " + e.getMessage() );
+        }
+
+        return recordNosList;
+    }
+    
+    
+    
+    
+    
+    public List<Integer> getLinelistingDeathRecordNos( OrganisationUnit organisationUnit, Period period )
+    {
+        List<Integer> recordNosList = new ArrayList<Integer>();
+        
+        int  dataElementid = 1027;
+        String query = "";
+
+        try
+        {
+            query = "SELECT recordno FROM lldatavalue WHERE dataelementid = " + dataElementid + " AND periodid = "
+                + period.getId() + " AND sourceid = " + organisationUnit.getId();
+
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+
+            while ( rs1.next() )
+            {
+                recordNosList.add( rs1.getInt( 1 ) );
+            }
+
+            Collections.sort( recordNosList );
+        }
+        catch ( Exception e )
+        {
+            System.out.println( "SQL Exception : " + e.getMessage() );
+        }
+
+        return recordNosList;
+    }
+    
+    
+    
 }
