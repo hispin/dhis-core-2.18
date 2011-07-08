@@ -45,7 +45,7 @@ public interface SelectedStateManager
     // -------------------------------------------------------------------------
     // Patient
     // -------------------------------------------------------------------------
-    
+
     void setSelectedPatient( Patient patient );
 
     Patient getSelectedPatient();
@@ -61,7 +61,7 @@ public interface SelectedStateManager
     ProgramInstance getSelectedProgramInstance();
 
     void clearSelectedProgramInstance();
-    
+
     // -------------------------------------------------------------------------
     // Program-stage-instance
     // -------------------------------------------------------------------------
@@ -71,21 +71,30 @@ public interface SelectedStateManager
     ProgramStageInstance getSelectedProgramStageInstance();
 
     void clearSelectedProgramStageInstance();
-    
-    
-    
-    
+
+    // -------------------------------------------------------------------------
+    // Progam
+    // -------------------------------------------------------------------------
+
     void setSelectedProgram( Program program );
 
     Program getSelectedProgram();
 
     void clearSelectedProgram();
 
+    // -------------------------------------------------------------------------
+    // Progam-stages
+    // -------------------------------------------------------------------------
+
     void setSelectedProgramStage( ProgramStage programStage );
 
     ProgramStage getSelectedProgramStage();
 
     void clearSelectedProgramStage();
+
+    // -------------------------------------------------------------------------
+    // for searching patients
+    // -------------------------------------------------------------------------
 
     void setListAll( boolean listAll );
 
