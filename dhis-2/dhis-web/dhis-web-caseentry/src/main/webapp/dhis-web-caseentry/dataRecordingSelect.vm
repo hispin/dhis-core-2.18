@@ -51,5 +51,3 @@
 		</td>
 	</tr>
 </table>
-
-<input type='hidden' id='patientId' name='patientId' value='$patient.id'>

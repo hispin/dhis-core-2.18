@@ -10,6 +10,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
     <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+    <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+    <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
   </bean>
 
 	<!-- Data Entry -->
@@ -49,33 +51,28 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction" class="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction"
     scope="prototype">
     <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
   </bean>
 
   <bean id="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction" class="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction"
     scope="prototype">
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
   </bean>
 
   <bean id="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction" class="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction"
     scope="prototype">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-    <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
     <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
   </bean>
 
   <bean id="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction" class="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction"
     scope="prototype">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-    <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-    <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
     <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
   </bean>
 
@@ -83,11 +80,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-    <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
     <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-    <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
   </bean>
 
   <bean id="org.hisp.dhis.caseentry.screen.DataEntryScreenManager" class="org.hisp.dhis.caseentry.screen.DefaultDataEntryScreenManager"
@@ -107,22 +100,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStagesAction" class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStagesAction"
     scope="prototype">
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
     <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
   </bean>
 
   <bean id="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction" class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction"
     scope="prototype">
     <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-    <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
     <property name="programDataEntryService" ref="org.hisp.dhis.program.ProgramDataEntryService" />
     <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
     <property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
   </bean>
 
   <bean id="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction" class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction"
@@ -142,8 +133,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction" class="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction"
     scope="prototype">
-    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
   </bean>
 
   <bean id="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction" class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction"
@@ -281,13 +272,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction" class="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction"
     scope="prototype">
     <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-    <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
     <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
-    <property name="orgunitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-    <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
   </bean>
 
 </beans>

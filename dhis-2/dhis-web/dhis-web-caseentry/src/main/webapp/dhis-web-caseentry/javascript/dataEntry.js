@@ -90,7 +90,6 @@ function loadProgramStages()
 	}
 	jQuery.postJSON( "loadProgramStages.action",
 		{
-			patientId: getFieldValue('patientId'),
 			programId: getFieldValue('programId')
 		}, 
 		function( json ) 
@@ -140,7 +139,6 @@ function loadDataEntry()
 	jQuery('#dataEntryFormDiv').load("dataentryform.action",
 		{
 			programStageId:getFieldValue('programStageId'),
-			patientId: getFieldValue('patientId'),
 			useDefaultForm : useDefaultForm
 		}, 
 		function( )
@@ -327,7 +325,7 @@ function ExecutionDateSaver( programStageInstanceId_, executionDate_, resultColo
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
-        request.send( 'saveExecutionDate.action?programStageInstanceId=' + programStageInstanceId + '&executionDate=' + executionDate );
+        request.send( 'saveExecutionDate.action?executionDate=' + executionDate );
     };
 
     function handleResponse( rootElement )
@@ -402,10 +400,7 @@ function DateSaver( dataElementId_, value_, providedByAnotherFacility_, resultCo
     {
 		var params = 'dataElementId=' + dataElementId 
 			params +=  '&value=' + value 
-			params +=  '&providedByAnotherFacility=' + providedByAnotherFacility
-			params += '&orgunitId=' + getFieldValue('orgunitId');
-			params += '&patientId=' + getFieldValue('patientId');
-			params += '&programStageId=' + getFieldValue('programStageId');
+			params +=  '&providedByAnotherFacility=' + providedByAnotherFacility;
 			
         var request = new Request();
         request.setCallbackSuccess( handleResponse );
@@ -490,10 +485,7 @@ function DateSaverCustom( programStageId, dataElementId_, value_, providedByAnot
     {
 		var params = 'dataElementId=' + dataElementId 
 			params +=  '&value=' + value 
-			params +=  '&providedByAnotherFacility=' + providedByAnotherFacility
-			params += '&orgunitId=' + getFieldValue('orgunitId');
-			params += '&patientId=' + getFieldValue('patientId');
-			params += '&programStageId=' + getFieldValue('programStageId');
+			params +=  '&providedByAnotherFacility=' + providedByAnotherFacility;
 		
         var request = new Request();
         request.setCallbackSuccess( handleResponse );
@@ -582,10 +574,7 @@ function CheckBoxSaver( dataElementId_, providedByAnotherFacility_, resultColor_
         request.setCallbackError( handleHttpErrorCheckBox );
         request.setResponseTypeXML( 'status' );
         request.send( 'saveProvidingFacility.action?dataElementId=' + dataElementId 
-				+ '&patientId=' + getFieldValue('patientId') 
-				+ '&programStageId=' + getFieldValue('programStageId') 
-				+ '&providedByAnotherFacility=' + providedByAnotherFacility 
-				);
+				+ '&providedByAnotherFacility=' + providedByAnotherFacility );
     };
 
     function handleResponseCheckBox( rootElement )
@@ -633,8 +622,6 @@ function CustomCheckBoxSaver( programStageId, dataElementId_, providedByAnotherF
         request.setCallbackError( handleHttpErrorCheckBox );
         request.setResponseTypeXML( 'status' ); 
         request.send( 'saveProvidingFacility.action?dataElementId=' + dataElementId 
-					+ '&patientId=' + getFieldValue('patientId')
-					+ '&programStageId=' + programStageId 
 					+'&providedByAnotherFacility=' + providedByAnotherFacility );
     };
 
@@ -820,10 +807,7 @@ function ValueSaver( dataElementId_, value_, providedByAnotherFacility_, resultC
 		var params = 'dataElementId=' + dataElementId;
 			params += '&value=' + value;
 			params += '&providedByAnotherFacility=' + providedByAnotherFacility;
-			params += '&orgunitId=' + getFieldValue('orgunitId');
-			params += '&patientId=' + getFieldValue('patientId');
-			params += '&programStageId=' + getFieldValue('programStageId');
-
+			
         var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
@@ -930,9 +914,6 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
 				params += '&optionComboId=' + optionComboId;
 				params += '&value=' + value;
 				params += '&providedByAnotherFacility=' + providedByAnotherFacility;
-				params += '&orgunitId=' + getFieldValue('orgunitId');
-				params += '&patientId=' + getFieldValue('patientId');
-				params += '&programStageId=' + getFieldValue('programStageId');
 			
 			request.sendAsPost( params ); 
 			
@@ -944,9 +925,6 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
 			var params = 'dataElementId=' + dataElementId;
 				params += '&value=' + value;
 				params += '&providedByAnotherFacility=' + providedByAnotherFacility;
-				params += '&orgunitId=' + getFieldValue('orgunitId');
-				params += '&patientId=' + getFieldValue('patientId');
-				params += '&programStageId=' + getFieldValue('programStageId');
 				
 			request.sendAsPost( params );
 			if( type == 'date' ) request.send( 'saveDateValue.action' );
@@ -1229,7 +1207,6 @@ function selectDefaultForm()
 
 function saveValueWithOptionComboId( this_ )
 {
-	
     var data = jQuery( this_ ).metadata({
         type:'attr',
         name:'data'
@@ -1389,9 +1366,7 @@ TOGGLE = {
 
 function runValidation()
 {
-	window.open( 'validateProgram.action?orgunitId=' + getFieldValue('orgunitId') 
-							+ '&patientId=' + getFieldValue('patientId') 
-							+ '&programStageId=' + getFieldValue('programStageId') );
+	window.open( 'validateProgram.action' );
 }
 
 
@@ -1425,8 +1400,7 @@ function multiDataEntryOrgunitSelected( orgUnits )
 				addOptionById( 'programId', json.programs[i].id, json.programs[i].name );
 			} 
 		}	
-		setFieldValue( 'orgunitName', json.organisationUnit ); 
-		setFieldValue( 'orgunitId', json.organisationUnitId ); 
+		setFieldValue( 'orgunitName', json.organisationUnit );
 	});
 }
 

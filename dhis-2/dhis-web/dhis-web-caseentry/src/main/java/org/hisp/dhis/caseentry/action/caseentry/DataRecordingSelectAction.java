@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.caseentry;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -52,7 +53,14 @@ public class DataRecordingSelectAction
     {
         this.patientService = patientService;
     }
+    
+    private SelectedStateManager selectedStateManager;
 
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -86,7 +94,8 @@ public class DataRecordingSelectAction
         throws Exception
     {
         patient = patientService.getPatient( patientId );
-
+        selectedStateManager.setSelectedPatient( patient );
+        
         for ( Program program : patient.getPrograms() )
         {
             programs.add( program );

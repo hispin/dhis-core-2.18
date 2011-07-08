@@ -30,8 +30,8 @@ package org.hisp.dhis.caseentry.action.caseentry;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -49,18 +49,18 @@ public class GetProgramsByOrgunitAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    private SelectedStateManager selectedStateManager;
+
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
     }
 
     // -------------------------------------------------------------------------
@@ -88,10 +88,14 @@ public class GetProgramsByOrgunitAction
     public String execute()
         throws Exception
     {
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         programs = programService.getPrograms( organisationUnit );
 
+        selectedStateManager.clearSelectedPatient();
+        selectedStateManager.clearSelectedProgramInstance();
+        selectedStateManager.clearSelectedProgramStageInstance();
+        
         return SUCCESS;
     }
 }
