@@ -1131,10 +1131,19 @@
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
 
-		<action name="showAddProgramValidationForm"
+		<action name="showAddMultiProgramValidationForm"
 			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addProgramValidationForm.vm</param>
+			<param name="page">/dhis-web-maintenance-patient/addMultiProgramValidationForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
+		</action>
+		
+		<action name="showAddSingleProgramValidationForm"
+			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/addSingleProgramValidationForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
@@ -1147,10 +1156,19 @@
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
 
-		<action name="showUpdateProgramValidationForm"
+		<action name="showUpdateMultiProgramValidationForm"
 			class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateProgramValidationForm.vm</param>
+			<param name="page">/dhis-web-maintenance-patient/updateMultiProgramValidationForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
+		</action>
+		
+		<action name="showUpdateSingleProgramValidationForm"
+			class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/updateSingleProgramValidationForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
