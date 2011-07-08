@@ -35,15 +35,11 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
  */
 public class Constant
     extends AbstractIdentifiableObject
-{
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    
+{   
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
+    private static final long serialVersionUID = -8420671741149847205L;
     
     // -------------------------------------------------------------------------
     // Variables
