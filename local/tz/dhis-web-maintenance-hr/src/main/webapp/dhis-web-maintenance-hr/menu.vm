@@ -17,3 +17,10 @@
     <li><a href="aggregateIndicator.action">$i18n.getString( "aggregated_indicator" )&nbsp;</a></li>    
     <li><a href="criteria.action">$i18n.getString( "criteria" )&nbsp;</a></li>
 </ul>
+
+<h2>$i18n.getString( "hr_importexport" )&nbsp;</h2>
+<ul>
+    <li><a href="hrimport.action">$i18n.getString( "target_indicator" )&nbsp;</a></li>     
+    <li><a href="aggregateIndicator.action">$i18n.getString( "aggregated_indicator" )&nbsp;</a></li>    
+    <li><a href="criteria.action">$i18n.getString( "criteria" )&nbsp;</a></li>
+</ul>
