@@ -4,16 +4,18 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.hisp.dhis</groupId>
-	<artifactId>dhis-local-tz</artifactId>
+	<artifactId>dhis-hr</artifactId>
 	<version>2.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Local Tanzania Modules</name>
+	<name>Human Resource Modules</name>
 
 	<modules>
 		<module>dhis-api-hr</module>
 		<module>dhis-service-hr</module>
 		<module>dhis-web-hrentry</module>
 		<module>dhis-web-maintenance-hr</module>
+		<module>dhis-service-importexport-hr</module>
+		<module>dhis-support-jdbc-hr</module>
 	</modules>
 </project>
 
