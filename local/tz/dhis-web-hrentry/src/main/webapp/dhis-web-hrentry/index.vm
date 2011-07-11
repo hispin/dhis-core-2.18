@@ -7,4 +7,8 @@
     #introListImgItem( "showRecordsReportForm.action" "record_data" "summaryreport" )
     #introListImgItem( "showAggregatedReportForm.action" "aggregate_report" "summaryreport" )
     #introListImgItem( "reportSelect.action" "aggregate_data" "summaryreport" )
+    
+    #introListImgItem( "setImportFormat.action?importFormat=DXF" "import" "import" )
+    #introListImgItem( "displayDataValueExportForm.action?exportFormat=DXF" "data_export" "export" )
+    #introListImgItem( "displayMetaDataExportForm.action?exportFormat=DXF" "metadata_export" "export" )
 </ul>
