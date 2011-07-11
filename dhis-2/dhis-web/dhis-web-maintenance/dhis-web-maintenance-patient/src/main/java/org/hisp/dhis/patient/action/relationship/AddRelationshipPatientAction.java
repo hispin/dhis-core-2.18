@@ -83,6 +83,8 @@ public class AddRelationshipPatientAction
 
     private String bloodGroup;
 
+    private String registrationDate;
+
     private boolean underAge;
 
     private Integer relationshipId;
@@ -164,7 +166,7 @@ public class AddRelationshipPatientAction
 
         patient.setDobType( dobType );
 
-        patient.setRegistrationDate( new Date() );
+        patient.setRegistrationDate( format.parseDate( registrationDate ) );
 
         // ---------------------------------------------------------------------
         // Generate system id with this format :
@@ -249,7 +251,7 @@ public class AddRelationshipPatientAction
         // -----------------------------------------------------------------------------
         // Save Patient Attributes
         // -----------------------------------------------------------------------------
-       
+
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
 
         PatientAttributeValue attributeValue = null;
@@ -403,5 +405,10 @@ public class AddRelationshipPatientAction
     public void setAgeType( char ageType )
     {
         this.ageType = ageType;
+    }
+
+    public void setRegistrationDate( String registrationDate )
+    {
+        this.registrationDate = registrationDate;
     }
 }
