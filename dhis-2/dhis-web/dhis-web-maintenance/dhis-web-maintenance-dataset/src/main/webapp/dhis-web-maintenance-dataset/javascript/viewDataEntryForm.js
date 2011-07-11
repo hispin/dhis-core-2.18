@@ -198,28 +198,22 @@ function insertDataElement() {
 				+ optionComboId + " - " + optionComboName + " - " + dataElementType;
 	
 		var displayName = "[ " + dataElementName + " " + optionComboName + " ]";
-		var dataEntryId = "value[" + dataElementId + "].value:value["
-				+ optionComboId + "].value";
-		var boolDataEntryId = "value[" + dataElementId + "].value:value["
-				+ optionComboId + "].value";
+		var dataEntryId = dataElementId + "-" + optionComboId + "-val";
 	
-		var id = "";
 		var html = "";
 	
 		if (dataElementType == "bool") {
-			id = boolDataEntryId;
 			html = "<input title=\"" + titleValue
-					+ "\" value=\"" + displayName + "\" id=\"" + boolDataEntryId
+					+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId
 					+ "\" style=\"width:7em;text-align:center\"/>";
 		} 
 		else {
-			id = dataEntryId;
 			html = "<input title=\"" + titleValue
 					+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId
 					+ "\" style=\"width:7em;text-align:center\"/>";
 		}
 	
-		if (!checkExisted(id)) {
+		if (!checkExisted(dataEntryId)) {
 			oEditor.insertHtml(html);
 		} else {
 			showThenFadeOutMessage( "<b>" + i18n_dataelement_already_inserted + "</b>" );

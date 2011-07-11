@@ -106,8 +106,8 @@ function saveMinMaxLimit()
 	}
 	
 	if ( window.opener && window.opener.document ) {
-		window.opener.document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].min' ).innerHTML = minValue;
-    	window.opener.document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].max' ).innerHTML = maxValue;
+		window.opener.document.getElementById( currentDataElementId + '-' + currentOptionComboId + '-min' ).innerHTML = minValue;
+    	window.opener.document.getElementById( currentDataElementId + '-' + currentOptionComboId + '-max' ).innerHTML = maxValue;
 	}
 	
     var url = 'saveMinMaxLimits.action?organisationUnitId=' + currentOrganisationUnitId + '&dataElementId=' + currentDataElementId + 

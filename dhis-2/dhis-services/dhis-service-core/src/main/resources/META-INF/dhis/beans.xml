@@ -994,6 +994,12 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="runlevel" value="5" />
     <property name="skipInTests" value="true" />
   </bean>
+  
+  <bean id="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" class="org.hisp.dhis.dataentryform.DataEntryFormUpgrader">
+	<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
+    <property name="runlevel" value="5" />
+    <property name="skipInTests" value="true" />
+  </bean>
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject" ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
@@ -1008,6 +1014,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
           <ref local="org.hisp.dhis.dataset.DataSetShortNamePopulator" />
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormPopulator" />
+		  <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
         </list>
       </list>
     </property>

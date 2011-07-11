@@ -26,7 +26,7 @@
   #set( $dataElements = $orderedDataElements.get( $categoryCombo )  )
   #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryCombo.id )  )
   #set( $mark = 0 )
-  #foreach( $optionCombo in $optionCombos )<span id="value[option${optionCombo.id}].name" class="hidden">${optionCombo.name}</span>
+  #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.id}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
   #end
   #foreach( $dataElement in $dataElements )
   #if( $mark == 1 )
@@ -38,8 +38,8 @@
   #set( $count = $count + 1 )
   <tr>
     <td  style="#if( $mark == 1 )background-color:#e0e0e0;#end padding-right:50px;">
-      <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">$encoder.htmlEncode( $dataElement.name )</span>
-      <span id="value[$dataElement.id].type" class="hidden">$dataElement.getDetailedNumberType()</span>
+      <span id="${dataElement.id}-dataelement" title="$!encoder.htmlEncode( $dataElement.description )">${encoder.htmlEncode( $dataElement.name )}</span>
+      <span id="${dataElement.id}-type" class="hidden">$dataElement.getDetailedNumberType()</span>
     </td>
 
     #foreach( $optionCombo in $optionCombos )
@@ -47,7 +47,7 @@
 	    #set( $minMax = $minMaxMap.get( "$dataElement.id:$optionCombo.id" ) )
 	    #set( $dataValue = false )
 	    #set( $dataValue = $dataValueMap.get( "$dataElement.id:$optionCombo.id" ) )
-	    #set( $dataEntryId = "value[$dataElement.id].value:value[$optionCombo.id].value" )
+	    #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )
 	    #set( $minMaxError = false )
 	    #if( $dataElement.type == "int" && $dataValue && $minMax )
 	      #if( $integer.parseInt( $dataValue.value ) < $minMax.min || $integer.parseInt( $dataValue.value ) > $minMax.max )
@@ -55,12 +55,11 @@
 	      #end
 	    #end
 
-	    <span id="value[${dataElement.id}:${optionCombo.id}].min" class="hidden">$!minMax.min</span>
-	    <span id="value[${dataElement.id}:${optionCombo.id}].max" class="hidden">$!minMax.max</span>
+	    <span id="${dataElement.id}-${optionCombo.id}-min" class="hidden">$!minMax.min</span>
+	    <span id="${dataElement.id}-${optionCombo.id}-max" class="hidden">$!minMax.max</span>
 
 	    <td>
 	    #if( $dataElement.type == "bool" )
-		    <span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span>
 		    <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) ) onchange="saveBoolean($dataElement.id,$optionCombo.id, this )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
 		      <option value="">[$i18n.getString( "no_value" )]</option>
 		      <option value="true" #if( $dataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>

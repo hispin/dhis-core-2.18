@@ -234,22 +234,20 @@ public class DefaultDataEntryFormService
         Collection<DataValue> dataValues, Map<String, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, DataSet dataSet )
     {
         // ---------------------------------------------------------------------
-        // Inline javascript to add to HTML before output
+        // Inline javascript/html to add to HTML before output
         // ---------------------------------------------------------------------
         
         int i = 1;
-        final String jsCodeForInputFields = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME' )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
-        final String jsCodeForSelectLists = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeyup=\"return keyPress(event, this)\" ";
-        final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
         
-        // ---------------------------------------------------------------------
-        // Metadata code to add to HTML before output
-        // ---------------------------------------------------------------------
-
-        final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
-            + "<span id=\"value[$DATAELEMENTID].type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
-            + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].min\" style=\"display:none\">$MIN</div>"
-            + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].max\" style=\"display:none\">$MAX</div>";
+        final String jsCodeForInputFields = " name=\"entryfield\" $DISABLED onchange=\"saveVal( $DATAELEMENTID, $OPTIONCOMBOID )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
+        final String jsCodeForSelectLists = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeyup=\"return keyPress(event, this)\" ";
+        
+        final String historyCode = " ondblclick='javascript:viewHist( $DATAELEMENTID, $OPTIONCOMBOID )' ";
+        
+        final String metaDataCode = "<span id=\"$DATAELEMENTID-dataelement\" style=\"display:none\">$DATAELEMENTNAME</span>"
+            + "<span id=\"$DATAELEMENTID-type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
+            + "<div id=\"$DATAELEMENTID-$OPTIONCOMBOID-min\" style=\"display:none\">$MIN</div>"
+            + "<div id=\"$DATAELEMENTID-$OPTIONCOMBOID-max\" style=\"display:none\">$MAX</div>";
 
         StringBuffer sb = new StringBuffer();
 
@@ -319,8 +317,6 @@ public class DefaultDataEntryFormService
                 String minValue = minMaxDataElement != null ? String.valueOf( minMaxDataElement.getMin() ) : "-";
                 String maxValue = minMaxDataElement != null ? String.valueOf( minMaxDataElement.getMax() ) : "-";
 
-                inputHtml = inputHtml.replaceAll( "view=\".*?\"", "" ); // For backwards compatibility
-
                 StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getName() ).append( " " ).
                     append( categoryOptionCombo.getName() ).append( " Type: " ).append( dataElement.getType() ).
                     append( " Min: " ).append( minValue ).append( " Max: " ).append( maxValue ).append( "\"" );
@@ -370,9 +366,11 @@ public class DefaultDataEntryFormService
                     if ( dataElement.getType().equals( VALUE_TYPE_INT ) )
                     {
                         appendCode += historyCode;
+                        
                         if ( minMaxDataElement != null && !dataElementValue.equals( EMPTY ) )
                         {
                             double value = Double.parseDouble( dataElementValue );
+                            
                             if ( value < minMaxDataElement.getMin() || value > minMaxDataElement.getMax() )
                             {
                                 backgroundColor = "style=\"background-color:#ff6600;";
