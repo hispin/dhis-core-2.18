@@ -251,13 +251,12 @@ public class DataEntryFormServiceTest
     @Test
     public void testPrepareForEdit()
     {
-        String html = "<table><tr><td><input id=\"value[" + dataElementId + "].value:value[" + categoryOptionComboId + "].value\" style=\"width:4em;text-align:center\" title=\"\" value=\"\" /></td></tr></table>";
+        String html = "<table><tr><td><input id=\"" + dataElementId + "-" + categoryOptionComboId + "-val\" style=\"width:4em;text-align:center\" title=\"\" value=\"\" /></td></tr></table>";
         String title = "" + dataElementId + " - " + dataElement.getName() + " - " + categoryOptionComboId + " - " + categoryOptionCombo.getName() + " - " + dataElement.getType();
         String value = "[ " + dataElement.getName() + " " + categoryOptionCombo.getName() + " ]";
-        String expected = "<table><tr><td><input id=\"value[" + dataElementId + "].value:value[" + categoryOptionComboId + "].value\" style=\"width:4em;text-align:center\" title=\"" + title + "\" value=\"" + value + "\" /></td></tr></table>";
+        String expected = "<table><tr><td><input id=\"" + dataElementId + "-" + categoryOptionComboId + "-val\" style=\"width:4em;text-align:center\" title=\"" + title + "\" value=\"" + value + "\" /></td></tr></table>";
         String actual = dataEntryFormService.prepareDataEntryFormForEdit( html );
         
         assertEquals( expected.length(), actual.length() );
-        // assertEquals( expected, actual ); TODO
     }
 }

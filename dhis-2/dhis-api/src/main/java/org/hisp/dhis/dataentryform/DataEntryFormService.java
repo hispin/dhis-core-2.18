@@ -45,7 +45,7 @@ public interface DataEntryFormService
     String ID = DataEntryFormService.class.getName();
 
     final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?/>)", Pattern.DOTALL );
-    final Pattern IDENTIFIER_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
+    final Pattern IDENTIFIER_PATTERN = Pattern.compile( "(\\d+)-(\\d+)-val" );
     final Pattern INDICATOR_PATTERN = Pattern.compile( "indicatorid=\"(.*?)\"" );
     final Pattern VALUE_TAG_PATTERN = Pattern.compile( "value=\"(.*?)\"", Pattern.DOTALL );
     final Pattern TITLE_TAG_PATTERN = Pattern.compile( "title=\"(.*?)\"", Pattern.DOTALL );
@@ -109,7 +109,8 @@ public interface DataEntryFormService
     Collection<DataEntryForm> getDataEntryForms( final Collection<Integer> identifiers );
     
     /**
-     * Prepare DataEntryForm code for persisting.
+     * Prepare DataEntryForm code for save by reversing the effects of
+     * prepareDataEntryFormForEdit().
      * 
      * @return htmlCode the HTML code of the data entry form.
      */

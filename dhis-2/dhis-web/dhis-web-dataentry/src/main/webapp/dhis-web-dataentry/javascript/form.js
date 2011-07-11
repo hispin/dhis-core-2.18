@@ -234,82 +234,15 @@ function setDisplayModes()
 
 function valueFocus( e )
 {
-    // Retrieve the data element id from the id of the field
-    var baseId = e.target.id;
+	var id = e.target.id;
 
-    var opId = baseId;
-    var str = baseId;
-
-    if ( baseId.indexOf( ':' ) != -1 )
-    {
-        opId = baseId.substr( baseId.indexOf( ':' ) + 1, baseId.length );
-        str = baseId.substr( 0, baseId.indexOf( ':' ) );
-    }
-
-    var match1 = /.*\[(.*)\]/.exec( str ); // value[-dataElementId-]
-    var match2 = /.*\[(.*)\]/.exec( opId ); // value[-optionComboId-]
-
-    if ( !match1 )
-    {
-        return;
-    }
-
-    deId = match1[1];
-    ocId = match2[1];
-
-    var nameContainer = document.getElementById( 'value[' + deId + '].name' );
-    var opCbContainer = document.getElementById( 'value[option' + ocId + '].name' );
-    var minContainer = document.getElementById( 'value[' + deId + ':' + ocId + '].min' );
-    var maxContainer = document.getElementById( 'value[' + deId + ':' + ocId + '].max' );
-
-    if ( !nameContainer )
-    {
-        return;
-    }
-
-    var name = '';
-    var optionName = '';
-
-    var as = nameContainer.getElementsByTagName( 'a' );
-
-    if ( as.length > 0 ) // Admin rights: Name is in a link
-    {
-        name = as[0].firstChild.nodeValue;
-    } else
-    {
-        name = nameContainer.firstChild.nodeValue;
-    }
-
-    if ( opCbContainer )
-    {
-        if ( opCbContainer.firstChild )
-        {
-            optionName = opCbContainer.firstChild.nodeValue;
-        }
-    }
-
-    if ( minContainer )
-    {
-        if ( minContainer.firstChild )
-        {
-            optionName += " - " + minContainer.firstChild.nodeValue;
-        }
-    }
-
-    if ( maxContainer )
-    {
-        if ( maxContainer.firstChild )
-        {
-            optionName += " - " + maxContainer.firstChild.nodeValue;
-        }
-    }
-
-    var curDeSpan = document.getElementById( 'currentDataElement' );
-
-    curDeSpan.firstChild.nodeValue = name;
-
-    document.getElementById( "currentOptionCombo" ).innerHTML = optionName;
-
+	var dataElementId = id.split( '-' )[0];
+	var optionComboId = id.split( '-' )[1];
+	
+	var dataElementName = $( '#' + dataElementId + '-dataelement' ).text();
+	var optionComboName = $( '#' + optionComboId + '-optioncombo' ).text();
+	
+	$( "#currentDataElement" ).html( dataElementName + ' ' + optionComboName );
 }
 
 function keyPress( event, field )
