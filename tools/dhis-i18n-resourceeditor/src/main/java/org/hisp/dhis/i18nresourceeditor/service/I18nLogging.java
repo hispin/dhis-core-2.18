@@ -26,9 +26,6 @@ package org.hisp.dhis.i18nresourceeditor.service;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/**
- * @author <a href="oyvind.brucker@gmail.com">Øyvind Brucker/a>
- */
 public interface I18nLogging {
 
     public void outWarning(String output);
