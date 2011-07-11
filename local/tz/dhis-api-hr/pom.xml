@@ -11,7 +11,7 @@
 
 	<artifactId>dhis-api-hr</artifactId>
 	<packaging>jar</packaging>
-	<name>DHIS HR Tanzania</name>
+	<name>DHIS API HR </name>
 
 	<dependencies>
 		<dependency>
