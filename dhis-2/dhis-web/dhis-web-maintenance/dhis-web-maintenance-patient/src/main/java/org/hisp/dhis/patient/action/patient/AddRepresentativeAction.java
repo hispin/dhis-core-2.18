@@ -83,6 +83,8 @@ public class AddRepresentativeAction
 
     private String bloodGroup;
 
+    private String registrationDate;
+
     private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
@@ -109,9 +111,9 @@ public class AddRepresentativeAction
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
-        
+
         fullName = fullName.trim();
-        
+
         int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
 
@@ -137,7 +139,7 @@ public class AddRepresentativeAction
         patient.setFirstName( firstName );
         patient.setMiddleName( middleName );
         patient.setLastName( lastName );
-        
+
         // ---------------------------------------------------------------------
         // Get Other information for patient
         // ---------------------------------------------------------------------
@@ -159,7 +161,7 @@ public class AddRepresentativeAction
 
         patient.setDobType( dobType );
 
-        patient.setRegistrationDate( new Date() );
+        patient.setRegistrationDate( format.parseDate( registrationDate ) );
 
         patientService.savePatient( patient );
 
@@ -259,7 +261,12 @@ public class AddRepresentativeAction
     {
         this.fullName = fullName;
     }
-    
+
+    public void setRegistrationDate( String registrationDate )
+    {
+        this.registrationDate = registrationDate;
+    }
+
     public void setAge( Integer age )
     {
         this.age = age;

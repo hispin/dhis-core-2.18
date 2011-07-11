@@ -104,6 +104,8 @@ public class AddPatientAction
     private String gender;
 
     private String bloodGroup;
+    
+    private String registrationDate;
 
     private boolean underAge;
 
@@ -181,7 +183,7 @@ public class AddPatientAction
 
         patient.setDobType( dobType );
 
-        patient.setRegistrationDate( new Date() );
+        patient.setRegistrationDate( format.parseDate( registrationDate ) );
 
         // -----------------------------------------------------------------------------
         // Prepare Patient Identifiers
@@ -356,6 +358,11 @@ public class AddPatientAction
     public void setAge( Integer age )
     {
         this.age = age;
+    }
+
+    public void setRegistrationDate( String registrationDate )
+    {
+        this.registrationDate = registrationDate;
     }
 
     public void setGender( String gender )

@@ -67,7 +67,10 @@ function addRelationshipPatient()
       url: 'addRelationshipPatient.action',
       data: getParamsForDiv('addRelationshipDiv'),
       success: function( json ) {
-		setMessage( i18n_save_success );
+		hideById('addRelationshipDiv');
+		showById('selectDiv');
+		showById('searchPatientDiv');
+		showById('listPatientDiv');
 		jQuery('#loaderDiv').hide();
       }
      });
