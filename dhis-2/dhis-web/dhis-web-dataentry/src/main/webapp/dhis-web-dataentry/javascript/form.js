@@ -53,7 +53,7 @@ function organisationUnitSelected( orgUnits )
             if ( json.periodValid )
             {
                 showLoader();
-                $( '#contentDiv' ).load( 'select.action', displayEntryFormCompleted );
+                $( '#contentDiv' ).load( 'select.action', loadDataValues );
             }
         } else
         {
@@ -146,7 +146,7 @@ function dataSetSelected()
             {
                 showLoader();
                 $( '#selectedPeriodIndex' ).val( periodIndex );
-                $( '#contentDiv' ).load( 'select.action', setDisplayModes );
+                $( '#contentDiv' ).load( 'select.action', loadDataValuesAndDisplayModes );
             } else
             {
                 clearEntryForm();
@@ -165,7 +165,7 @@ function displayModeSelected()
 
     var url = 'select.action?displayMode=' + $( "input[name='displayMode']:checked" ).val();
 
-    $( '#contentDiv' ).load( url, displayEntryFormCompleted );
+    $( '#contentDiv' ).load( url, loadDataValues );
 }
 
 // -----------------------------------------------------------------------------
@@ -179,27 +179,50 @@ function periodSelected()
     $( '#currentPeriod' ).html( periodName );
 
     var periodIndex = $( '#selectedPeriodIndex' ).val();
-
+    
     if ( periodIndex && periodIndex != -1 )
     {
         showLoader();
         var url = 'select.action?selectedPeriodIndex=' + periodIndex;
-        $( '#contentDiv' ).load( url, setDisplayModes );
+        $( '#contentDiv' ).load( url, loadDataValuesAndDisplayModes );
     }
 }
 
-function displayEntryFormCompleted()
+// -----------------------------------------------------------------------------
+// Form
+// -----------------------------------------------------------------------------
+
+function loadDataValues()
 {
-    addEventListeners();
-    hideLoader();
-    enable( 'validationButton' );
-    updateIndicators();
+	insertDataValues();
+	displayEntryFormCompleted();
+}
+
+function loadDataValuesAndDisplayModes()
+{
+	insertDataValues();
+	setDisplayModes();
+	displayEntryFormCompleted();
+}
+
+function insertDataValues()
+{
+	$.getJSON( 'getDataValues.action', function( json )
+	{
+		$.each( json.dataValues, function( i, value )
+		{
+			var fieldId = '#' + value.id;
+			
+			if ( $( fieldId ) )
+			{
+				$( fieldId ).val( value.val );
+			}
+		} );
+	} );
 }
 
 function setDisplayModes()
 {
-    displayEntryFormCompleted();
-
     $.getJSON( 'loadDisplayModes.action', function( json )
     {
         $( '#displayModeCustom' ).removeAttr( 'disabled' );
@@ -213,10 +236,12 @@ function setDisplayModes()
         if ( json.displayMode == 'customform' )
         {
             $( '#displayModeCustom' ).attr( 'checked', 'checked' );
-        } else if ( json.displayMode == 'sectionform' )
+        } 
+        else if ( json.displayMode == 'sectionform' )
         {
             $( '#displayModeSection' ).attr( 'checked', 'checked' );
-        } else
+        } 
+        else
         {
             $( '#displayModeDefault' ).attr( 'checked', 'checked' );
         }
@@ -230,6 +255,14 @@ function setDisplayModes()
             $( '#displayModeSection' ).attr( 'disabled', 'disabled' );
         }
     } );
+}
+
+function displayEntryFormCompleted()
+{
+    addEventListeners();
+    hideLoader();
+    enable( 'validationButton' );
+    updateIndicators();
 }
 
 function valueFocus( e )

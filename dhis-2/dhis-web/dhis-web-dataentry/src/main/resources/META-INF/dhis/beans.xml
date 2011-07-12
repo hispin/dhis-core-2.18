@@ -19,7 +19,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
-	<!-- Actions -->
+  <!-- Actions -->
+
+  <bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction"
+	scope="prototype">
+    <property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
+	<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+  </bean>
 
   <bean id="org.hisp.dhis.de.action.LoadOrganisationUnitAction" class="org.hisp.dhis.de.action.LoadOrganisationUnitAction"
     scope="prototype">

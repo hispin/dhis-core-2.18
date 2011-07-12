@@ -1,0 +1,8 @@
+#set( $size = $dataValues.size() )
+{ "dataValues": [
+#foreach( $value in $dataValues )
+{
+  "id":"${value.dataElement.id}-${value.optionCombo.id}-val",
+  "val":"${value.value}"
+}#if( $velocityCount < $size ),#end
+#end ] }
