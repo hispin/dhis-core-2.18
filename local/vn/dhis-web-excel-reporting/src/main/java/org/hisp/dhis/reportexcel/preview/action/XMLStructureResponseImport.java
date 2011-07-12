@@ -129,6 +129,8 @@ public class XMLStructureResponseImport
 
             for ( int j = 0; j < cell.length; j++ )
             {
+                run = 0;
+                
                 // Remember that empty cells can contain format information
                 if ( !cell[j].getType().equals( CellType.EMPTY ) || (cell[j].getCellFormat() != null) )
                 {
@@ -139,11 +141,7 @@ public class XMLStructureResponseImport
                         if ( (importItem.getSheetNo() == sheetNo) && (importItem.getRow() == (i + 1))
                             && (importItem.getColumn() == (j + 1)) )
                         {
-                            if ( TYPE.equals( ExcelItemGroup.TYPE.NORMAL ) )
-                            {
-                                xml.append( " id='" + importItem.getExpression() + "'>" );
-                            }
-                            else if ( TYPE.equals( ExcelItemGroup.TYPE.CATEGORY ) )
+                            if ( TYPE.equals( ExcelItemGroup.TYPE.NORMAL ) || TYPE.equals( ExcelItemGroup.TYPE.CATEGORY ) )
                             {
                                 xml.append( " id='" + importItem.getExpression() + "'>" );
                             }
@@ -155,7 +153,7 @@ public class XMLStructureResponseImport
                     }
 
                     if ( run == importItems.size() )
-                    {
+                    {                        
                         xml.append( ">" );
                     } // end checking
 
