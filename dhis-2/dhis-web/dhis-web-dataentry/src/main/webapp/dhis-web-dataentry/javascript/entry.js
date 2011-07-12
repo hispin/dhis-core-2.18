@@ -167,32 +167,21 @@ function saveVal( dataElementId, optionComboId )
         }
     }
 
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, value, COLOR_GREEN, '' );
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, value, COLOR_GREEN );
     valueSaver.save();
     
     updateIndicators(); // Update indicators in case of custom form
 }
 
-function saveBoolean( dataElementId, optionComboId, selectedOption )
+function saveBoolean( dataElementId, optionComboId )
 {
-    var select = selectedOption.options[selectedOption.selectedIndex].value
-    var organisationUnitId = getFieldValue( 'organisationUnitId' );
+    var fieldId = '#' + dataElementId + '-' + optionComboId + '-val';
+    var value = $( fieldId + ' option:selected' ).val();
+    var organisationUnitId = $( '#organisationUnitId' ).val();
 
-    selectedOption.style.backgroundColor = COLOR_YELLOW;
+    $( fieldId ).css( 'background-color', COLOR_YELLOW );
 
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, select, COLOR_GREEN, selectedOption );
-    valueSaver.save();
-}
-
-function saveDate( dataElementId, dataElementName )
-{
-    var field = document.getElementById( dataElementId + '-date' );
-    var type = document.getElementById( dataElementId + '-valuetype' ).innerHTML;
-    var organisationUnitId = getFieldValue( 'organisationUnitId' );
-
-    field.style.backgroundColor = COLOR_YELLOW;
-
-    var valueSaver = new ValueSaver( dataElementId, '', organisationUnitId, field.value, COLOR_GREEN, '' );
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, value, COLOR_GREEN );
     valueSaver.save();
 }
 
@@ -213,13 +202,12 @@ function alertField( fieldId, alertMessage )
 // Saver objects
 // -----------------------------------------------------------------------------
 
-function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_, resultColor_, selectedOption_ )
+function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_, resultColor_ )
 {
     var dataElementId = dataElementId_;
     var optionComboId = optionComboId_;
     var value = value_;
     var resultColor = resultColor_;
-    var selectedOption = selectedOption_;
     var organisationUnitId = organisationUnitId_;
 
     this.save = function()
