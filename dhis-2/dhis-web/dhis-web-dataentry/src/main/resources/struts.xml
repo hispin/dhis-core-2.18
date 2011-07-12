@@ -12,6 +12,10 @@
       <result name="success" type="redirect">displayForm.action</result>
     </action>
 
+    <action name="getDataValues" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction">
+	  <result name="success" type="velocity-json">/dhis-web-dataentry/responseDataValues.vm</result>
+	</action>
+
     <action name="displayForm" class="org.hisp.dhis.de.action.LoadOrganisationUnitAction">
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>

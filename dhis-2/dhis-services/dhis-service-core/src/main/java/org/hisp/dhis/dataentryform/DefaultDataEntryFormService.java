@@ -289,24 +289,13 @@ public class DefaultDataEntryFormService
                 String dataElementValue = getValue( dataValues, dataElementId, optionComboId );
 
                 // -------------------------------------------------------------
-                // Insert data value for data element in output code
+                // Insert data value for data element in output code for boolean
                 // -------------------------------------------------------------
 
                 if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
                 {
                     inputHtml = inputHtml.replace( "input", "select" );
                     inputHtml = inputHtml.replaceAll( "value=\".*?\"", "" );
-                }
-                else
-                {
-                    if ( inputHtml.contains( EMPTY_VALUE_TAG ) )
-                    {
-                        inputHtml = inputHtml.replace( EMPTY_VALUE_TAG, "value=\"" + dataElementValue + "\"" );
-                    }
-                    else
-                    {
-                        inputHtml += "value=\"" + dataElementValue + "\"";
-                    }
                 }
 
                 // -------------------------------------------------------------
