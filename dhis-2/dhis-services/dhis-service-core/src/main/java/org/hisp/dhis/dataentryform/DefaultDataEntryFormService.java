@@ -246,8 +246,8 @@ public class DefaultDataEntryFormService
         
         final String metaDataCode = "<span id=\"$DATAELEMENTID-dataelement\" style=\"display:none\">$DATAELEMENTNAME</span>"
             + "<span id=\"$DATAELEMENTID-type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
-            + "<div id=\"$DATAELEMENTID-$OPTIONCOMBOID-min\" style=\"display:none\">$MIN</div>"
-            + "<div id=\"$DATAELEMENTID-$OPTIONCOMBOID-max\" style=\"display:none\">$MAX</div>";
+            + "<div id=\"$DATAELEMENTID-$OPTIONCOMBOID-min\" style=\"display:none\"></div>"
+            + "<div id=\"$DATAELEMENTID-$OPTIONCOMBOID-max\" style=\"display:none\"></div>";
 
         StringBuffer sb = new StringBuffer();
 
@@ -379,17 +379,6 @@ public class DefaultDataEntryFormService
                 inputHtml = inputHtml.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
                 inputHtml = inputHtml.replace( "$DISABLED", disabled );
                 inputHtml = inputHtml.replace( STYLE_TAG, backgroundColor );
-
-                if ( minMaxDataElement == null )
-                {
-                    inputHtml = inputHtml.replace( "$MIN", minValue );
-                    inputHtml = inputHtml.replace( "$MAX", maxValue );
-                }
-                else
-                {
-                    inputHtml = inputHtml.replace( "$MIN", String.valueOf( minMaxDataElement.getMin() ) );
-                    inputHtml = inputHtml.replace( "$MAX", String.valueOf( minMaxDataElement.getMax() ) );
-                }
 
                 inputMatcher.appendReplacement( sb, inputHtml );
             }

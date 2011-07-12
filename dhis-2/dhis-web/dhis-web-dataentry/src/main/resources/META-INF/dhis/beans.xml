@@ -25,6 +25,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	scope="prototype">
     <property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 	<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+	<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
   </bean>
 
   <bean id="org.hisp.dhis.de.action.LoadOrganisationUnitAction" class="org.hisp.dhis.de.action.LoadOrganisationUnitAction"
