@@ -225,12 +225,12 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
 
     function handleResponse( json )
     {
-        var code = json.code;
+        var code = json.c;
 
         if ( code == 0 )
         {
             markValue( resultColor );
-        } 
+        }
         else
         {
             markValue( COLOR_RED );
@@ -246,7 +246,6 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
 
     function markValue( color )
     {
-        var element = document.getElementById( dataElementId + '-' + optionComboId + '-val' );
-        element.style.backgroundColor = color;
+        $( '#' + dataElementId + '-' + optionComboId + '-val' ).css( "background-color", color );
     }
 }
