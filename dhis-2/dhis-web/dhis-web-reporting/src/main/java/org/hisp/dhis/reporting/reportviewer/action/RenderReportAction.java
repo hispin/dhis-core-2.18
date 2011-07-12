@@ -31,6 +31,7 @@ import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 
 import java.io.OutputStream;
 import java.sql.Connection;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,6 +42,7 @@ import net.sf.jasperreports.engine.JasperReport;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
@@ -79,6 +81,13 @@ public class RenderReportAction
         this.reportTableService = reportTableService;
     }
     
+    private ConstantService constantService;
+    
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
+
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -137,6 +146,8 @@ public class RenderReportAction
         
         Report report = reportService.getReport( id );
         
+        Map<String, Double> constantMap = constantService.getConstantParameterMap();
+        
         JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
         
         JasperPrint print = null;
@@ -147,7 +158,7 @@ public class RenderReportAction
             
             Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
             
-            print = JasperFillManager.fillReport( jasperReport, null, grid );
+            print = JasperFillManager.fillReport( jasperReport, constantMap, grid );
         }
         else // Assume SQL report and provide JDBC connection
         {
@@ -155,7 +166,7 @@ public class RenderReportAction
             
             try
             {
-                print = JasperFillManager.fillReport( jasperReport, null, connection );
+                print = JasperFillManager.fillReport( jasperReport, constantMap, connection );
             }
             finally
             {        

@@ -27,6 +27,8 @@ package org.hisp.dhis.result;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
@@ -62,6 +64,13 @@ public class GridJasperResult
     {
         this.grid = grid;
     }
+    
+    private Map<?, ?> params;
+
+    public void setParams( Map<?, ?> params )
+    {
+        this.params = params;
+    }
 
     // -------------------------------------------------------------------------
     // Result implementation
@@ -77,8 +86,12 @@ public class GridJasperResult
 
         Grid _grid = (Grid) invocation.getStack().findValue( "grid" );
         
-        grid = _grid != null ? _grid : grid; 
+        grid = _grid != null ? _grid : grid;
+        
+        Map<?, ?> _params = (Map<?, ?>) invocation.getStack().findValue( "params" );
 
+        params = _params != null ? _params : params;
+        
         // ---------------------------------------------------------------------
         // Configure response
         // ---------------------------------------------------------------------
@@ -93,6 +106,6 @@ public class GridJasperResult
         // Write jrxml based on Velocity template
         // ---------------------------------------------------------------------
 
-        GridUtils.toJasperReport( grid, response.getOutputStream() );
+        GridUtils.toJasperReport( grid, params, response.getOutputStream() );
     }
 }

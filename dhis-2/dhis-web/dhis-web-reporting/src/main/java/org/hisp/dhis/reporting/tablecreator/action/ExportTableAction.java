@@ -27,7 +27,10 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Map;
+
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.util.SessionUtils;
@@ -53,6 +56,13 @@ public class ExportTableAction
         this.reportTableService = reportTableService;
     }
     
+    private ConstantService constantService;
+    
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -110,6 +120,13 @@ public class ExportTableAction
         return grid;
     }
 
+    private Map<?, ?> params;
+
+    public Map<?, ?> getParams()
+    {
+        return params;
+    }
+
     // -------------------------------------------------------------------------
     // Result implementation
     // -------------------------------------------------------------------------
@@ -126,6 +143,8 @@ public class ExportTableAction
         {
             grid = reportTableService.getReportTableGrid( id, format, reportingPeriod, organisationUnitId );            
         }
+
+        params = constantService.getConstantParameterMap();
         
         SessionUtils.setSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID, grid );
         

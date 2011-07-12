@@ -45,6 +45,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import jxl.Workbook;
 import jxl.write.Label;
@@ -96,6 +97,7 @@ public class GridUtils
     
     private static final String KEY_GRID = "grid";
     private static final String KEY_ENCODER = "encoder";
+    private static final String KEY_PARAMS = "params";
     private static final String TEMPLATE = "grid.vm";
     private static final String RESOURCE_LOADER_NAME = "class";
 
@@ -281,18 +283,18 @@ public class GridUtils
     /**
      * Writes a Jasper Reports representation of the given Grid to the given OutputStream.
      */
-    public static void toJasperReport( Grid grid, OutputStream out )
+    public static void toJasperReport( Grid grid, Map<?, ?> params, OutputStream out )
         throws Exception
     {
         final StringWriter writer = new StringWriter();
         
-        render( grid, writer );
+        render( grid, params, writer );
         
         String report = writer.toString();
 
         JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report ) );
         
-        JasperPrint print = JasperFillManager.fillReport( jasperReport, null, grid );
+        JasperPrint print = JasperFillManager.fillReport( jasperReport, params, grid );
         
         JasperExportManager.exportReportToPdfStream( print, out );
     }
@@ -300,16 +302,20 @@ public class GridUtils
     /**
      * Writes a JRXML (Jasper Reports XML) representation of the given Grid to the given Writer.
      */
-    public static void toJrxml( Grid grid, Writer writer )
+    public static void toJrxml( Grid grid, Map<?, ?> params, Writer writer )
         throws Exception
     {
-        render( grid, writer );
+        render( grid, params, writer );
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     /**
      * Render using Velocity.
      */
-    private static void render( Grid grid, Writer writer )
+    private static void render( Grid grid, Map<?, ?> params, Writer writer )
         throws Exception
     {
         final VelocityEngine velocity = new VelocityEngine();
@@ -322,6 +328,7 @@ public class GridUtils
         
         context.put( KEY_GRID, grid );
         context.put( KEY_ENCODER, ENCODER );
+        context.put( KEY_PARAMS, params );
         
         velocity.getTemplate( TEMPLATE ).merge( context, writer );
     }

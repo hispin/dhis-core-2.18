@@ -49,11 +49,7 @@ public class JRExportUtils
     public static final String TYPE_XLS = "xls";
     public static final String TYPE_PDF = "pdf";
     
-    private static final Map<String, JRExportProvider> exporters = new HashMap<String, JRExportProvider>() {
-        /**
-         * Determines if a de-serialized file is compatible with this class.
-         */
-        private static final long serialVersionUID = 6662444011214507874L;
+    private static final Map<String, JRExportProvider> exporters = new HashMap<String, JRExportProvider>() {    
     {
         put( TYPE_XLS, new JRXlsExportProvider() );
         put( TYPE_PDF, new JRPdfExportProvider() );

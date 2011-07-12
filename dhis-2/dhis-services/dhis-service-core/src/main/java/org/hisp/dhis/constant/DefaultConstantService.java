@@ -97,6 +97,18 @@ public class DefaultConstantService
         
         return map;
     }
+    
+    public Map<String, Double> getConstantParameterMap()
+    {
+        Map<String, Double> map = new HashMap<String, Double>();
+        
+        for ( Constant constant : getAllConstants() )
+        {
+            map.put( constant.getName(), constant.getValue() );
+        }
+        
+        return map;
+    }
 
     // -------------------------------------------------------------------------
     // Constant expanding
