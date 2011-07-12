@@ -83,7 +83,10 @@ public class SaveBookmarkAction
         this.contain = contain;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
