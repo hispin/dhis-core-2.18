@@ -207,15 +207,39 @@ function loadDataValuesAndDisplayModes()
 
 function insertDataValues()
 {
-	$.getJSON( 'getDataValues.action', function( json )
+	// Clear existing values
+	
+	$( '[name="entryfield"]' ).val( '' );
+	
+	$.getJSON( 'getDataValues.action', function( json ) 
 	{
+		// Set data values
+	
 		$.each( json.dataValues, function( i, value )
 		{
-			var fieldId = '#' + value.id;
+			var fieldId = '#' + value.id + '-val';
 			
 			if ( $( fieldId ) )
 			{
 				$( fieldId ).val( value.val );
+			}
+		} );
+		
+		// Set min-max values
+		
+		$.each( json.minMaxDataElements, function( i, value )
+		{
+			var minFieldId = '#' + value.id + '-min';
+			var maxFieldId = '#' + value.id + '-max';
+			
+			if ( $( minFieldId ) )
+			{
+				$( minFieldId ).html( value.min );
+			}
+			
+			if ( $( maxFieldId ) )
+			{
+				$( maxFieldId ).html( value.max );
 			}
 		} );
 	} );

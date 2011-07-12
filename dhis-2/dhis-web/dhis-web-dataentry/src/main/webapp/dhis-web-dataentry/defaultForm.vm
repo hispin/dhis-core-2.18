@@ -54,10 +54,7 @@
 	      	#set( $minMaxError = true )
 	      #end
 	    #end
-
-	    <span id="${dataElement.id}-${optionCombo.id}-min" class="hidden">$!minMax.min</span>
-	    <span id="${dataElement.id}-${optionCombo.id}-max" class="hidden">$!minMax.max</span>
-
+	    <span id="${dataElement.id}-${optionCombo.id}-min" class="hidden"></span><span id="${dataElement.id}-${optionCombo.id}-max" class="hidden"></span>
 	    <td>
 	    #if( $dataElement.type == "bool" )
 		    <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) ) onchange="saveBoolean($dataElement.id,$optionCombo.id )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>

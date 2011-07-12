@@ -33,6 +33,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.state.SelectedStateManager;
+import org.hisp.dhis.minmax.MinMaxDataElement;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -54,6 +56,13 @@ public class GetDataValuesForDataSetAction
     {
         this.dataValueService = dataValueService;
     }
+    
+    private MinMaxDataElementService minMaxDataElementService;
+
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
+    {
+        this.minMaxDataElementService = minMaxDataElementService;
+    }
 
     private SelectedStateManager selectedStateManager;
 
@@ -72,6 +81,13 @@ public class GetDataValuesForDataSetAction
     {
         return dataValues;
     }
+    
+    private Collection<MinMaxDataElement> minMaxDataElements;
+
+    public Collection<MinMaxDataElement> getMinMaxDataElements()
+    {
+        return minMaxDataElements;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -84,6 +100,8 @@ public class GetDataValuesForDataSetAction
         OrganisationUnit unit = selectedStateManager.getSelectedOrganisationUnit();
         
         dataValues = dataValueService.getDataValues( unit, period, dataSet.getDataElements() );
+        
+        minMaxDataElements = minMaxDataElementService.getMinMaxDataElements( unit, dataSet.getDataElements() );
         
         return SUCCESS;
     }
