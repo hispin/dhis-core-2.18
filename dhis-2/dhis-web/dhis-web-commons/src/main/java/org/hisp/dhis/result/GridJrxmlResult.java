@@ -1,6 +1,7 @@
 package org.hisp.dhis.result;
 
 import java.io.Writer;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -65,6 +66,13 @@ public class GridJrxmlResult
         this.grid = grid;
     }
 
+    private Map<?, ?> params;
+
+    public void setParams( Map<?, ?> params )
+    {
+        this.params = params;
+    }
+
     // -------------------------------------------------------------------------
     // Result implementation
     // -------------------------------------------------------------------------
@@ -80,6 +88,10 @@ public class GridJrxmlResult
         Grid _grid = (Grid) invocation.getStack().findValue( "grid" );
         
         grid = _grid != null ? _grid : grid; 
+
+        Map<?, ?> _params = (Map<?, ?>) invocation.getStack().findValue( "params" );
+
+        params = _params != null ? _params : params;
         
         // ---------------------------------------------------------------------
         // Configure response
@@ -97,6 +109,6 @@ public class GridJrxmlResult
         // Write jrxml based on Velocity template
         // ---------------------------------------------------------------------
 
-        GridUtils.toJrxml( grid, writer );
+        GridUtils.toJrxml( grid, params, writer );
     }
 }

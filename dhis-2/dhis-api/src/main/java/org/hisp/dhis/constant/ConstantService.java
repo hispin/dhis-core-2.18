@@ -56,6 +56,8 @@ public interface ConstantService
     
     Map<Integer, Double> getConstantMap();
     
+    Map<String, Double> getConstantParameterMap();
+    
     // -------------------------------------------------------------------------
     // Constant expanding
     // -------------------------------------------------------------------------
