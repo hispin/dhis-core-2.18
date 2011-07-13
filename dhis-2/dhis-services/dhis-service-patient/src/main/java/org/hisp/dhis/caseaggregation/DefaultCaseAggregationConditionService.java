@@ -30,6 +30,7 @@ package org.hisp.dhis.caseaggregation;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_SUM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROPERTY;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OPERATOR_AND;
@@ -69,7 +70,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService
 {
-    private final String regExp = "\\[(" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|"
+    private final String regExp = "\\[(" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|"
         + OBJECT_PATIENT_PROPERTY + "|" + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
         + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
@@ -438,7 +439,11 @@ public class DefaultCaseAggregationConditionService
                 {
                     condition = getConditionForProgramProperty( orgunitId, startDate, endDate ) + info[1];
                 }
-
+				else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM ) )
+                {
+                    condition = getConditionForProgram( info[1], orgunitId, startDate, endDate );
+                }
+				
                 // -------------------------------------------------------------
                 // Replacing the operand with 1 in order to later be able to
                 // verify
@@ -541,6 +546,16 @@ public class DefaultCaseAggregationConditionService
             + "INNER JOIN programinstance as pi ON psi.programinstanceid = pi.programinstanceid "
             + "INNER JOIN patient as p ON p.patientid = pi.patientid WHERE p.organisationunitid = " + orgunitId + " "
             + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' AND ";
+    }
+
+    private String getConditionForProgram ( String programId,  int orgunitId, String startDate, String endDate )
+    {
+        return "SELECT distinct(p.patientid) FROM programstageinstance as psi "
+        + "INNER JOIN programinstance as pi ON psi.programinstanceid = pi.programinstanceid "
+        + "INNER JOIN patient as p ON p.patientid = pi.patientid "
+        + "WHERE pi.programid=" + programId + " "
+        + "AND p.organisationunitid = " + orgunitId + " "
+        + "AND pi.enrollmentdate >= '" + startDate + "' AND pi.enrollmentdate <= '" + endDate + "' ";
     }
 
     private String getSQL( List<String> conditions, List<String> operators )
