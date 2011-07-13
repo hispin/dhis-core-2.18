@@ -81,123 +81,6 @@
 .x-form-check-wrap-inner input,.x-form-radio-wrap-inner input{position:absolute;-ms-filter:"alpha(opacity=0)";filter:alpha(opacity=0);-moz-opacity:0;opacity:0;}
 
 /* IconCombo */
-.ux-ic-icon-0 {
-    background-image:url(iconcombo/ux-ic-icon-0.png) ! important;
-}
-.ux-ic-icon-0-title {
-    background:url(iconcombo/ux-ic-icon-0.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-1 {
-    background-image:url(iconcombo/ux-ic-icon-1.png) ! important;
-}
-.ux-ic-icon-1-title {
-    background:url(iconcombo/ux-ic-icon-1.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-2 {
-    background-image:url(iconcombo/ux-ic-icon-2.png) ! important;
-}
-.ux-ic-icon-2-title {
-    background:url(iconcombo/ux-ic-icon-2.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-3 {
-    background-image:url(iconcombo/ux-ic-icon-3.png) ! important;
-}
-.ux-ic-icon-3-title {
-    background:url(iconcombo/ux-ic-icon-3.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-4 {
-    background-image:url(iconcombo/ux-ic-icon-4.png) ! important;
-}
-.ux-ic-icon-4-title {
-    background:url(iconcombo/ux-ic-icon-4.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-5 {
-    background-image:url(iconcombo/ux-ic-icon-5.png) ! important;
-}
-.ux-ic-icon-5-title {
-    background:url(iconcombo/ux-ic-icon-5.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-6 {
-    background-image:url(iconcombo/ux-ic-icon-6.png) ! important;
-}
-.ux-ic-icon-6-title {
-    background:url(iconcombo/ux-ic-icon-6.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-7 {
-    background-image:url(iconcombo/ux-ic-icon-7.png) ! important;
-}
-.ux-ic-icon-7-title {
-    background:url(iconcombo/ux-ic-icon-7.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-8 {
-    background-image:url(iconcombo/ux-ic-icon-8.png) ! important;
-}
-.ux-ic-icon-8-title {
-    background:url(iconcombo/ux-ic-icon-8.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-9 {
-    background-image:url(iconcombo/ux-ic-icon-9.png) ! important;
-}
-.ux-ic-icon-9-title {
-    background:url(iconcombo/ux-ic-icon-9.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-10 {
-    background-image:url(iconcombo/ux-ic-icon-10.png) ! important;
-}
-.ux-ic-icon-10-title {
-    background:url(iconcombo/ux-ic-icon-10.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-11 {
-    background-image:url(iconcombo/ux-ic-icon-11.png) ! important;
-}
-.ux-ic-icon-11-title {
-    background:url(iconcombo/ux-ic-icon-11.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
-.ux-ic-icon-12 {
-    background-image:url(iconcombo/ux-ic-icon-12.png) ! important;
-}
-.ux-ic-icon-12-title {
-    background:url(iconcombo/ux-ic-icon-12.png) no-repeat 0 0 transparent;
-    padding:0 0 3px 21px;
-	font:bold 11px arial;
-	color:#111;
-}
 .ux-icon-combo-icon {
     background-repeat: no-repeat;
     background-position: 5px 50%;
@@ -218,5 +101,141 @@
 }
 .x-form-field-wrap .ux-icon-combo-icon {
     top: 3px;
-    left: 5px;
+    left: 2px;
+}
+
+.ux-ic-icon-groupset-type-0 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-0.png) ! important;
+}
+.ux-ic-icon-groupset-type-0-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-0.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-1 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-1.png) ! important;
+}
+.ux-ic-icon-groupset-type-1-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-1.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-2 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-2.png) ! important;
+}
+.ux-ic-icon-groupset-type-2-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-2.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-3 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-3.png) ! important;
+}
+.ux-ic-icon-groupset-type-3-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-3.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-4 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-4.png) ! important;
+}
+.ux-ic-icon-groupset-type-4-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-4.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-5 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-5.png) ! important;
+}
+.ux-ic-icon-groupset-type-5-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-5.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-6 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-6.png) ! important;
+}
+.ux-ic-icon-groupset-type-6-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-6.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-7 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-7.png) ! important;
+}
+.ux-ic-icon-groupset-type-7-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-7.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-8 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-8.png) ! important;
+}
+.ux-ic-icon-groupset-type-8-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-8.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-9 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-9.png) ! important;
+}
+.ux-ic-icon-groupset-type-9-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-9.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-10 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-10.png) ! important;
+}
+.ux-ic-icon-groupset-type-10-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-10.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-11 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-11.png) ! important;
+}
+.ux-ic-icon-groupset-type-11-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-11.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-groupset-type-12 {
+    background-image:url(iconcombo/ux-ic-icon-groupset-type-12.png) ! important;
+}
+.ux-ic-icon-groupset-type-12-title {
+    background:url(iconcombo/ux-ic-icon-groupset-type-12.png) no-repeat 0 0 transparent;
+    padding:0 0 3px 21px;
+	font:bold 11px arial;
+	color:#111;
+}
+.ux-ic-icon-maplegend-type-0 {
+    background-image:url(iconcombo/ux-ic-icon-maplegend-type-0.png) ! important;
+}
+.ux-ic-icon-maplegend-type-1 {
+    background-image:url(iconcombo/ux-ic-icon-maplegend-type-1.png) ! important;
+}
+.ux-ic-icon-maplegend-type-2 {
+    background-image:url(iconcombo/ux-ic-icon-maplegend-type-2.png) ! important;
+}
+.ux-ic-icon-maplegend-type-3 {
+    background-image:url(iconcombo/ux-ic-icon-maplegend-type-3.png) ! important;
+}
+.ux-ic-icon-maplegend-type-4 {
+    background-image:url(iconcombo/ux-ic-icon-maplegend-type-4.png) ! important;
+}
+.ux-ic-icon-maplegend-type-5 {
+    background-image:url(iconcombo/ux-ic-icon-maplegend-type-5.png) ! important;
 }

@@ -27,8 +27,9 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.mapping.MappingService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland
@@ -40,9 +41,9 @@ public class AddOrUpdateMapLegendAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private MappingService mappingService;
-    
+
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
@@ -51,23 +52,23 @@ public class AddOrUpdateMapLegendAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private String name;
-    
+
     public void setName( String name )
     {
         this.name = name;
     }
 
     private String startValue;
-    
+
     public void setStartValue( String startValue )
     {
         this.startValue = startValue;
     }
 
     private String endValue;
-    
+
     public void setEndValue( String endValue )
     {
         this.endValue = endValue;
@@ -79,14 +80,22 @@ public class AddOrUpdateMapLegendAction
     {
         this.color = color;
     }
-    
+
+    private String image;
+
+    public void setImage( String image )
+    {
+        this.image = image;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        this.mappingService.addOrUpdateMapLegend( name, Double.parseDouble( startValue ), Double.parseDouble( endValue ), color );
+        this.mappingService.addOrUpdateMapLegend( name, Double.parseDouble( startValue ),
+            Double.parseDouble( endValue ), color, image );
 
         return SUCCESS;
     }

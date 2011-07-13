@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2007-2008  Camptocamp|
  *
  * This file is part of MapFish Client
@@ -18,13 +18,13 @@
  */
 
 /**
- * @requires core/GeoStat/Point.js
+ * @requires core/GeoStat/Centroid.js
  * @requires core/Color.js
  */
 
 Ext.namespace('mapfish.widgets', 'mapfish.widgets.geostat');
 
-mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
+mapfish.widgets.geostat.Centroid = Ext.extend(Ext.FormPanel, {
 
     layer: null,
 
@@ -92,7 +92,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
         
         this.createSelectFeatures();
         
-		mapfish.widgets.geostat.Point.superclass.initComponent.apply(this);
+		mapfish.widgets.geostat.Centroid.superclass.initComponent.apply(this);
     },
     
     setUrl: function(url) {
@@ -122,14 +122,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
     
     initProperties: function() {
         this.legend = {
-            value: G.conf.map_legendset_type_automatic,
-            method: G.conf.classify_by_equal_intervals,
-            classes: 5,
-            reset: function() {
-                this.value = G.conf.map_legendset_type_automatic;
-                this.method = G.conf.classify_by_equal_intervals;
-                this.classes = 5;
-            }
+            value: G.conf.map_legendset_type_predefined
         };
         
         this.organisationUnitSelection = {
@@ -191,16 +184,20 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
         };
         
         this.stores = {
-            infrastructuralDataElementMapValue: new Ext.data.JsonStore({
-                url: G.conf.path_mapping + 'getInfrastructuralDataElementMapValues' + G.conf.type,
-                root: 'mapValues',
-                fields: ['dataElementName', 'value'],
-                sortInfo: {field: 'dataElementName', direction: 'ASC'},
-                autoLoad: false,
-                isLoaded: false,
-                listeners: {
-                    'load': G.func.storeLoadListener
-                }
+            mapLegendTypeIcon: new Ext.data.ArrayStore({
+                fields: ['name', 'css'],
+                data: [
+                    ['0','ux-ic-icon-maplegend-type-0'],
+                    ['1','ux-ic-icon-maplegend-type-1'],
+                    ['2','ux-ic-icon-maplegend-type-2'],
+                    ['3','ux-ic-icon-maplegend-type-3'],
+                    ['4','ux-ic-icon-maplegend-type-4'],
+                    ['5','ux-ic-icon-maplegend-type-5'],
+                    ['6','ux-ic-icon-maplegend-type-6'],
+                    ['7','ux-ic-icon-maplegend-type-7'],
+                    ['8','ux-ic-icon-maplegend-type-8'],
+                    ['9','ux-ic-icon-maplegend-type-9']
+                ]
             }),
             indicatorsByGroup: new Ext.data.JsonStore({
                 url: G.conf.path_mapping + 'getIndicatorsByIndicatorGroup' + G.conf.type,
@@ -277,6 +274,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             emptyText: G.i18n.optional,
             selectOnFocus: true,
+            hidden: true,
             width: G.conf.combo_width,
             store: G.stores.mapView,
             listeners: {
@@ -302,7 +300,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             }
         },
         
-        { html: '<div class="thematic-br">' },
+        //{ html: '<div class="thematic-br">' },
 		
 		{
             xtype: 'combo',
@@ -382,42 +380,10 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                     fn: function(cb) {
                         if (G.util.setCurrentValue.call(this, cb, 'mapview')) {
                             return;
-                        }
-                        
+                        }                        
                         this.updateValues = true;
-                        Ext.Ajax.request({
-                            url: G.conf.path_mapping + 'getMapLegendSetByIndicator' + G.conf.type,
-                            method: 'POST',
-                            params: {indicatorId: cb.getValue()},
-                            scope: this,
-                            success: function(r) {
-                                var mapLegendSet = Ext.util.JSON.decode(r.responseText).mapLegendSet[0];
-                                if (mapLegendSet.id) {
-                                    this.legend.value = G.conf.map_legendset_type_predefined;
-                                    this.prepareMapViewLegend();
-                                    
-                                    function load() {
-                                        this.form.findField('maplegendset').setValue(mapLegendSet.id);
-                                        this.applyPredefinedLegend();
-                                    }
-                                    
-                                    if (!G.stores.predefinedMapLegendSet.isLoaded) {
-                                        G.stores.predefinedMapLegendSet.load({scope: this, callback: function() {
-                                            load.call(this);
-                                        }});
-                                    }
-                                    else {
-                                        load.call(this);
-                                    }
-                                }
-                                else {
-                                    this.legend.value = G.conf.map_legendset_type_automatic;
-                                    this.prepareMapViewLegend();
-                                    this.classify(false, cb.keepPosition);
-                                    G.util.setKeepPosition(cb);
-                                }
-                            }
-                        });
+                        this.classify(false, cb.keepPosition);
+                        G.util.setKeepPosition(cb);
                     }
                 }
             }
@@ -470,42 +436,10 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                     fn: function(cb) {
                         if (G.util.setCurrentValue.call(this, cb, 'mapview')) {
                             return;
-                        }
-                        
+                        }                        
                         this.updateValues = true;
-                        Ext.Ajax.request({
-                            url: G.conf.path_mapping + 'getMapLegendSetByDataElement' + G.conf.type,
-                            method: 'POST',
-                            params: {dataElementId: cb.getValue()},
-                            scope: this,
-                            success: function(r) {
-                                var mapLegendSet = Ext.util.JSON.decode(r.responseText).mapLegendSet[0];
-                                if (mapLegendSet.id) {
-                                    this.legend.value = G.conf.map_legendset_type_predefined;
-                                    this.prepareMapViewLegend();
-                                    
-                                    function load() {
-                                        this.form.findField('maplegendset').setValue(mapLegendSet.id);
-                                        this.applyPredefinedLegend();
-                                    }
-                                    
-                                    if (!G.stores.predefinedMapLegendSet.isLoaded) {
-                                        G.stores.predefinedMapLegendSet.load({scope: this, callback: function() {
-                                            load.call(this);
-                                        }});
-                                    }
-                                    else {
-                                        load.call(this);
-                                    }
-                                }
-                                else {
-                                    this.legend.value = G.conf.map_legendset_type_automatic;
-                                    this.prepareMapViewLegend();
-                                    this.classify(false, cb.keepPosition);
-                                    G.util.setKeepPosition(cb);
-                                }
-                            }
-                        });
+                        this.classify(false, cb.keepPosition);
+                        G.util.setKeepPosition(cb);
                     }
                 }
             }
@@ -558,8 +492,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                     fn: function(cb) {
                         if (G.util.setCurrentValue.call(this, cb, 'mapview')) {
                             return;
-                        }
-                        
+                        }                        
                         this.updateValues = true;
                         this.classify(false, cb.keepPosition);                        
                         G.util.setKeepPosition(cb);
@@ -661,46 +594,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
 		
 		{
             xtype: 'combo',
-            name: 'maplegendtype',
-            editable: false,
-            valueField: 'value',
-            displayField: 'text',
-            mode: 'local',
-            fieldLabel: G.i18n.legend_type,
-            value: this.legend.value,
-            triggerAction: 'all',
-            width: G.conf.combo_width,
-            store: new Ext.data.ArrayStore({
-                fields: ['value', 'text'],
-                data: [
-					[G.conf.map_legendset_type_automatic, G.i18n.automatic],
-					[G.conf.map_legendset_type_predefined, G.i18n.predefined]
-				]
-            }),
-            listeners: {
-                'select': {
-                    scope: this,
-                    fn: function(cb) {
-                        if (cb.getValue() == G.conf.map_legendset_type_predefined && cb.getValue() != this.legend.value) {
-							this.legend.value = G.conf.map_legendset_type_predefined;
-                            this.prepareMapViewLegend();
-							
-							if (this.form.findField('maplegendset').getValue()) {
-                                this.applyPredefinedLegend();
-							}
-                        }
-                        else if (cb.getValue() == G.conf.map_legendset_type_automatic && cb.getValue() != this.legend.value) {
-							this.legend.value = G.conf.map_legendset_type_automatic;
-							this.prepareMapViewLegend();                            
-                            this.classify(false, true);
-                        }
-                    }
-                }
-            }
-        },
-		
-		{
-            xtype: 'combo',
             name: 'maplegendset',
             editable: false,
             valueField: 'id',
@@ -709,174 +602,14 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             fieldLabel: G.i18n.legendset,
             triggerAction: 'all',
             width: G.conf.combo_width,
-			hidden: true,
-            store: G.stores.predefinedMapLegendSet,
+            store: G.stores.predefinedImageMapLegendSet,
             listeners: {
                 'select': {
                     scope: this,
                     fn: function() {
-                        this.form.findField('mapview').clearValue();
 						this.applyPredefinedLegend();
                     }
                 }
-            }
-        },
-
-        {
-            xtype: 'combo',
-            name: 'method',
-            fieldLabel: G.i18n.method,
-            editable: false,
-            valueField: 'value',
-            displayField: 'text',
-            mode: 'local',
-            value: this.legend.method,
-            triggerAction: 'all',
-            width: G.conf.combo_width,
-            store: new Ext.data.ArrayStore({
-                fields: ['value', 'text'],
-                data: [
-					[2, G.i18n.equal_intervals],
-					[3, G.i18n.equal_group_count],
-					[1, G.i18n.fixed_intervals]
-				]
-            }),
-            listeners: {
-                'select': {
-                    scope: this,
-                    fn: function(cb) {
-                        this.form.findField('mapview').clearValue();
-                        if (cb.getValue() == G.conf.classify_with_bounds && cb.getValue() != this.legend.method) {
-							this.legend.method = G.conf.classify_with_bounds;
-                            this.prepareMapViewLegend();
-                        }
-                        else if (cb.getValue() != this.legend.method) {
-							this.legend.method = cb.getValue();
-                            this.prepareMapViewLegend();
-                            this.classify(false, true);
-                        }
-                    }
-                }
-            }
-        },
-        
-        {
-            xtype: 'textfield',
-            name: 'bounds',
-            fieldLabel: G.i18n.bounds,
-            width: G.conf.combo_width,
-            hidden: true,
-            listeners: {
-                'change': {
-                    scope: this,
-                    fn: function() {
-                        this.classify(false, true);
-                    }
-                }                
-            }
-        },
-        
-        {
-            xtype: 'combo',
-            name: 'classes',
-            fieldLabel: G.i18n.classes,
-            editable: false,
-            valueField: 'value',
-            displayField: 'value',
-            mode: 'local',
-            value: this.legend.classes,
-            triggerAction: 'all',
-            width: G.conf.combo_width,
-            store: new Ext.data.ArrayStore({
-                fields: ['value'],
-                data: [[1], [2], [3], [4], [5], [6], [7]]
-            }),
-            listeners: {
-                'select': {
-                    scope: this,
-                    fn: function(cb) {
-                        this.form.findField('mapview').clearValue();
-						
-						if (cb.getValue() != this.legend.classes) {
-							this.legend.classes = cb.getValue();
-							this.classify(false, true);
-						}
-                    }
-                }
-            }
-        },
-
-        {
-            xtype: 'colorfield',
-            name: 'startcolor',
-            fieldLabel: G.i18n.low_color,
-            allowBlank: false,
-            width: G.conf.combo_width,
-            value: "#FF0000",
-            listeners: {
-                'select': {
-                    scope: this,
-                    fn: function() {
-                        this.classify(false, true);
-                    }
-                }
-            }
-        },
-        
-        {
-            xtype: 'colorfield',
-            name: 'endcolor',
-            fieldLabel: G.i18n.high_color,
-            allowBlank: false,
-            width: G.conf.combo_width,
-            value: "#FFFF00",
-            listeners: {
-                'select': {
-                    scope: this,
-                    fn: function() {
-                        this.classify(false, true);
-                    }
-                }
-            }
-        },
-        
-        { html: '<div class="thematic-br">' },
-        
-        {
-            xtype: 'numberfield',
-            name: 'radiuslow',
-            fieldLabel: G.i18n.low_point_size,
-            width: G.conf.combo_number_width_small,
-            allowDecimals: false,
-            allowNegative: false,
-            minValue: 1,
-            value: 5,
-            listeners: {
-                'change': {
-                    scope: this,
-                    fn: function() {
-                        this.classify(false, true);
-                    }
-                }                
-            }
-        },
-        
-        {
-            xtype: 'numberfield',
-            name: 'radiushigh',
-            fieldLabel: G.i18n.high_point_size,
-            width: G.conf.combo_number_width_small,
-            allowDecimals: false,
-            allowNegative: false,
-            minValue: 1,
-            value: 20,
-            listeners: {
-                'change': {
-                    scope: this,
-                    fn: function() {
-                        this.classify(false, true);
-                    }
-                }                
             }
         }
 
@@ -996,7 +729,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
 										return;
 									}
 									if (node.attributes.level > this.form.findField('level').levelComboBox.getValue()) {
-										Ext.message.msg(false, G.i18n.level_is_higher_that_boundary_level);
+										Ext.message.msg(false, 'Level is higher than boundary level');
 										return;
 									}
                                     
@@ -1053,219 +786,10 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             }
         };
         
-        var onClickSelect = function onClickSelect(feature) {
-            if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_point_class_name) {
-                if (scope.featureOptions.menu) {
-                    scope.featureOptions.menu.destroy();
-                }
-                
-                scope.featureOptions.menu = new Ext.menu.Menu({
-                    showInfo: function() {
-                        if (scope.featureOptions.info) {
-                            scope.featureOptions.info.destroy();
-                        }
-                        
-                        scope.featureOptions.info = new Ext.Window({
-                            title: '<span class="window-information-title">' + feature.attributes.name + '</span>',
-                            layout: 'table',
-                            width: G.conf.window_width + 178,
-                            height: G.util.getMultiSelectHeight() + 100,
-                            bodyStyle: 'background-color:#fff',
-                            defaults: {
-                                bodyStyle: 'vertical-align:top',
-                                labelSeparator: G.conf.labelseparator,
-                                emptyText: G.conf.emptytext
-                            },
-                            layoutConfig: {
-                                columns: 2
-                            },
-                            items: [
-                                {
-                                    xtype: 'panel',
-                                    layout: 'anchor',
-                                    bodyStyle: 'padding:8px 4px 8px 8px',
-                                    width: 160,
-                                    items: [
-                                        {html: '<div class="window-info">' + G.i18n.type + '<p style="font-weight:normal">' + feature.attributes.type + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.code + '<p style="font-weight:normal">' + feature.attributes.code + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.address + '<p style="font-weight:normal">' + feature.attributes.ad + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.contact_person + '<p style="font-weight:normal">' + feature.attributes.cp + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.email + '<p style="font-weight:normal">' + feature.attributes.em + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.phone_number + '<p style="font-weight:normal">' + feature.attributes.pn + '</p></div>'}
-                                    ]
-                                },
-                                {
-                                    xtype: 'form',
-                                    bodyStyle: 'padding:8px 8px 8px 4px',
-                                    width: G.conf.window_width + 20,
-                                    labelWidth: G.conf.label_width,
-                                    items: [
-                                        {html: '<div class="window-info">' + G.i18n.infrastructural_data + '</div>'},
-                                        {
-                                            xtype: 'combo',
-                                            name: 'period',
-                                            fieldLabel: G.i18n.period,
-                                            typeAhead: true,
-                                            editable: false,
-                                            valueField: 'id',
-                                            displayField: 'name',
-                                            mode: 'remote',
-                                            forceSelection: true,
-                                            triggerAction: 'all',
-                                            selectOnFocus: true,
-                                            width: G.conf.combo_width,
-                                            store: G.stores.infrastructuralPeriodsByType,
-                                            keepPosition: false,
-                                            listeners: {
-                                                'select': function(cb) {
-                                                    scope.infrastructuralPeriod = cb.getValue();
-                                                    scope.stores.infrastructuralDataElementMapValue.setBaseParam('periodId', cb.getValue());
-                                                    scope.stores.infrastructuralDataElementMapValue.setBaseParam('organisationUnitId', feature.attributes.id);
-                                                    scope.stores.infrastructuralDataElementMapValue.load();
-                                                }
-                                            }
-                                        },
-                                        {html: '<div style="padding:4px 0 0 0"></div>'},
-                                        {
-                                            xtype: 'grid',
-                                            height: G.util.getMultiSelectHeight(),
-                                            width: 242,
-                                            cm: new Ext.grid.ColumnModel({
-                                                columns: [
-                                                    {id: 'dataElementName', header: 'Data element', dataIndex: 'dataElementName', sortable: true, width: 150},
-                                                    {id: 'value', header: 'Value', dataIndex: 'value', sortable: true, width: 50}
-                                                ]
-                                            }),
-                                            disableSelection: true,
-                                            viewConfig: {forceFit: true},
-                                            store: scope.stores.infrastructuralDataElementMapValue
-                                        }
-                                    ]
-                                }
-                            ]
-                        });
-    
-                        if (scope.infrastructuralPeriod) {
-                            scope.featureOptions.info.find('name', 'period')[0].setValue(scope.infrastructuralPeriod);
-                            scope.stores.infrastructuralDataElementMapValue.setBaseParam('periodId', scope.infrastructuralPeriod);
-                            scope.stores.infrastructuralDataElementMapValue.setBaseParam('organisationUnitId', feature.attributes.id);
-                            scope.stores.infrastructuralDataElementMapValue.load();
-                        }
-                        scope.featureOptions.info.setPagePosition(Ext.getCmp('east').x - (scope.featureOptions.info.width + 15), Ext.getCmp('center').y + 41);
-                        scope.featureOptions.info.show();
-                        scope.featureOptions.menu.destroy();
-                    },
-                    showRelocate: function() {
-                        if (scope.featureOptions.coordinate) {
-                            scope.featureOptions.coordinate.destroy();
-                        }
-                        
-                        scope.featureOptions.coordinate = new Ext.Window({
-                            title: '<span class="window-relocate-title">' + feature.attributes.name + '</span>',
-                            layout: 'fit',
-                            width: G.conf.window_width,
-                            height: 95,
-                            items: [
-                                {
-                                    xtype: 'panel',
-                                    bodyStyle: 'padding:8px',
-                                    items: [
-                                        {html: G.i18n.select_new_location_on_map}
-                                    ]
-                                }
-                            ],
-                            bbar: [
-                                '->',
-                                {
-                                    xtype: 'button',
-                                    iconCls: 'icon-cancel',
-                                    hideLabel: true,
-                                    text: G.i18n.cancel,
-                                    handler: function() {
-                                        G.vars.relocate.active = false;
-                                        scope.featureOptions.coordinate.destroy();
-                                        document.getElementById('OpenLayers.Map_3_OpenLayers_ViewPort').style.cursor = 'auto';
-                                    }
-                                }
-                            ],
-                            listeners: {
-                                'close': function() {
-                                    G.vars.relocate.active = false;
-                                    document.getElementById('OpenLayers.Map_3_OpenLayers_ViewPort').style.cursor = 'auto';
-                                }
-                            }
-                        });
-                        scope.featureOptions.coordinate.setPagePosition(Ext.getCmp('east').x - (scope.featureOptions.coordinate.width + 15), Ext.getCmp('center').y + 41);
-                        scope.featureOptions.coordinate.show();                        
-                    },
-                    items: [
-                        {
-                            text: G.i18n.show_information_sheet,
-                            iconCls: 'menu-featureoptions-info',
-                            handler: function(item) {
-                                if (G.stores.infrastructuralPeriodsByType.isLoaded) {
-                                    item.parentMenu.showInfo();
-                                }
-                                else {
-                                    G.stores.infrastructuralPeriodsByType.setBaseParam('name', G.system.infrastructuralPeriodType);
-                                    G.stores.infrastructuralPeriodsByType.load({callback: function() {
-                                        item.parentMenu.showInfo();
-                                    }});
-                                }
-                            }
-                        },
-                        {
-                            text: G.i18n.relocate,
-                            iconCls: 'menu-featureoptions-relocate',
-                            disabled: !G.user.isAdmin,
-                            handler: function(item) {
-                                G.vars.relocate.active = true;
-                                G.vars.relocate.widget = scope;
-                                G.vars.relocate.feature = feature;
-                                document.getElementById('OpenLayers.Map_3_OpenLayers_ViewPort').style.cursor = 'crosshair';
-                                item.parentMenu.showRelocate();
-                            }
-                        }
-                    ]
-                });
-                scope.featureOptions.menu.showAt([G.vars.mouseMove.x, G.vars.mouseMove.y]);
-            }
-            else {
-                if (feature.attributes.hasChildrenWithCoordinates) {
-                    if (G.vars.locateFeatureWindow) {
-                        G.vars.locateFeatureWindow.destroy();
-                    }
-                             
-                    scope.updateValues = true;
-                    scope.isDrillDown = true;
-                    
-                    function organisationUnitLevelCallback() {
-                        var names = this.organisationUnitSelection.setValuesOnDrillDown(feature.attributes.id, feature.attributes.name);
-                        this.form.findField('boundary').setValue(names[0]);
-                        this.form.findField('level').setValue(names[1]);
-                        this.loadGeoJson();
-                    }
-                    
-                    if (G.stores.organisationUnitLevel.isLoaded) {
-                        organisationUnitLevelCallback.call(scope);
-                    }
-                    else {
-                        G.stores.organisationUnitLevel.load({scope: scope, callback: function() {
-                            organisationUnitLevelCallback.call(this);
-                        }});
-                    }
-                }
-                else {
-                    Ext.message.msg(false, G.i18n.no_coordinates_found);
-                }
-            }
-        };
-        
         this.selectFeatures = new OpenLayers.Control.newSelectFeature(
             this.layer, {
                 onHoverSelect: onHoverSelect,
-                onHoverUnselect: onHoverUnselect,
-                onClickSelect: onClickSelect
+                onHoverUnselect: onHoverUnselect
             }
         );
         
@@ -1351,34 +875,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
         return obj;
     },
     
-    prepareMapViewLegend: function() {
-        this.form.findField('maplegendtype').setValue(this.legend.value);
-        
-        if (this.legend.value == G.conf.map_legendset_type_automatic) {
-            this.form.findField('method').showField();
-            this.form.findField('startcolor').showField();
-            this.form.findField('endcolor').showField();
-            this.form.findField('maplegendset').hideField();
-            
-            if (this.legend.method == G.conf.classify_with_bounds) {
-                this.form.findField('classes').hideField();
-                this.form.findField('bounds').showField();
-            }
-            else {
-                this.form.findField('classes').showField();
-                this.form.findField('bounds').hideField();
-            }                
-        }
-        else if (this.legend.value == G.conf.map_legendset_type_predefined) {
-            this.form.findField('method').hideField();
-            this.form.findField('classes').hideField();
-            this.form.findField('bounds').hideField();
-            this.form.findField('startcolor').hideField();
-            this.form.findField('endcolor').hideField();
-            this.form.findField('maplegendset').showField();
-        }
-    },
-    
     setMapView: function() {
         var obj = this.prepareMapViewValueType();
         
@@ -1433,39 +929,18 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
     },
     
     setMapViewLegend: function() {
-        this.prepareMapViewLegend();
-
         function predefinedMapLegendSetStoreCallback() {
             this.form.findField('maplegendset').setValue(this.mapView.mapLegendSetId);
             this.applyPredefinedLegend(true);
         }
         
-        this.form.findField('radiuslow').setValue(this.mapView.radiusLow || G.conf.defaultLowRadius);
-        this.form.findField('radiushigh').setValue(this.mapView.radiusHigh || G.conf.defaultHighRadius);
-        
-        if (this.legend.value == G.conf.map_legendset_type_automatic) {
-            this.form.findField('method').setValue(this.mapView.method);
-            this.form.findField('startcolor').setValue(this.mapView.colorLow);
-            this.form.findField('endcolor').setValue(this.mapView.colorHigh);
-
-            if (this.legend.method == G.conf.classify_with_bounds) {
-                this.form.findField('bounds').setValue(this.mapView.bounds);
-            }
-            else {
-                this.form.findField('classes').setValue(this.mapView.classes);
-            }
-
-            this.setMapViewMap();
+        if (G.stores.predefinedMapLegendSet.isLoaded) {
+            predefinedMapLegendSetStoreCallback.call(this);
         }
-        else if (this.legend.value == G.conf.map_legendset_type_predefined) {
-            if (G.stores.predefinedMapLegendSet.isLoaded) {
+        else {
+            G.stores.predefinedMapLegendSet.load({scope: this, callback: function() {
                 predefinedMapLegendSetStoreCallback.call(this);
-            }
-            else {
-                G.stores.predefinedMapLegendSet.load({scope: this, callback: function() {
-                    predefinedMapLegendSetStoreCallback.call(this);
-                }});
-            }
+            }});
         }
     },
     
@@ -1476,8 +951,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
         G.stores.organisationUnitLevel.load();
         this.form.findField('boundary').setValue(this.mapView.parentOrganisationUnitName);
         this.form.findField('level').setValue(this.mapView.organisationUnitLevelName);
-
-        G.vars.activePanel.setPoint();
+        
         this.loadGeoJson();
     },
 	
@@ -1491,22 +965,18 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             scope: this,
 			success: function(r) {
 				var mapLegends = Ext.util.JSON.decode(r.responseText).mapLegends;
-				var colors = [];
-				var bounds = [];
+				this.symbolizerInterpolation = [];
+				this.bounds = [];
 				for (var i = 0; i < mapLegends.length; i++) {
-					if (bounds[bounds.length-1] != mapLegends[i].startValue) {
-						if (bounds.length !== 0) {
-							colors.push(new mapfish.ColorRgb(240,240,240));
+					if (this.bounds[this.bounds.length-1] != mapLegends[i].startValue) {
+						if (this.bounds.length !== 0) {
+							this.symbolizerInterpolation.push('blank');
 						}
-						bounds.push(mapLegends[i].startValue);
+						this.bounds.push(mapLegends[i].startValue);
 					}
-					colors.push(new mapfish.ColorRgb());
-					colors[colors.length-1].setFromHex(mapLegends[i].color);
-					bounds.push(mapLegends[i].endValue);
+					this.symbolizerInterpolation.push(mapLegends[i].image);
+					this.bounds.push(mapLegends[i].endValue);
 				}
-
-				this.colorInterpolation = colors;
-				this.bounds = bounds;
                 
                 if (isMapView) {
                     this.setMapViewMap();
@@ -1560,27 +1030,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                 }
                 return false;
             }
-
-            if (this.form.findField('maplegendtype').getValue() == G.conf.map_legendset_type_automatic) {
-                if (this.form.findField('method').getValue() == G.conf.classify_with_bounds) {
-                    if (!this.form.findField('bounds').getValue()) {
-                        if (exception) {
-                            Ext.message.msg(false, G.i18n.form_is_not_complete);
-                        }
-                        return false;
-                    }
-                }
-            }
-            else if (this.form.findField('maplegendtype').getValue() == G.conf.map_legendset_type_predefined) {
-                if (!this.form.findField('maplegendset').getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
-                    return false;
-                }
-            }
             
-            if (!this.form.findField('radiuslow').getValue() || !this.form.findField('radiushigh').getValue()) {
+            if (!this.form.findField('maplegendset').getValue()) {
                 if (exception) {
                     Ext.message.msg(false, G.i18n.form_is_not_complete);
                 }
@@ -1612,15 +1063,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                 parentOrganisationUnitName: this.organisationUnitSelection.parent.name,
                 organisationUnitLevel: this.organisationUnitSelection.level.level,
                 organisationUnitLevelName: this.organisationUnitSelection.level.name,
-                mapLegendType: this.form.findField('maplegendtype').getValue(),
-                method: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('method').getValue() : null,
-                classes: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('classes').getValue() : null,
-                bounds: this.legend.value == G.conf.map_legendset_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
-                colorLow: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('startcolor').getValue() : null,
-                colorHigh: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('endcolor').getValue() : null,
-                mapLegendSetId: this.legend.value == G.conf.map_legendset_type_predefined ? this.form.findField('maplegendset').getValue() : null,
-				radiusLow: this.form.findField('radiuslow').getValue(),
-				radiusHigh: this.form.findField('radiushigh').getValue(),
+                mapLegendSetId: this.form.findField('maplegendset').getValue(),
                 longitude: G.vars.map.getCenter().lon,
                 latitude: G.vars.map.getCenter().lat,
                 zoom: parseFloat(G.vars.map.getZoom())
@@ -1662,18 +1105,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
                 boundary.treePanel.selectPath(boundary.treePanel.getRootNode().getPath());
                 level.levelComboBox.clearValue();
             }
-            
-            this.legend.reset();
-            this.prepareMapViewLegend();
-            this.form.findField('method').setValue(this.legend.method);
-            this.form.findField('classes').setValue(this.legend.classes);
-            this.form.findField('bounds').reset();
-            
-            this.form.findField('startcolor').setValue('#FF0000');
-            this.form.findField('endcolor').setValue('#FFFF00');
-            
-            this.form.findField('radiuslow').reset();
-            this.form.findField('radiushigh').reset();
             
             document.getElementById(this.legendDiv).innerHTML = '';
             
@@ -1770,12 +1201,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
         
 		var options = {
             indicator: 'value',
-            method: this.form.findField('method').getValue(),
-            numClasses: this.form.findField('classes').getValue(),
-            colors: this.getColors(),
-            minSize: parseInt(this.form.findField('radiuslow').getValue()),
-            maxSize: parseInt(this.form.findField('radiushigh').getValue())
-		};
+            method: G.conf.classify_by_equal_intervals
+        };
         
         G.vars.activeWidget = this;        
         this.coreComp.applyClassification(options, this);
@@ -1785,7 +1212,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
     },
     
     onRender: function(ct, position) {
-        mapfish.widgets.geostat.Point.superclass.onRender.apply(this, arguments);
+        mapfish.widgets.geostat.Centroid.superclass.onRender.apply(this, arguments);
 
 		var coreOptions = {
             'layer': this.layer,
@@ -1799,8 +1226,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.FormPanel, {
             'labelGenerator': this.labelGenerator
         };
 
-        this.coreComp = new mapfish.GeoStat.Point(this.map, coreOptions);
+        this.coreComp = new mapfish.GeoStat.Centroid(this.map, coreOptions);
     }
 });
 
-Ext.reg('point', mapfish.widgets.geostat.Point);
+Ext.reg('centroid', mapfish.widgets.geostat.Centroid);

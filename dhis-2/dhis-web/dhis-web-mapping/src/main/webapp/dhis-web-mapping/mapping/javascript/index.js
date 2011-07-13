@@ -129,7 +129,7 @@
 	var predefinedMapLegendStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllMapLegends' + G.conf.type,
         root: 'mapLegends',
-        fields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'],
+        fields: ['id', 'name', 'startValue', 'endValue', 'color', 'image', 'displayString'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -139,12 +139,41 @@
     
     var predefinedMapLegendSetStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getMapLegendSetsByType' + G.conf.type,
-        baseParams: {type: G.conf.map_legend_type_predefined},
+        baseParams: {type: G.conf.map_legendset_type_predefined},
         root: 'mapLegendSets',
-        fields: ['id', 'name', 'indicators', 'dataelements'],
+        fields: ['id', 'name', 'legendType', 'indicators', 'dataelements'],
         sortInfo: {field:'name', direction:'ASC'},
         autoLoad: false,
         isLoaded: false,
+        legendType: null,
+        listeners: {
+            'load': G.func.storeLoadListener
+        }
+    }); 
+    
+    var predefinedColorMapLegendSetStore = new Ext.data.JsonStore({
+        url: G.conf.path_mapping + 'getMapLegendSetsByType' + G.conf.type,
+        baseParams: {type: G.conf.map_legendset_type_predefined, symbolizer: G.conf.map_legend_symbolizer_color},
+        root: 'mapLegendSets',
+        fields: ['id', 'name', 'symbolizer', 'indicators', 'dataelements'],
+        sortInfo: {field:'name', direction:'ASC'},
+        autoLoad: false,
+        isLoaded: false,
+        legendType: null,
+        listeners: {
+            'load': G.func.storeLoadListener
+        }
+    }); 
+    
+    var predefinedImageMapLegendSetStore = new Ext.data.JsonStore({
+        url: G.conf.path_mapping + 'getMapLegendSetsByType' + G.conf.type,
+        baseParams: {type: G.conf.map_legendset_type_predefined, symbolizer: G.conf.map_legend_symbolizer_image},
+        root: 'mapLegendSets',
+        fields: ['id', 'name', 'symbolizer', 'indicators', 'dataelements'],
+        sortInfo: {field:'name', direction:'ASC'},
+        autoLoad: false,
+        isLoaded: false,
+        legendType: null,
         listeners: {
             'load': G.func.storeLoadListener
         }
@@ -222,6 +251,18 @@
         }
     });
     
+    var mapLegendTypeIconStore = new Ext.data.ArrayStore({
+        fields: ['name', 'css'],
+        data: [
+            ['0','ux-ic-icon-maplegend-type-0'],
+            ['1','ux-ic-icon-maplegend-type-1'],
+            ['2','ux-ic-icon-maplegend-type-2'],
+            ['3','ux-ic-icon-maplegend-type-3'],
+            ['4','ux-ic-icon-maplegend-type-4'],
+            ['5','ux-ic-icon-maplegend-type-5']
+        ]
+    });
+    
     G.stores = {
 		mapView: mapViewStore,
         indicatorGroup: indicatorGroupStore,
@@ -233,12 +274,15 @@
         infrastructuralPeriodsByType: infrastructuralPeriodsByTypeStore,
         predefinedMapLegend: predefinedMapLegendStore,
         predefinedMapLegendSet: predefinedMapLegendSetStore,
+        predefinedColorMapLegendSet: predefinedColorMapLegendSetStore,
+        predefinedImageMapLegendSet: predefinedImageMapLegendSetStore,
         organisationUnitLevel: organisationUnitLevelStore,
         organisationUnitsAtLevel: organisationUnitsAtLevelStore,
         geojsonFiles: geojsonFilesStore,
         overlay: overlayStore,
         groupSet: groupSetStore,
-        groupsByGroupSet: groupsByGroupSetStore
+        groupsByGroupSet: groupsByGroupSetStore,
+        mapLegendTypeIcon: mapLegendTypeIconStore
     };
     
 	/* Thematic layers */
@@ -298,6 +342,25 @@
     
     symbolLayer.layerType = G.conf.map_layer_type_thematic;
     G.vars.map.addLayer(symbolLayer);
+    
+    centroidLayer = new OpenLayers.Layer.Vector('Centroid layer', {
+        'visibility': false,
+        'displayInLayerSwitcher': false,
+        'styleMap': new OpenLayers.StyleMap({
+            'default': new OpenLayers.Style(
+                OpenLayers.Util.applyDefaults(
+                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'pointRadius': 5},
+                    OpenLayers.Feature.Vector.style['default']
+                )
+            ),
+            'select': new OpenLayers.Style(
+                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+            )
+        })
+    });
+    
+    centroidLayer.layerType = G.conf.map_layer_type_thematic;
+    G.vars.map.addLayer(centroidLayer);
     
     /* Init base layers */
     if (window.google) {
@@ -563,7 +626,6 @@
                         valueField: 'id',
                         displayField: 'text',
                         width: G.conf.combo_width_fieldset,
-                        mode: 'local',
                         triggerAction: 'all'
                     },
                     {
@@ -606,7 +668,7 @@
                     {
                         xtype: 'checkbox',
                         id: 'exportimageincludelegend_chb',
-                        fieldLabel: G.i18n.legend_,
+                        fieldLabel: G.i18n.legend,
                         labelSeparator: '',				
                         isFormField: true,
                         checked: true
@@ -728,7 +790,7 @@
         items: [
             {
                 id: 'newpredefinedmaplegend_p',
-                title: G.i18n.legend_,
+                title: G.i18n.legend,
                 items: [
                     {
                         xtype: 'form',
@@ -761,14 +823,64 @@
                                 width: G.conf.combo_number_width_small
                             },
                             {
+                                xtype: 'combo',
+                                id: 'predefinedmaplegendtype_cb',
+                                fieldLabel: G.i18n.legend_symbolizer,
+                                labelSeparator: G.conf.labelseparator,
+                                editable: false,
+                                valueField: 'id',
+                                displayField: 'symbolizer',
+                                width: G.conf.combo_width_fieldset,
+                                minListWidth: G.conf.combo_width_fieldset,
+                                mode: 'local',
+                                triggerAction: 'all',
+                                value: 'color',
+                                store: new Ext.data.ArrayStore({
+                                    fields: ['id','symbolizer'],
+                                    data: [
+                                        [G.conf.map_legend_symbolizer_color, G.i18n.color],
+                                        [G.conf.map_legend_symbolizer_image, G.i18n.image]
+                                    ]
+                                }),
+                                listeners: {
+                                    'select': function(cb) {
+                                        if (cb.getValue() == G.conf.map_legend_symbolizer_color) {
+                                            Ext.getCmp('predefinedmaplegendcolor_cf').showField();
+                                            Ext.getCmp('predefinedmaplegendimage_cb').hideField();
+                                        }
+                                        else if (cb.getValue() == G.conf.map_legend_symbolizer_image) {
+                                            Ext.getCmp('predefinedmaplegendcolor_cf').hideField();
+                                            Ext.getCmp('predefinedmaplegendimage_cb').showField();
+                                        }
+                                    }
+                                }
+                            },
+                            {
                                 xtype: 'colorfield',
-                                id: 'predefinedmaplegendcolor_cp',
+                                id: 'predefinedmaplegendcolor_cf',
                                 emptyText: G.conf.emptytext,
                                 labelSeparator: G.conf.labelseparator,
                                 fieldLabel: G.i18n.color,
                                 allowBlank: false,
                                 width: G.conf.combo_width_fieldset,
                                 value:"#C0C0C0"
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'predefinedmaplegendimage_cb',
+                                plugins: new Ext.ux.plugins.IconCombo(),
+                                valueField: 'name',
+                                displayField: 'css',
+                                iconClsField: 'css',
+                                editable: false,
+                                triggerAction: 'all',
+                                mode: 'local',
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.image,
+                                hidden: true,
+                                width: G.conf.combo_number_width_small,
+                                listWidth: G.conf.combo_number_width_small,
+                                store: G.stores.mapLegendTypeIcon
                             },
                             {html: '<div class="window-p"></div>'},
                             {html: '<div class="window-info">Delete legend</div>'},
@@ -784,10 +896,15 @@
                                 selectOnFocus: true,
                                 emptyText: G.conf.emptytext,
                                 labelSeparator: G.conf.labelseparator,
-                                fieldLabel: G.i18n.legend_,
+                                fieldLabel: G.i18n.legend,
                                 width: G.conf.combo_width_fieldset,
                                 minListWidth: G.conf.combo_width_fieldset,
-                                store: G.stores.predefinedMapLegend
+                                store: G.stores.predefinedMapLegend,
+                                listeners: {
+                                    'focus': function(cb) {
+                                        cb.getStore().clearFilter();
+                                    }
+                                }
                             }
                         ]
                     },
@@ -808,14 +925,18 @@
                                             var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
                                             var mlsv = parseFloat(Ext.getCmp('predefinedmaplegendstartvalue_nf').getValue());
                                             var mlev = parseFloat(Ext.getCmp('predefinedmaplegendendvalue_nf').getValue());
-                                            var mlc = Ext.getCmp('predefinedmaplegendcolor_cp').getValue();
+                                            var type = Ext.getCmp('predefinedmaplegendtype_cb').getValue();
+                                            var mlc = type == G.conf.map_legend_symbolizer_color ?
+                                                Ext.getCmp('predefinedmaplegendcolor_cf').getValue() : null;
+                                            var mli = type == G.conf.map_legend_symbolizer_image ?
+                                                Ext.getCmp('predefinedmaplegendimage_cb').getRawValue() : null;
                                             
                                             if (!Ext.isNumber(parseFloat(mlsv)) || !Ext.isNumber(mlev)) {
                                                 Ext.message.msg(false, G.i18n.form_is_not_complete);
                                                 return;
                                             }
                                             
-                                            if (!mln || !mlc) {
+                                            if (!mln || (!mlc && !mli)) {
                                                 Ext.message.msg(false, G.i18n.form_is_not_complete);
                                                 return;
                                             }
@@ -830,17 +951,27 @@
                                                 return;
                                             }
                                             
+                                            var params = {};
+                                            params.name = mln;
+                                            params.startValue = mlsv;
+                                            params.endValue = mlev;                                            
+                                            if (type == G.conf.map_legend_symbolizer_color) {
+                                                params.color = mlc;
+                                            }
+                                            else if (type == G.conf.map_legend_symbolizer_image) {
+                                                params.image = mli;
+                                            }
+                                            
                                             Ext.Ajax.request({
                                                 url: G.conf.path_mapping + 'addOrUpdateMapLegend' + G.conf.type,
                                                 method: 'POST',
-                                                params: {name: mln, startValue: mlsv, endValue: mlev, color: mlc},
+                                                params: params,
                                                 success: function(r) {
                                                     Ext.message.msg(true, G.i18n.legend + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.was_registered);
                                                     G.stores.predefinedMapLegend.load();
                                                     Ext.getCmp('predefinedmaplegendname_tf').reset();
                                                     Ext.getCmp('predefinedmaplegendstartvalue_nf').reset();
                                                     Ext.getCmp('predefinedmaplegendendvalue_nf').reset();
-                                                    Ext.getCmp('predefinedmaplegendcolor_cp').reset();
                                                 }
                                             });
                                         }
@@ -878,10 +1009,10 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 348 : 346);
+                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_expanded_1);
                     },
                     collapse: function() {
-                        predefinedMapLegendSetWindow.setHeight(123);
+                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_collapsed);
                     }
                 }
             },
@@ -902,6 +1033,38 @@
                                 labelSeparator: G.conf.labelseparator,
                                 fieldLabel: G.i18n.display_name,
                                 width: G.conf.combo_width_fieldset
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'predefinedmaplegendsettype_cb',
+                                fieldLabel: G.i18n.legend_symbolizer,
+                                labelSeparator: G.conf.labelseparator,
+                                editable: false,
+                                valueField: 'id',
+                                displayField: 'symbolizer',
+                                width: G.conf.combo_width_fieldset,
+                                minListWidth: G.conf.combo_width_fieldset,
+                                mode: 'local',
+                                triggerAction: 'all',
+                                store: new Ext.data.ArrayStore({
+                                    fields: ['id','symbolizer'],
+                                    data: [
+                                        [G.conf.map_legend_symbolizer_color, G.i18n.color],
+                                        [G.conf.map_legend_symbolizer_image, G.i18n.image]
+                                    ]
+                                }),
+                                listeners: {
+                                    'select': function(cb) {
+                                        G.stores.predefinedMapLegend.filterBy( function(r, rid) {
+                                            if (cb.getValue() == G.conf.map_legend_symbolizer_color) {
+                                                return r.data.color;
+                                            }
+                                            else if (cb.getValue() == G.conf.map_legend_symbolizer_image) {
+                                                return r.data.image;
+                                            }
+                                        });
+                                    }
+                                }
                             },
                             {html: '<div class="window-field-label">'+G.i18n.legends+'</div>'},
                             {
@@ -994,15 +1157,23 @@
                                                 }
                                             }
                                             
+                                            var symbolizer = Ext.getCmp('predefinedmaplegendsettype_cb').getValue();
+                                            
                                             Ext.Ajax.request({
                                                 url: G.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
                                                 method: 'POST',
-                                                params: {name: mlsv, type: G.conf.map_legend_type_predefined},
+                                                params: {name: mlsv, type: G.conf.map_legendset_type_predefined, symbolizer: symbolizer},
                                                 success: function(r) {
                                                     Ext.message.msg(true, G.i18n.new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + G.i18n.was_registered);
-                                                    G.stores.predefinedMapLegendSet.load();
                                                     Ext.getCmp('predefinedmaplegendsetname_tf').reset();
-                                                    Ext.getCmp('predefinednewmaplegend_ms').reset();							
+                                                    Ext.getCmp('predefinednewmaplegend_ms').reset();			
+                                                    G.stores.predefinedMapLegendSet.load();
+                                                    if (symbolizer == G.conf.map_legend_symbolizer_color) {
+                                                        G.stores.predefinedColorMapLegendSet.load();
+                                                    }
+                                                    else if (symbolizer == G.conf.map_legend_symbolizer_image) {
+                                                        G.stores.predefinedImageMapLegendSet.load();
+                                                    }
                                                 }
                                             });
                                         }
@@ -1046,10 +1217,28 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight((G.util.getMultiSelectHeight() / 2) + (Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 298:295));
+                        predefinedMapLegendSetWindow.setHeight((G.util.getMultiSelectHeight() / 2) + G.conf.predefinedmaplegendsetwindow_expanded_2);
+                        
+                        var pmlst = Ext.getCmp('predefinedmaplegendsettype_cb');
+                        if (pmlst.getValue()) {
+                            G.stores.predefinedMapLegend.filterBy( function(r) {
+                                if (pmlst.getValue() == G.conf.map_legend_symbolizer_color) {
+                                    return r.data.color;
+                                }
+                                else if (pmlst.getValue() == G.conf.map_legend_symbolizer_image) {
+                                    return r.data.image;
+                                }
+                            });
+                        }
+                        else {
+                            pmlst.setValue(G.conf.map_legend_symbolizer_color);
+                            G.stores.predefinedMapLegend.filterBy( function(r, rid) {
+                                return r.data.color;
+                            });
+                        }                                                        
                     },
                     collapse: function() {
-                        predefinedMapLegendSetWindow.setHeight(123);
+                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_collapsed);
                     }
                 }
             },
@@ -1168,14 +1357,14 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + (Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 242 : 240));
+                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + G.conf.predefinedmaplegendsetwindow_expanded_3);
                         
                         if (!G.stores.indicator.isLoaded) {
                             G.stores.indicator.load();
                         }
                     },
                     collapse: function() {
-                        predefinedMapLegendSetWindow.setHeight(123);
+                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_collapsed);
                     }
                 }
             },
@@ -1294,21 +1483,21 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + (Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 240 : 238));
+                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + G.conf.predefinedmaplegendsetwindow_expanded_4);
                         
                         if (!G.stores.dataElement.isLoaded) {
                             G.stores.dataElement.load();
                         }
                     },
                     collapse: function() {
-                        predefinedMapLegendSetWindow.setHeight(123);
+                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_collapsed);
                     }
                 }
             }
         ],
         listeners: {
             afterrender: function() {
-                predefinedMapLegendSetWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 348 : 346);
+                predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_expanded_1);
             }
         }
     });
@@ -1465,8 +1654,8 @@
                         triggerAction: 'all',
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.fill_opacity,
-                        width: G.conf.combo_number_width,
-                        minListWidth: G.conf.combo_number_width,
+                        width: G.conf.combo_number_width_small,
+                        minListWidth: G.conf.combo_number_width_small,
                         value: 0.5,
                         store: {
                             xtype: 'arraystore',
@@ -1494,8 +1683,8 @@
                         triggerAction: 'all',
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.stroke_width,
-                        width: G.conf.combo_number_width,
-                        minListWidth: G.conf.combo_number_width,
+                        width: G.conf.combo_number_width_small,
+                        minListWidth: G.conf.combo_number_width_small,
                         value: 2,
                         store: {
                             xtype: 'arraystore',
@@ -1714,6 +1903,10 @@
                 {
                     nodeType: 'gx_layer',
                     layer: 'Symbol layer'
+                },
+                {
+                    nodeType: 'gx_layer',
+                    layer: 'Centroid layer'
                 }
             ]
         },
@@ -2180,6 +2373,41 @@
         }
     });
     
+    centroid = new mapfish.widgets.geostat.Centroid({
+        id: 'centroid',
+		title: '<span class="panel-title">Centroid layer</span>',
+        map: G.vars.map,
+        layer: centroidLayer,
+        featureSelection: false,
+        legendDiv: 'centroidlegend',
+        defaults: {width: 130},
+        tools: [
+            {
+                id: 'refresh',
+                qtip: 'Refresh layer',
+                handler: function() {
+                    centroid.updateValues = true;
+                    centroid.classify();
+                }
+            },
+            {
+                id: 'close',
+                qtip: 'Clear layer',
+                handler: function() {
+                    choropleth.formValues.clearForm.call(centroid);
+                }
+            }
+        ],
+        listeners: {
+            'expand': function() {
+                G.vars.activePanel.setCentroid();
+            },
+            'afterrender': function() {
+                this.layer.widget = this;
+            }
+        }
+    });
+    
 	/* Section: map toolbar */
 	var mapLabel = new Ext.form.Label({
 		text: G.i18n.map,
@@ -2217,6 +2445,16 @@
             else if (G.vars.activePanel.isPoint()) {
                 if (point.layer.getDataExtent()) {
                     G.vars.map.zoomToExtent(point.layer.getDataExtent());
+                }
+            }
+            else if (G.vars.activePanel.isSymbol()) {
+                if (symbol.layer.getDataExtent()) {
+                    G.vars.map.zoomToExtent(symbol.layer.getDataExtent());
+                }
+            }
+            else if (G.vars.activePanel.isCentroid()) {
+                if (centroid.layer.getDataExtent()) {
+                    G.vars.map.zoomToExtent(centroid.layer.getDataExtent());
                 }
             }
         }
@@ -2330,7 +2568,7 @@
                 var x = Ext.getCmp('center').x + G.conf.window_position_x;
                 var y = Ext.getCmp('center').y + G.conf.window_position_y;
                 predefinedMapLegendSetWindow.setPosition(x,y);
-				predefinedMapLegendSetWindow.show();
+				predefinedMapLegendSetWindow.show();         
                 if (!G.stores.predefinedMapLegend.isLoaded) {
                     G.stores.predefinedMapLegend.load();
                 }
@@ -2527,6 +2765,10 @@
                     {
                         title: '<span class="panel-title">Symbol layer legend</span>',
                         contentEl: 'symbollegend'
+                    },
+                    {
+                        title: '<span class="panel-title">Centroid layer legend</span>',
+                        contentEl: 'centroidlegend'
                     }
                 ]
             },
@@ -2549,7 +2791,8 @@
                 items: [
                     choropleth,
                     point,
-                    symbol
+                    symbol,
+                    centroid
                 ]
             },
             {
@@ -2568,7 +2811,7 @@
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_overlay, G.conf.defaultLayerOpacity);
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_thematic, G.conf.defaultLayerOpacity);
                 symbolLayer.setOpacity(1);
-                
+                centroidLayer.setOpacity(1);
                 
                 var svg = document.getElementsByTagName('svg');
                 
@@ -2587,13 +2830,15 @@
                 Ext.getCmp('mapdatetype_cb').setValue(G.system.mapDateType.value);
                 
                 choropleth.prepareMapViewValueType();
-                point.prepareMapViewValueType();
-                
                 choropleth.prepareMapViewDateType();
-                point.prepareMapViewDateType();
-                
                 choropleth.prepareMapViewLegend();
+                
+                point.prepareMapViewValueType();
+                point.prepareMapViewDateType();
                 point.prepareMapViewLegend();
+                
+                centroid.prepareMapViewValueType();
+                centroid.prepareMapViewDateType();                
                 
                 G.vars.map.events.register('addlayer', null, function(e) {
                     var svg = document.getElementsByTagName('svg');
@@ -2638,8 +2883,8 @@
     G.vars.map.addControl(new OpenLayers.Control.ZoomBox());
 	
 	G.vars.map.addControl(new OpenLayers.Control.MousePosition({
-        displayClass: 'void', 
-        div: $('mouseposition'), 
+        displayClass: 'void',
+        div: $('mouseposition'),
         prefix: '<span style="color:#666">x: &nbsp;</span>',
         separator: '<br/><span style="color:#666">y: &nbsp;</span>'
     }));
@@ -2649,7 +2894,7 @@
         div: $('overviewmap'),
         size: new OpenLayers.Size(188, 97),
         minRectSize: 0,
-        layers: [new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender")]
+        layers: [new OpenLayers.Layer.OSM.Osmarender('OSM Osmarender')]
     }));
     
     G.vars.map.addControl(new OpenLayers.Control.PanPanel({

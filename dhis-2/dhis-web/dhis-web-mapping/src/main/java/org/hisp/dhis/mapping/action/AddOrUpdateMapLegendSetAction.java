@@ -71,33 +71,12 @@ public class AddOrUpdateMapLegendSetAction
     {
         this.type = type;
     }
+    
+    private String symbolizer;
 
-    private int method;
-
-    public void setMethod( int method )
+    public void setSymbolizer( String symbolizer )
     {
-        this.method = method;
-    }
-
-    private int classes;
-
-    public void setClasses( int classes )
-    {
-        this.classes = classes;
-    }
-
-    private String colorLow;
-
-    public void setColorLow( String colorLow )
-    {
-        this.colorLow = colorLow;
-    }
-
-    private String colorHigh;
-
-    public void setColorHigh( String colorHigh )
-    {
-        this.colorHigh = colorHigh;
+        this.symbolizer = symbolizer;
     }
 
     private Collection<String> mapLegends;
@@ -115,17 +94,16 @@ public class AddOrUpdateMapLegendSetAction
     {
         Set<MapLegend> legends = new HashSet<MapLegend>();
 
-        if ( this.mapLegends != null )
+        if ( mapLegends != null )
         {
-            for ( String legend : this.mapLegends )
+            for ( String legend : mapLegends )
             {
-                legends.add( this.mappingService.getMapLegend( Integer.parseInt( legend ) ) );
+                legends.add( mappingService.getMapLegend( Integer.parseInt( legend ) ) );
             }
         }
 
-        this.mappingService.addOrUpdateMapLegendSet( this.name, this.type, this.method, this.classes, this.colorLow,
-            this.colorHigh, legends );
+        mappingService.addOrUpdateMapLegendSet( name, type, symbolizer, legends );
 
-        return "success";
+        return SUCCESS;
     }
 }

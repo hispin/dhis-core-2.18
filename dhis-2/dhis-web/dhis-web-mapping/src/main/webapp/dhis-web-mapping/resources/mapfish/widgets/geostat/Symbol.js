@@ -120,11 +120,11 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     
     initProperties: function() {
         this.legend = {
-            value: G.conf.map_legend_type_automatic,
+            value: G.conf.map_legendset_type_automatic,
             method: G.conf.classify_by_equal_intervals,
             classes: 5,
             reset: function() {
-                this.value = G.conf.map_legend_type_automatic;
+                this.value = G.conf.map_legendset_type_automatic;
                 this.method = G.conf.classify_by_equal_intervals;
                 this.classes = 5;
             }
@@ -192,19 +192,19 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             icon: new Ext.data.ArrayStore({
                 fields: ['name', 'css'],
                 data: [
-                    ['0','ux-ic-icon-0'],
-                    ['1','ux-ic-icon-1'],
-                    ['2','ux-ic-icon-2'],
-                    ['3','ux-ic-icon-3'],
-                    ['4','ux-ic-icon-4'],
-                    ['5','ux-ic-icon-5'],
-                    ['6','ux-ic-icon-6'],
-                    ['7','ux-ic-icon-7'],
-                    ['8','ux-ic-icon-8'],
-                    ['9','ux-ic-icon-9'],
-                    ['10','ux-ic-icon-10'],
-                    ['11','ux-ic-icon-11'],
-                    ['12','ux-ic-icon-12']
+                    ['0','ux-ic-icon-groupset-type-0'],
+                    ['1','ux-ic-icon-groupset-type-1'],
+                    ['2','ux-ic-icon-groupset-type-2'],
+                    ['3','ux-ic-icon-groupset-type-3'],
+                    ['4','ux-ic-icon-groupset-type-4'],
+                    ['5','ux-ic-icon-groupset-type-5'],
+                    ['6','ux-ic-icon-groupset-type-6'],
+                    ['7','ux-ic-icon-groupset-type-7'],
+                    ['8','ux-ic-icon-groupset-type-8'],
+                    ['9','ux-ic-icon-groupset-type-9'],
+                    ['10','ux-ic-icon-groupset-type-10'],
+                    ['11','ux-ic-icon-groupset-type-11'],
+                    ['12','ux-ic-icon-groupset-type-12']
                 ]
             }),
             infrastructuralDataElementMapValue: new Ext.data.JsonStore({
@@ -342,8 +342,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                     mode: 'local',
                     labelStyle: 'color:#000',
                     labelSeparator: G.conf.labelseparator,
-                    width: 50,
-                    listWidth: 50,
+                    width: G.conf.combo_number_width_small,
+                    listWidth: G.conf.combo_number_width_small,
                     store: this.stores.icon,
                     listeners: {
                         'select': {
@@ -786,12 +786,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 				organisationUnitLevel: this.organisationUnitSelection.level.level,
                 organisationUnitLevelName: this.organisationUnitSelection.level.name,
 				mapLegendType: this.form.findField('maplegendtype').getValue(),
-				method: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('method').getValue() : null,
-				classes: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('classes').getValue() : null,
-				bounds: this.legend.value == G.conf.map_legend_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
-				colorLow: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('startcolor').getValue() : null,
-				colorHigh: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('endcolor').getValue() : null,
-                mapLegendSetId: this.legend.value == G.conf.map_legend_type_predefined ? this.form.findField('maplegendset').getValue() : null,
+				method: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('method').getValue() : null,
+				classes: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('classes').getValue() : null,
+				bounds: this.legend.value == G.conf.map_legendset_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
+				colorLow: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('startcolor').getValue() : null,
+				colorHigh: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('endcolor').getValue() : null,
+                mapLegendSetId: this.legend.value == G.conf.map_legendset_type_predefined ? this.form.findField('maplegendset').getValue() : null,
 				radiusLow: this.form.findField('radiuslow').getValue(),
 				radiusHigh: this.form.findField('radiushigh').getValue(),
 				longitude: G.vars.map.getCenter().lon,
@@ -828,6 +828,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     loadGeoJson: function() {
         G.vars.mask.msg = G.i18n.loading_geojson;
         G.vars.mask.show();
+        G.vars.activeWidget = this;
         
         this.setUrl(G.conf.path_mapping + 'getGeoJson.action?' +
             'parentId=' + this.organisationUnitSelection.parent.id +
@@ -851,6 +852,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 
     applyValues: function() {
 		var options = {indicator: this.form.findField('groupset').getRawValue().toLowerCase()};
+        
+        G.vars.activeWidget = this;
 		this.coreComp.updateOptions(options);
         this.coreComp.applyClassification(this.form);
         this.classificationApplied = true;

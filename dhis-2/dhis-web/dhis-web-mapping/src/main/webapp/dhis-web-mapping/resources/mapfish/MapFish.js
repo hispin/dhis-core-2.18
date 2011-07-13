@@ -98,6 +98,7 @@
             "core/GeoStat/Choropleth.js",
             "core/GeoStat/Point.js",
             "core/GeoStat/Symbol.js",
+            "core/GeoStat/Centroid.js",
             //"core/Routing.js",
             "core/Util.js",
             //"core/Searcher.js",
@@ -120,7 +121,8 @@
             //"widgets/data/GridRowFeatureMediator.js",
             "widgets/geostat/Choropleth.js",
             "widgets/geostat/Point.js",
-            "widgets/geostat/Symbol.js"
+            "widgets/geostat/Symbol.js",
+            "widgets/geostat/Centroid.js"
             //"widgets/geostat/Mapping.js",
             //"widgets/tree/LayerTree.js",
             //"widgets/tree/LayerTreeExtra.js",

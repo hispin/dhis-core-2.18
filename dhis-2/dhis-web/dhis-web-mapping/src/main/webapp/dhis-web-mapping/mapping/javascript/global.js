@@ -17,6 +17,7 @@ G.conf = {
 	thematicMap: 'gisThematicMap',
 	thematicMap2: 'gisThematicMap2',
     thematicMap3: 'gisThematicMap3',
+    thematicMap4: 'gisThematicMap4',
     overlayRegistration: 'gisOverlay',
 	administration: 'gisAdministration',
 	favorites: 'gisFavoriteMapView',
@@ -32,14 +33,18 @@ G.conf = {
 	combo_width_fieldset: 127,
 	combo_list_width_fieldset: 127 + 17,
 	combo_number_width: 65,
-	combo_number_width_small: 40,
+	combo_number_width_small: 44,
     window_width: 251,
     window_position_x: 55,
     window_position_y: 41,
     adminwindow_collapsed: 54,
     adminwindow_expanded_1: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 121 : 116,
     adminwindow_expanded_2: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 145 : 143,
-        
+    predefinedmaplegendsetwindow_collapsed: 123,
+    predefinedmaplegendsetwindow_expanded_1: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 373 : 371,
+    predefinedmaplegendsetwindow_expanded_2: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 323 : 320,
+    predefinedmaplegendsetwindow_expanded_3: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 242 : 240,
+    predefinedmaplegendsetwindow_expanded_4: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 240 : 238,
     
 //  GUI
 
@@ -55,8 +60,10 @@ G.conf = {
 	map_source_type_database: 'database',
 	map_source_type_geojson: 'geojson',
 	map_source_type_shapefile: 'shapefile',
-	map_legend_type_automatic: 'automatic',
-	map_legend_type_predefined: 'predefined',
+	map_legend_symbolizer_color: 'color',
+	map_legend_symbolizer_image: 'image',
+	map_legendset_type_automatic: 'automatic',
+	map_legendset_type_predefined: 'predefined',
     map_layer_type_baselayer: 'baselayer',
     map_layer_type_overlay: 'overlay',
     map_layer_type_thematic: 'thematic',
@@ -349,6 +356,11 @@ G.util = {
         return p.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
     },
     
+    getTransformedPoint: function(p) {
+        return p.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+    },
+		
+    
     createOverlay: function(name, fillColor, fillOpacity, strokeColor, strokeWidth, url) {
         return new OpenLayers.Layer.Vector(name, {
             'visibility': false,
@@ -468,6 +480,9 @@ G.vars = {
         setSymbol: function() {
             this.value = G.conf.thematicMap3;
         },
+        setCentroid: function() {
+            this.value = G.conf.thematicMap4;
+        },
         isPolygon: function() {
             return this.value === G.conf.thematicMap;
         },
@@ -476,8 +491,13 @@ G.vars = {
         },
         isSymbol: function() {
             return this.value === G.conf.thematicMap3;
+        },
+        isCentroid: function() {
+            return this.value === G.conf.thematicMap4;
         }
     },
+    
+    activeWidget: null,
     
     relocate: {},
     

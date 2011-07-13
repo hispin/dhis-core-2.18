@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping.action;
 
 import com.opensymphony.xwork2.Action;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
@@ -43,25 +44,32 @@ public class GetMapLegendSetsByTypeAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private MappingService mappingService;
-    
+
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private String type;
-    
+
     public void setType( String type )
     {
         this.type = type;
     }
-    
+
+    private String symbolizer;
+
+    public void setSymbolizer( String symbolizer )
+    {
+        this.symbolizer = symbolizer;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -72,15 +80,44 @@ public class GetMapLegendSetsByTypeAction
     {
         return this.object;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        this.object = new ArrayList<MapLegendSet>( this.mappingService.getMapLegendSetsByType( type ) );
+        object = new ArrayList<MapLegendSet>( mappingService.getMapLegendSetsByType( type ) );
 
-        return "success";
+        if ( symbolizer != null )
+        {
+            Collection<MapLegendSet> remove = new ArrayList<MapLegendSet>();
+
+            for ( MapLegendSet legendSet : object )
+            {
+                if ( legendSet.getSymbolizer() != null )
+                {
+                    if ( (symbolizer.equals( MappingService.MAP_LEGEND_SYMBOLIZER_COLOR ) && legendSet.getSymbolizer()
+                        .equals( MappingService.MAP_LEGEND_SYMBOLIZER_IMAGE ))
+                        || (symbolizer.equals( MappingService.MAP_LEGEND_SYMBOLIZER_IMAGE ) && legendSet
+                            .getSymbolizer().equals( MappingService.MAP_LEGEND_SYMBOLIZER_COLOR )) )
+                    {
+                        remove.add( legendSet );
+                    }
+                }
+
+                else
+                {
+                    if ( symbolizer.equals( MappingService.MAP_LEGEND_SYMBOLIZER_IMAGE ) )
+                    {
+                        remove.add( legendSet );
+                    }
+                }
+            }
+
+            object.removeAll( remove );
+        }
+
+        return SUCCESS;
     }
 }

@@ -14,13 +14,7 @@
 
     <property name="type" column="type" />
 
-    <property name="method" column="method" not-null="true" />
-
-    <property name="classes" column="classes" not-null="true" />
-
-    <property name="colorLow" column="colorlow" />
-
-    <property name="colorHigh" column="colorhigh" />
+    <property name="symbolizer" column="symbolizer" />
 
     <set name="mapLegends" table="maplegendsetmaplegend">
       <key column="legendsetid" foreign-key="fk_maplegendsetmaplegend_legendsetid" />
