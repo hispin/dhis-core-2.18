@@ -5,7 +5,7 @@
   	#if ( $newObjects > 0 )
   	<td id="new${objectName}Td" style="background-color:#CEEACC">
   		<a href="displayPreviewForm.action?type=${objectName.toUpperCase()}&status=NEW" style="width:100%; display:block; text-align:center">
-  			<span id="new{objectName}Span">
+  			<span id="new${objectName}Span">
   				$newObjects
   			</span>
   		</a>
