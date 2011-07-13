@@ -116,7 +116,7 @@ public class DefaultPivotTableService
             periodService.getPeriodsBetweenDates( periodType, getMediumDate( startDate ), getMediumDate( endDate ) ) );
         
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( 
-            organisationUnitService.getOrganisationUnit( organisationUnitId ).getChildren() );
+            organisationUnitService.getOrganisationUnit( organisationUnitId ).getChildrenThisIfEmpty() );
          
         List<? extends AbstractIdentifiableObject> indicators = null;
         Collection<? extends AggregatedValue> aggregatedValues = null;
