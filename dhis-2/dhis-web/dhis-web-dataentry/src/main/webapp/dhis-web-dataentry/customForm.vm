@@ -1,9 +1,3 @@
-
-<input type="hidden" value="$organisationUnit.id" id="organisationUnitId"/>
-
-#foreach( $optionCombo in $allOptionCombos )
-<td><span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span></td>       
-#end
 $customDataEntryFormCode
 
 #parse( "/dhis-web-dataentry/completeRegistration.vm" )

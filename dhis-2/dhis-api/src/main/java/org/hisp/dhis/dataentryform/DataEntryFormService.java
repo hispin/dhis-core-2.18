@@ -29,13 +29,10 @@ package org.hisp.dhis.dataentryform;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.minmax.MinMaxDataElement;
 
 /**
  * @author Bharath Kumar
@@ -138,8 +135,7 @@ public interface DataEntryFormService
      * @param dataSet the data set associated with this form.
      * @return HTML code for the form.
      */
-    String prepareDataEntryFormForEntry( String htmlCode,
-        Collection<DataValue> dataValues, Map<String, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, DataSet dataSet );
+    String prepareDataEntryFormForEntry( String htmlCode, String disabled, I18n i18n, DataSet dataSet );
     
     Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
     

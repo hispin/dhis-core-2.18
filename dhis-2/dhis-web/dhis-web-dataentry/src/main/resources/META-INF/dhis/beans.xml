@@ -59,8 +59,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
     <property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 

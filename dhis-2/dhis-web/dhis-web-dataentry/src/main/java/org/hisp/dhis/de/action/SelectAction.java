@@ -57,11 +57,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -118,20 +115,6 @@ public class SelectAction
         this.registrationService = registrationService;
     }
 
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
-    private MinMaxDataElementService minMaxDataElementService;
-
-    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
-    {
-        this.minMaxDataElementService = minMaxDataElementService;
-    }
-
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
@@ -168,6 +151,10 @@ public class SelectAction
         this.displayPropertyHandler = displayPropertyHandler;
     }
 
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
     private Map<DataElementCategoryCombo, List<DataElement>> orderedDataElements = new HashMap<DataElementCategoryCombo, List<DataElement>>();
 
     public Map<DataElementCategoryCombo, List<DataElement>> getOrderedDataElements()
@@ -198,20 +185,12 @@ public class SelectAction
         return this.customDataEntryFormCode;
     }
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
     private String displayMode;
 
     public void setDisplayMode( String displayMode )
     {
         this.displayMode = displayMode;
     }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
 
     private OrganisationUnit organisationUnit;
 
@@ -276,14 +255,7 @@ public class SelectAction
         return dataElementValueTypeMap;
     }
 
-    private Map<String, MinMaxDataElement> minMaxMap;
-
-    public Map<String, MinMaxDataElement> getMinMaxMap()
-    {
-        return minMaxMap;
-    }
-
-    private Integer integer = 0;
+    private Integer integer = 0; // TODO wtf
 
     public Integer getInteger()
     {
@@ -487,21 +459,6 @@ public class SelectAction
         // Get the min/max values
         // ---------------------------------------------------------------------
 
-        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
-            organisationUnit, dataElements );
-
-        minMaxMap = new HashMap<String, MinMaxDataElement>( minMaxDataElements.size() );
-
-        for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
-        {
-            minMaxMap.put( minMaxDataElement.getDataElement().getId() + ":"
-                + minMaxDataElement.getOptionCombo().getId(), minMaxDataElement );
-        }
-
-        // ---------------------------------------------------------------------
-        // Get the min/max values
-        // ---------------------------------------------------------------------
-
         orderedDataElements = dataElementService.getGroupedDataElementsByCategoryCombo( dataElements );
 
         orderedCategoryCombos = dataElementService.getDataElementCategoryCombos( dataElements );
@@ -569,23 +526,6 @@ public class SelectAction
         }
 
         // ---------------------------------------------------------------------
-        // Get the DataValues and create a map
-        // ---------------------------------------------------------------------
-
-        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements,
-            allOptionCombos );
-
-        dataValueMap = new HashMap<String, DataValue>( dataValues.size() );
-
-        for ( DataValue dataValue : dataValues )
-        {
-            Integer deId = dataValue.getDataElement().getId();
-            Integer ocId = dataValue.getOptionCombo().getId();
-
-            dataValueMap.put( deId.toString() + ':' + ocId.toString(), dataValue );
-        }
-
-        // ---------------------------------------------------------------------
         // Make the DataElement types available
         // ---------------------------------------------------------------------
 
@@ -599,13 +539,13 @@ public class SelectAction
         // Get data entry form
         // ---------------------------------------------------------------------
 
-        if( displayMode.equals( SECTION_FORM ) )
+        if ( displayMode.equals( SECTION_FORM ) )
         {
             getSectionForm( dataElements, selectedDataSet );
         }
         else
         {
-            getOtherDataEntryForm( dataElements, selectedDataSet, dataValues );
+            getOtherDataEntryForm( dataElements, selectedDataSet );
         }
 
         return displayMode;
@@ -656,8 +596,7 @@ public class SelectAction
 
     }
 
-    private void getOtherDataEntryForm( List<DataElement> dataElements, DataSet dataSet,
-        Collection<DataValue> dataValues )
+    private void getOtherDataEntryForm( List<DataElement> dataElements, DataSet dataSet )
     {
         DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
 
@@ -676,8 +615,8 @@ public class SelectAction
 
         if ( cdeFormExists )
         {
-            customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEntry( dataEntryForm.getHtmlCode(),
-                dataValues, minMaxMap, disabled, i18n, dataSet );
+            customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEntry( 
+                dataEntryForm.getHtmlCode(), disabled, i18n, dataSet );
         }
 
         // ---------------------------------------------------------------------
