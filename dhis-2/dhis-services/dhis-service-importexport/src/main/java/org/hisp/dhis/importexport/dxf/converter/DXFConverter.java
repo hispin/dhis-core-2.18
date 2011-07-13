@@ -43,6 +43,8 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.concept.ConceptService;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -78,6 +80,7 @@ import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHan
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CompleteDataSetRegistrationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConceptBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryDataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryIndicatorBatchHandler;
@@ -160,6 +163,13 @@ public class DXFConverter
     public void setConceptService( ConceptService conceptService )
     {
         this.conceptService = conceptService;
+    }
+
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
     }
 
     private DataElementService dataElementService;
@@ -332,6 +342,21 @@ public class DXFConverter
                 batchHandler.flush();
 
                 log.info( "Imported Concepts" );
+            }
+            else if ( reader.isStartElement( ConstantConverter.COLLECTION_NAME ) )
+            {
+                state.setMessage( "importing_constants" );
+
+                BatchHandler<Constant> batchHandler = batchHandlerFactory.createBatchHandler(
+                    ConstantBatchHandler.class ).init();
+
+                XMLConverter converter = new ConstantConverter( batchHandler, importObjectService, constantService );
+
+                converterInvoker.invokeRead( converter, reader, params );
+
+                batchHandler.flush();
+
+                log.info( "Imported Constants" );
             }
             else if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) )
             {
@@ -696,11 +721,12 @@ public class DXFConverter
             else if ( reader.isStartElement( OrganisationUnitConverter.COLLECTION_NAME ) )
             {
                 state.setMessage( "importing_organisation_units" );
-                
+
                 BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler(
                     OrganisationUnitBatchHandler.class ).init();
 
-                XMLConverter converter = new OrganisationUnitConverter( batchHandler, importObjectService, organisationUnitService, importAnalyser );
+                XMLConverter converter = new OrganisationUnitConverter( batchHandler, importObjectService,
+                    organisationUnitService, importAnalyser );
 
                 converterInvoker.invokeRead( converter, reader, params );
 
@@ -944,4 +970,5 @@ public class DXFConverter
 
         cacheManager.clearCache();
     }
+
 }

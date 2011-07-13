@@ -43,6 +43,7 @@
   		<th style="width:108px">$i18n.getString( "update" )</th>
   		<td style="width:260px"></td>
 	</tr>
+	#displayObjects( "constant" "Constant" $newConstants $updateConstants )
 	#displayObjects( "data_element" "DataElement" $newDataElements $updateDataElements )
 	#displayObjects( "calculated_data_element" "CalculatedDataElement" $newCalculatedDataElements $updateCalculatedDataElements )
 	#displayObjects( "data_element_group" "DataElementGroup" $newDataElementGroups $updateDataElementGroups )

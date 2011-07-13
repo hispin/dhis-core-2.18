@@ -49,6 +49,7 @@ import org.hibernate.SessionFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.concept.ConceptService;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -63,6 +64,7 @@ import org.hisp.dhis.importexport.dxf.converter.CategoryComboCategoryAssociation
 import org.hisp.dhis.importexport.dxf.converter.ChartConverter;
 import org.hisp.dhis.importexport.dxf.converter.CompleteDataSetRegistrationConverter;
 import org.hisp.dhis.importexport.dxf.converter.ConceptConverter;
+import org.hisp.dhis.importexport.dxf.converter.ConstantConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryDataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryIndicatorConverter;
@@ -107,8 +109,7 @@ import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultDXFExportService.java 5960 2008-10-17 14:07:50Z larshelg
- *          $
+ * @version $Id: DefaultDXFExportService.java 5960 2008-10-17 14:07:50Z larshelg $
  */
 public class DefaultDXFExportService
     implements ExportService
@@ -138,6 +139,13 @@ public class DefaultDXFExportService
     public void setConceptService( ConceptService conceptService )
     {
         this.conceptService = conceptService;
+    }
+
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
     }
 
     private DataElementCategoryService categoryService;
@@ -292,6 +300,8 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new DataElementGroupSetConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupSetMemberConverter( dataElementService ) );
 
+            thread.registerXMLConverter( new ConstantConverter( constantService ) );
+
             thread.registerXMLConverter( new IndicatorTypeConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupConverter( indicatorService ) );
@@ -302,7 +312,7 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new DataDictionaryConverter( dataDictionaryService ) );
             thread.registerXMLConverter( new DataDictionaryDataElementConverter( dataDictionaryService ) );
             thread.registerXMLConverter( new DataDictionaryIndicatorConverter( dataDictionaryService ) );
-            
+
             thread.registerXMLConverter( new DataSetConverter( dataSetService ) );
             thread.registerXMLConverter( new DataSetMemberConverter( dataSetService, dataElementService ) );
 
@@ -346,4 +356,5 @@ public class DefaultDXFExportService
             throw new RuntimeException( "Error occured during export to stream", ex );
         }
     }
+
 }

@@ -64,7 +64,15 @@ function discardObjectCallback( xmlElement )
 	
 	if ( type == "success" )
     {
-    	if ( elementType == "DATAELEMENT" && elementStatus == "NEW" )
+    	if ( elementType == "CONSTANT" && elementStatus == "NEW" )
+		{
+			handleField( discardedElements, "newConstantSpan", "newConstantTd" );
+		}
+    	else if ( elementType == "CONSTANT" && elementStatus == "UPDATE" )
+		{
+			handleField( discardedElements, "updateConstantSpan", "updateConstantTd" );
+		}
+		else if ( elementType == "DATAELEMENT" && elementStatus == "NEW" )
 		{
 			handleField( discardedElements, "newDataElementSpan", "newDataElementTd" );
 		}
@@ -240,7 +248,12 @@ function discardObjectsOfTypeCallback( xmlElement )
 	{
 		// Set value count to none
 		
-		if ( elementType == "DATAELEMENT" )
+		if ( elementType == "CONSTANT" )
+		{
+			clearField( "newConstantTd" );
+			clearField( "updateConstantTd" );
+		}
+		else if ( elementType == "DATAELEMENT" )
 		{
 			clearField( "newDataElementTd" );
 			clearField( "updateDataElementTd" );

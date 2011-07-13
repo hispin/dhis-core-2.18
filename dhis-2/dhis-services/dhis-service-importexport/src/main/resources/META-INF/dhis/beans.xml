@@ -70,6 +70,7 @@
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
     <property name="objectMappingGenerator" ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator" />
     <property name="importObjectStore" ref="org.hisp.dhis.importexport.ImportObjectStore" />
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
@@ -95,6 +96,7 @@
     <property name="importObjectStore" ref="org.hisp.dhis.importexport.ImportObjectStore" />
     <property name="importDataValueService" ref="org.hisp.dhis.importexport.ImportDataValueService" />
     <property name="importObjectManager" ref="org.hisp.dhis.importexport.ImportObjectManager" />
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
@@ -195,6 +197,7 @@
     <property name="importObjectService" ref="org.hisp.dhis.importexport.ImportObjectService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
@@ -242,6 +245,7 @@
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="statementManager" ref="statementManager" />
     <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
+	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />

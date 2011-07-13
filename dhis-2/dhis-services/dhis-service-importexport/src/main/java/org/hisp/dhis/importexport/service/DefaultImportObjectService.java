@@ -37,6 +37,8 @@ import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.ImportableObject;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -111,6 +113,13 @@ public class DefaultImportObjectService<T>
     public void setImportObjectManager( ImportObjectManager importObjectManager )
     {
         this.importObjectManager = importObjectManager;
+    }
+
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
     }
 
     private DataElementService dataElementService;
@@ -353,7 +362,7 @@ public class DefaultImportObjectService<T>
 
                 deleteGroupAssociations( GroupMemberType.DATASET, dataSet.getId() );
                 deleteMemberAssociations( GroupMemberType.DATASET_SOURCE, dataSet.getId() );
-                
+
                 deleteCompleteDataSetRegistrationsByDataSet( dataSet.getId() );
             }
             else if ( importObject.getClassName().equals( OrganisationUnit.class.getName() ) )
@@ -491,8 +500,13 @@ public class DefaultImportObjectService<T>
         // Updates the name of the import object to the name of the existing
         // object.
         // ---------------------------------------------------------------------
+        if ( object.getClass().equals( Constant.class ) )
+        {
+            Constant constant = (Constant) object;
 
-        if ( object.getClass().equals( DataElement.class ) )
+            constant.setName( constantService.getConstant( existingObjectId ).getName() );
+        }
+        else if ( object.getClass().equals( DataElement.class ) )
         {
             DataElement element = (DataElement) object;
 
@@ -601,7 +615,7 @@ public class DefaultImportObjectService<T>
             dataValue = updateDataValue( dataValue, dataValueService.getDataValue( dataValue.getSource(), dataValue
                 .getDataElement(), dataValue.getPeriod(), dataValue.getOptionCombo() ) );
         }
-        
+
         // ---------------------------------------------------------------------
         // Sets the status of the import object to match, these objects will
         // later be ignored on import all but is needed for matching of
@@ -619,6 +633,7 @@ public class DefaultImportObjectService<T>
 
     public void importAll()
     {
+        importObjectManager.importConstants();
         importObjectManager.importCategoryOptions();
         importObjectManager.importCategories();
         importObjectManager.importCategoryCombos();
@@ -811,4 +826,5 @@ public class DefaultImportObjectService<T>
             }
         }
     }
+
 }

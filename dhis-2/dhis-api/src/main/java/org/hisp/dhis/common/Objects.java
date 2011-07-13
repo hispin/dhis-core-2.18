@@ -33,6 +33,7 @@ package org.hisp.dhis.common;
  */
 public enum Objects
 {
+    CONSTANT,
     DATAELEMENT,
     EXTENDEDDATAELEMENT,
     DATAELEMENTGROUP,
