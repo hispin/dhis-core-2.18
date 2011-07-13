@@ -61,6 +61,7 @@ public class NameMappingUtil
     private static ThreadLocal<Map<Object, String>> reportTableMap = new ThreadLocal<Map<Object,String>>();
     private static ThreadLocal<Map<Object, String>> dataElementAggregationOperatorMap = new ThreadLocal<Map<Object,String>>();
     private static ThreadLocal<Map<Object, String>> dataEntryFormMap = new ThreadLocal<Map<Object,String>>();
+    private static ThreadLocal<Map<Object, String>> constantMap = new ThreadLocal<Map<Object,String>>();
 
     // -------------------------------------------------------------------------
     // Control
@@ -89,6 +90,7 @@ public class NameMappingUtil
         reportTableMap.remove();
         dataElementAggregationOperatorMap.remove();
         dataEntryFormMap.remove();
+        constantMap.remove();
     }
 
     // -------------------------------------------------------------------------
@@ -527,6 +529,28 @@ public class NameMappingUtil
     public static Map<Object, String> getDataEntryFormMap()
     {
         return dataEntryFormMap.get() != null ? new HashMap<Object, String>( dataEntryFormMap.get() ) : new HashMap<Object, String>();
+    }
+    
+
+    // -------------------------------------------------------------------------
+    // Constant
+    // -------------------------------------------------------------------------
+
+    /**
+     * Adds a map entry with Constant identifier as key and name as value.
+     */
+    public static void addConstantMapping( Object constantId, String constantName )
+    {
+        put( constantMap , constantId, constantName );
+    }
+
+    /**
+     * Returns a Map with all Constant identifier and name entries.
+     */
+
+    public static Map<Object, String> getConstantMap()
+    {
+        return constantMap.get() != null ? new HashMap<Object, String>( constantMap.get() ) : new HashMap<Object, String>();
     }
     
     // -------------------------------------------------------------------------

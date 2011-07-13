@@ -74,7 +74,7 @@ public abstract class AbstractImporter<T extends ImportableObject>
     {
         if ( params.isAnalysis() ) 
         {
-            if ( importAnalyser != null ) // Analyser instantiatet only for relevant objects
+            if ( importAnalyser != null ) // Analyzer instantiatet only for relevant objects
             {
                 importAnalyser.addObject( object );
             }

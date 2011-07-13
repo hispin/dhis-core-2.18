@@ -33,6 +33,7 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -48,6 +49,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.ConceptBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
@@ -77,7 +79,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultObjectMappingGenerator.java 6425 2008-11-22 00:08:57Z larshelg $
+ * @version $Id: DefaultObjectMappingGenerator.java 6425 2008-11-22 00:08:57Z
+ *          larshelg $
  */
 public class DefaultObjectMappingGenerator
     implements ObjectMappingGenerator
@@ -85,9 +88,9 @@ public class DefaultObjectMappingGenerator
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private BatchHandlerFactory batchHandlerFactory;
-    
+
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
     {
         this.batchHandlerFactory = batchHandlerFactory;
@@ -99,11 +102,22 @@ public class DefaultObjectMappingGenerator
     {
         this.periodStore = periodStore;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Constant
+    // -------------------------------------------------------------------------
+
+    public Map<Object, Integer> getConstantMapping( boolean skipMapping )
+    {
+        BatchHandler<Constant> batchHandler = batchHandlerFactory.createBatchHandler( ConstantBatchHandler.class );
+
+        return getMapping( batchHandler, NameMappingUtil.getConstantMap(), skipMapping );
+    }
+
     // -------------------------------------------------------------------------
     // Concept
     // -------------------------------------------------------------------------
-    
+
     public Map<Object, Integer> getConceptMapping( boolean skipMapping )
     {
         BatchHandler<Concept> batchHandler = batchHandlerFactory.createBatchHandler( ConceptBatchHandler.class );
@@ -124,8 +138,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getCategoryMapping( boolean skipMapping )
     {
-        BatchHandler<DataElementCategory> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class );
-        
+        BatchHandler<DataElementCategory> batchHandler = batchHandlerFactory
+            .createBatchHandler( DataElementCategoryBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getCategoryMap(), skipMapping );
     }
 
@@ -135,8 +150,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getCategoryComboMapping( boolean skipMapping )
     {
-        BatchHandler<DataElementCategoryCombo> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class );
-        
+        BatchHandler<DataElementCategoryCombo> batchHandler = batchHandlerFactory
+            .createBatchHandler( DataElementCategoryComboBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getCategoryComboMap(), skipMapping );
     }
 
@@ -146,8 +162,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getCategoryOptionMapping( boolean skipMapping )
     {
-        BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class );
-        
+        BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory
+            .createBatchHandler( DataElementCategoryOptionBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getCategoryOptionMap(), skipMapping );
     }
 
@@ -159,7 +176,7 @@ public class DefaultObjectMappingGenerator
     {
         return getMapping( NameMappingUtil.getCategoryOptionComboMap(), skipMapping );
     }
-    
+
     // -------------------------------------------------------------------------
     // DataElement
     // -------------------------------------------------------------------------
@@ -167,7 +184,7 @@ public class DefaultObjectMappingGenerator
     public Map<Object, Integer> getDataElementMapping( boolean skipMapping )
     {
         BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
-        
+
         return getMapping( batchHandler, NameMappingUtil.getDataElementMap(), skipMapping );
     }
 
@@ -177,8 +194,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getDataElementGroupMapping( boolean skipMapping )
     {
-        BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
-        
+        BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory
+            .createBatchHandler( DataElementGroupBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getDataElementGroupMap(), skipMapping );
     }
 
@@ -188,8 +206,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getDataElementGroupSetMapping( boolean skipMapping )
     {
-        BatchHandler<DataElementGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupSetBatchHandler.class );
-        
+        BatchHandler<DataElementGroupSet> batchHandler = batchHandlerFactory
+            .createBatchHandler( DataElementGroupSetBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getDataElementGroupSetMap(), skipMapping );
     }
 
@@ -200,7 +219,7 @@ public class DefaultObjectMappingGenerator
     public Map<Object, Integer> getIndicatorMapping( boolean skipMapping )
     {
         BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
-                
+
         return getMapping( batchHandler, NameMappingUtil.getIndicatorMap(), skipMapping );
     }
 
@@ -210,8 +229,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getIndicatorGroupMapping( boolean skipMapping )
     {
-        BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
-                
+        BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory
+            .createBatchHandler( IndicatorGroupBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getIndicatorGroupMap(), skipMapping );
     }
 
@@ -221,8 +241,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getIndicatorGroupSetMapping( boolean skipMapping )
     {
-        BatchHandler<IndicatorGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupSetBatchHandler.class );
-                
+        BatchHandler<IndicatorGroupSet> batchHandler = batchHandlerFactory
+            .createBatchHandler( IndicatorGroupSetBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getIndicatorGroupSetMap(), skipMapping );
     }
 
@@ -232,8 +253,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getIndicatorTypeMapping( boolean skipMapping )
     {
-        BatchHandler<IndicatorType> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
-        
+        BatchHandler<IndicatorType> batchHandler = batchHandlerFactory
+            .createBatchHandler( IndicatorTypeBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getIndicatorTypeMap(), skipMapping );
     }
 
@@ -243,11 +265,12 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getDataDictionaryMapping( boolean skipMapping )
     {
-        BatchHandler<DataDictionary> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class );
-        
+        BatchHandler<DataDictionary> batchHandler = batchHandlerFactory
+            .createBatchHandler( DataDictionaryBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getDataDictionaryMap(), skipMapping );
     }
-    
+
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------
@@ -255,17 +278,18 @@ public class DefaultObjectMappingGenerator
     public Map<Object, Integer> getDataSetMapping( boolean skipMapping )
     {
         BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
-        
+
         return getMapping( batchHandler, NameMappingUtil.getDataSetMap(), skipMapping );
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
 
     public Map<Object, Integer> getOrganisationUnitMapping( boolean skipMapping )
     {
-        BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
+        BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory
+            .createBatchHandler( OrganisationUnitBatchHandler.class );
 
         return getMapping( batchHandler, NameMappingUtil.getOrganisationUnitMap(), skipMapping );
     }
@@ -276,8 +300,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getOrganisationUnitGroupMapping( boolean skipMapping )
     {
-        BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class );
-        
+        BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory
+            .createBatchHandler( OrganisationUnitGroupBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getOrganisationUnitGroupMap(), skipMapping );
     }
 
@@ -287,8 +312,9 @@ public class DefaultObjectMappingGenerator
 
     public Map<Object, Integer> getOrganisationUnitGroupSetMapping( boolean skipMapping )
     {
-        BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
-        
+        BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory
+            .createBatchHandler( GroupSetBatchHandler.class );
+
         return getMapping( batchHandler, NameMappingUtil.getGroupSetMap(), skipMapping );
     }
 
@@ -299,72 +325,79 @@ public class DefaultObjectMappingGenerator
     public Map<Object, Integer> getReportTableMapping( boolean skipMapping )
     {
         BatchHandler<ReportTable> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableBatchHandler.class );
-        
+
         return getMapping( batchHandler, NameMappingUtil.getReportTableMap(), skipMapping );
     }
-    
+
     // -------------------------------------------------------------------------
     // Period
     // -------------------------------------------------------------------------
 
-    public Map<Object, Integer> getPeriodMapping( boolean skipMapping ) // Original identifier, new identifier
+    public Map<Object, Integer> getPeriodMapping( boolean skipMapping ) // Original
+    // identifier,
+    // new
+    // identifier
     {
         BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
-        
+
         batchHandler.init();
-        
+
         Map<Object, Integer> periodMap = new LoggingHashMap<Object, Integer>();
-        
+
         Map<Object, Period> mapping = NameMappingUtil.getPeriodMap();
-        
+
         if ( mapping != null )
         {
             for ( Map.Entry<Object, Period> map : mapping.entrySet() )
             {
-                int identifier = skipMapping ? getKey( map.getKey() ) : batchHandler.getObjectIdentifier( map.getValue() );
-                
+                int identifier = skipMapping ? getKey( map.getKey() ) : batchHandler.getObjectIdentifier( map
+                    .getValue() );
+
                 verifyIdentifier( identifier, skipMapping, map.getValue().toString() );
-                
+
                 periodMap.put( map.getKey(), identifier );
             }
-            
+
             verifyMap( mapping, periodMap );
         }
-        
+
         batchHandler.flush();
-        
+
         return periodMap;
     }
-    
-    public Map<Period, Integer> getPeriodObjectMapping( boolean skipMapping ) // Original object, new identifier
+
+    public Map<Period, Integer> getPeriodObjectMapping( boolean skipMapping ) // Original
+    // object,
+    // new
+    // identifier
     {
         BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
-        
+
         batchHandler.init();
-        
+
         Map<Period, Integer> periodMap = new LoggingHashMap<Period, Integer>();
-        
+
         Collection<Period> periods = NameMappingUtil.getPeriodMap().values();
-        
+
         if ( periods != null )
         {
             for ( Period period : periods )
             {
                 int identifier = skipMapping ? period.getId() : batchHandler.getObjectIdentifier( period );
-                
+
                 verifyIdentifier( identifier, skipMapping, period.toString() );
-                
+
                 periodMap.put( period, identifier );
             }
-            
+
             if ( periodMap.size() != periods.size() )
             {
                 throw new RuntimeException( "The period mapping contains duplicates" );
             }
         }
-        
+
         batchHandler.flush();
-        
+
         return periodMap;
     }
 
@@ -376,14 +409,14 @@ public class DefaultObjectMappingGenerator
     public Map<String, Integer> getPeriodTypeMapping()
     {
         Map<String, Integer> periodTypeMap = new LoggingHashMap<String, Integer>();
-        
+
         Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
-        
+
         for ( PeriodType type : periodTypes )
         {
             periodTypeMap.put( type.getName(), type.getId() );
         }
-        
+
         return periodTypeMap;
     }
 
@@ -391,41 +424,44 @@ public class DefaultObjectMappingGenerator
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Map<Object, Integer> getMapping( BatchHandler<?> batchHandler, Map<Object, String> nameMap, boolean skipMapping )
+    private Map<Object, Integer> getMapping( BatchHandler<?> batchHandler, Map<Object, String> nameMap,
+        boolean skipMapping )
     {
         batchHandler.init();
 
         Map<Object, Integer> identifierMap = new LoggingHashMap<Object, Integer>();
-        
+
         if ( nameMap != null )
         {
             for ( Map.Entry<Object, String> nameMapEntry : nameMap.entrySet() )
             {
-                int identifier = skipMapping ? getKey( nameMapEntry.getKey() ) : batchHandler.getObjectIdentifier( nameMapEntry.getValue() );
-                
+                int identifier = skipMapping ? getKey( nameMapEntry.getKey() ) : batchHandler
+                    .getObjectIdentifier( nameMapEntry.getValue() );
+
                 verifyIdentifier( identifier, skipMapping, nameMapEntry.getValue() );
 
                 identifierMap.put( nameMapEntry.getKey(), identifier );
             }
-            
+
             verifyMap( nameMap, identifierMap );
         }
-        
+
         batchHandler.flush();
-        
+
         return identifierMap;
     }
-    
-    private Map<Object, Integer> getMapping( Map<Object, DataElementCategoryOptionCombo> categoryOptionComboMap, boolean skipMapping )
+
+    private Map<Object, Integer> getMapping( Map<Object, DataElementCategoryOptionCombo> categoryOptionComboMap,
+        boolean skipMapping )
     {
         Map<Object, Integer> identifierMap = new LoggingHashMap<Object, Integer>();
-        
+
         if ( categoryOptionComboMap != null )
         {
             for ( Map.Entry<Object, DataElementCategoryOptionCombo> map : categoryOptionComboMap.entrySet() )
             {
                 int identifier = 0;
-                
+
                 if ( skipMapping )
                 {
                     identifier = getKey( map.getKey() );
@@ -433,36 +469,37 @@ public class DefaultObjectMappingGenerator
                 else
                 {
                     DataElementCategoryOptionCombo temp = map.getValue();
-                    
-                    DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( temp );
-                    
+
+                    DataElementCategoryOptionCombo categoryOptionCombo = categoryService
+                        .getDataElementCategoryOptionCombo( temp );
+
                     if ( categoryOptionCombo == null )
                     {
                         throw new RuntimeException( "DataElementCategoryOptionCombo does not exist: " + temp );
                     }
-                    
-                    identifier = categoryOptionCombo.getId(); 
+
+                    identifier = categoryOptionCombo.getId();
                 }
-                
+
                 verifyIdentifier( identifier, skipMapping, "[DataElementCategoryOptionCombo]" );
-                
+
                 identifierMap.put( map.getKey(), identifier );
             }
-            
+
             verifyMap( categoryOptionComboMap, identifierMap );
         }
-        
+
         return identifierMap;
     }
-    
+
     private void verifyIdentifier( Integer identifier, boolean skipMapping, String name )
     {
         if ( identifier == 0 && !skipMapping )
         {
             throw new RuntimeException( "The object named '" + name + "' does not exist" );
-        }        
+        }
     }
-    
+
     private void verifyMap( Map<?, ?> nameMap, Map<?, ?> identifierMap )
     {
         if ( nameMap.size() != identifierMap.size() )
@@ -470,7 +507,7 @@ public class DefaultObjectMappingGenerator
             throw new RuntimeException( "The name mapping contains duplicate names" );
         }
     }
-    
+
     /**
      * Return the Integer value of the Object argument. If the Object is not of
      * type Integer, -1 is returned.
@@ -478,7 +515,7 @@ public class DefaultObjectMappingGenerator
     private int getKey( Object key )
     {
         int value = -1;
-        
+
         try
         {
             value = Integer.parseInt( String.valueOf( key ) );
@@ -487,7 +524,8 @@ public class DefaultObjectMappingGenerator
         {
             // Object is not of type Integer
         }
-        
+
         return value;
     }
+
 }

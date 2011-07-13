@@ -39,6 +39,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -69,6 +71,7 @@ import org.hisp.dhis.importexport.ImportType;
 import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.importer.ChartImporter;
 import org.hisp.dhis.importexport.importer.CompleteDataSetRegistrationImporter;
+import org.hisp.dhis.importexport.importer.ConstantImporter;
 import org.hisp.dhis.importexport.importer.DataDictionaryImporter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryComboImporter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryImporter;
@@ -101,6 +104,7 @@ import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CompleteDataSetRegistrationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryDataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryIndicatorBatchHandler;
@@ -179,6 +183,13 @@ public class DefaultImportObjectManager
     public void setImportObjectStore( ImportObjectStore importObjectStore )
     {
         this.importObjectStore = importObjectStore;
+    }
+
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
     }
 
     private DataElementCategoryService categoryService;
@@ -289,6 +300,28 @@ public class DefaultImportObjectManager
     // -------------------------------------------------------------------------
     // ImportObjectManager implementation
     // -------------------------------------------------------------------------
+
+    @Transactional
+    public void importConstants()
+    {
+        BatchHandler<Constant> batchHandler = batchHandlerFactory.createBatchHandler( ConstantBatchHandler.class )
+            .init();
+
+        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( Constant.class );
+
+        Importer<Constant> importer = new ConstantImporter( batchHandler, constantService );
+
+        for ( ImportObject importObject : importObjects )
+        {
+            importer.importObject( (Constant) importObject.getObject(), params );
+        }
+
+        batchHandler.flush();
+
+        importObjectStore.deleteImportObjects( Constant.class );
+
+        log.info( "Imported Constants" );
+    }
 
     @Transactional
     public void importCategoryOptions()
@@ -556,7 +589,8 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicators()
     {
-        BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class ).init();
+        BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class )
+            .init();
 
         Map<Object, Integer> indicatorTypeMapping = objectMappingGenerator.getIndicatorTypeMapping( false );
         Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
@@ -739,7 +773,8 @@ public class DefaultImportObjectManager
 
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( OrganisationUnit.class );
 
-        Importer<OrganisationUnit> importer = new OrganisationUnitImporter( organisationUnitBatchHandler, organisationUnitService );
+        Importer<OrganisationUnit> importer = new OrganisationUnitImporter( organisationUnitBatchHandler,
+            organisationUnitService );
 
         for ( ImportObject importObject : importObjects )
         {
@@ -976,7 +1011,7 @@ public class DefaultImportObjectManager
 
         log.info( "Imported Reports" );
     }
-    
+
     @Transactional
     public void importCompleteDataSetRegistrations()
     {
@@ -1039,7 +1074,8 @@ public class DefaultImportObjectManager
                 importer.importObject( value, params );
                 importedObjects++;
 
-            } catch ( Exception e )
+            }
+            catch ( Exception e )
             {
                 importedObjects--;
                 failedObjects++;
@@ -1051,7 +1087,7 @@ public class DefaultImportObjectManager
 
         importDataValueService.deleteImportDataValues();
 
-        log.info( importReport( importedObjects,failedObjects ) );
+        log.info( importReport( importedObjects, failedObjects ) );
     }
 
     // -------------------------------------------------------------------------
@@ -1085,21 +1121,23 @@ public class DefaultImportObjectManager
         importObjectStore.deleteImportObjects( type );
     }
 
-    private String importReport(Integer importedObjects, Integer failedObjects)
+    private String importReport( Integer importedObjects, Integer failedObjects )
     {
         Integer totalObjects = importedObjects + failedObjects;
         String importReportString = "";
-        if (failedObjects > 0 )
+        if ( failedObjects > 0 )
         {
-            importReportString = totalObjects.toString() + " values handled.\n" + importedObjects.toString() + " new values successfully imported.\n"
-                + failedObjects.toString() + " were not imported due to errors.";
-             return importReportString;
+            importReportString = totalObjects.toString() + " values handled.\n" + importedObjects.toString()
+                + " new values successfully imported.\n" + failedObjects.toString()
+                + " were not imported due to errors.";
+            return importReportString;
         }
         else
         {
             importReportString = importedObjects.toString() + " values were imported.";
-                return importReportString;
+            return importReportString;
         }
 
     }
+
 }

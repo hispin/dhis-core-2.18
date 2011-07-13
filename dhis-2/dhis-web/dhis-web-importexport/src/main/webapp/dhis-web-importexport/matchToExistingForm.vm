@@ -38,6 +38,12 @@
 	
 	#displayProperty( "name" $importObject.object.name )
 	
+	#if ( $objectType == "CONSTANT" )
+	
+	#displayProperty( "value" $importObject.object.value )
+	
+	#end
+	
 	#if ( $objectType == "DATAELEMENT" || $objectType == "CALCULATEDDATAELEMENT" )
 			
 	#displayProperty( "alternative_name" $importObject.object.alternativeName )

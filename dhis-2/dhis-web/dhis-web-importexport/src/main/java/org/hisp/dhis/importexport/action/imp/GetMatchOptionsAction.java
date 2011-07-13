@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.action.imp;
  */
 
 import static org.hisp.dhis.common.Objects.CHART;
+import static org.hisp.dhis.common.Objects.CONSTANT;
 import static org.hisp.dhis.common.Objects.DATADICTIONARY;
 import static org.hisp.dhis.common.Objects.DATAELEMENT;
 import static org.hisp.dhis.common.Objects.DATAELEMENTGROUP;
@@ -48,6 +49,7 @@ import static org.hisp.dhis.common.Objects.VALIDATIONRULE;
 import java.util.Collection;
 
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
@@ -83,7 +85,7 @@ public class GetMatchOptionsAction
     {
         this.objectType = type;
     }
-    
+
     private Integer objectId;
 
     public Integer getObjectId()
@@ -95,7 +97,7 @@ public class GetMatchOptionsAction
     {
         this.objectId = id;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -105,15 +107,15 @@ public class GetMatchOptionsAction
     public Object getImportObject()
     {
         return importObject;
-    }    
-    
+    }
+
     private Collection<?> objects;
 
     public Collection<?> getObjects()
     {
         return objects;
     }
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -125,13 +127,20 @@ public class GetMatchOptionsAction
         this.importObjectService = importObjectService;
     }
 
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -145,21 +154,21 @@ public class GetMatchOptionsAction
     {
         this.dataDictionaryService = dataDictionaryService;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
@@ -173,7 +182,7 @@ public class GetMatchOptionsAction
     {
         this.validationRuleService = validationRuleService;
     }
-    
+
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
@@ -187,14 +196,14 @@ public class GetMatchOptionsAction
     {
         this.reportTableService = reportTableService;
     }
-    
+
     private ChartService chartService;
-    
+
     public void setChartService( ChartService chartService )
     {
         this.chartService = chartService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -203,14 +212,18 @@ public class GetMatchOptionsAction
         throws Exception
     {
         importObject = importObjectService.getImportObject( Integer.valueOf( objectId ) );
-        
-        if ( objectType.equals( DATAELEMENT.name() ) )
+
+        if ( objectType.equals( CONSTANT.name() ) )
+        {
+            objects = constantService.getAllConstants();
+        }
+        else if ( objectType.equals( DATAELEMENT.name() ) )
         {
             objects = dataElementService.getAllDataElements();
         }
         else if ( objectType.equals( DATAELEMENTGROUP.name() ) )
         {
-            objects = dataElementService.getAllDataElementGroups();        
+            objects = dataElementService.getAllDataElementGroups();
         }
         else if ( objectType.equals( DATAELEMENTGROUPSET.name() ) )
         {
@@ -220,7 +233,7 @@ public class GetMatchOptionsAction
         {
             objects = indicatorService.getAllIndicatorTypes();
         }
-        else if ( objectType.equals( INDICATOR.name() ) ) 
+        else if ( objectType.equals( INDICATOR.name() ) )
         {
             objects = indicatorService.getAllIndicators();
         }
@@ -272,7 +285,8 @@ public class GetMatchOptionsAction
         {
             objects = chartService.getAllCharts();
         }
-        
+
         return SUCCESS;
     }
+
 }

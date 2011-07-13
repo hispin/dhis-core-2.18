@@ -33,6 +33,8 @@ package org.hisp.dhis.importexport;
  */
 public interface ImportObjectManager
 {
+    void importConstants();
+    
     void importCategoryOptions();
     
     void importCategories();
@@ -106,4 +108,5 @@ public interface ImportObjectManager
     void importCompleteDataSetRegistrations();
     
     void importDataValues();
+
 }

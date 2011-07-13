@@ -40,6 +40,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -81,18 +82,18 @@ public class GetPreviewOptionsAction
     {
         this.importObjectService = importObjectService;
     }
-    
+
     private ImportDataValueService importDataValueService;
 
     public void setImportDataValueService( ImportDataValueService importDataValueService )
     {
         this.importDataValueService = importDataValueService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private String type;
 
     public String getType()
@@ -104,7 +105,7 @@ public class GetPreviewOptionsAction
     {
         this.type = elementType;
     }
-    
+
     private String status;
 
     public String getStatus()
@@ -120,6 +121,13 @@ public class GetPreviewOptionsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+    
+    private Integer newConstants;
+
+    public Integer getNewConstants()
+    {
+        return newConstants;
+    }
 
     private Integer newDataElements;
 
@@ -127,14 +135,14 @@ public class GetPreviewOptionsAction
     {
         return newDataElements;
     }
-    
+
     private Integer newCalculatedDataElements;
 
     public Integer getNewCalculatedDataElements()
     {
         return newCalculatedDataElements;
     }
-    
+
     private Integer newExtendedDataElements;
 
     public Integer getNewExtendedDataElements()
@@ -148,9 +156,9 @@ public class GetPreviewOptionsAction
     {
         return newDataElementGroups;
     }
-    
+
     private Integer newDataElementGroupSets;
-    
+
     public Integer getNewDataElementGroupSets()
     {
         return newDataElementGroupSets;
@@ -176,9 +184,9 @@ public class GetPreviewOptionsAction
     {
         return newIndicatorGroups;
     }
-    
+
     private Integer newIndicatorGroupSets;
-    
+
     public Integer getNewIndicatorGroupSets()
     {
         return newIndicatorGroupSets;
@@ -190,7 +198,7 @@ public class GetPreviewOptionsAction
     {
         return newDataDictionaries;
     }
-    
+
     private Integer newDataSets;
 
     public Integer getNewDataSets()
@@ -218,21 +226,21 @@ public class GetPreviewOptionsAction
     {
         return newOrganisationUnitGroupSets;
     }
-    
+
     private Integer newOrganisationUnitLevels;
 
     public Integer getNewOrganisationUnitLevels()
     {
         return newOrganisationUnitLevels;
     }
-    
+
     private Integer newValidationRules;
 
     public Integer getNewValidationRules()
     {
         return newValidationRules;
     }
-    
+
     private Integer newReports;
 
     public Integer getNewReports()
@@ -246,9 +254,9 @@ public class GetPreviewOptionsAction
     {
         return newReportTables;
     }
-    
+
     private Integer newCharts;
-    
+
     public Integer getNewCharts()
     {
         return newCharts;
@@ -259,13 +267,20 @@ public class GetPreviewOptionsAction
     public Integer getNewOlapUrls()
     {
         return newOlapUrls;
-    }    
-    
+    }
+
     private Integer newDataValues;
 
     public Integer getNewDataValues()
     {
         return newDataValues;
+    }
+
+    private Integer updateConstants;
+
+    public Integer getUpdateConstants()
+    {
+        return updateConstants;
     }
 
     private Integer updateDataElements;
@@ -274,14 +289,14 @@ public class GetPreviewOptionsAction
     {
         return updateDataElements;
     }
-    
+
     private Integer updateCalculatedDataElements;
 
     public Integer getUpdateCalculatedDataElements()
     {
         return updateCalculatedDataElements;
     }
-    
+
     private Integer updateExtendedDataElements;
 
     public Integer getUpdateExtendedDataElements()
@@ -295,9 +310,9 @@ public class GetPreviewOptionsAction
     {
         return updateDataElementGroups;
     }
-    
+
     private Integer updateDataElementGroupSets;
-    
+
     public Integer getUpdateDataElementGroupSets()
     {
         return updateDataElementGroupSets;
@@ -323,9 +338,9 @@ public class GetPreviewOptionsAction
     {
         return updateIndicatorGroups;
     }
-    
+
     private Integer updateIndicatorGroupSets;
-    
+
     public Integer getUpdateIndicatorGroupSets()
     {
         return updateIndicatorGroupSets;
@@ -337,7 +352,7 @@ public class GetPreviewOptionsAction
     {
         return updateDataDictionaries;
     }
-    
+
     private Integer updateDataSets;
 
     public Integer getUpdateDataSets()
@@ -351,7 +366,7 @@ public class GetPreviewOptionsAction
     {
         return updateOrganisationUnits;
     }
-    
+
     private Integer updateOrganisationUnitGroups;
 
     public Integer getUpdateOrganisationUnitGroups()
@@ -365,21 +380,21 @@ public class GetPreviewOptionsAction
     {
         return updateOrganisationUnitGroupSets;
     }
-    
+
     private Integer updateOrganisationUnitLevels;
 
     public Integer getUpdateOrganisationUnitLevels()
     {
         return updateOrganisationUnitLevels;
     }
-    
+
     private Integer updateValidationRules;
 
     public Integer getUpdateValidationRules()
     {
         return updateValidationRules;
     }
-    
+
     private Integer updateReports;
 
     public Integer getUpdateReports()
@@ -393,9 +408,9 @@ public class GetPreviewOptionsAction
     {
         return updateReportTables;
     }
-    
+
     private Integer updateCharts;
-    
+
     public Integer getUpdateCharts()
     {
         return updateCharts;
@@ -407,21 +422,21 @@ public class GetPreviewOptionsAction
     {
         return updateOlapUrls;
     }
-    
+
     private Integer updateDataValues;
 
     public Integer getUpdateDataValues()
     {
         return updateDataValues;
     }
-    
+
     public List<ImportObject> importObjects;
 
     public List<ImportObject> getImportObjects()
     {
         return importObjects;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -429,6 +444,7 @@ public class GetPreviewOptionsAction
     public String execute()
         throws Exception
     {
+        newConstants = importObjectService.getImportObjects( NEW, Constant.class ).size();
         newDataElements = importObjectService.getImportObjects( NEW, DataElement.class ).size();
         newDataElementGroups = importObjectService.getImportObjects( NEW, DataElementGroup.class ).size();
         newDataElementGroupSets = importObjectService.getImportObjects( NEW, DataElementGroupSet.class ).size();
@@ -447,7 +463,8 @@ public class GetPreviewOptionsAction
         newReportTables = importObjectService.getImportObjects( NEW, ReportTable.class ).size();
         newCharts = importObjectService.getImportObjects( NEW, Chart.class ).size();
         newDataValues = importDataValueService.getNumberOfImportDataValues( NEW );
-        
+
+        updateConstants = importObjectService.getImportObjects( UPDATE, Constant.class ).size();
         updateDataElements = importObjectService.getImportObjects( UPDATE, DataElement.class ).size();
         updateDataElementGroups = importObjectService.getImportObjects( UPDATE, DataElementGroup.class ).size();
         updateDataElementGroupSets = importObjectService.getImportObjects( UPDATE, DataElementGroupSet.class ).size();
@@ -473,7 +490,7 @@ public class GetPreviewOptionsAction
 
         type = type == null ? (String) getSessionVar( KEY_PREVIEW_TYPE ) : type;
         status = status == null ? (String) getSessionVar( KEY_PREVIEW_STATUS ) : status;
-        
+
         setSessionVar( KEY_PREVIEW_TYPE, type );
         setSessionVar( KEY_PREVIEW_STATUS, status );
 
@@ -483,11 +500,13 @@ public class GetPreviewOptionsAction
 
         if ( type != null && status != null )
         {
-            importObjects = new ArrayList<ImportObject>( importObjectService.getImportObjects( valueOf( status ), ClassMapUtil.getClass( type ) ) );
-            
+            importObjects = new ArrayList<ImportObject>( importObjectService.getImportObjects( valueOf( status ),
+                ClassMapUtil.getClass( type ) ) );
+
             Collections.sort( importObjects, new ImportObjectComparator() );
         }
-                       
+
         return SUCCESS;
     }
+
 }
