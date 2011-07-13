@@ -1,5 +1,7 @@
 
 /**
+ * This file depends on form.js.
+ * 
  * Format for the span/input identifiers for selectors:
  * 
  * {dataelementid}-{optioncomboid}-val // data value
@@ -13,11 +15,6 @@
 // -----------------------------------------------------------------------------
 // Save
 // -----------------------------------------------------------------------------
-
-var COLOR_GREEN = '#b9ffb9';
-var COLOR_YELLOW = '#fffe8c';
-var COLOR_RED = '#ff8a8a';
-var COLOR_ORANGE = '#ff6600';
 
 var FORMULA_PATTERN = /\[.+?\]/g;
 var SEPARATOR = '.';
@@ -99,7 +96,6 @@ function saveVal( dataElementId, optionComboId )
     var fieldId = '#' + dataElementId + '-' + optionComboId + '-val';
     var value =$( fieldId ).val();
     var type = $( '#' + dataElementId + '-type' ).html();
-    var organisationUnitId = $( '#organisationUnitId' ).val();
 
     $( fieldId ).css( 'background-color', COLOR_YELLOW );
 
@@ -140,7 +136,7 @@ function saveVal( dataElementId, optionComboId )
             var minString = $( '#' + dataElementId + '-' + optionComboId + '-min' ).html();
             var maxString = $( '#' + dataElementId + '-' + optionComboId + '-max' ).html();
 
-            if ( minString && maxString )
+            if ( minString && maxString ) // TODO if only one exists?
             {
                 var valueNo = new Number( value );
                 var min = new Number( minString );
@@ -148,7 +144,7 @@ function saveVal( dataElementId, optionComboId )
 
                 if ( valueNo < min )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, value, COLOR_ORANGE );
+                    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, value, COLOR_ORANGE );
                     valueSaver.save();
 
                     window.alert( i18n_value_of_data_element_less + ': ' + min + '\n\n' + dataElementName );
@@ -157,7 +153,7 @@ function saveVal( dataElementId, optionComboId )
 
                 if ( valueNo > max )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, value, COLOR_ORANGE );
+                    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, value, COLOR_ORANGE );
                     valueSaver.save();
 
                     window.alert( i18n_value_of_data_element_greater + ': ' + max + '\n\n' + dataElementName );
@@ -167,7 +163,7 @@ function saveVal( dataElementId, optionComboId )
         }
     }
 
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, value, COLOR_GREEN );
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, value, COLOR_GREEN );
     valueSaver.save();
     
     updateIndicators(); // Update indicators in case of custom form
@@ -177,11 +173,10 @@ function saveBoolean( dataElementId, optionComboId )
 {
     var fieldId = '#' + dataElementId + '-' + optionComboId + '-val';
     var value = $( fieldId + ' option:selected' ).val();
-    var organisationUnitId = $( '#organisationUnitId' ).val();
 
     $( fieldId ).css( 'background-color', COLOR_YELLOW );
 
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, value, COLOR_GREEN );
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, value, COLOR_GREEN );
     valueSaver.save();
 }
 

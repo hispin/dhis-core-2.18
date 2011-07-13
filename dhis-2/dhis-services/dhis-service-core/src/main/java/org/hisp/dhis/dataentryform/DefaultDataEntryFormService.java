@@ -29,8 +29,6 @@ package org.hisp.dhis.dataentryform;
 
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
-import static org.hisp.dhis.datavalue.DataValue.FALSE;
-import static org.hisp.dhis.datavalue.DataValue.TRUE;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,11 +41,9 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -230,8 +226,7 @@ public class DefaultDataEntryFormService
         return sb.toString();
     }
 
-    public String prepareDataEntryFormForEntry( String htmlCode,
-        Collection<DataValue> dataValues, Map<String, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, DataSet dataSet )
+    public String prepareDataEntryFormForEntry( String htmlCode, String disabled, I18n i18n, DataSet dataSet )
     {
         // ---------------------------------------------------------------------
         // Inline javascript/html to add to HTML before output
@@ -245,9 +240,9 @@ public class DefaultDataEntryFormService
         final String historyCode = " ondblclick='javascript:viewHist( $DATAELEMENTID, $OPTIONCOMBOID )' ";
         
         final String metaDataCode = "<span id=\"$DATAELEMENTID-dataelement\" style=\"display:none\">$DATAELEMENTNAME</span>"
-            + "<span id=\"$DATAELEMENTID-type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
-            + "<div id=\"$DATAELEMENTID-$OPTIONCOMBOID-min\" style=\"display:none\"></div>"
-            + "<div id=\"$DATAELEMENTID-$OPTIONCOMBOID-max\" style=\"display:none\"></div>";
+            + "<span id=\"$DATAELEMENTID-type\" class=\"hidden\">$DATAELEMENTTYPE</span>"
+            + "<span id=\"$DATAELEMENTID-$OPTIONCOMBOID-min\" name=\"min\" class=\"hidden\"></span>"
+            + "<span id=\"$DATAELEMENTID-$OPTIONCOMBOID-max\" name=\"max\" class=\"hidden\"></span>";
 
         StringBuffer sb = new StringBuffer();
 
@@ -286,8 +281,6 @@ public class DefaultDataEntryFormService
 
                 String dataElementValueType = dataElement.getDetailedNumberType();
 
-                String dataElementValue = getValue( dataValues, dataElementId, optionComboId );
-
                 // -------------------------------------------------------------
                 // Insert data value for data element in output code for boolean
                 // -------------------------------------------------------------
@@ -302,22 +295,11 @@ public class DefaultDataEntryFormService
                 // Insert title info
                 // -------------------------------------------------------------
 
-                MinMaxDataElement minMaxDataElement = minMaxMap.get( dataElement.getId() + ":" + optionComboId );
-                String minValue = minMaxDataElement != null ? String.valueOf( minMaxDataElement.getMin() ) : "-";
-                String maxValue = minMaxDataElement != null ? String.valueOf( minMaxDataElement.getMax() ) : "-";
-
                 StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getName() ).append( " " ).
-                    append( categoryOptionCombo.getName() ).append( " Type: " ).append( dataElement.getType() ).
-                    append( " Min: " ).append( minValue ).append( " Max: " ).append( maxValue ).append( "\"" );
+                    append( categoryOptionCombo.getName() ).append( " Type: " ).append( dataElement.getType() ).append( "\"" );
                 
                 inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, title ) : inputHtml + " " + title;
 
-                // -------------------------------------------------------------
-                // Append Javascript code and meta data (type/min/max) for
-                // persisting to output code, and insert value and type for
-                // fields
-                // -------------------------------------------------------------
-                
                 String backgroundColor = "style=\"";
                 
                 String appendCode = "";
@@ -327,25 +309,8 @@ public class DefaultDataEntryFormService
                     appendCode += jsCodeForSelectLists + "tabindex=\"" + i++ + "\">";
 
                     appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
-
-                    if ( dataElementValue.equals( TRUE ) )
-                    {
-                        appendCode += "<option value=\"true\" selected>" + i18n.getString( "yes" ) + "</option>";
-                    }
-                    else
-                    {
-                        appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
-                    }
-
-                    if ( dataElementValue.equals( FALSE ) )
-                    {
-                        appendCode += "<option value=\"false\" selected>" + i18n.getString( "no" ) + "</option>";
-                    }
-                    else
-                    {
-                        appendCode += "<option value=\"false\">" + i18n.getString( "no" ) + "</option>";
-                    }
-
+                    appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
+                    appendCode += "<option value=\"false\">" + i18n.getString( "no" ) + "</option>";
                     appendCode += "</select>";
                 }
                 else
@@ -355,16 +320,6 @@ public class DefaultDataEntryFormService
                     if ( dataElement.getType().equals( VALUE_TYPE_INT ) )
                     {
                         appendCode += historyCode;
-                        
-                        if ( minMaxDataElement != null && !dataElementValue.equals( EMPTY ) )
-                        {
-                            double value = Double.parseDouble( dataElementValue );
-                            
-                            if ( value < minMaxDataElement.getMin() || value > minMaxDataElement.getMax() )
-                            {
-                                backgroundColor = "style=\"background-color:#ff6600;";
-                            }
-                        }
                     }
 
                     appendCode += TAG_CLOSE;
@@ -425,24 +380,6 @@ public class DefaultDataEntryFormService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    /**
-     * Returns the value of the DataValue in the Collection of DataValues with
-     * the given data element identifier and category option combo id.
-     */
-    private String getValue( Collection<DataValue> dataValues, int dataElementId, int categoryOptionComboId )
-    {
-        for ( DataValue dataValue : dataValues )
-        {
-            if ( dataValue.getDataElement().getId() == dataElementId
-                && dataValue.getOptionCombo().getId() == categoryOptionComboId )
-            {
-                return dataValue.getValue();
-            }
-        }
-
-        return EMPTY;
-    }
 
     /**
      * Returns a Map of all DataElements in the given DataSet where the key is

@@ -72,6 +72,17 @@ public class GetDataValuesForDataSetAction
     }
 
     // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer selectedPeriodIndex;
+
+    public void setSelectedPeriodIndex( Integer selectedPeriodIndex )
+    {
+        this.selectedPeriodIndex = selectedPeriodIndex;
+    }
+
+    // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
@@ -95,6 +106,11 @@ public class GetDataValuesForDataSetAction
 
     public String execute()
     {
+        if ( selectedPeriodIndex != null )
+        {
+            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
+        }
+        
         Period period = selectedStateManager.getSelectedPeriod();
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
         OrganisationUnit unit = selectedStateManager.getSelectedOrganisationUnit();
