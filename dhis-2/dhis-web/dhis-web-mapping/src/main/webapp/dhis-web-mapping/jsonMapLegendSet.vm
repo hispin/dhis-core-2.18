@@ -4,6 +4,7 @@
   [{
     "id": "$!{object.id}",
     "name": "$!encoder.jsonEncode( ${object.name} )",
+    "symbolizer": "$!encoder.jsonEncode( ${object.symbolizer} )",
     "indicators": [#foreach( $indicator in $object.indicators )$!{indicator.id}#if( $velocityCount < $indicators_size ),#end#end],
     "dataElements": [#foreach( $dataElement in $object.dataElements )$!{dataElement.id}#if( $velocityCount < $dataelements_size ),#end#end]
   }]

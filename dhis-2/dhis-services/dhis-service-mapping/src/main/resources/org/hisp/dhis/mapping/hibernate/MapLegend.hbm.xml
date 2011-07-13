@@ -18,5 +18,7 @@
 
     <property name="color" column="color" />
 
+    <property name="image" column="image" />
+
   </class>
 </hibernate-mapping>

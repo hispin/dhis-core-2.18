@@ -151,11 +151,11 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     initProperties: function() {
         this.legend = {
-            value: G.conf.map_legend_type_automatic,
+            value: G.conf.map_legendset_type_automatic,
             method: G.conf.classify_by_equal_intervals,
             classes: 5,
             reset: function() {
-                this.value = G.conf.map_legend_type_automatic;
+                this.value = G.conf.map_legendset_type_automatic;
                 this.method = G.conf.classify_by_equal_intervals;
                 this.classes = 5;
             }
@@ -422,7 +422,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                             success: function(r) {
                                 var mapLegendSet = Ext.util.JSON.decode(r.responseText).mapLegendSet[0];
                                 if (mapLegendSet.id) {
-                                    this.legend.value = G.conf.map_legend_type_predefined;
+                                    this.legend.value = G.conf.map_legendset_type_predefined;
                                     this.prepareMapViewLegend();
                                     
                                     function load() {
@@ -440,7 +440,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                     }
                                 }
                                 else {
-                                    this.legend.value = G.conf.map_legend_type_automatic;
+                                    this.legend.value = G.conf.map_legendset_type_automatic;
                                     this.prepareMapViewLegend();
                                     this.classify(false, cb.keepPosition);
                                     G.util.setKeepPosition(cb);
@@ -510,7 +510,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                             success: function(r) {
                                 var mapLegendSet = Ext.util.JSON.decode(r.responseText).mapLegendSet[0];
                                 if (mapLegendSet.id) {
-                                    this.legend.value = G.conf.map_legend_type_predefined;
+                                    this.legend.value = G.conf.map_legendset_type_predefined;
                                     this.prepareMapViewLegend();
                                     
                                     function load() {
@@ -528,7 +528,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                     }
                                 }
                                 else {
-                                    this.legend.value = G.conf.map_legend_type_automatic;
+                                    this.legend.value = G.conf.map_legendset_type_automatic;
                                     this.prepareMapViewLegend();
                                     this.classify(false, cb.keepPosition);
                                     G.util.setKeepPosition(cb);
@@ -702,24 +702,24 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: new Ext.data.ArrayStore({
                 fields: ['value', 'text'],
                 data: [
-					[G.conf.map_legend_type_automatic, G.i18n.automatic],
-					[G.conf.map_legend_type_predefined, G.i18n.predefined]
+					[G.conf.map_legendset_type_automatic, G.i18n.automatic],
+					[G.conf.map_legendset_type_predefined, G.i18n.predefined]
 				]
             }),
             listeners: {
                 'select': {
                     scope: this,
                     fn: function(cb) {
-                        if (cb.getValue() == G.conf.map_legend_type_predefined && cb.getValue() != this.legend.value) {
-							this.legend.value = G.conf.map_legend_type_predefined;
+                        if (cb.getValue() == G.conf.map_legendset_type_predefined && cb.getValue() != this.legend.value) {
+							this.legend.value = G.conf.map_legendset_type_predefined;
                             this.prepareMapViewLegend();
 							
 							if (this.form.findField('maplegendset').getValue()) {
                                 this.applyPredefinedLegend();
 							}
                         }
-                        else if (cb.getValue() == G.conf.map_legend_type_automatic && cb.getValue() != this.legend.value) {
-							this.legend.value = G.conf.map_legend_type_automatic;
+                        else if (cb.getValue() == G.conf.map_legendset_type_automatic && cb.getValue() != this.legend.value) {
+							this.legend.value = G.conf.map_legendset_type_automatic;
 							this.prepareMapViewLegend();                            
                             this.classify(false, true);
                         }
@@ -739,7 +739,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             width: G.conf.combo_width,
 			hidden: true,
-            store: G.stores.predefinedMapLegendSet,
+            store: G.stores.predefinedColorMapLegendSet,
             listeners: {
                 'select': {
                     scope: this,
@@ -1383,7 +1383,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     prepareMapViewLegend: function() {
         this.form.findField('maplegendtype').setValue(this.legend.value);
         
-        if (this.legend.value == G.conf.map_legend_type_automatic) {
+        if (this.legend.value == G.conf.map_legendset_type_automatic) {
             this.form.findField('method').showField();
             this.form.findField('startcolor').showField();
             this.form.findField('endcolor').showField();
@@ -1398,7 +1398,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 this.form.findField('bounds').hideField();
             }                
         }
-        else if (this.legend.value == G.conf.map_legend_type_predefined) {
+        else if (this.legend.value == G.conf.map_legendset_type_predefined) {
             this.form.findField('method').hideField();
             this.form.findField('classes').hideField();
             this.form.findField('bounds').hideField();
@@ -1472,7 +1472,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         this.form.findField('radiuslow').setValue(this.mapView.radiusLow || G.conf.defaultLowRadius);
         this.form.findField('radiushigh').setValue(this.mapView.radiusHigh || G.conf.defaultHighRadius);
         
-        if (this.legend.value == G.conf.map_legend_type_automatic) {
+        if (this.legend.value == G.conf.map_legendset_type_automatic) {
             this.form.findField('method').setValue(this.mapView.method);
             this.form.findField('startcolor').setValue(this.mapView.colorLow);
             this.form.findField('endcolor').setValue(this.mapView.colorHigh);
@@ -1486,7 +1486,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
             this.setMapViewMap();
         }
-        else if (this.legend.value == G.conf.map_legend_type_predefined) {
+        else if (this.legend.value == G.conf.map_legendset_type_predefined) {
             if (G.stores.predefinedMapLegendSet.isLoaded) {
                 predefinedMapLegendSetStoreCallback.call(this);
             }
@@ -1511,9 +1511,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     },
 	
 	applyPredefinedLegend: function(isMapView) {
-        this.legend.value = G.conf.map_legend_type_predefined;
+        this.legend.value = G.conf.map_legendset_type_predefined;
 		var mls = this.form.findField('maplegendset').getValue();
-		var bounds = [];
 		Ext.Ajax.request({
 			url: G.conf.path_mapping + 'getMapLegendsByMapLegendSet' + G.conf.type,
 			method: 'POST',
@@ -1533,7 +1532,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 					colors.push(new mapfish.ColorRgb());
 					colors[colors.length-1].setFromHex(mapLegends[i].color);
 					bounds.push(mapLegends[i].endValue);
-				}
+				}              
 
 				this.colorInterpolation = colors;
 				this.bounds = bounds;
@@ -1591,7 +1590,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 return false;
             }
 
-            if (this.form.findField('maplegendtype').getValue() == G.conf.map_legend_type_automatic) {
+            if (this.form.findField('maplegendtype').getValue() == G.conf.map_legendset_type_automatic) {
                 if (this.form.findField('method').getValue() == G.conf.classify_with_bounds) {
                     if (!this.form.findField('bounds').getValue()) {
                         if (exception) {
@@ -1601,7 +1600,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     }
                 }
             }
-            else if (this.form.findField('maplegendtype').getValue() == G.conf.map_legend_type_predefined) {
+            else if (this.form.findField('maplegendtype').getValue() == G.conf.map_legendset_type_predefined) {
                 if (!this.form.findField('maplegendset').getValue()) {
                     if (exception) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
@@ -1643,12 +1642,12 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 organisationUnitLevel: this.organisationUnitSelection.level.level,
                 organisationUnitLevelName: this.organisationUnitSelection.level.name,
                 mapLegendType: this.form.findField('maplegendtype').getValue(),
-                method: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('method').getValue() : null,
-                classes: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('classes').getValue() : null,
-                bounds: this.legend.value == G.conf.map_legend_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
-                colorLow: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('startcolor').getValue() : null,
-                colorHigh: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('endcolor').getValue() : null,
-                mapLegendSetId: this.legend.value == G.conf.map_legend_type_predefined ? this.form.findField('maplegendset').getValue() : null,
+                method: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('method').getValue() : null,
+                classes: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('classes').getValue() : null,
+                bounds: this.legend.value == G.conf.map_legendset_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
+                colorLow: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('startcolor').getValue() : null,
+                colorHigh: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('endcolor').getValue() : null,
+                mapLegendSetId: this.legend.value == G.conf.map_legendset_type_predefined ? this.form.findField('maplegendset').getValue() : null,
 				radiusLow: this.form.findField('radiuslow').getValue(),
 				radiusHigh: this.form.findField('radiushigh').getValue(),
                 longitude: G.vars.map.getCenter().lon,
@@ -1715,6 +1714,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     loadGeoJson: function() {
         G.vars.mask.msg = G.i18n.loading_geojson;
         G.vars.mask.show();
+        G.vars.activeWidget = this;
         
         this.setUrl(G.conf.path_mapping + 'getGeoJson.action?' +
             'parentId=' + this.organisationUnitSelection.parent.id +
@@ -1806,6 +1806,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             maxSize: parseInt(this.form.findField('radiushigh').getValue())
         };
         
+        G.vars.activeWidget = this;
         this.coreComp.applyClassification(options, this);
         this.classificationApplied = true;
         

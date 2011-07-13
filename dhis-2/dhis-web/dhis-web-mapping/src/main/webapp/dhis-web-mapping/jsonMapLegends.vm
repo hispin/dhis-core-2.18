@@ -7,7 +7,8 @@
     "startValue": $!{mapLegend.startValue},
     "endValue": $!{mapLegend.endValue},
     "color": "$!encoder.jsonEncode( ${mapLegend.color} )",
-    "displayString": "$!encoder.jsonEncode( ${mapLegend.name} ), $!{mapLegend.startValue} - $!{mapLegend.endValue}, $!encoder.jsonEncode( ${mapLegend.color} )"
+    "image": "$!encoder.jsonEncode( ${mapLegend.image} )",
+    "displayString": "$!encoder.jsonEncode( ${mapLegend.name} ), $!{mapLegend.startValue} - $!{mapLegend.endValue}"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

@@ -45,33 +45,24 @@ public class MapLegendSet
 
     private String type;
 
-    private int method;
-
-    private int classes;
-
-    private String colorLow;
-
-    private String colorHigh;
+    private String symbolizer;
 
     private Set<MapLegend> mapLegends = new HashSet<MapLegend>();
 
     private Set<Indicator> indicators = new HashSet<Indicator>();
-    
+
     private Set<DataElement> dataElements = new HashSet<DataElement>();
 
     public MapLegendSet()
     {
     }
 
-    public MapLegendSet( String name, String type, int method, int classes, String colorLow, String colorHigh,
-        Set<MapLegend> mapLegends, Set<Indicator> indicators, Set<DataElement> dataElements )
+    public MapLegendSet( String name, String type, String symbolizer, Set<MapLegend> mapLegends,
+        Set<Indicator> indicators, Set<DataElement> dataElements )
     {
         this.name = name;
         this.type = type;
-        this.method = method;
-        this.classes = classes;
-        this.colorLow = colorLow;
-        this.colorHigh = colorHigh;
+        this.symbolizer = symbolizer;
         this.mapLegends = mapLegends;
         this.indicators = indicators;
         this.dataElements = dataElements;
@@ -144,44 +135,14 @@ public class MapLegendSet
         this.type = type;
     }
 
-    public int getMethod()
+    public String getSymbolizer()
     {
-        return method;
+        return symbolizer;
     }
 
-    public void setMethod( int method )
+    public void setSymbolizer( String symbolizer )
     {
-        this.method = method;
-    }
-
-    public int getClasses()
-    {
-        return classes;
-    }
-
-    public void setClasses( int classes )
-    {
-        this.classes = classes;
-    }
-
-    public String getColorLow()
-    {
-        return colorLow;
-    }
-
-    public void setColorLow( String colorLow )
-    {
-        this.colorLow = colorLow;
-    }
-
-    public String getColorHigh()
-    {
-        return colorHigh;
-    }
-
-    public void setColorHigh( String colorHigh )
-    {
-        this.colorHigh = colorHigh;
+        this.symbolizer = symbolizer;
     }
 
     public Set<MapLegend> getMapLegends()

@@ -65,7 +65,7 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
 		var mapLegendType = this.widget.form.findField('maplegendtype').getValue();
         this.widget.imageLegend = [];
         
-        this.colorInterpolation = mapLegendType == G.conf.map_legend_type_automatic ?
+        this.colorInterpolation = mapLegendType == G.conf.map_legendset_type_automatic ?
             mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors) : this.widget.colorInterpolation;
             
         for (var i = 0; i < this.classification.bins.length; i++) {
@@ -80,7 +80,7 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
         var values = [];
         for (var i = 0; i < this.layer.features.length; i++) {
             values.push(this.layer.features[i].attributes[this.indicator]);
-        }
+        }      
         
         var distOptions = {
             'labelGenerator': this.options.labelGenerator

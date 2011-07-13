@@ -21,7 +21,7 @@
  * @requires core/GeoStat.js
  */
 
-mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
+mapfish.GeoStat.Centroid = OpenLayers.Class(mapfish.GeoStat, {
 
     colors: [
         new mapfish.ColorRgb(120, 120, 0),
@@ -44,7 +44,7 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
 
     classification: null,
 
-    colorInterpolation: null,
+    symbolizerInterpolation: null,
     
     widget: null,
 
@@ -60,18 +60,14 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
         }
     },
     
-    createColorInterpolation: function() {
-        var numColors = this.classification.bins.length;
-		var mapLegendType = this.widget.form.findField('maplegendtype').getValue();
-        this.widget.imageLegend = [];
-        
-        this.colorInterpolation = mapLegendType == G.conf.map_legendset_type_automatic ?
-            mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors) : this.widget.colorInterpolation;
+    createSymbolizerInterpolation: function() {
+        this.widget.imageLegend = [];        
+        this.symbolizerInterpolation = this.widget.symbolizerInterpolation;
             
         for (var i = 0; i < this.classification.bins.length; i++) {
             this.widget.imageLegend.push({
                 label: this.classification.bins[i].label.replace('&nbsp;&nbsp;', ' '),
-                color: this.colorInterpolation[i].toHexString()
+                color: this.symbolizerInterpolation[i]
             });
         }
     },
@@ -96,28 +92,21 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
             null
         );
 
-        this.createColorInterpolation();
+        this.createSymbolizerInterpolation();
     },
 
     applyClassification: function(options, widget) {
         this.widget = widget;
         this.updateOptions(options);
         
-		var calculateRadius = OpenLayers.Function.bind(
-			function(feature) {
-				var value = feature.attributes[this.indicator];
-                var size = (value - this.minVal) / (this.maxVal - this.minVal) *
-					(this.maxSize - this.minSize) + this.minSize;
-                return size || this.minSize;
-            },	this
-		);
-		this.extendStyle(null, {'pointRadius': '${calculateRadius}'}, {'calculateRadius': calculateRadius});
-    
         var boundsArray = this.classification.getBoundsArray();
         var rules = new Array(boundsArray.length-1);
         for (var i = 0; i < boundsArray.length-1; i++) {
-            var rule = new OpenLayers.Rule({
-                symbolizer: {fillColor: this.colorInterpolation[i].toHexString()},
+            var rule = new OpenLayers.Rule({                
+                symbolizer: {
+                    'pointRadius': this.symbolizerInterpolation[i] == 'blank' ? 0 : 16,
+                    'externalGraphic': '../resources/ext-ux/iconcombo/' + this.symbolizerInterpolation[i] + '-map.png'
+                }, 
                 filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.BETWEEN,
                     property: this.indicator,
@@ -140,11 +129,12 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
         this.legendDiv.update("");
         for (var i = 0; i < this.classification.bins.length; i++) {
             var element = document.createElement("div");
-            element.style.backgroundColor = this.colorInterpolation[i].toHexString();
-            element.style.width = "30px";
-            element.style.height = "15px";
+            element.style.backgroundImage = 'url(../resources/ext-ux/iconcombo/' + this.symbolizerInterpolation[i] + '.png)';
+            element.style.backgroundRepeat = 'no-repeat';
+            element.style.width = "25px";
+            element.style.height = "18px";
             element.style.cssFloat = "left";
-            element.style.marginRight = "10px";
+            element.style.marginLeft = "3px";
             this.legendDiv.appendChild(element);
 
             element = document.createElement("div");
@@ -157,5 +147,5 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
         }
     },
 
-    CLASS_NAME: "mapfish.GeoStat.Point"
+    CLASS_NAME: "mapfish.GeoStat.Centroid"
 });
