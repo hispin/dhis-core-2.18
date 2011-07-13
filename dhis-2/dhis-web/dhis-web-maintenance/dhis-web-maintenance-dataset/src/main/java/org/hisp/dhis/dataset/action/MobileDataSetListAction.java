@@ -54,18 +54,6 @@ public class MobileDataSetListAction
     // -------------------------------------------------------------------------
     // Getters and Setters
     // -------------------------------------------------------------------------
-    private List<DataSet> dataSets;
-    
-    public void setDataSets( List<DataSet> dataSets )
-    {
-        this.dataSets = dataSets;
-    }
-    
-    public List<DataSet> getDataSets()
-    {
-        return dataSets;
-    }
-    
     private List<DataSet> mobileDatasets;
 
     public List<DataSet> getMobileDatasets()
@@ -82,11 +70,9 @@ public class MobileDataSetListAction
     public String execute()
         throws Exception
     {
-        dataSets = new ArrayList<DataSet>(dataSetService.getAllDataSets());
         mobileDatasets = new ArrayList<DataSet>(dataSetService.getDataSetsForMobile());
-        dataSets.removeAll( mobileDatasets );
-        Collections.sort( dataSets, new DataSetNameComparator() );
         Collections.sort( mobileDatasets, new DataSetNameComparator() );
+        
         return SUCCESS;
     }
 }

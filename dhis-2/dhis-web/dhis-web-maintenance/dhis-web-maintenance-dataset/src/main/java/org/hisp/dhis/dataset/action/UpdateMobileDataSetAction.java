@@ -52,6 +52,7 @@ public class UpdateMobileDataSetAction
                 dataSetService.updateDataSet( dataset );
             }
         }
+     
         for ( String id : availableList )
         {
             dataset = dataSetService.getDataSet( Integer.parseInt( id ) );
@@ -61,7 +62,7 @@ public class UpdateMobileDataSetAction
                 dataSetService.updateDataSet( dataset );
             }
         }
-        
+
         return SUCCESS;
     }
 
