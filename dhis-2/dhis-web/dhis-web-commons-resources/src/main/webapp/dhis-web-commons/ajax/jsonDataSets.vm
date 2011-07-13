@@ -5,7 +5,8 @@
     "id": $!{dataSet.id},
     "name": "$!encoder.jsonEncode( ${dataSet.name} )",
     "shortName": "$!encoder.jsonEncode( ${dataSet.shortName} )",
-    "periodTypeId": "$!{dataSet.periodTypeId}"
+    "periodTypeId": "$!{dataSet.periodTypeId}",
+    "version": "$!{dataSet.version}"
   }#if( $velocityCount < $size ),#end
 #end
 ]
