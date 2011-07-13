@@ -25,11 +25,11 @@
     </property>
 
     <property name="shortName">
-      <column name="shortname" not-null="true" unique="true" length="30" />
+      <column name="shortname" not-null="true" unique="true" length="50" />
     </property>
 
     <property name="code">
-      <column name="code" not-null="false" unique="false" length="30" />
+      <column name="code" not-null="false" unique="false" length="50" />
     </property>
 
     <property name="description" type="text" />
