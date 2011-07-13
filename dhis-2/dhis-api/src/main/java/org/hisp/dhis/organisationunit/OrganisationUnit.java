@@ -412,6 +412,22 @@ public class OrganisationUnit
         newParent.getChildren().add( this );
     }
     
+    public Set<OrganisationUnit> getChildrenThisIfEmpty()
+    {
+        Set<OrganisationUnit> set = new HashSet<OrganisationUnit>();
+        
+        if ( hasChild() )
+        {
+            set = children;
+        }
+        else
+        {
+            set.add( this );
+        }
+        
+        return set;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
