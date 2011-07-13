@@ -60,7 +60,7 @@ public class CaseAggregationCondition
     
     public static String OBJECT_PROGRAM_PROPERTY = "PP";
     
-    
+    public static String OBJECT_PROGRAM = "PG";
 
     // -------------------------------------------------------------------------
     // Fields

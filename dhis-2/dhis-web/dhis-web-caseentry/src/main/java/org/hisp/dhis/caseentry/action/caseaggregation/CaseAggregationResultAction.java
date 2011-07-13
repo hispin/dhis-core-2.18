@@ -230,54 +230,57 @@ public class CaseAggregationResultAction
                     CaseAggregationCondition condition = aggregationConditionService.getCaseAggregationCondition(
                         dElement, optionCombo );
 
-                    if ( condition == null )
-                        break;
-
-                    for ( Period period : periodList )
+                    if ( condition != null )
                     {
-                        String message = i18n.getString( "in" ) + " " + format.formatPeriod( period );
 
-                        double resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
-
-                        DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
-
-                        if ( resultValue != 0 )
+                        for ( Period period : periodList )
                         {
-                            if ( dataValue == null )
+                            String message = i18n.getString( "in" ) + " " + format.formatPeriod( period );
+
+                            double resultValue = aggregationConditionService.parseConditition( condition, orgUnit,
+                                period );
+
+                            DataValue dataValue = dataValueService
+                                .getDataValue( orgUnit, dElement, period, optionCombo );
+
+                            if ( resultValue != 0 )
                             {
-                                dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, storedBy,
-                                    new Date(), null, optionCombo );
+                                if ( dataValue == null )
+                                {
+                                    dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, storedBy,
+                                        new Date(), null, optionCombo );
 
-                                dataValueService.addDataValue( dataValue );
-                                mapDataValues.put( dataValue, i18n.getString( "added" ) + " " + message );
+                                    dataValueService.addDataValue( dataValue );
+                                    mapDataValues.put( dataValue, i18n.getString( "added" ) + " " + message );
+                                }
+                                else
+                                {
+                                    dataValue.setValue( "" + resultValue );
+                                    dataValue.setTimestamp( new Date() );
+                                    dataValue.setStoredBy( storedBy );
+
+                                    dataValueService.updateDataValue( dataValue );
+
+                                    mapDataValues.put( dataValue, i18n.getString( "updated" ) + " " + message );
+                                }
+
+                                mapCaseAggCondition.put( dataValue, condition );
+
                             }
-                            else
+                            else if ( dataValue != null )
                             {
-                                dataValue.setValue( "" + resultValue );
-                                dataValue.setTimestamp( new Date() );
-                                dataValue.setStoredBy( storedBy );
+                                DataValue dvalue = new DataValue( dElement, period, orgUnit, "", storedBy, new Date(),
+                                    null, optionCombo );
+                                dvalue.setValue( dataValue.getValue() + " " + i18n.getString( "old_value" ) );
 
-                                dataValueService.updateDataValue( dataValue );
+                                dataValueService.deleteDataValue( dataValue );
 
-                                mapDataValues.put( dataValue, i18n.getString( "updated" ) + " " + message );
+                                mapDataValues.put( dvalue, i18n.getString( "deleted" ) + " " + message );
                             }
 
-                            mapCaseAggCondition.put( dataValue, condition );
-
-                        }
-                        else if ( dataValue != null )
-                        {
-                            DataValue dvalue = new DataValue( dElement, period, orgUnit, "", storedBy, new Date(),
-                                null, optionCombo );
-                            dvalue.setValue( dataValue.getValue() + " " + i18n.getString( "old_value" ) );
-
-                            dataValueService.deleteDataValue( dataValue );
-
-                            mapDataValues.put( dvalue, i18n.getString( "deleted" ) + " " + message );
                         }
 
                     }
-
                 }
             }
 
