@@ -3,12 +3,6 @@
 // Import
 // -------------------------------------------------------------------------
 
-function submitImportForm()
-{
-    setWaitMessage( i18n_importing ); 
-	document.getElementById( "importForm" ).submit();
-}
-
 function showAdvancedOptions()
 {
 	var optionDiv = document.getElementById( "optionDiv" );
