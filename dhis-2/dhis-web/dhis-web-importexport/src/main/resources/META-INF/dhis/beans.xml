@@ -139,9 +139,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.importexport.action.exp.GetDetailedExportOptionsAction" class="org.hisp.dhis.importexport.action.exp.GetDetailedExportOptionsAction"
     scope="prototype">
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.exp.GetDataElementListAction" class="org.hisp.dhis.importexport.action.exp.GetDataElementListAction"
