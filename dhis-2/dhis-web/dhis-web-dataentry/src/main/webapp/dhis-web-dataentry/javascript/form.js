@@ -1,4 +1,4 @@
-// Identifiers for which zero values are, insignificant, also used in entry.js
+// Identifiers for which zero values are, insignificant, also used in entry.js, populated in select.vm
 var significantZeros = [];
 
 // Associative array with [indicator id, expression] for indicators in form, also used in entry.js
@@ -150,7 +150,6 @@ function dataSetSelected()
 
         $.getJSON( url, function( json )
         {
-            significantZeros = json.significantZeros;
             indicatorFormulas = json.indicatorFormulas;
 
             addOptionById( 'selectedPeriodIndex', '-1', '[ ' + i18n_select_period + ' ]' );

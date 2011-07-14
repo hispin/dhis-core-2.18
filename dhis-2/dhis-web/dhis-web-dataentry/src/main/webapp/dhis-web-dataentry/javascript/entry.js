@@ -161,12 +161,12 @@ function saveVal( dataElementId, optionComboId )
                 }
             }
         }
+        
+	    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, value, COLOR_GREEN );
+	    valueSaver.save();
+	    
+	    updateIndicators(); // Update indicators in case of custom form
     }
-
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, value, COLOR_GREEN );
-    valueSaver.save();
-    
-    updateIndicators(); // Update indicators in case of custom form
 }
 
 function saveBoolean( dataElementId, optionComboId )

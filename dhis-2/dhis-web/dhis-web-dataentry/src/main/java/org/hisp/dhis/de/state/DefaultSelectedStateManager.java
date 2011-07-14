@@ -30,14 +30,10 @@ package org.hisp.dhis.de.state;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -47,9 +43,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -61,14 +55,9 @@ import com.opensymphony.xwork2.ActionContext;
 public class DefaultSelectedStateManager
     implements SelectedStateManager
 {
-    private static final Log log = LogFactory.getLog( DefaultSelectedStateManager.class );
-
     public static final String SESSION_KEY_SELECTED_DATASET_ID = "data_entry_selected_dataset_id";
-
     public static final String SESSION_KEY_SELECTED_PERIOD_INDEX = "data_entry_selected_period_index";
-
-    public static final String SESSION_KEY_BASE_PERIOD = "data_entry_base_period";
-    
+    public static final String SESSION_KEY_BASE_PERIOD = "data_entry_base_period";    
     public static final String SESSION_KEY_SELECTED_DISPLAY_MODE = "data_entry_selected_display_mode";
 
     // -------------------------------------------------------------------------
@@ -87,13 +76,6 @@ public class DefaultSelectedStateManager
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
-    }
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
     }
 
     private CurrentUserService currentUserService;
@@ -157,18 +139,11 @@ public class DefaultSelectedStateManager
         // Retain only DataSets from current user's authority groups
         // ---------------------------------------------------------------------
 
-        if ( currentUserService.getCurrentUser() != null && !currentUserService.currentUserIsSuper() )
+        User currentUser = currentUserService.getCurrentUser();
+        
+        if ( currentUser != null && !currentUserService.currentUserIsSuper() )
         {
-            UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
-
-            Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
-
-            for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
-            {
-                dataSetUserAuthorityGroups.addAll( userAuthorityGroup.getDataSets() );
-            }
-
-            dataSets.retainAll( dataSetUserAuthorityGroups );
+            dataSets.retainAll( currentUser.getUserCredentials().getAllDataSets() );
         }
 
         // ---------------------------------------------------------------------
@@ -360,15 +335,11 @@ public class DefaultSelectedStateManager
 
         if ( basePeriod == null )
         {
-            log.debug( "Base period is null, creating new" );
-
             basePeriod = periodType.createPeriod();
             getSession().put( SESSION_KEY_BASE_PERIOD, basePeriod );
         }
         else if ( !basePeriod.getPeriodType().equals( periodType ) )
         {
-            log.debug( "Wrong type of base period, transforming" );
-
             basePeriod = periodType.createPeriod( basePeriod.getStartDate() );
             getSession().put( SESSION_KEY_BASE_PERIOD, basePeriod );
         }

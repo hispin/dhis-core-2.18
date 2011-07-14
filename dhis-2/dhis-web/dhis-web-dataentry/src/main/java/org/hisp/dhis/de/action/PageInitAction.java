@@ -27,6 +27,10 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.de.state.SelectedStateManager;
 
 import com.opensymphony.xwork2.Action;
@@ -34,7 +38,7 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Lars Helge Overland
  */
-public class LoadOrganisationUnitAction
+public class PageInitAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -47,17 +51,37 @@ public class LoadOrganisationUnitAction
     {
         this.selectedStateManager = selectedStateManager;
     }
+    
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private Collection<DataElement> significantZeros;
+
+    public Collection<DataElement> getSignificantZeros()
+    {
+        return significantZeros;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-    {
+    {        
         selectedStateManager.clearSelectedOrganisationUnits();
         selectedStateManager.clearSelectedDataSet();
         selectedStateManager.clearSelectedPeriod();
 
+        significantZeros = dataElementService.getDataElementsByZeroIsSignificant( true );
+        
         return SUCCESS;
     }
 }

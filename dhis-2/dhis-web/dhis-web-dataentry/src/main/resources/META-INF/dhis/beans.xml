@@ -3,8 +3,6 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="org.hisp.dhis.de.action.EmptyAction" class="org.hisp.dhis.de.action.EmptyAction" />
-
   <bean id="org.hisp.dhis.de.history.HistoryRetriever" class="org.hisp.dhis.de.history.DefaultHistoryRetriever">
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
@@ -14,23 +12,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.de.state.SelectedStateManager" class="org.hisp.dhis.de.state.DefaultSelectedStateManager">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
   <!-- Actions -->
 
+  <bean id="org.hisp.dhis.de.action.PageInitAction" class="org.hisp.dhis.de.action.PageInitAction"
+    scope="prototype">
+    <property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+  </bean>
+
   <bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction"
 	scope="prototype">
     <property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 	<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 	<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.de.action.LoadOrganisationUnitAction" class="org.hisp.dhis.de.action.LoadOrganisationUnitAction"
-    scope="prototype">
-    <property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
   </bean>
 
   <bean id="org.hisp.dhis.de.action.LoadDataSetsAction" class="org.hisp.dhis.de.action.LoadDataSetsAction" scope="prototype">
