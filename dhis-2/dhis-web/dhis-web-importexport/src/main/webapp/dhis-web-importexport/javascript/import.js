@@ -386,11 +386,20 @@ function matchObject()
 	
 	var existingObjects = document.getElementById( "existingObjects" );
 	
-	var existingObjectId = existingObjects.options[ existingObjects.selectedIndex ].value;
+	var selectedIndex = existingObjects.selectedIndex;
 	
-	if ( importObjectId != null && existingObjectId != null )
+	if ( selectedIndex == -1 )
 	{
-		window.location.href = "matchObject.action?importObjectId=" + importObjectId + "&existingObjectId=" + existingObjectId;
+		showWarningMessage( i18n_no_item_to_match );
+	}
+	else
+	{
+		var existingObjectId = existingObjects.options[ selectedIndex ].value;
+		
+		if ( importObjectId != null && existingObjectId != null )
+		{
+			window.location.href = "matchObject.action?importObjectId=" + importObjectId + "&existingObjectId=" + existingObjectId;
+		}
 	}
 }
 
@@ -473,7 +482,7 @@ function filterExistingObjects()
 // -------------------------------------------------------------------------
 
 function handleField( discardedElements, spanName, tdName )
-{
+{alert(discardedElements + ", " + spanName + ", " + tdName);
 	var existingElements = document.getElementById( spanName ).innerHTML;
 			
 	existingElements = existingElements - discardedElements;

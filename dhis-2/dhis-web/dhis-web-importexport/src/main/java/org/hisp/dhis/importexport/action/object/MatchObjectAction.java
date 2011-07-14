@@ -100,6 +100,7 @@ public class MatchObjectAction
         // ---------------------------------------------------------------------
         // Verify import configuration
         // ---------------------------------------------------------------------
+        
         importFormat = getCurrentRunningProcessImportFormat();
 
         if ( importFormat != null && importFormat.equals( "DHIS14FILE" ) )
@@ -113,6 +114,7 @@ public class MatchObjectAction
                 return "dhis14";
             }
         }
+        
         return SUCCESS;
     }
 }
