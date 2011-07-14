@@ -94,7 +94,7 @@ public class ConstantConverter
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<Constant> constants = constantService.getAllConstants();
-System.out.println("\nconstants : " + (constants == null ? "is null" : constants));
+        
         if ( constants != null && constants.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
