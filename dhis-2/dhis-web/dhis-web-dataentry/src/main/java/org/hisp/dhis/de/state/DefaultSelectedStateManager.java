@@ -262,8 +262,8 @@ public class DefaultSelectedStateManager
         }
     }
 
-    public Period reloadPeriod(){
-        
+    public Period reloadPeriod()
+    {        
         Period period = getSelectedPeriod();
 
         return periodService.reloadPeriod( period );
