@@ -9,10 +9,5 @@
     "externalId": "$!{period.externalId}"
   }#if( $velocityCount < $size1 ),#end
 #end ],
-#set( $size3 = $indicators.size() )
-  "indicatorFormulas": {
-#foreach( $indicator in $indicators )
-  "${indicator.id}": "($!{indicator.explodedNumerator})/($!{indicator.explodedDenominator})*($!{indicator.indicatorType.factor})"#if( $velocityCount < $size3 ),#end
-#end },
   "periodValid": ${periodValid}
 }

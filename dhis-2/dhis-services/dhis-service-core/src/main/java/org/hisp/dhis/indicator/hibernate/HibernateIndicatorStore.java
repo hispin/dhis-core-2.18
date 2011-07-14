@@ -158,6 +158,14 @@ public class HibernateIndicatorStore
         return sessionFactory.getCurrentSession().createQuery( hql ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<Indicator> getIndicatorsWithDataSets()
+    {
+        final String hql = "from Indicator d where d.dataSets.size > 0";
+
+        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+    }
+
     public int getIndicatorCount()
     {
         return getCount();

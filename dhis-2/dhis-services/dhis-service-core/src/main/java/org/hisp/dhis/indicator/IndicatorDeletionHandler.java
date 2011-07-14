@@ -32,6 +32,7 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -102,6 +103,18 @@ public class IndicatorDeletionHandler
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
             if ( indicator.getGroups().remove( group ) )
+            {
+                indicatorService.updateIndicator( indicator );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteDataSet( DataSet dataSet )
+    {
+        for ( Indicator indicator : indicatorService.getAllIndicators() )
+        {
+            if ( indicator.getDataSets().remove( dataSet ) )
             {
                 indicatorService.updateIndicator( indicator );
             }
