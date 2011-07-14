@@ -64,6 +64,8 @@ public interface IndicatorService
     Collection<Indicator> getIndicatorsWithGroupSets();
     
     Collection<Indicator> getIndicatorsWithoutGroups();
+    
+    Collection<Indicator> getIndicatorsWithDataSets();
 
     int getIndicatorCountByName( String name );
     

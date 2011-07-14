@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.AbstractNameableObject;
+import org.hisp.dhis.dataset.DataSet;
 
 /**
  * @author Lars Helge Overland
@@ -71,7 +72,9 @@ public class Indicator
 
     private Date lastUpdated;
     
-    private Set<IndicatorGroup> groups =  new HashSet<IndicatorGroup>();
+    private Set<IndicatorGroup> groups = new HashSet<IndicatorGroup>();
+    
+    private Set<DataSet> dataSets = new HashSet<DataSet>();
     
     // -------------------------------------------------------------------------
     // Logic
@@ -291,5 +294,15 @@ public class Indicator
     public void setGroups( Set<IndicatorGroup> groups )
     {
         this.groups = groups;
+    }
+
+    public Set<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
+    public void setDataSets( Set<DataSet> dataSets )
+    {
+        this.dataSets = dataSets;
     }
 }

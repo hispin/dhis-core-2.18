@@ -32,6 +32,9 @@ import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.de.state.SelectedStateManager;
+import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,6 +62,20 @@ public class PageInitAction
         this.dataElementService = dataElementService;
     }
 
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+    
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -68,6 +85,13 @@ public class PageInitAction
     public Collection<DataElement> getSignificantZeros()
     {
         return significantZeros;
+    }
+    
+    private Collection<Indicator> indicators;
+
+    public Collection<Indicator> getIndicators()
+    {
+        return indicators;
     }
 
     // -------------------------------------------------------------------------
@@ -81,6 +105,14 @@ public class PageInitAction
         selectedStateManager.clearSelectedPeriod();
 
         significantZeros = dataElementService.getDataElementsByZeroIsSignificant( true );
+        
+        indicators = indicatorService.getIndicatorsWithDataSets();
+        
+        for ( Indicator indicator : indicators )
+        {
+            indicator.setExplodedNumerator( expressionService.explodeExpression( indicator.getNumerator() ) );
+            indicator.setExplodedDenominator( expressionService.explodeExpression( indicator.getDenominator() ) );
+        }
         
         return SUCCESS;
     }

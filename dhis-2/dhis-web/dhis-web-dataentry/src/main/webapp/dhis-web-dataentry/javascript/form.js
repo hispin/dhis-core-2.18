@@ -150,8 +150,6 @@ function dataSetSelected()
 
         $.getJSON( url, function( json )
         {
-            indicatorFormulas = json.indicatorFormulas;
-
             addOptionById( 'selectedPeriodIndex', '-1', '[ ' + i18n_select_period + ' ]' );
 
             for ( i in json.periods )
@@ -291,6 +289,10 @@ function insertDataValues()
 				$( valFieldId ).css( 'background-color', COLOR_ORANGE );
 			}
 		} );
+		
+		// Update indicator values in form
+		
+		updateIndicators();
 	} );
 }
 
@@ -334,7 +336,6 @@ function displayEntryFormCompleted()
 {
     addEventListeners();
     enable( 'validationButton' );
-    updateIndicators();
     dataEntryFormIsLoaded = true;
     hideLoader();
 }

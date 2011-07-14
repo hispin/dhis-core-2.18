@@ -241,6 +241,6 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
 
     function markValue( color )
     {
-        $( '#' + dataElementId + '-' + optionComboId + '-val' ).css( "background-color", color );
+        $( '#' + dataElementId + '-' + optionComboId + '-val' ).css( 'background-color', color );
     }
 }

@@ -149,10 +149,10 @@
   <cache name="org.hisp.dhis.dataset.DataSet.sections"
     maxElementsInMemory="400"/>
   
-  <cache name="org.hisp.dhis.dataelement.DataElement.dataSets"
+  <cache name="org.hisp.dhis.dataelement.DataElement.groups"
     maxElementsInMemory="400"/>
   
-  <cache name="org.hisp.dhis.dataelement.DataElement.groups"
+  <cache name="org.hisp.dhis.dataelement.DataElement.dataSets"
     maxElementsInMemory="400"/>
   
   <cache name="org.hisp.dhis.dataelement.DataElementGroup.members"
@@ -162,6 +162,9 @@
     maxElementsInMemory="400"/>
     
   <cache name="org.hisp.dhis.indicator.Indicator.groups"
+    maxElementsInMemory="400"/>
+  
+  <cache name="org.hisp.dhis.indicator.Indicator.dataSets"
     maxElementsInMemory="400"/>
   
   <cache name="org.hisp.dhis.indicator.IndicatorGroup.members"
