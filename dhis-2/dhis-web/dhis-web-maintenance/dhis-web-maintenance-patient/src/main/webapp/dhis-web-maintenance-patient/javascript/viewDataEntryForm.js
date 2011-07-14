@@ -197,61 +197,51 @@ function insertDataElement( source, associationId )
 	var dataElementId = dataElement.id;	
 	var dataElementName = dataElement.name;	
 	var dataElementType = dataElement.type;
-	var viewByValue = jQuery( source + ' #viewBySelector' ).val();	
-
-	var strPSDataEntryId   = "value["+ associationId +"].value:value["+ dataElementId +"].value";
-	var comboPSDataEntryId = "value["+ associationId +"].combo:value["+ dataElementId +"].combo";
-	var boolPSDataEntryId  = "value["+ associationId +"].boolean:value["+ dataElementId +"].boolean";
-	var datePSDataEntryId  = "value["+ associationId +"].date:value["+ dataElementId +"].date";
-
-	if(viewByValue == "deid") dispName = "[ " + dataElementId;
-	else if (viewByValue == "deshortname") dispName = "[ " + dataElement.shortName;
-	else dispName = "[ " + dataElementName;
-
-	viewByValue = "@@" + viewByValue + "@@";
-
+	
 	var id = "";
 
-	var selectString = "";
+	var htmlCode = "";
 
 	if( dataElementType == "string" )
 	{
 		if( categoryOptionCombos[0].default == 'true' )
-		{			
-			strPSDataEntryId  = strPSDataEntryId + ":value["+ categoryOptionCombos[0].id +"].value";
-			selectString += "<input name=\"entryfield\" id=\""+strPSDataEntryId+"\" type=\"text\" value=\"\" onkeypress=\"return keyPress(event, this)\" >";			
-			id = strPSDataEntryId;
-		}else{			
-			selectString = "<select name=\"entryselect\" id=\"" + comboPSDataEntryId + "\" > <option value=\"\">i18n_select_value</option>";
-		
-			jQuery.each( categoryOptionCombos, function(i, item ){
-				selectString += "<option value=\""+ item.id +"\" id=\"combo[" + item.id + "].combo\" >(" + item.name + ")</option>";
-			});
-			
-			selectString += "</select>";
-			
-			id = comboPSDataEntryId;
+		{		
+			var titleValue = dataElementId + "." + dataElementName 
+					+ "-" + categoryOptionCombos[0].id + "." + categoryOptionCombos[0].id 
+					+ " "+dataElementType+"\"";
+			var displayName = dataElementName + "-" + optionComboName + " ]";
+			id  = associationId + "-" + dataElementId + "-" + categoryOptionCombos[0].id +"-val";
+			htmlCode += "<input name=\"entryfield\" id=\""+ id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\" onkeypress=\"return keyPress(event, this)\" >";			
+		}else{	
+			var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
+			var displayName = dataElementName;
+			id = associationId + "-" + dataElementId + "-val"; 
+			htmlCode = "<input name=\"entryselect\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
 		}		
-		
-	} else if (dataElementType == "bool") {
-		selectString = "<select name=\"entryselect\" id=\"" + boolPSDataEntryId + "\" > <option value=\"\">i18n_select_value</option>";
-		selectString += "<option value=\"true\" >i18n_yes</option>";
-		selectString += "<option value=\"false\" >i18n_no</option>";
-		selectString += "</select>";
-		
-		id = boolPSDataEntryId;
-	} else if (dataElementType == "date") {
-		selectString = "<input type=\"text\" id=\"" + datePSDataEntryId + "\" name=\"entryfield\" value=\"\">";	
-		id = datePSDataEntryId;
-	} else if ( dataElementType == "int" ) {
+	} 
+	else if ( dataElementType == "bool" )
+	{
+		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
+		var displayName = dataElementName;
+		id = associationId + "-" + dataElementId + "-val" ;
+		htmlCode = "<input name=\"entryselect\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
+	} 
+	else if ( dataElementType == "date" )
+	{
+		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
+		var displayName = dataElementName;
+		id = associationId + "-" + dataElementId + "-val" ;
+		htmlCode = "<input name=\"entryfield\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
+	} 
+	else if ( dataElementType == "int" ) 
+	{
 		jQuery.each( categoryOptionCombos, function(i, item ){
 			optionComboName = item.name;
 			optionComboId = item.id;
-			var titleValue = "-- " + dataElementId + ". " + dataElementName + " " + optionComboId + ". " + optionComboName+" ("+dataElementType+") --";
-			var displayName = dispName + " - " + optionComboName + " ]";
-			var dataEntryId = "value[" + associationId + "].value:value[" + dataElementId + "].value:value[" + optionComboId + "].value";
-			selectString += "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:10em;text-align:center\"/><br/>";
-			id = dataEntryId;
+			var titleValue = "-- " + dataElementId + "." + dataElementName + "-" + optionComboId + "." + optionComboName+" ("+dataElementType+") --";
+			var displayName = dataElementName + "-" + optionComboName;
+			id = associationId + "-" + dataElementId + "-" + optionComboId + "-val";
+			htmlCode += "<input title=\"" + titleValue + "\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + id + "\" />";
 		});
 	}
 	
@@ -263,5 +253,5 @@ function insertDataElement( source, associationId )
 		jQuery( source + " #message_").html("");
 	}
 
-	oEditor.insertHtml( selectString );
+	oEditor.insertHtml( htmlCode );
 }

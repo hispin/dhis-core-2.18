@@ -997,6 +997,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   
   <bean id="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" class="org.hisp.dhis.dataentryform.DataEntryFormUpgrader">
 	<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
+	<property name="programDataEntryService" ref="org.hisp.dhis.program.ProgramDataEntryService"/>
     <property name="runlevel" value="5" />
     <property name="skipInTests" value="true" />
   </bean>

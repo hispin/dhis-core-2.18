@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.caseentry.screen.DataEntryScreenManager;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -45,6 +44,7 @@ import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -52,7 +52,8 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
-public class ProgramStageCustomDataEntryAction implements Action
+public class ProgramStageCustomDataEntryAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -86,11 +87,11 @@ public class ProgramStageCustomDataEntryAction implements Action
         this.selectedStateManager = selectedStateManager;
     }
 
-    private DataEntryScreenManager dataEntryScreenManager;
+    private ProgramDataEntryService programDataEntryService;
 
-    public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
+    public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
     {
-        this.dataEntryScreenManager = dataEntryScreenManager;
+        this.programDataEntryService = programDataEntryService;
     }
 
     // -------------------------------------------------------------------------
@@ -220,20 +221,21 @@ public class ProgramStageCustomDataEntryAction implements Action
     {
         this.useDefaultForm = useDefaultForm;
     }
-    
+
     public ProgramStageInstance programStageInstance;
-    
+
     public int getProgramStageInstanceId()
     {
-           return programStageInstance.getId();
+        return programStageInstance.getId();
     }
-    
+
     private Collection<ProgramStageDataElement> programStageDataElements;
 
     public Collection<ProgramStageDataElement> getProgramStageDataElements()
     {
         return programStageDataElements;
     }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -242,27 +244,27 @@ public class ProgramStageCustomDataEntryAction implements Action
         throws Exception
     {
         // ---------------------------------------------------------------------
-        // Get Orgunit & Program, ProgramStage 
+        // Get Orgunit & Program, ProgramStage
         // ---------------------------------------------------------------------
-        
+
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
-        
+
         programStage = programStageInstance.getProgramStage();
-        
+
         programStageDataElements = programStage.getProgramStageDataElements();
-        
+
         program = programStage.getProgram();
-        
+
         patient = programStageInstance.getProgramInstance().getPatient();
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
-        
+
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
-        Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues(
-             programStageInstance );
+        Collection<PatientDataValue> patientDataValues = patientDataValueService
+            .getPatientDataValues( programStageInstance );
 
         DataEntryForm dataEntryForm = programStage.getDataEntryForm();
         if ( dataEntryForm == null )
@@ -272,16 +274,15 @@ public class ProgramStageCustomDataEntryAction implements Action
 
         boolean cdeFormExists = (dataEntryForm != null);
 
-        String disabled = "";
         if ( cdeFormExists )
         {
             customDataEntryFormExists = true;
-            
-            customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
-                dataEntryForm.getHtmlCode(), patientDataValues, disabled,
-                i18n, programStage, programStageInstance, organisationUnit );
+
+            customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry(
+                dataEntryForm.getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance,
+                organisationUnit );
         }
-        
+
         return SUCCESS;
     }
 

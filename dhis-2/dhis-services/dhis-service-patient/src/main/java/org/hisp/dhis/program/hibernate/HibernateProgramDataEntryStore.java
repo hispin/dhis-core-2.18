@@ -25,37 +25,44 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.program;
+package org.hisp.dhis.program.hibernate;
 
 import java.util.Collection;
-import java.util.regex.Pattern;
 
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.program.ProgramDataEntryStore;
 
 /**
  * @author Chau Thu Tran
- * @version $ ProgramDataEntryService.java May 26, 2011 3:56:03 PM $
+ * @version $ HibernateProgramDataEntryStore.java Jul 12, 2011 11:00:04 AM $
  * 
  */
-public interface ProgramDataEntryService
+public class HibernateProgramDataEntryStore
+    implements ProgramDataEntryStore
 {
-    final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-    
-    final Pattern IDENTIFIER_PATTERN_TEXTBOX = Pattern.compile( "id=\"(\\d+)-(\\d+)-(\\d+)-val\"" );
-    final Pattern IDENTIFIER_PATTERN_OTHERS = Pattern.compile( "id=\"(\\d+)-(\\d+)-val\"" );
-    
-    //--------------------------------------------------------------------------
-    // ProgramDataEntryService
-    //--------------------------------------------------------------------------
-    
-    Collection<DataEntryForm> getProgramDataEntryForms();
-    
-    String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, String disabled,
-        I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
-        OrganisationUnit organisationUnit );
-    
-    String prepareDataEntryFormForEdit( String htmlCode );
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
+
+    protected SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation method
+    // -------------------------------------------------------------------------
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Collection<DataEntryForm> get()
+    {
+        String hql = "select DISTINCT( p.dataEntryForm ) from ProgramStage p";
+
+        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+    }
+
 }
