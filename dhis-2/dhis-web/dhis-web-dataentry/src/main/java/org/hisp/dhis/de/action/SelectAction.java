@@ -162,22 +162,6 @@ public class SelectAction
         return orderedDataElements;
     }
 
-    private Boolean cdeFormExists;
-
-    public Boolean getCdeFormExists()
-    {
-        return cdeFormExists;
-    }
-
-    private String disabled = " ";
-
-    private DataEntryForm dataEntryForm;
-
-    public DataEntryForm getDataEntryForm()
-    {
-        return this.dataEntryForm;
-    }
-
     private String customDataEntryFormCode;
 
     public String getCustomDataEntryFormCode()
@@ -246,20 +230,6 @@ public class SelectAction
     public List<String> getStandardComments()
     {
         return standardComments;
-    }
-
-    private Map<String, String> dataElementValueTypeMap;
-
-    public Map<String, String> getDataElementValueTypeMap()
-    {
-        return dataElementValueTypeMap;
-    }
-
-    private Integer integer = 0; // TODO wtf
-
-    public Integer getInteger()
-    {
-        return integer;
     }
 
     private Integer selectedDataSetId;
@@ -526,16 +496,6 @@ public class SelectAction
         }
 
         // ---------------------------------------------------------------------
-        // Make the DataElement types available
-        // ---------------------------------------------------------------------
-
-        dataElementValueTypeMap = new HashMap<String, String>();
-        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_DATE, i18n.getString( "date" ) );
-        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_BOOL, i18n.getString( "yes_no" ) );
-        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_INT, i18n.getString( "number" ) );
-        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_STRING, i18n.getString( "text" ) );
-
-        // ---------------------------------------------------------------------
         // Get data entry form
         // ---------------------------------------------------------------------
 
@@ -600,27 +560,22 @@ public class SelectAction
     {
         DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
 
-        if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
-        {
-            disabled = "disabled";
-        }
+        String disabled = dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) ? "disabled" : "";
 
         // ---------------------------------------------------------------------
         // Get the custom data entry form (if any)
         // ---------------------------------------------------------------------
 
-        dataEntryForm = dataSet.getDataEntryForm();
+        DataEntryForm dataEntryForm = dataSet.getDataEntryForm();
 
-        cdeFormExists = (dataEntryForm != null);
-
-        if ( cdeFormExists )
+        if ( dataEntryForm != null )
         {
             customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEntry( 
                 dataEntryForm.getHtmlCode(), disabled, i18n, dataSet );
         }
 
         // ---------------------------------------------------------------------
-        // Working on the display of dataelements
+        // Working on the display of data elements
         // ---------------------------------------------------------------------
 
         List<DataElement> des = new ArrayList<DataElement>();

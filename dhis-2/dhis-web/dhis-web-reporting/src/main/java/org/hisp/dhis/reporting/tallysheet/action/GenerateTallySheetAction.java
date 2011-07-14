@@ -108,25 +108,17 @@ public class GenerateTallySheetAction
     }
 
     // -------------------------------------------------------------------------
-    // Variables
-    // -------------------------------------------------------------------------
-
-    private TallySheet tallySheet;
-
-    private List<TallySheetTuple> tallySheetTuples;
-
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        tallySheet = (TallySheet) ActionContext.getContext().getSession().get( TallySheet.KEY_TALLY_SHEET );
+        TallySheet tallySheet = (TallySheet) ActionContext.getContext().getSession().get( TallySheet.KEY_TALLY_SHEET );
 
         if ( tallySheet != null )
         {
-            tallySheetTuples = tallySheet.getTallySheetTuples();
+            List<TallySheetTuple> tallySheetTuples = tallySheet.getTallySheetTuples();
 
             for ( int i = 0; i < checked.length; i++ )
             {
