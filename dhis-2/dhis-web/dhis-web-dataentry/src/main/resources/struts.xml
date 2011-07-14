@@ -42,7 +42,7 @@
       <result name="success" type="velocity-json">/dhis-web-dataentry/responseDisplayModes.vm</result>
     </action>
 
-    <action name="select" class="org.hisp.dhis.de.action.SelectAction">
+    <action name="loadForm" class="org.hisp.dhis.de.action.LoadFormAction">
       <result name="customform" type="velocity">/dhis-web-dataentry/customForm.vm</result>
       <result name="sectionform" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
       <result name="defaultform" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
