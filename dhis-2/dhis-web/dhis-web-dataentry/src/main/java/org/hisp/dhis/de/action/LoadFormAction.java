@@ -69,10 +69,10 @@ import com.opensymphony.xwork2.Action;
  * @author Torgeir Lorange Ostby
  * @version $Id: SelectAction.java 5930 2008-10-15 03:30:52Z tri $
  */
-public class SelectAction
+public class LoadFormAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( SelectAction.class );
+    private static final Log log = LogFactory.getLog( LoadFormAction.class );
 
     private static final String SECTION_FORM = "sectionform";
     

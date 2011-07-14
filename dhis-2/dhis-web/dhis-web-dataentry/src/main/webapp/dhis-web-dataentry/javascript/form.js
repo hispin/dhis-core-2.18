@@ -164,7 +164,7 @@ function dataSetSelected()
             {
                 showLoader();
                 $( '#selectedPeriodIndex' ).val( periodIndex );
-                $( '#contentDiv' ).load( 'select.action', loadDataValuesAndDisplayModes );
+                $( '#contentDiv' ).load( 'loadForm.action', loadDataValuesAndDisplayModes );
             } 
             else
             {
@@ -182,7 +182,7 @@ function displayModeSelected()
 {
     showLoader();
 
-    var url = 'select.action?displayMode=' + $( "input[name='displayMode']:checked" ).val();
+    var url = 'loadForm.action?displayMode=' + $( "input[name='displayMode']:checked" ).val();
 
     $( '#contentDiv' ).load( url, loadDataValues );
 }
@@ -209,7 +209,7 @@ function periodSelected()
         }
         else
         {
-        	var url = 'select.action?selectedPeriodIndex=' + periodIndex;
+        	var url = 'loadForm.action?selectedPeriodIndex=' + periodIndex;
         	
         	$( '#contentDiv' ).load( url, loadDataValuesAndDisplayModes );
         }
