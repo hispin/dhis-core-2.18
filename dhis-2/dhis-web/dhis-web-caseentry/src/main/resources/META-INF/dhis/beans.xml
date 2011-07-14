@@ -151,7 +151,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction" class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction"
     scope="prototype">
-    <property name="dataEntryScreenManager" ref="org.hisp.dhis.caseentry.screen.DataEntryScreenManager" />
+    <property name="programDataEntryService" ref="org.hisp.dhis.program.ProgramDataEntryService" />
     <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
     <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />

@@ -439,7 +439,7 @@ public class DefaultCaseAggregationConditionService
                 {
                     condition = getConditionForProgramProperty( orgunitId, startDate, endDate ) + info[1];
                 }
-				else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM ) )
+                else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM ) )
                 {
                     condition = getConditionForProgram( info[1], orgunitId, startDate, endDate );
                 }

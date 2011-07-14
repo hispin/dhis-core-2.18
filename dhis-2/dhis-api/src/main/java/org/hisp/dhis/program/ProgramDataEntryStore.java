@@ -28,34 +28,15 @@
 package org.hisp.dhis.program;
 
 import java.util.Collection;
-import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
 
 /**
  * @author Chau Thu Tran
  * @version $ ProgramDataEntryService.java May 26, 2011 3:56:03 PM $
  * 
  */
-public interface ProgramDataEntryService
+public interface ProgramDataEntryStore
 {
-    final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-    
-    final Pattern IDENTIFIER_PATTERN_TEXTBOX = Pattern.compile( "id=\"(\\d+)-(\\d+)-(\\d+)-val\"" );
-    final Pattern IDENTIFIER_PATTERN_OTHERS = Pattern.compile( "id=\"(\\d+)-(\\d+)-val\"" );
-    
-    //--------------------------------------------------------------------------
-    // ProgramDataEntryService
-    //--------------------------------------------------------------------------
-    
-    Collection<DataEntryForm> getProgramDataEntryForms();
-    
-    String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, String disabled,
-        I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
-        OrganisationUnit organisationUnit );
-    
-    String prepareDataEntryFormForEdit( String htmlCode );
+    Collection<DataEntryForm> get();
 }

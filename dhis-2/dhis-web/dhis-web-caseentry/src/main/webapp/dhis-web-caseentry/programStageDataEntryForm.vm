@@ -35,7 +35,8 @@ jQuery("#entryFormContainer").ready(function(){
     <tr>
         <td><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
         <td>
-			<input id="programStageId" name="programStageId" type="text" readonly="readonly" value="$encoder.htmlEncode( $programStage.name )" style="min-width:350px">            
+			<input id="programStageId" name="programStageId" type="hidden" value="$programStage.id" style="min-width:350px">            
+			<input type="text" readonly="readonly" value="$encoder.htmlEncode( $programStage.name )" style="min-width:350px">            
         </td>        
         #if( $programStageInstance )
             <td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
@@ -52,14 +53,14 @@ jQuery("#entryFormContainer").ready(function(){
 		</td>
 		<td>&nbsp;</td>
 		<td>
-			<div id="actions" style="float:left">
+		<!--	<div id="actions" style="float:left">
 				<input type="checkbox" id="useDefaultForm" name="useDefaultForm"
 					#if( $useDefaultForm  ) 
 						checked="checked"
 					#end
 					onchange="selectDefaultForm();">
 				<label>$i18n.getString( "use_default_form" )</label><br>    
-			</div>			
+			</div>			 -->
 		</td>
     </tr>
 </table>
