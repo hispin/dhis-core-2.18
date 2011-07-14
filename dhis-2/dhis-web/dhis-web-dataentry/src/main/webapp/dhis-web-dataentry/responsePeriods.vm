@@ -9,11 +9,6 @@
     "externalId": "$!{period.externalId}"
   }#if( $velocityCount < $size1 ),#end
 #end ],
-#set( $size2 = $significantZeros.size() )
-  "significantZeros": [
-#foreach( $dataElement in $significantZeros )
-  ${dataElement.id}#if( $velocityCount < $size2 ),#end
-#end ],
 #set( $size3 = $indicators.size() )
   "indicatorFormulas": {
 #foreach( $indicator in $indicators )
