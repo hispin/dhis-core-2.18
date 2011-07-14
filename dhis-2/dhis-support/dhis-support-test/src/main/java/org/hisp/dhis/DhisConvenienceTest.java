@@ -802,8 +802,8 @@ public abstract class DhisConvenienceTest
         MapLegendSet legendSet = new MapLegendSet();
 
         legendSet.setName( "MapLegendSet" + uniqueCharacter );
-        legendSet.setColorLow( "ColorLow" + uniqueCharacter );
-        legendSet.setColorHigh( "ColorHigh" + uniqueCharacter );
+        //legendSet.setColorLow( "ColorLow" + uniqueCharacter );
+        //legendSet.setColorHigh( "ColorHigh" + uniqueCharacter );
 
         for ( Indicator indicator : indicators )
         {
