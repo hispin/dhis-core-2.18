@@ -3,6 +3,7 @@ isAjax = true;
 function organisationUnitSelected( orgUnits )
 {
     showLoader();
+	setInnerHTML( 'contentDiv','' );
 	jQuery.postJSON( "getPrograms.action",
 	{
 	}, 
@@ -21,7 +22,7 @@ function organisationUnitSelected( orgUnits )
 		}
 		else
 		{
-			addOptionById( 'programId', "0", i18n_select );
+			addOptionById( 'programId', "", i18n_select );
 			
 			for ( var i in json.programs ) 
 			{
