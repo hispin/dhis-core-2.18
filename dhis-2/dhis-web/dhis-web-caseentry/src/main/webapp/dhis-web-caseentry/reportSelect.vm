@@ -1,56 +1,55 @@
-<script type="text/javascript">   
-    var i18n_report_generation_failed = '$encoder.jsEscape( $i18n.getString( "report_generation_failed" ), "'")';    
-</script>   
-
 <h3>$i18n.getString( "report_management" )</h3>
 
 <form id="reportForm" name="reportForm" method="post" action="reportSelect.action">
 <table>	
     <tr>
 	  <td><label>$i18n.getString( "reporting_unit" )</label></td>
-	  <td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px"></td>
+	  <td><input type="text" readonly="readonly" id='orgunitname' name='orgunitname' #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px"></td>
     </tr>
     
     <tr>
-        <td><label for="programId">$i18n.getString( "program" )</label></td>
+        <td><label for="programId">$i18n.getString( "program" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-            <select id="programId" name="programId" style="min-width:350px" onchange="document.forms[0].submit();" #if( $!programs && $programs.size() == 0 ) disabled="disabled" #end>
-                <option value="0">[$i18n.getString( "select" )]</option>
-                #foreach( $program in $programs )
-                    <option value="$program.id" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
-                #end
+            <select id="programId" name="programId" disabled style="min-width:350px" class="{validate:{required:true}}">
             </select>
         </td>
     </tr>
         
     <tr>
-        <td><label>$i18n.getString( "start_date" )</label></td>
+        <td><label>$i18n.getString( "start_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-            <input type="text" id="startDate" name="startDate" #if( $startDate ) value="$encoder.htmlEncode( $startDate )" #end />
+            <input type="text" id="startDate" name="startDate" disabled class="{validate:{required:true}}" />
 			<script type="text/javascript">
-				datePicker('startDate');
+				datePickerValid('startDate');
             </script>  	
         </td>
     </tr>
     
     <tr>
-        <td><label>$i18n.getString( "end_date" )</label></td>
+        <td><label>$i18n.getString( "end_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-            <input type="text" id="endDate" name="endDate" #if( $endDate ) value="$encoder.htmlEncode( $endDate )" #end />
+            <input type="text" id="endDate" name="endDate" disabled class="{validate:{required:true}}" />
             <script type="text/javascript">
-				datePicker('endDate');
+				datePickerValid('endDate');
             </script> 				
         </td>      
     </tr>    	                		
 </table>
 <p>
-    <input type="button" value="$i18n.getString( 'generate' )" style="width:10em" onclick="validateAndGenerateReport()"/>
+    <input type="button" id='generateBtn' name='generateBtn' disabled value="$i18n.getString( 'generate' )" style="width:10em" onclick="validateAndGenerateReport()"/>
     <input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='index.action'" style="width:10em"/>
 </p>  
 </form>
+
+#parse( "dhis-web-commons/loader/loader.vm" )
 
 <hr style="clear:both">
 
 <div id="contentDiv"></div>
 
 <span id="message"></span>
+
+<script type="text/javascript">   
+    var i18n_report_generation_failed = '$encoder.jsEscape( $i18n.getString( "report_generation_failed" ), "'")';    
+	var i18n_select = '$encoder.jsEscape( $i18n.getString( "select" ), "'")';    
+</script>   

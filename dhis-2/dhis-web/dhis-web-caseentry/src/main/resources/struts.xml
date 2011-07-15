@@ -153,6 +153,14 @@
     
     <!-- Report -->
 
+ 	<action name="reportSelect" class="org.hisp.dhis.caseentry.action.report.ReportSelectAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/reportSelect.vm</param>
+      <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
+    </action>
+    
     <action name="reportSelect" class="org.hisp.dhis.caseentry.action.report.ReportSelectAction">
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
@@ -169,10 +177,9 @@
     </action>
 
     <action name="generateReport" class="org.hisp.dhis.caseentry.action.report.GenerateReportAction">
-      <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/report.vm</param>
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
+      <param name="javascripts">javascript/report.js</param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 

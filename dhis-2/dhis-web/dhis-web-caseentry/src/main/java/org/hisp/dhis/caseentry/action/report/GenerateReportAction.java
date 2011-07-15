@@ -29,12 +29,13 @@ package org.hisp.dhis.caseentry.action.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -63,11 +64,11 @@ public class GenerateReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     private ProgramService programService;
@@ -102,32 +103,11 @@ public class GenerateReportAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    private Program program;
-
-    public Program getProgram()
-    {
-        return program;
-    }
-
-    private Collection<Program> programs = new ArrayList<Program>();
-
-    public Collection<Program> getPrograms()
-    {
-        return programs;
-    }
-
     private Integer programId;
 
-    public Integer getProgramId()
+    public void setProgramId( Integer programId )
     {
-        return programId;
+        this.programId = programId;
     }
 
     private String startDate;
@@ -137,11 +117,6 @@ public class GenerateReportAction
         this.startDate = startDate;
     }
 
-    public String getStartDate()
-    {
-        return startDate;
-    }
-
     private String endDate;
 
     public void setEndDate( String endDate )
@@ -149,9 +124,11 @@ public class GenerateReportAction
         this.endDate = endDate;
     }
 
-    public String getEndDate()
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
     {
-        return endDate;
+        return organisationUnit;
     }
 
     Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
@@ -168,6 +145,13 @@ public class GenerateReportAction
         return colorMap;
     }
 
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -175,42 +159,29 @@ public class GenerateReportAction
     public String execute()
         throws Exception
     {
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        program = selectedStateManager.getSelectedProgram();
+        program = programService.getProgram( programId );
 
-        programId = program.getId();
+        Date sDate = format.parseDate( startDate );
 
-        programs = programService.getPrograms( organisationUnit );
+        Date eDate = format.parseDate( endDate );
 
         // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
 
-        int total = programInstanceService.countProgramInstances( program, organisationUnit );
+        int total = programInstanceService.countProgramInstances( program, organisationUnit, sDate, eDate );
 
         this.paging = createPaging( total );
 
-        Collection<ProgramInstance> selectedProgramInstances = programInstanceService.getProgramInstances( program,
-            organisationUnit, paging.getStartPos(), paging.getPageSize() );
+        programInstances = programInstanceService.getProgramInstances( program, organisationUnit, sDate, eDate, paging
+            .getStartPos(), paging.getPageSize() );
 
         Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
-        for ( ProgramInstance programInstance : selectedProgramInstances )
+        for ( ProgramInstance programInstance : programInstances )
         {
-            if ( !programInstance.isCompleted() )
-            {
-                programInstances.add( programInstance );
-            }
-            else
-            {
-                if ( programInstance.getEnrollmentDate().before( format.parseDate( endDate ) )
-                    && programInstance.getEnrollmentDate().after( format.parseDate( startDate ) ) )
-                {
-                    programInstances.add( programInstance );
-                }
-            }
-
             programStageInstances.addAll( programInstance.getProgramStageInstances() );
         }
 

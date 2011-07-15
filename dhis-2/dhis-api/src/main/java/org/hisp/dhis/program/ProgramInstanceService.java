@@ -26,6 +26,7 @@
  */
 package org.hisp.dhis.program;
 
+import java.util.Date;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -71,5 +72,12 @@ public interface ProgramInstanceService
     
     Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit, int min, int max );
     
+    Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
+
+    Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate,
+        int min, int max );
+
     int countProgramInstances( Program program, OrganisationUnit organisationUnit );
+    
+    int countProgramInstances( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
 }

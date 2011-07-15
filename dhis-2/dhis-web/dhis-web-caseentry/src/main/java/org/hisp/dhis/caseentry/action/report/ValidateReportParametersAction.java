@@ -29,7 +29,6 @@ package org.hisp.dhis.caseentry.action.report;
 
 import java.util.Date;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 
@@ -45,14 +44,7 @@ public class ValidateReportParametersAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
+    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -103,20 +95,6 @@ public class ValidateReportParametersAction
     public String execute()
         throws Exception
     {
-        if ( selectedStateManager.getSelectedOrganisationUnit() == null )
-        {
-            message = i18n.getString( "please_select_a_reporting_unit" );
-
-            return INPUT;
-        }
-
-        if ( selectedStateManager.getSelectedProgram() == null )
-        {
-            message = i18n.getString( "please_select_a_program" );
-
-            return INPUT;
-        }
-
         if ( startDate == null )
         {
             message = i18n.getString( "please_choose_a_valid_start_date" );
