@@ -33,11 +33,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -83,20 +81,6 @@ public class DefaultSelectedStateManager
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
-    }
-
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
-    private ProgramStageService programStageService;
-
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
     }
 
     private ProgramInstanceService programInstanceService;
@@ -186,50 +170,6 @@ public class DefaultSelectedStateManager
     public void clearSelectedProgramStageInstance()
     {
         getSession().remove( SESSION_KEY_SELECTED_PROGRAM_STAGE_INSTANCE_ID );
-    }
-
-    public void setSelectedProgram( Program program )
-    {
-        getSession().put( SESSION_KEY_SELECTED_PROGRAM_ID, program.getId() );
-    }
-
-    public Program getSelectedProgram()
-    {
-        Integer id = (Integer) getSession().get( SESSION_KEY_SELECTED_PROGRAM_ID );
-
-        if ( id == null )
-        {
-            return null;
-        }
-
-        return programService.getProgram( id );
-    }
-
-    public void clearSelectedProgram()
-    {
-        getSession().remove( SESSION_KEY_SELECTED_PROGRAM_ID );
-    }
-
-    public void setSelectedProgramStage( ProgramStage programStage )
-    {
-        getSession().put( SESSION_KEY_SELECTED_PROGRAMSTAGE_ID, programStage.getId() );
-    }
-
-    public ProgramStage getSelectedProgramStage()
-    {
-        Integer id = (Integer) getSession().get( SESSION_KEY_SELECTED_PROGRAMSTAGE_ID );
-
-        if ( id == null )
-        {
-            return null;
-        }
-
-        return programStageService.getProgramStage( id );
-    }
-
-    public void clearSelectedProgramStage()
-    {
-        getSession().remove( SESSION_KEY_SELECTED_PROGRAMSTAGE_ID );
     }
 
     public void clearListAll()
