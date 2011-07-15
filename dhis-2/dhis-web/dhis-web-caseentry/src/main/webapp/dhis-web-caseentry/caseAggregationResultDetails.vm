@@ -1,33 +1,42 @@
 <table class='mainPageTable listTable'>
-	<thead>
-		<th>$i18n.getString('full_name')</th>
-		<th>$i18n.getString('program_stage')</th>
-		<th>$i18n.getString('data_element')</th>
-		<th>$i18n.getString('value')</th>
-	</thead>
 	<tbody>
+		#set($hasDataValue = true )
 		#foreach( $patient in $mapPatients.keySet())
-			<tr id="tr${patientDataValue.dataElement.id}" style='background-color: #cccccc'>
-				<td>$patient.getFullName()</td>
-				<td></td>
-				<td></td>
-				<td></td>
+			#if( $hasDataValue == true)
+			<tr height='5em'>
+				<th>$i18n.getString( "full_name" )</th>
+				<th>$i18n.getString( "age" )</th>
+				<th>$i18n.getString( "gender" )</th>
+			</tr>
+			#end
+			<tr>
+				<td>$!patient.getFullName()</td>
+				<td>$!patient.getAge()</td>
+				<td>$!patient.gender</td>
 			</tr>
 			
 			#set($dataValues = $mapPatients.get($patient) )
-			#if( $!dataValues )
-				#foreach( $dataValue in $dataValues )
+			#if ( $!dataValues.size() == 0 )
+				#set($hasDataValue = false )
 				<tr>
-					<td></td>
+					<td colspan='3'></td>
+				</tr>
+			#else
+				#set($hasDataValue = true )
+				<tr style='background-color: #cccccc'>
+					<td>$i18n.getString('program_stage')</td>
+					<td>$i18n.getString('data_element')</td>
+					<td>$i18n.getString('value')</td>
+				</tr>
+				#set( $mark = false )
+				#foreach( $dataValue in $dataValues )
+				<tr #alternate( $mark )>
 					<td>$dataValue.programStageInstance.programStage.name</td>
 					<td>$dataValue.dataElement.name</td>
 					<td>$dataValue.value</td>
 				</tr>
+				#set( $mark = !$mark)
 				#end
-			#else
-				<tr>
-					<td colspan='4'></td>
-				</tr>
 			#end
 		#end
 	</tbody>

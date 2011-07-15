@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.caseaggregation;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
@@ -143,12 +144,17 @@ public class CaseAggregationResultDetailsAction
             Collection<DataElement> dataElements = aggregationConditionService.getDataElementsInCondition( aggCondition
                 .getAggregationExpression() );
 
-            Collection<PatientDataValue> dataValues = patientDataValueService.getPatientDataValues( patient,
-                dataElements, period.getStartDate(), period.getEndDate() );
+            Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
 
+            if ( dataElements.size() > 0 )
+            {
+                dataValues = patientDataValueService.getPatientDataValues( patient,
+                    dataElements, period.getStartDate(), period.getEndDate() );
+            }
+            
             mapPatients.put( patient, dataValues );
         }
-        
+
         return SUCCESS;
     }
 }

@@ -232,7 +232,6 @@ public class CaseAggregationResultAction
 
                     if ( condition != null )
                     {
-
                         for ( Period period : periodList )
                         {
                             String message = i18n.getString( "in" ) + " " + format.formatPeriod( period );

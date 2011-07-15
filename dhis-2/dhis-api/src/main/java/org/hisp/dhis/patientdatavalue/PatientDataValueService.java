@@ -97,7 +97,7 @@ public interface PatientDataValueService
     Collection<PatientDataValue> getPatientDataValues( DataElement dataElement, boolean providedByAnotherFacility );
 
     Collection<PatientDataValue> getPatientDataValues( Patient patient, Collection<DataElement> dataElements,
-        Date date, java.util.Date date2 );
+        Date startDate, Date endDate );
 
     Collection<PatientDataValue> getAllPatientDataValues();
 }
