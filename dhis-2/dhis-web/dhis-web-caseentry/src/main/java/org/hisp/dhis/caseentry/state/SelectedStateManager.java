@@ -29,9 +29,7 @@ package org.hisp.dhis.caseentry.state;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 
 /**
@@ -71,26 +69,6 @@ public interface SelectedStateManager
     ProgramStageInstance getSelectedProgramStageInstance();
 
     void clearSelectedProgramStageInstance();
-
-    // -------------------------------------------------------------------------
-    // Progam
-    // -------------------------------------------------------------------------
-
-    void setSelectedProgram( Program program );
-
-    Program getSelectedProgram();
-
-    void clearSelectedProgram();
-
-    // -------------------------------------------------------------------------
-    // Progam-stages
-    // -------------------------------------------------------------------------
-
-    void setSelectedProgramStage( ProgramStage programStage );
-
-    ProgramStage getSelectedProgramStage();
-
-    void clearSelectedProgramStage();
 
     // -------------------------------------------------------------------------
     // for searching patients
