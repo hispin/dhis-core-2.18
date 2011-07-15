@@ -1,16 +1,23 @@
-<h3>$i18n.getString( "report_management" )</h3>
+<script>
+	jQuery(document).ready(	function(){
+		validation( 'reportForm', function(form){
+			validateAndGenerateReport();
+		}); 
+	});		
+</script>
 
+<h3>$i18n.getString( "report_management" )</h3>
 <form id="reportForm" name="reportForm" method="post" action="reportSelect.action">
 <table>	
     <tr>
 	  <td><label>$i18n.getString( "reporting_unit" )</label></td>
-	  <td><input type="text" readonly="readonly" id='orgunitname' name='orgunitname' #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px"></td>
+	  <td><input type="text" readonly="readonly" id='orgunitname' name='orgunitname' value="[$i18n.getString( "select" )]" style="min-width:350px"></td>
     </tr>
     
     <tr>
         <td><label for="programId">$i18n.getString( "program" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-            <select id="programId" name="programId" disabled style="min-width:350px" class="{validate:{required:true}}">
+            <select id="programId" name="programId" disabled style="min-width:350px" class="{validate:{required:true}}" >
             </select>
         </td>
     </tr>
@@ -36,7 +43,7 @@
     </tr>    	                		
 </table>
 <p>
-    <input type="button" id='generateBtn' name='generateBtn' disabled value="$i18n.getString( 'generate' )" style="width:10em" onclick="validateAndGenerateReport()"/>
+    <input type="submit" id='generateBtn' name='generateBtn' disabled value="$i18n.getString( 'generate' )" style="width:10em" />
     <input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='index.action'" style="width:10em"/>
 </p>  
 </form>
