@@ -175,22 +175,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="activityPlanService" ref="org.hisp.dhis.activityplan.ActivityPlanService" />
   </bean>
 
-	<!-- Report -->
+  <!-- Report -->
 
   <bean id="org.hisp.dhis.caseentry.action.report.ReportSelectAction" class="org.hisp.dhis.caseentry.action.report.ReportSelectAction"
     scope="prototype">
-    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
   </bean>
 
   <bean id="org.hisp.dhis.caseentry.action.report.ValidateReportParametersAction" class="org.hisp.dhis.caseentry.action.report.ValidateReportParametersAction"
     scope="prototype">
-    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
   </bean>
 
   <bean id="org.hisp.dhis.caseentry.action.report.GenerateReportAction" class="org.hisp.dhis.caseentry.action.report.GenerateReportAction"
     scope="prototype">
-    <property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
     <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />

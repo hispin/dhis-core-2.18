@@ -1,3 +1,6 @@
+#if( $programInstance.size() == 0 )
+	<i>$i18n.getString('no_result')</i>
+#else
 <table class="mainPageTable">
 <tr>
     <td style="vertical-align:top">    
@@ -41,7 +44,7 @@
     </td>
 </tr>
 </table>
-
+#end
 <p></p>
 
 <div class="paging-container">

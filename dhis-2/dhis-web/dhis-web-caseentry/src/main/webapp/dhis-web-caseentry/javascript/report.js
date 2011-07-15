@@ -2,7 +2,40 @@ isAjax = true;
 
 function organisationUnitSelected( orgUnits )
 {
-    window.location.href = 'reportSelect.action';
+    showLoader();
+	jQuery.postJSON( "getPrograms.action",
+	{
+	}, 
+	function( json ) 
+	{    
+		setFieldValue( 'orgunitname', json.organisationUnit );
+		
+		clearListById('programId');
+		if( json.programs.length == 0)
+		{
+			disable('programId');
+			disable('startDate');
+			disable('endDate');
+			disable('endDate');
+			disable('generateBtn');
+		}
+		else
+		{
+			addOptionById( 'programId', "0", i18n_select );
+			
+			for ( var i in json.programs ) 
+			{
+				addOptionById( 'programId', json.programs[i].id, json.programs[i].name );
+			} 
+			enable('programId');
+			enable('startDate');
+			enable('endDate');
+			enable('endDate');
+			enable('generateBtn');
+		}
+		
+		hideLoader();
+	});
 }
 
 selection.setListenerFunction( organisationUnitSelected );
@@ -47,8 +80,9 @@ function loadGeneratedReport()
 
 	jQuery( "#contentDiv" ).load( "generateReport.action",
 	{
-		'startDate': getFieldValue( 'startDate' ),
-		'&endDate': getFieldValue( 'endDate' )
+		programId: getFieldValue( 'programId' ),
+		startDate: getFieldValue( 'startDate' ),
+		endDate: getFieldValue( 'endDate' )
 	}, function() { unLockScreen();hideById( 'message' );showById( 'contentDiv' );});
 }
 

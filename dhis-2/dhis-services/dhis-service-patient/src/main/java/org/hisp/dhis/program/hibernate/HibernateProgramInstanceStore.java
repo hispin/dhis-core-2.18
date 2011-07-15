@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.program.hibernate;
 
+import java.util.Date;
 import java.util.Collection;
 
 import org.hibernate.criterion.Order;
@@ -117,11 +118,49 @@ public class HibernateProgramInstanceStore
             .addOrder( Order.asc( "patient.id" ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Date startDate,
+        Date endDate )
+    {
+        return getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ), Restrictions.ge( "enrollmentDate", startDate ),
+            Restrictions.le( "enrollmentDate", endDate ) )
+            .createAlias( "patient", "patient" )
+            .add(Restrictions.eq( "patient.organisationUnit", organisationUnit ) ) 
+            .addOrder( Order.asc( "patient.id" ) ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Date startDate,
+        Date endDate, int min, int max )
+    {
+        return getCriteria( Restrictions.eq( "program", program ), 
+            Restrictions.isNull( "endDate" ), 
+            Restrictions.ge( "enrollmentDate", startDate ),
+            Restrictions.le( "enrollmentDate", endDate ) )
+            .createAlias( "patient", "patient" )
+            .add(Restrictions.eq( "patient.organisationUnit", organisationUnit ) )
+            .addOrder( Order.asc( "patient.id" ) ).setFirstResult( min ).setMaxResults( max ).list();
+    }
+
     public int count( Program program, OrganisationUnit organisationUnit )
     {
-        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) )
+        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ), 
+            Restrictions.isNull( "endDate" ) )
             .createAlias( "patient", "patient" ).add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) )
             .setProjection( Projections.rowCount() ).uniqueResult();
+        return rs != null ? rs.intValue() : 0;
+    }
+
+    public int count( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    {
+        Number rs = (Number) getCriteria( Restrictions.eq( "program", program ), 
+            Restrictions.isNull( "endDate" ),
+            Restrictions.ge( "enrollmentDate", startDate ), 
+            Restrictions.le( "enrollmentDate", endDate ) )
+            .createAlias( "patient", "patient" )
+            .add(Restrictions.eq( "patient.organisationUnit", organisationUnit ) )
+            .setProjection( Projections.rowCount() ).uniqueResult();
+
         return rs != null ? rs.intValue() : 0;
     }
 }

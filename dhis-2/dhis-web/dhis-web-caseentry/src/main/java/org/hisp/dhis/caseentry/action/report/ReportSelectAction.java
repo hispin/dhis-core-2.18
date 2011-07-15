@@ -27,13 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,49 +41,12 @@ public class ReportSelectAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+   
+    private OrganisationUnitSelectionManager selectionManager;
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
-    }
-
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    private Integer programId;
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
-    public Integer getProgramId()
-    {
-        return programId;
-    }
-
-    private Collection<Program> programs = new ArrayList<Program>();
-
-    public Collection<Program> getPrograms()
-    {
-        return programs;
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------------------------------------
@@ -97,58 +54,9 @@ public class ReportSelectAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
-
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
-        if ( organisationUnit == null )
-        {
-            programId = null;
-
-            selectedStateManager.clearSelectedProgram();
-
-            return SUCCESS;
-        }
-
-        // ---------------------------------------------------------------------
-        // Load assigned Programs
-        // ---------------------------------------------------------------------
-
-        programs = programService.getPrograms( organisationUnit );
-
-        // ---------------------------------------------------------------------
-        // Validate selected Program
-        // ---------------------------------------------------------------------
-
-        Program selectedProgram;
-
-        if ( programId != null )
-        {
-            selectedProgram = programService.getProgram( programId );
-        }
-        else
-        {
-            selectedProgram = selectedStateManager.getSelectedProgram();
-        }
-
-        if ( selectedProgram != null && programs.contains( selectedProgram ) )
-        {
-            programId = selectedProgram.getId();
-            selectedStateManager.setSelectedProgram( selectedProgram );
-        }
-        else
-        {
-            programId = null;
-
-            selectedStateManager.clearSelectedProgram();
-
-            return SUCCESS;
-        }
-
+        selectionManager.clearSelectedOrganisationUnits();
+        
         return SUCCESS;
     }
 }
