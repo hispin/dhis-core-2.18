@@ -482,7 +482,7 @@ function filterExistingObjects()
 // -------------------------------------------------------------------------
 
 function handleField( discardedElements, spanName, tdName )
-{alert(discardedElements + ", " + spanName + ", " + tdName);
+{
 	var existingElements = document.getElementById( spanName ).innerHTML;
 			
 	existingElements = existingElements - discardedElements;
