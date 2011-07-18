@@ -197,8 +197,8 @@ function Subtree()
                 createChildren( $parentTag.get( 0 ), item );
             } else
             {
-                setVisible( $children.eq( 0 ), false );
-                setToggle( $parentTag, false );
+                setVisible( $children.eq( 0 ), true );
+                setToggle( $parentTag, true );
             }
         } );
     }
