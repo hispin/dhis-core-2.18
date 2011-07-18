@@ -186,23 +186,21 @@ function Subtree()
 
     function processExpand( rootElement )
     {
-        var parentElements = rootElement.getElementsByTagName( 'parent' );
-
-        for ( var i = 0, parentElement; ( parentElement = parentElements[i] ); ++i )
+        $( rootElement ).find( "parent" ).each( function( i, item )
         {
-            var parentId = parentElement.getAttribute( 'parentId' );
-            var parentTag = document.getElementById( getTagId( parentId ) );
-            var children = parentTag.getElementsByTagName( 'ul' );
+            var parentId = $( item ).attr( "parentId" );
+            var $parentTag = $( "#" + getTagId( parentId ) );
+            var $children = $parentTag.find( "ul" );
 
-            if ( children.length < 1 )
+            if ( $children.length < 1 )
             {
-                createChildren( parentTag, parentElement );
+                createChildren( $parentTag.get( 0 ), item );
             } else
             {
-                setVisible( children[0], true );
-                setToggle( parentTag, true );
+                setVisible( $children.eq( 0 ), false );
+                setToggle( $parentTag, false );
             }
-        }
+        } );
     }
 
     function treeReceived( rootElement )
@@ -249,43 +247,44 @@ function Subtree()
         setVisible( childrenTag, true );
         setToggle( parentTag, true );
 
-        parentTag.appendChild( childrenTag );
+        $( parentTag ).get( 0 ).appendChild( childrenTag );
     }
 
     function createTreeElementTag( child )
     {
-        var childId = child.getAttribute( 'id' );
-        var hasChildren = child.getAttribute( 'hasChildren' ) != '0';
+        var $child = $( child );
+        var childId = $child.attr( "id" );
+        var hasChildren = $child.attr( "hasChildren" ) != 0;
 
-        var toggleTag = document.createElement( 'span' );
-        toggleTag.className = 'toggle';
+        var $toggleTag = $( "<span/>" );
+        $toggleTag.addClass( "toggle" );
 
         if ( hasChildren )
         {
-            toggleTag.onclick = new Function( 'subtree.toggle( ' + childId + ' )' );
-            toggleTag.appendChild( getToggleExpand() );
+            $toggleTag.bind( "click", new Function( 'subtree.toggle( ' + childId + ' )' ) );
+            $toggleTag.append( getToggleExpand() );
         } else
         {
-            toggleTag.appendChild( getToggleBlank() );
+            $toggleTag.append( getToggleBlank() );
         }
 
-        var linkTag = document.createElement( 'a' );
-        linkTag.href = 'javascript:void selection.select( ' + childId + ' )';
-        linkTag.appendChild( document.createTextNode( child.firstChild.nodeValue ) );
+        var $linkTag = $( "<a/>" );
+        $linkTag.attr( "href", "javascript:void selection.select( " + childId + ")" );
+        $linkTag.append( $child.eq( 0 ).text() );
 
-        if ( child.getAttribute( 'selected' ) == 'true' )
+        if ( $child.attr( "select" ) )
         {
-            linkTag.className = 'selected';
+            $linkTag.addClass( "selected" );
         }
 
-        var childTag = document.createElement( 'li' );
-        childTag.id = getTagId( childId );
-        childTag.appendChild( document.createTextNode( ' ' ) );
-        childTag.appendChild( toggleTag );
-        childTag.appendChild( document.createTextNode( ' ' ) );
-        childTag.appendChild( linkTag );
+        var $childTag = $( "<li/>" );
+        $childTag.attr( "id", getTagId( childId ) );
+        $childTag.append( " " );
+        $childTag.append( $toggleTag )
+        $childTag.append( " " );
+        $childTag.append( $linkTag )
 
-        return childTag;
+        return $childTag.get( 0 );
     }
 
     function setToggle( unitTag, expanded )
