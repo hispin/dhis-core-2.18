@@ -68,13 +68,6 @@ public class DefaultProgramDataEntryService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramDataEntryStore programDataEntryStore;
-
-    public void setProgramDataEntryStore( ProgramDataEntryStore programDataEntryStore )
-    {
-        this.programDataEntryStore = programDataEntryStore;
-    }
-
     private PatientDataValueService patientDataValueService;
 
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
@@ -120,12 +113,6 @@ public class DefaultProgramDataEntryService
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-
-    @Override
-    public Collection<DataEntryForm> getProgramDataEntryForms()
-    {
-        return programDataEntryStore.get();
-    }
 
     @Override
     public String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues,

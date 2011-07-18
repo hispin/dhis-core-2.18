@@ -87,4 +87,5 @@ public interface DataEntryFormStore
     
     Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds );
    
+    Collection<DataEntryForm> get();
 }
