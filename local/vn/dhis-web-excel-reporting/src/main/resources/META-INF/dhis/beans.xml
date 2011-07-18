@@ -299,7 +299,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
 
-	<!-- REPORT EXCEL ITEM BEAN -->
+	<!-- EXPORT ITEM BEAN -->
 
 	<bean id="org.hisp.dhis.reportexcel.exportitem.action.ListExportItemAction"
 		class="org.hisp.dhis.reportexcel.exportitem.action.ListExportItemAction"
@@ -378,9 +378,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemAction"
-		class="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemAction"
+	<bean id="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToExportReportAction"
+		class="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToExportReportAction"
 		scope="prototype">
+		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToImportReportAction"
+		class="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToImportReportAction"
+		scope="prototype">
+		<property name="importItemService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
 		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
@@ -855,7 +864,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- EXCEL ITEM GROUP                                               -->
+	<!-- IMPORT REPORT												   -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 	<bean
@@ -1109,15 +1118,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemAction"
-		class="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemAction"
-		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
-		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
-		<property name="statementManager" ref="statementManager" />
 	</bean>
 
 	<!-- IMPORT DATA -->
