@@ -67,7 +67,7 @@
 		<version>3.5-FINAL</version>
 	</dependency>
 	
-	<!-- Used for Ms Office 2007 and over 
+	<!-- Used for Ms Office 2007 and over -->
 	
 	<dependency>
 		<groupId>org.apache.poi</groupId>
@@ -80,7 +80,7 @@
 		<artifactId>poi-scratchpad</artifactId>		
 		<version>3.5-FINAL</version>
 	</dependency>
-	-->
+	<!---->
 	
   </dependencies>
   
