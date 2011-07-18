@@ -45,6 +45,9 @@ import org.apache.poi.hssf.usermodel.HSSFEvaluationWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.FormulaParser;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.ErrorConstants;
 
 /**
  * @author Tran Thanh Tri
@@ -83,7 +86,7 @@ public class ExcelUtils
     public static final String EXTENSION_XLS = ".xls";
 
     // -------------------------------------------------------------------------
-    //
+    // JXL methods
     // -------------------------------------------------------------------------
 
     /* JXL - Get the specified cell */
@@ -134,6 +137,10 @@ public class ExcelUtils
         }
     }
 
+    // -------------------------------------------------------------------------
+    // POI methods
+    // -------------------------------------------------------------------------
+
     /* POI - Get the specified cell */
     public static org.apache.poi.ss.usermodel.Cell getCellByPOI( int row, int column,
         org.apache.poi.ss.usermodel.Sheet sheetPOI )
@@ -168,7 +175,7 @@ public class ExcelUtils
                 break;
 
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR:
-                value = String.valueOf( cellPOI.getErrorCellValue() );
+                value = ErrorConstants.getText( cellPOI.getErrorCellValue() );
                 break;
 
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
@@ -176,11 +183,71 @@ public class ExcelUtils
                 break;
 
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
-                value = String.valueOf( cellPOI.getNumericCellValue() );
+                if ( DateUtil.isCellDateFormatted( cellPOI ) )
+                {
+                    value = String.valueOf( cellPOI.getDateCellValue() );
+                }
+                else
+                {
+                    value = String.valueOf( cellPOI.getNumericCellValue() );
+                }
                 break;
 
             default:
                 value = cellPOI.getStringCellValue();
+                break;
+            }
+        }
+
+        return value;
+
+    }
+
+    /* POI - Read the special value of given cell */
+    public static String readSpecialValueByPOI( int row, int column, org.apache.poi.ss.usermodel.Sheet sheetPOI )
+    {
+        org.apache.poi.ss.usermodel.Cell cellPOI = getCellByPOI( row, column, sheetPOI );
+
+        String value = "";
+
+        if ( cellPOI != null )
+        {
+            switch ( cellPOI.getCellType() )
+            {
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING:
+                value = cellPOI.getRichStringCellValue().toString();
+                break;
+
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BOOLEAN:
+                value = String.valueOf( cellPOI.getBooleanCellValue() );
+                break;
+
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR:
+                value = ErrorConstants.getText( cellPOI.getErrorCellValue() );
+                break;
+
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
+                try
+                {
+                    value = String.valueOf( cellPOI.getNumericCellValue() );
+                }
+                catch ( IllegalStateException ise )
+                {
+                    value = cellPOI.getCellFormula();
+                }
+                break;
+            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
+                if ( DateUtil.isCellDateFormatted( cellPOI ) )
+                {
+                    value = String.valueOf( cellPOI.getDateCellValue() );
+                }
+                else
+                {
+                    value = String.valueOf( cellPOI.getNumericCellValue() );
+                }
+                break;
+
+            default:
                 break;
             }
         }
@@ -408,6 +475,75 @@ public class ExcelUtils
         {
             return -1;
         }
+    }
+
+    public static String convertAlignmentString( String s )
+    {
+        if ( s.equalsIgnoreCase( "centre" ) )
+        {
+            return "center";
+        }
+        else
+        {
+            return s;
+        }
+    }
+
+    public static String convertAlignmentString( Short s )
+    {
+        String align = "";
+
+        switch ( s )
+        {
+        case CellStyle.ALIGN_CENTER:
+        case CellStyle.ALIGN_CENTER_SELECTION:
+            align = "center";
+            break;
+
+        case CellStyle.ALIGN_JUSTIFY:
+            align = "justify";
+            break;
+
+        case CellStyle.ALIGN_LEFT:
+            align = "left";
+            break;
+
+        case CellStyle.ALIGN_RIGHT:
+            align = "right";
+            break;
+
+        default:
+            align = "general";
+            break;
+        }
+
+        return align;
+    }
+
+    public static String convertVerticalString( Short s )
+    {
+        String valign = "";
+
+        switch ( s )
+        {
+        case CellStyle.VERTICAL_TOP:
+            valign = "top";
+            break;
+
+        case CellStyle.VERTICAL_CENTER:
+            valign = "center";
+            break;
+
+        case CellStyle.VERTICAL_BOTTOM:
+            valign = "bottom";
+            break;
+
+        default:
+            valign = "justify";
+            break;
+        }
+
+        return valign;
     }
 
     public static String checkingExcelFormula( String string_formula, int indexRow, int indexCol )

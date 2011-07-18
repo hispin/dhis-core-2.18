@@ -60,7 +60,7 @@ function selectAllData( _this )
 		
 		for ( var i = 0 ; i < importlist.length ; i ++ )
 		{
-			importlist[i].className = 'ui-selected';
+			importlist[i].className = 'ui-widget-content ui-selected';
 			
 			idTemp = jQuery(importlist[i]).attr( 'id' ) + "_" + jQuery(importlist[i]).html();
 			
@@ -79,7 +79,7 @@ function selectAllData( _this )
 		
 		for ( var i = 0 ; i < importlist.length ; i ++ )
 		{
-			importlist[i].className = 'ui-unselected';
+			importlist[i].className = 'ui-widget-content ui-unselected';
 		}
 		
 		importItemIds.length = 0;
