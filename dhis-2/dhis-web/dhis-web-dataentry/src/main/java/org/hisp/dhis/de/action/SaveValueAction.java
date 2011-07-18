@@ -45,7 +45,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 public class SaveValueAction
     implements Action
@@ -97,7 +96,7 @@ public class SaveValueAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Input
     // -------------------------------------------------------------------------
 
     private String value;
@@ -114,11 +113,6 @@ public class SaveValueAction
         this.dataElementId = dataElementId;
     }
 
-    public int getDataElementId()
-    {
-        return dataElementId;
-    }
-
     private int organisationUnitId;
 
     public void setOrganisationUnitId( int organisationUnitId )
@@ -133,28 +127,15 @@ public class SaveValueAction
         this.optionComboId = optionComboId;
     }
 
-    public int getOptionComboId()
-    {
-        return optionComboId;
-    }
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
     private int statusCode = 0;
 
     public int getStatusCode()
     {
         return statusCode;
-    }
-
-    private String inputId;
-
-    public String getInputId()
-    {
-        return inputId;
-    }
-
-    public void setInputId( String inputId )
-    {
-        this.inputId = inputId;
     }
 
     // -------------------------------------------------------------------------

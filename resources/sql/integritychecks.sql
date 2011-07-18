@@ -91,3 +91,9 @@ select * from dataelementcategory where categoryid not in (select distinct categ
 
 select * from categorycombo where categorycomboid not in (select distinct categorycomboid from categorycombos_categories);
 
+-- Get category options present in more than one category
+
+select categoryoptionid, (
+select count(categoryoptionid) from categories_categoryoptions where categoryoptionid=cc.categoryoptionid )
+as categorycount from categories_categoryoptions as cc order by categorycount desc;
+

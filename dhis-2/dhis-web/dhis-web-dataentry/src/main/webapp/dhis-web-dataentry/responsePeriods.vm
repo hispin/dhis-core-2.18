@@ -2,10 +2,7 @@
 { "periods": [
 #foreach( $period in $periods )
   {
-    "startDate": "$!format.formatDate( ${period.startDate} )",
-    "endDate": "$!format.formatDate( ${period.endDate} )",
-    "name": "$!format.formatPeriod( ${period} )",
-    "externalId": "$!{period.externalId}"
+    "name": "$!format.formatPeriod( ${period} )"
   }#if( $velocityCount < $size1 ),#end
 #end ],
   "periodValid": ${periodValid}
