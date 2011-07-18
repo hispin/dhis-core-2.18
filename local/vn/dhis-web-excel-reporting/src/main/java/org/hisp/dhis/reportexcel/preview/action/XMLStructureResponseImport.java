@@ -27,7 +27,8 @@ package org.hisp.dhis.reportexcel.preview.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.reportexcel.utils.StringUtils.convertAlignmentString;
+import static org.hisp.dhis.reportexcel.utils.ExcelUtils.convertAlignmentString;
+import static org.hisp.dhis.reportexcel.utils.ExcelUtils.readSpecialValueByPOI;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,13 +36,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-import jxl.Cell;
-import jxl.CellType;
-import jxl.Range;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.format.CellFormat;
-
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
 
@@ -61,7 +61,7 @@ public class XMLStructureResponseImport
     /**
      * The workbook we are reading from a given file
      */
-    private Workbook WORKBOOK;
+    private org.apache.poi.ss.usermodel.Workbook WORKBOOK;
 
     private static final String WORKBOOK_OPENTAG = "<workbook>";
 
@@ -102,71 +102,9 @@ public class XMLStructureResponseImport
 
         FileInputStream inputStream = new FileInputStream( new File( pathFileName ) );
 
-        this.WORKBOOK = Workbook.getWorkbook( inputStream );
+        this.WORKBOOK = new HSSFWorkbook( inputStream );
 
         this.writeFormattedXML( collectSheets, importItems, bWriteDescription, type );
-    }
-
-    // -------------------------------------------------------------------------
-    // Public methods
-    // -------------------------------------------------------------------------
-
-    public void writeData( int sheetNo, List<ExcelItem> importItems, String TYPE )
-    {
-        Sheet s = WORKBOOK.getSheet( sheetNo - 1 );
-
-        xml.append( "<sheet id='" + (sheetNo) + "'>" );
-        xml.append( "<name><![CDATA[" + s.getName() + "]]></name>" );
-
-        Cell[] cell = null;
-        int run = 0;
-
-        for ( int i = 0; i < s.getRows(); i++ )
-        {
-            xml.append( "<row index='" + i + "'>" );
-
-            cell = s.getRow( i );
-
-            for ( int j = 0; j < cell.length; j++ )
-            {
-                run = 0;
-                
-                // Remember that empty cells can contain format information
-                if ( !cell[j].getType().equals( CellType.EMPTY ) || (cell[j].getCellFormat() != null) )
-                {
-                    xml.append( "<col no='" + j + "'" );
-
-                    for ( ExcelItem importItem : importItems )
-                    {
-                        if ( (importItem.getSheetNo() == sheetNo) && (importItem.getRow() == (i + 1))
-                            && (importItem.getColumn() == (j + 1)) )
-                        {
-                            if ( TYPE.equals( ExcelItemGroup.TYPE.NORMAL ) || TYPE.equals( ExcelItemGroup.TYPE.CATEGORY ) )
-                            {
-                                xml.append( " id='" + importItem.getExpression() + "'>" );
-                            }
-
-                            break;
-                        }
-
-                        run++;
-                    }
-
-                    if ( run == importItems.size() )
-                    {                        
-                        xml.append( ">" );
-                    } // end checking
-
-                    xml.append( "<data><![CDATA[" + cell[j].getContents() + "]]></data>" );
-
-                    this.readingDetailsFormattedCell( cell[j] );
-
-                    xml.append( "</col>" );
-                }
-            }
-            xml.append( "</row>" );
-        }
-        xml.append( "</sheet>" );
     }
 
     // -------------------------------------------------------------------------
@@ -191,7 +129,7 @@ public class XMLStructureResponseImport
 
         for ( Integer sheet : collectSheets )
         {
-            writeData( sheet, importItems, type );
+            this.writeData( sheet, importItems, type );
         }
 
         xml.append( WORKBOOK_CLOSETAG );
@@ -210,37 +148,96 @@ public class XMLStructureResponseImport
         xml.append( MERGEDCELL_CLOSETAG );
     }
 
+    private void writeData( int sheetNo, List<ExcelItem> importItems, String TYPE )
+    {
+        Sheet s = WORKBOOK.getSheetAt( sheetNo - 1 );
+
+        xml.append( "<sheet id='" + (sheetNo) + "'>" );
+        xml.append( "<name><![CDATA[" + s.getSheetName() + "]]></name>" );
+
+        int run = 0;
+        int i = 0;
+        int j = 0;
+
+        for ( Row row : s )
+        {
+            j = 0;
+
+            xml.append( "<row index='" + i + "'>" );
+
+            for ( Cell cell : row )
+            {
+                run = 0;
+
+                // Remember that empty cells can contain format information
+                if ( (cell.getCellStyle() != null) || cell.getCellType() != Cell.CELL_TYPE_BLANK )
+                {
+                    xml.append( "<col no='" + j + "'" );
+
+                    for ( ExcelItem importItem : importItems )
+                    {
+                        if ( (importItem.getSheetNo() == sheetNo) && (importItem.getRow() == (i + 1))
+                            && (importItem.getColumn() == (j + 1)) )
+                        {
+                            if ( TYPE.equals( ExcelItemGroup.TYPE.NORMAL )
+                                || TYPE.equals( ExcelItemGroup.TYPE.CATEGORY ) )
+                            {
+                                xml.append( " id='" + importItem.getExpression() + "'>" );
+                            }
+
+                            break;
+                        }
+
+                        run++;
+                    }
+
+                    if ( run == importItems.size() )
+                    {
+                        xml.append( ">" );
+                    } // end checking
+
+                    xml.append( "<data><![CDATA[" + readSpecialValueByPOI( i + 1, j + 1, s ) + "]]></data>" );
+
+                    this.readingDetailsFormattedCell( cell );
+
+                    xml.append( "</col>" );
+                }
+
+                j++;
+            }
+
+            i++;
+
+            xml.append( "</row>" );
+        }
+        xml.append( "</sheet>" );
+    }
+
     private void writeBySheetNo( int sheetNo )
     {
-        Sheet sheet = WORKBOOK.getSheet( sheetNo - 1 );
-        Range[] aMergedCell = sheet.getMergedCells();
+        Sheet sheet = WORKBOOK.getSheetAt( sheetNo - 1 );
+        CellRangeAddress cellRangeAddress = null;
 
-        int iColTopLeft = 0;
-        int iRowTopLeft = 0;
-        int iColBottomRight = 0;
-
-        for ( int j = 0; j < aMergedCell.length; j++ )
+        for ( int i = 0; i < sheet.getNumMergedRegions(); i++ )
         {
-            iColTopLeft = aMergedCell[j].getTopLeft().getColumn();
-            iRowTopLeft = aMergedCell[j].getTopLeft().getRow();
-            iColBottomRight = aMergedCell[j].getBottomRight().getColumn();
+            cellRangeAddress = sheet.getMergedRegion( i );
 
-            if ( iColTopLeft != iColBottomRight )
+            if ( cellRangeAddress.getFirstColumn() != cellRangeAddress.getLastColumn() )
             {
-                xml.append( "<cell " + "iKey='" + (sheetNo) + "#" + iRowTopLeft + "#" + iColTopLeft + "'>"
-                    + (iColBottomRight - iColTopLeft + 1) + "</cell>" );
+                xml.append( "<cell " + "iKey='" + (sheetNo) + "#" + cellRangeAddress.getFirstRow() + "#"
+                    + cellRangeAddress.getFirstColumn() + "'>"
+                    + (cellRangeAddress.getLastColumn() - cellRangeAddress.getFirstColumn() + 1) + "</cell>" );
             }
         }
     }
 
-    private void readingDetailsFormattedCell( Cell objCell )
+    private void readingDetailsFormattedCell( org.apache.poi.ss.usermodel.Cell objCell )
     {
-        // The format information
-        CellFormat format = objCell.getCellFormat();
+        CellStyle format = objCell.getCellStyle();
 
         if ( format != null )
         {
-            xml.append( "<format align='" + convertAlignmentString( format.getAlignment().getDescription() ) + "'/>" );
+            xml.append( "<format align='" + convertAlignmentString( format.getAlignment() ) + "'/>" );
         }
     }
 }

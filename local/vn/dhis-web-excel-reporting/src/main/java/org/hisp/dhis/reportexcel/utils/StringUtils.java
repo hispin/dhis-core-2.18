@@ -53,22 +53,6 @@ public class StringUtils
     /*                                                                        */
     /* ---------------------------------------------------------------------- */
 
-    public static String convertAlignmentString( String s )
-    {
-        if ( s.equalsIgnoreCase( "centre" ) )
-        {
-            return "center";
-        }
-        else
-        {
-            return s;
-        }
-    }
-
-    /* ---------------------------------------------------------------------- */
-    /*                                                                        */
-    /* ---------------------------------------------------------------------- */
-
     public static String refiningNumberDecimalFormat( String input )
     {
         try
