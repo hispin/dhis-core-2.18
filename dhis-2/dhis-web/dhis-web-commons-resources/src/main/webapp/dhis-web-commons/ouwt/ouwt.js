@@ -45,11 +45,9 @@ function Selection()
 
     this.select = function( unitId )
     {
-        var unitTag = document.getElementById( getTagId( unitId ) );
+        var linkTag = $( "#" + getTagId( unitId ) ).find( "a" ).eq( 0 );
 
-        var linkTags = unitTag.getElementsByTagName( 'a' );
-
-        if ( linkTags[0].className == 'selected' && unselectAllowed )
+        if ( linkTag.hasClass( "selected" ) && unselectAllowed )
         {
             $.post( organisationUnitTreePath + "removeorgunit.action", {
                 id : unitId
@@ -58,7 +56,6 @@ function Selection()
                 responseReceived( data.firstChild );
             }, 'xml' );
 
-            linkTags[0].className = '';
         } else
         {
             if ( multipleSelectionAllowed )
@@ -80,19 +77,9 @@ function Selection()
                     responseReceived( data.firstChild );
                 }, 'xml' );
 
-                // Remove all select marks
-                var treeTag = document.getElementById( 'orgUnitTree' );
-                var linkTags = treeTag.getElementsByTagName( 'a' );
+                $( "#orgUnitTree" ).find( "a" ).removeClass( "selected" );
+                $( "#" + getTagId( unitId ) ).find( "a" ).eq( 0 ).addClass( "selected" );
 
-                for ( var i = 0, linkTag; ( linkTag = linkTags[i] ); ++i )
-                {
-                    linkTag.className = '';
-                }
-
-                // Set new select mark
-                var unitTag = document.getElementById( getTagId( unitId ) );
-                linkTags = unitTag.getElementsByTagName( 'a' );
-                linkTags[0].className = 'selected';
             }
         }
     };
@@ -155,8 +142,7 @@ function Subtree()
 {
     this.toggle = function( unitId )
     {
-        var parentTag = document.getElementById( getTagId( unitId ) );
-        var children = parentTag.getElementsByTagName( 'ul' );
+        var children = $( "#" + getTagId( unitId ) ).find( "ul" );
 
         var request = new Request();
         request.setResponseTypeXML( 'units' );
@@ -321,12 +307,18 @@ function Subtree()
 
     function setVisible( tag, visible )
     {
-        tag.style.display = visible ? 'block' : 'none';
+        if ( visible )
+        {
+            $( tag ).show();
+        } else
+        {
+            $( tag ).hide();
+        }
     }
 
     function isVisible( tag )
     {
-        return tag.style.display != 'none';
+        return $( tag ).is( ":visible" );
     }
 
     function getTagId( unitId )
