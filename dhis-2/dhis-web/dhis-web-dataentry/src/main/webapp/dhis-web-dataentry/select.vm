@@ -33,8 +33,7 @@ indicatorFormulas['${indicator.id}'] = '($!{indicator.explodedNumerator})/($!{in
 
 <div id="currentSelection">
 	<span style="float:left;cursor:pointer;margin-right:5px;"><img src="../images/hide.png" title="$i18n.getString( 'close' )" onclick="closeCurrentSelection()"></span>
-	<span id="currentOrganisationUnit">$i18n.getString( "no_organisationunit_selected" )</span> -
-	<span id="currentPeriod">$i18n.getString( "no_period_selected" )</span/><br>
+	<span id="currentOrganisationUnit">$i18n.getString( "no_organisationunit_selected" )</span> - <span id="currentPeriod">$i18n.getString( "no_period_selected" )</span/><br>
 	<span id="currentDataElement">$i18n.getString( "no_dataelement_selected" )</span>
 </div>
 
