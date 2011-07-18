@@ -12,6 +12,10 @@
 			height:500,
 			title: "$i18n.getString( 'expression' )"
 		});
+			
+		jQuery( "#periodTypeName" ).change(function(){
+			getOperandsPage();
+		});
 		
 		getConstantsPage();
 		getOperandsPage();
