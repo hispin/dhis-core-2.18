@@ -301,7 +301,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/report/exportItems.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/exportItem.js</param>
+			<param name="javascripts">javascript/exportItems.js</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -327,7 +327,7 @@
 			class="org.hisp.dhis.reportexcel.exportitem.action.SetupExportItemFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/report/addExportItemForm.vm</param>
-			<param name="javascripts">javascript/exportItem.js</param>
+			<param name="javascripts">javascript/exportItems.js</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -343,7 +343,7 @@
 			class="org.hisp.dhis.reportexcel.exportitem.action.SetupExportItemFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/report/updateExportItemForm.vm</param>
-			<param name="javascripts">javascript/exportItem.js</param>
+			<param name="javascripts">javascript/exportItems.js</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -393,20 +393,20 @@
 				/dhis-web-excel-reporting/report/responseExportItems.vm</result>
 		</action>
 		
-		<action name="copyExportItems"
-			class="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemAction">
+		<action name="copyExportItemToExportReport"
+			class="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToExportReportAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-		<action name="copyImportItemsToImportReport"
-			class="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemToImportReportAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-			<param name="requiredAuthorities">F_COPY_IMPORT_ITEM_ADMINISTRATION</param>
+		<action name="copyExportItemToImportReport"
+			class="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToImportReportAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
-
+		
 		<action name="getListSheet"
 			class="org.hisp.dhis.reportexcel.exportitem.action.GetListSheetAction">
 			<result name="success" type="velocity-xml">
@@ -989,11 +989,12 @@
 				/dhis-web-excel-reporting/import/responseImportItems.vm
 			</result>
 		</action>
-
-		<action name="copyImportItems"
-			class="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		
+		<action name="copyImportItemToImportReport"
+			class="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemToImportReportAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_COPY_IMPORT_ITEM_ADMINISTRATION</param>
 		</action>
 
 		<!-- IMPORT DATA -->
@@ -1031,7 +1032,7 @@
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
 				javascript/preview.js,
-				javascript/imports.js</param>
+				javascript/import.js</param>
 			<param name="stylesheets">
 				style/style.css,
 				style/previewStyle.css</param>

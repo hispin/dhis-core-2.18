@@ -41,7 +41,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class CopyExportItemAction
+public class CopyExportItemToExportReportAction
     implements Action
 {
     // -------------------------------------------------------------------------

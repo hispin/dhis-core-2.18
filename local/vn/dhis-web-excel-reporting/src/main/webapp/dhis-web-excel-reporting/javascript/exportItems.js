@@ -110,7 +110,7 @@ function validateUpdateExportItem( form )
 		sheetNo: getFieldValue( 'sheetNo' ),
 		row: getFieldValue( 'row' ),
 		column: getFieldValue( 'column' )
-
+		
 	},function( json ){
 		if(json.response == 'success'){
 			form.submit();
@@ -310,7 +310,7 @@ function saveCopyExportItemsToExportReport() {
 	// Do copy and prepare the message notes
 	if ( ItemsSaved.length > 0 )
 	{
-		var url = "copyExportItems.action";
+		var url = "copyExportItemToExportReport.action";
 			url += "?exportReportId=" + $("#targetExportReport").val();
 			url += "&sheetNo=" + sheetId;
 			
@@ -430,7 +430,7 @@ function saveCopiedExportItemsToImportReport() {
 	// do copy and prepare the message notes
 	if ( ItemsSaved.length > 0 )
 	{
-		var url = "copyImportItems.action";
+		var url = "copyExportItemToImportReport.action";
 			url += "?importReportId=" + $("#targetImportReport").val();
 			url += "&sheetNo=" + sheetId;
 			
@@ -479,7 +479,7 @@ function executeCopyItems( url )
 				warningMessages +=
 				"<br/><b>[" + (ItemsSaved.length) + "/" + (NumberOfItemsChecked) + "]</b>:: "
 				+ i18n_copy_successful
-				+ "<br/>======================<br/><br/>";
+				+ "<br/>=======================<br/><br/>";
 			}
 			
 			setMessage( warningMessages );

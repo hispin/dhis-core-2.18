@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.importitem.action;
+package org.hisp.dhis.reportexcel.exportitem.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -43,12 +43,12 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class CopyImportItemAction
+public class CopyExportItemToImportReportAction
     implements Action
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ExportReportService exportReportService;
 
@@ -71,19 +71,19 @@ public class CopyImportItemAction
         this.statementManager = statementManager;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer importReportId;
 
     private Integer sheetNo;
 
-    private Collection<String> reportItemIds;
+    private Collection<String> exportItemIds;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setImportReportId( Integer importReportId )
     {
@@ -95,9 +95,9 @@ public class CopyImportItemAction
         return sheetNo;
     }
 
-    public void setReportItemIds( Collection<String> reportItemIds )
+    public void setExportItemIds( Collection<String> exportItemIds )
     {
-        this.reportItemIds = reportItemIds;
+        this.exportItemIds = exportItemIds;
     }
 
     public void setSheetNo( Integer sheetNo )
@@ -105,9 +105,9 @@ public class CopyImportItemAction
         this.sheetNo = sheetNo;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
@@ -116,7 +116,7 @@ public class CopyImportItemAction
 
         ExcelItemGroup importReport = importItemService.getImportReport( importReportId );
 
-        for ( String itemId : reportItemIds )
+        for ( String itemId : exportItemIds )
         {
             ReportExcelItem itemSource = exportReportService.getExportItem( Integer.parseInt( itemId ) );
 

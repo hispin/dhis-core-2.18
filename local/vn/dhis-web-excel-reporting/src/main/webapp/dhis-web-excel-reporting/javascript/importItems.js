@@ -284,7 +284,7 @@ function saveCopiedImportItemsToImportReport() {
 		}
 		
 		request.sendAsPost(params);
-		request.send( "copyImportItemsToImportReport.action");
+		request.send( "copyImportItemToImportReport.action");
 	}
 	// If have no any ImportItem(s) will be copied
 	// and also have ImportItem(s) in Duplicating list
