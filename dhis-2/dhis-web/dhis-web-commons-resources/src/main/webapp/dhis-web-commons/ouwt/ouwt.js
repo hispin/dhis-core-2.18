@@ -173,17 +173,15 @@ function Subtree()
 
     function processCollapse( rootElement )
     {
-        var unitElements = rootElement.getElementsByTagName( 'unit' );
-
-        for ( var i = 0, unitElement; ( unitElement = unitElements[i] ); ++i )
+        $( rootElement ).find( "unit" ).each( function( i, item )
         {
-            var parentId = unitElement.firstChild.nodeValue;
-            var parentTag = document.getElementById( getTagId( parentId ) );
-            var children = parentTag.getElementsByTagName( 'ul' );
+            var parentId = $( item ).eq( 0 ).text();
+            var $parentTag = $( "#" + getTagId( parentId ) );
+            var child = $parentTag.find( "ul" ).eq( 0 );
 
-            setVisible( children[0], false );
-            setToggle( parentTag, false );
-        }
+            setVisible( child, false );
+            setToggle( $parentTag, false );
+        } );
     }
 
     function processExpand( rootElement )
@@ -292,8 +290,7 @@ function Subtree()
 
     function setToggle( unitTag, expanded )
     {
-        var spans = unitTag.getElementsByTagName( 'span' );
-        var toggleTag = spans[0];
+        var toggleTag = $( unitTag ).find( "span" ).get( 0 );
         var toggleImg = expanded ? getToggleCollapse() : getToggleExpand();
 
         if ( toggleTag.firstChild )
