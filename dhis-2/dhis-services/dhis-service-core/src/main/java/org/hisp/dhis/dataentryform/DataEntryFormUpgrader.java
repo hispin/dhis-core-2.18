@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,14 +43,7 @@ public class DataEntryFormUpgrader
     {
         this.dataEntryFormService = dataEntryFormService;
     }
-
-    private ProgramDataEntryService programDataEntryService;
-
-    public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
-    {
-        this.programDataEntryService = programDataEntryService;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Implementation method
     // -------------------------------------------------------------------------
@@ -62,7 +54,7 @@ public class DataEntryFormUpgrader
     {
         Collection<DataEntryForm> dataEntryForms = dataEntryFormService.getAllDataEntryForms();
 
-        Collection<DataEntryForm> programDataEntryForms = programDataEntryService.getProgramDataEntryForms();
+        Collection<DataEntryForm> programDataEntryForms = dataEntryFormService.getProgramDataEntryForms();
 
         dataEntryForms.removeAll( programDataEntryForms );
 

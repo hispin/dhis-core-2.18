@@ -128,6 +128,12 @@ public class DefaultDataEntryFormService
         return dataEntryFormStore.getAllDataEntryForms();
     }
 
+    @Override
+    public Collection<DataEntryForm> getProgramDataEntryForms()
+    {
+        return dataEntryFormStore.get();
+    }
+    
     public String prepareDataEntryFormForSave( String htmlCode )
     {
         StringBuffer sb = new StringBuffer();

@@ -30,7 +30,6 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -50,8 +49,6 @@ public interface ProgramDataEntryService
     //--------------------------------------------------------------------------
     // ProgramDataEntryService
     //--------------------------------------------------------------------------
-    
-    Collection<DataEntryForm> getProgramDataEntryForms();
     
     String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, String disabled,
         I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,

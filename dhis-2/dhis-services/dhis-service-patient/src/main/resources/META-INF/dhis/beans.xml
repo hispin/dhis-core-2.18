@@ -137,10 +137,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="clazz" value="org.hisp.dhis.patient.PatientMobileSetting"/>
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	
-	<bean id="org.hisp.dhis.program.ProgramDataEntryStore" class="org.hisp.dhis.program.hibernate.HibernateProgramDataEntryStore">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
    
 	<!-- Service definitions -->
 	
@@ -160,8 +156,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="programDataEntryStore"
-			ref="org.hisp.dhis.program.ProgramDataEntryStore" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.activityplan.ActivityPlanService"
