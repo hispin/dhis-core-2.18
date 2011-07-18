@@ -1,8 +1,5 @@
-
 // -----------------------------------------------------------------------------
 // Author:   Torgeir Lorange Ostby
-// Version:  $Id: ouwt.js 3457 2007-07-11 12:34:24Z torgeilo $
-// Version:  $Id: ouwt.js 3457 2007-07-11 12:34:24Z torgeilo $
 // -----------------------------------------------------------------------------
 
 /*
@@ -40,48 +37,49 @@ function Selection()
     {
         multipleSelectionAllowed = allowed;
     };
-    
+
     this.setUnselectAllowed = function( allowed )
     {
-    	unselectAllowed = allowed;
+        unselectAllowed = allowed;
     }
 
     this.select = function( unitId )
     {
-        var unitTag = document.getElementById( getTagId( unitId ));
-		
-		var linkTags = unitTag.getElementsByTagName( 'a' );
+        var unitTag = document.getElementById( getTagId( unitId ) );
+
+        var linkTags = unitTag.getElementsByTagName( 'a' );
 
         if ( linkTags[0].className == 'selected' && unselectAllowed )
         {
-			$.post(organisationUnitTreePath + "removeorgunit.action",{
-				id:unitId
-			}, function (data){
-				responseReceived(data.firstChild);
-			},'xml');
-			
+            $.post( organisationUnitTreePath + "removeorgunit.action", {
+                id : unitId
+            }, function( data )
+            {
+                responseReceived( data.firstChild );
+            }, 'xml' );
+
             linkTags[0].className = '';
-        }
-        else
+        } else
         {
             if ( multipleSelectionAllowed )
             {
-				$.post(organisationUnitTreePath + "addorgunit.action",{
-					id:unitId
-				}, function (data){
-					responseReceived(data.firstChild);
-				},'xml');
-				
+                $.post( organisationUnitTreePath + "addorgunit.action", {
+                    id : unitId
+                }, function( data )
+                {
+                    responseReceived( data.firstChild );
+                }, 'xml' );
+
                 linkTags[0].className = 'selected';
-            }
-            else
+            } else
             {
-				$.post(organisationUnitTreePath + "setorgunit.action",{
-					id:unitId
-				}, function (data){
-					responseReceived(data.firstChild);
-				},'xml');	
-				
+                $.post( organisationUnitTreePath + "setorgunit.action", {
+                    id : unitId
+                }, function( data )
+                {
+                    responseReceived( data.firstChild );
+                }, 'xml' );
+
                 // Remove all select marks
                 var treeTag = document.getElementById( 'orgUnitTree' );
                 var linkTags = treeTag.getElementsByTagName( 'a' );
@@ -92,7 +90,7 @@ function Selection()
                 }
 
                 // Set new select mark
-                var unitTag = document.getElementById( getTagId( unitId ));
+                var unitTag = document.getElementById( getTagId( unitId ) );
                 linkTags = unitTag.getElementsByTagName( 'a' );
                 linkTags[0].className = 'selected';
             }
@@ -107,13 +105,13 @@ function Selection()
         }
 
         var unitIds = new Array();
-        
+
         var unitIdElements = rootElement.getElementsByTagName( 'unitId' );
         for ( var i = 0, unitIdElement; ( unitIdElement = unitIdElements[i] ); ++i )
         {
             unitIds[i] = unitIdElement.firstChild.nodeValue;
         }
-        
+
         listenerFunction( unitIds );
     }
 
@@ -121,25 +119,32 @@ function Selection()
     {
         return 'orgUnit' + unitId;
     }
-    
-	this.findByCode = function()
-	{
-		$.getJSON( organisationUnitTreePath + 'getOrganisationUnitByCode.action?code=' + encodeURI( $( '#searchField' ).val() ), function ( data ) {
-			var unitId = data.message;
-			if ( data.response == "success" ) {
-				$( '#orgUnitTreeContainer' ).load( organisationUnitTreePath + 'loadOrganisationUnitTree.action', function() {					
-					
-					if ( !listenerFunction ) {
-						return false;
-					}					
-					var unitIds = [unitId];					
-					listenerFunction( unitIds ); 
-				} );			
-			} else {
-				$( '#searchField' ).css( 'background-color', '#ffc5c5' );
-			}
-		} );
-	}
+
+    this.findByCode = function()
+    {
+        $.getJSON( organisationUnitTreePath + 'getOrganisationUnitByCode.action?code='
+                + encodeURI( $( '#searchField' ).val() ), function( data )
+        {
+            var unitId = data.message;
+            if ( data.response == "success" )
+            {
+                $( '#orgUnitTreeContainer' ).load( organisationUnitTreePath + 'loadOrganisationUnitTree.action',
+                        function()
+                        {
+
+                            if ( !listenerFunction )
+                            {
+                                return false;
+                            }
+                            var unitIds = [ unitId ];
+                            listenerFunction( unitIds );
+                        } );
+            } else
+            {
+                $( '#searchField' ).css( 'background-color', '#ffc5c5' );
+            }
+        } );
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -150,18 +155,17 @@ function Subtree()
 {
     this.toggle = function( unitId )
     {
-        var parentTag = document.getElementById( getTagId( unitId ));
+        var parentTag = document.getElementById( getTagId( unitId ) );
         var children = parentTag.getElementsByTagName( 'ul' );
 
         var request = new Request();
         request.setResponseTypeXML( 'units' );
 
-        if ( children.length < 1 || !isVisible( children[0] ))
+        if ( children.length < 1 || !isVisible( children[0] ) )
         {
             request.setCallbackSuccess( processExpand );
             request.send( organisationUnitTreePath + 'expandSubtree.action?parentId=' + unitId );
-        }
-        else
+        } else
         {
             request.setCallbackSuccess( processCollapse );
             request.send( organisationUnitTreePath + 'collapseSubtree.action?parentId=' + unitId );
@@ -184,18 +188,18 @@ function Subtree()
     function processCollapse( rootElement )
     {
         var unitElements = rootElement.getElementsByTagName( 'unit' );
-        
+
         for ( var i = 0, unitElement; ( unitElement = unitElements[i] ); ++i )
         {
             var parentId = unitElement.firstChild.nodeValue;
-            var parentTag = document.getElementById( getTagId( parentId ));
+            var parentTag = document.getElementById( getTagId( parentId ) );
             var children = parentTag.getElementsByTagName( 'ul' );
-            
+
             setVisible( children[0], false );
             setToggle( parentTag, false );
         }
     }
-    
+
     function processExpand( rootElement )
     {
         var parentElements = rootElement.getElementsByTagName( 'parent' );
@@ -203,14 +207,13 @@ function Subtree()
         for ( var i = 0, parentElement; ( parentElement = parentElements[i] ); ++i )
         {
             var parentId = parentElement.getAttribute( 'parentId' );
-            var parentTag = document.getElementById( getTagId( parentId ));
+            var parentTag = document.getElementById( getTagId( parentId ) );
             var children = parentTag.getElementsByTagName( 'ul' );
 
             if ( children.length < 1 )
             {
                 createChildren( parentTag, parentElement );
-            }
-            else
+            } else
             {
                 setVisible( children[0], true );
                 setToggle( parentTag, true );
@@ -222,14 +225,14 @@ function Subtree()
     {
         var rootsElement = rootElement.getElementsByTagName( 'roots' )[0];
         var unitElements = rootsElement.getElementsByTagName( 'unit' );
-        
+
         var treeTag = document.getElementById( 'orgUnitTree' );
         var rootsTag = document.createElement( 'ul' );
 
         for ( var i = 0; i < unitElements.length; ++i )
         {
             var unitTag = createTreeElementTag( unitElements[i] );
-            
+
             rootsTag.appendChild( unitTag );
         }
 
@@ -241,7 +244,7 @@ function Subtree()
         for ( var i = 0, parentElement; ( parentElement = parentElements[i] ); ++i )
         {
             var parentId = parentElement.getAttribute( 'parentId' );
-            var parentTag = document.getElementById( getTagId( parentId ));
+            var parentTag = document.getElementById( getTagId( parentId ) );
 
             createChildren( parentTag, parentElement );
         }
@@ -277,15 +280,14 @@ function Subtree()
         {
             toggleTag.onclick = new Function( 'subtree.toggle( ' + childId + ' )' );
             toggleTag.appendChild( getToggleExpand() );
-        }
-        else
+        } else
         {
             toggleTag.appendChild( getToggleBlank() );
         }
 
         var linkTag = document.createElement( 'a' );
         linkTag.href = 'javascript:void selection.select( ' + childId + ' )';
-        linkTag.appendChild( document.createTextNode( child.firstChild.nodeValue ));
+        linkTag.appendChild( document.createTextNode( child.firstChild.nodeValue ) );
 
         if ( child.getAttribute( 'selected' ) == 'true' )
         {
@@ -294,11 +296,11 @@ function Subtree()
 
         var childTag = document.createElement( 'li' );
         childTag.id = getTagId( childId );
-        childTag.appendChild( document.createTextNode( ' ' ));
+        childTag.appendChild( document.createTextNode( ' ' ) );
         childTag.appendChild( toggleTag );
-        childTag.appendChild( document.createTextNode( ' ' ));
+        childTag.appendChild( document.createTextNode( ' ' ) );
         childTag.appendChild( linkTag );
-        
+
         return childTag;
     }
 
@@ -310,12 +312,11 @@ function Subtree()
 
         if ( toggleTag.firstChild )
         {
-        	toggleTag.replaceChild( toggleImg, toggleTag.firstChild );
-		}
-		else
-		{
-			toggleTag.appendChild( toggleImg );
-		}
+            toggleTag.replaceChild( toggleImg, toggleTag.firstChild );
+        } else
+        {
+            toggleTag.appendChild( toggleImg );
+        }
     }
 
     function setVisible( tag, visible )
@@ -332,7 +333,7 @@ function Subtree()
     {
         return 'orgUnit' + unitId;
     }
-    
+
     function getToggleExpand()
     {
         var imgTag = getToggleImage();
@@ -340,27 +341,27 @@ function Subtree()
         imgTag.alt = '[+]';
         return imgTag;
     }
-    
+
     function getToggleCollapse()
     {
         var imgTag = getToggleImage();
         imgTag.src = '../images/expand.png';
-		imgTag.width = '9';
+        imgTag.width = '9';
         imgTag.height = '9';
         imgTag.alt = '[-]';
         return imgTag;
     }
 
-	function getToggleBlank()
-	{
-		var imgTag = getToggleImage();
-		imgTag.src = '../images/transparent.gif';
-		imgTag.width = '9';
+    function getToggleBlank()
+    {
+        var imgTag = getToggleImage();
+        imgTag.src = '../images/transparent.gif';
+        imgTag.width = '9';
         imgTag.height = '9';
-		imgTag.alt = '';
-		return imgTag;
-	}
-    
+        imgTag.alt = '';
+        return imgTag;
+    }
+
     function getToggleImage()
     {
         var imgTag = document.createElement( 'img' );
