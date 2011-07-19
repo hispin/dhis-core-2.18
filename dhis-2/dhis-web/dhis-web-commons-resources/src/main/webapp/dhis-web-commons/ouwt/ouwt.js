@@ -71,13 +71,13 @@ function Selection()
                 $linkTag.addClass( "selected" );
             } else
             {
-                $.post( organisationUnitTreePath + "setorgunit.action", {
-                    id : unitId
-                }, function( data )
-                {
-                    responseReceived( data.firstChild );
-                }, 'xml' );
-
+                $.ajax({
+					type: "POST",
+					url: organisationUnitTreePath + "setorgunit.action?id=" + unitId,
+					dataType: "xml",
+					success: responseReceived
+				});
+				
                 $( "#orgUnitTree" ).find( "a" ).removeClass( "selected" );
                 $linkTag.addClass( "selected" );
             }
