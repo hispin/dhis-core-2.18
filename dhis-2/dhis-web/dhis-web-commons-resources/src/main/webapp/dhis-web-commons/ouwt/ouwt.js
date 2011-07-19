@@ -45,9 +45,9 @@ function Selection()
 
     this.select = function( unitId )
     {
-        var linkTag = $( "#" + getTagId( unitId ) ).find( "a" ).eq( 0 );
+        var $linkTag = $( "#" + getTagId( unitId ) ).find( "a" ).eq( 0 );
 
-        if ( linkTag.hasClass( "selected" ) && unselectAllowed )
+        if ( $linkTag.hasClass( "selected" ) && unselectAllowed )
         {
             $.post( organisationUnitTreePath + "removeorgunit.action", {
                 id : unitId
@@ -56,6 +56,7 @@ function Selection()
                 responseReceived( data.firstChild );
             }, 'xml' );
 
+            $linkTag.removeClass( "selected" );
         } else
         {
             if ( multipleSelectionAllowed )
@@ -67,7 +68,7 @@ function Selection()
                     responseReceived( data.firstChild );
                 }, 'xml' );
 
-                linkTags[0].className = 'selected';
+                $linkTag.addClass( "selected" );
             } else
             {
                 $.post( organisationUnitTreePath + "setorgunit.action", {
@@ -78,8 +79,7 @@ function Selection()
                 }, 'xml' );
 
                 $( "#orgUnitTree" ).find( "a" ).removeClass( "selected" );
-                $( "#" + getTagId( unitId ) ).find( "a" ).eq( 0 ).addClass( "selected" );
-
+                $linkTag.addClass( "selected" );
             }
         }
     };
@@ -289,15 +289,15 @@ function Subtree()
 
     function setToggle( unitTag, expanded )
     {
-        var toggleTag = $( unitTag ).find( "span" ).get( 0 );
+        var $toggleTag = $( unitTag ).find( "span" );
         var toggleImg = expanded ? getToggleCollapse() : getToggleExpand();
 
-        if ( toggleTag.firstChild )
+        if ( $toggleTag.children().eq( 0 ) )
         {
-            toggleTag.replaceChild( toggleImg, toggleTag.firstChild );
+            $toggleTag.children().eq( 0 ).replaceWith( toggleImg );
         } else
         {
-            toggleTag.appendChild( toggleImg );
+            $toggleTag.append( toggleImg );
         }
     }
 
