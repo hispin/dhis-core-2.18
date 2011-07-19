@@ -71,13 +71,13 @@ function Selection()
                 $linkTag.addClass( "selected" );
             } else
             {
-                $.ajax({
-					type: "POST",
-					url: organisationUnitTreePath + "setorgunit.action?id=" + unitId,
-					dataType: "xml",
-					success: responseReceived
-				});
-				
+                $.ajax( {
+                    type : "POST",
+                    url : organisationUnitTreePath + "setorgunit.action?id=" + unitId,
+                    dataType : "xml",
+                    success : responseReceived
+                } );
+
                 $( "#orgUnitTree" ).find( "a" ).removeClass( "selected" );
                 $linkTag.addClass( "selected" );
             }
@@ -314,37 +314,21 @@ function Subtree()
 
     function getToggleExpand()
     {
-        var imgTag = getToggleImage();
-        imgTag.src = '../images/colapse.png';
-        imgTag.alt = '[+]';
-        return imgTag;
+        return getToggleImage().attr( "src", "../images/colapse.png" ).attr( "alt", "[+]" );
     }
 
     function getToggleCollapse()
     {
-        var imgTag = getToggleImage();
-        imgTag.src = '../images/expand.png';
-        imgTag.width = '9';
-        imgTag.height = '9';
-        imgTag.alt = '[-]';
-        return imgTag;
+        return getToggleImage().attr( "src", "../images/expand.png" ).attr( "alt", "[-]" );
     }
 
     function getToggleBlank()
     {
-        var imgTag = getToggleImage();
-        imgTag.src = '../images/transparent.gif';
-        imgTag.width = '9';
-        imgTag.height = '9';
-        imgTag.alt = '';
-        return imgTag;
+        return getToggleImage().attr( "src", "../images/transparent.gif" ).attr( "alt", "" );
     }
 
     function getToggleImage()
     {
-        var imgTag = document.createElement( 'img' );
-        imgTag.width = '9';
-        imgTag.height = '9';
-        return imgTag;
+        return $( "<img/>" ).attr( "width", 9 ).attr( "height", 9 );
     }
 }
