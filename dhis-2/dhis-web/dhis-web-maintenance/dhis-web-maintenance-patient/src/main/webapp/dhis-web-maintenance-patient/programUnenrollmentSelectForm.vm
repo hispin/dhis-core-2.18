@@ -60,10 +60,10 @@
     <tr>
         <td style="width:180px"><label for="programId">$i18n.getString( "program" )</label></td>
         <td>
-            <select id="programInstanceId" name="programInstanceId" onchange="showUnenrollmentForm('$patient.id', jQuery('#programInstanceId :selected').attr('programId') )" style="min-width:200px" >
+            <select id="programInstanceId" name="programInstanceId" onchange="showUnenrollmentForm( this.value )" style="min-width:200px" >
                 <option value="0">[$i18n.getString( "select" )]</option>
                 #foreach( $instance in $programInstances )
-                    <option value="$instance.id" programId="$instance.program.id" >$encoder.htmlEncode( $instance.program.name )</option>
+                    <option value="$instance.id" >$encoder.htmlEncode( $instance.program.name )</option>
                 #end
             </select>
         </td>
@@ -76,12 +76,12 @@
 	<table width="100%">
 		<tr>
 			<td style="width:20px"><label for="enrollmentDate">$i18n.getString( "date_of_enrollment" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" style="width:180px" id="enrollmentDate" name="enrollmentDate" value="$!format.formatDate( $programInstance.enrollmentDate )"> <i>( $!programInstance.program.dateOfEnrollmentDescription )</i></td>
+			<td><input type="text" style="width:180px" id="enrollmentDate" name="enrollmentDate" value="$!format.formatDate( $programInstance.enrollmentDate )"> <i id='dateOfEnrollmentDescription'></i></td>
 		</tr>
 		
 		<tr>
 			<td style="width:180px"><label for="dateOfIncident">$i18n.getString( "date_of_incident" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" style="width:180px" id="dateOfIncident" name="dateOfIncident" value="$!format.formatDate( $programInstance.dateOfIncident )"><i>( $!programInstance.program.dateOfIncidentDescription )</i></td>
+			<td><input type="text" style="width:180px" id="dateOfIncident" name="dateOfIncident" value="$!format.formatDate( $programInstance.dateOfIncident )"><i id='dateOfIncidentDescription'></i></td>
 		</tr>
 		<tr>
 			<td></td>
