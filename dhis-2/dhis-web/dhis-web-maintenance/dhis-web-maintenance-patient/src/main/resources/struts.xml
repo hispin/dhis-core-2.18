@@ -135,8 +135,8 @@
 
 		<action name="removeRelationship"
 			class="org.hisp.dhis.patient.action.relationship.RemoveRelationshipAction">
-			<result name="success" type="redirect">getRelationshipList.action
-			</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_RELATIONSHIP_DELETE</param>
 		</action>
 

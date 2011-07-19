@@ -28,7 +28,6 @@ package org.hisp.dhis.patient.action.relationship;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.state.SelectedStateManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,13 +42,6 @@ public class RemoveRepresentativeAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     private PatientService patientService;
 
     public void setPatientService( PatientService patientService )
@@ -61,11 +53,11 @@ public class RemoveRepresentativeAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Patient patient;
+    private Integer patientId;
 
-    public Patient getPatient()
+    public void setPatientId( Integer patientId )
     {
-        return patient;
+        this.patientId = patientId;
     }
 
     // -------------------------------------------------------------------------
@@ -75,7 +67,7 @@ public class RemoveRepresentativeAction
     public String execute()
         throws Exception
     {
-        patient = selectedStateManager.getSelectedPatient();
+        Patient patient = patientService.getPatient( patientId );
 
         patient.setRepresentative( null );
 

@@ -89,7 +89,7 @@ public interface SelectedStateManager
     boolean getListAll();
 
     void clearListAll();
-
+    
     // -------------------------------------------------------------------------
     // for Sorting patients - Sort by patient-attribute
     // -------------------------------------------------------------------------

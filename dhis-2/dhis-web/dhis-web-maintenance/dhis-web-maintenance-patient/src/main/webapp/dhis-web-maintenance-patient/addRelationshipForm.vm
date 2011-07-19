@@ -4,20 +4,19 @@
 		jQuery('name').focus();
 			
 		validation( 'relationshipSelectForm', function(form){
-			form.submit();
+			validateSearchPartner();
 		}); 
 		
 	});		
 </script>
 <div>
-    <input type="button" value="$i18n.getString( 'back_to_search' )" onclick="onClickRelationshipBackBtn()" style="width:10em"/>
+    <input type="button" value="$i18n.getString( 'back_to_search' )" onclick="showRelationshipList($patient.id)" style="width:10em"/>
 </div>
 
 <h3>$i18n.getString( "adding_new_relationship_for" )</h3>
 
-<form id="relationshipSelectForm" name="relationshipSelectForm" method="post" action="showAddRelationshipForm.action" onsubmit="return validateSearchPartner()">
+<form id="relationshipSelectForm" name="relationshipSelectForm" method="post" action="showAddRelationshipForm.action">
 <input type="hidden" id="patientId" name="patientId" value="$patient.id"/>
-
 <table>
 <tr>
     <td style="vertical-align:top" bgcolor="#cccccc">

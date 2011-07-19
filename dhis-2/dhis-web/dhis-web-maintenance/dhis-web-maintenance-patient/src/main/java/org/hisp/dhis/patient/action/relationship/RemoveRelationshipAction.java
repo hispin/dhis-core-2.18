@@ -54,11 +54,11 @@ public class RemoveRelationshipAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private int relationshipId;
+    private int id;
 
-    public void setRelationshipId( int relationshipId )
+    public void setId( int id )
     {
-        this.relationshipId = relationshipId;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
@@ -68,7 +68,7 @@ public class RemoveRelationshipAction
     public String execute()
         throws Exception
     {
-        Relationship relationship = relationshipService.getRelationship( relationshipId );
+        Relationship relationship = relationshipService.getRelationship( id );
 
         relationshipService.deleteRelationship( relationship );
 

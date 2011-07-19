@@ -28,7 +28,6 @@ package org.hisp.dhis.patient.action.relationship;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
 import com.opensymphony.xwork2.Action;
@@ -50,14 +49,7 @@ public class SaveRepresentativeAction
     {
         this.patientService = patientService;
     }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
+    
     private PatientAttributeValueService patientAttributeValueService;
 
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
@@ -69,11 +61,11 @@ public class SaveRepresentativeAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Patient patient;
+    private Integer patientId;
 
-    public Patient getPatient()
+    public void setPatientId( Integer patientId )
     {
-        return patient;
+        this.patientId = patientId;
     }
 
     private Integer representativeId;
@@ -90,6 +82,13 @@ public class SaveRepresentativeAction
         this.copyAttribute = copyAttribute;
     }
 
+    private Patient patient;
+
+    public Patient getPatient()
+    {
+        return patient;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -99,7 +98,7 @@ public class SaveRepresentativeAction
     {
         Patient representative = patientService.getPatient( representativeId );
 
-        patient = selectedStateManager.getSelectedPatient();
+        patient = patientService.getPatient( patientId );
 
         patient.setRepresentative( representative );
 

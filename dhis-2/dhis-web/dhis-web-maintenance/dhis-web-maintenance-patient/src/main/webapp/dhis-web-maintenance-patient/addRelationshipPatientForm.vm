@@ -24,7 +24,7 @@
 	});		
 </script>
 <div>
-    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="onClickRelationshipBackBtn();" style="width:10em">
+    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="showRelationshipList($patient.id);" style="width:10em">
 </div>
 
 <h3>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h3>

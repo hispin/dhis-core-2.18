@@ -42,7 +42,7 @@
                         <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:showAddRelationship('$patient.id')">                                                              
                     </td>
                     <td style="text-align:right">
-                        <input type="button" value="$i18n.getString( "add_new_patient" )" onclick="javascript:showAddRelationshipPatient('$patient.id')">                                                              
+                        <input type="button" value="$i18n.getString( "add_new_patient" )" onclick="javascript:showAddRelationshipPatient( '$patient.id',false )">                                                              
                     </td>
                 </tr>
           
@@ -104,7 +104,6 @@
         </tr>                        
         <tr>              
             <td>
-                <span id="partnerIdField"></span>
                 <strong>$i18n.getString( "full_name" ):</strong><span id="fullNameField"></span><br>
                 <strong>$i18n.getString( "gender" ):</strong><span id="genderField"></span><br>
                 <strong>$i18n.getString( "date_of_birth" ):</strong><span id="dateOfBirthField"></span><br>

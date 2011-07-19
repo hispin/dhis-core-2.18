@@ -50,7 +50,7 @@
 </script>
 
 <h3>$i18n.getString( "update_patient" )</h3>
-<p><input type="button" value="$i18n.getString( 'back_to_search' )" onclick="onClickBackBtn();" style="width:10em"/></p>
+<p><input type="button" value="$i18n.getString( 'back_to_search' )" onclick="loadPatientList();" style="width:10em"/></p>
 
 <form id="updatePatientForm" name="updatePatientForm" action="updatePatient.action" method="post" >
 <input type="hidden" id="representativeId" name="representativeId"/> 

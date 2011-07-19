@@ -337,7 +337,7 @@ function addValidationCompleted( messageElement )
     }
     else if ( type == 'input' )
     {
-        setMessage( message );
+        showErrorMessage( message );
     }
     else if( type == 'duplicate' )
     {
@@ -384,7 +384,7 @@ function updateValidationCompleted( messageElement )
     }
     else if ( type == 'input' )
     {
-        setMessage( message );
+        showErrorMessage( message );
     }
     else if( type == 'duplicate' )
     {
@@ -692,10 +692,9 @@ function loadAllPatients()
 	
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listPatientDiv';
-	jQuery('#listPatientDiv').load('searchPatient.action?listAll=true',
+	jQuery('#listPatientDiv').load('searchPatient.action?listAll=true',{},
 		function(){
 			showById('listPatientDiv');
-			setInnerHTML( 'searchTextInfo', i18n_list_all_patient );
 			jQuery('#loaderDiv').hide();
 		});
 	hideLoader();
@@ -835,11 +834,11 @@ function validateProgramEnrollment()
 			}
 			else if ( type == 'error' )
 			{
-				window.alert( i18n_program_enrollment_failed + ':' + '\n' + message );
+				showErrorMessage( i18n_program_enrollment_failed + ':' + '\n' + message );
 			}
 			else if ( type == 'input' )
 			{
-				setMessage( json.message );
+				showWarningMessage( json.message );
 			}
       }
     });
@@ -855,7 +854,7 @@ function saveProgramEnrollment()
 		success: function( html ) {
 				setInnerHTML('programEnrollmentDiv', html );
 				jQuery('#enrollBtn').attr('value',i18n_update);
-				setMessage( i18n_save_success );
+				showSuccessMessage( i18n_enrol_success );
 			}
 		});
     return false;
@@ -901,6 +900,8 @@ function showUnenrollmentForm( programInstanceId )
 		{   
 			setFieldValue( 'enrollmentDate', json.dateOfIncident );
 			setFieldValue( 'dateOfIncident', json.enrollmentDate );
+			setFieldValue( 'dateOfEnrollmentDescription', json.dateOfEnrollmentDescription );
+			setFieldValue( 'dateOfIncidentDescription', json.dateOfIncidentDescription );
 			showById( 'unenrollmentFormDiv' );
 			$( "#loaderDiv" ).hide();
 		});
@@ -964,19 +965,30 @@ function saveDueDate( programStageInstanceId, programStageInstanceName )
 
 function showRelationshipList( patientId )
 {
-	hideById('selectDiv');
-	hideById('searchPatientDiv');
-	hideById('listPatientDiv');
+	hideById('addRelationshipDiv');
 	
-	jQuery('#loaderDiv').show();
-	jQuery('#listRelationshipDiv').load('showRelationshipList.action',
-		{
-			id:patientId
-		}, function()
-		{
-			showById('listRelationshipDiv');
-			jQuery('#loaderDiv').hide();
-		});
+	if ( getFieldValue('isShowPatientList') == 'false' )
+	{
+		hideById('selectDiv');
+		hideById('searchPatientDiv');
+		hideById('listPatientDiv');
+
+		jQuery('#loaderDiv').show();
+		jQuery('#listRelationshipDiv').load('showRelationshipList.action',
+			{
+				id:patientId
+			}, function()
+			{
+				showById('listRelationshipDiv');
+				jQuery('#loaderDiv').hide();
+			});
+	}
+	else
+	{
+		showById('selectDiv');
+		showById('searchPatientDiv');
+		showById('listPatientDiv');
+	}
 }
 
 // ----------------------------------------------------------------
@@ -996,23 +1008,21 @@ function onClickBackBtn()
 	hideById('addRelationshipDiv');
 }
 
-
-function onClickRelationshipBackBtn()
+function loadPatientList()
 {
-	if ( byId('listRelationshipDiv').innerHTML == '' )
-	{
-		onClickBackBtn();
-		return;
-	}
+	showById('selectDiv');
+	showById('searchPatientDiv');
+	showById('listPatientDiv');
 	
-	showById('listRelationshipDiv');
-	
-	hideById('selectDiv');
-	hideById('searchPatientDiv');
-	hideById('listPatientDiv');
 	hideById('addPatientDiv');
 	hideById('updatePatientDiv');
 	hideById('enrollmentDiv');
+	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
+	
+	$('#listPatientDiv').load("searchPatient.action", {}
+		, function(){
+			showById('listPatientDiv');
+			$( "#loaderDiv" ).hide();
+		});
 }
-

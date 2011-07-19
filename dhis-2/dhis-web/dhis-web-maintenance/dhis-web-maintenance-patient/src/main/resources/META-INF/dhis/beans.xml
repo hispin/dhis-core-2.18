@@ -132,8 +132,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.patient.action.relationship.SaveRepresentativeAction"
 		class="org.hisp.dhis.patient.action.relationship.SaveRepresentativeAction"
 		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
@@ -144,8 +142,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.relationship.RemoveRepresentativeAction"
 		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
 	</bean>
 
 	<bean
@@ -378,8 +374,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.patient.action.patient.SearchPatientAction"
 		class="org.hisp.dhis.patient.action.patient.SearchPatientAction"
 		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />

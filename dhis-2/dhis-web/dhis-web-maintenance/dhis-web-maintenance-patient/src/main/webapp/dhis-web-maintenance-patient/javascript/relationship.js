@@ -219,15 +219,15 @@ function addRelationshipCompleted( messageElement )
 	
 	if( type == 'success' )
 	{
-		setMessage( i18n_save_success );
+		showSuccessMessage( i18n_save_success );
 	}	
 	else if( type == 'error' )
 	{
-		window.alert( i18n_adding_relationship_failed + ':' + '\n' + message );
+		showErrorMessage( i18n_adding_relationship_failed + ':' + '\n' + message );
 	}
 	else if( type == 'input' )
 	{
-		setMessage( message );
+		showWarningMessage( message );
 	}
 	jQuery('#loaderDiv').hide();
 }
@@ -238,46 +238,8 @@ function addRelationshipCompleted( messageElement )
 
 function removeRelationship( relationshipId, patientA, aIsToB, patientB )
 {	
-	
-    var result = window.confirm( i18n_confirm_delete_relationship + '\n\n' + patientA + ' is ' + aIsToB + ' to ' + patientB );
-    
-    if( result )
-    {
-    	window.location = 'removeRelationship.action?relationshipId=' + relationshipId;   	         
-    }
+	removeItem( relationshipId, patientA + ' is ' + aIsToB + ' to ' + patientB, i18n_confirm_delete_relationship, 'removeRelationship.action' );
 }
-
-
-/*function removeRelationship( relationshipId, patientA, aIsToB, patientB )
-{	
-	
-    var result = window.confirm( i18n_confirm_delete_relationship + '\n\n' + patientA + ' is ' + aIsToB + ' to ' + patientB );
-    
-    if( result )
-    {
-    	var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( removeRelationshipCompleted );
-        request.send( 'removeRelationship.action?relationshipId=' + relationshipId );         
-    }
-}
-
-function removeRelationshipCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;    
-    
-    if( type == 'success' )
-	{
-		window.location = "getRelationshipList.action";
-	}	
-	else if( type = 'error' )
-    {
-        setInnerHTML( 'warningField', message );
-        
-        showWarning();
-    }
-}*/
 
 //------------------------------------------------------------------------------
 // Relationship partner
@@ -295,7 +257,8 @@ function representativeReceived( patientElement )
 {		
 	var partnerIsRepresentative = getElementValue( patientElement, 'partnerIsRepresentative' );	
 	
-	var partnerId = '<div><input type="hidden" id="partnerId" name="partnerId" value="' + getElementValue( patientElement, 'id' ) + '"></div>';
+	var patientId = getFieldValue('id' );
+	var partnerId = getElementValue( patientElement, 'id' );
 	var labelField;	
 	var buttonFirstField;
 	var buttonSecondField;
@@ -304,21 +267,20 @@ function representativeReceived( patientElement )
 	{
 		labelField = i18n_do_you_want_to_remove_this_one_from_being_representative;
 		
-		buttonFirstField = '<input type="button" value="' + i18n_yes + '" onclick="javascript:removeRepresentative()">'; 
+		buttonFirstField = '<input type="button" value="' + i18n_yes + '" onclick="javascript:removeRepresentative( ' + patientId + ',' + partnerId + ')">'; 
 		buttonSecondField = '&nbsp;';
 	}
 	else if( partnerIsRepresentative == 'false' )
 	{
 		labelField = i18n_do_you_want_to_make_this_one_a_representative;
 		
-		buttonFirstField = '<input type="button" value="' + i18n_yes + '" onclick="javascript:saveRepresentative( false )">';
-		buttonSecondField= '<input type="button" value="' + i18n_yes_and_attribute + '" onclick="javascript:saveRepresentative( true )">';
+		buttonFirstField = '<input type="button" value="' + i18n_yes + '" onclick="javascript:saveRepresentative( ' + patientId + ',' + partnerId + ', false )">';
+		buttonSecondField= '<input type="button" value="' + i18n_yes_and_attribute + '" onclick="javascript:saveRepresentative( ' + patientId + ',' + partnerId + ', true )">';
 	}	
 	
 	setInnerHTML( 'labelField', labelField );
 	setInnerHTML( 'buttonFirstField', buttonFirstField );
 	setInnerHTML( 'buttonSecondField', buttonSecondField );
-	setInnerHTML( 'partnerIdField', partnerId );	
 	setInnerHTML( 'fullNameField', getElementValue( patientElement, 'fullName' ) );
 	setInnerHTML( 'genderField', getElementValue( patientElement, 'gender' ) );	
     setInnerHTML( 'dateOfBirthField', getElementValue( patientElement, 'dateOfBirth' ) );    
@@ -353,15 +315,18 @@ function hideRelationshipPartnerContainer()
     node.style.display = 'none';   
 }
 
-function saveRepresentative( copyAttribute )
-{	
-	var representativeId = document.getElementById( 'partnerId' );
+function saveRepresentative( patientId, representativeId, copyAttribute )
+{
+	var url = 'saveRepresentative.action'
+	var params  = 'patientId=' + patientId
+		params += '&representativeId=' + representativeId;	
+		params += '&copyAttribute=' + copyAttribute;
 	
-	var url = 'saveRepresentative.action?representativeId=' + representativeId.value + '&copyAttribute=' + copyAttribute;	
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'message' );
-	request.setCallbackSuccess( saveRepresentativeCompleted );    
+	request.setCallbackSuccess( saveRepresentativeCompleted ); 
+	request.sendAsPost( params );	
 	request.send( url );        
 
 	return false;
@@ -374,27 +339,28 @@ function saveRepresentativeCompleted( messageElement )
 	
 	if( type == 'success' )
 	{
-		window.location = "getRelationshipList.action";
+		hideById('relationshipPartnerContainer');
 	}	
 	else if( type == 'error' )
 	{
-		window.alert( i18n_saving_representative_failed + ':' + '\n' + message );
+		showErrorMessage( i18n_saving_representative_failed + ':' + '\n' + message );
 	}
 	else if( type == 'input' )
 	{
-		setHeaderMessage( message );
+		showWarningMessage( message );
 	}
 }
 
-function removeRepresentative()
+function removeRepresentative( patientId, representativeId )
 {	
-	var representativeId = document.getElementById( 'partnerId' );
-	
-	var url = 'removeRepresentative.action?representativeId=' + representativeId.value;	
+	var url = 'removeRepresentative.action';
+	var params = 'patientId=' + patientId;
+		params +='&representativeId=' + representativeId;	
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'message' );
-	request.setCallbackSuccess( removeRepresentativeCompleted );    
+	request.setCallbackSuccess( removeRepresentativeCompleted );
+	request.sendAsPost( params );
 	request.send( url );        
 
 	return false;
@@ -408,7 +374,7 @@ function removeRepresentativeCompleted( messageElement )
 	
 	if( type == 'success' )
 	{
-		window.location = "getRelationshipList.action";
+		showRelationshipList( getFieldValue('id') );
 	}	
 	else if( type == 'error' )
 	{
