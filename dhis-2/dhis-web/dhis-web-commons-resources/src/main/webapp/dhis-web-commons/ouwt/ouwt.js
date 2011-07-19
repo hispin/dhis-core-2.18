@@ -93,11 +93,10 @@ function Selection()
 
         var unitIds = new Array();
 
-        var unitIdElements = rootElement.getElementsByTagName( 'unitId' );
-        for ( var i = 0, unitIdElement; ( unitIdElement = unitIdElements[i] ); ++i )
+        $( rootElement ).find( "unitId" ).each( function( i, item )
         {
-            unitIds[i] = unitIdElement.firstChild.nodeValue;
-        }
+            unitIds[i] = $( item ).text()
+        } );
 
         listenerFunction( unitIds );
     }
@@ -205,49 +204,38 @@ function Subtree()
 
     function treeReceived( rootElement )
     {
-        var rootsElement = rootElement.getElementsByTagName( 'roots' )[0];
-        var unitElements = rootsElement.getElementsByTagName( 'unit' );
+        var $treeTag = $( "#orgUnitTree" );
+        var $rootsTag = $( "<ul/>" );
 
-        var treeTag = document.getElementById( 'orgUnitTree' );
-        var rootsTag = document.createElement( 'ul' );
-
-        for ( var i = 0; i < unitElements.length; ++i )
+        $( rootElement ).find( "roots > unit" ).each( function( i, item )
         {
-            var unitTag = createTreeElementTag( unitElements[i] );
+            $rootsTag.append( createTreeElementTag( item ) );
+        } );
 
-            rootsTag.appendChild( unitTag );
-        }
+        $treeTag.append( $rootsTag );
 
-        treeTag.appendChild( rootsTag );
-
-        var childrenElement = rootElement.getElementsByTagName( 'children' )[0];
-        var parentElements = childrenElement.getElementsByTagName( 'parent' );
-
-        for ( var i = 0, parentElement; ( parentElement = parentElements[i] ); ++i )
+        $( rootElement ).find( "children > parent" ).each( function( i, item )
         {
-            var parentId = parentElement.getAttribute( 'parentId' );
-            var parentTag = document.getElementById( getTagId( parentId ) );
+            var parentId = $( item ).attr( "parentId" );
+            var $parentTag = $( "#" + getTagId( parentId ) );
 
-            createChildren( parentTag, parentElement );
-        }
+            createChildren( $parentTag, item );
+        } );
     }
 
     function createChildren( parentTag, parentElement )
     {
-        var children = parentElement.getElementsByTagName( 'child' );
-        var childrenTag = document.createElement( 'ul' );
+        var $childrenTag = $( "<ul/>" );
 
-        for ( var i = 0, child; ( child = children[i] ); ++i )
+        $( parentElement ).find( "child" ).each( function( i, item )
         {
-            var childTag = createTreeElementTag( child );
+            $childrenTag.append( createTreeElementTag( item ) );
+        } )
 
-            childrenTag.appendChild( childTag );
-        }
-
-        setVisible( childrenTag, true );
+        setVisible( $childrenTag, true );
         setToggle( parentTag, true );
 
-        $( parentTag ).get( 0 ).appendChild( childrenTag );
+        $( parentTag ).append( $childrenTag );
     }
 
     function createTreeElementTag( child )
@@ -284,7 +272,7 @@ function Subtree()
         $childTag.append( " " );
         $childTag.append( $linkTag )
 
-        return $childTag.get( 0 );
+        return $childTag;
     }
 
     function setToggle( unitTag, expanded )
