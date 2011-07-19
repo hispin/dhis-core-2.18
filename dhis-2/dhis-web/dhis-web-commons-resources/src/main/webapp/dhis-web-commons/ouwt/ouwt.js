@@ -143,31 +143,33 @@ function Subtree()
     {
         var children = $( "#" + getTagId( unitId ) ).find( "ul" );
 
-        var request = new Request();
-        request.setResponseTypeXML( 'units' );
-
         if ( children.length < 1 || !isVisible( children[0] ) )
         {
-            request.setCallbackSuccess( processExpand );
-            request.send( organisationUnitTreePath + 'expandSubtree.action?parentId=' + unitId );
+            $.ajax( {
+                url : organisationUnitTreePath + 'expandSubtree.action',
+                data : {
+                    'parentId' : unitId
+                },
+                success : processExpand
+            } );
         } else
         {
-            request.setCallbackSuccess( processCollapse );
-            request.send( organisationUnitTreePath + 'collapseSubtree.action?parentId=' + unitId );
+            $.ajax( {
+                url : organisationUnitTreePath + 'collapseSubtree.action',
+                data : {
+                    'parentId' : unitId
+                },
+                success : processCollapse
+            } );
         }
     };
 
     this.refreshTree = function()
     {
-        var treeTag = document.getElementById( 'orgUnitTree' );
+        var $treeTag = $( "#orgUnitTree" );
+        $treeTag.children().eq( 0 ).remove();
 
-        var children = treeTag.getElementsByTagName( 'ul' );
-        treeTag.removeChild( children[0] );
-
-        var request = new Request();
-        request.setResponseTypeXML( 'units' );
-        request.setCallbackSuccess( treeReceived );
-        request.send( organisationUnitTreePath + 'getExpandedTree.action' );
+        $.get( organisationUnitTreePath + "getExpandedTree.action", treeReceived );
     };
 
     function processCollapse( rootElement )
