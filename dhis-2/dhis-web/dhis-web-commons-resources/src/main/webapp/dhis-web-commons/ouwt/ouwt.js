@@ -195,7 +195,7 @@ function Subtree()
 
             if ( $children.length < 1 )
             {
-                createChildren( $parentTag.get( 0 ), item );
+                createChildren( $parentTag, item );
             } else
             {
                 setVisible( $children.eq( 0 ), true );
