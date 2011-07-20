@@ -66,7 +66,7 @@ public class ImportDataOrganizationGroupAction
 
             int importItemId = Integer.parseInt( importItemIds[i].split( "-" )[2] );
 
-            ExcelItem importItem = importItemService.getImportItem( importItemId );
+            ExcelItem importItem = importReportService.getImportItem( importItemId );
 
             if ( importItem.getId() == importItemId )
             {

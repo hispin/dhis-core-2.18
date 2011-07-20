@@ -30,7 +30,7 @@ package org.hisp.dhis.reportexcel.importreport.action;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,11 +45,11 @@ public class AddImportReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private PeriodService periodService;
@@ -103,7 +103,7 @@ public class AddImportReportAction
         importReport.setType( type );
         importReport.setPeriodType( periodType );
 
-        importItemService.addImportReport( importReport );
+        importReportService.addImportReport( importReport );
 
         return SUCCESS;
     }

@@ -17,9 +17,9 @@
 		<td><label>$i18n.getString('import_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="type" name="type" style="min-width:20em">
-				<option value='NORMAL' #if($importReport.type ==  "NORMAL") selected="selected" #end>$i18n.getString('NORMAL')</option>					
-				<option value='CATEGORY' #if($importReport.type == "CATEGORY") selected="selected" #end >$i18n.getString('CATEGORY')</option>					
-				<option value='ORGANIZATION_GROUP_LISTING' #if($importReport.type == "ORGANIZATION_GROUP_LISTING") selected="selected" #end>$i18n.getString('ORGANIZATION_GROUP_LISTING')</option>									
+			#foreach( $type in $importTypes )
+				<option value='$type' #if( $importReport.type.equals( $type ) ) selected="selected" #end>$i18n.getString($type)</option>
+			#end					
 			</select>
 		</td>
 	</tr>	

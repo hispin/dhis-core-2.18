@@ -28,7 +28,7 @@ package org.hisp.dhis.reportexcel.importreport.action;
  */
 
 import org.hisp.dhis.reportexcel.action.ActionSupport;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 /**
  * @author Chau Thu Tran
@@ -41,11 +41,11 @@ public class DeleteImportReportAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -68,7 +68,7 @@ public class DeleteImportReportAction
     {
         try
         {
-            importItemService.deleteImportReport( id );
+            importReportService.deleteImportReport( id );
 
             message = i18n.getString( "success" );
         }

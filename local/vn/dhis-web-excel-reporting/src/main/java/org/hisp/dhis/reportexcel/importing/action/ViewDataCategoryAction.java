@@ -59,7 +59,7 @@ public class ViewDataCategoryAction
             setUpImportItems( importReport, importItems, categoryImportItems );
 
             xmlStructureResponse = new XMLStructureResponseImport( selectionManager.getUploadFilePath(),
-                importItemService.getAllSheet(), categoryImportItems, true, ExcelItemGroup.TYPE.CATEGORY ).getXml();
+                importReportService.getAllSheet(), categoryImportItems, true, ExcelItemGroup.TYPE.CATEGORY ).getXml();
         }
         catch ( Exception ex )
         {

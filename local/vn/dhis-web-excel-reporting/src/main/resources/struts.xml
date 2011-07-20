@@ -152,7 +152,19 @@
 			<param name="javascripts">javascript/exportReports.js</param>			
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
-
+		
+		<action name="getAllExportReports"
+			class="org.hisp.dhis.reportexcel.exportreport.action.ListExportReportAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseExportReports.vm</result>
+		</action>
+		
+		<action name="getAllExportReportByType"
+			class="org.hisp.dhis.reportexcel.exportreport.action.ListExportReportByReportTypeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseExportReports.vm</result>
+		</action>
+		
 		<action name="updateExportReportForm"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -381,10 +393,10 @@
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-		<action name="getAllExportReports"
-			class="org.hisp.dhis.reportexcel.exportreport.action.ListExportReportAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseExportReports.vm</result>
+		<action name="getExportItemTypes"
+			class="org.hisp.dhis.reportexcel.exportitem.action.GetExportItemTypesAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-excel-reporting/jsonItemTypes.vm</result>
 		</action>
 
 		<action name="getExportItemsBySheet"
@@ -750,7 +762,7 @@
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 		<action name="addImportReportForm"
-			class="org.hisp.dhis.commons.action.GetPeriodTypesAction">
+			class="org.hisp.dhis.reportexcel.importreport.action.SetupImportReportFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/import/addImportReport.vm</param>
 			<param name="javascripts">javascript/importReports.js</param>
@@ -790,9 +802,15 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/import/responseImportReports.vm</result>
 		</action>
+		
+		<action name="getAllImportReportByType"
+			class="org.hisp.dhis.reportexcel.importreport.action.ListAllImportReportByTypeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/import/responseImportReports.vm</result>
+		</action>
 
 		<action name="updateImportReportForm"
-			class="org.hisp.dhis.reportexcel.importreport.action.ShowUpdateImportReportFormAction">
+			class="org.hisp.dhis.reportexcel.importreport.action.SetupImportReportFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/import/updateImportReport.vm</param>
 			<param name="javascripts">javascript/importReports.js</param>
@@ -983,7 +1001,7 @@
 				/dhis-web-excel-reporting/import/responseImportItem.vm</result>
 		</action>
 
-		<action name="getImportItemsByGroup"
+		<action name="getImportItemsByImportReport"
 			class="org.hisp.dhis.reportexcel.importitem.action.ListImportItemAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/import/responseImportItems.vm
@@ -992,6 +1010,13 @@
 		
 		<action name="copyImportItemToImportReport"
 			class="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemToImportReportAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_COPY_IMPORT_ITEM_ADMINISTRATION</param>
+		</action>
+		
+		<action name="copyImportItemToExportReport"
+			class="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemToExportReportAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_COPY_IMPORT_ITEM_ADMINISTRATION</param>

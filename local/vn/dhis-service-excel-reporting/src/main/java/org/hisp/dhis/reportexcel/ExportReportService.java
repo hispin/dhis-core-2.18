@@ -64,6 +64,10 @@ public interface ExportReportService
 
     public Collection<ReportExcel> getExportReportsByGroup( String group );
 
+    public Collection<ReportExcel> getExportReportsByClazz( Class<?> clazz );
+    
+    public Collection<ReportExcel> getExportReportsByReportType( String reportType );
+    
     public Collection<String> getExportReportGroups();
 
     public Collection<String> getAllExportReportTemplates();

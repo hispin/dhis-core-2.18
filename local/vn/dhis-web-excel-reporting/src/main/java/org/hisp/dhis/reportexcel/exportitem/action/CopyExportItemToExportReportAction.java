@@ -112,16 +112,18 @@ public class CopyExportItemToExportReportAction
         {
             ReportExcelItem reportItem = exportReportService.getExportItem( Integer.parseInt( itemId ) );
 
-            ReportExcelItem newReportItem = new ReportExcelItem();
-            newReportItem.setName( reportItem.getName() );
-            newReportItem.setItemType( reportItem.getItemType() );
-            newReportItem.setPeriodType( reportItem.getPeriodType() );
-            newReportItem.setExpression( reportItem.getExpression() );
-            newReportItem.setRow( reportItem.getRow() );
-            newReportItem.setColumn( reportItem.getColumn() );
-            newReportItem.setSheetNo( sheetNo );
-            newReportItem.setReportExcel( exportReport );
-            exportReportService.addExportItem( newReportItem );
+            ReportExcelItem newExportItem = new ReportExcelItem();
+            
+            newExportItem.setName( reportItem.getName() );
+            newExportItem.setItemType( reportItem.getItemType() );
+            newExportItem.setPeriodType( reportItem.getPeriodType() );
+            newExportItem.setExpression( reportItem.getExpression() );
+            newExportItem.setRow( reportItem.getRow() );
+            newExportItem.setColumn( reportItem.getColumn() );
+            newExportItem.setSheetNo( sheetNo );
+            newExportItem.setReportExcel( exportReport );
+            
+            exportReportService.addExportItem( newExportItem );
         }
 
         statementManager.destroy();

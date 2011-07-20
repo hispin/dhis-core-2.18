@@ -41,11 +41,11 @@ public class ImportItemDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -61,11 +61,11 @@ public class ImportItemDeletionHandler
     @Override
     public void deleteOrganisationUnit( OrganisationUnit source )
     {
-        for ( ExcelItemGroup importReport : importItemService.getAllImportReport() )
+        for ( ExcelItemGroup importReport : importReportService.getAllImportReport() )
         {
             if ( importReport.getOrganisationAssocitions().remove( source ) )
             {
-                importItemService.updateImportReport( importReport );
+                importReportService.updateImportReport( importReport );
             }
         }
     }

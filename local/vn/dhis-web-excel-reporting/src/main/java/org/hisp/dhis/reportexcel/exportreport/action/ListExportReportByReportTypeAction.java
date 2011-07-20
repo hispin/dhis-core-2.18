@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportexcel.exportreport.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,103 +27,62 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.reportexcel.importreport.degroup.action;
-
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
-import org.hisp.dhis.reportexcel.importitem.ImportReportService;
+import org.hisp.dhis.reportexcel.ExportReportService;
+import org.hisp.dhis.reportexcel.ReportExcel;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class UpdateSortedDataElementForCategoryAction
+public class ListExportReportByReportTypeAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportReportService importReportService;
+    private ExportReportService exportReportService;
 
-    public void setImportReportService( ImportReportService importReportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.importReportService = importReportService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
+        this.exportReportService = exportReportService;
     }
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String reportType;
 
-    private List<String> dataElementIds = new ArrayList<String>();
-
-    public String message;
-
-    public I18n i18n;
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public String getMessage()
+    public void setReportType( String reportType )
     {
-        return message;
+        this.reportType = reportType;
     }
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
+    private Collection<ReportExcel> exportReports = new ArrayList<ReportExcel>();
 
-    public void setDataElementIds( List<String> dataElementIds )
+    public Collection<ReportExcel> getExportReports()
     {
-        this.dataElementIds = dataElementIds;
-    }
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
+        return exportReports;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Execute method
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = importReportService.getDataElementGroupOrder( id.intValue() );
-
-        List<DataElement> dataElements = new ArrayList<DataElement>();
-
-        for ( String dataElementId : this.dataElementIds )
-        {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
-            dataElements.add( dataElement );
+        if ( reportType != null )
+        {            
+            exportReports = exportReportService.getExportReportsByReportType( reportType );
         }
-
-        dataElementGroupOrder.setDataElements( dataElements );
-
-        this.message = i18n.getString( "update_sort_dataelement_success" );
-
-        importReportService.updateDataElementGroupOrder( dataElementGroupOrder );
-
+        
         return SUCCESS;
     }
 }

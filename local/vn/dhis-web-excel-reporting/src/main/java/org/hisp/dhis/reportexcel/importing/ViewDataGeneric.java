@@ -33,7 +33,7 @@ import java.util.List;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
@@ -50,11 +50,11 @@ public abstract class ViewDataGeneric
     // Dependencies
     // -------------------------------------------------------------------------
 
-    protected ImportItemService importItemService;
+    protected ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     protected SelectionManager selectionManager;
@@ -97,7 +97,7 @@ public abstract class ViewDataGeneric
     {
         try
         {
-            ExcelItemGroup importReport = importItemService.getImportReport( selectionManager.getSelectedReportId() );
+            ExcelItemGroup importReport = importReportService.getImportReport( selectionManager.getSelectedReportId() );
 
             List<ExcelItem> importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );
 

@@ -33,7 +33,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,11 +49,11 @@ public class SaveDataElementGroupOrderForCategoryAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private DataElementService dataElementService;
@@ -111,7 +111,7 @@ public class SaveDataElementGroupOrderForCategoryAction
     public String execute()
         throws Exception
     {
-        ExcelItemGroup importReport = (ExcelItemGroup) importItemService.getImportReport( id );
+        ExcelItemGroup importReport = (ExcelItemGroup) importReportService.getImportReport( id );
 
         DataElementGroupOrder dataElementGroupOrder = new DataElementGroupOrder();
         dataElementGroupOrder.setName( name );
@@ -134,7 +134,7 @@ public class SaveDataElementGroupOrderForCategoryAction
 
         importReport.setDataElementOrders( dataElementGroupOrders );
 
-        importItemService.updateImportReport( importReport );
+        importReportService.updateImportReport( importReport );
 
         return SUCCESS;
     }

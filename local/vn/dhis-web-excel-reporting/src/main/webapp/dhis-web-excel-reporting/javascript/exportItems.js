@@ -164,17 +164,17 @@ function deleteMultiExportItem( confirm )
 }
 
 /**
-*	COPY EXPORT_ITEM(s) TO ANOTHER EXPORT_REPORT
-*/
-function copySelectedExportItemToExportReport() {
+ *	COPY EXPORT_ITEM(s) TO ANOTHER EXPORT_REPORT
+ */
+function copyExportItemToExportReport() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( copySelectedExportItemToExportReportReceived );
-	request.send( "getAllExportReports.action" );
+	request.setCallbackSuccess( copyExportItemToExportReportReceived );
+	request.send( "getAllExportReportByType.action?reportType=" + getFieldValue( "exportReportType" ) );
 }
 
-function copySelectedExportItemToExportReportReceived( xmlObject ) {
+function copyExportItemToExportReportReceived( xmlObject ) {
 
 	var exportReports = xmlObject.getElementsByTagName("exportReport");
 	var selectList = document.getElementById("targetExportReport");
@@ -193,9 +193,9 @@ function copySelectedExportItemToExportReportReceived( xmlObject ) {
 }
 
 
-/*
-*	Validate Copy Export Items to another Export Report
-*/
+/**
+ *	Validate Copy Export Items to another Export Report
+ */
 
 sheetId = 0;
 NumberOfItemsChecked = 0;
@@ -204,25 +204,25 @@ itemsCurTarget = null;
 itemsDuplicated = null;
 warningMessages = "";
 
-function validateCopyExportItemsToExportReport() {
+function validateCopyExportItemsToExportReport()
+{
+	if ( jQuery( 'input:checked' ).length == 0 )
+	{
+		setMessage( i18n_no_item );
+		return;
+	}
 
-	sheetId	= $( "#targetSheetNo" ).val();
+	sheetId	= getFieldValue( "targetSheetNo" );
 	
-	var message = '';
-	
-	if ( sheetId < 1 ) {
-	
-		message = i18n_input_sheet_no;
+	if ( sheetId < 1 )
+	{
+		setMessage( i18n_input_sheet_no );
+		return;
 	}
 	
-	if ( byId("targetExportReport").value == -1 )
+	if ( getFieldValue("targetExportReport") == -1 )
 	{
-		message += "<br/>"+ i18n_choose_export_report;
-	}
-	
-	if ( message.length > 0 )
-	{
-		setMessage( message );
+		setMessage( i18n_choose_export_report );
 		return;
 	}
 	
@@ -236,7 +236,7 @@ function validateCopyExportItemsToExportReport() {
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( validateCopyExportItemsToExportReportReceived );
 	
-	var param = "exportReportId=" + byId("targetExportReport").value;
+	var param = "exportReportId=" + getFieldValue("targetExportReport");
 		param += "&sheetNo=" + sheetId;
 	
 	request.sendAsPost( param );
@@ -253,22 +253,23 @@ function validateCopyExportItemsToExportReportReceived( data ) {
 		itemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
 	}
 	
-	splitDuplicatedItems( 'exportItemCheck', 'exportItemID', 'exportItemName' );
+	splitDuplicatedItems( 'exportItemID', 'exportItemName' );
 	saveCopyExportItemsToExportReport();
 }
 
-function splitDuplicatedItems( itemCheckID, itemIDAttribute, itemNameAttribute ) {
-
+function splitDuplicatedItems( itemIDAttribute, itemNameAttribute )
+{
 	var flag = -1;
 	var itemsChecked = new Array();
-	var listRadio = document.getElementsByName( itemCheckID );
+	var listRadio = document.getElementsByName( 'exportItemCheck' );
 
 	ItemsSaved = null;
 	ItemsSaved = new Array();
 	
-	for (var i = 0 ; i < listRadio.length ; i++) {
-	
-		if ( listRadio.item(i).checked ) {
+	for (var i = 0 ; i < listRadio.length ; i++)
+	{
+		if ( listRadio.item(i).checked )
+		{
 			itemsChecked.push( listRadio.item(i).getAttribute(itemIDAttribute) + "#" + listRadio.item(i).getAttribute(itemNameAttribute));
 		}
 	}
@@ -311,7 +312,7 @@ function saveCopyExportItemsToExportReport() {
 	if ( ItemsSaved.length > 0 )
 	{
 		var url = "copyExportItemToExportReport.action";
-			url += "?exportReportId=" + $("#targetExportReport").val();
+			url += "?exportReportId=" + getFieldValue("targetExportReport");
 			url += "&sheetNo=" + sheetId;
 			
 		for (var i in ItemsSaved)
@@ -336,15 +337,15 @@ function saveCopyExportItemsToExportReport() {
 *	COPY SELECTED EXPORT_ITEM(s) TO IMPORT_REPORT
 */
 
-function copySelectedExportItemToImportReport() {
+function copyExportItemToImportReport() {
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( copySelectedExportItemToImportReportReceived );
-	request.send( "getAllImportReport.action" );
+    request.setCallbackSuccess( copyExportItemToImportReportReceived );
+	request.send( "getAllImportReportByType.action?reportType=" + getFieldValue( "exportReportType" ) );
 }
 
-function copySelectedExportItemToImportReportReceived( xmlObject ) {
+function copyExportItemToImportReportReceived( xmlObject ) {
 	
 	var groups = xmlObject.getElementsByTagName("importReport");
 	var selectList = document.getElementById("targetImportReport");
@@ -368,23 +369,23 @@ function copySelectedExportItemToImportReportReceived( xmlObject ) {
 
 function validateCopyExportItemsToImportReport() {
 
-	sheetId	= $("#targetImportReportSheetNo").val();
-	
-	var message = '';
+	if ( jQuery( 'input:checked' ).length == 0 )
+	{
+		setMessage( i18n_no_item );
+		return;
+	}
+
+	sheetId	= getFieldValue("targetImportReportSheetNo");
 	
 	if ( sheetId < 1 )
 	{
-		message = i18n_input_sheet_no;
+		setMessage( i18n_input_sheet_no );
+		return;
 	}
 	
-	if ( byId("targetImportReport").value == -1 )
+	if ( getFieldValue("targetImportReport") == -1 )
 	{
-		message += "<br/>" + i18n_choose_import_report;
-	}
-	
-	if ( message.length > 0 )
-	{
-		setMessage( message );
+		setMessage( i18n_choose_import_report );
 		return;
 	}
 	
@@ -397,21 +398,19 @@ function validateCopyExportItemsToImportReport() {
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( validateCopyExportItemsToImportReportReceived );
-	request.send( "getImportItemsByGroup.action?importReportId=" + byId("targetImportReport").value );
-	
+	request.send( "getImportItemsByImportReport.action?importReportId=" + getFieldValue("targetImportReport") );
 }
 
-function validateCopyExportItemsToImportReportReceived( xmlObject ) {
-	
+function validateCopyExportItemsToImportReportReceived( xmlObject )
+{	
 	var items = xmlObject.getElementsByTagName('importItem');
 	
-	for (var i = 0 ;  i < items.length ; i ++) {
-	
+	for (var i = 0 ;  i < items.length ; i ++)
+	{
 		itemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
 	}
 	
-	splitDuplicatedItems( 'exportItemCheck', 'exportItemID', 'exportItemName' );
-	
+	splitDuplicatedItems( 'exportItemID', 'exportItemName' );
 	saveCopiedExportItemsToImportReport();
 }
 
@@ -431,7 +430,7 @@ function saveCopiedExportItemsToImportReport() {
 	if ( ItemsSaved.length > 0 )
 	{
 		var url = "copyExportItemToImportReport.action";
-			url += "?importReportId=" + $("#targetImportReport").val();
+			url += "?importReportId=" + getFieldValue("targetImportReport");
 			url += "&sheetNo=" + sheetId;
 			
 		for (var i in ItemsSaved)

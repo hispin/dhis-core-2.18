@@ -36,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,11 +52,11 @@ public class ShowUpdateImportItemFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private DataElementService dataElementService;
@@ -113,9 +113,9 @@ public class ShowUpdateImportItemFormAction
     public String execute()
         throws Exception
     {
-        importReport = importItemService.getImportReport( importReportId );
+        importReport = importReportService.getImportReport( importReportId );
 
-        importItem = importItemService.getImportItem( importItemId );
+        importItem = importReportService.getImportItem( importItemId );
 
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 

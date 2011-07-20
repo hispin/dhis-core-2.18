@@ -52,7 +52,7 @@ public class ViewDataNormalAction
         try
         {
             xmlStructureResponse = new XMLStructureResponseImport( selectionManager.getUploadFilePath(),
-                importItemService.getAllSheet(), importItems, true, ExcelItemGroup.TYPE.NORMAL ).getXml();
+                importReportService.getAllSheet(), importItems, true, ExcelItemGroup.TYPE.NORMAL ).getXml();
         }
         catch ( Exception ex )
         {

@@ -125,23 +125,23 @@ function getDataElements( id, target )
 
 sheetId = 0;
 noItemsChecked = 0;
-ImportItemsSaved = null;
-importItemsCurTarget = null;
-importItemsDuplicated = null;
+ItemsSaved = null;
+itemsCurTarget = null;
+itemsDuplicated = null;
 
-function copySelectedItemToGroup() {
+function copyImportItemToImportReport() {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( copySelectedItemToGroupReceived );
-	request.send( "getAllImportReport.action" );
+	request.setCallbackSuccess( copyImportItemToImportReportReceived );
+	request.send( "getAllImportReportByType.action?reportType=" + getFieldValue( "importReportType" ) );
 
 }
 
-function copySelectedItemToGroupReceived( xmlObject ) {
+function copyImportItemToImportReportReceived( xmlObject ) {
 
 	var reports = xmlObject.getElementsByTagName("importReport");
-	var selectList = document.getElementById("targetGroup");
+	var selectList = document.getElementById("targetImportReport");
 	var options = selectList.options;
 	
 	options.length = 0;
@@ -156,38 +156,66 @@ function copySelectedItemToGroupReceived( xmlObject ) {
 	openDialog( dialog1 );
 }
 
+function copyImportItemToExportReport() {
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( copyImportItemToExportReportReceived );
+	request.send( "getAllExportReportByType.action?reportType=" + getFieldValue( "importReportType" ) );
+}
+
+function copyImportItemToExportReportReceived( xmlObject ) {
+
+	var exportReports = xmlObject.getElementsByTagName("exportReport");
+	var selectList = document.getElementById("targetExportReport");
+	var options = selectList.options;
+	
+	options.length = 0;
+	
+	for( var i = 0 ; i < exportReports.length ; i++ ) {
+	
+		var id = exportReports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
+		var name = exportReports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
+		options.add(new Option(name,id), null);
+	}
+	
+	loadItemTypes( jQuery("#targetExportReport").val() );
+	
+	openDialog( dialog2 );
+}
+
 function validateCopyImportItemsToImportReport() {
 
-	sheetId	= byId("targetSheetNo").value;
-	
-	var message = '';
-	
+	if ( jQuery( 'input:checked' ).length == 0 )
+	{
+		setMessage( i18n_no_item );
+		return;
+	}
+
+	sheetId	= getFieldValue( "copyToImportReport input[id=targetSheetNo]" );
+
 	if ( sheetId < 1 )
 	{
-		message = i18n_input_sheet_no;
-	}
-	
-	if ( byId("targetGroup").value == -1 )
-	{
-		message += "<br/>" + i18n_choose_import_report;
-	}
-	
-	if ( message.length > 0 )
-	{
-		setMessage( message );
+		setMessage( i18n_input_sheet_no );
 		return;
 	}
 	
-	importItemsCurTarget = null;
-	importItemsDuplicated = null;
+	if ( byId("targetImportReport").value == -1 )
+	{
+		setMessage( i18n_choose_import_report );
+		return;
+	}
 	
-	importItemsCurTarget = new Array();
-	importItemsDuplicated = new Array();
+	itemsCurTarget = null;
+	itemsDuplicated = null;
+	
+	itemsCurTarget = new Array();
+	itemsDuplicated = new Array();
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( validateCopyImportItemsToImportReportReceived );
-	request.send( "getImportItemsByGroup.action?importReportId=" + byId("targetGroup").value );
+	request.send( "getImportItemsByImportReport.action?importReportId=" + byId("targetImportReport").value );
 }
 
 function validateCopyImportItemsToImportReportReceived( xmlObject ) {
@@ -196,22 +224,74 @@ function validateCopyImportItemsToImportReportReceived( xmlObject ) {
 	
 	for (var i = 0 ;  i < items.length ; i ++) {
 	
-		importItemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
+		itemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
 	}
 	
-	splitDuplicatedImportItems( 'importItemChecked', 'importItemID', 'importItemName' );
-	
+	splitDuplicatedImportItems( 'importItemID', 'importItemName' );
 	saveCopiedImportItemsToImportReport();
 }
 
-function splitDuplicatedImportItems( itemCheckID, itemIDAttribute, itemNameAttribute ) {
+
+function validateCopyImportItemsToExportReport()
+{
+	if ( jQuery( 'input:checked' ).length == 0 )
+	{
+		setMessage( i18n_no_item );
+		return;
+	}
+
+	sheetId	= getFieldValue( "copyToExportReport input[id=targetSheetNo]" );
+	
+	if ( sheetId < 1 )
+	{
+		setMessage( i18n_input_sheet_no );
+		return;
+	}
+	
+	if ( getFieldValue( "targetExportReport" ) == -1 )
+	{
+		setMessage( "<br/>" + i18n_choose_import_report);
+		return;
+	}
+	
+	itemsCurTarget = null;
+	itemsDuplicated = null;
+	
+	itemsCurTarget = new Array();
+	itemsDuplicated = new Array();
+	
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( validateCopyImportItemsToExportReportReceived );
+	
+	var param = "exportReportId=" + getFieldValue( "targetExportReport" );
+		param += "&sheetNo=" + sheetId;
+	
+	request.sendAsPost( param );
+	request.send( "getExportItemsBySheet.action" );
+}
+
+function validateCopyImportItemsToExportReportReceived( xmlObject ) {
+	
+	var items = xmlObject.getElementsByTagName( 'exportItem' );
+	
+	for (var i = 0 ;  i < items.length ; i ++)
+	{
+		itemsCurTarget.push(items[i].getElementsByTagName( 'name' )[0].firstChild.nodeValue);
+	}
+	
+	splitDuplicatedImportItems( 'importItemID', 'importItemName' );
+	saveCopiedImportItemsToExportReport();
+}
+
+function splitDuplicatedImportItems( itemIDAttribute, itemNameAttribute ) {
 
 	var flag = -1;
 	var itemsChecked = new Array();
-	var listRadio = document.getElementsByName( itemCheckID );
+	var listRadio = document.getElementsByName( 'importItemChecked' );
 
-	ImportItemsSaved = null;
-	ImportItemsSaved = new Array();
+	ItemsSaved = null;
+	ItemsSaved = new Array();
 	
 	for (var i = 0 ; i < listRadio.length ; i++) {
 	
@@ -226,18 +306,18 @@ function splitDuplicatedImportItems( itemCheckID, itemIDAttribute, itemNameAttri
 	{
 		flag = i;
 		
-		for (var j in importItemsCurTarget)
+		for (var j in itemsCurTarget)
 		{
-			if ( itemsChecked[i].split("#")[1] == importItemsCurTarget[j] )
+			if ( itemsChecked[i].split("#")[1] == itemsCurTarget[j] )
 			{
 				flag = -1;
-				importItemsDuplicated.push( itemsChecked[i].split("#")[1] );
+				itemsDuplicated.push( itemsChecked[i].split("#")[1] );
 				break;
 			}
 		}
 		if ( flag >= 0 )
 		{
-			ImportItemsSaved.push( itemsChecked[i].split("#")[0] );
+			ItemsSaved.push( itemsChecked[i].split("#")[0] );
 		}
 	}
 }
@@ -249,18 +329,18 @@ function saveCopiedImportItemsToImportReport() {
 	warningMessages = "";
 	// If have ImportItem(s) in Duplicating list
 	// preparing the warning message
-	if ( importItemsDuplicated.length > 0 ) {
+	if ( itemsDuplicated.length > 0 ) {
 
 		warningMessages += 
-		"<b>[" + (importItemsDuplicated.length) + "/" + (noItemsChecked) + "]</b>:: "
+		"<b>[" + (itemsDuplicated.length) + "/" + (noItemsChecked) + "]</b>:: "
 		+ i18n_copy_items_duplicated
 		+ "<br/><br/>";
 		
-		for (var i in importItemsDuplicated) {
+		for (var i in itemsDuplicated) {
 		
 			warningMessages +=
 			"<b>(*)</b> "
-			+ importItemsDuplicated[i] 
+			+ itemsDuplicated[i] 
 			+ "<br/><br/>";
 		}
 		
@@ -269,18 +349,18 @@ function saveCopiedImportItemsToImportReport() {
 	
 	// If have also ImportItem(s) in Copying list
 	// do copy and prepare the message notes
-	if ( ImportItemsSaved.length > 0 ) {
+	if ( ItemsSaved.length > 0 ) {
 	
 		var request = new Request();
 		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( saveCopiedImportItemsToImportReportReceived );	
+		request.setCallbackSuccess( saveCopiedImportItemsReceived );	
 		
-		var params = "importReportDestId=" + byId("targetGroup").value;
+		var params = "importReportDestId=" + byId("targetImportReport").value;
 			params += "&sheetNo=" + sheetId;
 			
-		for (var i in importItemsSaved)
+		for (var i in ItemsSaved)
 		{
-			params += "&itemIds=" + importItemsSaved[i];
+			params += "&itemIds=" + ItemsSaved[i];
 		}
 		
 		request.sendAsPost(params);
@@ -288,7 +368,7 @@ function saveCopiedImportItemsToImportReport() {
 	}
 	// If have no any ImportItem(s) will be copied
 	// and also have ImportItem(s) in Duplicating list
-	else if ( importItemsDuplicated.length > 0 ) {
+	else if ( itemsDuplicated.length > 0 ) {
 
 		setMessage( warningMessages );
 	}
@@ -296,7 +376,61 @@ function saveCopiedImportItemsToImportReport() {
 	closeDialog( dialog1 );
 }
 
-function saveCopiedImportItemsToImportReportReceived( data ) {
+function saveCopiedImportItemsToExportReport() {
+	
+	warningMessages = "";
+	// If have ImportItem(s) in Duplicating list
+	// preparing the warning message
+	if ( itemsDuplicated.length > 0 ) {
+
+		warningMessages += 
+		"<b>[" + (itemsDuplicated.length) + "/" + (noItemsChecked) + "]</b>:: "
+		+ i18n_copy_items_duplicated
+		+ "<br/><br/>";
+		
+		for (var i in itemsDuplicated) {
+		
+			warningMessages +=
+			"<b>(*)</b> "
+			+ itemsDuplicated[i] 
+			+ "<br/><br/>";
+		}
+		
+		warningMessages += "<br/>";
+	}
+	
+	// If have also ImportItem(s) in Copying list
+	// do copy and prepare the message notes
+	if ( ItemsSaved.length > 0 ) {
+	
+		var request = new Request();
+		request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess( saveCopiedImportItemsReceived );	
+		
+		var params = "exportReportId=" + getFieldValue( "targetExportReport" );
+			params += "&periodType=" + getFieldValue( "periodType" );
+			params += "&itemType=" + getFieldValue( "itemType" );
+			params += "&sheetNo=" + sheetId;
+			
+		for (var i in ItemsSaved)
+		{
+			params += "&itemIds=" + ItemsSaved[i];
+		}
+		
+		request.sendAsPost(params);
+		request.send( "copyImportItemToExportReport.action");
+	}
+	// If have no any ImportItem(s) will be copied
+	// and also have ImportItem(s) in Duplicating list
+	else if ( itemsDuplicated.length > 0 ) {
+
+		setMessage( warningMessages );
+	}
+		
+	closeDialog( dialog2 );
+}
+
+function saveCopiedImportItemsReceived( data ) {
 	
 	var type = data.getAttribute("type");
 	
@@ -304,7 +438,7 @@ function saveCopiedImportItemsToImportReportReceived( data ) {
 	
 		warningMessages +=
 		" ======= Sheet [" + sheetId + "] ========"
-		+ "<br/><b>[" + (ImportItemsSaved.length) + "/" + (noItemsChecked) + "]</b>:: "
+		+ "<br/><b>[" + (ItemsSaved.length) + "/" + (noItemsChecked) + "]</b>:: "
 		+ i18n_copy_successful
 		+ "<br/>======================<br/><br/>";
 

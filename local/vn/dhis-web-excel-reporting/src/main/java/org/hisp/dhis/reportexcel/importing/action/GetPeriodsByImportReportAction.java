@@ -31,7 +31,7 @@ import java.util.List;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 
 /**
@@ -52,11 +52,11 @@ public class GetPeriodsByImportReportAction
         this.periodGenericManager = periodGenericManager;
     }
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -91,7 +91,7 @@ public class GetPeriodsByImportReportAction
             return ERROR;
         }
 
-        ExcelItemGroup importReport = importItemService.getImportReport( Integer.parseInt( importReportId ) );
+        ExcelItemGroup importReport = importReportService.getImportReport( Integer.parseInt( importReportId ) );
 
         periodGenericManager.setPeriodType( importReport.getPeriodType().getName() );
 

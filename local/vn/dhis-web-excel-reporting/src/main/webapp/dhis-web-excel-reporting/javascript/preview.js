@@ -97,15 +97,15 @@ function previewExportReportReceived( parentElement )
 		
 		for (var i = 0 ; i < _rows.length ; i ++)
 		{
-			_index	 = 0;
-			_sHTML 	+= "<tr>";
+			_index	= 0;
+			_sHTML += "<tr>";
 			
-			_cols 	 = _rows[i].getElementsByTagName( 'col' );
+			_cols 	= _rows[i].getElementsByTagName( 'col' );
 			
 			for (var j 	= 0 ; j < _cols.length ; )
 			{
-				var _number	 = getRootElementAttribute( _cols[j], 'no' );
-				var keyId = getRootElementAttribute( _cols[j], 'id' );
+				var _number	= getRootElementAttribute( _cols[j], 'no' );
+				var keyId 	= getRootElementAttribute( _cols[j], 'id' );
 				
 				// Printing out the unformatted cells
 				for (; _index < _number ; _index ++)

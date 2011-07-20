@@ -34,7 +34,7 @@ import java.util.List;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 import org.hisp.dhis.reportexcel.importitem.comparator.ImportReportComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -46,11 +46,11 @@ public class ListAllImportReportAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private PeriodService periodService;
@@ -85,7 +85,7 @@ public class ListAllImportReportAction
     public String execute()
         throws Exception
     {
-        importReports = new ArrayList<ExcelItemGroup>( importItemService.getAllImportReport() );
+        importReports = new ArrayList<ExcelItemGroup>( importReportService.getAllImportReport() );
 
         Collections.sort( importReports, new ImportReportComparator() );
 

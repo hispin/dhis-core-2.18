@@ -31,9 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 import org.hisp.dhis.reportexcel.importitem.comparator.ImportItemComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -49,11 +50,11 @@ public class ListImportItemAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -66,14 +67,11 @@ public class ListImportItemAction
 
     private List<ExcelItem> importItems;
 
+    private List<String> periodTypes;
+
     // -------------------------------------------------------------------------
     // Getters and Setters
     // -------------------------------------------------------------------------
-
-    public List<ExcelItem> getImportItems()
-    {
-        return importItems;
-    }
 
     public void setImportReportId( Integer importReportId )
     {
@@ -85,6 +83,16 @@ public class ListImportItemAction
         return importReport;
     }
 
+    public List<ExcelItem> getImportItems()
+    {
+        return importItems;
+    }
+
+    public List<String> getPeriodTypes()
+    {
+        return periodTypes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -92,13 +100,14 @@ public class ListImportItemAction
     public String execute()
         throws Exception
     {
-        importReport = importItemService.getImportReport( importReportId );
+        importReport = importReportService.getImportReport( importReportId );
 
         importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );
+
+        periodTypes = ReportExcelItem.PERIODTYPE.getPeriodTypes();
 
         Collections.sort( importItems, new ImportItemComparator() );
 
         return SUCCESS;
     }
-
 }

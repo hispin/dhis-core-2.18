@@ -20,18 +20,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- IMPORTITEM STORE                                               -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="org.hisp.dhis.reportexcel.importitem.ImportItemStore"
-		class="org.hisp.dhis.reportexcel.importitem.hibernate.HibernateImportItemStore">
+	<bean id="org.hisp.dhis.reportexcel.importitem.ImportReportStore"
+		class="org.hisp.dhis.reportexcel.importitem.hibernate.HibernateImportReportStore">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 	</bean>
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- IMPORTITEM SERVICE                                             -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="org.hisp.dhis.reportexcel.importitem.ImportItemService"
-		class="org.hisp.dhis.reportexcel.importitem.DefaultImportItemService">
-		<property name="importItemStore"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemStore" />
+	<bean id="org.hisp.dhis.reportexcel.importitem.ImportReportService"
+		class="org.hisp.dhis.reportexcel.importitem.DefaultImportReportService">
+		<property name="importReportStore"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
 	
@@ -45,8 +45,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.reportexcel.importitem.ImportItemDeletionHandler"
 		class="org.hisp.dhis.reportexcel.importitem.ImportItemDeletionHandler">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<!-- DeletionManager -->

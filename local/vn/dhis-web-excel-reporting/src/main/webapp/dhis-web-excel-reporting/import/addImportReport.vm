@@ -16,9 +16,9 @@
 		<td><label>$i18n.getString('import_report_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="type" name="type" style="min-width:20em">
-				<option value='NORMAL'>$i18n.getString('NORMAL')</option>					
-				<option value='CATEGORY'>$i18n.getString('CATEGORY')</option>					
-				<option value='ORGANIZATION_GROUP_LISTING'>$i18n.getString('ORGANIZATION_GROUP_LISTING')</option>									
+			#foreach( $type in $importTypes )
+				<option value='$type'>$i18n.getString($type)</option>
+			#end
 			</select>
 		</td>
 	</tr>	
@@ -26,9 +26,9 @@
 		<td><label>$i18n.getString('period_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em">
-				#foreach ( $periodType in $periodTypes )
-            		 <option value="$periodType.name">$i18n.getString( $periodType.name )</option>
-           		#end						
+			#foreach( $periodType in $periodTypes )
+            	 <option value="$periodType.name">$i18n.getString( $periodType.name )</option>
+           	#end						
 			</select>
 		</td>
 	</tr>	

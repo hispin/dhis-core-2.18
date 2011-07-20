@@ -13,7 +13,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemStore;
+import org.hisp.dhis.reportexcel.importitem.ImportReportStore;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -47,8 +47,8 @@ import org.hisp.dhis.reportexcel.importitem.ImportItemStore;
  * @version $Id$
  */
 
-public class HibernateImportItemStore
-    implements ImportItemStore
+public class HibernateImportReportStore
+    implements ImportReportStore
 {
     // ----------------------------------------------------------------------
     // Dependencies
@@ -69,7 +69,7 @@ public class HibernateImportItemStore
     }
 
     // ----------------------------------------------------------------------
-    // ImportItemStore implementation
+    // ImportReportStore implementation
     // ----------------------------------------------------------------------
 
     public int addImportItem( ExcelItem excelItem )
@@ -202,6 +202,18 @@ public class HibernateImportItemStore
         return criteria.list();
     }
 
+    @SuppressWarnings("unchecked")
+    public Collection<ExcelItemGroup> getImportReportsByType( String type )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( ExcelItemGroup.class );
+        
+        criteria.add( Restrictions.eq( "type", type ) );
+        
+        return criteria.list();
+    }
+    
     public DataElementGroupOrder getDataElementGroupOrder( Integer id )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -236,4 +248,5 @@ public class HibernateImportItemStore
 
         return criteria.setProjection( Projections.distinct( Projections.property( "sheetNo" ) ) ).list();
     }
+
 }
