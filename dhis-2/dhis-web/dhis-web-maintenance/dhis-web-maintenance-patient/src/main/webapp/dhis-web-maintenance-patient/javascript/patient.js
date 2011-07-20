@@ -253,6 +253,7 @@ function searchPatients()
 	if( getFieldValue('searchText') == '' )
 	{
 		$('#listPatientDiv').html( "<i style='color:red'>" + i18n_specify_a_search_criteria + "</i>" );
+		showById( 'listPatientDiv' );
 		return;
 	}
 	
@@ -271,6 +272,21 @@ function searchPatients()
 		});
 }
 
+function sortPatients()
+{
+	hideById( 'listPatientDiv' );
+	
+	contentDiv = 'listPatientDiv';
+	$( "#loaderDiv" ).show();
+	$('#listPatientDiv').load("searchPatient.action", 
+		{
+			sortPatientAttributeId: getFieldValue('sortPatientAttributeId')
+		}
+		, function(){
+			showById('listPatientDiv');
+			$( "#loaderDiv" ).hide();
+		});
+}
 // -----------------------------------------------------------------------------
 // Disable form
 // -----------------------------------------------------------------------------
@@ -692,7 +708,10 @@ function loadAllPatients()
 	
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listPatientDiv';
-	jQuery('#listPatientDiv').load('searchPatient.action?listAll=true',{},
+	jQuery('#listPatientDiv').load('searchPatient.action',{
+			listAll:true,
+			sortPatientAttributeId: getFieldValue('sortPatientAttributeId')
+		},
 		function(){
 			showById('listPatientDiv');
 			jQuery('#loaderDiv').hide();
