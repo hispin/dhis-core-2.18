@@ -1,6 +1,6 @@
 
 function organisationUnitSelected( orgUnits )
-{		
+{	
 	showById('selectDiv');
 	disable('listPatientBtn');
 	
@@ -12,40 +12,41 @@ function organisationUnitSelected( orgUnits )
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
 			
-	$.getJSON( 'organisationUnitHasPatients.action?orgunitId=' + orgUnits[0], function( json ) 
-	{
-		var type = json.response;
-		setFieldValue('selectedOrgunitText', json.message );
-			
-		if( type == 'success' )
+	$.getJSON( 'organisationUnitHasPatients.action?orgunitId=' + orgUnits[0], {}
+		, function( json ) 
 		{
-					
-			$( "#loaderDiv" ).show();
-			jQuery.postJSON( "patientform.action",
-				{
-				}, 
-				function( json ) 
-				{    
-					clearListById('programId');
-					addOptionById( 'programId', "0", i18n_select_program );
-					for ( i in json.programs ) 
+			var type = json.response;
+			setFieldValue('selectedOrgunitText', json.message );
+				
+			if( type == 'success' )
+			{
+						
+				$( "#loaderDiv" ).show();
+				jQuery.postJSON( "patientform.action",
 					{
-						addOptionById( 'programId', json.programs[i].id, json.programs[i].name );
-					} 
-					
-					showById('searchPatientDiv');
-					enable('listPatientBtn');
-					setInnerHTML('warnmessage','');
-					
-					$( "#loaderDiv" ).hide();
-				});
-		}
-		else if( type == 'input' )
-		{
-			setInnerHTML('warnmessage', i18n_can_not_register_patient_for_orgunit);
-			disable('listPatientBtn');
-		}
-	} );
+					}, 
+					function( json ) 
+					{    
+						clearListById('programId');
+						addOptionById( 'programId', "0", i18n_select_program );
+						for ( i in json.programs ) 
+						{
+							addOptionById( 'programId', json.programs[i].id, json.programs[i].name );
+						} 
+						
+						showById('searchPatientDiv');
+						enable('listPatientBtn');
+						setInnerHTML('warnmessage','');
+						
+						$( "#loaderDiv" ).hide();
+					});
+			}
+			else if( type == 'input' )
+			{
+				setInnerHTML('warnmessage', i18n_can_not_register_patient_for_orgunit);
+				disable('listPatientBtn');
+			}
+		} );
 }
 
 selection.setListenerFunction( organisationUnitSelected );
@@ -154,12 +155,12 @@ function patientReceived( patientElement )
 	// Get common-information
     // ----------------------------------------------------------------------------
 	
-	var id = patientElement.getElementsByTagName( "id" )[0].firstChild.nodeValue;
-	var fullName = patientElement.getElementsByTagName( "fullName" )[0].firstChild.nodeValue;   
-	var gender = patientElement.getElementsByTagName( "gender" )[0].firstChild.nodeValue;   
-	var dobType = patientElement.getElementsByTagName( "dobType" )[0].firstChild.nodeValue;   
-	var birthDate = patientElement.getElementsByTagName( "dateOfBirth" )[0].firstChild.nodeValue;   
-	var bloodGroup= patientElement.getElementsByTagName( "bloodGroup" )[0].firstChild.nodeValue;   
+	var id = $(patientElement).find( "id" ).text();
+	var fullName = $(patientElement).find( "fullName" ).text();
+	var gender = $(patientElement).find( "gender" ).text();
+	var dobType = $(patientElement).find( "dobType" ).text();
+	var birthDate = $(patientElement).find( "dateOfBirth" ).text();
+	var bloodGroup= $(patientElement).find( "bloodGroup" ).text();
     
 	var commonInfo =  '<strong>'  + i18n_id + ':</strong> ' + id + "<br>" 
 					+ '<strong>' + i18n_full_name + ':</strong> ' + fullName + "<br>" 
@@ -171,46 +172,45 @@ function patientReceived( patientElement )
 	setInnerHTML( 'commonInfoField', commonInfo );
 	
 	// ----------------------------------------------------------------------------
-	// Get identifier
+	// Get identifiers
     // ----------------------------------------------------------------------------
 	
-	var identifiers = patientElement.getElementsByTagName( "identifier" );   
-    
     var identifierText = '';
 	
-	for ( var i = 0; i < identifiers.length; i++ )
-	{		
-		identifierText = identifierText + identifiers[ i ].getElementsByTagName( "identifierText" )[0].firstChild.nodeValue + '<br>';		
-	}
+	var identifiers = $(patientElement).find( "identifier" );
+	$( identifiers ).each( function( i, item )
+        {
+            identifierText += $( item ).text() + '<br>';		
+        } );
 	
 	setInnerHTML( 'identifierField', identifierText );
 	
-	
-	
 	// ----------------------------------------------------------------------------
-	// Get attribute
+	// Get attributes
     // ----------------------------------------------------------------------------
 	
-	var attributes = patientElement.getElementsByTagName( "attribute" );   
-    
     var attributeValues = '';
 	
-	for ( var i = 0; i < attributes.length; i++ )
-	{	
-		attributeValues = attributeValues + '<strong>' + attributes[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue  + ':  </strong>' + attributes[ i ].getElementsByTagName( "value" )[0].firstChild.nodeValue + '<br>';		
-	}
+	var attributes = $(patientElement).find( "attribute" );
+	$( attributes ).each( function( i, item )
+        {
+            attributeValues += '<strong>' + $( item ).find( 'name' ).text() + ':</strong> ' + $( item ).find( 'value' ).text() + '<br>';				
+        } );
 	
 	setInnerHTML( 'attributeField', attributeValues );
     
-    var programs = patientElement.getElementsByTagName( "program" );   
-    
+	// ----------------------------------------------------------------------------
+	// Get programs
+    // ----------------------------------------------------------------------------
+	
     var programName = '';
 	
-	for ( var i = 0; i < programs.length; i++ )
-	{		
-		programName = programName + programs[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue + '<br>';		
-	}
-	
+	var programs = $( patientElement ).find( "program" );
+	$( programs ).each( function( i, item )
+        {
+            programName += $( item ).text() + '<br>';
+        } );
+		
 	setInnerHTML( 'programField', programName );
    
     showDetails();
@@ -985,9 +985,7 @@ function showRelationshipList( patientId )
 	}
 	else
 	{
-		showById('selectDiv');
-		showById('searchPatientDiv');
-		showById('listPatientDiv');
+		loadPatientList();
 	}
 }
 
@@ -1010,18 +1008,19 @@ function onClickBackBtn()
 
 function loadPatientList()
 {
-	showById('selectDiv');
-	showById('searchPatientDiv');
-	showById('listPatientDiv');
-	
+	$.ajaxSettings.cache = false;
+
+	hideById('listPatientDiv');
 	hideById('addPatientDiv');
 	hideById('updatePatientDiv');
 	hideById('enrollmentDiv');
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
 	
-	$('#listPatientDiv').load("searchPatient.action", {}
+	jQuery('#listPatientDiv').load("searchPatient.action", {}
 		, function(){
+			showById('selectDiv');
+			showById('searchPatientDiv');
 			showById('listPatientDiv');
 			$( "#loaderDiv" ).hide();
 		});
