@@ -43,7 +43,7 @@ public class DataEntryFormUpgrader
     {
         this.dataEntryFormService = dataEntryFormService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Implementation method
     // -------------------------------------------------------------------------
@@ -54,61 +54,18 @@ public class DataEntryFormUpgrader
     {
         Collection<DataEntryForm> dataEntryForms = dataEntryFormService.getAllDataEntryForms();
 
-        Collection<DataEntryForm> programDataEntryForms = dataEntryFormService.getProgramDataEntryForms();
-
-        dataEntryForms.removeAll( programDataEntryForms );
-
-        upgradeDataEntryForm( dataEntryForms );
-
-        upgradeProgramDataEntryForm( programDataEntryForms );
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private void upgradeDataEntryForm( Collection<DataEntryForm> dataEntryForms )
-    {
         int i = 0;
 
-        for ( DataEntryForm form : dataEntryFormService.getAllDataEntryForms() )
+        for ( DataEntryForm programDataEntryForm : dataEntryForms )
         {
-            Matcher matcher = ID_PATTERN.matcher( form.getHtmlCode() );
+            String customForm = upgradeDataEntryForm( programDataEntryForm.getHtmlCode() );
 
-            StringBuffer out = new StringBuffer();
-
-            while ( matcher.find() )
-            {
-                String upgradedId = "id=\"" + matcher.group( 1 ) + "-" + matcher.group( 2 ) + "-val\"";
-
-                matcher.appendReplacement( out, upgradedId );
-
-                i++;
-            }
-
-            matcher.appendTail( out );
-
-            form.setHtmlCode( out.toString() );
-            form.setHtmlCode( form.getHtmlCode().replaceAll( "view=\"@@deshortname@@\"", "" ) );
-
-            dataEntryFormService.updateDataEntryForm( form );
-        }
-
-        log.info( "Upgraded custom data entry form identifiers: " + i );
-    }
-
-    private void upgradeProgramDataEntryForm( Collection<DataEntryForm> programDataEntryForms )
-    {
-        int i = 0;
-
-        for ( DataEntryForm programDataEntryForm : programDataEntryForms )
-        {
-            String customForm = upgradeProgramDataEntryFormForTextBox( programDataEntryForm.getHtmlCode() );
+            customForm = upgradeProgramDataEntryFormForTextBox( customForm );
 
             customForm = upgradeProgramDataEntryFormForDate( customForm );
 
             customForm = upgradeProgramDataEntryFormForOption( customForm );
-            
+
             programDataEntryForm.setHtmlCode( customForm );
 
             dataEntryFormService.updateDataEntryForm( programDataEntryForm );
@@ -117,6 +74,28 @@ public class DataEntryFormUpgrader
         }
 
         log.info( "Upgraded custom case entry form identifiers: " + i );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private String upgradeDataEntryForm( String htmlCode )
+    {
+        Matcher matcher = ID_PATTERN.matcher( htmlCode );
+
+        StringBuffer out = new StringBuffer();
+
+        while ( matcher.find() )
+        {
+            String upgradedId = "id=\"" + matcher.group( 1 ) + "-" + matcher.group( 2 ) + "-val\"";
+
+            matcher.appendReplacement( out, upgradedId );
+        }
+
+        matcher.appendTail( out );
+
+        return out.toString().replaceAll( "view=\"@@deshortname@@\"", "" );
     }
 
     private String upgradeProgramDataEntryFormForTextBox( String htmlCode )
@@ -146,7 +125,7 @@ public class DataEntryFormUpgrader
     {
         StringBuffer out = new StringBuffer();
         Matcher inputMatcher = SELECT_PATTERN.matcher( htmlCode );
-        
+
         while ( inputMatcher.find() )
         {
             String inputHtml = inputMatcher.group();
@@ -156,7 +135,7 @@ public class DataEntryFormUpgrader
             if ( matcher.find() )
             {
                 String upgradedId = matcher.group( 1 ) + "-" + matcher.group( 3 ) + "-val";
-                
+
                 inputHtml = "<input name=\"entryselect\" id=\"" + upgradedId + "\" >";
             }
 
