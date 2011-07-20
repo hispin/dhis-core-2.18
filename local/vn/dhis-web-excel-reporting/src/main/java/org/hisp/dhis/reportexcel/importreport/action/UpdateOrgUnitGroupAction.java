@@ -32,7 +32,7 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,11 +47,11 @@ public class UpdateOrgUnitGroupAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
@@ -86,7 +86,7 @@ public class UpdateOrgUnitGroupAction
     public String execute()
         throws Exception
     {
-        ExcelItemGroup importReport = (ExcelItemGroup) importItemService.getImportReport( id );
+        ExcelItemGroup importReport = (ExcelItemGroup) importReportService.getImportReport( id );
 
         List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
 
@@ -100,7 +100,7 @@ public class UpdateOrgUnitGroupAction
 
         importReport.setOrganisationUnitGroups( organisationUnitGroups );
 
-        importItemService.updateImportReport( importReport );
+        importReportService.updateImportReport( importReport );
 
         return SUCCESS;
     }

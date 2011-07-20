@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<reportItems>
-#foreach($reportItem in $reportItems)
-	<reportItem>
-		<id>$reportItem.id</id>
-		<name>$encoder.xmlEncode( $reportItem.name )</name>
-		<row>$reportItem.row</row>
-		<column>$reportItem.column</column>
-	</reportItem>
+<exportItems>
+#foreach($exportItem in $exportItems)
+	<exportItem>
+		<id>$exportItem.id</id>
+		<name>$encoder.xmlEncode( $exportItem.name )</name>
+		<row>$exportItem.row</row>
+		<column>$exportItem.column</column>
+	</exportItem>
 #end
-</reportItems>
+</exportItems>

@@ -29,7 +29,7 @@ package org.hisp.dhis.reportexcel.importitem.action;
 
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 /**
  * @author Chau Thu Tran
@@ -43,11 +43,11 @@ public class ValidateImportItemAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -79,7 +79,7 @@ public class ValidateImportItemAction
     public String execute()
         throws Exception
     {
-        ExcelItem importItem = importItemService.getImportItem( name );
+        ExcelItem importItem = importReportService.getImportItem( name );
 
         if ( importItem != null && (this.id == null || importItem.getId() != this.id) )
         {

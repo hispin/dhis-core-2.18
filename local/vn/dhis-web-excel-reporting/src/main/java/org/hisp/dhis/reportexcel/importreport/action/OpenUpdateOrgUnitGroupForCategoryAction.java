@@ -34,7 +34,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,11 +49,11 @@ public class OpenUpdateOrgUnitGroupForCategoryAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
@@ -106,7 +106,7 @@ public class OpenUpdateOrgUnitGroupForCategoryAction
     public String execute()
         throws Exception
     {
-        this.importReport = importItemService.getImportReport( id );
+        this.importReport = importReportService.getImportReport( id );
 
         this.availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>( this.organisationUnitGroupService
             .getAllOrganisationUnitGroups() );

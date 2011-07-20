@@ -32,7 +32,7 @@ import java.util.List;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 /**
  * @author Chau Thu Tran
@@ -45,11 +45,11 @@ public class UpdateSortedDataElementGroupOrderForCategoryAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -77,13 +77,13 @@ public class UpdateSortedDataElementGroupOrderForCategoryAction
     public String execute()
         throws Exception
     {
-        ExcelItemGroup importReport = importItemService.getImportReport( importReportId );
+        ExcelItemGroup importReport = importReportService.getImportReport( importReportId );
 
         List<DataElementGroupOrder> dataElementGroupOrders = new ArrayList<DataElementGroupOrder>();
 
         for ( String id : this.dataElementGroupOrderId )
         {
-            DataElementGroupOrder daElementGroupOrder = importItemService.getDataElementGroupOrder( Integer
+            DataElementGroupOrder daElementGroupOrder = importReportService.getDataElementGroupOrder( Integer
                 .parseInt( id ) );
 
             dataElementGroupOrders.add( daElementGroupOrder );
@@ -91,7 +91,7 @@ public class UpdateSortedDataElementGroupOrderForCategoryAction
 
         importReport.setDataElementOrders( dataElementGroupOrders );
 
-        importItemService.updateImportReport( importReport );
+        importReportService.updateImportReport( importReport );
 
         message = i18n.getString( "success" );
 

@@ -28,6 +28,7 @@ package org.hisp.dhis.reportexcel.importitem;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public class ExcelItemGroup
     private String name;
 
     private String type;
-    
+
     private Set<ExcelItem> excelItems;
 
     private Set<OrganisationUnit> organisationAssocitions;
@@ -81,6 +82,17 @@ public class ExcelItemGroup
         public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
 
         public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
+
+        public static final List<String> getImportTypes()
+        {
+            List<String> list = new ArrayList<String>();
+
+            list.add( NORMAL );
+            list.add( CATEGORY );
+            list.add( ORGANIZATION_GROUP_LISTING );
+
+            return list;
+        }
     }
 
     // -------------------------------------------------------------------------

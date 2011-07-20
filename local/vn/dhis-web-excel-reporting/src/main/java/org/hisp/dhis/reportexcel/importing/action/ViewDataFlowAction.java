@@ -27,7 +27,7 @@
 package org.hisp.dhis.reportexcel.importing.action;
 
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
@@ -44,11 +44,11 @@ public class ViewDataFlowAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private SelectionManager selectionManager;
@@ -79,7 +79,7 @@ public class ViewDataFlowAction
     {
         selectionManager.setSelectedReportId( importReportId );
 
-        ExcelItemGroup importReport = importItemService.getImportReport( importReportId );
+        ExcelItemGroup importReport = importReportService.getImportReport( importReportId );
 
         return importReport.getType();
     }

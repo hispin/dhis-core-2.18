@@ -27,7 +27,7 @@
 
 package org.hisp.dhis.reportexcel.importreport.degroup.action;
 
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,11 +42,11 @@ public class DeleteDataElementGroupOrderForCategoryAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -67,7 +67,7 @@ public class DeleteDataElementGroupOrderForCategoryAction
     public String execute()
         throws Exception
     {
-        importItemService.deleteDataElementGroupOrder( id );
+        importReportService.deleteDataElementGroupOrder( id );
 
         return SUCCESS;
     }

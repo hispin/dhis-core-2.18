@@ -34,7 +34,7 @@ import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,11 +57,11 @@ public class CopyExportItemToImportReportAction
         this.exportReportService = exportReportService;
     }
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private StatementManager statementManager;
@@ -114,7 +114,7 @@ public class CopyExportItemToImportReportAction
     {
         statementManager.initialise();
 
-        ExcelItemGroup importReport = importItemService.getImportReport( importReportId );
+        ExcelItemGroup importReport = importReportService.getImportReport( importReportId );
 
         for ( String itemId : exportItemIds )
         {
@@ -127,12 +127,12 @@ public class CopyExportItemToImportReportAction
             importItem.setColumn( itemSource.getColumn() );
             importItem.setExpression( itemSource.getExpression() );
             importItem.setSheetNo( sheetNo );
-            importItem.setExcelItemGroup( importItemService.getImportReport( importReportId ) );
+            importItem.setExcelItemGroup( importReport );
 
-            importItemService.addImportItem( importItem );
+            importReportService.addImportItem( importItem );
         }
 
-        importItemService.updateImportReport( importReport );
+        importReportService.updateImportReport( importReport );
 
         statementManager.destroy();
 

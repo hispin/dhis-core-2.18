@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportexcel.importreport.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,24 +27,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.reportexcel.importreport.degroup.action;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class UpdateSortedDataElementForCategoryAction
+public class SetupImportReportFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -56,47 +55,43 @@ public class UpdateSortedDataElementForCategoryAction
         this.importReportService = importReportService;
     }
 
-    private DataElementService dataElementService;
+    private PeriodService periodService;
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.dataElementService = dataElementService;
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input && Output
     // -------------------------------------------------------------------------
 
     private Integer id;
-
-    private List<String> dataElementIds = new ArrayList<String>();
-
-    public String message;
-
-    public I18n i18n;
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public String getMessage()
-    {
-        return message;
-    }
 
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public void setDataElementIds( List<String> dataElementIds )
+    private ExcelItemGroup importReport;
+
+    public ExcelItemGroup getImportReport()
     {
-        this.dataElementIds = dataElementIds;
+        return importReport;
     }
 
-    public void setI18n( I18n i18n )
+    private List<String> importTypes;
+
+    public List<String> getImportTypes()
     {
-        this.i18n = i18n;
+        return importTypes;
+    }
+
+    private List<PeriodType> periodTypes;
+
+    public List<PeriodType> getPeriodTypes()
+    {
+        return periodTypes;
     }
 
     // -------------------------------------------------------------------------
@@ -106,22 +101,16 @@ public class UpdateSortedDataElementForCategoryAction
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = importReportService.getDataElementGroupOrder( id.intValue() );
-
-        List<DataElement> dataElements = new ArrayList<DataElement>();
-
-        for ( String dataElementId : this.dataElementIds )
+        if ( id != null && id != -1 )
         {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
-            dataElements.add( dataElement );
+            importReport = importReportService.getImportReport( id );
         }
 
-        dataElementGroupOrder.setDataElements( dataElements );
-
-        this.message = i18n.getString( "update_sort_dataelement_success" );
-
-        importReportService.updateDataElementGroupOrder( dataElementGroupOrder );
+        importTypes = ExcelItemGroup.TYPE.getImportTypes();
+        
+        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
 
         return SUCCESS;
     }
+
 }

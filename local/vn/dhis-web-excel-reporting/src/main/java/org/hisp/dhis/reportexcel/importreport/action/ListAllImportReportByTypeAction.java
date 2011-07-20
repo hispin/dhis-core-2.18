@@ -28,12 +28,10 @@ package org.hisp.dhis.reportexcel.importreport.action;
  */
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -41,63 +39,50 @@ import com.opensymphony.xwork2.Action;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class ShowUpdateImportReportFormAction
+public class ListAllImportReportByTypeAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
-    // Input && Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private String reportType;
 
-    public void setId( int id )
+    public void setReportType( String reportType )
     {
-        this.id = id;
+        this.reportType = reportType;
     }
 
-    private ExcelItemGroup importReport;
+    private Collection<ExcelItemGroup> importReports = new ArrayList<ExcelItemGroup>();
 
-    public ExcelItemGroup getImportReport()
+    public Collection<ExcelItemGroup> getImportReports()
     {
-        return importReport;
-    }
-
-    private List<PeriodType> periodTypes;
-
-    public List<PeriodType> getPeriodTypes()
-    {
-        return periodTypes;
+        return importReports;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Execute method
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        importReport = importItemService.getImportReport( id );
+        if ( reportType != null )
+        {            
+            importReports = importReportService.getImportReportsByType( reportType );
+        }
         
-        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
-
         return SUCCESS;
     }
 }

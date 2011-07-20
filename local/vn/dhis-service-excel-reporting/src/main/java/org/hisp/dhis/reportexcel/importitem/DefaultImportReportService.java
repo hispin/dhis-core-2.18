@@ -42,18 +42,18 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-public class DefaultImportItemService
-    implements ImportItemService
+public class DefaultImportReportService
+    implements ImportReportService
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemStore importItemStore;
+    private ImportReportStore importReportStore;
 
-    public void setImportItemStore( ImportItemStore importItemStore )
+    public void setImportReportStore( ImportReportStore importReportStore )
     {
-        this.importItemStore = importItemStore;
+        this.importReportStore = importReportStore;
     }
 
     private I18nService i18nService;
@@ -69,7 +69,7 @@ public class DefaultImportItemService
 
     public int addImportReport( ExcelItemGroup importReport )
     {
-        int id = importItemStore.addImportReport( importReport );
+        int id = importReportStore.addImportReport( importReport );
 
         i18nService.addObject( importReport );
 
@@ -78,45 +78,49 @@ public class DefaultImportItemService
 
     public void deleteImportReport( int id )
     {
-        i18nService.removeObject( importItemStore.getImportReport( id ) );
+        i18nService.removeObject( importReportStore.getImportReport( id ) );
 
-        importItemStore.deleteImportReport( id );
+        importReportStore.deleteImportReport( id );
     }
 
     public Collection<ExcelItemGroup> getAllImportReport()
     {
-        return i18n( i18nService, importItemStore.getAllImportReport() );
+        return i18n( i18nService, importReportStore.getAllImportReport() );
     }
 
     public ExcelItemGroup getImportReport( int id )
     {
-        return i18n( i18nService, importItemStore.getImportReport( id ) );
+        return i18n( i18nService, importReportStore.getImportReport( id ) );
     }
 
     public ExcelItemGroup getImportReport( String name )
     {
-        return importItemStore.getImportReport( name );
+        return importReportStore.getImportReport( name );
     }
 
     public void updateImportReport( ExcelItemGroup importReport )
     {
-        importItemStore.updateImportReport( importReport );
+        importReportStore.updateImportReport( importReport );
 
         i18nService.verify( importReport );
     }
 
     public Collection<ExcelItemGroup> getImportReports( OrganisationUnit organisationUnit )
     {
-        return i18n( i18nService, importItemStore.getImportReports( organisationUnit ) );
+        return i18n( i18nService, importReportStore.getImportReports( organisationUnit ) );
     }
 
+    public Collection<ExcelItemGroup> getImportReportsByType( String type )
+    {
+        return i18n( i18nService, importReportStore.getImportReportsByType( type ) );
+    }
     // -------------------------------------------------------------------------
     // Import Item Services
     // -------------------------------------------------------------------------
 
     public int addImportItem( ExcelItem excelItem )
     {
-        int id = importItemStore.addImportItem( excelItem );
+        int id = importReportStore.addImportItem( excelItem );
 
         i18nService.addObject( excelItem );
 
@@ -125,36 +129,36 @@ public class DefaultImportItemService
 
     public void deleteImportItem( int id )
     {
-        i18nService.removeObject( importItemStore.getImportItem( id ) );
+        i18nService.removeObject( importReportStore.getImportItem( id ) );
 
-        importItemStore.deleteImportItem( id );
+        importReportStore.deleteImportItem( id );
     }
 
     public Collection<ExcelItem> getAllImportItem()
     {
-        return i18n( i18nService, importItemStore.getAllImportItem() );
+        return i18n( i18nService, importReportStore.getAllImportItem() );
     }
 
     public void updateImportItem( ExcelItem excelItem )
     {
-        importItemStore.updateImportItem( excelItem );
+        importReportStore.updateImportItem( excelItem );
 
         i18nService.verify( excelItem );
     }
 
     public ExcelItem getImportItem( int id )
     {
-        return i18n( i18nService, importItemStore.getImportItem( id ) );
+        return i18n( i18nService, importReportStore.getImportItem( id ) );
     }
 
     public ExcelItem getImportItem( String name )
     {
-        return importItemStore.getImportItem( name );
+        return importReportStore.getImportItem( name );
     }
 
     public Collection<Integer> getAllSheet()
     {
-        return importItemStore.getSheets();
+        return importReportStore.getSheets();
     }
 
     // -------------------------------------------------------------------------
@@ -163,16 +167,17 @@ public class DefaultImportItemService
 
     public DataElementGroupOrder getDataElementGroupOrder( Integer id )
     {
-        return importItemStore.getDataElementGroupOrder( id );
+        return importReportStore.getDataElementGroupOrder( id );
     }
 
     public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
     {
-        importItemStore.updateDataElementGroupOrder( dataElementGroupOrder );
+        importReportStore.updateDataElementGroupOrder( dataElementGroupOrder );
     }
 
     public void deleteDataElementGroupOrder( Integer id )
     {
-        importItemStore.deleteDataElementGroupOrder( id );
+        importReportStore.deleteDataElementGroupOrder( id );
     }
+
 }

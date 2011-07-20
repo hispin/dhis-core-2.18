@@ -32,7 +32,7 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,11 +47,11 @@ public class UpdateDataElementGroupOrderForCategoryAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private DataElementService dataElementService;
@@ -116,7 +116,7 @@ public class UpdateDataElementGroupOrderForCategoryAction
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = importItemService
+        DataElementGroupOrder dataElementGroupOrder = importReportService
             .getDataElementGroupOrder( dataElementGroupOrderId );
 
         List<DataElement> dataElements = new ArrayList<DataElement>();
@@ -132,7 +132,7 @@ public class UpdateDataElementGroupOrderForCategoryAction
         dataElementGroupOrder.setName( name );
         dataElementGroupOrder.setCode( code );
 
-        importItemService.updateDataElementGroupOrder( dataElementGroupOrder );
+        importReportService.updateDataElementGroupOrder( dataElementGroupOrder );
 
         return SUCCESS;
     }

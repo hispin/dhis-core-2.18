@@ -35,7 +35,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 /**
@@ -63,11 +63,11 @@ public class GetImportingParamsAction
         this.selectionManager = selectionManager;
     }
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -137,7 +137,7 @@ public class GetImportingParamsAction
         // Load and sort ExcelItemGroups
         // ---------------------------------------------------------------------
 
-        importReports = new ArrayList<ExcelItemGroup>( importItemService.getImportReports( organisationUnit ) );
+        importReports = new ArrayList<ExcelItemGroup>( importReportService.getImportReports( organisationUnit ) );
 
         return SUCCESS;
     }

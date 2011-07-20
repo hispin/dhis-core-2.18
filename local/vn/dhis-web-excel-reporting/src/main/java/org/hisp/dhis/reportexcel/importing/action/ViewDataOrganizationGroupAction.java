@@ -46,7 +46,7 @@ import org.hisp.dhis.reportexcel.importing.ImportItemValue;
 import org.hisp.dhis.reportexcel.importing.ImportItemValueByOrganisationUnit;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 import org.hisp.dhis.reportexcel.importitem.comparator.ImportItemComparator;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
@@ -65,11 +65,11 @@ public class ViewDataOrganizationGroupAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private SelectionManager selectionManager;
@@ -131,7 +131,7 @@ public class ViewDataOrganizationGroupAction
 
                 Workbook wb = new HSSFWorkbook( inputStream );
 
-                ExcelItemGroup importReport = importItemService
+                ExcelItemGroup importReport = importReportService
                     .getImportReport( selectionManager.getSelectedReportId() );
 
                 List<ExcelItem> importItems = new ArrayList<ExcelItem>( importReport.getExcelItems() );

@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportexcel.exportitem.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,43 +26,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.hisp.dhis.reportexcel.importreport.degroup.action;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
-import org.hisp.dhis.reportexcel.importitem.ImportReportService;
+import org.hisp.dhis.reportexcel.ExportReportService;
+import org.hisp.dhis.reportexcel.ReportExcelItem;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class UpdateSortedDataElementForCategoryAction
+
+public class GetExportItemTypesAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportReportService importReportService;
+    private ExportReportService exportReportService;
 
-    public void setImportReportService( ImportReportService importReportService )
+    public void setExportReportService( ExportReportService exportReportService )
     {
-        this.importReportService = importReportService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
+        this.exportReportService = exportReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -69,58 +59,37 @@ public class UpdateSortedDataElementForCategoryAction
 
     private Integer id;
 
-    private List<String> dataElementIds = new ArrayList<String>();
-
-    public String message;
-
-    public I18n i18n;
+    private List<String> itemTypes = new ArrayList<String>();
 
     // -------------------------------------------------------------------------
-    // Getter & Setter
+    // Getters & Setters
     // -------------------------------------------------------------------------
-
-    public String getMessage()
-    {
-        return message;
-    }
 
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public void setDataElementIds( List<String> dataElementIds )
+    public List<String> getItemTypes()
     {
-        this.dataElementIds = dataElementIds;
-    }
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
+        return itemTypes;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action Implementation
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = importReportService.getDataElementGroupOrder( id.intValue() );
-
-        List<DataElement> dataElements = new ArrayList<DataElement>();
-
-        for ( String dataElementId : this.dataElementIds )
+        if ( id == null || id == -1 )
         {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
-            dataElements.add( dataElement );
+            itemTypes = ReportExcelItem.TYPE.getItemTypes();
         }
-
-        dataElementGroupOrder.setDataElements( dataElements );
-
-        this.message = i18n.getString( "update_sort_dataelement_success" );
-
-        importReportService.updateDataElementGroupOrder( dataElementGroupOrder );
+        else
+        {
+            itemTypes = exportReportService.getExportReport( id ).getItemTypes();
+        }
 
         return SUCCESS;
     }

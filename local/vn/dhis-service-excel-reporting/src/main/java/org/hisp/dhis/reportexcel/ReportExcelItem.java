@@ -141,6 +141,20 @@ public class ReportExcelItem
         public static final String SERIAL = "serial";
 
         public static final String FORMULA_EXCEL = "formulaexcel";
+        
+        public static List<String> getItemTypes()
+        {
+            List<String> list = new ArrayList<String>();
+            list.add( DATAELEMENT );
+            list.add( ORGANISATION );
+            list.add( INDICATOR );
+            list.add( DATAELEMENT_CODE );
+            list.add( DATAELEMENT_NAME );
+            list.add( SERIAL );
+            list.add( FORMULA_EXCEL );
+
+            return list;
+        }
     }
 
     public static class PERIODTYPE

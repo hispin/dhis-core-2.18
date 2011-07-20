@@ -43,7 +43,10 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.ExportReportStore;
 import org.hisp.dhis.reportexcel.PeriodColumn;
 import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelCategory;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
+import org.hisp.dhis.reportexcel.ReportExcelNormal;
+import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
@@ -175,6 +178,33 @@ public class HibernateExportReportStore
         criteria.add( Restrictions.eq( "group", group ) );
 
         return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ReportExcel> getExportReportsByClazz( Class<?> clazz )
+    {
+        return sessionFactory.getCurrentSession().createCriteria( clazz ).list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<ReportExcel> getExportReportsByReportType( String reportType )
+    {
+        Class<?> clazz = null;
+
+        if ( reportType.equals( ReportExcel.TYPE.NORMAL ) )
+        {
+            clazz = ReportExcelNormal.class;
+        }
+        else if ( reportType.equals( ReportExcel.TYPE.CATEGORY ) )
+        {
+            clazz = ReportExcelCategory.class;
+        }
+        else if ( reportType.equals( ReportExcel.TYPE.ORGANIZATION_GROUP_LISTING ) )
+        {
+            clazz = ReportExcelOganiztionGroupListing.class;
+        }
+        
+        return getExportReportsByClazz( clazz );
     }
 
     @SuppressWarnings( "unchecked" )

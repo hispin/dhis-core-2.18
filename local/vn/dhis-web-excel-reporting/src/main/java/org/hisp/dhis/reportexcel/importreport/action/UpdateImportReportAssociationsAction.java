@@ -31,7 +31,7 @@ import java.util.Collection;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,11 +47,11 @@ public class UpdateImportReportAssociationsAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private SelectionTreeManager selectionTreeManager;
@@ -79,7 +79,7 @@ public class UpdateImportReportAssociationsAction
     public String execute()
         throws Exception
     {
-        ExcelItemGroup importReport = importItemService.getImportReport( importReportId );
+        ExcelItemGroup importReport = importReportService.getImportReport( importReportId );
 
         importReport.getOrganisationAssocitions().clear();
 
@@ -87,7 +87,7 @@ public class UpdateImportReportAssociationsAction
 
         importReport.getOrganisationAssocitions().addAll( orgUnits );
 
-        importItemService.updateImportReport( importReport );
+        importReportService.updateImportReport( importReport );
 
         return SUCCESS;
     }

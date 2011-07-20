@@ -153,6 +153,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.reportexcel.exportreport.action.ListExportReportByReportTypeAction"
+		class="org.hisp.dhis.reportexcel.exportreport.action.ListExportReportByReportTypeAction"
+		scope="prototype">
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
+	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.exportreport.action.UpdateExportReportAction"
 		class="org.hisp.dhis.reportexcel.exportreport.action.UpdateExportReportAction"
@@ -377,6 +384,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.exportitem.action.GetExportItemTypesAction"
+		class="org.hisp.dhis.reportexcel.exportitem.action.GetExportItemTypesAction"
+		scope="prototype">
+		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
+	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToExportReportAction"
 		class="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToExportReportAction"
@@ -388,8 +402,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToImportReportAction"
 		class="org.hisp.dhis.reportexcel.exportitem.action.CopyExportItemToImportReportAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
@@ -871,8 +885,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.action.AddImportReportAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.AddImportReportAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
@@ -880,34 +894,41 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.action.DeleteImportReportAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.DeleteImportReportAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importreport.action.ListAllImportReportAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.ListAllImportReportAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.reportexcel.importreport.action.ListAllImportReportByTypeAction"
+		class="org.hisp.dhis.reportexcel.importreport.action.ListAllImportReportByTypeAction"
+		scope="prototype">
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
+	</bean>
+	
 	<bean
 		id="org.hisp.dhis.reportexcel.importreport.action.UpdateImportReportAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.UpdateImportReportAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 	
 	<bean
-		id="org.hisp.dhis.reportexcel.importreport.action.ShowUpdateImportReportFormAction"
-		class="org.hisp.dhis.reportexcel.importreport.action.ShowUpdateImportReportFormAction"
+		id="org.hisp.dhis.reportexcel.importreport.action.SetupImportReportFormAction"
+		class="org.hisp.dhis.reportexcel.importreport.action.SetupImportReportFormAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
@@ -915,24 +936,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.action.ValidateImportReportAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.ValidateImportReportAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importreport.action.GetImportReportByIdAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.GetImportReportByIdAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importreport.action.UpdateImportReportAssociationsAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.UpdateImportReportAssociationsAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
@@ -941,8 +962,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.action.OpenImportReportAssociationsAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.OpenImportReportAssociationsAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />		
 	</bean>
@@ -951,8 +972,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.action.UpdateOrgUnitGroupAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.UpdateOrgUnitGroupAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
@@ -961,8 +982,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.action.OpenUpdateOrgUnitGroupForCategoryAction"
 		class="org.hisp.dhis.reportexcel.importreport.action.OpenUpdateOrgUnitGroupForCategoryAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
@@ -975,24 +996,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.degroup.action.DeleteDataElementGroupOrderForCategoryAction"
 		class="org.hisp.dhis.reportexcel.importreport.degroup.action.DeleteDataElementGroupOrderForCategoryAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importreport.degroup.action.GetDataElementGroupOrderForCategoryAction"
 		class="org.hisp.dhis.reportexcel.importreport.degroup.action.GetDataElementGroupOrderForCategoryAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importreport.degroup.action.SaveDataElementGroupOrderForCategoryAction"
 		class="org.hisp.dhis.reportexcel.importreport.degroup.action.SaveDataElementGroupOrderForCategoryAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
@@ -1000,8 +1021,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.degroup.action.UpdateDataElementGroupOrderForCategoryAction"
 		class="org.hisp.dhis.reportexcel.importreport.degroup.action.UpdateDataElementGroupOrderForCategoryAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
@@ -1009,8 +1030,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.degroup.action.UpdateSortedDataElementForCategoryAction"
 		class="org.hisp.dhis.reportexcel.importreport.degroup.action.UpdateSortedDataElementForCategoryAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
@@ -1018,8 +1039,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importreport.degroup.action.UpdateSortedDataElementGroupOrderForCategoryAction"
 		class="org.hisp.dhis.reportexcel.importreport.degroup.action.UpdateSortedDataElementGroupOrderForCategoryAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -1032,23 +1053,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataElementService"
 			ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.importitem.action.AddImportItemAction"
 		class="org.hisp.dhis.reportexcel.importitem.action.AddImportItemAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importitem.action.DeleteImportItemAction"
 		class="org.hisp.dhis.reportexcel.importitem.action.DeleteImportItemAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
@@ -1070,16 +1091,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.importitem.action.ListImportItemAction"
 		class="org.hisp.dhis.reportexcel.importitem.action.ListImportItemAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importitem.action.UpdateImportItemAction"
 		class="org.hisp.dhis.reportexcel.importitem.action.UpdateImportItemAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 	
 	<bean
@@ -1088,32 +1109,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataElementService"
 			ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 	
 	<bean
 		id="org.hisp.dhis.reportexcel.importitem.action.ValidateImportItemAction"
 		class="org.hisp.dhis.reportexcel.importitem.action.ValidateImportItemAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importitem.action.GetImportItemByIdAction"
 		class="org.hisp.dhis.reportexcel.importitem.action.GetImportItemByIdAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importitem.action.UpdateImportItemFormAction"
 		class="org.hisp.dhis.reportexcel.importitem.action.UpdateImportItemFormAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="categoryService"
@@ -1129,8 +1150,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByImportReportAction">
 		<property name="periodGenericManager"
 			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 	</bean>
 
 	<bean
@@ -1139,8 +1160,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
@@ -1150,8 +1171,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
@@ -1161,8 +1182,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importing.action.ViewDataNormalAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ViewDataNormalAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
@@ -1172,8 +1193,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
@@ -1183,8 +1204,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importing.action.ViewDataOrganizationGroupAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ViewDataOrganizationGroupAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="organisationUnitSelectionManager"
@@ -1196,8 +1217,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="periodGenericManager"
 			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="selectionManager"
@@ -1208,8 +1229,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataNormalAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataNormalAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="dataValueService"
 			ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="dataElementService"
@@ -1234,8 +1255,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="dataValueService"
 			ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="dataElementService"
@@ -1260,8 +1281,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataOrganizationGroupAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataOrganizationGroupAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="dataValueService"
 			ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="dataElementService"
@@ -1316,8 +1337,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemToImportReportAction"
 		class="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemToImportReportAction"
 		scope="prototype">
-		<property name="importItemService"
-			ref="org.hisp.dhis.reportexcel.importitem.ImportItemService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemToExportReportAction"
+		class="org.hisp.dhis.reportexcel.importitem.action.CopyImportItemToExportReportAction"
+		scope="prototype">
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportexcel.importitem.ImportReportService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
 

@@ -61,7 +61,6 @@
 				<input type="button" id="expression-button" value="$i18n.getString('expression')" style="width:20em"/>											
 				<input type="hidden" id="expression" name="expression" style="width:15em" class="{validate:{required:true}}"/>
 			</td>
-			
 		</tr>	
 		<tr>
 			<td><label>$i18n.getString('sheet_no')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>

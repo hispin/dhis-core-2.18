@@ -34,7 +34,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,11 +49,11 @@ public class UpdateImportItemFormAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private ExpressionService expressionService;
@@ -109,7 +109,7 @@ public class UpdateImportItemFormAction
     public String execute()
         throws Exception
     {
-        importItem = importItemService.getImportItem( importItemId );
+        importItem = importReportService.getImportItem( importItemId );
 
         DataElementOperand operand = expressionService.getOperandsInExpression( importItem.getExpression() ).iterator()
             .next();

@@ -161,6 +161,16 @@ public class DefaultExportReportService
         return i18n( i18nService, exportReportStore.getExportReportsByGroup( group ) );
     }
 
+    public Collection<ReportExcel> getExportReportsByClazz( Class<?> clazz )
+    {
+        return exportReportStore.getExportReportsByClazz( clazz );
+    }
+
+    public Collection<ReportExcel> getExportReportsByReportType( String reportType )
+    {
+        return exportReportStore.getExportReportsByReportType( reportType );
+    }
+    
     public Collection<String> getAllExportReportTemplates()
     {
         return exportReportStore.getAllExportReportTemplates();
@@ -174,11 +184,9 @@ public class DefaultExportReportService
         }
     }
 
-    @Override
     public void updateExportReportSystemByTemplate( String curName, String newName )
     {
         exportReportStore.updateReportWithExcelTemplate( curName, newName );
-
     }
 
     // --------------------------------------
@@ -290,16 +298,13 @@ public class DefaultExportReportService
         exportReportStore.updateDataEntryStatus( arg0 );
     }
 
-    @Override
     public PeriodColumn getPeriodColumn( Integer id )
     {
         return exportReportStore.getPeriodColumn( id );
     }
 
-    @Override
     public void updatePeriodColumn( PeriodColumn periodColumn )
     {
         exportReportStore.updatePeriodColumn( periodColumn );
     }
-
 }

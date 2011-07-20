@@ -5,9 +5,9 @@ import java.util.Collection;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 
-public interface ImportItemService
+public interface ImportReportService
 {
-    String ID = ImportItemService.class.getName();
+    String ID = ImportReportService.class.getName();
 
     // -------------------------------------------------------------------------
     // Import Report services
@@ -27,6 +27,8 @@ public interface ImportItemService
 
     public Collection<ExcelItemGroup> getImportReports( OrganisationUnit organisationUnit );
 
+    public Collection<ExcelItemGroup> getImportReportsByType( String type );
+    
     // -------------------------------------------------------------------------
     // Import item services
     // -------------------------------------------------------------------------

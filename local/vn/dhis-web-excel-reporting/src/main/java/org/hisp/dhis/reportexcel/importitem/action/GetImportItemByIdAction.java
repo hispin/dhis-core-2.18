@@ -28,7 +28,7 @@ package org.hisp.dhis.reportexcel.importitem.action;
  */
 
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,11 +44,11 @@ public class GetImportItemByIdAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     // -------------------------------------------------------------------------
@@ -76,7 +76,7 @@ public class GetImportItemByIdAction
     public String execute()
         throws Exception
     {
-        importItem = importItemService.getImportItem( importItemId );
+        importItem = importReportService.getImportItem( importItemId );
 
         return SUCCESS;
     }

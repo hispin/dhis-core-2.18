@@ -28,7 +28,7 @@ package org.hisp.dhis.reportexcel.importing.action;
  */
 
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 
@@ -45,11 +45,11 @@ public class ImportDataFlowAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private PeriodGenericManager periodGenericManager;
@@ -135,7 +135,7 @@ public class ImportDataFlowAction
 
         selectionManager.setListObject( importItemIds );
 
-        ExcelItemGroup importReport = importItemService.getImportReport( importReportId );
+        ExcelItemGroup importReport = importReportService.getImportReport( importReportId );
 
         return importReport.getType();
     }

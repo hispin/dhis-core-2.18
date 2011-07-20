@@ -33,7 +33,7 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
-import org.hisp.dhis.reportexcel.importitem.ImportItemService;
+import org.hisp.dhis.reportexcel.importitem.ImportReportService;
 
 /**
  * @author Chau Thu Tran
@@ -47,11 +47,11 @@ public class CopyImportItemToImportReportAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportItemService importItemService;
+    private ImportReportService importReportService;
 
-    public void setImportItemService( ImportItemService importItemService )
+    public void setImportReportService( ImportReportService importReportService )
     {
-        this.importItemService = importItemService;
+        this.importReportService = importReportService;
     }
 
     private StatementManager statementManager;
@@ -104,11 +104,11 @@ public class CopyImportItemToImportReportAction
     {
         statementManager.initialise();
 
-        ExcelItemGroup dest = importItemService.getImportReport( importReportDestId );
+        ExcelItemGroup dest = importReportService.getImportReport( importReportDestId );
 
         for ( String itemId : itemIds )
         {
-            ExcelItem itemSource = importItemService.getImportItem( Integer.parseInt( itemId ) );
+            ExcelItem itemSource = importReportService.getImportItem( Integer.parseInt( itemId ) );
 
             ExcelItem importItem = new ExcelItem();
 
@@ -119,7 +119,7 @@ public class CopyImportItemToImportReportAction
             importItem.setSheetNo( sheetNo );
             importItem.setExcelItemGroup( dest );
 
-            importItemService.addImportItem( importItem );
+            importReportService.addImportItem( importItem );
         }
 
         message = i18n.getString( "success" );
