@@ -74,10 +74,12 @@ function addRelationshipPatient()
 		showById('listPatientDiv');
 		jQuery('#loaderDiv').hide();
 		
-		var isShowPatientList = setFieldValue( 'isShowPatientList', isShowPatientList );
-		if( !isShowPatientList )
+		if( getFieldValue( 'isShowPatientList' ) == 'false' )
 		{
 			showRelationshipList( getFieldValue('id') );
+		}else
+		{
+			loadPatientList();
 		}
       }
      });
