@@ -324,7 +324,7 @@ function Subtree()
 
     function getToggleBlank()
     {
-        return getToggleImage().attr( "src", "../images/transparent.gif" ).attr( "alt", "" );
+        return getToggleImage().attr( "src", "../images/transparent.gif" ).removeAttr( "alt" );
     }
 
     function getToggleImage()
