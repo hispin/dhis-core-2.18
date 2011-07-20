@@ -140,6 +140,4 @@ public interface DataEntryFormService
     Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
     
     Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds );
-
-    Collection<DataEntryForm> getProgramDataEntryForms();
 }

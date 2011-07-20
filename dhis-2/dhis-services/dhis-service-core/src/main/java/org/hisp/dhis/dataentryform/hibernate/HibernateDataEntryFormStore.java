@@ -143,14 +143,4 @@ public class HibernateDataEntryFormStore
 
         return criteria.list();
     }
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    public Collection<DataEntryForm> get()
-    {
-        String hql = "select DISTINCT( p.dataEntryForm ) from ProgramStage p";
-
-        return sessionFactory.getCurrentSession().createQuery( hql ).list();
-    }
-
 }
