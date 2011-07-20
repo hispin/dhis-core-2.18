@@ -89,13 +89,15 @@
 		</tr>
 
 		<tr>
-			<td colspan='2'><hr/></td>	
+			<td colspan='2'></td>	
 		<tr>
 	
 		<!-- ------------------------------------------------------------ -->
 		<!--                   Show Program - Attributes                  -->
 		<!-- ------------------------------------------------------------ -->
-		
+		<tr>
+			<th colspan='2'>$i18n.getString('reason')</th>
+		<tr>
 		#foreach($attribute in $programAttributes)
 		<tr>
 			<td style="width:180px">$attribute.name</td>

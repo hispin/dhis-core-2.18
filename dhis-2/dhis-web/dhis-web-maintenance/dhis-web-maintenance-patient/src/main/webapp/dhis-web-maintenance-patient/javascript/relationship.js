@@ -136,6 +136,7 @@ function searchValidationCompleted( messageElement )
 			{
 				jQuery(this).attr('disabled', 'disabled');
 			});
+			
 		$.ajax({
 			type: "GET",
 			url: 'searchRelationshipPatient.action',

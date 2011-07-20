@@ -124,10 +124,19 @@ public class SearchRelationshipPatientAction
     {
         Patient patient = patientService.getPatient( patientId );
 
-        if ( searchingAttributeId != null && searchText != null )
-        {
+        if ( searchText != null && searchText.length() > 0 )
             searchText = searchText.trim();
 
+        int index = searchText.indexOf( ' ' );
+
+        if ( index != -1 && index == searchText.lastIndexOf( ' ' ) )
+        {
+            String[] keys = searchText.split( " " );
+            searchText = keys[0] + "  " + keys[1];
+        }
+
+        if ( searchingAttributeId != null && searchText != null )
+        {
             if ( searchText.length() > 0 )
             {
                 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
@@ -149,8 +158,6 @@ public class SearchRelationshipPatientAction
 
         if ( searchText != null )
         {
-            searchText = searchText.trim();
-
             if ( searchText.length() > 0 )
             {
                 patients = patientService.getPatientsByNames( searchText );
