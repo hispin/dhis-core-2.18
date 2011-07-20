@@ -232,7 +232,7 @@ public class SearchPatientAction
             }
             selectedStateManager.setSelectedProgram( program );
             selectedStateManager.setSearchingAttributeId( searchingAttributeId );
-            
+
             searchPatientByProgram( organisationUnit, program, sortingPatientAttribute );
 
             return SUCCESS;
@@ -262,7 +262,7 @@ public class SearchPatientAction
                 selectedStateManager.clearSortingAttributeId();
             }
             selectedStateManager.setSearchText( searchText );
-            
+
             searchPatientByAttribute( searchingPatientAttribute, searchText, sortingPatientAttribute );
 
             return SUCCESS;
@@ -367,20 +367,19 @@ public class SearchPatientAction
 
         patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(), paging
             .getPageSize() ) );
-
-        if ( patients != null && patients.size() > 0 )
+        
+        if ( patients != null && patients.size() > 0 && sortingPatientAttribute != null )
         {
             for ( Patient patient : patients )
             {
-                if ( sortingPatientAttribute != null )
-                {
-                    PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue(
-                        patient, sortingPatientAttribute );
-                    String value = (attributeValue == null) ? "" : attributeValue.getValue();
+                PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
+                    sortingPatientAttribute );
+                String value = (attributeValue == null) ? "" : attributeValue.getValue();
 
-                    mapPatientPatientAttr.put( patient.getId(), value );
-                }
+                mapPatientPatientAttr.put( patient.getId(), value );
             }
+            
+            patients = patientService.sortPatientsByAttribute( patients, sortingPatientAttribute );
         }
     }
 
@@ -393,22 +392,18 @@ public class SearchPatientAction
         patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, program, paging.getStartPos(),
             paging.getPageSize() ) );
 
-        if ( patients != null && patients.size() > 0 )
+        if ( patients != null && patients.size() > 0 && sortingPatientAttribute != null )
         {
             for ( Patient patient : patients )
             {
-                // mapRelationShip.put( patient.getId(),
-                // relationshipService.getRelationshipsForPatient( patient ) );
+                PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
+                    sortingPatientAttribute );
+                String value = (attributeValue == null) ? "" : attributeValue.getValue();
 
-                if ( sortingPatientAttribute != null )
-                {
-                    PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue(
-                        patient, sortingPatientAttribute );
-                    String value = (attributeValue == null) ? "" : attributeValue.getValue();
-
-                    mapPatientPatientAttr.put( patient.getId(), value );
-                }
+                mapPatientPatientAttr.put( patient.getId(), value );
             }
+            
+            patients = patientService.sortPatientsByAttribute( patients, sortingPatientAttribute );
         }
     }
 
@@ -430,15 +425,7 @@ public class SearchPatientAction
 
             for ( Patient patient : patients )
             {
-                // -------------------------------------------------------------
-                // Get hierarchy organisation unit
-                // -------------------------------------------------------------
-
                 mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
-
-                // -------------------------------------------------------------
-                // Sort patients
-                // -------------------------------------------------------------
 
                 if ( sortingPatientAttribute != null )
                 {
