@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <patientIdentifierType>
   <id>$patientIdentifierType.id</id>
   <name>$encoder.xmlEncode( $patientIdentifierType.name )</name>
   <description>$encoder.xmlEncode( $patientIdentifierType.description )</description>  
+  <mandatory>$patientIdentifierType.mandatory</mandatory>  
+  <related>$patientIdentifierType.related</related>  
+  <noChars>$!patientIdentifierType.noChars</noChars>  
+  <type>$patientIdentifierType.type</type>  
 </patientIdentifierType>

@@ -30,7 +30,7 @@
 	</tr>	
 	
 	<tr>
-		<td width="20em"><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="mandatory" name="mandatory" style="min-width:20em">
 				<option value="true" #if( $patientIdentifierType.mandatory ) selected="selected" #end>$i18n.getString( "yes" )</option>
@@ -41,10 +41,9 @@
 	</tr>
 	
 	<tr>
-		<td width="20em"><label for="related">$i18n.getString( "related" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="related">$i18n.getString( "related" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="related" name="related" style="min-width:20em" class="{validate:{required:true}}">
-				<option value="" >[$i18n.getString( "please_select" )]</option>
 				<option value="true" #if( $patientIdentifierType.related ) selected="selected" #end>$i18n.getString( "yes" )</option>
 				<option value="false" #if( !$patientIdentifierType.related ) selected="selected" #end>$i18n.getString( "no" )</option>
 			</select>
@@ -53,7 +52,7 @@
 	</tr>
   	
 	<tr>
-		<td width="30em"><label for="noChar">$i18n.getString( "no_of_char" )</label></td>
+		<td><label for="noChars">$i18n.getString( "no_of_char" )</label></td>
 		<td>
 			<input type="text" name="noChars" id="noChars" value="$!patientIdentifierType.noChars" class="{validate:{required:false, number:true}}" style="min-width:30em" />
 		</td>		
@@ -61,10 +60,9 @@
 	</tr> 	
 	
 	<tr>
-		<td width="30em"><label for="type">$i18n.getString( "type" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="type">$i18n.getString( "type" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="type" name="type" style="min-width:30.2em"  class="{validate:{required:true}}">
-				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 				<option value="text" #if( $patientIdentifierType.type=='text' ) selected="selected" #end>$i18n.getString( "string" )</option>
 				<option value="number" #if( $patientIdentifierType.type=='number' ) selected="selected" #end>$i18n.getString( "number" )</option>
 				<option value="letter" #if( $patientIdentifierType.type=='letter' ) selected="selected" #end>$i18n.getString( "alphabet" )</option>

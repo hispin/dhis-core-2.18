@@ -42,6 +42,7 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -66,6 +67,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableGroup;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.jdbc.ReportTableManager;
 import org.hisp.dhis.system.grid.ListGrid;
@@ -77,30 +79,39 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultReportTableService
     implements ReportTableService
 {
     private static final Log log = LogFactory.getLog( DefaultReportTableService.class );
-    
+
     private static final String YES = "Yes";
+
     private static final String NO = "No";
-    
+
     // ---------------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------------
 
     private ReportTableManager reportTableManager;
-    
+
     public void setReportTableManager( ReportTableManager reportTableManager )
     {
         this.reportTableManager = reportTableManager;
     }
 
     private GenericIdentifiableObjectStore<ReportTable> reportTableStore;
-    
+
     public void setReportTableStore( GenericIdentifiableObjectStore<ReportTable> reportTableStore )
     {
         this.reportTableStore = reportTableStore;
+    }
+
+    private GenericIdentifiableObjectStore<ReportTableGroup> reportTableGroupStore;
+
+    public void setReportTableGroupStore( GenericIdentifiableObjectStore<ReportTableGroup> reportTableGroupStore )
+    {
+        this.reportTableGroupStore = reportTableGroupStore;
     }
 
     protected ReportService reportService;
@@ -123,9 +134,9 @@ public class DefaultReportTableService
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private DataMartService dataMartService;
-    
+
     public void setDataMartService( DataMartService dataMartService )
     {
         this.dataMartService = dataMartService;
@@ -142,34 +153,32 @@ public class DefaultReportTableService
     // ReportTableService implementation
     // -------------------------------------------------------------------------
 
-    @Transactional
-    public void populateReportTableDataMart( int id, String mode, Integer reportingPeriod, Integer organisationUnitId, I18nFormat format )
+    public void populateReportTableDataMart( int id, String mode, Integer reportingPeriod, Integer organisationUnitId,
+        I18nFormat format )
     {
         ReportTable reportTable = getReportTable( id, mode );
-        
+
         reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
-        
+
         if ( reportTable.hasDataElements() || reportTable.hasIndicators() )
         {
-            dataMartService.export( getIdentifiers( DataElement.class, reportTable.getDataElements() ),
-                getIdentifiers( Indicator.class, reportTable.getIndicators() ),
-                getIdentifiers( Period.class, reportTable.getAllPeriods() ),
-                getIdentifiers( OrganisationUnit.class, reportTable.getAllUnits() ) );
+            dataMartService.export( getIdentifiers( DataElement.class, reportTable.getDataElements() ), getIdentifiers(
+                Indicator.class, reportTable.getIndicators() ), getIdentifiers( Period.class, reportTable
+                .getAllPeriods() ), getIdentifiers( OrganisationUnit.class, reportTable.getAllUnits() ) );
         }
-        
+
         if ( reportTable.hasDataSets() )
         {
             completenessService.exportDataSetCompleteness( getIdentifiers( DataSet.class, reportTable.getDataSets() ),
-                getIdentifiers( Period.class, reportTable.getAllPeriods() ),
-                getIdentifiers( OrganisationUnit.class, reportTable.getAllUnits() ) );
+                getIdentifiers( Period.class, reportTable.getAllPeriods() ), getIdentifiers( OrganisationUnit.class,
+                    reportTable.getAllUnits() ) );
         }
     }
-    
-    @Transactional
+
     public Grid getReportTableGrid( int id, I18nFormat format, Integer reportingPeriod, Integer organisationUnitId )
     {
         ReportTable reportTable = getReportTable( id );
-        
+
         reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
 
         return getGrid( reportTable );
@@ -185,95 +194,170 @@ public class DefaultReportTableService
         {
             return reportService.getReport( id ).getReportTable();
         }
-        
+
         return null;
     }
-    
+
     // -------------------------------------------------------------------------
     // Persistence
     // -------------------------------------------------------------------------
 
-    @Transactional
     public int saveReportTable( ReportTable reportTable )
     {
         return reportTableStore.save( reportTable );
     }
 
-    @Transactional
     public void updateReportTable( ReportTable reportTable )
     {
         reportTableStore.update( reportTable );
     }
 
-    @Transactional
     public void deleteReportTable( ReportTable reportTable )
     {
         reportTableStore.delete( reportTable );
     }
 
-    @Transactional
     public ReportTable getReportTable( int id )
     {
         return reportTableStore.get( id );
     }
 
-    @Transactional
     public Collection<ReportTable> getReportTables( final Collection<Integer> identifiers )
     {
         Collection<ReportTable> objects = getAllReportTables();
-        
+
         return identifiers == null ? objects : FilterUtils.filter( objects, new Filter<ReportTable>()
+        {
+            public boolean retain( ReportTable object )
             {
-                public boolean retain( ReportTable object )
-                {
-                    return identifiers.contains( object.getId() );
-                }
-            } );
+                return identifiers.contains( object.getId() );
+            }
+        } );
     }
 
-    @Transactional
     public Collection<ReportTable> getAllReportTables()
     {
         return reportTableStore.getAll();
     }
 
-    @Transactional
     public ReportTable getReportTableByName( String name )
     {
         return reportTableStore.getByName( name );
     }
 
-    @Transactional
     public Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
     {
         return reportTableStore.getBetweenByName( name, first, max );
     }
 
-    @Transactional
     public int getReportTableCount()
     {
         return reportTableStore.getCount();
     }
 
-    @Transactional
     public int getReportTableCountByName( String name )
     {
         return reportTableStore.getCountByName( name );
     }
 
-    @Transactional
     public Collection<ReportTable> getReportTablesBetween( int first, int max )
     {
         return reportTableStore.getBetween( first, max );
     }
-    
+
+    // -------------------------------------------------------------------------
+    // ReportTableGroup
+    // -------------------------------------------------------------------------
+
+    public int addReportTableGroup( ReportTableGroup reportTableGroup )
+    {
+        return reportTableGroupStore.save( reportTableGroup );
+    }
+
+    public void updateReportTableGroup( ReportTableGroup reportTableGroup )
+    {
+        reportTableGroupStore.update( reportTableGroup );
+    }
+
+    public void deleteReportTableGroup( ReportTableGroup reportTableGroup )
+    {
+        reportTableGroupStore.delete( reportTableGroup );
+    }
+
+    public ReportTableGroup getReportTableGroup( int id )
+    {
+        return reportTableGroupStore.get( id );
+    }
+
+    public ReportTableGroup getReportTableGroupByName( String name )
+    {
+        return reportTableGroupStore.getByName( name );
+    }
+
+    public Collection<ReportTableGroup> getAllReportTableGroups()
+    {
+        return reportTableGroupStore.getAll();
+    }
+
+    public Collection<ReportTableGroup> getReportTableGroups( final Collection<Integer> identifiers )
+    {
+        Collection<ReportTableGroup> groups = getAllReportTableGroups();
+
+        return identifiers == null ? groups : FilterUtils.filter( groups, new Filter<ReportTableGroup>()
+        {
+            public boolean retain( ReportTableGroup object )
+            {
+                return identifiers.contains( object.getId() );
+            }
+        } );
+    }
+
+    public Collection<ReportTableGroup> getGroupsContainingReportTable( ReportTable reportTable )
+    {
+        Collection<ReportTableGroup> groups = getAllReportTableGroups();
+
+        Iterator<ReportTableGroup> iterator = groups.iterator();
+
+        while ( iterator.hasNext() )
+        {
+            ReportTableGroup group = iterator.next();
+
+            if ( !group.getMembers().contains( reportTable ) )
+            {
+                iterator.remove();
+            }
+        }
+
+        return groups;
+    }
+
+    public int getReportTableGroupCount()
+    {
+        return reportTableGroupStore.getCount();
+    }
+
+    public int getReportTableGroupCountByName( String name )
+    {
+        return reportTableGroupStore.getCountByName( name );
+    }
+
+    public Collection<ReportTableGroup> getReportTableGroupsBetween( int first, int max )
+    {
+        return reportTableGroupStore.getBetween( first, max );
+    }
+
+    public Collection<ReportTableGroup> getReportTableGroupsBetweenByName( String name, int first, int max )
+    {
+        return reportTableGroupStore.getBetweenByName( name, first, max );
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
     /**
-     * Populates the report table with dynamic meta objects originating from report
-     * table parameters.
+     * Populates the report table with dynamic meta objects originating from
+     * report table parameters.
      * 
      * @param reportTable the report table.
      * @param reportingPeriod the reporting period number.
@@ -281,7 +365,7 @@ public class DefaultReportTableService
      * @param format the I18n format.
      * @return a report table.
      */
-    private ReportTable initDynamicMetaObjects( ReportTable reportTable, Integer reportingPeriod, 
+    private ReportTable initDynamicMetaObjects( ReportTable reportTable, Integer reportingPeriod,
         Integer organisationUnitId, I18nFormat format )
     {
         // ---------------------------------------------------------------------
@@ -289,17 +373,20 @@ public class DefaultReportTableService
         // ---------------------------------------------------------------------
 
         if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
-        {             
-            reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods( reportingPeriod, format, !reportTable.isDoPeriods() ) ) );                                
-            reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( reportingPeriod, format ) );
-            
+        {
+            reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods(
+                reportingPeriod, format, !reportTable.isDoPeriods() ) ) );
+            reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( reportingPeriod,
+                format ) );
+
             log.info( "Reporting period date from report param: " + reportTable.getReportingMonthName() );
         }
         else
         {
-            reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods( 1, format, !reportTable.isDoPeriods() ) ) );                
+            reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods(
+                1, format, !reportTable.isDoPeriods() ) ) );
             reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( 1, format ) );
-            
+
             log.info( "Reporting period date default: " + reportTable.getReportingMonthName() );
         }
 
@@ -307,14 +394,16 @@ public class DefaultReportTableService
         // Grand parent organisation unit report parameter
         // ---------------------------------------------------------------------
 
-        if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamGrandParentOrganisationUnit() )
+        if ( reportTable.getReportParams() != null
+            && reportTable.getReportParams().isParamGrandParentOrganisationUnit() )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
             organisationUnit.setCurrentParent( true );
-            reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getGrandChildren() ) );
+            reportTable.getRelativeUnits().addAll(
+                new ArrayList<OrganisationUnit>( organisationUnit.getGrandChildren() ) );
             reportTable.getRelativeUnits().add( organisationUnit );
             reportTable.setOrganisationUnitName( organisationUnit.getName() );
-            
+
             log.info( "Grand parent organisation unit: " + organisationUnit.getName() );
         }
 
@@ -329,7 +418,7 @@ public class DefaultReportTableService
             reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
             reportTable.getRelativeUnits().add( organisationUnit );
             reportTable.setOrganisationUnitName( organisationUnit.getName() );
-            
+
             log.info( "Parent organisation unit: " + organisationUnit.getName() );
         }
 
@@ -339,10 +428,10 @@ public class DefaultReportTableService
 
         if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamOrganisationUnit() )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );            
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
             reportTable.getRelativeUnits().add( organisationUnit );
             reportTable.setOrganisationUnitName( organisationUnit.getName() );
-            
+
             log.info( "Organisation unit: " + organisationUnit.getName() );
         }
 
@@ -352,7 +441,7 @@ public class DefaultReportTableService
 
         reportTable.setI18nFormat( format );
         reportTable.init();
-        
+
         return reportTable;
     }
 
@@ -364,48 +453,60 @@ public class DefaultReportTableService
      */
     private Grid getGrid( ReportTable reportTable )
     {
-        String subtitle = StringUtils.trimToEmpty( reportTable.getOrganisationUnitName() ) + SPACE + StringUtils.trimToEmpty( reportTable.getReportingMonthName() );
-        
+        String subtitle = StringUtils.trimToEmpty( reportTable.getOrganisationUnitName() ) + SPACE
+            + StringUtils.trimToEmpty( reportTable.getReportingMonthName() );
+
         Grid grid = new ListGrid().setTitle( reportTable.getName() ).setSubtitle( subtitle );
-        
+
         final Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable );
-        
+
         // ---------------------------------------------------------------------
         // Headers
         // ---------------------------------------------------------------------
 
         for ( String column : reportTable.getIndexColumns() )
         {
-            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) ); // Index columns
-        }
-        
-        for ( String column : reportTable.getIndexNameColumns() )
-        {
-            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) ); // Index name columns
+            grid
+                .addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) ); // Index
+            // columns
         }
 
-        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( REPORTING_MONTH_COLUMN_NAME ), REPORTING_MONTH_COLUMN_NAME, String.class.getName(), true, true ) );
-        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( PARAM_ORGANISATIONUNIT_COLUMN_NAME ), PARAM_ORGANISATIONUNIT_COLUMN_NAME, String.class.getName(), true, true ) );
-        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME ), ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, String.class.getName(), true, true ) );
-                
+        for ( String column : reportTable.getIndexNameColumns() )
+        {
+            grid
+                .addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) ); // Index
+            // name
+            // columns
+        }
+
+        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( REPORTING_MONTH_COLUMN_NAME ), REPORTING_MONTH_COLUMN_NAME,
+            String.class.getName(), true, true ) );
+        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( PARAM_ORGANISATIONUNIT_COLUMN_NAME ),
+            PARAM_ORGANISATIONUNIT_COLUMN_NAME, String.class.getName(), true, true ) );
+        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME ),
+            ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, String.class.getName(), true, true ) );
+
         for ( List<NameableObject> column : reportTable.getColumns() )
         {
-            grid.addHeader( new GridHeader( getPrettyColumnName( column ), getColumnName( column ), Double.class.getName(), false, false ) );
+            grid.addHeader( new GridHeader( getPrettyColumnName( column ), getColumnName( column ), Double.class
+                .getName(), false, false ) );
         }
-        
+
         if ( reportTable.doSubTotals() )
         {
             for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() )
             {
-                grid.addHeader( new GridHeader( categoryOption.getShortName(), columnEncode( categoryOption.getShortName() ), Double.class.getName(), false, false ) );
+                grid.addHeader( new GridHeader( categoryOption.getShortName(), columnEncode( categoryOption
+                    .getShortName() ), Double.class.getName(), false, false ) );
             }
         }
-        
+
         if ( reportTable.doTotal() )
         {
-            grid.addHeader( new GridHeader( TOTAL_COLUMN_PRETTY_NAME, TOTAL_COLUMN_NAME, Double.class.getName(), false, false ) );
+            grid.addHeader( new GridHeader( TOTAL_COLUMN_PRETTY_NAME, TOTAL_COLUMN_NAME, Double.class.getName(), false,
+                false ) );
         }
-        
+
         // ---------------------------------------------------------------------
         // Values
         // ---------------------------------------------------------------------
@@ -413,37 +514,49 @@ public class DefaultReportTableService
         for ( List<NameableObject> row : reportTable.getRows() )
         {
             grid.addRow();
-            
+
             for ( IdentifiableObject object : row )
             {
                 grid.addValue( object.getId() ); // Index columns
             }
-            
+
             for ( NameableObject object : row )
             {
                 grid.addValue( object.getShortName() ); // Index name columns
             }
-            
+
             grid.addValue( reportTable.getReportingMonthName() );
             grid.addValue( reportTable.getOrganisationUnitName() );
             grid.addValue( isCurrentParent( row ) ? YES : NO );
-            
+
             for ( List<NameableObject> column : reportTable.getColumns() )
             {
                 grid.addValue( map.get( getIdentifier( row, column ) ) ); // Values
             }
-            
+
             if ( reportTable.doSubTotals() )
             {
                 for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() )
                 {
-                    grid.addValue( map.get( getIdentifier( row, DataElementCategoryOption.class, categoryOption.getId() ) ) );
+                    grid.addValue( map
+                        .get( getIdentifier( row, DataElementCategoryOption.class, categoryOption.getId() ) ) );
                 }
             }
-            
+
             if ( reportTable.doTotal() )
             {
-                grid.addValue( map.get( getIdentifier( row ) ) ); // Only category option combo is crosstab when total, row identifier will return total
+                grid.addValue( map.get( getIdentifier( row ) ) ); // Only
+                // category
+                // option
+                // combo is
+                // crosstab
+                // when
+                // total,
+                // row
+                // identifier
+                // will
+                // return
+                // total
             }
         }
 
@@ -451,7 +564,7 @@ public class DefaultReportTableService
         {
             addRegressionToGrid( grid, reportTable.getColumns().size() );
         }
-        
+
         // ---------------------------------------------------------------------
         // Sort and limit
         // ---------------------------------------------------------------------
@@ -465,7 +578,7 @@ public class DefaultReportTableService
         {
             grid.limitGrid( reportTable.topLimit() );
         }
-        
+
         return grid;
     }
 
@@ -478,20 +591,21 @@ public class DefaultReportTableService
     private Grid addRegressionToGrid( Grid grid, int numberOfColumns )
     {
         int startColumnIndex = grid.getWidth() - numberOfColumns;
-        
+
         for ( int i = 0; i < numberOfColumns; i++ )
         {
             int columnIndex = i + startColumnIndex;
-            
+
             grid.addRegressionColumn( columnIndex, true );
         }
-        
+
         return grid;
     }
-    
+
     /**
      * Checks whether the given List of IdentifiableObjects contains an object
-     * which is an OrganisationUnit and has the currentParent property set to true.
+     * which is an OrganisationUnit and has the currentParent property set to
+     * true.
      * 
      * @param objects the List of IdentifiableObjects.
      */
@@ -499,12 +613,12 @@ public class DefaultReportTableService
     {
         for ( IdentifiableObject object : objects )
         {
-            if ( object != null && object instanceof OrganisationUnit && ((OrganisationUnit)object).isCurrentParent() )
+            if ( object != null && object instanceof OrganisationUnit && ((OrganisationUnit) object).isCurrentParent() )
             {
                 return true;
             }
         }
-        
+
         return false;
     }
 }

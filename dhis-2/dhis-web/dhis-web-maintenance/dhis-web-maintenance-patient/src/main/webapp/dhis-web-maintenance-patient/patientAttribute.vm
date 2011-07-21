@@ -26,15 +26,15 @@
                 <td>$encoder.htmlEncode( $patientAttribute.name )</td>                
                 
                 <td style="text-align:center">
-                  <a href="showUpdatePatientAttributeForm.action?id=$patientAttribute.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+                  <a href="showUpdatePatientAttributeForm.action?id=$patientAttribute.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
                 </td>                
  
                 <td style="text-align:center">
-                  <a href="javascript:removePatientAttribute( '$patientAttribute.id', '$encoder.jsEncode( $patientAttribute.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+                  <a href="javascript:removePatientAttribute( '$patientAttribute.id', '$encoder.jsEncode( $patientAttribute.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
                 </td>            
                 
                 <td style="text-align:center">
-                  <a href="javascript:showPatientAttributeDetails( $patientAttribute.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+                  <a href="javascript:showPatientAttributeDetails( $patientAttribute.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
                 </td>
                 
               </tr>
@@ -48,7 +48,7 @@
 
 			<div id="detailsArea" style="display:none">
 				<div style="float:right">
-					<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
 				</div>				
 				<p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
                 <p><label>$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>

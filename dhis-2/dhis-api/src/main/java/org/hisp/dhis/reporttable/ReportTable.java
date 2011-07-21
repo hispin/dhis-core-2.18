@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.AbstractNameableObject;
@@ -51,8 +53,9 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 
 /**
- * The ReportTable object represents a customizable database table. It has features
- * like crosstabulation, relative periods, parameters, and display columns.
+ * The ReportTable object represents a customizable database table. It has
+ * features like crosstabulation, relative periods, parameters, and display
+ * columns.
  * 
  * @author Lars Helge Overland
  * @version $Id$
@@ -66,68 +69,97 @@ public class ReportTable
     private static final long serialVersionUID = 5618655666320890565L;
 
     public static final String DATAELEMENT_ID = "dataelementid";
+
     public static final String DATAELEMENT_NAME = "dataelementname";
+
     public static final String CATEGORYCOMBO_ID = "categoryoptioncomboid";
+
     public static final String CATEGORYCOMBO_NAME = "categoryoptioncomboname";
+
     public static final String CATEGORYOPTION_ID = "categoryoptionid";
+
     public static final String CATEGORYOPTION_NAME = "categoryoptionname";
+
     public static final String INDICATOR_ID = "indicatorid";
+
     public static final String INDICATOR_NAME = "indicatorname";
+
     public static final String DATASET_ID = "datasetid";
+
     public static final String DATASET_NAME = "datasetname";
+
     public static final String PERIOD_ID = "periodid";
+
     public static final String PERIOD_NAME = "periodname";
+
     public static final String ORGANISATIONUNIT_ID = "organisationunitid";
+
     public static final String ORGANISATIONUNIT_NAME = "organisationunitname";
 
     public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
+
     public static final String PARAM_ORGANISATIONUNIT_COLUMN_NAME = "param_organisationunit_name";
+
     public static final String ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME = "organisation_unit_is_parent";
-    
+
     public static final String SEPARATOR = "_";
-    public static final String SPACE = " ";    
+
+    public static final String SPACE = " ";
+
     public static final String TOTAL_COLUMN_NAME = "total";
+
     public static final String TOTAL_COLUMN_PRETTY_NAME = "Total";
-    
+
     public static final int ASC = -1;
+
     public static final int DESC = 1;
+
     public static final int NONE = 0;
-    
-    public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>() {
-        private static final long serialVersionUID = 4194194769957136714L; {
-        put( DATAELEMENT_ID, "Data element ID" );
-        put( DATAELEMENT_NAME, "Data element" );
-        put( CATEGORYCOMBO_ID, "Category combination ID" );
-        put( CATEGORYCOMBO_NAME, "Category combination" );
-        put( INDICATOR_ID, "Indicator ID" );
-        put( INDICATOR_NAME, "Indicator" );
-        put( DATASET_ID, "Data set ID" );
-        put( DATASET_NAME, "Data set" );
-        put( PERIOD_ID, "Period ID" );
-        put( PERIOD_NAME, "Period" );        
-        put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
-        put( ORGANISATIONUNIT_NAME, "Organisation unit" );        
-        put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
-        put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );        
-        put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
-    } };
-    
-    public static final Map<Class<? extends NameableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends NameableObject>, String>() {
-        private static final long serialVersionUID = 4742098364404485991L; {
-        put( Indicator.class, INDICATOR_ID );
-        put( DataElement.class, DATAELEMENT_ID );
-        put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );
-        put( DataElementCategoryOption.class, CATEGORYOPTION_ID );
-        put( DataSet.class, DATASET_ID );
-        put( Period.class, PERIOD_ID );
-        put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
-    } };
+
+    public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>()
+    {
+        private static final long serialVersionUID = 4194194769957136714L;
+        {
+            put( DATAELEMENT_ID, "Data element ID" );
+            put( DATAELEMENT_NAME, "Data element" );
+            put( CATEGORYCOMBO_ID, "Category combination ID" );
+            put( CATEGORYCOMBO_NAME, "Category combination" );
+            put( INDICATOR_ID, "Indicator ID" );
+            put( INDICATOR_NAME, "Indicator" );
+            put( DATASET_ID, "Data set ID" );
+            put( DATASET_NAME, "Data set" );
+            put( PERIOD_ID, "Period ID" );
+            put( PERIOD_NAME, "Period" );
+            put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
+            put( ORGANISATIONUNIT_NAME, "Organisation unit" );
+            put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
+            put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
+            put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
+        }
+    };
+
+    public static final Map<Class<? extends NameableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends NameableObject>, String>()
+    {
+        private static final long serialVersionUID = 4742098364404485991L;
+        {
+            put( Indicator.class, INDICATOR_ID );
+            put( DataElement.class, DATAELEMENT_ID );
+            put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );
+            put( DataElementCategoryOption.class, CATEGORYOPTION_ID );
+            put( DataSet.class, DATASET_ID );
+            put( Period.class, PERIOD_ID );
+            put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
+        }
+    };
 
     private static final String EMPTY = "";
+
     private static final NameableObject[] IRT = new NameableObject[0];
-    private static final String[] SRT = new String[0];    
+
+    private static final String[] SRT = new String[0];
+
     private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"'<>.]";
-    
+
     // -------------------------------------------------------------------------
     // Persisted properties
     // -------------------------------------------------------------------------
@@ -141,42 +173,48 @@ public class ReportTable
      * The list of DataElements the ReportTable contains.
      */
     private List<DataElement> dataElements = new ArrayList<DataElement>();
-    
+
     /**
      * The list of Indicators the ReportTable contains.
      */
     private List<Indicator> indicators = new ArrayList<Indicator>();
-    
+
     /**
      * The list of DataSets the ReportTable contains.
      */
     private List<DataSet> dataSets = new ArrayList<DataSet>();
-    
+
     /**
      * The list of Periods the ReportTable contains.
      */
     private List<Period> periods = new ArrayList<Period>();
-    
+
     /**
      * The list of OrganisationUnits the ReportTable contains.
      */
     private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
-    
+
+    /**
+     * The list of OrganisationUnits the ReportTable contains.
+     */
+    private List<ReportTableGroup> groups = new ArrayList<ReportTableGroup>();
+
     /**
      * The DataElementCategoryCombo for the ReportTable.
      */
     private DataElementCategoryCombo categoryCombo;
-    
+
     /**
-     * Whether to crosstabulate on the Indicator dimension, which also represents DataElements and DataSets.
+     * Whether to crosstabulate on the Indicator dimension, which also
+     * represents DataElements and DataSets.
      */
     private boolean doIndicators;
-    
+
     /**
      * Whether to crosstabulate on the Period dimension.
      */
     private boolean doPeriods;
-    
+
     /**
      * Whether to crosstabulate on the OrganisationUnit dimension.
      */
@@ -191,12 +229,12 @@ public class ReportTable
      * The ReportParams of the ReportTable.
      */
     private ReportParams reportParams;
-    
+
     /**
      * The sort order if any applied to the last column of the table.
      */
     private Integer sortOrder;
-    
+
     /**
      * Inidicates whether the table should be limited from top by this value.
      */
@@ -205,22 +243,22 @@ public class ReportTable
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
-    
+
     /**
      * Periods relative to the reporting month.
      */
     private List<Period> relativePeriods = new ArrayList<Period>();
-    
+
     /**
      * Static Periods and relative Periods.
      */
     private List<Period> allPeriods = new ArrayList<Period>();
-    
+
     /**
      * OrganisationUnits relative to a parent unit or current unit.
      */
     private List<OrganisationUnit> relativeUnits = new ArrayList<OrganisationUnit>();
-    
+
     /**
      * Static OrganisationUnits and relative OrganisationUnits.
      */
@@ -235,35 +273,36 @@ public class ReportTable
      * All crosstabulated columns.
      */
     private List<List<NameableObject>> columns = new ArrayList<List<NameableObject>>();
-    
+
     /**
      * All rows.
      */
     private List<List<NameableObject>> rows = new ArrayList<List<NameableObject>>();
-    
+
     /**
-     * Names of the columns used to query the datavalue table and as index columns
-     * in the report table.
+     * Names of the columns used to query the datavalue table and as index
+     * columns in the report table.
      */
     private List<String> indexColumns = new ArrayList<String>();
-    
+
     /**
-     * Names of the columns holding entry names used to query the datavalue table.
+     * Names of the columns holding entry names used to query the datavalue
+     * table.
      */
     private List<String> indexNameColumns = new ArrayList<String>();
-    
+
     /**
      * The I18nFormat used for internationalization of ie. periods.
      */
     private I18nFormat i18nFormat;
-    
+
     /**
      * The name of the reporting month based on the report param.
      */
     private String reportingMonthName;
-    
+
     /**
-     * The name of the (parent) organisation unit based on the report param. 
+     * The name of the (parent) organisation unit based on the report param.
      */
     private String organisationUnitName;
 
@@ -271,7 +310,7 @@ public class ReportTable
      * The category option combos derived from the dimension set.
      */
     private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -280,9 +319,9 @@ public class ReportTable
      * Constructor for persistence purposes.
      */
     public ReportTable()
-    {   
+    {
     }
-    
+
     /**
      * Default constructor.
      * 
@@ -292,36 +331,29 @@ public class ReportTable
      * @param dataElements the data elements.
      * @param indicators the indicators.
      * @param dataSets the datasets.
-     * @param periods the periods. These periods cannot have the name property set.
-     * @param relativePeriods the relative periods. These periods must have the name property set. Not persisted.
+     * @param periods the periods. These periods cannot have the name property
+     *        set.
+     * @param relativePeriods the relative periods. These periods must have the
+     *        name property set. Not persisted.
      * @param units the organisation units.
      * @param relativeUnits the organisation units. Not persisted.
      * @param dimensionSet the dimension set. Not persisted.
-     * @param doIndicators indicating whether indicators should be crosstabulated.
-     * @param doCategoryOptionCombos indicating whether category option combos should be crosstabulated.
+     * @param doIndicators indicating whether indicators should be
+     *        crosstabulated.
+     * @param doCategoryOptionCombos indicating whether category option combos
+     *        should be crosstabulated.
      * @param doPeriods indicating whether periods should be crosstabulated.
-     * @param doUnits indicating whether organisation units should be crosstabulated.
+     * @param doUnits indicating whether organisation units should be
+     *        crosstabulated.
      * @param relatives the relative periods.
      * @param i18nFormat the i18n format. Not persisted.
      * @param reportingMonthName the reporting month name. Not persisted.
      */
-    public ReportTable( String name,
-        boolean regression,
-        List<DataElement> dataElements,
-        List<Indicator> indicators,
-        List<DataSet> dataSets,
-        List<Period> periods,
-        List<Period> relativePeriods,
-        List<OrganisationUnit> units,
-        List<OrganisationUnit> relativeUnits,
-        DataElementCategoryCombo categoryCombo,
-        boolean doIndicators,
-        boolean doPeriods,
-        boolean doUnits,
-        RelativePeriods relatives,
-        ReportParams reportParams,
-        I18nFormat i18nFormat,
-        String reportingMonthName )
+    public ReportTable( String name, boolean regression, List<DataElement> dataElements, List<Indicator> indicators,
+        List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> units,
+        List<OrganisationUnit> relativeUnits, DataElementCategoryCombo categoryCombo, boolean doIndicators,
+        boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
+        I18nFormat i18nFormat, String reportingMonthName )
     {
         this.name = name;
         this.regression = regression;
@@ -348,19 +380,21 @@ public class ReportTable
 
     public void init()
     {
-        verify( nonEmptyLists( dataElements, indicators, dataSets ) > 0, "Must contain dataelements, indicators or datasets" );
+        verify( nonEmptyLists( dataElements, indicators, dataSets ) > 0,
+            "Must contain dataelements, indicators or datasets" );
         verify( nonEmptyLists( periods, relativePeriods ) > 0, "Must contain periods or relative periods" );
-        verify( nonEmptyLists( units, relativeUnits ) > 0, "Must contain organisation units or relative organisation units" );
-        verify( !( doTotal() && regression ), "Cannot have regression columns with total columns" );
+        verify( nonEmptyLists( units, relativeUnits ) > 0,
+            "Must contain organisation units or relative organisation units" );
+        verify( !(doTotal() && regression), "Cannot have regression columns with total columns" );
         verify( i18nFormat != null, "I18n format must be set" );
-        
+
         // ---------------------------------------------------------------------
         // Init dimensions
         // ---------------------------------------------------------------------
 
         if ( isDimensional() )
         {
-            categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( categoryCombo.getOptionCombos() );            
+            categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( categoryCombo.getOptionCombos() );
             verify( nonEmptyLists( categoryOptionCombos ) == 1, "Category option combos size must be larger than 0" );
         }
 
@@ -371,36 +405,66 @@ public class ReportTable
         allIndicators.addAll( dataElements );
         allIndicators.addAll( indicators );
         allIndicators.addAll( dataSets );
-                
+
         allPeriods.addAll( periods );
         allPeriods.addAll( relativePeriods );
         allPeriods = removeDuplicates( allPeriods );
-        
-        Collections.sort( allPeriods, new AscendingPeriodComparator() ); // Sort periods ascending
+
+        Collections.sort( allPeriods, new AscendingPeriodComparator() ); // Sort
+        // periods
+        // ascending
         setNames( allPeriods ); // Set names on periods
-        
+
         allUnits.addAll( units );
         allUnits.addAll( relativeUnits );
         allUnits = removeDuplicates( allUnits );
 
         columns = new CombinationGenerator<NameableObject>( getArrays( true ) ).getCombinations();
         rows = new CombinationGenerator<NameableObject>( getArrays( false ) ).getCombinations();
-        
+
         addIfEmpty( columns ); // Allow for all or none crosstab dimensions
         addIfEmpty( rows );
-        
+
         add( indexColumns, INDICATOR_ID, doIndicators );
         add( indexColumns, PERIOD_ID, doPeriods );
         add( indexColumns, ORGANISATIONUNIT_ID, doUnits );
         add( indexNameColumns, INDICATOR_NAME, doIndicators );
         add( indexNameColumns, PERIOD_NAME, doPeriods );
-        add( indexNameColumns, ORGANISATIONUNIT_NAME, doUnits );        
+        add( indexNameColumns, ORGANISATIONUNIT_NAME, doUnits );
     }
 
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
-        
+
+    public void addReportTableGroup( ReportTableGroup group )
+    {
+        groups.add( group );
+        group.getMembers().add( this );
+    }
+
+    public void removeReportTableGroup( ReportTableGroup group )
+    {
+        groups.remove( group );
+        group.getMembers().remove( this );
+    }
+
+    public void updateReportTableGroups( Set<ReportTableGroup> updates )
+    {
+        for ( ReportTableGroup group : new HashSet<ReportTableGroup>( groups ) )
+        {
+            if ( !updates.contains( group ) )
+            {
+                removeReportTableGroup( group );
+            }
+        }
+
+        for ( ReportTableGroup group : updates )
+        {
+            addReportTableGroup( group );
+        }
+    }
+
     /**
      * Indicates whether this ReportTable is multi-dimensional.
      */
@@ -408,7 +472,7 @@ public class ReportTable
     {
         return categoryCombo != null;
     }
-        
+
     /**
      * Indicates whether a total column should be included.
      */
@@ -416,7 +480,7 @@ public class ReportTable
     {
         return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && isDimensional();
     }
-    
+
     /**
      * Indicates whether subtotal columns should be included. The category combo
      * of the report table must have more than one category if subtotal columns
@@ -426,45 +490,52 @@ public class ReportTable
     {
         return doTotal() && categoryCombo.getCategories() != null && categoryCombo.getCategories().size() > 1;
     }
-    
+
     /**
-     * Generates a pretty column name based on short-names of the argument objects. 
-     * Null arguments are ignored in the name.
+     * Generates a pretty column name based on short-names of the argument
+     * objects. Null arguments are ignored in the name.
      */
     public static String getPrettyColumnName( List<NameableObject> objects )
     {
         StringBuffer buffer = new StringBuffer();
-        
+
         for ( NameableObject object : objects )
         {
-            buffer.append( object != null ? ( object.getShortName() + SPACE ) : EMPTY );
+            buffer.append( object != null ? (object.getShortName() + SPACE) : EMPTY );
         }
-        
+
         return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SPACE ) ) : TOTAL_COLUMN_PRETTY_NAME;
     }
-    
+
     /**
-     * Generates a column name based on short-names of the argument objects. Null 
-     * arguments are ignored in the name.
+     * Generates a column name based on short-names of the argument objects.
+     * Null arguments are ignored in the name.
      */
     public static String getColumnName( List<NameableObject> objects )
     {
         StringBuffer buffer = new StringBuffer();
-        
+
         for ( NameableObject object : objects )
         {
             if ( object != null && object instanceof Period )
             {
-                buffer.append( object.getName() + SEPARATOR ); // Relative periods must have static names when crosstabbed - which are set on name property
+                buffer.append( object.getName() + SEPARATOR ); // Relative
+                // periods must
+                // have static
+                // names when
+                // crosstabbed -
+                // which are set
+                // on name
+                // property
             }
             else
             {
-                buffer.append( object != null ? ( object.getShortName() + SEPARATOR ) : EMPTY );
+                buffer.append( object != null ? (object.getShortName() + SEPARATOR) : EMPTY );
             }
         }
 
         String column = columnEncode( buffer.toString() );
-        
+
         return column.length() > 0 ? column.substring( 0, column.lastIndexOf( SEPARATOR ) ) : TOTAL_COLUMN_NAME;
     }
 
@@ -476,7 +547,7 @@ public class ReportTable
     {
         return getIdentifier( objects, new ArrayList<NameableObject>() );
     }
-    
+
     /**
      * Generates a grid identifier based on the internal identifiers of the
      * argument objects.
@@ -484,17 +555,17 @@ public class ReportTable
     public static String getIdentifier( List<? extends NameableObject> objects1, List<? extends NameableObject> objects2 )
     {
         List<String> identifiers = new ArrayList<String>();
-        
+
         for ( NameableObject object : objects1 )
         {
             identifiers.add( getIdentifier( object.getClass(), object.getId() ) );
         }
-        
+
         for ( NameableObject object : objects2 )
         {
             identifiers.add( getIdentifier( object.getClass(), object.getId() ) );
         }
-        
+
         return getIdentifier( identifiers.toArray( SRT ) );
     }
 
@@ -504,29 +575,30 @@ public class ReportTable
     public static String getIdentifier( List<NameableObject> objects, Class<? extends NameableObject> clazz, int id )
     {
         List<String> identifiers = new ArrayList<String>();
-        
+
         for ( NameableObject object : objects )
         {
             identifiers.add( getIdentifier( object.getClass(), object.getId() ) );
         }
-        
+
         identifiers.add( getIdentifier( clazz, id ) );
-        
-        return getIdentifier( identifiers.toArray( SRT  ) );
+
+        return getIdentifier( identifiers.toArray( SRT ) );
     }
-    
+
     /**
      * Generates a grid column identifier based on the argument identifiers.
      */
     public static String getIdentifier( String... identifiers )
     {
         List<String> ids = Arrays.asList( identifiers );
-        
-        Collections.sort( ids ); // Sort to remove the significance of the order
-        
+
+        Collections.sort( ids ); // Sort to remove the significance of the
+        // order
+
         return StringUtils.join( ids, SEPARATOR );
     }
-    
+
     /**
      * Returns a grid identifier based on the argument class and id.
      */
@@ -534,7 +606,7 @@ public class ReportTable
     {
         return CLASS_ID_MAP.get( clazz ) + id;
     }
-    
+
     /**
      * Indicates whether the report table contains data elements.
      */
@@ -542,7 +614,7 @@ public class ReportTable
     {
         return dataElements != null && dataElements.size() > 0;
     }
-    
+
     /**
      * Indicates whether the report table contains indicators.
      */
@@ -550,7 +622,7 @@ public class ReportTable
     {
         return indicators != null && indicators.size() > 0;
     }
-    
+
     /**
      * Indicates whether the report table contains data sets.
      */
@@ -572,10 +644,10 @@ public class ReportTable
             string = string.length() > 255 ? string.substring( 0, 255 ) : string;
             string = string.toLowerCase();
         }
-        
+
         return string;
     }
-    
+
     /**
      * Returns null-safe sort order, none if null.
      */
@@ -583,7 +655,7 @@ public class ReportTable
     {
         return sortOrder != null ? sortOrder : NONE;
     }
-    
+
     /**
      * Returns null-safe top limit, 0 if null;
      */
@@ -591,7 +663,7 @@ public class ReportTable
     {
         return topLimit != null ? topLimit : 0;
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -599,27 +671,27 @@ public class ReportTable
     private NameableObject[][] getArrays( boolean crosstab )
     {
         List<NameableObject[]> arrays = new ArrayList<NameableObject[]>();
-        
-        if ( ( doIndicators && crosstab ) || ( !doIndicators && !crosstab ) )
+
+        if ( (doIndicators && crosstab) || (!doIndicators && !crosstab) )
         {
             arrays.add( allIndicators.toArray( IRT ) );
         }
-        
-        if ( ( doPeriods && crosstab ) || ( !doPeriods && !crosstab ) )
+
+        if ( (doPeriods && crosstab) || (!doPeriods && !crosstab) )
         {
             arrays.add( allPeriods.toArray( IRT ) );
         }
-        
-        if ( ( doUnits && crosstab ) || ( !doUnits && !crosstab ) )
+
+        if ( (doUnits && crosstab) || (!doUnits && !crosstab) )
         {
             arrays.add( allUnits.toArray( IRT ) );
         }
-        
+
         if ( isDimensional() && crosstab ) // Must be crosstab if exists
         {
             arrays.add( categoryOptionCombos.toArray( IRT ) );
         }
-        
+
         return arrays.toArray( new NameableObject[0][] );
     }
 
@@ -633,14 +705,14 @@ public class ReportTable
             list.add( Arrays.asList( new NameableObject[0] ) );
         }
     }
-    
+
     /**
      * Returns the number of empty lists among the argument lists.
      */
     private static int nonEmptyLists( List<?>... lists )
     {
         int nonEmpty = 0;
-        
+
         for ( List<?> list : lists )
         {
             if ( list != null && list.size() > 0 )
@@ -648,13 +720,13 @@ public class ReportTable
                 ++nonEmpty;
             }
         }
-        
+
         return nonEmpty;
     }
-    
+
     /**
-     * Sets the name and short name properties on the given Periods which don't have
-     * the name property already set.
+     * Sets the name and short name properties on the given Periods which don't
+     * have the name property already set.
      */
     private void setNames( List<Period> periods )
     {
@@ -662,10 +734,15 @@ public class ReportTable
         {
             if ( period.getName() == null ) // Crosstabulated relative periods
             {
-                period.setName( i18nFormat.formatPeriod( period ) ); // Static periods + indexed relative periods
-                period.setShortName( i18nFormat.formatPeriod( period ) );                
+                period.setName( i18nFormat.formatPeriod( period ) ); // Static
+                // periods
+                // +
+                // indexed
+                // relative
+                // periods
+                period.setShortName( i18nFormat.formatPeriod( period ) );
             }
-        }        
+        }
     }
 
     /**
@@ -678,7 +755,7 @@ public class ReportTable
             list.add( object );
         }
     }
-    
+
     /**
      * Removes duplicates from the given list while maintaining the order.
      */
@@ -686,7 +763,7 @@ public class ReportTable
     {
         final List<T> temp = new ArrayList<T>( list );
         list.clear();
-        
+
         for ( T object : temp )
         {
             if ( !list.contains( object ) )
@@ -694,10 +771,10 @@ public class ReportTable
                 list.add( object );
             }
         }
-        
+
         return list;
     }
-    
+
     /**
      * Supportive method.
      */
@@ -706,9 +783,9 @@ public class ReportTable
         if ( !expression )
         {
             throw new IllegalStateException( falseMessage );
-        }   
+        }
     }
-    
+
     // -------------------------------------------------------------------------
     // Equals and hashCode
     // -------------------------------------------------------------------------
@@ -717,11 +794,11 @@ public class ReportTable
     public int hashCode()
     {
         final int PRIME = 31;
-        
+
         int result = 1;
-        
-        result = PRIME * result + ( ( name == null ) ? 0 : name.hashCode() );
-        
+
+        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+
         return result;
     }
 
@@ -732,22 +809,22 @@ public class ReportTable
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final ReportTable other = (ReportTable) object;
-        
+
         return name.equals( other.getName() );
     }
-    
+
     // -------------------------------------------------------------------------
     // Get- and set-methods for persisted properties
     // -------------------------------------------------------------------------
@@ -781,7 +858,7 @@ public class ReportTable
     {
         this.categoryOptionCombos = categoryOptionCombos;
     }
-    
+
     public List<Indicator> getIndicators()
     {
         return indicators;
@@ -820,6 +897,16 @@ public class ReportTable
     public void setUnits( List<OrganisationUnit> units )
     {
         this.units = units;
+    }
+
+    public List<ReportTableGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( List<ReportTableGroup> groups )
+    {
+        this.groups = groups;
     }
 
     public DataElementCategoryCombo getCategoryCombo()
@@ -935,7 +1022,7 @@ public class ReportTable
     {
         return allUnits;
     }
-    
+
     public I18nFormat getI18nFormat()
     {
         return i18nFormat;
@@ -955,7 +1042,7 @@ public class ReportTable
     {
         this.reportingMonthName = reportingMonthName;
     }
-    
+
     public String getOrganisationUnitName()
     {
         return organisationUnitName;

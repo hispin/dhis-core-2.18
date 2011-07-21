@@ -14,10 +14,11 @@ function beforeSubmit()
 
 function showPatientAttributeGroupDetails( patientAttributeGroupId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'patientAttributeGroup' );
-    request.setCallbackSuccess( patientAttributeGroupReceived );
-    request.send( 'getPatientAttributeGroup.action?id=' + patientAttributeGroupId );
+	$.ajax({
+		url: 'getPatientAttributeGroup.action?id=' + patientAttributeGroupId,
+		cache: false,
+		success: patientAttributeGroupReceived
+	});
 }
 
 function patientAttributeGroupReceived( patientAttributeGroupElement )
@@ -43,9 +44,12 @@ function removePatientAttributeGroup( patientAttributeGroupId, name )
 // Show and Hide tooltip
 // -----------------------------------------------------------------------------
 
-function patientAttributeGroupAssociation(){
+function patientAttributeGroupAssociation()
+{
 	selectAllById('selectedAttributeGroups');
+
     var form = document.getElementById( 'patientAttributeGroupAssociationForm' );        
+
     form.submit();
 }
 
