@@ -90,8 +90,7 @@ function generateExpression( expression )
  */
 function saveVal( dataElementId, optionComboId )
 {
-    var dataElementName = $( '#' + dataElementId + '-dataelement' ).html();
-
+    var dataElementName = dataElements[dataElementId].name;
     var fieldId = '#' + dataElementId + '-' + optionComboId + '-val';
     var value =$( fieldId ).val();
     var type = dataElements[dataElementId].type;

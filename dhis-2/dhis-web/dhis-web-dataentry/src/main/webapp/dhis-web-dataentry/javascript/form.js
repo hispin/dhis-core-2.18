@@ -314,7 +314,7 @@ function valueFocus( e )
 	var dataElementId = id.split( '-' )[0];
 	var optionComboId = id.split( '-' )[1];
 	
-	var dataElementName = $( '#' + dataElementId + '-dataelement' ).text();
+	var dataElementName = dataElements[dataElementId].name;
 	var optionComboName = $( '#' + optionComboId + '-optioncombo' ).text();
 	
 	$( "#currentDataElement" ).html( dataElementName + ' ' + optionComboName );
@@ -331,8 +331,6 @@ function keyPress( event, field )
     {
         focusField.focus();
     }
-
-    return true;
 }
 
 function getNextEntryField( field )

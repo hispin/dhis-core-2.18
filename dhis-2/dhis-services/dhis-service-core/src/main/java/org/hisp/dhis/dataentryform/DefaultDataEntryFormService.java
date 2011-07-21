@@ -235,12 +235,10 @@ public class DefaultDataEntryFormService
         int i = 1;
         
         final String jsCodeForInputFields = " name=\"entryfield\" $DISABLED onchange=\"saveVal( $DATAELEMENTID, $OPTIONCOMBOID )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
-        final String jsCodeForSelectLists = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID )\" onkeyup=\"return keyPress(event, this)\" ";
+        final String jsCodeForSelectLists = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID )\" onkeyup=\"keyPress(event, this)\" ";
         
         final String historyCode = " ondblclick='javascript:viewHist( $DATAELEMENTID, $OPTIONCOMBOID )' ";
         
-        final String metaDataCode = "<span id=\"$DATAELEMENTID-dataelement\" style=\"display:none\">$DATAELEMENTNAME</span>"; //TODO read from js
-
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
@@ -324,7 +322,6 @@ public class DefaultDataEntryFormService
 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
                 
-                inputHtml += metaDataCode;
                 inputHtml = inputHtml.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 inputHtml = inputHtml.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 inputHtml = inputHtml.replace( "$DATAELEMENTTYPE", dataElementValueType );

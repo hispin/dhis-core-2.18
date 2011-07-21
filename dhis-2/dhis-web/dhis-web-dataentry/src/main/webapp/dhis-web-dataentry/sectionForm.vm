@@ -1,7 +1,7 @@
 #set( $marker = 0 )
 #set( $tabIndex = 1 )
 
-#foreach( $section in $sections)
+#foreach( $section in $sections )
 
 #if( $marker == 1 )
   #set( $marker = 0 )
@@ -29,12 +29,12 @@
 	  #set( $categoryOptions = $optionsMap.get( $category.id ) )
       #set( $colCount = $colCount / $categoryOptions.size() )
       <tr colspan="$colCount">
-        <td></td>
+      <td></td>
         #set( $cols = $colRepeat.get( $category.id ) )
         #foreach( $col in $cols )
-          #foreach( $categoryOption in $categoryOptions )
-          <th colspan="$colCount"><div align="center"> #if( $categoryOption.isDefault() )${i18n.getString( "value" )}#else ${encoder.htmlEncode( $categoryOption.name )}#end </div></th>
-          #end
+        #foreach( $categoryOption in $categoryOptions )
+        <th colspan="$colCount"><div align="center">#if( $categoryOption.isDefault() )${i18n.getString( "value" )}#else ${encoder.htmlEncode( $categoryOption.name )}#end</div></th>
+        #end
         #end
       </tr>
       #end
@@ -52,9 +52,7 @@
       #end
       #set( $count = $count + 1 )
       <tr>
-        <td  style="#if( $mark == 1 )background-color:#e0e0e0;#end padding-right:50px;">
-          <span id="${dataElement.id}-dataelement">${encoder.htmlEncode( $dataElement.name )}</span>
-        </td>
+        <td  style="#if( $mark == 1 )background-color:#e0e0e0;#end padding-right:50px;"><span>${encoder.htmlEncode( $dataElement.name )}</span></td>
         #foreach( $optionCombo in $optionCombos )
         #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )
         #set( $greyedField = false )
@@ -67,7 +65,7 @@
           <option value="false">$i18n.getString( "no" )</option>
         </select>
         #else
-        <input name="entryfield" id="$dataEntryId" type="text" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveVal(${dataElement.id},${optionCombo.id})" ondblclick="viewHist(${dataElement.id},${optionCombo.id})" #else disabled="disabled"#end onkeyup="return keyPress(event,this)" class="entryField #if( $locked || $greyedField ) grey#end" tabindex="$tabIndex" #if( $locked || $greyedField )disabled="disabled"#end>
+        <input name="entryfield" id="$dataEntryId" type="text" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveVal(${dataElement.id},${optionCombo.id})" ondblclick="viewHist(${dataElement.id},${optionCombo.id})" #else disabled="disabled"#end onkeyup="keyPress(event,this)" class="entryField#if( $locked || $greyedField ) grey#end" tabindex="$tabIndex" #if( $locked || $greyedField )disabled="disabled"#end>
         #end
       </td>
       #set( $tabIndex = $tabIndex + 1 )
