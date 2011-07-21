@@ -11,19 +11,21 @@ jQuery(document).ready(	function(){
 
 function showProgramValidationDetails ( programValidationId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'programValdiation' );
-    request.setCallbackSuccess( programValdiationReceived );
-    request.send( 'getProgramValidation.action?validationId=' + programValidationId );
+    $.ajax({
+		url: 'getProgramValidation.action?validationId=' + programValidationId,
+		cache: false,
+		dataType: "xml",
+		success: programValdiationReceived
+	});
 }
 
 function programValdiationReceived( programValidationElement )
 {
-	setInnerHTML( 'idField', getElementValue( programValidationElement, 'id' ) );
-	setInnerHTML( 'descriptionField', getElementValue( programValidationElement, 'description' ) );	
-    setInnerHTML( 'leftSideField', getElementValue( programValidationElement, 'leftSide' ) );
-	setInnerHTML( 'rightSideField', getElementValue( programValidationElement, 'rightSide' ) );
-	setInnerHTML( 'programField', getElementValue( programValidationElement, 'program' ) );
+	setInnerHTML( 'idField', $( programValidationElement).find('id').text() );
+	setInnerHTML( 'descriptionField', $( programValidationElement).find('description' ).text() );	
+    setInnerHTML( 'leftSideField', $( programValidationElement).find('leftSide').text() );
+	setInnerHTML( 'rightSideField', $( programValidationElement).find('rightSide').text() );
+	setInnerHTML( 'programField', $( programValidationElement).find('program').text() );
     
     showDetails();
 }
@@ -82,43 +84,37 @@ function clearValidation( target, decriptionDiv )
 
 function getLeftPrgramStageDataElements()
 {
-  var programStage = document.getElementById( 'leftStage' );
-  var psId = programStage.options[ programStage.selectedIndex ].value;
-  if( psId == '')
-  {
-	return;
-  }
+	clearListById( 'leftSideDE' );
+	
+	var programStage = document.getElementById( 'leftStage' );
+	var psId = programStage.options[ programStage.selectedIndex ].value;
+	if( psId == '') return;
   
-  var requestString = 'getPSDataElements.action?psId=' + psId;
-
-  var request = new Request();
-  request.setResponseTypeXML( 'leftSideDE' );
-  request.setCallbackSuccess( getLeftPrgramStageDataElementsCompleted );
-
-  request.send( requestString );	
+	$.ajax({
+		url: 'getPSDataElements.action?psId=' + psId,
+		dataType: "xml",
+		success: getLeftPrgramStageDataElementsCompleted
+	});  
 }
 
 function getLeftPrgramStageDataElementsCompleted( dataelementElement )
 {
-  var programstageDE = document.getElementById( 'leftSideDE' );
-  
-  clearList( programstageDE );
-  	
-  var programstageDEList = dataelementElement.getElementsByTagName( 'dataelement' );
+	var programstageDE = byId( 'leftSideDE' );
+	var programstageDEList = $(dataelementElement).find( 'dataelement' );
  
-  for ( var i = 0; i < programstageDEList.length; i++ )
-  {
-    var id = programstageDEList[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
-    var name = programstageDEList[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
-	var type = programstageDEList[ i ].getElementsByTagName("type")[0].firstChild.nodeValue;
+	$( programstageDEList ).each( function( i, item )
+        {
+            var id = $( item ).find("id").text();
+			var name = $( item ).find("name").text();
+			var type = $( item ).find("type").text(); 
 
-    var option = document.createElement("option");
-    option.value = id;
-    option.text = name;
-    option.title = name;
-    jQuery(option).attr({data:"{type:'"+type+"'}"});
-    programstageDE.add(option, null);       	
-  }	    
+			var option = document.createElement("option");
+			option.value = id;
+			option.text = name;
+			option.title = name;
+			jQuery(option).attr({data:"{type:'"+type+"'}"});
+			programstageDE.add(option, null);  			
+        } );
 }
 
 //------------------------------------------------------------------------------
@@ -127,60 +123,35 @@ function getLeftPrgramStageDataElementsCompleted( dataelementElement )
 
 function getRightPrgramStageDataElements()
 {
-  var programStage = document.getElementById( 'rightStage' );
-  var psId = programStage.options[ programStage.selectedIndex ].value;
-  if( psId == '')
-  {
-	return;
-  }
+	clearListById( 'rightSideDE' );
+  	
+	var programStage = document.getElementById( 'rightStage' );
+	var psId = programStage.options[ programStage.selectedIndex ].value;
+	if( psId == '') return;
   
-  var requestString = 'getPSDataElements.action?psId=' + psId;
-
-  var request = new Request();
-  request.setResponseTypeXML( 'rightSideDE' );
-  request.setCallbackSuccess( getRightPrgramStageDataElementsCompleted );
-
-  request.send( requestString );	
+	$.ajax({
+		url: 'getPSDataElements.action?psId=' + psId,
+		dataType: "xml",
+		success: getRightPrgramStageDataElementsCompleted
+	});  
 }
 
 function getRightPrgramStageDataElementsCompleted( dataelementElement )
 {
-  var programstageDE = document.getElementById( 'rightSideDE' );
-  
-  clearList( programstageDE );
-  	
-  var programstageDEList = dataelementElement.getElementsByTagName( 'dataelement' );
+	var programstageDE = document.getElementById( 'rightSideDE' );
+	var programstageDEList = $(dataelementElement).find( 'dataelement' );
  
-  for ( var i = 0; i < programstageDEList.length; i++ )
-  {
-    var id = programstageDEList[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
-    var name = programstageDEList[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
-	var type = programstageDEList[ i ].getElementsByTagName("type")[0].firstChild.nodeValue;
-
-    var option = document.createElement("option");
-    option.value = id;
-    option.text = name;
-    option.title = name;
-    jQuery(option).attr({data:"{type:'"+type+"'}"});
-    programstageDE.add(option, null);       	
-  }	    
-}
-
-
-$.extend({
-  getUrlVars: function(){
-    var vars = [], hash;
-    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for(var i = 0; i < hashes.length; i++)
+	$( programstageDEList ).each( function( i, item )
     {
-      hash = hashes[i].split('=');
-      vars.push(hash[0]);
-      vars[hash[0]] = hash[1];
-    }
-    return vars;
-  },
-  getUrlVar: function(name){
-    return $.getUrlVars()[name];
-  }
-});
-
+		var id = $( item ).find("id").text();
+		var name = $( item ).find("name").text();
+		var type = $( item ).find("type").text(); 
+		
+		var option = document.createElement("option");
+		option.value = id;
+		option.text = name;
+		option.title = name;
+		jQuery(option).attr({data:"{type:'"+type+"'}"});
+		programstageDE.add(option, null); 
+	});
+}
