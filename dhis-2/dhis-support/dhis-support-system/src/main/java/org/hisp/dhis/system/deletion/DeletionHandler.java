@@ -29,6 +29,7 @@ package org.hisp.dhis.system.deletion;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.chart.ChartGroup;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.datadictionary.DataDictionary;
@@ -77,6 +78,7 @@ import org.hisp.dhis.programattributevalue.ProgramAttributeValue;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportGroup;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -115,6 +117,15 @@ public abstract class DeletionHandler
     }
 
     public boolean allowDeleteChart( Chart chart )
+    {
+        return true;
+    }
+
+    public void deleteChartGroup( ChartGroup group )
+    {
+    }
+
+    public boolean allowDeleteChartGroup( ChartGroup group )
     {
         return true;
     }
@@ -362,11 +373,29 @@ public abstract class DeletionHandler
         return true;
     }
 
+    public void deleteReportGroup( ReportGroup group )
+    {
+    }
+
+    public boolean allowDeleteReportGroup( ReportGroup group )
+    {
+        return true;
+    }
+
     public void deleteReportTable( ReportTable reportTable )
     {
     }
 
     public boolean allowDeleteReportTable( ReportTable reportTable )
+    {
+        return true;
+    }
+
+    public void deleteReportTableGroup( ReportTable group )
+    {
+    }
+
+    public boolean allowReportTableGroup( ReportTable group )
     {
         return true;
     }
@@ -538,7 +567,7 @@ public abstract class DeletionHandler
     public void deleteRelationshipType( RelationshipType relationshipType )
     {
     }
-    
+
     public boolean allowDeleteProgram( Program program )
     {
         return true;
@@ -556,7 +585,7 @@ public abstract class DeletionHandler
     public void deleteProgramInstance( ProgramInstance programInstance )
     {
     }
-    
+
     public boolean allowDeleteProgramStage( ProgramStage programStage )
     {
         return true;
@@ -565,7 +594,7 @@ public abstract class DeletionHandler
     public void deleteProgramStage( ProgramStage programStage )
     {
     }
-    
+
     public boolean allowDeleteProgramStageInstance( ProgramStageInstance programStageInstance )
     {
         return true;
@@ -574,7 +603,7 @@ public abstract class DeletionHandler
     public void deleteProgramStageInstance( ProgramStageInstance programStageInstance )
     {
     }
-    
+
     public boolean allowDeleteProgramStageDataElement( ProgramStageDataElement programStageDataElement )
     {
         return true;
@@ -583,7 +612,7 @@ public abstract class DeletionHandler
     public void deleteProgramStageDataElement( ProgramStageDataElement programStageDataElement )
     {
     }
-    
+
     public boolean allowDeletePatientDataValue( PatientDataValue patientDataValue )
     {
         return true;
@@ -592,7 +621,7 @@ public abstract class DeletionHandler
     public void deletePatientDataValue( PatientDataValue patientDataValue )
     {
     }
-    
+
     public boolean allowDeleteValidationCriteria( ValidationCriteria validationCriteria )
     {
         return true;
@@ -601,7 +630,7 @@ public abstract class DeletionHandler
     public void deleteValidationCriteria( ValidationCriteria validationCriteria )
     {
     }
-    
+
     public boolean allowDeleteProgramAttributeValue( ProgramAttributeValue programAttributeValue )
     {
         return true;
@@ -610,22 +639,23 @@ public abstract class DeletionHandler
     public void deleteProgramAttributeValue( ProgramAttributeValue programAttributeValue )
     {
     }
-    
+
     public boolean allowDeleteConstant( Constant constant )
     {
         return true;
     }
-    
+
     public void deleteConstant( Constant constant )
     {
     }
-    
+
     public boolean allowDeleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
     {
         return true;
     }
-    
+
     public void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
     {
     }
+
 }
