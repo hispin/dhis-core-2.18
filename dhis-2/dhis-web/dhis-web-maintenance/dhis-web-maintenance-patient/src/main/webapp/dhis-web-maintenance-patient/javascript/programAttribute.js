@@ -4,20 +4,22 @@
 
 function showProgramAttributeDetails( programAttributeId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'programAttribute' );
-    request.setCallbackSuccess( programAttributeReceived );
-    request.send( 'getProgramAttribute.action?id=' + programAttributeId );
+	$.ajax({
+		url: 'getProgramAttribute.action?id=' + programAttributeId,
+		cache: false,
+		dataType: "xml",
+		success: programAttributeReceived
+	});
 }
 
 function programAttributeReceived( programAttributeElement )
 {
-	setInnerHTML( 'idField', getElementValue( programAttributeElement, 'id' ) );
-	setInnerHTML( 'nameField', getElementValue( programAttributeElement, 'name' ) );	
-    setInnerHTML( 'descriptionField', getElementValue( programAttributeElement, 'description' ) );
+	setInnerHTML( 'idField', $( programAttributeElement).find('id' ).text() );
+	setInnerHTML( 'nameField',  $( programAttributeElement).find('name').text() );	
+    setInnerHTML( 'descriptionField', $( programAttributeElement).find('description').text() );
     
     var valueTypeMap = { 'NUMBER':i18n_number, 'BOOL':i18n_yes_no, 'TEXT':i18n_text, 'DATE':i18n_date, 'COMBO':i18n_combo };
-    var valueType = getElementValue( programAttributeElement, 'valueType' );    
+    var valueType =  $( programAttributeElement).find('valueType' ).text();    
 	
     setInnerHTML( 'valueTypeField', valueTypeMap[valueType] );    
    
@@ -27,6 +29,7 @@ function programAttributeReceived( programAttributeElement )
 // -----------------------------------------------------------------------------
 // Remove Program Attribute
 // -----------------------------------------------------------------------------
+
 function removeProgramAttribute( programAttributeId, name )
 {
 	removeItem( programAttributeId, name, i18n_confirm_delete, 'removeProgramAttribute.action' );	
@@ -72,22 +75,24 @@ ATTRIBUTE_OPTION =
 	},
 	remove : function (this_, optionId)
 	{
-		
 		if( jQuery(this_).siblings("input").attr("name") != "attrOptions")
 		{
-			jQuery.get("removeProgramAttributeOption.action?id="+optionId,function(data){
-				var type  = jQuery(data).find("message").attr("type");
-				alert(type);
-				if( type == "success")
+			jQuery.getJSON("removeProgramAttributeOption.action",
+				{ 
+					id: optionId 
+				},function( json )
 				{
-					alert("success");
-					jQuery(this_).parent().parent().remove();
-					alert(jQuery(data).text());
-				}else 
-				{
-					alert(jQuery(data).text());
-				}
-			});
+					var type  = json.response;
+					
+					if( type == "success")
+					{
+						jQuery(this_).parent().parent().remove();
+						showSuccessMessage(json.message);
+					}else 
+					{
+						showWarningMessage(json.message);
+					}
+				});
 		}else
 		{
 			jQuery(this_).parent().parent().remove();

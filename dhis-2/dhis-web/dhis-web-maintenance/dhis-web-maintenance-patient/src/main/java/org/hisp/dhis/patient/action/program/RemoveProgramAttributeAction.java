@@ -57,10 +57,6 @@ public class RemoveProgramAttributeAction
 
     private Integer id;
 
-    // -------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------
-    
     public void setId( Integer id )
     {
         this.id = id;
