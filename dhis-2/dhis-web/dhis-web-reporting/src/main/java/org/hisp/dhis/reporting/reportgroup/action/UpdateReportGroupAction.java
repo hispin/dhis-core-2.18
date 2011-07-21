@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.chart.action;
+package org.hisp.dhis.reporting.reportgroup.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,84 +27,90 @@ package org.hisp.dhis.reporting.chart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportGroup;
+import org.hisp.dhis.report.ReportService;
 
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.comparator.ChartTitleComparator;
-import org.hisp.dhis.paging.ActionPagingSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetAllChartsAction
-    extends ActionPagingSupport<Chart>
-{
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -5514430921098331756L;
 
+public class UpdateReportGroupAction
+    implements Action
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ChartService chartService;
+    private ReportService reportService;
 
-    public void setChartService( ChartService chartService )
+    public void setReportService( ReportService reportService )
     {
-        this.chartService = chartService;
+        this.reportService = reportService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------------------------------------
-    
-    private String key;
-    
-    public String getKey()
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        return key;
+        this.id = id;
     }
 
-    public void setKey( String key )
+    private String name;
+
+    public void setName( String name )
     {
-        this.key = key;
+        this.name = name;
     }
 
-    private List<Chart> charts;
+    private Set<String> groupMembers = new HashSet<String>();
 
-    public List<Chart> getCharts()
+    public void setGroupMembers( Set<String> groupMembers )
     {
-        return charts;
+        this.groupMembers = groupMembers;
     }
-        
+
+    private ReportGroup reportGroup;
+
+    public ReportGroup getReportGroup()
+    {
+        return reportGroup;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        if ( isNotBlank( key ) )
-        {
-            this.paging = createPaging( chartService.getChartCountByName( key ) );
-            
-            charts = new ArrayList<Chart>( chartService.getChartsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
-        }
-        else
-        {
-            this.paging = createPaging( chartService.getChartCount() );
+        reportGroup = reportService.getReportGroup( id );
 
-            charts = new ArrayList<Chart>( chartService.getChartsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        if ( name != null && name.trim().length() > 0 )
+        {
+            reportGroup.setName( name );
         }
-        
-        Collections.sort( charts, new ChartTitleComparator() );
-        
+
+        Set<Report> members = new HashSet<Report>();
+
+        for ( String memberId : groupMembers )
+        {
+            members.add( reportService.getReport( Integer.parseInt( memberId ) ) );
+        }
+
+        reportGroup.updateReports( members );
+
+        reportService.updateReportGroup( reportGroup );
+
         return SUCCESS;
     }
 }

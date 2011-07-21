@@ -1,5 +1,3 @@
-package org.hisp.dhis.reporting.chart.action;
-
 /*
  * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
@@ -27,84 +25,86 @@ package org.hisp.dhis.reporting.chart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+package org.hisp.dhis.reporting.reporttablegroup.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.comparator.ChartTitleComparator;
-import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableGroup;
+import org.hisp.dhis.reporttable.ReportTableService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetAllChartsAction
-    extends ActionPagingSupport<Chart>
-{
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -5514430921098331756L;
 
+public class ShowUpdateReportTableGroupFormAction
+    implements Action
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ChartService chartService;
+    private ReportTableService reportTableService;
 
-    public void setChartService( ChartService chartService )
+    public void setReportTableService( ReportTableService reportTableService )
     {
-        this.chartService = chartService;
+        this.reportTableService = reportTableService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Comparator
     // -------------------------------------------------------------------------
-    
-    private String key;
-    
-    public String getKey()
+
+    private Comparator<ReportTable> reportTableComparator;
+
+    public void setReportTableComparator( Comparator<ReportTable> reportTableComparator )
     {
-        return key;
+        this.reportTableComparator = reportTableComparator;
     }
 
-    public void setKey( String key )
+    // -------------------------------------------------------------------------
+    // Input/output
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        this.key = key;
+        this.id = id;
     }
 
-    private List<Chart> charts;
+    private ReportTableGroup reportTableGroup;
 
-    public List<Chart> getCharts()
+    public ReportTableGroup getReportTableGroup()
     {
-        return charts;
+        return reportTableGroup;
     }
-        
+
+    private List<ReportTable> groupMembers = new ArrayList<ReportTable>();
+
+    public List<ReportTable> getGroupMembers()
+    {
+        return groupMembers;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        if ( isNotBlank( key ) )
-        {
-            this.paging = createPaging( chartService.getChartCountByName( key ) );
-            
-            charts = new ArrayList<Chart>( chartService.getChartsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
-        }
-        else
-        {
-            this.paging = createPaging( chartService.getChartCount() );
+        reportTableGroup = reportTableService.getReportTableGroup( id );
 
-            charts = new ArrayList<Chart>( chartService.getChartsBetween( paging.getStartPos(), paging.getPageSize() ) );
-        }
-        
-        Collections.sort( charts, new ChartTitleComparator() );
-        
+        groupMembers = new ArrayList<ReportTable>( reportTableGroup.getMembers() );
+
+        Collections.sort( groupMembers, reportTableComparator );
+
         return SUCCESS;
     }
 }

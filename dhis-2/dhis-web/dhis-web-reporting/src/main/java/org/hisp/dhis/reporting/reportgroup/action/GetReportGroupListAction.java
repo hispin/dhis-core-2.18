@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.chart.action;
+package org.hisp.dhis.reporting.reportgroup.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -33,37 +33,44 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.comparator.ChartTitleComparator;
+import org.hisp.dhis.report.ReportGroup;
+import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.report.comparator.ReportGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetAllChartsAction
-    extends ActionPagingSupport<Chart>
+public class GetReportGroupListAction
+    extends ActionPagingSupport<ReportGroup>
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
-    private static final long serialVersionUID = -5514430921098331756L;
+    private static final long serialVersionUID = -1L;
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ChartService chartService;
+    private ReportService reportService;
 
-    public void setChartService( ChartService chartService )
+    public void setReportService( ReportService reportService )
     {
-        this.chartService = chartService;
+        this.reportService = reportService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+
+    private List<ReportGroup> reportGroups;
+
+    public List<ReportGroup> getReportGroups()
+    {
+        return reportGroups;
+    }
     
     private String key;
     
@@ -77,34 +84,27 @@ public class GetAllChartsAction
         this.key = key;
     }
 
-    private List<Chart> charts;
-
-    public List<Chart> getCharts()
-    {
-        return charts;
-    }
-        
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        if ( isNotBlank( key ) )
+        if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            this.paging = createPaging( chartService.getChartCountByName( key ) );
+            this.paging = createPaging( reportService.getReportGroupCountByName( key ) );
             
-            charts = new ArrayList<Chart>( chartService.getChartsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            reportGroups = new ArrayList<ReportGroup>( reportService.getReportGroupsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
-            this.paging = createPaging( chartService.getChartCount() );
-
-            charts = new ArrayList<Chart>( chartService.getChartsBetween( paging.getStartPos(), paging.getPageSize() ) );
+            this.paging = createPaging( reportService.getReportGroupCount() );
+            
+            reportGroups = new ArrayList<ReportGroup>( reportService.getReportGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
-        
-        Collections.sort( charts, new ChartTitleComparator() );
-        
+
+        Collections.sort( reportGroups, new ReportGroupNameComparator() );
+
         return SUCCESS;
     }
 }

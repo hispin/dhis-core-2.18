@@ -1,9 +1,9 @@
-<script type="text/javascript" src="javascript/updateChartGroupForm.js"></script>
+<script type="text/javascript" src="javascript/updateReportGroupForm.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
-		jQuery("#availableChartsList").dhisAjaxSelect({
-			source: "getCharts.action",
-			iterator: "charts",
+		jQuery("#availableReportsList").dhisAjaxSelect({
+			source: "getReports.action",
+			iterator: "reports",
 			connectedTo: 'groupMembers',
 			handler: function(item) {
 				var option = jQuery("<option />");
@@ -16,12 +16,12 @@
 	});
 </script>
 
-<h3>$i18n.getString( "edit_chart_group" )</h3>
+<h3>$i18n.getString( "edit_report_group" )</h3>
 
-<form id="updateChartGroupForm" action="updateChartGroup.action" method="post" >
+<form id="updateReportGroupForm" action="updateReportGroup.action" method="post" >
 
 <div>
-	<input type="hidden" id="id" name="id" value="$chartGroup.id"/>
+	<input type="hidden" id="id" name="id" value="$reportGroup.id"/>
 </div>
 
 <table>
@@ -30,7 +30,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $chartGroup.name )" style="width:20em"/></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $reportGroup.name )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
@@ -43,7 +43,7 @@
     <col style="width: 450px"/>
 
 	<tr>
-		<th>$i18n.getString( "available_charts" )</th>
+		<th>$i18n.getString( "available_reports" )</th>
 		<th></th>
 		<th>$i18n.getString( "group_members" )
 			<select id="memberValidator" class="{validate:{required:true}}" style="display:none"/>
@@ -52,20 +52,20 @@
 
 	<tr>
 		<td>
-			<select id="availableChartsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
+			<select id="availableReportsList" multiple="multiple" style="height: 200px; width: 100%;"></select>
 		</td>
 		
         <td style="text-align:center">          
-        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableChartsList' );"/><br/>
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableReportsList' );"/><br/>
             <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'groupMembers' );"/><br/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableChartsList' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableReportsList' );"/><br/>
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'groupMembers' );"/>
         </td>
     
 		<td>
 			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
-				#foreach( $chart in $groupMembers )
-                    <option value="$chart.id">$encoder.htmlEncode( $chart.title )</option>
+				#foreach( $report in $groupMembers )
+                    <option value="$report.id">$encoder.htmlEncode( $report.name )</option>
                 #end
 			</select>
 		</td>
@@ -75,7 +75,7 @@
 
 <p>
 	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='chartGroup.action'" style="width:10em"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='reportGroup.action'" style="width:10em"/>
 </p>
 
 </form>

@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.chart.action;
+package org.hisp.dhis.reporting.reportgroup.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,84 +27,85 @@ package org.hisp.dhis.reporting.chart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.report.ReportService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.comparator.ChartTitleComparator;
-import org.hisp.dhis.paging.ActionPagingSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetAllChartsAction
-    extends ActionPagingSupport<Chart>
+public class RemoveReportGroupAction
+    implements Action
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -5514430921098331756L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ChartService chartService;
+    private ReportService reportService;
 
-    public void setChartService( ChartService chartService )
+    public void setReportService( ReportService reportService )
     {
-        this.chartService = chartService;
+        this.reportService = reportService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // I18n
     // -------------------------------------------------------------------------
-    
-    private String key;
-    
-    public String getKey()
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
     {
-        return key;
+        this.i18n = i18n;
     }
 
-    public void setKey( String key )
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        this.key = key;
+        this.id = id;
     }
 
-    private List<Chart> charts;
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
-    public List<Chart> getCharts()
+    private String message;
+
+    public String getMessage()
     {
-        return charts;
+        return message;
     }
-        
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        if ( isNotBlank( key ) )
+        try
         {
-            this.paging = createPaging( chartService.getChartCountByName( key ) );
-            
-            charts = new ArrayList<Chart>( chartService.getChartsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            reportService.deleteReportGroup( reportService.getReportGroup( id ) );
         }
-        else
+        catch ( DeleteNotAllowedException ex )
         {
-            this.paging = createPaging( chartService.getChartCount() );
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
 
-            charts = new ArrayList<Chart>( chartService.getChartsBetween( paging.getStartPos(), paging.getPageSize() ) );
+                return ERROR;
+            }
         }
-        
-        Collections.sort( charts, new ChartTitleComparator() );
-        
+
+        message = i18n.getString( "item_deleted_successfully" );
+
         return SUCCESS;
     }
 }
