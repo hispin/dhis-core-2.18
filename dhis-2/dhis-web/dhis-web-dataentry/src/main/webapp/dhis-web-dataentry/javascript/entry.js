@@ -135,8 +135,8 @@ function saveVal( dataElementId, optionComboId )
                 }
             }
 
-            var minString = $( '#' + dataElementId + '-' + optionComboId + '-min' ).html();
-            var maxString = $( '#' + dataElementId + '-' + optionComboId + '-max' ).html();
+            var minString = currentMinMaxValueMap[dataElementId + '-' + optionComboId + '-min'];
+            var maxString = currentMinMaxValueMap[dataElementId + '-' + optionComboId + '-max'];
 
             if ( minString && maxString ) // TODO if only one exists?
             {

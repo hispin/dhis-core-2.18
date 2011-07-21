@@ -7,6 +7,9 @@ var indicatorFormulas = [];
 // Array with associative arrays for each data set, populated in select.vm
 var dataSets = [];
 
+// Array with keys on form {dataelementid}-{optioncomboid}-min/max with min/max values
+var currentMinMaxValueMap = [];
+
 // Indicates whether any data entry form has been loaded
 var dataEntryFormIsLoaded = false;
 
@@ -232,7 +235,7 @@ function loadDataValues()
 
 function insertDataValues()
 {
-	var valueMap = new Array();
+	var dataValueMap = new Array();
 	
 	var periodId = $( '#selectedPeriodId' ).val();
     var dataSetId = $( '#selectedDataSetId' ).val();
@@ -261,34 +264,28 @@ function insertDataValues()
 				$( fieldId ).val( value.val );
 			}
 			
-			valueMap[value.id] = value.val;
+			dataValueMap[value.id] = value.val;
 		} );
 		
 		// Set min-max values and colorize violation fields
 		
 		$.each( json.minMaxDataElements, function( i, value )
 		{
-			var minFieldId = '#' + value.id + '-min';
-			var maxFieldId = '#' + value.id + '-max';
+			var minId = value.id + '-min';
+			var maxId = value.id + '-max';
+			
 			var valFieldId = '#' + value.id + '-val';
 			
-			if ( $( minFieldId ) )
-			{
-				$( minFieldId ).html( value.min );
-			}
-			
-			if ( $( maxFieldId ) )
-			{
-				$( maxFieldId ).html( value.max );
-			}
-			
-			var dataValue = valueMap[value.id];
+			var dataValue = dataValueMap[value.id];
 			
 			if ( dataValue && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) 
 				|| ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
 			{
 				$( valFieldId ).css( 'background-color', COLOR_ORANGE );
 			}
+			
+			currentMinMaxValueMap[minId] = value.min;
+			currentMinMaxValueMap[maxId] = value.max;
 		} );
 		
 		// Update indicator values in form

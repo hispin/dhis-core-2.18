@@ -114,11 +114,8 @@ function saveMinMaxLimit()
 		$( '#maxSpan' ).html( '' );
 	}
 	
-	if ( window.opener && window.opener.document ) 
-	{
-		window.opener.document.getElementById( currentDataElementId + '-' + currentOptionComboId + '-min' ).innerHTML = minValue;
-    	window.opener.document.getElementById( currentDataElementId + '-' + currentOptionComboId + '-max' ).innerHTML = maxValue;
-	}
+	currentMinMaxValueMap[currentDataElementId + '-' + currentOptionComboId + '-min'] = minValue;
+	currentMinMaxValueMap[currentDataElementId + '-' + currentOptionComboId + '-max'] = maxValue;
 	
     var url = 'saveMinMaxLimits.action?organisationUnitId=' + currentOrganisationUnitId + '&dataElementId=' + currentDataElementId + 
     	'&optionComboId=' + currentOptionComboId + '&minLimit=' + minValue + '&maxLimit=' + maxValue;

@@ -40,8 +40,7 @@
       <span id="${dataElement.id}-type" class="hidden">$dataElement.getDetailedNumberType()</span>
     </td>
     #foreach( $optionCombo in $optionCombos )
-	    #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )
-	    <span id="${dataElement.id}-${optionCombo.id}-min" name="min" class="hidden"></span><span id="${dataElement.id}-${optionCombo.id}-max" name="max" class="hidden"></span>
+	    #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )	    
 	    <td>
 	    #if( $dataElement.type == "bool" )
 		    <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) ) onchange="saveBoolean($dataElement.id,$optionCombo.id )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>

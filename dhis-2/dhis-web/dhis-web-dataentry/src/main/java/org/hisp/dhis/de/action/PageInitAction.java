@@ -36,6 +36,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -77,6 +78,13 @@ public class PageInitAction
         this.dataSetService = dataSetService;
     }
 
+    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -108,6 +116,8 @@ public class PageInitAction
 
     public String execute()
     {
+        selectionManager.clearSelectedOrganisationUnits();
+        
         significantZeros = dataElementService.getDataElementsByZeroIsSignificant( true );
         
         indicators = indicatorService.getIndicatorsWithDataSets();

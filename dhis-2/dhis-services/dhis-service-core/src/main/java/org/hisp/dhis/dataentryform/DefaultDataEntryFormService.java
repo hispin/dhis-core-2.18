@@ -240,9 +240,7 @@ public class DefaultDataEntryFormService
         final String historyCode = " ondblclick='javascript:viewHist( $DATAELEMENTID, $OPTIONCOMBOID )' ";
         
         final String metaDataCode = "<span id=\"$DATAELEMENTID-dataelement\" style=\"display:none\">$DATAELEMENTNAME</span>"
-            + "<span id=\"$DATAELEMENTID-type\" class=\"hidden\">$DATAELEMENTTYPE</span>"
-            + "<span id=\"$DATAELEMENTID-$OPTIONCOMBOID-min\" name=\"min\" class=\"hidden\"></span>"
-            + "<span id=\"$DATAELEMENTID-$OPTIONCOMBOID-max\" name=\"max\" class=\"hidden\"></span>";
+            + "<span id=\"$DATAELEMENTID-type\" class=\"hidden\">$DATAELEMENTTYPE</span>";
 
         StringBuffer sb = new StringBuffer();
 
