@@ -657,6 +657,17 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="removeProgramAttributeOption"
+			class="org.hisp.dhis.patient.action.program.RemoveProgramAttributeOptionAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
+		</action>
+
 		<!-- Program_OrganisationUnit Association -->
 
 		<action name="defineProgramAssociationsForm"

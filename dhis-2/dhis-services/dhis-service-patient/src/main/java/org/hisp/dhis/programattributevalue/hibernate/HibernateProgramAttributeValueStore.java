@@ -30,9 +30,11 @@ package org.hisp.dhis.programattributevalue.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Query;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeOption;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.programattributevalue.ProgramAttributeValue;
 import org.hisp.dhis.programattributevalue.ProgramAttributeValueStore;
@@ -90,5 +92,13 @@ public class HibernateProgramAttributeValueStore
     {
         return getCriteria( Restrictions.eq( "programAttribute", programAttribute ),
             Restrictions.ilike( "value", "%" + searchText + "%" ) ).list();
+    }
+
+    @Override
+    public int countByProgramAttributeoption( ProgramAttributeOption attributeOption )
+    {
+        Number rs = (Number) getCriteria( Restrictions.eq( "programAttributeOption", attributeOption ) ).setProjection(
+            Projections.rowCount() ).uniqueResult();
+        return rs != null ? rs.intValue() : 0;
     }
 }

@@ -30,6 +30,7 @@ package org.hisp.dhis.programattributevalue;
 import java.util.Collection;
 
 import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeOption;
 import org.hisp.dhis.program.ProgramInstance;
 
 /**
@@ -59,6 +60,10 @@ public interface ProgramAttributeValueService
 
     Collection<ProgramAttributeValue> getProgramAttributeValues( ProgramAttribute programAttribute );
     
-    Collection<ProgramAttributeValue> searchProgramAttributeValues( ProgramAttribute programAttribute, String searchText );   
+    Collection<ProgramAttributeValue> searchProgramAttributeValues( ProgramAttribute programAttribute, String searchText );
+    
+
+    int countByProgramAttributeOption( ProgramAttributeOption attributeOption ); 
+    
     
 }

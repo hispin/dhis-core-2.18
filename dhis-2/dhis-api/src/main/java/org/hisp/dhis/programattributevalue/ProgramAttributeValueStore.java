@@ -31,6 +31,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeOption;
 import org.hisp.dhis.program.ProgramInstance;
 
 /**
@@ -41,7 +42,6 @@ import org.hisp.dhis.program.ProgramInstance;
 public interface ProgramAttributeValueStore
     extends GenericStore<ProgramAttributeValue>
 {
-
     void saveVoid( ProgramAttributeValue programAttributeValue );
 
     int delete( ProgramAttribute programAttribute );
@@ -56,4 +56,5 @@ public interface ProgramAttributeValueStore
     
     Collection<ProgramAttributeValue> search( ProgramAttribute programAttribute, String searchText );   
     
+    int countByProgramAttributeoption( ProgramAttributeOption attributeOption );
 }

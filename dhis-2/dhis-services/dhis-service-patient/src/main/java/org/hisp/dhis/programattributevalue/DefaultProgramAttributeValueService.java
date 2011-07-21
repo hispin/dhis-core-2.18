@@ -30,6 +30,7 @@ package org.hisp.dhis.programattributevalue;
 import java.util.Collection;
 
 import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeOption;
 import org.hisp.dhis.program.ProgramInstance;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,5 +111,11 @@ public class DefaultProgramAttributeValueService
         String searchText )
     {
         return programAttributeValueStore.search( programAttribute, searchText );
+    }
+
+    @Override
+    public int countByProgramAttributeOption( ProgramAttributeOption attributeOption )
+    {
+        return programAttributeValueStore.countByProgramAttributeoption( attributeOption );
     }
 }
