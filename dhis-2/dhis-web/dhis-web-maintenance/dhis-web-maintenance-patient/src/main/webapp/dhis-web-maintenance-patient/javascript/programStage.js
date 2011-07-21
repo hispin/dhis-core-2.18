@@ -18,8 +18,6 @@ function addProgramStage()
 	}
 }
 
-
-
 function showSortProgramStage()
 {
 	var programId = document.getElementById('id').value;
@@ -40,10 +38,12 @@ function showSortProgramStage()
 
 function showProgramStageDetails( programStageId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'programStage' );
-    request.setCallbackSuccess( programStageReceived );
-    request.send( 'getProgramStage.action?id=' + programStageId );
+	$.ajax({
+		url: 'getProgramStage.action?id=' + programStageId,
+		cache: false,
+		dataType: "xml",
+		success: programStageReceived
+	});
 }
 
 function programStageReceived( programStageElement )
