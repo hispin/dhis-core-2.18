@@ -1,0 +1,23 @@
+
+#macro( expandOrganisationUnit $organisationUnit )
+	{
+		"id": $!{organisationUnit.id},
+		"name": "$!encoder.jsonEncode( ${organisationUnit.name} )",
+		"hasChildren": #if( $organisationUnit.children.size() > 0 )true,#{else}false#end
+		#if( $organisationUnit.children.size() > 0 )
+		"children": [
+			#foreach ( $child in $organisationUnit.children )
+				#expandOrganisationUnit( $child )#if( $velocityCount < $organisationUnit.children.size() ),#end
+			#end
+		]
+		#end
+	}
+#end
+
+{ "organisationUnits": [
+	#foreach ( $organisationUnit in $organisationUnits )
+		#expandOrganisationUnit( $organisationUnit )
+		#if( $velocityCount < $organisationUnits.size() ),#end
+	#end
+	]
+}

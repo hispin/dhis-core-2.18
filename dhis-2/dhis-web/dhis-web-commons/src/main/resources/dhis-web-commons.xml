@@ -6,15 +6,16 @@
 
   <include file="struts-default.xml" />
 
-	<!-- Properties -->
+  <!-- Properties -->
 
   <constant name="struts.velocity.contexts" value="org.hisp.dhis.encoding.velocity.EncoderVelocityContext" />
   <constant name="struts.velocity.toolboxlocation" value="toolbox.xml" /> <!-- Work-around -->
   <constant name="struts.i18n.encoding" value="UTF-8" />
   <constant name="struts.multipart.parser" value="jakarta" />
   <constant name="struts.multipart.maxSize" value="1073741824" />
+  <constant name="struts.directive.parse.max.depth" value="30" />
 
-	<!-- DHIS Web Commons -->
+  <!-- DHIS Web Commons -->
 
   <package name="dhis-web-commons" extends="struts-default" namespace="/dhis-web-commons">
 
@@ -56,10 +57,10 @@
         <interceptor-ref name="params" />
         <interceptor-ref name="chain" />
         <interceptor-ref name="i18nInterceptor" />
-				<!--
-					The securityInterceptor is put after the i18nInterceptor so that
-					the access denied error pages can use internationalisation.
-				-->
+        <!--
+          The securityInterceptor is put after the i18nInterceptor so that
+          the access denied error pages can use internationalisation.
+        -->
         <interceptor-ref name="securityInterceptor" />
         <interceptor-ref name="loginInterceptor" />
         <interceptor-ref name="sortOrderInterceptor" />
@@ -105,7 +106,7 @@
     </global-results>
   </package>
 
-	<!-- Organisation Unit Selection Tree -->
+  <!-- Organisation Unit Selection Tree -->
 
   <package name="dhis-web-commons-oust" extends="dhis-web-commons" namespace="/dhis-web-commons/oust">
 
@@ -155,7 +156,7 @@
 
   </package>
 
-	<!-- Organisation Unit Web Tree -->
+  <!-- Organisation Unit Web Tree -->
 
   <package name="dhis-web-commons-ouwt" extends="dhis-web-commons" namespace="/dhis-web-commons/ouwt">
 
@@ -209,7 +210,7 @@
 
   </package>
 
-	<!-- Menu -->
+  <!-- Menu -->
 
   <package name="dhis-web-commons-menu" extends="dhis-web-commons" namespace="/dhis-web-commons/menu">
 
@@ -229,7 +230,7 @@
 
   </package>
 
-	<!-- i18n -->
+  <!-- i18n -->
 
   <package name="dhis-web-commons-i18n" extends="dhis-web-commons" namespace="/dhis-web-commons">
 
@@ -273,7 +274,7 @@
 
   </package>
 
-	<!-- Common actions XML -->
+  <!-- Common actions XML -->
 
   <package name="dhis-web-commons-ajax" extends="dhis-web-commons" namespace="/dhis-web-commons-ajax">
 
@@ -393,7 +394,7 @@
 
   </package>
 
-	<!-- Common actions JSON -->
+  <!-- Common actions JSON -->
 
   <package name="dhis-web-commons-ajax-json" extends="dhis-web-commons" namespace="/dhis-web-commons-ajax-json">
 
@@ -589,6 +590,12 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <action name="getOrganisationUnitTree" class="org.hisp.dhis.commons.action.GetOrganisationUnitTreeAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonOrganisationUnitTree.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <action name="getPeriod" class="org.hisp.dhis.commons.action.GetPeriodAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonPeriod.vm</result>
@@ -612,7 +619,7 @@
         /dhis-web-commons/ajax/jsonConstants.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-	
+
     <action name="getExpressionText" class="org.hisp.dhis.commons.action.GetExpressionTextAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
@@ -628,7 +635,7 @@
 
   </package>
 
-    <!-- Stream -->
+  <!-- Stream -->
 
   <package name="dhis-web-commons-stream" extends="dhis-web-commons" namespace="/dhis-web-commons-stream">
 
@@ -637,8 +644,8 @@
     </action>
 
   </package>
-	
-	<!-- About -->
+
+  <!-- About -->
 
   <package name="dhis-web-commons-about" extends="dhis-web-commons" namespace="/dhis-web-commons-about">
 
