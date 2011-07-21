@@ -17,6 +17,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 	<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
   </bean>
 
   <bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction"

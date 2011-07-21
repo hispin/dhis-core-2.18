@@ -38,10 +38,6 @@ function PeriodType()
 		
 		for ( var j = 0; j < periods.length; j++ )
 		{
-			var c = periods[j];
-			var d = periods[j]['startDate'];
-			var e = null;
-			
 			if ( $.date( periods[j]['startDate'], dateFormat ).date().getTime() < now )
 			{
 				array[i++] = periods[j];

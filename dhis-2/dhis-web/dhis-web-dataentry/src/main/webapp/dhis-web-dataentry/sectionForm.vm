@@ -58,8 +58,7 @@
         #foreach( $optionCombo in $optionCombos )
         #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )
         #set( $greyedField = false )
-        #set( $greyedField = $greyedFields.get( "$dataElement.id:$optionCombo.id" ) )
-        <span id="${dataElement.id}-${optionCombo.id}-min" name="min" class="hidden"></span><span id="${dataElement.id}-${optionCombo.id}-max" name="max" class="hidden"></span>
+        #set( $greyedField = $greyedFields.get( "$dataElement.id:$optionCombo.id" ) )        
         <td>
         #if( $dataElement.type == "bool" )
         <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) ) onchange="saveBoolean($dataElement.id,$optionCombo.id )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled"#end>
