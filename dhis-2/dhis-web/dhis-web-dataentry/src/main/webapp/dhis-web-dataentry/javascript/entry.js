@@ -9,7 +9,6 @@
  * {optioncomboid}-optioncombo // name of category option combo
  * {dataelementid}-{optioncomboid}-min // min value for data value
  * {dataelementid}-{optioncomboid}-max // max value for data value
- * {dataelementid}-type // data element type
  */
 
 // -----------------------------------------------------------------------------
@@ -95,7 +94,7 @@ function saveVal( dataElementId, optionComboId )
 
     var fieldId = '#' + dataElementId + '-' + optionComboId + '-val';
     var value =$( fieldId ).val();
-    var type = $( '#' + dataElementId + '-type' ).html();
+    var type = dataElements[dataElementId].type;
 
     $( fieldId ).css( 'background-color', COLOR_YELLOW );
 

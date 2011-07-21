@@ -1,6 +1,9 @@
 // Identifiers for which zero values are, insignificant, also used in entry.js, populated in select.vm
 var significantZeros = [];
 
+// Array with associative arrays for each data element, populated in select.vm
+var dataElements = [];
+
 // Associative array with [indicator id, expression] for indicators in form, also used in entry.js, populated in select.vm
 var indicatorFormulas = [];
 
