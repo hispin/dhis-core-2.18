@@ -30,13 +30,15 @@ package org.hisp.dhis.de.action;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -64,24 +66,38 @@ public class GetDataValuesForDataSetAction
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.dataSetService = dataSetService;
+    }
+
+    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer selectedPeriodIndex;
+    private String periodId;
 
-    public void setSelectedPeriodIndex( Integer selectedPeriodIndex )
+    public void setPeriodId( String periodId )
     {
-        this.selectedPeriodIndex = selectedPeriodIndex;
+        this.periodId = periodId;
     }
+    
+    private Integer dataSetId;
 
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -106,14 +122,9 @@ public class GetDataValuesForDataSetAction
 
     public String execute()
     {
-        if ( selectedPeriodIndex != null )
-        {
-            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
-        }
-        
-        Period period = selectedStateManager.getSelectedPeriod();
-        DataSet dataSet = selectedStateManager.getSelectedDataSet();
-        OrganisationUnit unit = selectedStateManager.getSelectedOrganisationUnit();
+        Period period = PeriodType.createPeriodExternalId( periodId );
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        OrganisationUnit unit = selectionManager.getSelectedOrganisationUnit();
         
         dataValues = dataValueService.getDataValues( unit, period, dataSet.getDataElements() );
         

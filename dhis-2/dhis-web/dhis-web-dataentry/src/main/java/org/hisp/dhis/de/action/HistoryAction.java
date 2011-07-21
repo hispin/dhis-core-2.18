@@ -40,9 +40,10 @@ import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.history.DataElementHistory;
 import org.hisp.dhis.de.history.HistoryRetriever;
-import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -86,13 +87,6 @@ public class HistoryAction
     {
         this.categoryService = categoryService;
     }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
     
     private DataValueAuditService dataValueAuditService;
 
@@ -100,7 +94,14 @@ public class HistoryAction
     {
         this.dataValueAuditService = dataValueAuditService;
     }
-    
+
+    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -129,6 +130,18 @@ public class HistoryAction
     public Boolean getShowComment()
     {
     	return showComment;
+    }
+
+    private String periodId;
+
+    public String getPeriodId()
+    {
+        return periodId;
+    }
+
+    public void setPeriodId( String periodId )
+    {
+        this.periodId = periodId;
     }
 
     // -------------------------------------------------------------------------
@@ -191,9 +204,9 @@ public class HistoryAction
             throw new Exception( "DataElement doesn't exist: " + dataElementId );
         }
 
-        Period period = selectedStateManager.getSelectedPeriod();
+        Period period = PeriodType.createPeriodExternalId( periodId );
 
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
         
         dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
 

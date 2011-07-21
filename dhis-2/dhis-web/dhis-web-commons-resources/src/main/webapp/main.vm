@@ -34,11 +34,14 @@
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.cookie.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.glob.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.date.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/i18nJavaScriptSupport.action"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/periodType.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/date.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/validationRules.js"></script>
 

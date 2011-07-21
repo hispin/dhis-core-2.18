@@ -81,13 +81,7 @@ public class DefaultHistoryRetriever
     {
         if ( !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
         {
-            return null;
-
-            /*
-             * throw new HistoryRetrieverException(
-             * "DataElement is not of type " + DataElement.TYPE_INT + ": " +
-             * dataElement.getShortName() ) ;
-             */
+            return null; // TODO
         }
 
         // ---------------------------------------------------------------------
@@ -143,10 +137,8 @@ public class DefaultHistoryRetriever
 
         history.setMaxHistoryValue( max );
 
-        // get the maxValue
         double maxValue = getMaxValue( history );
 
-        // if there was any entred values, set minValue and maxValue
         if ( maxValue != Double.NEGATIVE_INFINITY )
         {
             history.setMaxValue( maxValue );

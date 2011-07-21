@@ -39,16 +39,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.validation.ValidationRule;
@@ -76,13 +78,6 @@ public class ValidationAction
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
-    }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
     }
 
     private ExpressionService expressionService;
@@ -134,6 +129,38 @@ public class ValidationAction
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
+    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private String periodId;
+
+    public void setPeriodId( String periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -174,16 +201,16 @@ public class ValidationAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgUnit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit orgUnit = selectionManager.getSelectedOrganisationUnit();
 
-        Period selectedPeriod = selectedStateManager.getSelectedPeriod();
+        Period selectedPeriod = PeriodType.createPeriodExternalId( periodId );
 
         if ( orgUnit != null && selectedPeriod != null )
         {
             Period period = periodService.getPeriod( selectedPeriod.getStartDate(), selectedPeriod.getEndDate(),
                 selectedPeriod.getPeriodType() );
     
-            DataSet dataSet = selectedStateManager.getSelectedDataSet();
+            DataSet dataSet = dataSetService.getDataSet( dataSetId );
     
             // ---------------------------------------------------------------------
             // Min-max and outlier analysis

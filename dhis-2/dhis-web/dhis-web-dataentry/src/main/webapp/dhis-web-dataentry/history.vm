@@ -2,6 +2,7 @@
 	var currentOrganisationUnitId = $!{dataElementHistory.organisationUnit.id};
 	var currentDataElementId = $!{dataElementHistory.dataElement.id};
 	var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
+	var currentPeriodId = '${periodId}';
 	
 	var i18n_enter_digits = '$encoder.jsEscape( $i18n.getString( "enter_digits" ) , "'")';
 	var i18n_max_must_be_greater_than_min = '$encoder.jsEscape( $i18n.getString( "max_must_be_greater_than_min" ) , "'")';
@@ -84,7 +85,7 @@
 			    <h4>$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</h4>  
 			#end    
 			
-			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&categoryOptionComboId=${dataElementHistory.optionCombo.id}"/>			
+			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&categoryOptionComboId=${dataElementHistory.optionCombo.id}&periodId=${periodId}"/>			
         </td>
     </tr>
 	<tr>

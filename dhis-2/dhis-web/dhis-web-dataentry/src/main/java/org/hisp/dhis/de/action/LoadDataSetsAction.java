@@ -30,12 +30,17 @@ package org.hisp.dhis.de.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
-import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.period.CalendarPeriodType;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,13 +54,38 @@ public class LoadDataSetsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -94,7 +124,7 @@ public class LoadDataSetsAction
 
     public String execute()
     {
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         if ( organisationUnit != null )
         {        
@@ -102,7 +132,7 @@ public class LoadDataSetsAction
             // Load data sets for selected org unit
             // -----------------------------------------------------------------
 
-            dataSets = selectedStateManager.loadDataSetsForSelectedOrgUnit();
+            dataSets = loadDataSetsForSelectedOrgUnit( organisationUnit );
     
             Collections.sort( dataSets, new DataSetNameComparator() );
 
@@ -110,21 +140,51 @@ public class LoadDataSetsAction
             // Check if selected data set is associated with selected org unit
             // -----------------------------------------------------------------
 
-            DataSet selectedDataSet = selectedStateManager.getSelectedDataSet();
-            
-            if ( selectedDataSet != null && dataSets.contains( selectedDataSet ) )
+            if ( dataSetId != null )
             {
-                dataSetValid = true;
+                DataSet selectedDataSet = dataSetService.getDataSet( dataSetId );
                 
-                periodValid = selectedStateManager.getSelectedPeriod() != null;
-            }
-            else
-            {
-                selectedStateManager.clearSelectedDataSet();
-                selectedStateManager.clearSelectedPeriod();
+                if ( selectedDataSet != null && dataSets.contains( selectedDataSet ) )
+                {
+                    dataSetValid = true;
+                }
             }
         }
         
         return SUCCESS;
+    }
+    
+    private List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit )
+    {
+        List<DataSet> dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+
+        // ---------------------------------------------------------------------
+        // Retain only DataSets from current user's authority groups
+        // ---------------------------------------------------------------------
+
+        User currentUser = currentUserService.getCurrentUser();
+        
+        if ( currentUser != null && !currentUserService.currentUserIsSuper() )
+        {
+            dataSets.retainAll( currentUser.getUserCredentials().getAllDataSets() );
+        }
+
+        // ---------------------------------------------------------------------
+        // Remove DataSets which don't have a CalendarPeriodType
+        // ---------------------------------------------------------------------
+
+        Iterator<DataSet> iterator = dataSets.iterator();
+
+        while ( iterator.hasNext() )
+        {
+            DataSet dataSet = iterator.next();
+
+            if ( !( dataSet.getPeriodType() instanceof CalendarPeriodType) )
+            {
+                iterator.remove();
+            }
+        }
+
+        return dataSets;
     }
 }
