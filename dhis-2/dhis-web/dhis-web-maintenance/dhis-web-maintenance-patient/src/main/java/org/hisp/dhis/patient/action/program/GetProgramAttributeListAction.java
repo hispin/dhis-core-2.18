@@ -57,7 +57,7 @@ public class GetProgramAttributeListAction
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
-    
+
     public void setProgramAttributeService( ProgramAttributeService programAttributeService )
     {
         this.programAttributeService = programAttributeService;
@@ -76,8 +76,15 @@ public class GetProgramAttributeListAction
     public String execute()
         throws Exception
     {
+        ProgramAttribute deadDateAttribute = programAttributeService.getProgramAttributeByName( ProgramAttribute.DEAD_NAME );
+        ProgramAttribute closedDateAttribute = programAttributeService
+            .getProgramAttributeByName( ProgramAttribute.CLOSED_DATE );
+        
         programAttributes = programAttributeService.getAllProgramAttributes();
         
+        programAttributes.remove( deadDateAttribute );
+        programAttributes.remove( closedDateAttribute );
+
         return SUCCESS;
     }
 }

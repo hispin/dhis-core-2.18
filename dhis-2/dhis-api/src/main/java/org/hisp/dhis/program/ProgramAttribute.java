@@ -46,6 +46,7 @@ public class ProgramAttribute
     // -------------------------------------------------------------------------
     // Define ValueType
     // -------------------------------------------------------------------------
+    
     public static final String TYPE_DATE = "DATE";
 
     public static final String TYPE_STRING = "TEXT";
