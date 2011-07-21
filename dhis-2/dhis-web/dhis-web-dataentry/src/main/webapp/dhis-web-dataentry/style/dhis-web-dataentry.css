@@ -28,12 +28,6 @@
   display: none;
 }
 
-.entryField
-{
-  width: 100%;
-  text-align: center;
-}
-
 .minmax
 {
   background-color: #ff6600;
@@ -42,6 +36,22 @@
 .grey
 {
   background-color: #cccccc;
+}
+
+.altRow
+{
+  background-color: #e0e0e0;
+  padding-right: 50px;
+}
+
+.regRow
+{
+  padding-right: 50px;
+}
+
+.cent
+{
+  text-align: center;
 }
 
 @media print 

@@ -242,6 +242,13 @@ public interface DataElementService
      * @return all DataElements which are not assigned to any DataSets.
      */
     Collection<DataElement> getDataElementsWithoutDataSets();
+
+    /**
+     * Returns all DataElements which are assigned to at least one DataSet.
+     * 
+     * @return all DataElements which are assigned to at least one DataSet.
+     */
+    Collection<DataElement> getDataElementsWithDataSets();
     
     /**
      * Checks whether a DataElement with the given identifier exists.

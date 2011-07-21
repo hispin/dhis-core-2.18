@@ -92,7 +92,7 @@ function showDataSqlViewForm( viewId )
 			}
 			else if ( json.response == "error" )
 			{
-				alert( json.message );
+				setHeaderDelayMessage( json.message );
 			}
 		}
 	);

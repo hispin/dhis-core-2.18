@@ -308,6 +308,14 @@ public class HibernateDataElementStore
         return sessionFactory.getCurrentSession().createQuery( hql ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElement> getDataElementsWithDataSets()
+    {
+        String hql = "from DataElement d where d.dataSets.size > 0";
+
+        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+    }
+
     public boolean dataElementExists( int id )
     {
         final String sql = "select count(*) from dataelement where dataelementid=" + id;

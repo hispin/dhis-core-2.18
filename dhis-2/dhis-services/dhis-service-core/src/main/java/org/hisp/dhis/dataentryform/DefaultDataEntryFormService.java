@@ -28,7 +28,6 @@ package org.hisp.dhis.dataentryform;
  */
 
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -234,10 +233,8 @@ public class DefaultDataEntryFormService
         
         int i = 1;
         
-        final String jsCodeForInputFields = " name=\"entryfield\" $DISABLED onchange=\"saveVal( $DATAELEMENTID, $OPTIONCOMBOID )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
-        final String jsCodeForSelectLists = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID )\" onkeyup=\"keyPress(event, this)\" ";
-        
-        final String historyCode = " ondblclick='javascript:viewHist( $DATAELEMENTID, $OPTIONCOMBOID )' ";
+        final String jsCodeForInputFields = " name=\"entryfield\" $DISABLED ";
+        final String jsCodeForSelectLists = " name=\"entryfield\" $DISABLED ";
         
         StringBuffer sb = new StringBuffer();
 
@@ -310,22 +307,11 @@ public class DefaultDataEntryFormService
                 }
                 else
                 {
-                    appendCode += jsCodeForInputFields + "tabindex=\"" + i++ + "\"";
-
-                    if ( dataElement.getType().equals( VALUE_TYPE_INT ) )
-                    {
-                        appendCode += historyCode;
-                    }
-
-                    appendCode += TAG_CLOSE;
+                    appendCode += jsCodeForInputFields + "tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
                 
-                inputHtml = inputHtml.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
-                inputHtml = inputHtml.replace( "$DATAELEMENTNAME", dataElement.getName() );
-                inputHtml = inputHtml.replace( "$DATAELEMENTTYPE", dataElementValueType );
-                inputHtml = inputHtml.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
                 inputHtml = inputHtml.replace( "$DISABLED", disabled );
                 inputHtml = inputHtml.replace( STYLE_TAG, backgroundColor );
 
