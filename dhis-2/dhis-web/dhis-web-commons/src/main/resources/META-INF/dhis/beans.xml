@@ -5,7 +5,7 @@
 		http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
-	<!-- Web Portal -->
+  <!-- Web Portal -->
 
   <bean id="org.hisp.dhis.webportal.module.ModuleManager" class="org.hisp.dhis.webportal.module.DefaultModuleManager">
     <property name="moduleComparator">
@@ -88,7 +88,7 @@
     </property>
   </bean>
 
-	<!-- Organisation Unit Web Tree -->
+  <!-- Organisation Unit Web Tree -->
 
   <bean id="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" class="org.hisp.dhis.ouwt.manager.DefaultOrganisationUnitSelectionManager">
     <property name="organisationUnitService">
@@ -184,7 +184,7 @@
     </property>
   </bean>
 
-	<!-- Organisation Unit Selection Tree -->
+  <!-- Organisation Unit Selection Tree -->
 
   <bean id="org.hisp.dhis.oust.manager.SelectionTreeManager" class="org.hisp.dhis.oust.manager.DefaultSelectionTreeManager">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -511,6 +511,11 @@
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
+  <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitTreeAction" class="org.hisp.dhis.commons.action.GetOrganisationUnitTreeAction"
+    scope="prototype">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+
   <bean id="org.hisp.dhis.commons.action.GetPeriodAction" class="org.hisp.dhis.commons.action.GetPeriodAction"
     scope="prototype">
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
@@ -531,7 +536,7 @@
     <property name="locationManager" ref="locationManager" />
     <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.commons.action.GetConstantsAction" class="org.hisp.dhis.commons.action.GetConstantsAction"
     scope="prototype">
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
@@ -539,7 +544,7 @@
 
   <bean id="org.hisp.dhis.commons.action.NoAction" class="org.hisp.dhis.commons.action.NoAction" />
 
-	<!-- Interceptor -->
+  <!-- Interceptor -->
 
   <bean id="org.hisp.dhis.interceptor.DisplayPropertyInterceptor" class="org.hisp.dhis.interceptor.DisplayPropertyInterceptor">
     <property name="displayPropertyManager" ref="org.hisp.dhis.options.displayproperty.DisplayPropertyManager" />
