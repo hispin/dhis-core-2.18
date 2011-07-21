@@ -156,28 +156,6 @@ function filterDataElements( filter, container, list )
 	});	
 }
 
-function validateDataEntryForm( )
-{
-	$.postJSON(
-    	    'validateDataEntryForm.action',
-    	    {
-    	        dataEntryFormId: getFieldValue('dataEntryFormId'),
-				name: getFieldValue('name')
-    	    },
-    	    function( json )
-    	    {
-    	    	if ( json.response == "success" )
-    	    	{
-					byId( 'saveDataEntryForm' ).submit(); 
-    	    	}
-    	    	else if ( json.response == "error" )
-    	    	{
-    	    		setHeaderMessage( json.message );
-    	    	}
-    	    }
-    	);
-}
-
 function insertDataElement( source, associationId )
 {
 	var oEditor = jQuery("#designTextarea").ckeditorGet();
@@ -209,7 +187,7 @@ function insertDataElement( source, associationId )
 			var titleValue = dataElementId + "." + dataElementName 
 					+ "-" + categoryOptionCombos[0].id + "." + categoryOptionCombos[0].id 
 					+ " "+dataElementType+"\"";
-			var displayName = dataElementName + "-" + optionComboName + " ]";
+			var displayName = dataElementName + "-" + categoryOptionCombos[0].name + " ]";
 			id  = associationId + "-" + dataElementId + "-" + categoryOptionCombos[0].id +"-val";
 			htmlCode += "<input name=\"entryfield\" id=\""+ id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\" onkeypress=\"return keyPress(event, this)\" >";			
 		}else{	
