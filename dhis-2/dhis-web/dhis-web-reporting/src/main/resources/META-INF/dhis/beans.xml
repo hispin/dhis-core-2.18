@@ -93,7 +93,44 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.chart.action.ValidateChartAction" class="org.hisp.dhis.reporting.chart.action.ValidateChartAction"
     scope="prototype">
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>  
+  </bean>
+  
+  <!-- ChartGroups -->
+
+  <bean id="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupListAction" class="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupListAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.reporting.chartgroup.action.ValidateChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.ValidateChartGroupAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.chartgroup.action.AddChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.AddChartGroupAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.chartgroup.action.ShowUpdateChartGroupFormAction" class="org.hisp.dhis.reporting.chartgroup.action.ShowUpdateChartGroupFormAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.chartgroup.action.UpdateChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.UpdateChartGroupAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+  </bean>
+    
+  <bean id="org.hisp.dhis.reporting.chartgroup.action.RemoveChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.RemoveChartGroupAction"
+    scope="prototype">
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+  </bean>
   
   <!-- TableCreator -->
 

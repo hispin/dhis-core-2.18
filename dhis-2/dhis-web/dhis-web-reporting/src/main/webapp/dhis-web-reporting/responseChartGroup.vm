@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chartGroup>
+	<id>$chartGroup.id</id>
+    <name>$!encoder.xmlEncode( $chartGroup.name )</name>
+    <memberCount>$chartGroup.getMembers().size()</memberCount>
+</chartGroup>

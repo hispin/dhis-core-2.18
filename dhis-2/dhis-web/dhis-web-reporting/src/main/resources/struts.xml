@@ -96,13 +96,75 @@
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseChart.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-
+	
+    <action name="getCharts" class="org.hisp.dhis.reporting.chart.action.GetAllChartsAction">
+      <result name="success" type="velocity-json">/dhis-web-reporting/jsonCharts.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
     <action name="validateChart" class="org.hisp.dhis.reporting.chart.action.ValidateChartAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-reporting/responseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
+	<!-- ReportGroup -->
+	
+    <action name="chartGroup" class="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reporting/chartGroup.vm</param>
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="javascripts">javascript/chartGroup.js</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="removeChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.RemoveChartGroupAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
+    </action>
+
+    <action name="showAddChartGroupForm" class="org.hisp.dhis.reporting.chart.action.GetAllChartsAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reporting/addChartGroupForm.vm</param>
+      <param name="javascripts">javascript/chartGroup.js</param>
+      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
+    </action>
+
+    <action name="addChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.AddChartGroupAction">
+      <result name="success" type="redirect">chartGroup.action</result>
+      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
+    </action>
+
+    <action name="showUpdateChartGroupForm" class="org.hisp.dhis.reporting.chartgroup.action.ShowUpdateChartGroupFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reporting/updateChartGroupForm.vm</param>
+      <param name="javascripts">javascript/chartGroup.js</param>
+      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+    </action>
+
+    <action name="updateChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.UpdateChartGroupAction">
+      <result name="success" type="redirect">chartGroup.action
+			</result>
+      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+    </action>
+	
+	<action name="getChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupAction">
+      <result name="success" type="velocity-xml">/dhis-web-reporting/responseChartGroup.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="validateChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.ValidateChartGroupAction">
+      <result name="success" type="velocity-json">
+		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">
+		/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
     <!-- Report -->
 
     <action name="displayAddReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction">
@@ -151,7 +213,7 @@
     <action name="getReportDesign" class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction">
       <result name="success" type="outputStreamResult" />
     </action>
-    
+	
     <!-- ReportTable -->
 
     <action name="displayManageTableForm" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction">
