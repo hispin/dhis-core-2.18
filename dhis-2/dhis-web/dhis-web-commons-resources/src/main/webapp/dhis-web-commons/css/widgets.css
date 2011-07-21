@@ -281,6 +281,8 @@ span#message
   background-color: #ffffbf;
   border: 1px solid #cccc00;
   width: 500px;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 span#info
@@ -291,6 +293,8 @@ span#info
   background-color: #baffbc;
   border: 1px solid #12cd17;
   width: 500px;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 div#detailsArea 
@@ -323,17 +327,17 @@ div#headerMessage
   left: 180px;
   position: fixed;
   display: none;
-  height: 26px;
+  height: 30px;
   width: 380px;
   background-color: #ffffbf;
-  border-right: 1px solid #cccc00;
-  border-bottom: 1px solid #cccc00;
-  border-left: 1px solid #cccc00;
+  border: 1px solid #cccc00;
   z-index: 21;
   font-size: 9pt;
   text-align: center;
   vertical-align: center;
-  line-height: 25px;
+  line-height: 30px;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 /*----------------------------------------------------------------------------*/

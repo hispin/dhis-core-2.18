@@ -127,7 +127,7 @@ public class PageInitAction
         
         significantZeros = dataElementService.getDataElementsByZeroIsSignificant( true );
         
-        dataElements = dataElementService.getAllDataElements(); //TODO with data sets only
+        dataElements = dataElementService.getDataElementsWithDataSets();
         
         indicators = indicatorService.getIndicatorsWithDataSets();
         

@@ -12,66 +12,65 @@
 <table style="border:1px solid #c0c0c0; padding:10px;">
 <tr>
   <td>
-    <div style="text-align:center"><h3>$encoder.htmlEncode( $section.name )</h3></div>
+    <div class="cent"><h3>$encoder.htmlEncode( $section.name )</h3></div>
   </td>
 </tr>
 <tr>
   <td>
-    <div id="$section.id" style="display:block">
-      <table cellpadding="0">
-      #set( $categoryComboId = $sectionCombos.get( $section.id ) )
-      #set( $colCount = $numberOfTotalColumns.get( $categoryComboId ) )
-      #set( $categories = $orderedCategories.get( $categoryComboId ) )
-      #set( $optionsMap = $orderedOptionsMap.get( $categoryComboId ) )
-      #set( $colRepeat = $catColRepeat.get( $categoryComboId ) )
+    <div>
+    <table cellpadding="0">
+    #set( $categoryComboId = $sectionCombos.get( $section.id ) )
+    #set( $colCount = $numberOfTotalColumns.get( $categoryComboId ) )
+    #set( $categories = $orderedCategories.get( $categoryComboId ) )
+    #set( $optionsMap = $orderedOptionsMap.get( $categoryComboId ) )
+    #set( $colRepeat = $catColRepeat.get( $categoryComboId ) )
 	
-      #foreach( $category in $categories )
-	  #set( $categoryOptions = $optionsMap.get( $category.id ) )
-      #set( $colCount = $colCount / $categoryOptions.size() )
-      <tr colspan="$colCount">
-      <td></td>
-        #set( $cols = $colRepeat.get( $category.id ) )
-        #foreach( $col in $cols )
-        #foreach( $categoryOption in $categoryOptions )
-        <th colspan="$colCount"><div align="center">#if( $categoryOption.isDefault() )${i18n.getString( "value" )}#else ${encoder.htmlEncode( $categoryOption.name )}#end</div></th>
-        #end
-        #end
-      </tr>
-      #end
+    #foreach( $category in $categories )
+    #set( $categoryOptions = $optionsMap.get( $category.id ) )
+    #set( $colCount = $colCount / $categoryOptions.size() )
+    <tr colspan="$colCount">
+    <td></td>
+    #set( $cols = $colRepeat.get( $category.id ) )
+    #foreach( $col in $cols )
+    #foreach( $categoryOption in $categoryOptions )
+    <th colspan="$colCount"><span align="center">#if( $categoryOption.isDefault() )${i18n.getString( "value" )}#else ${encoder.htmlEncode( $categoryOption.name )}#end</span></th>
+    #end
+    #end
+    </tr>
+    #end
 
-      #set( $count = 0 )
-      #set( $mark = 0 )
-      #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryComboId )  )
-      #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.id}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
-      #end
-      #foreach( $dataElement in $section.dataElements )
-      #if( $mark == 1 )
-      #set( $mark = 0 )
-      #else
-      #set( $mark = 1 )
-      #end
-      #set( $count = $count + 1 )
-      <tr>
-        <td  style="#if( $mark == 1 )background-color:#e0e0e0;#end padding-right:50px;"><span>${encoder.htmlEncode( $dataElement.name )}</span></td>
-        #foreach( $optionCombo in $optionCombos )
-        #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )
-        #set( $greyedField = false )
-        #set( $greyedField = $greyedFields.get( "$dataElement.id:$optionCombo.id" ) )        
-        <td>
-        #if( $dataElement.type == "bool" )
-        <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) ) onchange="saveBoolean($dataElement.id,$optionCombo.id )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled"#end>
-	      <option value="">[$i18n.getString( "no_value" )]</option>
-          <option value="true">$i18n.getString( "yes" )</option>
-          <option value="false">$i18n.getString( "no" )</option>
-        </select>
-        #else
-        <input name="entryfield" id="$dataEntryId" type="text" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveVal(${dataElement.id},${optionCombo.id})" ondblclick="viewHist(${dataElement.id},${optionCombo.id})" #else disabled="disabled"#end onkeyup="keyPress(event,this)" class="entryField#if( $locked || $greyedField ) grey#end" tabindex="$tabIndex" #if( $locked || $greyedField )disabled="disabled"#end>
-        #end
-      </td>
-      #set( $tabIndex = $tabIndex + 1 )
-      #end
-      </tr>
-	#end
+    #set( $count = 0 )
+    #set( $mark = 0 )
+    #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryComboId )  )
+    #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.id}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
+    #end
+    #foreach( $dataElement in $section.dataElements )
+    #if( $mark == 1 )
+    #set( $mark = 0 )
+    #else
+    #set( $mark = 1 )
+    #end
+    #set( $count = $count + 1 )
+    <tr>
+    <td #if( $mark == 1 )class="altRow"#else class="regRow"#end><span>${encoder.htmlEncode( $dataElement.name )}</span></td>
+    #foreach( $optionCombo in $optionCombos )
+    #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )
+    #set( $greyedField = false )
+    #set( $greyedField = $greyedFields.get( "$dataElement.id:$optionCombo.id" ) )        
+    #if( $dataElement.type == "bool" )
+    <td><select name="entryselect" id="$dataEntryId" #if( !$auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )disabled="disabled"#end tabindex="$tabIndex" #if( $locked || $greyedField )disabled="disabled"#end>
+      <option value="">[$i18n.getString( "no_value" )]</option>
+      <option value="true">$i18n.getString( "yes" )</option>
+      <option value="false">$i18n.getString( "no" )</option>
+    </select></td>
+    #else
+    <td><input name="entryfield" id="$dataEntryId" type="text" #if( !$auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )disabled="disabled"#end tabindex="$tabIndex" #if( $locked || $greyedField )class="grey" disabled="disabled"#end></td>
+    #end
+    </td>
+    #set( $tabIndex = $tabIndex + 1 )
+    #end
+    </tr>
+    #end
 	</table>
     </div>
     </td>

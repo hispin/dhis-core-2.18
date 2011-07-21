@@ -578,7 +578,7 @@ function setHeaderTimeDelayMessage( message, timing )
  */
 function hideHeaderMessage()
 {
-    $( 'div#headerMessage' ).slideUp( 'slow' );
+    $( 'div#headerMessage' ).slideUp( 'fast' );
 }   
 
 /**

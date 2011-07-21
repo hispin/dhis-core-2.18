@@ -302,6 +302,11 @@ public class DefaultDataElementService
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithoutDataSets() );
     }
+    
+    public Collection<DataElement> getDataElementsWithDataSets()
+    {
+        return i18n( i18nService, dataElementStore.getDataElementsWithDataSets() );
+    }
 
     public boolean dataElementExists( int id )
     {
