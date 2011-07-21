@@ -27,6 +27,17 @@ ${dataElement.id}#if( $velocityCount < $size1 ),#end #end ];
 #foreach( $indicator in $indicators )
 indicatorFormulas['${indicator.id}'] = '($!{indicator.explodedNumerator})/($!{indicator.explodedDenominator})*($!{indicator.indicatorType.factor})';
 #end
+
+dataSets = {
+#set( $size3 = $dataSets.size() )
+#foreach( $dataSet in $dataSets )
+"${dataSet.id}": {
+"id":"${dataSet.id}",
+"name":"$!encoder.jsonEncode( ${dataSet.name} )",
+"periodType":"$!encoder.jsonEncode( ${dataSet.periodType.name} )" 
+}#if( $velocityCount < $size3 ),#end
+#end };
+
 </script>
 
 <h3>$i18n.getString( "data_entry" ) #openHelp( "dataEntry" )</h3>
@@ -38,14 +49,9 @@ indicatorFormulas['${indicator.id}'] = '($!{indicator.explodedNumerator})/($!{in
 </div>
 
 <div id="actions" style="">	
-    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" id="validationButton" style="width:150px;" disabled="disabled"/><br/><br/>
+    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="validate()" id="validationButton" style="width:150px;" disabled="disabled"/><br/><br/>
 
-    <label for="displayModeCustom">$i18n.getString( "use_custom_form" )</label>
-    <input type="radio" id="displayModeCustom" name="displayMode" value="customform" disabled="disabled" onclick="displayModeSelected()"><br>
-    <label for="displayModeSection">$i18n.getString( "use_section_form" )</label>
-	<input type="radio" id="displayModeSection" name="displayMode" value="sectionform" disabled="disabled" onclick="displayModeSelected()"><br>
-	<label for="displayModeDefault">$i18n.getString( "use_default_form" )</label>
-	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform" disabled="disabled" onclick="displayModeSelected()"><br><br>
+    <input type="checkbox" id="defaultForm" onclick="loadDefaultForm()" disabled="disabled"><label for="defaultForm">$i18n.getString( "use_default_form" )</label><br>
 </div>
 
 <table>
@@ -58,8 +64,8 @@ indicatorFormulas['${indicator.id}'] = '($!{indicator.explodedNumerator})/($!{in
 		<td><select id="selectedDataSetId" name="selectedDataSetId" style="width:350px" onchange="dataSetSelected()" disabled="disabled"></select></td>
 	</tr>	
 	<tr>
-		<td><label for="selectedPeriodIndex">$i18n.getString( "period" )</label></td>
-		<td><select id="selectedPeriodIndex" name="selectedPeriodIndex" style="width:227px" onchange="periodSelected()" disabled="disabled"></select>
+		<td><label for="selectedPeriodId">$i18n.getString( "period" )</label></td>
+		<td><select id="selectedPeriodId" name="selectedPeriodId" style="width:227px" onchange="periodSelected()" disabled="disabled"></select>
 			<input type="button" id="prevButton" style="width:60px" value="$i18n.getString( 'prev' )" title="$i18n.getString('earlier_periods')" onclick="previousPeriodsSelected()" disabled="disabled"><input 
 				   type="button" id="nextButton" style="width:60px" value="$i18n.getString( 'next' )" title="$i18n.getString('later_periods')" onclick="nextPeriodsSelected()" disabled="disabled">
 		</td>

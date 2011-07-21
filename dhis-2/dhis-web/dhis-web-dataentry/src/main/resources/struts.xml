@@ -26,22 +26,10 @@
       <result name="success" type="velocity-json">/dhis-web-dataentry/responseDataSets.vm</result>
     </action>
 
-    <action name="loadPeriods" class="org.hisp.dhis.de.action.LoadPeriodsAction">
-      <result name="success" type="velocity-json">/dhis-web-dataentry/responsePeriods.vm</result>
-    </action>
-
-    <action name="loadNextPreviousPeriods" class="org.hisp.dhis.de.action.LoadNextPreviousPeriodsAction">
-      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonPeriods.vm</result>
-    </action>
-
-    <action name="loadDisplayModes" class="org.hisp.dhis.de.action.LoadDisplayModesAction">
-      <result name="success" type="velocity-json">/dhis-web-dataentry/responseDisplayModes.vm</result>
-    </action>
-
     <action name="loadForm" class="org.hisp.dhis.de.action.LoadFormAction">
-      <result name="customform" type="velocity">/dhis-web-dataentry/customForm.vm</result>
-      <result name="sectionform" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
-      <result name="defaultform" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
+      <result name="custom" type="velocity">/dhis-web-dataentry/customForm.vm</result>
+      <result name="section" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
+      <result name="default" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
       <result name="input" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
     </action>
 

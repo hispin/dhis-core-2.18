@@ -11,16 +11,17 @@ function saveComment()
 {
 	var commentValue = $( '#commentTextArea' ).val();
 	
-	var commentSaver = new CommentSaver( currentDataElementId, currentOptionComboId, currentOrganisationUnitId, commentValue );
+	var commentSaver = new CommentSaver( currentDataElementId, currentOptionComboId, currentOrganisationUnitId, currentPeriodId, commentValue );
 	
 	commentSaver.save();
 }
 
-function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, value_ )
+function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, periodId_, value_ )
 {	
     var dataElementId = dataElementId_;
     var optionComboId = optionComboId_;
     var organisationUnitId = organisationUnitId_;
+    var periodId = periodId_;
     var value = value_;
     
     this.save = function()
@@ -28,7 +29,7 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, valu
     	markComment( COLOR_YELLOW );
     	
         var url = 'saveComment.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' +
-                dataElementId + '&optionComboId=' + optionComboId + '&comment=' + value;
+                dataElementId + '&optionComboId=' + optionComboId + '&periodId=' + periodId + '&comment=' + value;
         
         $.ajax( { url: url, dataType: 'json', success: handleResponse, error: handleError } );
     };

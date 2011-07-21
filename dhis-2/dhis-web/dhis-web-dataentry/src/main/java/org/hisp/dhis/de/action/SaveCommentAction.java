@@ -37,10 +37,10 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -79,13 +79,6 @@ public class SaveCommentAction
         this.dataValueService = dataValueService;
     }
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
@@ -103,6 +96,13 @@ public class SaveCommentAction
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
+
+    private String periodId;
+    
+    public void setPeriodId( String periodId )
+    {
+        this.periodId = periodId;
+    }
 
     private String comment;
 
@@ -152,7 +152,7 @@ public class SaveCommentAction
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Period period = selectedStateManager.getSelectedPeriod();
+        Period period = PeriodType.createPeriodExternalId( periodId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 

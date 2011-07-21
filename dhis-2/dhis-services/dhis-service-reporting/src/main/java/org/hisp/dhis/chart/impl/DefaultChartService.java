@@ -286,6 +286,8 @@ public class DefaultChartService
         DataElementCategoryOptionCombo categoryOptionCombo, Period lastPeriod, OrganisationUnit organisationUnit,
         int historyLength, I18nFormat format )
     {
+        lastPeriod = periodService.reloadPeriod( lastPeriod );
+        
         List<Period> periods = periodService.getPeriods( lastPeriod, historyLength );
 
         MinMaxDataElement minMax = minMaxDataElementService.getMinMaxDataElement( organisationUnit, dataElement,

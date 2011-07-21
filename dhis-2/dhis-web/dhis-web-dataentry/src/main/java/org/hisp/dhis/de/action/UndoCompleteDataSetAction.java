@@ -32,9 +32,11 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.de.state.SelectedStateManager;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -56,23 +58,48 @@ public class UndoCompleteDataSetAction
     {
         this.registrationService = registrationService;
     }
-    
-    private SelectedStateManager selectedStateManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
     
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private String periodId;
+
+    public void setPeriodId( String periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {        
-        DataSet dataSet = selectedStateManager.getSelectedDataSet();
-        Period period = selectedStateManager.getSelectedPeriod();
-        OrganisationUnit unit = selectedStateManager.getSelectedOrganisationUnit();
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        Period period = PeriodType.createPeriodExternalId( periodId );
+        OrganisationUnit unit = selectionManager.getSelectedOrganisationUnit();
         
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, unit );
         

@@ -31,7 +31,8 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.de.state.SelectedStateManager;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -47,13 +48,6 @@ public class PageInitAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
     
     private DataElementService dataElementService;
 
@@ -75,6 +69,13 @@ public class PageInitAction
     {
         this.expressionService = expressionService;
     }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -93,20 +94,25 @@ public class PageInitAction
     {
         return indicators;
     }
+    
+    private Collection<DataSet> dataSets;
+
+    public Collection<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-    {        
-        selectedStateManager.clearSelectedOrganisationUnits();
-        selectedStateManager.clearSelectedDataSet();
-        selectedStateManager.clearSelectedPeriod();
-
+    {
         significantZeros = dataElementService.getDataElementsByZeroIsSignificant( true );
         
         indicators = indicatorService.getIndicatorsWithDataSets();
+        
+        dataSets = dataSetService.getAllDataSets();
         
         for ( Indicator indicator : indicators )
         {

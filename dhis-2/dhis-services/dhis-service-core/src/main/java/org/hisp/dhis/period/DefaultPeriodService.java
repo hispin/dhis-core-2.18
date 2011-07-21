@@ -226,19 +226,19 @@ public class DefaultPeriodService
     {
         List<Period> periods = new ArrayList<Period>( historyLength );
 
+        lastPeriod = periodStore.reloadForceAddPeriod( lastPeriod );
+        
         CalendarPeriodType periodType = (CalendarPeriodType) lastPeriod.getPeriodType();
-
-        Period period = lastPeriod;
 
         Period p = new Period();
 
         for ( int i = 0; i < historyLength; ++i )
         {
-            p = getPeriodFromDates( period.getStartDate(), period.getEndDate(), periodType );
+            p = getPeriodFromDates( lastPeriod.getStartDate(), lastPeriod.getEndDate(), periodType );
 
-            periods.add( p != null ? p : period );
+            periods.add( p != null ? p : lastPeriod );
 
-            period = periodType.getPreviousPeriod( period );
+            lastPeriod = periodType.getPreviousPeriod( lastPeriod );
         }
 
         Collections.reverse( periods );

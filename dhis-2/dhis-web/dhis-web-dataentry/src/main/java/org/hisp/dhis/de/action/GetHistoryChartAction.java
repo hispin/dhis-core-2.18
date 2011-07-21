@@ -32,10 +32,11 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.jfree.chart.JFreeChart;
 
 import com.opensymphony.xwork2.Action;
@@ -73,13 +74,13 @@ public class GetHistoryChartAction
         this.categoryService = categoryService;
     }
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
-    
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -105,6 +106,12 @@ public class GetHistoryChartAction
         this.categoryOptionComboId = categoryOptionComboId;
     }
 
+    private String periodId;
+
+    public void setPeriodId( String periodId )
+    {
+        this.periodId = periodId;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -140,8 +147,9 @@ public class GetHistoryChartAction
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
 
-        Period period = selectedStateManager.getSelectedPeriod();
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        Period period = PeriodType.createPeriodExternalId( periodId );
+        
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
         
         chart = chartService.getJFreeChartHistory( dataElement, categoryOptionCombo, period, organisationUnit, HISTORY_LENGTH, format );
         

@@ -28,6 +28,8 @@ package org.hisp.dhis.period;
  */
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -218,16 +220,61 @@ public abstract class PeriodType
     }
 
     /**
+     * Parses a date from a String on the format YYYY-MM-DD.
+     * 
+     * @param dateString the String to parse.
+     * @return a Date based on the given String.
+     */
+    public static Date getMediumDate( String dateString )
+    {
+        try
+        {
+            final SimpleDateFormat format = new SimpleDateFormat();    
+            format.applyPattern( "yyyy-MM-dd" );    
+            return dateString != null ? format.parse( dateString ) : null;
+        }
+        catch ( ParseException ex )
+        {
+            throw new RuntimeException( "Failed to parse medium date", ex );
+        }
+    }
+    
+    /**
      * Returns an iso8601 formatted string representation of the period
      *
-     * @param period
+     * @param period the period.
      * @return the period as string
      */
     public abstract String getIsoDate( Period period );
 
+    /**
+     * Generates a period based on the given iso8601 formatted string.
+     * 
+     * @param isoDate the iso8601 string.
+     * @return the period.
+     */
     public abstract Period createPeriod( String isoDate );
 
     public abstract String getIsoFormat();
+    
+    /**
+     * Creates a period based on the given external identifier, which is on the
+     * format [PeriodType]_[StartDate]. The start date is on the form yyyy-MM-dd.
+     * 
+     * @param externalId the external identifier.
+     * @return the period.
+     */
+    public static Period createPeriodExternalId( String externalId )
+    {
+        if ( externalId == null || externalId.split( "_" ).length <= 1 )
+        {
+            return null;
+        }
+        
+        final String[] id = externalId.split( "_" );
+        final PeriodType periodType = getPeriodTypeByName( id[0] );
+        return periodType.createPeriod( getMediumDate( id[1] ) );
+    }
     
     // -------------------------------------------------------------------------
     // hashCode and equals

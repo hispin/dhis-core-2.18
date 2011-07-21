@@ -1014,7 +1014,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
           <ref local="org.hisp.dhis.dataset.DataSetShortNamePopulator" />
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormPopulator" />
-		  <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
+		  <!-- <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" /> -->
         </list>
       </list>
     </property>
