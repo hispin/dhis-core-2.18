@@ -370,5 +370,26 @@ var validationRules = {
         "value" : {
             "required" : true
         }
+    },
+    "chartGroup" : {
+        "name" : {
+            "required" : true,
+			"rangelength" : [ 3, 230 ],
+            "alphanumericwithbasicpuncspaces" : true
+		}
+    },
+    "reportGroup" : {
+        "name" : {
+            "required" : true,
+			"rangelength" : [ 3, 230 ],
+            "alphanumericwithbasicpuncspaces" : true
+		}
+    },
+    "reportTableGroup" : {
+        "name" : {
+            "required" : true,
+			"rangelength" : [ 3, 230 ],
+            "alphanumericwithbasicpuncspaces" : true
+		}
     }
 }
