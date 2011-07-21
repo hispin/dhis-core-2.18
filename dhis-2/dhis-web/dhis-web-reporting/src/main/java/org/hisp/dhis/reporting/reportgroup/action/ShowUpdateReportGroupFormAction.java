@@ -1,5 +1,3 @@
-package org.hisp.dhis.reporting.chart.action;
-
 /*
  * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
@@ -27,84 +25,86 @@ package org.hisp.dhis.reporting.chart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+package org.hisp.dhis.reporting.reportgroup.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.comparator.ChartTitleComparator;
-import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportGroup;
+import org.hisp.dhis.report.ReportService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetAllChartsAction
-    extends ActionPagingSupport<Chart>
-{
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -5514430921098331756L;
 
+public class ShowUpdateReportGroupFormAction
+    implements Action
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ChartService chartService;
+    private ReportService reportService;
 
-    public void setChartService( ChartService chartService )
+    public void setReportService( ReportService reportService )
     {
-        this.chartService = chartService;
+        this.reportService = reportService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Comparator
     // -------------------------------------------------------------------------
-    
-    private String key;
-    
-    public String getKey()
+
+    private Comparator<Report> reportComparator;
+
+    public void setReportComparator( Comparator<Report> reportComparator )
     {
-        return key;
+        this.reportComparator = reportComparator;
     }
 
-    public void setKey( String key )
+    // -------------------------------------------------------------------------
+    // Input/output
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        this.key = key;
+        this.id = id;
     }
 
-    private List<Chart> charts;
+    private ReportGroup reportGroup;
 
-    public List<Chart> getCharts()
+    public ReportGroup getReportGroup()
     {
-        return charts;
+        return reportGroup;
     }
-        
+
+    private List<Report> groupMembers = new ArrayList<Report>();
+
+    public List<Report> getGroupMembers()
+    {
+        return groupMembers;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        if ( isNotBlank( key ) )
-        {
-            this.paging = createPaging( chartService.getChartCountByName( key ) );
-            
-            charts = new ArrayList<Chart>( chartService.getChartsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
-        }
-        else
-        {
-            this.paging = createPaging( chartService.getChartCount() );
+        reportGroup = reportService.getReportGroup( id );
 
-            charts = new ArrayList<Chart>( chartService.getChartsBetween( paging.getStartPos(), paging.getPageSize() ) );
-        }
-        
-        Collections.sort( charts, new ChartTitleComparator() );
-        
+        groupMembers = new ArrayList<Report>( reportGroup.getMembers() );
+
+        Collections.sort( groupMembers, reportComparator );
+
         return SUCCESS;
     }
 }

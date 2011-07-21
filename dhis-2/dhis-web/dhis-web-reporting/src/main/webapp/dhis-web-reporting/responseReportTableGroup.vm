@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reportTableGroup>
+	<id>$reportTableGroup.id</id>
+    <name>$!encoder.xmlEncode( $reportTableGroup.name )</name>
+    <memberCount>$reportTableGroup.getMembers().size()</memberCount>
+</reportTableGroup>

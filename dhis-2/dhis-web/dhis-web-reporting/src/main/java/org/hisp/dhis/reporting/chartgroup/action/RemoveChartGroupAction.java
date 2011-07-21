@@ -93,7 +93,6 @@ public class RemoveChartGroupAction
         try
         {
             chartService.deleteChartGroup( chartService.getChartGroup( id ) );
-
         }
         catch ( DeleteNotAllowedException ex )
         {

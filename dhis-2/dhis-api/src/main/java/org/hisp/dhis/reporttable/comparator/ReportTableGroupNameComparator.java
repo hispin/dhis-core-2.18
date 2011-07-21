@@ -1,7 +1,7 @@
-package org.hisp.dhis.reporting.chartgroup.action;
+package org.hisp.dhis.reporttable.comparator;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,55 +27,19 @@ package org.hisp.dhis.reporting.chartgroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.chart.ChartGroup;
-import org.hisp.dhis.chart.ChartService;
+import java.util.Comparator;
 
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.reporttable.ReportTableGroup;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetChartGroupAction
-    implements Action
+public class ReportTableGroupNameComparator
+    implements Comparator<ReportTableGroup>
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private ChartService chartService;
-
-    public void setChartService( ChartService chartService )
+    public int compare( ReportTableGroup group1, ReportTableGroup group2 )
     {
-        this.chartService = chartService;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    private ChartGroup chartGroup;
-
-    public ChartGroup getChartGroup()
-    {
-        return chartGroup;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-    {
-        chartGroup = chartService.getChartGroup( id );
-
-        return SUCCESS;
+        return group1.getName().compareToIgnoreCase( group2.getName() );
     }
 }

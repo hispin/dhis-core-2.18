@@ -210,7 +210,44 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
+  
+  <!-- ReportTableGroups -->
+
+  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupAction"
+    scope="prototype">
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupListAction" class="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupListAction"
+    scope="prototype">
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.ValidateReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.ValidateReportTableGroupAction"
+    scope="prototype">
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.AddReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.AddReportTableGroupAction"
+    scope="prototype">
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.ShowUpdateReportTableGroupFormAction" class="org.hisp.dhis.reporting.reporttablegroup.action.ShowUpdateReportTableGroupFormAction"
+    scope="prototype">
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.UpdateReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.UpdateReportTableGroupAction"
+    scope="prototype">
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+  </bean>
     
+  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.RemoveReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.RemoveReportTableGroupAction"
+    scope="prototype">
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+  </bean>
+  
   <!-- ReportViewer -->
 
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction" class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
@@ -256,6 +293,43 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction" class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"
+    scope="prototype">
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+  </bean>
+  
+  <!-- ReportGroups -->
+
+  <bean id="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupAction"
+    scope="prototype">
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupListAction" class="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupListAction"
+    scope="prototype">
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.reporting.reportgroup.action.ValidateReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.ValidateReportGroupAction"
+    scope="prototype">
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.reportgroup.action.AddReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.AddReportGroupAction"
+    scope="prototype">
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.reportgroup.action.ShowUpdateReportGroupFormAction" class="org.hisp.dhis.reporting.reportgroup.action.ShowUpdateReportGroupFormAction"
+    scope="prototype">
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.reportgroup.action.UpdateReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.UpdateReportGroupAction"
+    scope="prototype">
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+  </bean>
+    
+  <bean id="org.hisp.dhis.reporting.reportgroup.action.RemoveReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.RemoveReportGroupAction"
     scope="prototype">
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>

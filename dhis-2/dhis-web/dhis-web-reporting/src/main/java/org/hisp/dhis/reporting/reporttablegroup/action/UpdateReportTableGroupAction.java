@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.chart.action;
+package org.hisp.dhis.reporting.reporttablegroup.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,84 +27,90 @@ package org.hisp.dhis.reporting.chart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableGroup;
+import org.hisp.dhis.reporttable.ReportTableService;
 
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.comparator.ChartTitleComparator;
-import org.hisp.dhis.paging.ActionPagingSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetAllChartsAction
-    extends ActionPagingSupport<Chart>
-{
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -5514430921098331756L;
 
+public class UpdateReportTableGroupAction
+    implements Action
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ChartService chartService;
+    private ReportTableService reportTableService;
 
-    public void setChartService( ChartService chartService )
+    public void setReportTableService( ReportTableService reportTableService )
     {
-        this.chartService = chartService;
+        this.reportTableService = reportTableService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------------------------------------
-    
-    private String key;
-    
-    public String getKey()
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        return key;
+        this.id = id;
     }
 
-    public void setKey( String key )
+    private String name;
+
+    public void setName( String name )
     {
-        this.key = key;
+        this.name = name;
     }
 
-    private List<Chart> charts;
+    private Set<String> groupMembers = new HashSet<String>();
 
-    public List<Chart> getCharts()
+    public void setGroupMembers( Set<String> groupMembers )
     {
-        return charts;
+        this.groupMembers = groupMembers;
     }
-        
+
+    private ReportTableGroup reportTableGroup;
+
+    public ReportTableGroup getReportTableGroup()
+    {
+        return reportTableGroup;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
-        if ( isNotBlank( key ) )
-        {
-            this.paging = createPaging( chartService.getChartCountByName( key ) );
-            
-            charts = new ArrayList<Chart>( chartService.getChartsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
-        }
-        else
-        {
-            this.paging = createPaging( chartService.getChartCount() );
+        reportTableGroup = reportTableService.getReportTableGroup( id );
 
-            charts = new ArrayList<Chart>( chartService.getChartsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        if ( name != null && name.trim().length() > 0 )
+        {
+            reportTableGroup.setName( name );
         }
-        
-        Collections.sort( charts, new ChartTitleComparator() );
-        
+
+        Set<ReportTable> members = new HashSet<ReportTable>();
+
+        for ( String memberId : groupMembers )
+        {
+            members.add( reportTableService.getReportTable( Integer.parseInt( memberId ) ) );
+        }
+
+        reportTableGroup.updateReportTables( members );
+
+        reportTableService.updateReportTableGroup( reportTableGroup );
+
         return SUCCESS;
     }
 }
