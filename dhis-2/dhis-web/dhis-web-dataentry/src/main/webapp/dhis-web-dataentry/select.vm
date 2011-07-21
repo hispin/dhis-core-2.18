@@ -28,7 +28,8 @@ dataElements = {
 #set( $size2 = $dataElements.size() )
 #foreach( $dataElement in $dataElements )
 "${dataElement.id}": {
-"type":"${dataElement.getDetailedNumberType()}"
+"name":"${dataElement.name}",
+"type":"$encoder.jsonEncode( ${dataElement.getDetailedNumberType()} )"
 }#if( $velocityCount < $size2 ),#end
 #end };
 
@@ -40,8 +41,8 @@ dataSets = {
 #set( $size3 = $dataSets.size() )
 #foreach( $dataSet in $dataSets )
 "${dataSet.id}": {
-"name":"$!encoder.jsonEncode( ${dataSet.name} )",
-"periodType":"$!encoder.jsonEncode( ${dataSet.periodType.name} )" 
+"name":"$encoder.jsonEncode( ${dataSet.name} )",
+"periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )" 
 }#if( $velocityCount < $size3 ),#end
 #end };
 

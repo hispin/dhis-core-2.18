@@ -64,7 +64,7 @@
     <action name="viewHistory" class="org.hisp.dhis.de.action.HistoryAction">
       <result name="success" type="velocity">/popup.vm</result>
       <param name="page">/dhis-web-dataentry/history.vm</param>
-      <param name="javascripts">javascript/form.js,javascript/history.js</param>
+      <param name="javascripts">javascript/history.js</param>
     </action>
 
     <action name="registerCompleteDataSet" class="org.hisp.dhis.de.action.RegisterCompleteDataSetAction">
