@@ -28,9 +28,11 @@ package org.hisp.dhis.report.impl;
  */
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportGroup;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -44,12 +46,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultReportService
     implements ReportService
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private GenericIdentifiableObjectStore<Report> reportStore;
 
     public void setReportStore( GenericIdentifiableObjectStore<Report> reportStore )
     {
         this.reportStore = reportStore;
     }
+
+    private GenericIdentifiableObjectStore<ReportGroup> reportGroupStore;
+
+    public void setReportGroupStore( GenericIdentifiableObjectStore<ReportGroup> reportGroupStore )
+    {
+        this.reportGroupStore = reportGroupStore;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implements
+    // -------------------------------------------------------------------------
 
     public int saveReport( Report report )
     {
@@ -70,7 +87,7 @@ public class DefaultReportService
     {
         return reportStore.get( id );
     }
-    
+
     public Report getReportByName( String name )
     {
         return reportStore.getByName( name );
@@ -87,5 +104,91 @@ public class DefaultReportService
                 return identifiers.contains( object.getId() );
             }
         } );
+    }
+
+    // -------------------------------------------------------------------------
+    // ReportGroup
+    // -------------------------------------------------------------------------
+
+    public int addReportGroup( ReportGroup reportGroup )
+    {
+        return reportGroupStore.save( reportGroup );
+    }
+
+    public void updateReportGroup( ReportGroup reportGroup )
+    {
+        reportGroupStore.update( reportGroup );
+    }
+
+    public void deleteReportGroup( ReportGroup reportGroup )
+    {
+        reportGroupStore.delete( reportGroup );
+    }
+
+    public ReportGroup getReportGroup( int id )
+    {
+        return reportGroupStore.get( id );
+    }
+
+    public ReportGroup getReportGroupByName( String name )
+    {
+        return reportGroupStore.getByName( name );
+    }
+
+    public Collection<ReportGroup> getAllReportGroups()
+    {
+        return reportGroupStore.getAll();
+    }
+
+    public Collection<ReportGroup> getReportGroups( final Collection<Integer> identifiers )
+    {
+        Collection<ReportGroup> groups = getAllReportGroups();
+
+        return identifiers == null ? groups : FilterUtils.filter( groups, new Filter<ReportGroup>()
+        {
+            public boolean retain( ReportGroup object )
+            {
+                return identifiers.contains( object.getId() );
+            }
+        } );
+    }
+
+    public Collection<ReportGroup> getGroupsContainingReport( Report report )
+    {
+        Collection<ReportGroup> groups = getAllReportGroups();
+
+        Iterator<ReportGroup> iterator = groups.iterator();
+
+        while ( iterator.hasNext() )
+        {
+            ReportGroup group = iterator.next();
+
+            if ( !group.getMembers().contains( report ) )
+            {
+                iterator.remove();
+            }
+        }
+
+        return groups;
+    }
+
+    public int getReportGroupCount()
+    {
+        return reportGroupStore.getCount();
+    }
+
+    public int getReportGroupCountByName( String name )
+    {
+        return reportGroupStore.getCountByName( name );
+    }
+
+    public Collection<ReportGroup> getReportGroupsBetween( int first, int max )
+    {
+        return reportGroupStore.getBetween( first, max );
+    }
+
+    public Collection<ReportGroup> getReportGroupsBetweenByName( String name, int first, int max )
+    {
+        return reportGroupStore.getBetweenByName( name, first, max );
     }
 }

@@ -29,7 +29,9 @@ package org.hisp.dhis.chart;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -103,6 +105,8 @@ public class Chart
 
     private String targetLineLabel;
 
+    private List<ChartGroup> groups = new ArrayList<ChartGroup>();
+
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
@@ -151,6 +155,38 @@ public class Chart
         if ( organisationUnit != null )
         {
             allOrganisationUnits.add( organisationUnit );
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addChartGroup( ChartGroup group )
+    {
+        groups.add( group );
+        group.getMembers().add( this );
+    }
+
+    public void removeChartGroup( ChartGroup group )
+    {
+        groups.remove( group );
+        group.getMembers().remove( this );
+    }
+
+    public void updateChartGroups( Set<ChartGroup> updates )
+    {
+        for ( ChartGroup group : new HashSet<ChartGroup>( groups ) )
+        {
+            if ( !updates.contains( group ) )
+            {
+                removeChartGroup( group );
+            }
+        }
+        
+        for ( ChartGroup group : updates )
+        {
+            addChartGroup( group );
         }
     }
 
@@ -518,5 +554,15 @@ public class Chart
     public void setAllOrganisationUnits( List<OrganisationUnit> allOrganisationUnits )
     {
         this.allOrganisationUnits = allOrganisationUnits;
+    }
+
+    public List<ChartGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( List<ChartGroup> groups )
+    {
+        this.groups = groups;
     }
 }

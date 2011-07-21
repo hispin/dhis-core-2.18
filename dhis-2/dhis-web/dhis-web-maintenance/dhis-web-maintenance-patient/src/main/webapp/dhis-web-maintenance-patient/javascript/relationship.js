@@ -4,10 +4,12 @@
 
 function showRelationshipTypeDetails( relationshipTypeId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'relationshipType' );
-    request.setCallbackSuccess( relationshipTypeReceived );
-    request.send( 'getRelationshipType.action?id=' + relationshipTypeId );
+  	$.ajax({
+		url: 'getRelationshipType.action?id=' + relationshipTypeId,
+		cache: false,
+		dataType: "xml",
+		success: relationshipTypeReceived
+	});
 }
 
 function relationshipTypeReceived( relationshipTypeElement )

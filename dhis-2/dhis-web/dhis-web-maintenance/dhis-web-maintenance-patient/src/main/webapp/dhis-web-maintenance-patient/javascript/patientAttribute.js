@@ -4,20 +4,22 @@
 
 function showPatientAttributeDetails( patientAttributeId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'patientAttribute' );
-    request.setCallbackSuccess( patientAttributeReceived );
-    request.send( 'getPatientAttribute.action?id=' + patientAttributeId );
+	$.ajax({
+		url: 'getPatientAttribute.action?id=' + patientAttributeId,
+		cache: false,
+		dataType: "xml",
+		success: patientAttributeReceived
+	});
 }
 
 function patientAttributeReceived( patientAttributeElement )
 {
-	setInnerHTML( 'idField', getElementValue( patientAttributeElement, 'id' ) );
-	setInnerHTML( 'nameField', getElementValue( patientAttributeElement, 'name' ) );	
-    setInnerHTML( 'descriptionField', getElementValue( patientAttributeElement, 'description' ) );
+	setInnerHTML( 'idField', $( patientAttributeElement).find('id' ).text() );
+	setInnerHTML( 'nameField', $( patientAttributeElement).find('name' ).text() );	
+    setInnerHTML( 'descriptionField', $( patientAttributeElement).find('description' ).text() );
     
     var valueTypeMap = { 'NUMBER':i18n_number, 'BOOL':i18n_yes_no, 'TEXT':i18n_text, 'DATE':i18n_date, 'COMBO':i18n_combo };
-    var valueType = getElementValue( patientAttributeElement, 'valueType' );    
+    var valueType = $( patientAttributeElement ).find('valueType' ).text();    
     
     setInnerHTML( 'valueTypeField', valueTypeMap[valueType] );    
    

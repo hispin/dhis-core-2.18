@@ -27,12 +27,12 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.chart.Chart.DIMENSION_INDICATOR_PERIOD;
-import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_INDICATOR;
-import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_INDICATOR;
 import static org.hisp.dhis.chart.Chart.DIMENSION_DATAELEMENT_PERIOD;
+import static org.hisp.dhis.chart.Chart.DIMENSION_INDICATOR_PERIOD;
 import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_DATAELEMENT;
+import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_INDICATOR;
 import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_DATAELEMENT;
+import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_INDICATOR;
 import static org.hisp.dhis.chart.Chart.SIZE_NORMAL;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR3D;
@@ -50,6 +50,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -62,8 +63,10 @@ import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.chart.ChartGroup;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.ChartStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -189,6 +192,13 @@ public class DefaultChartService
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private GenericIdentifiableObjectStore<ChartGroup> chartGroupStore;
+
+    public void setChartGroupStore( GenericIdentifiableObjectStore<ChartGroup> chartGroupStore )
+    {
+        this.chartGroupStore = chartGroupStore;
     }
 
     // -------------------------------------------------------------------------
@@ -326,7 +336,8 @@ public class DefaultChartService
         // Interpolation DataSet
         // ---------------------------------------------------------------------
 
-        if ( x.size() >= 3 ) // minimum 3 data points required for interpolation
+        if ( x.size() >= 3 ) // minimum 3 data points required for
+        // interpolation
         {
             periodCount = 0;
 
@@ -366,6 +377,92 @@ public class DefaultChartService
         JFreeChart jFreeChart = getBasicJFreeChart( plot );
 
         return jFreeChart;
+    }
+
+    // -------------------------------------------------------------------------
+    // ChartGroup
+    // -------------------------------------------------------------------------
+
+    public int addChartGroup( ChartGroup chartGroup )
+    {
+        return chartGroupStore.save( chartGroup );
+    }
+
+    public void updateChartGroup( ChartGroup chartGroup )
+    {
+        chartGroupStore.update( chartGroup );
+    }
+
+    public void deleteChartGroup( ChartGroup chartGroup )
+    {
+        chartGroupStore.delete( chartGroup );
+    }
+
+    public ChartGroup getChartGroup( int id )
+    {
+        return chartGroupStore.get( id );
+    }
+
+    public ChartGroup getChartGroupByName( String name )
+    {
+        return chartGroupStore.getByName( name );
+    }
+
+    public Collection<ChartGroup> getAllChartGroups()
+    {
+        return chartGroupStore.getAll();
+    }
+
+    public Collection<ChartGroup> getChartGroups( final Collection<Integer> identifiers )
+    {
+        Collection<ChartGroup> groups = getAllChartGroups();
+
+        return identifiers == null ? groups : FilterUtils.filter( groups, new Filter<ChartGroup>()
+        {
+            public boolean retain( ChartGroup object )
+            {
+                return identifiers.contains( object.getId() );
+            }
+        } );
+    }
+
+    public Collection<ChartGroup> getGroupsContainingChart( Chart chart )
+    {
+        Collection<ChartGroup> groups = getAllChartGroups();
+
+        Iterator<ChartGroup> iterator = groups.iterator();
+
+        while ( iterator.hasNext() )
+        {
+            ChartGroup group = iterator.next();
+
+            if ( !group.getMembers().contains( chart ) )
+            {
+                iterator.remove();
+            }
+        }
+
+        return groups;
+    }
+
+    public int getChartGroupCount()
+    {
+        return chartGroupStore.getCount();
+    }
+
+    public int getChartGroupCountByName( String name )
+    {
+        return chartGroupStore.getCountByName( name );
+    }
+
+    public Collection<ChartGroup> getChartGroupsBetween( int first, int max )
+    {
+        return chartGroupStore.getBetween( first, max );
+    }
+
+    public Collection<ChartGroup> getChartGroupsBetweenByName( String name, int first, int max )
+    {
+        return chartGroupStore.getBetweenByName( name, first, max );
     }
 
     // -------------------------------------------------------------------------
@@ -658,15 +755,15 @@ public class DefaultChartService
                         if ( isIndicatorChart )
                         {
                             value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                                .getAggregatedIndicatorValue( indicators.get( i ), period.getStartDate(),
-                                    period.getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
+                                .getAggregatedIndicatorValue( indicators.get( i ), period.getStartDate(), period
+                                    .getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
                                 .getAggregatedValue( indicators.get( i ), period, selectedOrganisationUnit );
                         }
                         else if ( isDataElementChart )
                         {
                             value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                                .getAggregatedDataValue( dataElements.get( i ), null, period.getStartDate(),
-                                    period.getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
+                                .getAggregatedDataValue( dataElements.get( i ), null, period.getStartDate(), period
+                                    .getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
                                 .getAggregatedValue( dataElements.get( i ), period, selectedOrganisationUnit );
                         }
 

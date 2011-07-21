@@ -16,7 +16,7 @@
 	});		
 </script>
 <h3>$i18n.getString( "update_patient_attribute_group" )</h3>
-<form id="updatePatientAttributeGroupForm" name="updatePatientAttributeGroupForm" action="updatePatientAttributeGroup.action" method="post" onsubmit="return validateUpdatePatientAttributeGroup();">
+<form id="updatePatientAttributeGroupForm" name="updatePatientAttributeGroupForm" action="updatePatientAttributeGroup.action" method="post" >
 
 <div style="display:inline">
   <input type="hidden" id="id" name="id" value="$!patientAttributeGroup.id"/>

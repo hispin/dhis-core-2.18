@@ -29,6 +29,9 @@ package org.hisp.dhis.report;
 
 import java.util.Collection;
 
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportGroup;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -36,7 +39,7 @@ import java.util.Collection;
 public interface ReportService
 {
     final String ID = ReportService.class.getName();
-    
+
     /**
      * Saves a Report.
      * 
@@ -44,7 +47,7 @@ public interface ReportService
      * @return the generated identifier.
      */
     int saveReport( Report report );
-    
+
     /**
      * Retrieves the Report with the given identifier.
      * 
@@ -52,21 +55,21 @@ public interface ReportService
      * @return the Report.
      */
     Report getReport( int id );
-    
+
     /**
      * Deletes a Report.
      * 
      * @param report the Report to delete.
      */
     void deleteReport( Report report );
-    
+
     /**
      * Retrieves all Reports.
      * 
      * @return a Collection of Reports.
      */
     Collection<Report> getAllReports();
-    
+
     /**
      * Retrieves the Report with the given name.
      * 
@@ -74,7 +77,7 @@ public interface ReportService
      * @return the Report.
      */
     Report getReportByName( String name );
-    
+
     /**
      * Retrieves all Reports with the given identifiers.
      * 
@@ -82,4 +85,32 @@ public interface ReportService
      * @return a Collection of Reports.
      */
     Collection<Report> getReports( final Collection<Integer> identifiers );
+
+    // -------------------------------------------------------------------------
+    // ReportGroup
+    // -------------------------------------------------------------------------
+
+    int addReportGroup( ReportGroup reportGroup );
+
+    void updateReportGroup( ReportGroup reportGroup );
+
+    void deleteReportGroup( ReportGroup reportGroup );
+
+    ReportGroup getReportGroup( int id );
+
+    ReportGroup getReportGroupByName( String name );
+
+    Collection<ReportGroup> getAllReportGroups();
+
+    Collection<ReportGroup> getReportGroups( final Collection<Integer> identifiers );
+
+    Collection<ReportGroup> getGroupsContainingReport( Report report );
+
+    int getReportGroupCount();
+
+    int getReportGroupCountByName( String name );
+
+    Collection<ReportGroup> getReportGroupsBetween( int first, int max );
+
+    Collection<ReportGroup> getReportGroupsBetweenByName( String name, int first, int max );
 }

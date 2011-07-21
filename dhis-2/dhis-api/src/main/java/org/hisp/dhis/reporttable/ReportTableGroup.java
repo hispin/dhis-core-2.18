@@ -1,4 +1,4 @@
-package org.hisp.dhis.report;
+package org.hisp.dhis.reporttable;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,156 +27,120 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.AbstractIdentifiableObject;
-import org.hisp.dhis.reporttable.ReportTable;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class Report
+public class ReportTableGroup
     extends AbstractIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
-    private static final long serialVersionUID = 7880117720157807526L;
+    private static final long serialVersionUID = -1L;
 
-    public static final String TEMPLATE_DIR = "templates";
-
-    private String designContent;
-
-    private ReportTable reportTable;
-
-    private List<ReportGroup> groups = new ArrayList<ReportGroup>();
-
+    private Set<ReportTable> members = new HashSet<ReportTable>();
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public Report()
+    public ReportTableGroup()
     {
     }
 
-    public Report( String name, String designContent, ReportTable reportTable )
+    public ReportTableGroup( String name )
     {
         this.name = name;
-        this.designContent = designContent;
-        this.reportTable = reportTable;
     }
 
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
-    public void addReportGroup( ReportGroup group )
+    public void addReportTable( ReportTable reportTable )
     {
-        groups.add( group );
-        group.getMembers().add( this );
+        members.add( reportTable );
+        reportTable.getGroups().add( this );
     }
-
-    public void removeReportGroup( ReportGroup group )
+    
+    public void removeReportTable( ReportTable reportTable )
     {
-        groups.remove( group );
-        group.getMembers().remove( this );
+        members.remove( reportTable );
+        reportTable.getGroups().remove( this );
     }
-
-    public void updateReportGroups( Set<ReportGroup> updates )
+    
+    public void updateReportTables( Set<ReportTable> updates )
     {
-        for ( ReportGroup group : new HashSet<ReportGroup>( groups ) )
+        for ( ReportTable reportTable : new HashSet<ReportTable>( members ) )
         {
-            if ( !updates.contains( group ) )
+            if ( !updates.contains( reportTable ) )
             {
-                removeReportGroup( group );
+                removeReportTable( reportTable );
             }
         }
-
-        for ( ReportGroup group : updates )
+        
+        for ( ReportTable reportTable : updates )
         {
-            addReportGroup( group );
+            addReportTable( reportTable );
         }
     }
-
-    public boolean hasReportTable()
-    {
-        return reportTable != null;
-    }
-
+    
     // -------------------------------------------------------------------------
-    // Equals and hashCode
+    // hashCode and equals
     // -------------------------------------------------------------------------
 
     @Override
     public int hashCode()
     {
-        final int prime = 31;
-
-        int result = 1;
-
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-
-        return result;
+        return name.hashCode();
     }
 
     @Override
-    public boolean equals( Object object )
+    public boolean equals( Object o )
     {
-        if ( this == object )
+        if ( this == o )
         {
             return true;
         }
 
-        if ( object == null )
+        if ( o == null )
         {
             return false;
         }
 
-        if ( getClass() != object.getClass() )
+        if ( !(o instanceof ReportTableGroup) )
         {
             return false;
         }
 
-        final Report other = (Report) object;
+        final ReportTableGroup other = (ReportTableGroup) o;
 
-        return this.name.equals( other.getName() );
+        return name.equals( other.getName() );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[" + name + "]";
     }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public String getDesignContent()
+    public Set<ReportTable> getMembers()
     {
-        return designContent;
+        return members;
     }
 
-    public void setDesignContent( String designContent )
+    public void setMembers( Set<ReportTable> members )
     {
-        this.designContent = designContent;
-    }
-
-    public ReportTable getReportTable()
-    {
-        return reportTable;
-    }
-
-    public void setReportTable( ReportTable reportTable )
-    {
-        this.reportTable = reportTable;
-    }
-
-    public List<ReportGroup> getGroups()
-    {
-        return groups;
-    }
-
-    public void setGroups( List<ReportGroup> groups )
-    {
-        this.groups = groups;
+        this.members = members;
     }
 }
