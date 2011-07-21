@@ -96,6 +96,13 @@ public class PageInitAction
         return significantZeros;
     }
     
+    private Collection<DataElement> dataElements;
+    
+    public Collection<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
     private Collection<Indicator> indicators;
 
     public Collection<Indicator> getIndicators()
@@ -119,6 +126,8 @@ public class PageInitAction
         selectionManager.clearSelectedOrganisationUnits();
         
         significantZeros = dataElementService.getDataElementsByZeroIsSignificant( true );
+        
+        dataElements = dataElementService.getAllDataElements(); //TODO with data sets only
         
         indicators = indicatorService.getIndicatorsWithDataSets();
         
