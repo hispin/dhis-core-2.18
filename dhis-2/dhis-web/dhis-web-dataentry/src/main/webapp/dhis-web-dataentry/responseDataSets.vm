@@ -11,6 +11,5 @@
     "id": $!{organisationUnit.id},
     "name": "$!encoder.jsonEncode( ${organisationUnit.name} )"
   },
-  "dataSetValid": ${dataSetValid},
-  "periodValid": ${periodValid}
+  "dataSetValid": ${dataSetValid}
 }

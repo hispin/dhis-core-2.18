@@ -40,7 +40,8 @@ function addEventListeners()
     {
     	var id = $( this ).attr( 'id' );    	
 		var dataElementId = id.split( '-' )[0];
-		var optionComboId = id.split( '-' )[1];	
+		var optionComboId = id.split( '-' )[1];
+		var type = dataElements[dataElementId].type;
     	
     	$( this ).focus( valueFocus );
     	
@@ -58,6 +59,11 @@ function addEventListeners()
     	
     	$( this ).css( 'width', '100%' );
     	$( this ).css( 'text-align', 'center' );
+    	
+    	if ( type == 'date' ) {
+    		$( this ).css( 'width', '80%' );    		
+    		datePicker( id );
+    	}
     } );
     
     $( '[name="entryselect"]' ).each( function( i )
@@ -219,7 +225,7 @@ function dataSetSelected()
         
         var previousPeriodType = currentDataSetId ? dataSets[currentDataSetId].periodType : null;
 
-        if ( periodId && periodId != -1 && previousPeriodType && previousPeriodType == periodType ) //TODO if periodValid
+        if ( periodId && periodId != -1 && previousPeriodType && previousPeriodType == periodType )
         {
             showLoader();
             $( '#selectedPeriodId' ).val( periodId );
