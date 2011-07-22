@@ -197,7 +197,7 @@ public class ReportTable
     /**
      * The list of OrganisationUnits the ReportTable contains.
      */
-    private List<ReportTableGroup> groups = new ArrayList<ReportTableGroup>();
+    private Set<ReportTableGroup> groups = new HashSet<ReportTableGroup>();
 
     /**
      * The DataElementCategoryCombo for the ReportTable.
@@ -899,12 +899,12 @@ public class ReportTable
         this.units = units;
     }
 
-    public List<ReportTableGroup> getGroups()
+    public Set<ReportTableGroup> getGroups()
     {
         return groups;
     }
 
-    public void setGroups( List<ReportTableGroup> groups )
+    public void setGroups( Set<ReportTableGroup> groups )
     {
         this.groups = groups;
     }

@@ -105,7 +105,7 @@ public class Chart
 
     private String targetLineLabel;
 
-    private List<ChartGroup> groups = new ArrayList<ChartGroup>();
+    private Set<ChartGroup> groups = new HashSet<ChartGroup>();
 
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
@@ -175,7 +175,7 @@ public class Chart
     }
 
     public void updateChartGroups( Set<ChartGroup> updates )
-    {
+    {  
         for ( ChartGroup group : new HashSet<ChartGroup>( groups ) )
         {
             if ( !updates.contains( group ) )
@@ -556,12 +556,12 @@ public class Chart
         this.allOrganisationUnits = allOrganisationUnits;
     }
 
-    public List<ChartGroup> getGroups()
+    public Set<ChartGroup> getGroups()
     {
         return groups;
     }
 
-    public void setGroups( List<ChartGroup> groups )
+    public void setGroups( Set<ChartGroup> groups )
     {
         this.groups = groups;
     }
