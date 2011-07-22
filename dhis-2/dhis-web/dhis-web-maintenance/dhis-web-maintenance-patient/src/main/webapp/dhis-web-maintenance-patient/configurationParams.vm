@@ -20,7 +20,7 @@
 	</tr>
 	<tr>		
 		<td><input type="button" value="$i18n.getString('ok')" style="width:150px" onclick="saveConfiguration();"/>
-			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:150px">
+			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='index.action'" style="width:150px">
 		</td>
 	</tr>
 </table>
