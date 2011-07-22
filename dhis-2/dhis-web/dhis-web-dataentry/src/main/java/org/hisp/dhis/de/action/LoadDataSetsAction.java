@@ -110,14 +110,7 @@ public class LoadDataSetsAction
     {
         return dataSetValid;
     }
-    
-    private boolean periodValid;
-
-    public boolean isPeriodValid()
-    {
-        return periodValid;
-    }
-    
+        
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
