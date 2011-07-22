@@ -48,10 +48,7 @@
 		</td>				
 	</tr>
 	<tr>
-		<td width="20em"><label for="operator">$i18n.getString( "operator" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td>
-			<input type="radio" id="operator" name="operator" value="COUNT" #if( "$caseAggregation.operator" == "COUNT") checked #end style='display:none;'>
-		</td>				
+		<input type="radio" id="operator" name="operator" value="COUNT" checked style='display:none;'/>
 	</tr>
 	<tr>
         <td colspan="2"><p></p></td>

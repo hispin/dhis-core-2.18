@@ -5,20 +5,18 @@
 
 function getAggDataElements( )
 {
-  var dataElementGroup = document.getElementById( 'dataElementGroup' );
-  var dataElementGroupId = dataElementGroup.options[ dataElementGroup.selectedIndex ].value;
-  if( dataElementGroupId == 0 ){
-	clearList( byId('aggregationDataElementId'));
-	return;
-  }
-  
-  var requestString = 'getAggDataElements.action?dataElementGroupId=' + dataElementGroupId;
-
-  var request = new Request();
-  request.setResponseTypeXML( 'dataelement' );
-  request.setCallbackSuccess( getAggDataElementsCompleted );
-
-  request.send( requestString );
+	var dataElementGroup = document.getElementById( 'dataElementGroup' );
+	var dataElementGroupId = dataElementGroup.options[ dataElementGroup.selectedIndex ].value;
+	if( dataElementGroupId == 0 ){
+		clearList( byId('aggregationDataElementId'));
+		return;
+	}
+	$.ajax({
+		url: 'getAggDataElements.action?dataElementGroupId=' + dataElementGroupId,
+		cache: false,
+		dataType: "xml",
+		success: getAggDataElementsCompleted
+	});
 }
 
 function getAggDataElementsCompleted( dataelementElement )
@@ -49,56 +47,46 @@ function getAggDataElementsCompleted( dataelementElement )
 
 function getProgramStages()
 {
-  var program = document.getElementById( 'program' );
-  var programId = program.options[ program.selectedIndex ].value;
-  if(programId == '0'){
-	clearList( byId( 'programStage' ) );
-	clearList( byId( 'programstageDE' ) );
-	return;  
-  }
+	clearListById( 'programStage' );
+  	clearListById( 'programstageDE' );
 	
-  var requestString = 'getProgramStages.action?programId=' + programId;
+	var program = document.getElementById( 'program' );
+	var programId = program.options[ program.selectedIndex ].value;
+	if( programId == '0' ){
+		return;  
+	}
 
-  var request = new Request();
-  request.setResponseTypeXML( 'programStage' );
-  request.setCallbackSuccess( getProgramStagesCompleted );
-
-  request.send( requestString );	
+	$.ajax({
+		url: 'getProgramStages.action?programId=' + programId,
+		cache: false,
+		dataType: "xml",
+		success: getProgramStagesCompleted
+	});  
 }
 
 function getProgramStagesCompleted( programstageElement )
 {
-  var programstage = document.getElementById( 'programStage' );
-  
-  clearList( programstage );
-  	
-  var programstageList = programstageElement.getElementsByTagName( 'programstage' );
- 
-  for( var i = 0; i < programstageList.length; i++ )
-  {
-    var id = programstageList[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
-    var name = programstageList[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
+	var programstage = document.getElementById( 'programStage' );
+	var programstageList = $(programstageElement).find( 'programstage' );
 
-    var option = document.createElement("option");
-    option.value = id;
-    option.text = name;
-    option.title = name;
-    
-    programstage.add(option, null);       	
-  }
-  
-  if( programstage.options.length > 0 )
-  {
-  	programstage.options[0].selected = true;
-    	
-   	getPrgramStageDataElements();
-  }
-  else
-  {
-   	var programstageDE = document.getElementById( 'programstageDE' );
-  
-  	clearList( programstageDE );
-  }	    
+	$( programstageList ).each( function( i, item )
+	{
+		var id = $( item ).find("id").text();
+		var name = $( item ).find("name").text();
+
+		var option = document.createElement("option");
+		option.value = id;
+		option.text = name;
+		option.title = name;
+
+		programstage.add(option, null);       	
+	});
+
+	if( programstage.options.length > 0 )
+	{
+		programstage.options[0].selected = true;
+		getPrgramStageDataElements();
+	}   
 }
 
 //------------------------------------------------------------------------------
@@ -107,39 +95,37 @@ function getProgramStagesCompleted( programstageElement )
 
 function getPrgramStageDataElements()
 {
-  var programStage = document.getElementById( 'programStage' );
-  var psId = programStage.options[ programStage.selectedIndex ].value;
+	clearListById( 'programstageDE' );
 
-  var requestString = 'getPSDataElements.action?psId=' + psId;
-
-  var request = new Request();
-  request.setResponseTypeXML( 'dataelement' );
-  request.setCallbackSuccess( getPrgramStageDataElementsCompleted );
-
-  request.send( requestString );	
+	var programStage = document.getElementById( 'programStage' );
+	var psId = programStage.options[ programStage.selectedIndex ].value;
+	
+	$.ajax({
+		url: 'getPSDataElements.action?psId=' + psId,
+		cache: false,
+		dataType: "xml",
+		success: getPrgramStageDataElementsCompleted
+	});
 }
 
 function getPrgramStageDataElementsCompleted( dataelementElement )
 {
-  var programstageDE = document.getElementById( 'programstageDE' );
-  
-  clearList( programstageDE );
-  	
-  var programstageDEList = dataelementElement.getElementsByTagName( 'dataelement' );
- 
-  for ( var i = 0; i < programstageDEList.length; i++ )
-  {
-    var id = programstageDEList[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
-    var name = programstageDEList[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
-	var type = programstageDEList[ i ].getElementsByTagName("type")[0].firstChild.nodeValue;
+	var programstageDE = byId('programstageDE');
+	var psDataElements = $(dataelementElement).find( 'dataelement' );
 
-    var option = document.createElement("option");
-    option.value = id;
-    option.text = name;
-    option.title = name;
-    jQuery(option).attr({data:"{type:'"+type+"'}"});
-    programstageDE.add(option, null);       	
-  }	    
+	$( psDataElements ).each( function( i, item )
+	{
+		var id = $(item).find("id").text();
+		var name = $(item).find("name").text();
+		var type =$(item).find("type").text();
+
+		var option = document.createElement("option");
+		option.value = id;
+		option.text = name;
+		option.title = name;
+		jQuery(option).attr({data:"{type:'"+type+"'}"});
+		programstageDE.add(option, null);       	
+	} );	    
 }
 
 //-----------------------------------------------------------------
@@ -174,20 +160,22 @@ function removeCaseAggregation( caseAggregationId, caseAggregationName )
 
 function showCaseAggregationDetails( caseAggregationId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'caseAggregation' );
-    request.setCallbackSuccess( caseAggregationReceived );
-    request.send( 'getCaseAggregation.action?id=' + caseAggregationId );
+    $.ajax({
+		url: 'getCaseAggregation.action?id=' + caseAggregationId,
+		cache: false,
+		dataType: "xml",
+		success: caseAggregationReceived
+	});
 }
 
 function caseAggregationReceived( caseAggregationElement )
 {
-	setInnerHTML( 'idField', getElementValue( caseAggregationElement, 'id' ) );
-	setInnerHTML( 'descriptionField', getElementValue( caseAggregationElement, 'description' ) );	
-    setInnerHTML( 'operatorField', getElementValue( caseAggregationElement, 'operator' ) );
-    setInnerHTML( 'aggregationDataElementField', getElementValue( caseAggregationElement, 'aggregationDataElement' ) );
-	setInnerHTML( 'optionComboField', getElementValue( caseAggregationElement, 'optionCombo' ) );	
-    setInnerHTML( 'aggregationExpressionField', getElementValue( caseAggregationElement, 'aggregationExpression' ) );
+	setInnerHTML( 'idField', $( caseAggregationElement).find('id' ).text() );
+	setInnerHTML( 'descriptionField', $( caseAggregationElement).find('description' ).text() );	
+    setInnerHTML( 'operatorField', $( caseAggregationElement).find('operator' ).text() );
+    setInnerHTML( 'aggregationDataElementField', $( caseAggregationElement).find('aggregationDataElement' ).text() );
+	setInnerHTML( 'optionComboField', $( caseAggregationElement).find('optionCombo' ).text() );	
+    setInnerHTML( 'aggregationExpressionField', $( caseAggregationElement).find('aggregationExpression' ).text() );
     
     showDetails();
 }
