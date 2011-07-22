@@ -96,14 +96,7 @@ public class LoadDataSetsAction
     {
         return dataSets;
     }
-    
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-    
+        
     private boolean dataSetValid;
 
     public boolean isDataSetValid()
@@ -117,7 +110,7 @@ public class LoadDataSetsAction
 
     public String execute()
     {
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         if ( organisationUnit != null )
         {        

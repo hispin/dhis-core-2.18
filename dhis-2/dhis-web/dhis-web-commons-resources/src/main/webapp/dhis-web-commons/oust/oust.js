@@ -53,12 +53,7 @@ function SelectionTreeSelection()
 
         if ( linkTags[0].className == 'selected' )
         {
-			$.ajax({
-				url: selectionTreePath + 'removeorgunit.action?id=' + unitId,
-				cache: false,
-				dataType: "xml",
-				success: responseReceived
-			});
+			$.post( selectionTreePath + 'removeorgunit.action', { id:unitId }, responseReceived );
 				
             linkTags[0].className = '';			
         }
@@ -66,23 +61,13 @@ function SelectionTreeSelection()
         {			
             if ( multipleSelectionAllowed )
             {
-                $.ajax({
-					url: selectionTreePath + 'addorgunit.action?id=' + unitId,
-					cache: false,
-					dataType: "xml",
-					success: responseReceived
-				});
+                $.post( selectionTreePath + 'addorgunit.action', { id:unitId }, responseReceived );
 				
 				linkTags[0].className = 'selected';
             }
             else
             {
-                $.ajax({
-					url: selectionTreePath + 'setorgunit.action?id=' + unitId,
-					cache: false,
-					dataType: "xml",
-					success: responseReceived
-				});
+                $.post( selectionTreePath + 'setorgunit.action', { id:unitId }, responseReceived );
 				
                 // Remove all select marks
                 var treeTag = document.getElementById( 'selectionTree' );
@@ -101,25 +86,23 @@ function SelectionTreeSelection()
         }
     };
 
-    function responseReceived( rootElement )
+    function responseReceived( json )
     {
-		selectedOrganisationUnit = new Array();
-	
-		var unitIds = new Array();
-
-        var unitIdElements = $(rootElement).find( 'unitId' );
-        
-        for ( var i = 0, unitIdElement; ( unitIdElement = unitIdElements[i] ); ++i )
-        {
-            unitIds[i] = unitIdElement.firstChild.nodeValue;
-			selectedOrganisationUnit.push( unitIds[i] );	
-        }
-		
         if ( !listenerFunction )
         {
             return;
         }       
         
+		selectedOrganisationUnit = new Array();
+	
+		var unitIds = new Array();
+
+        for ( i in json.selectedUnits )
+        {
+            unitIds[i] = json.selectedUnits[i].id;
+			selectedOrganisationUnit.push( unitIds[i] );	
+        }
+		
         listenerFunction( unitIds );
     }
 

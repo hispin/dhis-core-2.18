@@ -116,9 +116,10 @@ function loadDefaultForm()
 // OrganisationUnit Selection
 // -----------------------------------------------------------------------------
 
-function organisationUnitSelected( orgUnits )
+function organisationUnitSelected( orgUnits, orgUnitNames )
 {
 	currentOrganisationUnitId = orgUnits[0];
+	var organisationUnitName = orgUnitNames[0];
 	
     $( '#selectedDataSetId' ).removeAttr( 'disabled' );
 
@@ -131,8 +132,8 @@ function organisationUnitSelected( orgUnits )
 
     $.getJSON( url, { dataSetId:dataSetId },  function( json )
     {
-        $( '#selectedOrganisationUnit' ).val( json.organisationUnit.name );
-        $( '#currentOrganisationUnit' ).html( json.organisationUnit.name );
+        $( '#selectedOrganisationUnit' ).val( organisationUnitName );
+        $( '#currentOrganisationUnit' ).html( organisationUnitName );
 
         addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
 

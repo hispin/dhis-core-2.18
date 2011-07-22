@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<selected>
+#set( $size = $selectedUnits.size() )
+{ "selectedUnits": [
 #foreach( $unit in $selectedUnits )
-	<unitId>$unit.id</unitId>
+  {
+	"id":"${unit.id}",
+	"name":"$encoder.jsonEncode( ${unit.name} )"
+  }#if( $velocityCount < $size ),#end
 #end
-</selected>
+] }
