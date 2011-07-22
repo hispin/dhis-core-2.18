@@ -13,20 +13,22 @@ function removeCriteria( id, name )
 
 function showValidationCriteriaDetails( criteriaId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'dataElement' );
-    request.setCallbackSuccess( validationCriteriaReceived );
-    request.send( 'getValidationCriteria.action?id=' + criteriaId );
+	$.ajax({
+		url: 'getValidationCriteria.action?id=' + criteriaId,
+		cache: false,
+		dataType: "xml",
+		success: validationCriteriaReceived
+	});
 }
 
 function validationCriteriaReceived( validationCriteria )
 {
-    setInnerHTML( 'nameField', getElementValue( validationCriteria, 'name' ) );
-    setInnerHTML( 'descriptionField', getElementValue( validationCriteria, 'description' ) );
+    setInnerHTML( 'nameField', $(validationCriteria).find('name').text() );
+    setInnerHTML( 'descriptionField', $(validationCriteria).find('description' ).text() );
 	
-	var property = getElementValue( validationCriteria, 'property' )
-	var operator = getElementValue( validationCriteria, 'operator' )
-	var	value = getElementValue( validationCriteria, 'value' )
+	var property = $(validationCriteria).find('property').text()
+	var operator = $(validationCriteria).find('operator').text()
+	var	value = $(validationCriteria).find('value').text()
 	
 	// get operator
 	if(operator == 0 ){
@@ -45,15 +47,19 @@ function validationCriteriaReceived( validationCriteria )
 // Show div to Add or Update Validation-Criteria
 // ----------------------------------------------------------------------------------------
 function showDivValue(){
+	
 	var propertyName = byId('property').value;
+	
 	hideDiv();
-	if(propertyName != ''){
+	
+	if(propertyName != '')
+	{
 		 var div = byId(propertyName + 'Div');
 		 div.style.display = 'block';
 		 
-		 if(propertyName == 'gender' || 
+		 if( propertyName == 'gender' || 
 			propertyName == 'dobType' || 
-			propertyName == 'bloodGroup'){
+			propertyName == 'bloodGroup' ){
 				
 			byId('operator').selectedIndex = 1;
 			disable('operator');
@@ -63,7 +69,8 @@ function showDivValue(){
 	 }
 }
 
-function hideDiv(){
+function hideDiv()
+{
 	hideById('genderDiv');
 	hideById('integerValueOfAgeDiv');
 	hideById('birthDateDiv');
