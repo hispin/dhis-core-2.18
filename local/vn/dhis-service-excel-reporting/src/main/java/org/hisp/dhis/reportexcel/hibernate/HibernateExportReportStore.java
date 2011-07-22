@@ -55,6 +55,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Tran Thanh Tri
  * @version $Id$
  */
+
+@Transactional
 public class HibernateExportReportStore
     implements ExportReportStore
 {
@@ -186,7 +188,7 @@ public class HibernateExportReportStore
         return sessionFactory.getCurrentSession().createCriteria( clazz ).list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<ReportExcel> getExportReportsByReportType( String reportType )
     {
         Class<?> clazz = null;
@@ -203,7 +205,7 @@ public class HibernateExportReportStore
         {
             clazz = ReportExcelOganiztionGroupListing.class;
         }
-        
+
         return getExportReportsByClazz( clazz );
     }
 
@@ -280,7 +282,6 @@ public class HibernateExportReportStore
         return sqlQuery.list();
     }
 
-    @Override
     public void deleteMultiExportItem( Collection<Integer> ids )
     {
         String sql = "delete ReportExcelItem d where d.id in (:ids)";
@@ -321,29 +322,23 @@ public class HibernateExportReportStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        String sql = "select count(*) from datavalue where sourceid=" + organisationUnit.getId()
-            + " and dataelementid in (";
-
-        int i = 0;
+        Collection<Integer> deIds = new HashSet<Integer>();
 
         for ( DataElement element : dataSet.getDataElements() )
         {
-            sql += element.getId();
-
-            if ( i++ < dataSet.getDataElements().size() - 1 )
-            {
-                sql += ",";
-            }
+            deIds.add( element.getId() );
         }
 
-        sql += ") and periodid=" + period.getId();
+        String sql = "select count(*) from DataValue where sourceid=" + organisationUnit.getId();
+        sql += " and periodid=" + period.getId();
+        sql += " and dataelementid in (:deIds)";
 
         Query query = session.createQuery( sql );
+        query.setParameterList( "deIds", deIds );
 
         Number nr = (Number) query.uniqueResult();
 
         return nr == null ? 0 : nr.intValue();
-
     }
 
     public void deleteDataEntryStatus( int id )
@@ -409,21 +404,18 @@ public class HibernateExportReportStore
         session.update( arg0 );
     }
 
-    @Override
     public PeriodColumn getPeriodColumn( Integer id )
     {
         Session session = sessionFactory.getCurrentSession();
         return (PeriodColumn) session.get( PeriodColumn.class, id );
     }
 
-    @Override
     public void updatePeriodColumn( PeriodColumn periodColumn )
     {
         Session session = sessionFactory.getCurrentSession();
         session.update( periodColumn );
     }
 
-    @Transactional
     public void updateReportWithExcelTemplate( String curTemplateName, String newTemplateName )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -435,7 +427,5 @@ public class HibernateExportReportStore
         query.setString( "newName", newTemplateName ).setString( "curName", curTemplateName );
 
         query.executeUpdate();
-
     }
-
 }
