@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportexcel.dataentrystatus.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,35 +54,20 @@ public class GetDataSetAction
     // -------------------------------------------------------------------------
 
     private CurrentUserService currentUserService;
-    
-    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     private UserService userService;
-
-    // -------------------------------------------------------------------------
-    // Ouput
-    // -------------------------------------------------------------------------
-
-    private List<DataSet> dataSets;
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public List<DataSet> getDataSets()
-    {
-        return dataSets;
-    }
 
     public void setUserService( UserService userService )
     {
         this.userService = userService;
     }
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
+    private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
@@ -90,9 +75,20 @@ public class GetDataSetAction
     }
 
     // -------------------------------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------------------------------
+
+    private List<DataSet> dataSets;
+
+    public List<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
