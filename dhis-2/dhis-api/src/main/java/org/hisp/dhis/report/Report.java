@@ -27,9 +27,7 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.AbstractIdentifiableObject;
@@ -53,7 +51,7 @@ public class Report
 
     private ReportTable reportTable;
 
-    private List<ReportGroup> groups = new ArrayList<ReportGroup>();
+    private Set<ReportGroup> groups = new HashSet<ReportGroup>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -170,12 +168,12 @@ public class Report
         this.reportTable = reportTable;
     }
 
-    public List<ReportGroup> getGroups()
+    public Set<ReportGroup> getGroups()
     {
         return groups;
     }
 
-    public void setGroups( List<ReportGroup> groups )
+    public void setGroups( Set<ReportGroup> groups )
     {
         this.groups = groups;
     }
