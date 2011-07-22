@@ -5,7 +5,6 @@
 		<dataelement>
   			<id>$optionComboIds.get($count)</id>
   			<name>$encoder.xmlEncode( $ocName )</name>
-  			<type>$encoder.xmlEncode( $optionComboType.get($count) )</type>
 		</dataelement>	
 	#end
 </dataelements>
