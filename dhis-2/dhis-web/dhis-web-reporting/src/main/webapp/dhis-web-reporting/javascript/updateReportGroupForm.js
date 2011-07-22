@@ -9,8 +9,7 @@ jQuery( document ).ready( function()
             listValidator( 'memberValidator', 'groupMembers' );
         },
         'rules' : getValidationRules( "reportGroup" )
-    } );
+    });
 	
-	checkValueIsExist( "name", "validateReportGroup.action", {id: $reportGroup.id});
-	
-} );
+	checkValueIsExist( "name", "validateReportGroup.action", {id: getFieldValue( "id" )});
+});
