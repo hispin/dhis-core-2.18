@@ -6,7 +6,7 @@
 	});
 </script>
 
-<h3>$i18n.getString( "reporttable_group_management" ) #openHelp( "reporttable_group" )</h3>
+<h3>$i18n.getString( "report_table_group_management" ) #openHelp( "report_table_group" )</h3>
 
 <table class="mainPageTable">
 	<tr>
@@ -15,7 +15,7 @@
 				<tr>
 					<td>#filterDiv( "reportTableGroup" )</td>
 					<td colspan="9" style="text-align:right">
-						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddReportGroupForm.action'" style="width:80px"/></a>
+						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddReportTableGroupForm.action'" style="width:80px"/></a>
 					</td>
 				</tr>
 			</table>
@@ -31,11 +31,11 @@
 				<tbody id="list">
 					#foreach( $reportTableGroup in $reportTableGroups )
 					<tr id="tr${reportTableGroup.id}">
-						<td onclick="showReportGroupDetails( $reportTableGroup.id )">$encoder.htmlEncode( $reportTableGroup.name )</td>
+						<td onclick="showReportTableGroupDetails( $reportTableGroup.id )">$encoder.htmlEncode( $reportTableGroup.name )</td>
 						<td style="text-align:center">
-							<a href="showUpdateReportGroupForm.action?id=$reportTableGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>               
-							<a href="javascript:removeReportGroup( '$reportTableGroup.id', '$encoder.jsEncode( $reportTableGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>               
-							<a href="javascript:showReportGroupDetails( $reportTableGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+							<a href="showUpdateReportTableGroupForm.action?id=$reportTableGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>               
+							<a href="javascript:removeReportTableGroup( '$reportTableGroup.id', '$encoder.jsEncode( $reportTableGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>               
+							<a href="javascript:showReportTableGroupDetails( $reportTableGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 						</td>
 					</tr>
 				#end

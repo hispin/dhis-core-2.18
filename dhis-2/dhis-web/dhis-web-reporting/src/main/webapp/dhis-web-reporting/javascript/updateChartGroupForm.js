@@ -9,8 +9,7 @@ jQuery( document ).ready( function()
             listValidator( 'memberValidator', 'groupMembers' );
         },
         'rules' : getValidationRules( "chartGroup" )
-    } );
+    });
 	
-	checkValueIsExist( "name", "validateChartGroup.action", {id: $chartGroup.id});
-	
-} );
+	checkValueIsExist( "name", "validateChartGroup.action", {id: getFieldValue( "id" )});
+});

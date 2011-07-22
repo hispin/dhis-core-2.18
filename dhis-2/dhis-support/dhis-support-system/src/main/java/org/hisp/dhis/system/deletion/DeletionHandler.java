@@ -80,6 +80,7 @@ import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportGroup;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableGroup;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -391,11 +392,11 @@ public abstract class DeletionHandler
         return true;
     }
 
-    public void deleteReportTableGroup( ReportTable group )
+    public void deleteReportTableGroup( ReportTableGroup group )
     {
     }
 
-    public boolean allowReportTableGroup( ReportTable group )
+    public boolean allowReportTableGroup( ReportTableGroup group )
     {
         return true;
     }

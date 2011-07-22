@@ -16,7 +16,7 @@
 	});
 </script>
 
-<h3>$i18n.getString( "create_new_reporttable_group" )</h3>
+<h3>$i18n.getString( "create_new_report_table_group" )</h3>
 
 <form id="addReportTableGroupForm" action="addReportTableGroup.action" method="post" >
 
@@ -39,7 +39,7 @@
     <col style="width: 450px"/>
 
 	<tr>
-		<th>$i18n.getString( "available_reporttables" )</th>
+		<th>$i18n.getString( "available_report_tables" )</th>
 		<th></th>
 		<th>$i18n.getString( "group_members" )
 			<select id="memberValidator" class="{validate:{required:true}}" style="display:none"/>

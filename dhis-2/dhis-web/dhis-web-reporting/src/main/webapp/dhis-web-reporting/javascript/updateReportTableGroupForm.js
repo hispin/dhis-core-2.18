@@ -11,6 +11,6 @@ jQuery( document ).ready( function()
         'rules' : getValidationRules( "reportTableGroup" )
     } );
 	
-	checkValueIsExist( "name", "validateReportTableGroup.action", {id: $reportTableGroup.id});
+	checkValueIsExist( "name", "validateReportTableGroup.action", {id: getFieldValue( "id" )});
 	
 } );

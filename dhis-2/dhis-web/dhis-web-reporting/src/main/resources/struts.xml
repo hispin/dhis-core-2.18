@@ -13,6 +13,12 @@
       <param name="page">/dhis-web-reporting/index.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
     </action>
+	
+    <action name="viewGroups" class="org.hisp.dhis.reporting.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reporting/viewGroups.vm</param>
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+    </action>
     
     <!-- Document -->
 
@@ -237,7 +243,7 @@
       <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
     </action>
 
-    <action name="showAddReportGroupForm" class="org.hisp.dhis.reporting.report.action.GetAllReportsAction">
+    <action name="showAddReportGroupForm" class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/addReportGroupForm.vm</param>
       <param name="javascripts">javascript/reportGroup.js</param>
@@ -377,7 +383,7 @@
       <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
     </action>
 
-    <action name="showAddReportTableGroupForm" class="org.hisp.dhis.reporting.reporttable.action.GetAllReportTablesAction">
+    <action name="showAddReportTableGroupForm" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/addReportTableGroupForm.vm</param>
       <param name="javascripts">javascript/reportTableGroup.js</param>
@@ -599,6 +605,6 @@
         <param name="bufferSize">10240</param>
       </result>
     </action>
-
+	
   </package>
 </struts>

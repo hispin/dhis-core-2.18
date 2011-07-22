@@ -1,0 +1,7 @@
+﻿<h3>$i18n.getString( "groups" )</h3>
+
+<ul id="introList">
+    #introListImgItem( "chartGroup.action" "chart_groups" "groups")
+    #introListImgItem( "reportGroup.action" "report_groups" "groups")
+	#introListImgItem( "reportTableGroup.action" "report_table_groups" "groups" )
+</ul>
