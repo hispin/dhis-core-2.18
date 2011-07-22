@@ -49,34 +49,19 @@ function Selection()
 
         if ( $linkTag.hasClass( "selected" ) && unselectAllowed )
         {
-            $.post( organisationUnitTreePath + "removeorgunit.action", {
-                id : unitId
-            }, function( data )
-            {
-                responseReceived( data.firstChild );
-            }, 'xml' );
-
+            $.post( organisationUnitTreePath + "removeorgunit.action", { id : unitId }, responseReceived );
+            
             $linkTag.removeClass( "selected" );
         } else
         {
             if ( multipleSelectionAllowed )
             {
-                $.post( organisationUnitTreePath + "addorgunit.action", {
-                    id : unitId
-                }, function( data )
-                {
-                    responseReceived( data.firstChild );
-                }, 'xml' );
+                $.post( organisationUnitTreePath + "addorgunit.action", { id : unitId }, responseReceived );
 
                 $linkTag.addClass( "selected" );
             } else
             {
-                $.ajax( {
-                    type : "POST",
-                    url : organisationUnitTreePath + "setorgunit.action?id=" + unitId,
-                    dataType : "xml",
-                    success : responseReceived
-                } );
+                $.post( organisationUnitTreePath + "setorgunit.action", { id : unitId }, responseReceived );
 
                 $( "#orgUnitTree" ).find( "a" ).removeClass( "selected" );
                 $linkTag.addClass( "selected" );
@@ -84,21 +69,23 @@ function Selection()
         }
     };
 
-    function responseReceived( rootElement )
+    function responseReceived( json )
     {
         if ( !listenerFunction )
         {
             return;
         }
 
-        var unitIds = new Array();
+        var unitIds = [];
+        var unitNames = [];
 
-        $( rootElement ).find( "unitId" ).each( function( i, item )
+        for ( i in json.selectedUnits )
         {
-            unitIds[i] = $( item ).text()
-        } );
-
-        listenerFunction( unitIds );
+            unitIds[i] = json.selectedUnits[i].id;
+            unitNames[i] = json.selectedUnits[i].name;
+        }
+        
+        listenerFunction( unitIds, unitNames );
     }
 
     function getTagId( unitId )

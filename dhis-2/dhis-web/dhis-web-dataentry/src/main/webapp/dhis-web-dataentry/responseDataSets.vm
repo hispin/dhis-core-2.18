@@ -6,10 +6,5 @@
     "name": "$!encoder.jsonEncode( ${dataSet.name} )"
   }#if( $velocityCount < $size ),#end
 #end ],
-  "organisationUnit":
-  {
-    "id": $!{organisationUnit.id},
-    "name": "$!encoder.jsonEncode( ${organisationUnit.name} )"
-  },
   "dataSetValid": ${dataSetValid}
 }

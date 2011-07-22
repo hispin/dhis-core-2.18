@@ -123,19 +123,19 @@
     </action>
 
     <action name="setorgunit" class="org.hisp.dhis.oust.action.SetSelectedOrganisationUnitAction">
-      <result name="success" type="velocity">
+      <result name="success" type="velocity-json">
         /dhis-web-commons/ouwt/responseSelect.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="addorgunit" class="org.hisp.dhis.oust.action.AddSelectedOrganisationUnitAction">
-      <result name="success" type="velocity">
+      <result name="success" type="velocity-json">
         /dhis-web-commons/ouwt/responseSelect.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="removeorgunit" class="org.hisp.dhis.oust.action.RemoveSelectedOrganisationUnitAction">
-      <result name="success" type="velocity">
+      <result name="success" type="velocity-json">
         /dhis-web-commons/ouwt/responseSelect.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -149,7 +149,7 @@
     </action>
 
     <action name="selectallorgunit" class="org.hisp.dhis.oust.action.SelectAllOrganisationUnitAction">
-      <result name="success" type="velocity-xml">
+      <result name="success" type="velocity-json">
         /dhis-web-commons/ouwt/responseSelect.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -179,19 +179,19 @@
     </action>
 
     <action name="setorgunit" class="org.hisp.dhis.ouwt.action.SetSelectedOrganisationUnitAction">
-      <result name="success" type="velocity-xml">
+      <result name="success" type="velocity-json">
         /dhis-web-commons/ouwt/responseSelect.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="addorgunit" class="org.hisp.dhis.ouwt.action.AddSelectedOrganisationUnitAction">
-      <result name="success" type="velocity-xml">
+      <result name="success" type="velocity-json">
         /dhis-web-commons/ouwt/responseSelect.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="removeorgunit" class="org.hisp.dhis.ouwt.action.RemoveSelectedOrganisationUnitAction">
-      <result name="success" type="velocity-xml">
+      <result name="success" type="velocity-json">
         /dhis-web-commons/ouwt/responseSelect.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>

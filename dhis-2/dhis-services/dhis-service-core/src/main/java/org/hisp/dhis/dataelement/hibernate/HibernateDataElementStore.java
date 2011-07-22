@@ -297,7 +297,7 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.groups.size = 0";
 
-        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+        return getQuery( hql ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -305,7 +305,7 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.dataSets.size = 0";
 
-        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+        return getQuery( hql ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -313,7 +313,7 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.dataSets.size > 0";
 
-        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+        return getQuery( hql ).list();
     }
 
     public boolean dataElementExists( int id )
