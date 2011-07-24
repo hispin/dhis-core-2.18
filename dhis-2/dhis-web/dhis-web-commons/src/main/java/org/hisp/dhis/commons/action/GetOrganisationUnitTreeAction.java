@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -83,6 +86,22 @@ public class GetOrganisationUnitTreeAction
     public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
+    }
+
+    public class SetSorter
+    {
+        public Set<OrganisationUnit> sortOrganisationUnitSet( Set<OrganisationUnit> organisationUnits )
+        {
+            SortedSet<OrganisationUnit> sortedSet = new TreeSet<OrganisationUnit>( organisationUnitComparator );
+            sortedSet.addAll( organisationUnits );
+
+            return sortedSet;
+        }
+    }
+
+    public SetSorter getSorter()
+    {
+        return new SetSorter();
     }
 
     // -------------------------------------------------------------------------
