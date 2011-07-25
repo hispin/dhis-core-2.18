@@ -271,12 +271,6 @@ public class DefaultDataEntryFormService
                     return "Category option combo with id: " + optionComboId + " does not exist";
                 }
 
-                String dataElementValueType = dataElement.getDetailedNumberType();
-
-                // -------------------------------------------------------------
-                // Insert data value for data element in output code for boolean
-                // -------------------------------------------------------------
-
                 if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
                 {
                     inputHtml = inputHtml.replace( "input", "select" );

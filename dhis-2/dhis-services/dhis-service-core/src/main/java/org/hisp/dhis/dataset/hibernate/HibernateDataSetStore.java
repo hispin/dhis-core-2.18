@@ -158,12 +158,9 @@ public class HibernateDataSetStore
         return (DataSet) criteria.uniqueResult();
     }
 
-    @SuppressWarnings( "unchecked" )
     public Collection<DataSet> getAllDataSets()
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.createCriteria( DataSet.class ).list();
+        return getAll();
     }
 
     @SuppressWarnings( "unchecked" )

@@ -89,6 +89,24 @@ public class UserCredentials
     }
     
     /**
+     * Indicates whether this user credentials is a super user, implying that the
+     * ALL authority is present in at least one of the user authority groups of
+     * this user credentials.
+     */
+    public boolean isSuper()
+    {
+        for ( UserAuthorityGroup group : userAuthorityGroups )
+        {
+            if ( group.getAuthorities().contains( UserAuthorityGroup.AUTHORITY_ALL ) )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
      * Returns a set of the aggregated data sets for all user authority groups
      * of this user credentials.
      */

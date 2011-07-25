@@ -38,7 +38,6 @@ import org.amplecode.quick.mapper.ObjectMapper;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -165,16 +164,9 @@ public class HibernateDataElementStore
         return (DataElement) criteria.uniqueResult();
     }
 
-    @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getAllDataElements()
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.setCacheable( true );
-        criteria.addOrder( Order.asc( "name" ) );
-
-        return criteria.list();
+        return getAll();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -252,11 +244,9 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsWithGroupSets()
     {
-        final String sql = "from DataElement d where d.groupSets.size > 0";
+        String hql = "from DataElement d where d.groupSets.size > 0";
 
-        Query query = sessionFactory.getCurrentSession().createQuery( sql );
-
-        return query.list();
+        return getQuery( hql ).list();
     }
 
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )
@@ -283,9 +273,7 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsByZeroIsSignificant( boolean zeroIsSignificant )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
+        Criteria criteria = getCriteria();
         criteria.add( Restrictions.eq( "zeroIsSignificant", zeroIsSignificant ) );
         criteria.add( Restrictions.eq( "type", DataElement.VALUE_TYPE_INT ) );
 

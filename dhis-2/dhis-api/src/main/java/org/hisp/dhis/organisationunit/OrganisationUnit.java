@@ -104,13 +104,13 @@ public class OrganisationUnit
     
     private String phoneNumber;
 
+    private Boolean hasPatients;
+    
     private transient int level;
     
     private transient boolean currentParent;
     
     private transient String type;
-    
-    private Boolean hasPatients;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -720,5 +720,4 @@ public class OrganisationUnit
     {
         this.type = type;
     }
-
 }

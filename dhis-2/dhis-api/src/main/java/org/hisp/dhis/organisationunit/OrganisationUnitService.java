@@ -240,6 +240,8 @@ public interface OrganisationUnitService
      * @return a collection of organisation units.
      */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit );
+
+    OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet();
     
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
