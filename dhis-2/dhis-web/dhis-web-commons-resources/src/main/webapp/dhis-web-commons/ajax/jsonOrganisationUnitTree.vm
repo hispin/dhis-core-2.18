@@ -6,8 +6,7 @@
 		"hasChildren": #if( $organisationUnit.children.size() > 0 )true,#{else}false#end
 		#if( $organisationUnit.children.size() > 0 )
 		"children": [
-			#set( $children = $sorter.sort( $organisationUnit.children ) ) 
-			#foreach ( $child in $children )
+			#foreach ( $child in $organisationUnit.sortedChildren )
 				#expandOrganisationUnit( $child )#if( $velocityCount < $organisationUnit.children.size() ),#end
 			#end
 		]

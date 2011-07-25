@@ -88,29 +88,6 @@ public class GetOrganisationUnitTreeAction
         return organisationUnits;
     }
 
-    public class SetSorter<T>
-    {
-        private Comparator<T> comparator;
-
-        public SetSorter( Comparator<T> comparator )
-        {
-            this.comparator = comparator;
-        }
-
-        public Set<T> sort( Set<T> unsortedSet )
-        {
-            SortedSet<T> sortedSet = new TreeSet<T>( comparator );
-            sortedSet.addAll( unsortedSet );
-
-            return sortedSet;
-        }
-    }
-
-    public SetSorter<OrganisationUnit> getSorter()
-    {
-        return new SetSorter<OrganisationUnit>( organisationUnitComparator );
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
