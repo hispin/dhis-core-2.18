@@ -29,12 +29,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
   </bean>
 
-  <bean id="org.hisp.dhis.de.action.LoadDataSetsAction" class="org.hisp.dhis.de.action.LoadDataSetsAction" scope="prototype">
-    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-  </bean>
-
   <bean id="org.hisp.dhis.de.action.LoadFormAction" class="org.hisp.dhis.de.action.LoadFormAction" scope="prototype">
     <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />

@@ -22,10 +22,6 @@
 	  <result name="success" type="velocity-json">/dhis-web-dataentry/responseDataValues.vm</result>
 	</action>
 
-    <action name="loadDataSets" class="org.hisp.dhis.de.action.LoadDataSetsAction">
-      <result name="success" type="velocity-json">/dhis-web-dataentry/responseDataSets.vm</result>
-    </action>
-
     <action name="loadForm" class="org.hisp.dhis.de.action.LoadFormAction">
       <result name="custom" type="velocity">/dhis-web-dataentry/customForm.vm</result>
       <result name="section" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
