@@ -94,12 +94,10 @@ public class DataRecordingSelectAction
         throws Exception
     {
         patient = patientService.getPatient( patientId );
-        selectedStateManager.setSelectedPatient( patient );
         
-        for ( Program program : patient.getPrograms() )
-        {
-            programs.add( program );
-        }
+        programs.addAll( patient.getPrograms() );
+        
+        selectedStateManager.setSelectedPatient( patient );
 
         return SUCCESS;
     }

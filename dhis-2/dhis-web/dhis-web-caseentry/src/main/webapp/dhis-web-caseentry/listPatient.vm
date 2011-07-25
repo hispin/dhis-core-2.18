@@ -63,10 +63,10 @@
                     $encoder.htmlEncode( $patient.getAge() )
                 </td>				
 				<td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( "data_entry" )"><img src="images/data_entry.png" alt="$i18n.getString( "data_entry" )"></a>                  
+                  <a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>                  
                 </td>
                 <td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+                  <a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
                 </td>               				
 			</tr>
 			#if( $mark )
@@ -90,17 +90,15 @@
     <td style="width:20em; padding-left:2em; vertical-align:top">
         <div id="detailsArea" style="display:none">
             <div style="float:right">
-                <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+                <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
             </div>              
-            <p><label>$i18n.getString( "common_info" ):</label><br><span id="commonInfoField"></span></p>	
-			<p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>                    
-            <p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
-            <p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
+            <p><label><strong>$i18n.getString( "common_info" ):</strong></label><br><span id="commonInfoField"></span></p>	
+			<p><label><strong>$i18n.getString( "identifier" ):</strong></label><br><span id="identifierField"></span></p>                    
+            <p><label><strong>$i18n.getString( "attributes" ):</strong></label><br><span id="attributeField"></span></p>
+            <p><label><strong>$i18n.getString( "enrolled_in_program" ):</strong></label><br><span id="programField"></span></p>
         </div>
     </td>
   </tr>
 </table>
-
-
    
 <span id="message"></span>

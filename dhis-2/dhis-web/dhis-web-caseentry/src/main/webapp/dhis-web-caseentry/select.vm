@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "name_based_data_entry" )</h3>
 
-<div id='searchPatientDiv' #if($organisationUnit) #else disabled #end>
+<div id='searchPatientDiv'>
 	<table>    
 		<tr>
 			<td><label>$i18n.getString( "registering_unit" )</label></td>
@@ -28,7 +28,7 @@
 			  <em title="$i18n.getString( "required" )" class="required">*</em></label>
 			</td>       
 			<td>
-				<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" #if($organisationUnit) #else readonly #end/>
+				<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" #if($organisationUnit) #else readonly #end onkeyup='javascript: searchPatientsOnKeyUp(event)' />
 			</td>        
 			<td>
 				<input type="button" id='searchBtn' value="$i18n.getString( 'search' )" onclick='validateSearch();' #if($organisationUnit) #else disabled #end/>

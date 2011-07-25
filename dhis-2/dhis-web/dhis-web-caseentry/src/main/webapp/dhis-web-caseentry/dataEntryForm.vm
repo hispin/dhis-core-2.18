@@ -1,28 +1,19 @@
 <script>
 jQuery("#entryFormContainer").ready(function(){
-    entryFormContainerOnReady();
+    setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
+	setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
+	entryFormContainerOnReady();
 });
 </script>
 
 <div id='entryFormContainer'>
-<p align='right'>
-	<label for="label2">$i18n.getString( "due_date" ) </label>
-	<input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"/>
-	&nbsp;&nbsp;&nbsp;
-	<label for="label">$i18n.getString( "report_date" ) </label>
-	<input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onChange="saveExecutionDate( getFieldValue('programStageInstanceId'), getFieldValue('programStageInstanceName') );" />
-		<script type="text/javascript">
-			datePickerValid('executionDate', false);
-		</script>
-</p>
-
 <input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
 
 <hr style="clear:both">
 
 <span id="startMsg" style="font-style:italic; color:blue; display: #if($programStageInstance.executionDate) none #else block #end">$i18n.getString( "report_date_warning" )</span>
 
-<div id='entryForm' style="display: #if($programStageInstance.executionDate) block #else none #end">
+<div id='entryForm' style="display: #if($programStageInstance.executionDate) block #else none #end;">
 	#if( !$useDefaultForm)
 		<div id="customEntryScreenContainer">
 			#if( $customDataEntryFormCode ) 

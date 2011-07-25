@@ -29,6 +29,8 @@
                 #end
             </select>
         </td>
+		<td><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
+        <td><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" readonly </td>
     </tr>
     
     <tr>
@@ -37,7 +39,13 @@
             <select id="programStageId" name="programStageId" style="min-width:350px" onchange="javascript:loadDataEntry();" >
             </select>
         </td>
-    </tr>   
+		<td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
+		<td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" >
+			<script type="text/javascript">
+			   datePickerValid( 'executionDate', false );
+			</script>  
+    </tr>
+	
 	<tr>
 		<td></td>
 		<td>
@@ -45,7 +53,7 @@
 			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();", '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );" style="width:12em " disabled="disabled" >
 		</td>
 		<td align='right'>
-			<input type="checkbox" id="useDefaultForm" name="useDefaultForm" value="true" onclick="loadDataEntry();" disabled="disabled" />
+			<input type="checkbox" id="useDefaultForm" name="useDefaultForm" value="true" onclick="loadDataEntry();" />
 			<label>$i18n.getString( "use_default_form" )</label><br>	
 		</td>
 		</td>

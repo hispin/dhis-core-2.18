@@ -113,15 +113,7 @@ public class MultiDataEntrySelectAction
     {
         patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
-
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
-        // ---------------------------------------------------------------------
-        // Load assigned Programs
-        // ---------------------------------------------------------------------
 
         if( organisationUnit != null )
         {
