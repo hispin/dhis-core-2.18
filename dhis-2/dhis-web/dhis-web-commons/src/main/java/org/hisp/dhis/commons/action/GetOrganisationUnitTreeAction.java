@@ -88,20 +88,27 @@ public class GetOrganisationUnitTreeAction
         return organisationUnits;
     }
 
-    public class SetSorter
+    public class SetSorter<T>
     {
-        public Set<OrganisationUnit> sortOrganisationUnitSet( Set<OrganisationUnit> organisationUnits )
+        private Comparator<T> comparator;
+
+        public SetSorter( Comparator<T> comparator )
         {
-            SortedSet<OrganisationUnit> sortedSet = new TreeSet<OrganisationUnit>( organisationUnitComparator );
-            sortedSet.addAll( organisationUnits );
+            this.comparator = comparator;
+        }
+
+        public Set<T> sort( Set<T> unsortedSet )
+        {
+            SortedSet<T> sortedSet = new TreeSet<T>( comparator );
+            sortedSet.addAll( unsortedSet );
 
             return sortedSet;
         }
     }
 
-    public SetSorter getSorter()
+    public SetSorter<OrganisationUnit> getSorter()
     {
-        return new SetSorter();
+        return new SetSorter<OrganisationUnit>( organisationUnitComparator );
     }
 
     // -------------------------------------------------------------------------
