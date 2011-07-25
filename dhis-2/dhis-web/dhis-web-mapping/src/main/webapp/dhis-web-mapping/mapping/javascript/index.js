@@ -437,7 +437,7 @@
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.display_name,
                         width: G.conf.combo_width_fieldset,
-                        autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
+                        autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '255'}
                     },
                     {
                         xtype: 'checkbox',
@@ -464,7 +464,7 @@
                         labelSeparator: G.conf.labelseparator,
                         selectOnFocus: true,
                         width: G.conf.combo_width_fieldset,
-                        minListWidth: G.conf.combo_width_fieldset,
+                        listWidth: 'auto',
                         store:G.stores.mapView
                     }
                 ]
