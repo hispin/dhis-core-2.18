@@ -6,21 +6,23 @@ function organisationUnitSelected( orgUnits )
 	hideById('dataEntryFormDiv');
 	hideById('dataRecordingSelectDiv');
 	showById('searchPatientDiv');
+
+	$.ajax({
+		url: "searchform.action",
+		dataType: "xml",
+		cache: false,
+		success: function (data)
+			{
+				enable('listPatientBtn');
+				enable('searchingAttributeId');
+				enable('searchBtn');
+				jQuery('#searchText').removeAttr( 'readonly' );
+				
+				setFieldValue( 'orgunitName', $(data).find( "name" ).text() );
 			
-	jQuery.post("searchform.action",
-		{
-		},
-		function (data)
-		{
-			enable('listPatientBtn');
-			enable('searchingAttributeId');
-			enable('searchBtn');
-			jQuery('#searchText').removeAttr( 'readonly' );
-			
-			setFieldValue( 'orgunitName', data.getElementsByTagName( "name" )[0].firstChild.nodeValue );
-		
-			hideLoader();
-		},'xml');
+				hideLoader();
+			}
+		});
 }
 
 selection.setListenerFunction( organisationUnitSelected );
@@ -139,48 +141,68 @@ function loadProgramStages()
 
 function loadDataEntry()
 {
-	hideById('dataEntryFormDiv');
-	if( getFieldValue('programStageId') == '0' )
+	setInnerHTML('dataEntryFormDiv', '');
+	showById('dataEntryFormDiv')
+	setFieldValue( 'dueDate', '' );
+	setFieldValue( 'executionDate', '' );
+	
+	if( getFieldValue('programStageId') == null
+		|| getFieldValue('programStageId') == 0 )
 	{
 		disable('validationBtn');
 		disable('completeBtn');
 		return;
 	}
 	
-	// Load data-entry form
 	showLoader();
 	var useDefaultForm = jQuery("#useDefaultForm").attr('checked') ? true : false;
-	jQuery('#dataEntryFormDiv').load("dataentryform.action",
+	
+	$.ajax({
+		url: "dataentryform.action",
+		data: 'programStageId='+getFieldValue('programStageId')+'&useDefaultForm=' +useDefaultForm,
+		cache: false,
+		dataType: "html",
+		success: function( html )
 		{
-			programStageId:getFieldValue('programStageId'),
-			useDefaultForm : useDefaultForm
-		}, 
-		function( )
-		{
-		}).slideDown('fast', function()
-		{
+			setInnerHTML('dataEntryFormDiv', html );
 			enable('validationBtn');
 			enable('completeBtn');
 			enable('useDefaultForm');
 			
 			hideLoader();
 			hideById('contentDiv'); 
-		});
+		}
+	});
 }
 
 //-----------------------------------------------------------------------------
 // Search Patient
 //-----------------------------------------------------------------------------
 
-function validateSearch()
-{	
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( searchValidationCompleted );
-	request.sendAsPost('searchText=' + getFieldValue( 'searchText' ));
-    request.send( 'validateSearch.action' );
+function searchPatientsOnKeyUp( event )
+{
+	var key = getKeyCode( event );
+	
+	if ( key==13 )// Enter
+	{
+		validateSearch();
+	}
+}
 
-    return false;
+function getKeyCode(e)
+{
+	 if (window.event)
+		return window.event.keyCode;
+	 return (e)? e.which : null;
+}
+ 
+function validateSearch( event )
+{	
+	var request = new Request();
+	request.setResponseTypeXML( 'message' );
+	request.setCallbackSuccess( searchValidationCompleted );
+	request.sendAsPost('searchText=' + getFieldValue( 'searchText' ));
+	request.send( 'validateSearch.action' );
 }
 
 function searchValidationCompleted( messageElement )
@@ -220,10 +242,12 @@ function searchValidationCompleted( messageElement )
 
 function showPatientDetails( patientId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'patient' );
-    request.setCallbackSuccess( patientReceived );
-    request.send( 'getPatient.action?id=' + patientId );
+	$.ajax({
+		url: 'getPatient.action?id=' + patientId,
+		cache: false,
+		dataType: "xml",
+		success: patientReceived
+	});
 }
 
 function patientReceived( patientElement )
@@ -232,12 +256,12 @@ function patientReceived( patientElement )
 	// Get common-information
     // ----------------------------------------------------------------------------
 	
-	var id = patientElement.getElementsByTagName( "id" )[0].firstChild.nodeValue;
-	var fullName = patientElement.getElementsByTagName( "fullName" )[0].firstChild.nodeValue;   
-	var gender = patientElement.getElementsByTagName( "gender" )[0].firstChild.nodeValue;   
-	var dobType = patientElement.getElementsByTagName( "dobType" )[0].firstChild.nodeValue;   
-	var birthDate = patientElement.getElementsByTagName( "dateOfBirth" )[0].firstChild.nodeValue;   
-	var bloodGroup= patientElement.getElementsByTagName( "bloodGroup" )[0].firstChild.nodeValue;   
+	var id = jQuery(patientElement).find( "id" ).text();
+	var fullName = jQuery(patientElement).find( "fullName" ).text();
+	var gender = jQuery(patientElement).find( "gender" ).text();
+	var dobType = jQuery(patientElement).find( "dobType" ).text();
+	var birthDate = jQuery(patientElement).find( "dateOfBirth" ).text();
+	var bloodGroup= jQuery(patientElement).find( "bloodGroup" ).text();
     
 	var commonInfo =  '<strong>'  + i18n_id + ':</strong> ' + id + "<br>" 
 					+ '<strong>' + i18n_full_name + ':</strong> ' + fullName + "<br>" 
@@ -252,29 +276,29 @@ function patientReceived( patientElement )
 	// Get identifier
     // ----------------------------------------------------------------------------
 	
-	var identifiers = patientElement.getElementsByTagName( "identifier" );   
-    
+	var identifiers = jQuery(patientElement).find( "identifier" );   
     var identifierText = '';
 	
-	for ( var i = 0; i < identifiers.length; i++ )
-	{		
-		identifierText = identifierText + identifiers[ i ].getElementsByTagName( "identifierText" )[0].firstChild.nodeValue + '<br>';		
-	}
+	$( identifiers ).each( function( i, item )
+	{
+		identifierText += $( item ).text() + '<br>';
+	});
 	
+	identifiers = ( identifiers.length == 0 ) ? i18n_none : identifiers;
 	setInnerHTML( 'identifierField', identifierText );
 	
 	// ----------------------------------------------------------------------------
 	// Get attribute
     // ----------------------------------------------------------------------------
 	
-	var attributes = patientElement.getElementsByTagName( "attribute" );   
-    
+	var attributes = jQuery(patientElement).find( "attribute" );   
     var attributeValues = '';
 	
-	for ( var i = 0; i < attributes.length; i++ )
-	{	
-		attributeValues = attributeValues + '<strong>' + attributes[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue  + ':  </strong>' + attributes[ i ].getElementsByTagName( "value" )[0].firstChild.nodeValue + '<br>';		
-	}
+	$( attributes ).each( function( i, item )
+	{
+		attributeValues += '<strong>' + $(item).find("name").text()+ ':  </strong>' + $(item).find("value").text() + '<br>';
+	});
+	
 	attributeValues = ( attributeValues.length == 0 ) ? i18n_none : attributeValues;
 	setInnerHTML( 'attributeField', attributeValues );
     
@@ -282,14 +306,13 @@ function patientReceived( patientElement )
 	// Get programs
     // ----------------------------------------------------------------------------
 	
-    var programs = patientElement.getElementsByTagName( "program" );   
-    
+	var programs = jQuery(patientElement).find( "program" );   
     var programName = '';
 	
-	for ( var i = 0; i < programs.length; i++ )
-	{		
-		programName = programName + programs[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue + '<br>';		
-	}
+	$( programs ).each( function( i, item )
+	{
+		programName += $(item).text() + '<br>';
+	});
 	
 	programName = ( programName.length == 0 ) ? i18n_none : programName;
 	setInnerHTML( 'programField', programName );
@@ -817,6 +840,7 @@ function ExecutionDateSaver( programStageInstanceId_, executionDate_, resultColo
         if ( code == 0 )
         {
             markValue( resultColor );
+			showById('entryFormContainer');
 			showById('dataEntryFormDiv');
 			showById('entryForm');
         }
@@ -876,9 +900,7 @@ DRAG_DIV = {
 		
     showData : function(data)
     {
-        jQuery("#orgUnitNameField").text(data.orgUnitName);
-        jQuery("#programStageName").text(data.programStageName);
-        jQuery("#dataelementName").text(data.dataElementName);
+        jQuery("#dataelementName").text(data.deName);
     },
 		
     resetData : function()

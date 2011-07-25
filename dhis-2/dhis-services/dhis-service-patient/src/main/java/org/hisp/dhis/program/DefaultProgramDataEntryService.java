@@ -580,7 +580,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForBoolean = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY}\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\"  text-align:center;\" ";
+        final String jsCodeForBoolean = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\"  text-align:center;\" ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -806,7 +806,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForCombo = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY}\" onchange=\"saveOpt( $DATAELEMENTID )\"";
+        final String jsCodeForCombo = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveOpt( $DATAELEMENTID )\"";
 
         StringBuffer sb = new StringBuffer();
 

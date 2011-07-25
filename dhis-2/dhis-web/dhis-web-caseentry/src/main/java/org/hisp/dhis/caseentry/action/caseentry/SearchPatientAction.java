@@ -148,6 +148,17 @@ public class SearchPatientAction
             return SUCCESS;
         }
 
+        if ( searchText != null )
+        {
+            int index = searchText.indexOf( ' ' );
+
+            if ( index != -1 && index == searchText.lastIndexOf( ' ' ) )
+            {
+                String[] keys = searchText.split( " " );
+                searchText = keys[0] + "  " + keys[1];
+            }
+        }
+
         if ( searchingAttributeId != null && searchText != null )
         {
             PatientAttribute searchingPatientAttribute = patientAttributeService
