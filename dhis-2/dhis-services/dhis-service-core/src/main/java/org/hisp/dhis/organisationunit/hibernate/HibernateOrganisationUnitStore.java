@@ -27,8 +27,13 @@ package org.hisp.dhis.organisationunit.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -47,6 +52,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.OrganisationUnitStore;
 import org.hisp.dhis.system.objectmapper.OrganisationUnitRelationshipRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
 
 /**
  * @author Kristian Nordal
@@ -155,6 +161,34 @@ public class HibernateOrganisationUnitStore
         }
 
         return query.list();
+    }
+        
+    public Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap()
+    {
+        final String sql = "select datasetid, sourceid from datasetsource";
+        
+        final Map<Integer, Set<Integer>> map = new HashMap<Integer, Set<Integer>>();
+        
+        jdbcTemplate.query( sql, new RowCallbackHandler()
+        {
+            public void processRow( ResultSet rs ) throws SQLException
+            {
+                int dataSetId = rs.getInt( 1 );
+                int organisationUnitId = rs.getInt( 2 );
+                
+                Set<Integer> dataSets = map.get( organisationUnitId );
+                
+                if ( dataSets == null )
+                {
+                    dataSets = new HashSet<Integer>();
+                    map.put( organisationUnitId, dataSets );
+                }
+                
+                dataSets.add( dataSetId );
+            }
+        } );
+        
+        return map;
     }
 
     // -------------------------------------------------------------------------

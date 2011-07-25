@@ -10,6 +10,12 @@ var indicatorFormulas = [];
 // Array with associative arrays for each data set, populated in select.vm
 var dataSets = [];
 
+// Associative array with identifier and array of assigned data sets, populated in select.vm
+var dataSetAssociationSets = [];
+
+// Associate array with mapping between organisation unit identifier and data set association set identifier, populated in select.vm
+var organisationUnitAssociationSetMap = [];
+
 // Array with keys on form {dataelementid}-{optioncomboid}-min/max with min/max values
 var currentMinMaxValueMap = [];
 
@@ -116,6 +122,35 @@ function loadDefaultForm()
 // OrganisationUnit Selection
 // -----------------------------------------------------------------------------
 
+/**
+ * Returns an array containing associative array elements with id and name 
+ * properties. The array is sorted on the element name property.
+ */
+function getSortedDataSetList()
+{
+	var associationSet = organisationUnitAssociationSetMap[currentOrganisationUnitId];
+	var orgUnitDataSets = dataSetAssociationSets[associationSet];
+	
+	var dataSetList = [];
+	
+	for ( i in orgUnitDataSets )
+	{
+		var dataSetId = orgUnitDataSets[i];
+		var dataSetName = dataSets[dataSetId].name;
+		
+		var row = [];
+		row['id'] = dataSetId;
+		row['name'] = dataSetName;
+		dataSetList[i] = row;		
+	}
+	
+	dataSetList.sort( function( a, b ) {
+		return a.name > b.name ? 1 : a.name < b.name ? -1 : 0;
+	} );
+	
+	return dataSetList;	
+}
+
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
 	currentOrganisationUnitId = orgUnits[0];
@@ -128,35 +163,41 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
     var url = 'loadDataSets.action';
 
+	$( '#selectedOrganisationUnit' ).val( organisationUnitName );
+	$( '#currentOrganisationUnit' ).html( organisationUnitName );
+
     clearListById( 'selectedDataSetId' );
 
-    $.getJSON( url, { dataSetId:dataSetId },  function( json )
+	addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
+	
+	var dataSetList = getSortedDataSetList();
+	
+	var dataSetValid = false;
+	
+	for ( i in dataSetList )
     {
-        $( '#selectedOrganisationUnit' ).val( organisationUnitName );
-        $( '#currentOrganisationUnit' ).html( organisationUnitName );
-
-        addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
-
-        for ( i in json.dataSets )
+        addOptionById( 'selectedDataSetId', dataSetList[i].id, dataSetList[i].name );
+        
+        if ( dataSetId == dataSetList[i].id )
         {
-            addOptionById( 'selectedDataSetId', json.dataSets[i].id, json.dataSets[i].name );
+        	dataSetValid = true;
         }
+    }
 
-        if ( json.dataSetValid && dataSetId != null )
-        {
-            $( '#selectedDataSetId' ).val( dataSetId );
+	if ( dataSetValid && dataSetId != null )
+	{
+		$( '#selectedDataSetId' ).val( dataSetId );
 
-            if ( periodId && periodId != -1 && dataEntryFormIsLoaded ) //TODO if period valid
-            {
-                showLoader();
-                loadDataValues();
-            }
-        } 
-        else
+        if ( periodId && periodId != -1 && dataEntryFormIsLoaded ) //TODO if period valid
         {
-            clearPeriod();
+            showLoader();
+            loadDataValues();
         }
-    } );
+    } 
+    else
+    {
+        clearPeriod();
+    }
 }
 
 selection.setListenerFunction( organisationUnitSelected );

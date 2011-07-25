@@ -40,13 +40,16 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.system.util.AuditLogUtil;
+import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -416,6 +419,47 @@ public class DefaultOrganisationUnitService
         List<OrganisationUnit> intersection = new ArrayList<OrganisationUnit>( CollectionUtils.intersection( subTree, result ) );
 
         return limit && intersection != null && intersection.size() > MAX_LIMIT ? intersection.subList( 0, MAX_LIMIT ) : intersection;   
+    }
+    
+    public OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet()
+    {
+        //TODO hierarchy ?
+        
+        Map<Integer, Set<Integer>> associationSet = organisationUnitStore.getOrganisationUnitDataSetAssocationMap();
+        
+        filterOrganisationUnitSortedDataSets( associationSet );
+        
+        OrganisationUnitDataSetAssociationSet set = new OrganisationUnitDataSetAssociationSet();
+        
+        for ( Map.Entry<Integer, Set<Integer>> entry : associationSet.entrySet() )
+        {
+            int index = set.getDataSetAssociationSets().indexOf( entry.getValue() );
+            
+            if ( index == -1 ) // Association set does not exist, add new
+            {
+                index = set.getDataSetAssociationSets().size();
+                set.getDataSetAssociationSets().add( entry.getValue() );
+            }
+            
+            set.getOrganisationUnitAssociationSetMap().put( entry.getKey(), index );
+        }
+        
+        return set;
+    }
+    
+    private void filterOrganisationUnitSortedDataSets( Map<Integer, Set<Integer>> associationMap )
+    {
+        User currentUser = currentUserService.getCurrentUser();
+        
+        if ( currentUser != null && !currentUser.getUserCredentials().isSuper() )
+        {
+            Collection<Integer> userDataSets = ConversionUtils.getIdentifiers( DataSet.class, currentUser.getUserCredentials().getAllDataSets() );
+            
+            for ( Set<Integer> dataSets : associationMap.values() )
+            {
+                dataSets.retainAll( userDataSets );
+            }
+        }
     }
     
     // -------------------------------------------------------------------------

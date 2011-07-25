@@ -28,6 +28,8 @@ package org.hisp.dhis.organisationunit;
  */
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
@@ -90,6 +92,8 @@ public interface OrganisationUnitStore
      * @param parentId the parent organisation unit identifier.
      */
     void updateOrganisationUnitParent( int organisationUnitId, int parentId );
+    
+    Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap();
     
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
