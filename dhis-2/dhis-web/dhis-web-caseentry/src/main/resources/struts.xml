@@ -26,10 +26,6 @@
         ../dhis-web-commons/javascripts/date.js</param>
     </action>
 
-    <action name="searchform" class="org.hisp.dhis.caseentry.action.caseentry.GetSelectedOrgunitAction">
-      <result name="success" type="velocity-xml">/dhis-web-caseentry/responseOrgUnit.vm</result>
-    </action>
-
     <action name="validateSearch" class="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction">
       <result name="success" type="velocity-xml">/dhis-web-caseentry/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-caseentry/responseError.vm</result>
@@ -127,6 +123,12 @@
     <action name="viewProgramStageRecords" class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
+      <param name="javascripts">javascript/dataEntry.js,../dhis-web-commons/javascripts/date.js</param>
+    </action>
+    
+     <action name="loadProgramStageRecords" class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
       <param name="javascripts">javascript/dataEntry.js,../dhis-web-commons/javascripts/date.js</param>
     </action>
 

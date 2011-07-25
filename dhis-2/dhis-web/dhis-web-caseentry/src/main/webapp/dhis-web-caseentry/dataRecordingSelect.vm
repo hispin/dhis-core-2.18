@@ -40,7 +40,7 @@
             </select>
         </td>
 		<td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-		<td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" >
+		<td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" >
 			<script type="text/javascript">
 			   datePickerValid( 'executionDate', false );
 			</script>  
@@ -52,10 +52,16 @@
 			<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" style="width:12em" disabled="disabled" >
 			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();", '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );" style="width:12em " disabled="disabled" >
 		</td>
-		<td align='right'>
-			<input type="checkbox" id="useDefaultForm" name="useDefaultForm" value="true" onclick="loadDataEntry();" />
-			<label>$i18n.getString( "use_default_form" )</label><br>	
-		</td>
+		<td></td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>
+			<input type="radio" id="useDefaultForm" name="useDefaultForm" value="true" onclick="loadDataEntry();" /><label>$i18n.getString( "use_default_form" )</label><br>	
+			<input type="radio" id="useDefaultForm" name="useDefaultForm" value="false" onclick="loadDataEntry();" checked /><label>$i18n.getString( "use_custom_form" )</label>
 		</td>
 	</tr>
 </table>
