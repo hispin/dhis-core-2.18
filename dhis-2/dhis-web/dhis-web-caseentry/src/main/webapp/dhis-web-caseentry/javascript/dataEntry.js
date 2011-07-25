@@ -1,28 +1,17 @@
 
-function organisationUnitSelected( orgUnits )
+function organisationUnitSelected( orgUnits, orgUnitNames )
 {
-	showLoader();
 	setInnerHTML( 'contentDiv', '' );
+	setFieldValue( 'orgunitName', orgUnitNames[0] );
+	
 	hideById('dataEntryFormDiv');
 	hideById('dataRecordingSelectDiv');
 	showById('searchPatientDiv');
-
-	$.ajax({
-		url: "searchform.action",
-		dataType: "xml",
-		cache: false,
-		success: function (data)
-			{
-				enable('listPatientBtn');
-				enable('searchingAttributeId');
-				enable('searchBtn');
-				jQuery('#searchText').removeAttr( 'readonly' );
-				
-				setFieldValue( 'orgunitName', $(data).find( "name" ).text() );
-			
-				hideLoader();
-			}
-		});
+	
+	enable('searchingAttributeId');
+	enable('searchText');
+	enable('searchBtn');	
+	enable('listPatientBtn');
 }
 
 selection.setListenerFunction( organisationUnitSelected );
@@ -60,7 +49,8 @@ function showSearchForm()
 isAjax = true;
 function listAllPatient()
 {
-	jQuery('#contentDiv').load( 'listAllPatients.action',
+	showLoader();
+	jQuery('#contentDiv').load( 'listAllPatients.action',{},
 		function()
 		{
 			hideById('dataRecordingSelectDiv');
@@ -155,24 +145,21 @@ function loadDataEntry()
 	}
 	
 	showLoader();
-	var useDefaultForm = jQuery("#useDefaultForm").attr('checked') ? true : false;
+	var useDefaultForm = jQuery("input[id='useDefaultForm']:checked").val();
 	
-	$.ajax({
-		url: "dataentryform.action",
-		data: 'programStageId='+getFieldValue('programStageId')+'&useDefaultForm=' +useDefaultForm,
-		cache: false,
-		dataType: "html",
-		success: function( html )
+	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
+		{ 
+			programStageId:getFieldValue('programStageId'), 
+			useDefaultForm:useDefaultForm
+		},function( )
 		{
-			setInnerHTML('dataEntryFormDiv', html );
 			enable('validationBtn');
 			enable('completeBtn');
 			enable('useDefaultForm');
 			
 			hideLoader();
 			hideById('contentDiv'); 
-		}
-	});
+		} );
 }
 
 //-----------------------------------------------------------------------------
@@ -228,11 +215,11 @@ function searchValidationCompleted( messageElement )
     }
     else if ( type == 'error' )
     {
-        window.alert( i18n_searching_patient_failed + ':' + '\n' + message );
+        showErrorMessage( i18n_searching_patient_failed + ':' + '\n' + message );
     }
     else if ( type == 'input' )
     {
-        setMessage( message );
+        showWarningMessage( message );
     }
 }
 
@@ -544,9 +531,9 @@ function keyPress( event, field )
             }
         }
     }
-    
+   
     if ( key == 13 ) /* CR */
-    {
+    { alert(key);
         nextField = getNextEntryField( field );
         if ( nextField )
         {
@@ -1064,17 +1051,35 @@ function selectProgram()
 
 function viewPrgramStageRecords( programStageInstanceId ) 
 {
-	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
 	$('#contentDataRecord').dialog('destroy').remove();
-    $('<div id="contentDataRecord">' ).load(url).dialog({
-        title: 'ProgramStage',
-		maximize: true, 
-		closable: true,
-		modal:true,
-		overlay:{background:'#000000', opacity:0.1},
-		width: 800,
-        height: 400
-    });
+    $('<div id="contentDataRecord">' ).load("viewProgramStageRecords.action",
+		{
+			programStageInstanceId: programStageInstanceId
+			
+		}).dialog(
+		{
+			title: 'ProgramStage',
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 800,
+			height: 400
+		});
+}
+
+function loadProgramStageRecords( programStageInstanceId ) 
+{
+	setInnerHTML('dataEntryFormDiv', '');
+	showLoader();
+	var useDefaultForm = jQuery("#useDefaultForm").attr('checked') ? true : false;
+    $('#dataEntryFormDiv' ).load("loadProgramStageRecords.action",
+		{
+			programStageInstanceId: programStageInstanceId,
+			useDefaultForm:useDefaultForm
+		}, function() {
+			hideLoader();
+		});
 }
 
 function entryFormContainerOnReady()

@@ -9,7 +9,8 @@ jQuery("#entryFormContainer").ready(function(){
         <td>
             <strong>$i18n.getString( "full_name" ):</strong>$encoder.htmlEncode( $patient.getFullName() )<br>
             <strong>$i18n.getString( "gender" ):</strong>$encoder.htmlEncode( $patient.gender )<br>
-            <strong>$i18n.getString( "date_of_birth" ):</strong>$format.formatDate( $patient.birthDate )<br>
+            <strong>$i18n.getString( "date_of_birth" ):</strong>
+			$format.formatDate( $patient.birthDate )<br>
             <strong>$i18n.getString( "age" ):</strong>$encoder.htmlEncode( $patient.getAge() )
         </td>
 	</tr>
@@ -48,18 +49,26 @@ jQuery("#entryFormContainer").ready(function(){
 		<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" #if($programStageInstance.executionDate) #else disabled #end>
 			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();" style="width:12em " #if($programStageInstance.executionDate) #else disabled #end>
 		</td>
-		<td align='right'>
-			<input type="checkbox" id="useDefaultForm" name="useDefaultForm" value="true" onclick="loadDataEntry();" />
-			<label>$i18n.getString( "use_default_form" )</label><br>
-		</td>
-		<td>
-		</td>
+		<td></td>
+		<td></td>
     </tr>
+	
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>
+			<input type="radio" id="useDefaultForm" name="useDefaultForm" value="true" onclick="loadProgramStageRecords($programStageInstance.id);" /><label>$i18n.getString( "use_default_form" )</label><br>	
+			<input type="radio" id="useDefaultForm" name="useDefaultForm" value="false" onclick="loadProgramStageRecords($programStageInstance.id);" checked='true' /><label>$i18n.getString( "use_custom_form" )</label>
+		</td>
+	</tr>
 </table>
 
 </form>
 
-<form id="dataEntryFormDiv" name="dataEntryFormDiv" method="post" action="selectDataRecording.action">
+#parse( "dhis-web-commons/loader/loader.vm" )
+
+<div id="dataEntryFormDiv" name="dataEntryFormDiv" method="post" action="selectDataRecording.action">
 
 <hr style="clear:both">
 

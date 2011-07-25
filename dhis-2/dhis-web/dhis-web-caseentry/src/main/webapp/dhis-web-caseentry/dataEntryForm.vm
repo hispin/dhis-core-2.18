@@ -2,6 +2,10 @@
 jQuery("#entryFormContainer").ready(function(){
     setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
 	setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
+	
+	$('#executionDate').change(function() {
+		saveExecutionDate( $programStageInstance.id, byId('programStageId').text );
+	});
 	entryFormContainerOnReady();
 });
 </script>

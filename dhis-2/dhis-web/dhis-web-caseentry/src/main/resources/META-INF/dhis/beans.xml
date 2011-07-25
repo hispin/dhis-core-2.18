@@ -28,11 +28,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
   </bean>
 
-  <bean id="org.hisp.dhis.caseentry.action.caseentry.GetSelectedOrgunitAction" class="org.hisp.dhis.caseentry.action.caseentry.GetSelectedOrgunitAction"
-    scope="prototype">
-    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-  </bean>
-
   <bean id="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction" class="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction"
     scope="prototype">
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
