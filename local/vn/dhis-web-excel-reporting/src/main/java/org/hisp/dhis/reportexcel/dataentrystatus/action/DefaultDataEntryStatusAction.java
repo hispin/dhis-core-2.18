@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportexcel.dataentrystatus.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.dataentrystatus.action;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -43,7 +43,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
@@ -184,26 +183,28 @@ public class DefaultDataEntryStatusAction
                 dataSets.retainAll( dataSetUserAuthorityGroups );
             }
 
-            dataStatus = new ArrayList<DataEntryStatus>( exportReportService.getDataEntryStatusDefaultByDataSets( dataSets ) );
+            dataStatus = new ArrayList<DataEntryStatus>( exportReportService
+                .getDataEntryStatusDefaultByDataSets( dataSets ) );
 
             maps = new HashMap<DataSet, List<DataEntryStatus>>();
 
             Calendar calendar = Calendar.getInstance();
+            List<Period> periods = null;
 
             for ( DataEntryStatus d : dataStatus )
             {
                 d.setNumberOfDataElement( d.getDataSet().getDataElements().size() );
 
-                PeriodType periodType = d.getPeriodType();
+                periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( d.getPeriodType(), DateUtils
+                    .getFirstDayOfYear( calendar.get( Calendar.YEAR ) ), DateUtils.getLastDayOfYear( calendar
+                    .get( Calendar.YEAR ) ) ) );
 
-                List<Period> periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( periodType,
-                    DateUtils.getFirstDayOfYear( calendar.get( Calendar.YEAR ) ), DateUtils.getLastDayOfYear( calendar
-                        .get( Calendar.YEAR ) ) ) );
-                List<DataEntryStatus> ds_temp = new ArrayList<DataEntryStatus>();
                 Collections.sort( periods, new PeriodComparator() );
+
+                List<DataEntryStatus> ds_temp = new ArrayList<DataEntryStatus>();
+
                 for ( Period p : periods )
                 {
-
                     DataEntryStatus dataStatusNew = new DataEntryStatus();
                     dataStatusNew.setPeriod( p );
                     dataStatusNew.setNumberOfDataElement( d.getNumberOfDataElement() );

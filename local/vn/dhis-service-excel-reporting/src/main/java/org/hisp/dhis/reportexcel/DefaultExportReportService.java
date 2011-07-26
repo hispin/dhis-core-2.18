@@ -53,9 +53,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultExportReportService
     implements ExportReportService
 {
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ExportReportStore exportReportStore;
 
@@ -253,9 +253,9 @@ public class DefaultExportReportService
         exportReportStore.deleteDataElementGroupOrder( id );
     }
 
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
     // Data Entry Status
-    // -------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public int countDataValueOfDataSet( DataSet arg0, OrganisationUnit arg1, Period arg2 )
     {

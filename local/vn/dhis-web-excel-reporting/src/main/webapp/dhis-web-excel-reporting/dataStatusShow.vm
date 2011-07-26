@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "dataset_completed_report" ) #openHelp( "excelReportingDataEntryStatusReport" )</h3>
+<h3>$i18n.getString( "data_status" ) #openHelp( "excelReportingDataEntryStatusReport" )</h3>
 
 <table width="100%" class="list">
 	<tr>
@@ -14,9 +14,7 @@
 					#foreach($ds_ in $maps.get($ds.dataSet))
 						<tr style="background-color:white">
 							<td rowspan=2 style="width:150px">$format.formatPeriod($ds_.period)</td>		
-							<td rowspan=2 style="width:25px">
-								<a href="javascript:viewData($ds.dataSet.id,$ds_.period.id,$organisationUnit.id)"><img src="../images/view_report.png" title="$i18n.getString( 'view_data' )"></a>								
-							</td>
+							<td rowspan=2 style="width:25px"><a href="javascript:viewData($ds.dataSet.id,$ds_.period.id,$organisationUnit.id)"><img src="../images/view_report.png" title="$i18n.getString( 'view_data' )"></a></td>
 							<td style="width:150px">$i18n.getString( 'number_datavalue' )</td>
 							<td title="$ds_.numberOfDataValue/$ds_.numberOfDataElement"><div style="text-align:center;#if($ds_.getCompletedPercent()>0) padding:2px;color:white; #end width:$ds_.getCompletedPercent()%;background-color:green;">$ds_.getCompletedPercent()%</div></td>	
 						</tr>	

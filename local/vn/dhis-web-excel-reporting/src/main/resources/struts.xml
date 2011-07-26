@@ -537,6 +537,12 @@
 			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
+		
+		<action name="updateDefault"
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.UpdateDefaultForDataStatusAction">
+			<result name="success" type="velocity">/dhis-web-excel-reporting/loadDefault.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
 
 		<action name="deleteDataEntryStatus"
 			class="org.hisp.dhis.reportexcel.dataentrystatus.action.DeleteDataEntryStatusAction">
@@ -545,29 +551,23 @@
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-		<action name="openUpdateDataEntryStatus"
-			class="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataEntryStatusAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
+		<action name="openAddDataEntryStatus" class="org.hisp.dhis.reportexcel.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/updateDataStatus.vm</param>
-			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
-			<param name="menuTreeHeight">400</param>
+			<param name="page">/dhis-web-excel-reporting/addDataStatus.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-		<action name="openAddDataEntryStatus" class="org.hisp.dhis.reportexcel.action.NoAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
+		<action name="openUpdateDataEntryStatus"
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataEntryStatusAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/addDataStatus.vm</param>
-			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
-			<param name="menuTreeHeight">400</param>
+			<param name="page">/dhis-web-excel-reporting/updateDataStatus.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
 		<action name="getDataSets"
-			class="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataSetAction">
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataSetsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseDataSets.vm</result>
 		</action>
@@ -584,7 +584,7 @@
 		<action name="viewByPeriodForm"
 			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewByPeriodFormAction">
 			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonPeriods.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>	
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 

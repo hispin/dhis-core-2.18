@@ -36,23 +36,33 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The purpose of the OrganisationUnitHierarchy object is to store the parent-child relationship of the
- * registered organisation units together with a timestamp. The parent-child relationships are
- * stored in a Map, where the key column stores the organisation unit id and the value column
- * stores the id of the parent organisation unit.
- * 
  * @author Lars Helge Overland
- * @version $Id: OrganisationUnitHierarchy.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class OrganisationUnitHierarchy
 {
     private Map<Integer, Collection<Integer>> preparedRelationships = new HashMap<Integer, Collection<Integer>>();
     
-    private Collection<OrganisationUnitRelationship> relationships;
+    private Map<Integer, Set<Integer>> relationships = new HashMap<Integer, Set<Integer>>();
     
-    public OrganisationUnitHierarchy( Collection<OrganisationUnitRelationship> relationships )
+    public OrganisationUnitHierarchy( Map<Integer, Set<Integer>> relationships )
     {
         this.relationships = relationships;
+    }
+    
+    public OrganisationUnitHierarchy( Collection<OrganisationUnitRelationship> relations )
+    {
+        for ( OrganisationUnitRelationship relation : relations )
+        {
+            Set<Integer> children = relationships.get( relation.getParentId() );
+            
+            if ( children == null )
+            {
+                children = new HashSet<Integer>();
+                relationships.put( relation.getParentId(), children );
+            }
+            
+            children.add( relation.getChildId() );
+        }
     }
     
     public OrganisationUnitHierarchy prepareChildren( Collection<OrganisationUnit> parents )
@@ -87,12 +97,13 @@ public class OrganisationUnitHierarchy
         
         for ( int i = 0; i < childCounter; i++ )
         {
-            for ( OrganisationUnitRelationship entry : relationships )
+            Set<Integer> currentChildren = relationships.get( children.get( i ) );
+            
+            if ( currentChildren != null )
             {
-                if ( entry.getParentId() == children.get( i ) )
-                {
-                    children.add( childCounter++, entry.getChildId() );
-                }
+                children.addAll( currentChildren );
+            
+                childCounter += currentChildren.size();
             }
         }
         

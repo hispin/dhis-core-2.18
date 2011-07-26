@@ -3,7 +3,7 @@
 	#foreach( $dataSet in $dataSets )
 		<dataset>
 			<id>$dataSet.id</id>
-			<name>$dataSet.name</name>
+			<name>$encoder.xmlEncode( $dataSet.name )</name>
 		</dataset>
 	#end
 </datasets>

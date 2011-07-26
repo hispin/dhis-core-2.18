@@ -392,6 +392,7 @@ public class HibernateExportReportStore
         {
             Criteria criteria = session.createCriteria( DataEntryStatus.class );
             criteria.add( Restrictions.eq( "dataSet", dataSet ) );
+            criteria.add( Restrictions.eq( "makeDefault", true ) );
             result.addAll( criteria.list() );
         }
 
