@@ -12,10 +12,10 @@
 	<modules>
 		<module>dhis-api-hr</module>
 		<module>dhis-service-hr</module>
-		<module>dhis-web-hrentry</module>
-		<module>dhis-web-maintenance-hr</module>
 		<module>dhis-service-importexport-hr</module>
 		<module>dhis-support-jdbc-hr</module>
+		<module>dhis-web-hrentry</module>
+		<module>dhis-web-maintenance-hr</module>
 	</modules>
 </project>
 
