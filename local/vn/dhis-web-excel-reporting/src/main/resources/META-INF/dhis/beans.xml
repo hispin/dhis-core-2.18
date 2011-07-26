@@ -624,6 +624,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
+		id="org.hisp.dhis.reportexcel.dataentrystatus.action.UpdateDefaultForDataStatusAction"
+		class="org.hisp.dhis.reportexcel.dataentrystatus.action.UpdateDefaultForDataStatusAction"
+		scope="prototype">
+		<property name="exportReportService" ref="org.hisp.dhis.reportexcel.ExportReportService" />
+	</bean>
+
+	<bean
 		id="org.hisp.dhis.reportexcel.dataentrystatus.action.DeleteDataEntryStatusAction"
 		class="org.hisp.dhis.reportexcel.dataentrystatus.action.DeleteDataEntryStatusAction"
 		scope="prototype">
@@ -652,13 +659,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataSetAction"
-		class="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataSetAction"
+		id="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataSetsAction"
+		class="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataSetsAction"
 		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
-		<property name="selectionManager" 
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="dataSetService" 
+			ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="exportReportService" 
+			ref="org.hisp.dhis.reportexcel.ExportReportService" />
 	</bean>
 
 	<!-- DATA SET COMPLETED BEAN -->

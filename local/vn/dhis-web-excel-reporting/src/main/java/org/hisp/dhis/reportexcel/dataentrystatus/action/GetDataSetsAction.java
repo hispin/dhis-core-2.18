@@ -33,8 +33,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.reportexcel.ExportReportService;
+import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -46,7 +48,7 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GetDataSetAction
+public class GetDataSetsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -67,18 +69,32 @@ public class GetDataSetAction
         this.userService = userService;
     }
 
-    private OrganisationUnitSelectionManager selectionManager;
+    private DataSetService dataSetService;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.selectionManager = selectionManager;
+        this.dataSetService = dataSetService;
+    }
+
+    private ExportReportService exportReportService;
+
+    public void setExportReportService( ExportReportService exportReportService )
+    {
+        this.exportReportService = exportReportService;
     }
 
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-    private List<DataSet> dataSets;
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    private List<DataSet> dataSets = new ArrayList<DataSet>();
 
     public List<DataSet> getDataSets()
     {
@@ -92,28 +108,37 @@ public class GetDataSetAction
     public String execute()
         throws Exception
     {
-        if ( selectionManager.getSelectedOrganisationUnit() != null )
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+
+        for ( DataEntryStatus des : exportReportService.getALLDataEntryStatus() )
         {
-            dataSets = new ArrayList<DataSet>( selectionManager.getSelectedOrganisationUnit().getDataSets() );
-
-            if ( !currentUserService.currentUserIsSuper() )
+            if ( dataSets.contains( des.getDataSet() ) )
             {
-                UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
-
-                Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
-
-                for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
-                {
-                    dataSetUserAuthorityGroups.addAll( userAuthorityGroup.getDataSets() );
-                }
-
-                dataSets.retainAll( dataSetUserAuthorityGroups );
+                dataSets.remove( des.getDataSet() );
             }
+        }
+
+        if ( dataSetId != null )
+        {
+            dataSets.add( dataSetService.getDataSet( dataSetId ) );
+        }
+
+        if ( !currentUserService.currentUserIsSuper() )
+        {
+            UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
+
+            Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
+
+            for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
+            {
+                dataSetUserAuthorityGroups.addAll( userAuthorityGroup.getDataSets() );
+            }
+
+            dataSets.retainAll( dataSetUserAuthorityGroups );
         }
 
         Collections.sort( dataSets, new DataSetNameComparator() );
 
         return SUCCESS;
     }
-
 }

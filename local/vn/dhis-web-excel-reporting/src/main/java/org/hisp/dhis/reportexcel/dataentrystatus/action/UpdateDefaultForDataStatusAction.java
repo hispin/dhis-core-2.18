@@ -26,31 +26,21 @@ package org.hisp.dhis.reportexcel.dataentrystatus.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.reportexcel.ExportReportService;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class UpdateDataEntryStatusAction
+public class UpdateDefaultForDataStatusAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
 
     private ExportReportService exportReportService;
 
@@ -60,34 +50,30 @@ public class UpdateDataEntryStatusAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer dataSetId;
-
-    private boolean makeDefault;
-
-    private Integer dataStatusId;
-
-    // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
+
+    private Integer dataStatusId;
 
     public void setDataStatusId( Integer dataStatusId )
     {
         this.dataStatusId = dataStatusId;
     }
 
-    public void setDataSetId( Integer dataSetId )
-    {
-        this.dataSetId = dataSetId;
-    }
+    private boolean makeDefault;
 
     public void setMakeDefault( boolean makeDefault )
     {
         this.makeDefault = makeDefault;
     }
-    
+
+    private DataEntryStatus dataStatus;
+
+    public DataEntryStatus getDataStatus()
+    {
+        return dataStatus;
+    }
+
     // -------------------------------------------------------------------------
     // Method implementation
     // -------------------------------------------------------------------------
@@ -95,16 +81,12 @@ public class UpdateDataEntryStatusAction
     public String execute()
         throws Exception
     {
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        dataStatus = exportReportService.getDataEntryStatus( dataStatusId );
 
-        DataEntryStatus dataStatus = exportReportService.getDataEntryStatus( dataStatusId );
-        dataStatus.setDataSet( dataSet );
         dataStatus.setMakeDefault( makeDefault );
-        dataStatus.setPeriodType( dataSet.getPeriodType() );
 
         exportReportService.updateDataEntryStatus( dataStatus );
 
         return SUCCESS;
     }
-
 }

@@ -1,33 +1,38 @@
-<h3>$i18n.getString( "add" ) $i18n.getString( "dataset_completed_report" )</h3>
+<script>
+	jQuery(document).ready(function(){
+		validation( 'addDataEntryStatus', function( form ){ form.submit(); } );
+	});
+</script>
+
+<h3>$i18n.getString( "add" ) $i18n.getString( "data_status" )</h3>
+
+<form id="addDataEntryStatus" action="addDataEntryStatus.action" method="post">
 <table>
 	<tr>
-		<td>$i18n.getString( 'dataset' )</td>
+		<td><label for="name">$i18n.getString( 'dataset' )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="dataSetId" name="dataSetId">
+			<select id="dataSetId" name="dataSetId" class="{validate:{required:true}}">
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td>$i18n.getString( 'make_default' )</td>
-		<td><input type="checkbox" id="makeDefault" name="makeDefault"/></td>
+		<td><input type="checkbox" id="makeDefault" name="makeDefault" value="true"/></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td colspan=2 align=center>
-			<input type="button" value="$i18n.getString( 'ok' )" style="width:100px" onclick="addDataStatus()"/>
-			<input type="button" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location = 'listDataEntryStatus.action'"/>
+		<td colspan="2" align="center">
+			<input type="submit" value="$i18n.getString( 'ok' )" style="width:100px"/>
+			<input type="button" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location='listDataEntryStatus.action'"/>
 		</td>
 	</tr>
 </table>
+</form>
 <script language="javascript">
-	function addDataStatus(){
-		window.location = 'addDataEntryStatus.action?dataSetId=' + getFieldValue('dataSetId') + "&makeDefault=" + document.getElementById('makeDefault').checked;
-	}
-
-
+	
 	var request = new Request();
 	request.setCallbackSuccess( dataSetResponse );	
 	request.setResponseTypeXML( 'xmlObject' );
@@ -37,7 +42,8 @@
 		var listDataSet = xmlObject.getElementsByTagName("dataset");
 		var dataSets = document.getElementById("dataSetId");
 		dataSets.options.length = 0;
-		for(var i=0;i<listDataSet.length;i++){
+		for ( var i=0 ; i < listDataSet.length ; i++ )
+		{
 			var id = listDataSet.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
 			var name = listDataSet.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
 			dataSets.options.add(new Option(name, id),null);			

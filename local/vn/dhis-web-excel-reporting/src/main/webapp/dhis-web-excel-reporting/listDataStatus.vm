@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "data_status" ) #openHelp( "excelReportingDataEntryStatus" )</h3>
+<h3>$i18n.getString( "data_status_management" ) #openHelp( "excelReportingDataEntryStatus" )</h3>
 <table width="100%">
 	<tr>
 		<td>
@@ -23,8 +23,8 @@
 	#foreach($ds in $dataStatus)
 		<tr #alternate( $mark )>
 			<td>$ds.dataSet.name</td>
-			<td>
-				<input type="checkbox" #if($ds.makeDefault) checked=true #end disabled=true/>
+			<td id="td${ds.id}">
+				<input type="checkbox" #if($ds.makeDefault) checked="true" #end value="$ds.makeDefault" onchange="updateDefault( $ds.id, $ds.makeDefault )"/>
 			</td>
 			<td>
 				<a href="javascript:deleteDataStatus('$ds.id');" title="$i18n.getString( 'delete' )"><img src="../images/delete.png" alt="$i18n.getString( 'delete' )"></a>
@@ -48,6 +48,12 @@
 			window.location = "deleteDataEntryStatus.action?dataStatusId=" + id;
 		}
 	}
+	
+	function updateDefault( id, value )
+	{
+		jQuery( "#td" + id ).load( 'updateDefault.action', { dataStatusId: id, makeDefault: !value }, function() {});
+	}
+	
 	jQuery(document).ready(function(){		
 		tableSorter( 'listTable' );	
 	});
