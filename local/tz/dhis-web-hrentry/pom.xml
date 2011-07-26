@@ -41,6 +41,12 @@
 			<artifactId>dhis-service-hr</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.hisp.dhis</groupId>
+			<artifactId>dhis-service-importexport-hr</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>

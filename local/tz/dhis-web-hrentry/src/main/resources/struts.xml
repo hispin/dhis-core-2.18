@@ -265,10 +265,9 @@
 	
 	<!-- HR Import Export -->
 	<action name="displayHrImportForm" class="org.hisp.dhis.importexport.action.imp.GetHrImportOptionsAction">
-      <result name="dhis14" type="redirect">displayConfigDhis14Form.action</result>
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-importexport/importForm.vm</param>
-      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="page">/dhis-web-hrentry/importForm.vm</param>
+      <param name="menu">/dhis-web-hrentry/menu.vm</param>
       <param name="javascripts">javascript/import.js,javascript/process.js</param>
     </action>
 	<action name="import" class="org.hisp.dhis.importexport.action.imp.ImportAction">
