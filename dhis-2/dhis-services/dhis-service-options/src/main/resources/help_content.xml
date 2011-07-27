@@ -2444,4 +2444,75 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
       <para>This option is for system administrators only to use. The cache statistics shows the status of the application level cache. The application level cache refers to the objects and query results that the application is caching in order to speed up performance. If the database has been modified directly the application cache needs to be cleared for it to take effect.</para>
     </section>
   </chapter>
+  <chapter>
+    <title>Beneficiaries and Programs</title>
+    <para>In this section you will learn how to:</para>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>Register beneficiaries and enrol into a program</para>
+        </listitem>
+        <listitem>
+          <para>Create beneficiary attributes and attribute groups</para>
+        </listitem>
+		<listitem>
+          <para>Create a beneficiary identifier type</para>
+        </listitem>
+		<listitem>
+          <para>Create a relationship type</para>
+        </listitem>
+		<listitem>
+          <para>Create program and attribute</para>
+        </listitem>
+		<listitem>
+          <para>Define a beneficiary aggregation</para>
+        </listitem>
+		<listitem>
+          <para>Define a validation criteria</para>
+        </listitem>
+		<listitem>
+          <para>Beneficiary Mobile Setting</para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <section id="patient">
+		<title>Beneficiary</title>
+        <para>Beneficiary provides a mechanism for admitting a beneficiary, includes register a new beneficiary, set relationships and enroll into a program. </para>
+		<para>In the registration process, the details - which are related to the personal information, identification, contact and location details &amp; health provider details, are entered in the application. In the registration itself, beneficiary is provided with the unique identification number. This number will be unique and will not match with the identification number of any person in the state jurisdiction. The issue of identification number will be the responsibility of facility where the beneficiary is registered first time.</para>
+		<para>To show beneficiary list by the selected facility, click the "List All Beneficiaries" button.</para>
+		<para>To search beneficiaries by name,identifier or beneficiary attributes, enter key into the text field and click the "Search" button or type Enter key.</para>
+		<para>To add a new beneficiary, click the "Add new" button.</para>
+		<para>To update the private information of a beneficiary, click the "Edit Profile" icon.</para>
+		<para>After the beneficiary registration, beneficiary needs to be enrolled in any of the program available in the application and for which she/he has been registered by entering date of enrollment and date of incident. Date of enrollment is the date date of registration of beneficiary with a facility. Date of incidence is the date when he/she got the disease. For instance, when a person comes for treatment, i.e. pregnant woman. Then the system should automatically generate visit dates for the subsequent ANC visits. But to generate these visit schedules, we need to ask the mother when is the first time she got pregnant. The day she came for treatment might not necessarily be the day she got pregnant, therefore for a better treatment ( by having appropriate visit dates ), we need to know information about the date she got pregnant - that is what the Date of Incidence is all about.</para>
+		<para>To enrol a beneficary in a program, click the "Program Enrollment Management" icon.</para>
+		<para>To open relationship list of the beneficiary, click the "Relationship Management" icon.</para>
+		<para>To add new a person who has relationship with the beneficiary, click the "Add dependent" icon.</para>
+		<para>To show details of a beneficiary, click the "Show details" icon.</para>
+	</section>
+	<section id="patient_attribute">
+		<title>Beneficiary attribute</title>
+        <para>Beneficiary attribute provides a mechanism for creating or updating a beneficiary attribute. The defined attributes will be used for registering a beneficiary.</para>
+		<para>To add a new beneficiary attribute, click the "Add new" button. Fill all fields with red asterisk, and click "Add" button.</para>
+	</section>
+	<section id="patient_attribute_group">
+		<title>Beneficiary Attribute Group</title>
+        <para>Beneficiary attribute group provides a mechanism for classifying related to beneficiary attributes. For instance, two attributes "Register person Phone number" and "Register person Address" might be grouped together into a beneficiary attribute group "Details of Registered person".</para>
+		<para>To add a new attribute group, click the "Add new" button. Fill in the "Name" field and then select all attributes that should belong to the group from the left panel. Click the "Move selected" button to add the selected attributes to the attribute group. Click the "Remove selected" button to remove all attributes from the group that have been selected in the right panel. Finally, click the "Add" button to save changes, or the "Cancel" button to discard any changes.</para>
+	</section>
+	<section id="patient_identifier_type">
+		<title>Beneficiary Identifier Type</title>
+        <para>Beneficiary identifier type provides a mechanism for defining identifiers associated with the registration of a beneficiary, such as Passport number, PAN, driving license, health identifier... </para>
+		<para>To add a new identifier type, click the "Add new" button. Fill all fields with red asterisk, and click "Add" button.</para>
+	</section>
+	<section id="relationship_type">
+		<title>Relationship Type</title>
+        <para>Relationship type provides a mechanism for defining  any relationship types and link beneficiaries through these relationship types by creating specific relationships.</para> 
+		<para>To add a new relationship type, click the "Add new" button. Fill all fields in "Add new Relationship Type" form, and click "Add" button.</para>
+	</section>
+	<section id="patient_registration">
+		<title>Beneficiary Registration </title>
+        <para>Beneficiary registration provides a mechanism for managing facilities which allow to registry new benificiaries or not.</para> 
+		<para>There are two process for registering facilities, one is where the admininistrator will say which facility can register and second is when end user logs in and select a facility, system will display waring message if the selected facility cannot registry bebeficiaries; else, the system will display the functions to register beneficiaries.</para>
+	</section>
+   </chapter>
 </book>

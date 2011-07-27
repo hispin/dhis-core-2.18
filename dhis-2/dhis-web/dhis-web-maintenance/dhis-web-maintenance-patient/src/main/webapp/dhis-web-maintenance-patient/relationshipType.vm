@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "relationship_type_management" )</h3>
+<h3>$i18n.getString( "relationship_type_management" ) #openHelp( "relationship_type" )</h3>
 
 <table class="mainPageTable">
   <tr>
