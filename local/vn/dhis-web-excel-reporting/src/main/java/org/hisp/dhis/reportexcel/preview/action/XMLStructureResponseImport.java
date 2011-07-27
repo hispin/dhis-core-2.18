@@ -27,6 +27,7 @@ package org.hisp.dhis.reportexcel.preview.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.io.FilenameUtils.getExtension;
 import static org.hisp.dhis.reportexcel.utils.ExcelUtils.convertAlignmentString;
 import static org.hisp.dhis.reportexcel.utils.ExcelUtils.readSpecialValueByPOI;
 
@@ -42,6 +43,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hisp.dhis.reportexcel.importitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importitem.ExcelItemGroup;
 
@@ -102,7 +104,14 @@ public class XMLStructureResponseImport
 
         FileInputStream inputStream = new FileInputStream( new File( pathFileName ) );
 
-        this.WORKBOOK = new HSSFWorkbook( inputStream );
+        if ( getExtension( pathFileName ).equals( "xls" ) )
+        {
+            this.WORKBOOK = new HSSFWorkbook( inputStream );
+        }
+        else
+        {
+            this.WORKBOOK = new XSSFWorkbook( inputStream );
+        }
 
         this.writeFormattedXML( collectSheets, importItems, bWriteDescription, type );
     }
