@@ -175,11 +175,11 @@ public class GetDataRecordsAction
         return programInstanceMap;
     }
 
-    private Map<Patient, PatientAttributeValue> patinetAttributeValueMap = new HashMap<Patient, PatientAttributeValue>();
+    private Map<Integer, PatientAttributeValue> patientAttributeValueMap = new HashMap<Integer, PatientAttributeValue>();
 
-    public Map<Patient, PatientAttributeValue> getPatinetAttributeValueMap()
+    public Map<Integer, PatientAttributeValue> getPatientAttributeValueMap()
     {
-        return patinetAttributeValueMap;
+        return patientAttributeValueMap;
     }
 
     Collection<Patient> patientListByOrgUnit;
@@ -220,14 +220,20 @@ public class GetDataRecordsAction
         // Program instances for the selected program
         // ---------------------------------------------------------------------
 
-        Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
-
         total = patientService.countGetPatientsByOrgUnitProgram( organisationUnit, program );
 
         this.paging = createPaging( total );
 
         patientListByOrgUnit = new ArrayList<Patient>( patientService.getPatients( organisationUnit, program, paging
             .getStartPos(), paging.getPageSize() ) );
+
+        if ( sortPatientAttribute != null )
+        {
+            patientAttributeValueMap = patientAttributeValueService.getPatientAttributeValueMapForPatients(
+                patientListByOrgUnit, sortPatientAttribute );
+        }
+        
+        Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
         for ( Patient patient : patientListByOrgUnit )
         {
@@ -246,11 +252,6 @@ public class GetDataRecordsAction
 
                     programInstances.add( programInstance );
 
-                    PatientAttributeValue patientAttributeValue = patientAttributeValueService
-                        .getPatientAttributeValue( patient, sortPatientAttribute );
-
-                    patinetAttributeValueMap.put( patient, patientAttributeValue );
-
                     List<ProgramStageInstance> programStageInstanceList = new ArrayList<ProgramStageInstance>(
                         programInstance.getProgramStageInstances() );
                     Collections.sort( programStageInstanceList, new ProgramStageInstanceComparator() );
@@ -259,15 +260,6 @@ public class GetDataRecordsAction
                     programStageInstances.addAll( programStageInstanceList );
                 }
             }
-        }
-
-        // ---------------------------------------------------------------------
-        // Sorting PatientList by selected Patient Attribute
-        // ---------------------------------------------------------------------
-
-        if ( sortPatientAttributeId != null )
-        {
-            patientListByOrgUnit = patientService.sortPatientsByAttribute( patientListByOrgUnit, sortPatientAttribute );
         }
 
         colorMap = programStageInstanceService.colorProgramStageInstances( programStageInstances );

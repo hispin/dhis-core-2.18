@@ -164,6 +164,27 @@ public class DefaultPatientAttributeValueService
         return patentAttributeValueMap;
     }
 
+    public Map<Integer, PatientAttributeValue> getPatientAttributeValueMapForPatients( Collection<Patient> patients,
+        PatientAttribute patientAttribute )
+    {
+        Map<Integer, PatientAttributeValue> attributeValueMap = new HashMap<Integer, PatientAttributeValue>();
+
+        Collection<PatientAttributeValue> patientAttributeValues = getPatientAttributeValues( patients );
+
+        if ( patientAttributeValues != null )
+        {
+            for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+            {
+                if ( patientAttributeValue.getPatientAttribute() == patientAttribute )
+                {
+                    attributeValueMap.put( patientAttributeValue.getPatient().getId(), patientAttributeValue );
+                }
+            }
+        }
+
+        return attributeValueMap;
+    }
+
     public Collection<PatientAttributeValue> searchPatientAttributeValue( PatientAttribute patientAttribute,
         String searchText )
     {

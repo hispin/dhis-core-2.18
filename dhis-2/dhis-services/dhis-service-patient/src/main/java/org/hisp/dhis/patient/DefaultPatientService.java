@@ -30,12 +30,11 @@ package org.hisp.dhis.patient;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -332,9 +331,9 @@ public class DefaultPatientService
     @Override
     public Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute )
     {
-        SortedMap<String, Patient> patientsSortedByAttribute = new TreeMap<String, Patient>();
+        List<PatientAttributeValue> patientsSortedByAttribute = new ArrayList<PatientAttributeValue>();
 
-        Set<Patient> sortedPatients = new HashSet<Patient>();
+        Collection<Patient> sortedPatients = new ArrayList<Patient>();
 
         // ---------------------------------------------------------------------
         // Better to fetch all attribute values at once than fetching the
@@ -345,14 +344,12 @@ public class DefaultPatientService
             .getPatientAttributeValues( patients );
 
         if ( patientAttributeValues != null )
-        {
+        {        
             for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
             {
                 if ( patientAttribute == patientAttributeValue.getPatientAttribute() )
                 {
-                    patientsSortedByAttribute.put( patientAttributeValue.getValue() + "-"
-                        + patientAttributeValue.getPatient().getFullName() + "-"
-                        + patientAttributeValue.getPatient().getId(), patientAttributeValue.getPatient() );
+                    patientsSortedByAttribute.add(  patientAttributeValue );
                 }
             }
         }
@@ -361,19 +358,15 @@ public class DefaultPatientService
         // Make sure all patients are in the sorted list - because all
         // patients might not have the sorting attribute/value
         // ---------------------------------------------------------------------
-
-        for ( Patient patient : patientsSortedByAttribute.values() )
+        
+        for( PatientAttributeValue patientAttributeValue : patientsSortedByAttribute )
         {
-            sortedPatients.add( patient );
+            sortedPatients.add( patientAttributeValue.getPatient() );
         }
-
-        for ( Patient patient : patients )
-        {
-            if ( !sortedPatients.contains( patient ) )
-            {
-                sortedPatients.add( patient );
-            }
-        }
+        
+        patients.removeAll( patientsSortedByAttribute );
+        
+        sortedPatients.addAll( patients );
 
         return sortedPatients;
     }
@@ -383,7 +376,7 @@ public class DefaultPatientService
     {
         return patientStore.getByNames( name.toLowerCase() );
     }
-    
+
     @Override
     public Collection<Patient> getPatientsByNames( String name, int min, int max )
     {
@@ -477,7 +470,7 @@ public class DefaultPatientService
     {
         return patientStore.countGetPatientsByOrgUnitProgram( organisationUnit, program );
     }
-
+    
     @Override
     public Object getObjectValue( String property, String value, I18nFormat format )
     {

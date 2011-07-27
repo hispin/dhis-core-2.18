@@ -62,6 +62,8 @@ public interface PatientAttributeValueService
     Collection<PatientAttributeValue> getAllPatientAttributeValues();
 
     Map<Integer, Collection<PatientAttributeValue>> getPatientAttributeValueMapForPatients( Collection<Patient> patients );
+    
+    Map<Integer, PatientAttributeValue> getPatientAttributeValueMapForPatients( Collection<Patient> patients, PatientAttribute patientAttribute );
 
     Collection<PatientAttributeValue> searchPatientAttributeValue( PatientAttribute patientAttribute, String searchText );   
 
