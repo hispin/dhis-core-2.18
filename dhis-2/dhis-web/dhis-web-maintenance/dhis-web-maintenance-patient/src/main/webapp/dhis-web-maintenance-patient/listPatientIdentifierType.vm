@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "patient_identifier_type_management" )</h3>
+<h3>$i18n.getString( "patient_identifier_type_management" ) #openHelp( "patient_identifier_type" )</h3>
 
 <table class="mainPageTable">
   <tr>
