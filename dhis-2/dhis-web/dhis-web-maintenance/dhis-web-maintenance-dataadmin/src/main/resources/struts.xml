@@ -17,7 +17,6 @@
 		<!-- Locking -->
 
     <action name="displayLockingForm" class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction">
-      <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/collectiveDataLockingForm.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
@@ -98,7 +97,6 @@
       <param name="page">
         /dhis-web-maintenance-dataadmin/showcache.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
     <action name="clearCache" class="org.hisp.dhis.dataadmin.action.cache.ClearCacheAction">
@@ -164,7 +162,6 @@
       <param name="javascripts"> ../dhis-web-commons/oust/oust.js,
         javascript/dataBrowser.js,
         javascript/dataBrowserForm.js</param>
-      <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
     <action name="searchResult" class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction">
@@ -289,7 +286,6 @@
     </action>
 
     <action name="getMinMaxValidationParams" class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetMinMaxValidationParamsAction">
-			<!--  <interceptor-ref name="organisationUnitTreeStack"/> -->
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/minMaxValidation.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
