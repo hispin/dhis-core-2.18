@@ -45,7 +45,7 @@ public class DefaultReportLocationManager
     private File REPORT;
 
     private File REPORT_TEMP;
-    
+
     private File REPORT_TEMPLATE;
 
     // -------------------------------------------------------------------------
@@ -127,7 +127,7 @@ public class DefaultReportLocationManager
         }
 
         REPORT_TEMPLATE = new File( REPORT, pathConfig );
-        
+
         REPORT_TEMPLATE.mkdirs();
 
         return REPORT_TEMPLATE;

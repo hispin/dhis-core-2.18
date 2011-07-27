@@ -56,7 +56,7 @@ public class ViewDataNormalAction
         }
         catch ( Exception ex )
         {
-            throw new RuntimeException( "Error while previewing the imported value", ex );
+            throw new RuntimeException( "Error while previewing the imported value at normal", ex );
         }
     }
 }

@@ -27,10 +27,10 @@ package org.hisp.dhis.reportexcel.preview.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.io.FilenameUtils.getExtension;
 import static org.hisp.dhis.reportexcel.utils.ExcelUtils.convertAlignmentString;
 import static org.hisp.dhis.reportexcel.utils.ExcelUtils.convertVerticalString;
 import static org.hisp.dhis.reportexcel.utils.ExcelUtils.readSpecialValueByPOI;
-import static org.hisp.dhis.reportexcel.utils.StringUtils.applyPatternDecimalFormat;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,6 +46,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 
 /**
@@ -119,7 +120,15 @@ public class XMLStructureResponse
         this.cleanUpForResponse();
         this.bWRITE_DTD = bWriteDTD;
         this.bWRITE_VERSION = bWriteVersion;
-        this.WORKBOOK = new HSSFWorkbook( new FileInputStream( pathFileName ) );
+        
+        if ( getExtension( pathFileName ).equals( "xls" ) )
+        {
+            this.WORKBOOK = new HSSFWorkbook( new FileInputStream( pathFileName ) );
+        }
+        else
+        {
+            this.WORKBOOK = new XSSFWorkbook( new FileInputStream( pathFileName ) );
+        }
 
         if ( bFormat )
         {
@@ -248,8 +257,7 @@ public class XMLStructureResponse
                 if ( (cell.getCellStyle() != null) || cell.getCellType() != Cell.CELL_TYPE_BLANK )
                 {
                     xml.append( "<col no='" + j + "'><data>" );
-                    xml.append( "<![CDATA[" + applyPatternDecimalFormat( readSpecialValueByPOI( i + 1, j + 1, s ) )
-                        + "]]></data>" );
+                    xml.append( "<![CDATA[" + readSpecialValueByPOI( i + 1, j + 1, s ) + "]]></data>" );
 
                     this.readingDetailsFormattedCell( cell, bDetailed );
 

@@ -46,6 +46,7 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -301,24 +302,16 @@ public class GenerateExcelReportGeneric
     public void createWorkbookInstance( ReportExcel exportReport )
         throws FileNotFoundException, IOException
     {
+        this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
+            + File.separator + exportReport.getExcelTemplateFile() );
+
         if ( checkingExtensionExcelFile( exportReport.getExcelTemplateFile() ) )
         {
-            this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager
-                .getReportExcelTemplateDirectory()
-                + File.separator + exportReport.getExcelTemplateFile() );
-
             this.templateWorkbook = new HSSFWorkbook( this.inputStreamExcelTemplate );
         }
         else
         {
-            /**
-             * DO NOT DELETE THIS SNIPPET CODE
-             * 
-             * this.templateWorkbook = new XSSFWorkbook(
-             * reportLocationManager.getExportReportTemplateDirectory() +
-             * File.separator + exportReport.getExcelTemplateFile() );
-             * 
-             */
+            this.templateWorkbook = new XSSFWorkbook( this.inputStreamExcelTemplate );
         }
     }
 

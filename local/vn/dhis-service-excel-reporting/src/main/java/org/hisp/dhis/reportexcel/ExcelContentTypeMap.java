@@ -41,6 +41,10 @@ public class ExcelContentTypeMap
 {
     private static final String APPLICATION = "application/";
 
+    public static final String XLS = "xls";
+
+    public static final String XLSX = "xlsx";
+
     private static Map<String, List<String>> contentTypes;
 
     static
@@ -49,25 +53,28 @@ public class ExcelContentTypeMap
 
         List<String> xlsContentTypes = new ArrayList<String>();
 
-        xlsContentTypes.add( APPLICATION + "xls" );
+        xlsContentTypes.add( APPLICATION + XLS );
         xlsContentTypes.add( APPLICATION + "vnd.ms-excel" );
         xlsContentTypes.add( APPLICATION + "octet-stream" );
 
-        contentTypes.put( "xls", xlsContentTypes );
+        contentTypes.put( XLS, xlsContentTypes );
+
+        List<String> xlsxContentTypes = new ArrayList<String>();
+
+        xlsxContentTypes.add( APPLICATION + XLSX );
+        xlsxContentTypes.add( APPLICATION + "octet-stream" );
+        xlsxContentTypes.add( APPLICATION + "vnd.openxmlformats-officedocument.spreadsheetml.sheet" );
+
+        contentTypes.put( XLSX, xlsxContentTypes );
 
         /*
          * List<String> odsContentTypes = new ArrayList<String>();
          * 
          * odsContentTypes.add( APPLICATION + "octet-stream" );
+         * odsContentTypes.add( APPLICATION +
+         * "vnd.oasis.opendocument.spreadsheet" );
          * 
          * contentTypes.put( "ods", odsContentTypes );
-         * 
-         * List<String> xlsxContentTypes = new ArrayList<String>();
-         * 
-         * xlsxContentTypes.add( APPLICATION + "xlsx" ); xlsxContentTypes.add(
-         * APPLICATION + "vnd.openxmlformats-officedocument.spreadsheetml.sheet" );
-         * 
-         * contentTypes.put( "xlsx", xlsxContentTypes );
          */
     }
 
