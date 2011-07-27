@@ -30,9 +30,12 @@ package org.hisp.dhis.reportexcel.filemanager.action;
 import static org.apache.commons.io.FilenameUtils.getExtension;
 
 import java.io.File;
+import java.io.FileInputStream;
 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
+import org.hisp.dhis.system.util.StreamUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -127,6 +130,13 @@ public class ValidateUploadExcelFile
             return ERROR;
         }
 
+        if ( isFormatBroken( uploadFileName, upload ) )
+        {
+            message = i18n.getString( "file_format_structure_broken" );
+
+            return ERROR;
+        }
+
         // Use for importing file
 
         if ( isDraft )
@@ -164,6 +174,33 @@ public class ValidateUploadExcelFile
         }
 
         return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive method
+    // -------------------------------------------------------------------------
+
+    private boolean isFormatBroken( String fileName, File file )
+    {
+        if ( getExtension( fileName ).equals( "xlsx" ) )
+        {
+            try
+            {
+                File output = new File( file.getParent(), (Math.random() * 1000) + fileName );
+
+                StreamUtils.write( file, output );
+
+                new XSSFWorkbook( new FileInputStream( output ) );
+
+                return false;
+            }
+            catch ( Exception e )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

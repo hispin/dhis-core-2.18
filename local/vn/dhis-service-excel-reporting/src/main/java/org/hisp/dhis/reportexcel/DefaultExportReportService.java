@@ -78,9 +78,9 @@ public class DefaultExportReportService
         this.i18nService = i18nService;
     }
 
-    // --------------------------------------
+    // -------------------------------------------------------------------------
     // Service of Report
-    // --------------------------------------
+    // -------------------------------------------------------------------------
 
     public int addExportReport( ReportExcel report )
     {
@@ -189,9 +189,9 @@ public class DefaultExportReportService
         exportReportStore.updateReportWithExcelTemplate( curName, newName );
     }
 
-    // --------------------------------------
+    // -------------------------------------------------------------------------
     // Service of Report Item
-    // --------------------------------------
+    // -------------------------------------------------------------------------
 
     public void addExportItem( ReportExcelItem reportItem )
     {
@@ -234,9 +234,9 @@ public class DefaultExportReportService
         return exportReportStore.getSheets( reportId );
     }
 
-    // --------------------------------------
+    // -------------------------------------------------------------------------
     // Report DataElement Order
-    // --------------------------------------
+    // -------------------------------------------------------------------------
 
     public DataElementGroupOrder getDataElementGroupOrder( Integer id )
     {
