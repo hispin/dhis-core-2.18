@@ -1031,6 +1031,7 @@ function multiDataEntryOrgunitSelected( orgUnits )
 
 function selectProgram()
 {
+	setInnerHTML('listPatient', '');
 	if( getFieldValue('programId') == 0 )
 	{
 		hideById('listPatient');
@@ -1038,14 +1039,16 @@ function selectProgram()
 	}
 	
 	contentDiv = 'listPatient';
+	showLoader();
 	jQuery('#listPatient').load("getDataRecords.action",
 		{
 			programId:getFieldValue('programId'),
 			sortPatientAttributeId: getFieldValue('patientAttributeId')
 		}, 
-		function( )
+		function()
 		{
 			showById("listPatient");
+			hideLoader();
 		});
 }
 

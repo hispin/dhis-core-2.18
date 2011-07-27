@@ -1,33 +1,39 @@
 <table class="mainPageTable">
     <tr>
         <td style="vertical-align:top">    
-        <table class="listTable">
+        <table class="listTable" id="patientList">
+			<col>
             #if( $sortPatientAttribute )
 				<col>
 			#end
             #foreach( $programStage in $program.programStages )
                 <col>
-            #end       
-            <tr>
-				#if( $sortPatientAttribute )
-					<th style="text-align:center">$encoder.htmlEncode( $sortPatientAttribute.name )</th>
-				#end
-                <th style="text-align:center">$i18n.getString( "full_name" )</th>
-                #foreach( $programStage in $program.programStages )
-                    <th style="text-align:center">$encoder.htmlEncode( $programStage.name )</th>
-                #end                
-            </tr>
-          
+            #end 
+			<thead>
+				<tr>
+					<th>#</th>
+					#if( $sortPatientAttribute )
+						<th style="text-align:center">$encoder.htmlEncode( $sortPatientAttribute.name )</th>
+					#end
+					<th style="text-align:center">$i18n.getString( "full_name" )</th>
+					#foreach( $programStage in $program.programStages )
+						<th style="text-align:center" class="{sorter: false}">$encoder.htmlEncode( $programStage.name )</th>
+					#end                
+				</tr>
+			</thead>
             <tbody id="list">
                 #set( $mark = false )                 
                 #foreach( $patient in $patientListByOrgUnit )
 					#set( $programInstance = $programInstanceMap.get( $patient ) )
-                    <tr #alternate( $mark )>
+					<tr #alternate( $mark )>
+						<td>
+							#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+							$nr
+						</td>
 						#if( $sortPatientAttribute )
-							#set( $patientAttributeValue = $patinetAttributeValueMap.get( $patient ) )
-							<td>$!patientAttributeValue.value</td>
+							<td>$!patientAttributeValueMap.get( $patient.id ).value</td>
 						#end
-                        <td><a href="javascript:showPatientDetails( $programInstance.patient.id )" title="$i18n.getString( "show_details" )">$patient.getFullName()</a></td>                    
+                        <td><a href="javascript:showPatientDetails( $programInstance.patient.id )" title="$i18n.getString( 'show_details' )">$patient.getFullName()</a></td>                    
                         #foreach( $programStageInstance in $programStageInstanceMap.get( $programInstance ) )
                             #if( $programStageInstance.executionDate )
                                 <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
@@ -65,3 +71,9 @@
 	<p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
 	<p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
 </div>
+
+<script>
+	jQuery(document).ready(function(){	
+		tableSorter( 'patientList' );
+	});
+</script>
