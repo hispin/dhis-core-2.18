@@ -428,7 +428,6 @@
       <param name="page">/dhis-web-reporting/viewPivotTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/pivot.js,javascript/criteria.js</param>
-      <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
     <action name="getPivotTable" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction">
@@ -461,7 +460,6 @@
       <param name="page">/dhis-web-reporting/dataSetReportForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataSetReport.js</param>
-      <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
     <action name="generateDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction">
@@ -480,7 +478,6 @@
       <param name="page">/dhis-web-reporting/selectTallySheetForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
-      <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
     <action name="configureTallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction">
@@ -489,7 +486,6 @@
       <param name="page">/dhis-web-reporting/viewTallySheetForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
-      <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
     <action name="generateTallySheetPDF" class="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction">
@@ -515,7 +511,6 @@
       <param name="page">/dhis-web-reporting/viewOrgUnitDistribution.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/orgUnitDistribution.js</param>
-      <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
     <action name="getOrgUnitDistributionChart" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionChartAction">
