@@ -83,20 +83,17 @@ function responseListPeriodForEndReceived( json )
 	
 function validationCaseAggregation( )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'dataElementGroup' );
-    request.setCallbackSuccess( validationCaseAggregationCompleted );
-	
-	var url  = "sDateLB=" + byId('sDateLB').value;
-		url += "&eDateLB=" + byId('eDateLB').value;
-		
-	request.sendAsPost(url);
-    request.send( 'validateCaseAggregation.action' );
+	$.post( 'validateCaseAggregation.action', 
+		{ 
+			sDateLB:getFieldValue('sDateLB'), 
+			eDateLB:getFieldValue('eDateLB')
+		}, validationCaseAggregationCompleted, 'xml' );
+					
 }
 
 function validationCaseAggregationCompleted( message )
 {
-    var type = message.getAttribute("type");
+    var type = $(message).find('message').attr('type');
 	
     if( type == "success" )
     {
@@ -104,7 +101,7 @@ function validationCaseAggregationCompleted( message )
     }
     else
     {
-        setMessage(message.firstChild.nodeValue);
+        showWarningMessage( $(message).find('message').text() );
     }
 }
 

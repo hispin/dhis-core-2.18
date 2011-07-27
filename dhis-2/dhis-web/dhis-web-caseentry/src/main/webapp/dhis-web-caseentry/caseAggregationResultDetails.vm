@@ -5,21 +5,23 @@
 			#if( $hasDataValue == true)
 			<tr height='5em'>
 				<th>$i18n.getString( "full_name" )</th>
-				<th>$i18n.getString( "age" )</th>
 				<th>$i18n.getString( "gender" )</th>
+                <th>$i18n.getString( "date_of_birth" )</th>
+                <th>$i18n.getString( "age" )</th>
 			</tr>
 			#end
 			<tr>
 				<td>$!patient.getFullName()</td>
-				<td>$!patient.getAge()</td>
 				<td>$!patient.gender</td>
+				<td>$format.formatDate($!patient.birthDate)</td>
+				<td>$!patient.getAge()</td>
 			</tr>
 			
 			#set($dataValues = $mapPatients.get($patient) )
 			#if ( $!dataValues.size() == 0 )
 				#set($hasDataValue = false )
 				<tr>
-					<td colspan='3'></td>
+					<td colspan='4'></td>
 				</tr>
 			#else
 				#set($hasDataValue = true )
