@@ -4,7 +4,7 @@
 		validation( 'editPatientMobileSetting', function( form ){ form.submit() }, function(){ selectAllById('selectedList') });
 	});
 </script>
-<h3>$i18n.getString( "patient_mobile_setting" )</h3>
+<h3>$i18n.getString( "patient_mobile_setting" ) #openHelp( "patient_mobile_setting" )</h3>
 <form id="editPatientMobileSetting" name="editPatientMobileSetting" action="editPatientMobileSetting.action" method="post" >
 	<table>
 		<tr>

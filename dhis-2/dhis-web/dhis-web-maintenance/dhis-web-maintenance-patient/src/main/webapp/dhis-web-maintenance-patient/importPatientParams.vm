@@ -1,4 +1,5 @@
-<h3>$i18n.getString('import_data')</h3>
+<h3>$i18n.getString('import_data') #openHelp( "import_beneficiary_data" )</h3>
+
 <form name="importingParam" id="importingParam" action="importPatient.action" method="post" enctype="multipart/form-data">   
 
 <table width="62%">
