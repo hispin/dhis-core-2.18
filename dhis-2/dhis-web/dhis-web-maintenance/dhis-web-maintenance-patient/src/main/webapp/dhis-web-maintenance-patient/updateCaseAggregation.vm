@@ -3,6 +3,8 @@
 		validation( 'updateCaseAggregationForm', function(form){
 			form.submit();
 		}); 
+		
+		checkValueIsExist( "aggregationDataElementId", "validateCaseAggregation.action", {id:getFieldValue('id')});
 	});	
 	
 </script>
@@ -12,7 +14,6 @@
 <form id="updateCaseAggregationForm" action="updateCaseAggregation.action" method="post" >
 
 <input type='hidden' id='id' name='id' value='$caseAggregation.id'>
-
 <table> 
 	<thead>
       <tr>
