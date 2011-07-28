@@ -51,7 +51,3 @@
 	</tr>
 	#end
 </table>
-
-<br>
-
-<p><input type="button" value="$i18n.getString( 'close' )" onclick="javascript:window.close()" style="width:100px"></p>

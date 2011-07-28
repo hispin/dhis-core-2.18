@@ -549,8 +549,7 @@ function validate()
     var dataSetId = $( '#selectedDataSetId' ).val();
 	
 	$( '#validationDiv' ).load( 'validate.action', {
-		periodId: periodId,
-		dataSetId: dataSetId },
+		periodId: periodId, dataSetId: dataSetId },	
 		displayValidationDialog
 	);
 }
@@ -574,9 +573,7 @@ function viewHist( dataElementId, optionComboId )
 	var periodId = $( '#selectedPeriodId' ).val();
 	
     $( '#historyDiv' ).load( 'viewHistory.action', {
-    	dataElementId: dataElementId,
-    	optionComboId: optionComboId,
-    	periodId: periodId },
+    	dataElementId: dataElementId, optionComboId: optionComboId, periodId: periodId },
     	displayHistoryDialog
     );
 }

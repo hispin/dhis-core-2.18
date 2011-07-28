@@ -73,18 +73,22 @@ function drillDownValidation( orgUnitId )
     } );
 }
 
+function displayValidationDetailsDialog()
+{
+	$( '#validationResultDetailsDiv' ).dialog( {
+	    modal: true,
+	   	title: 'Validation details',
+	   	width: 550,
+	   	height: 500
+	} );
+}
+
 function viewValidationResultDetails( validationRuleId, sourceId, periodId )
 {
-    var url = "viewValidationResultDetails.action?validationRuleId=" + validationRuleId + "&sourceId=" + sourceId
-            + "&periodId=" + periodId;
-
-    var dialog = window
-            .open(
-                    url,
-                    "_blank",
-                    "directories=no, \
-    		 height=550, width=500, location=no, menubar=no, status=no, \
-    		 toolbar=no, resizable=yes" );
+	$( '#validationResultDetailsDiv' ).load( 'viewValidationResultDetails.action', {
+		validationRuleId: validationRuleId, sourceId: sourceId, periodId: periodId },
+		displayValidationDetailsDialog 
+	);
 }
 
 function aggregateChanged()
