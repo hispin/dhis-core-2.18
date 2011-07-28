@@ -1053,6 +1053,15 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="validateCaseAggregation"
+			class="org.hisp.dhis.patient.action.caseaggregation.ValidateCaseAggregationConditionAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
 		<!-- Validation - PatientValidationCriteria -->
 
 		<action name="validationCriteria"

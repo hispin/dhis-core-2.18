@@ -25,50 +25,61 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.patientattribute;
+package org.hisp.dhis.patient.action.caseaggregation;
 
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ ValidateCaseAggregationConditionAction.java Jul 28, 2011 12:53:50
+ *          PM $
+ * 
  */
-
-public class ValidatePatientAttributeAction
+public class ValidateCaseAggregationConditionAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAttributeService patientAttributeService;
+    private CaseAggregationConditionService aggregationConditionService;
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
     {
-        this.patientAttributeService = patientAttributeService;
+        this.aggregationConditionService = aggregationConditionService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String aggregationDataElementId;
 
-    public void setId( Integer id )
+    public void setAggregationDataElementId( String aggregationDataElementId )
     {
-        this.id = id;
-    }
-
-    private String name;
-
-    public void setName( String name )
-    {
-        this.name = name;
+        this.aggregationDataElementId = aggregationDataElementId;
     }
 
     private String message;
@@ -89,14 +100,21 @@ public class ValidatePatientAttributeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        name = name.trim();
+        String[] ids = aggregationDataElementId.split( "\\." );
 
-        PatientAttribute match = patientAttributeService.getPatientAttributeByName( name );
+        DataElement aggregationDataElement = dataElementService.getDataElement( Integer.parseInt( ids[0] ) );
 
-        if ( match != null && (id == null || match.getId() != id) )
+        DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
+            .getDataElementCategoryOptionCombo( Integer.parseInt( ids[1] ) );
+
+        CaseAggregationCondition condition = aggregationConditionService.getCaseAggregationCondition(
+            aggregationDataElement, optionCombo );
+
+        if ( condition != null )
         {
             message = i18n.getString( "aggregation_data_element_in_use" );
 
@@ -106,5 +124,6 @@ public class ValidatePatientAttributeAction
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
+
     }
 }
