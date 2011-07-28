@@ -1,0 +1,23 @@
+<h3>$encoder.htmlEncode( $i18n.getString( "validation_result" ) )</h3>
+
+#if( $programValidations.size()==0 )  
+    <p><b>$encoder.htmlEncode( $i18n.getString( "successful_validation" ) )</b></p>
+#else
+    <p><b>$encoder.htmlEncode( $i18n.getString( "unsuccessful_validation" ) )</b></p>
+
+	<p><b>$encoder.htmlEncode( $i18n.getString( "the_following_dataelements_are_in_multi_stages" ) )</b></p>
+	<table class="listTable" style="width:100%">
+		<tr>
+			<th>$i18n.getString( "program_validation_description" )</th>
+		</tr>
+		#set( $mark = false )	    
+		#foreach( $programValidation in $programValidations ) 
+			<tr>	    
+				<td style="height:32px"#alternate( $mark )>$programValidation.description</td>	        
+			</tr>
+			#set( $mark = !$mark )
+		#end
+	</table>
+#end
+
+<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( "close" ) )" style="width:10em" onclick="window.close();"></p>

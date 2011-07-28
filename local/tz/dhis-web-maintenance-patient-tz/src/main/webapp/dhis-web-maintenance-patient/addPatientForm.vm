@@ -1,0 +1,62 @@
+<script>
+	jQuery(document).ready(	function(){
+
+		datePickerValid( 'birthDate' );
+		
+		jQuery("#addPatientForm").validate({
+				 meta:"validate"
+				,errorElement:"span"
+				,submitHandler: function(form)
+					{
+						validateAddPatient();
+					}
+				,beforeValidateHandler: function(form)
+					{
+						var dobType = $('#dobType').val();
+						
+						if( dobType=='V' || dobType=='D' ) 
+						{
+							var birthDate = $('#birthDate').val();
+							if( birthDate != '' ){
+								$("#memberValidator").val(birthDate);
+							}
+						}else{
+							var age = $('#age').val();
+							$("#memberValidator").val(age);
+						}
+					}
+			});
+					
+	});		
+</script>
+
+<h3>$i18n.getString( "add_new_patient" )</h3>	
+<p><input type="button" value="$i18n.getString( 'back_to_search' )" onclick="loadPatientList();" style="width:10em"/></p>
+
+<form id="addPatientForm" name="addPatientForm" method="post" >
+<input type="hidden" id="representativeId" name="representativeId"/> 
+<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
+
+#parse( "/dhis-web-maintenance-patient/patientForm.vm" )
+
+<p style="margin-top:10px">
+	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+</p>
+
+</form>
+
+<div id="hiddenModalContent" style="display:none">
+	<style> 
+		div#hiddenModalContent label { font-weight: bold;}  
+		div#hiddenModalContent td {padding: 2px 5px}
+	</style>
+	
+	<span>$i18n.getString( "duplicate_warning" )</span>
+	<input type="button" value="$i18n.getString( 'create_new_patient' )"  id="btnCreateNew"/>
+	
+	<div id="thickboxContainer"></div>
+</div>
+
+<script>
+	checkedDuplicate = false;
+</script>

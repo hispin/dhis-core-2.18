@@ -1,0 +1,1378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="org.hisp.dhis.patient.state.SelectedStateManager" class="org.hisp.dhis.patient.state.DefaultSelectedStateManager">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<!-- RelationshipType -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeListAction"
+		class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeListAction"
+		scope="prototype">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeAction"
+		class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeAction"
+		scope="prototype">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.AddRelationshipTypeAction"
+		class="org.hisp.dhis.patient.action.relationship.AddRelationshipTypeAction"
+		scope="prototype">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.RemoveRelationshipTypeAction"
+		class="org.hisp.dhis.patient.action.relationship.RemoveRelationshipTypeAction"
+		scope="prototype">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.UpdateRelationshipTypeAction"
+		class="org.hisp.dhis.patient.action.relationship.UpdateRelationshipTypeAction"
+		scope="prototype">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.ValidateRelationshipTypeAction"
+		class="org.hisp.dhis.patient.action.relationship.ValidateRelationshipTypeAction"
+		scope="prototype">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+	</bean>
+
+	<!-- Relationship -->
+
+	<bean id="org.hisp.dhis.patient.action.relationship.GetPartnerAction"
+		class="org.hisp.dhis.patient.action.relationship.GetPartnerAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.ShowRelationshipListAction"
+		class="org.hisp.dhis.patient.action.relationship.ShowRelationshipListAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipFormAction"
+		class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipFormAction"
+		scope="prototype">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.SearchRelationshipPatientAction"
+		class="org.hisp.dhis.patient.action.relationship.SearchRelationshipPatientAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.relationship.ValidateSearchAction"
+		class="org.hisp.dhis.patient.action.relationship.ValidateSearchAction"
+		scope="prototype">
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.SaveRelationshipAction"
+		class="org.hisp.dhis.patient.action.relationship.SaveRelationshipAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.SaveRepresentativeAction"
+		class="org.hisp.dhis.patient.action.relationship.SaveRepresentativeAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.RemoveRepresentativeAction"
+		class="org.hisp.dhis.patient.action.relationship.RemoveRepresentativeAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.RemoveRelationshipAction"
+		class="org.hisp.dhis.patient.action.relationship.RemoveRelationshipAction"
+		scope="prototype">
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipPatientAction"
+		class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipPatientAction"
+		scope="prototype">
+		<property name="patientService">
+			<ref bean="org.hisp.dhis.patient.PatientService" />
+		</property>
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+		<property name="patientAttributeValueService">
+			<ref
+				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		</property>
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+		<property name="relationshipTypeService">
+			<ref bean="org.hisp.dhis.relationship.RelationshipTypeService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.AddRelationshipPatientAction"
+		class="org.hisp.dhis.patient.action.relationship.AddRelationshipPatientAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientAttributeOptionService"
+			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.relationship.ValidateAddRelationshipPatientAction"
+		class="org.hisp.dhis.patient.action.relationship.ValidateAddRelationshipPatientAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeValueService">
+			<ref
+				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		</property>
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="identifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+
+	<!-- PatientAttribute -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeListAction"
+		class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeListAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeAction"
+		class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.AddPatientAttributeAction"
+		class="org.hisp.dhis.patient.action.patientattribute.AddPatientAttributeAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeOptionService"
+			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeAction"
+		class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.UpdatePatientAttributeAction"
+		class="org.hisp.dhis.patient.action.patientattribute.UpdatePatientAttributeAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeOptionService"
+			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.ValidatePatientAttributeAction"
+		class="org.hisp.dhis.patient.action.patientattribute.ValidatePatientAttributeAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.GetOptionalPatientAttributesWithoutGroupAction"
+		class="org.hisp.dhis.patient.action.patientattribute.GetOptionalPatientAttributesWithoutGroupAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributesWithdoutGroupAction"
+		class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributesWithdoutGroupAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeOptionAction"
+		class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeOptionAction"
+		scope="prototype">
+		<property name="patientAttributeOptionService"
+			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+	</bean>
+
+	<!-- Patient Attribute value -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeValueAction"
+		class="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeValueAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeValueAction"
+		class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeValueAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeOptionService"
+			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeDateValueAction"
+		class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeDateValueAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+	</bean>
+
+	<!-- Patient -->
+
+	<bean id="org.hisp.dhis.patient.action.patient.SearchPersonAction"
+		class="org.hisp.dhis.patient.action.patient.SearchPersonAction">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.SelectAction"
+		class="org.hisp.dhis.patient.action.patient.SelectAction" scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
+		class="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
+		class="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.SearchPatientAction"
+		class="org.hisp.dhis.patient.action.patient.SearchPatientAction"
+		scope="prototype">
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.GetPatientAction"
+		class="org.hisp.dhis.patient.action.patient.GetPatientAction" scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.AddPatientAction"
+		class="org.hisp.dhis.patient.action.patient.AddPatientAction" scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientAttributeOptionService"
+			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.RemovePatientAction"
+		class="org.hisp.dhis.patient.action.patient.RemovePatientAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.UpdatePatientAction"
+		class="org.hisp.dhis.patient.action.patient.UpdatePatientAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientAttributeOptionService"
+			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.ShowAddPatientFormAction"
+		class="org.hisp.dhis.patient.action.patient.ShowAddPatientFormAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.ValidatePatientAction"
+		class="org.hisp.dhis.patient.action.patient.ValidatePatientAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeValueService">
+			<ref
+				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		</property>
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="identifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction"
+		class="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction"
+		scope="prototype">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.AddRepresentativeAction"
+		class="org.hisp.dhis.patient.action.patient.AddRepresentativeAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction"
+		class="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction"
+		class="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patient.DefinePatientOrgnunitRegistrationAction"
+		class="org.hisp.dhis.patient.action.patient.DefinePatientOrgnunitRegistrationAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<!-- Patient-Program Enrollment -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.patient.ProgramEnrollmentSelectAction"
+		class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentSelectAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.ProgramEnrollmentAction"
+		class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patient.SaveProgramEnrollmentAction"
+		class="org.hisp.dhis.patient.action.patient.SaveProgramEnrollmentAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.SaveDueDateAction"
+		class="org.hisp.dhis.patient.action.patient.SaveDueDateAction" scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction"
+		class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction"
+		scope="prototype">
+		<property name="programAttributeService"
+			ref="org.hisp.dhis.program.ProgramAttributeService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.patient.GetProgramInstanceAction"
+		class="org.hisp.dhis.patient.action.patient.GetProgramInstanceAction"
+		scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
+		class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programAttributeService"
+			ref="org.hisp.dhis.program.ProgramAttributeService" />
+		<property name="programAttributeOptionService"
+			ref="org.hisp.dhis.program.ProgramAttributeOptionService" />
+		<property name="programAttributeValueService"
+			ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patient.ValidatePatientProgramEnrollmentAction"
+		class="org.hisp.dhis.patient.action.patient.ValidatePatientProgramEnrollmentAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<!-- Program -->
+
+	<bean id="org.hisp.dhis.patient.action.program.AddProgramAction"
+		class="org.hisp.dhis.patient.action.program.AddProgramAction" scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.program.GetProgramListAction"
+		class="org.hisp.dhis.patient.action.program.GetProgramListAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.program.GetProgramAction"
+		class="org.hisp.dhis.patient.action.program.GetProgramAction" scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.program.RemoveProgramAction"
+		class="org.hisp.dhis.patient.action.program.RemoveProgramAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.program.ShowAddProgramFormAction"
+		class="org.hisp.dhis.patient.action.program.ShowAddProgramFormAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.program.UpdateProgramAction"
+		class="org.hisp.dhis.patient.action.program.UpdateProgramAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.program.ValidateProgramAction"
+		class="org.hisp.dhis.patient.action.program.ValidateProgramAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<!-- Program Attribute -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.program.GetProgramAttributeListAction"
+		class="org.hisp.dhis.patient.action.program.GetProgramAttributeListAction"
+		scope="prototype">
+		<property name="programAttributeService"
+			ref="org.hisp.dhis.program.ProgramAttributeService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.program.GetProgramAttributeAction"
+		class="org.hisp.dhis.patient.action.program.GetProgramAttributeAction"
+		scope="prototype">
+		<property name="programAttributeService"
+			ref="org.hisp.dhis.program.ProgramAttributeService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.program.AddProgramAttributeAction"
+		class="org.hisp.dhis.patient.action.program.AddProgramAttributeAction"
+		scope="prototype">
+		<property name="programAttributeService"
+			ref="org.hisp.dhis.program.ProgramAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.program.UpdateProgramAttributeAction"
+		class="org.hisp.dhis.patient.action.program.UpdateProgramAttributeAction"
+		scope="prototype">
+		<property name="programAttributeService"
+			ref="org.hisp.dhis.program.ProgramAttributeService" />
+		<property name="programAttributeOptionService"
+			ref="org.hisp.dhis.program.ProgramAttributeOptionService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.program.RemoveProgramAttributeAction"
+		class="org.hisp.dhis.patient.action.program.RemoveProgramAttributeAction"
+		scope="prototype">
+		<property name="programAttributeService"
+			ref="org.hisp.dhis.program.ProgramAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.program.ValidateProgramAttributeAction"
+		class="org.hisp.dhis.patient.action.program.ValidateProgramAttributeAction"
+		scope="prototype">
+		<property name="programAttributeService"
+			ref="org.hisp.dhis.program.ProgramAttributeService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.program.RemoveProgramAttributeOptionAction"
+		class="org.hisp.dhis.patient.action.program.RemoveProgramAttributeOptionAction"
+		scope="prototype">
+		<property name="programAttributeOptionService"
+			ref="org.hisp.dhis.program.ProgramAttributeOptionService" />
+		<property name="programAttributeValueService"
+			ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueService" />
+	</bean>
+
+	<!-- Program_OrganisationUnit Association -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.program.DefineProgramAssociationsAction"
+		class="org.hisp.dhis.patient.action.program.DefineProgramAssociationsAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<!-- ProgramStage -->
+
+	<bean id="org.hisp.dhis.patient.action.programstage.AddProgramStageAction"
+		class="org.hisp.dhis.patient.action.programstage.AddProgramStageAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction"
+		class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.programstage.GetProgramStageAction"
+		class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programstage.RemoveProgramStageAction"
+		class="org.hisp.dhis.patient.action.programstage.RemoveProgramStageAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programstage.ShowSortProgramStageFormAction"
+		class="org.hisp.dhis.patient.action.programstage.ShowSortProgramStageFormAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction"
+		class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programstage.UpdateProgramStageAction"
+		class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.programstage.ValidateProgramStageAction"
+		class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<!-- Data Entry Form -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.ShowDataEntryFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.ShowDataEntryFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.ViewDataEntryFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.ViewDataEntryFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+		<property name="programDataEntryService"
+			ref="org.hisp.dhis.program.ProgramDataEntryService" />
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.SaveDataEntryFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.SaveDataEntryFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.DelDataEntryFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.DelDataEntryFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.SelectProgramStageDataElementAction"
+		class="org.hisp.dhis.patient.action.dataentryform.SelectProgramStageDataElementAction"
+		scope="prototype">
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.SelectDataElementAction"
+		class="org.hisp.dhis.patient.action.dataentryform.SelectDataElementAction"
+		scope="prototype">
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.GetSelectedDataElementsAction"
+		class="org.hisp.dhis.patient.action.dataentryform.GetSelectedDataElementsAction"
+		scope="prototype">
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.dataentryform.ValidateDataEntryFormAction"
+		class="org.hisp.dhis.patient.action.dataentryform.ValidateDataEntryFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+	</bean>
+
+	<!-- Patient Attribute Group -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.AddPatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.AddPatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.RemovePatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.RemovePatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.SavePatientAttributeGroupSortOrderAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.SavePatientAttributeGroupSortOrderAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.UpdatePatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.UpdatePatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattributegroup.ValidatePatientAttributeGroupAction"
+		class="org.hisp.dhis.patient.action.patientattributegroup.ValidatePatientAttributeGroupAction"
+		scope="prototype">
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	</bean>
+
+	<!-- Patient Identifier Type -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientidentifiertype.AddPatientIdentifierTypeAction"
+		class="org.hisp.dhis.patient.action.patientidentifiertype.AddPatientIdentifierTypeAction"
+		scope="prototype">
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction"
+		class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction"
+		scope="prototype">
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction"
+		class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction"
+		scope="prototype">
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientidentifiertype.RemovePatientIdentifierTypeAction"
+		class="org.hisp.dhis.patient.action.patientidentifiertype.RemovePatientIdentifierTypeAction"
+		scope="prototype">
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+	<bean
+		id="org.hisp.dhis.patient.action.patientidentifiertype.UpdatePatientIdentifierTypeAction"
+		class="org.hisp.dhis.patient.action.patientidentifiertype.UpdatePatientIdentifierTypeAction"
+		scope="prototype">
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+	<bean
+		id="org.hisp.dhis.patient.action.patientidentifiertype.ValidatePatientIdentifierTypeAction"
+		class="org.hisp.dhis.patient.action.patientidentifiertype.ValidatePatientIdentifierTypeAction"
+		scope="prototype">
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+	</bean>
+
+	<!-- Case Aggregation Mapping -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.AddCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.AddCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="dataElementCategoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction"
+		scope="prototype">
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction"
+		scope="prototype">
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.GetPSDataElementsAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.GetPSDataElementsAction"
+		scope="prototype">
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.RemoveCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.RemoveCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.ShowAddCaseAggregationConditionFormAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.ShowAddCaseAggregationConditionFormAction"
+		scope="prototype">
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.ShowUpdateCaseAggregationConditionFormAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.ShowUpdateCaseAggregationConditionFormAction"
+		scope="prototype">
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.UpdateCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.UpdateCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="dataElementCategoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.GetAggConditionDescriptionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.GetAggConditionDescriptionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.ValidateCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.ValidateCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="dataElementCategoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		</property>
+	</bean>
+	
+	<!-- Validation - PatientValidationCriteria -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.AddValidationCriteriaAction"
+		class="org.hisp.dhis.patient.action.validation.AddValidationCriteriaAction"
+		scope="prototype">
+		<property name="validationCriteriaService">
+			<ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
+		</property>
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.GetProgramListForValidationCriteriaAction"
+		class="org.hisp.dhis.patient.action.validation.GetProgramListForValidationCriteriaAction"
+		scope="prototype">
+		<property name="validationCriteriaService">
+			<ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.DefineProgramListForValidationCriteriaAction"
+		class="org.hisp.dhis.patient.action.validation.DefineProgramListForValidationCriteriaAction"
+		scope="prototype">
+		<property name="validationCriteriaService">
+			<ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.GetValidationCriteriaAction"
+		class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaAction"
+		scope="prototype">
+		<property name="validationCriteriaService">
+			<ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.GetValidationCriteriaListAction"
+		class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaListAction"
+		scope="prototype">
+		<property name="validationCriteriaService">
+			<ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.RemoveValidationCriteriaAction"
+		class="org.hisp.dhis.patient.action.validation.RemoveValidationCriteriaAction"
+		scope="prototype">
+		<property name="validationCriteriaService">
+			<ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.UpdateValidationCriteriaAction"
+		class="org.hisp.dhis.patient.action.validation.UpdateValidationCriteriaAction"
+		scope="prototype">
+		<property name="validationCriteriaService">
+			<ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
+		</property>
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.ValidateValidationCriteriaAction"
+		class="org.hisp.dhis.patient.action.validation.ValidateValidationCriteriaAction"
+		scope="prototype">
+		<property name="validationCriteriaService">
+			<ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
+		</property>
+	</bean>
+
+	<!-- Program Validation -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.AddProgramValidationAction"
+		class="org.hisp.dhis.patient.action.validation.AddProgramValidationAction"
+		scope="prototype">
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.GetProgramValidationAction"
+		class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction"
+		scope="prototype">
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
+		</property>
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.GetProgramValidationListAction"
+		class="org.hisp.dhis.patient.action.validation.GetProgramValidationListAction"
+		scope="prototype">
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.RemoveProgramValidationAction"
+		class="org.hisp.dhis.patient.action.validation.RemoveProgramValidationAction"
+		scope="prototype">
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction"
+		class="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction"
+		scope="prototype">
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
+		</property>
+	</bean>
+
+	<!-- Configuration -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.configuration.GetPatientExcelItemplateFileAction"
+		class="org.hisp.dhis.patient.action.configuration.GetPatientExcelItemplateFileAction"
+		scope="prototype">
+		<property name="systemSettingManager">
+			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.configuration.SetPatientExcelItemplateFileAction"
+		class="org.hisp.dhis.patient.action.configuration.SetPatientExcelItemplateFileAction"
+		scope="prototype">
+		<property name="systemSettingManager">
+			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
+		</property>
+	</bean>
+
+	<!-- Import patient -->
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientimport.ValidateUploadExcelFileAction"
+		class="org.hisp.dhis.patient.action.patientimport.ValidateUploadExcelFileAction"
+		scope="prototype">
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.action.patientimport.ImportPatientAction"
+		class="org.hisp.dhis.patient.action.patientimport.ImportPatientAction"
+		scope="prototype">
+		<property name="patientService">
+			<ref bean="org.hisp.dhis.patient.PatientService" />
+		</property>
+		<property name="programInstanceService">
+			<ref bean="org.hisp.dhis.program.ProgramInstanceService" />
+		</property>
+		<property name="programStageInstanceService">
+			<ref bean="org.hisp.dhis.program.ProgramStageInstanceService" />
+		</property>
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+		<property name="patientAttributeOptionService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeOptionService" />
+		</property>
+		<property name="systemSettingManager">
+			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
+		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="patientDataValueService">
+			<ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		</property>
+		<property name="patientIdentifierService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierService" />
+		</property>
+		<property name="patientAttributeValueService">
+			<ref bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		</property>
+	</bean>
+
+	<!-- Patient Mobile Setting -->
+	<bean
+		id="org.hisp.dhis.patient.action.mobilesetting.ShowMobileSettingFormAction"
+		class="org.hisp.dhis.patient.action.mobilesetting.ShowMobileSettingFormAction"
+		scope="prototype">
+		<property name="patientMobileSettingService">
+			<ref bean="org.hisp.dhis.patient.PatientMobileSettingService" />
+		</property>
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.mobilesetting.UpdateMobileSettingAction"
+		class="org.hisp.dhis.patient.action.mobilesetting.UpdateMobileSettingAction"
+		scope="prototype">
+		<property name="patientMobileSettingService">
+			<ref bean="org.hisp.dhis.patient.PatientMobileSettingService" />
+		</property>
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,39 @@
+<script>
+	jQuery(document).ready(	function(){
+		
+		jQuery('aIsToB').focus();
+			
+		validation( 'addRelationshipTypeForm', function(form){
+			validateAddRelationshipType();
+		}); 
+	});		
+</script>
+
+<h3>$i18n.getString( "add_new_relationship_type" )</h3>
+																					
+<form id="addRelationshipTypeForm" name="addRelationshipTypeForm" action="addRelationshipType.action" method="post">
+
+<table> 
+    <tr>
+        <td><label>$i18n.getString( "a_is_to_b" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="aIsToB" name="aIsToB"  maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+    </tr>   
+    
+    <tr>
+        <td><label>$i18n.getString( "b_is_to_a" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="bIsToA" name="bIsToA"  maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+    </tr>   
+    
+    <tr>
+        <td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+    </tr>   
+        
+</table>
+
+<p>
+    <input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+    <input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='relationshipType.action'" style="width:10em"/>
+</p>
+
+</form>

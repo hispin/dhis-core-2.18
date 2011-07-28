@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<caseAggregation>
+  <id>$caseAggregation.id</id>
+  <description>$encoder.xmlEncode( $caseAggregation.description )</description>
+  <operator>$caseAggregation.operator</operator>
+  <aggregationDataElement>$encoder.xmlEncode( $caseAggregation.aggregationDataElement.name)</aggregationDataElement>
+  <optionCombo>$encoder.xmlEncode( $caseAggregation.optionCombo.name )</optionCombo>
+  <aggregationExpression>$encoder.xmlEncode( $caseAggregation.aggregationExpression )</aggregationExpression>      
+</caseAggregation>

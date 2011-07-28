@@ -1,0 +1,24 @@
+#set( $size = $programStages.size() )
+{ 
+	"programStages": [
+		#foreach( $programStage in $programStages )
+		  {
+			"id":  ${programStage.id} ,
+			"name": "$!encoder.jsonEncode( ${programStage.name} )"
+		  }#if( $velocityCount < $size ),#end
+		#end],
+		
+	#set( $size = $programStages.size() )
+	"programStageInstances": [
+		#foreach( $programStageInstance in $programInstance.programStageInstances )
+		  {
+			"name": "$programStageInstance.programStage.name",
+			"colorMap": "$colorMap.get( $programStageInstance.id )",
+			"infor": #if( $programStageInstance.completed )
+						"$i18n.getString( 'completed_on' )$format.formatDate( $programStageInstance.executionDate )"
+					#else
+						"$i18n.getString( 'scheduled_for' )$format.formatDate( $programStageInstance.dueDate )"
+					#end
+		  }#if( $velocityCount < $programInstance.programStageInstances.size() ),#end
+		#end]
+}

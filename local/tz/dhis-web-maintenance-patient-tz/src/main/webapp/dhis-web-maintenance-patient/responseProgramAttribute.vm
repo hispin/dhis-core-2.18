@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<programAttribute>
+  <id>$programAttribute.id</id>
+  <name>$encoder.xmlEncode( $programAttribute.name )</name>
+  <description>$encoder.xmlEncode( $programAttribute.description )</description>
+  <valueType>$encoder.xmlEncode( $programAttribute.valueType )</valueType>     
+</programAttribute>

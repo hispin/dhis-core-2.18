@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<relationshipType>
+  <id>$relationshipType.id</id>
+  <aIsToB>$encoder.xmlEncode( $relationshipType.aIsToB )</aIsToB>
+  <bIsToA>$encoder.xmlEncode( $relationshipType.bIsToA )</bIsToA>
+  <description>$encoder.xmlEncode( $relationshipType.description )</description>       
+</relationshipType>
