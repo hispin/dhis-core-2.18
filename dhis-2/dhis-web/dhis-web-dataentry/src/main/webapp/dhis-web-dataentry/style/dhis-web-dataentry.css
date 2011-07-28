@@ -53,28 +53,3 @@
 {
   text-align: center;
 }
-
-@media print 
-{
-  #mainHeader, #topMenu, #leftBar, #currentSelection, #actions, input[type=button] 
-  {
-    display: none;
-  }
-  
-  input, select 
-  {
-    border: 0;
-    background-color: inherit;
-  }
-  
-  a 
-  {
-    text-decoration: none;
-    color: black;
-  }
-  
-  #typeCol, #minCol, #maxCol, #commentCol  
-  {
-    visibility: collapse;
-  } 
-}

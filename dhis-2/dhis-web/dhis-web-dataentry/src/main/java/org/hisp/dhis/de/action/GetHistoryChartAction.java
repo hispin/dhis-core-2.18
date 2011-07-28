@@ -131,7 +131,7 @@ public class GetHistoryChartAction
         return width;
     }
 
-    private int height = 330;
+    private int height = 300;
 
     public int getHeight()
     {

@@ -549,12 +549,26 @@ function validate()
 // History
 // -----------------------------------------------------------------------------
 
+function displayHistoryDialog()
+{
+	$( '#historyDiv' ).dialog( {
+	    modal: true,
+	   	title: 'History',
+	   	width: 580,
+	   	height: 710
+	} );
+}
+
 function viewHist( dataElementId, optionComboId )
 {
 	var periodId = $( '#selectedPeriodId' ).val();
 	
-    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId
-            + '&periodId=' + periodId + '&showComment=true', '_blank', 'width=580,height=710,scrollbars=yes' );
+    $( '#historyDiv' ).load( 'viewHistory.action', {
+    	dataElementId: dataElementId,
+    	optionComboId: optionComboId,
+    	periodId: periodId },
+    	displayHistoryDialog
+    );
 }
 
 function closeCurrentSelection()
