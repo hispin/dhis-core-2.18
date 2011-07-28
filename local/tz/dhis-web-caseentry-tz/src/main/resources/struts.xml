@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+  <include file="dhis-web-commons.xml" />
+
+  <package name="dhis-web-caseentry" extends="dhis-web-commons" namespace="/dhis-web-caseentry">
+
+    <action name="index" class="org.hisp.dhis.caseentry.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/index.vm</param>
+      <param name="menu">/dhis-web-caseentry/menu.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
+    </action>
+    
+  <!-- Data Entry -->
+
+    <action name="dataEntrySelect" class="org.hisp.dhis.caseentry.action.caseentry.DataEntrySelectAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/select.vm</param>
+      <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,
+        ../dhis-web-commons/javascripts/date.js</param>
+    </action>
+
+    <action name="validateSearch" class="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction">
+      <result name="success" type="velocity-xml">/dhis-web-caseentry/responseSuccess.vm</result>
+      <result name="error" type="velocity-xml">/dhis-web-caseentry/responseError.vm</result>
+      <result name="input" type="velocity-xml">/dhis-web-caseentry/responseInput.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="searchPatient" class="org.hisp.dhis.caseentry.action.caseentry.SearchPatientAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/listPatient.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="listAllPatients" class="org.hisp.dhis.caseentry.action.caseentry.SearchPatientAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="listAll">true</param>
+      <param name="page">/dhis-web-caseentry/listPatient.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="selectDataRecording" class="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/dataRecordingSelect.vm</param>
+      <param name="stylesheets">style/patient.css</param>
+    </action>
+
+    <action name="loadProgramStages" class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStagesAction">
+      <result name="success" type="velocity-json">/dhis-web-caseentry/responseProgramStages.vm</result>
+    </action>
+
+    <action name="dataentryform" class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
+      <param name="javascripts">javascript/customcheckbox/prettyCheckboxes.js</param>
+      <param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css</param>
+    </action>
+
+    <action name="completeDataEntry" class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+    </action>
+
+    <action name="saveExecutionDate" class="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction">
+      <result name="success" type="velocity">status.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>  
+    
+    <!-- save value -->
+
+    <action name="saveValue" class="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction">
+      <result name="success" type="velocity-xml">status.vm</result>
+      <result name="input" type="velocity-xml">/dhis-web-caseentry/responseInput.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <!-- save data-value -->
+
+    <action name="saveDateValue" class="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction">
+      <result name="success" type="velocity-xml">status.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="saveProvidingFacility" class="org.hisp.dhis.caseentry.action.caseentry.SaveProvidingFacilityAction">
+      <result name="success" type="velocity">status.vm</result>
+      <result name="input" type="velocity">status.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="getPatient" class="org.hisp.dhis.caseentry.action.caseentry.GetPatientAction">
+      <result name="success" type="velocity-xml">/dhis-web-caseentry/responsePatient.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>    
+
+	<!-- Multi DataEntry -->
+
+    <action name="multipledataEntrySelect" class="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/multiDataEntrySelect.vm</param>
+      <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js, javascript/dataEntry.js</param>
+    </action>
+
+    <action name="getPrograms" class="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction">
+      <result name="success" type="velocity-json">/dhis-web-caseentry/responsePrograms.vm</result>
+    </action>
+
+    <action name="getDataRecords" class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/dataentryRecords.vm</param>
+      <param name="javascripts">javascript/customcheckbox/prettyCheckboxes.js</param>
+      <param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css
+        ,../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="viewProgramStageRecords" class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
+      <param name="javascripts">javascript/dataEntry.js,../dhis-web-commons/javascripts/date.js</param>
+    </action>
+    
+     <action name="loadProgramStageRecords" class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
+      <param name="javascripts">javascript/dataEntry.js,../dhis-web-commons/javascripts/date.js</param>
+    </action>
+
+    <action name="completeProgramStageDataEntry" class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
+      <result name="success" type="redirect">getDataRecords.action?programId=${programId}</result>
+    </action>
+	    
+    <!-- Visit Plan -->
+
+    <action name="visitplan" class="org.hisp.dhis.caseentry.action.visitplan.VisitPlanAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/visitPlan.vm</param>
+      <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/visitPlan.js</param>
+    </action>
+
+    <action name="visitplanSortByAttribute" class="org.hisp.dhis.caseentry.action.visitplan.SearchVisitPlanAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/loadVisitPlan.vm</param>
+      <param name="javascripts">javascript/visitPlan.js</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+    
+    <!-- Report -->
+
+ 	<action name="reportSelect" class="org.hisp.dhis.caseentry.action.report.ReportSelectAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/reportSelect.vm</param>
+      <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
+    </action>
+    
+    <action name="reportSelect" class="org.hisp.dhis.caseentry.action.report.ReportSelectAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/reportSelect.vm</param>
+      <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
+    </action>
+
+    <action name="validateReportParameters" class="org.hisp.dhis.caseentry.action.report.ValidateReportParametersAction">
+      <result name="success" type="velocity-xml">/dhis-web-caseentry/responseSuccess.vm</result>
+      <result name="error" type="velocity-xml">/dhis-web-caseentry/responseError.vm</result>
+      <result name="input" type="velocity-xml">/dhis-web-caseentry/responseInput.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="generateReport" class="org.hisp.dhis.caseentry.action.report.GenerateReportAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/report.vm</param>
+      <param name="javascripts">javascript/report.js</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="viewRecords" class="org.hisp.dhis.caseentry.action.report.ViewRecordsAction">
+      <result name="success" type="velocity">/popup.vm</result>
+      <param name="page">/dhis-web-caseentry/records.vm</param>
+    </action>
+
+    <action name="getPatientDetails" class="org.hisp.dhis.caseentry.action.report.GetPatientDetailsAction">
+      <result name="success" type="velocity-xml">/dhis-web-caseentry/responsePatientDetails.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+	 <!-- Case Aggregation -->
+
+    <action name="caseAggregationForm" class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/caseAggregationForm.vm</param>
+      <param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>
+      <param name="javascripts">javascript/caseagg.js,javascript/date.js,javascript/caseAggregationForm.js</param>
+    </action>
+
+    <action name="loadPeriods" class="org.hisp.dhis.caseentry.action.caseaggregation.LoadPeriodsAction">
+      <result name="success" type="velocity-json">/dhis-web-caseentry/responsePeriods.vm</result>
+    </action>
+
+    <action name="validateCaseAggregation" class="org.hisp.dhis.caseentry.action.caseaggregation.ValidationCaseAggregationAction">
+      <result name="success" type="velocity-xml">/dhis-web-caseentry/responseSuccess.vm</result>
+      <result name="error" type="velocity-xml">/dhis-web-caseentry/responseError.vm</result>
+      <result name="input" type="velocity-xml">/dhis-web-caseentry/responseInput.vm</result>
+    </action>
+
+    <action name="caseAggregationResult" class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-caseentry/caseAggregationResult.vm</param>
+      <param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>
+      <param name="javascripts">javascript/caseagg.js,javascript/date.js,javascript/caseAggregationForm.js</param>
+    </action>
+
+    <action name="caseAggregationResultDetails" class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultDetailsAction">
+      <result name="success" type="velocity">/popup.vm</result>
+      <param name="page">/dhis-web-caseentry/caseAggregationResultDetails.vm</param>
+    </action>
+
+    <action name="nextPeriods" class="org.hisp.dhis.caseentry.state.NextPeriodsAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPeriods.vm</result>
+    </action>
+
+    <action name="previousPeriods" class="org.hisp.dhis.caseentry.state.PreviousPeriodsAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPeriods.vm</result>
+    </action>
+
+    <action name="validateProgram" class="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction">
+      <result name="success" type="velocity">/popup.vm</result>
+      <param name="page">/dhis-web-caseentry/validationResult.vm</param>
+    </action>
+
+  </package>
+</struts>
