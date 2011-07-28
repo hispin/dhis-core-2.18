@@ -501,9 +501,7 @@ function registerCompleteDataSet( json )
     } 
     else
     {
-    	var url = 'validate.action?periodId=' + periodId + '&dataSetId=' + dataSetId;
-    	
-        window.open( url, '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
+    	validate();
     }
 }
 
@@ -535,14 +533,26 @@ function undoCompleteDataSet()
 // Validation
 // -----------------------------------------------------------------------------
 
+function displayValidationDialog()
+{
+	$( '#validationDiv' ).dialog( {
+	    modal: true,
+	   	title: 'Validation',
+	   	width: 800,
+	   	height: 400
+	} );
+}
+
 function validate()
 {
 	var periodId = $( '#selectedPeriodId' ).val();
     var dataSetId = $( '#selectedDataSetId' ).val();
-		
-	var url = 'validate.action?periodId=' + periodId + '&dataSetId=' + dataSetId;
 	
-    window.open( url, '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
+	$( '#validationDiv' ).load( 'validate.action', {
+		periodId: periodId,
+		dataSetId: dataSetId },
+		displayValidationDialog
+	);
 }
 
 // -----------------------------------------------------------------------------

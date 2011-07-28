@@ -111,3 +111,5 @@ organisationUnitAssociationSetMap = {
 <div id="contentDiv"></div>
 
 <div id="historyDiv"></div>
+
+<div id="validationDiv"></div>
