@@ -34,6 +34,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.patient.PatientAttribute;
 
 import com.opensymphony.xwork2.Action;
 
@@ -74,6 +75,12 @@ public class ValidateCaseAggregationConditionAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
     private String aggregationDataElementId;
 
@@ -114,16 +121,23 @@ public class ValidateCaseAggregationConditionAction
         CaseAggregationCondition condition = aggregationConditionService.getCaseAggregationCondition(
             aggregationDataElement, optionCombo );
 
-        if ( condition != null )
+        if ( id != null && condition != null )
+        {
+            CaseAggregationCondition match = aggregationConditionService.getCaseAggregationCondition( id );
+
+            if ( match != condition )
+            {
+                message = i18n.getString( "aggregation_data_element_in_use" );
+                return INPUT;
+            }
+        }
+        else if ( condition != null )
         {
             message = i18n.getString( "aggregation_data_element_in_use" );
-
             return INPUT;
         }
 
         message = i18n.getString( "everything_is_ok" );
-
         return SUCCESS;
-
     }
 }
