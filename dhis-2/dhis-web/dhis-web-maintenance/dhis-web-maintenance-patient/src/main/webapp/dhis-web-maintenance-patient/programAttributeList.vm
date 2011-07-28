@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "program_attribute_management" )</h3>
+<h3>$i18n.getString( "program_attribute_management" ) #openHelp( "program_attribute" )</h3>
 <table class="mainPageTable">
 	<tr>
 		<td style="vertical-align:top">
