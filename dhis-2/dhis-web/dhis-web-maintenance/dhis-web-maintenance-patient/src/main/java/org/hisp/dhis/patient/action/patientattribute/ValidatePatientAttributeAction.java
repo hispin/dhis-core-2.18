@@ -98,7 +98,7 @@ public class ValidatePatientAttributeAction
 
         if ( match != null && (id == null || match.getId() != id) )
         {
-            message = i18n.getString( "aggregation_data_element_in_use" );
+            message = i18n.getString( "name_in_use" );
 
             return INPUT;
         }
