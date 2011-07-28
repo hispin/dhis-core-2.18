@@ -396,7 +396,7 @@ public abstract class DeletionHandler
     {
     }
 
-    public boolean allowReportTableGroup( ReportTableGroup group )
+    public boolean allowDeleteReportTableGroup( ReportTableGroup group )
     {
         return true;
     }
