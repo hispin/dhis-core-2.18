@@ -76,9 +76,8 @@
     </action>
 
     <action name="validate" class="org.hisp.dhis.de.action.ValidationAction">
-      <result name="success" type="velocity">/popup.vm</result>
-      <result name="input" type="velocity">/popup.vm</result>
-      <param name="page">/dhis-web-dataentry/validationResult.vm</param>
+      <result name="success" type="velocity">/dhis-web-dataentry/validationResult.vm</result>
+      <result name="input" type="velocity">/dhis-web-dataentry/validationResult.vm</result>
     </action>
 
     <action name="markValueForFollowup" class="org.hisp.dhis.de.action.MarkForFollowupAction">

@@ -1,13 +1,13 @@
 <h3>$encoder.htmlEncode( $i18n.getString( "validation_result" ) )</h3>
 
 #if( $results.size() == 0 && $dataValues.size() == 0 )  
-    <p><b>$encoder.htmlEncode( $i18n.getString( "successful_validation" ) )</b></p>
+    <p class="bold">$encoder.htmlEncode( $i18n.getString( "successful_validation" ) )</p>
 #else
-    <p><b>$encoder.htmlEncode( $i18n.getString( "unsuccessful_validation" ) )</b></p>
+    <p class="bold">$encoder.htmlEncode( $i18n.getString( "unsuccessful_validation" ) )</p>
 #end
 
 #if( $results.size() > 0)
-    <p><b>$encoder.htmlEncode( $i18n.getString( "the_following_values_violates_rules" ) )</b></p>
+    <p class="bold">$encoder.htmlEncode( $i18n.getString( "the_following_values_violate_rules" ) )</p>
     <table class="listTable" width="100%">
         <tr>
             <th style="width:110px">$encoder.htmlEncode( $i18n.getString( "validation_rule" ) )</th>                
@@ -42,7 +42,7 @@
 #end
 
 #if( $dataValues.size() > 0 )
-    <p><b>$encoder.htmlEncode( $i18n.getString( "the_following_values_are_outliers" ) )</b></p>
+    <p class="bold">$encoder.htmlEncode( $i18n.getString( "the_following_values_are_outliers" ) )</p>
     <table class="listTable" style="width:100%">
 	    <tr>
 	        <th>$i18n.getString( "data_element" )</th>
@@ -66,5 +66,3 @@
 	    #end
 	</table>
 #end
-
-<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( "close" ) )" style="width:10em" onclick="window.close()"></p>
