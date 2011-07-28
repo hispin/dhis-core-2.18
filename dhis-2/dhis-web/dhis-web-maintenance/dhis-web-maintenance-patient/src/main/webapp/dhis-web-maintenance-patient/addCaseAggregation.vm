@@ -3,6 +3,8 @@
 		validation( 'addCaseAggregationForm', function(form){
 			form.submit();
 		}); 
+		
+		checkValueIsExist( "aggregationDataElementId", "validateCaseAggregation.action");
 	});		
 </script>
 															

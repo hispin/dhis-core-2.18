@@ -11,34 +11,30 @@ function getAggDataElements( )
 		clearList( byId('aggregationDataElementId'));
 		return;
 	}
-	$.ajax({
-		url: 'getAggDataElements.action?dataElementGroupId=' + dataElementGroupId,
-		cache: false,
-		dataType: "xml",
-		success: getAggDataElementsCompleted
-	});
+
+	$.post( 'getAggDataElements.action', { dataElementGroupId:dataElementGroupId }, getAggDataElementsCompleted );
 }
 
 function getAggDataElementsCompleted( dataelementElement )
 {
-  var de = document.getElementById( 'aggregationDataElementId' );
+	var de = document.getElementById( 'aggregationDataElementId' );
   
-  clearList( de );
+	clearList( de );
   
-  var dataElementList = dataelementElement.getElementsByTagName( 'dataelement' );
+	var dataElementList = $(dataelementElement).find( 'dataelement' );
   
-  for ( var i = 0; i < dataElementList.length; i++ )
-    {
-        var id = dataElementList[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
-        var name = dataElementList[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
+	$( dataElementList ).each( function( i, item )
+	{
+        var id = $(item).find("id").text();
+        var name = $(item).find("name").text();
 
         var option = document.createElement("option");
         option.value = id;
         option.text = name;
         option.title = name;
         
-        de.add(option, null);  
-    }	    
+        de.add(option, null);  			
+	} );
 }
 
 //------------------------------------------------------------------------------
@@ -56,12 +52,7 @@ function getProgramStages()
 		return;  
 	}
 
-	$.ajax({
-		url: 'getProgramStages.action?programId=' + programId,
-		cache: false,
-		dataType: "xml",
-		success: getProgramStagesCompleted
-	});  
+	$.post( 'getProgramStages.action', { programId:programId }, getProgramStagesCompleted );
 }
 
 function getProgramStagesCompleted( programstageElement )
@@ -100,12 +91,7 @@ function getPrgramStageDataElements()
 	var programStage = document.getElementById( 'programStage' );
 	var psId = programStage.options[ programStage.selectedIndex ].value;
 	
-	$.ajax({
-		url: 'getPSDataElements.action?psId=' + psId,
-		cache: false,
-		dataType: "xml",
-		success: getPrgramStageDataElementsCompleted
-	});
+	$.post( 'getPSDataElements.action', { psId:psId }, getPrgramStageDataElementsCompleted );
 }
 
 function getPrgramStageDataElementsCompleted( dataelementElement )
@@ -160,12 +146,7 @@ function removeCaseAggregation( caseAggregationId, caseAggregationName )
 
 function showCaseAggregationDetails( caseAggregationId )
 {
-    $.ajax({
-		url: 'getCaseAggregation.action?id=' + caseAggregationId,
-		cache: false,
-		dataType: "xml",
-		success: caseAggregationReceived
-	});
+    $.post( 'getCaseAggregation.action', { id:caseAggregationId }, caseAggregationReceived );
 }
 
 function caseAggregationReceived( caseAggregationElement )
@@ -186,12 +167,12 @@ function caseAggregationReceived( caseAggregationElement )
 
 function getConditionDescription()
 {
-	$.post("getCaseAggregationDescription.action",
-		{
-			condition: getFieldValue('aggregationCondition')
-		},
-		function (data)
+	$.post( 'getCaseAggregationDescription.action', 
+		{ 
+			condition:getFieldValue('aggregationCondition') 
+		},function (data)
 		{
 			byId('aggregationDescription').innerHTML = data;
 		},'html');
 }
+

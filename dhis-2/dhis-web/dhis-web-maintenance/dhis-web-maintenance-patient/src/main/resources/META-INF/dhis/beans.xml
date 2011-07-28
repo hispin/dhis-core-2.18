@@ -1122,6 +1122,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.ValidateCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.ValidateCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="dataElementCategoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		</property>
+	</bean>
+	
 	<!-- Validation - PatientValidationCriteria -->
 
 	<bean
