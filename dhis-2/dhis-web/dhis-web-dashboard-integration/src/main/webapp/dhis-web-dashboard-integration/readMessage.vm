@@ -12,7 +12,7 @@
 <input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='message.action'" style="width:120px">
 </div>
 
-<div id="senderInfo" style="display:none">
+<div id="senderInfo" style="display:none" class="page">
 <h3>$message.message.sender.name</h3>
 <table>
 <tr>

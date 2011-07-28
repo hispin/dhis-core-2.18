@@ -108,8 +108,8 @@ organisationUnitAssociationSetMap = {
 
 #parse( "dhis-web-commons/loader/loader.vm" )
 
-<div id="contentDiv"></div>
+<div id="contentDiv" class="page"></div>
 
-<div id="historyDiv"></div>
+<div id="historyDiv" class="page"></div>
 
-<div id="validationDiv"></div>
+<div id="validationDiv" class="page"></div>

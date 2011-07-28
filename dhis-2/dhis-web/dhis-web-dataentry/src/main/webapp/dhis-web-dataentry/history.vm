@@ -6,24 +6,21 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 #set( $width = 40 * $dataElementHistory.historyLength )
 #set( $lastIndex = $dataElementHistory.historyLength - 1 )
 #set( $average = $dataElementHistory.historyPoints.get( $lastIndex ).average )
-
-<h3>
-    $encoder.htmlEncode( $dataElementHistory.dataElement.name )
-    $encoder.htmlEncode( $dataElementHistory.optionCombo.name )
-    #if ( $dataValue && $dataValue.isFollowup() )
-        <img id="followup" src="../images/marked.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
-	#elseif ( $dataValue )
-        <img id="followup" src="../images/unmarked.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
-	#else
-	    <img id="followup" src="../images/unmarked.png"/>
-	#end
-</h3>
-
+#set( $dataValueAuditSize = $dataValueAudits.size() )
 <table>
 	<tr>		
 		<!-- Comment -->
 		<td valign="top">
-			<h4>$i18n.getString( "dataelement_comment" )</h4>
+			<h4>$i18n.getString( "dataelement_comment" )
+			
+			#if ( $dataValue && $dataValue.isFollowup() )
+		        <img id="followup" src="../images/marked.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
+			#elseif ( $dataValue )
+		        <img id="followup" src="../images/unmarked.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
+			#else
+			    <img id="followup" src="../images/unmarked.png"/>
+			#end			
+			</h4>
 			<textarea id="commentTextArea" style="height:130px;width:240px">$!encoder.htmlEncode( $dataValue.comment )</textarea><br>
 			<input type="button" value="$i18n.getString( 'save_comment' )" style="width:130px" onclick="saveComment()">
 		</td>
@@ -40,7 +37,7 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
                             onkeyup="saveMinMaxLimit()"
                         #else disabled="disabled" #end />
 						<i><span id="maxSpan" style="color:red"></span></i>
-						</td>
+					</td>
                 </tr>
                 <tr>
                     <td style="background-color:#d54a4a; height:26px">&nbsp;</td>
@@ -65,7 +62,7 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
                 <tr>
                 	<td colspan="3"><input type="button" value="$i18n.getString( 'remove' )" onclick="removeMinMaxLimit()" style="width:100px"></td>
                 </tr>
-            </table>        
+            </table>
         </td>
 	</tr>
 	<tr>
@@ -74,11 +71,11 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 			<h4>$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</h4>
 			#if( !$isHistoryValid )			    
 			    <h4>$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</h4>  
-			#end    
-			
-			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&categoryOptionComboId=${dataElementHistory.optionCombo.id}&periodId=${periodId}"/>			
+			#end			
+			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&categoryOptionComboId=${dataElementHistory.optionCombo.id}&periodId=${periodId}"/>
         </td>
     </tr>
+    #if( $dataValueAuditSize > 0 )
 	<tr>
 		<!-- Data Value History -->
 		<td colspan="2">
@@ -87,9 +84,10 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 				<p>
 					$encoder.htmlEncode( $i18n.getString( "on" ) ) $eachDataValueAudit.timeStamp, 
 					$eachDataValueAudit.storedBy 
-					$encoder.htmlEncode( $i18n.getString( "change_from" ) ) $eachDataValueAudit.value.
+					$encoder.htmlEncode( $i18n.getString( "change_from" ) ) $eachDataValueAudit.value
 				</p>
 			#end					
         </td>
     </tr>
+    #end
 </table>

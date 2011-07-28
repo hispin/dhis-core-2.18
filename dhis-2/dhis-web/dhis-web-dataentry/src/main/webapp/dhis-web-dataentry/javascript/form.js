@@ -558,11 +558,11 @@ function validate()
 // History
 // -----------------------------------------------------------------------------
 
-function displayHistoryDialog()
+function displayHistoryDialog( operandName )
 {
 	$( '#historyDiv' ).dialog( {
 	    modal: true,
-	   	title: 'History',
+	   	title: operandName,
 	   	width: 580,
 	   	height: 710
 	} );
@@ -572,9 +572,14 @@ function viewHist( dataElementId, optionComboId )
 {
 	var periodId = $( '#selectedPeriodId' ).val();
 	
+	var dataElementName = dataElements[dataElementId].name;
+	var optionComboName = $( '#' + optionComboId + '-optioncombo' ).html();
+	var operandName = dataElementName + ' ' + optionComboName;
+	
     $( '#historyDiv' ).load( 'viewHistory.action', {
-    	dataElementId: dataElementId, optionComboId: optionComboId, periodId: periodId },
-    	displayHistoryDialog
+    	dataElementId: dataElementId, optionComboId: optionComboId, periodId: periodId }, function() {
+    		displayHistoryDialog( operandName );
+    	}
     );
 }
 
