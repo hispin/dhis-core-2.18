@@ -15,6 +15,6 @@
     <module>dhis-web-chr-form</module>
     <module>dhis-web-dataentry-chr</module>
     <module>dhis-web-datastatus</module>
-    <module>dhis-web-excel-reporting</module>
+    <module>dhis-web-spreadsheet-reporting</module>
   </modules>
 </project>

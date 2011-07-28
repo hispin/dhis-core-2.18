@@ -16,6 +16,8 @@
 		<module>dhis-support-jdbc-hr</module>
 		<module>dhis-web-hrentry</module>
 		<module>dhis-web-maintenance-hr</module>
+		<module>dhis-web-caseentry-tz</module>
+		<module>dhis-web-maintenance-patient-tz</module>
 	</modules>
 </project>
 

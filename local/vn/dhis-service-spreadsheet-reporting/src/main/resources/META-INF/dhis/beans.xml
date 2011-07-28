@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- ExportReport -->
+	<bean id="org.hisp.dhis.reportsheet.ExportReportStore"
+		class="org.hisp.dhis.reportsheet.hibernate.HibernateExportReportStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+	</bean>
+
+	<bean id="org.hisp.dhis.reportsheet.ExportReportService"
+		class="org.hisp.dhis.reportsheet.DefaultExportReportService">
+		<property name="exportReportStore" ref="org.hisp.dhis.reportsheet.ExportReportStore" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	</bean>
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- IMPORTITEM STORE                                               -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="org.hisp.dhis.reportsheet.importitem.ImportReportStore"
+		class="org.hisp.dhis.reportsheet.importitem.hibernate.HibernateImportReportStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
+	</bean>
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- IMPORTITEM SERVICE                                             -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="org.hisp.dhis.reportsheet.importitem.ImportReportService"
+		class="org.hisp.dhis.reportsheet.importitem.DefaultImportReportService">
+		<property name="importReportStore"
+			ref="org.hisp.dhis.reportsheet.importitem.ImportReportStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	</bean>
+	
+	<!-- DeletionHandlers -->
+
+	<bean id="org.hisp.dhis.reportsheet.ExportReportDeletionHandler"
+		class="org.hisp.dhis.reportsheet.ExportReportDeletionHandler">
+		<property name="exportReportService"
+			ref="org.hisp.dhis.reportsheet.ExportReportService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportsheet.importitem.ImportItemDeletionHandler"
+		class="org.hisp.dhis.reportsheet.importitem.ImportItemDeletionHandler">
+		<property name="importReportService"
+			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
+	</bean>
+
+	<!-- DeletionManager -->
+
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="deletionManager" />
+		<property name="targetMethod" value="addDeletionHandlers" />
+		<property name="arguments">
+			<list>
+				<list>
+					<ref local="org.hisp.dhis.reportsheet.ExportReportDeletionHandler" />
+					<ref local="org.hisp.dhis.reportsheet.importitem.ImportItemDeletionHandler" />
+				</list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.reportsheet.BookmarkStore" 
+		class="org.hisp.dhis.reportsheet.hibernate.HibernateBookmarkStore">			
+		<property name="clazz" value="org.hisp.dhis.reportsheet.Bookmark" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.reportsheet.BookmarkService" 
+		class="org.hisp.dhis.reportsheet.DefaultBookmarkService">
+		<property name="bookmarkStore" ref="org.hisp.dhis.reportsheet.BookmarkStore" />	
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />	
+	</bean>
+	
+	<!-- JChart -->
+	
+	<bean id="org.hisp.dhis.jchart.JChartStore" 
+		class="org.hisp.dhis.jchart.hibernate.HibernateJChartStore">		
+		<property name="clazz" value="org.hisp.dhis.jchart.JChart" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.jchart.JChartService" 
+		class="org.hisp.dhis.jchart.DefaultJChartService">		
+		<property name="jchartStore" ref="org.hisp.dhis.jchart.JChartStore" />
+		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />	
+	</bean>
+	
+</beans>
