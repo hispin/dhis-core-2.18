@@ -1,8 +1,4 @@
 
-var COLOR_GREEN = '#b9ffb9';
-var COLOR_YELLOW = '#fffe8c';
-var COLOR_RED = '#ff8a8a';
-
 // -----------------------------------------------------------------------------
 // Comments
 // -----------------------------------------------------------------------------
@@ -10,8 +6,9 @@ var COLOR_RED = '#ff8a8a';
 function saveComment()
 {
 	var commentValue = $( '#commentTextArea' ).val();
+	var periodId = $( '#selectedPeriodId' ).val();
 	
-	var commentSaver = new CommentSaver( currentDataElementId, currentOptionComboId, currentOrganisationUnitId, currentPeriodId, commentValue );
+	var commentSaver = new CommentSaver( currentDataElementId, currentOptionComboId, currentOrganisationUnitId, periodId, commentValue );
 	
 	commentSaver.save();
 }
@@ -68,7 +65,7 @@ function removeMinMaxLimit()
 	
 	var url = 'removeMinMaxLimits.action?organisationUnitId=' + currentOrganisationUnitId + '&dataElementId=' + currentDataElementId + '&optionComboId=' + currentOptionComboId;
 	
-	$.get( url, refreshWindow );
+	$.get( url, refreshChart );
 }
 
 function saveMinMaxLimit()
@@ -114,17 +111,19 @@ function saveMinMaxLimit()
 		$( '#maxSpan' ).html( '' );
 	}
 	
-	// TODO fix
-	//currentMinMaxValueMap[currentDataElementId + '-' + currentOptionComboId + '-min'] = minValue;
-	//currentMinMaxValueMap[currentDataElementId + '-' + currentOptionComboId + '-max'] = maxValue;
+	var minId = currentDataElementId + '-' + currentOptionComboId + '-min';
+	var maxId = currentDataElementId + '-' + currentOptionComboId + '-max';
+	
+	currentMinMaxValueMap[minId] = minValue;
+	currentMinMaxValueMap[maxId] = maxValue;
 	
     var url = 'saveMinMaxLimits.action?organisationUnitId=' + currentOrganisationUnitId + '&dataElementId=' + currentDataElementId + 
     	'&optionComboId=' + currentOptionComboId + '&minLimit=' + minValue + '&maxLimit=' + maxValue;
     
-    $.get( url, refreshWindow );
+    $.get( url, refreshChart );
 }
 
-function refreshWindow()
+function refreshChart()
 {
 	var source = 'getHistoryChart.action?dataElementId=' + currentDataElementId + '&categoryOptionComboId=' + currentOptionComboId + '&r=' + Math.random();
 	

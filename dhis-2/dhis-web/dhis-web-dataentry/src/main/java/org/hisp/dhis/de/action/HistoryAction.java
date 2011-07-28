@@ -120,18 +120,6 @@ public class HistoryAction
     	this.optionComboId = optionComboId;
     }
     
-    private Boolean showComment;
-    
-    public void setShowComment( Boolean showComment)
-    {
-    	this.showComment = showComment;
-    }
-    
-    public Boolean getShowComment()
-    {
-    	return showComment;
-    }
-
     private String periodId;
 
     public String getPeriodId()
@@ -189,7 +177,7 @@ public class HistoryAction
 
     public String execute()
         throws Exception
-    {    	
+    {
     	DataElement dataElement = dataElementService.getDataElement( dataElementId );       
         
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );

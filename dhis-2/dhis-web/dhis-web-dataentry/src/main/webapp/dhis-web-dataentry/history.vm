@@ -1,13 +1,6 @@
 <script type="text/javascript">
-	var currentOrganisationUnitId = $!{dataElementHistory.organisationUnit.id};
-	var currentDataElementId = $!{dataElementHistory.dataElement.id};
-	var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
-	var currentPeriodId = '${periodId}';
-	
-	var i18n_enter_digits = '$encoder.jsEscape( $i18n.getString( "enter_digits" ) , "'")';
-	var i18n_max_must_be_greater_than_min = '$encoder.jsEscape( $i18n.getString( "max_must_be_greater_than_min" ) , "'")';
-	var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
-	var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
+var currentDataElementId = $!{dataElementHistory.dataElement.id};
+var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 </script>
 
 #set( $width = 40 * $dataElementHistory.historyLength )
@@ -28,16 +21,14 @@
 
 <table>
 	<tr>		
-		<!-- Column 1 - Comment -->
+		<!-- Comment -->
 		<td valign="top">			
 			<h4>$i18n.getString( "dataelement_comment" )</h4>
-			#if( $showComment == 'true' )
 			<textarea id="commentTextArea" style="height:130px;width:240px">$!encoder.htmlEncode( $dataValue.comment )</textarea><br>
 			<input type="button" value="$i18n.getString( 'save_comment' )" style="width:130px" onclick="saveComment()">
-			#end
 		</td>
 		
-		<!-- Column 2 - Min-max -->
+		<!-- Min-max -->
         <td valign="top">       
             <h4>$encoder.htmlEncode( $i18n.getString( "min_max_limits" ) )</h4>
             <table>
@@ -47,8 +38,8 @@
                     <td><input type="text" id="maxLimit" style="width:10em" value="$!{dataElementHistory.maxLimit}" class="{validate:{digits:true}}"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
                             onkeyup="saveMinMaxLimit()"
-                        #else disabled="disabled" #end onfocus="this.select()"/>
-						<i><span id='maxSpan' style="color:red;"></span></i>
+                        #else disabled="disabled" #end />
+						<i><span id="maxSpan" style="color:red"></span></i>
 						</td>
                 </tr>
                 <tr>
@@ -57,14 +48,14 @@
                     <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
                            onkeyup="saveMinMaxLimit()"
-                        #else disabled="disabled" #end onfocus="this.select()"/>
-						<i><span id='minSpan' style="color:red;"></span></i>
+                        #else disabled="disabled" #end />
+						<i><span id="minSpan" style="color:red"></span></i>
 					</td>
                 </tr>
                 <tr>
                     <td style="background-color:#f4f256; height:26px">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "average" ) ) </td>
-                    <td><script type="text/javascript">document.write( ${average}.toFixed(1) );</script></td>
+                    <td>${average}</td>
                 </tr>
                 <tr>
                     <td style="background-color:#75e077; height:26px">&nbsp;</td>
@@ -101,7 +92,4 @@
 			#end					
         </td>
     </tr>
-
 </table>
-
-<p><input type="button" style="width:130px" value="$encoder.htmlEncode( $i18n.getString( 'close' ) )" onclick="javascript:self.close()"></p>

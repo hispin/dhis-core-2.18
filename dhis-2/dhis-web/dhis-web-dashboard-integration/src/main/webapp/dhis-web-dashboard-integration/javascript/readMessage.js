@@ -2,7 +2,6 @@ var dialog = null;
 
 $( document ).ready( function()
 {
-
     dialog = $( "#senderInfo" ).dialog( {
         modal : true,
         autoOpen : false,

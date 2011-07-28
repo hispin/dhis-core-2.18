@@ -14,7 +14,7 @@
       <param name="page">/dhis-web-dataentry/select.vm</param>
       <param name="menu">/dhis-web-dataentry/menu.vm</param>
       <param name="menuTreeHeight">420</param>
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js,javascript/history.js</param>
       <param name="stylesheets">style/dhis-web-dataentry.css</param>
     </action>
 
@@ -58,9 +58,7 @@
     </action>
 
     <action name="viewHistory" class="org.hisp.dhis.de.action.HistoryAction">
-      <result name="success" type="velocity">/popup.vm</result>
-      <param name="page">/dhis-web-dataentry/history.vm</param>
-      <param name="javascripts">javascript/history.js</param>
+      <result name="success" type="velocity">/dhis-web-dataentry/history.vm</result>
     </action>
 
     <action name="registerCompleteDataSet" class="org.hisp.dhis.de.action.RegisterCompleteDataSetAction">

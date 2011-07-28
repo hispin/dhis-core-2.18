@@ -19,6 +19,11 @@ var i18n_confirm_complete = '$encoder.jsEscape( $i18n.getString( "confirm_comple
 var i18n_confirm_undo = '$encoder.jsEscape( $i18n.getString( "confirm_undo" ) , "'")';
 var i18n_no_response_from_server = '$encoder.jsEscape( $i18n.getString( "no_response_from_server" ) , "'")';
 
+var i18n_enter_digits = '$encoder.jsEscape( $i18n.getString( "enter_digits" ) , "'")';
+var i18n_max_must_be_greater_than_min = '$encoder.jsEscape( $i18n.getString( "max_must_be_greater_than_min" ) , "'")';
+var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
+var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
+
 significantZeros = [
 #set( $size1 = $significantZeros.size() )
 #foreach( $dataElement in $significantZeros )
@@ -104,3 +109,5 @@ organisationUnitAssociationSetMap = {
 #parse( "dhis-web-commons/loader/loader.vm" )
 
 <div id="contentDiv"></div>
+
+<div id="historyDiv"></div>
