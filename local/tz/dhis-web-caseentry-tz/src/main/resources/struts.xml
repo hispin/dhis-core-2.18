@@ -238,6 +238,47 @@
       <result name="success" type="velocity">/popup.vm</result>
       <param name="page">/dhis-web-caseentry/validationResult.vm</param>
     </action>
+	
+	<!-- Beneficiary Registration -->
+
+	<action name="patient" class="org.hisp.dhis.patient.action.patient.SelectAction">
+		<interceptor-ref name="organisationUnitTreeStack" />
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-caseentry/selectPatient.vm</param>
+		<param name="menu">/dhis-web-caseentry/patientAndDataEntryMenuWithTree.vm</param>
+		<param name="menuTreeHeight">285</param>
+		<param name="javascripts">
+			../dhis-web-commons/ouwt/ouwt.js
+			,javascript/commons.js
+			,javascript/date.js
+			,javascript/patient.js
+			,javascript/relationship.js
+			,javascript/relationshipPatient.js
+			,../dhis-web-commons/javascripts/jQuery/ui/ui.thickbox.min.js
+			,../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js
+		</param>
+	</action>
+	
+	<action name="organisationUnitHasPatients"
+		class="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="input" type="velocity-json">
+			/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+	</action>
+	
+	<action name="patientform"
+		class="org.hisp.dhis.patient.action.patient.SearchPatientFormAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-caseentry/responsePrograms.vm</result>
+	</action>
+	
+	<action name="searchBeneficiary"
+		class="org.hisp.dhis.patient.action.patient.SearchPatientAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-caseentry/listBeneficiary.vm</param>
+		<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+	</action>
 
   </package>
 </struts>

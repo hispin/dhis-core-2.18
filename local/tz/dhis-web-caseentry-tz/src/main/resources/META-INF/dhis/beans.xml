@@ -268,5 +268,40 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
   </bean>
+  
+  <!-- Beneficiary Registration -->
+  <bean id="org.hisp.dhis.patient.action.patient.SelectAction"
+		class="org.hisp.dhis.patient.action.patient.SelectAction" scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+  </bean>
+  <bean
+		id="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
+		class="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+  <bean id="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
+		class="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+  </bean>
+  <bean id="org.hisp.dhis.patient.action.patient.SearchPatientAction"
+		class="org.hisp.dhis.patient.action.patient.SearchPatientAction"
+		scope="prototype">
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+  </bean>
 
 </beans>

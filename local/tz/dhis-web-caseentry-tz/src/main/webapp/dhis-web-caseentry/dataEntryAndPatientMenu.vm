@@ -1,0 +1,8 @@
+<a href="index.action"><h2>$i18n.getString( "data_entry" )</h2></a>
+<ul>
+    <li><a href="patient.action">$i18n.getString( "patient" )&nbsp;</a></li>
+    <li><a href="dataEntrySelect.action">$i18n.getString( "data_entry" )&nbsp;</a></li>
+    <li><a href="multipledataEntrySelect.action">$i18n.getString( "multiple_data_entry" )&nbsp;</a></li>
+</ul>
+
+<br/>
