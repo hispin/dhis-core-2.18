@@ -14,6 +14,7 @@
 
 		datePickerValid( 'birthDate' );
 		datePickerValid( 'deathDate' );
+		addEventForPatientForm('updatePatientForm');
 		
 		jQuery("#btnRepresentativeInfo").cluetip(
 		{
@@ -84,7 +85,7 @@
 	<tr>
 		<td><label for="dobType">$i18n.getString( "dob_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td class="input-column" >
-			<select id='dobType' name="dobType" style="width:30.3em" onchange="dobTypeOnChange();" class="{validate:{required:true}}">
+			<select id='dobType' name="dobType" style="width:30.3em" class="{validate:{required:true}}">
 				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 				<option value="V" #if($patient.dobType=='V') selected #end>$i18n.getString( "verified" )</option>
 				<option value="D" #if($patient.dobType=='D') selected #end>$i18n.getString( "declared" )</option>
@@ -102,14 +103,14 @@
 				<option value="M" #if($patient.getAgeType()=='M') selected #end> $i18n.getString('month')</option>
 				<option value="Y" #if($patient.getAgeType()=='Y') selected #end> $i18n.getString('year')</option>
 			</select>
-			<input type="text" id="age" name="age" value="$patient.getIntegerValueOfAge()" style="width:12em" onchange="ageOnchange()" class="{validate:{number:true, alphanumeric: true}}">
+			<input type="text" id="age" name="age" value="$patient.getIntegerValueOfAge()" style="width:12em" class="{validate:{number:true, alphanumeric: true}}">
 		</td>
 	</tr>
 
 	<tr id='birthdaySpan' style="display:none" >
 		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
 		<td class="input-column" >			
-			<input type="text" id="birthDate" name="birthDate" style="width:28em" onchange="bdOnchange()" value="$format.formatDate( $patient.birthDate )" >
+			<input type="text" id="birthDate" name="birthDate" style="width:28em" value="$format.formatDate( $patient.birthDate )" >
 		</td>
 	</tr>
 	

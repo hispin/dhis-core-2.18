@@ -28,6 +28,7 @@ package org.hisp.dhis.patient.action.patient;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patient.state.SelectedStateManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -50,6 +51,13 @@ public class VerifyOrganisationUnitHasParentAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private SelectedStateManager selectedStateManager;
+
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -67,8 +75,7 @@ public class VerifyOrganisationUnitHasParentAction
     }
 
     private String message;
-    
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -76,8 +83,14 @@ public class VerifyOrganisationUnitHasParentAction
     public String execute()
         throws Exception
     {
-        message = "";
+        selectedStateManager.clearListAll();
+        selectedStateManager.clearSearchingAttributeId();
+        selectedStateManager.clearSortingAttributeId();
+        selectedStateManager.clearSearchText();
+        selectedStateManager.clearSelectedProgram();
         
+        message = "";
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgunitId );
 
         if ( organisationUnit == null )
@@ -91,7 +104,7 @@ public class VerifyOrganisationUnitHasParentAction
         }
 
         message = organisationUnit.getName();
-        
+
         return SUCCESS;
     }
 }

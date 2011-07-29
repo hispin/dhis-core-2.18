@@ -4,57 +4,49 @@
 
 function validateAddRepresentative()
 {	
-	$.post("validatePatient.action?" + getIdParams(),
+	$.post("validatePatient.action?" + getIdentifierTypeIdParams(),
 		{
-			fullName: getFieldValue( 'fullName' ),
-			gender: getFieldValue( 'gender' ) ,
-			birthDate: getFieldValue( 'birthDate' ), 	        
-			age: getFieldValue( 'age' ) ,
-			dobType: getFieldValue( 'dobType' ) ,
-			ageType: getFieldValue( 'ageType' )
-		},
-		function (data)
-		{
-			addValidationRepresentativeCompleted(data);
-		},'xml');
-		
+			fullName: jQuery( '#addRepresentativeForm [id=fullName]' ).val(),
+			gender: jQuery( '#addRepresentativeForm [id=gender]' ).val(),
+			birthDate: jQuery( '#addRepresentativeForm [id=birthDate]' ).val(), 	        
+			age: jQuery( '#addRepresentativeForm [id=age]' ).val(),
+			dobType: jQuery( '#addRepresentativeForm [id=dobType]' ).val(),
+			ageType: jQuery( '#addRepresentativeForm [id=ageType]' ).val()
+		}, addValidationRepresentativeCompleted, "xml" );
 }
 
 function addValidationRepresentativeCompleted( messageElement )
 {
-	messageElement = messageElement.getElementsByTagName( "message" )[0];
-	var type = messageElement.getAttribute( "type" );
-	var message = messageElement.firstChild.nodeValue;
-	
+	var type = $(messageElement).find('message').attr('type');
+	var message = $(messageElement).find('message').text();
+    
 	 if ( type == 'success' )
 	 {
-		 // Use jQuery Ajax submit 
-		 jQuery.ajax({
-			   type: "POST"
-			   ,url: "addRepresentative.action"
-			   ,data: jQuery("#addRepresentativeForm").serialize()
-			   ,dataType : "xml"
-			   ,success: function(xml){ 
-			 		autoChoosePerson( xml );
-				}
-			   ,error: function()
-			   {
-					alert(i18n_error_connect_to_server);
-			   }
-			 });
-		 
+		jQuery.ajax({
+			type: "POST"
+			,url: "addRepresentative.action"
+			,data: jQuery("#addRepresentativeForm").serialize()
+			,dataType : "xml"
+			,success: function(xml){ 
+				autoChoosePerson( xml );
+			}
+		   ,error: function()
+		   {
+				alert(i18n_error_connect_to_server);
+		   }
+		});
+		
 	 }
 	 else if ( type == 'error' )
 	 {
-	     window.alert( i18n_adding_patient_failed + ':' + '\n' + message );
+	     showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + message );
 	 }
 	 else if ( type == 'input' )
 	 {
-	     setHeaderMessage( message );
+	     showWarningMessage( message );
 	 }
 	 else if( type == 'duplicate' )
 	 {
-		 jQuery( '#message' ).css({"display":"block"}).html(message);
 		 jQuery("#formContainer").hide();
 		 showPersons("listPersonsDuplicate", messageElement);
 	 }
@@ -62,10 +54,10 @@ function addValidationRepresentativeCompleted( messageElement )
 
 //get and build a param String of all the identifierType id and its value
 //excluding  identifiers which related is False
-function getIdParams()
+function getIdentifierTypeIdParams()
 {
 	var params = "";
-	jQuery("input.idfield").each(
+	jQuery("#addRepresentativeForm :input.idfield").each(
 			function()
 			{
 				if( jQuery(this).val() && !jQuery(this).is(":disabled") )
@@ -96,83 +88,82 @@ function showPersons( divContainer, xmlElement )
 {
 	var container = jQuery("#"+divContainer);
 	container.html("");
-	var patients = xmlElement.getElementsByTagName('patient');
+	var patients = $(xmlElement).find('patient');
 	var sPatient = "";
-	if( patients && patients.length > 0 )
-	{
-		for( var i = 0; i < patients.length ; i++ )
-		{
-			sPatient += "<hr style='margin:5px 0px;'><table>";
-			sPatient += "<tr><td><strong>"+i18n_patient_system_id+"</strong></td><td>"+ getElementValue( patients[i], 'systemIdentifier' )+"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_fullName+"</strong></td><td>"+ getElementValue( patients[i], 'fullName' )+"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_gender+"</strong></td><td>"+ getElementValue(  patients[i], 'gender' )+"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_date_of_birth+"</strong></td><td>"+getElementValue(  patients[i], 'dateOfBirth' ) +"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_age+"</strong></td><td>"+ getElementValue(  patients[i], 'age' ) +"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_blood_group+"</strong></td><td>"+ getElementValue(  patients[i], 'bloodGroup' ) +"</td></tr>";
-        	var identifiers =  patients[i].getElementsByTagName('identifier');
-        	if( identifiers && identifiers.length > 0 )
-        	{
-        		for( var j = 0; j < identifiers.length ; j++ )
-        		{
-        			sPatient +="<tr class='identifierRow"+getElementValue( patients[i], 'id' )+"' id='iden"+getElementValue( identifiers[j], 'id' )+"'>"
-        				+"<td><strong>"+getElementValue( identifiers[j], 'name' )+"</strong></td>"
-        				+"<td class='value'>"+getElementValue( identifiers[j], 'value' )+"</td>	"	
-        				+"</tr>";
-        		}
-        	}
-        	var attributes =  patients[i].getElementsByTagName('attribute');
-        	if( attributes && attributes.length > 0 )
-        	{
-        		for( var k = 0; k < attributes.length ; k++ )
-        		{
-        			sPatient +="<tr class='attributeRow'>"
-        				+"<td><strong>"+getElementValue( attributes[k], 'name' )+"</strong></td>"
-        				+"<td>"+getElementValue( attributes[k], 'value' )+"</td>	"	
-        				+"</tr>";
-        		}
-        	}
-        	sPatient += "<tr><td colspan='2'><input type='button' id='"+getElementValue(  patients[i], 'id' )+"' value='"+i18n_choose_this_person+"' onclick='choosePerson(this)'/></td></tr>";
-        	sPatient += "</table>";
-		}
-		container.append(sPatient);
-	}else
+	
+	if ( patients.length == 0 )
 	{
 		var message = "<p>"+i18n_no_result+"</p>";
 		container.html(message);
 	}
+	
+	$( patients ).each( function( i, patient )
+    {
+		sPatient += "<hr style='margin:5px 0px;'><table>";
+		sPatient += "<tr><td><strong>"+i18n_patient_system_id+"</strong></td><td>"+ $( patient ).find('systemIdentifier').text() +"</td></tr>" ;
+		sPatient += "<tr><td><strong>"+i18n_patient_fullName+"</strong></td><td>"+ $( patient ).find('fullName').text() +"</td></tr>" ;
+		sPatient += "<tr><td><strong>"+i18n_patient_gender+"</strong></td><td>"+ $( patient ).find('gender').text() +"</td></tr>" ;
+		sPatient += "<tr><td><strong>"+i18n_patient_date_of_birth+"</strong></td><td>"+ $( patient ).find('dateOfBirth').text() +"</td></tr>" ;
+		sPatient += "<tr><td><strong>"+i18n_patient_age+"</strong></td><td>"+ $( patient ).find('age').text() +"</td></tr>" ;
+		sPatient += "<tr><td><strong>"+i18n_patient_blood_group+"</strong></td><td>"+ $( patient ).find('bloodGroup').text() +"</td></tr>";
+		
+		var identifiers =  $( patient ).find('identifier');
+		$( identifiers ).each( function( i, identifier )
+		{
+			sPatient +="<tr class='identifierRow"+ $(identifier).find('id').text() + "' id='iden" + $(identifier).find('id' ).text() + "'>"
+				+"<td><strong>" + $(identifier).find('name').text() + "</strong></td>"
+				+"<td class='value'>" + $(identifier).find('value').text() + "</td>	"	
+				+"</tr>";
+		});
+		
+		var attributes = $( patient ).find('attribute');
+		$( attributes ).each( function( i, attribute )
+		{
+				sPatient += "<tr class='attributeRow'>"
+					+ "<td><strong>" + $(attribute).find('name').text() + "</strong></td>"
+					+ "<td>" + $(attribute).find('value').text() + "</td>	"	
+					+ "</tr>";
+		});
+		
+		sPatient += "<tr><td colspan='2'><input type='button' id='" + $(patient).find('id' ).first().text() +"' value='" + i18n_choose_this_person + "' onclick='choosePerson(this)'/></td></tr>";
+		sPatient += "</table>";
+		
+		container.append(sPatient);
+	 } );
 }
 
 // Will be call after save new person successfully
-function autoChoosePerson(xmlElement)
+function autoChoosePerson( xmlElement )
 {
-	jQuery("#tab-2").html("<center><strong>"+i18n_add_person_successfully+"</strong></center>");
+	jQuery("#tab-2").html("<center><strong>" + i18n_add_person_successfully + "</strong></center>");
 	var root = jQuery(xmlElement);
-	window.parent.jQuery("#representativeId").val( root.find("id").text() );
-	window.parent.jQuery("#relationshipTypeId").val( root.find("relationshipTypeId").text() );
+	jQuery("#addPatientForm [id=representativeId]").val( root.find("id").text() );
+	jQuery("#addPatientForm [id=relationshipTypeId]").val( root.find("relationshipTypeId").text() );
 	root.find("identifier").each(
 			function(){
-				var inputField = window.parent.jQuery("#iden" + jQuery(this).find("identifierTypeId").text());
+				var inputField = jQuery("#addPatientForm iden" + jQuery(this).find("identifierTypeId").text());
 				inputField.val( jQuery(this).find("identifierText").text() );
 				inputField.attr({"disabled":"disabled"});
 			}
 	);
-	// close thickbox popup
-	setTimeout(function(){window.parent.tb_remove();},3000);
-	
 }
 
+//------------------------------------------------------------------------------
 // Set Representative information to parent page.
+//------------------------------------------------------------------------------
+
 function choosePerson(this_)
 {
-	var relationshipTypeId = jQuery("#relationshipTypeId").val();
+	var relationshipTypeId = jQuery("#searchForm [id=relationshipTypeId]").val();
 	if( isBlank( relationshipTypeId ))
 	{
 		alert(i18n_please_select_relationshipType);
 		return;
 	}
+	
 	var id = jQuery(this_).attr("id");
-	window.parent.jQuery("#representativeId").val(id);
-	window.parent.jQuery("#relationshipTypeId").val(relationshipTypeId);
+	jQuery("#addPatientForm [id=representativeId]").val(id);
+	jQuery("#addPatientForm [id=relationshipTypeId]").val(relationshipTypeId);
 	jQuery(".identifierRow"+id).each(function(){
 		var inputField = window.parent.jQuery("#"+jQuery(this).attr("id"));
 		if( inputField.metadata({type:"attr",name:"data"}).related  )
@@ -183,8 +174,7 @@ function choosePerson(this_)
 		}
 	});
 	
-	// close thickbox popup
-	window.parent.tb_remove();
+	jQuery('#representativeDiv').dialog('close');
 }
 
 function toggleSearchType(this_)
@@ -192,36 +182,24 @@ function toggleSearchType(this_)
 	var type = jQuery(this_).val();
 	if( "identifier" == type )
 	{
-		jQuery("#rowIdentifier").show().find("#identifierTypeId").addClass('required:true');
-		jQuery("#rowAttribute").hide().find("#attributeId").removeClass("required");
-		jQuery("#searchValue").val("");
+		jQuery("#searchForm [id=rowIdentifier]").show().find("identifierTypeId").addClass('required:true');
+		jQuery("#searchForm [id=rowAttribute]").hide().find("id=attributeId").removeClass("required");
+		jQuery("#searchForm [id=searchValue]").val("");
 	}
 	else if( "attribute" == type )
 	{
-		jQuery("#rowIdentifier").hide().find("#identifierTypeId").removeClass("required");
-		jQuery("#rowAttribute").show().find("#attributeId").addClass("required:true");
-		jQuery("#searchValue").val("");
+		jQuery("#searchForm [id=rowIdentifier]").hide().find("#identifierTypeId").removeClass("required");
+		jQuery("#searchForm [id=rowAttribute]").show().find("#attributeId").addClass("required:true");
+		jQuery("#searchForm [id=searchValue]").val("");
 	}
 	else if( "name" == type || "" == type )
 	{
-		jQuery("#rowIdentifier").hide().find("#identifierTypeId").removeClass("required");
-		jQuery("#rowAttribute").hide().find("#attributeId").removeClass("required");
-		jQuery("#searchValue").val("");
+		jQuery("#searchForm [id=rowIdentifier]").hide().find("#identifierTypeId").removeClass("required");
+		jQuery("#searchForm [id=rowAttribute]").hide().find("#attributeId").removeClass("required");
+		jQuery("#searchForm [id=searchValue]").val("");
 	}
 }
 
-function ageOnchange()
-{
-	jQuery("#birthDate").val("").removeClass("required");
-	jQuery("#age").addClass('required:true');
-
-}
-
-function bdOnchange()
-{
-	jQuery("#age").val("").removeClass("required");
-	jQuery("#birthDate").addClass('required:true');
-}
 function isBlank(text)
 {
 	return !text ||  /^\s*$/.test(text);

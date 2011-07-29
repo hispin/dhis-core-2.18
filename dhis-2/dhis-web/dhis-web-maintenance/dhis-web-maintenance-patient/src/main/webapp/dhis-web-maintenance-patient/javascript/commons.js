@@ -1,16 +1,16 @@
-function dobTypeOnChange(){
+function dobTypeOnChange( container ){
 
-	var type = byId('dobType').value;
+	var type = jQuery('#' + container + ' [id=dobType]').val();
 	
 	if(type == 'V' || type == 'D'){
-		showById('birthdaySpan');
-		hideById('ageSpan');
+		showById(container + ' [id=birthdaySpan]');
+		hideById(container + ' [id=ageSpan]');
 	}else if(type == 'A'){
-		hideById('birthdaySpan');
-		showById('ageSpan');
+		hideById(container + ' [id=birthdaySpan]');
+		showById(container + ' [id=ageSpan]');
 	}else {
-		hideById('birthdaySpan');
-		hideById('ageSpan');
+		hideById(container + ' [id=birthdaySpan]');
+		hideById(container + ' [id=ageSpan]');
 	}
 }
 

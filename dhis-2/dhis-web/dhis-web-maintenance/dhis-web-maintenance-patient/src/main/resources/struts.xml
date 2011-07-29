@@ -310,12 +310,9 @@
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js
 				,javascript/commons.js
-				,javascript/date.js
 				,javascript/patient.js
 				,javascript/relationship.js
 				,javascript/relationshipPatient.js
-				,../dhis-web-commons/javascripts/jQuery/ui/ui.thickbox.min.js
-				,../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js
 			</param>
 		</action>
 		
@@ -416,9 +413,10 @@
 
 		<action name="showAddRepresentative"
 			class="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction">
-			<result name="success" type="velocity">/popup.vm</result>
+			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/underAgeForm.vm</param>
-			<param name="javascripts">javascript/commons.js, javascript/underage.js</param>
+			<param name="javascripts">javascript/underage.js, ../dhis-web-commons/javascripts/date.js</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="searchPerson"

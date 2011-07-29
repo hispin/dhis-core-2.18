@@ -1,8 +1,10 @@
 <script type="text/javascript">
-	jQuery(document).ready(function() {
+	jQuery("#representativeDiv").ready(function() {
+		
 		jQuery("#tabs").tabs();
-		datePickerValid( 'birthDate' );
-			
+		hideById('addRepresentativeForm [id=underAgeDiv]');
+		addEventForPatientForm('addRepresentativeForm');
+		
 		jQuery("#searchForm").validate({
 			meta:"validate"
 			,errorElement:"span"
@@ -15,30 +17,27 @@
 		});
 
 		jQuery("#addRepresentativeForm").validate({
-			 meta:"validate"
-			,errorElement:"td"
-			,submitHandler: function(form) { validateAddRepresentative(); }
-			,rules : {
-				relationshipTypeId  : { required: true },
-				fullName : {required:true,rangelength:[7,50], unicodechars:true},
-				gender : { required: true },
-				birthDate :{required:false,dateISO:true,datelessthanequaltoday:true}
-			},beforeValidateHandler: function(form)
+			meta:"validate"
+			,errorElement:"span"
+			,submitHandler: function(form)
 				{
-					var dobType = jQuery('#dobType').val();
-
+					validateAddRepresentative('addRepresentativeForm');
+				}
+			,beforeValidateHandler: function(form)
+				{
+					var dobType = $('#addRepresentativeForm [id=dobType]').val();
+					
 					if( dobType=='V' || dobType=='D' ) 
 					{
-						var birthDate = jQuery('#birthDate').val();
+						var birthDate = $('#addRepresentativeForm [id=birthDate]').val();
 						if( birthDate != '' ){
-							jQuery("#memberValidator").val(birthDate);
+							$("#addRepresentativeForm [id=memberValidator]").val(birthDate);
 						}
 					}else{
-						var age = jQuery('#age').val();
-						jQuery("#memberValidator").val(age);
+						var age = $('#addRepresentativeForm [id=age]').val();
+						$("#addRepresentativeForm [id=memberValidator]").val(age);
 					}
 				}
-
 		});
 
 		// Esc key for jQuery thickbox
@@ -95,7 +94,7 @@
 				<tr>
 					<td >$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></td>
 					<td >
-						<select name="relationshipTypeId" id="relationshipTypeId">
+						<select name="relationshipTypeId" id="relationshipTypeId" style='width:18em'>
 							<option value="">[$i18n.getString( "please_select" )]</option>        
 							#foreach ($relationship in $relationshipTypes)
 								<option value="$relationship.id">$!relationship.aIsToB</option>
@@ -106,7 +105,7 @@
 				<tr>
 					<td>$i18n.getString("search_by")<em title="$i18n.getString( "required" )" class="required">*</em></td>
 					<td>
-						<select id="searchType" name="searchType" onclick="toggleSearchType(this)">
+						<select id="searchType" name="searchType" onclick="toggleSearchType(this)" style='width:18em'>
 							<option value="">[$i18n.getString( "please_select" )]</option>        
 							<option value="identifier">$i18n.getString("identifier")</option>
 							<option value="attribute">$i18n.getString("attribute")</option>
@@ -114,10 +113,10 @@
 						</select>
 					</td>
 				</tr>
-				<tr id="rowIdentifier" style="display: none">
+				<tr id="rowIdentifier" style="display: none" >
 					<td>$i18n.getString("identifier_type")</td>
 					<td>
-						<select name="identifierTypeId" id="identifierTypeId" >
+						<select name="identifierTypeId" id="identifierTypeId" style='width:18em' >
 							<option value="">[$i18n.getString( "please_select" )]</option>       
 							#foreach($identifierType in $identifierTypes)
 								<option value="$identifierType.id">$identifierType.name</option>
@@ -129,7 +128,7 @@
 				<tr id="rowAttribute" style="display: none">
 					<td>$i18n.getString("attribute")</td>
 					<td>
-						<select name="attributeId" id="attributeId" >
+						<select name="attributeId" id="attributeId" style='width:18em'>
 							<option value="">[$i18n.getString( "please_select" )]</option>       
 							#foreach($attribute in $attributes)
 								<option value="$attribute.id">$attribute.name</option>
@@ -140,7 +139,7 @@
 				<tr><td colspan="2"></td></tr>
 				<tr>
 					<td>$i18n.getString("search_value")<em title="$i18n.getString( "required" )" class="required">*</em></td>
-					<td><input type="text" name="searchValue" id="searchValue"/></td>
+					<td><input type="text" name="searchValue" id="searchValue" style='width:18em'/></td>
 				</tr>
 				<tr>
 					<td colspan="2"><input type="submit" value="$i18n.getString('search')"/></td>
@@ -158,9 +157,9 @@
 		<form id="addRepresentativeForm" name="addRepresentativeForm" action="addRepresentative.action" method="post">
 			<table id="formContainer">
 				<tr>
-					<td style='width:8em'><label for="relationship_type">$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+					<td style='width:12.2em'><label for="relationship_type">$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 					<td >
-						<select name="relationshipTypeId" id="relationshipTypeId" style="width:28.2em">
+						<select name="relationshipTypeId" id="relationshipTypeId" style="width:28.2em" class="{validate:{required:true}}">
 							<option value="">[$i18n.getString( "please_select" )]</option>        
 							#foreach ($relationship in $relationshipTypes)
 								<option value="$relationship.id">$relationship.aIsToB</option>
@@ -183,7 +182,3 @@
 	</div>
 </div>
 
-<script>
-	hideById('underAgeDiv');
-</script>
-	

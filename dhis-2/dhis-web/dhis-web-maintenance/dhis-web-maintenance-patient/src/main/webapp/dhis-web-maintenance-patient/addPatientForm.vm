@@ -1,7 +1,8 @@
 <script>
 	jQuery(document).ready(	function(){
 
-		datePickerValid( 'birthDate' );
+		datePickerValid( 'addPatientForm [id=birthDate]' );
+		addEventForPatientForm( 'addPatientForm' );
 		
 		jQuery("#addPatientForm").validate({
 				 meta:"validate"
