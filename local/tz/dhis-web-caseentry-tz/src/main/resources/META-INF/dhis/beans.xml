@@ -269,39 +269,56 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
   </bean>
   
-  <!-- Beneficiary Registration -->
-  <bean id="org.hisp.dhis.patient.action.patient.SelectAction"
-		class="org.hisp.dhis.patient.action.patient.SelectAction" scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
+  <!-- NBITS Reports -->
+  <bean id="org.hisp.dhis.reports.datasetlock.action.GetOrgUnitNameAction"
+    class="org.hisp.dhis.reports.datasetlock.action.GetOrgUnitNameAction"
+    scope="prototype">
+    <property name="organisationUnitService">
+        <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
   </bean>
-  <bean
-		id="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
-		class="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	
+  <bean id="org.hisp.dhis.reports.nbits.action.NBITSReportFormAction" class="org.hisp.dhis.reports.nbits.action.NBITSReportFormAction"
+    scope="prototype">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
   </bean>
-  <bean id="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
-		class="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-  </bean>
-  <bean id="org.hisp.dhis.patient.action.patient.SearchPatientAction"
-		class="org.hisp.dhis.patient.action.patient.SearchPatientAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-  </bean>
+  <bean id="org.hisp.dhis.reports.nbits.action.NBITSReportResultAction" class="org.hisp.dhis.reports.nbits.action.NBITSReportResultAction"
+    scope="prototype">
+    <property name="statementManager" ref="statementManager" />
+	<property name="reportService" ref="org.hisp.dhis.reports.util.ReportService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+    <property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+    <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="jdbcTemplate" ref="jdbcTemplate"/>
+ </bean>
+ 
+ <!-- Report Service -->
+ <bean id="org.hisp.dhis.reports.util.ReportService" class="org.hisp.dhis.reports.util.ReportService" scope="prototype">
+    
+    <property name="periodService">
+        <ref bean="org.hisp.dhis.period.PeriodService"/>
+    </property>
+    <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    <property name="dataElementService">
+        <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+    </property>
+    <property name="indicatorService">
+        <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+    </property>
+    <property name="dataSetService">
+        <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property>
+    <property name="aggregationService">
+        <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+    </property>
+    <property name="dataValueService">
+        <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+    </property>
+    <property name="dataElementCategoryService">
+        <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>
+ </bean>
 
 </beans>

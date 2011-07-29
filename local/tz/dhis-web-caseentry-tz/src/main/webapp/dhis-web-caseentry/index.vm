@@ -3,16 +3,9 @@
 
 <ul id="introList">
     #introListImgItem( "dataEntrySelect.action" "data_entry" "dataentry" )
-    #introListImgItem( "multipledataEntrySelect.action" "multiple_dataentry" "dataentry" )
-    
-    #introListImgItem( "patient.action" "patient" "patient" )
-    
+	#introListImgItem( "multipledataEntrySelect.action" "multiple_dataentry" "dataentry" )
     #introListImgItem( "reportSelect.action" "summary_report" "summaryreport" )
     #introListImgItem( "visitplan.action" "visit_plan" "visitplan" )
-    
-    #introListImgItem( "benificiaryInfoReportsAnalyser.action" "beneficiary_info" "summaryreport" )
-    #introListImgItem( "activePlanReportsAnalyser.action" "activity_plan" "visitplan" )
-    #introListImgItem( "nbitsReportsAnalyser.action" "nbits_reports" "excel" )
-    
+    #introListImgItem( "nbitsReportsAnalyser.action" "nbits_report" "excel" )
     #introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )
 </ul>
