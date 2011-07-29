@@ -9,12 +9,12 @@
     <version>2.4-SNAPSHOT</version>
   </parent>
   
-  <artifactId>dhis-web-caseentry-tz</artifactId>
+  <artifactId>dhis-web-caseentry</artifactId>
   <packaging>war</packaging>
   <name>DHIS Case Entry</name>
   
   <build>
-    <finalName>dhis-web-caseentry-tz</finalName>
+    <finalName>dhis-web-caseentry</finalName>
   </build>
   
   <dependencies>
@@ -41,8 +41,18 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-options</artifactId>
-    </dependency>      
-    
+    </dependency>
+	<dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-in-service-reports</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-in-service-survey</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+	
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

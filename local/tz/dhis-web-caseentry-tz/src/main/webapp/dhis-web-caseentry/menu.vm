@@ -1,19 +1,15 @@
 
 <h2>$i18n.getString( "data_entry" )&nbsp;</h2>
 <ul>
-    <li><a href="patient.action">$i18n.getString( "patient" )</a></li>
     <li><a href="dataEntrySelect.action">$i18n.getString( "data_entry" )&nbsp;</a></li>
-    <li><a href="multipledataEntrySelect.action">$i18n.getString( "multiple_data_entry" )&nbsp;</a></li>
+	<li><a href="multipledataEntrySelect.action">$i18n.getString( "multiple_data_entry" )&nbsp;</a></li>
 </ul>
 
 <h2>$i18n.getString( "reports" )&nbsp;</h2>
 <ul>
     <li><a href="reportSelect.action">$i18n.getString( "summary_report" )&nbsp;</a></li>     
     <li><a href="visitplan.action">$i18n.getString( "visit_plan" )&nbsp;</a></li>
-    
-    <li><a href = "benificiaryInfoReportsAnalyser.action">$i18n.getString("beneficiary_info")&nbsp;</a></li>
-    <li><a href = "activePlanReportsAnalyser.action">$i18n.getString("activity_plan")&nbsp;</a></li>
-    <li><a href = "nbitsReportsAnalyser.action">$i18n.getString("nbits_reports")&nbsp;</a></li>
+    <li><a href = "nbitsReportsAnalyser.action">Programs Excel Reports</a></li>
 </ul>
 
 <h2>$i18n.getString( "case_aggregation" )&nbsp;</h2>
