@@ -29,12 +29,12 @@ package org.hisp.dhis.reporting.chartgroup.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartGroup;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.chart.comparator.ChartTitleComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,17 +55,6 @@ public class ShowUpdateChartGroupFormAction
     public void setChartService( ChartService chartService )
     {
         this.chartService = chartService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<Chart> chartComparator;
-
-    public void setChartComparator( Comparator<Chart> chartComparator )
-    {
-        this.chartComparator = chartComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -103,7 +92,7 @@ public class ShowUpdateChartGroupFormAction
 
         groupMembers = new ArrayList<Chart>( chartGroup.getMembers() );
 
-        Collections.sort( groupMembers, chartComparator );
+        Collections.sort( groupMembers, new ChartTitleComparator() );
 
         return SUCCESS;
     }
