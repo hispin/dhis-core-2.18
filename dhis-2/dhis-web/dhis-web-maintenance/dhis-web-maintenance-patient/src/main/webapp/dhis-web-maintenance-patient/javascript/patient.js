@@ -52,20 +52,9 @@ function organisationUnitSelected( orgUnits )
 selection.setListenerFunction( organisationUnitSelected );
 
 //------------------------------------------------------------------------------
-// Check for Integer
+// Search patients by selected attribute
 //------------------------------------------------------------------------------
 
-function isInt( value )
-{
-    var number = new Number( value );
-    
-    if ( isNaN( number ))
-    {   	
-        return false;
-    }
-    
-    return true;
-}
 
 function searchingAttributeOnChange()
 {
@@ -84,69 +73,19 @@ function searchingAttributeOnChange()
 	}
 }
 
-//-----------------------------------------------------------------------------
-//Saver objects
-//-----------------------------------------------------------------------------
-
-function DateSaver( programStageInstanceId_, dueDate_, resultColor_ )
-{
-	var SUCCESS = '#ccffcc';
-	var ERROR = '#ccccff';
-	
-	var programStageInstanceId = programStageInstanceId_;	
-	var dueDate = dueDate_;
-	var resultColor = resultColor_;	
-
-	this.save = function()
-	{
-		var request = new Request();
-		request.setCallbackSuccess( handleResponse );
-		request.setCallbackError( handleHttpError );
-		request.setResponseTypeXML( 'status' );
-		request.send( 'saveDueDate.action?programStageInstanceId=' + programStageInstanceId + '&dueDate=' + dueDate );
-	};
-
-	function handleResponse( rootElement )
-	{
-		var codeElement = rootElement.getElementsByTagName( 'code' )[0];
-		var code = parseInt( codeElement.firstChild.nodeValue );
-   
-		if ( code == 0 )
-		{
-			markValue( resultColor );                   
-		}
-		else
-		{
-			markValue( ERROR );
-			window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
-		}
-	}
-
-	function handleHttpError( errorCode )
-	{
-		markValue( ERROR );
-		window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
-	}   
-
-	function markValue( color )
-	{       
-   
-		var element = document.getElementById( 'value_' + programStageInstanceId + '_date' );	
-           
-		element.style.backgroundColor = color;
-	}
-}
-
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
 
 function showPatientDetails( patientId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'patient' );
-    request.setCallbackSuccess( patientReceived );
-    request.send( 'getPatient.action?id=' + patientId );
+    //$.post( 'getPatient.action', { id:patientId }, patientReceived );
+	$.ajax({
+		url: 'getPatient.action?id=' + patientId,
+		cache: false,
+		dataType: "xml",
+		success: patientReceived
+	});
 }
 
 function patientReceived( patientElement )
@@ -287,79 +226,52 @@ function sortPatients()
 			$( "#loaderDiv" ).hide();
 		});
 }
-// -----------------------------------------------------------------------------
-// Disable form
-// -----------------------------------------------------------------------------
 
-function disableForm()
-{
-    $('#fullName').attr("disabled", true);
-}
 // -----------------------------------------------------------------------------
 // Add Patient
 // -----------------------------------------------------------------------------
 
 function validateAddPatient()
 {	
-	var age = document.getElementById( 'age' );
-	var orgunitcode = document.getElementById('orgunitcode');
-	if( age.value != '' )
-	{
-		if( !isInt( age.value ) )
-		{
-			window.alert( i18n_age_must_integer );
-			age.select();
-			age.focus();
-			
-			return false;
-		}
-	}
-
-	var params = '&checkedDuplicate='+checkedDuplicate 
-				+'&fullName=' + getFieldValue( 'fullName' ) 
-				+'&gender=' + getFieldValue( 'gender' ) 
-				+'&dobType=' + getFieldValue( 'dobType' ) 
-				+'&birthDate=' + getFieldValue( 'birthDate' ) 
-				+'&ageType=' + getFieldValue( 'ageType' )
-				+'&age=' + getFieldValue( 'age' ) 
-				+'&genre=' + getFieldValue('gender') 
-				+'&underAge=' + jQuery("#underAge").is(":checked")
-				+'&representativeId=' + getFieldValue('representativeId')
-				+'&relationshipTypeId=' + getFieldValue('relationshipTypeId')
-				+ getIdParams();
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addValidationCompleted ); 
-	request.sendAsPost( params );	
-    request.send( "validatePatient.action" );        
-
-    return false;
+	$.post( 'validatePatient.action?' + getIdParams( ), 
+		{ 
+			checkedDuplicate: checkedDuplicate,
+			fullName: jQuery( '#addPatientForm [id=fullName]' ).val(),
+			gender: jQuery( '#addPatientForm [id=gender]' ).val(),
+			dobType: jQuery( '#addPatientForm [id=dobType]' ).val(),
+			birthDate: jQuery( '#addPatientForm [id=birthDate]' ).val(),
+			ageType: jQuery( '#addPatientForm [id=ageType]' ).val(),
+			age: jQuery( '#addPatientForm [id=age]' ).val(), 
+			gender: jQuery( '#addPatientForm [id=gender]' ).val(),
+			underAge: jQuery( '#addPatientForm [id=underAge]' ).is(":checked"),
+			representativeId: jQuery( '#addPatientForm [id=representativeId]' ).val(),
+			relationshipTypeId: jQuery( '#addPatientForm [id=relationshipTypeId]' ).val()
+		}, addValidationCompleted );
 }
 
-function addValidationCompleted( messageElement )
+function addValidationCompleted( data )
 {
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-    	removeDisabledIdentifier();
-    	addPatient();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_adding_patient_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        showErrorMessage( message );
-    }
-    else if( type == 'duplicate' )
-    {
-    	if( !checkedDuplicate )
-    		showListPatientDuplicate(messageElement, true);
-    }
+    var type = $(data).find('message').attr('type');
+	var message = $(data).find('message').text();
+	
+	if ( type == 'success' )
+	{
+		removeDisabledIdentifier( );
+		addPatient( );
+	}
+	else if ( type == 'error' )
+	{
+		showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + message );
+	}
+	else if ( type == 'input' )
+	{
+		showWarningMessage( message );
+	}
+	else if( type == 'duplicate' )
+	{
+		if( !checkedDuplicate )
+			showListPatientDuplicate(data, true);
+	}
 }
 
 
@@ -369,25 +281,19 @@ function addValidationCompleted( messageElement )
 
 function validateUpdatePatient()
 {
-    var params = 'id=' + getFieldValue( 'id' ) 
-				+'&fullName=' + getFieldValue( 'fullName' )
-				+'&gender=' + getFieldValue( 'gender' ) 
-				+'&birthDate=' + getFieldValue( 'birthDate' ) 
-				+ getIdParams();
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( updateValidationCompleted );   
-    request.sendAsPost( params );
-    request.send( "validatePatient.action" );
-        
-    return false;
+    $.post( 'validatePatient.action?' + getIdParams( ), 
+		{ 
+			id: jQuery( '#updatePatientForm [id=id]' ).val(),
+			fullName: jQuery( '#updatePatientForm [id=fullName]' ).val(),
+			gender: jQuery( '#updatePatientForm [id=gender]' ).val(),
+			birthDate: jQuery( '#updatePatientForm [id=birthDate]' ).val()
+		}, updateValidationCompleted );
 }
 
 function updateValidationCompleted( messageElement )
 {
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
+    var type = $(messageElement).find('message').attr('type');
+	var message = $(messageElement).find('message').text();
     
     if ( type == 'success' )
     {
@@ -396,11 +302,11 @@ function updateValidationCompleted( messageElement )
     }
     else if ( type == 'error' )
     {
-        window.alert( i18n_saving_patient_failed + ':' + '\n' + message );
+        showErrorMessage( i18n_saving_patient_failed + ':' + '\n' + message );
     }
     else if ( type == 'input' )
     {
-        showErrorMessage( message );
+        showWarningMessage( message );
     }
     else if( type == 'duplicate' )
     {
@@ -420,114 +326,29 @@ function getIdParams()
 	return params;
 }
 
-// remove value of all the disabled identifier fields
-// an identifier field is disabled when its value is inherited from another person ( underAge is true ) 
-// we don't save inherited identifiers. Only save the representative id.
-function removeDisabledIdentifier()
-{
-	jQuery("input.idfield").each(function(){
-		if( jQuery(this).is(":disabled"))
-			jQuery(this).val("");
-	});
-}
-
-//-----------------------------------------------------------------------------
-//Move members
-//-----------------------------------------------------------------------------
-var selectedList;
-var availableList;
-
-function move( listId ) {
-	
-	var fromList = document.getElementById(listId);
-	
-	if ( fromList.selectedIndex == -1 ) {return;}
-	
-	if ( ! availableList ) 
-	{
-		availableList = document.getElementById( 'availableList' );
-	}
-	
-	if ( ! selectedList ) 
-	{
-		selectedList = document.getElementById( 'selectedList' );
-	}
-	
-	var toList = ( fromList == availableList ? selectedList : availableList );
-	
-	while ( fromList.selectedIndex > -1 ) {
-		
-		option = fromList.options.item(fromList.selectedIndex);
-		fromList.remove(fromList.selectedIndex);
-		toList.add(option, null);
-	}
-}
-
-function submitForm() {
-	
-	if ( ! availableList ) 
-	{
-		availableList = document.getElementById('availableList');
-	}
-	
-	if ( ! selectedList ) 
-	{
-		selectedList = document.getElementById('selectedList');
-	}
-	
-	selectAll( selectedList );
-	
-	return false;
-}
-
-function selectAll( list ) 
-{
-	for ( var i = 0, option; option = list.options.item(i); i++ ) 
-	{
-		option.selected = true;
-	}
-}
-
-function ageOnchange()
-{
-	//jQuery("#birthDate").val("").removeClass("error").rules("remove","required");
-	//jQuery("#age").rules("add",{required:true});
-	jQuery("#birthDate").val("");
-
-}
-
-function bdOnchange()
-{
-	//jQuery("#age").rules("remove","required");
-	//jQuery("#age").val("");
-	//jQuery("#birthDate").rules("add",{required:true});
-	jQuery("#age").val("");
-}
-
-
+// -----------------------------------------------------------------------------
 // check duplicate patient
-function checkDuplicate()
-{
-	var params = 
-				'&fullName=' + getFieldValue( 'fullName' ) +
-				'&dobType=' + getFieldValue( 'dobType' ) +
-				'&gender=' + getFieldValue( 'gender' ) +
-				'&birthDate=' + getFieldValue( 'birthDate' ) +	        
-				'&age=' + getFieldValue( 'age' ) ;
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( checkDuplicateCompleted ); 
-	request.sendAsPost( params );	
-    request.send( "validatePatient.action" );        
+// -----------------------------------------------------------------------------
 
-    return false;
+function checkDuplicate( divname )
+{
+	$.post( 'validatePatient.action', 
+		{
+			fullName: jQuery( '#' + divname + ' [id=fullName]' ).val(),
+			dobType: jQuery( '#' + divname + ' [id=dobType]' ).val(),
+			gender: jQuery( '#' + divname + ' [id=gender]' ).val(),
+			birthDate: jQuery( '#' + divname + ' [id=birthDate]' ).val(),        
+			age: jQuery( '#' + divname + ' [id=age]' ).val()
+		}, function( xmlObject )
+		{
+			checkDuplicateCompleted( xmlObject );
+		});
 }
 function checkDuplicateCompleted( messageElement )
 {
 	checkedDuplicate = true;    
-	var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
+	var type = $(messageElement).find('message').attr('type');
+	var message = $(messageElement).find('message').text();
     
     if( type == 'success')
     {
@@ -539,7 +360,7 @@ function checkDuplicateCompleted( messageElement )
     }
     else if( type == 'duplicate' )
     {
-    	showListPatientDuplicate(messageElement, false);
+    	showListPatientDuplicate( messageElement, false );
     }
 }
 
@@ -550,75 +371,76 @@ function checkDuplicateCompleted( messageElement )
  */
 function showListPatientDuplicate(rootElement, validate)
 {
-	var message = rootElement.firstChild.nodeValue;
-	var patients = rootElement.getElementsByTagName('patient');
+	var message = $(rootElement).find('message').text();
+	var patients = $(rootElement).find('patient');
+	
 	var sPatient = "";
-	if( patients && patients.length > 0 )
-	{
-		for( var i = 0; i < patients.length ; i++ )
-		{
+	$( patients ).each( function( i, patient )
+        {
 			sPatient += "<hr style='margin:5px 0px;'><table>";
-			sPatient += "<tr><td><strong>"+i18n_patient_system_id+"</strong></td><td>"+ getElementValue( patients[i], 'systemIdentifier' )+"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_fullName+"</strong></td><td>"+ getElementValue( patients[i], 'fullName' )+"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_gender+"</strong></td><td>"+ getElementValue(  patients[i], 'gender' )+"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_date_of_birth+"</strong></td><td>"+getElementValue(  patients[i], 'dateOfBirth' ) +"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_age+"</strong></td><td>"+ getElementValue(  patients[i], 'age' ) +"</td></tr>" ;
-			sPatient += "<tr><td><strong>"+i18n_patient_blood_group+"</strong></td><td>"+ getElementValue(  patients[i], 'bloodGroup' ) +"</td></tr>";
-        	var identifiers =  patients[i].getElementsByTagName('identifier');
-        	if( identifiers && identifiers.length > 0 )
+			sPatient += "<tr><td><strong>" + i18n_patient_system_id + "</strong></td><td>" + $(patient).find('systemIdentifier').text() + "</td></tr>" ;
+			sPatient += "<tr><td><strong>" + i18n_patient_fullName + "</strong></td><td>" + $(patient).find('fullName').text() + "</td></tr>" ;
+			sPatient += "<tr><td><strong>" + i18n_patient_gender + "</strong></td><td>" + $(patient).find('gender').text() + "</td></tr>" ;
+			sPatient += "<tr><td><strong>" + i18n_patient_date_of_birth + "</strong></td><td>" + $(patient).find('dateOfBirth').text() + "</td></tr>" ;
+			sPatient += "<tr><td><strong>" + i18n_patient_age + "</strong></td><td>" + $(patient).find('age').text() + "</td></tr>" ;
+			sPatient += "<tr><td><strong>" + i18n_patient_blood_group + "</strong></td><td>" + $(patient).find('bloodGroup').text() + "</td></tr>";
+        	
+			var identifiers = $(patient).find('identifier');
+        	if( identifiers.length > 0 )
         	{
-        		sPatient += "<tr><td colspan='2'><strong>"+i18n_patient_identifiers+"</strong></td></tr>"
-        		for( var j = 0; j < identifiers.length ; j++ )
-        		{
+        		sPatient += "<tr><td colspan='2'><strong>" + i18n_patient_identifiers + "</strong></td></tr>"
+        		$( identifiers ).each( function( i, identifier )
+				{
         			sPatient +="<tr class='identifierRow'>"
-        				+"<td><strong>"+getElementValue( identifiers[j], 'name' )+"</strong></td>"
-        				+"<td>"+getElementValue( identifiers[j], 'value' )+"</td>	"	
+        				+"<td><strong>" + $(identifier).find('name').text() + "</strong></td>"
+        				+"<td>" + $(identifier).find('value').text() + "</td>	"	
         				+"</tr>";
-        		}
+        		});
         	}
-        	var attributes =  patients[i].getElementsByTagName('attribute');
-        	if( attributes && attributes.length > 0 )
+			
+        	var attributes = $(patient).find('attribute');
+        	if( attributes.length > 0 )
         	{
         		sPatient += "<tr><td colspan='2'><strong>"+i18n_patient_attributes+"</strong></td></tr>"
-        		for( var k = 0; k < attributes.length ; k++ )
-        		{
+        		$( attributes ).each( function( i, attribute )
+				{
         			sPatient +="<tr class='attributeRow'>"
-        				+"<td><strong>"+getElementValue( attributes[k], 'name' )+"</strong></td>"
-        				+"<td>"+getElementValue( attributes[k], 'value' )+"</td>	"	
+        				+"<td><strong>" + $(attribute).find('name').text() + "</strong></td>"
+        				+"<td>" + $(attribute).find('value').text() + "</td>	"	
         				+"</tr>";
-        		}
+        		});
         	}
-        	sPatient += "<tr><td colspan='2'><input type='button' id='"+getElementValue(  patients[i], 'id' )+"' value='"+i18n_edit_this_patient+"' onclick='showUpdatePatientForm(this.id)'/></td></tr>";
+        	sPatient += "<tr><td colspan='2'><input type='button' id='"+ $(patient).find('id').first().text() + "' value='" + i18n_edit_this_patient + "' onclick='showUpdatePatientForm(this.id)'/></td></tr>";
         	sPatient += "</table>";
-		}
+		});
+		
 		jQuery("#thickboxContainer","#hiddenModalContent").html("").append(sPatient);
 		if( !validate ) jQuery("#btnCreateNew","#hiddenModalContent").click(function(){window.parent.tb_remove();});
 		else jQuery("#btnCreateNew","#hiddenModalContent").click(function(){window.parent.tb_remove();window.parent.checkedDuplicate = true;window.parent.validatePatient();});
 		tb_show( message, "#TB_inline?height=500&width=500&inlineId=hiddenModalContent", null);
-	}
 }
 
-function validatePatient()
-{
-	if( jQuery("#id").val() )
-		validateUpdatePatient();
-	else validateAddPatient();
-}
+// -----------------------------------------------------------------------------
+// Show representative form
+// -----------------------------------------------------------------------------
 
-//  ------------------------------
-//  checked = TRUE  : show pop up
-//  ------------------------------
-//  checked = FALSE : find all identifier which is disabled, remove its value and enable it
-//  This happen when user chose a representative, but now they dont want this patient to be under age anymore
-//  TODO : if user created a new person, should we delete that person in this case ?
 function toggleUnderAge(this_)
 {
 	if( jQuery(this_).is(":checked"))
 	{
-		tb_show(i18n_child_representative,"showAddRepresentative.action?TB_iframe=true&height=400&width=500",null);
+		$('#representativeDiv').dialog('destroy').remove();
+		$('<div id="representativeDiv">' ).load( 'showAddRepresentative.action' ).dialog({
+			title: i18n_child_representative,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 800,
+			height: 400
+		});
 	}else
 	{
-		jQuery("input.idfield").each(function(){
+		jQuery("#representativeDiv :input.idfield").each(function(){
 			if( jQuery(this).is(":disabled"))
 			{
 				jQuery(this).removeAttr("disabled").val("");
@@ -627,96 +449,6 @@ function toggleUnderAge(this_)
 		jQuery("#representativeId").val("");
 		jQuery("#relationshipTypeId").val("");
 	}
-}
-
-function changePageSize( baseLink )
-{
-	var pageSize = jQuery("#sizeOfPage").val();
-	window.location.href = baseLink +"pageSize=" + pageSize ;
-}
-function jumpToPage( baseLink )
-{
-	var pageSize = jQuery("#sizeOfPage").val();
-	var currentPage = jQuery("#jumpToPage").val();
-	window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
-}
-
-/**
- * Overwrite showDetails() of common.js
- * This method will show details div on a pop up instead of show the div in the main table's column.
- * So we will have more place for the main column of the table.
- * @return
- */
-
-function showDetails()
-{
-	var detailArea = $("#detailsArea");
-	var top = (f_clientHeight() / 2) - 200;	
-	if ( top < 0 ) top = 0; 
-    var left = screen.width - detailArea.width() - 100;
-    detailArea.css({"left":left+"px","top":top+"px"});
-    detailArea.show('fast');
-    
-}
-
-/**
- *  Get document width, hieght, scroll positions
- *  Work with all browsers
- * @return
- */
-
-function f_clientWidth() {
-	return f_filterResults (
-		window.innerWidth ? window.innerWidth : 0,
-		document.documentElement ? document.documentElement.clientWidth : 0,
-		document.body ? document.body.clientWidth : 0
-	);
-}
-function f_clientHeight() {
-	return f_filterResults (
-		window.innerHeight ? window.innerHeight : 0,
-		document.documentElement ? document.documentElement.clientHeight : 0,
-		document.body ? document.body.clientHeight : 0
-	);
-}
-function f_scrollLeft() {
-	return f_filterResults (
-		window.pageXOffset ? window.pageXOffset : 0,
-		document.documentElement ? document.documentElement.scrollLeft : 0,
-		document.body ? document.body.scrollLeft : 0
-	);
-}
-function f_scrollTop() {
-	return f_filterResults (
-		window.pageYOffset ? window.pageYOffset : 0,
-		document.documentElement ? document.documentElement.scrollTop : 0,
-		document.body ? document.body.scrollTop : 0
-	);
-}
-function f_filterResults(n_win, n_docel, n_body) {
-	var n_result = n_win ? n_win : 0;
-	if (n_docel && (!n_result || (n_result > n_docel)))
-		n_result = n_docel;
-	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
-}
-
-function loadAllPatients()
-{
-	hideById('listPatientDiv');
-	hideById('addPatientDiv');
-	hideById('updatePatientDiv');
-	
-	jQuery('#loaderDiv').show();
-	contentDiv = 'listPatientDiv';
-	jQuery('#listPatientDiv').load('searchPatient.action',{
-			listAll:true,
-			sortPatientAttributeId: getFieldValue('sortPatientAttributeId')
-		},
-		function(){
-			showById('listPatientDiv');
-			jQuery('#loaderDiv').hide();
-		});
-	hideLoader();
 }
 
 // ----------------------------------------------------------------
@@ -786,11 +518,10 @@ function updatePatient()
       type: "POST",
       url: 'updatePatient.action',
       data: getParamsForDiv('updatePatientDiv'),
-      success: function() {
+      success: function( json ) {
 		showProgramEnrollmentSelectForm( getFieldValue('id') );
       }
      });
-    return false;
 }
 
 // ----------------------------------------------------------------
@@ -961,10 +692,10 @@ function saveDueDate( programStageInstanceId, programStageInstanceName )
 {
 	var field = document.getElementById( 'value_' + programStageInstanceId + '_date' );
 	
-	var dateOfIncident = new Date(byId('dateOfIncident').value);
+	var dateOfIncident = new Date( byId('dateOfIncident').value );
 	var dueDate = new Date(field.value);
 	
-	if(dueDate < dateOfIncident)
+	if( dueDate < dateOfIncident )
 	{
 		field.style.backgroundColor = '#FFCC00';
 		alert( i18n_date_less_incident );
@@ -974,8 +705,7 @@ function saveDueDate( programStageInstanceId, programStageInstanceName )
 	field.style.backgroundColor = '#ffffcc';
 	
 	var dateSaver = new DateSaver( programStageInstanceId, field.value, '#ccffcc' );
-	dateSaver.save();
-  
+	dateSaver.save();s
 }
 
 //----------------------------------------------------
@@ -1043,4 +773,170 @@ function loadPatientList()
 			showById('listPatientDiv');
 			$( "#loaderDiv" ).hide();
 		});
+}
+
+// -----------------------------------------------------------------------------
+// Load all patients
+// -----------------------------------------------------------------------------
+
+function loadAllPatients()
+{
+	hideById('listPatientDiv');
+	hideById('addPatientDiv');
+	hideById('updatePatientDiv');
+	
+	jQuery('#loaderDiv').show();
+	contentDiv = 'listPatientDiv';
+	jQuery('#listPatientDiv').load('searchPatient.action',{
+			listAll:true,
+			sortPatientAttributeId: getFieldValue('sortPatientAttributeId')
+		},
+		function(){
+			showById('listPatientDiv');
+			jQuery('#loaderDiv').hide();
+		});
+	hideLoader();
+}
+
+//-----------------------------------------------------------------------------
+// Saver objects
+//-----------------------------------------------------------------------------
+
+function DateSaver( programStageInstanceId_, dueDate_, resultColor_ )
+{
+	var SUCCESS = '#ccffcc';
+	var ERROR = '#ccccff';
+	
+	var programStageInstanceId = programStageInstanceId_;	
+	var dueDate = dueDate_;
+	var resultColor = resultColor_;	
+
+	this.save = function()
+	{
+		var request = new Request();
+		request.setCallbackSuccess( handleResponse );
+		request.setCallbackError( handleHttpError );
+		request.setResponseTypeXML( 'status' );
+		request.send( 'saveDueDate.action?programStageInstanceId=' + programStageInstanceId + '&dueDate=' + dueDate );
+	};
+
+	function handleResponse( rootElement )
+	{
+		var codeElement = rootElement.getElementsByTagName( 'code' )[0];
+		var code = parseInt( codeElement.firstChild.nodeValue );
+   
+		if ( code == 0 )
+		{
+			markValue( resultColor );                   
+		}
+		else
+		{
+			markValue( ERROR );
+			window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+		}
+	}
+
+	function handleHttpError( errorCode )
+	{
+		markValue( ERROR );
+		window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
+	}   
+
+	function markValue( color )
+	{       
+   
+		var element = document.getElementById( 'value_' + programStageInstanceId + '_date' );	
+           
+		element.style.backgroundColor = color;
+	}
+}
+
+
+// -----------------------------------------------------------------------------
+// remove value of all the disabled identifier fields
+// an identifier field is disabled when its value is inherited from another person ( underAge is true ) 
+// we don't save inherited identifiers. Only save the representative id.
+// -----------------------------------------------------------------------------
+
+function removeDisabledIdentifier()
+{
+	jQuery("input.idfield").each(function(){
+		if( jQuery(this).is(":disabled"))
+			jQuery(this).val("");
+	});
+}
+
+function addEventForPatientForm( divname )
+{
+	jQuery("#" + divname + " [id=age]").change(function() {
+		jQuery("#" + divname + " [id=birthDate]").val("");
+	});
+	
+	jQuery("#" + divname + " [id=birthDate]").change(function() {
+		jQuery("#" + divname + " [id=age]").val("");
+	});
+	
+	jQuery("#" + divname + " [id=checkDuplicateBtn]").click(function() {
+		checkDuplicate( divname );
+	});
+	
+	jQuery("#" + divname + " [id=dobType]").click(function() {
+		dobTypeOnChange( divname );
+	});
+}
+
+// -----------------------------------------------------------------------------
+// Show Details
+// -----------------------------------------------------------------------------
+
+function showDetails()
+{
+	var detailArea = $("#detailsArea");
+	var top = (f_clientHeight() / 2) - 200;	
+	if ( top < 0 ) top = 0; 
+    var left = screen.width - detailArea.width() - 100;
+    detailArea.css({"left":left+"px","top":top+"px"});
+    detailArea.show('fast');
+    
+}
+
+/**
+ *  Get document width, hieght, scroll positions
+ *  Work with all browsers
+ * @return
+ */
+
+function f_clientWidth() {
+	return f_filterResults (
+		window.innerWidth ? window.innerWidth : 0,
+		document.documentElement ? document.documentElement.clientWidth : 0,
+		document.body ? document.body.clientWidth : 0
+	);
+}
+function f_clientHeight() {
+	return f_filterResults (
+		window.innerHeight ? window.innerHeight : 0,
+		document.documentElement ? document.documentElement.clientHeight : 0,
+		document.body ? document.body.clientHeight : 0
+	);
+}
+function f_scrollLeft() {
+	return f_filterResults (
+		window.pageXOffset ? window.pageXOffset : 0,
+		document.documentElement ? document.documentElement.scrollLeft : 0,
+		document.body ? document.body.scrollLeft : 0
+	);
+}
+function f_scrollTop() {
+	return f_filterResults (
+		window.pageYOffset ? window.pageYOffset : 0,
+		document.documentElement ? document.documentElement.scrollTop : 0,
+		document.body ? document.body.scrollTop : 0
+	);
+}
+function f_filterResults(n_win, n_docel, n_body) {
+	var n_result = n_win ? n_win : 0;
+	if (n_docel && (!n_result || (n_result > n_docel)))
+		n_result = n_docel;
+	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
 }

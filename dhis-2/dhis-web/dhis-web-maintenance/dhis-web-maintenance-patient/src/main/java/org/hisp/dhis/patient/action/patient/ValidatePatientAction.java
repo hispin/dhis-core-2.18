@@ -185,7 +185,7 @@ public class ValidatePatientAction
         {
             patients = patientService.getPatient( firstName, middleName, lastName, format.parseDate( birthDate ),
                 gender );
-
+            
             if ( patients != null && patients.size() > 0 )
             {
                 message = i18n.getString( "patient_duplicate" );

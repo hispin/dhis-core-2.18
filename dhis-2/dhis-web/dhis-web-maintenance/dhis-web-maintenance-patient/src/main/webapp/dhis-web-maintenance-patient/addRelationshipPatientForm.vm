@@ -1,7 +1,9 @@
 <script>
 	jQuery('#addRelationshipPatientForm').ready(	function(){
 
-		datePickerValid( 'birthDate' );
+		datePickerValid( 'addRelationshipPatientForm [id=birthDate]' );
+		hideById('addRelationshipPatientForm [id=underAgeDiv]');
+		addEventForPatientForm('addRelationshipPatientForm');
 		
 		jQuery("#addRelationshipPatientForm").validate({
 			 meta:"validate"
@@ -12,12 +14,12 @@
 				}
 			,beforeValidateHandler: function(form)
 				{
-					var birthDate = $('#birthDate').val();
-					var age = $('#age').val();
+					var birthDate = $('#addRelationshipPatientForm [id=birthDate]').val();
+					var age = $('#addRelationshipPatientForm [id=age]').val();
 					if(age !=''){
-						$( "#memberValidator").val(age);
+						$( "#addRelationshipPatientForm [id=memberValidator]").val(age);
 					}else{
-						$( "#memberValidator").val(birthDate);
+						$( "#addRelationshipPatientForm [id=memberValidator]").val(birthDate);
 					}
 				}
 		});

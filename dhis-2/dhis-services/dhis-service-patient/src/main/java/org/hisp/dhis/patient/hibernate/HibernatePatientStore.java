@@ -172,14 +172,14 @@ public class HibernatePatientStore
         Conjunction con = Restrictions.conjunction();
 
         if ( StringUtils.isNotBlank( firstName ) )
-            con.add( Restrictions.eq( "firstName", firstName ) );
+            con.add( Restrictions.ilike( "firstName", firstName ) );
 
         if ( StringUtils.isNotBlank( middleName ) )
-            con.add( Restrictions.eq( "middleName", middleName ) );
+            con.add( Restrictions.ilike( "middleName", middleName ) );
 
         if ( StringUtils.isNotBlank( lastName ) )
-            con.add( Restrictions.eq( "lastName", lastName ) );
-
+            con.add( Restrictions.ilike( "lastName", lastName ) );
+        
         con.add( Restrictions.eq( "gender", gender ) );
         con.add( Restrictions.eq( "birthDate", birthdate ) );
 

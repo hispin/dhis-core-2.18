@@ -44,7 +44,7 @@
 	<tr>
 		<td><label for="dobType">$i18n.getString( "dob_type" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td class="input-column">
-			<select id='dobType' name="dobType" style="width:28.3em" onchange="dobTypeOnChange();" class="{validate:{required:false}}">
+			<select id='dobType' name="dobType" style="width:28.3em" class="{validate:{required:true}}">
 				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 				<option value="V" >$i18n.getString( "verified" )</option>
 				<option value="D" >$i18n.getString( "declared" )</option>
@@ -99,21 +99,19 @@
 	<tr><td colspan="2">&nbsp;</td></tr>	
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString('check_duplicate')"  onclick="checkDuplicate();"/></td>
+		<td><input type="button" id='checkDuplicateBtn' name='checkDuplicateBtn' value="$i18n.getString('check_duplicate')" /></td>
 	</tr>
 	<tr><td colspan="2">&nbsp;</td></tr>	
 
 	<!-- UNDERAGE -->
-	<div id='underAgeDiv'>
-	<tr>
+	<tr id='underAgeDiv'>
 		<td>$i18n.getString("is_underage")</td>
 		<td>
 			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true"/>
 		</td>
 	</tr>
-	</div>
+	
 	<!--IDENTIFIERS -->
-
 	<tr><td colspan="2">&nbsp;</td></tr>	
 	<tr><th colspan="2" class="heading-column">$i18n.getString( "patient_identifiers" )</th></tr>
 	#foreach ($identifierType in $identifierTypes)
