@@ -1,4 +1,11 @@
-﻿<h3>$i18n.getString( "groups" )</h3>
+<script type="text/javascript">
+jQuery(function() {
+	/* make sure that the leftBar is always visible when entering page. */
+	leftBar.showAnimated();
+});
+</script>
+
+<h3>$i18n.getString( "groups" )</h3>
 
 <ul id="introList">
     #introListImgItem( "chartGroup.action" "chart_groups" "groups")
