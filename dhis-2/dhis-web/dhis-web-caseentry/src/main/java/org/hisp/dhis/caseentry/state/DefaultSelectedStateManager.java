@@ -35,10 +35,8 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.ActionContext;
 
