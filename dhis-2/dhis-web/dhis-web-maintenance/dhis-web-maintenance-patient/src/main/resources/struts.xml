@@ -85,9 +85,8 @@
 
 		<action name="getPartner"
 			class="org.hisp.dhis.patient.action.relationship.GetPartnerAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responsePartner.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/detailsPartner.vm</param>
 		</action>
 
 		<action name="showRelationshipList"
@@ -166,8 +165,6 @@
 			class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipPatientAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addRelationshipPatientForm.vm</param>
-			<param name="stylesheets">
-				../dhis-web-commons/javascripts/jQuery/ui/css/ui.thickbox.css</param>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
@@ -270,35 +267,7 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
-
-		<!-- PatientAttributeValue -->
-
-		<action name="showUpdatePatientAttributeValueForm"
-			class="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeValueAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updatePatientAttributeValueForm.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
-			<param name="menuTreeHeight">321</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/patientAttributeValue.js</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_UPDATE</param>
-		</action>
-
-		<action name="savePatientAttributeValue"
-			class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeValueAction">
-			<result name="success" type="velocity">status.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_ADD,F_PATIENTATTRIBUTEVALUE_UPDATE,F_PATIENTATTRIBUTEVALUE_DELETE</param>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>
-		</action>
-
-		<action name="savePatientAttributeDateValue"
-			class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeDateValueAction">
-			<result name="success" type="velocity">status.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_PATIENTATTRIBUTEVALUE_ADD,F_PATIENTATTRIBUTEVALUE_UPDATE,F_PATIENTATTRIBUTEVALUE_DELETE</param>
-		</action>
-
+		
 		<!-- Patient -->
 
 		<action name="patient" class="org.hisp.dhis.patient.action.patient.SelectAction">
@@ -351,11 +320,10 @@
 
 		<action name="getPatient"
 			class="org.hisp.dhis.patient.action.patient.GetPatientAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responsePatient.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/detailsPatient.vm</param>
 		</action>
-
+		
 		<action name="removePatient"
 			class="org.hisp.dhis.patient.action.patient.RemovePatientAction">
 			<result name="success" type="velocity-json">
@@ -643,7 +611,6 @@
 			<param name="requiredAuthorities">F_PROGRAM_ATTRIBUTE_UPDATE</param>
 		</action>
 
-
 		<action name="validateProgramAttribute"
 			class="org.hisp.dhis.patient.action.program.ValidateProgramAttributeAction">
 			<result name="success" type="velocity-json">
@@ -677,8 +644,7 @@
 
 		<action name="defineProgramAssociations"
 			class="org.hisp.dhis.patient.action.program.DefineProgramAssociationsAction">
-			<result name="success" type="redirect">program.action
-			</result>
+			<result name="success" type="redirect">program.action</result>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
@@ -713,8 +679,7 @@
 
 		<action name="addProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.AddProgramStageAction">
-			<result name="success" type="redirect">programStage.action?id=${id}
-			</result>
+			<result name="success" type="redirect">programStage.action?id=${id}</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
 
@@ -729,8 +694,7 @@
 
 		<action name="updateProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageAction">
-			<result name="success" type="redirect">programStage.action?id=${programId}
-			</result>
+			<result name="success" type="redirect">programStage.action?id=${programId}</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_UPDATE</param>
 		</action>
 
@@ -764,10 +728,8 @@
 
 		<action name="saveProgramStageSortOder"
 			class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction">
-			<result name="success" type="redirect">programStage.action?id=${id}
-			</result>
+			<result name="success" type="redirect">programStage.action?id=${id}</result>
 		</action>
-
 
 		<!-- Data Entry Form -->
 
@@ -843,8 +805,7 @@
 
 		<action name="addPatientAttributeGroup"
 			class="org.hisp.dhis.patient.action.patientattributegroup.AddPatientAttributeGroupAction">
-			<result name="success" type="redirect">patientAttributeGroup.action
-			</result>
+			<result name="success" type="redirect">patientAttributeGroup.action</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 

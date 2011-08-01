@@ -1,34 +1,39 @@
 <script>
+	
 	jQuery(document).ready(	function(){
 
-		datePickerValid( 'addPatientForm [id=birthDate]' );
-		addEventForPatientForm( 'addPatientForm' );
-		
+		currentDiv = 'addPatientForm';
+		checkedDuplicate = false;
+
 		jQuery("#addPatientForm").validate({
 				 meta:"validate"
 				,errorElement:"span"
 				,submitHandler: function(form)
 					{
-						validateAddPatient();
+						validateAddPatient('addPatientForm');
 					}
 				,beforeValidateHandler: function(form)
 					{
-						var dobType = $('#dobType').val();
+						var dobType = $('#addPatientForm [id=dobType]').val();
 						
 						if( dobType=='V' || dobType=='D' ) 
 						{
-							var birthDate = $('#birthDate').val();
+							var birthDate = $('#addPatientForm [id=birthDate]').val();
 							if( birthDate != '' ){
-								$("#memberValidator").val(birthDate);
+								$("#addPatientForm [id=memberValidator]").val(birthDate);
 							}
 						}else{
-							var age = $('#age').val();
-							$("#memberValidator").val(age);
+							var age = $('#addPatientForm [id=age]').val();
+							$("#addPatientForm [id=memberValidator]").val(age);
 						}
 					}
 			});
-					
-	});		
+		
+		datePickerValid( 'addPatientForm [id=registrationDate]' );
+		datePickerValid( 'addPatientForm [id=birthDate]' );
+		addEventForPatientForm( 'addPatientForm' );
+	});	
+	
 </script>
 
 <h3>$i18n.getString( "add_new_patient" )</h3>	
@@ -45,19 +50,3 @@
 </p>
 
 </form>
-
-<div id="hiddenModalContent" style="display:none">
-	<style> 
-		div#hiddenModalContent label { font-weight: bold;}  
-		div#hiddenModalContent td {padding: 2px 5px}
-	</style>
-	
-	<span>$i18n.getString( "duplicate_warning" )</span>
-	<input type="button" value="$i18n.getString( 'create_new_patient' )"  id="btnCreateNew"/>
-	
-	<div id="thickboxContainer"></div>
-</div>
-
-<script>
-	checkedDuplicate = false;
-</script>

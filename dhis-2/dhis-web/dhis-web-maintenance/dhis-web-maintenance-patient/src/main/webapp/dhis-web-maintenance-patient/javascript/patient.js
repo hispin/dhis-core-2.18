@@ -79,80 +79,14 @@ function searchingAttributeOnChange()
 
 function showPatientDetails( patientId )
 {
-    //$.post( 'getPatient.action', { id:patientId }, patientReceived );
-	$.ajax({
-		url: 'getPatient.action?id=' + patientId,
-		cache: false,
-		dataType: "xml",
-		success: patientReceived
-	});
-}
-
-function patientReceived( patientElement )
-{   
-	// ----------------------------------------------------------------------------
-	// Get common-information
-    // ----------------------------------------------------------------------------
-	
-	var id = $(patientElement).find( "id" ).text();
-	var fullName = $(patientElement).find( "fullName" ).text();
-	var gender = $(patientElement).find( "gender" ).text();
-	var dobType = $(patientElement).find( "dobType" ).text();
-	var birthDate = $(patientElement).find( "dateOfBirth" ).text();
-	var bloodGroup= $(patientElement).find( "bloodGroup" ).text();
-    
-	var commonInfo =  '<strong>'  + i18n_id + ':</strong> ' + id + "<br>" 
-					+ '<strong>' + i18n_full_name + ':</strong> ' + fullName + "<br>" 
-					+ '<strong>' + i18n_gender + ':</strong> ' + gender+ "<br>" 
-					+ '<strong>' + i18n_dob_type + ':</strong> ' + dobType+ "<br>" 
-					+ '<strong>' + i18n_date_of_birth + ':</strong> ' + birthDate+ "<br>" 
-					+ '<strong>' + i18n_blood_group  + ':</strong> ' + bloodGroup;
-	
-	setInnerHTML( 'commonInfoField', commonInfo );
-	
-	// ----------------------------------------------------------------------------
-	// Get identifiers
-    // ----------------------------------------------------------------------------
-	
-    var identifierText = '';
-	
-	var identifiers = $(patientElement).find( "identifier" );
-	$( identifiers ).each( function( i, item )
-        {
-            identifierText += $( item ).text() + '<br>';		
-        } );
-	
-	setInnerHTML( 'identifierField', identifierText );
-	
-	// ----------------------------------------------------------------------------
-	// Get attributes
-    // ----------------------------------------------------------------------------
-	
-    var attributeValues = '';
-	
-	var attributes = $(patientElement).find( "attribute" );
-	$( attributes ).each( function( i, item )
-        {
-            attributeValues += '<strong>' + $( item ).find( 'name' ).text() + ':</strong> ' + $( item ).find( 'value' ).text() + '<br>';				
-        } );
-	
-	setInnerHTML( 'attributeField', attributeValues );
-    
-	// ----------------------------------------------------------------------------
-	// Get programs
-    // ----------------------------------------------------------------------------
-	
-    var programName = '';
-	
-	var programs = $( patientElement ).find( "program" );
-	$( programs ).each( function( i, item )
-        {
-            programName += $( item ).text() + '<br>';
-        } );
-		
-	setInnerHTML( 'programField', programName );
-   
-    showDetails();
+    $('#detailsArea').load("getPatient.action", 
+		{
+			id:patientId
+		}
+		, function( html ){
+			setInnerHTML( 'detailsArea', html );
+			showDetails();
+		});
 }
 
 // -----------------------------------------------------------------------------
@@ -339,12 +273,13 @@ function checkDuplicate( divname )
 			gender: jQuery( '#' + divname + ' [id=gender]' ).val(),
 			birthDate: jQuery( '#' + divname + ' [id=birthDate]' ).val(),        
 			age: jQuery( '#' + divname + ' [id=age]' ).val()
-		}, function( xmlObject )
+		}, function( xmlObject, divname )
 		{
-			checkDuplicateCompleted( xmlObject );
+			checkDuplicateCompleted( xmlObject, divname );
 		});
 }
-function checkDuplicateCompleted( messageElement )
+
+function checkDuplicateCompleted( messageElement, divname )
 {
 	checkedDuplicate = true;    
 	var type = $(messageElement).find('message').attr('type');
@@ -364,12 +299,7 @@ function checkDuplicateCompleted( messageElement )
     }
 }
 
-/**
- * Show list patient duplicate  by jQuery thickbox plugin
- * @param rootElement : root element of the response xml
- * @param validate  :  is TRUE if this method is called from validation method  
- */
-function showListPatientDuplicate(rootElement, validate)
+function showListPatientDuplicate( rootElement, validate )
 {
 	var message = $(rootElement).find('message').text();
 	var patients = $(rootElement).find('patient');
@@ -401,7 +331,7 @@ function showListPatientDuplicate(rootElement, validate)
         	var attributes = $(patient).find('attribute');
         	if( attributes.length > 0 )
         	{
-        		sPatient += "<tr><td colspan='2'><strong>"+i18n_patient_attributes+"</strong></td></tr>"
+        		sPatient += "<tr><td colspan='2'><strong>" + i18n_patient_attributes + "</strong></td></tr>"
         		$( attributes ).each( function( i, attribute )
 				{
         			sPatient +="<tr class='attributeRow'>"
@@ -414,10 +344,17 @@ function showListPatientDuplicate(rootElement, validate)
         	sPatient += "</table>";
 		});
 		
-		jQuery("#thickboxContainer","#hiddenModalContent").html("").append(sPatient);
-		if( !validate ) jQuery("#btnCreateNew","#hiddenModalContent").click(function(){window.parent.tb_remove();});
-		else jQuery("#btnCreateNew","#hiddenModalContent").click(function(){window.parent.tb_remove();window.parent.checkedDuplicate = true;window.parent.validatePatient();});
-		tb_show( message, "#TB_inline?height=500&width=500&inlineId=hiddenModalContent", null);
+		sPatient = i18n_duplicate_warning + "<br>" + sPatient;
+		$('#resultSearchDiv' ).html( sPatient );
+		$('#resultSearchDiv' ).dialog({
+			title: i18n_duplicated_patient_list,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 800,
+			height: 400
+		});
 }
 
 // -----------------------------------------------------------------------------
@@ -506,10 +443,11 @@ function showUpdatePatientForm( patientId )
 		}, function()
 		{
 			showById('updatePatientDiv');
-			jQuery('#searchPatientsByNameDiv').dialog('close');
-			window.parent.tb_remove();
+			jQuery('#searchPatientsDiv').dialog('close');
 			jQuery('#loaderDiv').hide();
 		});
+		
+	jQuery('#resultSearchDiv').dialog('close');
 }
 
 function updatePatient()
@@ -868,12 +806,8 @@ function removeDisabledIdentifier()
 
 function addEventForPatientForm( divname )
 {
-	jQuery("#" + divname + " [id=age]").change(function() {
-		jQuery("#" + divname + " [id=birthDate]").val("");
-	});
-	
-	jQuery("#" + divname + " [id=birthDate]").change(function() {
-		jQuery("#" + divname + " [id=age]").val("");
+	jQuery("#" + divname + " [id=searchPatientByNameBtn]").click(function() {
+		getPatientsByName( divname );
 	});
 	
 	jQuery("#" + divname + " [id=checkDuplicateBtn]").click(function() {
@@ -884,6 +818,7 @@ function addEventForPatientForm( divname )
 		dobTypeOnChange( divname );
 	});
 }
+
 
 // -----------------------------------------------------------------------------
 // Show Details
@@ -940,3 +875,4 @@ function f_filterResults(n_win, n_docel, n_body) {
 		n_result = n_docel;
 	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
 }
+

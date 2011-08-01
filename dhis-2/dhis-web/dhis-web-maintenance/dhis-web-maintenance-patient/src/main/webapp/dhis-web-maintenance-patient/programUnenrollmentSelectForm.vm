@@ -111,7 +111,8 @@
 				#elseif( $attribute.valueType == "DATE" )
 					<input type="text" style="width:180px" id="attr$attribute.id" name="attr$attribute.id" class=' #validate( "default"  $attribute.mandatory )'>
 					<script type="text/javascript">
-						datePickerValid( 'attr$attribute.id' );
+						var attributeId = 'attr' + '$attribute.id'
+						datePickerValid( attributeId );
 					</script>                       
 				#elseif( $attribute.valueType == "COMBO" )
 					<select id="attr$attribute.id" name="attr$attribute.id" style="width:200px">
