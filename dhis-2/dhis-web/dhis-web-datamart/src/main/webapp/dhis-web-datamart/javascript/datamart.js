@@ -275,20 +275,6 @@ function removeDatamartExport( exportId, exportName )
     }
 }
 
-function getQueryStringFromList( listId, paramName )
-{
-	var list = document.getElementById( listId );
-	
-	var params = "";
-	
-	for ( var i = 0; i < list.options.length; i++ )
-	{
-		params += paramName + "=" + list.options[i].value + "&";
-	}
-	
-	return params;
-}
-
 // -----------------------------------------------------------------------------
 // Validation
 // -----------------------------------------------------------------------------
