@@ -93,24 +93,24 @@ function showPersons( divContainer, xmlElement )
 	
 	if ( patients.length == 0 )
 	{
-		var message = "<p>"+i18n_no_result+"</p>";
+		var message = "<p>" + i18n_no_result + "</p>";
 		container.html(message);
 	}
 	
 	$( patients ).each( function( i, patient )
     {
 		sPatient += "<hr style='margin:5px 0px;'><table>";
-		sPatient += "<tr><td><strong>"+i18n_patient_system_id+"</strong></td><td>"+ $( patient ).find('systemIdentifier').text() +"</td></tr>" ;
-		sPatient += "<tr><td><strong>"+i18n_patient_fullName+"</strong></td><td>"+ $( patient ).find('fullName').text() +"</td></tr>" ;
-		sPatient += "<tr><td><strong>"+i18n_patient_gender+"</strong></td><td>"+ $( patient ).find('gender').text() +"</td></tr>" ;
-		sPatient += "<tr><td><strong>"+i18n_patient_date_of_birth+"</strong></td><td>"+ $( patient ).find('dateOfBirth').text() +"</td></tr>" ;
-		sPatient += "<tr><td><strong>"+i18n_patient_age+"</strong></td><td>"+ $( patient ).find('age').text() +"</td></tr>" ;
-		sPatient += "<tr><td><strong>"+i18n_patient_blood_group+"</strong></td><td>"+ $( patient ).find('bloodGroup').text() +"</td></tr>";
+		sPatient += "<tr><td><strong>" + i18n_patient_system_id + "</strong></td><td>" + $( patient ).find('systemIdentifier').text() + "</td></tr>" ;
+		sPatient += "<tr><td><strong>" + i18n_patient_full_name + "</strong></td><td>" + $( patient ).find('fullName').text() + "</td></tr>" ;
+		sPatient += "<tr><td><strong>" + i18n_patient_gender + "</strong></td><td>" + $( patient ).find('gender').text() + "</td></tr>" ;
+		sPatient += "<tr><td><strong>" + i18n_patient_date_of_birth + "</strong></td><td>" + $( patient ).find('dateOfBirth').text() + "</td></tr>" ;
+		sPatient += "<tr><td><strong>" + i18n_patient_age + "</strong></td><td>" + $( patient ).find('age').text() + "</td></tr>" ;
+		sPatient += "<tr><td><strong>" + i18n_patient_blood_group + "</strong></td><td>" + $( patient ).find('bloodGroup').text() + "</td></tr>";
 		
 		var identifiers =  $( patient ).find('identifier');
 		$( identifiers ).each( function( i, identifier )
 		{
-			sPatient +="<tr class='identifierRow"+ $(identifier).find('id').text() + "' id='iden" + $(identifier).find('id' ).text() + "'>"
+			sPatient +="<tr class='identifierRow" + $(identifier).find('id').text() + "' id='iden" + $(identifier).find('id' ).text() + "'>"
 				+"<td><strong>" + $(identifier).find('name').text() + "</strong></td>"
 				+"<td class='value'>" + $(identifier).find('value').text() + "</td>	"	
 				+"</tr>";

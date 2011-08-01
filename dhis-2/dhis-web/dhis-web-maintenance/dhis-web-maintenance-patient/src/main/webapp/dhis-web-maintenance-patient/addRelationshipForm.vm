@@ -57,7 +57,7 @@
             </tr>
             <tr>  
                 <td>
-                    <select id="relationshipTypeId" name="relationshipTypeId" >
+                    <select id="relationshipTypeId" name="relationshipTypeId" class="{validate:{required:true}}" >
                         <option value="">[$i18n.getString( "select_relationship" )]</option>
                         #foreach( $relationshipType in $relationshipTypes )                        
                             <option value="$relationshipType.id:$encoder.htmlEncode( $relationshipType.aIsToB )" #if( $relationshipTypeId && "$relationshipType.id:$encoder.htmlEncode( $relationshipType.aIsToB )" == $relationshipTypeId ) selected="selected" #end>$encoder.htmlEncode( $relationshipType.aIsToB )</option>
@@ -91,7 +91,7 @@
             </tr>  
             <tr>
                 <td>
-                    <select size="15" id="availablePartnersList" name="availablePartnersList" style="min-width:20em;height:10em">                        
+                    <select size="15" id="availablePartnersList" name="availablePartnersList" style="min-width:20em;height:10em" class="{validate:{required:true}}">                        
                         #foreach ( $partner in $patients )
                             <option value="$partner.id"> $encoder.htmlEncode( $partner.getFullName() )</option>
                         #end                

@@ -20,7 +20,7 @@
 	<tbody>
 		#set($mark = false)
 		#foreach( $patient  in $patients )
-			<tr id="tr${patient.id}" #alternate($mark) onclick='showUpdatePatientForm($patient.id)' style="cursor:pointer">
+			<tr id="tr${patient.id}" #alternate($mark) onclick='showUpdatePatientForm($patient.id)' style="cursor:pointer" title="$i18n.getString('update_this_patient')">
 				<td>
 					#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
 					$nr
