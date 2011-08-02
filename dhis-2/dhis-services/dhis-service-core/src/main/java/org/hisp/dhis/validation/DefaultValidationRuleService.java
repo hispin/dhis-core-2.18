@@ -303,15 +303,19 @@ public class DefaultValidationRuleService
                 if ( validationRule.getPeriodType() != null && validationRule.getPeriodType().equals( period.getPeriodType() ) )
                 {
                     leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), period, source, true, aggregate, null );
-                    rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period, source, true, aggregate, null );
-        
-                    if ( leftSide != null && rightSide != null )
+                    
+                    if ( leftSide != null )
                     {
-                        violation = !expressionIsTrue( leftSide, validationRule.getOperator(), rightSide );
-        
-                        if ( violation )
+                        rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period, source, true, aggregate, null );
+            
+                        if ( rightSide != null )
                         {
-                            validationViolations.add( new ValidationResult( period, source, validationRule, getRounded( leftSide, DECIMALS ), getRounded( rightSide, DECIMALS ) ) );
+                            violation = !expressionIsTrue( leftSide, validationRule.getOperator(), rightSide );
+            
+                            if ( violation )
+                            {
+                                validationViolations.add( new ValidationResult( period, source, validationRule, getRounded( leftSide, DECIMALS ), getRounded( rightSide, DECIMALS ) ) );
+                            }
                         }
                     }
                 }
@@ -333,6 +337,8 @@ public class DefaultValidationRuleService
     {
         final Set<ValidationRule> relevantValidationRules = new HashSet<ValidationRule>();
 
+        //TODO move getDataElementsInExpression out of for-loop
+        
         for ( ValidationRule validationRule : getAllValidationRules() )
         {
             for ( DataElement dataElement : dataElements )
