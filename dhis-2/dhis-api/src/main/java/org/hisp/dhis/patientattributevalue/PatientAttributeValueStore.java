@@ -27,6 +27,8 @@
 package org.hisp.dhis.patientattributevalue;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.patient.Patient;
@@ -66,5 +68,9 @@ public interface PatientAttributeValueStore
     
     Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText );
 
+    Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts, int min, int max);
+
     int countSearchPatientAttributeValue(  PatientAttribute patientAttribute, String searchText );
+    
+    int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts );
 }

@@ -26,13 +26,14 @@ function organisationUnitSelected( orgUnits )
 					{
 					}, 
 					function( json ) 
-					{    
-						clearListById('programId');
-						addOptionById( 'programId', "0", i18n_select_program );
+					{   
+						programComboBox = '<select id="searchText" name="searchText" style="width:20.2em" >';
+						
 						for ( i in json.programs ) 
 						{
-							addOptionById( 'programId', json.programs[i].id, json.programs[i].name );
+							programComboBox += '<option value=' + json.programs[i].id + '>' + json.programs[i].name + '</option>';
 						} 
+						programComboBox += '</select>';
 						
 						showById('searchPatientDiv');
 						enable('listPatientBtn');
@@ -55,21 +56,19 @@ selection.setListenerFunction( organisationUnitSelected );
 // Search patients by selected attribute
 //------------------------------------------------------------------------------
 
-
-function searchingAttributeOnChange()
-{
-	var value = byId('searchingAttributeId').value;
+function searchingAttributeOnChange( this_ )
+{	
+	var container = jQuery(this_).parent().parent().attr('id');
+	var attributeId = jQuery('#' + container+ ' [id=searchingAttributeId]').val(); 
+	var element = $('#' + container+ ' [id=searchText]');
 	
-	if(value == '0')
+	if( attributeId == '0' )
 	{
-		byId('programId').style.display = 'block';
-		byId('searchText').style.display = 'none';
+		element.replaceWith( programComboBox );
 	}
 	else
 	{
-		byId('searchText').style.display = 'block';
-		byId('programId').style.display = 'none';
-		byId('programId').selectedIndex = 0;
+		element.replaceWith( searchTextBox );
 	}
 }
 
@@ -125,23 +124,22 @@ function searchPatients()
 	
 	if( getFieldValue('searchText') == '' )
 	{
-		$('#listPatientDiv').html( "<i style='color:red'>" + i18n_specify_a_search_criteria + "</i>" );
-		showById( 'listPatientDiv' );
+		showWarningMessage( i18n_specify_a_search_criteria );
 		return;
 	}
 	
 	contentDiv = 'listPatientDiv';
 	$( "#loaderDiv" ).show();
-	$('#listPatientDiv').load("searchPatient.action", 
-		{
-			searchText: getFieldValue('searchText'), 
-			searchingAttributeId: getFieldValue('searchingAttributeId'), 
-			sortPatientAttributeId: getFieldValue('sortPatientAttributeId'), 
-			programId: getFieldValue('programId') 
-		}
-		, function(){
-			showById('listPatientDiv');
-			$( "#loaderDiv" ).hide();
+	$.ajax({
+		url: 'searchPatient.action',
+		type:"POST",
+		data: getParamsForDiv('searchPatientDiv'),
+		success: function( html ){
+				statusSearching = 1;
+				setInnerHTML( 'listPatientDiv', html );
+				showById('listPatientDiv');
+				$( "#loaderDiv" ).hide();
+			}
 		});
 }
 
@@ -507,7 +505,6 @@ function showProgramEnrollmentForm( patientId, programId )
 		});
 }
 
-
 function validateProgramEnrollment()
 {	
 	$.ajax({
@@ -695,22 +692,23 @@ function onClickBackBtn()
 
 function loadPatientList()
 {
-	$.ajaxSettings.cache = false;
-
-	hideById('listPatientDiv');
 	hideById('addPatientDiv');
 	hideById('updatePatientDiv');
 	hideById('enrollmentDiv');
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
 	
-	jQuery('#listPatientDiv').load("searchPatient.action", {}
-		, function(){
-			showById('selectDiv');
-			showById('searchPatientDiv');
-			showById('listPatientDiv');
-			$( "#loaderDiv" ).hide();
-		});
+	showById('selectDiv');
+	showById('searchPatientDiv');
+	
+	if( statusSearching == 0)
+	{
+		loadAllPatients();
+	}
+	else if( statusSearching == 1 )
+	{
+		searchPatients();
+	}
 }
 
 // -----------------------------------------------------------------------------
@@ -730,6 +728,7 @@ function loadAllPatients()
 			sortPatientAttributeId: getFieldValue('sortPatientAttributeId')
 		},
 		function(){
+			statusSearching = 0;
 			showById('listPatientDiv');
 			jQuery('#loaderDiv').hide();
 		});
@@ -875,4 +874,23 @@ function f_filterResults(n_win, n_docel, n_body) {
 		n_result = n_docel;
 	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
 }
+
+// -----------------------------------------------------------------------------
+// Advanced search
+// -----------------------------------------------------------------------------
+
+function addAttributeOption()
+{
+	var rowId = 'advSearchBox' + jQuery('#advancedSearchTB select[name=searchingAttributeId]').length + 1;
+	var contend  = '<td>' + getInnerHTML('searchingAttributeIdTD') + '</td>'
+		contend += '<td>' + searchTextBox ;
+		contend += '<input type="button" value="-" onclick="removeAttributeOption(' + "'" + rowId + "'" + ');"></td>';
+		contend = '<tr id="' + rowId + '">' + contend + '</tr>';
+	$('#advancedSearchTB > tbody:last').append( contend );
+}	
+
+function removeAttributeOption( rowId )
+{
+	jQuery( '#' + rowId ).remove();
+}		
 

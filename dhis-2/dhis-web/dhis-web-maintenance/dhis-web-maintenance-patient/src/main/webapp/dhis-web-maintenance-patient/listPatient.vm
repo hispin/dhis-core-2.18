@@ -27,9 +27,9 @@
     <td>    
       <table class="listTable" id="patientList" width='100%'>               
           <col width="30"/>
-            #if($mapPatientPatientAttr.size()!=0)
-                <col/>
-            #end
+			#foreach( $attribute in $patientAttributes )
+				<col/>
+			#end
           <col/>
           <col/>
           <col/>
@@ -44,12 +44,8 @@
 		  <thead>
 			<tr>
 				<th>#</th>
-				#if($mapPatientPatientAttr.size()!=0)
-					<th id="patientAttributeName"></th>
-					<script>
-						var selectedAttr = byId("sortPatientAttributeId");
-						byId('patientAttributeName').innerHTML = selectedAttr.options[selectedAttr.selectedIndex].text;
-					</script>
+				#foreach( $attribute in $patientAttributes )
+					<th id="patientAttributeName">$attribute.name</th>
 				#end
 				<th>$i18n.getString( "first_name" )</th>
 				<th>$i18n.getString( "middle_name" )</th>
@@ -67,17 +63,16 @@
           <tbody id="list">	
 		  #set( $mark = false )
           #foreach( $patient in $patients )
-          	<tr id="tr${patient.id}" #alternate( $mark )>
+          	<tr id="tr${patient.id}" #alternate($mark) >
 				
 				<td>
 					#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
 					$nr
 				</td>
 				
-				#if($!mapPatientPatientAttr.size()!=0)
-				<td>
-					$!mapPatientPatientAttr.get( $patient.id )
-				</td>
+				#foreach( $attribute in $patientAttributes )
+					#set ( $key = $patient.id + '-' + $attribute.id )
+					<td>$mapPatientPatientAttr.get($key)</td>
 				#end
 					
 				<td>$!patient.firstName</td>

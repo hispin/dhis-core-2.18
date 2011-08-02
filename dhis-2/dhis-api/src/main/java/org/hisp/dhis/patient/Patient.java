@@ -362,7 +362,6 @@ public class Patient
         {
             return "( < 1 yr )";
         }
-
         else
         {
             return "( " + age + " yr )";
