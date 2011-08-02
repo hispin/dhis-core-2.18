@@ -103,8 +103,11 @@ public abstract class ActionPagingSupport<T>
             String paramName = paramNames.nextElement();
             if ( !paramName.equalsIgnoreCase( "pageSize" ) && !paramName.equalsIgnoreCase( "currentPage" ) )
             {
-                String value = request.getParameter( paramName );
-                baseLink += paramName + "=" + value + "&";
+                String[] values = request.getParameterValues( paramName );
+                for( int i=0; i<values.length; i++ )
+                {
+                    baseLink += paramName + "=" + values[i] + "&";
+                }
             }
         }
 

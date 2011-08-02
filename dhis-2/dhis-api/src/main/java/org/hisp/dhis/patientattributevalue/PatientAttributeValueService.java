@@ -27,6 +27,7 @@
 package org.hisp.dhis.patientattributevalue;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.patient.Patient;
@@ -64,7 +65,7 @@ public interface PatientAttributeValueService
     Map<Integer, Collection<PatientAttributeValue>> getPatientAttributeValueMapForPatients( Collection<Patient> patients );
     
     Map<Integer, PatientAttributeValue> getPatientAttributeValueMapForPatients( Collection<Patient> patients, PatientAttribute patientAttribute );
-
+    
     Collection<PatientAttributeValue> searchPatientAttributeValue( PatientAttribute patientAttribute, String searchText );   
 
     void copyPatientAttributeValues( Patient source, Patient destination );
@@ -74,9 +75,13 @@ public interface PatientAttributeValueService
     Collection<Patient> getPatient( PatientAttribute attribute, String value );
     
     Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText, int min, int max);
-    
+        
     Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText );
-    
+
+    Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts, int min, int max);
+
     int countSearchPatientAttributeValue(  PatientAttribute patientAttribute, String searchText );
+    
+    int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts );
     
 }

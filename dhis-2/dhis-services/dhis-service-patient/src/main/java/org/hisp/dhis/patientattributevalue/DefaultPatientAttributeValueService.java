@@ -29,6 +29,7 @@ package org.hisp.dhis.patientattributevalue;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
@@ -227,5 +228,16 @@ public class DefaultPatientAttributeValueService
     public Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText )
     {
         return patientAttributeValueStore.searchPatients( patientAttribute, searchText );
+    }
+
+    public Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts, int min,
+        int max )
+    {
+        return patientAttributeValueStore.searchPatients( patientAttributeIds, searchTexts, min, max );
+    }
+
+    public int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts )
+    {
+        return patientAttributeValueStore.countSearchPatients( patientAttributeIds, searchTexts );
     }
 }
