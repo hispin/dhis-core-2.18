@@ -25,16 +25,6 @@
 </select>
 </p>
 
-<h4>$i18n.getString( "no_of_cpu_cores" )</h4>
-
-<p>
-<select name="cpuCores" style="width:30em">
-#foreach( $i in [1..8] )
-<option value="$i"#if( $i == $keyCpuCores ) selected="selected"#end>$i</option>
-#end
-</select>
-</p>
-
 <h4>$i18n.getString( "style" )</h4>
 
 <select style="width:30em" name='currentStyle' id='currentStyle'>
