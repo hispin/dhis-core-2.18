@@ -56,6 +56,7 @@ import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.PaginatedList;
+import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -63,9 +64,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class DefaultDataMartEngine
     implements DataMartEngine
-{
-    private static final int THREAD_NO = 2;
-    
+{    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -155,7 +154,9 @@ public class DefaultDataMartEngine
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState state )
     {
-        Clock clock = new Clock().startClock().logTime( "Data mart export process started" );
+        final int cpuCores = SystemUtils.getCpuCores();
+        
+        Clock clock = new Clock().startClock().logTime( "Data mart export process started, number of CPU cores: " + cpuCores );
         
         // ---------------------------------------------------------------------
         // Get objects
@@ -224,7 +225,7 @@ public class DefaultDataMartEngine
         // Drop potential indexes
         // ---------------------------------------------------------------------
 
-        boolean isIndicators = indicators != null && indicators.size() > 0;
+        final boolean isIndicators = indicators != null && indicators.size() > 0;
         
         aggregatedDataValueService.dropIndex( true, isIndicators );
         
@@ -246,7 +247,7 @@ public class DefaultDataMartEngine
 
         state.setMessage( "exporting_data_for_data_elements" );
 
-        List<List<Period>> periodPages = new PaginatedList<Period>( periods ).setNumberOfPages( THREAD_NO ).getPages();
+        List<List<Period>> periodPages = new PaginatedList<Period>( periods ).setNumberOfPages( cpuCores ).getPages();
         
         if ( allOperands.size() > 0 )
         {
