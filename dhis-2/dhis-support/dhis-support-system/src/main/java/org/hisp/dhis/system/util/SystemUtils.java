@@ -46,4 +46,9 @@ public class SystemUtils
 
         return false;
     }
+    
+    public static int getCpuCores()
+    {
+        return Runtime.getRuntime().availableProcessors();
+    }
 }
