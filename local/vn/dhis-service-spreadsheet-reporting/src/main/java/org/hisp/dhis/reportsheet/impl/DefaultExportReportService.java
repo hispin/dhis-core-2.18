@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportsheet;
+package org.hisp.dhis.reportsheet.impl;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -38,6 +38,11 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.reportsheet.ExportItem;
+import org.hisp.dhis.reportsheet.ExportReport;
+import org.hisp.dhis.reportsheet.ExportReportService;
+import org.hisp.dhis.reportsheet.ExportReportStore;
+import org.hisp.dhis.reportsheet.PeriodColumn;
 import org.hisp.dhis.reportsheet.status.DataEntryStatus;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -232,25 +237,6 @@ public class DefaultExportReportService
     public Collection<Integer> getSheets( Integer reportId )
     {
         return exportReportStore.getSheets( reportId );
-    }
-
-    // -------------------------------------------------------------------------
-    // Report DataElement Order
-    // -------------------------------------------------------------------------
-
-    public DataElementGroupOrder getDataElementGroupOrder( Integer id )
-    {
-        return exportReportStore.getDataElementGroupOrder( id );
-    }
-
-    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
-    {
-        exportReportStore.updateDataElementGroupOrder( dataElementGroupOrder );
-    }
-
-    public void deleteDataElementGroupOrder( Integer id )
-    {
-        exportReportStore.deleteDataElementGroupOrder( id );
     }
 
     // -------------------------------------------------------------------------

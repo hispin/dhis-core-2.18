@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportsheet.importitem.impl;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,51 +26,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import static org.apache.commons.lang.StringUtils.isBlank;
 
-package org.hisp.dhis.reportsheet.importreport.degroup.action;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.hisp.dhis.reportsheet.importitem.ImportReportService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.reportsheet.importitem.ImportingManager;
+import org.springframework.core.task.TaskExecutor;
 
 /**
- * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class DeleteDataElementGroupOrderForCategoryAction
-    implements Action
+public class DefaultImportingManager
+    implements ImportingManager
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportReportService importReportService;
+    private TaskExecutor taskExecutor;
 
-    public void setImportReportService( ImportReportService importReportService )
+    public void setTaskExecutor( TaskExecutor taskExecutor )
     {
-        this.importReportService = importReportService;
+        this.taskExecutor = taskExecutor;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Ouput
+    // Properties
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Map<String, Runnable> tasks = new HashMap<String, Runnable>();
 
-    public void setId( Integer id )
+    public void setTasks( Map<String, Runnable> tasks )
     {
-        this.id = id;
+        this.tasks = tasks;
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // ImportingManager implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
+    public void executeTask( String key )
     {
-        importReportService.deleteDataElementGroupOrder( id );
-
-        return SUCCESS;
+        executeTask( getTask( key ) );
     }
+
+    public void executeTask( Runnable task )
+    {
+        taskExecutor.execute( task );
+    }
+
+    public Runnable getTask( String key )
+    {
+        if ( isBlank( key ) && (tasks == null) && tasks.isEmpty() )
+        {
+            return null;
+        }
+
+        return tasks.get( key );
+    }
+
 }

@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportsheet.impl;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,58 +26,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportsheet.importreport.degroup.action;
 
-import org.hisp.dhis.reportsheet.DataElementGroupOrder;
-import org.hisp.dhis.reportsheet.importitem.ImportReportService;
+import java.util.Collection;
 
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.reportsheet.Bookmark;
+import org.hisp.dhis.reportsheet.BookmarkService;
+import org.hisp.dhis.reportsheet.BookmarkStore;
+import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author Chau Thu Tran
- * @version $Id$
+ * @author Tran Thanh Tri
  */
-public class GetDataElementGroupOrderForCategoryAction
-    implements Action
+@Transactional
+public class DefaultBookmarkService
+    implements BookmarkService
 {
+
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private ImportReportService importReportService;
+    private BookmarkStore bookmarkStore;
 
-    public void setImportReportService( ImportReportService importReportService )
+    public void setBookmarkStore( BookmarkStore bookmarkStore )
     {
-        this.importReportService = importReportService;
+        this.bookmarkStore = bookmarkStore;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Implemented
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
-    public void setId( Integer id )
+    @Override
+    public void deleteBookmark( int id )
     {
-        this.id = id;
+        bookmarkStore.delete( bookmarkStore.get( id ) );
     }
 
-    private DataElementGroupOrder dataElementGroupOrder;
-
-    public DataElementGroupOrder getDataElementGroupOrder()
+    @Override
+    public Collection<Bookmark> getAllBookmark( String type )
     {
-        return dataElementGroupOrder;
+        return bookmarkStore.getAllBookmark( type, currentUserService.getCurrentUsername() );
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
+    @Override
+    public Bookmark getBookmark( int id )
     {
-        dataElementGroupOrder = importReportService.getDataElementGroupOrder( id.intValue() );
-
-        return SUCCESS;
+        return bookmarkStore.get( id );
     }
+
+    @Override
+    public int saveBookmark( Bookmark bookmark )
+    {
+        bookmark.setUsername( currentUserService.getCurrentUsername() );
+
+        return bookmarkStore.save( bookmark );
+    }
+
 }

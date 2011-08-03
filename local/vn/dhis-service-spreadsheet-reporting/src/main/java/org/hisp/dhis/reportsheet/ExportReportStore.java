@@ -41,9 +41,9 @@ public interface ExportReportStore
 {
     String ID = ExportReportStore.class.getName();
 
-    // --------------------------------------
+    // -------------------------------------------------------------------------
     // Service of Report
-    // --------------------------------------
+    // -------------------------------------------------------------------------
 
     public int addExportReport( ExportReport exportReport );
 
@@ -69,9 +69,9 @@ public interface ExportReportStore
 
     public Collection<String> getAllExportReportTemplates();
 
-    // --------------------------------------
+    // -------------------------------------------------------------------------
     // Service of Report Item
-    // --------------------------------------
+    // -------------------------------------------------------------------------
 
     public void addExportItem( ExportItem exportItem );
 
@@ -91,19 +91,9 @@ public interface ExportReportStore
 
     public void updateReportWithExcelTemplate( String curTemplateName, String newTemplateName );
 
-    // --------------------------------------
-    // DataElement Order
-    // --------------------------------------
-
-    public DataElementGroupOrder getDataElementGroupOrder( Integer id );
-
-    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder );
-
-    public void deleteDataElementGroupOrder( Integer id );
-
-    // --------------------------------------
+    // -------------------------------------------------------------------------
     // Data Entry Status
-    // --------------------------------------
+    // -------------------------------------------------------------------------
 
     public int saveDataEntryStatus( DataEntryStatus dataStatus );
 
@@ -123,9 +113,9 @@ public interface ExportReportStore
 
     public int countDataValueOfDataSet( DataSet dataSet, OrganisationUnit organisationUnit, Period period );
 
-    // --------------------------------------
+    // -------------------------------------------------------------------------
     // Period Column
-    // --------------------------------------
+    // -------------------------------------------------------------------------
 
     public PeriodColumn getPeriodColumn( Integer id );
 

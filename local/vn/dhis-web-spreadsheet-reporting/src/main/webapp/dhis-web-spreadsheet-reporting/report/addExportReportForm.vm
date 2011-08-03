@@ -2,7 +2,7 @@
 	jQuery(document).ready(	function(){
 		validation( 'addExportReportForm', function( form ){ form.submit() } );
 
-		checkValueIsExist( "name", "validateExportReportAction.action" );			
+		checkValueIsExist( "name", "validateExportReportAction.action" );
 		
 		var cache = {},	lastXhr;
 		jQuery( "#group" ).autocomplete({

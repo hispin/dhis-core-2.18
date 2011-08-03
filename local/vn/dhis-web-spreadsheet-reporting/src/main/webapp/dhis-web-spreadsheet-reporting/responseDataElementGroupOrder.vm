@@ -2,6 +2,7 @@
 <dataElementGroupOrder>
 	<name>$dataElementGroupOrder.name</name>
 	<code>$dataElementGroupOrder.code</code>
+	<memberCount>$dataElementGroupOrder.dataElements.size()</memberCount>
 	<dataElements>
 	#foreach( $dataElement in $dataElementGroupOrder.dataElements )
 		<dataElement>

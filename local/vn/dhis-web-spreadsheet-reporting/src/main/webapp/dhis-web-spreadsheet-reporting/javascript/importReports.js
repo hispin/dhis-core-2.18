@@ -58,17 +58,14 @@ function getDataElementsByGroupReceived( datalement ) {
 	var dataElementIds = document.getElementById('dataElementIds');
 	
 	for( var i = 0 ; i < availableDataElements.options.length ; i++ ) {
-	
-		for ( var j = 0 ; j < dataElementIds.options.length ; j++ ) {				
-		
+		for ( var j = 0 ; j < dataElementIds.options.length ; j++ ) {
 			if ( availableDataElements.options[i].value == dataElementIds.options[j].value ) {
-			
 				availableDataElements.options[i].style.display='none';				
 			}
 		}
 	}
 	
-	$("#dataElementGroups").showAtCenter( true );	
+	$("#dataElementGroups").showAtCenter( true );
 }
 
 function getALLDataElementGroups() {
@@ -83,11 +80,9 @@ function getALLDataElementGroups() {
 function getALLDataElementGroupsReceived( data ) {
 	
 	var availableDataElementGroups = document.getElementById('availableDataElementGroups');
-		
 	availableDataElementGroups.options.length = 0;
 		
 	var dataElementGroups = data.getElementsByTagName('dataElementGroup');
-		
 	availableDataElementGroups.options.add(new Option("ALL", null));	
 		
 	for( var i = 0 ; i < dataElementGroups.length ; i++ ) {
@@ -99,6 +94,6 @@ function getALLDataElementGroupsReceived( data ) {
 		availableDataElementGroups.add(option, null);
 	}
 	
-	getDataElementsByGroup(byId("availableDataElementGroups").value);
+	getDataElementsByGroup( getFieldValue("availableDataElementGroups") );
 }
 

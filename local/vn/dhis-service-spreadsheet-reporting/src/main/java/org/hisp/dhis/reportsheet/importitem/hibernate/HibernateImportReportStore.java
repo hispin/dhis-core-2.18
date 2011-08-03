@@ -10,7 +10,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reportsheet.DataElementGroupOrder;
 import org.hisp.dhis.reportsheet.importitem.ImportItem;
 import org.hisp.dhis.reportsheet.importitem.ImportReport;
 import org.hisp.dhis.reportsheet.importitem.ImportReportStore;
@@ -202,41 +201,16 @@ public class HibernateImportReportStore
         return criteria.list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<ImportReport> getImportReportsByType( String type )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Criteria criteria = session.createCriteria( ImportReport.class );
-        
+
         criteria.add( Restrictions.eq( "type", type ) );
-        
+
         return criteria.list();
-    }
-    
-    public DataElementGroupOrder getDataElementGroupOrder( Integer id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElementGroupOrder.class );
-
-        criteria.add( Restrictions.eq( "id", id.intValue() ) );
-
-        return (DataElementGroupOrder) criteria.uniqueResult();
-    }
-
-    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        session.update( dataElementGroupOrder );
-    }
-
-    public void deleteDataElementGroupOrder( Integer id )
-    {
-
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( getDataElementGroupOrder( id ) );
     }
 
     @SuppressWarnings( "unchecked" )

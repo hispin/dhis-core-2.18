@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportsheet.importitem;
+package org.hisp.dhis.reportsheet.importitem.impl;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -33,7 +33,10 @@ import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.reportsheet.DataElementGroupOrder;
+import org.hisp.dhis.reportsheet.importitem.ImportItem;
+import org.hisp.dhis.reportsheet.importitem.ImportReport;
+import org.hisp.dhis.reportsheet.importitem.ImportReportService;
+import org.hisp.dhis.reportsheet.importitem.ImportReportStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -160,24 +163,4 @@ public class DefaultImportReportService
     {
         return importReportStore.getSheets();
     }
-
-    // -------------------------------------------------------------------------
-    // DataElement Order
-    // -------------------------------------------------------------------------
-
-    public DataElementGroupOrder getDataElementGroupOrder( Integer id )
-    {
-        return importReportStore.getDataElementGroupOrder( id );
-    }
-
-    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
-    {
-        importReportStore.updateDataElementGroupOrder( dataElementGroupOrder );
-    }
-
-    public void deleteDataElementGroupOrder( Integer id )
-    {
-        importReportStore.deleteDataElementGroupOrder( id );
-    }
-
 }
