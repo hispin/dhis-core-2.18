@@ -121,12 +121,15 @@ function getKeyCode(e)
 function searchPatients()
 {
 	hideById( 'listPatientDiv' );
-	
-	if( getFieldValue('searchText') == '' )
-	{
-		showWarningMessage( i18n_specify_a_search_criteria );
-		return;
-	}
+	var searchTextFields = jQuery('[name=searchText]');
+	$( searchTextFields ).each( function( i, item )
+    {
+		if( jQuery( item ).val() == '' )
+		{
+			showWarningMessage( i18n_specify_search_criteria );
+			return;
+		}
+	});
 	
 	contentDiv = 'listPatientDiv';
 	$( "#loaderDiv" ).show();

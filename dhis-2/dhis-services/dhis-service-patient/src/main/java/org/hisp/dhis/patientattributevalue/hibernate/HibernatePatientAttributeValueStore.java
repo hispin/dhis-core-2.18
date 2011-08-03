@@ -205,6 +205,7 @@ public class HibernatePatientAttributeValueStore
     private String createHQL( Integer patientAttributeId, String searchText, int index, int noCondition )
     {
         String hql = "";
+        searchText = searchText.trim();
         boolean isSearchByAttribute = true;
 
         // ---------------------------------------------------------------------
@@ -212,12 +213,40 @@ public class HibernatePatientAttributeValueStore
         // ---------------------------------------------------------------------
         if ( patientAttributeId == null )
         {
+//            hql += " ( SELECT p" + index + " FROM Patient as p" + index + " JOIN p" + index
+//                + ".identifiers as identifier" + index + " " + "WHERE  lower(identifier" + index
+//                + ".identifier) LIKE lower('%" + searchText + "%') " + "OR lower(p" + index
+//                + ".firstName) LIKE lower('%" + searchText + "%') " + "OR lower(p" + index
+//                + ".middleName) LIKE lower('%" + searchText + "%') " + "OR lower(p" + index
+//                + ".lastName) LIKE lower('%" + searchText + "%') ";
+            int startIndex = searchText.indexOf( ' ' );
+            int endIndex = searchText.lastIndexOf( ' ' );
+
+            String firstName = searchText.toString();
+            String middleName = "";
+            String lastName = "";
+
+            if ( searchText.indexOf( ' ' ) != -1 )
+            {
+                firstName = searchText.substring( 0, startIndex );
+                if ( startIndex == endIndex )
+                {
+                    middleName = "";
+                    lastName = searchText.substring( startIndex + 1, searchText.length() );
+                }
+                else
+                {
+                    middleName = searchText.substring( startIndex + 1, endIndex );
+                    lastName = searchText.substring( endIndex + 1, searchText.length() );
+                }
+            }
+            
             hql += " ( SELECT p" + index + " FROM Patient as p" + index + " JOIN p" + index
                 + ".identifiers as identifier" + index + " " + "WHERE  lower(identifier" + index
-                + ".identifier) LIKE lower('%" + searchText + "%') " + "OR lower(p" + index
-                + ".firstName) LIKE lower('%" + searchText + "%') " + "OR lower(p" + index
-                + ".middleName) LIKE lower('%" + searchText + "%') " + "OR lower(p" + index
-                + ".lastName) LIKE lower('%" + searchText + "%') ";
+                + ".identifier) LIKE lower('%" + searchText + "%') " + "OR (lower(p" + index
+                + ".firstName) LIKE lower('%" + firstName + "%') " + "AND lower(p" + index
+                + ".middleName) = lower('" + middleName + "') " + "AND lower(p" + index
+                + ".lastName) LIKE lower('%" + lastName + "%')) ";
 
             isSearchByAttribute = false;
         }
