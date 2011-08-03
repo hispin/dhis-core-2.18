@@ -99,14 +99,14 @@ public class DefaultMessageService
     {
         UserGroup userGroup = configurationService.getConfiguration().getFeedbackRecipients();
         
-        int count = 0;
+        int r = 0;
         
         if ( userGroup != null && userGroup.getMembers().size() > 0 )
         {
-            count = sendMessage( message, userGroup.getMembers() );
+            r = sendMessage( message, userGroup.getMembers() );
         }
         
-        return count;
+        return r;
     }
         
     public int saveMessage( Message message )
