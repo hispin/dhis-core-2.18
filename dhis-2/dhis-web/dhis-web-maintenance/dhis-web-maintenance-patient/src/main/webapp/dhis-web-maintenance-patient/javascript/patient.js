@@ -122,14 +122,17 @@ function searchPatients()
 {
 	hideById( 'listPatientDiv' );
 	var searchTextFields = jQuery('[name=searchText]');
+	var flag = true;
 	$( searchTextFields ).each( function( i, item )
     {
 		if( jQuery( item ).val() == '' )
 		{
 			showWarningMessage( i18n_specify_search_criteria );
-			return;
+			flag = false;
 		}
 	});
+	
+	if(!flag) return;
 	
 	contentDiv = 'listPatientDiv';
 	$( "#loaderDiv" ).show();
