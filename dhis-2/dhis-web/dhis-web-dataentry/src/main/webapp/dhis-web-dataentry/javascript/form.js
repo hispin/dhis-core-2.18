@@ -51,6 +51,8 @@ function addEventListeners()
     	
     	$( this ).focus( valueFocus );
     	
+    	$( this ).blur( valueBlur );
+    	
     	$( this ).change( function() {
     		saveVal( dataElementId, optionComboId );
     	} );
@@ -402,12 +404,23 @@ function valueFocus( e )
 	var dataElementName = dataElements[dataElementId].name;
 	var optionComboName = $( '#' + optionComboId + '-optioncombo' ).text();
 	
-	$( "#currentDataElement" ).html( dataElementName + ' ' + optionComboName );
+	$( '#currentDataElement' ).html( dataElementName + ' ' + optionComboName );
+	
+	$( '#' + dataElementId + '-cell' ).addClass( 'currentRow' );
+}
+
+function valueBlur( e )
+{
+	var id = e.target.id;
+
+	var dataElementId = id.split( '-' )[0];
+	
+	$( '#' + dataElementId + '-cell' ).removeClass( 'currentRow' );
 }
 
 function keyPress( event, field )
 {
-    var key = event.keyCode || event.charCode || event.which;
+    var key = event.keyCoe || event.charCode || event.which;
 
     var focusField = ( key == 13 || key == 40 ) ? getNextEntryField( field )
             : ( key == 38 ) ? getPreviousEntryField( field ) : false;
