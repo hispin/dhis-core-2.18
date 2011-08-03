@@ -38,12 +38,20 @@ import com.opensymphony.xwork2.Action;
 public class ReadMessageAction
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private MessageService messageService;
 
     public void setMessageService( MessageService messageService )
     {
         this.messageService = messageService;
     }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
     private Integer id;
     
@@ -52,12 +60,20 @@ public class ReadMessageAction
         this.id = id;
     }
 
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
     private UserMessage message;
     
     public UserMessage getMessage()
     {
         return message;
     }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()

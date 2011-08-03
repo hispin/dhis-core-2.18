@@ -38,12 +38,20 @@ import com.opensymphony.xwork2.Action;
 public class UnreadMessageAction
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private MessageService messageService;
 
     public void setMessageService( MessageService messageService )
     {
         this.messageService = messageService;
     }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
     private Integer id;
     
@@ -52,7 +60,10 @@ public class UnreadMessageAction
         this.id = id;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {

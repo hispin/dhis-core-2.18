@@ -38,6 +38,10 @@ import com.opensymphony.xwork2.Action;
 public class RemoveMessageAction
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private MessageService messageService;
 
     public void setMessageService( MessageService messageService )
@@ -45,12 +49,20 @@ public class RemoveMessageAction
         this.messageService = messageService;
     }
 
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
     private Integer id;
     
     public void setId( Integer id )
     {
         this.id = id;
     }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
