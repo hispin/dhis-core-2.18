@@ -105,7 +105,7 @@ public class GetChartAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implemenation
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()

@@ -18,7 +18,7 @@
 <tr>
   <td>
     <div>
-    <table cellpadding="0">
+    <table cellspacing="0">
     #set( $categoryComboId = $sectionCombos.get( $section.id ) )
     #set( $colCount = $numberOfTotalColumns.get( $categoryComboId ) )
     #set( $categories = $orderedCategories.get( $categoryComboId ) )
@@ -52,7 +52,7 @@
     #end
     #set( $count = $count + 1 )
     <tr>
-    <td #if( $mark == 1 )class="altRow"#else class="regRow"#end><span>${encoder.htmlEncode( $dataElement.name )}</span></td>
+    <td id="${dataElement.id}-cell" #if( $mark == 1 )class="altRow"#else class="regRow"#end><span>${encoder.htmlEncode( $dataElement.name )}</span></td>
     #foreach( $optionCombo in $optionCombos )
     #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )
     #set( $greyedField = false )

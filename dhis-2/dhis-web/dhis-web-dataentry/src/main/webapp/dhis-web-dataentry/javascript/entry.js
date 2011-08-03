@@ -7,6 +7,7 @@
  * {dataelementid}-{optioncomboid}-val // data value
  * {dataelementid}-dataelement // name of data element
  * {optioncomboid}-optioncombo // name of category option combo
+ * {dataelementid}-cell // table cell for data element name
  * {dataelementid}-{optioncomboid}-min // min value for data value
  * {dataelementid}-{optioncomboid}-max // max value for data value
  */
