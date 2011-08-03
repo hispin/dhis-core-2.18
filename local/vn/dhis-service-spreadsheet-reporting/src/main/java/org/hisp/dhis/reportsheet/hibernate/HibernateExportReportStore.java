@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.hibernate;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,14 +39,13 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportsheet.DataElementGroupOrder;
-import org.hisp.dhis.reportsheet.ExportReportStore;
-import org.hisp.dhis.reportsheet.PeriodColumn;
+import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportCategory;
-import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReportNormal;
 import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
+import org.hisp.dhis.reportsheet.ExportReportStore;
+import org.hisp.dhis.reportsheet.PeriodColumn;
 import org.hisp.dhis.reportsheet.status.DataEntryStatus;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
@@ -291,29 +290,7 @@ public class HibernateExportReportStore
 
         query.executeUpdate();
     }
-
-    // -------------------------------------------------------------------------
-    // Report DataElement Order
-    // -------------------------------------------------------------------------
-
-    public DataElementGroupOrder getDataElementGroupOrder( Integer id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        return (DataElementGroupOrder) session.get( DataElementGroupOrder.class, id );
-    }
-
-    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        session.update( dataElementGroupOrder );
-    }
-
-    public void deleteDataElementGroupOrder( Integer id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        session.delete( this.getDataElementGroupOrder( id ) );
-    }
-
+    
     // -------------------------------------------------------------------------
     // Data Entry Status
     // -------------------------------------------------------------------------
@@ -380,7 +357,6 @@ public class HibernateExportReportStore
         Session session = sessionFactory.getCurrentSession();
         return (Integer) session.save( arg0 );
     }
-
 
     @SuppressWarnings( "unchecked" )
     public Collection<DataEntryStatus> getDataEntryStatusByDataSets( Collection<DataSet> dataSets )

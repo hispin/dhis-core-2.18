@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportsheet.degroup.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportsheet.exportreport.category.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,28 +33,39 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
-import org.hisp.dhis.reportsheet.ExportReportService;
+import org.hisp.dhis.reportsheet.DataElementGroupOrderService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 public class UpdateDataElementGroupOrderAction
     implements Action
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
-
-    private ExportReportService exportReportService;
+    // -------------------------------------------------------------------------
 
     private DataElementService dataElementService;
 
-    // -------------------------------------------
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private DataElementGroupOrderService dataElementGroupOrderService;
+
+    public void setDataElementGroupOrderService( DataElementGroupOrderService dataElementGroupOrderService )
+    {
+        this.dataElementGroupOrderService = dataElementGroupOrderService;
+    }
+
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer id;
 
@@ -65,23 +77,13 @@ public class UpdateDataElementGroupOrderAction
 
     private List<String> dataElementIds = new ArrayList<String>();
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setDataElementGroupOrderId( Integer dataElementGroupOrderId )
     {
         this.dataElementGroupOrderId = dataElementGroupOrderId;
-    }
-
-    public void setExportReportService( ExportReportService exportReportService )
-    {
-        this.exportReportService = exportReportService;
-    }
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
     }
 
     public void setName( String name )
@@ -109,10 +111,15 @@ public class UpdateDataElementGroupOrderAction
         this.code = code;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = exportReportService.getDataElementGroupOrder( dataElementGroupOrderId );
+        DataElementGroupOrder dataElementGroupOrder = dataElementGroupOrderService
+            .getDataElementGroupOrder( dataElementGroupOrderId );
 
         List<DataElement> dataElements = new ArrayList<DataElement>();
 
@@ -129,7 +136,7 @@ public class UpdateDataElementGroupOrderAction
 
         dataElementGroupOrder.setCode( code );
 
-        exportReportService.updateDataElementGroupOrder( dataElementGroupOrder );
+        dataElementGroupOrderService.updateDataElementGroupOrder( dataElementGroupOrder );
 
         return SUCCESS;
     }

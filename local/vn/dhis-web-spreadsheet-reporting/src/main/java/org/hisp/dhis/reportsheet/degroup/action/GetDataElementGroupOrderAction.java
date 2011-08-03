@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportsheet.degroup.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,45 +26,71 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportsheet.exportreport.category.action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.reportsheet.DataElementGroupOrder;
+import org.hisp.dhis.reportsheet.DataElementGroupOrderService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetAllDataElementGroupsAction
+public class GetDataElementGroupOrderAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private DataElementService dataElementService;
+    private DataElementGroupOrderService dataElementGroupOrderService;
 
-    private List<DataElementGroup> dataElementGroups;
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public List<DataElementGroup> getDataElementGroups()
+    public void setDataElementGroupOrderService( DataElementGroupOrderService dataElementGroupOrderService )
     {
-        return dataElementGroups;
+        this.dataElementGroupOrderService = dataElementGroupOrderService;
     }
 
-    public void setDataElementService( DataElementService dataElementService )
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        this.dataElementService = dataElementService;
+        this.id = id;
+    }
+
+    private Integer reportId;
+
+    public Integer getReportId()
+    {
+        return reportId;
+    }
+
+    public void setReportId( Integer reportId )
+    {
+        this.reportId = reportId;
+    }
+
+    private String clazzName;
+
+    public void setClazzName( String clazzName )
+    {
+        this.clazzName = clazzName;
+    }
+
+    public String getClazzName()
+    {
+        return clazzName;
+    }
+
+    private DataElementGroupOrder dataElementGroupOrder;
+
+    public DataElementGroupOrder getDataElementGroupOrder()
+    {
+        return dataElementGroupOrder;
     }
 
     // -------------------------------------------------------------------------
@@ -72,10 +100,9 @@ public class GetAllDataElementGroupsAction
     public String execute()
         throws Exception
     {
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        dataElementGroupOrder = dataElementGroupOrderService.getDataElementGroupOrder( id );
 
         return SUCCESS;
     }
+
 }

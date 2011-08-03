@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportsheet.degroup.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,8 +27,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.reportsheet.exportreport.category.action;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +34,13 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
-import org.hisp.dhis.reportsheet.ExportReportService;
-import org.hisp.dhis.reportsheet.state.SelectionManager;
+import org.hisp.dhis.reportsheet.DataElementGroupOrderService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 public class UpdateSortedDataElementAction
@@ -50,11 +50,24 @@ public class UpdateSortedDataElementAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ExportReportService exportReportService;
-
     private DataElementService dataElementService;
 
-    private SelectionManager selectionManager;
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private DataElementGroupOrderService dataElementGroupOrderService;
+
+    public void setDataElementGroupOrderService( DataElementGroupOrderService dataElementGroupOrderService )
+    {
+        this.dataElementGroupOrderService = dataElementGroupOrderService;
+    }
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -62,7 +75,7 @@ public class UpdateSortedDataElementAction
 
     private Integer id;
 
-    private Integer exportReportId;
+    private Integer reportId;
 
     private List<String> dataElementIds = new ArrayList<String>();
 
@@ -79,24 +92,14 @@ public class UpdateSortedDataElementAction
         return message;
     }
 
-    public Integer getExportReportId()
+    public void setReportId( Integer reportId )
     {
-        return exportReportId;
+        this.reportId = reportId;
     }
 
-    public void setSelectionManager( SelectionManager selectionManager )
+    public Integer getReportId()
     {
-        this.selectionManager = selectionManager;
-    }
-
-    public void setExportReportService( ExportReportService exportReportService )
-    {
-        this.exportReportService = exportReportService;
-    }
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
+        return reportId;
     }
 
     public void setId( Integer id )
@@ -114,11 +117,6 @@ public class UpdateSortedDataElementAction
         this.dataElementIds = dataElementIds;
     }
 
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -126,7 +124,7 @@ public class UpdateSortedDataElementAction
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = exportReportService.getDataElementGroupOrder( id );
+        DataElementGroupOrder dataElementGroupOrder = dataElementGroupOrderService.getDataElementGroupOrder( id );
 
         List<DataElement> dataElements = new ArrayList<DataElement>();
 
@@ -138,11 +136,9 @@ public class UpdateSortedDataElementAction
 
         dataElementGroupOrder.setDataElements( dataElements );
 
-        this.message = i18n.getString( "update_sort_dataelement_success" );
+        message = i18n.getString( "update_sort_dataelement_success" );
 
-        exportReportService.updateDataElementGroupOrder( dataElementGroupOrder );
-
-        exportReportId = selectionManager.getSelectedReportId();
+        dataElementGroupOrderService.updateDataElementGroupOrder( dataElementGroupOrder );
 
         return SUCCESS;
     }

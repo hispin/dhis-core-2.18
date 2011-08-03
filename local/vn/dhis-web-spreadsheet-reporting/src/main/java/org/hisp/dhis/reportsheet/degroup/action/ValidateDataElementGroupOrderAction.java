@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportsheet.degroup.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,78 +26,78 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportsheet.importreport.degroup.action;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
-import org.hisp.dhis.reportsheet.importitem.ImportReport;
-import org.hisp.dhis.reportsheet.importitem.ImportReportService;
+import org.hisp.dhis.reportsheet.DataElementGroupOrderService;
 import org.hisp.dhis.reportsheet.action.ActionSupport;
 
 /**
- * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class UpdateSortedDataElementGroupOrderForCategoryAction
+public class ValidateDataElementGroupOrderAction
     extends ActionSupport
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportReportService importReportService;
+    private DataElementGroupOrderService dataElementGroupOrderService;
 
-    public void setImportReportService( ImportReportService importReportService )
+    public void setDataElementGroupOrderService( DataElementGroupOrderService dataElementGroupOrderService )
     {
-        this.importReportService = importReportService;
+        this.dataElementGroupOrderService = dataElementGroupOrderService;
     }
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer importReportId;
+    private Integer id;
 
-    public void setImportReportId( Integer importReportId )
+    public void setId( Integer id )
     {
-        this.importReportId = importReportId;
+        this.id = id;
     }
 
-    private List<String> dataElementGroupOrderId = new ArrayList<String>();
+    private Integer reportId;
 
-    public void setDataElementGroupOrderId( List<String> dataElementGroupOrderId )
+    public void setReportId( Integer reportId )
     {
-        this.dataElementGroupOrderId = dataElementGroupOrderId;
+        this.reportId = reportId;
+    }
+
+    private String clazzName;
+
+    public void setClazzName( String clazzName )
+    {
+        this.clazzName = clazzName;
+    }
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Input & Output
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        ImportReport importReport = importReportService.getImportReport( importReportId );
-
-        List<DataElementGroupOrder> dataElementGroupOrders = new ArrayList<DataElementGroupOrder>();
-
-        for ( String id : this.dataElementGroupOrderId )
+        DataElementGroupOrder groupOrder = dataElementGroupOrderService.getDataElementGroupOrder( name, clazzName,
+            reportId );
+        
+        if ( groupOrder != null && (this.id == null || groupOrder.getId() != this.id) )
         {
-            DataElementGroupOrder daElementGroupOrder = importReportService.getDataElementGroupOrder( Integer
-                .parseInt( id ) );
+            message = i18n.getString( "name_ready_exist" );
 
-            dataElementGroupOrders.add( daElementGroupOrder );
+            return ERROR;
         }
-
-        importReport.setDataElementOrders( dataElementGroupOrders );
-
-        importReportService.updateImportReport( importReport );
-
-        message = i18n.getString( "success" );
 
         return SUCCESS;
     }
-
 }

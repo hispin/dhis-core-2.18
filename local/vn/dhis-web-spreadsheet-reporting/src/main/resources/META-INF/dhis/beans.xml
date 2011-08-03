@@ -8,14 +8,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="singleton">
 	</bean>
 
-	<!-- Report Location Manager -->
-
-	<bean id="org.hisp.dhis.reportsheet.ReportLocationManager" class="org.hisp.dhis.reportsheet.DefaultReportLocationManager"
-		init-method="init">
-		<property name="locationManager" ref="locationManager"/>
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
-	</bean>
-
 	<bean id="org.hisp.dhis.reportsheet.filemanager.action.DownloadFileAction"
 		class="org.hisp.dhis.reportsheet.filemanager.action.DownloadFileAction" scope="prototype">
 		<property name="selectionManager"
@@ -213,57 +205,58 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- REPORT EXCEL CATEGORY BEAN -->
 
 	<bean
-		id="org.hisp.dhis.reportsheet.exportreport.category.action.GetAllDataElementGroupsAction"
-		class="org.hisp.dhis.reportsheet.exportreport.category.action.GetAllDataElementGroupsAction"
+		id="org.hisp.dhis.reportsheet.degroup.action.ValidateDataElementGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.degroup.action.ValidateDataElementGroupOrderAction"
+		scope="prototype">
+		<property name="dataElementGroupOrderService" ref="org.hisp.dhis.reportsheet.DataElementGroupOrderService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.degroup.action.SaveDataElementGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.degroup.action.SaveDataElementGroupOrderAction"
 		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
+		<property name="importReportService" ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportsheet.exportreport.category.action.SaveDataElementGroupOrderAction"
-		class="org.hisp.dhis.reportsheet.exportreport.category.action.SaveDataElementGroupOrderAction"
+		id="org.hisp.dhis.reportsheet.degroup.action.UpdateDataElementGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.degroup.action.UpdateDataElementGroupOrderAction"
 		scope="prototype">
-		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataElementGroupOrderService" ref="org.hisp.dhis.reportsheet.DataElementGroupOrderService" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportsheet.exportreport.category.action.UpdateDataElementGroupOrderAction"
-		class="org.hisp.dhis.reportsheet.exportreport.category.action.UpdateDataElementGroupOrderAction"
+		id="org.hisp.dhis.reportsheet.degroup.action.DeleteDataElementGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.degroup.action.DeleteDataElementGroupOrderAction"
 		scope="prototype">
+		<property name="dataElementGroupOrderService" ref="org.hisp.dhis.reportsheet.DataElementGroupOrderService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportsheet.degroup.action.GetDataElementGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.degroup.action.GetDataElementGroupOrderAction"
+		scope="prototype">
+		<property name="dataElementGroupOrderService" ref="org.hisp.dhis.reportsheet.DataElementGroupOrderService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportsheet.degroup.action.UpdateSortedDataElementGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.degroup.action.UpdateSortedDataElementGroupOrderAction"
+		scope="prototype">
+		<property name="dataElementGroupOrderService" ref="org.hisp.dhis.reportsheet.DataElementGroupOrderService" />
 		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
+		<property name="importReportService" ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.degroup.action.UpdateSortedDataElementAction"
+		class="org.hisp.dhis.reportsheet.degroup.action.UpdateSortedDataElementAction"
+		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportsheet.exportreport.category.action.DeleteDataElementGroupOrderAction"
-		class="org.hisp.dhis.reportsheet.exportreport.category.action.DeleteDataElementGroupOrderAction"
-		scope="prototype">
-		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportsheet.exportreport.category.action.GetDataElementGroupOrderAction"
-		class="org.hisp.dhis.reportsheet.exportreport.category.action.GetDataElementGroupOrderAction"
-		scope="prototype">
-		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportsheet.exportreport.category.action.UpdateSortedDataElementAction"
-		class="org.hisp.dhis.reportsheet.exportreport.category.action.UpdateSortedDataElementAction"
-		scope="prototype">
-		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportsheet.exportreport.category.action.UpdateSortedDataElementGroupOrderAction"
-		class="org.hisp.dhis.reportsheet.exportreport.category.action.UpdateSortedDataElementGroupOrderAction"
-		scope="prototype">
-		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
+		<property name="dataElementGroupOrderService" ref="org.hisp.dhis.reportsheet.DataElementGroupOrderService" />
 	</bean>
 
 	<!-- REPORT ORGANISATION UNIT GROUP LISTING BEAN -->
@@ -950,8 +943,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportsheet.importreport.action.GetImportReportByIdAction"
-		class="org.hisp.dhis.reportsheet.importreport.action.GetImportReportByIdAction"
+		id="org.hisp.dhis.reportsheet.importreport.action.GetImportReportAction"
+		class="org.hisp.dhis.reportsheet.importreport.action.GetImportReportAction"
 		scope="prototype">
 		<property name="importReportService"
 			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
@@ -995,61 +988,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-
-	<!--- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
-	<!--  DATA ELEMENT GROUP ORDER FOR EXCEL ITEM 						 -->
-	<!--- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
-
-	<bean
-		id="org.hisp.dhis.reportsheet.importreport.degroup.action.DeleteDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportsheet.importreport.degroup.action.DeleteDataElementGroupOrderForCategoryAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportsheet.importreport.degroup.action.GetDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportsheet.importreport.degroup.action.GetDataElementGroupOrderForCategoryAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportsheet.importreport.degroup.action.SaveDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportsheet.importreport.degroup.action.SaveDataElementGroupOrderForCategoryAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportsheet.importreport.degroup.action.UpdateDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportsheet.importreport.degroup.action.UpdateDataElementGroupOrderForCategoryAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportsheet.importreport.degroup.action.UpdateSortedDataElementForCategoryAction"
-		class="org.hisp.dhis.reportsheet.importreport.degroup.action.UpdateSortedDataElementForCategoryAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportsheet.importreport.degroup.action.UpdateSortedDataElementGroupOrderForCategoryAction"
-		class="org.hisp.dhis.reportsheet.importreport.degroup.action.UpdateSortedDataElementGroupOrderForCategoryAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportsheet.importreport.action;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,24 +27,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.reportsheet.importreport.degroup.action;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.reportsheet.DataElementGroupOrder;
+import org.hisp.dhis.reportsheet.importitem.ImportReport;
 import org.hisp.dhis.reportsheet.importitem.ImportReportService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class UpdateSortedDataElementForCategoryAction
+public class GetImportReportAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -56,47 +51,27 @@ public class UpdateSortedDataElementForCategoryAction
         this.importReportService = importReportService;
     }
 
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input && Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private int id;
 
-    private List<String> dataElementIds = new ArrayList<String>();
-
-    public String message;
-
-    public I18n i18n;
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setId( Integer id )
+    public void setId( int id )
     {
         this.id = id;
     }
 
-    public void setDataElementIds( List<String> dataElementIds )
+    private ImportReport report;
+
+    public ImportReport getReport()
     {
-        this.dataElementIds = dataElementIds;
+        return report;
     }
 
-    public void setI18n( I18n i18n )
+    public String getClazzSimpleName()
     {
-        this.i18n = i18n;
+        return ImportReport.class.getSimpleName();
     }
 
     // -------------------------------------------------------------------------
@@ -106,21 +81,7 @@ public class UpdateSortedDataElementForCategoryAction
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = importReportService.getDataElementGroupOrder( id.intValue() );
-
-        List<DataElement> dataElements = new ArrayList<DataElement>();
-
-        for ( String dataElementId : this.dataElementIds )
-        {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
-            dataElements.add( dataElement );
-        }
-
-        dataElementGroupOrder.setDataElements( dataElements );
-
-        this.message = i18n.getString( "update_sort_dataelement_success" );
-
-        importReportService.updateDataElementGroupOrder( dataElementGroupOrder );
+        report = importReportService.getImportReport( id );
 
         return SUCCESS;
     }

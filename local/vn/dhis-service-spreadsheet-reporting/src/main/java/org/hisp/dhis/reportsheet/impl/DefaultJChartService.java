@@ -1,7 +1,10 @@
-package org.hisp.dhis.jchart;
+package org.hisp.dhis.reportsheet.impl;
 
 import java.util.Collection;
 
+import org.hisp.dhis.jchart.JChart;
+import org.hisp.dhis.jchart.JChartSevice;
+import org.hisp.dhis.jchart.JChartStore;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.springframework.transaction.annotation.Transactional;

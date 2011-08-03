@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,65 +27,24 @@ package org.hisp.dhis.reportsheet;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.transaction.annotation.Transactional;
-
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-@Transactional
-public class DefaultBookmarkService
-    implements BookmarkService
+public interface DataElementGroupOrderStore
 {
+    String ID = DataElementGroupOrderStore.class.getName();
 
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Data Element Group Order
     // -------------------------------------------------------------------------
 
-    private BookmarkStore bookmarkStore;
+    public DataElementGroupOrder getDataElementGroupOrder( Integer id );
 
-    public void setBookmarkStore( BookmarkStore bookmarkStore )
-    {
-        this.bookmarkStore = bookmarkStore;
-    }
+    public DataElementGroupOrder getDataElementGroupOrder( String name, String clazzName, Integer reportId );
 
-    private CurrentUserService currentUserService;
+    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder );
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Implemented
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void deleteBookmark( int id )
-    {
-        bookmarkStore.delete( bookmarkStore.get( id ) );
-    }
-
-    @Override
-    public Collection<Bookmark> getAllBookmark( String type )
-    {
-        return bookmarkStore.getAllBookmark( type, currentUserService.getCurrentUsername() );
-    }
-
-    @Override
-    public Bookmark getBookmark( int id )
-    {
-        return bookmarkStore.get( id );
-    }
-
-    @Override
-    public int saveBookmark( Bookmark bookmark )
-    {
-        bookmark.setUsername( currentUserService.getCurrentUsername() );
-
-        return bookmarkStore.save( bookmark );
-    }
+    public void deleteDataElementGroupOrder( Integer id );
 
 }

@@ -153,7 +153,7 @@
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 		
-		<action name="getAllExportReports"
+		<action name="getAllExportReport"
 			class="org.hisp.dhis.reportsheet.exportreport.action.ListExportReportAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-spreadsheet-reporting/responseExportReports.vm</result>
@@ -189,60 +189,99 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<!-- REPORT EXCEL CATEGORY ACTION -->
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<!-- DATAELEMENT GROUP ORDER FOR CATEGORY ACTION 				   -->
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-		<action name="listDataElementGroupOrder"
+		<action name="listDataElementGroupOrderForExportReport"
 			class="org.hisp.dhis.reportsheet.exportreport.action.GetExportReportAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/listDataElementGroup.vm</param>
+			<param name="page">/dhis-web-spreadsheet-reporting/listDataElementGroupOrder.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroup.js</param>
+			<param name="javascripts">javascript/dataElementGroupOrder.js</param>
 			<param name="stylesheets">style/basic.css,style/style.css</param>
 		</action>
-
-		<action name="getAllDataElementGroups"
-			class="org.hisp.dhis.reportsheet.exportreport.category.action.GetAllDataElementGroupsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseDataElementGroups.vm</result>
+		
+		<action name="listDataElementGroupOrderForImportReport"
+			class="org.hisp.dhis.reportsheet.importreport.action.GetImportReportAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/listDataElementGroupOrder.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="javascripts">javascript/dataElementGroupOrder.js</param>
+			<param name="stylesheets">style/basic.css, style/style.css</param>
+		</action>	
+		
+		<action name="validateDataElementGroupOrder"
+			class="org.hisp.dhis.reportsheet.degroup.action.ValidateDataElementGroupOrderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
-
-		<action name="addDataElementGroupOrder"
-			class="org.hisp.dhis.reportsheet.exportreport.category.action.SaveDataElementGroupOrderAction">
+		
+		<action name="addDataElementGroupOrderForExportReport"
+			class="org.hisp.dhis.reportsheet.degroup.action.SaveDataElementGroupOrderAction">
 			<result name="success" type="redirect">
-				listDataElementGroupOrder.action?id=${id}</result>
+				listDataElementGroupOrderForExportReport.action?id=${id}</result>
 		</action>
-
-		<action name="updateDataElementGroupOrder"
-			class="org.hisp.dhis.reportsheet.exportreport.category.action.UpdateDataElementGroupOrderAction">
+		
+		<action name="addDataElementGroupOrderForImportReport"
+			class="org.hisp.dhis.reportsheet.degroup.action.SaveDataElementGroupOrderAction">
 			<result name="success" type="redirect">
-				listDataElementGroupOrder.action?id=${id}</result>
+				listDataElementGroupOrderForImportReport.action?id=${id}
+			</result>
 		</action>
 
+		<action name="updateDataElementGroupOrderForExportReport"
+			class="org.hisp.dhis.reportsheet.degroup.action.UpdateDataElementGroupOrderAction">
+			<result name="success" type="redirect">
+				listDataElementGroupOrderForExportReport.action?id=${id}</result>
+		</action>
+		
+		<action name="updateDataElementGroupOrderForImportReport"
+			class="org.hisp.dhis.reportsheet.degroup.action.UpdateDataElementGroupOrderAction">
+			<result name="success" type="redirect">
+				listDataElementGroupOrderForImportReport.action?id=${id}
+			</result>
+		</action>
+		
 		<action name="deleteDataElementGroupOrder"
-			class="org.hisp.dhis.reportsheet.exportreport.category.action.DeleteDataElementGroupOrderAction">
-			<result name="success" type="redirect">
-				listDataElementGroupOrder.action?id=${id}</result>
+			class="org.hisp.dhis.reportsheet.degroup.action.DeleteDataElementGroupOrderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+		
+		<action name="updateSortDataElementGroupOrder"
+			class="org.hisp.dhis.reportsheet.degroup.action.UpdateSortedDataElementGroupOrderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+		
+		<action name="getDataElementGroupOrder"
+			class="org.hisp.dhis.reportsheet.degroup.action.GetDataElementGroupOrderAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-spreadsheet-reporting/responseDataElementGroupOrder.vm</result>
 		</action>
 		
 		<action name="openSortDataElement"
-			class="org.hisp.dhis.reportsheet.exportreport.category.action.GetDataElementGroupOrderAction">
+			class="org.hisp.dhis.reportsheet.degroup.action.GetDataElementGroupOrderAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/sortDataElements.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroup.js</param>
+			<param name="javascripts">javascript/dataElementGroupOrder.js</param>
 			<param name="stylesheets">style/basic.css</param>
 		</action>
 
-		<action name="updateSortedDataElements"
-			class="org.hisp.dhis.reportsheet.exportreport.category.action.UpdateSortedDataElementAction">
+		<action name="updateSortedDataElementsForExportReport"
+			class="org.hisp.dhis.reportsheet.degroup.action.UpdateSortedDataElementAction">
 			<result name="success" type="redirect">
-				listDataElementGroupOrder.action?id=${exportReportId}</result>
+				listDataElementGroupOrderForExportReport.action?id=${reportId}</result>
 		</action>
-
-		<action name="updateSortDataElementGroupOrder"
-			class="org.hisp.dhis.reportsheet.exportreport.category.action.UpdateSortedDataElementGroupOrderAction">
+		
+		<action name="updateSortedDataElementsForImportReport"
+			class="org.hisp.dhis.reportsheet.degroup.action.UpdateSortedDataElementAction">
 			<result name="success" type="redirect">
-				listDataElementGroupOrder.action?id=${exportReportId}</result>
+				listDataElementGroupOrderForImportReport.action?id=${reportId}</result>
 		</action>
 
 		<!-- REPORT ORGANISATION UNIT GROUP LISTING ACTION -->
@@ -424,12 +463,6 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-spreadsheet-reporting/responseSheets.vm</result>
 		</action>
-
-		<action name="getDataElementOrder"
-			class="org.hisp.dhis.reportsheet.exportreport.category.action.GetDataElementOrderAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseDataElementOrder.vm</result>
-		</action>	
 
 		<!-- GENERATE REPORT EXCEL ACTION -->
 
@@ -832,7 +865,7 @@
 		</action>
 
 		<action name="getImportReport"
-			class="org.hisp.dhis.reportsheet.importreport.action.GetImportReportByIdAction">
+			class="org.hisp.dhis.reportsheet.importreport.action.GetImportReportAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-spreadsheet-reporting/import/responseImportReport.vm</result>
 		</action>
@@ -843,8 +876,8 @@
 			</result>
 		</action>
 
-		<action name="openUpdateOrgnisationUnitGroupForImportReport"
-			class="org.hisp.dhis.reportsheet.importreport.action.OpenUpdateOrganisationUnitGroupForCategoryAction">
+		<action name="openUpdateOrgUnitGroupForImportReport"
+			class="org.hisp.dhis.reportsheet.importreport.action.OpenUpdateOrgUnitGroupForCategoryAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/import/associateOrgunitGroup.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
@@ -856,65 +889,7 @@
 			</result>
 		</action>
 
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<!--  DATA ELEMENT GROUP ORDER FOR IMPORT ITEM 					   -->
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-		<action name="listDataElementGroupOrderForImportReport"
-			class="org.hisp.dhis.reportsheet.importreport.action.GetImportReportByIdAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/import/listDataElementGroup.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="javascripts">javascript/sortedDataElementGroup.js</param>
-			<param name="stylesheets">style/basic.css, style/style.css</param>
-		</action>
-
-		<action name="addDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportsheet.importreport.degroup.action.SaveDataElementGroupOrderForCategoryAction">
-			<result name="success" type="redirect">
-				listDataElementGroupOrderForImportReport.action?id=${id}
-			</result>
-		</action>
-
-		<action name="updateDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportsheet.importreport.degroup.action.UpdateDataElementGroupOrderForCategoryAction">
-			<result name="success" type="redirect">
-				listDataElementGroupOrderForImportReport.action?id=${id}
-			</result>
-		</action>
-
-		<action name="deleteDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportsheet.importreport.degroup.action.DeleteDataElementGroupOrderForCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-		</action>
-
-		<action name="getDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportsheet.importreport.degroup.action.GetDataElementGroupOrderForCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseDataElementOrder.vm</result>
-		</action>
-
-		<action name="openSortDataElementForCategory"
-			class="org.hisp.dhis.reportsheet.importreport.degroup.action.GetDataElementGroupOrderForCategoryAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/import/sortDataElements.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="javascripts">javascript/sortedDataElementGroup.js</param>
-			<param name="stylesheets">style/basic.css</param>
-		</action>
-
-		<action name="updateSortedDataElementsForCategory"
-			class="org.hisp.dhis.reportsheet.importreport.degroup.action.UpdateSortedDataElementForCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-		</action>
-
-		<action name="updateSortedDataElementGroupOrderForCategory"
-			class="org.hisp.dhis.reportsheet.importreport.degroup.action.UpdateSortedDataElementGroupOrderForCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-		</action>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!-- IMPORT ITEM                                                     -->

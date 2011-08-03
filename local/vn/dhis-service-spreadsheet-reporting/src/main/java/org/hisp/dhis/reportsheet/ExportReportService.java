@@ -95,16 +95,6 @@ public interface ExportReportService
     public void deleteMultiExportItem( Collection<Integer> ids );
 
     // -------------------------------------------------------------------------
-    // Report DataElement Order
-    // -------------------------------------------------------------------------
-
-    public DataElementGroupOrder getDataElementGroupOrder( Integer id );
-
-    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder );
-
-    public void deleteDataElementGroupOrder( Integer id );
-
-    // -------------------------------------------------------------------------
     // Data Entry Status
     // -------------------------------------------------------------------------
 

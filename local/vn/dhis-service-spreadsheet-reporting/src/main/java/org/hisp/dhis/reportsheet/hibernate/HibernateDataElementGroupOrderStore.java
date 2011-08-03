@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportsheet.exportreport.action;
+package org.hisp.dhis.reportsheet.hibernate;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -26,93 +26,76 @@ package org.hisp.dhis.reportsheet.exportreport.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-import org.hisp.dhis.reportsheet.ExportReportService;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hisp.dhis.reportsheet.DataElementGroupOrder;
+import org.hisp.dhis.reportsheet.DataElementGroupOrderStore;
 import org.hisp.dhis.reportsheet.ExportReport;
-import org.hisp.dhis.reportsheet.action.ActionSupport;
-import org.hisp.dhis.reportsheet.state.SelectionManager;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author Tran Thanh Tri
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetExportReportAction
-    extends ActionSupport
+
+@Transactional
+public class HibernateDataElementGroupOrderStore
+    implements DataElementGroupOrderStore
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ExportReportService exportReportService;
+    private SessionFactory sessionFactory;
 
-    public void setExportReportService( ExportReportService exportReportService )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.exportReportService = exportReportService;
-    }
-
-    private SelectionManager selectionManager;
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Data Element Group Order
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
-    private ExportReport report;
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public void setId( Integer id )
+    public DataElementGroupOrder getDataElementGroupOrder( Integer id )
     {
-        this.id = id;
+        Session session = sessionFactory.getCurrentSession();
+        return (DataElementGroupOrder) session.get( DataElementGroupOrder.class, id );
     }
 
-    public Integer getId()
+    public DataElementGroupOrder getDataElementGroupOrder( String name, String clazzName, Integer reportId )
     {
-        return id;
-    }
+        Session session = sessionFactory.getCurrentSession();
 
-    public ExportReport getReport()
-    {
-        return report;
-    }
+        String sql = "SELECT * FROM reportexcel_dataelementgrouporders WHERE lower(name) LIKE :name";
 
-    public void setReport( ExportReport report )
-    {
-        this.report = report;
-    }
-
-    public String getClazzSimpleName()
-    {
-        return ExportReport.class.getSimpleName();
-    }
-
-    // -------------------------------------------------------------------------
-    // Execute method
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        if ( id != null )
+        if ( clazzName.equals( ExportReport.class.getSimpleName() ) )
         {
-            selectionManager.setSelectedReportId( id );
-
-            report = exportReportService.getExportReport( id );
+            sql += " AND reportexcelid = :reportId";
         }
         else
         {
-            return ERROR;
+            sql += " AND excelitemgroupid = :reportId";
         }
 
-        return SUCCESS;
+        SQLQuery query = session.createSQLQuery( sql );
+
+        query.addEntity( DataElementGroupOrder.class );
+        query.setString( "name", "%" + name.toLowerCase() + "%" ).setInteger( "reportId", reportId );
+
+        return (DataElementGroupOrder) query.uniqueResult();
+    }
+
+    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.update( dataElementGroupOrder );
+    }
+
+    public void deleteDataElementGroupOrder( Integer id )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.delete( this.getDataElementGroupOrder( id ) );
     }
 }

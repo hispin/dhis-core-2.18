@@ -3,7 +3,6 @@ package org.hisp.dhis.reportsheet.importitem;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.reportsheet.DataElementGroupOrder;
 
 public interface ImportReportStore
 {
@@ -46,14 +45,4 @@ public interface ImportReportStore
     public ImportItem getImportItem( String name );
 
     public Collection<Integer> getSheets();
-
-    // -------------------------------------------------------------------------
-    // DataElement Order
-    // -------------------------------------------------------------------------
-
-    public DataElementGroupOrder getDataElementGroupOrder( Integer id );
-
-    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder );
-
-    public void deleteDataElementGroupOrder( Integer id );
 }

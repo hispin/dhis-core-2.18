@@ -4,7 +4,10 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- ExportReport -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- ExportReport STORE / SERVICE								   -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
 	<bean id="org.hisp.dhis.reportsheet.ExportReportStore"
 		class="org.hisp.dhis.reportsheet.hibernate.HibernateExportReportStore">
 		<property name="sessionFactory" ref="sessionFactory"/>
@@ -12,27 +15,51 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.reportsheet.ExportReportService"
-		class="org.hisp.dhis.reportsheet.DefaultExportReportService">
+		class="org.hisp.dhis.reportsheet.impl.DefaultExportReportService">
 		<property name="exportReportStore" ref="org.hisp.dhis.reportsheet.ExportReportStore" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
 	</bean>
+	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- IMPORTITEM STORE                                               -->
+	<!-- IMPORTITEM STORE / SERVICE                                    -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
 	<bean id="org.hisp.dhis.reportsheet.importitem.ImportReportStore"
 		class="org.hisp.dhis.reportsheet.importitem.hibernate.HibernateImportReportStore">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 	</bean>
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- IMPORTITEM SERVICE                                             -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
 	<bean id="org.hisp.dhis.reportsheet.importitem.ImportReportService"
-		class="org.hisp.dhis.reportsheet.importitem.DefaultImportReportService">
+		class="org.hisp.dhis.reportsheet.importitem.impl.DefaultImportReportService">
 		<property name="importReportStore"
 			ref="org.hisp.dhis.reportsheet.importitem.ImportReportStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	</bean>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- DATAELEMENTGROUPORDER STORE / SERVICE                         -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<bean id="org.hisp.dhis.reportsheet.DataElementGroupOrderStore"
+		class="org.hisp.dhis.reportsheet.hibernate.HibernateDataElementGroupOrderStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.reportsheet.DataElementGroupOrderService"
+		class="org.hisp.dhis.reportsheet.impl.DefaultDataElementGroupOrderService">
+		<property name="dataElementGroupOrderStore"
+			ref="org.hisp.dhis.reportsheet.DataElementGroupOrderStore" />
+	</bean>
+	
+	<!-- Report Location Manager -->
+
+	<bean id="org.hisp.dhis.reportsheet.ReportLocationManager"
+		class="org.hisp.dhis.reportsheet.impl.DefaultReportLocationManager"
+		init-method="init">
+		<property name="locationManager" ref="locationManager"/>
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 	
 	<!-- DeletionHandlers -->
@@ -65,6 +92,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- BOOKMARK STORE / SERVICE                         			   -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
 	<bean id="org.hisp.dhis.reportsheet.BookmarkStore" 
 		class="org.hisp.dhis.reportsheet.hibernate.HibernateBookmarkStore">			
 		<property name="clazz" value="org.hisp.dhis.reportsheet.Bookmark" />
@@ -72,7 +103,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean id="org.hisp.dhis.reportsheet.BookmarkService" 
-		class="org.hisp.dhis.reportsheet.DefaultBookmarkService">
+		class="org.hisp.dhis.reportsheet.impl.DefaultBookmarkService">
 		<property name="bookmarkStore" ref="org.hisp.dhis.reportsheet.BookmarkStore" />	
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />	
 	</bean>
@@ -86,7 +117,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean id="org.hisp.dhis.jchart.JChartService" 
-		class="org.hisp.dhis.jchart.DefaultJChartService">		
+		class="org.hisp.dhis.reportsheet.impl.DefaultJChartService">		
 		<property name="jchartStore" ref="org.hisp.dhis.jchart.JChartStore" />
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />	
 	</bean>

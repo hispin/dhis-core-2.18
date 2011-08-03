@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportsheet.importreport.action;
+package org.hisp.dhis.reportsheet.degroup.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,45 +27,38 @@ package org.hisp.dhis.reportsheet.importreport.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.reportsheet.importitem.ImportReport;
-import org.hisp.dhis.reportsheet.importitem.ImportReportService;
+import org.hisp.dhis.reportsheet.DataElementGroupOrderService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
+ * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetImportReportByIdAction
+public class DeleteDataElementGroupOrderAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ImportReportService importReportService;
+    private DataElementGroupOrderService dataElementGroupOrderService;
 
-    public void setImportReportService( ImportReportService importReportService )
+    public void setDataElementGroupOrderService( DataElementGroupOrderService dataElementGroupOrderService )
     {
-        this.importReportService = importReportService;
+        this.dataElementGroupOrderService = dataElementGroupOrderService;
     }
 
     // -------------------------------------------------------------------------
-    // Input && Output
+    // Input & Ouput
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Integer id;
 
-    public void setId( int id )
+    public void setId( Integer id )
     {
         this.id = id;
-    }
-
-    private ImportReport importReport;
-
-    public ImportReport getImportReport()
-    {
-        return importReport;
     }
 
     // -------------------------------------------------------------------------
@@ -75,7 +68,7 @@ public class GetImportReportByIdAction
     public String execute()
         throws Exception
     {
-        importReport = importReportService.getImportReport( id );
+        dataElementGroupOrderService.deleteDataElementGroupOrder( id );
 
         return SUCCESS;
     }
