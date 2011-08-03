@@ -135,6 +135,11 @@ public class SearchPatientAction
         this.listAll = listAll;
     }
 
+    public Boolean getListAll()
+    {
+        return listAll;
+    }
+
     public void setSearchingAttributeId( List<Integer> searchingAttributeId )
     {
         this.searchingAttributeId = searchingAttributeId;

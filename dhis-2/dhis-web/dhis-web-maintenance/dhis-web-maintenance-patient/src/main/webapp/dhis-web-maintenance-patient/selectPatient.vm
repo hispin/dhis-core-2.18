@@ -38,10 +38,12 @@
 				</td>		
 				<td>
 					<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );'>
-					<input type="button" value='+' onclick='addAttributeOption();'>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>	
 				<td></td>
-				<td><input type="button" value='$i18n.getString( "search" )' onclick='searchPatients();'></td>
+				<td><input type="button" value='+' onclick='addAttributeOption();'>
+					<input type="button" value='$i18n.getString( "search" )' onclick='searchPatients();'>
+				</td>
 				<td>&nbsp;</td>
 				<td><input type="button" value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();"></td>
 			</tr>
