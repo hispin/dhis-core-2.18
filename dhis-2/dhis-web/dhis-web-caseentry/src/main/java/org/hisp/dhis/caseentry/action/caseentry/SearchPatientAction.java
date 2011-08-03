@@ -29,6 +29,8 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -70,6 +72,8 @@ public class SearchPatientAction
 
     private Collection<Patient> patients = new ArrayList<Patient>();
 
+    private Map<Integer, String> mapPatientOrgunit = new HashMap<Integer, String>();
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -92,6 +96,11 @@ public class SearchPatientAction
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
+    }
+
+    public Map<Integer, String> getMapPatientOrgunit()
+    {
+        return mapPatientOrgunit;
     }
 
     public void setSearchText( String searchText )
@@ -170,15 +179,38 @@ public class SearchPatientAction
 
             patients = patientAttributeValueService.searchPatients( searchingPatientAttribute, searchText, paging
                 .getStartPos(), paging.getPageSize() );
+        }
+        else
+        {
+            total = patientService.countGetPatients( searchText );
+            this.paging = createPaging( total );
 
-            return SUCCESS;
+            patients = patientService.getPatients( searchText, paging.getStartPos(), paging.getPageSize() );
+        }
+        
+        for ( Patient patient : patients )
+        {
+            mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+        }
+        
+        return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive method
+    // -------------------------------------------------------------------------
+   
+    private String getHierarchyOrgunit( OrganisationUnit orgunit )
+    {
+        String hierarchyOrgunit = orgunit.getName();
+
+        while ( orgunit.getParent() != null )
+        {
+            hierarchyOrgunit = orgunit.getParent().getName() + " / " + hierarchyOrgunit;
+
+            orgunit = orgunit.getParent();
         }
 
-        total = patientService.countGetPatients( searchText );
-        this.paging = createPaging( total );
-
-        patients = patientService.getPatients( searchText, paging.getStartPos(), paging.getPageSize() );
-
-        return SUCCESS;
+        return hierarchyOrgunit;
     }
 }

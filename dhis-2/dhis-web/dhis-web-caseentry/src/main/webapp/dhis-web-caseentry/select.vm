@@ -9,7 +9,7 @@
 			</td>
 			<td>&nbsp;</td>
 			<td>
-				<input type="button" id='listPatientBtn' value="$i18n.getString( "list_all_patients" )" onclick="javascript:listAllPatient();" #if($organisationUnit) #else disabled #end>
+				<input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" #if($organisationUnit) #else disabled #end>
 			</td>        
 		</tr>        
 	</table>
@@ -19,7 +19,7 @@
 	<table> 
 		<tr>           
 			<td>
-			  <select id="searchingAttributeId" name="searchingAttributeId" style="min-width:300px"  #if( $patientAttributes.size() == 0 ) disabled="disabled" #end #if($organisationUnit) #else disabled #end>
+			  <select id="searchingAttributeId" name="searchingAttributeId" style="min-width:300px"  #if($organisationUnit) #else disabled #end>
 				<option value="">$i18n.getString( "search_by_name_identifier" )</option>
 					#foreach( $attribute in $patientAttributes )
 						<option value="$attribute.id" #if( $searchingAttributeId && $attribute.id == $searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.name )</option>

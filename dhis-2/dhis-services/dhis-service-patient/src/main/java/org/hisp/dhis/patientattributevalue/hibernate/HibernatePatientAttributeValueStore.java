@@ -28,7 +28,6 @@ package org.hisp.dhis.patientattributevalue.hibernate;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
@@ -156,7 +155,7 @@ public class HibernatePatientAttributeValueStore
     public Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts, int min,
         int max )
     {
-        String hql = "SELECT pav.patient FROM PatientAttributeValue as pav WHERE pav.patient in ";
+        String hql = "SELECT DISTINCT pav.patient FROM PatientAttributeValue as pav WHERE pav.patient in ";
         String end = "";
 
         int index = 0;
@@ -178,7 +177,7 @@ public class HibernatePatientAttributeValueStore
 
     public int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts )
     {
-        String hql = "SELECT COUNT( pav.patient ) FROM PatientAttributeValue as pav WHERE pav.patient in ";
+        String hql = "SELECT COUNT( DISTINCT pav.patient ) FROM PatientAttributeValue as pav WHERE pav.patient in ";
         String end = "";
 
         int index = 0;
@@ -201,7 +200,7 @@ public class HibernatePatientAttributeValueStore
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     private String createHQL( Integer patientAttributeId, String searchText, int index, int noCondition )
     {
         String hql = "";
@@ -213,12 +212,6 @@ public class HibernatePatientAttributeValueStore
         // ---------------------------------------------------------------------
         if ( patientAttributeId == null )
         {
-//            hql += " ( SELECT p" + index + " FROM Patient as p" + index + " JOIN p" + index
-//                + ".identifiers as identifier" + index + " " + "WHERE  lower(identifier" + index
-//                + ".identifier) LIKE lower('%" + searchText + "%') " + "OR lower(p" + index
-//                + ".firstName) LIKE lower('%" + searchText + "%') " + "OR lower(p" + index
-//                + ".middleName) LIKE lower('%" + searchText + "%') " + "OR lower(p" + index
-//                + ".lastName) LIKE lower('%" + searchText + "%') ";
             int startIndex = searchText.indexOf( ' ' );
             int endIndex = searchText.lastIndexOf( ' ' );
 
@@ -240,13 +233,12 @@ public class HibernatePatientAttributeValueStore
                     lastName = searchText.substring( endIndex + 1, searchText.length() );
                 }
             }
-            
+
             hql += " ( SELECT p" + index + " FROM Patient as p" + index + " JOIN p" + index
                 + ".identifiers as identifier" + index + " " + "WHERE  lower(identifier" + index
                 + ".identifier) LIKE lower('%" + searchText + "%') " + "OR (lower(p" + index
-                + ".firstName) LIKE lower('%" + firstName + "%') " + "AND lower(p" + index
-                + ".middleName) = lower('" + middleName + "') " + "AND lower(p" + index
-                + ".lastName) LIKE lower('%" + lastName + "%')) ";
+                + ".firstName) LIKE lower('%" + firstName + "%') " + "AND lower(p" + index + ".middleName) = lower('"
+                + middleName + "') " + "AND lower(p" + index + ".lastName) LIKE lower('%" + lastName + "%')) ";
 
             isSearchByAttribute = false;
         }
