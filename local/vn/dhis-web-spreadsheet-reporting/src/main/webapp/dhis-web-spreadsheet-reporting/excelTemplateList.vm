@@ -67,18 +67,18 @@
 	</tbody>
 </table>
 
-<div id="editExcelTemplateDiv" style="position:fixed;display:none;width:444px;z-index:11;background-color: white;border: medium solid silver;height:60px;padding:20px">
-	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hidePopupWindow('editExcelTemplateDiv');hideMessage();">[x]</div>
+<div id="editExcelTemplateDiv">
 	<input type="hidden" value="" id="currentFileNameHidden"/>
 	<table>
 		<tr>
 			<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="newName"  style="width:20em" name="T1" size="20" onkeyup="javascript: validateRenamingExcelTemplate(this.value ,1);"/></td>
+			<td><input type="text" id="newName" style="width:20em" name="T1" size="20" onkeyup="javascript: validateRenamingExcelTemplate(this.value ,1);"/></td>
 			<td><input type="button" value="$i18n.getString('rename')" id="excelTemplateButtonRename" disabled="disabled" onclick="javascript: checkingStatusExcelTemplate(document.getElementById('newName').value, 1, 2);"/></td>
-			<td><input type="button" value="$i18n.getString('cancel')" onclick="hidePopupWindow('editExcelTemplateDiv');hideMessage();"/></td>
+			<td><input type="button" value="$i18n.getString('cancel')" onclick="closeDialog( dialog );hideMessage();"/></td>
 		</tr>
 	</table>
 </div>
+
 <span id="message" style="top:100px;right:5px;position:fixed;width:300px;z-index:10002" onclick="javascript:hideById(this.id);"></span>
 
 <script language="javascript">
@@ -98,6 +98,8 @@
 	var confirmRenamingMessage = i18n_file_used_system + '\n' + i18n_confirm_rename;
 	var confirmUpdateSysMessage = i18n_rename_successful + '\n' + i18n_confirm_update_system;
 	
+	var dialog = setUpDialog( 'editExcelTemplateDiv', '$i18n.getString( "edit_excel_template" )', 444, 60 );
+	
 	#if ( $message )
 		#if ( $newFileUploadedOrRenamed )
 			$(document).ready( function() {
@@ -107,4 +109,3 @@
 	#end
 
 </script>
-<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>

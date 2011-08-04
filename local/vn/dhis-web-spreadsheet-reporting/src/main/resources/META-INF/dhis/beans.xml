@@ -1327,9 +1327,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportsheet.filemanager.action.RenameExcelTemplateAction"
 		class="org.hisp.dhis.reportsheet.filemanager.action.RenameExcelTemplateAction"
 		scope="prototype">
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportsheet.ReportLocationManager" />
 	</bean>
 
 	<bean

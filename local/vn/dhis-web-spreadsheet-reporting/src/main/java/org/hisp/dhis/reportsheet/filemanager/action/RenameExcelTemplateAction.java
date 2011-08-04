@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.filemanager.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,12 +26,13 @@ package org.hisp.dhis.reportsheet.filemanager.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import static org.hisp.dhis.reportsheet.utils.FileUtils.rename;
+
 import java.io.File;
 
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.reportsheet.ReportLocationManager;
 import org.hisp.dhis.reportsheet.action.ActionSupport;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
-import org.hisp.dhis.reportsheet.utils.FileUtils;
 
 /**
  * @author Dang Duy Hieu
@@ -45,13 +46,8 @@ public class RenameExcelTemplateAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
+    private ReportLocationManager reportLocationManager;
+    
     private SelectionManager selectionManager;
 
     public void setSelectionManager( SelectionManager selectionManager )
@@ -62,7 +58,7 @@ public class RenameExcelTemplateAction
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
-    
+
     private String newFileName;
 
     public void setNewFileName( String newFileName )
@@ -94,21 +90,20 @@ public class RenameExcelTemplateAction
     {
         message = "";
 
-        String templateDirectory = (String) systemSettingManager
-            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
+        File templateDirectory = reportLocationManager.getExportReportTemplateDirectory();
 
         File curFile = new File( templateDirectory + File.separator + curFileName );
         File newFile = new File( templateDirectory + File.separator + newFileName );
 
         selectionManager.setRenameFilePath( curFile.getAbsolutePath() );
 
-        if ( FileUtils.rename( curFile, newFile ) )
+        if ( rename( curFile, newFile ) )
         {
-            message = "rename_successful";
+            message = i18n.getString( "rename_successful" );
         }
         else
         {
-            message = "rename_failed";
+            message = i18n.getString( "rename_failed" );
 
             return ERROR;
         }
@@ -119,5 +114,10 @@ public class RenameExcelTemplateAction
         }
 
         return SUCCESS;
+    }
+
+    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    {
+        this.reportLocationManager = reportLocationManager;
     }
 }

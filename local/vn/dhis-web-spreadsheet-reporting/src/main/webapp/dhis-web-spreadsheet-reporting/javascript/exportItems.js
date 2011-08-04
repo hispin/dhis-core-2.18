@@ -337,8 +337,8 @@ function saveCopyExportItemsToExportReport() {
 *	COPY SELECTED EXPORT_ITEM(s) TO IMPORT_REPORT
 */
 
-function copyExportItemToImportReport() {
-	
+function copyExportItemToImportReport()
+{
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( copyExportItemToImportReportReceived );
@@ -469,7 +469,7 @@ function setUpDuplicatedItemsMessage()
 }
 
 function executeCopyItems( url )
-{	
+{
 	$.postJSON(
 		url, {}, function ( json )
 		{
@@ -487,83 +487,10 @@ function executeCopyItems( url )
 }
 
 /**
-* Open dataelement expression
-*/
-function openDataElementExpression() {
-
-	byId( "formula" ).value = byId( "expression" ).value;
-	
-	getALLDataElementGroup();
-	getDataElementsByGroup();
-	enable("dataElementGroup");
-	enable("availableDataElements");
-	byId("availableDataElements").onchange = function(e){ getOptionCombos() };
-	if(mode=='update'){
-		updateFormulaText( 'formula' );
-	}
-	
-	$("#normal").showAtCenter( true );
-}
-
-/**
-* Get All dataelement group
-*/
-	
-function getALLDataElementGroup() {
-
-	var list = byId('dataElementGroup');
-	
-	list.options.length = 0;
-	list.add( new Option( "ALL", "ALL" ), null );
-	
-	for ( id in dataElementGroups )
-	{
-		list.add( new Option( dataElementGroups[id], id ), null );
-	}
-}
-
-/**
-* Get DataElements By Group
-*/
-
-function getDataElementsByGroup( )
-{
-	var dataElementGroupId = $("#dataElementGroup").val();
-	var url = "../dhis-web-commons-ajax/getDataElements.action?id=" + $("#dataElementGroup").val();
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getDataElementsByGroupCompleted );
-	request.send( url );	
-}
-
-function getDataElementsByGroupCompleted( xmlObject ){
-
-	var dataElementList = byId( "availableDataElements" );
-		
-	dataElementList.options.length = 0;
-	
-	var dataelements = xmlObject.getElementsByTagName( "dataElement" );
-
-	for ( var i = 0; i < dataelements.length; i++)
-	{
-		var id = dataelements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var elementName = dataelements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-		
-		var option = new Option( elementName, id );
-		option.onmousemove  = function(e){
-			showToolTip( e, this.text);
-		}
-		dataElementList.add( option, null );
-	}
-}
-
-
-/**
 * Indicator Export item type
 */
-function openIndicatorExpression() {
-
+function openIndicatorExpression()
+{
 	byId("formulaIndicator").value = byId("expression").value;
 	
 	getIndicatorGroups();
@@ -575,8 +502,8 @@ function openIndicatorExpression() {
 	$("#indicatorForm").show();
 }
 
-function getIndicatorGroups() {
-
+function getIndicatorGroups()
+{
 	var list = byId('indicatorGroups');
 	
 	list.options.length = 0;
@@ -589,16 +516,16 @@ function getIndicatorGroups() {
 	}
 }
 
-function filterIndicators() {
-
+function filterIndicators()
+{
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( filterIndicatorsCompleted );
 	request.send( "../dhis-web-commons-ajax/getIndicators.action?id=" + $("#indicatorGroups").val());
 }
 
-function filterIndicatorsCompleted( xmlObject ) {
-
+function filterIndicatorsCompleted( xmlObject )
+{
 	var indiatorList = byId( "availableIndicators" );
 	indiatorList.options.length = 0;
 	
@@ -625,15 +552,14 @@ function filterIndicatorsCompleted( xmlObject ) {
 /**
 * Open Category Expression
 */
-function openCategoryExpression() {
-	
+function openCategoryExpression()
+{	
 	byId("categoryFormula").value = byId("expression").value;
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( openCategoryExpressionReceived );
-	request.send("getExportReport.action?id=" + exportReportId);
-	
+	request.send("getExportReport.action?id=" + exportReportId);	
 }
 
 function openCategoryExpressionReceived( data ) {
@@ -664,46 +590,12 @@ function openCategoryExpressionReceived( data ) {
 	$( "#category" ).show();	
 }
 
-
-/**
-* Get DataElement Group Order
-*/
-
-function getDataElementGroupOrder() {
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getDataElementGroupOrderReceived );
-	request.send( "getDataElementGroupOrder.action?id=" + $("#dataElementGroup_").val() );
-
-}
-
-function getDataElementGroupOrderReceived( data ) {
-
-	var availableDataElements = byId('availableDataElements_');
-	availableDataElements.options.length = 0;
-	var dataelEments = data.getElementsByTagName( "dataElement" );	
-	
-	for ( var i = 0; i < dataelEments.length; i++ )
-	{			
-		var id = dataelEments[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var name = dataelEments[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;       
-		//availableDataElements.options.add(new Option(name, id));
-		var option = new Option( name, id );
-		option.onmousemove  = function(e){
-			showToolTip( e, this.text);
-		}
-		availableDataElements.add(option, null);
-	}
-}
-
-function getOptionCombos_() {
-
+function getOptionCombos_()
+{
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( getOptionCombos_Received );
-	request.send( "getOptionCombos.action?dataElementId=" + byId("availableDataElements_").value );
-	
+	request.send( "getOptionCombos.action?dataElementId=" + byId("availableDataElements_").value );	
 }
 
 function getOptionCombos_Received( xmlObject ) {
@@ -726,15 +618,16 @@ function getOptionCombos_Received( xmlObject ) {
 	}
 }
 
-function insertDataElementId_() {
-
+function insertDataElementId_()
+{
 	var optionCombo = byId("optionCombos_");
 	var dataElementComboId = "[*." + optionCombo.value + "]";
 	byId("categoryFormula").value = dataElementComboId;
 	byId("categoryFormulaDiv").innerHTML = "*." + optionCombo[optionCombo.selectedIndex].text ;
 }
 
-function clearFormula(formulaFieldName){
+function clearFormula(formulaFieldName)
+{
 	byId(formulaFieldName).value = '';
 	byId(formulaFieldName + "Div").innerHTML = ''
 }
