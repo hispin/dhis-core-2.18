@@ -1,7 +1,0 @@
-<a href="index.action"><h2>$i18n.getString( "import" )</h2></a>
-<ul>
-	<li><a href="configuration.action">$i18n.getString( "configuration" )</a></li>
-	<li><a href="importPatientForm.action">$i18n.getString( "import_data" )</a></li>
-</ul>
-
-

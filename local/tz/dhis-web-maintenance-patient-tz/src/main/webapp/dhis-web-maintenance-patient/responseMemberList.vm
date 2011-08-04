@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<members>
-#foreach ( $member in $members )
-	<member>		
-		<fullName>$encoder.xmlEncode( $member.firstName ) $encoder.xmlEncode( $member.middleName ) $encoder.xmlEncode( $member.lastName )</fullName>	
-	</member>
-#end
-</members>

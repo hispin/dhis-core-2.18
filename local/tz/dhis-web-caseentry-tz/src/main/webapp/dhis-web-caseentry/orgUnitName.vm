@@ -1,7 +1,0 @@
-
-{ "organisationUnit":
-    {
-   "id": $!{organisationUnit.id},
-   "name": "$!encoder.jsonEncode( ${organisationUnit.name} )"
-    }
-}
