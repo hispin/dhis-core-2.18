@@ -27,10 +27,7 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
@@ -51,13 +48,6 @@ public class SendFeedbackAction
         this.messageService = messageService;
     }
     
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -82,11 +72,7 @@ public class SendFeedbackAction
 
     public String execute()
     {
-        User sender = currentUserService.getCurrentUser();
-
-        Message message = new Message( subject, text, sender );
-        
-        messageService.sendFeedback( message );
+        messageService.sendFeedback( subject, text );
         
         return SUCCESS;
     }

@@ -29,8 +29,8 @@ package org.hisp.dhis.dashboard.message.action;
 
 import java.util.List;
 
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.message.UserMessage;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,11 +55,11 @@ public class GetMessagesAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<UserMessage> messages;
+    private List<MessageConversation> conversations;
 
-    public List<UserMessage> getMessages()
+    public List<MessageConversation> getConversations()
     {
-        return messages;
+        return conversations;
     }
 
     // -------------------------------------------------------------------------
@@ -68,7 +68,7 @@ public class GetMessagesAction
 
     public String execute()
     {
-        messages = messageService.getUserMessages( 0, 200 );
+        conversations = messageService.getMessageConversations( 0, 300 );
         
         return SUCCESS;
     }

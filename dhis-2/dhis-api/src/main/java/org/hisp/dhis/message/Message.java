@@ -27,8 +27,7 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 import java.util.UUID;
 
 import org.hisp.dhis.user.User;
@@ -39,30 +38,29 @@ import org.hisp.dhis.user.User;
 public class Message
 {
     private int id;
-    
+
     private String key;
-    
-    private String subject;
     
     private String text;
 
     private User sender;
     
-    private Set<UserMessage> userMessages = new HashSet<UserMessage>();
-    
+    private Date sentDate;
+
     public Message()
     {
         this.key = UUID.randomUUID().toString();
+        this.sentDate = new Date();
     }
     
-    public Message( String subject, String text, User sender )
+    public Message( String text, User sender )
     {
         this.key = UUID.randomUUID().toString();
-        this.subject = subject;
         this.text = text;
         this.sender = sender;
+        this.sentDate = new Date();
     }
-        
+    
     public int getId()
     {
         return id;
@@ -81,16 +79,6 @@ public class Message
     public void setKey( String key )
     {
         this.key = key;
-    }
-
-    public String getSubject()
-    {
-        return subject;
-    }
-
-    public void setSubject( String subject )
-    {
-        this.subject = subject;
     }
 
     public String getText()
@@ -113,48 +101,13 @@ public class Message
         this.sender = sender;
     }
 
-    public Set<UserMessage> getUserMessages()
+    public Date getSentDate()
     {
-        return userMessages;
+        return sentDate;
     }
 
-    public void setUserMessages( Set<UserMessage> userMessages )
+    public void setSentDate( Date sentDate )
     {
-        this.userMessages = userMessages;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return key.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-        
-        if ( object == null )
-        {
-            return false;
-        }
-        
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-        
-        final Message other = (Message) object;
-        
-        return key.equals( other.key );
-    }
-    
-    @Override
-    public String toString()
-    {
-        return "[Subject: " + subject + ", text: " + text + "]";
+        this.sentDate = sentDate;
     }
 }

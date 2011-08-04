@@ -30,11 +30,9 @@ package org.hisp.dhis.dashboard.message.action;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
@@ -63,13 +61,6 @@ public class SendMessageAction
         this.selectionTreeManager = selectionTreeManager;
     }
     
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -94,10 +85,6 @@ public class SendMessageAction
 
     public String execute()
     {
-        User sender = currentUserService.getCurrentUser();
-
-        Message message = new Message( subject, text, sender );
-        
         Set<User> users = new HashSet<User>();
         
         for ( OrganisationUnit unit : selectionTreeManager.getReloadedSelectedOrganisationUnits() )
@@ -105,7 +92,7 @@ public class SendMessageAction
             users.addAll( unit.getUsers() );
         }
         
-        messageService.sendMessage( message, users );
+        messageService.sendMessage( subject, text, users );
         
         return SUCCESS;
     }

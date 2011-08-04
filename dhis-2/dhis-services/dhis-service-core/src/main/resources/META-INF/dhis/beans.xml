@@ -201,15 +201,10 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
-  <bean id="org.hisp.dhis.message.MessageStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
-    <property name="clazz" value="org.hisp.dhis.message.Message" />
+  <bean id="org.hisp.dhis.message.MessageConversationStore" class="org.hisp.dhis.message.hibernate.HibernateMessageConversationStore">
+    <property name="clazz" value="org.hisp.dhis.message.MessageConversation" />
     <property name="sessionFactory" ref="sessionFactory" />
-    <property name="cacheable" value="true" />
-  </bean>
-
-  <bean id="org.hisp.dhis.message.UserMessageStore" class="org.hisp.dhis.message.hibernate.HibernateUserMessageStore">
-    <property name="clazz" value="org.hisp.dhis.message.UserMessage" />
-    <property name="sessionFactory" ref="sessionFactory" />
+	<property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="cacheable" value="true" />
   </bean>
 
@@ -420,8 +415,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </bean>
 
   <bean id="org.hisp.dhis.message.MessageService" class="org.hisp.dhis.message.DefaultMessageService">
-    <property name="messageStore" ref="org.hisp.dhis.message.MessageStore" />
-    <property name="userMessageStore" ref="org.hisp.dhis.message.UserMessageStore" />
+    <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
   </bean>

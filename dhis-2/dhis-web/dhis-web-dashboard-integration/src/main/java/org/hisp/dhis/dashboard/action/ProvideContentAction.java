@@ -137,7 +137,7 @@ public class ProvideContentAction
             chartAreas.add( content.get( DashboardManager.CHART_AREA_PREFIX + i ) );
         }
 
-        messageCount = messageService.getUnreadMessageCount();
+        messageCount = messageService.getUnreadMessageConversationCount();
 
         return SUCCESS;
     }

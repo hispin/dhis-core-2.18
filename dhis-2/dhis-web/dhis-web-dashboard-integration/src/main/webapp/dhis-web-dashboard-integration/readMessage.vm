@@ -1,32 +1,48 @@
+<script type="text/javascript">
+var i18n_sender = '$encoder.jsEscape( $i18n.getString( "sender" ), "'")';
+var i18n_enter_text = '$encoder.jsEscape( $i18n.getString( "enter_text" ), "'")';
+</script>
 
 <div id="senderInfo" style="display:none" class="page">
-<h3>$message.message.sender.name</h3>
+<h3><span id="senderName"></span></h3>
 <table>
 <tr>
 <td><label>$i18n.getString( "email" ):</label></td>
-<td>$!encoder.htmlEncode( ${message.message.sender.email} )</td>
+<td><span id="senderEmail"></span></td>
 </tr>
 <tr>
 <td><label>$i18n.getString( "phone_number" ):</label></td>
-<td>$!encoder.htmlEncode( ${message.message.sender.phoneNumber} )</td>
+<td><span id="senderPhoneNumber"></span></td>
 </tr>
 <tr>
 <td><label>$i18n.getString( "organisation_units" ):</label></td>
-<td>$!encoder.htmlEncode( ${message.message.sender.organisationUnitsName} )</td>
+<td><span id="senderOrganisationUnits"></span></td>
 </tr>
 </table>
 </div>
 
-<div style="border-bottom: 1px solid #cccccc; margin-bottom:15px; padding-bottom:15px; width:50%;">
-<input type="button" value="$i18n.getString( 'mark_unread' )" onclick="window.location.href='unreadMessage.action?id=${message.id}'" style="width:120px">
-<input type="button" value="$i18n.getString( 'remove' )" onclick="window.location.href='removeMessageRedirect.action?id=${message.id}'" style="width:120px">
+<input type="hidden" id="conversationId" value="${conversation.id}"/>
+
+<div class="messageDiv">
+<input type="button" value="$i18n.getString( 'mark_unread' )" onclick="window.location.href='unreadMessage.action?id=${conversation.id}'" style="width:120px">
+<input type="button" value="$i18n.getString( 'remove' )" onclick="window.location.href='removeMessageRedirect.action?id=${conversation.id}'" style="width:120px">
 <input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='message.action'" style="width:120px">
 </div>
 
-<h3>$encoder.htmlEncode( $message.message.subject )</h3>
+<div>
+<h3>$encoder.htmlEncode( $conversation.subject )</h3>
+</div>
 
-<div class="messageDiv"><span class="bold" style="cursor:pointer" onclick="showSenderInfo( ${message.message.sender.id} )">$encoder.htmlEncode( $message.message.sender.name )</span>&nbsp;
-<span style="color:#606060">$format.formatDate( $message.messageDate )</span></div>
+#foreach( $message in $conversation.messages )
+<div class="messageDiv">
+<span class="bold" style="cursor:pointer" onclick="showSenderInfo( ${message.sender.id} )">$encoder.htmlEncode( $message.sender.name )</span>&nbsp;
+<span style="color:#606060">$format.formatDate( $message.sentDate )</span>
 
-<div style="border-bottom: 1px solid #cccccc; margin-bottom:15px; padding-bottom:15px; width:50%;">$encoder.htmlEncode( $message.message.text )</div>
+<p>$encoder.htmlEncode( $message.text )</p>
+</div>
+#end
 
+<div>
+<textarea id="text" name="text" style="width:495px;height:125px"></textarea><br>
+<input type="button" value="$i18n.getString( 'reply' )" onclick="sendReply()" style="width:120px">
+</div>

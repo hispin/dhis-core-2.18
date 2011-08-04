@@ -69,6 +69,11 @@
     <action name="sendFeedback" class="org.hisp.dhis.dashboard.message.action.SendFeedbackAction">
       <result name="success" type="redirect">message.action</result>
     </action>
+	
+	<action name="sendReply" class="org.hisp.dhis.dashboard.message.action.SendReplyAction">
+	  <result name="success" type="velocity-xml">/dhis-web-dashboard-integration/responseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+	</action>
 
     <action name="showSendMessage" class="org.hisp.dhis.dashboard.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -91,7 +96,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dashboard-integration/readMessage.vm</param>
       <param name="menu">/dhis-web-dashboard-integration/menu.vm</param>
-      <param name="javascripts">javascript/readMessage.js</param>
+      <param name="javascripts">javascript/message.js</param>
       <param name="stylesheets">style/dashboard.css</param>
     </action>
 

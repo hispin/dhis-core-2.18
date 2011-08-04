@@ -39,25 +39,21 @@ public interface MessageService
 {
     final String ID = MessageService.class.getName();
     
-    int sendMessage( Message message, Set<User> users );
+    int sendMessage( String subject, String text, Set<User> users );
     
-    int sendFeedback( Message message );
+    int sendFeedback( String subject, String text );
     
-    int saveMessage( Message message );
+    void sendReply( MessageConversation conversation, String text );
     
-    Message getMessage( int id );
+    int saveMessageConversation( MessageConversation conversation );
     
-    UserMessage getUserMessage( int id );
+    void updateMessageConversation( MessageConversation conversation );
     
-    void updateUserMessage( UserMessage userMessage );
+    MessageConversation getMessageConversation( int id );
     
-    void deleteUserMessage( UserMessage userMessage );
+    long getUnreadMessageConversationCount();
     
-    List<UserMessage> getUserMessages( int first, int max );
+    long getUnreadMessageConversationCount( User user );
     
-    List<UserMessage> getUserMessages( User user, int first, int max );
-    
-    long getUnreadMessageCount();
-    
-    long getUnreadMessageCount( User user );
+    public List<MessageConversation> getMessageConversations( int first, int max );
 }
