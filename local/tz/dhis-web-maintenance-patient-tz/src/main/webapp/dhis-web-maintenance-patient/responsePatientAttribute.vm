@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<patientAttribute>
-  <id>$patientAttribute.id</id>
-  <name>$encoder.xmlEncode( $patientAttribute.name )</name>
-  <description>$encoder.xmlEncode( $patientAttribute.description )</description>
-  <valueType>$encoder.xmlEncode( $patientAttribute.valueType )</valueType>     
-</patientAttribute>

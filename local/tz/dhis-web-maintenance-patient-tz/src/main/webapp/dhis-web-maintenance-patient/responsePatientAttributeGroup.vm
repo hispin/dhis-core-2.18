@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<patientAttributeGroup>
-  <id>$patientAttributeGroup.id</id>
-  <name>$encoder.xmlEncode( $patientAttributeGroup.name )</name>
-  <description>$encoder.xmlEncode( $patientAttributeGroup.description )</description>
-  <noAttribute>$patientAttributeGroup.attributes.size()</noAttribute>     
-</patientAttributeGroup>
