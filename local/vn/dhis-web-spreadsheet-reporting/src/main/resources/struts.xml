@@ -798,7 +798,6 @@
 			class="org.hisp.dhis.reportsheet.importreport.action.SetupImportReportFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/import/addImportReport.vm</param>
-			<param name="javascripts">javascript/importReports.js</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -825,9 +824,7 @@
 			<param name="page">/dhis-web-spreadsheet-reporting/import/importReports.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">
-				javascript/importReports.js,
-				../dhis-web-commons/ouwt/ouwt.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
 		</action>
 
 		<action name="getAllImportReport"
@@ -846,7 +843,6 @@
 			class="org.hisp.dhis.reportsheet.importreport.action.SetupImportReportFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/import/updateImportReport.vm</param>
-			<param name="javascripts">javascript/importReports.js</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 

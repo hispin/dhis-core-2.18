@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.exportitem.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -82,13 +82,16 @@ public class GetDataElementCategoryOptionCombosAction
     {
         ExportReportCategory report = (ExportReportCategory) exportReportService.getExportReport( id );
 
-        DataElementGroupOrder dataElementGroupOrder = report.getDataElementOrders().iterator().next();
+        if ( report.getDataElementOrders() != null && !report.getDataElementOrders().isEmpty() )
+        {
+            DataElementGroupOrder dataElementGroupOrder = report.getDataElementOrders().iterator().next();
 
-        DataElement de = dataElementGroupOrder.getDataElements().iterator().next();
+            DataElement de = dataElementGroupOrder.getDataElements().iterator().next();
 
-        dataElementCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( de.getCategoryCombo()
-            .getOptionCombos() );
-
+            dataElementCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( de.getCategoryCombo()
+                .getOptionCombos() );
+        }
+        
         return SUCCESS;
     }
 }
