@@ -280,6 +280,12 @@ public class TableAlteror
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT fke509dd5ef1c932ed" );
         executeSql( "DROP TABLE source CASCADE" );        
 
+        // message
+
+        executeSql( "ALTER TABLE message DROP COLUMN messagesubject" );
+        executeSql( "ALTER TABLE usermessage DROP COLUMN messagedate" );
+        executeSql( "DROP TABLE message_usermessages" );
+        
         log.info( "Tables updated" );
     }
 

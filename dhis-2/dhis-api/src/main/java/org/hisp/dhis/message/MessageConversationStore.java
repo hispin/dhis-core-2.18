@@ -35,10 +35,10 @@ import org.hisp.dhis.user.User;
 /**
  * @author Lars Helge Overland
  */
-public interface UserMessageStore
-    extends GenericStore<UserMessage>
+public interface MessageConversationStore
+    extends GenericStore<MessageConversation>
 {
-    List<UserMessage> getUserMessages( User user, int first, int max );
+    List<MessageConversation> getMessageConversations( User user, int first, int max );
     
-    long getUnreadUserMessageCount( User user );
+    long getUnreadUserMessageConversationCount( User user );
 }

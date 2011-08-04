@@ -11,19 +11,15 @@
     <id name="id" column="messageid">
       <generator class="native" />
     </id>
-
-    <property name="key" column="messagekey" not-null="true" />
-    <property name="subject" column="messagesubject" not-null="true" />
-    <property name="text" column="messagetext" type="text" />
-
-    <many-to-one name="sender" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_message_user"
-      not-null="true" />
-
-    <set name="userMessages" table="message_usermessages" cascade="save-update">
-      <key column="messageid" foreign-key="fk_message_usermessages_messageid" />
-      <many-to-many class="org.hisp.dhis.message.UserMessage" column="usermessageid" unique="true"
-        foreign-key="fk_message_usermessages" />
-    </set>
-
+	
+	<property name="key" column="messagekey" not-null="true"/>
+	<property name="text" column="messagetext"/>
+	
+    <many-to-one name="sender" class="org.hisp.dhis.user.User" column="userid" 
+	  foreign-key="fk_message_userid" />
+	
+	<property name="sentDate"/>
+	
   </class>
 </hibernate-mapping>
+	

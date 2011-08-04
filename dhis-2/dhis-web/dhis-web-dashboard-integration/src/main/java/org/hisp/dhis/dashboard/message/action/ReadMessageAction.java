@@ -27,8 +27,9 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.message.UserMessage;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,6 +49,13 @@ public class ReadMessageAction
     {
         this.messageService = messageService;
     }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -64,11 +72,11 @@ public class ReadMessageAction
     // Output
     // -------------------------------------------------------------------------
 
-    private UserMessage message;
-    
-    public UserMessage getMessage()
+    private MessageConversation conversation;
+
+    public MessageConversation getConversation()
     {
-        return message;
+        return conversation;
     }
 
     // -------------------------------------------------------------------------
@@ -79,11 +87,11 @@ public class ReadMessageAction
     public String execute()
         throws Exception
     {
-        message = messageService.getUserMessage( id );
+        conversation = messageService.getMessageConversation( id );
         
-        message.setRead( true );
+        conversation.markRead( currentUserService.getCurrentUser() );
         
-        messageService.updateUserMessage( message );
+        messageService.updateMessageConversation( conversation );
         
         return SUCCESS;
     }

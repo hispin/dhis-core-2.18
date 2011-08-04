@@ -27,8 +27,9 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.message.UserMessage;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,6 +50,13 @@ public class UnreadMessageAction
         this.messageService = messageService;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -67,11 +75,11 @@ public class UnreadMessageAction
     public String execute()
         throws Exception
     {
-        UserMessage message = messageService.getUserMessage( id );
+        MessageConversation conversation = messageService.getMessageConversation( id );
         
-        message.setRead( false );
+        conversation.markUnread( currentUserService.getCurrentUser() );
         
-        messageService.updateUserMessage( message );
+        messageService.updateMessageConversation( conversation );
         
         return SUCCESS;
     }

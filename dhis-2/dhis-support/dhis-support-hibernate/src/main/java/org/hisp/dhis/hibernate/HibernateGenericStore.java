@@ -39,6 +39,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -54,6 +55,13 @@ public class HibernateGenericStore<T>
         this.sessionFactory = sessionFactory;
     }
     
+    protected JdbcTemplate jdbcTemplate;
+    
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     private Class<T> clazz;
 
     /**

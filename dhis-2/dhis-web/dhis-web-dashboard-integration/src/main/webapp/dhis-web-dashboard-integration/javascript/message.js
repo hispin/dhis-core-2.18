@@ -18,8 +18,8 @@ function read( id )
 
 function validateMessage()
 {
-	var subject = $( '#subject' ).val();
-	var text = $( '#text' ).val();
+	var subject = $( "#subject" ).val();
+	var text = $( "#text" ).val();
 	
 	if ( subject == null || subject.trim() == '' )
 	{
@@ -34,4 +34,37 @@ function validateMessage()
 	}
 	
 	return true;
+}
+
+function showSenderInfo( id )
+{
+	$.getJSON( "../dhis-web-commons-ajax-json/getUser.action", { id:id }, function( json ) {
+		$( "#senderName" ).html( json.user.firstName + " " + json.user.surname );
+		$( "#senderEmail" ).html( json.user.email );
+		$( "#senderPhoneNumber" ).html( json.user.phoneNumber );
+		$( "#senderOrganisationUnits" ).html( json.user.organisationUnits );
+		
+		$( "#senderInfo" ).dialog( {
+	        modal : true,
+	        width : 300,
+	        height : 250,
+	        title : "Sender"
+	    } );
+	} );
+}
+
+function sendReply()
+{
+	var id = $( "#conversationId" ).val();
+	var text = $( "#text" ).val();
+	
+	if ( text == null || text.trim() == '' )
+	{
+		setHeaderMessage( i18n_enter_text );
+		return false;
+	}
+	
+	$.postUTF8( "sendReply.action", { id:id, text:text }, function() {
+		window.location.href = "readMessage.action?id=" + id;
+	} );
 }

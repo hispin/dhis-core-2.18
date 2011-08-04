@@ -27,7 +27,7 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
+import java.util.UUID;
 
 import org.hisp.dhis.user.User;
 
@@ -38,25 +38,22 @@ public class UserMessage
 {
     private int id;
     
-    private User user;
+    private String key;
     
-    private Message message;
+    private User user;
     
     private boolean read;
 
-    private Date messageDate;
-
     public UserMessage()
     {
-        this.messageDate = new Date();
+        this.key = UUID.randomUUID().toString();
     }
     
-    public UserMessage( User user, Message message )
+    public UserMessage( User user )
     {
+        this.key = UUID.randomUUID().toString();
         this.user = user;
-        this.message = message;
         this.read = false;
-        this.messageDate = new Date();
     }
     
     public int getId()
@@ -69,6 +66,16 @@ public class UserMessage
         this.id = id;
     }
 
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
     public User getUser()
     {
         return user;
@@ -77,16 +84,6 @@ public class UserMessage
     public void setUser( User user )
     {
         this.user = user;
-    }
-
-    public Message getMessage()
-    {
-        return message;
-    }
-
-    public void setMessage( Message message )
-    {
-        this.message = message;
     }
 
     public boolean isRead()
@@ -98,56 +95,10 @@ public class UserMessage
     {
         this.read = read;
     }
-
-    public Date getMessageDate()
-    {
-        return messageDate;
-    }
-
-    public void setMessageDate( Date messageDate )
-    {
-        this.messageDate = messageDate;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        
-        int result = 1;
-        
-        result = prime * result + message.hashCode();
-        result = prime * result + user.hashCode();
-        
-        return result;
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-        
-        if ( object == null )
-        {
-            return false;
-        }
-        
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-        
-        final UserMessage other = (UserMessage) object;
-        
-        return message.equals( other.message ) && user.equals( other.user );
-    }
     
     @Override
     public String toString()
     {
-        return "[User: " + user + ", message: " + message + ", read: " + read + "]";
+        return "[User: " + user + ", read: " + read + "]";
     }
 }

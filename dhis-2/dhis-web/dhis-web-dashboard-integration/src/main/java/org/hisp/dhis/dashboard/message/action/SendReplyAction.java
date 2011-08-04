@@ -1,4 +1,4 @@
-package org.hisp.dhis.message.hibernate;
+package org.hisp.dhis.dashboard.message.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,44 +27,56 @@ package org.hisp.dhis.message.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.message.MessageService;
 
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.message.UserMessage;
-import org.hisp.dhis.message.UserMessageStore;
-import org.hisp.dhis.user.User;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class HibernateUserMessageStore
-    extends HibernateGenericStore<UserMessage> implements UserMessageStore 
+public class SendReplyAction
+    implements Action
 {
-    @SuppressWarnings("unchecked")
-    public List<UserMessage> getUserMessages( User user, int first, int max )
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private MessageService messageService;
+
+    public void setMessageService( MessageService messageService )
     {
-        Criteria criteria = getCriteria( Restrictions.eq( "user", user ) );
-        
-        criteria.setFirstResult( first );
-        criteria.setMaxResults( max );
-        criteria.addOrder( Order.desc( "messageDate" ) );
-        //TODO eager-fetch message
-        
-        return criteria.list();
+        this.messageService = messageService;
     }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
     
-    public long getUnreadUserMessageCount( User user )
+    public void setId( Integer id )
     {
-        String hql = "select count(*) from UserMessage where user = :user and read = false";
+        this.id = id;
+    }
+
+    private String text;
+
+    public void setText( String text )
+    {
+        this.text = text;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+    {
+        MessageConversation conversation = messageService.getMessageConversation( id );
         
-        Query query = getQuery( hql );
-        query.setEntity( "user", user );
-        query.setCacheable( true );
+        messageService.sendReply( conversation, text );
         
-        return (Long) query.uniqueResult();
+        return SUCCESS;
     }
 }
