@@ -2493,44 +2493,44 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
 	</section>
 	<section id="patient_attribute">
 		<title>Beneficiary attribute</title>
-        <para>Beneficiary attribute session provides a mechanism for defining a beneficiary attribute. The defined attributes will be used for registering a beneficiary.</para>
+        <para>Beneficiary attribute section provides a mechanism for defining a beneficiary attribute. The defined attributes will be used for registering a beneficiary.</para>
         <para>To access the beneficiary attribute maintenance module, choose Maintenance->Beneficiaries and Programs->Beneficiary Attribute.</para>
 		<para>To add a new beneficiary attribute, click the "Add new" button. Fill all fields with red asterisk, and click "Add" button.</para>
 	</section>
 	<section id="patient_attribute_group">
 		<title>Beneficiary Attribute Group</title>
-        <para>Beneficiary attribute group session provides a mechanism for classifying beneficiary attributes. For instance, two attributes "Register person Phone number" and "Register person Address" might be grouped together into a beneficiary attribute group "Details of Registered person".</para>
+        <para>Beneficiary attribute group section provides a mechanism for classifying beneficiary attributes. For instance, two attributes "Register person Phone number" and "Register person Address" might be grouped together into a beneficiary attribute group "Details of Registered person".</para>
         <para>To access the beneficiary attribute group maintenance module, choose Maintenance->Beneficiaries and Programs->Beneficiary Attribute Group.</para>
 		<para>To add a new attribute group, click the "Add new" button. Fill in the "Name" and "Description" fields and then select attributes that should belong to the group from the left panel. Click the "Move selected items" button to add the selected attributes to the attribute group. Click the "Remove selected items" button to remove attributes from the group that have been selected in the right panel. Finally, click the "Add" button to save changes, or the "Cancel" button to discard any changes.</para>
 	</section>
 	<section id="patient_identifier_type">
 		<title>Beneficiary Identifier Type</title>
-        <para>Beneficiary identifier type session provides a mechanism for defining identifiers associated with the registration of a beneficiary, such as Passport number, PAN, driving license, driving license, health identifier and so on.</para>
+        <para>Beneficiary identifier type section provides a mechanism for defining identifiers associated with the registration of a beneficiary, such as Passport number, PAN, driving license, driving license, health identifier and so on.</para>
 		<para>To access the beneficiary identifier type maintenance module, choose Maintenance->Beneficiaries and Programs->Beneficiary Identifier Type.</para>
 		<para>To add a new identifier type, click the "Add new" button. Fill all fields with red asterisk, and click "Add" button.</para>
 	</section>
 	<section id="relationship_type">
 		<title>Relationship Type</title>
-        <para>Relationship type session provides a mechanism for defining any relationship types and link beneficiaries through these relationship types by creating specific relationships.</para> 
+        <para>Relationship type section provides a mechanism for defining any relationship types and link beneficiaries through these relationship types by creating specific relationships.</para> 
 		<para>To access the relationship type maintenance module, choose Maintenance->Beneficiaries and Programs->Relationship Type.</para>
 		<para>To add a new relationship type, click the "Add new" button. Fill all fields in "Add new Relationship Type" form, and click "Add" button.</para>
 	</section>
 	<section id="patient_registration">
 		<title>Beneficiary Registration </title>
-        <para>Beneficiary registration session provides a mechanism for managing facilities which allow to registry new benificiaries or not.</para> 
+        <para>Beneficiary registration section provides a mechanism for managing facilities which allow to registry new benificiaries or not.</para> 
 		<para>To access the beneficiary registration maintenance module, choose Maintenance->Beneficiaries and Programs->Beneficiary Registration.</para>
 		<para>There are two process for registering facilities. The first one is where the administrator will say which facility can register. The second is when end user logs in and then select a facility, system will display a waring message if the selected facility cannot register beneficiaries; else, the system will display the functions to register beneficiaries.</para>
 	</section>
 	<section id="program">
 		<title>Program</title>
-        <para>Program session provides a mechanism for defining a health program. All name based case entry is organised through the use of programs.</para>
+        <para>Program section provides a mechanism for defining a health program. All name based case entry is organised through the use of programs.</para>
 		<para>To access the program maintenance module, choose Maintenance->Beneficiaries and Programs->Program.</para>
 		<para>A health program includes some specific stages because of having multiple encounters for a given program. E.g. once a pregnant woman enrolls to the "ANC Program", she will get examination and treatments for the first trimester, the second trimester and/or the third trimester. These encounters in most cases are mandatory, and there will be dropouts in some cases, in which a pregnant woman should go through after she enrolled in the "ANC Program". So the specific stages of the health program are defined when a health program is created/specified.</para> 
 		<para>To add a new program, click the "Add new" button. Fill all fields with read asterisk, and then click the "Add" button.</para>
 		<para>You can assign the facilities to a program in the Program Management ( in which a list of available programs are shown) by clicking on the blue folder icon, which is the first icon under Operations, corresponding to the program you would like to modify.</para>
 		<para>The function "Define Program Validation" is designed for defining validations of a program in which you would like to modify after entering patient data values for program stages. </para>
 		<para>For instance, Parity, Previous live birth male, Previous live birth female, Previous still birth are patient data elements. They belong to many stages. And if data value of Parity is 0, then ( Previous live birth female + Previous still birth ) = 0. Besides, if a patient data element exists into many program stages, the system will check whether the values of the patient data element are in all program stages of the program or not.</para>
-		<para>For instance, TT1 is a patient data element. It exists into program stages as following Checkup 1, Checkup 2, Checkup 3. If the data value of this data element into Checkup 1 is null, the data values into Checkup 2, Checkup 3 should be null.</para>
+		<para>For instance, TT1 is a patient data element. It exists into program stages as follows Checkup 1, Checkup 2, Checkup 3. If the data value of this data element into Checkup 1 is null, the data values into Checkup 2, Checkup 3 should be null.</para>
 		<para>To define a program stage, click the "Program Stage Management" icon.</para>
 		<para>To add a new program stage, into "Program Stage Management" form, click the "Add new" button. Fill in the "Name" and "Description" fields and then select the data elements that should belong to the group from the left panel. Click the "Move selected" button to add the selected data elements to the right panel. Click the "Remove selected" button to remove data elements that have been selected in the right panel. Finally, click the "Add" button to save changes, or the "Cancel" button to discard any changes.</para>
 		<para>Your program will then be ready to be used to enroll beneficiaries (which are modified/created under Maintenance->Beneficiaries and Programs->Beneficiaries) and enter data under the data-entry function session: Services->Name Based Data Records->Data Entry or Multiple Data.</para>
@@ -2538,14 +2538,14 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
 	</section>
 	<section id="program_attribute">
 		<title>Program Attribute</title>
-        <para>Program attribute session provides a mechanism for defining a program attribute. The defined program attributes will be used when a beneficiary unenroll from a program. You can add and edit program attributes in Maintenance->Beneficiaries and Programs->Progam Attribute.</para> 
+        <para>Program attribute section provides a mechanism for defining a program attribute. The defined program attributes will be used when a beneficiary unenroll from a program. You can add and edit program attributes in Maintenance->Beneficiaries and Programs->Progam Attribute.</para> 
 		<para>To access the program attribute maintenance module, choose Maintenance->Beneficiaries and Programs->Program Attribute.</para>
 		<para>To add a new program, click the "Add new" button. Fill all fields with read asterisk, and click "Add" button.</para>
 		<para>NOTE: There are two program attributes are created for all programs as default to track up program un-enrollment when a beneficiary is announced to un-enrol the program or to be dead. And these two attributes are: Dead (with Yes/No value type) and Closed Date (with Date value type). Moreover, when a beneficiary un-enrolls from a program, the un-enrolled date is required.</para>
 	</section>
 	<section id="beneficiary_aggregation_query_builder">
 		<title>Beneficiary Aggregation Query Builder</title>
-        <para>Beneficiary aggregation query builder session is the core functionality for linking data between name-based information tracking system – NBITS ( beneficiaries, programs, etc ) and aggregate management system ( dataset, report, charts, etc.) by defining the linking/aggregating rules.</para> 
+        <para>Beneficiary aggregation query builder section is the core functionality for linking data between name-based information tracking system – NBITS ( beneficiaries, programs, etc ) and aggregate management system ( dataset, report, charts, etc.) by defining the linking/aggregating rules.</para> 
         <para>This provides two functions. The first is the "Beneficiaries Aggregation Query Builder", a tool to define a formula, an expression, a rule for aggregation data from the tracking (name-based) system to the aggregation system. The second is the  "Beneficiary Aggregation" used for generating routine data values from patient data value by periods ( or other interval if desired ) and by a facility.</para>
         <para>To access "Beneficiaries Aggregation Query Builder" module, choose Maintenance->Beneficiaries and Programs->Beneficiary Aggregation Query Builder.</para>
         <para>To add a new beneficiaries aggregation query builder, click the "Add new" button. Fill in "Description" field and select an aggregation "Data Element" from a data element group.</para>
@@ -2581,23 +2581,88 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
 	</section>
 	<section id="validation_criteria">
 		<title>Validation Criteria</title>
-        <para>Validation criteria provide a mechanism for defining criteria for beneficiaries when enrolling a program.</para>
+        <para>Validation criteria section provide a mechanism for defining criteria for beneficiaries when enrolling a program.</para>
         <para>To access the validation criteria maintenance module, choose Maintenance->Beneficiaries and Programs->Validation Criteria.</para>
 		<para>To add a new validation criterion, click the "Add new" button. Fill all fields with read asterisk, and click "Add" button.</para>
 		<para>You can assign facilities to a validation criterion in the Validation Criteria Management ( list of available validation criteria are shown ) by clicking on the blue folder icon, the first icon under Operations, corresponding to the validation criterion you would like to assign. Click the "Move selected" button to add the selected programs to the validation criterion. Click the "Remove selected" button to remove programs from the group that have been selected in the right panel. Finally, click the "Save" button to save changes, or the "Cancel" button to discard any changes.</para>
 	</section>
 	<section id="patient_mobile_setting">
 		<title>Beneficiary Mobile Setting</title>
-		<para>Beneficiary mobile setting session provides a mechanism for specifying beneficiary attributes of beneficiaries shown into activities when end user downloads them to mobile.</para>
+		<para>Beneficiary mobile setting section provides a mechanism for specifying beneficiary attributes of beneficiaries shown into activities when end user downloads them to mobile.</para>
 	</section>
 	<section id="import_beneficiary_configuration">
 		<title>Import Beneficiary Configuration</title>
-		<para>Import beneficiary configuration session provides a mechanism for specifying a path to an Excel file which contains private information of many beneficiaries and corresponding treatment cases.</para>
+		<para>Import beneficiary configuration section provides a mechanism for specifying a path to an Excel file which contains private information of many beneficiaries and corresponding treatment cases.</para>
 		<para>The Excel file have two sheets. One saves patient registration information like name, birthdate, gender, village, etc. Two saves treatment cases according to the beneficiaries into the sheet one.</para>
 	</section>
 	<section id="import_beneficiary_data">
 		<title>Import Beneficiary Data</title>
-		<para>Import beneficiary data session provides a mechanism for importing private information of beneficiaries and treatment cases from an Excel file.</para>
+		<para>Import beneficiary data section provides a mechanism for importing private information of beneficiaries and treatment cases from an Excel file.</para>
+	</section>
+   </chapter>
+   <chapter>
+    <title>Name-Based Data Records</title>
+    <para>In this section you will learn how to:</para>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>Input data for treatment stages of a beneficiary</para>
+        </listitem>
+        <listitem>
+          <para>Summary beneficiary list enrol a certain program by the time</para>
+        </listitem>
+		<listitem>
+          <para>Create visit plans of beneficiaries by an organisation unit</para>
+        </listitem>
+		<listitem>
+          <para>Calculate and aggregate data of treatment case</para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <section id="single_patient_entry_form">
+		<title>Beneficiary Data entry</title>
+        <para>Beneficiary data entry section provides a mechanism for inputting data for treatment stages of a beneficiary.</para>
+		<para>To access the beneficiary data entry module, choose Services->Name-Based Data Records->Data Entry.</para>
+		<para>To enter data, you will first have to select a facility for which beneficiaries belong to in order to enter data. Simply clicking on the concerned facility from the facilities hierarchy displayed on the left side of the data entry screen.</para>
+		<para>To open data entry form for a beneficiary, please do the steps as follows:</para>
+		<para>1. Search beneficiaries: click the List All Beneficiaries button to show all beneficiaries by the selected facility; or select an attribute on the attribute box and enter a key to search beneficiaries. The result list is shown below.</para>
+		<para>2. To open treatment form, click the Data Entry icon, the first icon under Operations, corresponding to the beneficiary you would like to input data.</para>
+		<para>3. Choose a program which you want input data for the selected beneficiary in the Program list.</para>
+		<para>4. Choose a program stage in Program Stage list.</para>
+		<para>5. Enter a report data for this stage. The form is shown below.</para>
+		<para>You will now enter data for the data entry form. The disabled data fields in data entry form are corresponding to these data elements belong to other stages.</para>
+	</section>
+	<section id="multi_patient_entry_form">
+		<title>Multi beneficiary data entry</title>
+        <para>Multi beneficiary data entry section provides a mechanism for inputting data for treatment stages of beneficiaries.</para>
+		<para>To access the multi beneficiary data entry module, choose Services->Name-Based Data Records->Multiple Data Entry.</para>
+		<para>To enter data, you will first have to select the facility for which beneficiaries belong to in order to enter data. Simply clicking on the concerned facility from the facilities hierarchy displayed on the left side of the data entry screen.</para>
+		<para>To open data entry form for a beneficiary with Multiple Data Entry function, please do the steps as follows:</para>
+		<para>1. Select a program in Program list. The beneficiary list by the selected facility is shown. Each beneficiary in the list is shown with each corresponded stages.</para>
+		<para>2. To open treatment form, click the date of a program stage corresponding to the beneficiary you would like to input data. A form is shown.</para>
+		<para>3. Enter a report data in the form. The data entry form is shown.</para>
+		<para>You will now enter data for the data entry form. The disabled data fields in data entry form are corresponding to these data elements belong to other stages.</para>
+	</section>
+	<section id="patient_summary_report">
+		<title>Report Management</title>
+        <para>Report Management section provides a mechanism for reporting in cases according to a facility and a program by the time.</para>
+		<para>To access the report Management module, choose Services->Name-Based Data Records->Summary Report.</para>
+		<para>The first, you have to select the facility where you want to report. Simply clicking on the concerned organisation unit from the facilities hierarchy displayed on the left side of the data entry screen.</para>
+		<para>The second, select a program to report. Then enter a start date and an end date for which cases with report data should be included. The date picker widget may be used to select dates.</para>
+		<para>Finally, click the Generate button.</para>
+	</section>
+	<section id="patient_visit_plan">
+		<title>Visit Plans</title>
+        <para>Visit plans section provides a mechanism for creating visit plans for beneficiaries enroling a program.</para>
+		<para>To access the report Management module, choose Services->Name-Based Data Records->Visit Plans.</para>
+		<para>The first, you have to select the facility where you want to report. Simply clicking on the concerned organisation unit from the facilities hierarchy displayed on the left side of the data entry screen.</para>
+		<para>Then select an attribute in the Sort By box. The visit plan list is shown.</para>
+	</section>
+	<section id="run_case_aggregation">
+		<title>Beneficiary aggregation</title>
+        <para>Beneficiary aggregation section provides a mechanism for calculating and aggregating data of treatment case by using beneficiary aggregation query builder defined in Maintenance->Beneficiaries and Programs->Beneficiary Aggregation Query Builder.</para>
+		<para>To access the report Management module, choose Services->Name-Based Data Records->Beneficiary Aggregation.</para>
+		<para>The first, you have to select a data set in the Dataset List box. A period list which is correspoding to period type of the data set is filled in Form box and To box. The second, select a from-period and a to-period for periods which you want to aggregate data of beneficiaries. The third, select an option in the OrganisationUnit By box. The fourth, select a facility. Finally, click the Aggregate button.</para>
 	</section>
    </chapter>
 </book>

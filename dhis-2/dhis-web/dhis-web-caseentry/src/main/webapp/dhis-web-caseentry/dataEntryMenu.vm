@@ -1,5 +1,5 @@
 
-<a href="index.action"><h2>$i18n.getString( "data_entry_and_reports" )&nbsp;</h2></a>
+<a href="index.action"><h2>$i18n.getString( "data_entry" )&nbsp;</h2></a>
 
 <ul>
 	<li><a href="dataEntrySelect.action">$i18n.getString( "data_entry" )&nbsp;</a></li>
