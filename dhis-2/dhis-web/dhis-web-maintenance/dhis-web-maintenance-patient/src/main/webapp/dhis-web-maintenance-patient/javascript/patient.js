@@ -171,20 +171,12 @@ function sortPatients()
 
 function validateAddPatient()
 {	
-	$.post( 'validatePatient.action?' + getIdParams( ), 
-		{ 
-			checkedDuplicate: checkedDuplicate,
-			fullName: jQuery( '#addPatientForm [id=fullName]' ).val(),
-			gender: jQuery( '#addPatientForm [id=gender]' ).val(),
-			dobType: jQuery( '#addPatientForm [id=dobType]' ).val(),
-			birthDate: jQuery( '#addPatientForm [id=birthDate]' ).val(),
-			ageType: jQuery( '#addPatientForm [id=ageType]' ).val(),
-			age: jQuery( '#addPatientForm [id=age]' ).val(), 
-			gender: jQuery( '#addPatientForm [id=gender]' ).val(),
-			underAge: jQuery( '#addPatientForm [id=underAge]' ).is(":checked"),
-			representativeId: jQuery( '#addPatientForm [id=representativeId]' ).val(),
-			relationshipTypeId: jQuery( '#addPatientForm [id=relationshipTypeId]' ).val()
-		}, addValidationCompleted );
+	$.ajax({
+		type: "POST",
+		url: 'validatePatient.action',
+		data: getParamsForDiv('addPatientDiv'),
+		success:addValidationCompleted
+     });	
 }
 
 function addValidationCompleted( data )
