@@ -28,6 +28,7 @@ package org.hisp.dhis.expression;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -65,6 +66,20 @@ public class ExpressionDeletionHandler
         {
             if ( expression.getDataElementsInExpression().remove( dataElement ) )
             {
+                expression.setExpression( "1" );
+                expressionService.updateExpression( expression );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo optionCombo )
+    {
+        for ( Expression expression : expressionService.getAllExpressions() )
+        {
+            if ( expression.getOptionCombosInExpression().remove( optionCombo ) )
+            {
+                expression.setExpression( "1" );
                 expressionService.updateExpression( expression );
             }
         }

@@ -49,6 +49,12 @@ function addEventListeners()
 		var optionComboId = id.split( '-' )[1];
 		var type = dataElements[dataElementId].type;
     	
+    	$( this ).unbind( 'focus' );
+    	$( this ).unbind( 'blur' );
+    	$( this ).unbind( 'change' );
+    	$( this ).unbind( 'dblclick' );
+    	$( this ).unbind( 'keyup' );
+    	
     	$( this ).focus( valueFocus );
     	
     	$( this ).blur( valueBlur );
@@ -80,6 +86,9 @@ function addEventListeners()
 		var dataElementId = id.split( '-' )[0];
 		var optionComboId = id.split( '-' )[1];	
 		
+    	$( this ).unbind( 'focus' );
+    	$( this ).unbind( 'change' );
+    	
     	$( this ).focus( valueFocus );
     	
     	$( this ).change( function() {
