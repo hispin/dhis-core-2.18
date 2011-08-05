@@ -27,6 +27,8 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -59,6 +61,8 @@ public class DataElementCategoryOptionComboDeletionHandler
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
+    //TODO expressionoptioncombo
+    
     @Override
     public String getClassName()
     {
@@ -68,50 +72,50 @@ public class DataElementCategoryOptionComboDeletionHandler
     @Override
     public boolean allowDeleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
     {
-        for ( DataElementCategoryOptionCombo categoryOptionCombo : 
-            categoryService.getAllDataElementCategoryOptionCombos() )
-        {
-            if ( categoryOptionCombo.getCategoryOptions().contains( categoryOption ) )
-            {
-                return false;
-            }
-        }
+        final String sql =
+            "select count(*) from datavalue dv " +
+            "where dv.categoryoptioncomboid in ( " +
+                "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc " +
+                "where cc.categoryoptionid = " + categoryOption.getId() + " );";
         
-        return true;
+        return jdbcTemplate.queryForInt( sql ) == 0;
+    }
+    
+    @Override
+    public boolean allowDeleteDataElementCategory( DataElementCategory category )
+    {
+        final String sql =
+            "select count(*) from datavalue dv " +
+            "where dv.categoryoptioncomboid in ( " +
+              "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc, categories_categoryoptions co " +
+              "where cc.categoryoptionid = co.categoryoptionid " +
+              "and co.categoryid=" + category.getId() + " );";        
+
+        return jdbcTemplate.queryForInt( sql ) == 0;
     }
     
     @Override
     public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        for ( DataElementCategoryOptionCombo eachOptionCombo : categoryCombo.getOptionCombos() )
-        {
-            String sql = "SELECT COUNT(*) FROM datavalue where categoryoptioncomboid=" + eachOptionCombo.getId();
-            
-            if ( jdbcTemplate.queryForInt( sql ) > 0 )
-            {
-                return false;
-            }
-            
-            sql = "SELECT COUNT(*) FROM expressionoptioncombo where categoryoptioncomboid=" + eachOptionCombo.getId();
-            
-            if ( jdbcTemplate.queryForInt( sql ) > 0 )
-            {
-                return false;
-            }
-        }
+        final String sql =
+            "select count(*) from datavalue dv " +
+            "where dv.categoryoptioncomboid in ( " +
+              "select co.categoryoptioncomboid from categorycombos_optioncombos co " +
+              "where co.categorycomboid=" + categoryCombo.getId() + " );";
         
-        return true;
+        return jdbcTemplate.queryForInt( sql ) == 0;
     }
     
     @Override
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryService.getAllDataElementCategoryOptionCombos() )
+        Iterator<DataElementCategoryOptionCombo> iterator = categoryCombo.getOptionCombos().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( categoryOptionCombo.getCategoryCombo().equals( categoryCombo ) )
-            {
-                categoryService.deleteDataElementCategoryOptionCombo( categoryOptionCombo );
-            }
+            DataElementCategoryOptionCombo optionCombo = iterator.next();
+            iterator.remove();
+            categoryService.deleteDataElementCategoryOptionCombo( optionCombo );
         }
     }
 }

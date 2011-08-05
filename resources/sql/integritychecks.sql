@@ -61,8 +61,6 @@ create index aggregateddatavalue_index on aggregateddatavalue (dataelementid, ca
 create index aggregatedindicatorvalue_index on aggregatedindicatorvalue (indicatorid, periodid, organisationunitid);
 create index aggregateddatasetcompleteness_index on aggregateddatasetcompleteness  (datasetid, periodid, organisationunitid);
 
-select * from categoryoptioncombo where categoryoptioncomboid not in (select distinct categoryoptioncomboid from datavalue);
-
 -- Get category option combos without category options
 
 select * from categoryoptioncombo where categoryoptioncomboid not in (select distinct categoryoptioncomboid from categoryoptioncombos_categoryoptions);
@@ -96,4 +94,9 @@ select * from categorycombo where categorycomboid not in (select distinct catego
 select categoryoptionid, (
 select count(categoryoptionid) from categories_categoryoptions where categoryoptionid=cc.categoryoptionid )
 as categorycount from categories_categoryoptions as cc order by categorycount desc;
+
+-- Get category option combos without data values (not an error)
+
+select * from categoryoptioncombo where categoryoptioncomboid not in (select distinct categoryoptioncomboid from datavalue);
+
 
