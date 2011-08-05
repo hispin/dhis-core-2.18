@@ -1,4 +1,4 @@
-set ::dhis(version) "1.0"
+set ::dhis(version) "1.0 2011-Aug-03"
 
 #load tcl core extensions
 package require msgcat
