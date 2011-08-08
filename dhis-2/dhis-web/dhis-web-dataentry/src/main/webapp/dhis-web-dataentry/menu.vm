@@ -1,6 +1,15 @@
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		selection.setListenerFunction( organisationUnitSelected );
+
+		jQuery("body").bind("ajaxSuccess", function(e, xhr, settings) {
+			if(settings.url.indexOf("getOrganisationUnitTree")) {
+				selection.responseReceived();
+				jQuery("body").unbind("ajaxSuccess");
+			}
+		});
+	});
+</script>
+
 <br>
 #parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
-
-<script>
-selection.setListenerFunction( organisationUnitSelected );
-</script>

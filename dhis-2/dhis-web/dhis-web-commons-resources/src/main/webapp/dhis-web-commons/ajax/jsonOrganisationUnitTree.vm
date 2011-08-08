@@ -2,22 +2,18 @@
 #macro( expandOrganisationUnit $organisationUnit )
 	{
 		"id": $!{organisationUnit.id},
-		"name": "$!encoder.jsonEncode( ${organisationUnit.name} )",
-		"hasChildren": #if( $organisationUnit.children.size() > 0 )true,#{else}false#end
-		#if( $organisationUnit.children.size() > 0 )
+		#if( $organisationUnit.parent )"parentId": $!{organisationUnit.parent.id},#end
+		"name": "$!encoder.jsonEncode( ${organisationUnit.name} )"#if( $organisationUnit.children.size() > 0 ),
 		"children": [
-			#foreach ( $child in $organisationUnit.sortedChildren )
-				#expandOrganisationUnit( $child )#if( $velocityCount < $organisationUnit.children.size() ),#end
-			#end
-		]
-		#end
+		#foreach ( $child in $organisationUnit.sortedChildren )
+			#expandOrganisationUnit( $child )#if( $velocityCount < $organisationUnit.children.size() ),#end
+		#end]#end
 	}
 #end
 
 { "organisationUnits": [
 	#foreach ( $organisationUnit in $organisationUnits )
-		#expandOrganisationUnit( $organisationUnit )
-		#if( $velocityCount < $organisationUnits.size() ),#end
+		#expandOrganisationUnit( $organisationUnit )#if( $velocityCount < $organisationUnits.size() ),#end
 	#end
 	]
 }
