@@ -72,14 +72,10 @@ public class XWorkPortalParamsInterceptor
 
     public void destroy()
     {
-        // TODO Auto-generated method stub
-        
     }
 
     public void init()
     {
-        // TODO Auto-generated method stub
-        
     }
 
     public String intercept( ActionInvocation actionInvocation )

@@ -40,6 +40,12 @@ var COLOR_RED = '#ff8a8a';
 var COLOR_ORANGE = '#ff6600';
 var COLOR_WHITE = '#ffffff';
 
+//Page init
+
+$( document ).ready( function() {
+	selection.setListenerFunction( organisationUnitSelected );
+} );
+
 function addEventListeners()
 {
     $( '[name="entryfield"]' ).each( function( i ) 
@@ -210,8 +216,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
         clearPeriod();
     }
 }
-
-selection.setListenerFunction( organisationUnitSelected );
 
 // -----------------------------------------------------------------------------
 // Next/Previous Periods Selection

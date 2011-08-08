@@ -13,6 +13,11 @@
     <param-value>databaseAdmin</param-value>
   </context-param>
 
+  <mime-mapping> 
+    <extension>manifest</extension>
+    <mime-type>text/cache-manifest</mime-type> 
+  </mime-mapping>
+
   <filter>
     <filter-name>RedirectFilter</filter-name>
     <filter-class>org.hisp.dhis.servlet.filter.HttpRedirectFilter</filter-class>
