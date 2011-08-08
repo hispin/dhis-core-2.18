@@ -2,12 +2,15 @@
 // Organisation unit selection listener
 // -----------------------------------------------------------------------------
 
+$( document ).ready( function()
+{
+    selection.setListenerFunction( organisationUnitSelected );
+} )
+
 function organisationUnitSelected( orgUnitIds )
 {
     window.location.href = 'organisationUnit.action';
 }
-
-selection.setListenerFunction( organisationUnitSelected );
 
 // -----------------------------------------------------------------------------
 // View details
@@ -26,25 +29,25 @@ function organisationUnitReceived( unitElement )
     setInnerHTML( 'nameField', getElementValue( unitElement, 'name' ) );
     setInnerHTML( 'shortNameField', getElementValue( unitElement, 'shortName' ) );
     setInnerHTML( 'openingDateField', getElementValue( unitElement, 'openingDate' ) );
-    
+
     var orgUnitCode = getElementValue( unitElement, 'code' );
     setInnerHTML( 'codeField', orgUnitCode ? orgUnitCode : '[' + none + ']' );
-	
-	var closedDate = getElementValue( unitElement, 'closedDate' );
+
+    var closedDate = getElementValue( unitElement, 'closedDate' );
     setInnerHTML( 'closedDateField', closedDate ? closedDate : '[' + none + ']' );
 
     var commentValue = getElementValue( unitElement, 'comment' );
     setInnerHTML( 'commentField', commentValue ? commentValue.replace( /\n/g, '<br>' ) : '[' + none + ']' );
-    
+
     var active = getElementValue( unitElement, 'active' );
     setInnerHTML( 'activeField', active == 'true' ? yes : no );
-    
+
     var url = getElementValue( unitElement, 'url' );
     setInnerHTML( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + none + ']' );
-    
+
     var lastUpdated = getElementValue( unitElement, 'lastUpdated' );
     setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + none + ']' );
-    
+
     showDetails();
 }
 
@@ -54,5 +57,5 @@ function organisationUnitReceived( unitElement )
 
 function removeOrganisationUnit( unitId, unitName )
 {
-	removeItem( unitId, unitName, confirm_to_delete_org_unit, 'removeOrganisationUnit.action', subtree.refreshTree );
+    removeItem( unitId, unitName, confirm_to_delete_org_unit, 'removeOrganisationUnit.action', subtree.refreshTree );
 }

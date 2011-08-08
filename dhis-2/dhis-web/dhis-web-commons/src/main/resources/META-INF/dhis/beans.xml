@@ -144,6 +144,11 @@
     </property>
   </bean>
 
+  <bean id="org.hisp.dhis.ouwt.action.ClearSelectedOrganisationUnitsAction" class="org.hisp.dhis.ouwt.action.ClearSelectedOrganisationUnitsAction"
+    scope="prototype">
+    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+  </bean>
+
   <bean id="org.hisp.dhis.ouwt.action.SetSelectedOrganisationUnitAction" class="org.hisp.dhis.ouwt.action.SetSelectedOrganisationUnitAction"
     scope="prototype">
     <property name="organisationUnitService">
@@ -152,6 +157,11 @@
     <property name="selectionManager">
       <ref local="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
     </property>
+  </bean>
+
+  <bean id="org.hisp.dhis.ouwt.action.GetSelectedOrganisationUnitsAction" class="org.hisp.dhis.ouwt.action.GetSelectedOrganisationUnitsAction"
+    scope="prototype">
+    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
   </bean>
 
   <bean id="org.hisp.dhis.ouwt.action.AddSelectedOrganisationUnitAction" class="org.hisp.dhis.ouwt.action.AddSelectedOrganisationUnitAction"
@@ -513,7 +523,7 @@
 
   <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitTreeAction" class="org.hisp.dhis.commons.action.GetOrganisationUnitTreeAction"
     scope="prototype">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.commons.action.GetPeriodAction" class="org.hisp.dhis.commons.action.GetPeriodAction"

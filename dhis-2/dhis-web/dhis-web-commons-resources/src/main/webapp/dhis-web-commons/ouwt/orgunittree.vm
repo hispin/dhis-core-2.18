@@ -1,4 +1,13 @@
 
+<div id="orgUnitTree">
+	<ul>
+	</ul>
+</div>
+
+<img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
+
+
+#*
 #macro( parseNode $node )
 	#if( $node.hasChildren )
 		#if( $node.children )
@@ -28,11 +37,8 @@
 #end
 
 #if( $organisationUnitTree )
-	<div id="orgUnitTree">
-		<ul>
-			#foreach( $root in $organisationUnitTree )
-				#parseNode( $root )
-			#end
-		</ul>
-	</div>
+		#foreach( $root in $organisationUnitTree )
+			#parseNode( $root )
+		#end
 #end
+*#

@@ -1,4 +1,4 @@
-package org.hisp.dhis.commons.action;
+package org.hisp.dhis.ouwt.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,54 +27,25 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author mortenoh
  */
-public class GetOrganisationUnitTreeAction
+public class ClearSelectedOrganisationUnitsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.currentUserService = currentUserService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<OrganisationUnit> organisationUnitComparator;
-
-    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
-    {
-        this.organisationUnitComparator = organisationUnitComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-
-    private List<OrganisationUnit> organisationUnits;
-
-    public List<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------------------------------------
@@ -84,18 +55,7 @@ public class GetOrganisationUnitTreeAction
     public String execute()
         throws Exception
     {
-        User user = currentUserService.getCurrentUser();
-
-        if ( user.getOrganisationUnits() != null )
-        {
-            organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
-        }
-        else
-        {
-            organisationUnits = new ArrayList<OrganisationUnit>();
-        }
-
-        Collections.sort( organisationUnits, organisationUnitComparator );
+         selectionManager.clearSelectedOrganisationUnits();
 
         return SUCCESS;
     }

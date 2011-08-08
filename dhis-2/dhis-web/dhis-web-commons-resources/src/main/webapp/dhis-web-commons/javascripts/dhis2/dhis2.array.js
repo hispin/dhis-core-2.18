@@ -34,7 +34,7 @@ dhis2.util.namespace( 'dhis2.array' );
  * @param from {Number} Start index
  * @param to {Number} End index
  * 
- * @returns {Array} Array without the removed parts
+ * @returns {Array} Array without the removed parts
  */
 dhis2.array.remove = function( array, from, to )
 {
