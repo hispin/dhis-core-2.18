@@ -735,6 +735,10 @@
     <action name="loadDocument" class="org.hisp.dhis.commons.action.LoadDocumentAction">
       <result name="success" type="outputStreamResult" />
     </action>
+	
+	<action name="ping" class="org.hisp.dhis.commons.action.NoAction">
+		<result name="success" type="outputStreamResult" />
+	</action>
 
   </package>
 
