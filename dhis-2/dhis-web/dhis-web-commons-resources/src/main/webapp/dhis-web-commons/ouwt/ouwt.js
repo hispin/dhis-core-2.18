@@ -74,7 +74,7 @@ function Selection()
                     sessionStorage[getTagId( "Selected" )] = roots[0];
                 }
 
-                this.sync();
+                selection.sync();
             }
 
             if ( data["organisationUnits"].length > 0 )
