@@ -73,14 +73,14 @@ function Selection()
                 {
                     sessionStorage[getTagId( "Selected" )] = roots[0];
                 }
-
-                selection.sync();
             }
 
             if ( data["organisationUnits"].length > 0 )
             {
                 subtree.reloadTree();
             }
+
+            selection.sync();
 
             $( "#ouwt_loader" ).hide();
         } );
@@ -96,58 +96,68 @@ function Selection()
 
             $.post( organisationUnitTreePath + "getselected.action", function( data )
             {
+                if ( data["selectedUnits"].length < 1 )
+                {
+                    return;
+                }
+
                 if ( multipleSelectionAllowed )
                 {
-                    $.each( data, function( i, item )
+                    var selected = [];
+                    $.each( data["selectedUnits"], function( i, item )
                     {
-                        console.log( "multiSelecting " + item.id );
-                    } )
+                        selected.push( item.id );
+                    } );
+
+                    sessionStorage[getTagId( "Selected" )] = JSON.stringify( selected );
                 }
                 else
                 {
-                    console.log( "singleSelecting " + data[0].id );
+                    var ou = data["selectedUnits"][0];
+                    sessionStorage[getTagId( "Selected" )] = ou.id;
                 }
+
+                subtree.reloadTree();
             } );
         }
         else
         {
-            $.post( organisationUnitTreePath + "clearselected.action", this.responseReceived );
-
-            if ( sessionStorage[getTagId( "Selected" )] === undefined )
+            $.post( organisationUnitTreePath + "clearselected.action", function()
             {
-                return;
-            }
-
-            var selected = JSON.parse( sessionStorage[getTagId( "Selected" )] );
-
-            if ( multipleSelectionAllowed )
-            {
-                if ( !$.isArray( selected ) )
+                if ( sessionStorage[getTagId( "Selected" )] === undefined )
                 {
-                    selected = [ selected ];
+                    return;
                 }
 
-                $.each( selected, function( i, item )
-                {
-                    $.post( organisationUnitTreePath + "addorgunit.action", {
-                        id : item
-                    } )
-                } );
-            }
-            else
-            {
-                if ( $.isArray( selected ) )
-                {
-                    selected = selected[0];
-                }
+                var selected = JSON.parse( sessionStorage[getTagId( "Selected" )] );
 
-                $.post( organisationUnitTreePath + "setorgunit.action", {
-                    id : selected
-                } );
-            }
+                if ( multipleSelectionAllowed )
+                {
+                    if ( !$.isArray( selected ) )
+                    {
+                        selected = [ selected ];
+                    }
+
+                    $.each( selected, function( i, item )
+                    {
+                        $.post( organisationUnitTreePath + "addorgunit.action", {
+                            id : item
+                        } )
+                    } );
+                }
+                else
+                {
+                    if ( $.isArray( selected ) )
+                    {
+                        selected = selected[0];
+                    }
+
+                    $.post( organisationUnitTreePath + "setorgunit.action", {
+                        id : selected
+                    } );
+                }
+            } );
         }
-
-        subtree.reloadTree();
     }
 
     this.clear = function()
