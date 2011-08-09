@@ -25,6 +25,7 @@
       <result-type name="velocity-xml" class="org.hisp.dhis.result.VelocityXMLResult" />
       <result-type name="velocity-json" class="org.hisp.dhis.result.VelocityJsonResult" />
       <result-type name="velocity-javascript" class="org.hisp.dhis.result.VelocityJavascriptResult" />
+	  <result-type name="velocity-cache-manifest" class="org.hisp.dhis.result.VelocityCacheManifestResult" />
       <result-type name="outputStreamResult" class="org.hisp.dhis.result.OutputStreamResult" />
       <result-type name="gridCsvResult" class="org.hisp.dhis.result.GridCsvResult" />
       <result-type name="gridXlsResult" class="org.hisp.dhis.result.GridXlsResult" />
@@ -104,6 +105,7 @@
         <param name="message">${exception.class.name}: ${exception.message}</param>
       </result>
     </global-results>
+	
   </package>
 
   <!-- Organisation Unit Selection Tree -->
@@ -267,6 +269,12 @@
 
   <package name="dhis-web-commons-i18n" extends="dhis-web-commons" namespace="/dhis-web-commons">
 
+	<!-- TODO give i18n its own namespace and move cacheManifest action to dhis-web-commons package -->
+
+	<action name="cacheManifest" class="org.hisp.dhis.commons.action.NoAction">
+		<result name="success" type="velocity-cache-manifest">/cacheManifest.vm</result>
+	</action>
+	
     <action name="i18n" class="org.hisp.dhis.i18n.action.I18nAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/i18n/translate.vm</param>
