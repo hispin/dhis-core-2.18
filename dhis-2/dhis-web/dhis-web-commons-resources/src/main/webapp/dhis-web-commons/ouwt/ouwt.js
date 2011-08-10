@@ -359,6 +359,7 @@ function Selection()
 
             selection.sync();
             subtree.reloadTree();
+            selection.responseReceived();
         }
         else
         {
