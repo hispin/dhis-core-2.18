@@ -14,9 +14,10 @@
  * selection.setMultipleSelectionAllowed function to change this.
  */
 
+var organisationUnitTreePath = '../dhis-web-commons/ouwt/';
+
 var selection = new Selection();
 var subtree = new Subtree();
-var organisationUnitTreePath = '../dhis-web-commons/ouwt/';
 
 $( document ).ready( function()
 {
@@ -29,9 +30,7 @@ $( document ).ready( function()
 
 function Selection()
 {
-    var listenerFunction;
-    var multipleSelectionAllowed = false;
-    var unselectAllowed = false;
+    var listenerFunction, multipleSelectionAllowed = false, unselectAllowed = false;
 
     this.setListenerFunction = function( listenerFunction_ )
     {
@@ -46,7 +45,7 @@ function Selection()
     this.setUnselectAllowed = function( allowed )
     {
         unselectAllowed = allowed;
-    }
+    };
 
     this.load = function()
     {
@@ -54,9 +53,9 @@ function Selection()
         {
             var roots = [];
 
-            for ( var i in data["organisationUnits"] )
+            for ( var i in data.organisationUnits )
             {
-                var ou = data["organisationUnits"][i];
+                var ou = data.organisationUnits[i];
                 roots.push( ou.id );
                 store_ou( ou );
             }
@@ -84,7 +83,7 @@ function Selection()
 
             $( "#ouwt_loader" ).hide();
         } );
-    }
+    };
 
     // server = true : sync from server
     // server = false : sync to server
@@ -158,7 +157,7 @@ function Selection()
                 }
             } );
         }
-    }
+    };
 
     this.clear = function()
     {
@@ -178,7 +177,7 @@ function Selection()
         subtree.reloadTree();
 
         $.post( organisationUnitTreePath + "clearselected.action" ).complete( this.responseReceived );
-    }
+    };
 
     function store_ou( ou )
     {
@@ -196,6 +195,7 @@ function Selection()
 
         localStorage[getTagId( ou.id )] = JSON.stringify( output );
     }
+    ;
 
     this.select = function( unitId )
     {
@@ -317,12 +317,13 @@ function Selection()
         }
 
         listenerFunction( ids, names );
-    }
+    };
 
     function getTagId( unitId )
     {
         return 'orgUnit' + unitId;
     }
+    ;
 
     this.findByCode = function()
     {
@@ -382,12 +383,12 @@ function Subtree()
         {
             selectOrgUnit( item );
         } );
-    }
+    };
 
     selectOrgUnit = function( ou )
     {
         $( "#" + getTagId( ou ) + " > a" ).addClass( "selected" );
-    }
+    };
 
     expandTreeAtOrgUnits = function( ous )
     {
@@ -395,7 +396,7 @@ function Subtree()
         {
             expandTreeAtOrgUnit( item );
         } );
-    }
+    };
 
     expandTreeAtOrgUnit = function( ou )
     {
@@ -449,7 +450,7 @@ function Subtree()
             var expand = JSON.parse( localStorage[getTagId( item )] );
             processExpand( expand );
         } );
-    }
+    };
 
     this.reloadTree = function()
     {
@@ -483,7 +484,7 @@ function Subtree()
     this.refreshTree = function()
     {
         selection.load();
-    }
+    };
 
     function processCollapse( parent )
     {
@@ -492,6 +493,7 @@ function Subtree()
         setVisible( child, false );
         setToggle( $parentTag, false );
     }
+    ;
 
     function processExpand( parent )
     {
@@ -508,6 +510,7 @@ function Subtree()
             setToggle( $parentTag, true );
         }
     }
+    ;
 
     function createChildren( parentTag, parent )
     {
@@ -524,6 +527,7 @@ function Subtree()
 
         $( parentTag ).append( $childrenTag );
     }
+    ;
 
     function createTreeElementTag( ou )
     {
@@ -554,6 +558,7 @@ function Subtree()
 
         return $childTag;
     }
+    ;
 
     function setToggle( unitTag, expanded )
     {
@@ -569,6 +574,7 @@ function Subtree()
             $toggleTag.append( toggleImg );
         }
     }
+    ;
 
     function setVisible( tag, visible )
     {
@@ -581,34 +587,41 @@ function Subtree()
             $( tag ).hide();
         }
     }
+    ;
 
     function isVisible( tag )
     {
         return $( tag ).is( ":visible" );
     }
+    ;
 
     function getTagId( unitId )
     {
         return 'orgUnit' + unitId;
     }
+    ;
 
     function getToggleExpand()
     {
         return getToggleImage().attr( "src", "../images/colapse.png" ).attr( "alt", "[+]" );
     }
+    ;
 
     function getToggleCollapse()
     {
         return getToggleImage().attr( "src", "../images/expand.png" ).attr( "alt", "[-]" );
     }
+    ;
 
     function getToggleBlank()
     {
         return getToggleImage().attr( "src", "../images/transparent.gif" ).removeAttr( "alt" );
     }
+    ;
 
     function getToggleImage()
     {
         return $( "<img/>" ).attr( "width", 9 ).attr( "height", 9 );
     }
+    ;
 }

@@ -1,13 +1,11 @@
-
 /**
  * This file depends on form.js.
  * 
  * Format for the span/input identifiers for selectors:
  * 
- * {dataelementid}-{optioncomboid}-val // data value
- * {dataelementid}-dataelement // name of data element
- * {optioncomboid}-optioncombo // name of category option combo
- * {dataelementid}-cell // table cell for data element name
+ * {dataelementid}-{optioncomboid}-val // data value {dataelementid}-dataelement //
+ * name of data element {optioncomboid}-optioncombo // name of category option
+ * combo {dataelementid}-cell // table cell for data element name
  * {dataelementid}-{optioncomboid}-min // min value for data value
  * {dataelementid}-{optioncomboid}-max // max value for data value
  */
@@ -15,7 +13,6 @@
 // -----------------------------------------------------------------------------
 // Save
 // -----------------------------------------------------------------------------
-
 var FORMULA_PATTERN = /\[.+?\]/g;
 var SEPARATOR = '.';
 
@@ -71,7 +68,10 @@ function generateExpression( expression )
     for ( k in matcher )
     {
         var match = matcher[k];
-        var operand = match.replace( /[\[\]]/g, '' ); // Remove brackets from expression to simplify extraction of identifiers
+        var operand = match.replace( /[\[\]]/g, '' ); // Remove brackets from
+                                                        // expression to
+                                                        // simplify extraction
+                                                        // of identifiers
 
         var dataElementId = operand.substring( 0, operand.indexOf( SEPARATOR ) );
         var categoryOptionComboId = operand.substring( operand.indexOf( SEPARATOR ) + 1, operand.length );
@@ -80,7 +80,8 @@ function generateExpression( expression )
 
         var value = $( fieldId ) && $( fieldId ).val() ? $( fieldId ).val() : '0';
 
-        expression = expression.replace( match, value ); // TODO signed numbers
+        expression = expression.replace( match, value ); // TODO signed
+                                                            // numbers
     }
 
     return expression;
@@ -93,13 +94,13 @@ function saveVal( dataElementId, optionComboId )
 {
     var dataElementName = dataElements[dataElementId].name;
     var fieldId = '#' + dataElementId + '-' + optionComboId + '-val';
-    var value =$( fieldId ).val();
+    var value = $( fieldId ).val();
     var type = dataElements[dataElementId].type;
 
     $( fieldId ).css( 'background-color', COLOR_YELLOW );
 
-	var periodId = $( '#selectedPeriodId' ).val();
-        
+    var periodId = $( '#selectedPeriodId' ).val();
+
     if ( value )
     {
         if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
@@ -110,7 +111,7 @@ function saveVal( dataElementId, optionComboId )
             }
             if ( type == 'int' && !isInt( value ) )
             {
-                return alertField( fieldId,  i18n_value_must_integer + '\n\n' + dataElementName );
+                return alertField( fieldId, i18n_value_must_integer + '\n\n' + dataElementName );
             }
             if ( type == 'number' && !isRealNumber( value ) )
             {
@@ -118,7 +119,7 @@ function saveVal( dataElementId, optionComboId )
             }
             if ( type == 'positiveNumber' && !isPositiveInt( value ) )
             {
-                return alertField( fieldId,  i18n_value_must_positive_integer + '\n\n' + dataElementName );
+                return alertField( fieldId, i18n_value_must_positive_integer + '\n\n' + dataElementName );
             }
             if ( type == 'negativeNumber' && !isNegativeInt( value ) )
             {
@@ -126,7 +127,8 @@ function saveVal( dataElementId, optionComboId )
             }
             if ( isValidZeroNumber( value ) )
             {
-                // If value is 0 and zero is not significant for data element, skip value
+                // If value is 0 and zero is not significant for data element,
+                // skip value
                 if ( significantZeros.indexOf( dataElementId ) == -1 )
                 {
                     $( fieldId ).css( 'background-color', COLOR_GREEN );
@@ -145,7 +147,8 @@ function saveVal( dataElementId, optionComboId )
 
                 if ( valueNo < min )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId, value, COLOR_ORANGE );
+                    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId,
+                            value, COLOR_ORANGE );
                     valueSaver.save();
 
                     window.alert( i18n_value_of_data_element_less + ': ' + min + '\n\n' + dataElementName );
@@ -154,7 +157,8 @@ function saveVal( dataElementId, optionComboId )
 
                 if ( valueNo > max )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId, value, COLOR_ORANGE );
+                    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId,
+                            value, COLOR_ORANGE );
                     valueSaver.save();
 
                     window.alert( i18n_value_of_data_element_greater + ': ' + max + '\n\n' + dataElementName );
@@ -162,11 +166,12 @@ function saveVal( dataElementId, optionComboId )
                 }
             }
         }
-        
-	    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId, value, COLOR_GREEN );
-	    valueSaver.save();
-	    
-	    updateIndicators(); // Update indicators in case of custom form
+
+        var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId, value,
+                COLOR_GREEN );
+        valueSaver.save();
+
+        updateIndicators(); // Update indicators in case of custom form
     }
 }
 
@@ -177,9 +182,10 @@ function saveBoolean( dataElementId, optionComboId )
 
     $( fieldId ).css( 'background-color', COLOR_YELLOW );
 
-	var periodId = $( '#selectedPeriodId' ).val();
-        
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId, value, COLOR_GREEN );
+    var periodId = $( '#selectedPeriodId' ).val();
+
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId, value,
+            COLOR_GREEN );
     valueSaver.save();
 }
 
