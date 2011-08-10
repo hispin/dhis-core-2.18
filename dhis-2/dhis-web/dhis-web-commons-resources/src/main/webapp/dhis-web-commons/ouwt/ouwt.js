@@ -63,7 +63,7 @@ function Selection()
 
             localStorage[getTagId( "Roots" )] = JSON.stringify( roots );
 
-            if ( sessionStorage[getTagId( "Selected" )] === undefined )
+            if ( sessionStorage[getTagId( "Selected" )] == null )
             {
                 if ( multipleSelectionAllowed )
                 {
@@ -80,7 +80,7 @@ function Selection()
                 subtree.reloadTree();
             }
 
-            selection.sync();
+            //selection.sync();
 
             $( "#ouwt_loader" ).hide();
         } );
@@ -89,7 +89,7 @@ function Selection()
     // server = true : sync from server
     // server = false : sync to server
     this.sync = function( server )
-    {
+    {	
         if ( server )
         {
             sessionStorage.removeItem( getTagId( "Selected" ) );
@@ -124,13 +124,13 @@ function Selection()
         {
             $.post( organisationUnitTreePath + "clearselected.action", function()
             {
-                if ( sessionStorage[getTagId( "Selected" )] === undefined )
+                if ( sessionStorage[getTagId( "Selected" )] == null )
                 {
                     return;
                 }
 
                 var selected = JSON.parse( sessionStorage[getTagId( "Selected" )] );
-
+		
                 if ( multipleSelectionAllowed )
                 {
                     if ( !$.isArray( selected ) )
@@ -152,11 +152,12 @@ function Selection()
                         selected = selected[0];
                     }
 
-                    $.post( organisationUnitTreePath + "setorgunit.action", {
-                        id : selected
-                    } );
-                }
-            } );
+					$.post( organisationUnitTreePath + "setorgunit.action", {
+							id : selected
+					},this.responseReceived );	
+				}					
+            });
+			
         }
     }
 
@@ -398,7 +399,7 @@ function Subtree()
 
     expandTreeAtOrgUnit = function( ou )
     {
-        if ( localStorage[getTagId( ou )] === undefined )
+        if ( localStorage[getTagId( ou )] == null )
         {
             return;
         }
@@ -455,7 +456,7 @@ function Subtree()
         var $treeTag = $( "#orgUnitTree" );
         $treeTag.children().eq( 0 ).remove();
 
-        if ( sessionStorage[getTagId( "Selected" )] === undefined )
+        if ( sessionStorage[getTagId( "Selected" )] == null )
         {
             var roots = JSON.parse( localStorage[getTagId( "Roots" )] );
 
