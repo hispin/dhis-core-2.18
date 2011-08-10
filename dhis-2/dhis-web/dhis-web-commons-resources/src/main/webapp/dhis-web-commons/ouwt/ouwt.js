@@ -329,29 +329,41 @@ function Selection()
     {
         var name = $( '#searchField' ).val()
 
-        $.getJSON( organisationUnitTreePath + 'getOrganisationUnitByCode.action?code=' + encodeURI( name ), function(
-                data )
+        var match;
+
+        for ( var ou in localStorage )
         {
-            if ( data.response == "success" )
+            if ( ou.indexOf( "orgUnit" ) != -1 )
             {
-                var unitId = data.message;
+                var value = localStorage[ou];
 
-                $( '#orgUnitTreeContainer' ).load( organisationUnitTreePath + 'loadOrganisationUnitTree.action',
-                        function()
-                        {
-                            if ( !listenerFunction )
-                            {
-                                return false;
-                            }
+                if ( value.indexOf( "\"" + name + "\"" ) != -1 )
+                {
+                    match = JSON.parse( value );
+                }
+            }
+        }
 
-                            listenerFunction( [ unitId ] );
-                        } );
+        if ( match !== undefined )
+        {
+            $( '#searchField' ).css( 'background-color', '#ffffff' );
+
+            if ( multipleSelectionAllowed )
+            {
+                sessionStorage[getTagId( "Selected" )] = [ match.id ];
             }
             else
             {
-                $( '#searchField' ).css( 'background-color', '#ffc5c5' );
+                sessionStorage[getTagId( "Selected" )] = match.id;
             }
-        } );
+
+            selection.sync();
+            subtree.reloadTree();
+        }
+        else
+        {
+            $( '#searchField' ).css( 'background-color', '#ffc5c5' );
+        }
     }
 }
 
