@@ -28,7 +28,7 @@ tr.selected{
 
 <h3>$i18n.getString( "add_new_program_stage" )</h3>
 																		
-<form id="addProgramStageForm" name="addProgramStageForm" action="addProgramStage.action" method="get">
+<form id="addProgramStageForm" name="addProgramStageForm" action="addProgramStage.action" method="post">
 
 <div style="display:inline">
 	<input type="hidden" id="id" name="id" value="$program.id"/>
