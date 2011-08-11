@@ -501,11 +501,5 @@ public class MappingServiceTest
 
         assertEquals( baseLayers, mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_BASELAYER ) );
         assertEquals( overlayLayers, mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_OVERLAY ) );
-
-        assertEquals( mappingService.getMapLayer( idA ), mappingService.getMapLayerByMapSource( "mapSourceA" ) );
-        assertEquals( mappingService.getMapLayer( idB ), mappingService.getMapLayerByMapSource( "mapSourceB" ) );
-        assertEquals( mappingService.getMapLayer( idC ), mappingService.getMapLayerByMapSource( "mapSourceC" ) );
-        assertEquals( mappingService.getMapLayer( idD ), mappingService.getMapLayerByMapSource( "mapSourceD" ) );
-
     }
 }

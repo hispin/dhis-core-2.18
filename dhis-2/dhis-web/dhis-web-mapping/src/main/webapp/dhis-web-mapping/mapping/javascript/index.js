@@ -6,7 +6,8 @@
     
 	G.vars.map = new OpenLayers.Map({
         controls: [new OpenLayers.Control.MouseToolbar()],
-        displayProjection: new OpenLayers.Projection("EPSG:4326")
+        displayProjection: new OpenLayers.Projection("EPSG:4326"),
+        maxExtent: new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508)
     });
     
     G.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:G.i18n.loading,msgCls:'x-mask-loading2'});
@@ -19,6 +20,7 @@
         success: function(r) {
             var init = Ext.util.JSON.decode(r.responseText);
             G.vars.parameter.mapView = init.mapView;
+            G.user.initBaseLayers = init.baseLayers;
             G.user.initOverlays = init.overlays;
             G.user.isAdmin = init.security.isAdmin;
             G.system.aggregationStrategy = init.systemSettings.aggregationStrategy;
@@ -214,11 +216,24 @@
         }
     });
     
+    var baseLayerStore = new Ext.data.JsonStore({
+        url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
+        baseParams: {type: G.conf.map_layer_type_baselayer},
+        root: 'mapLayers',
+        fields: ['id', 'name', 'url', 'layers'],
+        sortInfo: {field: 'name', direction: 'ASC'},
+        autoLoad: false,
+        isLoaded: false,
+        listeners: {
+            'load': G.func.storeLoadListener
+        }
+    });    
+    
     var overlayStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
         baseParams: {type: G.conf.map_layer_type_overlay},
         root: 'mapLayers',
-        fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
+        fields: ['id', 'name', 'type', 'url', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
@@ -280,6 +295,7 @@
         organisationUnitsAtLevel: organisationUnitsAtLevelStore,
         geojsonFiles: geojsonFilesStore,
         overlay: overlayStore,
+        baseLayer: baseLayerStore,
         groupSet: groupSetStore,
         groupsByGroupSet: groupsByGroupSetStore,
         mapLegendTypeIcon: mapLegendTypeIconStore
@@ -360,7 +376,7 @@
     });
     
     centroidLayer.layerType = G.conf.map_layer_type_thematic;
-    G.vars.map.addLayer(centroidLayer);
+    G.vars.map.addLayer(centroidLayer);    
     
     /* Init base layers */
     if (window.google) {
@@ -383,6 +399,30 @@
     osm.layerType = G.conf.map_layer_type_baselayer;
     G.vars.map.addLayer(osm);
     
+    /* Init base layers */
+	function addBaseLayersToMap(init) {
+        function add(r) {
+            if (r.length) {                
+                for (var i = 0; i < r.length; i++) {
+                    var baseLayer = G.util.createWMSLayer(r[i].data.name, r[i].data.url, r[i].data.layers);                    
+                    baseLayer.layerType = G.conf.map_layer_type_baselayer;
+                    baseLayer.setVisibility(false);                    
+                    G.vars.map.addLayer(baseLayer);
+                }
+            }
+        }
+        
+        if (init) {
+            add(G.user.initBaseLayers);
+        }
+        else {
+            G.stores.baseLayer.load({callback: function(r) {
+                add(r);
+            }});
+        }
+	}
+	addBaseLayersToMap(true);
+    
     /* Init overlays */
 	function addOverlaysToMap(init) {
         function add(r) {
@@ -390,7 +430,7 @@
                 for (var i = 0; i < r.length; i++) {
                     var overlay = G.util.createOverlay(
                         r[i].data.name, r[i].data.fillColor, 1, r[i].data.strokeColor, parseFloat(r[i].data.strokeWidth),
-                        G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource
+                        G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.url
                     );
                     
                     overlay.layerType = G.conf.map_layer_type_overlay;
@@ -1585,7 +1625,7 @@
                     },
                     {
                         id: 'help5',
-                        title: '<span class="panel-tab-title">' + G.i18n.overlays + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.overlays_ + '</span>'
                     },
                     {
                         id: 'help6',
@@ -1596,10 +1636,140 @@
         ]
     });
 
+    /* Section: base layers */
+	var baseLayersWindow = new Ext.Window({
+        id: 'baselayers_w',
+        title: '<span id="window-baselayer-title">WMS ' + G.i18n.overlays + '</span>',
+		layout: 'fit',
+        closeAction: 'hide',
+        height: 230,
+		width: G.conf.window_width,
+        items: [
+            {
+                xtype: 'form',
+                bodyStyle: 'padding:8px',
+                labelWidth: G.conf.label_width,
+                items: [
+                    {html: '<div class="window-info">' + G.i18n.register_new_wms_overlay + '</div>'},
+                    {
+                        xtype: 'textfield',
+                        id: 'baselayername_tf',
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.display_name,
+                        width: G.conf.combo_width_fieldset,
+                        autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '50'}
+                    },
+                    {
+                        xtype: 'textfield',
+                        id: 'baselayerurl_tf',
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.url,
+                        width: G.conf.combo_width_fieldset
+                    },
+                    {
+                        xtype: 'textfield',
+                        id: 'baselayerlayer_tf',
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.layer,
+                        width: G.conf.combo_width_fieldset
+                    },
+                    {html: '<div class="window-p"></div>'},
+                    {html: '<div class="window-info">' + G.i18n.delete_ + ' WMS ' + G.i18n.overlay + '</div>'},
+                    {
+                        xtype: 'combo',
+                        id: 'baselayer_cb',
+                        editable: false,
+                        valueField: 'id',
+                        displayField: 'name',
+                        mode: 'remote',
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.overlay_,
+                        width: G.conf.combo_width_fieldset,                
+                        store: G.stores.baseLayer
+                    }
+                ]
+            }
+        ],
+        bbar: [
+            '->',
+            {
+                xtype: 'button',
+                id: 'newbaselayer_b',
+                text: 'Register',
+                iconCls: 'icon-add',
+                handler: function() {
+                    var bln = Ext.getCmp('baselayername_tf').getRawValue();
+                    var blu = Ext.getCmp('baselayerurl_tf').getRawValue();
+                    var bll = Ext.getCmp('baselayerlayer_tf').getRawValue();
+                    
+                    if (!bln || !blu || !bll) {
+                        Ext.message.msg(false, G.i18n.form_is_not_complete);
+                        return;
+                    }
+                    
+                    Ext.Ajax.request({
+                        url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
+                        method: 'POST',
+                        params: {name: bln, type: G.conf.map_layer_type_baselayer, url: blu, layers: bll},
+                        success: function(r) {
+                            Ext.message.msg(true, 'WMS ' + G.i18n.overlay + ' <span class="x-msg-hl">' + bln + '</span> ' + G.i18n.registered);
+                            G.stores.baseLayer.load();
+                            
+                            if (G.vars.map.getLayersByName(bln).length) {
+                                G.vars.map.getLayersByName(bln)[0].destroy();
+                            }
+                            
+                            var baselayer = G.util.createWMSLayer(bln, blu, bll);  
+                            baselayer.layerType = G.conf.map_layer_type_baselayer;
+                            baselayer.setVisibility(false);                            
+                            G.vars.map.addLayer(baselayer);
+                            
+                            Ext.getCmp('baselayername_tf').reset();
+                        }
+                    });
+                }
+            },
+            {
+                xtype: 'button',
+                id: 'deletebaselayer_b',
+                text: G.i18n.delete_,
+                iconCls: 'icon-remove',
+                handler: function() {
+                    var bl = Ext.getCmp('baselayer_cb').getValue();
+                    var bln = Ext.getCmp('baselayer_cb').getRawValue();
+                    
+                    if (!bl) {
+                        Ext.message.msg(false, G.i18n.please_select_a_baselayer);
+                        return;
+                    }
+                    
+                    Ext.Ajax.request({
+                        url: G.conf.path_mapping + 'deleteMapLayer' + G.conf.type,
+                        method: 'POST',
+                        params: {id: bl},
+                        success: function(r) {
+                            Ext.message.msg(true, 'WMS ' + G.i18n.overlay + ' <span class="x-msg-hl">' + bln + '</span> '+ G.i18n.deleted);
+                            G.stores.baseLayer.load();
+                            Ext.getCmp('baselayer_cb').clearValue();
+                        }
+                    });
+                    
+                    G.vars.map.getLayersByName(bln)[0].destroy();
+                }
+            }
+        ]
+    });
+
     /* Section: overlays */
 	var overlaysWindow = new Ext.Window({
         id: 'overlays_w',
-        title: '<span id="window-maplayer-title">' + G.i18n.overlays + '</span>',
+        title: '<span id="window-maplayer-title">Vector ' + G.i18n.overlays + '</span>',
 		layout: 'fit',
         closeAction: 'hide',
         height: 307,
@@ -1610,7 +1780,7 @@
                 bodyStyle: 'padding:8px',
                 labelWidth: G.conf.label_width,
                 items: [
-                    {html: '<div class="window-info">Register new overlay</div>'},
+                    {html: '<div class="window-info">' + G.i18n.register_new_vector_overlay + '</div>'},
                     {
                         xtype: 'textfield',
                         id: 'maplayername_tf',
@@ -1693,11 +1863,11 @@
                         }
                     },
                     {html: '<div class="window-p"></div>'},
-                    {html: '<div class="window-info">Delete overlay</div>'},
+                    {html: '<div class="window-info">' + G.i18n.delete_ + ' vector ' + G.i18n.overlay + '</div>'},
                     {
                         xtype: 'combo',
                         id: 'maplayer_cb',
-                        editable:false,
+                        editable: false,
                         valueField: 'id',
                         displayField: 'name',
                         mode: 'remote',
@@ -1705,9 +1875,9 @@
                         triggerAction: 'all',
                         emptytext: G.conf.emptytext,
                         labelSeparator: G.conf.labelseparator,
-                        fieldLabel: G.i18n.overlays,
+                        fieldLabel: G.i18n.overlay_,
                         width: G.conf.combo_width_fieldset,                
-                        store:G.stores.overlay
+                        store: G.stores.overlay
                     }
                 ]
             }
@@ -1735,9 +1905,9 @@
                     Ext.Ajax.request({
                         url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
                         method: 'POST',
-                        params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: 1, strokeColor: mlsc, strokeWidth: mlsw},
+                        params: {name: mln, type: 'overlay', url: mlmsf, fillColor: mlfc, fillOpacity: 1, strokeColor: mlsc, strokeWidth: mlsw},
                         success: function(r) {
-                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
+                            Ext.message.msg(true, 'Vector ' + G.i18n.overlay + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
                             G.stores.overlay.load();
                             
                             if (G.vars.map.getLayersByName(mln).length) {
@@ -1780,7 +1950,7 @@
                         method: 'POST',
                         params: {id: ml},
                         success: function(r) {
-                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> '+ G.i18n.deleted);
+                            Ext.message.msg(true, 'Vector ' + G.i18n.overlay + ' <span class="x-msg-hl">' + mln + '</span> '+ G.i18n.deleted);
                             G.stores.overlay.load();
                             Ext.getCmp('maplayer_cb').clearValue();
                         }
@@ -2257,8 +2427,18 @@
         bbar: [
             {
                 xtype: 'button',
+                id: 'baselayers_b',
+                text: 'WMS ' + G.i18n.overlay,
+                iconCls: 'icon-baselayer',
+                handler: function() {
+                    Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (Ext.getCmp('overlays_w').width + 15), Ext.getCmp('center').y + 41);
+                    Ext.getCmp('baselayers_w').show();
+                }
+            },
+            {
+                xtype: 'button',
                 id: 'overlays_b',
-                text: 'Overlays',
+                text: 'Vector ' + G.i18n.overlay,
                 iconCls: 'icon-overlay',
                 handler: function() {
                     Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (Ext.getCmp('overlays_w').width + 15), Ext.getCmp('center').y + 41);
