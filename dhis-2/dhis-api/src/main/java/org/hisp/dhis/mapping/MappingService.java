@@ -159,7 +159,7 @@ public interface MappingService
 
     void updateMapLayer( MapLayer mapLayer );
 
-    void addOrUpdateMapLayer( String name, String type, String mapSource, String layer, String fillColor,
+    void addOrUpdateMapLayer( String name, String type, String url, String layers, String fillColor,
         double fillOpacity, String strokeColor, int strokeWidth );
 
     void deleteMapLayer( MapLayer mapLayer );

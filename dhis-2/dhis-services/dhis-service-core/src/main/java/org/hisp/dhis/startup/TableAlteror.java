@@ -122,6 +122,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE map DROP COLUMN latitude" );
         executeSql( "ALTER TABLE map DROP COLUMN zoom" );
         executeSql( "ALTER TABLE maplayer DROP CONSTRAINT maplayer_mapsource_key" );
+        executeSql( "ALTER TABLE maplayer DROP COLUMN mapsource" );
+        executeSql( "ALTER TABLE maplayer DROP COLUMN mapsourcetype" );
+        executeSql( "ALTER TABLE maplayer DROP COLUMN layer" );
 
         // extended data element
         executeSql( "ALTER TABLE dataelement DROP CONSTRAINT fk_dataelement_extendeddataelementid" );

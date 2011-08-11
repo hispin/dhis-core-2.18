@@ -131,7 +131,8 @@ G.i18n = {
     was_saved_as_base_coordinate: '$encoder.jsEscape($i18n.getString( 'was_saved_as_base_coordinate' ) , "'")',
     error_while_saving_data: '$encoder.jsEscape($i18n.getString( 'error_while_saving_data' ) , "'")',
     is_saved_as_map_source: '$encoder.jsEscape($i18n.getString( 'is_saved_as_map_source' ) , "'")',
-    is_already_selected: '$encoder.jsEscape($i18n.getString( 'is_already_selected' ) , "'")',	
+    is_already_selected: '$encoder.jsEscape($i18n.getString( 'is_already_selected' ) , "'")',
+    overlays_: '$encoder.jsEscape($i18n.getString( 'overlays_' ) , "'")',
     overlays: '$encoder.jsEscape($i18n.getString( 'overlays' ) , "'")',
     was_registered: '$encoder.jsEscape($i18n.getString( 'was_registered' ) , "'")',
     is_already_in_use: '$encoder.jsEscape($i18n.getString( 'is_already_in_use' ) , "'")',
@@ -301,5 +302,7 @@ G.i18n = {
     set_thematic_map_date_type: '$encoder.jsEscape($i18n.getString( 'set_thematic_map_date_type' ) , "'")',
     date: '$encoder.jsEscape($i18n.getString( 'date' ) , "'")',
     legend_symbolizer: '$encoder.jsEscape($i18n.getString( 'legend_symbolizer' ) , "'")',
-    image: '$encoder.jsEscape($i18n.getString( 'image' ) , "'")'
+    image: '$encoder.jsEscape($i18n.getString( 'image' ) , "'")',
+    register_new_wms_overlay: '$encoder.jsEscape($i18n.getString( 'register_new_wms_overlay' ) , "'")',
+    register_new_vector_overlay: '$encoder.jsEscape($i18n.getString( 'register_new_vector_overlay' ) , "'")'    
 };

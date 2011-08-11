@@ -226,6 +226,9 @@ a.x-menu-item-custom {
 .x-btn .icon-exit {
 	background-image:url('../../../images/exit2.png');
 }
+.x-btn .icon-baselayer {
+	background-image:url('../../../images/baselayer.png');
+}
 .x-btn .icon-overlay {
 	background-image:url('../../../images/overlay.png');
 }
@@ -322,6 +325,12 @@ a.x-menu-item-custom {
 #window-help-title {
 	padding:0 0 3px 21px;
 	background:url('../../../images/question.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
+#window-baselayer-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/baselayer.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }

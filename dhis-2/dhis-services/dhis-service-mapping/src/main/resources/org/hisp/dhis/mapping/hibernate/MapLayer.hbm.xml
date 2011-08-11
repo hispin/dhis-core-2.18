@@ -14,9 +14,9 @@
 
     <property name="type" column="type" />
 
-    <property name="mapSource" column="mapsource" />
+    <property name="url" column="url" type="text" />
 
-    <property name="layer" column="layer" />
+    <property name="layers" column="layers" type="text" />
 
     <property name="fillColor" column="fillcolor" />
 

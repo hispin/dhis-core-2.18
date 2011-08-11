@@ -1,3 +1,4 @@
+#set( $baseLayersSize = $baseLayers.size() )
 #set( $overlaysSize = $overlays.size() )
 {
   "mapView": { 
@@ -40,15 +41,25 @@
     "infrastructuralDataElements": "$!{infrastructuralDataElements.id}",
     "infrastructuralPeriodType": "$!{infrastructuralPeriodType.name}"
   },
+  "baseLayers": [
+#foreach( $baseLayer in $baseLayers )
+    {
+      "data": {
+        "id": "$!{baseLayer.id}",
+        "name": "$!encoder.jsonEncode( ${baseLayer.name} )",
+        "url": "$!encoder.jsonEncode( ${baseLayer.url} )",
+        "layers": "$!encoder.jsonEncode( ${baseLayer.layers} )"
+      }
+    }#if( $velocityCount < $baseLayersSize ),#end
+#end
+  ],
   "overlays": [
 #foreach( $overlay in $overlays )
     {
       "data": {
         "id": "$!{overlay.id}",
         "name": "$!encoder.jsonEncode( ${overlay.name} )",
-        "type": "$!encoder.jsonEncode( ${overlay.type} )",
-        "mapSource": "$!encoder.jsonEncode( ${overlay.mapSource} )",
-        "layer": "$!encoder.jsonEncode( ${overlay.layer} )",
+        "url": "$!encoder.jsonEncode( ${overlay.url} )",
         "fillColor": "$!encoder.jsonEncode( ${overlay.fillColor} )",
         "fillOpacity": "$!{overlay.fillOpacity}",
         "strokeColor": "$!encoder.jsonEncode( ${overlay.strokeColor} )",

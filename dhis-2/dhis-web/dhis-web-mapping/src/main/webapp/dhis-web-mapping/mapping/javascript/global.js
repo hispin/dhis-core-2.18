@@ -359,7 +359,21 @@ G.util = {
     getTransformedPoint: function(p) {
         return p.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
     },
-		
+    
+    createWMSLayer: function(name, url, layer) {
+        return new OpenLayers.Layer.WMS(name, url, 
+            {
+                layers: layer,
+                transparent: true,
+                format: 'image/png'
+            },
+            {
+                isBaseLayer: false,
+                buffer: 0,
+                ratio: 1
+            }
+        );
+    },
     
     createOverlay: function(name, fillColor, fillOpacity, strokeColor, strokeWidth, url) {
         return new OpenLayers.Layer.Vector(name, {
