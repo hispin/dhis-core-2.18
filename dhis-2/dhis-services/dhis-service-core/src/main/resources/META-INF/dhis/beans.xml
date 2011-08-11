@@ -6,7 +6,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
-	<!-- Store definitions -->
+  <!-- Store definitions -->
 
   <bean id="org.hisp.dhis.dataelement.DataElementOperandStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementOperand" />
@@ -204,7 +204,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.message.MessageConversationStore" class="org.hisp.dhis.message.hibernate.HibernateMessageConversationStore">
     <property name="clazz" value="org.hisp.dhis.message.MessageConversation" />
     <property name="sessionFactory" ref="sessionFactory" />
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="cacheable" value="true" />
   </bean>
 
@@ -222,13 +222,18 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="clazz" value="org.hisp.dhis.configuration.Configuration" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.constant.ConstantStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="sessionFactory" ref="sessionFactory" />
-	<property name="clazz" value="org.hisp.dhis.constant.Constant" />
+    <property name="clazz" value="org.hisp.dhis.constant.Constant" />
   </bean>
-  
-	<!-- Service definitions -->
+
+  <bean id="org.hisp.dhis.version.VersionStore" class="org.hisp.dhis.version.hibernate.HibernateVersionStore">
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="clazz" value="org.hisp.dhis.version.Version" />
+  </bean>
+
+  <!-- Service definitions -->
 
   <bean id="org.hisp.dhis.dataelement.DataElementOperandService" class="org.hisp.dhis.dataelement.DefaultDataElementOperandService">
     <property name="dataElementOperandStore" ref="org.hisp.dhis.dataelement.DataElementOperandStore" />
@@ -296,7 +301,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.expression.ExpressionService" class="org.hisp.dhis.expression.DefaultExpressionService">
     <property name="expressionStore" ref="org.hisp.dhis.expression.ExpressionStore" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
@@ -322,6 +327,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitService" class="org.hisp.dhis.organisationunit.DefaultOrganisationUnitService">
     <property name="organisationUnitStore" ref="org.hisp.dhis.organisationunit.OrganisationUnitStore" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="versionService" ref="org.hisp.dhis.version.VersionService" />
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" class="org.hisp.dhis.organisationunit.DefaultOrganisationUnitGroupService">
@@ -436,7 +442,11 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="constantStore" ref="org.hisp.dhis.constant.ConstantStore" />
   </bean>
 
-	<!-- I18nService -->
+  <bean id="org.hisp.dhis.version.VersionService" class="org.hisp.dhis.version.DefaultVersionService">
+    <property name="versionStore" ref="org.hisp.dhis.version.VersionStore" />
+  </bean>
+
+  <!-- I18nService -->
 
   <bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
     <property name="localeManager">
@@ -462,7 +472,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     </property>
   </bean>
 
-	<!-- I18n object definitions -->
+  <!-- I18n object definitions -->
 
   <bean id="I18nDataElement" class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="DataElement" />
@@ -940,7 +950,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     </property>
   </bean>
 
-	<!-- Startup routine definitions -->
+  <!-- Startup routine definitions -->
 
   <bean id="org.hisp.dhis.startup.TableAlteror" class="org.hisp.dhis.startup.TableAlteror">
     <property name="statementManager" ref="statementManager" />
@@ -988,9 +998,9 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="runlevel" value="5" />
     <property name="skipInTests" value="true" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" class="org.hisp.dhis.dataentryform.DataEntryFormUpgrader">
-	<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
+    <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
     <property name="runlevel" value="5" />
     <property name="skipInTests" value="true" />
   </bean>
@@ -1008,13 +1018,13 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
           <ref local="org.hisp.dhis.dataset.DataSetShortNamePopulator" />
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormPopulator" />
-		  <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
+          <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
         </list>
       </list>
     </property>
   </bean>
 
-	<!-- DeletionHandlers -->
+  <!-- DeletionHandlers -->
 
   <bean id="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler" class="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler">
     <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
@@ -1128,8 +1138,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" class="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
-	
-	<!-- DeletionManager -->
+
+  <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject" ref="deletionManager" />
@@ -1169,13 +1179,13 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     </property>
   </bean>
 
-	<!-- Min/Max validation -->
+  <!-- Min/Max validation -->
 
   <bean id="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService" class="org.hisp.dhis.minmax.validation.DefaultMinMaxValuesGenerationService">
     <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore" />
   </bean>
 
-	<!-- AOP definitions -->
+  <!-- AOP definitions -->
 
   <aop:config>
 
@@ -1208,31 +1218,31 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         method="intercept" />
     </aop:aspect>
 
-		<!--
-			<aop:aspect ref="i18nTranslationInterceptor"> <aop:after-returning
-			pointcut="execution( *
-			org.hisp.dhis.dataelement.DataElementService.get*(..) )"
-			method="intercept" returning="object"/> <aop:after-returning
-			pointcut="execution( *
-			org.hisp.dhis.dataelement.DataElementCategoryService.get*(..) )"
-			method="intercept" returning="object"/> <aop:after-returning
-			pointcut="execution( *
-			org.hisp.dhis.indicator.IndicatorService.get*(..) )"
-			method="intercept" returning="object"/> <aop:after-returning
-			pointcut="execution( *
-			org.hisp.dhis.datadictionary.DataDictionaryService.get*(..) )"
-			method="intercept" returning="object"/> <aop:after-returning
-			pointcut="execution( * org.hisp.dhis.dataset.DataSetService.get*(..)
-			)" method="intercept" returning="object"/> <aop:after-returning
-			pointcut="execution( *
-			org.hisp.dhis.organisationunit.OrganisationUnitService.get*(..) )"
-			method="intercept" returning="object"/> <aop:after-returning
-			pointcut="execution( *
-			org.hisp.dhis.organisationunit.OrganisationUnitGroupService.get*(..)
-			)" method="intercept" returning="object"/> </aop:aspect>
-		-->
+    <!--
+      <aop:aspect ref="i18nTranslationInterceptor"> <aop:after-returning
+      pointcut="execution( *
+      org.hisp.dhis.dataelement.DataElementService.get*(..) )"
+      method="intercept" returning="object"/> <aop:after-returning
+      pointcut="execution( *
+      org.hisp.dhis.dataelement.DataElementCategoryService.get*(..) )"
+      method="intercept" returning="object"/> <aop:after-returning
+      pointcut="execution( *
+      org.hisp.dhis.indicator.IndicatorService.get*(..) )"
+      method="intercept" returning="object"/> <aop:after-returning
+      pointcut="execution( *
+      org.hisp.dhis.datadictionary.DataDictionaryService.get*(..) )"
+      method="intercept" returning="object"/> <aop:after-returning
+      pointcut="execution( * org.hisp.dhis.dataset.DataSetService.get*(..)
+      )" method="intercept" returning="object"/> <aop:after-returning
+      pointcut="execution( *
+      org.hisp.dhis.organisationunit.OrganisationUnitService.get*(..) )"
+      method="intercept" returning="object"/> <aop:after-returning
+      pointcut="execution( *
+      org.hisp.dhis.organisationunit.OrganisationUnitGroupService.get*(..)
+      )" method="intercept" returning="object"/> </aop:aspect>
+    -->
   </aop:config>
 
-	<!-- Security import -->
+  <!-- Security import -->
   <import resource="security.xml" />
 </beans>

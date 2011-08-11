@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
@@ -50,6 +51,8 @@ import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.version.Version;
+import org.hisp.dhis.version.VersionService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -83,6 +86,13 @@ public class DefaultOrganisationUnitService
         this.currentUserService = currentUserService;
     }
 
+    private VersionService versionService;
+
+    public void setVersionService( VersionService versionService )
+    {
+        this.versionService = versionService;
+    }
+
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -98,8 +108,8 @@ public class DefaultOrganisationUnitService
 
         int id = organisationUnitStore.save( organisationUnit );
 
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-            AuditLogUtil.ACTION_ADD, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_ADD,
+            OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
 
         return id;
     }
@@ -110,8 +120,8 @@ public class DefaultOrganisationUnitService
 
         organisationUnitStore.update( organisationUnit );
 
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-            AuditLogUtil.ACTION_EDIT, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_EDIT,
+            OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
     }
 
     public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
@@ -138,8 +148,8 @@ public class DefaultOrganisationUnitService
 
         organisationUnitStore.delete( organisationUnit );
 
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-            AuditLogUtil.ACTION_DELETE, OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_DELETE,
+            OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
     }
 
     public OrganisationUnit getOrganisationUnit( int id )
@@ -174,7 +184,7 @@ public class DefaultOrganisationUnitService
     {
         return organisationUnitStore.getByName( name );
     }
-    
+
     public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
     {
         return organisationUnitStore.getOrganisationUnitByNameIgnoreCase( name );
@@ -219,7 +229,7 @@ public class DefaultOrganisationUnitService
         }
 
         List<OrganisationUnit> childList = parent.getSortedChildren();
-        
+
         for ( OrganisationUnit child : childList )
         {
             child.setLevel( level );
@@ -397,84 +407,93 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitsWithoutGroups();
     }
 
-    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, boolean limit )
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name,
+        Collection<OrganisationUnitGroup> groups, boolean limit )
     {
         return organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups, limit );
     }
 
-    @SuppressWarnings("unchecked")    
-    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit )
+    @SuppressWarnings( "unchecked" )
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name,
+        Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit )
     {
-        boolean _limit = limit && parent == null; // Can only limit in query if parent is not set and we get all units
-        
-        final Collection<OrganisationUnit> result = organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups, _limit );
-        
+        boolean _limit = limit && parent == null; // Can only limit in query if
+                                                  // parent is not set and we
+                                                  // get all units
+
+        final Collection<OrganisationUnit> result = organisationUnitStore.getOrganisationUnitsByNameAndGroups( name,
+            groups, _limit );
+
         if ( parent == null )
         {
             return result;
         }
-        
-        final Collection<OrganisationUnit> subTree = getOrganisationUnitWithChildren( parent.getId() );
-        
-        List<OrganisationUnit> intersection = new ArrayList<OrganisationUnit>( CollectionUtils.intersection( subTree, result ) );
 
-        return limit && intersection != null && intersection.size() > MAX_LIMIT ? intersection.subList( 0, MAX_LIMIT ) : intersection;   
+        final Collection<OrganisationUnit> subTree = getOrganisationUnitWithChildren( parent.getId() );
+
+        List<OrganisationUnit> intersection = new ArrayList<OrganisationUnit>( CollectionUtils.intersection( subTree,
+            result ) );
+
+        return limit && intersection != null && intersection.size() > MAX_LIMIT ? intersection.subList( 0, MAX_LIMIT )
+            : intersection;
     }
-    
+
     public OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet()
     {
         Map<Integer, Set<Integer>> associationSet = organisationUnitStore.getOrganisationUnitDataSetAssocationMap();
-        
+
         filterUserDataSets( associationSet );
         filterChildOrganisationUnits( associationSet );
-        
+
         OrganisationUnitDataSetAssociationSet set = new OrganisationUnitDataSetAssociationSet();
-        
+
         for ( Map.Entry<Integer, Set<Integer>> entry : associationSet.entrySet() )
         {
             int index = set.getDataSetAssociationSets().indexOf( entry.getValue() );
-            
+
             if ( index == -1 ) // Association set does not exist, add new
             {
                 index = set.getDataSetAssociationSets().size();
                 set.getDataSetAssociationSets().add( entry.getValue() );
             }
-            
+
             set.getOrganisationUnitAssociationSetMap().put( entry.getKey(), index );
         }
-        
+
         return set;
     }
-    
+
     private void filterUserDataSets( Map<Integer, Set<Integer>> associationMap )
     {
         User currentUser = currentUserService.getCurrentUser();
-        
+
         if ( currentUser != null && !currentUser.getUserCredentials().isSuper() )
         {
-            Collection<Integer> userDataSets = ConversionUtils.getIdentifiers( DataSet.class, currentUser.getUserCredentials().getAllDataSets() );
-            
+            Collection<Integer> userDataSets = ConversionUtils.getIdentifiers( DataSet.class, currentUser
+                .getUserCredentials().getAllDataSets() );
+
             for ( Set<Integer> dataSets : associationMap.values() )
             {
                 dataSets.retainAll( userDataSets );
             }
         }
     }
-    
+
     private void filterChildOrganisationUnits( Map<Integer, Set<Integer>> associatonMap )
     {
         User currentUser = currentUserService.getCurrentUser();
-        
+
         if ( currentUser != null )
         {
-            Collection<Integer> parentIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, currentUser.getOrganisationUnits() );
-            
+            Collection<Integer> parentIds = ConversionUtils.getIdentifiers( OrganisationUnit.class,
+                currentUser.getOrganisationUnits() );
+
             Collection<Integer> children = getOrganisationUnitHierarchy().getChildren( parentIds );
-        
+
             associatonMap.keySet().retainAll( children );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
@@ -560,8 +579,8 @@ public class DefaultOrganisationUnitService
 
     public List<OrganisationUnitLevel> getOrganisationUnitLevels()
     {
-        List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>( organisationUnitStore
-            .getOrganisationUnitLevels() );
+        List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>(
+            organisationUnitStore.getOrganisationUnitLevels() );
 
         Collections.sort( levels, new OrganisationUnitLevelComparator() );
 
@@ -600,7 +619,7 @@ public class DefaultOrganisationUnitService
         Map<Integer, OrganisationUnitLevel> levelMap = new HashMap<Integer, OrganisationUnitLevel>();
 
         Collection<OrganisationUnitLevel> levels = getOrganisationUnitLevels();
-        
+
         for ( OrganisationUnitLevel level : levels )
         {
             levelMap.put( level.getLevel(), level );
@@ -620,16 +639,32 @@ public class DefaultOrganisationUnitService
     {
         return organisationUnitStore.getMaxOfOrganisationUnitLevels();
     }
-    
+
     @Override
     public void updateOrganisationUnits( Collection<OrganisationUnit> units )
     {
         organisationUnitStore.update( units );
     }
-    
+
     @Override
     public Collection<OrganisationUnit> getOrganisationUnits( Boolean hasPatients )
     {
-        return organisationUnitStore.get(hasPatients);
+        return organisationUnitStore.get( hasPatients );
+    }
+
+    private void updateVersion()
+    {
+        String uuid = UUID.randomUUID().toString();
+        Version orgUnitVersion = versionService.getVersionByKey( VersionService.ORGANISATIONUNIT_VERSION );
+
+        if ( orgUnitVersion == null )
+        {
+            orgUnitVersion = new Version();
+            orgUnitVersion.setKey( VersionService.ORGANISATIONUNIT_VERSION );
+        }
+
+        orgUnitVersion.setValue( uuid );
+
+        versionService.updateVersion( orgUnitVersion );
     }
 }

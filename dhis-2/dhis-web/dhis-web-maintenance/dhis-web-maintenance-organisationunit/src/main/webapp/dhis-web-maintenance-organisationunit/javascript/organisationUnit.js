@@ -4,7 +4,7 @@
 
 $( document ).ready( function()
 {
-    selection.setListenerFunction( organisationUnitSelected );
+    selection.setListenerFunction( organisationUnitSelected, true );
 } )
 
 function organisationUnitSelected( orgUnitIds )
