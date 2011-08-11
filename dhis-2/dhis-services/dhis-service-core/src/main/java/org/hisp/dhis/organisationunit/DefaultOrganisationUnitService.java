@@ -111,6 +111,8 @@ public class DefaultOrganisationUnitService
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_ADD,
             OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
 
+        updateVersion();
+
         return id;
     }
 
@@ -122,6 +124,8 @@ public class DefaultOrganisationUnitService
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_EDIT,
             OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+
+        updateVersion();
     }
 
     public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
@@ -150,6 +154,8 @@ public class DefaultOrganisationUnitService
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_DELETE,
             OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+        
+        updateVersion();
     }
 
     public OrganisationUnit getOrganisationUnit( int id )
@@ -644,6 +650,8 @@ public class DefaultOrganisationUnitService
     public void updateOrganisationUnits( Collection<OrganisationUnit> units )
     {
         organisationUnitStore.update( units );
+        
+        updateVersion();
     }
 
     @Override
@@ -661,10 +669,14 @@ public class DefaultOrganisationUnitService
         {
             orgUnitVersion = new Version();
             orgUnitVersion.setKey( VersionService.ORGANISATIONUNIT_VERSION );
+            orgUnitVersion.setValue( uuid );
+
+            versionService.addVersion( orgUnitVersion );
         }
-
-        orgUnitVersion.setValue( uuid );
-
-        versionService.updateVersion( orgUnitVersion );
+        else
+        {
+            orgUnitVersion.setValue( uuid );
+            versionService.updateVersion( orgUnitVersion );
+        }
     }
 }
