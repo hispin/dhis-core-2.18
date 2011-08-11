@@ -2,11 +2,11 @@
 
 jQuery( document ).ready( function()
 {
-	tableSorter( 'userList' );
-	selection.setListenerFunction( orgUnitSelected );
+    tableSorter( 'userList' );
+    selection.setListenerFunction( orgUnitSelected, true );
 } );
 
 function orgUnitSelected( orgUnitIds )
 {
-	window.location.href = "user.action";
+    window.location.href = "user.action";
 }

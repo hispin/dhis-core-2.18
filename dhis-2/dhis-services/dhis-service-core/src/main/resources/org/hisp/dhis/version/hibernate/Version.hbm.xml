@@ -4,16 +4,16 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.constant.Constant" table="constant">
+  <class name="org.hisp.dhis.version.Version" table="Version">
 
     <cache usage="read-write" />
 
-    <id name="id" column="constantid">
+    <id name="id" column="versionid">
       <generator class="native" />
     </id>
 
-    <property name="name">
-      <column name="name" not-null="true" unique="true" length="230" />
+    <property name="key">
+      <column name="key" not-null="true" unique="true" length="230" />
     </property>
 
     <property name="value" />

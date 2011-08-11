@@ -22,15 +22,6 @@ var subtree = new Subtree();
 $( document ).ready( function()
 {
     selection.load();
-
-    jQuery( "body" ).bind( "ajaxComplete", function( e, xhr, settings )
-    {
-        if ( settings.url.indexOf( "getOrganisationUnitTree" ) )
-        {
-            selection.responseReceived();
-            jQuery( "body" ).unbind( "ajaxSuccess" );
-        }
-    } );
 } );
 
 // -----------------------------------------------------------------------------
@@ -41,9 +32,21 @@ function Selection()
 {
     var listenerFunction, multipleSelectionAllowed = false, unselectAllowed = false;
 
-    this.setListenerFunction = function( listenerFunction_ )
+    this.setListenerFunction = function( listenerFunction_, skipInitialCall )
     {
         listenerFunction = listenerFunction_;
+
+        if ( !skipInitialCall )
+        {
+            jQuery( "body" ).bind( "ajaxComplete", function( e, xhr, settings )
+            {
+                if ( settings.url.indexOf( "getOrganisationUnitTree" ) )
+                {
+                    selection.responseReceived();
+                    jQuery( "body" ).unbind( "ajaxSuccess" );
+                }
+            } );
+        }
     };
 
     this.setMultipleSelectionAllowed = function( allowed )
@@ -88,7 +91,6 @@ function Selection()
 
             selection.sync();
             subtree.reloadTree();
-            selection.responseReceived();
 
             $( "#ouwt_loader" ).hide();
         } );
