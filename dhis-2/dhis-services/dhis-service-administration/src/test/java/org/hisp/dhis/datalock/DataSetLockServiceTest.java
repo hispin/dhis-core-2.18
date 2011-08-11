@@ -47,6 +47,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -419,6 +420,7 @@ public class DataSetLockServiceTest
     }
 
     @Test
+    @Ignore
     public void testGetDataSetLockByDataSetPeriodAndSource()
     {
         Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
@@ -440,6 +442,7 @@ public class DataSetLockServiceTest
     }
 
     @Test
+    @Ignore
     public void testGetDataSetLocksBySource()
     {
         Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
