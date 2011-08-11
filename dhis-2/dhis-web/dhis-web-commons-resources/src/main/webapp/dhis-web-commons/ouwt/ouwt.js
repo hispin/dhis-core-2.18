@@ -22,6 +22,15 @@ var subtree = new Subtree();
 $( document ).ready( function()
 {
     selection.load();
+
+    jQuery( "body" ).bind( "ajaxComplete", function( e, xhr, settings )
+    {
+        if ( settings.url.indexOf( "getOrganisationUnitTree" ) )
+        {
+            selection.responseReceived();
+            jQuery( "body" ).unbind( "ajaxSuccess" );
+        }
+    } );
 } );
 
 // -----------------------------------------------------------------------------
