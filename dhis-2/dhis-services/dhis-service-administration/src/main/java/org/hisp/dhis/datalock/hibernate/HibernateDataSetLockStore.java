@@ -29,6 +29,7 @@ package org.hisp.dhis.datalock.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -124,25 +125,25 @@ public class HibernateDataSetLockStore
         return (DataSetLock) session.get( DataSetLock.class, id );
     }
 
-    @SuppressWarnings("unchecked")
-        public Collection<DataSetLock> getDataSetLockByDataSet( DataSet dataSet )
-    {           
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataSetLock> getDataSetLockByDataSet( DataSet dataSet )
+    {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Criteria criteria = session.createCriteria( DataSetLock.class );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
-        
+
         return criteria.list();
     }
 
-    @SuppressWarnings("unchecked")
-        public Collection<DataSetLock> getDataSetLockByPeriod( Period period )
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataSetLock> getDataSetLockByPeriod( Period period )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Period storedPeriod = reloadPeriod( period );
 
-        Criteria criteria = session.createCriteria( DataSetLock.class );        
+        Criteria criteria = session.createCriteria( DataSetLock.class );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
 
         return criteria.list();
@@ -163,28 +164,29 @@ public class HibernateDataSetLockStore
 
     public DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, OrganisationUnit source )
     {
-        Session session = sessionFactory.getCurrentSession();
-
         Period storedPeriod = reloadPeriod( period );
 
-        Criteria criteria = session.createCriteria( DataSetLock.class );
-        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
-        criteria.add( Restrictions.eq( "period", storedPeriod ) );
-        criteria.createAlias( "sources", "s" );
-        criteria.add( Restrictions.eq( "s.id", source.getId() ) );
+        String hql = "from DataSetLock d ";
+        hql += "where dataSet = :dataSet ";
+        hql += "and period = :period ";
+        hql += "and :source in elements(d.sources)";
 
-        return (DataSetLock) criteria.uniqueResult();
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+        query.setEntity( "dataSet", dataSet );
+        query.setEntity( "period", storedPeriod );
+        query.setEntity( "source", source );
+
+        return (DataSetLock) query.uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<DataSetLock> getDataSetLocksBySource( OrganisationUnit source )
     {
-        Session session = sessionFactory.getCurrentSession();
+        String hql = "from DataSetLock d where :source in elements(d.sources)";
 
-        Criteria criteria = session.createCriteria( DataSetLock.class );
-        criteria.createAlias( "sources", "s" );
-        criteria.add( Restrictions.eq( "s.id", source.getId() ) );
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+        query.setEntity( "source", source );
 
-        return criteria.list();
+        return query.list();
     }
 }
