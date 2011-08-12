@@ -40,10 +40,10 @@ function Selection()
         {
             jQuery( "body" ).bind( "ajaxComplete", function( e, xhr, settings )
             {
-                if ( settings.url.indexOf( "getOrganisationUnitTree" ) )
+                if ( settings.url.indexOf( "getOrganisationUnitTree" ) && settings.data === undefined )
                 {
                     selection.responseReceived();
-                    jQuery( "body" ).unbind( "ajaxSuccess" );
+                    jQuery( "body" ).unbind( "ajaxComplete" );
                 }
             } );
         }
