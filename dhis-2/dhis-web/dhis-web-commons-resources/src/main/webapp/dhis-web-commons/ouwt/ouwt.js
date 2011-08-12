@@ -330,7 +330,7 @@ function Selection()
 
         var selected = []
 
-        if ( sessionStorage[getTagId( "Selected" )] !== undefined )
+        if ( sessionStorage[getTagId( "Selected" )] != null )
         {
             selected = JSON.parse( sessionStorage[getTagId( "Selected" )] );
         }
@@ -472,7 +472,7 @@ function Subtree()
         {
             while ( ouEl.parentId !== undefined )
             {
-                if ( localStorage[getTagId( ouEl.parentId )] !== undefined )
+                if ( localStorage[getTagId( ouEl.parentId )] != null )
                 {
                     array.push( ouEl.parentId );
                 }
