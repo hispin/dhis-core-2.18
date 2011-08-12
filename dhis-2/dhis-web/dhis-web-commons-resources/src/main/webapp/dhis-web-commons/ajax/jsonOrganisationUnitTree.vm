@@ -11,9 +11,12 @@
 	}
 #end
 
-{ "organisationUnits": [
+{ "version": "$!encoder.jsonEncode( $version )"
+  #if( ! $versionOnly )
+  ,"organisationUnits": [
 	#foreach ( $organisationUnit in $organisationUnits )
 		#expandOrganisationUnit( $organisationUnit )#if( $velocityCount < $organisationUnits.size() ),#end
 	#end
 	]
+ #end
 }

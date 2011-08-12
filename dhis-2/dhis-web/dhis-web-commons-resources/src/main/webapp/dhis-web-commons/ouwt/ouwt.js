@@ -61,19 +61,7 @@ function Selection()
 
     this.load = function()
     {
-        $.get( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action', function( data, textStatus, jqXHR )
-        {
-            var roots = [];
-
-            for ( var i in data.organisationUnits )
-            {
-                var ou = data.organisationUnits[i];
-                roots.push( ou.id );
-                store_ou( ou );
-            }
-
-            localStorage[getTagId( "Roots" )] = JSON.stringify( roots );
-        } ).complete( function()
+        function sync_and_reload()
         {
             var roots = JSON.parse( localStorage[getTagId( "Roots" )] );
 
@@ -93,7 +81,46 @@ function Selection()
             subtree.reloadTree();
 
             $( "#ouwt_loader" ).hide();
-        } );
+        }
+
+        var version = localStorage[getTagId( "Version" )];
+        var should_update = false;
+
+        $.get( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action', {
+            "versionOnly" : true
+        }, function( data, textStatus, jqXHR )
+        {
+            if ( version != data.version )
+            {
+                should_update = true;
+            }
+        } ).complete(
+                function()
+                {
+                    if ( should_update )
+                    {
+                        $.get( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action',
+                                function( data, textStatus, jqXHR )
+                                {
+                                    var roots = [];
+
+                                    for ( var i in data.organisationUnits )
+                                    {
+                                        var ou = data.organisationUnits[i];
+                                        roots.push( ou.id );
+                                        store_ou( ou );
+                                    }
+
+                                    localStorage[getTagId( "Roots" )] = JSON.stringify( roots );
+                                    localStorage[getTagId( "Version" )] = data.version;
+
+                                } ).complete( sync_and_reload );
+                    }
+                    else
+                    {
+                        sync_and_reload();
+                    }
+                } );
     };
 
     // server = true : sync from server
@@ -505,8 +532,10 @@ function Subtree()
         }
     };
 
+    // force reload
     this.refreshTree = function()
     {
+        localStorage.removeItem( getTagId( "Version" ) );
         selection.load();
     };
 
