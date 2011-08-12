@@ -39,6 +39,9 @@ var currentPeriodOffset = 0;
 // Period type object
 var periodTypeFactory = new PeriodType();
 
+// Instance of the StorageManager
+var storageManager = new StorageManager();
+
 var COLOR_GREEN = '#b9ffb9';
 var COLOR_YELLOW = '#fffe8c';
 var COLOR_RED = '#ff8a8a';
@@ -654,4 +657,154 @@ function viewHist( dataElementId, optionComboId )
 function closeCurrentSelection()
 {
     $( '#currentSelection' ).fadeOut();
+}
+
+/**
+ * This object provides utility methods for localStorage and manages data entry
+ * forms and data values. 
+ */
+function StorageManager()
+{
+	var MAX_SIZE = new Number( 2600000 );
+	
+	var KEY_FORM_PREFIX = "dataset-";
+	var KEY_DATAVALUES = "datavalues";
+	
+	/**
+	 * Returns the total number of characters currently in the local storage.
+	 */
+	this.totalSize = function()
+	{
+		var totalSize = new Number();
+		
+		for ( var i = 0; i < localStorage.length; i++ )
+		{
+  			var value = localStorage.key(i);
+  			
+  			if ( value )
+  			{
+  				totalSize += value.length;  				
+  			}  			
+		}
+		
+		return totalSize;
+	}
+	
+	/**
+	 * Return the remaining capacity of the local storage in characters, ie.
+	 * the maximum size minus the current size.
+	 */
+	this.remainingStorage = function()
+	{
+		return MAX_SIZE - this.totalSize();
+	}
+	
+	/**
+	 * Saves the content of a data entry form.
+	 * 
+	 * @param dataSetId the identifier of the data set of the form.
+	 * @param html the form HTML content.
+	 */
+	this.saveForm = function( dataSetId, html )
+	{
+		var id = KEY_FORM_PREFIX + dataSetId;
+		
+		try
+		{
+			localStorage[id] = html;
+		}
+		catch ( e )
+		{
+			console.log( "Max local storage quota reached, ignored form " + e );
+		}
+	}
+	
+	/**
+	 * Gets the content of a data entry form.
+	 * 
+	 * @param dataSetId the identifier of the data set of the form.
+	 * @return the content of a data entry form.
+	 */
+	this.getForm = function( dataSetId )
+	{
+		var id = KEY_FORM_PREFIX + dataSetId;
+		
+		return localStorage[id];
+	}
+	
+	/**
+	 * Saves a data value.
+	 * 
+	 * @param dataElementId the data element identifier.
+	 * @param categoryOptionComboId the category option combo identifier.
+	 * @param periodId the period identifier.
+	 * @param organisationUnitId the organisation unit identifier.
+	 * @param value the value.
+	 */
+	this.saveDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId, value )
+	{
+		var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
+		
+		var dataValues = [];
+		
+		if ( localStorage[KEY_DATAVALUES] != null )
+		{
+			dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
+		}
+		
+		try
+		{
+			dataValues[id] = value;
+		}		
+		catch ( e )
+		{
+			console.log( "Max local storage quota reached, ignored data value " + e );
+		}
+		
+		localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
+	}
+	
+	/**
+	 * Gets the value for the data value with the given arguments, or null if it
+	 * does not exist.
+	 * 
+	 * @param dataElementId the data element identifier.
+	 * @param categoryOptionComboId the category option combo identifier.
+	 * @param periodId the period identifier.
+	 * @param organisationUnitId the organisation unit identifier.
+	 * @return the value for the data value with the given arguments, null if non-existing.
+	 */
+	this.getDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
+	{
+		var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
+		
+		if ( localStorage[KEY_DATAVALUES] != null )
+		{
+			var dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
+			
+			return dataValues[id];
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Returns a JSON associative array where the keys are on the form
+	 * <data element id>-<category option combo id>-<period id>-<organisation unit id>
+	 * and the data values are the values.
+	 * 
+	 * @return  a JSON associative array.
+	 */
+	this.getAllDataValues = function()
+	{
+		return localStorage[KEY_DATAVALUES] != null ? JSON.parse( localStorage[KEY_DATAVALUES] ) : null;
+	}
+	
+	/**
+	 * Supportive method.
+	 */
+	this.getDataValueIdentifier = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
+	{
+		return dataElementId + "-" + categoryOptionComboId + "-" + periodId + "-" + organisationUnitId;
+	}
 }
