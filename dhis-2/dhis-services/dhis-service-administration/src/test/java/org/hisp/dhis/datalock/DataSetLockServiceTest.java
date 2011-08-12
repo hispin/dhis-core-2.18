@@ -47,7 +47,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -106,7 +105,7 @@ public class DataSetLockServiceTest
         throws Exception
     {
         dataSetService = (DataSetService) getBean( DataSetService.ID );
-        
+
         dataSetLockService = (DataSetLockService) getBean( DataSetLockService.ID );
 
         periodService = (PeriodService) getBean( PeriodService.ID );
@@ -196,7 +195,7 @@ public class DataSetLockServiceTest
             units.add( s );
         }
     }
-    
+
     private void assertEq( DataSetLock dataSetLock, DataSet dataSet, Period period, Set<OrganisationUnit> sources )
     {
         assertEquals( dataSet, dataSetLock.getDataSet() );
@@ -420,7 +419,6 @@ public class DataSetLockServiceTest
     }
 
     @Test
-    @Ignore
     public void testGetDataSetLockByDataSetPeriodAndSource()
     {
         Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
@@ -442,7 +440,6 @@ public class DataSetLockServiceTest
     }
 
     @Test
-    @Ignore
     public void testGetDataSetLocksBySource()
     {
         Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
