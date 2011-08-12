@@ -25,6 +25,12 @@ package org.hisp.dhis.version;
 
 import java.util.Collection;
 
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * @author mortenoh
+ */
+@Transactional
 public class DefaultVersionService
     implements VersionService
 {
