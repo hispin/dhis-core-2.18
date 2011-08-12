@@ -31,10 +31,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.version.Version;
+import org.hisp.dhis.version.VersionService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,6 +56,13 @@ public class GetOrganisationUnitTreeAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private VersionService versionService;
+
+    public void setVersionService( VersionService versionService )
+    {
+        this.versionService = versionService;
     }
 
     // -------------------------------------------------------------------------
@@ -77,6 +87,25 @@ public class GetOrganisationUnitTreeAction
         return organisationUnits;
     }
 
+    private String version;
+
+    public String getVersion()
+    {
+        return version;
+    }
+
+    private Boolean versionOnly = false;
+
+    public void setVersionOnly( Boolean versionOnly )
+    {
+        this.versionOnly = versionOnly;
+    }
+
+    public Boolean getVersionOnly()
+    {
+        return versionOnly;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -84,19 +113,40 @@ public class GetOrganisationUnitTreeAction
     public String execute()
         throws Exception
     {
-        User user = currentUserService.getCurrentUser();
-
-        if ( user.getOrganisationUnits() != null )
+        if ( !versionOnly )
         {
-            organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
-        }
-        else
-        {
-            organisationUnits = new ArrayList<OrganisationUnit>();
+            User user = currentUserService.getCurrentUser();
+
+            if ( user.getOrganisationUnits() != null )
+            {
+                organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+            }
+            else
+            {
+                organisationUnits = new ArrayList<OrganisationUnit>();
+            }
+
+            Collections.sort( organisationUnits, organisationUnitComparator );
         }
 
-        Collections.sort( organisationUnits, organisationUnitComparator );
+        version = getVersionString();
 
         return SUCCESS;
+    }
+
+    private String getVersionString()
+    {
+        Version orgUnitVersion = versionService.getVersionByKey( VersionService.ORGANISATIONUNIT_VERSION );
+
+        if ( orgUnitVersion == null )
+        {
+            String uuid = UUID.randomUUID().toString();
+            orgUnitVersion = new Version();
+            orgUnitVersion.setKey( VersionService.ORGANISATIONUNIT_VERSION );
+            orgUnitVersion.setValue( uuid );
+            versionService.addVersion( orgUnitVersion );
+        }
+
+        return orgUnitVersion.getValue();
     }
 }
