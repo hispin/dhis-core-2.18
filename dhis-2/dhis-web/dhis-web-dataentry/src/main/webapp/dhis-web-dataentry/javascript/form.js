@@ -57,7 +57,7 @@ $( document ).ready( function()
 
 function addEventListeners()
 {
-    $( '[name="entryfield"]' ).each( function( i )
+    $( '[name="ef"]' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
         var dataElementId = id.split( '-' )[0];
@@ -99,7 +99,7 @@ function addEventListeners()
         }
     } );
 
-    $( '[name="entryselect"]' ).each( function( i )
+    $( '[name="es"]' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
         var dataElementId = id.split( '-' )[0];
@@ -363,18 +363,19 @@ function insertDataValues()
 
     // Clear existing values and colors
 
-    $( '[name="entryfield"]' ).val( '' );
-    $( '[name="entryselect"]' ).val( '' );
+    $( '[name="ef"]' ).val( '' );
+    $( '[name="es"]' ).val( '' );
 
-    $( '[name="entryfield"]' ).css( 'background-color', COLOR_WHITE );
-    $( '[name="entryselect"]' ).css( 'background-color', COLOR_WHITE );
+    $( '[name="ef"]' ).css( 'background-color', COLOR_WHITE );
+    $( '[name="es"]' ).css( 'background-color', COLOR_WHITE );
 
     $( '[name="min"]' ).html( '' );
     $( '[name="max"]' ).html( '' );
 
     $.getJSON( 'getDataValues.action', {
             periodId : periodId,
-        	dataSetId : dataSetId
+        	dataSetId : dataSetId,
+        	organisationUnitId: currentOrganisationUnitId
         },
         function( json )
         {
@@ -404,9 +405,9 @@ function insertDataValues()
 
                 var dataValue = dataValueMap[value.id];
 
-                if ( dataValue
-                        && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) || ( value.max && new Number(
-                                dataValue ) > new Number( value.max ) ) ) )
+                if ( dataValue && 
+                	( ( value.min && new Number( dataValue ) < new Number( value.min ) ) 
+                	|| ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
                 {
                     $( valFieldId ).css( 'background-color', COLOR_ORANGE );
                 }
@@ -418,6 +419,21 @@ function insertDataValues()
             // Update indicator values in form
 
             updateIndicators();
+            
+            // Set completeness button
+            
+            if ( json.complete )
+            {
+            	$( '#completeButton' ).attr( 'disabled', 'disabled' );
+            	$( '#undoButton' ).removeAttr( 'disabled' );
+            }
+            else
+            {
+            	$( '#completeButton' ).removeAttr( 'disabled' );
+            	$( '#undoButton' ).attr( 'disabled', 'disabled' );
+            }
+            
+            // TODO locking
         } );
 }
 
@@ -430,6 +446,8 @@ function displayEntryFormCompleted()
 
     dataEntryFormIsLoaded = true;
     hideLoader();
+    
+    $( '#completenessDiv' ).css( 'display', 'block' );
 }
 
 function valueFocus( e )
@@ -473,13 +491,13 @@ function getNextEntryField( field )
 {
     var index = field.getAttribute( 'tabindex' );
 
-    field = $( 'input[name="entryfield"][tabindex="' + ( ++index ) + '"]' );
+    field = $( 'input[name="ef"][tabindex="' + ( ++index ) + '"]' );
 
     while ( field )
     {
         if ( field.is( ':disabled' ) || field.is( ':hidden' ) )
         {
-            field = $( 'input[name="entryfield"][tabindex="' + ( ++index ) + '"]' );
+            field = $( 'input[name="ef"][tabindex="' + ( ++index ) + '"]' );
         }
         else
         {
@@ -492,13 +510,13 @@ function getPreviousEntryField( field )
 {
     var index = field.getAttribute( 'tabindex' );
 
-    field = $( 'input[name="entryfield"][tabindex="' + ( --index ) + '"]' );
+    field = $( 'input[name="ef"][tabindex="' + ( --index ) + '"]' );
 
     while ( field )
     {
         if ( field.is( ':disabled' ) || field.is( ':hidden' ) )
         {
-            field = $( 'input[name="entryfield"][tabindex="' + ( --index ) + '"]' );
+            field = $( 'input[name="ef"][tabindex="' + ( --index ) + '"]' );
         }
         else
         {
@@ -525,7 +543,8 @@ function validateCompleteDataSet()
 
         $.getJSON( 'getValidationViolations.action', {
             periodId : periodId,
-            dataSetId : dataSetId
+            dataSetId : dataSetId,
+            organisationUnitId: currentOrganisationUnitId
         }, registerCompleteDataSet ).error( function()
         {
             $( '#completeButton' ).removeAttr( 'disabled' );
@@ -545,7 +564,8 @@ function registerCompleteDataSet( json )
     {
         $.getJSON( 'registerCompleteDataSet.action', {
             periodId : periodId,
-            dataSetId : dataSetId
+            dataSetId : dataSetId,
+            organisationUnitId: currentOrganisationUnitId
         }, function()
         {
         } ).error( function()
@@ -576,7 +596,8 @@ function undoCompleteDataSet()
 
         $.getJSON( 'undoCompleteDataSet.action', {
             periodId : periodId,
-            dataSetId : dataSetId
+            dataSetId : dataSetId,
+            organisationUnitId: currentOrganisationUnitId
         }, function()
         {
         } ).error( function()
@@ -610,7 +631,8 @@ function validate()
 
     $( '#validationDiv' ).load( 'validate.action', {
         periodId : periodId,
-        dataSetId : dataSetId
+        dataSetId : dataSetId,
+        organisationUnitId: currentOrganisationUnitId
     }, displayValidationDialog );
 }
 
@@ -637,9 +659,10 @@ function viewHist( dataElementId, optionComboId )
     var operandName = dataElementName + ' ' + optionComboName;
 
     $( '#historyDiv' ).load( 'viewHistory.action', {
-        dataElementId : dataElementId,
-        optionComboId : optionComboId,
-        periodId : periodId
+        dataElementId: dataElementId,
+        optionComboId: optionComboId,
+        periodId: periodId,
+        organisationUnitId: currentOrganisationUnitId 
     }, function()
     {
         displayHistoryDialog( operandName );

@@ -113,3 +113,13 @@ organisationUnitAssociationSetMap = {
 <div id="historyDiv" class="page"></div>
 
 <div id="validationDiv" class="page"></div>
+
+<div id="completenessDiv" class="page" style="display:none">
+
+<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+<hr style="clear:both">
+<input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()" style="width:120px">
+<input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'incomplete' )" onclick="undoCompleteDataSet()" style="width:120px">
+<input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" style="width:120px">
+
+</div>

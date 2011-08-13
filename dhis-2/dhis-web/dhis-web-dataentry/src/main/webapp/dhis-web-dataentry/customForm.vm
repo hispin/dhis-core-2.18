@@ -1,3 +1,1 @@
 $customDataEntryFormCode
-
-#parse( "/dhis-web-dataentry/completeRegistration.vm" )

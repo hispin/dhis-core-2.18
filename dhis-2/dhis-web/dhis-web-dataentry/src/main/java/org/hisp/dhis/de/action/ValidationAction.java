@@ -47,7 +47,7 @@ import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -61,8 +61,6 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Margrethe Store
  * @author Lars Helge Overland
- * @version $Id: ValidationAction.java 5426 2008-06-16 04:33:05Z larshelg $
- * @version $Id: ValidationAction.java 2010-04-20 01:52:07Z Chau Thu Tran $
  */
 public class ValidationAction
     implements Action
@@ -129,18 +127,18 @@ public class ValidationAction
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-    
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -159,6 +157,13 @@ public class ValidationAction
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
+    }
+
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
     }
 
     // -------------------------------------------------------------------------
@@ -201,7 +206,7 @@ public class ValidationAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgUnit = selectionManager.getSelectedOrganisationUnit();
+        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         Period selectedPeriod = PeriodType.createPeriodExternalId( periodId );
 

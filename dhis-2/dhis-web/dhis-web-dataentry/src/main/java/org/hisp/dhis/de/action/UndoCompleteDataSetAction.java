@@ -34,7 +34,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
@@ -58,19 +58,19 @@ public class UndoCompleteDataSetAction
     {
         this.registrationService = registrationService;
     }
-
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
     
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -91,6 +91,13 @@ public class UndoCompleteDataSetAction
         this.dataSetId = dataSetId;
     }
 
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -99,7 +106,7 @@ public class UndoCompleteDataSetAction
     {        
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
         Period period = PeriodType.createPeriodExternalId( periodId );
-        OrganisationUnit unit = selectionManager.getSelectedOrganisationUnit();
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, unit );
         
