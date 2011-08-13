@@ -33,7 +33,7 @@ ${dataElement.id}#if( $velocityCount < $size1 ),#end
 dataElements = {
 #set( $size2 = $dataElements.size() )
 #foreach( $dataElement in $dataElements )
-"${dataElement.id}":{"name":"${dataElement.name}","type":"$encoder.jsonEncode( ${dataElement.getDetailedNumberType()} )" 
+"${dataElement.id}":{"name":"$encoder.jsonEncode( ${dataElement.name} )","type":"$encoder.jsonEncode( ${dataElement.getDetailedNumberType()} )" 
 }#if( $velocityCount < $size2 ),#end
 #end };
 

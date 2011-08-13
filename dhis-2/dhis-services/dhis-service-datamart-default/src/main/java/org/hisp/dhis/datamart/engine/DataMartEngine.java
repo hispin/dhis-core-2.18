@@ -43,10 +43,9 @@ public interface DataMartEngine
      * @param indicatorIds the indicator identifiers.
      * @param periodIds the period identifiers.
      * @param organisationUnitIds the organisation unit identifiers.
-     * @param useIndexes indicates whether to create indexes on the data mart tables
-     *        after the export process.
+     * @param completeExport indicates whether this is a complete export.
      * @param processState the state object.
      */
     void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState processState );
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean completeExport, ProcessState processState );
 }

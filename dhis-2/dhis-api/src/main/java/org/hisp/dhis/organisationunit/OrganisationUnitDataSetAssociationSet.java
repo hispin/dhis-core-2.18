@@ -29,6 +29,7 @@ package org.hisp.dhis.organisationunit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,10 +39,21 @@ import java.util.Set;
  */
 public class OrganisationUnitDataSetAssociationSet
 {
+    /**
+     * List of data set association sets.
+     */
     private List<Set<Integer>> dataSetAssociationSets = new ArrayList<Set<Integer>>();
     
+    /**
+     * Mapping between organisation unit identifier and index of association set in list.
+     */
     private Map<Integer, Integer> organisationUnitAssociationSetMap = new HashMap<Integer, Integer>();
 
+    /**
+     * Set of distinct data sets in all association sets.
+     */
+    private Set<Integer> distinctDataSets = new HashSet<Integer>();
+    
     public OrganisationUnitDataSetAssociationSet()
     {
     }
@@ -64,5 +76,15 @@ public class OrganisationUnitDataSetAssociationSet
     public void setOrganisationUnitAssociationSetMap( Map<Integer, Integer> organisationUnitAssociationSetMap )
     {
         this.organisationUnitAssociationSetMap = organisationUnitAssociationSetMap;
+    }
+
+    public Set<Integer> getDistinctDataSets()
+    {
+        return distinctDataSets;
+    }
+
+    public void setDistinctDataSets( Set<Integer> distinctDataSets )
+    {
+        this.distinctDataSets = distinctDataSets;
     }
 }

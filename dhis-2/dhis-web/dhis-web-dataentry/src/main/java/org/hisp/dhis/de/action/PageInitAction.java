@@ -157,13 +157,13 @@ public class PageInitAction
         
         indicators = indicatorService.getIndicatorsWithDataSets();
         
-        dataSets = dataSetService.getAllDataSets();
-        
         OrganisationUnitDataSetAssociationSet organisationUnitSet = organisationUnitService.getOrganisationUnitDataSetAssociationSet();
         
         dataSetAssociationSets = organisationUnitSet.getDataSetAssociationSets();
         
         organisationUnitAssociationSetMap = organisationUnitSet.getOrganisationUnitAssociationSetMap();
+        
+        dataSets = dataSetService.getDataSets( organisationUnitSet.getDistinctDataSets() );
         
         for ( Indicator indicator : indicators )
         {

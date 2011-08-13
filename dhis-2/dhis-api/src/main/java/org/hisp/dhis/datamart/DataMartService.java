@@ -81,11 +81,10 @@ public interface DataMartService
      * @param periodIds the period identifiers.
      * @param organisationUnitIds the organisation unit identifiers.
      * @param relatives the RelativePeriods.
-     * @param useIndexes indicates whether to create indexes on the data mart tables
-     *        after the export process.
+     * @param completeExport indicates whether this is a complete export.
      */
     void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives, boolean useIndexes );
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives, boolean completeExport );
     
     // ----------------------------------------------------------------------
     // DataMartExport

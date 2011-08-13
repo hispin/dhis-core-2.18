@@ -152,7 +152,7 @@ public class DefaultDataMartEngine
 
     @Transactional
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState state )
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean completeExport, ProcessState state )
     {
         final int cpuCores = SystemUtils.getCpuCores();
         
@@ -303,7 +303,7 @@ public class DefaultDataMartEngine
         // Create potential indexes
         // ---------------------------------------------------------------------
 
-        if ( useIndexes )
+        if ( completeExport )
         {
             aggregatedDataValueService.createIndex( true, isIndicators );
             
