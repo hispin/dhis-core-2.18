@@ -224,9 +224,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
     {
         $( '#selectedDataSetId' ).val( dataSetId );
 
-        if ( periodId && periodId != -1 && dataEntryFormIsLoaded ) // TODO if
-                                                                    // period
-                                                                    // valid
+        if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
         {
             showLoader();
             loadDataValues();
@@ -374,59 +372,53 @@ function insertDataValues()
     $( '[name="min"]' ).html( '' );
     $( '[name="max"]' ).html( '' );
 
-    $
-            .getJSON(
-                    'getDataValues.action',
-                    {
-                        periodId : periodId,
-                        dataSetId : dataSetId
-                    },
-                    function( json )
-                    {
-                        // Set data values, works for select lists too as data
-                        // value = select value
+    $.getJSON( 'getDataValues.action', {
+            periodId : periodId,
+        	dataSetId : dataSetId
+        },
+        function( json )
+        {
+            // Set data values, works for select lists too as data
+            // value = select value
 
-                        $.each( json.dataValues, function( i, value )
-                        {
-                            var fieldId = '#' + value.id + '-val';
+            $.each( json.dataValues, function( i, value )
+            {
+                var fieldId = '#' + value.id + '-val';
 
-                            if ( $( fieldId ) )
-                            {
-                                $( fieldId ).val( value.val );
-                            }
+                if ( $( fieldId ) )
+                {
+                    $( fieldId ).val( value.val );
+                }
 
-                            dataValueMap[value.id] = value.val;
-                        } );
+                dataValueMap[value.id] = value.val;
+            } );
 
-                        // Set min-max values and colorize violation fields
+            // Set min-max values and colorize violation fields
 
-                        $
-                                .each(
-                                        json.minMaxDataElements,
-                                        function( i, value )
-                                        {
-                                            var minId = value.id + '-min';
-                                            var maxId = value.id + '-max';
+            $.each( json.minMaxDataElements, function( i, value ) 
+            {
+                var minId = value.id + '-min';
+                var maxId = value.id + '-max';
 
-                                            var valFieldId = '#' + value.id + '-val';
+                var valFieldId = '#' + value.id + '-val';
 
-                                            var dataValue = dataValueMap[value.id];
+                var dataValue = dataValueMap[value.id];
 
-                                            if ( dataValue
-                                                    && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) || ( value.max && new Number(
-                                                            dataValue ) > new Number( value.max ) ) ) )
-                                            {
-                                                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
-                                            }
+                if ( dataValue
+                        && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) || ( value.max && new Number(
+                                dataValue ) > new Number( value.max ) ) ) )
+                {
+                    $( valFieldId ).css( 'background-color', COLOR_ORANGE );
+                }
 
-                                            currentMinMaxValueMap[minId] = value.min;
-                                            currentMinMaxValueMap[maxId] = value.max;
-                                        } );
+                currentMinMaxValueMap[minId] = value.min;
+                currentMinMaxValueMap[maxId] = value.max;
+            } );
 
-                        // Update indicator values in form
+            // Update indicator values in form
 
-                        updateIndicators();
-                    } );
+            updateIndicators();
+        } );
 }
 
 function displayEntryFormCompleted()

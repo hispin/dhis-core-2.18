@@ -68,10 +68,10 @@ function generateExpression( expression )
     for ( k in matcher )
     {
         var match = matcher[k];
-        var operand = match.replace( /[\[\]]/g, '' ); // Remove brackets from
-                                                        // expression to
-                                                        // simplify extraction
-                                                        // of identifiers
+        
+        // Remove brackets from expression to simplify extraction of identifiers
+        
+        var operand = match.replace( /[\[\]]/g, '' ); 
 
         var dataElementId = operand.substring( 0, operand.indexOf( SEPARATOR ) );
         var categoryOptionComboId = operand.substring( operand.indexOf( SEPARATOR ) + 1, operand.length );
@@ -80,8 +80,7 @@ function generateExpression( expression )
 
         var value = $( fieldId ) && $( fieldId ).val() ? $( fieldId ).val() : '0';
 
-        expression = expression.replace( match, value ); // TODO signed
-                                                            // numbers
+        expression = expression.replace( match, value ); // TODO signed numbers
     }
 
     return expression;
@@ -127,8 +126,8 @@ function saveVal( dataElementId, optionComboId )
             }
             if ( isValidZeroNumber( value ) )
             {
-                // If value is 0 and zero is not significant for data element,
-                // skip value
+                // If value = 0 and zero not significant for data element, skip
+                
                 if ( significantZeros.indexOf( dataElementId ) == -1 )
                 {
                     $( fieldId ).css( 'background-color', COLOR_GREEN );

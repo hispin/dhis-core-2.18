@@ -423,9 +423,9 @@ public class DefaultOrganisationUnitService
     public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name,
         Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit )
     {
-        boolean _limit = limit && parent == null; // Can only limit in query if
-                                                  // parent is not set and we
-                                                  // get all units
+        // Can only limit in query if parent is not set and we get all units
+        
+        boolean _limit = limit && parent == null;
 
         final Collection<OrganisationUnit> result = organisationUnitStore.getOrganisationUnitsByNameAndGroups( name,
             groups, _limit );
@@ -464,6 +464,7 @@ public class DefaultOrganisationUnitService
             }
 
             set.getOrganisationUnitAssociationSetMap().put( entry.getKey(), index );
+            set.getDistinctDataSets().addAll( entry.getValue() );
         }
 
         return set;

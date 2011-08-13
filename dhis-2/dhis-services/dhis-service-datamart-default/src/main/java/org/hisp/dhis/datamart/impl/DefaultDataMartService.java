@@ -116,14 +116,14 @@ public class DefaultDataMartService
 
     @Transactional
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives, boolean useIndexes )
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives, boolean completeExport )
     {
         if ( relatives != null )
         {
             periodIds.addAll( getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods( 1, null, false ) ) ) );
         }
         
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, useIndexes, new OutputHolderState() );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, completeExport, new OutputHolderState() );
     }
     
     // -------------------------------------------------------------------------
