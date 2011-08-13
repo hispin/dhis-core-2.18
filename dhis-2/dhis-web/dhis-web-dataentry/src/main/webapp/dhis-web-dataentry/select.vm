@@ -47,7 +47,7 @@ indicatorFormulas = {
 dataSets = {
 #set( $size4 = $dataSets.size() )
 #foreach( $dataSet in $dataSets )
-"${dataSet.id}":{"name":"$encoder.jsonEncode( ${dataSet.name} )","periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )" 
+"${dataSet.id}":{"name":"$encoder.jsonEncode( ${dataSet.name} )","periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )","version":"${dataSet.version}"
 }#if( $velocityCount < $size4 ),#end
 #end };
 

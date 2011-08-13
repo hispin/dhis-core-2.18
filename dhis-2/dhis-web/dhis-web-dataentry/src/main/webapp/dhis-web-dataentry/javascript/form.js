@@ -658,12 +658,17 @@ function closeCurrentSelection()
 function StorageManager()
 {
 	var MAX_SIZE = new Number( 2600000 );
+	var MAX_SIZE_FORMS = new Number( 1600000 );
+	var MAX_SIZE_DATA_VALUES = new Number( 500000 );
 	
-	var KEY_FORM_PREFIX = "dataset-";
+	var KEY_FORM_PREFIX = "form-";
+	var KEY_FORM_VERSIONS = "formversions";
 	var KEY_DATAVALUES = "datavalues";
 	
 	/**
 	 * Returns the total number of characters currently in the local storage.
+	 * 
+	 * @return number of characters.
 	 */
 	this.totalSize = function()
 	{
@@ -683,6 +688,32 @@ function StorageManager()
 	}
 	
 	/**
+	 * Returns the total numbers of characters in stored forms currently in the
+	 * local storage.
+	 * 
+	 * @return number of characters.
+	 */
+	this.totalFormSize = function()
+	{
+		var totalSize = new Number();
+		
+		for ( var i = 0; i < localStorage.length; i++ )
+		{
+			if ( localStorage.key(i).substring( 0, KEY_FORM_PREFIX.length ) == KEY_FORM_PREFIX )
+			{
+				var value = localStorage.key(i);
+				
+				if ( value )
+				{
+					totalSize += value.length;
+				}
+			}
+		}
+		
+		return totalSize;
+	}
+	
+	/**
 	 * Return the remaining capacity of the local storage in characters, ie.
 	 * the maximum size minus the current size.
 	 */
@@ -696,6 +727,7 @@ function StorageManager()
 	 * 
 	 * @param dataSetId the identifier of the data set of the form.
 	 * @param html the form HTML content.
+	 * @return true if the form saved successfully, false otherwise.
 	 */
 	this.saveForm = function( dataSetId, html )
 	{
@@ -707,8 +739,19 @@ function StorageManager()
 		}
 		catch ( e )
 		{
-			console.log( "Max local storage quota reached, ignored form " + e );
+			console.log( "Max local storage quota reached, ignored form: " + dataSetId );			
+			return false;
 		}
+		
+		if ( MAX_SIZE_FORMS < this.totalFormSize() )
+		{
+			this.deleteForm( dataSetId );
+			
+			console.log( "Max local storage quota for forms reached, ignored form: " + dataSetId );
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -722,6 +765,61 @@ function StorageManager()
 		var id = KEY_FORM_PREFIX + dataSetId;
 		
 		return localStorage[id];
+	}
+	
+	/**
+	 * Removes a form.
+	 * 
+	 * @param dataSetId the identifier of the data set of the form.
+	 */
+	this.deleteForm = function( dataSetId )
+	{
+		localStorage.removeItem( dataSetId );
+	}
+	
+	/**
+	 * Saves a version for a form.
+	 * 
+	 * @param the identifier of the data set of the form.
+	 * @param formVersion the version of the form.
+	 */
+	this.saveFormVersion = function( dataSetId, formVersion )
+	{
+		var formVersions = [];
+		
+		if ( localStorage[KEY_FORM_VERSIONS] != null )
+		{
+			formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
+		}
+		
+		formVersions[dataSetId] = formVersion;
+		
+		try
+		{
+			localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
+		}
+		catch ( e )
+		{
+			console.log( "Max local storage quota reached, ignored form version " + e );
+		}
+	}
+	
+	/**
+	 * Returns the version of the form of the data set with the given identifier.
+	 * 
+	 * @param dataSetId the identifier of the data set of the form
+	 * @return the form version.
+	 */
+	this.getFormVersion = function( dataSetId )
+	{
+		if ( localStorage[KEY_FORM_VERSIONS] != null )
+		{
+			var formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
+			
+			return formVersions[dataSetId];
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -744,16 +842,16 @@ function StorageManager()
 			dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
 		}
 		
+		dataValues[id] = value;
+		
 		try
 		{
-			dataValues[id] = value;
-		}		
+			localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
+		}
 		catch ( e )
 		{
 			console.log( "Max local storage quota reached, ignored data value " + e );
 		}
-		
-		localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
 	}
 	
 	/**
