@@ -28,7 +28,6 @@ package org.hisp.dhis.patientattributevalue;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.patient.Patient;

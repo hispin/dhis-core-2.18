@@ -72,7 +72,7 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 			#if( !$isHistoryValid )			    
 			    <h4>$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</h4>  
 			#end			
-			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&categoryOptionComboId=${dataElementHistory.optionCombo.id}&periodId=${periodId}"/>
+			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&categoryOptionComboId=${dataElementHistory.optionCombo.id}&organisationUnitId=${dataElementHistory.organisationUnit.id}&periodId=${periodId}"/>
         </td>
     </tr>
     #if( $dataValueAuditSize > 0 )

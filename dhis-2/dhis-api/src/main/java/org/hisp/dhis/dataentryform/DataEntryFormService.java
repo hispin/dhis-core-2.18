@@ -135,7 +135,7 @@ public interface DataEntryFormService
      * @param dataSet the data set associated with this form.
      * @return HTML code for the form.
      */
-    String prepareDataEntryFormForEntry( String htmlCode, String disabled, I18n i18n, DataSet dataSet );
+    String prepareDataEntryFormForEntry( String htmlCode, I18n i18n, DataSet dataSet );
     
     Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
     

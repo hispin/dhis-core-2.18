@@ -41,7 +41,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.history.DataElementHistory;
 import org.hisp.dhis.de.history.HistoryRetriever;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
@@ -49,7 +49,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: HistoryAction.java 4778 2008-03-20 13:21:56Z abyot $
  */
 public class HistoryAction
     implements Action
@@ -95,11 +94,11 @@ public class HistoryAction
         this.dataValueAuditService = dataValueAuditService;
     }
 
-    private OrganisationUnitSelectionManager selectionManager;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.selectionManager = selectionManager;
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -130,6 +129,13 @@ public class HistoryAction
     public void setPeriodId( String periodId )
     {
         this.periodId = periodId;
+    }
+    
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
     }
 
     // -------------------------------------------------------------------------
@@ -194,7 +200,7 @@ public class HistoryAction
 
         Period period = PeriodType.createPeriodExternalId( periodId );
 
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         
         dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
 

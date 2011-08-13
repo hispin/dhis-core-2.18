@@ -34,7 +34,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.jfree.chart.JFreeChart;
@@ -74,11 +74,11 @@ public class GetHistoryChartAction
         this.categoryService = categoryService;
     }
 
-    private OrganisationUnitSelectionManager selectionManager;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.selectionManager = selectionManager;
+        this.organisationUnitService = organisationUnitService;
     }
 
     private I18nFormat format;
@@ -111,6 +111,13 @@ public class GetHistoryChartAction
     public void setPeriodId( String periodId )
     {
         this.periodId = periodId;
+    }
+    
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
     }
 
     // -------------------------------------------------------------------------
@@ -149,7 +156,7 @@ public class GetHistoryChartAction
 
         Period period = PeriodType.createPeriodExternalId( periodId );
         
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         
         chart = chartService.getJFreeChartHistory( dataElement, categoryOptionCombo, period, organisationUnit, HISTORY_LENGTH, format );
         
