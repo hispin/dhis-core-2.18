@@ -53,6 +53,8 @@ var COLOR_WHITE = '#ffffff';
 $( document ).ready( function()
 {
     selection.setListenerFunction( organisationUnitSelected );
+    
+    updateForms();
 } );
 
 function addEventListeners()
@@ -134,23 +136,36 @@ function clearEntryForm()
     dataEntryFormIsLoaded = false;
 }
 
-function loadForm( periodId, dataSetId )
+function loadForm( dataSetId )
 {
-    var defaultForm = $( '#defaultForm' ).is( ':checked' );
-
-    $( '#contentDiv' ).load( 'loadForm.action', {
-        periodId : periodId,
-        dataSetId : dataSetId,
-        defaultForm : defaultForm
-    }, loadDataValues );
+	if ( storageManager.formExists( dataSetId ) )
+	{
+		console.log( 'Loading form locally: ' + dataSetId );
+		
+		var html = storageManager.getForm( dataSetId );
+		
+		$( '#contentDiv' ).html( html );
+		
+		loadDataValues();
+	}
+	else
+	{	
+		console.log( 'Loading form remotely: ' + dataSetId );
+		
+	    var defaultForm = $( '#defaultForm' ).is( ':checked' );
+	
+	    $( '#contentDiv' ).load( 'loadForm.action', {
+	        dataSetId : dataSetId,
+	        defaultForm : defaultForm
+	    }, loadDataValues );
+	}
 }
 
 function loadDefaultForm()
 {
     var dataSetId = $( '#selectedDataSetId' ).val();
-    var periodId = $( '#selectedPeriodId' ).val();
 
-    loadForm( periodId, dataSetId );
+    loadForm( dataSetId );
 }
 
 // -----------------------------------------------------------------------------
@@ -305,7 +320,7 @@ function dataSetSelected()
         {
             showLoader();
             $( '#selectedPeriodId' ).val( periodId );
-            loadForm( periodId, dataSetId );
+            loadForm( dataSetId );
         }
         else
         {
@@ -339,7 +354,7 @@ function periodSelected()
         }
         else
         {
-            loadForm( periodId, dataSetId );
+            loadForm( dataSetId );
         }
     }
 }
@@ -674,6 +689,76 @@ function closeCurrentSelection()
     $( '#currentSelection' ).fadeOut();
 }
 
+// -----------------------------------------------------------------------------
+// Local storage of forms
+// -----------------------------------------------------------------------------
+
+function updateForms()
+{
+	purgeLocalForms();
+	console.log( 'Purged local forms' );
+	
+	updateExistingLocalForms();
+	console.log( 'Updated existing local forms' );
+	
+	downloadRemoteForms();
+	console.log( 'Downloaded remote forms' );
+}
+
+function purgeLocalForms()
+{
+	var formIds = storageManager.getAllForms();
+	
+	for ( i in formIds )
+	{
+		var localId = formIds[i];
+		
+		if ( dataSets[localId] == null )
+		{
+			storageManager.deleteForm( localId );
+			console.log( 'Deleted locally stored form: ' + localId );
+		}
+	}
+}
+
+function updateExistingLocalForms()
+{
+	var formIds = storageManager.getAllForms();	
+	var formVersions = storageManager.getAllFormVersions();
+	
+	for ( i in formIds )
+	{
+		var dataSetId = formIds[i];
+		
+		var remoteVersion = dataSets[dataSetId].version;
+		var localVersion = formVersions[dataSetId];
+		
+		if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
+		{
+			storageManager.downloadForm( dataSetId, remoteVersion ); 
+		}
+	}
+}
+
+function downloadRemoteForms()
+{
+	for ( dataSetId in dataSets )
+	{
+		var remoteVersion = dataSets[dataSetId].version;
+		
+		if ( !storageManager.formExists( dataSetId ) )
+		{
+			storageManager.downloadForm( dataSetId, remoteVersion );
+		}
+	}
+}
+
+// TODO break if local storage is full
+
+// -----------------------------------------------------------------------------
+// StorageManager
+// -----------------------------------------------------------------------------
+
 /**
  * This object provides utility methods for localStorage and manages data entry
  * forms and data values. 
@@ -759,10 +844,12 @@ function StorageManager()
 		try
 		{
 			localStorage[id] = html;
+			
+			console.log( 'Successfully stored form: ' + dataSetId );
 		}
 		catch ( e )
 		{
-			console.log( "Max local storage quota reached, ignored form: " + dataSetId );			
+			console.log( 'Max local storage quota reached, ignored form: ' + dataSetId );			
 			return false;
 		}
 		
@@ -770,7 +857,7 @@ function StorageManager()
 		{
 			this.deleteForm( dataSetId );
 			
-			console.log( "Max local storage quota for forms reached, ignored form: " + dataSetId );
+			console.log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
 			return false;
 		}
 		
@@ -801,6 +888,67 @@ function StorageManager()
 	}
 	
 	/**
+	 * Returns an array of the identifiers of all forms.
+	 * 
+	 * @return array with form identifiers.
+	 */
+	this.getAllForms = function()
+	{
+		var formIds = [];
+		var i = 0;
+		
+		for ( var i = 0; i < localStorage.length; i++ )
+		{
+			var key = localStorage.key(i);
+			
+			if ( key.substring( 0, KEY_FORM_PREFIX.length ) == KEY_FORM_PREFIX )
+			{
+				var id = key.split( '-' )[1];
+				
+				formIds[i++] = id;
+			}
+		}
+		
+		return formIds;
+	}
+	
+	/**
+	 * Indicates whether a form exists.
+	 * 
+	 * @param dataSetId the identifier of the data set of the form.
+	 * @return true if a form exists, false otherwise. 
+	 */
+	this.formExists = function( dataSetId )
+	{
+		var id = KEY_FORM_PREFIX + dataSetId;
+		
+		return localStorage[id] != null;
+	}
+	
+	/**
+	 * Downloads the form for the data set with the given identifier from the 
+	 * remote server and saves the form locally. Potential existing forms with
+	 * the same identifier will be overwritten. Updates the form version. Method 
+	 * is synchronous.
+	 * 
+	 * @param dataSetId the identifier of the data set of the form.
+	 * @param formVersion the version of the form of the remote data set.
+	 */
+	this.downloadForm = function( dataSetId, formVersion )
+	{
+		$.ajax( {
+			url: 'loadForm.action',
+			data: { dataSetId: dataSetId },
+			dataType: 'text',
+			async: false,
+			success: function( data, textStatus, jqXHR ) {					
+				storageManager.saveForm( dataSetId, data );
+				storageManager.saveFormVersion( dataSetId, formVersion );
+			}
+		} );
+	}
+	
+	/**
 	 * Saves a version for a form.
 	 * 
 	 * @param the identifier of the data set of the form.
@@ -820,10 +968,12 @@ function StorageManager()
 		try
 		{
 			localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
+			
+			console.log( 'Successfully stored form version: ' + dataSetId );
 		}
 		catch ( e )
 		{
-			console.log( "Max local storage quota reached, ignored form version " + e );
+			console.log( 'Max local storage quota reached, ignored form version: ' + dataSetId );
 		}
 	}
 	
@@ -843,6 +993,11 @@ function StorageManager()
 		}
 		
 		return null;
+	}
+	
+	this.getAllFormVersions = function()
+	{
+		return localStorage[KEY_FORM_VERSIONS] != null ?  JSON.parse( localStorage[KEY_FORM_VERSIONS] ) : null;
 	}
 	
 	/**
@@ -870,10 +1025,12 @@ function StorageManager()
 		try
 		{
 			localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
+			
+			console.log( 'Successfully stored data value' );
 		}
 		catch ( e )
 		{
-			console.log( "Max local storage quota reached, ignored data value " + e );
+			console.log( 'Max local storage quota reached, ignored data value' );
 		}
 	}
 	
