@@ -6,8 +6,8 @@ RUNTIME_LINUX=runtime/tclkit-8.6b1.1
 win-exe:
 	rm -rf mydatamart.vfs/libext/sqlite* mydatamart.vfs/libext/tls*
 	cp -r windoze/libext mydatamart.vfs 
-	$(TCLKITSH_WIN) runtime/sdx.kit wrap mydatamart.kit
-	$(TCLKITSH_WIN) runtime/sdx.kit wrap mydatamart.exe -runtime $(RUNTIME_WIN)
+	$(TCLKITSH_WIN) runtime/sdx.kit wrap target/mydatamart.kit
+	$(TCLKITSH_WIN) runtime/sdx.kit wrap target/mydatamart.exe -runtime $(RUNTIME_WIN)
 
 linux-exe:
 	rm -rf mydatamart.vfs/libext/sqlite* mydatamart.vfs/libext/tls*
@@ -22,5 +22,5 @@ test:
 	$(TCLKITSH_WIN) unittests/unittest.tcl -testdir unittests -verbose -pe -file "excel.test"
 
 clean:
-	rm -f mydatamart.kit *~
+	rm -f target/* *~
 	rm -rf mydatamart.vfs/libext/sqlite* mydatamart.vfs/libext/tls*
