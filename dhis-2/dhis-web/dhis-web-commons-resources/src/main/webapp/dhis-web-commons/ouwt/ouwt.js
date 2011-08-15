@@ -38,13 +38,9 @@ function Selection()
 
         if ( !skipInitialCall )
         {
-            jQuery( "body" ).bind( "ajaxComplete", function( e, xhr, settings )
+            $( "#orgUnitTree" ).bind( "ouwtLoaded", function()
             {
-                if ( settings.url.indexOf( "getOrganisationUnitTree" ) && settings.data === undefined )
-                {
-                    selection.responseReceived();
-                    jQuery( "body" ).unbind( "ajaxComplete" );
-                }
+                selection.responseReceived();
             } );
         }
     };
@@ -120,6 +116,8 @@ function Selection()
                     {
                         sync_and_reload();
                     }
+
+                    $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
                 } );
     };
 

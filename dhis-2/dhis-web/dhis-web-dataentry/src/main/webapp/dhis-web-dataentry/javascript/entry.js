@@ -70,10 +70,10 @@ function generateExpression( expression )
     for ( k in matcher )
     {
         var match = matcher[k];
-        
+
         // Remove brackets from expression to simplify extraction of identifiers
-        
-        var operand = match.replace( /[\[\]]/g, '' ); 
+
+        var operand = match.replace( /[\[\]]/g, '' );
 
         var dataElementId = operand.substring( 0, operand.indexOf( SEPARATOR ) );
         var categoryOptionComboId = operand.substring( operand.indexOf( SEPARATOR ) + 1, operand.length );
@@ -82,7 +82,8 @@ function generateExpression( expression )
 
         var value = $( fieldId ) && $( fieldId ).val() ? $( fieldId ).val() : '0';
 
-        expression = expression.replace( match, value ); // TODO signed numbers
+        expression = expression.replace( match, value ); // TODO signed
+        // numbers
     }
 
     return expression;
@@ -129,7 +130,7 @@ function saveVal( dataElementId, optionComboId )
             if ( isValidZeroNumber( value ) )
             {
                 // If value = 0 and zero not significant for data element, skip
-                
+
                 if ( significantZeros.indexOf( dataElementId ) == -1 )
                 {
                     $( fieldId ).css( 'background-color', COLOR_GREEN );
@@ -209,20 +210,21 @@ function alertField( fieldId, alertMessage )
 
 function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, periodId_, value_, resultColor_ )
 {
-    var dataElementId = dataElementId_;
-    var optionComboId = optionComboId_;
-    var value = value_;
+    var dataValue = {
+        "dataElementId" : dataElementId_,
+        "optionComboId" : optionComboId_,
+        "organisationUnitId" : organisationUnitId_,
+        "periodId" : periodId_,
+        "value" : value_,
+    };
+
     var resultColor = resultColor_;
-    var organisationUnitId = organisationUnitId_;
-    var periodId = periodId_;
 
     this.save = function()
     {
-        var url = 'saveValue.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId
-                + '&optionComboId=' + optionComboId + '&periodId=' + periodId + '&value=' + value;
-
         $.ajax( {
-            url : url,
+            url : "saveValue.action",
+            data : dataValue,
             dataType : 'json',
             success : handleResponse,
             error : handleError
@@ -252,6 +254,6 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
 
     function markValue( color )
     {
-        $( '#' + dataElementId + '-' + optionComboId + '-val' ).css( 'background-color', color );
+        $( '#' + dataValue.dataElementId + '-' + dataValue.optionComboId + '-val' ).css( 'background-color', color );
     }
 }
