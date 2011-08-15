@@ -38,7 +38,7 @@ function Selection()
 
         if ( !skipInitialCall )
         {
-            $( "#orgUnitTree" ).bind( "ouwtLoaded", function()
+            $( "#orgUnitTree" ).one( "ouwtLoaded", function()
             {
                 selection.responseReceived();
             } );
