@@ -204,6 +204,31 @@ function alertField( fieldId, alertMessage )
     return false;
 }
 
+$(document).ready(function() {
+    $("#orgUnitTree").one("ouwtLoaded", function() {
+        saveDataValuesInLocalStorage();
+    });
+})
+
+function saveDataValuesInLocalStorage() {
+    var dataValues = storageManager.getAllDataValues();
+
+    for(var dataValueKey in dataValues) {
+        var dataValue = dataValues[dataValueKey];
+        console.log(dataValue);
+
+        $.ajax( {
+            url : "saveValue.action",
+            data : dataValue,
+            dataType : 'json',
+            success : function( json ) {
+                storageManager.clearDataValueJSON( dataValue );
+                console.log("Successfully saved dataValue with value " + dataValue.value);
+            }
+        } );
+    }
+}
+
 // -----------------------------------------------------------------------------
 // Saver objects
 // -----------------------------------------------------------------------------
@@ -222,13 +247,16 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
 
     this.save = function()
     {
-        storageManager.saveDataValueJSON( dataValue );
+        storageManager.saveDataValue( dataValue );
 
         $.ajax( {
             url : "saveValue.action",
             data : dataValue,
             dataType : 'json',
-            success : handleResponse,
+            success : function( json ) {
+                storageManager.clearDataValueJSON( dataValue );
+                handleResponse( json );
+            },
             error : handleError
         } );
     };

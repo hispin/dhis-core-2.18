@@ -1005,25 +1005,11 @@ function StorageManager()
 	/**
 	 * Saves a data value.
 	 * 
-	 * @param dataValue The datavalue and identifiers in json format.
+     * @param dataValue The datavalue and identifiers in json format.
 	 */
-	this.saveDataValueJSON = function( dataValue )
+	this.saveDataValue = function( dataValue )
 	{
-	    this.saveDataValue( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId, dataValue.organisationUnitId, dataValue.value );
-	}
-
-	/**
-	 * Saves a data value.
-	 * 
-	 * @param dataElementId the data element identifier.
-	 * @param categoryOptionComboId the category option combo identifier.
-	 * @param periodId the period identifier.
-	 * @param organisationUnitId the organisation unit identifier.
-	 * @param value the value.
-	 */
-	this.saveDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId, value )
-	{
-		var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
+		var id = this.getDataValueIdentifier( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId, dataValue.organisationUnitId );
 
 		var dataValues = {};
 
@@ -1032,7 +1018,7 @@ function StorageManager()
 			dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
 		}
 
-		dataValues[id] = value;
+		dataValues[id] = dataValue;
 
 		try
 		{
@@ -1059,15 +1045,44 @@ function StorageManager()
 	this.getDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
 	{
 		var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
-		
+
 		if ( localStorage[KEY_DATAVALUES] != null )
 		{
 			var dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
 			
 			return dataValues[id];
 		}
-		
+
 		return null;
+	}
+
+	/**
+	 * Removes the wanted dataValue from localStorage.
+	 * 
+	 * @param dataValue The datavalue and identifiers in json format.
+	 */
+	this.clearDataValueJSON = function( dataValue )
+	{
+	    this.clearDataValue( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId, dataValue.organisationUnitId );
+	}
+
+	/**
+     * Removes the wanted dataValue from localStorage.
+     * 
+     * @param dataElementId the data element identifier.
+     * @param categoryOptionComboId the category option combo identifier.
+     * @param periodId the period identifier.
+     * @param organisationUnitId the organisation unit identifier.
+     */
+	this.clearDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
+	{
+	    var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
+	    var dataValues = this.getAllDataValues();
+
+	    console.log("deleting with id " + id);
+	    
+	    delete dataValues[id];
+	    localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
 	}
 	
 	/**
