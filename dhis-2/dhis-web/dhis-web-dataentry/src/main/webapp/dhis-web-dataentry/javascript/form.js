@@ -54,7 +54,7 @@ $( document ).ready( function()
 {
     selection.setListenerFunction( organisationUnitSelected );
     
-    $( "#orgUnitTree" ).bind( "ouwtLoaded", function() {
+    $( '#orgUnitTree' ).bind( 'ouwtLoaded', function() {
     	updateForms();
     } );
 } );

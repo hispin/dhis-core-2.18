@@ -550,7 +550,11 @@ function validatorFormat( text )
 // Set Message for validatior
 // --------------------------------------------------------------------------
 jQuery(document).ready( function(){
-	jQuery.validator.setMessages( validationMessage );
+	if ( validationMessage != "undefined" )
+	{
+		jQuery.validator.setMessages( validationMessage );
+	}
+	
 	jQuery.validator.setDefaults({
 		debug: false,
 		success: "valid"
