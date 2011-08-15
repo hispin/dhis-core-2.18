@@ -54,7 +54,9 @@ $( document ).ready( function()
 {
     selection.setListenerFunction( organisationUnitSelected );
     
-    updateForms();
+    $( "#orgUnitTree" ).bind( "ouwtLoaded", function() {
+    	updateForms();
+    } );
 } );
 
 function addEventListeners()
