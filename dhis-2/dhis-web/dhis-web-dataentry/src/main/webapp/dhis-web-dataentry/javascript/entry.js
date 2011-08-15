@@ -215,15 +215,15 @@ function saveDataValuesInLocalStorage() {
 
     for(var dataValueKey in dataValues) {
         var dataValue = dataValues[dataValueKey];
-        console.log(dataValue);
 
         $.ajax( {
             url : "saveValue.action",
             data : dataValue,
             dataType : 'json',
-            success : function( json ) {
-                storageManager.clearDataValueJSON( dataValue );
-                console.log("Successfully saved dataValue with value " + dataValue.value);
+            dataValue: dataValue,
+            success : function( data, textStatus, jqXHR ) {
+                storageManager.clearDataValueJSON( this.dataValue );
+                console.log("Successfully saved dataValue with value " + this.dataValue );
             }
         } );
     }

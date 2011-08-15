@@ -1079,9 +1079,14 @@ function StorageManager()
 	    var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
 	    var dataValues = this.getAllDataValues();
 
-	    console.log("deleting with id " + id);
+	    var ret = delete dataValues[id];
 	    
-	    delete dataValues[id];
+	    if(ret) {
+	        console.log("deleted with id " + id);
+	    } else {
+	        console.log("could not delete with id " + id);
+	    }
+
 	    localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
 	}
 	
