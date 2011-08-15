@@ -52,7 +52,6 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import com.opensymphony.xwork2.Action;
 
@@ -159,13 +158,6 @@ public class LoadFormAction
         return this.customDataEntryFormCode;
     }
 
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
     private List<Section> sections;
 
     public List<Section> getSections()
@@ -208,25 +200,11 @@ public class LoadFormAction
         return orderdCategoryOptionCombos;
     }
 
-    private List<DataElementCategoryOptionCombo> allOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
-
-    public List<DataElementCategoryOptionCombo> getAllOptionCombos()
-    {
-        return allOptionCombos;
-    }
-
     private List<DataElementCategoryCombo> orderedCategoryCombos = new ArrayList<DataElementCategoryCombo>();
 
     public List<DataElementCategoryCombo> getOrderedCategoryCombos()
     {
         return orderedCategoryCombos;
-    }
-
-    private Map<Integer, Boolean> sectionIsMultiDimensional = new HashMap<Integer, Boolean>();
-
-    public Map<Integer, Boolean> getSectionIsMultiDimensional()
-    {
-        return sectionIsMultiDimensional;
     }
 
     private Map<Integer, Integer> sectionCombos = new HashMap<Integer, Integer>();
@@ -274,8 +252,6 @@ public class LoadFormAction
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
         {
             Collection<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
-
-            allOptionCombos.addAll( optionCombos );
 
             orderdCategoryOptionCombos.put( categoryCombo.getId(), optionCombos );
 
@@ -368,11 +344,6 @@ public class LoadFormAction
                 orderedCategoryCombos.add( sectionCategoryCombo );
 
                 sectionCombos.put( section.getId(), sectionCategoryCombo.getId() );
-            }
-
-            if ( section.hasMultiDimensionalDataElement() )
-            {
-                sectionIsMultiDimensional.put( section.getId(), true );
             }
 
             for ( DataElementOperand operand : section.getGreyedFields() )

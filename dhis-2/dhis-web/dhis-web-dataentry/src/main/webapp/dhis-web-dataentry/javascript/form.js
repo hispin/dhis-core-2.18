@@ -855,6 +855,7 @@ function StorageManager()
 			return false;
 		}
 		
+		/*
 		if ( MAX_SIZE_FORMS < this.totalFormSize() )
 		{
 			this.deleteForm( dataSetId );
@@ -862,6 +863,7 @@ function StorageManager()
 			console.log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
 			return false;
 		}
+		* */
 		
 		return true;
 	}
@@ -1079,7 +1081,8 @@ function StorageManager()
 	    var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
 	    var dataValues = this.getAllDataValues();
 
-	    if(dataValues[id] != null) {
+	    if( dataValues[id] != null ) 
+	    {
 	        delete dataValues[id];
 	        localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
 	    }
