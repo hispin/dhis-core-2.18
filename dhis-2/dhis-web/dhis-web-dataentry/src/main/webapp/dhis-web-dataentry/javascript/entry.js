@@ -222,6 +222,8 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
 
     this.save = function()
     {
+        storageManager.saveDataValueJSON( dataValue );
+
         $.ajax( {
             url : "saveValue.action",
             data : dataValue,
