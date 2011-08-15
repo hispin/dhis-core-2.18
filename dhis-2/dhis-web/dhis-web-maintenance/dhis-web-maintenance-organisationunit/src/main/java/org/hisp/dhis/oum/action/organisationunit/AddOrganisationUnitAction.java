@@ -256,13 +256,18 @@ public class AddOrganisationUnitAction
             parent.getChildren().add( organisationUnit );
         }
 
+        // ---------------------------------------------------------------------
+        // Must persist org unit before adding data sets because association are
+        // updated on both sides (and this side is inverse)
+        // ---------------------------------------------------------------------
+
+        organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
+
         for ( String id : dataSets )
         {
             organisationUnit.addDataSet( dataSetService.getDataSet( Integer.parseInt( id ) ) );
         }
         
-        organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
-
         for ( String id : selectedGroups )
         {
             OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( id ) );
@@ -274,6 +279,8 @@ public class AddOrganisationUnitAction
             }
         }
 
+        organisationUnitService.updateOrganisationUnit( organisationUnit );
+        
         return SUCCESS;
     }
 }
