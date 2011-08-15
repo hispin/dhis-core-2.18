@@ -14,7 +14,6 @@ css/light_blue/logo_separator.png
 css/widgets.css
 ../dhis-web-dataentry/style/dhis-web-dataentry.css
 javascripts/jQuery/jquery-1.6.1.min.js
-javascripts/jQuery/ui/jquery-ui-1.8.12.custom.min.js
 javascripts/jQuery/jquery.metadata.js
 javascripts/jQuery/jquery.glob.js
 javascripts/jQuery/jquery.date.js
