@@ -13,9 +13,9 @@ linux-exe:
 	rm -rf mydatamart.vfs/libext/sqlite* mydatamart.vfs/libext/tls*
 	cp -r linux/libext mydatamart.vfs
 	cp $(TCLKITSH_LINUX) ./tclkit-linux 
-	$(TCLKITSH_LINUX) runtime/sdx.kit wrap mydatamart.kit
-	$(TCLKITSH_LINUX) runtime/sdx.kit wrap mydatamart -runtime ./tclkit-linux
-	chmod +x mydatamart
+	$(TCLKITSH_LINUX) runtime/sdx.kit wrap target/mydatamart.kit
+	$(TCLKITSH_LINUX) runtime/sdx.kit wrap target/mydatamart -runtime ./tclkit-linux
+	chmod +x target/mydatamart
 	rm ./tclkit-linux
 
 test:
