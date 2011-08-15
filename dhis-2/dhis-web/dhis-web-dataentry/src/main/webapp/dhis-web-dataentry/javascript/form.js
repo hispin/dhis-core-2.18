@@ -1005,6 +1005,16 @@ function StorageManager()
 	/**
 	 * Saves a data value.
 	 * 
+	 * @param dataValue The datavalue and identifiers in json format
+	 */
+	this.saveDataValueJSON = function( dataValue )
+	{
+	    this.saveDataValue( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId, dataValue.organisationUnitId, dataValue.value );
+	}
+
+	/**
+	 * Saves a data value.
+	 * 
 	 * @param dataElementId the data element identifier.
 	 * @param categoryOptionComboId the category option combo identifier.
 	 * @param periodId the period identifier.
@@ -1014,16 +1024,16 @@ function StorageManager()
 	this.saveDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId, value )
 	{
 		var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
-		
-		var dataValues = [];
-		
+
+		var dataValues = {};
+
 		if ( localStorage[KEY_DATAVALUES] != null )
 		{
 			dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
 		}
-		
+
 		dataValues[id] = value;
-		
+
 		try
 		{
 			localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );

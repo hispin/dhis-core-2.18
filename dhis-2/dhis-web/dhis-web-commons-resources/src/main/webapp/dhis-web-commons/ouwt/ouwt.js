@@ -110,14 +110,16 @@ function Selection()
                                     localStorage[getTagId( "Roots" )] = JSON.stringify( roots );
                                     localStorage[getTagId( "Version" )] = data.version;
 
-                                } ).complete( sync_and_reload );
+                                } ).complete( function() {
+                                    sync_and_reload();
+                                    $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
+                                } );
                     }
                     else
                     {
                         sync_and_reload();
+                        $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
                     }
-
-                    $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
                 } );
     };
 
