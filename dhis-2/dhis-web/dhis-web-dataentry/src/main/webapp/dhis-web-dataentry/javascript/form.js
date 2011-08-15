@@ -958,7 +958,7 @@ function StorageManager()
 	 */
 	this.saveFormVersion = function( dataSetId, formVersion )
 	{
-		var formVersions = [];
+		var formVersions = {};
 		
 		if ( localStorage[KEY_FORM_VERSIONS] != null )
 		{
@@ -982,7 +982,7 @@ function StorageManager()
 	/**
 	 * Returns the version of the form of the data set with the given identifier.
 	 * 
-	 * @param dataSetId the identifier of the data set of the form
+	 * @param dataSetId the identifier of the data set of the form.
 	 * @return the form version.
 	 */
 	this.getFormVersion = function( dataSetId )
@@ -1005,7 +1005,7 @@ function StorageManager()
 	/**
 	 * Saves a data value.
 	 * 
-	 * @param dataValue The datavalue and identifiers in json format
+	 * @param dataValue The datavalue and identifiers in json format.
 	 */
 	this.saveDataValueJSON = function( dataValue )
 	{
