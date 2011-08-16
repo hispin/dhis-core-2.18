@@ -136,6 +136,8 @@ function clearEntryForm()
     currentPeriodOffset = 0;
 
     dataEntryFormIsLoaded = false;
+    
+    $( '#completenessDiv' ).css( 'display', 'none' );
 }
 
 function loadForm( dataSetId )
