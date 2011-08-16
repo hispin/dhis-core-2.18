@@ -154,20 +154,10 @@ function loadForm( dataSetId )
 	{	
 		console.log( 'Loading form remotely: ' + dataSetId );
 		
-	    var defaultForm = $( '#defaultForm' ).is( ':checked' );
-	
 	    $( '#contentDiv' ).load( 'loadForm.action', {
-	        dataSetId : dataSetId,
-	        defaultForm : defaultForm
+	        dataSetId : dataSetId
 	    }, loadDataValues );
 	}
-}
-
-function loadDefaultForm()
-{
-    var dataSetId = $( '#selectedDataSetId' ).val();
-
-    loadForm( dataSetId );
 }
 
 // -----------------------------------------------------------------------------

@@ -80,9 +80,7 @@ organisationUnitAssociationSetMap = {
 </div>
 
 <div id="actions" style="">	
-    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="validate()" id="validationButton" style="width:150px;" disabled="disabled"/><br/><br/>
-
-    <input type="checkbox" id="defaultForm" onclick="loadDefaultForm()" disabled="disabled"><label for="defaultForm">$i18n.getString( "use_default_form" )</label><br>
+    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="validate()" id="validationButton" style="width:150px;" disabled="disabled"/>
 </div>
 
 <table>

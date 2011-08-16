@@ -133,13 +133,6 @@ public class LoadFormAction
         this.dataSetId = dataSetId;
     }
 
-    private boolean defaultForm;
-
-    public void setDefaultForm( boolean defaultForm )
-    {
-        this.defaultForm = defaultForm;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -230,12 +223,6 @@ public class LoadFormAction
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-        // ---------------------------------------------------------------------
-        // Get display mode
-        // ---------------------------------------------------------------------
-
-        String displayMode = defaultForm ? DataSet.TYPE_DEFAULT : dataSet.getDataSetType();
-        
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
         if ( dataElements.isEmpty() )
@@ -313,6 +300,8 @@ public class LoadFormAction
         // Get data entry form
         // ---------------------------------------------------------------------
 
+        String displayMode = dataSet.getDataSetType();
+        
         if ( displayMode.equals( DataSet.TYPE_SECTION ) )
         {
             getSectionForm( dataElements, dataSet );
