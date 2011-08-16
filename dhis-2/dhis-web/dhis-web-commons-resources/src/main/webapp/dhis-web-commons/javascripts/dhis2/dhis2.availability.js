@@ -35,14 +35,13 @@ dhis2.availability._availableTimeoutHandler = undefined;
  * Start availability check, will trigger dhis2.online / dhis2.offline events
  * when availability changes.
  * 
- * @param checkInterval How often to check for availability, default is 1000.
+ * @param onlineInterval How often to check for availability, default is 1000.
+ * @param offlineInterval How often to check for availability, default is 1000.
  */
-dhis2.availability.startAvailabilityCheck = function( checkInterval )
+dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInterval )
 {
-    if ( checkInterval === undefined )
-    {
-        checkInterval = 1000;
-    }
+    onlineInterval = onlineInterval ? onlineInterval : 10000;
+    offlineInterval = offlineInterval ? offlineInterval : 1000;
 
     function _checkAvailability()
     {
@@ -56,7 +55,7 @@ dhis2.availability.startAvailabilityCheck = function( checkInterval )
                 if ( loggedIn != dhis2.availability._isLoggedIn )
                 {
                     dhis2.availability._isLoggedIn = loggedIn;
-                    $( document ).trigger( "dhis2.online", [ loggedIn ]);
+                    $( document ).trigger( "dhis2.online", [ loggedIn ] );
                 }
             },
             error : function( jqXHR, textStatus, errorThrown )
@@ -69,11 +68,18 @@ dhis2.availability.startAvailabilityCheck = function( checkInterval )
             }
         } ).complete( function()
         {
-            _availableTimeoutHandler = setTimeout( _checkAvailability, checkInterval );
+            if ( dhis2.availability._isAvailable )
+            {
+                dhis2.availability._availableTimeoutHandler = setTimeout( _checkAvailability, onlineInterval );
+            }
+            else
+            {
+                dhis2.availability._availableTimeoutHandler = setTimeout( _checkAvailability, offlineInterval );
+            }
         } );
     }
 
-    _availableTimeoutHandler = setTimeout( _checkAvailability, checkInterval );
+    _availableTimeoutHandler = setTimeout( _checkAvailability, onlineInterval );
 }
 
 /**
@@ -81,5 +87,5 @@ dhis2.availability.startAvailabilityCheck = function( checkInterval )
  */
 dhis2.availability.stopAvailabilityCheck = function()
 {
-    clearTimeout( _availableTimeoutHandler );
+    clearTimeout( dhis2.availability._availableTimeoutHandler );
 }
