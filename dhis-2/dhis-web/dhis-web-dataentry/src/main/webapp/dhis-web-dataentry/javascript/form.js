@@ -688,13 +688,8 @@ function closeCurrentSelection()
 function updateForms()
 {
 	purgeLocalForms();
-	console.log( 'Purged local forms' );
-	
-	updateExistingLocalForms();
-	console.log( 'Updated existing local forms' );
-	
+	updateExistingLocalForms();	
 	downloadRemoteForms();
-	console.log( 'Downloaded remote forms' );
 }
 
 function purgeLocalForms()
@@ -711,6 +706,8 @@ function purgeLocalForms()
 			console.log( 'Deleted locally stored form: ' + localId );
 		}
 	}
+	
+	console.log( 'Purged local forms' );
 }
 
 function updateExistingLocalForms()
@@ -922,8 +919,7 @@ function StorageManager()
 	/**
 	 * Downloads the form for the data set with the given identifier from the 
 	 * remote server and saves the form locally. Potential existing forms with
-	 * the same identifier will be overwritten. Updates the form version. Method 
-	 * is synchronous.
+	 * the same identifier will be overwritten. Updates the form version.
 	 * 
 	 * @param dataSetId the identifier of the data set of the form.
 	 * @param formVersion the version of the form of the remote data set.
@@ -934,10 +930,11 @@ function StorageManager()
 			url: 'loadForm.action',
 			data: { dataSetId: dataSetId },
 			dataType: 'text',
-			async: false,
+			dataSetId: dataSetId,
+			formVersion: formVersion,
 			success: function( data, textStatus, jqXHR ) {					
-				storageManager.saveForm( dataSetId, data );
-				storageManager.saveFormVersion( dataSetId, formVersion );
+				storageManager.saveForm( this.dataSetId, data );
+				storageManager.saveFormVersion( this.dataSetId, this.formVersion );
 			}
 		} );
 	}
