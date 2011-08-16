@@ -204,6 +204,20 @@ function alertField( fieldId, alertMessage )
     return false;
 }
 
+function ajax_login() {
+    $("#login_button").bind("click", function() {
+        var username = prompt("Please enter username");
+        var password = prompt("Please enter password");
+
+        $.post("../dhis-web-commons-security/login.action", {
+            "j_username": username,
+            "j_password": password
+        }).success(function() {
+            alert("login attempt successful, TODO check if login was successful with checkAvailability");
+        })
+    })    
+}
+
 $(document).ready(function() {
     dhis2.availability.startAvailabilityCheck();
 
@@ -221,12 +235,10 @@ $(document).ready(function() {
         } else {
             if(isHeaderMessageVisible()) {
                 updateHeaderMessage( "Successfully connected with server. Please <button id='login_button'>Login</button> " )
-                $("#login_button").bind("click", function() {
-                    // TODO hack, please improve
-                    window.location.href = "../dhis-web-commons/security/login.html";
-                })
+                ajax_login();
             } else {
                 setHeaderMessage( "Successfully connected with server. Please <button id='login_button'>Login</button> " )
+                ajax_login();
             }
         }
     })
