@@ -169,8 +169,8 @@ function saveVal( dataElementId, optionComboId )
             }
         }
 
-        var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId, value,
-                COLOR_GREEN );
+        var valueSaver = new ValueSaver( dataElementId, optionComboId, 
+        	currentOrganisationUnitId, periodId, value, COLOR_GREEN );
         valueSaver.save();
 
         updateIndicators(); // Update indicators in case of custom form
@@ -186,8 +186,8 @@ function saveBoolean( dataElementId, optionComboId )
 
     var periodId = $( '#selectedPeriodId' ).val();
 
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, currentOrganisationUnitId, periodId, value,
-            COLOR_GREEN );
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, 
+    	currentOrganisationUnitId, periodId, value, COLOR_GREEN );
     valueSaver.save();
 }
 
@@ -244,26 +244,24 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
         storageManager.saveDataValue( dataValue );
 
         $.ajax( {
-            url : "saveValue.action",
+            url : 'saveValue.action',
             data : dataValue,
             dataType : 'json',
-            success : function( json ) {
-                storageManager.clearDataValueJSON( dataValue );
-                handleResponse( json );
-            },
+            success : handleSuccess,
             error : handleError
         } );
     };
 
-    function handleResponse( json )
+    function handleSuccess( json )
     {
         var code = json.c;
 
-        if ( code == 0 )
+        if ( code == 0 ) // Value successfully saved on server
         {
+        	storageManager.clearDataValueJSON( dataValue );
             markValue( resultColor );
         }
-        else
+        else // Server error during save
         {
             markValue( COLOR_RED );
             window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
@@ -272,9 +270,8 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
 
     function handleError( jqXHR, textStatus, errorThrown )
     {
-        setHeaderMessage( "Unable to contact server. Data will be stored locally." )
-//        markValue( COLOR_RED );
-//        window.alert( i18n_saving_value_failed_status_code + '\n\n' + textStatus );
+        setHeaderMessage( "You are offline. Data will be stored locally." );
+        markValue( resultColor );
     }
 
     function markValue( color )
