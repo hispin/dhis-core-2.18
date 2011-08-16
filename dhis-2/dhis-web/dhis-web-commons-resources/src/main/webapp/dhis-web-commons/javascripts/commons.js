@@ -8,23 +8,6 @@ var _loading_bar_html = "<img src='../images/ajax-loader-bar.gif'>";
 var _loading_circle_html = "<img src='../images/ajax-loader-circle.gif'>";
 
 /**
- * Determines whether the DHIS server can be accessed, ie. if the server
- * is running (in the context of a remote server also if the network is up).
- */
-function serverIsAccessible()
-{
-	$.ajax( {
-		url: "../dhis-web-commons-stream/ping.action",
-		success: function( data, textStatus, jqXHR ) {
-			return true;
-		},
-		error: function( jqXHR, textStatus, errorThrown ) {
-			return false;
-		}
-	} );
-}
-
-/**
  * Go back using the document.referrer.
  * 
  * @param defaultUrl if there is not document.referrer, use this url

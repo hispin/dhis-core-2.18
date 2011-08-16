@@ -617,4 +617,8 @@
     </property>
   </bean>
 
+  <bean id="org.hisp.dhis.commons.action.GetPingAction" class="org.hisp.dhis.commons.action.GetPingAction">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+  </bean>
+
 </beans>
