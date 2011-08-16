@@ -16,7 +16,7 @@
       <param name="menuTreeHeight">420</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js,javascript/history.js</param>
       <param name="stylesheets">style/dhis-web-dataentry.css</param>
-      <param name="offline">false</param>
+      <param name="offline">true</param>
     </action>
 
     <action name="getDataValues" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction">
