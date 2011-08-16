@@ -80,9 +80,9 @@ $( document ).ready( function()
 
     $(document).bind("dhis2.offline", function() {
         if(isHeaderMessageVisible()) {
-            updateHeaderMessage( "Unable to contact server. Data will be stored locally." )
+            updateHeaderMessage( "You are offline. Data will be stored locally." )
         } else {
-            setHeaderMessage( "Unable to contact server. Data will be stored locally." )
+            setHeaderMessage( "You are offline. Data will be stored locally." )
         }
     })
 
