@@ -205,19 +205,38 @@ function alertField( fieldId, alertMessage )
 }
 
 $(document).ready(function() {
+    dhis2.availability.startAvailabilityCheck();
+
     $("#orgUnitTree").one("ouwtLoaded", function() {
         saveDataValuesInLocalStorage();
     });
 
-    dhis2.availability.startAvailabilityCheck();
-
     $(document).bind("dhis2.online", function(event, loggedIn) {
-        console.log("dhis2 is online")
-        console.log("loggedIn: " + loggedIn)
+        if(loggedIn) {
+            if(isHeaderMessageVisible()) {
+                updateHeaderMessage( "Successful connection with server." )
+            } else {
+                setHeaderMessage( "Successful connection with server." )
+            }
+        } else {
+            if(isHeaderMessageVisible()) {
+                updateHeaderMessage( "Successfully connected with server. Please <button id='login_button'>Login</button> " )
+                $("#login_button").bind("click", function() {
+                    // TODO hack, please improve
+                    window.location.href = "../dhis-web-commons/security/login.html";
+                })
+            } else {
+                setHeaderMessage( "Successfully connected with server. Please <button id='login_button'>Login</button> " )
+            }
+        }
     })
 
     $(document).bind("dhis2.offline", function() {
-        console.log("dhis2 is offline")
+        if(isHeaderMessageVisible()) {
+            updateHeaderMessage( "Unable to contact server. Data will be stored locally." )
+        } else {
+            setHeaderMessage( "Unable to contact server. Data will be stored locally." )
+        }
     })
 })
 

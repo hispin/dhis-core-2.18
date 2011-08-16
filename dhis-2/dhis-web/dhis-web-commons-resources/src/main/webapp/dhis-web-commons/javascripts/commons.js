@@ -582,6 +582,26 @@ function hideHeaderMessage()
 }   
 
 /**
+ *  Is header message visible.
+ * 
+ *  @returns true if visible, false is hidden
+ */
+function isHeaderMessageVisible()
+{
+    return $( 'div#headerMessage' ).is(":visible");
+}
+
+/**
+ *  Is header message hidden.
+ * 
+ *  @returns true if hidden, false is visible
+ */
+function isHeaderMessageHidden()
+{
+    return !isHeaderMessageVisible();
+}
+
+/**
  * Slides down the info message div and sets the message as text.
  * 
  * @param message the message.
