@@ -35,8 +35,10 @@ dhis2.availability._availableTimeoutHandler = undefined;
  * Start availability check, will trigger dhis2.online / dhis2.offline events
  * when availability changes.
  * 
- * @param onlineInterval How often to check for availability, default is 1000.
- * @param offlineInterval How often to check for availability, default is 1000.
+ * @param onlineInterval How often to check for availability when online,
+ *            default is 10000.
+ * @param offlineInterval How often to check for availability when offline,
+ *            default is 1000.
  */
 dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInterval )
 {
@@ -79,7 +81,8 @@ dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInt
         } );
     }
 
-    _availableTimeoutHandler = setTimeout( _checkAvailability, onlineInterval );
+    // use 500ms for initial check
+    _availableTimeoutHandler = setTimeout( _checkAvailability, 500 );
 }
 
 /**
