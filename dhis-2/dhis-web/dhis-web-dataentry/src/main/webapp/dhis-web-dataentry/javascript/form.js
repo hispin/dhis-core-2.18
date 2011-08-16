@@ -55,7 +55,7 @@ $( document ).ready( function()
     selection.setListenerFunction( organisationUnitSelected );
     
     $( '#orgUnitTree' ).bind( 'ouwtLoaded', function() {
-    	updateForms();
+    	setTimeout( "updateForms();", 1500 ); // TODO improve
     } );
 } );
 
