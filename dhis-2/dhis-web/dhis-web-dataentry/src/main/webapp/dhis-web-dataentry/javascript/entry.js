@@ -109,23 +109,23 @@ function saveVal( dataElementId, optionComboId )
         {
             if ( value.length > 255 )
             {
-                return alertField( fieldId, i18n_value_too_long + '\n\n' + dataElementName );
+                return alertField( fieldId, i18n_value_too_long + ': ' + dataElementName );
             }
             if ( type == 'int' && !isInt( value ) )
             {
-                return alertField( fieldId, i18n_value_must_integer + '\n\n' + dataElementName );
+                return alertField( fieldId, i18n_value_must_integer + ': ' + dataElementName );
             }
             if ( type == 'number' && !isRealNumber( value ) )
             {
-                return alertField( fieldId, i18n_value_must_number + '\n\n' + dataElementName );
+                return alertField( fieldId, i18n_value_must_number + ': ' + dataElementName );
             }
             if ( type == 'positiveNumber' && !isPositiveInt( value ) )
             {
-                return alertField( fieldId, i18n_value_must_positive_integer + '\n\n' + dataElementName );
+                return alertField( fieldId, i18n_value_must_positive_integer + ': ' + dataElementName );
             }
             if ( type == 'negativeNumber' && !isNegativeInt( value ) )
             {
-                return alertField( fieldId, i18n_value_must_negative_integer + '\n\n' + dataElementName );
+                return alertField( fieldId, i18n_value_must_negative_integer + ': ' + dataElementName );
             }
             if ( isValidZeroNumber( value ) )
             {
@@ -198,8 +198,8 @@ function alertField( fieldId, alertMessage )
 {
     $( fieldId ).css( fieldId, COLOR_YELLOW );
     $( fieldId ).select();
-    $( fieldId ).focus();
-    alert( alertMessage );
+    $( fieldId ).focus();    
+    window.alert( alertMessage );
 
     return false;
 }

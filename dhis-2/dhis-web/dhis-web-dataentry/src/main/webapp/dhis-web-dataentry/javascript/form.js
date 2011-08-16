@@ -557,7 +557,7 @@ function validateCompleteDataSet()
             $( '#completeButton' ).removeAttr( 'disabled' );
             $( '#undoButton' ).attr( 'disabled', 'disabled' );
 
-            alert( i18n_no_response_from_server );
+            window.alert( i18n_no_response_from_server );
         } );
     }
 }
@@ -580,7 +580,7 @@ function registerCompleteDataSet( json )
             $( '#completeButton' ).removeAttr( 'disabled' );
             $( '#undoButton' ).attr( 'disabled', 'disabled' );
 
-            alert( i18n_no_response_from_server );
+            window.alert( i18n_no_response_from_server );
         } );
     }
     else
@@ -612,7 +612,7 @@ function undoCompleteDataSet()
             $( '#completeButton' ).attr( 'disabled', 'disabled' );
             $( '#undoButton' ).removeAttr( 'disabled' );
 
-            alert( i18n_no_response_from_server );
+            window.alert( i18n_no_response_from_server );
         } );
     }
 }
@@ -640,7 +640,18 @@ function validate()
         periodId : periodId,
         dataSetId : dataSetId,
         organisationUnitId: currentOrganisationUnitId
-    }, displayValidationDialog );
+    },
+    function( response, status, xhr ) 
+    {
+    	if ( status == 'error' )
+    	{
+    		window.alert( i18n_operation_not_available_offline );
+    	}
+    	else
+    	{
+    		displayValidationDialog();
+    	}
+    } );
 }
 
 // -----------------------------------------------------------------------------
@@ -670,9 +681,17 @@ function viewHist( dataElementId, optionComboId )
         optionComboId: optionComboId,
         periodId: periodId,
         organisationUnitId: currentOrganisationUnitId 
-    }, function()
+    },
+    function( response, status, xhr ) 
     {
-        displayHistoryDialog( operandName );
+    	if ( status == 'error' )
+    	{
+    		window.alert( i18n_operation_not_available_offline );
+    	}
+    	else
+    	{
+        	displayHistoryDialog( operandName );
+    	}
     } );
 }
 
