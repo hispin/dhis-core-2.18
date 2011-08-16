@@ -591,8 +591,7 @@ function validateCompleteDataSet()
         var periodId = $( '#selectedPeriodId' ).val();
         var dataSetId = $( '#selectedDataSetId' ).val();
 
-        $( '#completeButton' ).attr( 'disabled', 'disabled' );
-        $( '#undoButton' ).removeAttr( 'disabled' );
+        disableCompleteButton();
 
         $.getJSON( 'getValidationViolations.action', {
             periodId : periodId,
@@ -600,8 +599,7 @@ function validateCompleteDataSet()
             organisationUnitId: currentOrganisationUnitId
         }, registerCompleteDataSet ).error( function()
         {
-            $( '#completeButton' ).removeAttr( 'disabled' );
-            $( '#undoButton' ).attr( 'disabled', 'disabled' );
+            disableUndoButton();
 
             window.alert( i18n_no_response_from_server );
         } );
@@ -623,14 +621,15 @@ function registerCompleteDataSet( json )
         {
         } ).error( function()
         {
-            $( '#completeButton' ).removeAttr( 'disabled' );
-            $( '#undoButton' ).attr( 'disabled', 'disabled' );
+            disableUndoButton();
 
             window.alert( i18n_no_response_from_server );
         } );
     }
     else
     {
+    	disableUndoButton();
+    	
         validate();
     }
 }
@@ -644,8 +643,7 @@ function undoCompleteDataSet()
         var periodId = $( '#selectedPeriodId' ).val();
         var dataSetId = $( '#selectedDataSetId' ).val();
 
-        $( '#completeButton' ).removeAttr( 'disabled' );
-        $( '#undoButton' ).attr( 'disabled', 'disabled' );
+        disableUndoButton();
 
         $.getJSON( 'undoCompleteDataSet.action', {
             periodId : periodId,
@@ -655,12 +653,23 @@ function undoCompleteDataSet()
         {
         } ).error( function()
         {
-            $( '#completeButton' ).attr( 'disabled', 'disabled' );
-            $( '#undoButton' ).removeAttr( 'disabled' );
+            disableCompleteButton();
 
             window.alert( i18n_no_response_from_server );
         } );
     }
+}
+
+function disableUndoButton()
+{
+	$( '#completeButton' ).removeAttr( 'disabled' );
+    $( '#undoButton' ).attr( 'disabled', 'disabled' );
+}
+
+function disableCompleteButton()
+{
+	$( '#completeButton' ).attr( 'disabled', 'disabled' );
+    $( '#undoButton' ).removeAttr( 'disabled' );
 }
 
 // -----------------------------------------------------------------------------
