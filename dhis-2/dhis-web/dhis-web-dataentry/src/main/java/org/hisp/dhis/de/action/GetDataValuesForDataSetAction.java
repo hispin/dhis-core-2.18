@@ -199,7 +199,7 @@ public class GetDataValuesForDataSetAction
         {
             CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, unit );
 
-            locked = registration != null;
+            complete = registration != null;
         }
 
         return SUCCESS;
