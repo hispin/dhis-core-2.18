@@ -208,6 +208,17 @@ $(document).ready(function() {
     $("#orgUnitTree").one("ouwtLoaded", function() {
         saveDataValuesInLocalStorage();
     });
+
+    dhis2.availability.startAvailabilityCheck();
+
+    $(document).bind("dhis2.online", function(event, loggedIn) {
+        console.log("dhis2 is online")
+        console.log("loggedIn: " + loggedIn)
+    })
+
+    $(document).bind("dhis2.offline", function() {
+        console.log("dhis2 is offline")
+    })
 })
 
 function saveDataValuesInLocalStorage() {
@@ -278,8 +289,9 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
 
     function handleError( jqXHR, textStatus, errorThrown )
     {
-        markValue( COLOR_RED );
-        window.alert( i18n_saving_value_failed_status_code + '\n\n' + textStatus );
+        setHeaderMessage( "Unable to contact server. Data will be stored locally." )
+//        markValue( COLOR_RED );
+//        window.alert( i18n_saving_value_failed_status_code + '\n\n' + textStatus );
     }
 
     function markValue( color )
