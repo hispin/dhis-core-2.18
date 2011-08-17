@@ -581,25 +581,37 @@ function getPreviousEntryField( field )
 // Data completeness
 // -----------------------------------------------------------------------------
 
+var KEY_COMPLETEDATASETS = "completedatasets";
+
+function getCompleteDataSetId(json)
+{
+    return json.periodId + "-" + json.dataSetId + "-" + json.organisationUnitId;
+}
+
+function getCurrentCompleteDataSetParams() {
+    var params = {
+            "periodId": $( '#selectedPeriodId' ).val(),
+            "dataSetId": $( '#selectedDataSetId' ).val(),
+            "organisationUnitId": currentOrganisationUnitId
+    };
+    
+    return params;
+}
+
 function validateCompleteDataSet()
 {
     var confirmed = confirm( i18n_confirm_complete );
 
     if ( confirmed )
     {
-        var periodId = $( '#selectedPeriodId' ).val();
-        var dataSetId = $( '#selectedDataSetId' ).val();
-
+        var params = getCurrentCompleteDataSetParams();
+        
         disableCompleteButton();
 
-        $.getJSON( 'getValidationViolations.action', {
-            periodId : periodId,
-            dataSetId : dataSetId,
-            organisationUnitId: currentOrganisationUnitId
-        }, registerCompleteDataSet ).error( function()
-        {
+        $.getJSON( 'getValidationViolations.action', params).success(function(data) {
+            registerCompleteDataSet(data);
+        }).error( function() {
             disableUndoButton();
-
             window.alert( i18n_no_response_from_server );
         } );
     }
@@ -607,21 +619,13 @@ function validateCompleteDataSet()
 
 function registerCompleteDataSet( json )
 {
-    var periodId = $( '#selectedPeriodId' ).val();
-    var dataSetId = $( '#selectedDataSetId' ).val();
+    var params = getCurrentCompleteDataSetParams();
 
     if ( json.response == 'success' )
     {
-        $.getJSON( 'registerCompleteDataSet.action', {
-            periodId : periodId,
-            dataSetId : dataSetId,
-            organisationUnitId: currentOrganisationUnitId
-        }, function()
-        {
-        } ).error( function()
-        {
+        $.getJSON( 'registerCompleteDataSet.action', params).success(function() {            
+        }).error( function() {
             disableUndoButton();
-
             window.alert( i18n_no_response_from_server );
         } );
     }
@@ -830,11 +834,11 @@ function StorageManager()
 	var MAX_SIZE = new Number( 2600000 );
 	var MAX_SIZE_FORMS = new Number( 1600000 );
 	var MAX_SIZE_DATA_VALUES = new Number( 500000 );
-	
+
 	var KEY_FORM_PREFIX = "form-";
 	var KEY_FORM_VERSIONS = "formversions";
 	var KEY_DATAVALUES = "datavalues";
-	
+
 	/**
 	 * Returns the total number of characters currently in the local storage.
 	 * 
