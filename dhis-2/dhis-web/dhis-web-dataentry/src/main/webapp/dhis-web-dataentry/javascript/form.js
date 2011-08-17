@@ -105,13 +105,17 @@ function loadMetaData()
 		organisationUnitAssociationSetMap = json.metaData.organisationUnitAssociationSetMap;
 		
 		console.log( 'Meta-data loaded' );		
-		uploadDataValuesInLocalStorage();
+		uploadLocalData();
 	} );
 }
 
-function uploadDataValuesInLocalStorage() 
+function uploadLocalData() 
 {
     var dataValues = storageManager.getAllDataValues();
+    var completeDataSets = getCompleteDataSetsLocalVariable();
+
+    var oldHeaderMessage = getHeaderMessage();
+    setHeaderWaitMessage("Syncing local data with server");
 
     for ( var dataValueKey in dataValues ) 
     {
@@ -122,11 +126,35 @@ function uploadDataValuesInLocalStorage()
             data : dataValue,
             dataType : 'json',
             dataValue: dataValue,
+            async: false,
             success : function( data, textStatus, jqXHR ) {
                 storageManager.clearDataValueJSON( this.dataValue );
                 console.log( 'Successfully saved data value with value: ' + this.dataValue );
             }
         } );
+    }
+
+    for( var completeDataSetKey in completeDataSets )
+    {
+        var completeDataSet = completeDataSets[completeDataSetKey]
+        console.log(completeDataSet);
+
+        $.ajax({
+            url: 'registerCompleteDataSet.action',
+            data: completeDataSet,
+            dataType: 'json',
+            completeDataSet: completeDataSet,
+            async: false,
+            success: function( data, textStatus, jqXHR ) {
+                clearCompleteDataSetLocally(this.completeDataSet);
+            }
+        });
+    }
+
+    if(oldHeaderMessage.length > 0) {
+        setHeaderMessage(oldHeaderMessage);
+    } else {
+        hideHeaderMessage();
     }
     
     updateForms();
@@ -643,6 +671,40 @@ function getCurrentCompleteDataSetParams() {
     return params;
 }
 
+function getCompleteDataSetsLocalVariable()
+{
+    var completeDataSets;
+
+    if(localStorage[KEY_COMPLETEDATASETS] == null)
+    {
+        completeDataSets = {}
+    } else {
+        completeDataSets = JSON.parse(localStorage[KEY_COMPLETEDATASETS]);
+    }
+
+    return completeDataSets;
+}
+
+function storeCompleteDataSetLocally(json)
+{
+    var completeDataSets = getCompleteDataSetsLocalVariable();
+    var completeDataSetId = getCompleteDataSetId(json);
+
+    completeDataSets[completeDataSetId] = json;
+
+    localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
+}
+
+function clearCompleteDataSetLocally(json)
+{
+    var completeDataSets = getCompleteDataSetsLocalVariable();
+    var completeDataSetId = getCompleteDataSetId(json);
+
+    delete completeDataSets[completeDataSetId];
+
+    localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
+}
+
 function validateCompleteDataSet()
 {
     var confirmed = confirm( i18n_confirm_complete );
@@ -656,8 +718,13 @@ function validateCompleteDataSet()
         $.getJSON( 'getValidationViolations.action', params).success(function(data) {
             registerCompleteDataSet(data);
         }).error( function() {
-            disableUndoButton();
-            window.alert( i18n_no_response_from_server );
+            // no response from server, fake a positive result and save it anyways
+            registerCompleteDataSet({
+                "response": "success"
+            });
+
+//            disableUndoButton();
+//            window.alert( i18n_no_response_from_server );
         } );
     }
 }
@@ -668,10 +735,14 @@ function registerCompleteDataSet( json )
 
     if ( json.response == 'success' )
     {
-        $.getJSON( 'registerCompleteDataSet.action', params).success(function() {            
+        storeCompleteDataSetLocally(params);
+
+        $.getJSON( 'registerCompleteDataSet.action', params).success(function() {
+            clearCompleteDataSetLocally(params);
         }).error( function() {
-            disableUndoButton();
-            window.alert( i18n_no_response_from_server );
+
+//            disableUndoButton();
+//            window.alert( i18n_no_response_from_server );
         } );
     }
     else
@@ -685,25 +756,20 @@ function registerCompleteDataSet( json )
 function undoCompleteDataSet()
 {
     var confirmed = confirm( i18n_confirm_undo );
-
+    var params = getCurrentCompleteDataSetParams();
+    
     if ( confirmed )
     {
-        var periodId = $( '#selectedPeriodId' ).val();
-        var dataSetId = $( '#selectedDataSetId' ).val();
-
         disableUndoButton();
 
-        $.getJSON( 'undoCompleteDataSet.action', {
-            periodId : periodId,
-            dataSetId : dataSetId,
-            organisationUnitId: currentOrganisationUnitId
-        }, function()
+        $.getJSON( 'undoCompleteDataSet.action', params).success(function() {
+            clearCompleteDataSetLocally(params);
+        }).error( function()
         {
-        } ).error( function()
-        {
-            disableCompleteButton();
+            clearCompleteDataSetLocally(params);
 
-            window.alert( i18n_no_response_from_server );
+//            disableCompleteButton();
+//            window.alert( i18n_no_response_from_server );
         } );
     }
 }
