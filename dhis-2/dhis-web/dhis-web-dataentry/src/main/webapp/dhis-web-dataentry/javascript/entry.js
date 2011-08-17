@@ -3,9 +3,10 @@
  * 
  * Format for the span/input identifiers for selectors:
  * 
- * {dataelementid}-{optioncomboid}-val // data value {dataelementid}-dataelement //
- * name of data element {optioncomboid}-optioncombo // name of category option
- * combo {dataelementid}-cell // table cell for data element name
+ * {dataelementid}-{optioncomboid}-val // data value 
+ * {dataelementid}-dataelement name of data element 
+ * {optioncomboid}-optioncombo // name of category option combo 
+ * {dataelementid}-cell // table cell for data element name
  * {dataelementid}-{optioncomboid}-min // min value for data value
  * {dataelementid}-{optioncomboid}-max // max value for data value
  * 
@@ -202,25 +203,6 @@ function alertField( fieldId, alertMessage )
     window.alert( alertMessage );
 
     return false;
-}
-
-function saveDataValuesInLocalStorage() {
-    var dataValues = storageManager.getAllDataValues();
-
-    for(var dataValueKey in dataValues) {
-        var dataValue = dataValues[dataValueKey];
-
-        $.ajax( {
-            url : "saveValue.action",
-            data : dataValue,
-            dataType : 'json',
-            dataValue: dataValue,
-            success : function( data, textStatus, jqXHR ) {
-                storageManager.clearDataValueJSON( this.dataValue );
-                console.log("Successfully saved dataValue with value " + this.dataValue );
-            }
-        } );
-    }
 }
 
 // -----------------------------------------------------------------------------

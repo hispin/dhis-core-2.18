@@ -11,18 +11,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Actions -->
 
-  <bean id="org.hisp.dhis.de.action.PageInitAction" class="org.hisp.dhis.de.action.PageInitAction"
-    scope="prototype">
+  <bean id="org.hisp.dhis.de.action.PageInitAction" class="org.hisp.dhis.de.action.PageInitAction" scope="prototype">
+    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+  </bean>	
+
+  <bean id="org.hisp.dhis.de.action.GetMetaDataAction" class="org.hisp.dhis.de.action.GetMetaDataAction" scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 	<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
-
-  <bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction"
-	scope="prototype">
+  
+  <bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction" scope="prototype">
 	<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 	<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
