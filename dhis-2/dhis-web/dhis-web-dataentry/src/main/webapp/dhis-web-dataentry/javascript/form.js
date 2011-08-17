@@ -77,7 +77,6 @@ $( document ).ready( function()
         }
     })
 
-
     $(document).bind("dhis2.offline", function() {
         if(isHeaderMessageVisible()) {
             updateHeaderMessage( "You are offline. Data will be stored locally." )
