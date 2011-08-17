@@ -18,6 +18,10 @@
       <param name="stylesheets">style/dhis-web-dataentry.css</param>
       <param name="offline">true</param>
     </action>
+	
+	<action name="getMetaData" class="org.hisp.dhis.de.action.GetMetaDataAction">
+		<result name="success" type="velocity-json">/dhis-web-dataentry/responseMetaData.vm</result>
+	</action>
 
     <action name="getDataValues" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction">
 	  <result name="success" type="velocity-json">/dhis-web-dataentry/responseDataValues.vm</result>

@@ -57,7 +57,6 @@ public class DefaultDataEntryFormService
 {    
     private static final String EMPTY_VALUE_TAG = "value=\"\"";
     private static final String EMPTY_TITLE_TAG = "title=\"\"";
-    private static final String STYLE_TAG = "style=\"";
     private static final String TAG_CLOSE = "/>";
     private static final String EMPTY = "";
     
@@ -286,8 +285,6 @@ public class DefaultDataEntryFormService
                 
                 inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, title ) : inputHtml + " " + title;
 
-                String backgroundColor = "style=\"";
-                
                 String appendCode = "";
 
                 if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) )
@@ -306,8 +303,6 @@ public class DefaultDataEntryFormService
 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
                 
-                inputHtml = inputHtml.replace( STYLE_TAG, backgroundColor );
-
                 inputMatcher.appendReplacement( sb, inputHtml );
             }
         }

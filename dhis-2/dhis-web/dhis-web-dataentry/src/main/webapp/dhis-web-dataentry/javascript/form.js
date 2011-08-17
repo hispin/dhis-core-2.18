@@ -1,22 +1,21 @@
-// Identifiers for which zero values are insignificant, also used in entry.js, populated in select.vm
+// Identifiers for which zero values are insignificant, also used in entry.js
 var significantZeros = [];
 
 // Array with associative arrays for each data element, populated in select.vm
 var dataElements = [];
 
 // Associative array with [indicator id, expression] for indicators in form,
-// also used in entry.js, populated in select.vm
+// also used in entry.js
 var indicatorFormulas = [];
 
 // Array with associative arrays for each data set, populated in select.vm
 var dataSets = [];
 
-// Associative array with identifier and array of assigned data sets, populated
-// in select.vm
+// Associative array with identifier and array of assigned data sets
 var dataSetAssociationSets = [];
 
 // Associate array with mapping between organisation unit identifier and data
-// set association set identifier, populated in select.vm
+// set association set identifier
 var organisationUnitAssociationSetMap = [];
 
 // Array with keys on form {dataelementid}-{optioncomboid}-min/max with min/max
@@ -48,58 +47,104 @@ var COLOR_RED = '#ff8a8a';
 var COLOR_ORANGE = '#ff6600';
 var COLOR_WHITE = '#ffffff';
 
-// Page init
-
+/**
+ * Page init. The order of events is:
+ * 
+ * 1. Load ouwt
+ * 2. Load meta-data
+ * 3. Upload potential locally stored data values to server
+ * 4. Check and potentially download updated forms from server 
+ */
 $( document ).ready( function()
 {
     selection.setListenerFunction( organisationUnitSelected );
 
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function() {
-    	setTimeout( "updateForms();", 1500 ); // TODO improve
-    	saveDataValuesInLocalStorage();
+    	console.log( 'Ouwt loaded' );    	
+    	loadMetaData();
     } );
 
-    $(document).bind("dhis2.online", function(event, loggedIn) {
-        if(loggedIn) {
-            if(isHeaderMessageVisible()) {
-                updateHeaderMessage( "Successful connection with server." )
+    $( document ).bind( 'dhis2.online', function( event, loggedIn ) {
+        if( loggedIn ) {
+            if( isHeaderMessageVisible() ) {
+                updateHeaderMessage( 'You are online' );
             } else {
-                setHeaderMessage( "Successful connection with server." )
+                setHeaderMessage( 'You are online' );
             }
-        } else {
-            if(isHeaderMessageVisible()) {
-                updateHeaderMessage( '<form style="display: inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' )
+        } 
+        else {
+            if( isHeaderMessageVisible() ) {
+                updateHeaderMessage( '<form style="display: inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
                 ajax_login();
             } else {
-                setHeaderMessage( '<form style="display: inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' )
+                setHeaderMessage( '<form style="display: inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
                 ajax_login();
             }
         }
-    })
+    } );
 
-    $(document).bind("dhis2.offline", function() {
-        if(isHeaderMessageVisible()) {
-            updateHeaderMessage( "You are offline. Data will be stored locally." )
+    $( document ).bind( 'dhis2.offline', function() {
+        if( isHeaderMessageVisible() ) {
+            updateHeaderMessage( 'You are offline. Data will be stored locally.' );
         } else {
-            setHeaderMessage( "You are offline. Data will be stored locally." )
+            setHeaderMessage( 'You are offline. Data will be stored locally.' );
         }
-    })
+    } );
 
     dhis2.availability.startAvailabilityCheck();
 } );
 
-function ajax_login() {
-    $("#login_button").bind("click", function() {
-        var username = $("#username").val();
-        var password = $("#password").val();
+function loadMetaData()
+{
+	$.getJSON( 'getMetaData.action', function( json ) {
+		significantZeros = json.metaData.significantZeros;
+		dataElements = json.metaData.dataElements;
+		indicatorFormulas = json.metaData.indicatorFormulas;
+		dataSets = json.metaData.dataSets;
+		dataSetAssociationSets = json.metaData.dataSetAssociationSets;
+		organisationUnitAssociationSetMap = json.metaData.organisationUnitAssociationSetMap;
+		
+		console.log( 'Meta-data loaded' );		
+		uploadDataValuesInLocalStorage();
+	} );
+}
 
-        $.post("../dhis-web-commons-security/login.action", {
-            "j_username": username,
-            "j_password": password
-        }).success(function() {
-            alert("login attempt successful, TODO check if login was successful with checkAvailability");
-        })
-    })    
+function uploadDataValuesInLocalStorage() 
+{
+    var dataValues = storageManager.getAllDataValues();
+
+    for ( var dataValueKey in dataValues ) 
+    {
+        var dataValue = dataValues[dataValueKey];
+
+        $.ajax( {
+            url : 'saveValue.action',
+            data : dataValue,
+            dataType : 'json',
+            dataValue: dataValue,
+            success : function( data, textStatus, jqXHR ) {
+                storageManager.clearDataValueJSON( this.dataValue );
+                console.log( 'Successfully saved data value with value: ' + this.dataValue );
+            }
+        } );
+    }
+    
+    updateForms();
+}
+
+function ajax_login() 
+{
+    $( '#login_button' ).bind( 'click', function() {
+        var username = $( '#username' ).val();
+        var password = $( '#password' ).val();
+
+        $.post( '../dhis-web-commons-security/login.action', {
+            'j_username': username,
+            'j_password': password
+        } ).success( function() {
+            alert( 'Login attempt successful, TODO check if login was successful with checkAvailability' );
+        } );
+    } );
 }
 
 function addEventListeners()
