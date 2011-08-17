@@ -96,14 +96,11 @@ function Selection()
         } ).complete(
                 function()
                 {
-                    // if ( should_update )
-                    if ( true )
+                    if ( should_update )
                     {
-                        console.log( "Hello" );
                         $.get( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action',
                                 function( data, textStatus, jqXHR )
                                 {
-                                    console.log( data );
                                     localStorage[getTagId( "Roots" )] = JSON.stringify( data.roots );
                                     localStorage[getTagId( "Version" )] = data.version;
                                     localStorage["organisationUnits"] = JSON.stringify( data.organisationUnits );
