@@ -15,6 +15,7 @@
  */
 
 var organisationUnitTreePath = '../dhis-web-commons/ouwt/';
+var organisationUnits = {};
 
 var selection = new Selection();
 var subtree = new Subtree();
@@ -109,6 +110,7 @@ function Selection()
 
                                     localStorage[getTagId( "Roots" )] = JSON.stringify( roots );
                                     localStorage[getTagId( "Version" )] = data.version;
+                                    localStorage["organisationUnits"] = JSON.stringify( data.organisationUnits );
 
                                 } ).complete( function()
                         {
@@ -227,14 +229,14 @@ function Selection()
     {
         var output = {}
         output.id = ou.id;
-        output.parentId = ou.parentId;
-        output.name = ou.name;
+        output.parentId = ou.pid;
+        output.name = ou.n;
         output.children = [];
 
-        for ( var i in ou.children )
+        for ( var i in ou.c )
         {
-            output.children.push( ou.children[i].id );
-            store_ou( ou.children[i] );
+            output.children.push( ou.c[i].id );
+            store_ou( ou.c[i] );
         }
 
         localStorage[getTagId( ou.id )] = JSON.stringify( output );
