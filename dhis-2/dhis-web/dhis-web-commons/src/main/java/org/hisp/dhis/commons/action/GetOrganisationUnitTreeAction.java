@@ -134,7 +134,7 @@ public class GetOrganisationUnitTreeAction
                 if ( user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
                 {
                     organisationUnits = new ArrayList<OrganisationUnit>(
-                        organisationUnitService.getAllOrganisationUnits() );
+                        organisationUnitService.getRootOrganisationUnits() );
                 }
                 else
                 {
