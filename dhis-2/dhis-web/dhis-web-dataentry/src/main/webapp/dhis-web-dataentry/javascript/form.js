@@ -68,10 +68,10 @@ $( document ).ready( function()
             }
         } else {
             if(isHeaderMessageVisible()) {
-                updateHeaderMessage( "Successfully connected with server. Please <button id='login_button'>Login</button> " )
+                updateHeaderMessage( '<form style="display: inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' )
                 ajax_login();
             } else {
-                setHeaderMessage( "Successfully connected with server. Please <button id='login_button'>Login</button> " )
+                setHeaderMessage( '<form style="display: inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' )
                 ajax_login();
             }
         }
@@ -90,8 +90,8 @@ $( document ).ready( function()
 
 function ajax_login() {
     $("#login_button").bind("click", function() {
-        var username = prompt("Please enter username");
-        var password = prompt("Please enter password");
+        var username = $("#username").val();
+        var password = $("#password").val();
 
         $.post("../dhis-web-commons-security/login.action", {
             "j_username": username,
