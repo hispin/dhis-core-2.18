@@ -336,7 +336,7 @@ public class DefaultDataElementCategoryService
     public void generateDefaultDimension()
     {
         // ---------------------------------------------------------------------
-        // Add default DataElementCategoryOption
+        // DataElementCategoryOption
         // ---------------------------------------------------------------------
 
         DataElementCategoryOption categoryOption = new DataElementCategoryOption(
@@ -345,8 +345,7 @@ public class DefaultDataElementCategoryService
         addDataElementCategoryOption( categoryOption );
 
         // ---------------------------------------------------------------------
-        // Add default DataElementCategory containing default
-        // DataElementCategoryOption
+        // DataElementCategory
         // ---------------------------------------------------------------------
 
         DataElementCategory category = new DataElementCategory( DataElementCategory.DEFAULT_NAME );
@@ -354,16 +353,15 @@ public class DefaultDataElementCategoryService
         List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
         categoryOptions.add( categoryOption );
         category.setCategoryOptions( categoryOptions );
+        categoryOption.setCategory( category );
 
         addDataElementCategory( category );
 
         // ---------------------------------------------------------------------
-        // Add default DataElementCategoryCombo made of the default
-        // DataElementCategory
+        // DataElementCategoryCombo
         // ---------------------------------------------------------------------
 
-        DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo(
-            DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
         List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
         categories.add( category );
@@ -372,14 +370,14 @@ public class DefaultDataElementCategoryService
         addDataElementCategoryCombo( categoryCombo );
 
         // ---------------------------------------------------------------------
-        // Add default DataElementCategoryOptionCombo
+        // DataElementCategoryOptionCombo
         // ---------------------------------------------------------------------
 
         DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
 
         categoryOptionCombo.setCategoryCombo( categoryCombo );
         categoryOptionCombo.setCategoryOptions( new ArrayList<DataElementCategoryOption>( categoryOptions ) );
-
+        
         addDataElementCategoryOptionCombo( categoryOptionCombo );
 
         Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
@@ -387,6 +385,9 @@ public class DefaultDataElementCategoryService
         categoryCombo.setOptionCombos( categoryOptionCombos );
 
         updateDataElementCategoryCombo( categoryCombo );
+        
+        categoryOption.setCategoryOptionCombos( categoryOptionCombos );
+        updateDataElementCategoryOption( categoryOption );
     }
 
     public DataElementCategoryOptionCombo getDefaultDataElementCategoryOptionCombo()
@@ -531,6 +532,9 @@ public class DefaultDataElementCategoryService
             optionCombos.add( optionCombo );
         }
 
+        //TODO update category option -> category option combo association
+        //TODO re-implement using CombinationGenerator
+        
         categoryCombo.setOptionCombos( optionCombos );
 
         updateDataElementCategoryCombo( categoryCombo );
@@ -738,5 +742,4 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryComboStore.getBetweenByName( name, first, max );
     }
-
 }

@@ -78,7 +78,7 @@ public class GetAssignedGroupsByDataElementAction
     public String execute()
         throws Exception
     {
-        DataElement dataElement = dataElementService.getDataElement( this.dataElementId );
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService
             .getGroupsContainingDataElement( dataElement ) );        

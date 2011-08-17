@@ -3,7 +3,7 @@
 
   <diskStore path="java.io.tmpdir" />
 
-  <defaultCache maxElementsInMemory="400000" eternal="false" timeToIdleSeconds="360" timeToLiveSeconds="720"
+  <defaultCache maxElementsInMemory="600000" eternal="false" timeToIdleSeconds="360" timeToLiveSeconds="720"
     overflowToDisk="false" diskPersistent="false" diskExpiryThreadIntervalSeconds="720" memoryStoreEvictionPolicy="LRU" />
 
   <!-- Hibernate entities -->
@@ -101,10 +101,12 @@
   <cache name="org.hisp.dhis.dataelement.DataElementCategory.categoryOptions" maxElementsInMemory="300" />
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryOption.categoryOptionCombos" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo.categoryOptions" maxElementsInMemory="500" />
 
   <cache name="org.hisp.dhis.dataset.DataSet.dataElements" maxElementsInMemory="4000" />
 
-  <cache name="org.hisp.dhis.dataset.DataSet.sources" maxElementsInMemory="20000" />
+  <cache name="org.hisp.dhis.dataset.DataSet.sources" maxElementsInMemory="120000" />
 
   <cache name="org.hisp.dhis.dataset.DataSet.sections" maxElementsInMemory="400" />
 
@@ -132,7 +134,7 @@
 
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.children" maxElementsInMemory="20000" />
 
-  <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.dataSets" maxElementsInMemory="400" />
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.dataSets" maxElementsInMemory="120000" />
 
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.groups" maxElementsInMemory="400" />
 
