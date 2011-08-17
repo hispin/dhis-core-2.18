@@ -74,6 +74,8 @@ function Selection()
                 }
             }
 
+            organisationUnits = JSON.parse( localStorage["organisationUnits"] );
+
             selection.sync();
             subtree.reloadTree();
 
@@ -94,24 +96,17 @@ function Selection()
         } ).complete(
                 function()
                 {
-                    if ( should_update )
+                    // if ( should_update )
+                    if ( true )
                     {
+                        console.log( "Hello" );
                         $.get( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action',
                                 function( data, textStatus, jqXHR )
                                 {
-                                    var roots = [];
-
-                                    for ( var i in data.organisationUnits )
-                                    {
-                                        var ou = data.organisationUnits[i];
-                                        roots.push( ou.id );
-                                        store_ou( ou );
-                                    }
-
-                                    localStorage[getTagId( "Roots" )] = JSON.stringify( roots );
+                                    console.log( data );
+                                    localStorage[getTagId( "Roots" )] = JSON.stringify( data.roots );
                                     localStorage[getTagId( "Version" )] = data.version;
                                     localStorage["organisationUnits"] = JSON.stringify( data.organisationUnits );
-
                                 } ).complete( function()
                         {
                             sync_and_reload();
@@ -225,24 +220,6 @@ function Selection()
         $.post( organisationUnitTreePath + "clearselected.action" ).complete( this.responseReceived );
     };
 
-    function store_ou( ou )
-    {
-        var output = {}
-        output.id = ou.id;
-        output.parentId = ou.pid;
-        output.name = ou.n;
-        output.children = [];
-
-        for ( var i in ou.c )
-        {
-            output.children.push( ou.c[i].id );
-            store_ou( ou.c[i] );
-        }
-
-        localStorage[getTagId( ou.id )] = JSON.stringify( output );
-    }
-    ;
-
     this.select = function( unitId )
     {
         var $linkTag = $( "#" + getTagId( unitId ) ).find( "a" ).eq( 0 );
@@ -350,14 +327,14 @@ function Selection()
         {
             $.each( selected, function( i, item )
             {
-                var name = JSON.parse( localStorage[getTagId( item )] ).name;
+                var name = organisationUnits[item].n;
                 ids.push( item );
                 names.push( name );
             } );
         }
         else
         {
-            var name = JSON.parse( localStorage[getTagId( selected )] ).name;
+            var name = organisationUnits[selected].n;
             ids.push( +selected );
             names.push( name );
         }
@@ -377,16 +354,13 @@ function Selection()
 
         var match;
 
-        for ( var ou in localStorage )
+        for ( var ou in organisationUnits )
         {
-            if ( ou.indexOf( "orgUnit" ) != -1 )
-            {
-                var value = localStorage[ou];
+            var value = organisationUnits[ou];
 
-                if ( value.indexOf( "\"" + name + "\"" ) != -1 )
-                {
-                    match = JSON.parse( value );
-                }
+            if ( value.indexOf( "\"" + name + "\"" ) != -1 )
+            {
+                match = value;
             }
         }
 
@@ -426,12 +400,12 @@ function Subtree()
 
         if ( children.length < 1 || !isVisible( children[0] ) )
         {
-            var ou = JSON.parse( localStorage[getTagId( unitId )] );
+            var ou = organisationUnits[unitId];
             processExpand( ou );
         }
         else
         {
-            var ou = JSON.parse( localStorage[getTagId( unitId )] );
+            var ou = organisationUnits[unitId];
             processCollapse( ou );
         }
     };
@@ -459,12 +433,12 @@ function Subtree()
 
     expandTreeAtOrgUnit = function( ou )
     {
-        if ( localStorage[getTagId( ou )] == null )
+        if ( organisationUnits[ou] == null )
         {
             return;
         }
 
-        var ouEl = JSON.parse( localStorage[getTagId( ou )] );
+        var ouEl = organisationUnits[ou];
 
         var $rootsTag = $( "#orgUnitTree > ul" );
 
@@ -476,20 +450,20 @@ function Subtree()
 
         var array = [];
 
-        if ( ouEl.parentId !== undefined )
+        if ( ouEl.pid !== undefined )
         {
-            while ( ouEl.parentId !== undefined )
+            while ( ouEl.pid !== undefined )
             {
-                if ( localStorage[getTagId( ouEl.parentId )] != null )
+                if ( organisationUnits[ouEl.pid] != null )
                 {
-                    array.push( ouEl.parentId );
+                    array.push( ouEl.pid );
                 }
                 else
                 {
                     break;
                 }
 
-                ouEl = JSON.parse( localStorage[getTagId( ouEl.parentId )] );
+                ouEl = organisationUnits[ouEl.pid];
             }
 
             array.reverse();
@@ -499,14 +473,14 @@ function Subtree()
 
         if ( $( "#" + getTagId( rootId ) ).length < 1 )
         {
-            var expand = JSON.parse( localStorage[getTagId( rootId )] );
+            var expand = organisationUnits[rootId];
             var $parentTag = $( "#" + getTagId( rootId ) );
             $rootsTag.append( createTreeElementTag( expand ) );
         }
 
         $.each( array, function( i, item )
         {
-            var expand = JSON.parse( localStorage[getTagId( item )] );
+            var expand = organisationUnits[item];
             processExpand( expand );
         } );
     };
@@ -582,9 +556,9 @@ function Subtree()
     {
         var $childrenTag = $( "<ul/>" );
 
-        $.each( parent.children, function( i, item )
+        $.each( parent.c, function( i, item )
         {
-            var ou = JSON.parse( localStorage[getTagId( item )] );
+            var ou = organisationUnits[item];
             $childrenTag.append( createTreeElementTag( ou ) );
         } );
 
@@ -600,7 +574,7 @@ function Subtree()
         var $toggleTag = $( "<span/>" );
         $toggleTag.addClass( "toggle" );
 
-        if ( ou.children.length > 0 )
+        if ( ou.c.length > 0 )
         {
             $toggleTag.bind( "click", new Function( 'subtree.toggle( ' + ou.id + ' )' ) );
             $toggleTag.append( getToggleExpand() );
@@ -612,7 +586,7 @@ function Subtree()
 
         var $linkTag = $( "<a/>" );
         $linkTag.attr( "href", "javascript:void selection.select( " + ou.id + ")" );
-        $linkTag.append( ou.name );
+        $linkTag.append( ou.n );
 
         var $childTag = $( "<li/>" );
 
