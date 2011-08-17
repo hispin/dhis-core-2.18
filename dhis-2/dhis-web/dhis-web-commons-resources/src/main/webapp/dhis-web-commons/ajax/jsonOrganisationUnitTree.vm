@@ -1,19 +1,9 @@
-
-#macro( expandOrganisationUnit $organisationUnit )
 {
-"id":$!{organisationUnit.id},
-#if( $organisationUnit.parent )"pid":$!{organisationUnit.parent.id},#end
-"n":"$!encoder.jsonEncode( ${organisationUnit.name} )"#if( $organisationUnit.children.size() > 0 ),
-"c":[
-#foreach ( $child in $organisationUnit.sortedChildren )
-#expandOrganisationUnit( $child )#if( $velocityCount < $organisationUnit.children.size() ),#end
-#end]#end }
-#end
-
-{ "version":"$!encoder.jsonEncode( $version )"
+"version":"$!encoder.jsonEncode( $version )"
 #if( ! $versionOnly )
-,"organisationUnits":[
-#foreach ( $organisationUnit in $organisationUnits )
-#expandOrganisationUnit( $organisationUnit )#if( $velocityCount < $organisationUnits.size() ),#end
-#end ]
-#end }
+,"organisationUnits": {
+#foreach( $unit in $organisationUnits )
+"${unit.id}":{"id":${unit.id},"n":"${unit.name}",#if( $unit.parent )"pid":${unit.parent.id},#end"c":[#foreach( $child in $unit.sortedChildren )${child.id}#if( $velocityCount < $organisationUnit.children.size() ),#end#end]}
+#if( $velocityCount < $organisationUnits.size() ),#end#end
+#end
+} }

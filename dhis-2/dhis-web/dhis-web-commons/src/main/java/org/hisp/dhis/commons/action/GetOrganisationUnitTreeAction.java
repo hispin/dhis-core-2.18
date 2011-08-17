@@ -28,8 +28,8 @@ package org.hisp.dhis.commons.action;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -74,21 +74,10 @@ public class GetOrganisationUnitTreeAction
     }
 
     // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<OrganisationUnit> organisationUnitComparator;
-
-    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
-    {
-        this.organisationUnitComparator = organisationUnitComparator;
-    }
-
-    // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> organisationUnits;
+    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
     public List<OrganisationUnit> getOrganisationUnits()
     {
@@ -120,29 +109,34 @@ public class GetOrganisationUnitTreeAction
 
     public String execute()
         throws Exception
-    {
+    {   
         if ( !versionOnly )
         {
+            Collection<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
+            
             User user = currentUserService.getCurrentUser();
 
             if ( user.getOrganisationUnits() != null && user.getOrganisationUnits().size() > 0 )
             {
-                organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+                userOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
             }
             else
             {
                 if ( user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
                 {
-                    organisationUnits = new ArrayList<OrganisationUnit>(
+                    userOrganisationUnits = new ArrayList<OrganisationUnit>(
                         organisationUnitService.getRootOrganisationUnits() );
                 }
                 else
                 {
-                    organisationUnits = new ArrayList<OrganisationUnit>();
+                    userOrganisationUnits = new ArrayList<OrganisationUnit>();
                 }
             }
 
-            Collections.sort( organisationUnits, organisationUnitComparator );
+            for ( OrganisationUnit unit : userOrganisationUnits )
+            {
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
+            }            
         }
 
         version = getVersionString();
