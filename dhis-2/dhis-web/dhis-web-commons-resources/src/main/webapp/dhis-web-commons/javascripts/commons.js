@@ -503,6 +503,11 @@ function setHeaderMessage( message )
     $( 'div#headerMessage' ).slideDown( 'fast' );
 }
 
+function getHeaderMessage()
+{
+    return $( 'div#headerMessage' ).html();
+}
+
 /**
  * Updates the text in the header message div with the message.
  * 
