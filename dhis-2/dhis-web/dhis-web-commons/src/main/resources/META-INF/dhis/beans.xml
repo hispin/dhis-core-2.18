@@ -525,6 +525,7 @@
   <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitTreeAction" class="org.hisp.dhis.commons.action.GetOrganisationUnitTreeAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="versionService" ref="org.hisp.dhis.version.VersionService" />
   </bean>
 

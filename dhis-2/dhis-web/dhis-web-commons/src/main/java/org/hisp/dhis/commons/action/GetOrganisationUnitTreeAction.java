@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.Version;
@@ -56,6 +57,13 @@ public class GetOrganisationUnitTreeAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     private VersionService versionService;
@@ -117,13 +125,21 @@ public class GetOrganisationUnitTreeAction
         {
             User user = currentUserService.getCurrentUser();
 
-            if ( user.getOrganisationUnits() != null )
+            if ( user.getOrganisationUnits() != null && user.getOrganisationUnits().size() > 0 )
             {
                 organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
             }
             else
             {
-                organisationUnits = new ArrayList<OrganisationUnit>();
+                if ( user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
+                {
+                    organisationUnits = new ArrayList<OrganisationUnit>(
+                        organisationUnitService.getAllOrganisationUnits() );
+                }
+                else
+                {
+                    organisationUnits = new ArrayList<OrganisationUnit>();
+                }
             }
 
             Collections.sort( organisationUnits, organisationUnitComparator );
