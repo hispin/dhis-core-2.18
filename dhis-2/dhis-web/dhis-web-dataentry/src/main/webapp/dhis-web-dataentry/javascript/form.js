@@ -475,6 +475,9 @@ function periodSelected()
 
 function loadDataValues()
 {
+    $( '#completeButton' ).removeAttr( 'disabled' );
+    $( '#undoButton' ).attr( 'disabled', 'disabled' );
+
     insertDataValues();
     displayEntryFormCompleted();
 }
