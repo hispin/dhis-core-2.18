@@ -84,6 +84,13 @@ public class GetOrganisationUnitTreeAction
         return organisationUnits;
     }
 
+    private List<OrganisationUnit> rootOrganisationUnits = new ArrayList<OrganisationUnit>();
+
+    public List<OrganisationUnit> getRootOrganisationUnits()
+    {
+        return rootOrganisationUnits;
+    }
+
     private String version;
 
     public String getVersion()
@@ -109,16 +116,17 @@ public class GetOrganisationUnitTreeAction
 
     public String execute()
         throws Exception
-    {   
+    {
         if ( !versionOnly )
         {
             Collection<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
-            
+
             User user = currentUserService.getCurrentUser();
 
             if ( user.getOrganisationUnits() != null && user.getOrganisationUnits().size() > 0 )
             {
                 userOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+                rootOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
             }
             else
             {
@@ -126,17 +134,20 @@ public class GetOrganisationUnitTreeAction
                 {
                     userOrganisationUnits = new ArrayList<OrganisationUnit>(
                         organisationUnitService.getRootOrganisationUnits() );
+                    rootOrganisationUnits = new ArrayList<OrganisationUnit>(
+                        organisationUnitService.getRootOrganisationUnits() );
                 }
                 else
                 {
                     userOrganisationUnits = new ArrayList<OrganisationUnit>();
+                    rootOrganisationUnits = new ArrayList<OrganisationUnit>();
                 }
             }
 
             for ( OrganisationUnit unit : userOrganisationUnits )
             {
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
-            }            
+            }
         }
 
         version = getVersionString();
