@@ -47,12 +47,12 @@
     <name>AmpleCode Maven 2 repository</name>
     <url>http://www.amplecode.org/maven2</url>
     </repository>
+     -->
     <repository>
       <id>dhis.uio.no</id>
       <name>Dhis2 External Dependencies Repository</name>
       <url>http://dhis.uio.no/maven/external</url>
-    </repository>
-    -->
+    </repository>   
     <!--
     <repository>
       <id>jboss-public-repository-group</id>
