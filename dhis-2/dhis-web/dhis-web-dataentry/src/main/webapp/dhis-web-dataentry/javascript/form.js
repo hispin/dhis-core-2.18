@@ -122,7 +122,7 @@ function loadMetaData()
 		organisationUnitAssociationSetMap = json.metaData.organisationUnitAssociationSetMap;
 		
 		console.log( 'Meta-data loaded' );		
-//		uploadLocalData();
+	    updateForms();
 	} );
 }
 
@@ -212,6 +212,8 @@ function uploadLocalData()
                 setHeaderMessage(i18n_online_notification);
             }
             
+            pushCompleteDataSets(completeDataSetsArray);
+
             return;
         }
 
@@ -247,8 +249,6 @@ function uploadLocalData()
             }
         } );
     })(dataValuesArray);
-
-    updateForms();
 }
 
 function ajax_login() 
