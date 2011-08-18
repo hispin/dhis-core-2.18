@@ -136,8 +136,7 @@ function uploadLocalData()
 
     for( var completeDataSetKey in completeDataSets )
     {
-        var completeDataSet = completeDataSets[completeDataSetKey]
-        console.log(completeDataSet);
+        var completeDataSet = completeDataSets[completeDataSetKey];
 
         $.ajax({
             url: 'registerCompleteDataSet.action',
@@ -322,7 +321,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
     var dataSetId = $( '#selectedDataSetId' ).val();
     var periodId = $( '#selectedPeriodId' ).val();
 
-    var url = 'loadDataSets.action';
+//    var url = 'loadDataSets.action';
 
     $( '#selectedOrganisationUnit' ).val( organisationUnitName );
     $( '#currentOrganisationUnit' ).html( organisationUnitName );
@@ -680,7 +679,7 @@ function getCompleteDataSetsLocalVariable()
 
     if(localStorage[KEY_COMPLETEDATASETS] == null)
     {
-        completeDataSets = {}
+        completeDataSets = {};
     } else {
         completeDataSets = JSON.parse(localStorage[KEY_COMPLETEDATASETS]);
     }
@@ -743,9 +742,6 @@ function registerCompleteDataSet( json )
         $.getJSON( 'registerCompleteDataSet.action', params).success(function() {
             clearCompleteDataSetLocally(params);
         }).error( function() {
-
-//            disableUndoButton();
-//            window.alert( i18n_no_response_from_server );
         } );
     }
     else
@@ -770,9 +766,6 @@ function undoCompleteDataSet()
         }).error( function()
         {
             clearCompleteDataSetLocally(params);
-
-//            disableCompleteButton();
-//            window.alert( i18n_no_response_from_server );
         } );
     }
 }
@@ -946,8 +939,8 @@ function downloadRemoteForms()
 function StorageManager()
 {
 	var MAX_SIZE = new Number( 2600000 );
-	var MAX_SIZE_FORMS = new Number( 1600000 );
-	var MAX_SIZE_DATA_VALUES = new Number( 500000 );
+//	var MAX_SIZE_FORMS = new Number( 1600000 );
+//	var MAX_SIZE_DATA_VALUES = new Number( 500000 );
 
 	var KEY_FORM_PREFIX = 'form-';
 	var KEY_FORM_VERSIONS = 'formversions';
@@ -973,7 +966,7 @@ function StorageManager()
 		}
 		
 		return totalSize;
-	}
+	};
 	
 	/**
 	 * Returns the total numbers of characters in stored forms currently in the
@@ -999,7 +992,7 @@ function StorageManager()
 		}
 		
 		return totalSize;
-	}
+	};
 	
 	/**
 	 * Return the remaining capacity of the local storage in characters, ie.
@@ -1008,7 +1001,7 @@ function StorageManager()
 	this.remainingStorage = function()
 	{
 		return MAX_SIZE - this.totalSize();
-	}
+	};
 	
 	/**
 	 * Saves the content of a data entry form.
@@ -1044,7 +1037,7 @@ function StorageManager()
 		* */
 		
 		return true;
-	}
+	};
 	
 	/**
 	 * Gets the content of a data entry form.
@@ -1057,7 +1050,7 @@ function StorageManager()
 		var id = KEY_FORM_PREFIX + dataSetId;
 		
 		return localStorage[id];
-	}
+	};
 	
 	/**
 	 * Removes a form.
@@ -1067,7 +1060,7 @@ function StorageManager()
 	this.deleteForm = function( dataSetId )
 	{
 		localStorage.removeItem( dataSetId );
-	}
+	};
 	
 	/**
 	 * Returns an array of the identifiers of all forms.
@@ -1077,7 +1070,6 @@ function StorageManager()
 	this.getAllForms = function()
 	{
 		var formIds = [];
-		var i = 0;
 		
 		for ( var i = 0; i < localStorage.length; i++ )
 		{
@@ -1092,7 +1084,7 @@ function StorageManager()
 		}
 		
 		return formIds;
-	}
+	};
 	
 	/**
 	 * Indicates whether a form exists.
@@ -1105,7 +1097,7 @@ function StorageManager()
 		var id = KEY_FORM_PREFIX + dataSetId;
 		
 		return localStorage[id] != null;
-	}
+	};
 	
 	/**
 	 * Downloads the form for the data set with the given identifier from the 
@@ -1128,8 +1120,8 @@ function StorageManager()
 				storageManager.saveFormVersion( this.dataSetId, this.formVersion );
 			}
 		} );
-	}
-	
+	};
+
 	/**
 	 * Saves a version for a form.
 	 * 
@@ -1157,7 +1149,7 @@ function StorageManager()
 		{
 			console.log( 'Max local storage quota reached, ignored form version: ' + dataSetId );
 		}
-	}
+	};
 	
 	/**
 	 * Returns the version of the form of the data set with the given identifier.
@@ -1175,12 +1167,12 @@ function StorageManager()
 		}
 		
 		return null;
-	}
+	};
 	
 	this.getAllFormVersions = function()
 	{
 		return localStorage[KEY_FORM_VERSIONS] != null ?  JSON.parse( localStorage[KEY_FORM_VERSIONS] ) : null;
-	}
+	};
 	
 	/**
 	 * Saves a data value.
@@ -1210,8 +1202,8 @@ function StorageManager()
 		{
 			console.log( 'Max local storage quota reached, ignored data value' );
 		}
-	}
-	
+	};
+
 	/**
 	 * Gets the value for the data value with the given arguments, or null if it
 	 * does not exist.
@@ -1234,7 +1226,7 @@ function StorageManager()
 		}
 
 		return null;
-	}
+	};
 
 	/**
 	 * Removes the wanted dataValue from localStorage.
@@ -1244,7 +1236,7 @@ function StorageManager()
 	this.clearDataValueJSON = function( dataValue )
 	{
 	    this.clearDataValue( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId, dataValue.organisationUnitId );
-	}
+	};
 
 	/**
      * Removes the wanted dataValue from localStorage.
@@ -1264,7 +1256,7 @@ function StorageManager()
 	        delete dataValues[id];
 	        localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
 	    }
-	}
+	};
 	
 	/**
 	 * Returns a JSON associative array where the keys are on the form
@@ -1276,7 +1268,7 @@ function StorageManager()
 	this.getAllDataValues = function()
 	{
 		return localStorage[KEY_DATAVALUES] != null ? JSON.parse( localStorage[KEY_DATAVALUES] ) : null;
-	}
+	};
 	
 	/**
 	 * Supportive method.
@@ -1284,5 +1276,5 @@ function StorageManager()
 	this.getDataValueIdentifier = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
 	{
 		return dataElementId + "-" + categoryOptionComboId + "-" + periodId + "-" + organisationUnitId;
-	}
+	};
 }

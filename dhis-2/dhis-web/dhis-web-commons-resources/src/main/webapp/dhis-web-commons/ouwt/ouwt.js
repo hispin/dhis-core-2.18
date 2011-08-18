@@ -31,7 +31,7 @@ $( document ).ready( function()
 
 function Selection()
 {
-    var listenerFunction, multipleSelectionAllowed = false, unselectAllowed = false;
+    var listenerFunction = undefined, multipleSelectionAllowed = false, unselectAllowed = false;
 
     this.setListenerFunction = function( listenerFunction_, skipInitialCall )
     {
@@ -227,7 +227,7 @@ function Selection()
 
             if ( !!selected && $.isArray( selected ) )
             {
-                var idx;
+                var idx = undefined;
 
                 $.each( selected, function( i, item )
                 {
@@ -310,7 +310,7 @@ function Selection()
             return;
         }
 
-        var selected = []
+        var selected = [];
 
         if ( sessionStorage[getTagId( "Selected" )] != null )
         {
@@ -347,9 +347,9 @@ function Selection()
 
     this.findByCode = function()
     {
-        var name = $( '#searchField' ).val()
+        var name = $( '#searchField' ).val();
 
-        var match;
+        var match = undefined;
 
         for ( var ou in organisationUnits )
         {
@@ -382,7 +382,7 @@ function Selection()
         {
             $( '#searchField' ).css( 'background-color', '#ffc5c5' );
         }
-    }
+    };
 }
 
 // -----------------------------------------------------------------------------
@@ -471,7 +471,7 @@ function Subtree()
         if ( $( "#" + getTagId( rootId ) ).length < 1 )
         {
             var expand = organisationUnits[rootId];
-            var $parentTag = $( "#" + getTagId( rootId ) );
+//            var $parentTag = $( "#" + getTagId( rootId ) );
             $rootsTag.append( createTreeElementTag( expand ) );
         }
 
@@ -589,9 +589,9 @@ function Subtree()
 
         $childTag.attr( "id", getTagId( ou.id ) );
         $childTag.append( " " );
-        $childTag.append( $toggleTag )
+        $childTag.append( $toggleTag );
         $childTag.append( " " );
-        $childTag.append( $linkTag )
+        $childTag.append( $linkTag );
 
         return $childTag;
     }
