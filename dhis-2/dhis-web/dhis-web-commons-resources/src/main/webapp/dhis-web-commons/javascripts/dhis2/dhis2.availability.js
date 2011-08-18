@@ -83,7 +83,7 @@ dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInt
 
     // use 500ms for initial check
     _availableTimeoutHandler = setTimeout( _checkAvailability, 500 );
-}
+};
 
 /**
  * Stop checking for availability.
@@ -91,4 +91,4 @@ dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInt
 dhis2.availability.stopAvailabilityCheck = function()
 {
     clearTimeout( dhis2.availability._availableTimeoutHandler );
-}
+};

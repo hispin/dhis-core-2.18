@@ -50,12 +50,12 @@ function DataDictionary()
                 target.append( '<option value="' + item.id + '">' + item.name + '</option>' );
             } );
         }
-    }
+    };
 
     this.loadAllDataElements = function( jQuerySelectionString )
     {
         this.loadDataElementsByGroup( '0', jQuerySelectionString );
-    }
+    };
 
     this.loadDataElementsByGroup = function( id, jQuerySelectionString )
     {
@@ -88,7 +88,7 @@ function DataDictionary()
                 target.append( '<option value="' + item.id + '">' + item.name + '</option>' );
             } );
         }
-    }
+    };
 
     this.loadIndicatorGroups = function( jQuerySelectionString )
     {
@@ -115,12 +115,12 @@ function DataDictionary()
                 target.append( '<option value="' + item.id + '">' + item.name + '</option>' );
             } );
         }
-    }
+    };
 
     this.loadAllIndicators = function( jQuerySelectionString )
     {
         this.loadIndicatorsByGroup( ALL_KEY, jQuerySelectionString );
-    }
+    };
 
     this.loadIndicatorsByGroup = function( id, jQuerySelectionString )
     {
@@ -153,7 +153,7 @@ function DataDictionary()
                 target.append( '<option value="' + item.id + '">' + item.name + '</option>' );
             } );
         }
-    }
+    };
 
     this.loadCategoryOptionComboByDE = function( id, jQuerySelectionString )
     {
@@ -186,19 +186,19 @@ function DataDictionary()
                 target.append( '<option value="' + item.id + '">' + item.name + '</option>' );
             } );
         }
-    }
+    };
 
     this.reloadOperands = function( currentpage )
     {
         this.params.currentPage = currentpage;
         this.loadOperands( this.jQuerySelectionString, this.params );
-    }
+    };
 
     this.changeOperandsPageSize = function( pagesize )
     {
         this.params.pageSize = pagesize;
         this.loadOperands( this.jQuerySelectionString, this.params );
-    }
+    };
 
     this.loadOperands = function( jQuerySelectionString, params )
     {
@@ -230,7 +230,6 @@ function DataDictionary()
                             {
                                 var numberOfPages = json.paging.numberOfPages;
                                 var currentPage = json.paging.currentPage;
-                                var baseLink = json.paging.baseLink;
                                 var pageSize = json.paging.pageSize;
                                 var startPage = json.paging.startPage;
 
@@ -273,7 +272,7 @@ function DataDictionary()
                                 jQuery( html ).insertAfter( target );
                             }
                         } );
-    }
+    };
 }
 
 var dataDictionary = new DataDictionary();

@@ -49,7 +49,7 @@ dhis2.util.namespace = function( path )
     }
 
     return parent;
-}
+};
 
 /**
  * adds ':containsNoCase' to filtering.

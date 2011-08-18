@@ -42,7 +42,7 @@ dhis2.comparator.defaultComparator = function( a, b )
     }
 
     return (a > b) ? 1 : -1;
-}
+};
 
 /**
  * Case sensitive compare of two jQuery objects (based on their innerHTML).
@@ -55,7 +55,7 @@ dhis2.comparator.defaultComparator = function( a, b )
 dhis2.comparator.htmlComparator = function( a, b )
 {
     return dhis2.comparator.defaultComparator( a.html(), b.html() );
-}
+};
 
 /**
  * Case insensitive compare of two jQuery objects (based on their innerHTML).
@@ -74,4 +74,4 @@ dhis2.comparator.htmlNoCaseComparator = function( a, b )
     b = !!b ? b.toLowerCase() : b;
 
     return dhis2.comparator.defaultComparator( a, b );
-}
+};
