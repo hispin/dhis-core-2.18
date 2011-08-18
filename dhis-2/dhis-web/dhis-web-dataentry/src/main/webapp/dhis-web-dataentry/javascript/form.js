@@ -67,7 +67,7 @@ $( document ).ready( function()
     $( document ).bind( 'dhis2.online', function( event, loggedIn ) {
         if ( loggedIn ) {
             if ( storageManager.hasLocalData() ) {
-                var message = i18n_need_to_sync_notification + '<button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+                var message = i18n_need_to_sync_notification + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
                 
                 setHeaderMessage( message );
                 
@@ -75,7 +75,7 @@ $( document ).ready( function()
             }
             else
             {
-                setHeaderMessage( i18n_online_notification );
+                setHeaderDelayMessage( i18n_online_notification );
             }
         } 
         else {
@@ -173,7 +173,7 @@ function uploadLocalData()
 
                 if ( array.length < 1 )
                 {
-                    setHeaderMessage( i18n_online_notification );
+                    setHeaderDelayMessage( i18n_online_notification );
                 }
             }
         });
@@ -182,7 +182,7 @@ function uploadLocalData()
     (function pushDataValues( array ) {
         if ( array.length < 1 )
         {
-            setHeaderMessage( i18n_online_notification );
+            setHeaderDelayMessage( i18n_online_notification );
             
             pushCompleteDataSets(completeDataSetsArray);
 
@@ -209,7 +209,7 @@ function uploadLocalData()
                 }
                 else
                 {
-                    setHeaderMessage( i18n_online_notification );
+                    setHeaderDelayMessage( i18n_online_notification );
                 }
             }
         } );
