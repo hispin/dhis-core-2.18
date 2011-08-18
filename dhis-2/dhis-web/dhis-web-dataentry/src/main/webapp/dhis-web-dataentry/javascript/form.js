@@ -67,9 +67,9 @@ $( document ).ready( function()
     $( document ).bind( 'dhis2.online', function( event, loggedIn ) {
         if( loggedIn ) {
             if( isHeaderMessageVisible() ) {
-                updateHeaderMessage( 'You are online' );
+                updateHeaderMessage( i18n_online_notification );
             } else {
-                setHeaderMessage( 'You are online' );
+                setHeaderMessage( i18n_online_notification );
             }
         } 
         else {
@@ -85,9 +85,9 @@ $( document ).ready( function()
 
     $( document ).bind( 'dhis2.offline', function() {
         if( isHeaderMessageVisible() ) {
-            updateHeaderMessage( 'You are offline. Data will be stored locally.' );
+            updateHeaderMessage( i18n_offline_notification );
         } else {
-            setHeaderMessage( 'You are offline. Data will be stored locally.' );
+            setHeaderMessage( i18n_offline_notification );
         }
     } );
 
@@ -115,19 +115,19 @@ function uploadLocalData()
     var completeDataSets = getCompleteDataSetsLocalVariable();
 
     var oldHeaderMessage = getHeaderMessage();
-    setHeaderWaitMessage("Syncing local data with server");
+    setHeaderWaitMessage( i18n_uploading_data_notification );
 
     for ( var dataValueKey in dataValues ) 
     {
         var dataValue = dataValues[dataValueKey];
 
         $.ajax( {
-            url : 'saveValue.action',
-            data : dataValue,
-            dataType : 'json',
+            url: 'saveValue.action',
+            data: dataValue,
+            dataType: 'json',
             dataValue: dataValue,
             async: false,
-            success : function( data, textStatus, jqXHR ) {
+            success: function( data, textStatus, jqXHR ) {
                 storageManager.clearDataValueJSON( this.dataValue );
                 console.log( 'Successfully saved data value with value: ' + this.dataValue );
             }
@@ -151,7 +151,7 @@ function uploadLocalData()
         });
     }
 
-    if(oldHeaderMessage.length > 0) {
+    if ( oldHeaderMessage.length > 0 ) {
         setHeaderMessage(oldHeaderMessage);
     } else {
         hideHeaderMessage();
@@ -949,9 +949,9 @@ function StorageManager()
 	var MAX_SIZE_FORMS = new Number( 1600000 );
 	var MAX_SIZE_DATA_VALUES = new Number( 500000 );
 
-	var KEY_FORM_PREFIX = "form-";
-	var KEY_FORM_VERSIONS = "formversions";
-	var KEY_DATAVALUES = "datavalues";
+	var KEY_FORM_PREFIX = 'form-';
+	var KEY_FORM_VERSIONS = 'formversions';
+	var KEY_DATAVALUES = 'datavalues';
 
 	/**
 	 * Returns the total number of characters currently in the local storage.
