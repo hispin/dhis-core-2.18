@@ -111,6 +111,25 @@ $( document ).ready( function()
     dhis2.availability.startAvailabilityCheck();
 } );
 
+function ajax_login() 
+{
+    $( '#login_button' ).bind( 'click', function() {
+        var username = $( '#username' ).val();
+        var password = $( '#password' ).val();
+
+        $.post( '../dhis-web-commons-security/login.action', {
+            'j_username': username,
+            'j_password': password
+        } ).success( function() {
+            var ret = dhis2.availability.syncCheckAvailability();
+
+            if(!ret) {
+                alert("Login failed, check your username and password and try again.");
+            }
+        } );
+    } );
+}
+
 function loadMetaData()
 {
 	$.getJSON( 'getMetaData.action', function( json ) {
@@ -236,21 +255,6 @@ function uploadLocalData()
             }
         } );
     })(dataValuesArray);
-}
-
-function ajax_login() 
-{
-    $( '#login_button' ).bind( 'click', function() {
-        var username = $( '#username' ).val();
-        var password = $( '#password' ).val();
-
-        $.post( '../dhis-web-commons-security/login.action', {
-            'j_username': username,
-            'j_password': password
-        } ).success( function() {
-            alert( 'Login attempt successful, TODO check if login was successful with checkAvailability' );
-        } );
-    } );
 }
 
 function addEventListeners()

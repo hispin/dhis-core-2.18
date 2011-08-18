@@ -48,7 +48,7 @@ dhis2.select.getGhost = function( $select )
     }
 
     return $select_ghost;
-}
+};
 
 /**
  * Filter a select on a given key. Options that are not matched, are moved to
@@ -64,7 +64,7 @@ dhis2.select.getGhost = function( $select )
 dhis2.select.filterWithKey = function( $select, key, caseSensitive )
 {
     $select_ghost = dhis2.select.getGhost( $select );
-    caseSensitive = caseSensitive || false;
+    caseSensitive = caseSensitive || false;
 
     if (key.length === 0) {
         dhis2.select.moveSorted( $select, $select_ghost.children() );
@@ -85,7 +85,7 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
         dhis2.select.moveSorted( $select_ghost, $select_not_matched );
         dhis2.select.moveSorted( $select, $select_ghost_matched );
     }
-}
+};
 
 /**
  * Moves an array of child elements into a select, these will be moved in a
@@ -126,7 +126,7 @@ dhis2.select.moveSorted = function ($select, $array)
 
         $select.append(array);
     }
-}
+};
 
 /**
  * Moves an array of child elements into a select.
@@ -137,7 +137,7 @@ dhis2.select.moveSorted = function ($select, $array)
 dhis2.select.move = function ($select, $array)
 {
     $select.append($array);
-}
+};
 
 /**
  * Mark all options in a select as selected.
@@ -147,7 +147,7 @@ dhis2.select.move = function ($select, $array)
 dhis2.select.selectAll = function($select)
 {
     $select.children().attr('selected', true);
-}
+};
 
 /**
  * Mark all options as not selected.
@@ -157,7 +157,7 @@ dhis2.select.selectAll = function($select)
 dhis2.select.selectNone = function($select)
 {
     $select.children().attr('selected', false);
-}
+};
 
 /**
  * Sort options in a select. Based on their html() content. This version is case
@@ -172,7 +172,7 @@ dhis2.select.sort = function($options)
     return $.makeArray($options).sort(function(a, b) {
         return dhis2.comparator.htmlComparator( $(a), $(b) );
     });
-}
+};
 
 /**
  * Sort options in a select. Based on their html() content. This version is case
@@ -187,4 +187,4 @@ dhis2.select.sortNC = function($options)
     return $($.makeArray($options).sort(function(a, b) {
         return dhis2.comparator.htmlNoCaseComparator( $(a), $(b) );
     }) );
-}
+};
