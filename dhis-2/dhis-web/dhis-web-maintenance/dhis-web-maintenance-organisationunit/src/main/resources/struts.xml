@@ -14,7 +14,7 @@
       <param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
     </action>
 
-		<!-- OrganisationUnit -->
+    <!-- OrganisationUnit -->
 
     <action name="organisationUnit" class="org.hisp.dhis.oum.action.organisationunit.GetOrganisationUnitListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -23,16 +23,16 @@
       <param name="javascripts">
         ../dhis-web-commons/ouwt/ouwt.js,
         javascript/organisationUnit.js
-			</param>
+      </param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
       <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
     <action name="validateOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.ValidateOrganisationUnitAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
+      </result>
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -45,20 +45,20 @@
 
     <action name="addOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.AddOrganisationUnitAction">
       <result name="success" type="redirect">organisationUnit.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
     </action>
 
     <action name="getCompulsoryGroupSet" class="org.hisp.dhis.oum.action.organisationunit.GetCompulsoryGroupSetAction">
       <result name="success" type="redirect">organisationUnit.action
-			</result>
+      </result>
       <result name="input" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/assignToCompulsoryGroupSetForm.vm</param>
     </action>
 
     <action name="assignOrganisationUnitToGroups" class="org.hisp.dhis.oum.action.organisationunit.AssignOrganisationUnitToGroupsAction">
       <result name="success" type="redirect">getCompulsoryGroupSet.action?organisationUnitId=${organisationUnitId}
-			</result>
+      </result>
     </action>
 
     <action name="showUpdateOrganisationUnitForm" class="org.hisp.dhis.oum.action.organisationunit.GetOrganisationUnitAction">
@@ -70,20 +70,22 @@
 
     <action name="updateOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.UpdateOrganisationUnitAction">
       <result name="success" type="redirect">organisationUnit.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
     </action>
 
     <action name="removeOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.RemoveOrganisationUnitAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_DELETE</param>
     </action>
 
-		<!-- OrganisationUnitGroup -->
+    <!-- OrganisationUnitGroup -->
 
     <action name="organisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -96,15 +98,15 @@
     <action name="getOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupAction">
       <result name="success" type="velocity-xml">
         /dhis-web-maintenance-organisationunit/responseOrganisationUnitGroupObject.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="validateOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.ValidateOrganisationUnitGroupAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
+      </result>
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -116,7 +118,7 @@
 
     <action name="addOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.AddOrganisationUnitGroupAction">
       <result name="success" type="redirect">organisationUnitGroup.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_ORGUNITGROUP_ADD</param>
     </action>
 
@@ -128,20 +130,22 @@
 
     <action name="updateOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.UpdateOrganisationUnitGroupAction">
       <result name="success" type="redirect">organisationUnitGroup.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_ORGUNITGROUP_UPDATE</param>
     </action>
 
     <action name="removeOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.RemoveOrganisationUnitGroupAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGUNITGROUP_DELETE</param>
     </action>
 
-		<!-- OrganisationUnitGroupSet -->
+    <!-- OrganisationUnitGroupSet -->
 
     <action name="organisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -154,21 +158,23 @@
     <action name="getOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetAction">
       <result name="success" type="velocity-xml">
         /dhis-web-maintenance-organisationunit/responseOrganisationUnitGroupSetObject.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="addOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.AddGroupSetAction">
       <result name="success" type="redirect">organisationUnitGroupSet.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
     </action>
 
     <action name="validateOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.ValidateGroupSetAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -188,20 +194,22 @@
 
     <action name="removeOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.RemoveGroupSetAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_DELETE</param>
     </action>
 
     <action name="updateOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.UpdateGroupSetAction">
       <result name="success" type="redirect">organisationUnitGroupSet.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_UPDATE</param>
     </action>
 
-		<!-- Hierarchy -->
+    <!-- Hierarchy -->
 
     <action name="hierarchyOperations" class="org.hisp.dhis.oum.action.hierarchy.GetSelectedOrganisationUnitAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -214,33 +222,39 @@
 
     <action name="validateOrganisationUnitToMove" class="org.hisp.dhis.oum.action.hierarchy.ValidateOrganisationUnitToMoveAction">
       <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
+        /dhis-web-maintenance-organisationunit/responseSuccess.vm
+      </result>
       <result name="error" type="velocity-xml">
-        /dhis-web-maintenance-organisationunit/responseError.vm</result>
+        /dhis-web-maintenance-organisationunit/responseError.vm
+      </result>
       <result name="input" type="velocity-xml">
-        /dhis-web-maintenance-organisationunit/responseInput.vm</result>
+        /dhis-web-maintenance-organisationunit/responseInput.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_MOVE</param>
     </action>
 
     <action name="validateNewParentOrganisationUnit" class="org.hisp.dhis.oum.action.hierarchy.ValidateNewParentOrganisationUnitAction">
       <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
+        /dhis-web-maintenance-organisationunit/responseSuccess.vm
+      </result>
       <result name="error" type="velocity-xml">
-        /dhis-web-maintenance-organisationunit/responseError.vm</result>
+        /dhis-web-maintenance-organisationunit/responseError.vm
+      </result>
       <result name="input" type="velocity-xml">
-        /dhis-web-maintenance-organisationunit/responseInput.vm</result>
+        /dhis-web-maintenance-organisationunit/responseInput.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_MOVE</param>
     </action>
 
     <action name="moveOrganisationUnit" class="org.hisp.dhis.oum.action.hierarchy.MoveOrganisationUnitAction">
       <result name="success" type="redirect">hierarchyOperations.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_MOVE</param>
     </action>
 
-		<!-- OrganisationUnitLevels -->
+    <!-- OrganisationUnitLevels -->
 
     <action name="organisationUnitLevel" class="org.hisp.dhis.oum.action.organisationunitlevel.GetOrganisationUnitLevelsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -251,8 +265,8 @@
     <action name="saveOrganisationUnitLevels" class="org.hisp.dhis.oum.action.organisationunitlevel.SaveOrganisationUnitLevelsAction">
       <result name="success" type="redirect">index.action</result>
     </action>
-		
-		<!-- OrganisationUnit Search -->
+
+    <!-- OrganisationUnit Search -->
 
     <action name="organisationUnitSearch" class="org.hisp.dhis.oum.action.search.SearchOrganisationUnitsAction">
       <result name="success" type="velocity">/main.vm</result>
