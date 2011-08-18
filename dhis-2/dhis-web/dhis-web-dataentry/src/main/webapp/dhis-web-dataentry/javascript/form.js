@@ -65,7 +65,7 @@ $( document ).ready( function()
     } );
 
     $( document ).bind( 'dhis2.online', function( event, loggedIn ) {
-        if( loggedIn ) {
+        if ( loggedIn ) {
             if( isHeaderMessageVisible() ) {
                 updateHeaderMessage( i18n_online_notification );
             } else {
@@ -73,7 +73,7 @@ $( document ).ready( function()
             }
         } 
         else {
-            if( isHeaderMessageVisible() ) {
+            if ( isHeaderMessageVisible() ) {
                 updateHeaderMessage( '<form style="display: inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
                 ajax_login();
             } else {
@@ -84,7 +84,7 @@ $( document ).ready( function()
     } );
 
     $( document ).bind( 'dhis2.offline', function() {
-        if( isHeaderMessageVisible() ) {
+        if ( isHeaderMessageVisible() ) {
             updateHeaderMessage( i18n_offline_notification );
         } else {
             setHeaderMessage( i18n_offline_notification );
@@ -147,11 +147,11 @@ function uploadLocalData()
             success: function( data, textStatus, jqXHR ) {
                 clearCompleteDataSetLocally(this.completeDataSet);
             }
-        });
+        } );
     }
 
     if ( oldHeaderMessage.length > 0 ) {
-        setHeaderMessage(oldHeaderMessage);
+        setHeaderMessage( oldHeaderMessage );
     } else {
         hideHeaderMessage();
     }
@@ -320,8 +320,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
     var dataSetId = $( '#selectedDataSetId' ).val();
     var periodId = $( '#selectedPeriodId' ).val();
-
-//    var url = 'loadDataSets.action';
 
     $( '#selectedOrganisationUnit' ).val( organisationUnitName );
     $( '#currentOrganisationUnit' ).html( organisationUnitName );
@@ -1071,6 +1069,8 @@ function StorageManager()
 	{
 		var formIds = [];
 		
+		var formIndex = 0;
+		
 		for ( var i = 0; i < localStorage.length; i++ )
 		{
 			var key = localStorage.key(i);
@@ -1079,7 +1079,7 @@ function StorageManager()
 			{
 				var id = key.split( '-' )[1];
 				
-				formIds[i++] = id;
+				formIds[formIndex++] = id;
 			}
 		}
 		
@@ -1251,7 +1251,7 @@ function StorageManager()
 	    var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
 	    var dataValues = this.getAllDataValues();
 
-	    if( dataValues[id] != null ) 
+	    if ( dataValues[id] != null ) 
 	    {
 	        delete dataValues[id];
 	        localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
