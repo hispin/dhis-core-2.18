@@ -17,7 +17,7 @@
 	</tr>
 </table>	
 <p>
-	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
+	<input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:10em"/>
 	<input type="button" onclick="window.location.href='organisationUnitGroup.action'" value="$i18n.getString( 'cancel' )" style="width:10em"/>
 </p>  
 </form>
