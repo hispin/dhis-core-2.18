@@ -654,7 +654,7 @@ function getPreviousEntryField( field )
 // Data completeness
 // -----------------------------------------------------------------------------
 
-var KEY_COMPLETEDATASETS = "completedatasets";
+var KEY_COMPLETEDATASETS = 'completedatasets';
 
 function getCompleteDataSetId(json)
 {
@@ -663,9 +663,9 @@ function getCompleteDataSetId(json)
 
 function getCurrentCompleteDataSetParams() {
     var params = {
-            "periodId": $( '#selectedPeriodId' ).val(),
-            "dataSetId": $( '#selectedDataSetId' ).val(),
-            "organisationUnitId": currentOrganisationUnitId
+            'periodId': $( '#selectedPeriodId' ).val(),
+            'dataSetId': $( '#selectedDataSetId' ).val(),
+            'organisationUnitId': currentOrganisationUnitId
     };
     
     return params;
@@ -675,11 +675,11 @@ function getCompleteDataSetsLocalVariable()
 {
     var completeDataSets;
 
-    if(localStorage[KEY_COMPLETEDATASETS] == null)
+    if( localStorage[KEY_COMPLETEDATASETS] == null )
     {
         completeDataSets = {};
     } else {
-        completeDataSets = JSON.parse(localStorage[KEY_COMPLETEDATASETS]);
+        completeDataSets = JSON.parse( localStorage[KEY_COMPLETEDATASETS] );
     }
 
     return completeDataSets;
@@ -715,16 +715,13 @@ function validateCompleteDataSet()
         
         disableCompleteButton();
 
-        $.getJSON( 'getValidationViolations.action', params).success(function(data) {
-            registerCompleteDataSet(data);
-        }).error( function() {
-            // no response from server, fake a positive result and save it anyways
+        $.getJSON( 'getValidationViolations.action', params).success( function( data ) {
+            registerCompleteDataSet( data );
+        } ).error( function() {
+            // no response from server, fake a positive result and save it anyway
             registerCompleteDataSet({
-                "response": "success"
+                'response': 'success'
             });
-
-//            disableUndoButton();
-//            window.alert( i18n_no_response_from_server );
         } );
     }
 }
@@ -739,7 +736,7 @@ function registerCompleteDataSet( json )
 
         $.getJSON( 'registerCompleteDataSet.action', params).success(function() {
             clearCompleteDataSetLocally(params);
-        }).error( function() {
+        } ).error( function() {
         } );
     }
     else
@@ -761,7 +758,7 @@ function undoCompleteDataSet()
 
         $.getJSON( 'undoCompleteDataSet.action', params).success(function() {
             clearCompleteDataSetLocally(params);
-        }).error( function()
+        } ).error( function()
         {
             clearCompleteDataSetLocally(params);
         } );
@@ -937,8 +934,7 @@ function downloadRemoteForms()
 function StorageManager()
 {
 	var MAX_SIZE = new Number( 2600000 );
-//	var MAX_SIZE_FORMS = new Number( 1600000 );
-//	var MAX_SIZE_DATA_VALUES = new Number( 500000 );
+	var MAX_SIZE_FORMS = new Number( 1600000 );
 
 	var KEY_FORM_PREFIX = 'form-';
 	var KEY_FORM_VERSIONS = 'formversions';
@@ -1024,7 +1020,6 @@ function StorageManager()
 			return false;
 		}
 		
-		/*
 		if ( MAX_SIZE_FORMS < this.totalFormSize() )
 		{
 			this.deleteForm( dataSetId );
@@ -1032,7 +1027,6 @@ function StorageManager()
 			console.log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
 			return false;
 		}
-		* */
 		
 		return true;
 	};
