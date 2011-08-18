@@ -25,7 +25,7 @@ var SEPARATOR = '.';
  */
 function updateIndicators()
 {
-    var entryFieldValues = getEntryFieldValues();
+//    var entryFieldValues = getEntryFieldValues();
 
     $( 'input[name="indicator"]' ).each( function( index )
     {
