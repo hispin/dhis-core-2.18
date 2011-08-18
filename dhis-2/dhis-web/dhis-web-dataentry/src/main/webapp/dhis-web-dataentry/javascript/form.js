@@ -66,7 +66,7 @@ $( document ).ready( function()
 
     $( document ).bind( 'dhis2.online', function( event, loggedIn ) {
         if ( loggedIn ) {
-            if( storageManager.haveLocalData()) {
+            if( storageManager.hasLocalData()) {
                 var message = i18n_need_to_sync_notification + '<button id="sync_button" type="button">' + i18n_sync_now + '</button>';
                 
                 if(isHeaderMessageVisible())
@@ -78,7 +78,7 @@ $( document ).ready( function()
                     setHeaderMessage( message );
                 }
                 
-                $("#sync_button").bind("click", uploadLocalData);
+                $( '#sync_button' ).bind( 'click', uploadLocalData );
             }
             else if( isHeaderMessageVisible() )
             {
@@ -147,32 +147,32 @@ function loadMetaData()
 
 function uploadLocalData() 
 {
-    if(!storageManager.haveLocalData())
+    if ( !storageManager.hasLocalData() )
     {
         return;
     }
 
     var dataValues = storageManager.getAllDataValues();
-    var completeDataSets = storageManager.getCompleteDataSetsLocalVariable();
+    var completeDataSets = storageManager.getCompleteDataSets();
 
     setHeaderWaitMessage( i18n_uploading_data_notification );
 
     var dataValuesArray = [];
 
-    for(var dataValueKey in dataValues)
+    for ( var dataValueKey in dataValues )
     {
         dataValuesArray.push(dataValueKey);
     }
 
     var completeDataSetsArray = [];
     
-    for(var completeDataSetKey in completeDataSets)
+    for ( var completeDataSetKey in completeDataSets )
     {
         completeDataSetsArray.push(completeDataSetKey);
     }
 
-    function pushCompleteDataSets(array) {
-        if(array.length < 1)
+    function pushCompleteDataSets( array ) {
+        if ( array.length < 1 )
         {
             return;
         }
@@ -187,11 +187,11 @@ function uploadLocalData()
             data: value,
             dataType: 'json',
             success: function( data, textStatus, jqXHR ) {
-//                clearCompleteDataSetLocally(value);
+//                clearCompleteDataSet(value);
                 console.log( 'Successfully saved complete dataset with value: ' + value );
                 (array = array.slice(1)).length && pushCompleteDataSets(array);
 
-                if(array.length < 1)
+                if ( array.length < 1 )
                 {
                     if ( isHeaderMessageVisible() )
                     {
@@ -206,8 +206,8 @@ function uploadLocalData()
         });
     };
 
-    (function pushDataValues(array) {
-        if(array.length < 1)
+    (function pushDataValues( array ) {
+        if ( array.length < 1 )
         {
             if ( isHeaderMessageVisible() )
             {
@@ -237,7 +237,7 @@ function uploadLocalData()
                 console.log( 'Successfully saved data value with value: ' + value );
                 (array = array.slice(1)).length && pushDataValues(array);
 
-                if(array.length < 1 && completeDataSetsArray.length > 0)
+                if ( array.length < 1 && completeDataSetsArray.length > 0 )
                 {
                     pushCompleteDataSets(completeDataSetsArray);
                 }
@@ -254,7 +254,7 @@ function uploadLocalData()
                 }
             }
         } );
-    })(dataValuesArray);
+    })( dataValuesArray );
 }
 
 function addEventListeners()
@@ -764,10 +764,10 @@ function registerCompleteDataSet( json )
 
     if ( json.response == 'success' )
     {
-        storageManager.storeCompleteDataSetLocally(params);
+        storageManager.saveCompleteDataSet(params);
 
         $.getJSON( 'registerCompleteDataSet.action', params).success(function() {
-            storageManager.clearCompleteDataSetLocally(params);
+            storageManager.clearCompleteDataSet(params);
         } ).error( function() {
         } );
     }
@@ -789,10 +789,10 @@ function undoCompleteDataSet()
         disableUndoButton();
 
         $.getJSON( 'undoCompleteDataSet.action', params).success(function() {
-            storageManager.clearCompleteDataSetLocally(params);
+            storageManager.clearCompleteDataSet(params);
         } ).error( function()
         {
-            storageManager.clearCompleteDataSetLocally(params);
+            storageManager.clearCompleteDataSet(params);
         } );
     }
 }
@@ -1256,7 +1256,7 @@ function StorageManager()
 	};
 
 	/**
-	 * Removes the wanted dataValue from localStorage.
+	 * Removes the given dataValue from localStorage.
 	 * 
 	 * @param dataValue The datavalue and identifiers in json format.
 	 */
@@ -1266,7 +1266,7 @@ function StorageManager()
 	};
 
 	/**
-     * Removes the wanted dataValue from localStorage.
+     * Removes the given dataValue from localStorage.
      * 
      * @param dataElementId the data element identifier.
      * @param categoryOptionComboId the category option combo identifier.
@@ -1305,12 +1305,21 @@ function StorageManager()
 		return dataElementId + "-" + categoryOptionComboId + "-" + periodId + "-" + organisationUnitId;
 	};
 	
-	this.getCompleteDataSetId = function (json)
+	/**
+	 * Supportive method.
+	 */
+	this.getCompleteDataSetId = function( json )
 	{
 	    return json.periodId + "-" + json.dataSetId + "-" + json.organisationUnitId;
 	};
 
-	this.getCurrentCompleteDataSetParams = function () {
+	/**
+	 * Returns current state in data entry form as associative array.
+	 * 
+	 * @return an associative array. 
+	 */
+	this.getCurrentCompleteDataSetParams = function() 
+	{
 	    var params = {
             'periodId': $( '#selectedPeriodId' ).val(),
             'dataSetId': $( '#selectedDataSetId' ).val(),
@@ -1320,28 +1329,32 @@ function StorageManager()
 	    return params;
 	};
 
-	this.getCompleteDataSetsLocalVariable = function ()
+	/**
+	 * Gets all complete data set registrations as JSON.
+	 * 
+	 * @return all complete data set registrations as JSON.
+	 */
+	this.getCompleteDataSets = function()
 	{
-	    var completeDataSets;
-
-	    if( localStorage[KEY_COMPLETEDATASETS] == null )
+	    if ( localStorage[KEY_COMPLETEDATASETS] != null )
 	    {
-	        return null;
+	        return JSON.parse( localStorage[KEY_COMPLETEDATASETS] );
 	    }
-	    else
-	    {
-	        completeDataSets = JSON.parse( localStorage[KEY_COMPLETEDATASETS] );
-	    }
-
-	    return completeDataSets;
+	    
+	    return null;
 	};
 
-	this.storeCompleteDataSetLocally = function (json)
+	/**
+	 * Saves a complete data set registration.
+	 * 
+	 * @param json the complete data set registration as JSON.
+	 */
+	this.saveCompleteDataSet = function( json )
 	{
-	    var completeDataSets = this.getCompleteDataSetsLocalVariable();
-	    var completeDataSetId = this.getCompleteDataSetId(json);
+	    var completeDataSets = this.getCompleteDataSets();
+	    var completeDataSetId = this.getCompleteDataSetId( json );
 
-	    if(completeDataSets != null) 
+	    if ( completeDataSets != null ) 
 	    {
 	        completeDataSets[completeDataSetId] = json;
 	    }
@@ -1354,16 +1367,21 @@ function StorageManager()
 	    localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
 	};
 
-	this.clearCompleteDataSetLocally = function (json)
+	/**
+	 * Removes the given complete data set registration.
+	 * 
+	 * @param the complete data set registration as JSON.
+	 */
+	this.clearCompleteDataSet = function( json )
 	{
-	    var completeDataSets = this.getCompleteDataSetsLocalVariable();
-	    var completeDataSetId = this.getCompleteDataSetId(json);
+	    var completeDataSets = this.getCompleteDataSets();
+	    var completeDataSetId = this.getCompleteDataSetId( json );
 
-	    if(completeDataSets != null)
+	    if ( completeDataSets != null )
 	    {
 	        delete completeDataSets[completeDataSetId];
 
-	        if(completeDataSets.length > 0)
+	        if ( completeDataSets.length > 0 )
 	        {
 	            localStorage.remoteItem(KEY_COMPLETEDATASETS);
 	        }
@@ -1374,12 +1392,18 @@ function StorageManager()
 	    }
 	};
 
-	this.haveLocalData = function ()
+	/**
+	 * Indicators whether there exists data values or complete data set registrations
+	 * in the local storage.
+	 * 
+	 * @return true if local data exists, false otherwise.
+	 */
+	this.hasLocalData = function()
 	{
 	    var dataValues = this.getAllDataValues();
-	    var completeDataSets = this.getCompleteDataSetsLocalVariable();
+	    var completeDataSets = this.getCompleteDataSets();
 
-	    if(dataValues != null || completeDataSets != null)
+	    if ( dataValues != null || completeDataSets != null )
 	    {
 	        return true;
 	    }
