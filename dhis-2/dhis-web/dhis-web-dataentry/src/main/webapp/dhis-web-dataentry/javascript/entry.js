@@ -83,8 +83,9 @@ function generateExpression( expression )
 
         var value = $( fieldId ) && $( fieldId ).val() ? $( fieldId ).val() : '0';
 
-        expression = expression.replace( match, value ); // TODO signed
-        // numbers
+        expression = expression.replace( match, value ); 
+        
+        // TODO signed numbers
     }
 
     return expression;
@@ -212,11 +213,11 @@ function alertField( fieldId, alertMessage )
 function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, periodId_, value_, resultColor_ )
 {
     var dataValue = {
-        "dataElementId" : dataElementId_,
-        "optionComboId" : optionComboId_,
-        "organisationUnitId" : organisationUnitId_,
-        "periodId" : periodId_,
-        "value" : value_,
+        'dataElementId' : dataElementId_,
+        'optionComboId' : optionComboId_,
+        'organisationUnitId' : organisationUnitId_,
+        'periodId' : periodId_,
+        'value' : value_,
     };
 
     var resultColor = resultColor_;
@@ -252,7 +253,7 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
 
     function handleError( jqXHR, textStatus, errorThrown )
     {
-        setHeaderMessage( "You are offline. Data will be stored locally." );
+        setHeaderMessage( i18n_offline_notification );
         markValue( resultColor );
     }
 
