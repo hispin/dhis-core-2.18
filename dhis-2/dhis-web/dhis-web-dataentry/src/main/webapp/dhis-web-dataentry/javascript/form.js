@@ -124,7 +124,7 @@ function ajax_login()
             var ret = dhis2.availability.syncCheckAvailability();
 
             if(!ret) {
-                alert("Login failed, check your username and password and try again.");
+                alert( i18n_ajax_login_failed );
             }
         } );
     } );
