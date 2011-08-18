@@ -500,22 +500,11 @@ function hideMessage()
 function setHeaderMessage( message )
 {
     $( 'div#headerMessage' ).html( message );
-    $( 'div#headerMessage' ).slideDown( 'fast' );
-}
-
-function getHeaderMessage()
-{
-    return $( 'div#headerMessage' ).html();
-}
-
-/**
- * Updates the text in the header message div with the message.
- * 
- * @param message the message.
- */
-function updateHeaderMessage( message )
-{
-	$( 'div#headerMessage' ).html( message );
+    
+    if ( isHeaderMessageHidden() )
+    {
+    	$( 'div#headerMessage' ).slideDown( 'fast' );
+    }
 }
 
 /**
@@ -527,17 +516,11 @@ function updateHeaderMessage( message )
 function setHeaderWaitMessage( message )
 {
 	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;" + _loading_bar_html );
-    $( 'div#headerMessage' ).slideDown( 'fast' );
-}
-
-/**
- * Updates the text in the header message div with the message.
- * 
- * @param message the message.
- */
-function updateHeaderWaitMessage( message )
-{
-	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;" + _loading_bar_html );
+	
+	if ( isHeaderMessageHidden() )
+	{
+    	$( 'div#headerMessage' ).slideDown( 'fast' );
+	}
 }
 
 /**
@@ -549,7 +532,7 @@ function setHeaderDelayMessage( message )
 	
 	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
 	
-	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 3000 );
+	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 5000 );
 }
 
 /**
@@ -561,21 +544,7 @@ function setHeaderWaitDelayMessage( message )
 	
 	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
 	
-	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 3000 );
-}
-
-/**
- * Sets the header message and hides it after the given seconds, default as 3s.
- */
-function setHeaderTimeDelayMessage( message, timing )
-{
-	if ( timing == undefined ) { setHeaderDelayMessage( message ); return;}
-	
-	setHeaderMessage( message );
-	
-	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
-	
-	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", timing );
+	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 5000 );
 }
 
 /**
@@ -587,9 +556,7 @@ function hideHeaderMessage()
 }   
 
 /**
- *  Is header message visible.
- * 
- *  @returns true if visible, false is hidden
+ * Indicates whether the header message is visible.
  */
 function isHeaderMessageVisible()
 {
@@ -597,9 +564,7 @@ function isHeaderMessageVisible()
 }
 
 /**
- *  Is header message hidden.
- * 
- *  @returns true if hidden, false is visible
+ * Indicates whether the header message is not visible.
  */
 function isHeaderMessageHidden()
 {

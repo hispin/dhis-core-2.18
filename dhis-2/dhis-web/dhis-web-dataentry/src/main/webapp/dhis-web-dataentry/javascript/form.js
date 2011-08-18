@@ -69,20 +69,9 @@ $( document ).ready( function()
             if ( storageManager.hasLocalData() ) {
                 var message = i18n_need_to_sync_notification + '<button id="sync_button" type="button">' + i18n_sync_now + '</button>';
                 
-                if ( isHeaderMessageVisible() )
-                {
-                    updateHeaderMessage( message );
-                } 
-                else 
-                {
-                    setHeaderMessage( message );
-                }
+                setHeaderMessage( message );
                 
                 $( '#sync_button' ).bind( 'click', uploadLocalData );
-            }
-            else if ( isHeaderMessageVisible() )
-            {
-                updateHeaderMessage( i18n_online_notification );
             }
             else
             {
@@ -90,22 +79,13 @@ $( document ).ready( function()
             }
         } 
         else {
-            if ( isHeaderMessageVisible() ) {
-                updateHeaderMessage( '<form style="display: inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
-                ajax_login();
-            } else {
-                setHeaderMessage( '<form style="display: inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
-                ajax_login();
-            }
+        	setHeaderMessage( '<form style="display:inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
+            ajax_login();
         }
     } );
 
     $( document ).bind( 'dhis2.offline', function() {
-        if ( isHeaderMessageVisible() ) {
-            updateHeaderMessage( i18n_offline_notification );
-        } else {
-            setHeaderMessage( i18n_offline_notification );
-        }
+        setHeaderMessage( i18n_offline_notification );
     } );
 
     dhis2.availability.startAvailabilityCheck();
@@ -193,14 +173,7 @@ function uploadLocalData()
 
                 if ( array.length < 1 )
                 {
-                    if ( isHeaderMessageVisible() )
-                    {
-                        updateHeaderMessage(i18n_online_notification);
-                    }
-                    else
-                    {
-                        setHeaderMessage(i18n_online_notification);
-                    }
+                    setHeaderMessage( i18n_online_notification );
                 }
             }
         });
@@ -209,14 +182,7 @@ function uploadLocalData()
     (function pushDataValues( array ) {
         if ( array.length < 1 )
         {
-            if ( isHeaderMessageVisible() )
-            {
-                updateHeaderMessage(i18n_online_notification);
-            }
-            else
-            {
-                setHeaderMessage(i18n_online_notification);
-            }
+            setHeaderMessage( i18n_online_notification );
             
             pushCompleteDataSets(completeDataSetsArray);
 
@@ -243,14 +209,7 @@ function uploadLocalData()
                 }
                 else
                 {
-                    if ( isHeaderMessageVisible() )
-                    {
-                        updateHeaderMessage(i18n_online_notification);
-                    }
-                    else
-                    {
-                        setHeaderMessage(i18n_online_notification);
-                    }
+                    setHeaderMessage( i18n_online_notification );
                 }
             }
         } );
