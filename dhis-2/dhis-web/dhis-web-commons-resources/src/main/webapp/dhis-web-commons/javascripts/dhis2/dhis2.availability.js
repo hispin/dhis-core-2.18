@@ -92,3 +92,39 @@ dhis2.availability.stopAvailabilityCheck = function()
 {
     clearTimeout( dhis2.availability._availableTimeoutHandler );
 };
+
+/**
+ * Synchronized one-off check of availability.
+ */
+dhis2.availability.syncCheckAvailability = function()
+{
+    var isLoggedIn = false;
+
+    $.ajax( {
+        url : "../dhis-web-commons-stream/ping.action",
+        async : false,
+        success : function( data, textStatus, jqXHR )
+        {
+            dhis2.availability._isAvailable = true;
+            var loggedIn = data.loggedIn ? true : false;
+
+            if ( loggedIn != dhis2.availability._isLoggedIn )
+            {
+                dhis2.availability._isLoggedIn = loggedIn;
+                $( document ).trigger( "dhis2.online", [ loggedIn ] );
+            }
+
+            isLoggedIn = loggedIn;
+        },
+        error : function( jqXHR, textStatus, errorThrown )
+        {
+            if ( dhis2.availability._isAvailable )
+            {
+                dhis2.availability._isAvailable = false;
+                $( document ).trigger( "dhis2.offline" );
+            }
+        }
+    } );
+
+    return isLoggedIn;
+};
