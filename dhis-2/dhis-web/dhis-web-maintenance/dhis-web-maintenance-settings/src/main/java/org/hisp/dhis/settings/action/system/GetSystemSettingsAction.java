@@ -37,6 +37,7 @@ import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.style.StyleManager;
 import org.hisp.dhis.period.PeriodService;
@@ -210,6 +211,8 @@ public class GetSystemSettingsAction
 
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
 
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
