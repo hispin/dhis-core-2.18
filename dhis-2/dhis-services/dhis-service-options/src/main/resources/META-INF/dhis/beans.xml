@@ -268,6 +268,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </entry>
         <entry>
           <key>
+            <value>zimbabwe</value>
+          </key>
+          <value>zimbabwe.png</value>
+        </entry>
+        <entry>
+          <key>
             <value>who</value>
           </key>
           <value>who.png</value>
