@@ -532,7 +532,7 @@ function setHeaderDelayMessage( message )
 	
 	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
 	
-	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 5000 );
+	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 8000 );
 }
 
 /**
@@ -544,7 +544,7 @@ function setHeaderWaitDelayMessage( message )
 	
 	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
 	
-	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 5000 );
+	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 8000 );
 }
 
 /**
