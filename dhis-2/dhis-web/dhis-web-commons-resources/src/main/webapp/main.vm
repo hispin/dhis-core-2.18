@@ -180,7 +180,7 @@
       </div>      
     </div>
         
-    <div id="headerMessage"></div>
+    <div id="headerMessage" class="bold"></div>
         
     <div class="page" id="mainPage">
       #if( !$page )
