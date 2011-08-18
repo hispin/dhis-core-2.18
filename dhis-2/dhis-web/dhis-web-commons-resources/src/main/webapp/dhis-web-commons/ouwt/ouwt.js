@@ -471,7 +471,7 @@ function Subtree()
         if ( $( "#" + getTagId( rootId ) ).length < 1 )
         {
             var expand = organisationUnits[rootId];
-//            var $parentTag = $( "#" + getTagId( rootId ) );
+            // var $parentTag = $( "#" + getTagId( rootId ) );
             $rootsTag.append( createTreeElementTag( expand ) );
         }
 
