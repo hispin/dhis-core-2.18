@@ -393,4 +393,4 @@ var validationRules = {
             "alphanumericwithbasicpuncspaces" : true
 		}
     }
-}
+};
