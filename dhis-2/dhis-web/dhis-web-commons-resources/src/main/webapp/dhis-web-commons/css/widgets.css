@@ -324,11 +324,11 @@ div#warningArea
 div#headerMessage
 {
   top: 0px;
-  left: 180px;
+  left: 155px;
   position: fixed;
   display: none;
   height: 30px;
-  width: 380px;
+  width: 410px;
   background-color: #ffffbf;
   border: 1px solid #cccc00;
   z-index: 21;
