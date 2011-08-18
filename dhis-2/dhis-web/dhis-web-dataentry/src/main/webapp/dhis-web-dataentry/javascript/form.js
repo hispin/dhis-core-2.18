@@ -66,7 +66,7 @@ $( document ).ready( function()
 
     $( document ).bind( 'dhis2.online', function( event, loggedIn ) {
         if ( loggedIn ) {
-            if( haveLocalData()) {
+            if( storageManager.haveLocalData()) {
                 var message = i18n_need_to_sync_notification + '<button id="sync_button" type="button">' + i18n_sync_now + '</button>';
                 
                 if(isHeaderMessageVisible())
@@ -126,28 +126,15 @@ function loadMetaData()
 	} );
 }
 
-function haveLocalData()
-{
-    var dataValues = storageManager.getAllDataValues();
-    var completeDataSets = getCompleteDataSetsLocalVariable();
-
-    if(dataValues != null || completeDataSets != null)
-    {
-        return true;
-    }
-
-    return false;
-}
-
 function uploadLocalData() 
 {
-    if(!haveLocalData())
+    if(!storageManager.haveLocalData())
     {
         return;
     }
 
     var dataValues = storageManager.getAllDataValues();
-    var completeDataSets = getCompleteDataSetsLocalVariable();
+    var completeDataSets = storageManager.getCompleteDataSetsLocalVariable();
 
     setHeaderWaitMessage( i18n_uploading_data_notification );
 
@@ -746,65 +733,14 @@ function getPreviousEntryField( field )
 // Data completeness
 // -----------------------------------------------------------------------------
 
-var KEY_COMPLETEDATASETS = 'completedatasets';
-
-function getCompleteDataSetId(json)
-{
-    return json.periodId + "-" + json.dataSetId + "-" + json.organisationUnitId;
-}
-
-function getCurrentCompleteDataSetParams() {
-    var params = {
-            'periodId': $( '#selectedPeriodId' ).val(),
-            'dataSetId': $( '#selectedDataSetId' ).val(),
-            'organisationUnitId': currentOrganisationUnitId
-    };
-    
-    return params;
-}
-
-function getCompleteDataSetsLocalVariable()
-{
-    var completeDataSets;
-
-    if( localStorage[KEY_COMPLETEDATASETS] == null )
-    {
-        return null;
-    } else {
-        completeDataSets = JSON.parse( localStorage[KEY_COMPLETEDATASETS] );
-    }
-
-    return completeDataSets;
-}
-
-function storeCompleteDataSetLocally(json)
-{
-    var completeDataSets = getCompleteDataSetsLocalVariable();
-    var completeDataSetId = getCompleteDataSetId(json);
-
-    completeDataSets[completeDataSetId] = json;
-
-    localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
-}
-
-function clearCompleteDataSetLocally(json)
-{
-    var completeDataSets = getCompleteDataSetsLocalVariable();
-    var completeDataSetId = getCompleteDataSetId(json);
-
-    delete completeDataSets[completeDataSetId];
-
-    localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
-}
-
 function validateCompleteDataSet()
 {
     var confirmed = confirm( i18n_confirm_complete );
 
     if ( confirmed )
     {
-        var params = getCurrentCompleteDataSetParams();
-        
+        var params = storageManager.getCurrentCompleteDataSetParams();
+
         disableCompleteButton();
 
         $.getJSON( 'getValidationViolations.action', params).success( function( data ) {
@@ -820,14 +756,14 @@ function validateCompleteDataSet()
 
 function registerCompleteDataSet( json )
 {
-    var params = getCurrentCompleteDataSetParams();
+    var params = storageManager.getCurrentCompleteDataSetParams();
 
     if ( json.response == 'success' )
     {
-        storeCompleteDataSetLocally(params);
+        storageManager.storeCompleteDataSetLocally(params);
 
         $.getJSON( 'registerCompleteDataSet.action', params).success(function() {
-            clearCompleteDataSetLocally(params);
+            storageManager.clearCompleteDataSetLocally(params);
         } ).error( function() {
         } );
     }
@@ -842,17 +778,17 @@ function registerCompleteDataSet( json )
 function undoCompleteDataSet()
 {
     var confirmed = confirm( i18n_confirm_undo );
-    var params = getCurrentCompleteDataSetParams();
+    var params = storageManager.getCurrentCompleteDataSetParams();
     
     if ( confirmed )
     {
         disableUndoButton();
 
         $.getJSON( 'undoCompleteDataSet.action', params).success(function() {
-            clearCompleteDataSetLocally(params);
+            storageManager.clearCompleteDataSetLocally(params);
         } ).error( function()
         {
-            clearCompleteDataSetLocally(params);
+            storageManager.clearCompleteDataSetLocally(params);
         } );
     }
 }
@@ -1031,6 +967,7 @@ function StorageManager()
 	var KEY_FORM_PREFIX = 'form-';
 	var KEY_FORM_VERSIONS = 'formversions';
 	var KEY_DATAVALUES = 'datavalues';
+	var KEY_COMPLETEDATASETS = 'completedatasets';
 
 	/**
 	 * Returns the total number of characters currently in the local storage.
@@ -1362,5 +1299,87 @@ function StorageManager()
 	this.getDataValueIdentifier = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
 	{
 		return dataElementId + "-" + categoryOptionComboId + "-" + periodId + "-" + organisationUnitId;
+	};
+	
+	this.getCompleteDataSetId = function (json)
+	{
+	    return json.periodId + "-" + json.dataSetId + "-" + json.organisationUnitId;
+	};
+
+	this.getCurrentCompleteDataSetParams = function () {
+	    var params = {
+            'periodId': $( '#selectedPeriodId' ).val(),
+            'dataSetId': $( '#selectedDataSetId' ).val(),
+            'organisationUnitId': currentOrganisationUnitId
+	    };
+	    
+	    return params;
+	};
+
+	this.getCompleteDataSetsLocalVariable = function ()
+	{
+	    var completeDataSets;
+
+	    if( localStorage[KEY_COMPLETEDATASETS] == null )
+	    {
+	        return null;
+	    }
+	    else
+	    {
+	        completeDataSets = JSON.parse( localStorage[KEY_COMPLETEDATASETS] );
+	    }
+
+	    return completeDataSets;
+	};
+
+	this.storeCompleteDataSetLocally = function (json)
+	{
+	    var completeDataSets = this.getCompleteDataSetsLocalVariable();
+	    var completeDataSetId = this.getCompleteDataSetId(json);
+
+	    if(completeDataSets != null) 
+	    {
+	        completeDataSets[completeDataSetId] = json;
+	    }
+	    else
+	    {
+	        completeDataSets = {};
+	        completeDataSets[completeDataSetId] = json;
+	    }
+
+	    localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
+	};
+
+	this.clearCompleteDataSetLocally = function (json)
+	{
+	    var completeDataSets = this.getCompleteDataSetsLocalVariable();
+	    var completeDataSetId = this.getCompleteDataSetId(json);
+
+	    if(completeDataSets != null)
+	    {
+	        delete completeDataSets[completeDataSetId];
+
+	        if(completeDataSets.length > 0)
+	        {
+	            localStorage.remoteItem(KEY_COMPLETEDATASETS);
+	        }
+	        else
+	        {
+	            localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
+	        }
+	    }
+	};
+
+	this.haveLocalData = function ()
+	{
+	    var dataValues = this.getAllDataValues();
+	    var completeDataSets = this.getCompleteDataSetsLocalVariable();
+
+	    if(dataValues != null || completeDataSets != null)
+	    {
+	        return true;
+	    }
+
+	    return false;
 	};
 }
