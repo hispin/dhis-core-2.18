@@ -66,9 +66,26 @@ $( document ).ready( function()
 
     $( document ).bind( 'dhis2.online', function( event, loggedIn ) {
         if ( loggedIn ) {
-            if( isHeaderMessageVisible() ) {
+            if( haveLocalData()) {
+                var message = i18n_need_to_sync_notification + '<button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+                
+                if(isHeaderMessageVisible())
+                {
+                    updateHeaderMessage( message );
+                } 
+                else 
+                {
+                    setHeaderMessage( message );
+                }
+                
+                $("#sync_button").bind("click", uploadLocalData);
+            }
+            else if( isHeaderMessageVisible() )
+            {
                 updateHeaderMessage( i18n_online_notification );
-            } else {
+            }
+            else
+            {
                 setHeaderMessage( i18n_online_notification );
             }
         } 
@@ -105,57 +122,132 @@ function loadMetaData()
 		organisationUnitAssociationSetMap = json.metaData.organisationUnitAssociationSetMap;
 		
 		console.log( 'Meta-data loaded' );		
-		uploadLocalData();
+//		uploadLocalData();
 	} );
 }
 
-function uploadLocalData() 
+function haveLocalData()
 {
     var dataValues = storageManager.getAllDataValues();
     var completeDataSets = getCompleteDataSetsLocalVariable();
 
-    var oldHeaderMessage = getHeaderMessage();
-    setHeaderWaitMessage( i18n_uploading_data_notification );
-
-    for ( var dataValueKey in dataValues ) 
+    if(dataValues != null || completeDataSets != null)
     {
-        var dataValue = dataValues[dataValueKey];
-
-        $.ajax( {
-            url: 'saveValue.action',
-            data: dataValue,
-            dataType: 'json',
-            dataValue: dataValue,
-            async: false,
-            success: function( data, textStatus, jqXHR ) {
-                storageManager.clearDataValueJSON( this.dataValue );
-                console.log( 'Successfully saved data value with value: ' + this.dataValue );
-            }
-        } );
+        return true;
     }
 
-    for( var completeDataSetKey in completeDataSets )
+    return false;
+}
+
+function uploadLocalData() 
+{
+    if(!haveLocalData())
     {
-        var completeDataSet = completeDataSets[completeDataSetKey];
+        return;
+    }
+
+    var dataValues = storageManager.getAllDataValues();
+    var completeDataSets = getCompleteDataSetsLocalVariable();
+
+    setHeaderWaitMessage( i18n_uploading_data_notification );
+
+    var dataValuesArray = [];
+
+    for(var dataValueKey in dataValues)
+    {
+        dataValuesArray.push(dataValueKey);
+    }
+
+    var completeDataSetsArray = [];
+    
+    for(var completeDataSetKey in completeDataSets)
+    {
+        completeDataSetsArray.push(completeDataSetKey);
+    }
+
+    function pushCompleteDataSets(array) {
+        if(array.length < 1)
+        {
+            return;
+        }
+
+        var key = array[0];
+        var value = completeDataSets[key];
+
+        console.log("Upload CompleteDataSet: " + key + ", with value: " + value);
 
         $.ajax({
             url: 'registerCompleteDataSet.action',
-            data: completeDataSet,
+            data: value,
             dataType: 'json',
-            completeDataSet: completeDataSet,
-            async: false,
             success: function( data, textStatus, jqXHR ) {
-                clearCompleteDataSetLocally(this.completeDataSet);
+//                clearCompleteDataSetLocally(value);
+                console.log( 'Successfully saved complete dataset with value: ' + value );
+                (array = array.slice(1)).length && pushCompleteDataSets(array);
+
+                if(array.length < 1)
+                {
+                    if ( isHeaderMessageVisible() )
+                    {
+                        updateHeaderMessage(i18n_online_notification);
+                    }
+                    else
+                    {
+                        setHeaderMessage(i18n_online_notification);
+                    }
+                }
+            }
+        });
+    };
+
+    (function pushDataValues(array) {
+        if(array.length < 1)
+        {
+            if ( isHeaderMessageVisible() )
+            {
+                updateHeaderMessage(i18n_online_notification);
+            }
+            else
+            {
+                setHeaderMessage(i18n_online_notification);
+            }
+            
+            return;
+        }
+
+        var key = array[0];
+        var value = dataValues[key];
+
+        console.log("Upload DataValue: " + key + ", with value: " + value);
+
+        $.ajax( {
+            url: 'saveValue.action',
+            data: value,
+            dataType: 'json',
+            success: function( data, textStatus, jqXHR ) {
+//                storageManager.clearDataValueJSON( value );
+                console.log( 'Successfully saved data value with value: ' + value );
+                (array = array.slice(1)).length && pushDataValues(array);
+
+                if(array.length < 1 && completeDataSetsArray.length > 0)
+                {
+                    pushCompleteDataSets(completeDataSetsArray);
+                }
+                else
+                {
+                    if ( isHeaderMessageVisible() )
+                    {
+                        updateHeaderMessage(i18n_online_notification);
+                    }
+                    else
+                    {
+                        setHeaderMessage(i18n_online_notification);
+                    }
+                }
             }
         } );
-    }
+    })(dataValuesArray);
 
-    if ( oldHeaderMessage.length > 0 ) {
-        setHeaderMessage( oldHeaderMessage );
-    } else {
-        hideHeaderMessage();
-    }
-    
     updateForms();
 }
 
@@ -677,7 +769,7 @@ function getCompleteDataSetsLocalVariable()
 
     if( localStorage[KEY_COMPLETEDATASETS] == null )
     {
-        completeDataSets = {};
+        return null;
     } else {
         completeDataSets = JSON.parse( localStorage[KEY_COMPLETEDATASETS] );
     }
