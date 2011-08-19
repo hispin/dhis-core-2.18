@@ -197,8 +197,9 @@ function openChartDialog( url, width )
  */
 function viewChartMenu( indicatorId, periodId, orgunitId )
 {
-    if ( currentDataType == DATA_TYPE_INDICATOR ) // Currently indicators only
-                                                    // supported
+	// Currently only indicators supported
+	
+    if ( currentDataType == DATA_TYPE_INDICATOR ) 
     {
         currentIndicator = indicatorId;
         currentPeriod = periodId;
@@ -206,15 +207,6 @@ function viewChartMenu( indicatorId, periodId, orgunitId )
 
         showDropDown( "pivotMenu" );
     }
-}
-
-/**
- * Loads the event listeners for the pivot table. Called after page is loaded.
- */
-function loadListeners()
-{
-    var table = document.getElementById( "pivotTable" );
-    table.addEventListener( "click", setPosition, false );
 }
 
 // -----------------------------------------------------------------------------
@@ -555,4 +547,40 @@ function clearGlobalVariables()
     orgunits.length = 0;
     data.length = 0;
     sizes.length = 0;
+}
+
+// -------------------------------------------------------------------------
+// Public methods
+// -------------------------------------------------------------------------
+
+function toggleDataType()
+{
+    $( "#indicatorGroupDiv" ).toggle();
+    $( "#dataElementGroupDiv" ).toggle();
+}
+
+function showCriteria()
+{
+    $( "div#criteria" ).show( "fast" );
+}
+
+function hideCriteria()
+{
+    $( "div#criteria" ).hide( "fast" );
+}
+
+function showPivot()
+{
+    $( "div#pivot" ).show( "fast" );
+}
+
+function hidePivot()
+{
+    $( "div#pivot" ).hide( "fast" );
+}
+
+function hideDivs()
+{
+    hideCriteria();
+    hidePivot();
 }
