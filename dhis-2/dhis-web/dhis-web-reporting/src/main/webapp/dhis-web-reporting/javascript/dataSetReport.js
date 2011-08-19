@@ -41,7 +41,6 @@ function validateDataSetReport()
     
     hideHeaderMessage();
     hideCriteria();
-	$( "#content" ).hide();
 	hideContent();
 	showLoader();
 	
