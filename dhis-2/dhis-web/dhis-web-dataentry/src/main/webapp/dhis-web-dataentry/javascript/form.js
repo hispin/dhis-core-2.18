@@ -170,7 +170,7 @@ function uploadLocalData()
             data: value,
             dataType: 'json',
             success: function( data, textStatus, jqXHR ) {
-//                clearCompleteDataSet(value);
+                clearCompleteDataSet(value);
                 console.log( 'Successfully saved complete dataset with value: ' + value );
                 (array = array.slice(1)).length && pushCompleteDataSets(array);
 
@@ -202,7 +202,7 @@ function uploadLocalData()
             data: value,
             dataType: 'json',
             success: function( data, textStatus, jqXHR ) {
-//                storageManager.clearDataValueJSON( value );
+                storageManager.clearDataValueJSON( value );
                 console.log( 'Successfully saved data value with value: ' + value );
                 (array = array.slice(1)).length && pushDataValues(array);
 
