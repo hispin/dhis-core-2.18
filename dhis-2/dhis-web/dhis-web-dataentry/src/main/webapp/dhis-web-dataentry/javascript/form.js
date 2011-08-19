@@ -51,60 +51,75 @@ var COLOR_GREY = '#cccccc';
 /**
  * Page init. The order of events is:
  * 
- * 1. Load ouwt
- * 2. Load meta-data (and notify ouwt)
- * 3. Check and potentially download updated forms from server 
+ * 1. Load ouwt 2. Load meta-data (and notify ouwt) 3. Check and potentially
+ * download updated forms from server
  */
-$( document ).ready( function()
+$( document )
+        .ready(
+                function()
+                {
+                    selection.setListenerFunction( organisationUnitSelected );
+                    $( '#loaderSpan' ).show();
+
+                    $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
+                    {
+                        console.log( 'Ouwt loaded' );
+                        loadMetaData();
+                    } );
+
+                    $( document )
+                            .bind(
+                                    'dhis2.online',
+                                    function( event, loggedIn )
+                                    {
+                                        if ( loggedIn )
+                                        {
+                                            if ( storageManager.hasLocalData() )
+                                            {
+                                                var message = i18n_need_to_sync_notification
+                                                        + ' <button id="sync_button" type="button">' + i18n_sync_now
+                                                        + '</button>';
+
+                                                setHeaderMessage( message );
+
+                                                $( '#sync_button' ).bind( 'click', uploadLocalData );
+                                            }
+                                            else
+                                            {
+                                                setHeaderDelayMessage( i18n_online_notification );
+                                            }
+                                        }
+                                        else
+                                        {
+                                            setHeaderMessage( '<form style="display:inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
+                                            ajax_login();
+                                        }
+                                    } );
+
+                    $( document ).bind( 'dhis2.offline', function()
+                    {
+                        setHeaderMessage( i18n_offline_notification );
+                    } );
+
+                    dhis2.availability.startAvailabilityCheck();
+                } );
+
+function ajax_login()
 {
-    selection.setListenerFunction( organisationUnitSelected );
-    $( '#loaderSpan' ).show();
-
-    $( '#orgUnitTree' ).one( 'ouwtLoaded', function() {
-    	console.log( 'Ouwt loaded' );    	
-    	loadMetaData();
-    } );
-
-    $( document ).bind( 'dhis2.online', function( event, loggedIn ) {
-        if ( loggedIn ) {
-            if ( storageManager.hasLocalData() ) {
-                var message = i18n_need_to_sync_notification + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
-
-                setHeaderMessage( message );
-
-                $( '#sync_button' ).bind( 'click', uploadLocalData );
-            }
-            else
-            {
-                setHeaderDelayMessage( i18n_online_notification );
-            }
-        } 
-        else {
-        	setHeaderMessage( '<form style="display:inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
-            ajax_login();
-        }
-    } );
-
-    $( document ).bind( 'dhis2.offline', function() {
-        setHeaderMessage( i18n_offline_notification );
-    } );
-
-    dhis2.availability.startAvailabilityCheck();
-} );
-
-function ajax_login() 
-{
-    $( '#login_button' ).bind( 'click', function() {
+    $( '#login_button' ).bind( 'click', function()
+    {
         var username = $( '#username' ).val();
         var password = $( '#password' ).val();
 
         $.post( '../dhis-web-commons-security/login.action', {
-            'j_username': username,
-            'j_password': password
-        } ).success( function() {
+            'j_username' : username,
+            'j_password' : password
+        } ).success( function()
+        {
             var ret = dhis2.availability.syncCheckAvailability();
 
-            if(!ret) {
+            if ( !ret )
+            {
                 alert( i18n_ajax_login_failed );
             }
         } );
@@ -113,30 +128,32 @@ function ajax_login()
 
 function loadMetaData()
 {
-	var KEY_METADATA = "metadata";
-	
-	$.getJSON( 'getMetaData.action', function( json ) {		
-		sessionStorage[KEY_METADATA] = JSON.stringify( json.metaData );
-	} ).complete( function() {
-		
-		var metaData = JSON.parse( sessionStorage[KEY_METADATA] );
-		
-		significantZeros = metaData.significantZeros;
-		dataElements = metaData.dataElements;
-		indicatorFormulas = metaData.indicatorFormulas;
-		dataSets = metaData.dataSets;
-		dataSetAssociationSets = metaData.dataSetAssociationSets;
-		organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
-		
-		selection.responseReceived(); // Notify that meta data is loaded
-		$( '#loaderSpan' ).hide();
-		console.log( 'Meta-data loaded' );	
-		
-	    updateForms();
-	} );
+    var KEY_METADATA = "metadata";
+
+    $.getJSON( 'getMetaData.action', function( json )
+    {
+        sessionStorage[KEY_METADATA] = JSON.stringify( json.metaData );
+    } ).complete( function()
+    {
+
+        var metaData = JSON.parse( sessionStorage[KEY_METADATA] );
+
+        significantZeros = metaData.significantZeros;
+        dataElements = metaData.dataElements;
+        indicatorFormulas = metaData.indicatorFormulas;
+        dataSets = metaData.dataSets;
+        dataSetAssociationSets = metaData.dataSetAssociationSets;
+        organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
+
+        selection.responseReceived(); // Notify that meta data is loaded
+        $( '#loaderSpan' ).hide();
+        console.log( 'Meta-data loaded' );
+
+        updateForms();
+    } );
 }
 
-function uploadLocalData() 
+function uploadLocalData()
 {
     if ( !storageManager.hasLocalData() )
     {
@@ -148,21 +165,11 @@ function uploadLocalData()
 
     setHeaderWaitMessage( i18n_uploading_data_notification );
 
-    var dataValuesArray = [];
+    var dataValuesArray = dataValues ? Object.keys( dataValues ) : [];
+    var completeDataSetsArray = completeDataSets ? Object.keys( completeDataSets ) : [];
 
-    for ( var dataValueKey in dataValues )
+    function pushCompleteDataSets( array )
     {
-        dataValuesArray.push(dataValueKey);
-    }
-
-    var completeDataSetsArray = [];
-    
-    for ( var completeDataSetKey in completeDataSets )
-    {
-        completeDataSetsArray.push(completeDataSetKey);
-    }
-
-    function pushCompleteDataSets( array ) {
         if ( array.length < 1 )
         {
             return;
@@ -171,31 +178,34 @@ function uploadLocalData()
         var key = array[0];
         var value = completeDataSets[key];
 
-        console.log("Upload CompleteDataSet: " + key + ", with value: " + value);
+        console.log( "Upload CompleteDataSet: " + key + ", with value: " + value );
 
-        $.ajax({
-            url: 'registerCompleteDataSet.action',
-            data: value,
-            dataType: 'json',
-            success: function( data, textStatus, jqXHR ) {
+        $.ajax( {
+            url : 'registerCompleteDataSet.action',
+            data : value,
+            dataType : 'json',
+            success : function( data, textStatus, jqXHR )
+            {
                 console.log( 'Successfully saved complete dataset with value: ' + value );
-                storageManager.clearCompleteDataSet(value);
-                (array = array.slice(1)).length && pushCompleteDataSets(array);
+                storageManager.clearCompleteDataSet( value );
+                ( array = array.slice( 1 ) ).length && pushCompleteDataSets( array );
 
                 if ( array.length < 1 )
                 {
                     setHeaderDelayMessage( i18n_online_notification );
                 }
             }
-        });
-    };
+        } );
+    }
+    ;
 
-    (function pushDataValues( array ) {
+    ( function pushDataValues( array )
+    {
         if ( array.length < 1 )
         {
             setHeaderDelayMessage( i18n_online_notification );
-            
-            pushCompleteDataSets(completeDataSetsArray);
+
+            pushCompleteDataSets( completeDataSetsArray );
 
             return;
         }
@@ -203,20 +213,21 @@ function uploadLocalData()
         var key = array[0];
         var value = dataValues[key];
 
-        console.log("Upload DataValue: " + key + ", with value: " + value);
+        console.log( "Upload DataValue: " + key + ", with value: " + value );
 
         $.ajax( {
-            url: 'saveValue.action',
-            data: value,
-            dataType: 'json',
-            success: function( data, textStatus, jqXHR ) {
+            url : 'saveValue.action',
+            data : value,
+            dataType : 'json',
+            success : function( data, textStatus, jqXHR )
+            {
                 storageManager.clearDataValueJSON( value );
                 console.log( 'Successfully saved data value with value: ' + value );
-                (array = array.slice(1)).length && pushDataValues(array);
+                ( array = array.slice( 1 ) ).length && pushDataValues( array );
 
                 if ( array.length < 1 && completeDataSetsArray.length > 0 )
                 {
-                    pushCompleteDataSets(completeDataSetsArray);
+                    pushCompleteDataSets( completeDataSetsArray );
                 }
                 else
                 {
@@ -224,7 +235,7 @@ function uploadLocalData()
                 }
             }
         } );
-    })( dataValuesArray );
+    } )( dataValuesArray );
 }
 
 function addEventListeners()
@@ -304,30 +315,30 @@ function clearEntryForm()
     currentPeriodOffset = 0;
 
     dataEntryFormIsLoaded = false;
-    
+
     $( '#completenessDiv' ).css( 'display', 'none' );
 }
 
 function loadForm( dataSetId )
 {
-	if ( storageManager.formExists( dataSetId ) )
-	{
-		console.log( 'Loading form locally: ' + dataSetId );
-		
-		var html = storageManager.getForm( dataSetId );
-		
-		$( '#contentDiv' ).html( html );
-		
-		loadDataValues();
-	}
-	else
-	{	
-		console.log( 'Loading form remotely: ' + dataSetId );
-		
-	    $( '#contentDiv' ).load( 'loadForm.action', {
-	        dataSetId : dataSetId
-	    }, loadDataValues );
-	}
+    if ( storageManager.formExists( dataSetId ) )
+    {
+        console.log( 'Loading form locally: ' + dataSetId );
+
+        var html = storageManager.getForm( dataSetId );
+
+        $( '#contentDiv' ).html( html );
+
+        loadDataValues();
+    }
+    else
+    {
+        console.log( 'Loading form remotely: ' + dataSetId );
+
+        $( '#contentDiv' ).load( 'loadForm.action', {
+            dataSetId : dataSetId
+        }, loadDataValues );
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -374,42 +385,42 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
     var dataSetList = getSortedDataSetList();
 
-	if ( dataSetList.length )
-	{
-	    $( '#selectedDataSetId' ).removeAttr( 'disabled' );	
-	    clearListById( 'selectedDataSetId' );	
-	    addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
-	
-	    var dataSetId = $( '#selectedDataSetId' ).val();
-	    var periodId = $( '#selectedPeriodId' ).val();
-	
-	    var dataSetValid = false;
-	
-	    for ( i in dataSetList )
-	    {
-	        addOptionById( 'selectedDataSetId', dataSetList[i].id, dataSetList[i].name );
-	
-	        if ( dataSetId == dataSetList[i].id )
-	        {
-	            dataSetValid = true;
-	        }
-	    }
-	
-	    if ( dataSetValid && dataSetId != null )
-	    {
-	        $( '#selectedDataSetId' ).val( dataSetId );
-	
-	        if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
-	        {
-	            showLoader();
-	            loadDataValues();
-	        }
-	    }
-	    else
-	    {
-	        clearPeriod();
-	    }
-	}
+    if ( dataSetList.length )
+    {
+        $( '#selectedDataSetId' ).removeAttr( 'disabled' );
+        clearListById( 'selectedDataSetId' );
+        addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
+
+        var dataSetId = $( '#selectedDataSetId' ).val();
+        var periodId = $( '#selectedPeriodId' ).val();
+
+        var dataSetValid = false;
+
+        for ( i in dataSetList )
+        {
+            addOptionById( 'selectedDataSetId', dataSetList[i].id, dataSetList[i].name );
+
+            if ( dataSetId == dataSetList[i].id )
+            {
+                dataSetValid = true;
+            }
+        }
+
+        if ( dataSetValid && dataSetId != null )
+        {
+            $( '#selectedDataSetId' ).val( dataSetId );
+
+            if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
+            {
+                showLoader();
+                loadDataValues();
+            }
+        }
+        else
+        {
+            clearPeriod();
+        }
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -550,72 +561,78 @@ function insertDataValues()
 
     $( '[name="min"]' ).html( '' );
     $( '[name="max"]' ).html( '' );
-    
+
     $( '[name="ef"]' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
 
-    $.getJSON( 'getDataValues.action', {
-            periodId : periodId,
-        	dataSetId : dataSetId,
-        	organisationUnitId: currentOrganisationUnitId
-        },
-        function( json )
-        {
-            // Set data values, works for select lists too as data
-            // value = select value
+    $
+            .getJSON(
+                    'getDataValues.action',
+                    {
+                        periodId : periodId,
+                        dataSetId : dataSetId,
+                        organisationUnitId : currentOrganisationUnitId
+                    },
+                    function( json )
+                    {
+                        // Set data values, works for select lists too as data
+                        // value = select value
 
-            $.each( json.dataValues, function( i, value )
-            {
-                var fieldId = '#' + value.id + '-val';
+                        $.each( json.dataValues, function( i, value )
+                        {
+                            var fieldId = '#' + value.id + '-val';
 
-                if ( $( fieldId ) )
-                {
-                    $( fieldId ).val( value.val );
-                }
+                            if ( $( fieldId ) )
+                            {
+                                $( fieldId ).val( value.val );
+                            }
 
-                dataValueMap[value.id] = value.val;
-            } );
+                            dataValueMap[value.id] = value.val;
+                        } );
 
-            // Set min-max values and colorize violation fields
+                        // Set min-max values and colorize violation fields
 
-            $.each( json.minMaxDataElements, function( i, value ) 
-            {
-                var minId = value.id + '-min';
-                var maxId = value.id + '-max';
+                        $
+                                .each(
+                                        json.minMaxDataElements,
+                                        function( i, value )
+                                        {
+                                            var minId = value.id + '-min';
+                                            var maxId = value.id + '-max';
 
-                var valFieldId = '#' + value.id + '-val';
+                                            var valFieldId = '#' + value.id + '-val';
 
-                var dataValue = dataValueMap[value.id];
+                                            var dataValue = dataValueMap[value.id];
 
-                if ( dataValue && 
-                	( ( value.min && new Number( dataValue ) < new Number( value.min ) ) 
-                	|| ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
-                {
-                    $( valFieldId ).css( 'background-color', COLOR_ORANGE );
-                }
+                                            if ( dataValue
+                                                    && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) || ( value.max && new Number(
+                                                            dataValue ) > new Number( value.max ) ) ) )
+                                            {
+                                                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
+                                            }
 
-                currentMinMaxValueMap[minId] = value.min;
-                currentMinMaxValueMap[maxId] = value.max;
-            } );
+                                            currentMinMaxValueMap[minId] = value.min;
+                                            currentMinMaxValueMap[maxId] = value.max;
+                                        } );
 
-            // Update indicator values in form
+                        // Update indicator values in form
 
-            updateIndicators();
-            
-            // Set completeness button
-            
-            if ( json.complete )
-            {
-            	$( '#completeButton' ).attr( 'disabled', 'disabled' );
-            	$( '#undoButton' ).removeAttr( 'disabled' );
-            }
-            else
-            {
-            	$( '#completeButton' ).removeAttr( 'disabled' );
-            	$( '#undoButton' ).attr( 'disabled', 'disabled' );
-            }
-            
-            // TODO locking
-        } );
+                        updateIndicators();
+
+                        // Set completeness button
+
+                        if ( json.complete )
+                        {
+                            $( '#completeButton' ).attr( 'disabled', 'disabled' );
+                            $( '#undoButton' ).removeAttr( 'disabled' );
+                        }
+                        else
+                        {
+                            $( '#completeButton' ).removeAttr( 'disabled' );
+                            $( '#undoButton' ).attr( 'disabled', 'disabled' );
+                        }
+
+                        // TODO locking
+                    } );
 }
 
 function displayEntryFormCompleted()
@@ -627,7 +644,7 @@ function displayEntryFormCompleted()
 
     dataEntryFormIsLoaded = true;
     hideLoader();
-    
+
     $( '#completenessDiv' ).css( 'display', 'block' );
 }
 
@@ -720,13 +737,16 @@ function validateCompleteDataSet()
 
         disableCompleteButton();
 
-        $.getJSON( 'getValidationViolations.action', params).success( function( data ) {
+        $.getJSON( 'getValidationViolations.action', params ).success( function( data )
+        {
             registerCompleteDataSet( data );
-        } ).error( function() {
-            // no response from server, fake a positive result and save it anyway
-            registerCompleteDataSet({
-                'response': 'success'
-            });
+        } ).error( function()
+        {
+            // no response from server, fake a positive result and save it
+            // anyway
+            registerCompleteDataSet( {
+                'response' : 'success'
+            } );
         } );
     }
 }
@@ -737,17 +757,19 @@ function registerCompleteDataSet( json )
 
     if ( json.response == 'success' )
     {
-        storageManager.saveCompleteDataSet(params);
+        storageManager.saveCompleteDataSet( params );
 
-        $.getJSON( 'registerCompleteDataSet.action', params).success(function() {
-            storageManager.clearCompleteDataSet(params);
-        } ).error( function() {
+        $.getJSON( 'registerCompleteDataSet.action', params ).success( function()
+        {
+            storageManager.clearCompleteDataSet( params );
+        } ).error( function()
+        {
         } );
     }
     else
     {
-    	disableUndoButton();
-    	
+        disableUndoButton();
+
         validate();
     }
 }
@@ -756,29 +778,30 @@ function undoCompleteDataSet()
 {
     var confirmed = confirm( i18n_confirm_undo );
     var params = storageManager.getCurrentCompleteDataSetParams();
-    
+
     if ( confirmed )
     {
         disableUndoButton();
 
-        $.getJSON( 'undoCompleteDataSet.action', params).success(function() {
-            storageManager.clearCompleteDataSet(params);
+        $.getJSON( 'undoCompleteDataSet.action', params ).success( function()
+        {
+            storageManager.clearCompleteDataSet( params );
         } ).error( function()
         {
-            storageManager.clearCompleteDataSet(params);
+            storageManager.clearCompleteDataSet( params );
         } );
     }
 }
 
 function disableUndoButton()
 {
-	$( '#completeButton' ).removeAttr( 'disabled' );
+    $( '#completeButton' ).removeAttr( 'disabled' );
     $( '#undoButton' ).attr( 'disabled', 'disabled' );
 }
 
 function disableCompleteButton()
 {
-	$( '#completeButton' ).attr( 'disabled', 'disabled' );
+    $( '#completeButton' ).attr( 'disabled', 'disabled' );
     $( '#undoButton' ).removeAttr( 'disabled' );
 }
 
@@ -804,18 +827,17 @@ function validate()
     $( '#validationDiv' ).load( 'validate.action', {
         periodId : periodId,
         dataSetId : dataSetId,
-        organisationUnitId: currentOrganisationUnitId
-    },
-    function( response, status, xhr ) 
+        organisationUnitId : currentOrganisationUnitId
+    }, function( response, status, xhr )
     {
-    	if ( status == 'error' )
-    	{
-    		window.alert( i18n_operation_not_available_offline );
-    	}
-    	else
-    	{
-    		displayValidationDialog();
-    	}
+        if ( status == 'error' )
+        {
+            window.alert( i18n_operation_not_available_offline );
+        }
+        else
+        {
+            displayValidationDialog();
+        }
     } );
 }
 
@@ -842,21 +864,20 @@ function viewHist( dataElementId, optionComboId )
     var operandName = dataElementName + ' ' + optionComboName;
 
     $( '#historyDiv' ).load( 'viewHistory.action', {
-        dataElementId: dataElementId,
-        optionComboId: optionComboId,
-        periodId: periodId,
-        organisationUnitId: currentOrganisationUnitId 
-    },
-    function( response, status, xhr ) 
+        dataElementId : dataElementId,
+        optionComboId : optionComboId,
+        periodId : periodId,
+        organisationUnitId : currentOrganisationUnitId
+    }, function( response, status, xhr )
     {
-    	if ( status == 'error' )
-    	{
-    		window.alert( i18n_operation_not_available_offline );
-    	}
-    	else
-    	{
-        	displayHistoryDialog( operandName );
-    	}
+        if ( status == 'error' )
+        {
+            window.alert( i18n_operation_not_available_offline );
+        }
+        else
+        {
+            displayHistoryDialog( operandName );
+        }
     } );
 }
 
@@ -871,59 +892,59 @@ function closeCurrentSelection()
 
 function updateForms()
 {
-	purgeLocalForms();
-	updateExistingLocalForms();	
-	downloadRemoteForms();
+    purgeLocalForms();
+    updateExistingLocalForms();
+    downloadRemoteForms();
 }
 
 function purgeLocalForms()
 {
-	var formIds = storageManager.getAllForms();
-	
-	for ( i in formIds )
-	{
-		var localId = formIds[i];
-		
-		if ( dataSets[localId] == null )
-		{
-			storageManager.deleteForm( localId );
-			console.log( 'Deleted locally stored form: ' + localId );
-		}
-	}
-	
-	console.log( 'Purged local forms' );
+    var formIds = storageManager.getAllForms();
+
+    for ( i in formIds )
+    {
+        var localId = formIds[i];
+
+        if ( dataSets[localId] == null )
+        {
+            storageManager.deleteForm( localId );
+            console.log( 'Deleted locally stored form: ' + localId );
+        }
+    }
+
+    console.log( 'Purged local forms' );
 }
 
 function updateExistingLocalForms()
 {
-	var formIds = storageManager.getAllForms();	
-	var formVersions = storageManager.getAllFormVersions();
-	
-	for ( i in formIds )
-	{
-		var dataSetId = formIds[i];
-		
-		var remoteVersion = dataSets[dataSetId].version;
-		var localVersion = formVersions[dataSetId];
-		
-		if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
-		{
-			storageManager.downloadForm( dataSetId, remoteVersion ); 
-		}
-	}
+    var formIds = storageManager.getAllForms();
+    var formVersions = storageManager.getAllFormVersions();
+
+    for ( i in formIds )
+    {
+        var dataSetId = formIds[i];
+
+        var remoteVersion = dataSets[dataSetId].version;
+        var localVersion = formVersions[dataSetId];
+
+        if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
+        {
+            storageManager.downloadForm( dataSetId, remoteVersion );
+        }
+    }
 }
 
 function downloadRemoteForms()
 {
-	for ( dataSetId in dataSets )
-	{
-		var remoteVersion = dataSets[dataSetId].version;
-		
-		if ( !storageManager.formExists( dataSetId ) )
-		{
-			storageManager.downloadForm( dataSetId, remoteVersion );
-		}
-	}
+    for ( dataSetId in dataSets )
+    {
+        var remoteVersion = dataSets[dataSetId].version;
+
+        if ( !storageManager.formExists( dataSetId ) )
+        {
+            storageManager.downloadForm( dataSetId, remoteVersion );
+        }
+    }
 }
 
 // TODO break if local storage is full
@@ -934,311 +955,315 @@ function downloadRemoteForms()
 
 /**
  * This object provides utility methods for localStorage and manages data entry
- * forms and data values. 
+ * forms and data values.
  */
 function StorageManager()
 {
-	var MAX_SIZE = new Number( 2600000 );
-	var MAX_SIZE_FORMS = new Number( 1600000 );
+    var MAX_SIZE = new Number( 2600000 );
+    var MAX_SIZE_FORMS = new Number( 1600000 );
 
-	var KEY_FORM_PREFIX = 'form-';
-	var KEY_FORM_VERSIONS = 'formversions';
-	var KEY_DATAVALUES = 'datavalues';
-	var KEY_COMPLETEDATASETS = 'completedatasets';
+    var KEY_FORM_PREFIX = 'form-';
+    var KEY_FORM_VERSIONS = 'formversions';
+    var KEY_DATAVALUES = 'datavalues';
+    var KEY_COMPLETEDATASETS = 'completedatasets';
 
-	/**
-	 * Returns the total number of characters currently in the local storage.
-	 * 
-	 * @return number of characters.
-	 */
-	this.totalSize = function()
-	{
-		var totalSize = new Number();
-		
-		for ( var i = 0; i < localStorage.length; i++ )
-		{
-  			var value = localStorage.key(i);
-  			
-  			if ( value )
-  			{
-  				totalSize += value.length;  				
-  			}  			
-		}
-		
-		return totalSize;
-	};
-	
-	/**
-	 * Returns the total numbers of characters in stored forms currently in the
-	 * local storage.
-	 * 
-	 * @return number of characters.
-	 */
-	this.totalFormSize = function()
-	{
-		var totalSize = new Number();
-		
-		for ( var i = 0; i < localStorage.length; i++ )
-		{
-			if ( localStorage.key(i).substring( 0, KEY_FORM_PREFIX.length ) == KEY_FORM_PREFIX )
-			{
-				var value = localStorage.key(i);
-				
-				if ( value )
-				{
-					totalSize += value.length;
-				}
-			}
-		}
-		
-		return totalSize;
-	};
-	
-	/**
-	 * Return the remaining capacity of the local storage in characters, ie.
-	 * the maximum size minus the current size.
-	 */
-	this.remainingStorage = function()
-	{
-		return MAX_SIZE - this.totalSize();
-	};
-	
-	/**
-	 * Saves the content of a data entry form.
-	 * 
-	 * @param dataSetId the identifier of the data set of the form.
-	 * @param html the form HTML content.
-	 * @return true if the form saved successfully, false otherwise.
-	 */
-	this.saveForm = function( dataSetId, html )
-	{
-		var id = KEY_FORM_PREFIX + dataSetId;
-		
-		try
-		{
-			localStorage[id] = html;
-			
-			console.log( 'Successfully stored form: ' + dataSetId );
-		}
-		catch ( e )
-		{
-			console.log( 'Max local storage quota reached, ignored form: ' + dataSetId );			
-			return false;
-		}
-		
-		if ( MAX_SIZE_FORMS < this.totalFormSize() )
-		{
-			this.deleteForm( dataSetId );
-			
-			console.log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
-			return false;
-		}
-		
-		return true;
-	};
-	
-	/**
-	 * Gets the content of a data entry form.
-	 * 
-	 * @param dataSetId the identifier of the data set of the form.
-	 * @return the content of a data entry form.
-	 */
-	this.getForm = function( dataSetId )
-	{
-		var id = KEY_FORM_PREFIX + dataSetId;
-		
-		return localStorage[id];
-	};
-	
-	/**
-	 * Removes a form.
-	 * 
-	 * @param dataSetId the identifier of the data set of the form.
-	 */
-	this.deleteForm = function( dataSetId )
-	{
-		localStorage.removeItem( dataSetId );
-	};
-	
-	/**
-	 * Returns an array of the identifiers of all forms.
-	 * 
-	 * @return array with form identifiers.
-	 */
-	this.getAllForms = function()
-	{
-		var formIds = [];
-		
-		var formIndex = 0;
-		
-		for ( var i = 0; i < localStorage.length; i++ )
-		{
-			var key = localStorage.key(i);
-			
-			if ( key.substring( 0, KEY_FORM_PREFIX.length ) == KEY_FORM_PREFIX )
-			{
-				var id = key.split( '-' )[1];
-				
-				formIds[formIndex++] = id;
-			}
-		}
-		
-		return formIds;
-	};
-	
-	/**
-	 * Indicates whether a form exists.
-	 * 
-	 * @param dataSetId the identifier of the data set of the form.
-	 * @return true if a form exists, false otherwise. 
-	 */
-	this.formExists = function( dataSetId )
-	{
-		var id = KEY_FORM_PREFIX + dataSetId;
-		
-		return localStorage[id] != null;
-	};
-	
-	/**
-	 * Downloads the form for the data set with the given identifier from the 
-	 * remote server and saves the form locally. Potential existing forms with
-	 * the same identifier will be overwritten. Updates the form version.
-	 * 
-	 * @param dataSetId the identifier of the data set of the form.
-	 * @param formVersion the version of the form of the remote data set.
-	 */
-	this.downloadForm = function( dataSetId, formVersion )
-	{
-		$.ajax( {
-			url: 'loadForm.action',
-			data: { dataSetId: dataSetId },
-			dataType: 'text',
-			dataSetId: dataSetId,
-			formVersion: formVersion,
-			success: function( data, textStatus, jqXHR ) {					
-				storageManager.saveForm( this.dataSetId, data );
-				storageManager.saveFormVersion( this.dataSetId, this.formVersion );
-			}
-		} );
-	};
+    /**
+     * Returns the total number of characters currently in the local storage.
+     * 
+     * @return number of characters.
+     */
+    this.totalSize = function()
+    {
+        var totalSize = new Number();
 
-	/**
-	 * Saves a version for a form.
-	 * 
-	 * @param the identifier of the data set of the form.
-	 * @param formVersion the version of the form.
-	 */
-	this.saveFormVersion = function( dataSetId, formVersion )
-	{
-		var formVersions = {};
-		
-		if ( localStorage[KEY_FORM_VERSIONS] != null )
-		{
-			formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
-		}
-		
-		formVersions[dataSetId] = formVersion;
-		
-		try
-		{
-			localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
-			
-			console.log( 'Successfully stored form version: ' + dataSetId );
-		}
-		catch ( e )
-		{
-			console.log( 'Max local storage quota reached, ignored form version: ' + dataSetId );
-		}
-	};
-	
-	/**
-	 * Returns the version of the form of the data set with the given identifier.
-	 * 
-	 * @param dataSetId the identifier of the data set of the form.
-	 * @return the form version.
-	 */
-	this.getFormVersion = function( dataSetId )
-	{
-		if ( localStorage[KEY_FORM_VERSIONS] != null )
-		{
-			var formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
-			
-			return formVersions[dataSetId];
-		}
-		
-		return null;
-	};
-	
-	this.getAllFormVersions = function()
-	{
-		return localStorage[KEY_FORM_VERSIONS] != null ?  JSON.parse( localStorage[KEY_FORM_VERSIONS] ) : null;
-	};
-	
-	/**
-	 * Saves a data value.
-	 * 
+        for ( var i = 0; i < localStorage.length; i++ )
+        {
+            var value = localStorage.key( i );
+
+            if ( value )
+            {
+                totalSize += value.length;
+            }
+        }
+
+        return totalSize;
+    };
+
+    /**
+     * Returns the total numbers of characters in stored forms currently in the
+     * local storage.
+     * 
+     * @return number of characters.
+     */
+    this.totalFormSize = function()
+    {
+        var totalSize = new Number();
+
+        for ( var i = 0; i < localStorage.length; i++ )
+        {
+            if ( localStorage.key( i ).substring( 0, KEY_FORM_PREFIX.length ) == KEY_FORM_PREFIX )
+            {
+                var value = localStorage.key( i );
+
+                if ( value )
+                {
+                    totalSize += value.length;
+                }
+            }
+        }
+
+        return totalSize;
+    };
+
+    /**
+     * Return the remaining capacity of the local storage in characters, ie. the
+     * maximum size minus the current size.
+     */
+    this.remainingStorage = function()
+    {
+        return MAX_SIZE - this.totalSize();
+    };
+
+    /**
+     * Saves the content of a data entry form.
+     * 
+     * @param dataSetId the identifier of the data set of the form.
+     * @param html the form HTML content.
+     * @return true if the form saved successfully, false otherwise.
+     */
+    this.saveForm = function( dataSetId, html )
+    {
+        var id = KEY_FORM_PREFIX + dataSetId;
+
+        try
+        {
+            localStorage[id] = html;
+
+            console.log( 'Successfully stored form: ' + dataSetId );
+        } catch ( e )
+        {
+            console.log( 'Max local storage quota reached, ignored form: ' + dataSetId );
+            return false;
+        }
+
+        if ( MAX_SIZE_FORMS < this.totalFormSize() )
+        {
+            this.deleteForm( dataSetId );
+
+            console.log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
+            return false;
+        }
+
+        return true;
+    };
+
+    /**
+     * Gets the content of a data entry form.
+     * 
+     * @param dataSetId the identifier of the data set of the form.
+     * @return the content of a data entry form.
+     */
+    this.getForm = function( dataSetId )
+    {
+        var id = KEY_FORM_PREFIX + dataSetId;
+
+        return localStorage[id];
+    };
+
+    /**
+     * Removes a form.
+     * 
+     * @param dataSetId the identifier of the data set of the form.
+     */
+    this.deleteForm = function( dataSetId )
+    {
+        localStorage.removeItem( dataSetId );
+    };
+
+    /**
+     * Returns an array of the identifiers of all forms.
+     * 
+     * @return array with form identifiers.
+     */
+    this.getAllForms = function()
+    {
+        var formIds = [];
+
+        var formIndex = 0;
+
+        for ( var i = 0; i < localStorage.length; i++ )
+        {
+            var key = localStorage.key( i );
+
+            if ( key.substring( 0, KEY_FORM_PREFIX.length ) == KEY_FORM_PREFIX )
+            {
+                var id = key.split( '-' )[1];
+
+                formIds[formIndex++] = id;
+            }
+        }
+
+        return formIds;
+    };
+
+    /**
+     * Indicates whether a form exists.
+     * 
+     * @param dataSetId the identifier of the data set of the form.
+     * @return true if a form exists, false otherwise.
+     */
+    this.formExists = function( dataSetId )
+    {
+        var id = KEY_FORM_PREFIX + dataSetId;
+
+        return localStorage[id] != null;
+    };
+
+    /**
+     * Downloads the form for the data set with the given identifier from the
+     * remote server and saves the form locally. Potential existing forms with
+     * the same identifier will be overwritten. Updates the form version.
+     * 
+     * @param dataSetId the identifier of the data set of the form.
+     * @param formVersion the version of the form of the remote data set.
+     */
+    this.downloadForm = function( dataSetId, formVersion )
+    {
+        $.ajax( {
+            url : 'loadForm.action',
+            data : {
+                dataSetId : dataSetId
+            },
+            dataType : 'text',
+            dataSetId : dataSetId,
+            formVersion : formVersion,
+            success : function( data, textStatus, jqXHR )
+            {
+                storageManager.saveForm( this.dataSetId, data );
+                storageManager.saveFormVersion( this.dataSetId, this.formVersion );
+            }
+        } );
+    };
+
+    /**
+     * Saves a version for a form.
+     * 
+     * @param the identifier of the data set of the form.
+     * @param formVersion the version of the form.
+     */
+    this.saveFormVersion = function( dataSetId, formVersion )
+    {
+        var formVersions = {};
+
+        if ( localStorage[KEY_FORM_VERSIONS] != null )
+        {
+            formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
+        }
+
+        formVersions[dataSetId] = formVersion;
+
+        try
+        {
+            localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
+
+            console.log( 'Successfully stored form version: ' + dataSetId );
+        } catch ( e )
+        {
+            console.log( 'Max local storage quota reached, ignored form version: ' + dataSetId );
+        }
+    };
+
+    /**
+     * Returns the version of the form of the data set with the given
+     * identifier.
+     * 
+     * @param dataSetId the identifier of the data set of the form.
+     * @return the form version.
+     */
+    this.getFormVersion = function( dataSetId )
+    {
+        if ( localStorage[KEY_FORM_VERSIONS] != null )
+        {
+            var formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
+
+            return formVersions[dataSetId];
+        }
+
+        return null;
+    };
+
+    this.getAllFormVersions = function()
+    {
+        return localStorage[KEY_FORM_VERSIONS] != null ? JSON.parse( localStorage[KEY_FORM_VERSIONS] ) : null;
+    };
+
+    /**
+     * Saves a data value.
+     * 
      * @param dataValue The datavalue and identifiers in json format.
-	 */
-	this.saveDataValue = function( dataValue )
-	{
-		var id = this.getDataValueIdentifier( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId, dataValue.organisationUnitId );
+     */
+    this.saveDataValue = function( dataValue )
+    {
+        var id = this.getDataValueIdentifier( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId,
+                dataValue.organisationUnitId );
 
-		var dataValues = {};
+        var dataValues = {};
 
-		if ( localStorage[KEY_DATAVALUES] != null )
-		{
-			dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
-		}
+        if ( localStorage[KEY_DATAVALUES] != null )
+        {
+            dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
+        }
 
-		dataValues[id] = dataValue;
+        dataValues[id] = dataValue;
 
-		try
-		{
-			localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
-			
-			console.log( 'Successfully stored data value' );
-		}
-		catch ( e )
-		{
-			console.log( 'Max local storage quota reached, ignored data value' );
-		}
-	};
+        try
+        {
+            localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
 
-	/**
-	 * Gets the value for the data value with the given arguments, or null if it
-	 * does not exist.
-	 * 
-	 * @param dataElementId the data element identifier.
-	 * @param categoryOptionComboId the category option combo identifier.
-	 * @param periodId the period identifier.
-	 * @param organisationUnitId the organisation unit identifier.
-	 * @return the value for the data value with the given arguments, null if non-existing.
-	 */
-	this.getDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
-	{
-		var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
+            console.log( 'Successfully stored data value' );
+        } catch ( e )
+        {
+            console.log( 'Max local storage quota reached, ignored data value' );
+        }
+    };
 
-		if ( localStorage[KEY_DATAVALUES] != null )
-		{
-			var dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
-			
-			return dataValues[id];
-		}
+    /**
+     * Gets the value for the data value with the given arguments, or null if it
+     * does not exist.
+     * 
+     * @param dataElementId the data element identifier.
+     * @param categoryOptionComboId the category option combo identifier.
+     * @param periodId the period identifier.
+     * @param organisationUnitId the organisation unit identifier.
+     * @return the value for the data value with the given arguments, null if
+     *         non-existing.
+     */
+    this.getDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
+    {
+        var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
 
-		return null;
-	};
+        if ( localStorage[KEY_DATAVALUES] != null )
+        {
+            var dataValues = JSON.parse( localStorage[KEY_DATAVALUES] );
 
-	/**
-	 * Removes the given dataValue from localStorage.
-	 * 
-	 * @param dataValue The datavalue and identifiers in json format.
-	 */
-	this.clearDataValueJSON = function( dataValue )
-	{
-	    this.clearDataValue( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId, dataValue.organisationUnitId );
-	};
+            return dataValues[id];
+        }
 
-	/**
+        return null;
+    };
+
+    /**
+     * Removes the given dataValue from localStorage.
+     * 
+     * @param dataValue The datavalue and identifiers in json format.
+     */
+    this.clearDataValueJSON = function( dataValue )
+    {
+        this.clearDataValue( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId,
+                dataValue.organisationUnitId );
+    };
+
+    /**
      * Removes the given dataValue from localStorage.
      * 
      * @param dataElementId the data element identifier.
@@ -1246,141 +1271,155 @@ function StorageManager()
      * @param periodId the period identifier.
      * @param organisationUnitId the organisation unit identifier.
      */
-	this.clearDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
-	{
-	    var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
-	    var dataValues = this.getAllDataValues();
+    this.clearDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
+    {
+        var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
+        var dataValues = this.getAllDataValues();
 
-	    if ( dataValues[id] != null ) 
-	    {
-	        delete dataValues[id];
-	        localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
-	    }
-	};
-	
-	/**
-	 * Returns a JSON associative array where the keys are on the form
-	 * <data element id>-<category option combo id>-<period id>-<organisation unit id>
-	 * and the data values are the values.
-	 * 
-	 * @return  a JSON associative array.
-	 */
-	this.getAllDataValues = function()
-	{
-		return localStorage[KEY_DATAVALUES] != null ? JSON.parse( localStorage[KEY_DATAVALUES] ) : null;
-	};
-	
-	/**
-	 * Supportive method.
-	 */
-	this.getDataValueIdentifier = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
-	{
-		return dataElementId + "-" + categoryOptionComboId + "-" + periodId + "-" + organisationUnitId;
-	};
-	
-	/**
-	 * Supportive method.
-	 */
-	this.getCompleteDataSetId = function( json )
-	{
-	    return json.periodId + "-" + json.dataSetId + "-" + json.organisationUnitId;
-	};
+        if ( dataValues[id] != null )
+        {
+            delete dataValues[id];
+            localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
+        }
+    };
 
-	/**
-	 * Returns current state in data entry form as associative array.
-	 * 
-	 * @return an associative array. 
-	 */
-	this.getCurrentCompleteDataSetParams = function() 
-	{
-	    var params = {
-            'periodId': $( '#selectedPeriodId' ).val(),
-            'dataSetId': $( '#selectedDataSetId' ).val(),
-            'organisationUnitId': currentOrganisationUnitId
-	    };
-	    
-	    return params;
-	};
+    /**
+     * Returns a JSON associative array where the keys are on the form <data
+     * element id>-<category option combo id>-<period id>-<organisation unit
+     * id> and the data values are the values.
+     * 
+     * @return a JSON associative array.
+     */
+    this.getAllDataValues = function()
+    {
+        return localStorage[KEY_DATAVALUES] != null ? JSON.parse( localStorage[KEY_DATAVALUES] ) : null;
+    };
 
-	/**
-	 * Gets all complete data set registrations as JSON.
-	 * 
-	 * @return all complete data set registrations as JSON.
-	 */
-	this.getCompleteDataSets = function()
-	{
-	    if ( localStorage[KEY_COMPLETEDATASETS] != null )
-	    {
-	        return JSON.parse( localStorage[KEY_COMPLETEDATASETS] );
-	    }
-	    
-	    return null;
-	};
+    /**
+     * Supportive method.
+     */
+    this.getDataValueIdentifier = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
+    {
+        return dataElementId + "-" + categoryOptionComboId + "-" + periodId + "-" + organisationUnitId;
+    };
 
-	/**
-	 * Saves a complete data set registration.
-	 * 
-	 * @param json the complete data set registration as JSON.
-	 */
-	this.saveCompleteDataSet = function( json )
-	{
-	    var completeDataSets = this.getCompleteDataSets();
-	    var completeDataSetId = this.getCompleteDataSetId( json );
+    /**
+     * Supportive method.
+     */
+    this.getCompleteDataSetId = function( json )
+    {
+        return json.periodId + "-" + json.dataSetId + "-" + json.organisationUnitId;
+    };
 
-	    if ( completeDataSets != null ) 
-	    {
-	        completeDataSets[completeDataSetId] = json;
-	    }
-	    else
-	    {
-	        completeDataSets = {};
-	        completeDataSets[completeDataSetId] = json;
-	    }
+    /**
+     * Returns current state in data entry form as associative array.
+     * 
+     * @return an associative array.
+     */
+    this.getCurrentCompleteDataSetParams = function()
+    {
+        var params = {
+            'periodId' : $( '#selectedPeriodId' ).val(),
+            'dataSetId' : $( '#selectedDataSetId' ).val(),
+            'organisationUnitId' : currentOrganisationUnitId
+        };
 
-	    localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
-	};
+        return params;
+    };
 
-	/**
-	 * Removes the given complete data set registration.
-	 * 
-	 * @param the complete data set registration as JSON.
-	 */
-	this.clearCompleteDataSet = function( json )
-	{
-	    var completeDataSets = this.getCompleteDataSets();
-	    var completeDataSetId = this.getCompleteDataSetId( json );
+    /**
+     * Gets all complete data set registrations as JSON.
+     * 
+     * @return all complete data set registrations as JSON.
+     */
+    this.getCompleteDataSets = function()
+    {
+        if ( localStorage[KEY_COMPLETEDATASETS] != null )
+        {
+            return JSON.parse( localStorage[KEY_COMPLETEDATASETS] );
+        }
 
-	    if ( completeDataSets != null )
-	    {
-	        delete completeDataSets[completeDataSetId];
+        return null;
+    };
 
-	        if ( completeDataSets.length > 0 )
-	        {
-	            localStorage.remoteItem(KEY_COMPLETEDATASETS);
-	        }
-	        else
-	        {
-	            localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
-	        }
-	    }
-	};
+    /**
+     * Saves a complete data set registration.
+     * 
+     * @param json the complete data set registration as JSON.
+     */
+    this.saveCompleteDataSet = function( json )
+    {
+        var completeDataSets = this.getCompleteDataSets();
+        var completeDataSetId = this.getCompleteDataSetId( json );
 
-	/**
-	 * Indicators whether there exists data values or complete data set registrations
-	 * in the local storage.
-	 * 
-	 * @return true if local data exists, false otherwise.
-	 */
-	this.hasLocalData = function()
-	{
-	    var dataValues = this.getAllDataValues();
-	    var completeDataSets = this.getCompleteDataSets();
+        if ( completeDataSets != null )
+        {
+            completeDataSets[completeDataSetId] = json;
+        }
+        else
+        {
+            completeDataSets = {};
+            completeDataSets[completeDataSetId] = json;
+        }
 
-	    if ( dataValues == null && completeDataSets == null )
-	    {
-	        return false;
-	    }
+        localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
+    };
 
-	    return true;
-	};
+    /**
+     * Removes the given complete data set registration.
+     * 
+     * @param the complete data set registration as JSON.
+     */
+    this.clearCompleteDataSet = function( json )
+    {
+        var completeDataSets = this.getCompleteDataSets();
+        var completeDataSetId = this.getCompleteDataSetId( json );
+
+        if ( completeDataSets != null )
+        {
+            delete completeDataSets[completeDataSetId];
+
+            if ( completeDataSets.length > 0 )
+            {
+                localStorage.remoteItem( KEY_COMPLETEDATASETS );
+            }
+            else
+            {
+                localStorage[KEY_COMPLETEDATASETS] = JSON.stringify( completeDataSets );
+            }
+        }
+    };
+
+    /**
+     * Indicators whether there exists data values or complete data set
+     * registrations in the local storage.
+     * 
+     * @return true if local data exists, false otherwise.
+     */
+    this.hasLocalData = function()
+    {
+        var dataValues = this.getAllDataValues();
+        var completeDataSets = this.getCompleteDataSets();
+
+        if ( dataValues == null && completeDataSets == null )
+        {
+            return false;
+        }
+        else if ( dataValues != null )
+        {
+            if ( Object.keys( dataValues ).length < 1 )
+            {
+                return false;
+            }
+        }
+        else if ( completeDataSets != null )
+        {
+            if ( Object.keys( completeDataSets ).length < 1 )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    };
 }
