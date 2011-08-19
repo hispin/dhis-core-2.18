@@ -112,13 +112,20 @@ function ajax_login()
 
 function loadMetaData()
 {
-	$.getJSON( 'getMetaData.action', function( json ) {
-		significantZeros = json.metaData.significantZeros;
-		dataElements = json.metaData.dataElements;
-		indicatorFormulas = json.metaData.indicatorFormulas;
-		dataSets = json.metaData.dataSets;
-		dataSetAssociationSets = json.metaData.dataSetAssociationSets;
-		organisationUnitAssociationSetMap = json.metaData.organisationUnitAssociationSetMap;
+	var KEY_METADATA = "metadata";
+	
+	$.getJSON( 'getMetaData.action', function( json ) {		
+		sessionStorage[KEY_METADATA] = JSON.stringify( json.metaData );
+	} ).complete( function() {
+		
+		var metaData = JSON.parse( sessionStorage[KEY_METADATA] );
+		
+		significantZeros = metaData.significantZeros;
+		dataElements = metaData.dataElements;
+		indicatorFormulas = metaData.indicatorFormulas;
+		dataSets = metaData.dataSets;
+		dataSetAssociationSets = metaData.dataSetAssociationSets;
+		organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
 		
 		selection.responseReceived(); // Notify that meta data is loaded
 		$( '#loaderSpan' ).hide();
