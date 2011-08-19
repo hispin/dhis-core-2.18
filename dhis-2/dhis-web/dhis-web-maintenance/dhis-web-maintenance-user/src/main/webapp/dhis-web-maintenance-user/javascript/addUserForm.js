@@ -1,22 +1,22 @@
-jQuery(document).ready(function()
+jQuery( document ).ready( function()
 {
-    validation2('addUserForm', function( form )
+    validation2( 'addUserForm', function( form )
     {
-        jQuery("#selectedList").children().attr("selected", true);
-        form.submit()
+        jQuery( "#selectedList" ).children().attr( "selected", true );
+        form.submit();
     }, {
         'beforeValidateHandler' : function()
         {
-            listValidator('roleValidator', 'selectedList');
+            listValidator( 'roleValidator', 'selectedList' );
         },
-        'rules' : getValidationRules("user")
-    });
+        'rules' : getValidationRules( "user" )
+    } );
 
     /* remote validation */
-    checkValueIsExist("username", "validateUser.action");
+    checkValueIsExist( "username", "validateUser.action" );
 
-    jQuery("#cancel").click(function()
+    jQuery( "#cancel" ).click( function()
     {
-        referrerBack("alluser.action");
-    });
-});
+        referrerBack( "alluser.action" );
+    } );
+} );

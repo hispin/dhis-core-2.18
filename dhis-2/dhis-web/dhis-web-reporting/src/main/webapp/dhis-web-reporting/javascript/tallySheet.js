@@ -39,7 +39,7 @@ function selectAll()
 {
     var length = document.configureTallySheetForm.checkbox.length;
 
-    for ( i = 0; i < length; i++ )
+    for ( var i = 0; i < length; i++ )
     {
         document.configureTallySheetForm.checkbox[i].checked = true;
         document.configureTallySheetForm.checked[i].value = true;
@@ -54,7 +54,7 @@ function selectNone()
 {
     var length = document.configureTallySheetForm.checkbox.length;
 
-    for ( i = 0; i < length; i++ )
+    for ( var i = 0; i < length; i++ )
     {
         document.configureTallySheetForm.checkbox[i].checked = false;
         document.configureTallySheetForm.checked[i].value = false;

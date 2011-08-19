@@ -10,4 +10,4 @@ window.onload = function()
             button.onclick = removeCDEDataElement;
         }
     }
-}
+};

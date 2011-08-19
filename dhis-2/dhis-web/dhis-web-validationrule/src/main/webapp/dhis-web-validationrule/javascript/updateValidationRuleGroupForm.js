@@ -4,11 +4,11 @@ jQuery( document ).ready( function()
 
     validation2( 'updateValidationRuleGroupForm', function( form )
     {
-        form.submit()
+        form.submit();
     }, {
         'beforeValidateHandler' : function()
         {
-            selectAllById( 'groupMembers' )
+            selectAllById( 'groupMembers' );
         },
         'rules' : getValidationRules( "validationRuleGroup" )
     } );

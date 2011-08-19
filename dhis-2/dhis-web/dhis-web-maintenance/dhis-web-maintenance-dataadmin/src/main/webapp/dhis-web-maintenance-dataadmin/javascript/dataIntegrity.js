@@ -43,7 +43,7 @@ function displayViolationList( list, id )
         $( "#" + id + "Button" )
            .attr({ src: "../images/down.png", title: "View violations" })
            .css({ cursor: "pointer" })
-           .click( function() { $( "#" + id + "Div" ).slideToggle( "fast" ) } );
+           .click( function() { $( "#" + id + "Div" ).slideToggle( "fast" ); } );
 
         // Populate violation div
 

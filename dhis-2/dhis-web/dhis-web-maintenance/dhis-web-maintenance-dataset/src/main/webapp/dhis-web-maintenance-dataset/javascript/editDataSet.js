@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
 	validation2('editDataSetForm', function(form) {
-		form.submit()
+		form.submit();
 	}, {
 		'beforeValidateHandler' : function() {
             $("#dataElementsSelectedList").find("option").attr("selected", "selected");

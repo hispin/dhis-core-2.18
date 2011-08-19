@@ -1,9 +1,9 @@
 jQuery(document).ready(function() {
 	validation2('editDataSetForm', function(form) {
-		form.submit()
+		form.submit();
 	}, {
 		'beforeValidateHandler' : function() {
-			selectAllById('selectedList')
+			selectAllById('selectedList');
 		},
 		'rules' : getValidationRules("section")
 	});

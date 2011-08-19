@@ -2,7 +2,7 @@ jQuery( document ).ready( function()
 {
     validation2( 'addDataDictionaryForm', function( form )
     {
-        form.submit()
+        form.submit();
     }, {
         'beforeValidateHandler' : function()
         {

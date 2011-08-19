@@ -5,7 +5,7 @@
 $( document ).ready( function()
 {
     selection.setListenerFunction( organisationUnitSelected, true );
-} )
+} );
 
 function organisationUnitSelected( orgUnitIds )
 {

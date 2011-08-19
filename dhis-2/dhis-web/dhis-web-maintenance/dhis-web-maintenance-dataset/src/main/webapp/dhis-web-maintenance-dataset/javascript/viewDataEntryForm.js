@@ -68,7 +68,7 @@ $(document).ready(function() {
 		} else {
 			insertIndicator();
 		}
-	})
+	});
 
 	$("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
 	$("#saveButton").button("option", "icons", { primary: "ui-icon-disk" });
@@ -113,7 +113,7 @@ function showIndicators() {
 function filterSelectList( select_id, filter )
 {
 	var select_selector = "#" + select_id;
-	var select_hidden_id = select_id + "_ghost"
+	var select_hidden_id = select_id + "_ghost";
 	var select_hidden_selector = "#" + select_hidden_id;
 
 	var $select_options = $(select_selector).find("option"); 
@@ -149,7 +149,7 @@ function filterSelectList( select_id, filter )
 		if(idxa > idxb) return 1;
 		else if(idxa < idxb) return -1;
 		else return 0;
-	})
+	});
 	
 	$(select_selector).empty();
 	$sorted.appendTo( select_selector );
@@ -174,7 +174,7 @@ function insertIndicator() {
 		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorid="' + id + '" style="width:7em;text-align:center;" readonly="readonly" />';
 
 		if(!checkExisted("indicator" + id)) {
-			oEditor.insertHtml( template )
+			oEditor.insertHtml( template );
 		} else {
 			showThenFadeOutMessage( "<b>" + i18n_indicator_already_inserted + "</b>" );
 		}

@@ -39,7 +39,7 @@ function getDataElementsFromStage(stageId, dataelementId){
 	if(stageId != ''){
 		var request = new Request();
 		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( getDataElementsFromStageReceived)
+		request.setCallbackSuccess( getDataElementsFromStageReceived);
 		request.send( "getProgramStage.action?id=" + stageId );
 	}	
 }

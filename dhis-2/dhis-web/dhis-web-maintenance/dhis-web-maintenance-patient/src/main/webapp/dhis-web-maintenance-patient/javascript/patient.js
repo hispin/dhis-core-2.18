@@ -314,7 +314,8 @@ function showListPatientDuplicate( rootElement, validate )
 			var identifiers = $(patient).find('identifier');
         	if( identifiers.length > 0 )
         	{
-        		sPatient += "<tr><td colspan='2'><strong>" + i18n_patient_identifiers + "</strong></td></tr>"
+        		sPatient += "<tr><td colspan='2'><strong>" + i18n_patient_identifiers + "</strong></td></tr>";
+
         		$( identifiers ).each( function( i, identifier )
 				{
         			sPatient +="<tr class='identifierRow'>"
@@ -327,7 +328,8 @@ function showListPatientDuplicate( rootElement, validate )
         	var attributes = $(patient).find('attribute');
         	if( attributes.length > 0 )
         	{
-        		sPatient += "<tr><td colspan='2'><strong>" + i18n_patient_attributes + "</strong></td></tr>"
+        		sPatient += "<tr><td colspan='2'><strong>" + i18n_patient_attributes + "</strong></td></tr>";
+
         		$( attributes ).each( function( i, attribute )
 				{
         			sPatient +="<tr class='attributeRow'>"
@@ -638,7 +640,7 @@ function saveDueDate( programStageInstanceId, programStageInstanceName )
 	field.style.backgroundColor = '#ffffcc';
 	
 	var dateSaver = new DateSaver( programStageInstanceId, field.value, '#ccffcc' );
-	dateSaver.save();s
+	dateSaver.save();
 }
 
 //----------------------------------------------------
@@ -880,10 +882,11 @@ function f_filterResults(n_win, n_docel, n_body) {
 function addAttributeOption()
 {
 	var rowId = 'advSearchBox' + jQuery('#advancedSearchTB select[name=searchingAttributeId]').length + 1;
-	var contend  = '<td>' + getInnerHTML('searchingAttributeIdTD') + '</td>'
+	var contend  = '<td>' + getInnerHTML('searchingAttributeIdTD') + '</td>';
 		contend += '<td>' + searchTextBox ;
 		contend += '<input type="button" value="-" onclick="removeAttributeOption(' + "'" + rowId + "'" + ');"></td>';
 		contend = '<tr id="' + rowId + '">' + contend + '</tr>';
+
 	$('#advancedSearchTB > tbody:last').append( contend );
 }	
 

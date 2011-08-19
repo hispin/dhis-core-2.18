@@ -2,7 +2,7 @@ jQuery( document ).ready( function()
 {
     validation2( 'addIndicatorGroupForm', function( form )
     {
-        form.submit()
+        form.submit();
     }, {
         'beforeValidateHandler' : function()
         {

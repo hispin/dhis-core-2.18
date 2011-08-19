@@ -34,13 +34,12 @@ function removeValidationRuleGroup( validationRuleGroupId, validationRuleGroupNa
 
 function initLists()
 {
-    var id;
-    for ( id in groupMembers )
+    for ( var id in groupMembers )
     {
         $( "#groupMembers" ).append( $( "<option></option>" ).attr( "value", id ).text( groupMembers[id] ) );
     }
 
-    for ( id in availableValidationRules )
+    for ( var id in availableValidationRules )
     {
         $( "#availableValidationRules" ).append(
                 $( "<option></option>" ).attr( "value", id ).text( availableValidationRules[id] ) );

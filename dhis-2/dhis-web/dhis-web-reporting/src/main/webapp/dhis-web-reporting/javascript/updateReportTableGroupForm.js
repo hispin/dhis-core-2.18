@@ -2,7 +2,7 @@ jQuery( document ).ready( function()
 {
     validation2( 'updateReportTableGroupForm', function( form )
     {
-        form.submit()
+        form.submit();
     }, {
         'beforeValidateHandler' : function()
         {
@@ -10,7 +10,9 @@ jQuery( document ).ready( function()
         },
         'rules' : getValidationRules( "reportTableGroup" )
     } );
-	
-	checkValueIsExist( "name", "validateReportTableGroup.action", {id: getFieldValue( "id" )});
-	
+
+    checkValueIsExist( "name", "validateReportTableGroup.action", {
+        id : getFieldValue( "id" )
+    } );
+
 } );
