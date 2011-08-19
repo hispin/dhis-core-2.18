@@ -54,55 +54,50 @@ var COLOR_GREY = '#cccccc';
  * 1. Load ouwt 2. Load meta-data (and notify ouwt) 3. Check and potentially
  * download updated forms from server
  */
-$( document )
-        .ready(
-                function()
-                {
-                    selection.setListenerFunction( organisationUnitSelected );
-                    $( '#loaderSpan' ).show();
+$( document ).ready( function()
+{
+    selection.setListenerFunction( organisationUnitSelected );
+    $( '#loaderSpan' ).show();
 
-                    $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
-                    {
-                        console.log( 'Ouwt loaded' );
-                        loadMetaData();
-                    } );
+    $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
+    {
+        console.log( 'Ouwt loaded' );
+        loadMetaData();
+    } );
 
-                    $( document )
-                            .bind(
-                                    'dhis2.online',
-                                    function( event, loggedIn )
-                                    {
-                                        if ( loggedIn )
-                                        {
-                                            if ( storageManager.hasLocalData() )
-                                            {
-                                                var message = i18n_need_to_sync_notification
-                                                        + ' <button id="sync_button" type="button">' + i18n_sync_now
-                                                        + '</button>';
+    $( document ).bind( 'dhis2.online', function( event, loggedIn )
+	{
+	    if ( loggedIn )
+	    {
+	        if ( storageManager.hasLocalData() )
+	        {
+	            var message = i18n_need_to_sync_notification
+	            	+ ' <button id="sync_button" type="button">' + i18n_sync_now
+	            	+ '</button>';
+	
+	            setHeaderMessage( message );
+	
+	            $( '#sync_button' ).bind( 'click', uploadLocalData );
+	        }
+	        else
+	        {
+	            setHeaderDelayMessage( i18n_online_notification );
+	        }
+	    }
+	    else
+	    {
+	        setHeaderMessage( '<form style="display:inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
+	        ajax_login();
+	    }
+	} );
 
-                                                setHeaderMessage( message );
+    $( document ).bind( 'dhis2.offline', function()
+    {
+        setHeaderMessage( i18n_offline_notification );
+    } );
 
-                                                $( '#sync_button' ).bind( 'click', uploadLocalData );
-                                            }
-                                            else
-                                            {
-                                                setHeaderDelayMessage( i18n_online_notification );
-                                            }
-                                        }
-                                        else
-                                        {
-                                            setHeaderMessage( '<form style="display:inline;"><label for="username">Username</label><input name="username" id="username" type="text" size="10"/><label for="password">Password</label><input name="password" id="password" type="password" size="10"/><button id="login_button" type="button">Login</button></form>' );
-                                            ajax_login();
-                                        }
-                                    } );
-
-                    $( document ).bind( 'dhis2.offline', function()
-                    {
-                        setHeaderMessage( i18n_offline_notification );
-                    } );
-
-                    dhis2.availability.startAvailabilityCheck();
-                } );
+    dhis2.availability.startAvailabilityCheck();
+} );
 
 function ajax_login()
 {
@@ -196,8 +191,7 @@ function uploadLocalData()
                 }
             }
         } );
-    }
-    ;
+    };
 
     ( function pushDataValues( array )
     {
@@ -564,75 +558,70 @@ function insertDataValues()
 
     $( '[name="ef"]' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
 
-    $
-            .getJSON(
-                    'getDataValues.action',
-                    {
-                        periodId : periodId,
-                        dataSetId : dataSetId,
-                        organisationUnitId : currentOrganisationUnitId
-                    },
-                    function( json )
-                    {
-                        // Set data values, works for select lists too as data
-                        // value = select value
+    $.getJSON( 'getDataValues.action',
+    {
+        periodId : periodId,
+        dataSetId : dataSetId,
+        organisationUnitId : currentOrganisationUnitId
+    },
+    function( json )
+    {
+        // Set data values, works for select lists too as data
+        // value = select value
 
-                        $.each( json.dataValues, function( i, value )
-                        {
-                            var fieldId = '#' + value.id + '-val';
+        $.each( json.dataValues, function( i, value )
+        {
+            var fieldId = '#' + value.id + '-val';
 
-                            if ( $( fieldId ) )
-                            {
-                                $( fieldId ).val( value.val );
-                            }
+            if ( $( fieldId ) )
+            {
+                $( fieldId ).val( value.val );
+            }
 
-                            dataValueMap[value.id] = value.val;
-                        } );
+            dataValueMap[value.id] = value.val;
+        } );
 
-                        // Set min-max values and colorize violation fields
+        // Set min-max values and colorize violation fields
 
-                        $
-                                .each(
-                                        json.minMaxDataElements,
-                                        function( i, value )
-                                        {
-                                            var minId = value.id + '-min';
-                                            var maxId = value.id + '-max';
+        $.each( json.minMaxDataElements, function( i, value )
+        {
+            var minId = value.id + '-min';
+            var maxId = value.id + '-max';
 
-                                            var valFieldId = '#' + value.id + '-val';
+            var valFieldId = '#' + value.id + '-val';
 
-                                            var dataValue = dataValueMap[value.id];
+            var dataValue = dataValueMap[value.id];
 
-                                            if ( dataValue
-                                                    && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) || ( value.max && new Number(
-                                                            dataValue ) > new Number( value.max ) ) ) )
-                                            {
-                                                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
-                                            }
+            if ( dataValue
+                    && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) || ( value.max && new Number(
+                            dataValue ) > new Number( value.max ) ) ) )
+            {
+                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
+            }
 
-                                            currentMinMaxValueMap[minId] = value.min;
-                                            currentMinMaxValueMap[maxId] = value.max;
-                                        } );
+            currentMinMaxValueMap[minId] = value.min;
+            currentMinMaxValueMap[maxId] = value.max;
+        } );
 
-                        // Update indicator values in form
+        // Update indicator values in form
 
-                        updateIndicators();
+        updateIndicators();
 
-                        // Set completeness button
+        // Set completeness button
 
-                        if ( json.complete )
-                        {
-                            $( '#completeButton' ).attr( 'disabled', 'disabled' );
-                            $( '#undoButton' ).removeAttr( 'disabled' );
-                        }
-                        else
-                        {
-                            $( '#completeButton' ).removeAttr( 'disabled' );
-                            $( '#undoButton' ).attr( 'disabled', 'disabled' );
-                        }
+        if ( json.complete )
+        {
+            $( '#completeButton' ).attr( 'disabled', 'disabled' );
+            $( '#undoButton' ).removeAttr( 'disabled' );
+        }
+        else
+        {
+            $( '#completeButton' ).removeAttr( 'disabled' );
+            $( '#undoButton' ).attr( 'disabled', 'disabled' );
+        }
 
-                        // TODO locking
-                    } );
+        // TODO locking
+    } );
 }
 
 function displayEntryFormCompleted()
