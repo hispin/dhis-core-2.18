@@ -1376,11 +1376,11 @@ function StorageManager()
 	    var dataValues = this.getAllDataValues();
 	    var completeDataSets = this.getCompleteDataSets();
 
-	    if ( dataValues != null || completeDataSets != null )
+	    if ( dataValues == null && completeDataSets == null )
 	    {
-	        return true;
+	        return false;
 	    }
 
-	    return false;
+	    return true;
 	};
 }
