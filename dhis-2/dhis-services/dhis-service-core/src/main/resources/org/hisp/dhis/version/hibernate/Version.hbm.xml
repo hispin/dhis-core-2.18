@@ -12,11 +12,9 @@
       <generator class="native" />
     </id>
 
-    <property name="key">
-      <column name="key" not-null="true" unique="true" length="230" />
-    </property>
+    <property name="key" column="versionkey" not-null="true" length="230"/>
 
-    <property name="value" />
+    <property name="value" column="versionvalue"/>
 
   </class>
 </hibernate-mapping>
