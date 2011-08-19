@@ -1,7 +1,8 @@
 <script type="text/javascript">
    jQuery(document).ready(function(){
 		
-		loadListeners();
+		$( "#pivotTable" ).click( setPosition );
+		showCriteria();
 
 		selectionTreeSelection.setMultipleSelectionAllowed( false );
 		selectionTreeSelection.setListenerFunction( organisationUnitSelected );
@@ -39,6 +40,8 @@ div#criteria
   background-color: #d9ece1;
   padding-left: 20px;
   margin-bottom: 6px;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 div#pivot
@@ -51,6 +54,8 @@ div#pivot
   background-color: #d9ece1;
   padding-left: 20px;
   margin-bottom: 6px;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 div.inputSection

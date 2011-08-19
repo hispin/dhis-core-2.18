@@ -427,7 +427,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewPivotTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/pivot.js,javascript/criteria.js</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/pivot.js</param>
     </action>
 
     <action name="getPivotTable" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction">
