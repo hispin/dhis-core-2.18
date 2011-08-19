@@ -9,8 +9,6 @@
  * {dataelementid}-cell // table cell for data element name
  * {dataelementid}-{optioncomboid}-min // min value for data value
  * {dataelementid}-{optioncomboid}-max // max value for data value
- * 
- * Class "ef" means "entry field", class "es" means "entry select".
  */
 
 // -----------------------------------------------------------------------------
@@ -52,7 +50,7 @@ function getEntryFieldValues()
 {
     var entryFieldValues = new Array();
 
-    $( 'input[name="ef"]' ).each( function( index )
+    $( 'input[name="entryfield"]' ).each( function( index )
     {
         entryFieldValues[$( this ).attr( 'id' )] = $( this ).attr( 'value' );
     } );
