@@ -2,7 +2,6 @@
    jQuery(document).ready(function(){
 		
 		$( "#pivotTable" ).click( setPosition );
-		showCriteria();
 
 		selectionTreeSelection.setMultipleSelectionAllowed( false );
 		selectionTreeSelection.setListenerFunction( organisationUnitSelected );
@@ -28,6 +27,11 @@
   padding-bottom: 3px;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+div#control
+{
+  margin-bottom: 15px;
 }
 
 div#criteria
@@ -91,16 +95,19 @@ div#pivotMenu
 
 </style>
 
+<h3>$i18n.getString( "pivot_table" )</h3>
+
 <!-- Control panel -->
 
+<div id="control">
 <input type="button" value='$i18n.getString( "data" )' style="width:80px" onclick="showCriteria()" />
 <input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="showPivot()" />&nbsp;
 <label id="dataLabel" style="color:#606060"></label>
-<hr style="height:1px; color:#d9ece1">
+</div>
 
 <!-- Criteria -->
 
-<div id="criteria" style="display:none">
+<div id="criteria">
 
 <div class="inputSection">
 <label>$i18n.getString( "data_type" )</label>

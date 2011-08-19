@@ -27,10 +27,13 @@
 
 package org.hisp.dhis.reporting.dataset.action;
 
+import static org.hisp.dhis.dataset.DataSet.TYPE_CUSTOM;
+import static org.hisp.dhis.dataset.DataSet.TYPE_SECTION;
+import static org.hisp.dhis.util.SessionUtils.KEY_DATASET_REPORT_GRID;
+import static org.hisp.dhis.util.SessionUtils.getSessionVar;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataset.DataSet;
@@ -45,10 +48,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
-
-import static org.hisp.dhis.dataset.DataSet.*;
-import static org.hisp.dhis.util.SessionUtils.*;
 
 /**
  * @author Chau Thu Tran
@@ -57,14 +56,6 @@ import static org.hisp.dhis.util.SessionUtils.*;
 public class GenerateDataSetReportAction
     implements Action
 {
-    private static final String PARAM_PAGE = "page";
-    
-    private static final Map<String, String> VIEW_MAP = new HashMap<String, String>() { {
-        put( TYPE_CUSTOM, "/dhis-web-reporting/renderCustomDataSetReportForm.vm" );
-        put( TYPE_SECTION, "/dhis-web-reporting/renderSectionDataSetReportForm.vm" );
-        put( TYPE_DEFAULT, "/dhis-web-reporting/renderDefaultDataSetReportForm.vm" );
-    } };
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -234,9 +225,7 @@ public class GenerateDataSetReportAction
             
             SessionUtils.setSessionVar( SessionUtils.KEY_DATASET_REPORT_GRID, grid );
         }
-                
-        ActionContext.getContext().getActionInvocation().getStack().setValue( PARAM_PAGE, VIEW_MAP.get( dataSetType ) );
         
-        return useLast ? type : SUCCESS;
+        return useLast ? type : dataSetType;
     }
 }

@@ -463,11 +463,11 @@
     </action>
 
     <action name="generateDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction">
+	  <result name="default" type="velocity">/dhis-web-reporting/renderDefaultDataSetReportForm.vm</result>
+	  <result name="section" type="velocity">/dhis-web-reporting/renderSectionDataSetReportForm.vm</result>
+	  <result name="custom" type="velocity">/dhis-web-reporting/renderCustomDataSetReportForm.vm</result>
       <result name="xls" type="gridXlsResult" />
       <result name="pdf" type="gridPdfResult" />
-      <result name="success" type="velocity">/main.vm</result> <!-- Page param set in action -->
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/dataSetReport.js</param>
     </action>
 	
     <!-- Tally Sheet Forms Generator -->

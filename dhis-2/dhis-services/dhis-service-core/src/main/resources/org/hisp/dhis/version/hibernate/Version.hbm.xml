@@ -4,7 +4,7 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.version.Version" table="Version">
+  <class name="org.hisp.dhis.version.Version" table="version">
 
     <cache usage="read-write" />
 
@@ -12,7 +12,7 @@
       <generator class="native" />
     </id>
 
-    <property name="key" column="versionkey" not-null="true" length="230"/>
+    <property name="key" column="versionkey" length="230"/>
 
     <property name="value" column="versionvalue"/>
 
