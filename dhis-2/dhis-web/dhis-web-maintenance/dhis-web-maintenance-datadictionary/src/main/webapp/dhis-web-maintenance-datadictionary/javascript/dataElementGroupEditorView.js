@@ -31,7 +31,6 @@ function loadAvailableDataElements()
     }
     list_1.find( ":first" ).attr( "selected", "selected" );
     list_2.find( ":first" ).attr( "selected", "selected" );
-
 }
 
 function loadAvailableGroups()
@@ -71,15 +70,15 @@ function loadAvailableGroups()
 
 function getDataElementsByGroup()
 {
-
     loadAvailableDataElements();
 
+	var id = jQuery( '#view_1 #dataElementGroups' ).val();
     var filter_1 = jQuery( '#view_1 #selecteDataElementsFilter' ).val();
     var list_1 = jQuery( "#view_1 #selectedDataElements" );
     list_1.empty();
 
     jQuery.postJSON( "../dhis-web-commons-ajax-json/getDataElements.action", {
-        id : jQuery( '#view_1 #dataElementGroups' ).val()
+        id : ( isNotNull( id ) ? id : -1 )
     }, function( json )
     {
         jQuery.each( json.dataElements, function( i, item )
@@ -143,7 +142,6 @@ function showAddGroup()
 
 function showAddGroupView2()
 {
-
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'title', i18n_new );
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'buttons', [ {
         text : i18n_save,
@@ -189,7 +187,6 @@ function showUpdateGroup()
         text : i18n_save,
         click : function()
         {
-
             jQuery.postJSON( "validateDataElementGroup.action", {
                 id : id,
                 name : function()
@@ -350,7 +347,7 @@ function getAssignedDataElementGroups()
     list_2.empty();
 
     jQuery.postJSON( "getAssignedDataElementGroups.action", {
-        dataElementId : id
+        dataElementId : ( isNotNull( id ) ? id : -1 )
     }, function( json )
     {
         jQuery.each( json.dataElementGroups, function( i, item )
