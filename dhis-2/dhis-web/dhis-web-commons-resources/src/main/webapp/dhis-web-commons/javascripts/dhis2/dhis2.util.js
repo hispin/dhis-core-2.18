@@ -65,3 +65,21 @@ $.expr[":"].containsNC = function( el, i, m )
 
     return eval( '/' + search + '/i' ).test( $( el ).text() );
 };
+
+/**
+ * Returns an array of the keys in a given object. Will use ES5 Object.keys() if
+ * available, if not it will provide a pure javascript implementation.
+ * 
+ * @returns array of keys
+ */
+if ( !Object.keys )
+{
+    Object.keys = function( obj )
+    {
+        var keys = new Array();
+        for ( k in obj )
+            if ( obj.hasOwnProperty( k ) )
+                keys.push( k );
+        return keys;
+    };
+}
