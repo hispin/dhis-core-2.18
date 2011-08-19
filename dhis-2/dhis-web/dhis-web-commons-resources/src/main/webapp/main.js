@@ -159,7 +159,7 @@ function LeftBar()
         setMainPageFullscreen( '20px' );
         document.getElementById( 'leftBar' ).style.display = 'none';
         document.getElementById( 'showLeftBar' ).style.display = 'block';
-    } 
+    };
 
 	function setMainPageFullscreen()
 	{
@@ -181,5 +181,5 @@ function LeftBar()
     this.openHelpForm = function( id )
     {
 		window.open ("../dhis-web-commons/help/viewDynamicHelp.action?id=" + id,"Help", 'width=800,height=600,scrollbars=yes');
-    }
+    };
 }

@@ -91,7 +91,7 @@ function dhisPaging_availableList_dblclick(sourceId, targetId, removeArray)
         }
 
         jqAvailableList.dhisPaging("load", sourceId);
-    }
+    };
 }
 
 /*
@@ -129,7 +129,7 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
         }
 
         jqAvailableList.dhisPaging("load", targetId);
-    }
+    };
 }
 
 // -----------------------------------------------
@@ -147,7 +147,7 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
         filter_input : "<input id='${id}' placeholder='Filter' type='text' style='width: 100%; height: 18px; border: 1px inset gray;' />",
         filter_select : "<select id='${id}' style='width: 100%; margin-bottom: 4px; margin-top: 0;'></select>",
         select_page : "Page <select id='${id}' style='width: 50px;'></select>"
-    }
+    };
 
     var methods = {
         load : function(select_id)
@@ -309,13 +309,14 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
 
             var $filter_tr = $("<tr/>");
 
-            var $filter_td1 = $("<td/>")
-            var $filter_td2 = $("<td/>")
+            var $filter_td1 = $("<td/>");
+            var $filter_td2 = $("<td/>");
             $filter_td2.css("width", "70px");
 
             $filter_td1.append($.tmpl(templates.filter_input, {
                 "id" : filter_input_id
-            }))
+            }));
+
             $filter_td2.append($.tmpl(templates.button, {
                 "id" : filter_button_id,
                 "text" : "filter"
@@ -410,7 +411,7 @@ function dhisPaging_selectedList_dblclick(sourceId, targetId, removeArray)
                 }
             });
         }
-    }
+    };
 
     $.fn.dhisPaging = function(method)
     {
