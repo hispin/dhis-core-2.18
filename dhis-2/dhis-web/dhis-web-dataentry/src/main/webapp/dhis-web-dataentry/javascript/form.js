@@ -123,7 +123,7 @@ function ajax_login()
 
 function loadMetaData()
 {
-    var KEY_METADATA = "metadata";
+    var KEY_METADATA = 'metadata';
 
     $.getJSON( 'getMetaData.action', function( json )
     {
@@ -173,7 +173,7 @@ function uploadLocalData()
         var key = array[0];
         var value = completeDataSets[key];
 
-        console.log( "Upload CompleteDataSet: " + key + ", with value: " + value );
+        console.log( 'Uploaded complete data set: ' + key + ', with value: ' + value );
 
         $.ajax( {
             url : 'registerCompleteDataSet.action',
@@ -207,7 +207,7 @@ function uploadLocalData()
         var key = array[0];
         var value = dataValues[key];
 
-        console.log( "Upload DataValue: " + key + ", with value: " + value );
+        console.log( 'Uploaded data value: ' + key + ', with value: ' + value );
 
         $.ajax( {
             url : 'saveValue.action',
@@ -234,7 +234,7 @@ function uploadLocalData()
 
 function addEventListeners()
 {
-    $( '[name="ef"]' ).each( function( i )
+    $( '[name="entryfield"]' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
         var dataElementId = id.split( '-' )[0];
@@ -276,7 +276,7 @@ function addEventListeners()
         }
     } );
 
-    $( '[name="es"]' ).each( function( i )
+    $( '[name="entryselect"]' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
         var dataElementId = id.split( '-' )[0];
@@ -547,16 +547,16 @@ function insertDataValues()
 
     // Clear existing values and colors, grey disabled fields
 
-    $( '[name="ef"]' ).val( '' );
-    $( '[name="es"]' ).val( '' );
+    $( '[name="entryfield"]' ).val( '' );
+    $( '[name="entryselect"]' ).val( '' );
 
-    $( '[name="ef"]' ).css( 'background-color', COLOR_WHITE );
-    $( '[name="es"]' ).css( 'background-color', COLOR_WHITE );
+    $( '[name="entryfield"]' ).css( 'background-color', COLOR_WHITE );
+    $( '[name="entryselect"]' ).css( 'background-color', COLOR_WHITE );
 
     $( '[name="min"]' ).html( '' );
     $( '[name="max"]' ).html( '' );
 
-    $( '[name="ef"]' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
+    $( '[name="entryfield"]' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
 
     $.getJSON( 'getDataValues.action',
     {
@@ -678,13 +678,13 @@ function getNextEntryField( field )
 {
     var index = field.getAttribute( 'tabindex' );
 
-    field = $( 'input[name="ef"][tabindex="' + ( ++index ) + '"]' );
+    field = $( 'input[name="entryfield"][tabindex="' + ( ++index ) + '"]' );
 
     while ( field )
     {
         if ( field.is( ':disabled' ) || field.is( ':hidden' ) )
         {
-            field = $( 'input[name="ef"][tabindex="' + ( ++index ) + '"]' );
+            field = $( 'input[name="entryfield"][tabindex="' + ( ++index ) + '"]' );
         }
         else
         {
@@ -697,13 +697,13 @@ function getPreviousEntryField( field )
 {
     var index = field.getAttribute( 'tabindex' );
 
-    field = $( 'input[name="ef"][tabindex="' + ( --index ) + '"]' );
+    field = $( 'input[name="entryfield"][tabindex="' + ( --index ) + '"]' );
 
     while ( field )
     {
         if ( field.is( ':disabled' ) || field.is( ':hidden' ) )
         {
-            field = $( 'input[name="ef"][tabindex="' + ( --index ) + '"]' );
+            field = $( 'input[name="entryfield"][tabindex="' + ( --index ) + '"]' );
         }
         else
         {
@@ -732,7 +732,6 @@ function validateCompleteDataSet()
         } ).error( function()
         {
             // no response from server, fake a positive result and save it
-            // anyway
             registerCompleteDataSet( {
                 'response' : 'success'
             } );
@@ -1289,7 +1288,7 @@ function StorageManager()
      */
     this.getDataValueIdentifier = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
     {
-        return dataElementId + "-" + categoryOptionComboId + "-" + periodId + "-" + organisationUnitId;
+        return dataElementId + '-' + categoryOptionComboId + '-' + periodId + '-' + organisationUnitId;
     };
 
     /**
@@ -1297,7 +1296,7 @@ function StorageManager()
      */
     this.getCompleteDataSetId = function( json )
     {
-        return json.periodId + "-" + json.dataSetId + "-" + json.organisationUnitId;
+        return json.periodId + '-' + json.dataSetId + '-' + json.organisationUnitId;
     };
 
     /**
