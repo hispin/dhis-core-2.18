@@ -18,6 +18,7 @@ javascripts/jQuery/jquery.metadata.js
 javascripts/jQuery/jquery.glob.js
 javascripts/jQuery/jquery.date.js
 javascripts/jQuery/jquery.tmpl.js
+i18nJavaScript.action
 javascripts/commons.js
 javascripts/lists.js
 javascripts/periodType.js

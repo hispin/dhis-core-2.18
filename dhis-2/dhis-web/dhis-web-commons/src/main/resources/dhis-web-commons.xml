@@ -309,8 +309,13 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="i18nJavaScriptSupport" class="org.hisp.dhis.commons.action.NoAction">
+    <action name="i18nJavaScript" class="org.hisp.dhis.commons.action.NoAction">
       <result name="success" type="velocity-javascript">/dhis-web-commons/i18n/i18n.vm
+      </result>
+    </action>
+
+    <action name="messagesJavaScript" class="org.hisp.dhis.commons.action.NoAction">
+      <result name="success" type="velocity-javascript">/dhis-web-commons/i18n/messages.vm
       </result>
     </action>
 
