@@ -20,13 +20,13 @@
 
 function Request()
 {
-    var request;
+    var request = undefined;
     var responseType = 'TEXT';
     var requestMethod = 'GET';
     var requestParameters = null;
-    var rootElementName;
-    var callbackSuccess;
-    var callbackError;
+    var rootElementName = undefined;
+    var callbackSuccess = undefined;
+    var callbackError = undefined;
 
     this.setResponseTypeXML = function( rootElementName_ )
     {

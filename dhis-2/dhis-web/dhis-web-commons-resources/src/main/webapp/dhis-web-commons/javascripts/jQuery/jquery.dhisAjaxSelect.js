@@ -98,14 +98,14 @@ function compare_data_with_kv($target, key, value)
 {
     var target_value = $target.data(key);
 
-    if(! $.isArray(target_value) ) {
+    if(! $.isArray(target_value) ) {
         var type = typeof(target_value);
 
         if(type === "number") {
             target_value = [ target_value.toString() ];
         } else {
             target_value = target_value.split(",");
-        }
+        };
     }
 
     if (target_value) {
@@ -130,7 +130,7 @@ function dhisAjaxSelect_availableList_dblclick(sourceId, targetId)
         } else {
             dhis2.select.move(jqSelectedList, jqAvailableList.find(":selected"));
         }
-    }
+    };
 }
 
 function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
@@ -148,7 +148,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
         }
 
         dhis2.select.moveSorted(jqAvailableList, $children);
-    }
+    };
 }
 
 // -----------------------------------------------
@@ -164,7 +164,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
         option_selected : "<option selected='selected'>${text}</option>",
         filter_input : "<input id='${id}' placeholder='Filter' type='text' style='width: 100%; height: 18px; border: 1px inset gray;' />",
         filter_select : "<select id='${id}' style='width: 100%; margin-bottom: 4px; margin-top: 0;'></select>"
-    }
+    };
 
     var methods = {
         load : function(select_id)
@@ -211,7 +211,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                 sortSelected: true
             };
 
-            var params = {}
+            var params = {};
 
             $.extend(settings, options);
             $.extend(params, options.params);
@@ -267,8 +267,6 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                     key = !!key ? key : "";
                     value = !!value ? value : "";
 
-                    var settings = $("#" + event.data.id).data("settings");
-
                     if(key.length === 0) {
                         $filter_input.removeAttr('disabled');
                     } else {
@@ -289,14 +287,14 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
 
             var $filter_tr = $("<tr/>");
 
-            var $filter_td1 = $("<td/>")
-            var $filter_td2 = $("<td/>")
+            var $filter_td1 = $("<td/>");
+            var $filter_td2 = $("<td/>");
 
             $filter_td2.css("width", "158px");
 
             $filter_td1.append($.tmpl(templates.filter_input, {
                 "id" : filter_input_id
-            }))
+            }));
 
             $filter_td2.append($.tmpl(templates.button, {
                 "id" : filter_button_id,
@@ -352,7 +350,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                         dhisAjaxSelect_selectedList_dblclick(settings.connectedTo, $select.attr('id')));
             }
         }
-    }
+    };
 
     $.fn.dhisAjaxSelect = function(method)
     {

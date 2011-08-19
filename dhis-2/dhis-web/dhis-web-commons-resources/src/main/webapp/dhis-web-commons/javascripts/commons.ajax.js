@@ -16,13 +16,7 @@ function DataDictionary()
 
     var categoryOptionComboList = new Array();
 
-    var operandsByDataElementGroup = new Array();
-
     var params = {};
-
-    var jQuerySelectionString;
-
-    var url;
 
     this.loadDataElementGroups = function( jQuerySelectionString )
     {
