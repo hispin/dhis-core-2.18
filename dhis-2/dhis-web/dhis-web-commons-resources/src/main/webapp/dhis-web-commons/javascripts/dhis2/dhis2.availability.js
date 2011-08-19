@@ -66,6 +66,7 @@ dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInt
                 if ( dhis2.availability._isAvailable )
                 {
                     dhis2.availability._isAvailable = false;
+                    dhis2.availability._isLoggedIn = -1;
                     $( document ).trigger( "dhis2.offline" );
                 }
             }
