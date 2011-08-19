@@ -94,25 +94,11 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.addFeatures(format.read(doc));
 		this.layer.features = G.util.getTransformedFeatureArray(this.layer.features);
         this.requestSuccess(request);
-
-        if (G.vars.activePanel.isPolygon()) {
-            if (!choropleth.formValidation.validateForm.call(choropleth)) {
+        
+        if (!G.vars.activeWidget.formValidation.validateForm.call(G.vars.activeWidget)) {
                 G.vars.mask.hide();
             }
-            choropleth.classify(false);
-        }
-        else if (G.vars.activePanel.isPoint()) {
-            if (!point.formValidation.validateForm.call(point)) {
-                G.vars.mask.hide();
-            }
-            point.classify(false);
-        }
-        else if (G.vars.activePanel.isSymbol()) {
-            if (!symbol.formValidation.validateForm.call(symbol)) {
-                G.vars.mask.hide();
-            }
-            symbol.classify(false);
-        }
+        G.vars.activeWidget.classify(false);
     },
 
     onSuccess2: function(request) {
@@ -132,10 +118,10 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.addFeatures(geo);
         this.requestSuccess(request);
   
-		if (!centroid.formValidation.validateForm.call(centroid)) {
+		if (!G.vars.activeWidget.formValidation.validateForm.call(G.vars.activeWidget)) {
 			G.vars.mask.hide();
 		}
-		centroid.classify(false);
+		G.vars.activeWidget.classify(false);
     },
 
     onFailure: function(request) {

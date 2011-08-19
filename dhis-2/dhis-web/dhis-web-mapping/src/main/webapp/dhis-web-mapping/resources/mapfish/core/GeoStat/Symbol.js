@@ -33,8 +33,10 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
         this.addOptions(newOptions);
     },
 
-    applyClassification: function(form) {
-        var panel = Ext.getCmp('groups_p');
+    applyClassification: function(form, widget) {
+        this.widget = widget;
+        
+        var panel = widget.cmp.group;
         G.stores.groupsByGroupSet.img = [];
         for (var i = 0, items = panel.items.items; i < items.length; i++) {
             G.stores.groupsByGroupSet.img.push(items[i].getRawValue());
@@ -65,8 +67,23 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
         if (!this.legendDiv) {
             return;
         }
-
+        
+        var info = this.widget.formValues.getLegendInfo.call(this.widget);
         this.legendDiv.update("");
+        
+        var element = document.createElement("div");
+        element.style.height = "14px";
+        element.innerHTML = info.map;
+        this.legendDiv.appendChild(element);
+        
+        element = document.createElement("div");
+        element.style.clear = "left";
+        this.legendDiv.appendChild(element);
+        
+        element = document.createElement("div");
+        element.style.width = "1px";
+        element.style.height = "5px";
+        this.legendDiv.appendChild(element);
 
         for (var i = 0; i < G.stores.groupsByGroupSet.data.items.length; i++) {
             var element = document.createElement("div");

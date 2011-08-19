@@ -24,7 +24,7 @@
 
 Ext.namespace('mapfish.widgets', 'mapfish.widgets.geostat');
 
-mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
+mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
 
     layer: null,
 
@@ -81,12 +81,16 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     infrastructuralPeriod: false,
     
     featureOptions: {},
+
+    cmp: {},
     
     initComponent: function() {
         
         this.initProperties();
         
         this.createItems();
+        
+        this.addItems();
         
         this.createSelectFeatures();
         
@@ -222,285 +226,196 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     },
     
     createItems: function() {
-        this.items = [
-            {
-                xtype: 'textfield',
-                name: 'boundary',
-                fieldLabel: G.i18n.boundary,
-                emptyText: G.conf.emptytext,
-                labelSeparator: G.conf.labelseparator,
-                width: G.conf.combo_width,
-                style: 'cursor:pointer',
-                node: {attributes: {hasChildrenWithCoordinates: false}},
-                selectedNode: null,
-                treeWindow: null,
-                treePanel: null,
-                listeners: {
-                    'focus': {
-                        scope: this,
-                        fn: function(tf) {
-                            if (tf.treeWindow) {
-                                tf.treeWindow.show();
-                            }
-                            else {
-                                this.createSingletonCmp.treeWindow.call(this);
-                            }
+        
+        this.cmp.groupSet = new Ext.form.ComboBox({
+            fieldLabel: G.i18n.groupset,
+            typeAhead: true,
+            editable: false,
+            valueField: 'id',
+            displayField: 'name',
+            mode: 'remote',
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: G.conf.emptytext,
+            labelSeparator: G.conf.labelseparator,
+            selectOnFocus: true,
+            width: G.conf.combo_width,
+            currentValue: false,
+            store: G.stores.groupSet,
+            listeners: {
+                'select': {
+                    scope: this,
+                    fn: function(cb) {
+                        if (cb.currentValue != cb.getValue() && cb.getRawValue() == 'Type') {
+                            cb.currentValue = cb.getValue();
+                            G.stores.groupsByGroupSet.setBaseParam('id', cb.getValue());
+                            G.stores.groupsByGroupSet.load({scope: this, callback: function() {
+                                this.cmp.group.removeAll();
+                                
+                                for (var i = 0; i < G.stores.groupsByGroupSet.getTotalCount(); i++) {
+                                    var combo = {
+                                        fieldLabel: G.stores.groupsByGroupSet.getAt(i).data.name,
+                                        value: i
+                                    };
+                                    this.cmp.group.add(combo);
+                                    this.cmp.group.doLayout();
+                                }
+                                
+                                this.classify(false, true);
+                            }});
                         }
+                        else if (cb.getRawValue() != 'Type') {
+                            cb.currentValue = cb.getValue();
+                            this.cmp.group.removeAll();
+                            this.cmp.group.doLayout();
+                        }
+                        
+                        this.window.cmp.reset.enable();
                     }
                 }
-            },
-            
-            {
-                xtype: 'textfield',
-                name: 'level',
-                fieldLabel: G.i18n.level,
-                emptyText: G.conf.emptytext,
-                labelSeparator: G.conf.labelseparator,
-                width: G.conf.combo_width,
-                style: 'cursor:pointer',
-                levelComboBox: null,
-                listeners: {
-                    'focus': {
-                        scope: this,
-                        fn: function() {
-                            if (this.form.findField('boundary').treeWindow) {
-                                this.form.findField('boundary').treeWindow.show();
-                            }
-                            else {
-                                this.createSingletonCmp.treeWindow.call(this);
-                            }
-                        }
-                    }
-                }
-            },
-            
-            {
+            }
+        });
+        
+        this.cmp.group = new Ext.Panel({
+            layout: 'form',
+            width: 257,
+            height: 344,
+            bodyStyle: 'padding:8px 0px 8px 18px;overflow-x:hidden;overflow-y:auto;',
+            labelWidth: 170,
+            defaults: {
                 xtype: 'combo',
-                name: 'groupset',
-                fieldLabel: G.i18n.groupset,
-                typeAhead: true,
+                plugins: new Ext.ux.plugins.IconCombo(),
+                valueField: 'name',
+                displayField: 'css',
+                iconClsField: 'css',
                 editable: false,
-                valueField: 'id',
-                displayField: 'name',
-                mode: 'remote',
-                forceSelection: true,
                 triggerAction: 'all',
-                emptyText: G.conf.emptytext,
+                mode: 'local',
+                labelStyle: 'color:#000;',
                 labelSeparator: G.conf.labelseparator,
-                selectOnFocus: true,
-                width: G.conf.combo_width,
-                currentValue: false,
-                store: G.stores.groupSet,
+                width: G.conf.combo_number_width_small,
+                listWidth: G.conf.combo_number_width_small,
+                store: this.stores.icon,
                 listeners: {
                     'select': {
                         scope: this,
-                        fn: function(cb) {
-                            var panel = Ext.getCmp('groups_p');
-                            if (cb.currentValue != cb.getValue() && cb.getRawValue() == 'Type') {
-                                cb.currentValue = cb.getValue();
-                                G.stores.groupsByGroupSet.setBaseParam('id', cb.getValue());
-                                G.stores.groupsByGroupSet.load({scope: this, callback: function() {
-                                    panel.removeAll();
-                                    
-                                    for (var i = 0; i < G.stores.groupsByGroupSet.getTotalCount(); i++) {
-                                        var combo = {
-                                            fieldLabel: G.stores.groupsByGroupSet.getAt(i).data.name,
-                                            value: i
-                                        };
-                                        panel.add(combo);
-                                        panel.doLayout();
-                                    }
-                                    
-                                    this.classify(false, true);
-                                }});
-                            }
-                            else if (cb.getRawValue() != 'Type') {
-                                cb.currentValue = cb.getValue();
-                                panel.removeAll();
-                                panel.doLayout();
-                            }
-                        }
-                    }
-                }
-            },
-            
-            {
-                xtype: 'panel',
-                id: 'groups_p',
-                layout: 'form',
-                bodyStyle: 'margin:0px; padding:8px 0px 8px 5px;',
-                width: '100%',
-                labelWidth: 195,
-                defaults: {
-                    xtype: 'combo',
-                    plugins: new Ext.ux.plugins.IconCombo(),
-                    valueField: 'name',
-                    displayField: 'css',
-                    iconClsField: 'css',
-                    editable: false,
-                    triggerAction: 'all',
-                    mode: 'local',
-                    labelStyle: 'color:#000',
-                    labelSeparator: G.conf.labelseparator,
-                    width: G.conf.combo_number_width_small,
-                    listWidth: G.conf.combo_number_width_small,
-                    store: this.stores.icon,
-                    listeners: {
-                        'select': {
-                            scope: this,
-                            fn: function() {
-                                this.classify(false, true);
-                            }
+                        fn: function() {
+                            this.classify(false, true);
                         }
                     }
                 }
             }
-        ];
+        });
+        
+        this.cmp.level = new Ext.form.ComboBox({
+            fieldLabel: G.i18n.level,
+            editable: false,
+            valueField: 'level',
+            displayField: 'name',
+            mode: 'remote',
+            forceSelection: true,
+            triggerAction: 'all',
+            selectOnFocus: true,
+            fieldLabel: G.i18n.level,
+            width: G.conf.combo_width,
+            store: G.stores.organisationUnitLevel,
+            listeners: {
+                'select': {
+                    scope: this,
+                    fn: function() {
+                        this.formValidation.validateForm.call(this);
+                        
+                        this.window.cmp.reset.enable();
+                    }
+                }
+            }
+        });
+        
+        this.cmp.parent = new Ext.tree.TreePanel({
+            bodyStyle: 'padding-left:2px; background-color:#fff',
+            height: 315,
+            width: 255,
+            autoScroll: true,
+            lines: false,
+            loader: new Ext.tree.TreeLoader({
+                dataUrl: G.conf.path_mapping + 'getOrganisationUnitChildren' + G.conf.type
+            }),
+            root: {
+                id: G.system.rootNode.id,
+                text: G.system.rootNode.name,
+                level: G.system.rootNode.level,
+                hasChildrenWithCoordinates: G.system.rootNode.hasChildrenWithCoordinates,
+                nodeType: 'async',
+                draggable: false,
+                expanded: true
+            },
+            widget: this,
+            isSelected: false,
+            reset: function() {
+                if (this.getSelectionModel().getSelectedNode()) {
+                    this.getSelectionModel().getSelectedNode().unselect();
+                }                
+                this.collapseAll();
+                this.getRootNode().expand();
+                this.isSelected = false;
+                this.widget.window.cmp.apply.disable();
+            },
+            listeners: {
+                'click': {
+                    scope: this,
+                    fn: function(n) {
+                        this.cmp.parent.selectedNode = n;
+                        this.cmp.parent.isSelected = true;
+                        this.formValidation.validateForm.call(this);
+                        
+                        this.window.cmp.reset.enable();
+                    }
+                }
+            }
+        });
     },
     
-    createSingletonCmp: {
-		treeWindow: function() {
-			Ext.Ajax.request({
-				url: G.conf.path_commons + 'getOrganisationUnits' + G.conf.type,
-				params: {level: 1},
-				method: 'POST',
-				scope: this,
-				success: function(r) {
-					var rootNode = Ext.util.JSON.decode(r.responseText).organisationUnits[0];
-                    var rootUnit = {
-						id: rootNode.id,
-						name: rootNode.name,
-                        level: 1,
-						hasChildrenWithCoordinates: rootNode.hasChildrenWithCoordinates
-					};
-					
-					var w = new Ext.Window({
-						title: 'Boundary and level',
-						closeAction: 'hide',
-						autoScroll: true,
-						height: 'auto',
-						autoHeight: true,
-						width: G.conf.window_width,
-						items: [
-							{
-								xtype: 'panel',
-								bodyStyle: 'padding:8px; background-color:#ffffff',
-								items: [
-									{html: '<div class="window-info">' + G.i18n.select_outer_boundary + '</div>'},
-									{
-										xtype: 'treepanel',
-										bodyStyle: 'background-color:#ffffff',
-										height: screen.height / 3,
-										autoScroll: true,
-										lines: false,
-										loader: new Ext.tree.TreeLoader({
-											dataUrl: G.conf.path_mapping + 'getOrganisationUnitChildren' + G.conf.type
-										}),
-										root: {
-											id: rootUnit.id,
-											text: rootUnit.name,
-                                            level: rootUnit.level,
-											hasChildrenWithCoordinates: rootUnit.hasChildrenWithCoordinates,
-											nodeType: 'async',
-											draggable: false,
-											expanded: true
-										},
-										clickedNode: null,
-										listeners: {
-											'click': {
-												scope: this,
-												fn: function(n) {
-													this.form.findField('boundary').selectedNode = n;
-												}
-											},
-                                            'afterrender': {
-                                                scope: this,
-                                                fn: function(tp) {
-                                                    this.form.findField('boundary').treePanel = tp;
-                                                }
-                                            }
-										}
-									}
-								]
-							},
-							{
-								xtype: 'panel',
-								layout: 'form',
-								bodyStyle: 'padding:8px; background-color:#ffffff',
-                                labelWidth: G.conf.label_width,
-								items: [
-									{html: '<div class="window-info">' + G.i18n.select_point_level + '</div>'},
-									{
-										xtype: 'combo',
-										fieldLabel: G.i18n.level,
-										editable: false,
-										valueField: 'level',
-										displayField: 'name',
-										mode: 'remote',
-										forceSelection: true,
-										triggerAction: 'all',
-										selectOnFocus: true,
-										emptyText: G.conf.emptytext,
-										labelSeparator: G.conf.labelseparator,
-                                        fieldLabel: G.i18n.level,
-										width: G.conf.combo_width_fieldset,
-										minListWidth: G.conf.combo_width_fieldset,
-										store: G.stores.organisationUnitLevel,
-										listeners: {
-											'afterrender': {
-												scope: this,
-												fn: function(cb) {
-													this.form.findField('level').levelComboBox = cb;
-												}
-											}
-										}
-									}
-								]
-							}
-						],
-						bbar: [
-							'->',
-							{
-								xtype: 'button',
-								text: G.i18n.apply,
-								iconCls: 'icon-assign',
-								scope: this,
-								handler: function() {
-									var node = this.form.findField('boundary').selectedNode;
-									if (!node || !this.form.findField('level').levelComboBox.getValue()) {
-										return;
-									}
-									if (node.attributes.level > this.form.findField('level').levelComboBox.getValue()) {
-										Ext.message.msg(false, G.i18n.level_is_higher_that_boundary_level);
-										return;
-									}
-
-									if (Ext.getCmp('locatefeature_w')) {
-										Ext.getCmp('locatefeature_w').destroy();
-									}
-									
-                                    this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
-										this.form.findField('level').levelComboBox.getValue(), this.form.findField('level').levelComboBox.getRawValue());
-										
-									this.form.findField('boundary').setValue(node.attributes.text);
-									this.form.findField('level').setValue(this.form.findField('level').levelComboBox.getRawValue());
-									
-									this.form.findField('boundary').treeWindow.hide();									
-									this.loadGeoJson();
-								}
-							}
-						]
-					});
-					
-					var x = Ext.getCmp('center').x + G.conf.window_position_x;
-					var y = Ext.getCmp('center').y + G.conf.window_position_y;
-					w.setPosition(x,y);
-					w.show();
-					this.form.findField('boundary').treeWindow = w;
-				}
-			});
-		}
-	},
+    addItems: function() {    
+        
+        this.items = [
+            {
+                xtype: 'panel',
+                layout: 'column',
+                width: 570,
+                items: [
+                    {
+                        xtype: 'panel',
+                        layout: 'form',
+                        width: 270,
+                        items: [
+                            { html: '<div class="window-info">Symbolizer by group / group set</div>' },                            
+                            this.cmp.groupSet,
+                            { html: '<div class="thematic-br"></div>' },
+                            this.cmp.group
+                        ]
+                    },
+                    {
+                        xtype: 'panel',
+                        width: 270,
+                        bodyStyle: 'padding:0 0 0 8px;',
+                        items: [
+                            { html: '<div class="window-info">' + G.i18n.organisation_unit_level + ' (facility)</div>' },                            
+                            {
+                                xtype: 'panel',
+                                layout: 'form',
+                                items: [
+                                    this.cmp.level
+                                ]
+                            },                            
+                            { html: '<div class="thematic-br"></div><div class="thematic-br"></div>' },                            
+                            { html: '<div class="window-info">Parent organisation unit</div>' },                            
+                            this.cmp.parent
+                        ]
+                    }
+                ]
+            }
+        ];
+    },
     
     createSelectFeatures: function() {
         var scope = this;
@@ -745,41 +660,44 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     
     formValidation: {
         validateForm: function(exception) {
-            if (!this.form.findField('boundary').getValue() || !this.form.findField('level').getValue()) {
+            
+            if (!this.cmp.groupSet.getValue()) {
                 if (exception) {
                     Ext.message.msg(false, G.i18n.form_is_not_complete);
                 }
+                this.window.cmp.apply.disable();
+                return false;
+            }
+
+            if (!this.cmp.parent.selectedNode || !this.cmp.level.getValue()) {
+                if (exception) {
+                    Ext.message.msg(false, G.i18n.form_is_not_complete);
+                }
+                this.window.cmp.apply.disable();
                 return false;
             }
             
-            if (!this.form.findField('groupset').getValue()) {
+            if (this.cmp.parent.selectedNode.attributes.level > this.cmp.level.getValue()) {
                 if (exception) {
-                    Ext.message.msg(false, G.i18n.form_is_not_complete);
+                    Ext.message.msg(false, 'Invalid parent organisation unit');
                 }
+                this.window.cmp.apply.disable();
                 return false;
-            }                
+            }
+            
+            if (this.cmp.parent.isSelected) {
+                this.window.cmp.apply.enable();
+            }
             
             return true;
         }
     },
     
-    formValues: {
+    formValues: { //todo
 		getAllValues: function() {
 			return {
 				featureType: G.conf.map_feature_type_point,
-				mapValueType: this.form.findField('mapvaluetype').getValue(),
-                indicatorGroupId: this.valueType.isIndicator() ? this.form.findField('indicatorgroup').getValue() : null,
-                indicatorId: this.valueType.isIndicator() ? this.form.findField('indicator').getValue() : null,
-				indicatorName: this.valueType.isIndicator() ? this.form.findField('indicator').getRawValue() : null,
-                dataElementGroupId: this.valueType.isDataElement() ? this.form.findField('dataelementgroup').getValue() : null,
-                dataElementId: this.valueType.isDataElement() ? this.form.findField('dataelement').getValue() : null,
-				dataElementName: this.valueType.isDataElement() ? this.form.findField('dataelement').getRawValue() : null,
                 mapDateType: G.system.mapDateType.value,
-                periodTypeId: G.system.mapDateType.isFixed() ? this.form.findField('periodtype').getValue() : null,
-                periodId: G.system.mapDateType.isFixed() ? this.form.findField('period').getValue() : null,
-                periodName: G.system.mapDateType.isFixed() ? this.form.findField('period').getRawValue() : null,
-                startDate: G.system.mapDateType.isStartEnd() ? this.form.findField('startdate').getRawValue() : null,
-                endDate: G.system.mapDateType.isStartEnd() ? this.form.findField('enddate').getRawValue() : null,
 				parentOrganisationUnitId: this.organisationUnitSelection.parent.id,
                 parentOrganisationUnitLevel: this.organisationUnitSelection.parent.level,
                 parentOrganisationUnitName: this.organisationUnitSelection.parent.name,
@@ -800,28 +718,30 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 			};
 		},
         
-        clearForm: function() {
-            var boundary = this.form.findField('boundary');
-            var level = this.form.findField('level');
-            var groupset = this.form.findField('groupset');
-            var panel = Ext.getCmp('groups_p');
-            boundary.reset();
-            level.reset();
-            if (boundary.treePanel && level.levelComboBox) {
-                boundary.treePanel.selectPath(boundary.treePanel.getRootNode().getPath());
-                level.levelComboBox.clearValue();
+        getLegendInfo: function() {
+            return {
+                map: this.organisationUnitSelection.level.name + ' / ' + this.organisationUnitSelection.parent.name
+            };
+        },
+        
+        clearForm: function(clearLayer) {
+            this.cmp.groupSet.clearValue();
+            this.cmp.groupSet.currentValue = null;
+            
+            this.cmp.group.removeAll();
+            this.cmp.group.doLayout();
+            
+            this.cmp.level.clearValue();
+            this.cmp.parent.reset();
+            
+            this.window.cmp.apply.disable();
+            this.window.cmp.reset.disable();
+            
+            if (clearLayer) {            
+                document.getElementById(this.legendDiv).innerHTML = '';                
+                this.layer.destroyFeatures();
+                this.layer.setVisibility(false);
             }
-            
-            groupset.clearValue();
-            groupset.currentValue = null;
-            
-            panel.removeAll();
-            panel.doLayout();
-            
-            document.getElementById(this.legendDiv).innerHTML = '';            
-            
-            this.layer.destroyFeatures();
-            this.layer.setVisibility(false);
         }
 	},
     
@@ -829,6 +749,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         G.vars.mask.msg = G.i18n.loading_geojson;
         G.vars.mask.show();
         G.vars.activeWidget = this;
+        this.updateValues = true;
         
         this.setUrl(G.conf.path_mapping + 'getGeoJson.action?' +
             'parentId=' + this.organisationUnitSelection.parent.id +
@@ -844,6 +765,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             
             for (var i = 0; i < this.layer.features.length; i++) {
                 this.layer.features[i].attributes.labelString = this.layer.features[i].attributes.name;
+                this.layer.features[j].attributes.name = G.util.cutString(this.layer.features[j].attributes.name, 30);
             }
              
             this.applyValues();
@@ -851,11 +773,11 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     },
 
     applyValues: function() {
-		var options = {indicator: this.form.findField('groupset').getRawValue().toLowerCase()};
+		var options = {indicator: this.cmp.groupSet.getRawValue().toLowerCase()};
         
         G.vars.activeWidget = this;
 		this.coreComp.updateOptions(options);
-        this.coreComp.applyClassification(this.form);
+        this.coreComp.applyClassification(this.form, this);
         this.classificationApplied = true;
         
         G.vars.mask.hide();

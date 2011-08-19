@@ -221,7 +221,7 @@ G.util = {
                     OpenLayers.Util.applyDefaults({
                         'fillOpacity': 1,
                         'strokeWidth': 1,
-                        'strokeColor': '#222222',
+                        'strokeColor': '#fff',
                         'label': '${labelString}',
                         'fontFamily': 'arial,lucida sans unicode',
                         'fontSize': fsize ? fsize : 13,
@@ -243,7 +243,7 @@ G.util = {
                 'default': new OpenLayers.Style(
                     OpenLayers.Util.applyDefaults({
                         'fillOpacity': 1,
-                        'strokeColor': '#222222',
+                        'strokeColor': '#fff',
                         'strokeWidth': 1
                     },
                     OpenLayers.Feature.Vector.style['default'])
@@ -312,7 +312,7 @@ G.util = {
         }
         else {
             cb.currentValue = cb.getValue();
-            this.form.findField(mv).clearValue();
+            mv.clearValue();
             return false;
         }
     },
@@ -459,6 +459,13 @@ G.util = {
             }
         }
         return true;
+    },
+    
+    cutString: function(str, len) {
+        if (str.length > len) {
+            str = str.substr(0,len) + '..';
+        }
+        return str;
     }
 };
 
@@ -541,7 +548,9 @@ G.system = {
         }
     },
     
-    infrastructuralPeriodType: null
+    infrastructuralPeriodType: null,
+    
+    rootNode: null
 };
 
 G.func = {
@@ -556,5 +565,369 @@ G.func = {
     
     loadEnd: function() {
         G.vars.mask.hide();
+    }
+};
+
+G.cls = {
+    vectorLayerButton: function(iconCls, tooltip, widget) {        
+        return new Ext.Button({
+            iconCls: iconCls,
+            tooltip: tooltip,
+            style: 'margin-top:1px',
+            widget: widget,
+            enableItems: function(bool) {
+                var menuItems = [2,3,5,6,7,9];
+                for (var i = 0; i < menuItems.length; i++) {
+                    if (bool) {
+                        this.menu.items.items[menuItems[i]].enable();
+                    }
+                    else {
+                        this.menu.items.items[menuItems[i]].disable();
+                    }
+                }
+            },
+            handler: function() {
+                this.enableItems(this.widget.layer.features ? this.widget.layer.features.length : false);
+            },
+            listeners: {
+                'afterrender': function(b) {
+                    this.menu = new Ext.menu.Menu({
+                        parent: b,
+                        items: [
+                            {
+                                text: 'Edit layer..',
+                                iconCls: 'menu-layeroptions-edit',
+                                scope: this,
+                                handler: function() {
+                                    this.widget.window.show();
+                                }
+                            },
+                            '-',
+                            {
+                                text: 'Refresh',
+                                iconCls: 'menu-layeroptions-refresh',
+                                scope: this,
+                                handler: function() {
+                                    this.widget.updateValues = true;
+                                    this.widget.classify();
+                                }
+                            },
+                            {
+                                text: 'Clear',
+                                iconCls: 'menu-layeroptions-clear',
+                                scope: this,
+                                handler: function() {
+                                    this.widget.formValues.clearForm.call(this.widget, true);
+                                }
+                            },
+                            '-',
+                            {
+                                text: 'Filter..',
+                                iconCls: 'menu-layeroptions-filter',
+                                scope: this,
+                                handler: function() {
+                                    this.widget.window.show();
+                                }
+                            },
+                            {
+                                text: 'Search..',
+                                iconCls: 'menu-layeroptions-locate',
+                                cmp: {
+                                    highlightColor: new Ext.ux.ColorField({
+                                        emptyText: G.conf.emptytext,
+                                        labelSeparator: G.conf.labelseparator,
+                                        fieldLabel: G.i18n.highlight_color,
+                                        allowBlank: false,
+                                        width: G.conf.combo_width_fieldset,
+                                        value: "#0000FF"
+                                    }),
+                                    window: null
+                                },
+                                showSearchWindow: function() {
+                                    var layer = this.parentMenu.parent.widget.layer;
+
+                                    var data = [];
+                                    for (var i = 0; i < layer.features.length; i++) {
+                                        data.push([layer.features[i].data.id || i, layer.features[i].data.name]);
+                                    }
+                                    
+                                    if (data.length) {
+                                        var featureStore = new Ext.data.ArrayStore({
+                                            mode: 'local',
+                                            idProperty: 'id',
+                                            fields: ['id','name'],
+                                            sortInfo: {field: 'name', direction: 'ASC'},
+                                            autoDestroy: true,
+                                            data: data
+                                        });
+                                        
+                                        if (this.cmp.window) {
+                                            this.cmp.window.destroy();
+                                        }  
+                                        
+                                        this.cmp.window = new Ext.Window({
+                                            title: '<span id="window-locate-title">Organisation unit search</span>',
+                                            layout: 'fit',
+                                            width: G.conf.window_width,
+                                            height: G.util.getMultiSelectHeight() + 140,
+                                            items: [
+                                                {
+                                                    xtype: 'form',
+                                                    bodyStyle:'padding:8px',
+                                                    labelWidth: G.conf.label_width,
+                                                    items: [
+                                                        { html: '<div class="window-info">Locate organisation units on the map</div>' },
+                                                        this.cmp.highlightColor,
+                                                        {
+                                                            xtype: 'textfield',
+                                                            emptyText: G.conf.emptytext,
+                                                            labelSeparator: G.conf.labelseparator,
+                                                            fieldLabel: G.i18n.text_filter,
+                                                            width: G.conf.combo_width_fieldset,
+                                                            enableKeyEvents: true,
+                                                            listeners: {
+                                                                'keyup': function(tf) {
+                                                                    featureStore.filter('name', tf.getValue(), true, false);
+                                                                }
+                                                            }
+                                                        },                                                    
+                                                        { html: '<div class="window-p"></div>' },
+                                                        {
+                                                            xtype: 'grid',
+                                                            height: G.util.getMultiSelectHeight(),
+                                                            cm: new Ext.grid.ColumnModel({
+                                                                columns: [{id: 'name', header: 'Features', dataIndex: 'name', width: 250}]
+                                                            }),
+                                                            sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+                                                            viewConfig: {forceFit: true},
+                                                            sortable: true,
+                                                            autoExpandColumn: 'name',
+                                                            store: featureStore,
+                                                            listeners: {
+                                                                'cellclick': {
+                                                                    scope: this,
+                                                                    fn: function(g, ri, ci, e) {
+                                                                        layer.redraw();
+                                                                        
+                                                                        var id, feature;
+                                                                        id = g.getStore().getAt(ri).data.id;
+                                                                        
+                                                                        for (var i = 0; i < layer.features.length; i++) {
+                                                                            if (layer.features[i].data.id == id) {
+                                                                                feature = layer.features[i];
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        
+                                                                        var color = this.cmp.highlightColor.getValue();
+                                                                        var symbolizer;
+                                                                        
+                                                                        if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_multipolygon_class_name ||
+                                                                            feature.geometry.CLASS_NAME == G.conf.map_feature_type_polygon_class_name) {
+                                                                            symbolizer = new OpenLayers.Symbolizer.Polygon({
+                                                                                'strokeColor': color,
+                                                                                'fillColor': color
+                                                                            });
+                                                                        }
+                                                                        else if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_point_class_name) {
+                                                                            symbolizer = new OpenLayers.Symbolizer.Point({
+                                                                                'pointRadius': 7,
+                                                                                'fillColor': color
+                                                                            });
+                                                                        }
+                                                                        
+                                                                        layer.drawFeature(feature,symbolizer);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            listeners: {
+                                                'hide': function() {
+                                                    layer.redraw();
+                                                }
+                                            }
+                                        });
+                                        this.cmp.window.setPagePosition(Ext.getCmp('east').x - (this.cmp.window.width + 15), Ext.getCmp('center').y + 41);
+                                        this.cmp.window.show();
+                                    }
+                                    else {
+                                        Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                                    }
+                                },
+                                handler: function() {
+                                    this.showSearchWindow();
+                                }
+                            },
+                            {
+                                name: 'labels',
+                                text: 'Labels..',
+                                iconCls: 'menu-layeroptions-labels',
+                                cmp: {
+                                    fontSize: new Ext.form.NumberField({
+                                        name: 'fontsize',
+                                        fieldLabel: G.i18n.font_size,
+                                        labelSeparator: G.conf.labelseparator,
+                                        width: G.conf.combo_number_width_small,
+                                        enableKeyEvents: true,
+                                        allowDecimals: false,
+                                        allowNegative: false,
+                                        value: 13,
+                                        emptyText: 13,
+                                        listeners: {
+                                            'keyup': {
+                                                scope: this,
+                                                fn: function(nf) {  
+                                                    var item = this.menu.find('name','labels')[0];
+                                                                                                    
+                                                    if (this.widget.labels) {
+                                                        this.widget.labels = false;
+                                                        G.util.labels.toggleFeatureLabels(this.widget, nf.getValue(), item.cmp.strong.getValue(),
+                                                            item.cmp.italic.getValue(), item.cmp.color.getValue());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }),
+                                    strong: new Ext.form.Checkbox({
+                                        fieldLabel: '<b>' + G.i18n.bold_ + '</b>',
+                                        labelSeparator: G.conf.labelseparator,
+                                        listeners: {
+                                            'check': {
+                                                scope: this,
+                                                fn: function(chb, checked) {
+                                                    var item = this.menu.find('name','labels')[0];
+                                                    
+                                                    if (this.widget.labels) {
+                                                        this.widget.labels = false;
+                                                        G.util.labels.toggleFeatureLabels(this.widget, item.cmp.fontSize.getValue(),
+                                                            checked, item.cmp.italic.getValue(), item.cmp.color.getValue());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }),
+                                    italic: new Ext.form.Checkbox({
+                                        fieldLabel: '<i>' + G.i18n.italic + '</i>',
+                                        labelSeparator: G.conf.labelseparator,
+                                        listeners: {
+                                            'check': {
+                                                scope: this,
+                                                fn: function(chb, checked) {
+                                                    var item = this.menu.find('name','labels')[0];
+                                                    
+                                                    if (this.widget.labels) {
+                                                        this.widget.labels = false;
+                                                        G.util.labels.toggleFeatureLabels(this.widget, item.cmp.fontSize.getValue(),
+                                                            item.cmp.strong.getValue(), checked, item.cmp.color.getValue());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }),
+                                    color: new Ext.ux.ColorField({
+                                        fieldLabel: G.i18n.color,
+                                        labelSeparator: G.conf.labelseparator,
+                                        allowBlank: false,
+                                        width: G.conf.combo_width_fieldset,
+                                        value: "#000000",
+                                        listeners: {
+                                            'select': {
+                                                scope: this,
+                                                fn: function(cf) {
+                                                    var item = this.menu.find('name','labels')[0];
+                                                    
+                                                    if (this.widget.labels) {
+                                                        this.widget.labels = false;
+                                                        G.util.labels.toggleFeatureLabels(this.widget, item.cmp.fontSize.getValue(),
+                                                            item.cmp.strong.getValue(), item.cmp.italic.getValue(), cf.getValue());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    })
+                                },
+                                showLabelWindow: function() {
+                                    var layer = this.parentMenu.parent.widget.layer;
+                                    if (layer.features.length) {
+                                        if (this.cmp.labelWindow) {
+                                            this.cmp.labelWindow.show();
+                                        }
+                                        else {
+                                            this.cmp.labelWindow = new Ext.Window({
+                                                title: '<span id="window-labels-title">Labels</span>',
+                                                layout: 'fit',
+                                                closeAction: 'hide',
+                                                width: G.conf.window_width,
+                                                height: 200,
+                                                items: [
+                                                    {
+                                                        xtype: 'form',
+                                                        bodyStyle: 'padding:8px',
+                                                        labelWidth: G.conf.label_width,
+                                                        items: [
+                                                            {html: '<div class="window-info">Show/hide feature labels</div>'},
+                                                            this.cmp.fontSize,
+                                                            this.cmp.strong,
+                                                            this.cmp.italic,
+                                                            this.cmp.color
+                                                        ]
+                                                    }
+                                                ],
+                                                bbar: [
+                                                    '->',
+                                                    {
+                                                        xtype: 'button',
+                                                        iconCls: 'icon-assign',
+                                                        hideLabel: true,
+                                                        text: G.i18n.toggle,
+                                                        scope: this,
+                                                        handler: function() {
+                                                            if (layer.features.length) {
+                                                                G.util.labels.toggleFeatureLabels(layer.widget, this.cmp.fontSize.getValue(),
+                                                                    this.cmp.strong.getValue(), this.cmp.italic.getValue(), this.cmp.color.getValue());
+                                                            }
+                                                            else {
+                                                                Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            });
+                                            this.cmp.labelWindow.setPagePosition(Ext.getCmp('east').x - (this.cmp.labelWindow.width + 15), Ext.getCmp('center').y + 41);                        
+                                            this.cmp.labelWindow.show();
+                                        }
+                                    }
+                                    else {
+                                        Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                                    }
+                                },
+                                handler: function() {
+                                    this.showLabelWindow();
+                                }
+                            },
+                            '-',
+                            {
+                                text: 'Opacity',
+                                iconCls: 'menu-layeroptions-opacity',
+                                menu: { 
+                                    items: G.conf.opacityItems,
+                                    listeners: {
+                                        'itemclick': {
+                                            scope: this,
+                                            fn: function(item) {
+                                                this.widget.layer.setOpacity(item.text);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                }
+            }
+        });
     }
 };
