@@ -51,13 +51,13 @@ var COLOR_WHITE = '#ffffff';
  * Page init. The order of events is:
  * 
  * 1. Load ouwt
- * 2. Load meta-data
- * 3. Upload potential locally stored data values to server
- * 4. Check and potentially download updated forms from server 
+ * 2. Load meta-data (and notify ouwt)
+ * 3. Check and potentially download updated forms from server 
  */
 $( document ).ready( function()
 {
     selection.setListenerFunction( organisationUnitSelected );
+    $( '#loaderSpan' ).show();
 
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function() {
     	console.log( 'Ouwt loaded' );    	
@@ -120,7 +120,10 @@ function loadMetaData()
 		dataSetAssociationSets = json.metaData.dataSetAssociationSets;
 		organisationUnitAssociationSetMap = json.metaData.organisationUnitAssociationSetMap;
 		
-		console.log( 'Meta-data loaded' );		
+		selection.responseReceived(); // Notify that meta data is loaded
+		$( '#loaderSpan' ).hide();
+		console.log( 'Meta-data loaded' );	
+		
 	    updateForms();
 	} );
 }
@@ -358,46 +361,47 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
     currentOrganisationUnitId = orgUnits[0];
     var organisationUnitName = orgUnitNames[0];
 
-    $( '#selectedDataSetId' ).removeAttr( 'disabled' );
-
-    var dataSetId = $( '#selectedDataSetId' ).val();
-    var periodId = $( '#selectedPeriodId' ).val();
-
     $( '#selectedOrganisationUnit' ).val( organisationUnitName );
     $( '#currentOrganisationUnit' ).html( organisationUnitName );
 
-    clearListById( 'selectedDataSetId' );
-
-    addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
-
     var dataSetList = getSortedDataSetList();
 
-    var dataSetValid = false;
-
-    for ( i in dataSetList )
-    {
-        addOptionById( 'selectedDataSetId', dataSetList[i].id, dataSetList[i].name );
-
-        if ( dataSetId == dataSetList[i].id )
-        {
-            dataSetValid = true;
-        }
-    }
-
-    if ( dataSetValid && dataSetId != null )
-    {
-        $( '#selectedDataSetId' ).val( dataSetId );
-
-        if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
-        {
-            showLoader();
-            loadDataValues();
-        }
-    }
-    else
-    {
-        clearPeriod();
-    }
+	if ( dataSetList.length )
+	{
+	    $( '#selectedDataSetId' ).removeAttr( 'disabled' );	
+	    clearListById( 'selectedDataSetId' );	
+	    addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
+	
+	    var dataSetId = $( '#selectedDataSetId' ).val();
+	    var periodId = $( '#selectedPeriodId' ).val();
+	
+	    var dataSetValid = false;
+	
+	    for ( i in dataSetList )
+	    {
+	        addOptionById( 'selectedDataSetId', dataSetList[i].id, dataSetList[i].name );
+	
+	        if ( dataSetId == dataSetList[i].id )
+	        {
+	            dataSetValid = true;
+	        }
+	    }
+	
+	    if ( dataSetValid && dataSetId != null )
+	    {
+	        $( '#selectedDataSetId' ).val( dataSetId );
+	
+	        if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
+	        {
+	            showLoader();
+	            loadDataValues();
+	        }
+	    }
+	    else
+	    {
+	        clearPeriod();
+	    }
+	}
 }
 
 // -----------------------------------------------------------------------------
