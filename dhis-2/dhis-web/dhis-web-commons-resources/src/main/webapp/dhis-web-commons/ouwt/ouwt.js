@@ -89,11 +89,16 @@ function Selection()
             "versionOnly" : true
         }, function( data, textStatus, jqXHR )
         {
-            if ( version != data.version )
+            if ( data.indexOf( "<!DOCTYPE" ) != 0 )
             {
-                should_update = true;
+                data = JSON.parse( data );
+
+                if ( version != data.version )
+                {
+                    should_update = true;
+                }
             }
-        } ).complete(
+        }, "text" ).complete(
                 function()
                 {
                     if ( should_update )
