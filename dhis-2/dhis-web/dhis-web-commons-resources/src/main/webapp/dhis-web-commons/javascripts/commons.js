@@ -265,13 +265,23 @@ function hasElements( listId )
 }
 
 /**
+ * Returns true if the given value not equals null or "null" string, false if not.
+ * 
+ * @param value the given value.
+ */
+function isNotNull( value )
+{
+    return ( value != null && trim(value) != "null" );
+}
+
+/**
  * Returns true if the element with the given identifier exists, false if not.
  * 
  * @param elementId the identifier of the element.
  */
-function isNotNull( elementId )
+function isNotEmpty( elementId )
 {
-    return  jQuery("#" + elementId).length  == 1;
+    return jQuery("#" + elementId).length == 1;
 }
 
 /**

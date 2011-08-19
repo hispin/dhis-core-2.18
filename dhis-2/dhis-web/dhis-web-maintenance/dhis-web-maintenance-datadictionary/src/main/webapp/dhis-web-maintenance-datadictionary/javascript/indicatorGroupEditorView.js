@@ -72,15 +72,15 @@ function loadAvailableGroups()
 
 function getIndicatorsByGroup()
 {
-
     loadAvailableIndicators();
 
+	var id = jQuery( '#view_1 #indicatorGroups' ).val();
     var filter_1 = jQuery( '#view_1 #selectedIndicatorsFilter' ).val();
     var list_1 = jQuery( "#view_1 #selectedIndicators" );
     list_1.empty();
 
     jQuery.postJSON( "../dhis-web-commons-ajax-json/getIndicators.action", {
-        id : jQuery( '#view_1 #indicatorGroups' ).val()
+        id : ( isNotNull( id ) ? id : -1 )
     }, function( json )
     {
         jQuery.each( json.indicators, function( i, item )
@@ -153,7 +153,6 @@ function showUpdateGroup()
         text : i18n_save,
         click : function()
         {
-
             jQuery.postJSON( "validateIndicatorGroup.action", {
                 id : id,
                 name : function()
@@ -247,10 +246,9 @@ function getAssignedIndicatorGroups()
     list_2.empty();
 
     jQuery.postJSON( "getAssignedIndicatorGroups.action", {
-        indicatorId : id
+        indicatorId : ( isNotNull( id ) ? id : -1 )
     }, function( json )
     {
-
         var availabelGroups_2 = jQuery( "#view_2 #availableGroups" );
         availabelGroups_2.empty();
         for ( var index in indicatorGroups )
@@ -270,9 +268,7 @@ function getAssignedIndicatorGroups()
                     jQuery( it ).remove();
                 }
             } );
-
         } );
-
     } );
 }
 

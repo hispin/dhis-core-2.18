@@ -1,7 +1,7 @@
 package org.hisp.dhis.dd.action.dataelementgroup;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,23 +67,29 @@ public class GetAssignedGroupsByDataElementAction
         this.dataElementId = dataElementId;
     }
 
-    private List<DataElementGroup> dataElementGroups;
+    private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
 
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+        if ( dataElementId != null )
+        {
+            DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService
-            .getGroupsContainingDataElement( dataElement ) );        
-      
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+            dataElementGroups = new ArrayList<DataElementGroup>( dataElementService
+                .getGroupsContainingDataElement( dataElement ) );
+
+            Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        }
 
         return SUCCESS;
     }

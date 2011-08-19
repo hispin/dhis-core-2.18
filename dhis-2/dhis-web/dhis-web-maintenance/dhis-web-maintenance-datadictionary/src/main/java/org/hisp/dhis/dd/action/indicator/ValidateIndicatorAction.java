@@ -110,7 +110,6 @@ public class ValidateIndicatorAction
     {
         if ( name != null )
         {
-
             Indicator match = indicatorService.getIndicatorByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )

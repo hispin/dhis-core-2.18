@@ -1,7 +1,7 @@
 package org.hisp.dhis.dd.action.indicatorgroup;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,6 @@ import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
-
 /**
  * @author Tran Thanh Tri
  * @version $Id: $
@@ -69,22 +68,28 @@ public class GetAssignedIndicatorGroupsAction
         this.indicatorId = indicatorId;
     }
 
-    private List<IndicatorGroup> indicatorGroups;
+    private List<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
 
     public List<IndicatorGroup> getIndicatorGroups()
     {
         return indicatorGroups;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
-        Indicator indicator = indicatorService.getIndicator( indicatorId );
+        if ( indicatorId != null )
+        {
+            Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getGroupsContainingIndicator( indicator ) );
+            indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getGroupsContainingIndicator( indicator ) );
 
-        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+            Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+        }
 
         return SUCCESS;
     }

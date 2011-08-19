@@ -37,12 +37,12 @@ function selectTableForm()
 {
     selectAllById( "selectedDataElements" );
 
-    if ( isNotNull( "selectedIndicators" ) )
+    if ( isNotEmpty( "selectedIndicators" ) )
     {
         selectAllById( "selectedIndicators" );
     }
 
-    if ( isNotNull( "selectedDataSets" ) )
+    if ( isNotEmpty( "selectedDataSets" ) )
     {
         selectAllById( "selectedDataSets" );
     }
