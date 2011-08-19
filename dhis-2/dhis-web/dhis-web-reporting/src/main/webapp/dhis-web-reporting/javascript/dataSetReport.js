@@ -23,27 +23,60 @@ function getPeriods( periodTypeList, availableList, selectedList, timespan )
 
 function validateDataSetReport()
 {
-    if ( !getListValue( "dataSetId" ) )
+    if ( !$( "#dataSetId" ).val() )
     {
-        setMessage( i18n_select_data_set );
+        setHeaderMessage( i18n_select_data_set );
         return false;
     }
-    if ( !getListValue( "periodId" ) )
+    if ( !$( "#periodId" ).val() )
     {
-        setMessage( i18n_select_period );
+        setHeaderMessage( i18n_select_period );
         return false;
     }
-    if ( selectedOrganisationUnitIds == null || selectedOrganisationUnitIds.length == 0 )
+    if ( !selectedOrganisationUnitIds || !selectedOrganisationUnitIds.length )
     {
-        setMessage( i18n_select_organisation_unit );
+        setHeaderMessage( i18n_select_organisation_unit );
         return false;
     }
-
-    document.getElementById( "reportForm" ).submit();
+    
+    hideHeaderMessage();
+    hideCriteria();
+	$( "#content" ).hide();
+	hideContent();
+	showLoader();
+	
+    var dataSetId = $( "#dataSetId" ).val();
+    var periodId = $( "#periodId" ).val();
+    
+    $( '#content' ).load( 'generateDataSetReport.action', { dataSetId: dataSetId, periodId: periodId }, function() {
+    	hideLoader();
+    	showContent();
+    	pageInit();
+    } );
 }
 
 function exportDataSetReport( type )
 {
     var url = "generateDataSetReport.action?useLast=true&dataSetId=" + $( "#dataSetId" ).val() + "&type=" + type;
     window.location.href = url;
+}
+
+function showCriteria()
+{
+	$( "#criteria" ).show( "fast" );
+}
+
+function hideCriteria()
+{
+	$( "#criteria" ).hide( "fast" );
+}
+
+function showContent()
+{
+	$( "#content" ).show( "fast" );
+}
+
+function hideContent()
+{
+	$( "#content" ).hide( "fast" );
 }
