@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.4-SNAPSHOT Version 12
+# 2.4-SNAPSHOT Version 13
 NETWORK:
 *
 CACHE:
@@ -27,6 +27,7 @@ javascripts/dhis2/dhis2.array.js
 javascripts/dhis2/dhis2.select.js
 javascripts/dhis2/dhis2.comparator.js
 javascripts/dhis2/dhis2.availability.js
+javascripts/jQuery/jquery.cookie.js
 ../main.js
 ouwt/ouwt.js 
 fonts/LiberationSans-Regular-webfont.eot
