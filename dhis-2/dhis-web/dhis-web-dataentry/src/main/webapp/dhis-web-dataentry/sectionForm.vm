@@ -65,7 +65,7 @@
       <option value="false">$i18n.getString( "no" )</option>
     </select></td>
     #else
-    <td><input name="ef" id="$dataEntryId" type="text" tabindex="$tabIndex"#if( $greyedField || !$hasAccess ) class="grey" disabled="disabled"#end></td>
+    <td><input name="ef" id="$dataEntryId" type="text" tabindex="$tabIndex"#if( $greyedField || !$hasAccess ) disabled="disabled"#end></td>
     #end
     </td>
     #set( $tabIndex = $tabIndex + 1 )

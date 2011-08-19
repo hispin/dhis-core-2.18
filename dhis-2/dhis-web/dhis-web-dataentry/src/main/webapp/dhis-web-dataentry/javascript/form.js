@@ -46,6 +46,7 @@ var COLOR_YELLOW = '#fffe8c';
 var COLOR_RED = '#ff8a8a';
 var COLOR_ORANGE = '#ff6600';
 var COLOR_WHITE = '#ffffff';
+var COLOR_GREY = '#cccccc';
 
 /**
  * Page init. The order of events is:
@@ -539,7 +540,7 @@ function insertDataValues()
     var periodId = $( '#selectedPeriodId' ).val();
     var dataSetId = $( '#selectedDataSetId' ).val();
 
-    // Clear existing values and colors
+    // Clear existing values and colors, grey disabled fields
 
     $( '[name="ef"]' ).val( '' );
     $( '[name="es"]' ).val( '' );
@@ -549,6 +550,8 @@ function insertDataValues()
 
     $( '[name="min"]' ).html( '' );
     $( '[name="max"]' ).html( '' );
+    
+    $( '[name="ef"]' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
 
     $.getJSON( 'getDataValues.action', {
             periodId : periodId,
