@@ -15,16 +15,16 @@ var selectedOrganisationUnit = new Array();
 
 function SelectionTreeSelection()
 {
-    var onSelectFunction;
-    
-    var listenerFunction;
-    
+    var onSelectFunction = undefined;
+
+    var listenerFunction = undefined;
+
     var multipleSelectionAllowed = true;
 
     this.setOnSelectFunction = function( onSelectFunction_ )
     {
         onSelectFunction = onSelectFunction_;
-    }
+    };
 
     this.setListenerFunction = function( listenerFunction_ )
     {
@@ -39,7 +39,7 @@ function SelectionTreeSelection()
 	this.getSelected = function()
 	{
 		return selectedOrganisationUnit;
-	}
+	};
 
     this.select = function( unitId )
     {
@@ -197,9 +197,8 @@ function SelectionTree()
 
     function treeReceived( rootElement )
     {
-		var rootsElement = $(rootElement).find( 'roots' ).first();
         var unitElements = $(rootElement).find( 'unit' );
-        
+
         var treeTag = document.getElementById( 'selectionTree' );
         var rootsTag = document.createElement( 'ul' );
 

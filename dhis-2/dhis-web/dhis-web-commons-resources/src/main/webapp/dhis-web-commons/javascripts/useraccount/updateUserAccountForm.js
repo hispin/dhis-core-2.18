@@ -6,7 +6,7 @@ jQuery( document ).ready( function()
 	rules["rawPassword"].required = false;
 	rules["oldPassword"] = {
 			required: true
-	}
+	};
 
 	validation2( 'updateUserinforForm', updateUser, {
 		'rules' : rules
