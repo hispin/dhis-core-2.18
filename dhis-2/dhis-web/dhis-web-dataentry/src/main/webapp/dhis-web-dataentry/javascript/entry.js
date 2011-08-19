@@ -198,7 +198,7 @@ function saveBoolean( dataElementId, optionComboId )
  */
 function alertField( fieldId, alertMessage )
 {
-    $( fieldId ).css( fieldId, COLOR_YELLOW );
+    $( fieldId ).css( 'background-color', COLOR_YELLOW );
     $( fieldId ).select();
     $( fieldId ).focus();    
     window.alert( alertMessage );

@@ -509,6 +509,8 @@ function hideMessage()
  */
 function setHeaderMessage( message )
 {
+	window.clearTimeout( headerMessageTimeout );
+	
     $( 'div#headerMessage' ).html( message );
     
     if ( isHeaderMessageHidden() )
@@ -525,6 +527,8 @@ function setHeaderMessage( message )
  */
 function setHeaderWaitMessage( message )
 {
+	window.clearTimeout( headerMessageTimeout );
+	
 	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;" + _loading_bar_html );
 	
 	if ( isHeaderMessageHidden() )
@@ -540,7 +544,7 @@ function setHeaderDelayMessage( message )
 {
 	setHeaderMessage( message );
 	
-	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
+	window.clearTimeout( headerMessageTimeout );
 	
 	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 8000 );
 }
@@ -552,7 +556,7 @@ function setHeaderWaitDelayMessage( message )
 {
 	setHeaderWaitMessage( message );
 	
-	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
+	window.clearTimeout( headerMessageTimeout );
 	
 	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 8000 );
 }
