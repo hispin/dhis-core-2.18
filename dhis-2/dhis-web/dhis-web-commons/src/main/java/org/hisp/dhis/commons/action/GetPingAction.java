@@ -28,7 +28,6 @@ package org.hisp.dhis.commons.action;
  */
 
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,16 +65,7 @@ public class GetPingAction
 
     public String execute()
     {
-        User user = currentUserService.getCurrentUser();
-
-        if ( user == null )
-        {
-            loggedIn = false;
-        }
-        else
-        {
-            loggedIn = true;
-        }
+        loggedIn = !(currentUserService.getCurrentUser() == null);
 
         return SUCCESS;
     }
