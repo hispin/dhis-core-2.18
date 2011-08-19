@@ -27,9 +27,9 @@
 
 dhis2.util.namespace( 'dhis2.availability' );
 
-dhis2.availability._isAvailable = undefined;
+dhis2.availability._isAvailable = -1;
 dhis2.availability._isLoggedIn = -1;
-dhis2.availability._availableTimeoutHandler = undefined;
+dhis2.availability._availableTimeoutHandler = -1;
 
 /**
  * Start availability check, will trigger dhis2.online / dhis2.offline events

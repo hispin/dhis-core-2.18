@@ -68,9 +68,9 @@ $( document ).ready( function()
         if ( loggedIn ) {
             if ( storageManager.hasLocalData() ) {
                 var message = i18n_need_to_sync_notification + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
-                
+
                 setHeaderMessage( message );
-                
+
                 $( '#sync_button' ).bind( 'click', uploadLocalData );
             }
             else
