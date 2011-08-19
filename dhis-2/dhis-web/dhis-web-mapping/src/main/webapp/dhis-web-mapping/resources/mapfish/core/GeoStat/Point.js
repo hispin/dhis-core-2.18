@@ -62,7 +62,7 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
     
     createColorInterpolation: function() {
         var numColors = this.classification.bins.length;
-		var mapLegendType = this.widget.form.findField('maplegendtype').getValue();
+		var mapLegendType = this.widget.cmp.mapLegendType.getValue();
         this.widget.imageLegend = [];
         
         this.colorInterpolation = mapLegendType == G.conf.map_legendset_type_automatic ?
@@ -136,8 +136,27 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
         if (!this.legendDiv) {
             return;
         }
-
+        
+        var info = this.widget.formValues.getLegendInfo.call(this.widget);
+        var element;
         this.legendDiv.update("");
+        
+        for (var p in info) {
+            element = document.createElement("div");
+            element.style.height = "14px";
+            element.innerHTML = info[p];
+            this.legendDiv.appendChild(element);
+            
+            element = document.createElement("div");
+            element.style.clear = "left";
+            this.legendDiv.appendChild(element);
+        }
+        
+        element = document.createElement("div");
+        element.style.width = "1px";
+        element.style.height = "5px";
+        this.legendDiv.appendChild(element);
+        
         for (var i = 0; i < this.classification.bins.length; i++) {
             var element = document.createElement("div");
             element.style.backgroundColor = this.colorInterpolation[i].toHexString();

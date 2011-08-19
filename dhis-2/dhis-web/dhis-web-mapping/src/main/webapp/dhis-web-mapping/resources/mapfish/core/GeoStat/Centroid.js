@@ -125,8 +125,27 @@ mapfish.GeoStat.Centroid = OpenLayers.Class(mapfish.GeoStat, {
         if (!this.legendDiv) {
             return;
         }
-
+        
+        var info = this.widget.formValues.getLegendInfo.call(this.widget);
+        var element;
         this.legendDiv.update("");
+        
+        for (var p in info) {
+            element = document.createElement("div");
+            element.style.height = "14px";
+            element.innerHTML = info[p];
+            this.legendDiv.appendChild(element);
+            
+            element = document.createElement("div");
+            element.style.clear = "left";
+            this.legendDiv.appendChild(element);
+        }
+        
+        element = document.createElement("div");
+        element.style.width = "1px";
+        element.style.height = "5px";
+        this.legendDiv.appendChild(element);
+        
         for (var i = 0; i < this.classification.bins.length; i++) {
             var element = document.createElement("div");
             element.style.backgroundImage = 'url(../resources/ext-ux/iconcombo/' + this.symbolizerInterpolation[i] + '.png)';
