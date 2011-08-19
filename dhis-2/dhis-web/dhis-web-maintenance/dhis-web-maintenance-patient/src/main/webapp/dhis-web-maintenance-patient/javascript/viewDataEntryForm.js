@@ -68,7 +68,7 @@ function deleteDataEntryForm( associationId )
 {
 	if( window.confirm( i18n_delete_confirm ) )
 	{
-		window.location = 'delDataEntryForm.action?associationId=' + associationId;
+		window.location.href = 'delDataEntryForm.action?associationId=' + associationId;
 	}
 }
 
@@ -152,7 +152,7 @@ function filterDataElements( filter, container, list )
 		var toMatch = item.text().toString().toLowerCase();		
         if( toMatch.indexOf(filterLower) != -1 ){
 			dataElementList.append( "<option value='" + item.attr('value') + "'>" + item.text() + "</option>" );
-		}
+		};
 	});	
 }
 
@@ -195,8 +195,8 @@ function insertDataElement( source, associationId )
 			var displayName = dataElementName;
 			id = associationId + "-" + dataElementId + "-val"; 
 			htmlCode = "<input name=\"entryselect\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
-		}		
-	} 
+		}
+	}
 	else if ( dataElementType == "bool" )
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";

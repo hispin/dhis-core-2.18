@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
 	validation2('addSectionForm', function(form) {
-		form.submit()
+		form.submit();
 	}, {
 		'beforeValidateHandler' : function() {
 			selectAllById('selectedList');

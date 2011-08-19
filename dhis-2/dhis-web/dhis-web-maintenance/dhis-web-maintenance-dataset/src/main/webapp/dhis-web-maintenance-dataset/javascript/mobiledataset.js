@@ -1,3 +1,4 @@
-function orgunitselected(){
-	window.location.reload(true)
+function orgunitselected()
+{
+    window.location.reload( true );
 }

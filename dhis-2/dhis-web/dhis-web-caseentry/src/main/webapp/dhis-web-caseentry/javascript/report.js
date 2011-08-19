@@ -91,7 +91,7 @@ function viewRecords( programStageInstanceId )
 {
 	var url = 'viewRecords.action?id=' + programStageInstanceId;
 	
-	var width = 800
+	var width = 800;
     var height = 500;
     var left = parseInt( ( screen.availWidth/2 ) - ( width/2 ) );
     var top = parseInt( ( screen.availHeight/2 ) - ( height/2 ) );

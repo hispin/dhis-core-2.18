@@ -91,7 +91,7 @@ function newParentOrganisationUnitReceived( unitElement )
 
 function newParentOrganisationUnitConfirmed()
 {
-    var toMoveId = document.getElementById( 'organisationUnitToMoveId' ).value
+    var toMoveId = document.getElementById( 'organisationUnitToMoveId' ).value;
     var newParentId = document.getElementById( 'newParentOrganisationUnitId' ).value;
 
     var request = new Request();

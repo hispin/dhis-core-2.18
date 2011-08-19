@@ -1,7 +1,7 @@
 
 function getStageByProgram( programId )
 {
-	window.location = "programStage.action?id=" + programId;
+	window.location.href = "programStage.action?id=" + programId;
 }
 
 function addProgramStage()
@@ -97,6 +97,7 @@ function unSelectDataElements()
 function moveUpDataElement()
 {
 	var selectedList = jQuery("#selectedList");
+
 	jQuery("#selectedList").find("tr").each( function( i, item ){
 		item = jQuery(item);
 		if( item.hasClass("selected") )
@@ -113,6 +114,7 @@ function moveUpDataElement()
 function moveDownDataElement()
 {
 	var selectedList = jQuery("#selectedList");
+
 	jQuery("#selectedList").find("tr").each( function( i, item ){
 		item = jQuery(item);
 		if( item.hasClass("selected") )

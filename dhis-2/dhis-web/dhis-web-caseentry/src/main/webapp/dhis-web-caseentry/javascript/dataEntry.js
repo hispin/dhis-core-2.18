@@ -108,14 +108,14 @@ function loadProgramStages()
 			
 			// show history / plan
 			var history = '<h4>' + i18n_program_stages_history_plan + '</h4>';
-			history += '<table>'
+			history += '<table>';
 			for ( i in json.programStageInstances ) 
 			{
 				history += '<tr>';
                 history += '<td>';
                 history += '<strong>' + json.programStageInstances[i].name + '</strong>';
 				history += '</td>';
-                history += '<td style="text-align:center" bgcolor=' + json.programStageInstances[i].colorMap + '>'                                                         
+                history += '<td style="text-align:center" bgcolor=' + json.programStageInstances[i].colorMap + '>';
                 history += json.programStageInstances[i].infor;
                 history += '</td>';
                 history += '</tr>';
@@ -132,7 +132,7 @@ function loadProgramStages()
 function loadDataEntry()
 {
 	setInnerHTML('dataEntryFormDiv', '');
-	showById('dataEntryFormDiv')
+	showById('dataEntryFormDiv');
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
 	
@@ -496,7 +496,6 @@ function valueFocus(e)
 
     var name = '';
 	
-	
     var as = nameContainer.getElementsByTagName('a');
 
     if ( as.length > 0 )	//Admin rights: Name is in a link
@@ -551,9 +550,9 @@ function getNextEntryField( field )
     var inputs = document.getElementsByName( "entryfield" );
     
     // Simple bubble sort
-    for ( i = 0; i < inputs.length - 1; ++i )
+    for ( var i = 0; i < inputs.length - 1; ++i )
     {
-        for ( j = i + 1; j < inputs.length; ++j )
+        for ( var j = i + 1; j < inputs.length; ++j )
         {
             if ( inputs[i].tabIndex > inputs[j].tabIndex )
             {
@@ -673,10 +672,10 @@ function DateSaver( dataElementId_, value_, providedByAnotherFacility_, resultCo
 
     this.save = function()
     {
-		var params = 'dataElementId=' + dataElementId 
-			params +=  '&value=' + value 
-			params +=  '&providedByAnotherFacility=' + providedByAnotherFacility;
-			
+		var params = 'dataElementId=' + dataElementId;
+		params +=  '&value=' + value;
+		params +=  '&providedByAnotherFacility=' + providedByAnotherFacility;
+
         var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
@@ -697,9 +696,9 @@ function DateSaver( dataElementId_, value_, providedByAnotherFacility_, resultCo
         {
             if(value != "")
             {
-                var validationElement = rootElement.getElementsByTagName( 'validations' )[0];
                 var dataelementList = rootElement.getElementsByTagName( 'validation' );
                 var message = '';
+
                 for ( var i = 0; i < dataelementList.length; i++ )
                 {
                     message += "\n - " + dataelementList[i].firstChild.nodeValue;
@@ -967,7 +966,7 @@ function doComplete()
 }
 
 TOGGLE = {
-    init : function(){
+    init : function() {
         jQuery(".togglePanel").each(function(){
             jQuery(this).next("table:first").addClass("sectionClose");
             jQuery(this).addClass("close");
@@ -983,8 +982,8 @@ TOGGLE = {
                 }
             });
         });
-    },
-}
+    }
+};
 
 //------------------------------------------------------
 // Run validation
@@ -1087,7 +1086,8 @@ function loadProgramStageRecords( programStageInstanceId )
 
 function entryFormContainerOnReady()
 {
-	var currentFocus; 
+	var currentFocus = undefined;
+
     if( jQuery("#entryFormContainer") ) {
 		
         if( jQuery("#executionDate").val() )
@@ -1118,7 +1118,7 @@ function entryFormContainerOnReady()
                 },
                 function()
                 {
-                    if(currentFocus){
+                    if(currentFocus) {
                         DRAG_DIV.showData(jQuery(currentFocus).metadata({
                             "type":"attr",
                             "name":"data"

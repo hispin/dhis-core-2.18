@@ -114,7 +114,7 @@ function getDataElements( dataElementGroupId, type, filterCalculated )
 
     if ( type != null )
     {
-        url += "&type=" + type
+        url += "&type=" + type;
     }
 
     if ( filterCalculated )

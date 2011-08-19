@@ -2,14 +2,16 @@ jQuery( document ).ready( function()
 {
     validation2( 'updateChartGroupForm', function( form )
     {
-        form.submit()
+        form.submit();
     }, {
         'beforeValidateHandler' : function()
         {
             listValidator( 'memberValidator', 'groupMembers' );
         },
         'rules' : getValidationRules( "chartGroup" )
-    });
-	
-	checkValueIsExist( "name", "validateChartGroup.action", {id: getFieldValue( "id" )});
-});
+    } );
+
+    checkValueIsExist( "name", "validateChartGroup.action", {
+        id : getFieldValue( "id" )
+    } );
+} );

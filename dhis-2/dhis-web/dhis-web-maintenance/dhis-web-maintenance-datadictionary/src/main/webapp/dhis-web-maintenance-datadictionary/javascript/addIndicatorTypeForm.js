@@ -2,7 +2,7 @@ jQuery( document ).ready( function()
 {
     validation2( 'addIndicatorTypeForm', function( form )
     {
-        form.submit()
+        form.submit();
     }, {
         'rules' : getValidationRules( "indicatorType" )
     } );

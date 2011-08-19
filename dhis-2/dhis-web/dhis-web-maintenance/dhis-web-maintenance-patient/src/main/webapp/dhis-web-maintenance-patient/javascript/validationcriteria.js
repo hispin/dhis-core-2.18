@@ -26,9 +26,9 @@ function validationCriteriaReceived( validationCriteria )
     setInnerHTML( 'nameField', $(validationCriteria).find('name').text() );
     setInnerHTML( 'descriptionField', $(validationCriteria).find('description' ).text() );
 	
-	var property = $(validationCriteria).find('property').text()
-	var operator = $(validationCriteria).find('operator').text()
-	var	value = $(validationCriteria).find('value').text()
+	var property = $(validationCriteria).find('property').text();
+	var operator = $(validationCriteria).find('operator').text();
+	var	value = $(validationCriteria).find('value').text();
 	
 	// get operator
 	if(operator == 0 ){

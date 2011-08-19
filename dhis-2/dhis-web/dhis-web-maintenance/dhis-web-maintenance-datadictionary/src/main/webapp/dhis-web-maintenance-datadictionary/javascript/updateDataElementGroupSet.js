@@ -2,7 +2,7 @@ jQuery( document ).ready( function()
 {
     validation2( 'updateDataElementGroupSet', function( form )
     {
-        form.submit()
+        form.submit();
     }, {
         'beforeValidateHandler' : beforeSubmit,
         'rules' : getValidationRules( "dataElementGroupSet" )

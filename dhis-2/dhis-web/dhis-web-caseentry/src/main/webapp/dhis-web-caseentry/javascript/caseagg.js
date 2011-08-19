@@ -1,8 +1,6 @@
 function dataSetSelected()
 {
 	var dataSetId = $( '#dataSetId' ).val();	
-	var periodFrom = $( '#sDateLB' ).val();
-	var periodTo = $( '#eDateLB' ).val();
 	
 	if ( dataSetId && dataSetId != 0 )
 	{

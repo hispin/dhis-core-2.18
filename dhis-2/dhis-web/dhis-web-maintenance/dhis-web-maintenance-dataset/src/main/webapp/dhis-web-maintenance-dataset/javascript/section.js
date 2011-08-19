@@ -26,13 +26,13 @@ function sortOrderSubmit() {
 	if( datasetId == "null" ) {
 		window.alert( i18n_please_select_dataset );
 	} else {
-		window.location = "showSortSectionForm.action?dataSetId=" + datasetId;
+		window.location.href = "showSortSectionForm.action?dataSetId=" + datasetId;
 	}
 }
 
 function getSectionByDataSet(dataSetId) 
 {
-	window.location = "section.action?dataSetId=" + dataSetId;
+	window.location.href = "section.action?dataSetId=" + dataSetId;
 }
 
 function removeSection(sectionId, sectionName) 
@@ -102,7 +102,7 @@ function toggle(dataElementId, optionComboId) {
 
 function saveGreyStatus( sectionId_, dataElementId_, optionComboId_ ) 
 {
-	var sectionId = sectionId_
+	var sectionId = sectionId_;
 	var dataElementId = dataElementId_;
 	var optionComboId = optionComboId_;
 	var isGreyed;
