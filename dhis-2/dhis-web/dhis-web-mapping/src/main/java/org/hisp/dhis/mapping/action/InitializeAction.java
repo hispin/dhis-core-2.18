@@ -40,6 +40,8 @@ import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.comparator.MapLayerNameComparator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -75,6 +77,13 @@ public class InitializeAction
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
     
     // -------------------------------------------------------------------------
@@ -133,6 +142,13 @@ public class InitializeAction
     {
         return infrastructuralPeriodType;
     }
+    
+    private OrganisationUnit rootNode;
+
+    public OrganisationUnit getRootNode()
+    {
+        return rootNode;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -164,6 +180,8 @@ public class InitializeAction
         infrastructuralDataElements = configurationService.getConfiguration().getInfrastructuralDataElements();
         
         infrastructuralPeriodType = configurationService.getConfiguration().getInfrastructuralPeriodTypeDefaultIfNull();
+        
+        rootNode = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) ).iterator().next();
 
         return SUCCESS;
     }
