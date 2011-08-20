@@ -94,12 +94,12 @@ public class SaveMinMaxLimitsAction
     {
         this.dataElementId = dataElementId;
     }
-    
-    private Integer optionComboId;
 
-    public void setOptionComboId( Integer optionComboId )
+    private Integer categoryOptionComboId;
+
+    public void setCategoryOptionComboId( Integer categoryOptionComboId )
     {
-        this.optionComboId = optionComboId;
+        this.categoryOptionComboId = categoryOptionComboId;
     }
 
     private Integer minLimit;
@@ -127,7 +127,7 @@ public class SaveMinMaxLimitsAction
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
         
-        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
 
         MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
             dataElement, optionCombo );
