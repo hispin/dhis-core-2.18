@@ -46,6 +46,10 @@
     background-image:url('../../resources/ext-ux/theme/gray-extend-ux/grid-split.png');
     height:23px;
 }
+.x-toolbar .xtb-sep-panel {
+    background-image:url('../../resources/ext-ux/theme/gray-extend-ux/grid-split.png');
+    height:17px;
+}
 .x-panel-tbar .x-toolbar {
     padding:0;
 }
@@ -143,6 +147,9 @@ a.x-menu-item-custom {
 }
 .menu-mapview {
     background-image:url('../../../images/favorite.png');
+}
+.menu-history {
+    background-image:url('../../../images/history2.png');
 }
 .no-icon-menu .x-menu-item-icon {
     display: none;
@@ -489,7 +496,7 @@ td.x-grid3-hd-over, td.sort-desc, td.sort-asc, td.x-grid3-hd-menu-open {
 #help h3 {
 	padding:8px 0 0 0;
 	font:bold 11px arial;
-	color:#222222;
+	color:#111;
 }
 #help p {
 	padding:4px 0 4px 0;

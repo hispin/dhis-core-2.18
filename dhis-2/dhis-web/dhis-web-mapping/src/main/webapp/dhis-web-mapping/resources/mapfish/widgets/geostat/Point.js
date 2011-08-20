@@ -1710,7 +1710,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
     },
 
     applyValues: function() {
-        Ext.getCmp('viewhistory_b').addItem(this);
+        this.button.menu.find('name','history')[0].addItem(this);
         
 		var options = {
             indicator: 'value',

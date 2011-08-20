@@ -278,16 +278,14 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         return Math.floor(1 + 3.3 * Math.log(this.nbVal, 10));
     },
 	
-    classify: function(method, nbBins, bounds) {    
+    classify: function(method, nbBins, bounds) {
 		if (G.vars.activeWidget.legend.value == G.conf.map_legendset_type_automatic) {
 			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
-				var str = G.vars.activePanel.isPolygon() ?
-                    choropleth.form.findField('bounds').getValue() : point.form.findField('bounds').getValue();
-				
+				var str = G.vars.activeWidget.cmp.bounds.getValue();
+                				
 				for (var i = 0; i < str.length; i++) {
 					str = str.replace(' ','');
-				}
-				
+				}				
 				if (str.charAt(str.length-1) == ',') {
 					str = str.substring(0, str.length-1);
 				}
@@ -302,14 +300,8 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 					}
 				}
 				
-				var newInput = bounds.join(',');
-                
-                if (G.vars.activePanel.isPolygon()) {
-                    choropleth.form.findField('bounds').setValue(newInput);
-                }
-                else {
-                    point.form.findField('bounds').setValue(newInput);
-                }
+				var newInput = bounds.join(',');                
+                G.vars.activeWidget.cmp.bounds.setValue(newInput);
 				
 				for (var k = 0; k < bounds.length; k++) {
 					bounds[k] = parseFloat(bounds[k]);
