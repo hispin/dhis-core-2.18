@@ -463,7 +463,7 @@
 		layout: 'fit',
         closeAction: 'hide',
 		width: G.conf.window_width,
-        height: 205,
+        height: 230,
         items: [
             {
                 xtype: 'form',
@@ -479,6 +479,27 @@
                         fieldLabel: G.i18n.display_name,
                         width: G.conf.combo_width_fieldset,
                         autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '255'}
+                    },
+                    {
+                        xtype: 'combo',
+                        id: 'favoritelayer_cb',
+                        fieldLabel: G.i18n.layer,
+                        labelSeparator: G.conf.labelseparator,
+                        editable: false,
+                        valueField: 'id',
+                        displayField: 'name',
+                        width: G.conf.combo_width_fieldset,
+                        minListWidth: G.conf.combo_width_fieldset,
+                        mode: 'local',
+                        triggerAction: 'all',
+                        value: G.conf.map_widget_choropleth,
+                        store: new Ext.data.ArrayStore({
+                            fields: ['id', 'name'],
+                            data: [
+                                [G.conf.map_widget_choropleth, G.conf.thematic_layer_1],
+                                [G.conf.map_widget_point, G.conf.thematic_layer_2]
+                            ]
+                        })
                     },
                     {
                         xtype: 'checkbox',
@@ -506,7 +527,7 @@
                         selectOnFocus: true,
                         width: G.conf.combo_width_fieldset,
                         listWidth: 'auto',
-                        store:G.stores.mapView
+                        store: G.stores.mapView
                     }
                 ]
             }
@@ -525,22 +546,15 @@
 						Ext.message.msg(false, G.i18n.form_is_not_complete);
 						return;
 					}
+                    var widget = Ext.getCmp('favoritelayer_cb').getValue() == G.conf.map_widget_choropleth ?
+                        choropleth : point;
                     
-                    var params;                    
+                    if (!widget.layer.features.length) {
+						Ext.message.msg(false, '<span class="x-msg-hl">' + widget.layer.name + '</span> is empty');
+						return;
+                    }   
                     
-                    if (G.vars.activePanel.isPolygon()) {
-                        if (!choropleth.formValidation.validateForm.apply(choropleth, [true])) {
-                            return;
-                        }
-                        params = choropleth.formValues.getAllValues.call(choropleth);
-                    }
-                    else if (G.vars.activePanel.isPoint()) {
-                        if (!point.formValidation.validateForm.apply(point, [true])) {
-                            return;
-                        }
-                        params = point.formValues.getAllValues.call(point);
-                    }
-                    
+                    var params = widget.formValues.getAllValues.call(widget);                    
                     params.name = vn;
                     params.system = Ext.getCmp('favoritesystem_chb').getValue();
                     
@@ -630,7 +644,14 @@
 					});
 				}
             }
-        ]
+        ],
+        listeners: {
+            'show': function() {
+                if (!polygonLayer.visibility && pointLayer.visibility) {
+                    Ext.getCmp('favoritelayer_cb').setValue(G.conf.map_widget_point);
+                }
+            }
+        }
     });
 	
 	/* Section: export map */
