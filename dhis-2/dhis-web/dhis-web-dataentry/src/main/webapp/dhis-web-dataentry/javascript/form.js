@@ -125,27 +125,32 @@ function loadMetaData()
 {
     var KEY_METADATA = 'metadata';
 
-    $.getJSON( 'getMetaData.action', function( json )
-    {
-        sessionStorage[KEY_METADATA] = JSON.stringify( json.metaData );
-    } ).complete( function()
-    {
-
-        var metaData = JSON.parse( sessionStorage[KEY_METADATA] );
-
-        significantZeros = metaData.significantZeros;
-        dataElements = metaData.dataElements;
-        indicatorFormulas = metaData.indicatorFormulas;
-        dataSets = metaData.dataSets;
-        dataSetAssociationSets = metaData.dataSetAssociationSets;
-        organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
-
-        selection.responseReceived(); // Notify that meta data is loaded
-        $( '#loaderSpan' ).hide();
-        console.log( 'Meta-data loaded' );
-
-        updateForms();
-    } );
+    $.ajax( { 
+    	url: 'getMetaData.action',
+    	cache: false,
+    	dataType: 'json',
+    	success: function( json )
+	    {
+	        sessionStorage[KEY_METADATA] = JSON.stringify( json.metaData );
+	    },
+	    complete: function()
+	    {
+	        var metaData = JSON.parse( sessionStorage[KEY_METADATA] );
+	
+	        significantZeros = metaData.significantZeros;
+	        dataElements = metaData.dataElements;
+	        indicatorFormulas = metaData.indicatorFormulas;
+	        dataSets = metaData.dataSets;
+	        dataSetAssociationSets = metaData.dataSetAssociationSets;
+	        organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
+	
+	        selection.responseReceived(); // Notify that meta data is loaded
+	        $( '#loaderSpan' ).hide();
+	        console.log( 'Meta-data loaded' );
+	
+	        updateForms();
+	    } 
+	} );
 }
 
 function uploadLocalData()
@@ -176,10 +181,11 @@ function uploadLocalData()
         console.log( 'Uploaded complete data set: ' + key + ', with value: ' + value );
 
         $.ajax( {
-            url : 'registerCompleteDataSet.action',
-            data : value,
-            dataType : 'json',
-            success : function( data, textStatus, jqXHR )
+            url: 'registerCompleteDataSet.action',
+            data: value,
+            dataType: 'json',
+            cache: false,
+            success: function( data, textStatus, jqXHR )
             {
                 console.log( 'Successfully saved complete dataset with value: ' + value );
                 storageManager.clearCompleteDataSet( value );
@@ -210,10 +216,11 @@ function uploadLocalData()
         console.log( 'Uploaded data value: ' + key + ', with value: ' + value );
 
         $.ajax( {
-            url : 'saveValue.action',
-            data : value,
-            dataType : 'json',
-            success : function( data, textStatus, jqXHR )
+            url: 'saveValue.action',
+            data: value,
+            dataType: 'json',
+            cache: false,
+            success: function( data, textStatus, jqXHR )
             {
                 storageManager.clearDataValueJSON( value );
                 console.log( 'Successfully saved data value with value: ' + value );
@@ -558,70 +565,75 @@ function insertDataValues()
 
     $( '[name="entryfield"]' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
 
-    $.getJSON( 'getDataValues.action',
-    {
-        periodId : periodId,
-        dataSetId : dataSetId,
-        organisationUnitId : currentOrganisationUnitId
-    },
-    function( json )
-    {
-        // Set data values, works for select lists too as data
-        // value = select value
-
-        $.each( json.dataValues, function( i, value )
-        {
-            var fieldId = '#' + value.id + '-val';
-
-            if ( $( fieldId ) )
-            {
-                $( fieldId ).val( value.val );
-            }
-
-            dataValueMap[value.id] = value.val;
-        } );
-
-        // Set min-max values and colorize violation fields
-
-        $.each( json.minMaxDataElements, function( i, value )
-        {
-            var minId = value.id + '-min';
-            var maxId = value.id + '-max';
-
-            var valFieldId = '#' + value.id + '-val';
-
-            var dataValue = dataValueMap[value.id];
-
-            if ( dataValue
-                    && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) || ( value.max && new Number(
-                            dataValue ) > new Number( value.max ) ) ) )
-            {
-                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
-            }
-
-            currentMinMaxValueMap[minId] = value.min;
-            currentMinMaxValueMap[maxId] = value.max;
-        } );
-
-        // Update indicator values in form
-
-        updateIndicators();
-
-        // Set completeness button
-
-        if ( json.complete )
-        {
-            $( '#completeButton' ).attr( 'disabled', 'disabled' );
-            $( '#undoButton' ).removeAttr( 'disabled' );
-        }
-        else
-        {
-            $( '#completeButton' ).removeAttr( 'disabled' );
-            $( '#undoButton' ).attr( 'disabled', 'disabled' );
-        }
-
-        // TODO locking
-    } );
+    $.ajax( {
+    	url: 'getDataValues.action',
+    	data:
+	    {
+	        periodId : periodId,
+	        dataSetId : dataSetId,
+	        organisationUnitId : currentOrganisationUnitId
+	    },
+	    cache: false,
+	    dataType: 'json',
+	    success: function( json )
+	    {
+	        // Set data values, works for select lists too as data
+	        // value = select value
+	
+	        $.each( json.dataValues, function( i, value )
+	        {
+	            var fieldId = '#' + value.id + '-val';
+	
+	            if ( $( fieldId ) )
+	            {
+	                $( fieldId ).val( value.val );
+	            }
+	
+	            dataValueMap[value.id] = value.val;
+	        } );
+	
+	        // Set min-max values and colorize violation fields
+	
+	        $.each( json.minMaxDataElements, function( i, value )
+	        {
+	            var minId = value.id + '-min';
+	            var maxId = value.id + '-max';
+	
+	            var valFieldId = '#' + value.id + '-val';
+	
+	            var dataValue = dataValueMap[value.id];
+	
+	            if ( dataValue
+	                    && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) || ( value.max && new Number(
+	                            dataValue ) > new Number( value.max ) ) ) )
+	            {
+	                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
+	            }
+	
+	            currentMinMaxValueMap[minId] = value.min;
+	            currentMinMaxValueMap[maxId] = value.max;
+	        } );
+	
+	        // Update indicator values in form
+	
+	        updateIndicators();
+	
+	        // Set completeness button
+	
+	        if ( json.complete )
+	        {
+	            $( '#completeButton' ).attr( 'disabled', 'disabled' );
+	            $( '#undoButton' ).removeAttr( 'disabled' );
+	        }
+	        else
+	        {
+	            $( '#completeButton' ).removeAttr( 'disabled' );
+	            $( '#undoButton' ).attr( 'disabled', 'disabled' );
+	        }
+	
+	        // TODO locking
+	    } 
+	} );
 }
 
 function displayEntryFormCompleted()
@@ -726,16 +738,20 @@ function validateCompleteDataSet()
 
         disableCompleteButton();
 
-        $.getJSON( 'getValidationViolations.action', params ).success( function( data )
-        {
-            registerCompleteDataSet( data );
-        } ).error( function()
-        {
-            // no response from server, fake a positive result and save it
-            registerCompleteDataSet( {
-                'response' : 'success'
-            } );
-        } );
+        $.ajax( { url: 'getValidationViolations.action',
+        	cache: false,
+        	data: params,
+        	dataType: 'json',
+        	success: function( data )
+	        {
+	            registerCompleteDataSet( data );
+	        },
+	        error: function()
+	        {
+	            // no response from server, fake a positive result and save it
+	            registerCompleteDataSet( { 'response' : 'success' } );
+	        } 
+    	} );
     }
 }
 
@@ -747,11 +763,9 @@ function registerCompleteDataSet( json )
     {
         storageManager.saveCompleteDataSet( params );
 
-        $.getJSON( 'registerCompleteDataSet.action', params ).success( function()
+        $.getJSON( 'registerCompleteDataSet.action', params, function()
         {
             storageManager.clearCompleteDataSet( params );
-        } ).error( function()
-        {
         } );
     }
     else
@@ -1118,14 +1132,16 @@ function StorageManager()
     this.downloadForm = function( dataSetId, formVersion )
     {
         $.ajax( {
-            url : 'loadForm.action',
-            data : {
+            url: 'loadForm.action',
+            data: 
+            {
                 dataSetId : dataSetId
             },
-            dataType : 'text',
-            dataSetId : dataSetId,
-            formVersion : formVersion,
-            success : function( data, textStatus, jqXHR )
+            dataSetId: dataSetId,
+            formVersion: formVersion,
+            cache: false,
+            dataType: 'text',
+            success: function( data, textStatus, jqXHR )
             {
                 storageManager.saveForm( this.dataSetId, data );
                 storageManager.saveFormVersion( this.dataSetId, this.formVersion );

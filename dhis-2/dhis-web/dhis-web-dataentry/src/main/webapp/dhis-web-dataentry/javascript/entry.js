@@ -225,11 +225,12 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
         storageManager.saveDataValue( dataValue );
 
         $.ajax( {
-            url : 'saveValue.action',
-            data : dataValue,
-            dataType : 'json',
-            success : handleSuccess,
-            error : handleError
+            url: 'saveValue.action',
+            data: dataValue,
+            dataType: 'json',
+            cache: false,
+            success: handleSuccess,
+            error: handleError
         } );
     };
 

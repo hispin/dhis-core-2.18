@@ -25,14 +25,20 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, peri
     {
         markComment( COLOR_YELLOW );
 
-        var url = 'saveComment.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId
-                + '&optionComboId=' + optionComboId + '&periodId=' + periodId + '&comment=' + value;
-
         $.ajax( {
-            url : url,
-            dataType : 'json',
-            success : handleResponse,
-            error : handleError
+            url: 'saveComment.action',
+            data:
+            {
+            	organisationUnitId: organisationUnitId,
+            	dataElementId: dataElementId,
+            	optionComboId: optionComboId,
+            	periodId: periodId,
+            	value: value
+            },
+            dataType: 'json',
+            cache: false,
+            success: handleResponse,
+            error: handleError
         } );
     };
 
@@ -140,20 +146,28 @@ function refreshChart()
 
 function markValueForFollowup( dataElementId, periodId, sourceId, categoryOptionComboId )
 {
-    var url = 'markValueForFollowup.action?dataElementId=' + dataElementId + '&periodId=' + periodId + '&sourceId='
-            + sourceId + '&categoryOptionComboId=' + categoryOptionComboId + '&r=' + Math.random();
-
-    $.getJSON( url, function( json )
-    {
-        if ( json.message == 'marked' )
-        {
-            $( '#followup' ).attr( 'src', '../images/marked.png' );
-            $( '#followup' ).attr( 'alt', i18n_unmark_value_for_followup );
-        }
-        else if ( json.message == 'unmarked' )
-        {
-            $( '#followup' ).attr( 'src', '../images/unmarked.png' );
-            $( '#followup' ).attr( 'alt', i18n_mark_value_for_followup );
-        }
-    } );
+    $.ajax( { url: 'markValueForFollowup.action',
+    	data:
+    	{
+    		dataElementId: dataElementId,
+    		periodId: periodId,
+    		sourceId: sourceId,
+    		categoryOptionComboId: categoryOptionComboId
+    	},
+    	cache: false,
+    	dataType: 'json',
+    	success: function( json )
+	    {
+	        if ( json.message == 'marked' )
+	        {
+	            $( '#followup' ).attr( 'src', '../images/marked.png' );
+	            $( '#followup' ).attr( 'alt', i18n_unmark_value_for_followup );
+	        }
+	        else if ( json.message == 'unmarked' )
+	        {
+	            $( '#followup' ).attr( 'src', '../images/unmarked.png' );
+	            $( '#followup' ).attr( 'alt', i18n_mark_value_for_followup );
+	        }
+	    }
+	} );
 }
