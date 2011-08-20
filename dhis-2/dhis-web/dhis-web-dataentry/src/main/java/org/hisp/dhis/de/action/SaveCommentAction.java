@@ -29,8 +29,6 @@ package org.hisp.dhis.de.action;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -47,13 +45,10 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: SaveCommentAction.java 3113 2007-03-19 20:47:10Z torgeilo $
  */
 public class SaveCommentAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( SaveCommentAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -180,8 +175,6 @@ public class SaveCommentAction
         {
             if ( commentValue != null )
             {
-                LOG.info( "Adding DataValue, comment added " + commentValue );
-
                 dataValue = new DataValue( dataElement, period, organisationUnit, null, 
                     storedBy, new Date(), commentValue, optionCombo );
 
@@ -190,8 +183,6 @@ public class SaveCommentAction
         }
         else
         {
-            LOG.info( "Updating DataValue, comment added/changed " + commentValue );
-
             dataValue.setComment( commentValue );
             dataValue.setTimestamp( new Date() );
             dataValue.setStoredBy( storedBy );

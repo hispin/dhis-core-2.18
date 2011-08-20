@@ -40,7 +40,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: SaveMinMaxLimitsAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class SaveMinMaxLimitsAction
     implements Action
@@ -117,12 +116,26 @@ public class SaveMinMaxLimitsAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private int statusCode;
+
+    public int getStatusCode()
+    {
+        return statusCode;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
+        minLimit = minLimit != null ? minLimit : 0;
+        maxLimit = maxLimit != null ? maxLimit : 0;
+        
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );

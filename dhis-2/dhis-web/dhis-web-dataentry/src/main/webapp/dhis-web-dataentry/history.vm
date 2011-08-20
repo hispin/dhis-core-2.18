@@ -14,9 +14,9 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 			<h4>$i18n.getString( "dataelement_comment" )
 			
 			#if ( $dataValue && $dataValue.isFollowup() )
-		        <img id="followup" src="../images/marked.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
+		        <img id="followup" src="../images/marked.png" alt="$i18n.getString( 'mark_value_for_followup' )" onclick="markValueForFollowup()" style="cursor:pointer"/>
 			#elseif ( $dataValue )
-		        <img id="followup" src="../images/unmarked.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup( '$dataValue.dataElement.id', '$dataValue.period.id', '$dataValue.source.id', '$dataValue.optionCombo.id' )" style="cursor:pointer"/>
+		        <img id="followup" src="../images/unmarked.png" alt="$i18n.getString( 'unmark_value_for_followup' )" onclick="markValueForFollowup()" style="cursor:pointer"/>
 			#else
 			    <img id="followup" src="../images/unmarked.png"/>
 			#end			
@@ -30,23 +30,19 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
             <h4>$encoder.htmlEncode( $i18n.getString( "min_max_limits" ) )</h4>
             <table>
                 <tr>
-                    <td style="background-color:#2e4e83; height:26px">&nbsp;</td>
-                    <td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
-                    <td><input type="text" id="maxLimit" style="width:10em" value="$!{dataElementHistory.maxLimit}" class="{validate:{digits:true}}"
-                        #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-                            onkeyup="saveMinMaxLimit()"
-                        #else disabled="disabled" #end />
-						<i><span id="maxSpan" style="color:red"></span></i>
+                    <td style="background-color:#d54a4a; height:26px">&nbsp;</td>
+                    <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
+                    <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}" class="{validate:{digits:true}}" 
+                        #if( !$auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) ) disabled="disabled"#end />
+						<i><span id="minSpan" style="color:red"></span></i>
 					</td>
                 </tr>
                 <tr>
-                    <td style="background-color:#d54a4a; height:26px">&nbsp;</td>
-                    <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
-                    <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}"
-                        #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-                           onkeyup="saveMinMaxLimit()"
-                        #else disabled="disabled" #end />
-						<i><span id="minSpan" style="color:red"></span></i>
+                    <td style="background-color:#2e4e83; height:26px">&nbsp;</td>
+                    <td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
+                    <td><input type="text" id="maxLimit" style="width:10em" value="$!{dataElementHistory.maxLimit}" class="{validate:{digits:true}}" 
+                    	#if( !$auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) ) disabled="disabled"#end />
+						<i><span id="maxSpan" style="color:red"></span></i>
 					</td>
                 </tr>
                 <tr>
@@ -60,7 +56,8 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
                     <td></td>
                 </tr>
                 <tr>
-                	<td colspan="3"><input type="button" value="$i18n.getString( 'remove' )" onclick="removeMinMaxLimit()" style="width:100px"></td>
+                	<td colspan="3"><input type="button" value="$i18n.getString( 'save' )" onclick="saveMinMaxLimit()" style="width:100px">
+                		<input type="button" value="$i18n.getString( 'remove' )" onclick="removeMinMaxLimit()" style="width:100px"></td>
                 </tr>
             </table>
         </td>

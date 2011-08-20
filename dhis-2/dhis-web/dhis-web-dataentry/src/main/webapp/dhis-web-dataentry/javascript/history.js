@@ -116,7 +116,7 @@ function saveMinMaxLimit()
         $( '#maxSpan' ).html( '' );
     }
 
-    if ( eval( minValue ) > eval( maxValue ) )
+    if ( new Number( minValue ) > new Number( maxValue ) )
     {
         $( '#maxSpan' ).html( i18n_max_must_be_greater_than_min );
         return;
@@ -132,34 +132,52 @@ function saveMinMaxLimit()
     currentMinMaxValueMap[minId] = minValue;
     currentMinMaxValueMap[maxId] = maxValue;
 
-    $.get( 'saveMinMaxLimits.action', 
+    $.ajax( {
+    	url: 'saveMinMaxLimits.action',
+    	data:
     	{
     		organisationUnitId: currentOrganisationUnitId,
     		dataElementId: currentDataElementId,
     		categoryOptionComboId: currentOptionComboId,
     		minLimit: minValue,
-    		maxValue: maxValue
+    		maxLimit: maxValue
     	},
-    	refreshChart );
+    	dataType: 'json',
+    	cache: false,
+    	success: function() {
+    		$( '#minLimit' ).css( 'background-color', COLOR_GREEN );
+    		$( '#maxLimit' ).css( 'background-color', COLOR_GREEN );
+    		refreshChart();
+    	},
+    	error: function() {
+    		
+    		$( '#minLimit' ).css( 'background-color', COLOR_RED );
+    		$( '#maxLimit' ).css( 'background-color', COLOR_RED );
+    	}
+    } );
 }
 
 function refreshChart()
-{
+{	
+    var periodId = $( '#selectedPeriodId' ).val();
+    
     var source = 'getHistoryChart.action?dataElementId=' + currentDataElementId + '&categoryOptionComboId='
             + currentOptionComboId + '&periodId=' + periodId + '&organisationUnitId=' + currentOrganisationUnitId + '&r=' + Math.random();
 
     $( '#historyChart' ).attr( 'src', source );
 }
 
-function markValueForFollowup( dataElementId, periodId, sourceId, categoryOptionComboId )
+function markValueForFollowup()
 {
+	var periodId = $( '#selectedPeriodId' ).val();
+	
     $.ajax( { url: 'markValueForFollowup.action',
     	data:
     	{
-    		dataElementId: dataElementId,
+    		dataElementId: currentDataElementId,
+    		categoryOptionComboId: currentOptionComboId,
     		periodId: periodId,
-    		sourceId: sourceId,
-    		categoryOptionComboId: categoryOptionComboId
+    		organisationUnitId: currentOrganisationUnitId
     	},
     	cache: false,
     	dataType: 'json',

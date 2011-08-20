@@ -38,7 +38,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -68,13 +68,6 @@ public class MarkForFollowupAction
         this.dataElementService = dataElementService;
     }
 
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -100,18 +93,18 @@ public class MarkForFollowupAction
         this.dataElementId = dataElementId;
     }
 
-    private Integer periodId;
+    private String periodId;
 
-    public void setPeriodId( Integer periodId )
+    public void setPeriodId( String periodId )
     {
         this.periodId = periodId;
     }
 
-    private Integer sourceId;
+    private int organisationUnitId;
 
-    public void setSourceId( Integer sourceId )
+    public void setOrganisationUnitId( int organisationUnitId )
     {
-        this.sourceId = sourceId;
+        this.organisationUnitId = organisationUnitId;
     }
 
     private Integer categoryOptionComboId;
@@ -138,9 +131,9 @@ public class MarkForFollowupAction
 
     public String execute()
     {
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );        
-        Period period = periodService.getPeriod( periodId );
-        OrganisationUnit source = organisationUnitService.getOrganisationUnit( sourceId );
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+        Period period = PeriodType.createPeriodExternalId( periodId );
+        OrganisationUnit source = organisationUnitService.getOrganisationUnit( organisationUnitId );
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
         
         DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo ); 
