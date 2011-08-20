@@ -59,6 +59,10 @@ G.conf = {
 	
 //	DHIS variables
 
+    map_widget_choropleth: 'choropleth',
+    map_widget_point: 'point',
+    map_widget_symbol: 'symbol',
+    map_widget_centroid: 'centroid',    
 	map_source_type_database: 'database',
 	map_source_type_geojson: 'geojson',
 	map_source_type_shapefile: 'shapefile',
