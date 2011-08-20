@@ -550,13 +550,9 @@
                         params: params,
                         success: function(r) {
                             Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + vn + '</span> ' + G.i18n.registered);
-                            G.stores.mapView.load();
-                            if (params.featureType == G.conf.map_feature_type_multipolygon) {
-								G.stores.polygonMapView.load();
-							}
-							else if (params.featureType == G.conf.map_feature_type_point) {
-								G.stores.pointMapView.load();
-							}
+                            G.stores.mapView.load({callback: function() {
+                                favoriteButton.reloadMenu();
+                            }});
                             Ext.getCmp('favoritename_tf').reset();
                             Ext.getCmp('favoritesystem_chb').reset();
                         }
@@ -584,21 +580,15 @@
                                     Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rw + '</span> ' + G.i18n.deleted);
                                     Ext.getCmp('favorite_cb').clearValue();
                                     
-                                    var featureType = G.stores.mapView.getAt(G.stores.mapView.findExact('id', v)).data.featureType;
-                                    if (featureType == G.conf.map_feature_type_multipolygon) {
-                                        G.stores.polygonMapView.load();
-                                    }
-                                    else if (featureType == G.conf.map_feature_type_point) {
-                                        G.stores.pointMapView.load();
-                                    }
+                                    G.stores.mapView.load({callback: function() {
+                                        favoriteButton.reloadMenu();
+                                    }});
                                     
-                                    G.stores.mapView.load();
-                                    
-                                    if (v == choropleth.form.findField('mapview').getValue()) {
-                                        choropleth.form.findField('mapview').clearValue();
+                                    if (v == choropleth.cmp.mapview.getValue()) {
+                                        choropleth.cmp.mapView.clearValue();
                                     }
-                                    if (v == point.form.findField('mapview').getValue()) {
-                                        point.form.findField('mapview').clearValue();
+                                    if (v == point.cmp.mapview.getValue()) {
+                                        point.cmp.mapView.clearValue();
                                     }
                                 }
                             });
@@ -2231,7 +2221,16 @@
                     }
                 }
             }
-        ]
+        ],
+        listeners: {
+            'show': {
+                scope: choropleth,
+                fn: function() {
+                    this.cmp.parent.isLoaded = true;
+                    this.window.isShown = true;
+                }
+            }
+        }
     });    
     choropleth.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
     
@@ -2530,7 +2529,7 @@
                         Ext.getCmp('mapdatetype_cb').setValue(G.system.mapDateType.value);
 
                         scope.valueType.value = mapView.mapValueType;
-                        scope.form.findField('mapvaluetype').setValue(scope.valueType.value);
+                        scope.cmp.mapValueType.setValue(scope.valueType.value);
                         
                         G.util.expandWidget(scope);                        
                         scope.setMapView();
@@ -2570,19 +2569,64 @@
         }
     });
 	
-	var favoritesButton = new Ext.Button({
+	var favoriteButton = new Ext.Button({
 		iconCls: 'icon-favorite',
 		tooltip: G.i18n.favorite_map_views,
         style: 'margin-top:1px',
-		handler: function() {
-            if (!favoriteWindow.hidden) {
-				favoriteWindow.hide();
-			}
-			else {
-                favoriteWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
-				favoriteWindow.show(this.id);
-			}
-		}
+        addMenuItems: function(store) {
+            this.menu.addItem('-');
+            
+            for (var i = 0; i < store.data.items.length; i++) {
+                var item = new Ext.menu.Item({
+                    text: store.data.items[i].data.name,
+                    iconCls: 'menu-mapview',
+                    mapViewId: store.data.items[i].data.id,
+                    scope: choropleth,
+                    handler: function(i) {
+                        G.util.mapView.layer(i.mapViewId);
+                    }
+                });
+                this.menu.addItem(item);
+            }            
+        },
+        reloadMenu: function() {
+            if (this.menu) {
+                this.menu.destroy();
+            }            
+            this.menu = new Ext.menu.Menu({
+                items: [
+                    {
+                        text: 'Manage favorites..',
+                        iconCls: 'menu-layeroptions-edit',
+                        scope: this,
+                        handler: function() {
+                            if (!favoriteWindow.hidden) {
+                                favoriteWindow.hide();
+                            }
+                            else {
+                                favoriteWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+                                favoriteWindow.show(this.id);
+                            }
+                        }
+                    }
+                ]
+            });
+            
+            var store = G.stores.mapView;            
+            if (!store.isLoaded) {
+                store.load({scope: this, callback: function() {
+                    this.addMenuItems(store);
+                }});
+            }
+            else {
+                this.addMenuItems(store);
+            }
+        },
+        listeners: {
+            'afterrender': function(b) {
+                b.reloadMenu();
+            }
+        }
 	});
 	
 	var predefinedMapLegendSetButton = new Ext.Button({
@@ -2738,7 +2782,7 @@
 			' ',' ',' ',
 			toolsLabel,
 			' ',' ',
-			favoritesButton,
+			favoriteButton,
             predefinedMapLegendSetButton,
 			exportImageButton,
             measureDistanceButton,
@@ -2888,6 +2932,11 @@
                 });
                 
                 document.getElementById('featuredatatext').innerHTML = '<div style="color:#666">' + G.i18n.no_feature_selected + '</div>';
+                
+                if (G.vars.parameter.id) {
+                    G.util.mapView.layer(G.vars.parameter.id);
+                    G.vars.parameter.id = null;
+                }
             }
         }
     });

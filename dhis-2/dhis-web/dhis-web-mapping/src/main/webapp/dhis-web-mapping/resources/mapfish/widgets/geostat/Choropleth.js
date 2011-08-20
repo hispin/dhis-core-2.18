@@ -95,35 +95,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
         this.addItems();
         
         this.createSelectFeatures();
-
-        if (G.vars.parameter.id) {
-            this.mapView = G.vars.parameter.mapView;
-            this.updateValues = true;
-            this.legend = {
-                value: this.mapView.mapLegendType,
-                method: this.mapView.method || this.legend.method,
-                classes: this.mapView.classes || this.legend.classes
-            };
-            
-            G.vars.parameter.id = false;
-            G.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
-            
-            function mapViewStoreCallback() {
-                this.cmp.mapview.setValue(this.mapView.id);
-                this.valueType.value = this.mapView.mapValueType;
-                this.cmp.mapValueType.setValue(this.valueType.value);
-                this.setMapView();
-            }
-            
-            if (G.stores.mapView.isLoaded) {
-                mapViewStoreCallback.call(this);
-            }
-            else {
-                G.stores.mapView.load({scope: this, callback: function() {
-                    mapViewStoreCallback.call(this);
-                }});
-            }
-        }
         
 		mapfish.widgets.geostat.Choropleth.superclass.initComponent.apply(this);
     },
@@ -307,22 +278,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                 'select': {
                     scope: this,
                     fn: function(cb) {
-                        this.mapView = G.stores.mapView.getAt(G.stores.mapView.find('id', cb.getValue())).data;
-                        this.updateValues = true;
-                        
-                        this.legend.value = this.mapView.mapLegendType;
-                        this.legend.method = this.mapView.method || this.legend.method;
-                        this.legend.classes = this.mapView.classes || this.legend.classes;
-
-                        G.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
-                        G.system.mapDateType.value = this.mapView.mapDateType;
-                        Ext.getCmp('mapdatetype_cb').setValue(G.system.mapDateType.value);
-
-                        this.valueType.value = this.mapView.mapValueType;
-                        this.cmp.mapValueType.setValue(this.valueType.value);
-                        this.setMapView();
-                        
-                        this.window.cmp.reset.enable();
+                        G.util.mapView.prepare.call(this, cb.getValue());
                     }
                 }
             }
@@ -894,6 +850,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                 expanded: true
             },
             widget: this,
+            isLoaded: false,
             isSelected: false,
             reset: function() {
                 if (this.getSelectionModel().getSelectedNode()) {
@@ -1431,7 +1388,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
         this.organisationUnitSelection.setValues(this.mapView.parentOrganisationUnitId, this.mapView.parentOrganisationUnitName,
             this.mapView.parentOrganisationUnitLevel, this.mapView.organisationUnitLevel, this.mapView.organisationUnitLevelName);
             
-        this.cmp.parent.reset();
+        //this.cmp.parent.reset();
+        
         this.cmp.parent.selectedNode = {attributes: {
             id: this.mapView.parentOrganisationUnitId,
             text: this.mapView.parentOrganisationUnitName,
