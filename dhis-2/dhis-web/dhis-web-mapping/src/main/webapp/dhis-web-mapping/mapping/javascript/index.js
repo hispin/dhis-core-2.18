@@ -2488,26 +2488,7 @@
 		tooltip: G.i18n.zoom_to_visible_extent,
         style: 'margin-top:1px',
 		handler: function() {
-            if (G.vars.activePanel.isPolygon()) {
-                if (choropleth.layer.getDataExtent()) {
-                    G.vars.map.zoomToExtent(choropleth.layer.getDataExtent());
-                }
-            }
-            else if (G.vars.activePanel.isPoint()) {
-                if (point.layer.getDataExtent()) {
-                    G.vars.map.zoomToExtent(point.layer.getDataExtent());
-                }
-            }
-            else if (G.vars.activePanel.isSymbol()) {
-                if (symbol.layer.getDataExtent()) {
-                    G.vars.map.zoomToExtent(symbol.layer.getDataExtent());
-                }
-            }
-            else if (G.vars.activePanel.isCentroid()) {
-                if (centroid.layer.getDataExtent()) {
-                    G.vars.map.zoomToExtent(centroid.layer.getDataExtent());
-                }
-            }
+            G.util.zoomToVisibleExtent();
         }
 	});         
     

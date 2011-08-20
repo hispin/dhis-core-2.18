@@ -397,7 +397,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
             width: G.conf.combo_width,
             store: this.stores.indicatorsByGroup,
             currentValue: null,
-            keepPosition: false,
+            lockPosition: false,
             listeners: {
                 'select': {
                     scope: this,
@@ -435,8 +435,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                                 else {
                                     this.legend.value = G.conf.map_legendset_type_automatic;
                                     this.prepareMapViewLegend();
-                                    this.classify(false, cb.keepPosition);
-                                    G.util.setKeepPosition(cb);
+                                    this.classify(false, cb.lockPosition);
+                                    G.util.setLockPosition(cb);
                                 }
                             }
                         });
@@ -485,7 +485,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
             selectOnFocus: true,
             width: G.conf.combo_width,
             store: this.stores.dataElementsByGroup,
-            keepPosition: false,
+            lockPosition: false,
             listeners: {
                 'select': {
                     scope: this,
@@ -523,8 +523,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                                 else {
                                     this.legend.value = G.conf.map_legendset_type_automatic;
                                     this.prepareMapViewLegend();
-                                    this.classify(false, cb.keepPosition);
-                                    G.util.setKeepPosition(cb);
+                                    this.classify(false, cb.lockPosition);
+                                    G.util.setLockPosition(cb);
                                 }
                             }
                         });
@@ -573,7 +573,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
             selectOnFocus: true,
             width: G.conf.combo_width,
             store: this.stores.periodsByType,
-            keepPosition: false,
+            lockPosition: false,
             listeners: {
                 'select': {
                     scope: this,
@@ -583,8 +583,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                         }
                         
                         this.updateValues = true;
-                        this.classify(false, cb.keepPosition);                        
-                        G.util.setKeepPosition(cb);
+                        this.classify(false, cb.lockPosition);                        
+                        G.util.setLockPosition(cb);
                         
                         this.window.cmp.reset.enable();
                     }
@@ -1066,7 +1066,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                                             selectOnFocus: true,
                                             width: G.conf.combo_width,
                                             store: G.stores.infrastructuralPeriodsByType,
-                                            keepPosition: false,
+                                            lockPosition: false,
                                             listeners: {
                                                 'select': function(cb) {
                                                     scope.infrastructuralPeriod = cb.getValue();
@@ -1374,7 +1374,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
             obj.stores.c2.load({scope: this, callback: function() {
                 obj.components.c2.setValue(this.mapView[obj.mapView.c2]);
                 obj.components.c2.currentValue = this.mapView[obj.mapView.c2];
-                obj.components.c2.keepPosition = true;
+                obj.components.c2.lockPosition = true;
                 
                 this.setMapViewLegend();
             }});
@@ -1684,14 +1684,12 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
         );
     },
 
-    classify: function(exception, position) {
+    classify: function(exception, lockPosition) {
         if (this.formValidation.validateForm.apply(this, [exception])) {
             G.vars.mask.msg = G.i18n.aggregating_map_values;
             G.vars.mask.show();
             
-            if (!position && this.layer.features.length) {
-                G.vars.map.zoomToExtent(this.layer.getDataExtent());
-            }
+            G.util.zoomToVisibleExtent(lockPosition);
             
             if (this.mapView) {
                 if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
@@ -1699,7 +1697,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                     G.vars.map.setCenter(new OpenLayers.LonLat(point.x, point.y), this.mapView.zoom);
                 }
                 else {
-                    G.vars.map.zoomToExtent(this.layer.getDataExtent());
+                    G.util.zoomToVisibleExtent();
                 }
                 this.mapView = false;
             }
