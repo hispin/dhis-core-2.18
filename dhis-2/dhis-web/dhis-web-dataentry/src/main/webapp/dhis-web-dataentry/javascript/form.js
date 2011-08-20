@@ -389,11 +389,12 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
     if ( dataSetList.length )
     {
         $( '#selectedDataSetId' ).removeAttr( 'disabled' );
-        clearListById( 'selectedDataSetId' );
-        addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
-
+        
         var dataSetId = $( '#selectedDataSetId' ).val();
         var periodId = $( '#selectedPeriodId' ).val();
+    
+        clearListById( 'selectedDataSetId' );
+        addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
 
         var dataSetValid = false;
 
