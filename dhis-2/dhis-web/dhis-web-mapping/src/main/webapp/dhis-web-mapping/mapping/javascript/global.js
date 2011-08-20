@@ -319,8 +319,8 @@ G.util = {
         }
     },
     
-    setKeepPosition: function(cb) {
-        cb.keepPosition = !cb.keepPosition ? true : cb.keepPosition;
+    setLockPosition: function(cb) {
+        cb.lockPosition = !cb.lockPosition ? true : cb.lockPosition;
     },
     
     mergeSvg: function(str, ext) {
@@ -425,6 +425,30 @@ G.util = {
             }
         }
         return layers;
+    },
+    
+    zoomToVisibleExtent: function(lockPosition) {
+        if (!lockPosition) {
+            var bounds = [];
+            var layers = this.getLayersByType(G.conf.map_layer_type_thematic);
+            
+            for (var i = 0; i < layers.length; i++) {
+                if (layers[i].getDataExtent() && layers[i].visibility) {
+                    bounds.push(layers[i].getDataExtent());
+                }
+            }
+                     
+            if (bounds.length === 1) {
+                G.vars.map.zoomToExtent(bounds[0]);
+            }
+            else if (bounds.length > 1) {
+                var extended = bounds[0];
+                for (var i = 1; i < bounds.length; i++) {
+                    extended.extend(bounds[i]);
+                }
+                G.vars.map.zoomToExtent(extended);
+            }
+        }
     },
     
     setZIndexByLayerType: function(type, index) {

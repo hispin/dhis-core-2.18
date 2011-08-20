@@ -500,7 +500,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                                             selectOnFocus: true,
                                             width: G.conf.combo_width,
                                             store: G.stores.infrastructuralPeriodsByType,
-                                            keepPosition: false,
+                                            lockPosition: false,
                                             listeners: {
                                                 'select': function(cb) {
                                                     scope.infrastructuralPeriod = cb.getValue();
@@ -757,11 +757,9 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
         );
     },
 
-    classify: function(exception, position) {
-        if (this.formValidation.validateForm.apply(this, [exception])) {            
-            if (!position && this.layer.features.length) {
-                G.vars.map.zoomToExtent(this.layer.getDataExtent());
-            }
+    classify: function(exception, lockPosition) {
+        if (this.formValidation.validateForm.apply(this, [exception])) {
+            G.util.zoomToVisibleExtent(lockPosition);
             
             for (var i = 0; i < this.layer.features.length; i++) {
                 this.layer.features[i].attributes.labelString = this.layer.features[i].attributes.name;
