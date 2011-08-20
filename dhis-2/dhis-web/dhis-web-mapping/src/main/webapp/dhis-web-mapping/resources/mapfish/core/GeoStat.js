@@ -166,6 +166,8 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.redraw();
         this.updateLegend();
         this.layer.setVisibility(true);
+        
+        G.util.zoomToVisibleExtent();
     },
 
     showDetails: function(obj) {},

@@ -427,11 +427,11 @@ G.util = {
         return layers;
     },
     
-    zoomToVisibleExtent: function(lockPosition) {
-        if (!lockPosition) {
+    zoomToVisibleExtent: function() {
+        if (!G.vars.lockPosition) {
             var bounds = [];
-            var layers = this.getLayersByType(G.conf.map_layer_type_thematic);
             
+            var layers = this.getLayersByType(G.conf.map_layer_type_thematic);            
             for (var i = 0; i < layers.length; i++) {
                 if (layers[i].getDataExtent() && layers[i].visibility) {
                     bounds.push(layers[i].getDataExtent());
@@ -545,6 +545,8 @@ G.vars = {
     },
     
     activeWidget: null,
+    
+    lockPosition: false,
     
     relocate: {},
     
