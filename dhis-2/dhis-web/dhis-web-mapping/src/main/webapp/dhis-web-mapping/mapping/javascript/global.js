@@ -35,8 +35,10 @@ G.conf = {
 	combo_number_width: 65,
 	combo_number_width_small: 44,
     window_width: 251,
-    window_position_x: 55,
-    window_position_y: 41,
+    window_x_right: 55,
+    window_y_right: 41,
+    window_x_left: 70,
+    window_y_left: 45,
     adminwindow_collapsed: 54,
     adminwindow_expanded_1: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 121 : 116,
     adminwindow_expanded_2: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 145 : 143,
@@ -576,7 +578,7 @@ G.cls = {
             style: 'margin-top:1px',
             widget: widget,
             enableItems: function(bool) {
-                var menuItems = [2,3,5,6,7,9];
+                var menuItems = [2,3,5,6,8];
                 for (var i = 0; i < menuItems.length; i++) {
                     if (bool) {
                         this.menu.items.items[menuItems[i]].enable();
@@ -599,7 +601,7 @@ G.cls = {
                                 iconCls: 'menu-layeroptions-edit',
                                 scope: this,
                                 handler: function() {
-                                    this.widget.window.show();
+                                    this.widget.window.show(this.id);
                                 }
                             },
                             '-',
@@ -621,14 +623,14 @@ G.cls = {
                                 }
                             },
                             '-',
-                            {
-                                text: 'Filter..',
-                                iconCls: 'menu-layeroptions-filter',
-                                scope: this,
-                                handler: function() {
-                                    this.widget.window.show();
-                                }
-                            },
+                            //{
+                                //text: 'Filter..',
+                                //iconCls: 'menu-layeroptions-filter',
+                                //scope: this,
+                                //handler: function() {
+                                    //this.widget.window.show();
+                                //}
+                            //},
                             {
                                 text: 'Search..',
                                 iconCls: 'menu-layeroptions-locate',
@@ -640,8 +642,7 @@ G.cls = {
                                         allowBlank: false,
                                         width: G.conf.combo_width_fieldset,
                                         value: "#0000FF"
-                                    }),
-                                    window: null
+                                    })
                                 },
                                 showSearchWindow: function() {
                                     var layer = this.parentMenu.parent.widget.layer;
@@ -659,13 +660,13 @@ G.cls = {
                                             sortInfo: {field: 'name', direction: 'ASC'},
                                             autoDestroy: true,
                                             data: data
-                                        });
+                                        });   
                                         
                                         if (this.cmp.window) {
                                             this.cmp.window.destroy();
-                                        }  
+                                        }
                                         
-                                        this.cmp.window = new Ext.Window({
+                                        this.window = new Ext.Window({
                                             title: '<span id="window-locate-title">Organisation unit search</span>',
                                             layout: 'fit',
                                             width: G.conf.window_width,
@@ -677,7 +678,16 @@ G.cls = {
                                                     labelWidth: G.conf.label_width,
                                                     items: [
                                                         { html: '<div class="window-info">Locate organisation units on the map</div>' },
-                                                        this.cmp.highlightColor,
+                                                        {
+                                                            xtype: 'colorfield',
+                                                            id: 'highlightcolor',
+                                                            emptyText: G.conf.emptytext,
+                                                            labelSeparator: G.conf.labelseparator,
+                                                            fieldLabel: G.i18n.highlight_color,
+                                                            allowBlank: false,
+                                                            width: G.conf.combo_width_fieldset,
+                                                            value: "#0000FF"
+                                                        },
                                                         {
                                                             xtype: 'textfield',
                                                             emptyText: G.conf.emptytext,
@@ -718,8 +728,7 @@ G.cls = {
                                                                                 break;
                                                                             }
                                                                         }
-                                                                        
-                                                                        var color = this.cmp.highlightColor.getValue();
+                                                                        var color = Ext.getCmp('highlightcolor').getValue();
                                                                         var symbolizer;
                                                                         
                                                                         if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_multipolygon_class_name ||
@@ -750,8 +759,8 @@ G.cls = {
                                                 }
                                             }
                                         });
-                                        this.cmp.window.setPagePosition(Ext.getCmp('east').x - (this.cmp.window.width + 15), Ext.getCmp('center').y + 41);
-                                        this.cmp.window.show();
+                                        this.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+                                        this.window.show(this.parentMenu.parent.id);
                                     }
                                     else {
                                         Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
@@ -896,8 +905,8 @@ G.cls = {
                                                     }
                                                 ]
                                             });
-                                            this.cmp.labelWindow.setPagePosition(Ext.getCmp('east').x - (this.cmp.labelWindow.width + 15), Ext.getCmp('center').y + 41);                        
-                                            this.cmp.labelWindow.show();
+                                            this.cmp.labelWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+                                            this.cmp.labelWindow.show(this.parentMenu.parent.id);
                                         }
                                     }
                                     else {

@@ -765,7 +765,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
             
             for (var i = 0; i < this.layer.features.length; i++) {
                 this.layer.features[i].attributes.labelString = this.layer.features[i].attributes.name;
-                this.layer.features[j].attributes.name = G.util.cutString(this.layer.features[j].attributes.name, 30);
+                this.layer.features[i].attributes.name = G.util.cutString(this.layer.features[i].attributes.name, 30);
             }
              
             this.applyValues();
