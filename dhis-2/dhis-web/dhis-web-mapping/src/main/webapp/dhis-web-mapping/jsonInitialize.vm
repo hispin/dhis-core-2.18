@@ -70,5 +70,11 @@
   ],
   "security": {
     "isAdmin": $auth.hasAccess( "dhis-web-mapping", "deleteMapLegendSet" )
-  } 
+  },
+  "rootNode": {
+    "id": "$!{rootNode.id}",
+    "name": "$!encoder.jsonEncode( ${rootNode.name} )",
+    "level": 1,
+    "hasChildrenWithCoordinates": $!{rootNode.hasChildrenWithCoordinates()}
+  }
 }
