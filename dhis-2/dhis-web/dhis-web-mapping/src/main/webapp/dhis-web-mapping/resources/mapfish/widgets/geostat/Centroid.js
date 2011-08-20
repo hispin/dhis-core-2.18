@@ -1073,15 +1073,13 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
             G.vars.mask.msg = G.i18n.aggregating_map_values;
             G.vars.mask.show();
             
-            G.util.zoomToVisibleExtent(lockPosition);
+            G.vars.lockPosition = lockPosition;
             
             if (this.mapView) {
                 if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
                     var point = G.util.getTransformedPointByXY(this.mapView.longitude, this.mapView.latitude);
                     G.vars.map.setCenter(new OpenLayers.LonLat(point.x, point.y), this.mapView.zoom);
-                }
-                else {
-                    G.util.zoomToVisibleExtent();
+                    G.vars.lockPosition = true;
                 }
                 this.mapView = false;
             }
