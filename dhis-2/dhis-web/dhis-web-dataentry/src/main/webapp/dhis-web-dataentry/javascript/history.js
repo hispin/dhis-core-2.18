@@ -141,11 +141,10 @@ function refreshChart()
 function markValueForFollowup( dataElementId, periodId, sourceId, categoryOptionComboId )
 {
     var url = 'markValueForFollowup.action?dataElementId=' + dataElementId + '&periodId=' + periodId + '&sourceId='
-            + sourceId + '&categoryOptionComboId=' + categoryOptionComboId;
+            + sourceId + '&categoryOptionComboId=' + categoryOptionComboId + '&r=' + Math.random();
 
     $.getJSON( url, function( json )
     {
-
         if ( json.message == 'marked' )
         {
             $( '#followup' ).attr( 'src', '../images/marked.png' );
