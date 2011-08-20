@@ -104,11 +104,11 @@ public class SaveCommentAction
         this.periodId = periodId;
     }
 
-    private String comment;
+    private String commentValue;
 
-    public void setComment( String comment )
+    public void setCommentValue( String commentValue )
     {
-        this.comment = comment;
+        this.commentValue = commentValue;
     }
 
     private int dataElementId;
@@ -165,9 +165,9 @@ public class SaveCommentAction
             storedBy = "[unknown]";
         }
 
-        if ( comment != null && comment.trim().equals( "" ) )
+        if ( commentValue != null && commentValue.isEmpty() )
         {
-            comment = null;
+            commentValue = null;
         }
 
         // ---------------------------------------------------------------------
@@ -178,21 +178,21 @@ public class SaveCommentAction
 
         if ( dataValue == null )
         {
-            if ( comment != null )
+            if ( commentValue != null )
             {
-                LOG.debug( "Adding DataValue, comment added" );
+                LOG.info( "Adding DataValue, comment added " + commentValue );
 
-                dataValue = new DataValue( dataElement, period, organisationUnit, null, storedBy, new Date(), comment,
-                    optionCombo );
+                dataValue = new DataValue( dataElement, period, organisationUnit, null, 
+                    storedBy, new Date(), commentValue, optionCombo );
 
                 dataValueService.addDataValue( dataValue );
             }
         }
         else
         {
-            LOG.debug( "Updating DataValue, comment added/changed" );
+            LOG.info( "Updating DataValue, comment added/changed " + commentValue );
 
-            dataValue.setComment( comment );
+            dataValue.setComment( commentValue );
             dataValue.setTimestamp( new Date() );
             dataValue.setStoredBy( storedBy );
 
