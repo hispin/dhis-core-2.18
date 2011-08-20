@@ -634,16 +634,6 @@ G.cls = {
                             {
                                 text: 'Search..',
                                 iconCls: 'menu-layeroptions-locate',
-                                cmp: {
-                                    highlightColor: new Ext.ux.ColorField({
-                                        emptyText: G.conf.emptytext,
-                                        labelSeparator: G.conf.labelseparator,
-                                        fieldLabel: G.i18n.highlight_color,
-                                        allowBlank: false,
-                                        width: G.conf.combo_width_fieldset,
-                                        value: "#0000FF"
-                                    })
-                                },
                                 showSearchWindow: function() {
                                     var layer = this.parentMenu.parent.widget.layer;
 
@@ -660,11 +650,7 @@ G.cls = {
                                             sortInfo: {field: 'name', direction: 'ASC'},
                                             autoDestroy: true,
                                             data: data
-                                        });   
-                                        
-                                        if (this.cmp.window) {
-                                            this.cmp.window.destroy();
-                                        }
+                                        });
                                         
                                         this.window = new Ext.Window({
                                             title: '<span id="window-locate-title">Organisation unit search</span>',
