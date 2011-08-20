@@ -47,9 +47,7 @@
     </action>
 
     <action name="saveMinMaxLimits" class="org.hisp.dhis.de.action.SaveMinMaxLimitsAction">
-      <result name="success" type="httpheader">
-        <param name="status">204</param>
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-dataentry/status.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_MINMAX_ADD,F_DATAELEMENT_MINMAX_UPDATE</param>
     </action>
