@@ -156,7 +156,6 @@ public class GetHistoryChartAction
 
         Period period = PeriodType.createPeriodExternalId( periodId );
         
-        System.out.println( "id " + organisationUnitId + ", dep " + organisationUnitService );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         
         chart = chartService.getJFreeChartHistory( dataElement, categoryOptionCombo, period, organisationUnit, HISTORY_LENGTH, format );

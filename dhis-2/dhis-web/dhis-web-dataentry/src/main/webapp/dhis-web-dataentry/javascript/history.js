@@ -13,13 +13,13 @@ function saveComment()
     commentSaver.save();
 }
 
-function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, periodId_, value_ )
+function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, periodId_, commentValue_ )
 {
     var dataElementId = dataElementId_;
     var optionComboId = optionComboId_;
     var organisationUnitId = organisationUnitId_;
     var periodId = periodId_;
-    var value = value_;
+    var commentValue = commentValue_;
 
     this.save = function()
     {
@@ -33,7 +33,7 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, peri
             	dataElementId: dataElementId,
             	optionComboId: optionComboId,
             	periodId: periodId,
-            	value: value
+            	commentValue: commentValue
             },
             dataType: 'json',
             cache: false,
