@@ -764,9 +764,14 @@ function registerCompleteDataSet( json )
     {
         storageManager.saveCompleteDataSet( params );
 
-        $.getJSON( 'registerCompleteDataSet.action', params, function()
-        {
-            storageManager.clearCompleteDataSet( params );
+        $.ajax( {
+        	url: 'registerCompleteDataSet.action', 
+        	data: params, 
+        	cache: false,
+        	success: function()
+	        {
+	            storageManager.clearCompleteDataSet( params );
+	        }
         } );
     }
     else
@@ -786,12 +791,18 @@ function undoCompleteDataSet()
     {
         disableUndoButton();
 
-        $.getJSON( 'undoCompleteDataSet.action', params ).success( function()
-        {
-            storageManager.clearCompleteDataSet( params );
-        } ).error( function()
-        {
-            storageManager.clearCompleteDataSet( params );
+        $.ajax( {
+        	url: 'undoCompleteDataSet.action', 
+        	data: params,
+        	cache: false,
+        	success: function()
+	        {
+	            storageManager.clearCompleteDataSet( params );
+	        },
+	        error: function()
+	        {
+	            storageManager.clearCompleteDataSet( params );
+	        }
         } );
     }
 }

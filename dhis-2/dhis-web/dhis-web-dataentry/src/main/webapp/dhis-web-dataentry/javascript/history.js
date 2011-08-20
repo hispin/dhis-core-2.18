@@ -74,13 +74,17 @@ function removeMinMaxLimit()
     $( '#minLimit' ).val( '' );
     $( '#maxLimit' ).val( '' );
 
-    $.get( 'removeMinMaxLimits.action', 
+    $.ajax( {
+    	url: 'removeMinMaxLimits.action',
+    	data: 
     	{
     		dataElementId: currentDataElementId,
     		categoryOptionComboId: currentOptionComboId,
     		organisationUnitId: currentOrganisationUnitId
     	},
-    	refreshChart );
+    	success: refreshChart,
+    	cache: false
+    } );
 }
 
 function saveMinMaxLimit()
