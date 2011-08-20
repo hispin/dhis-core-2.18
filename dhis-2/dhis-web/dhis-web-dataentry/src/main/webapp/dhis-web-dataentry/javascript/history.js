@@ -74,10 +74,13 @@ function removeMinMaxLimit()
     $( '#minLimit' ).val( '' );
     $( '#maxLimit' ).val( '' );
 
-    var url = 'removeMinMaxLimits.action?organisationUnitId=' + currentOrganisationUnitId + '&dataElementId='
-            + currentDataElementId + '&optionComboId=' + currentOptionComboId;
-
-    $.get( url, refreshChart );
+    $.get( 'removeMinMaxLimits.action', 
+    	{
+    		dataElementId: currentDataElementId,
+    		categoryOptionComboId: currentOptionComboId,
+    		organisationUnitId: currentOrganisationUnitId
+    	},
+    	refreshChart );
 }
 
 function saveMinMaxLimit()
@@ -129,17 +132,21 @@ function saveMinMaxLimit()
     currentMinMaxValueMap[minId] = minValue;
     currentMinMaxValueMap[maxId] = maxValue;
 
-    var url = 'saveMinMaxLimits.action?organisationUnitId=' + currentOrganisationUnitId + '&dataElementId='
-            + currentDataElementId + '&optionComboId=' + currentOptionComboId + '&minLimit=' + minValue + '&maxLimit='
-            + maxValue;
-
-    $.get( url, refreshChart );
+    $.get( 'saveMinMaxLimits.action', 
+    	{
+    		organisationUnitId: currentOrganisationUnitId,
+    		dataElementId: currentDataElementId,
+    		categoryOptionComboId: currentOptionComboId,
+    		minLimit: minValue,
+    		maxValue: maxValue
+    	},
+    	refreshChart );
 }
 
 function refreshChart()
 {
     var source = 'getHistoryChart.action?dataElementId=' + currentDataElementId + '&categoryOptionComboId='
-            + currentOptionComboId + '&r=' + Math.random();
+            + currentOptionComboId + '&periodId=' + periodId + '&organisationUnitId=' + currentOrganisationUnitId + '&r=' + Math.random();
 
     $( '#historyChart' ).attr( 'src', source );
 }
