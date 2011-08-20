@@ -1010,7 +1010,7 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
         getLegendInfo: function() {
             return {
                 name: this.valueType.isIndicator() ? this.cmp.indicator.getRawValue() : this.cmp.dataElement.getRawValue(),
-                time: G.system.mapDateType.isFixed() ? this.cmp.period.getRawValue() : this.cmp.startDate.getRawValue() + ' - ' + this.cmp.endDate.getRawValue(),
+                time: G.system.mapDateType.isFixed() ? this.cmp.period.getRawValue() : this.cmp.startDate.getRawValue() + ' to ' + this.cmp.endDate.getRawValue(),
                 map: this.organisationUnitSelection.level.name + ' / ' + this.organisationUnitSelection.parent.name
             };
         },

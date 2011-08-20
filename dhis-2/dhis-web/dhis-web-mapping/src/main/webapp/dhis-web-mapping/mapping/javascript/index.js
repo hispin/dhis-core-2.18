@@ -2146,7 +2146,7 @@
                 iconCls: 'icon-baselayer',
                 handler: function() {
                     Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (Ext.getCmp('overlays_w').width + 15), Ext.getCmp('center').y + 41);
-                    Ext.getCmp('baselayers_w').show();
+                    Ext.getCmp('baselayers_w').show(this.id);
                 }
             },
             {
@@ -2156,7 +2156,7 @@
                 iconCls: 'icon-overlay',
                 handler: function() {
                     Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (Ext.getCmp('overlays_w').width + 15), Ext.getCmp('center').y + 41);
-                    Ext.getCmp('overlays_w').show();
+                    Ext.getCmp('overlays_w').show(this.id);
                 }
             }
         ]
@@ -2233,7 +2233,7 @@
             }
         ]
     });    
-    choropleth.window.setPosition(340,45);
+    choropleth.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
     
     point = new mapfish.widgets.geostat.Point({
         map: G.vars.map,
@@ -2305,7 +2305,7 @@
             }
         ]
     });    
-    point.window.setPosition(340,45);
+    point.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
     
     symbol = new mapfish.widgets.geostat.Symbol({
         map: G.vars.map,
@@ -2377,7 +2377,7 @@
             }
         ]
     });    
-    symbol.window.setPosition(340,45);
+    symbol.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
     
     centroid = new mapfish.widgets.geostat.Centroid({
         map: G.vars.map,
@@ -2449,18 +2449,18 @@
             }
         ]
     });    
-    centroid.window.setPosition(340,45);
+    centroid.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
     
 	/* Section: map toolbar */
 	var mapLabel = new Ext.form.Label({
 		text: G.i18n.map,
 		style: 'font:bold 11px arial; color:#333;'
 	});
-	var l_l = new Ext.form.Label({
+	var layersLabel = new Ext.form.Label({
 		text: 'Layers',
 		style: 'font:bold 11px arial; color:#333;'
 	});
-	var t_l = new Ext.form.Label({
+	var toolsLabel = new Ext.form.Label({
 		text: 'Tools',
 		style: 'font:bold 11px arial; color:#333;'
 	});
@@ -2598,10 +2598,8 @@
 				favoriteWindow.hide();
 			}
 			else {
-                var x = Ext.getCmp('center').x + G.conf.window_position_x;
-                var y = Ext.getCmp('center').y + G.conf.window_position_y;    
-                favoriteWindow.setPosition(x,y);
-				favoriteWindow.show();
+                favoriteWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+				favoriteWindow.show(this.id);
 			}
 		}
 	});
@@ -2616,10 +2614,8 @@
 				predefinedMapLegendSetWindow.hide();
 			}
 			else {
-                var x = Ext.getCmp('center').x + G.conf.window_position_x;
-                var y = Ext.getCmp('center').y + G.conf.window_position_y;
-                predefinedMapLegendSetWindow.setPosition(x,y);
-				predefinedMapLegendSetWindow.show();         
+                predefinedMapLegendSetWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+				predefinedMapLegendSetWindow.show(this.id);         
                 if (!G.stores.predefinedMapLegend.isLoaded) {
                     G.stores.predefinedMapLegend.load();
                 }
@@ -2641,10 +2637,8 @@
 				exportImageWindow.hide();
 			}
 			else {
-                var x = Ext.getCmp('center').x + G.conf.window_position_x;
-                var y = Ext.getCmp('center').y + G.conf.window_position_y;			
-                exportImageWindow.setPosition(x,y);
-				exportImageWindow.show();
+                exportImageWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+				exportImageWindow.show(this.id);
 			}
 		}
 	});
@@ -2682,8 +2676,8 @@
                         }
                     });
                 }
-                control.window.setPagePosition(Ext.getCmp('east').x - (control.window.width + 15), Ext.getCmp('center').y + 41);
-                control.window.show();
+                control.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+                control.window.show(this.id);
                 document.getElementById('measureDistanceDiv').innerHTML = '0 km';                
                 control.setImmediate(true);
                 control.geodesic = true;
@@ -2706,10 +2700,8 @@
                 adminWindow.hide();
             }
             else {
-                var x = Ext.getCmp('center').x + G.conf.window_position_x;
-                var y = Ext.getCmp('center').y + G.conf.window_position_y;
-                adminWindow.setPosition(x,y);
-                adminWindow.show();
+                adminWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+                adminWindow.show(this.id);
             }
 		}
 	});
@@ -2726,7 +2718,7 @@
                 var c = Ext.getCmp('center').x;
                 var e = Ext.getCmp('east').x;
                 helpWindow.setPagePosition(c+((e-c)/2)-280, Ext.getCmp('east').y + 100);
-                helpWindow.show();
+                helpWindow.show(this.id);
             }
 		}
 	});
@@ -2754,7 +2746,7 @@
             ' ',
 			'-',
 			' ',' ',' ',
-			l_l,
+			layersLabel,
 			' ',' ',
             new G.cls.vectorLayerButton('icon-thematic1', G.i18n.thematic_layer + ' 1', choropleth),
             new G.cls.vectorLayerButton('icon-thematic2', G.i18n.thematic_layer + ' 2', point),
@@ -2763,7 +2755,7 @@
             ' ',
 			'-',
 			' ',' ',' ',
-			t_l,
+			toolsLabel,
 			' ',' ',
 			favoritesButton,
             predefinedMapLegendSetButton,
@@ -2892,7 +2884,7 @@
                 G.vars.map.events.register('click', null, function(e) {
                     if (G.vars.relocate.active) {
                         var mp = document.getElementById('mouseposition');
-                        var coordinates = '[' + mp.childNodes[1].data + ',' + mp.childNodes[4].data + ']';
+                        var coordinates = '[' + mp.childNodes[1].data + ',' + mp.childNodes[3].data + ']';
                         var center = Ext.getCmp('center').x;
 	
                         Ext.Ajax.request({
@@ -2908,7 +2900,7 @@
                                 Ext.message.msg(true, '<span class="x-msg-hl">' + G.vars.relocate.feature.attributes.name + 
                                     ' </span>relocated to ' +
                                     '[<span class="x-msg-hl">' + mp.childNodes[1].data + '</span>,' + 
-                                    '<span class="x-msg-hl">' + mp.childNodes[4].data + '</span>]');
+                                    '<span class="x-msg-hl">' + mp.childNodes[3].data + '</span>]');
                             }
                         });
                     }
