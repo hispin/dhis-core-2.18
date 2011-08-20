@@ -31,6 +31,7 @@ import static org.hisp.dhis.mapping.MappingService.KEY_MAP_DATE_TYPE;
 import static org.hisp.dhis.mapping.MappingService.MAP_DATE_TYPE_FIXED;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,9 +72,9 @@ public class InitializeAction
     {
         this.userSettingService = userSettingService;
     }
-    
+
     private ConfigurationService configurationService;
-    
+
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
@@ -85,7 +86,7 @@ public class InitializeAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -128,21 +129,21 @@ public class InitializeAction
     {
         return overlays;
     }
-    
+
     private DataElementGroup infrastructuralDataElements;
 
     public DataElementGroup getInfrastructuralDataElements()
     {
         return infrastructuralDataElements;
     }
-    
+
     private PeriodType infrastructuralPeriodType;
 
     public PeriodType getInfrastructuralPeriodType()
     {
         return infrastructuralPeriodType;
     }
-    
+
     private OrganisationUnit rootNode;
 
     public OrganisationUnit getRootNode()
@@ -165,23 +166,27 @@ public class InitializeAction
         else
         {
             mapView = mappingService.getMapView( id );
-            
+
             mapDateType = mapView.getMapDateType();
         }
-        
-        baseLayers = new ArrayList<MapLayer>( mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_BASELAYER ) );
-        
+
+        baseLayers = new ArrayList<MapLayer>(
+            mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_BASELAYER ) );
+
         Collections.sort( baseLayers, new MapLayerNameComparator() );
-        
+
         overlays = new ArrayList<MapLayer>( mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_OVERLAY ) );
-        
+
         Collections.sort( overlays, new MapLayerNameComparator() );
 
         infrastructuralDataElements = configurationService.getConfiguration().getInfrastructuralDataElements();
-        
+
         infrastructuralPeriodType = configurationService.getConfiguration().getInfrastructuralPeriodTypeDefaultIfNull();
+
+        Collection<OrganisationUnit> rootUnits = new ArrayList<OrganisationUnit>(
+            organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
         
-        rootNode = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) ).iterator().next();
+        rootNode = rootUnits.size() > 0 ? rootUnits.iterator().next() : new OrganisationUnit();
 
         return SUCCESS;
     }
