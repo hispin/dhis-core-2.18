@@ -492,6 +492,90 @@ G.util = {
             str = str.substr(0,len) + '..';
         }
         return str;
+    },
+    
+    mapView: {
+        layer: function(id) {
+            var w = new Ext.Window({
+                id: 'mapviewlayer_w',
+                title: '<span id="window-favorites-title">Favorite</span>',
+                layout: 'fit',
+                modal: true,
+                width: 150,
+                height: 98,
+                items: [
+                    {
+                        xtype: 'panel',
+                        bodyStyle: 'padding:14px;',
+                        items: [
+                            { html: 'Open in which layer?' }
+                        ]
+                    }
+                ],
+                bbar: [
+                    '->',
+                    {
+                        xtype: 'button',
+                        iconCls: 'icon-thematic1',
+                        hideLabel: true,
+                        handler: function() {
+                            G.util.mapView.prepare.call(choropleth, id);
+                            Ext.getCmp('mapviewlayer_w').destroy();
+                        }
+                    },
+                    {
+                        xtype: 'button',
+                        iconCls: 'icon-thematic2',
+                        hideLabel: true,
+                        handler: function() {
+                            G.util.mapView.prepare.call(point, id);
+                            Ext.getCmp('mapviewlayer_w').destroy();
+                        }
+                    }
+                ]                    
+            });
+            var c = Ext.getCmp('center').x;
+            var e = Ext.getCmp('east').x;
+            w.setPagePosition(c+((e-c)/2)-(w.width/2), Ext.getCmp('east').y + 100);
+            w.show();
+        },
+        
+        prepare: function(id) {
+            
+            if (!this.window.isShown) {
+                this.window.show();
+                this.window.hide();
+            }
+            var store = G.stores.mapView;
+            if (!store.isLoaded) {
+                store.load({scope: this, callback: function() {
+                    G.util.mapView.launch.call(this, id);
+                }});
+            }
+            else {
+                G.util.mapView.launch.call(this, id);
+            }
+        },
+        
+        launch: function(id) {
+            var store = G.stores.mapView;
+            this.mapView = store.getAt(store.find('id', id)).data;
+            this.updateValues = true;
+            
+            this.legend.value = this.mapView.mapLegendType;
+            this.legend.method = this.mapView.method || this.legend.method;
+            this.legend.classes = this.mapView.classes || this.legend.classes;
+
+            G.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
+            G.system.mapDateType.value = this.mapView.mapDateType;
+            Ext.getCmp('mapdatetype_cb').setValue(G.system.mapDateType.value);
+
+            this.valueType.value = this.mapView.mapValueType;
+            this.cmp.mapValueType.setValue(this.valueType.value);
+            
+            this.setMapView();
+            this.window.cmp.reset.enable();
+        }
     }
 };
 

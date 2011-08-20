@@ -141,6 +141,9 @@ a.x-menu-item-custom {
 .menu-featureoptions-relocate {
     background-image:url('../../../images/relocate.png');
 }
+.menu-mapview {
+    background-image:url('../../../images/favorite.png');
+}
 .no-icon-menu .x-menu-item-icon {
     display: none;
 }
@@ -276,6 +279,12 @@ a.x-menu-item-custom {
 }
 .x-btn .icon-measure {
 	background-image:url('../../../images/measure.png');
+}
+.x-btn .icon-thematic1 {
+	background-image:url('../../../images/thematic1.png');
+}
+.x-btn .icon-thematic2 {
+	background-image:url('../../../images/thematic2.png');
 }
 .x-btn-noicon .x-btn-small .x-btn-text {
     height:16px;
