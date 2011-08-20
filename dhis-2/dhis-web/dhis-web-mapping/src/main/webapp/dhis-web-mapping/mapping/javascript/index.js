@@ -144,7 +144,7 @@
         url: G.conf.path_mapping + 'getMapLegendSetsByType' + G.conf.type,
         baseParams: {type: G.conf.map_legendset_type_predefined},
         root: 'mapLegendSets',
-        fields: ['id', 'name', 'legendType', 'indicators', 'dataelements'],
+        fields: ['id', 'name', 'symbolizer', 'indicators', 'dataelements'],
         sortInfo: {field:'name', direction:'ASC'},
         autoLoad: false,
         isLoaded: false,
@@ -574,6 +574,10 @@
 				}
 			},
             {
+                xtype: 'tbseparator',
+                cls: 'xtb-sep-panel'
+            },
+            {
                 xtype: 'button',
                 id: 'deleteview_b',
                 iconCls: 'icon-remove',
@@ -653,6 +657,7 @@
             }
         }
     });
+    favoriteWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
 	
 	/* Section: export map */
 	var exportImageWindow = new Ext.Window({
@@ -831,6 +836,7 @@
             }
         ]    
     });
+    exportImageWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
 	
 	/* Section: predefined map legend set */
     var predefinedMapLegendSetWindow = new Ext.Window({
@@ -961,7 +967,8 @@
                         ]
                     },
                     {
-                        xtype: 'form',
+                        xtype: 'panel',
+                        layout: 'form',
                         items: [
                             {
                                 xtype: 'toolbar',
@@ -1027,6 +1034,10 @@
                                                 }
                                             });
                                         }
+                                    },
+                                    {
+                                        xtype: 'tbseparator',
+                                        cls: 'xtb-sep-panel'
                                     },
                                     {
                                         xtype: 'button',
@@ -1118,7 +1129,7 @@
                                     }
                                 }
                             },
-                            {html: '<div class="window-field-label">'+G.i18n.legends+'</div>'},
+                            {html: '<div class="window-field-label">' + G.i18n.legends + '</div>'},
                             {
                                 xtype: 'multiselect',
                                 id: 'predefinednewmaplegend_ms',
@@ -1134,7 +1145,7 @@
                             {html: '<div class="window-info">Delete legend set</div>'},
                             {
                                 xtype: 'combo',
-                                id: 'predefinedmaplegendsetindicator_cb',
+                                id: 'predefinedmaplegendset_cb',
                                 editable: false,
                                 valueField: 'id',
                                 displayField: 'name',
@@ -1147,7 +1158,7 @@
                                 fieldLabel: G.i18n.legendset,
                                 width: G.conf.combo_width_fieldset,
                                 minListWidth: G.conf.combo_width_fieldset,
-                                store:G.stores.predefinedMapLegendSet
+                                store: G.stores.predefinedMapLegendSet
                             }
                         ]
                     },
@@ -1231,13 +1242,17 @@
                                         }
                                     },
                                     {
+                                        xtype: 'tbseparator',
+                                        cls: 'xtb-sep-panel'
+                                    },
+                                    {
                                         xtype: 'button',
                                         id: 'deletepredefinedmaplegendset_b',
                                         text: G.i18n.delete_,
                                         iconCls: 'icon-remove',
                                         handler: function() {
-                                            var mlsv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue();
-                                            var mlsrv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getRawValue();
+                                            var mlsv = Ext.getCmp('predefinedmaplegendset_cb').getValue();
+                                            var mlsrv = Ext.getCmp('predefinedmaplegendset_cb').getRawValue();
                                             
                                             if (!mlsv) {
                                                 Ext.message.msg(false, G.i18n.please_select_a_legend_set);
@@ -1250,14 +1265,30 @@
                                                 params: {id: mlsv},
                                                 success: function(r) {
                                                     Ext.message.msg(true, G.i18n.legendset + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + G.i18n.was_deleted);
+                                                    var store = G.stores.predefinedMapLegendSet;
+                                                    var symbolizer = store.getAt(store.find('id', mlsv)).data.symbolizer;
+                                                    
                                                     G.stores.predefinedMapLegendSet.load();
-                                                    Ext.getCmp('predefinedmaplegendsetindicator_cb').clearValue();
-                                                    if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue) {
-                                                        Ext.getCmp('predefinedmaplegendsetindicator2_cb').clearValue();
+                                                    store = symbolizer == G.conf.map_legend_symbolizer_color ?
+                                                        G.stores.predefinedColorMapLegendSet : G.stores.predefinedImageMapLegendSet;
+                                                    store.load();
+                                                    
+                                                    Ext.getCmp('predefinedmaplegendset_cb').clearValue();
+                                                    if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue) {
+                                                        Ext.getCmp('predefinedmaplegendsetindicator_cb').clearValue();
                                                     }
-                                                    if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue) {
+                                                    if (mlsv == Ext.getCmp('predefinedmaplegendsetdataelement_cb').getValue) {
                                                         Ext.getCmp('predefinedmaplegendsetdataelement_cb').clearValue();
-                                                    }                            
+                                                    }
+                                                    if (mlsv == choropleth.cmp.mapLegendSet.getValue()) {
+                                                        choropleth.cmp.mapLegendSet.clearValue();
+                                                    }
+                                                    if (mlsv == point.cmp.mapLegendSet.getValue()) {
+                                                        point.cmp.mapLegendSet.clearValue();
+                                                    }
+                                                    if (mlsv == centroid.cmp.mapLegendSet.getValue()) {
+                                                        centroid.cmp.mapLegendSet.clearValue();
+                                                    }
                                                 }
                                             });
                                         }
@@ -1306,7 +1337,7 @@
                             {html: '<div class="window-info">Assign indicators to legend set</div>'},
                             {
                                 xtype: 'combo',
-                                id: 'predefinedmaplegendsetindicator2_cb',
+                                id: 'predefinedmaplegendsetindicator_cb',
                                 editable: false,
                                 valueField: 'id',
                                 displayField: 'name',
@@ -1366,8 +1397,8 @@
                                         text: G.i18n.assign,
                                         iconCls: 'icon-assign',
                                         handler: function() {
-                                            var ls = Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue();
-                                            var lsrw = Ext.getCmp('predefinedmaplegendsetindicator2_cb').getRawValue();
+                                            var ls = Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue();
+                                            var lsrw = Ext.getCmp('predefinedmaplegendsetindicator_cb').getRawValue();
                                             var lims = Ext.getCmp('predefinedmaplegendsetindicator_ms').getValue();
                                             
                                             if (!ls) {
@@ -1553,6 +1584,7 @@
             }
         }
     });
+    predefinedMapLegendSetWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
     
 			
     /* Section: help */
@@ -1746,6 +1778,10 @@
                         }
                     });
                 }
+            },
+            {
+                xtype: 'tbseparator',
+                cls: 'xtb-sep-panel'
             },
             {
                 xtype: 'button',
@@ -1944,6 +1980,10 @@
                 }
             },
             {
+                xtype: 'tbseparator',
+                cls: 'xtb-sep-panel'
+            },
+            {
                 xtype: 'button',
                 id: 'deletemaplayer_b',
                 text: G.i18n.delete_,
@@ -2055,6 +2095,8 @@
             }
         }
     });
+    adminWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+    
 
     var layerTree = new Ext.tree.TreePanel({
         id: 'layertree_tp',
@@ -2510,85 +2552,15 @@
 		handler: function() {
             G.util.zoomToVisibleExtent();
         }
-	});         
+	});
     
-    var viewHistoryButton = new Ext.Button({
-        id: 'viewhistory_b',
-		iconCls: 'icon-history',
-		tooltip: G.i18n.history,
-        style: 'margin-top:1px',
-        addMenu: function() {
-            this.menu = new Ext.menu.Menu({
-                id: 'viewhistory_m',
-                defaults: {
-                    itemCls: 'x-menu-item x-menu-item-custom'
-                },
-                items: [],
-                listeners: {
-                    'add': function(menu) {
-                        var items = menu.items.items;
-                        var keys = menu.items.keys;
-                        items.unshift(items.pop());
-                        keys.unshift(keys.pop());
-						
-						if (items.length > 10) {
-							items[items.length-1].destroy();
-						}
-                    },
-                    'click': function(menu, item, e) {
-                        var mapView = item.mapView;
-                        var scope = mapView.widget;                                            
-                        scope.mapView = mapView;
-                        scope.updateValues = true;
-                        
-                        scope.legend.value = mapView.mapLegendType;
-                        scope.legend.method = mapView.method || scope.legend.method;
-                        scope.legend.classes = mapView.classes || scope.legend.classes;
-                        
-                        G.vars.map.setCenter(new OpenLayers.LonLat(mapView.longitude, mapView.latitude), mapView.zoom);
-                        G.system.mapDateType.value = mapView.mapDateType;
-                        Ext.getCmp('mapdatetype_cb').setValue(G.system.mapDateType.value);
-
-                        scope.valueType.value = mapView.mapValueType;
-                        scope.cmp.mapValueType.setValue(scope.valueType.value);
-                        
-                        G.util.expandWidget(scope);                        
-                        scope.setMapView();
-                    }
-                }
-            });
-        },
-        addItem: function(scope) {
-            if (!this.menu) {
-                this.addMenu();
-            }
-
-            var mapView = scope.formValues.getAllValues.call(scope);
-            mapView.widget = scope;
-            mapView.timestamp = G.date.getNowHMS();
-            var c1 = '<span class="menu-item-inline-c1">';
-            var c2 = '<span class="menu-item-inline-c2">';
-            var spanEnd = '</span>';
-            mapView.label = '<span class="menu-item-inline-bg">' +
-                            c1 + mapView.timestamp + spanEnd +
-                            c2 + mapView.parentOrganisationUnitName + spanEnd +
-                            c1 + '( ' + mapView.organisationUnitLevelName + ' )' + spanEnd + 
-                            c2 + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName) + spanEnd +
-                            c1 + (mapView.mapDateType == G.conf.map_date_type_fixed ? mapView.periodName : (mapView.startDate + ' - ' + mapView.endDate)) + spanEnd +
-                            spanEnd;
-            
-            for (var i = 0; i < this.menu.items.items.length; i++) {
-                if (G.util.compareObjToObj(mapView, this.menu.items.items[i].mapView, ['longitude','latitude','zoom','widget','timestamp','label'])) {
-                    this.menu.items.items[i].destroy();
-                }
-            }
-            
-            this.menu.addMenuItem({
-                html: mapView.label,
-                mapView: mapView
-            });
-        }
-    });
+    var choroplethButton = new G.cls.vectorLayerButton('icon-thematic1', G.i18n.thematic_layer + ' 1', choropleth);
+    
+    var pointButton = new G.cls.vectorLayerButton('icon-thematic2', G.i18n.thematic_layer + ' 2', point);
+    
+    var symbolButton = new G.cls.vectorLayerButton('icon-symbol', 'Symbol layer', symbol);
+    
+    var centroidButton = new G.cls.vectorLayerButton('icon-centroid', 'Centroid layer', centroid);
 	
 	var favoriteButton = new Ext.Button({
 		iconCls: 'icon-favorite',
@@ -2625,7 +2597,6 @@
                                 favoriteWindow.hide();
                             }
                             else {
-                                favoriteWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
                                 favoriteWindow.show(this.id);
                             }
                         }
@@ -2660,7 +2631,6 @@
 				predefinedMapLegendSetWindow.hide();
 			}
 			else {
-                predefinedMapLegendSetWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
 				predefinedMapLegendSetWindow.show(this.id);         
                 if (!G.stores.predefinedMapLegend.isLoaded) {
                     G.stores.predefinedMapLegend.load();
@@ -2683,7 +2653,6 @@
 				exportImageWindow.hide();
 			}
 			else {
-                exportImageWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
 				exportImageWindow.show(this.id);
 			}
 		}
@@ -2741,12 +2710,11 @@
 		tooltip: 'Administrator settings',
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
-		handler: function() {
+		handler: function() {         
             if (!adminWindow.hidden) {
                 adminWindow.hide();
             }
             else {
-                adminWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
                 adminWindow.show(this.id);
             }
 		}
@@ -2761,9 +2729,6 @@
                 helpWindow.hide();
             }
             else {
-                var c = Ext.getCmp('center').x;
-                var e = Ext.getCmp('east').x;
-                helpWindow.setPagePosition(c+((e-c)/2)-280, Ext.getCmp('east').y + 100);
                 helpWindow.show(this.id);
             }
 		}
@@ -2788,16 +2753,15 @@
             zoomInButton,
 			zoomOutButton,
 			zoomToVisibleExtentButton,
-			viewHistoryButton,
             ' ',
 			'-',
 			' ',' ',' ',
 			layersLabel,
 			' ',' ',
-            new G.cls.vectorLayerButton('icon-thematic1', G.i18n.thematic_layer + ' 1', choropleth),
-            new G.cls.vectorLayerButton('icon-thematic2', G.i18n.thematic_layer + ' 2', point),
-            new G.cls.vectorLayerButton('icon-symbol', 'Symbol layer', symbol),
-            new G.cls.vectorLayerButton('icon-centroid', 'Centroid layer', centroid),
+            choroplethButton,
+            pointButton,
+            symbolButton,
+            centroidButton,
             ' ',
 			'-',
 			' ',' ',' ',
@@ -2953,6 +2917,16 @@
                 });
                 
                 document.getElementById('featuredatatext').innerHTML = '<div style="color:#666">' + G.i18n.no_feature_selected + '</div>';
+                
+                symbolButton.menu.remove(symbolButton.menu.items.last());
+                symbolButton.menu.remove(symbolButton.menu.items.last());
+                centroidButton.menu.remove(centroidButton.menu.items.last());
+                centroidButton.menu.remove(centroidButton.menu.items.last());
+                
+                var c = Ext.getCmp('center').x;
+                var e = Ext.getCmp('east').x;
+                
+                helpWindow.setPagePosition(c+((e-c)/2)-(helpWindow.width/2), Ext.getCmp('east').y + 100);
                 
                 if (G.vars.parameter.id) {
                     G.util.mapView.layer(G.vars.parameter.id);

@@ -115,11 +115,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
     },
     
     getColors: function() {
-        var startColor = new mapfish.ColorRgb();
-        startColor.setFromHex(this.form.findField('startcolor').getValue());
-        var endColor = new mapfish.ColorRgb();
-        endColor.setFromHex(this.form.findField('endcolor').getValue());
-        return [startColor, endColor];
     },
     
     initProperties: function() {
@@ -549,11 +544,11 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                             title: '<span class="window-relocate-title">' + feature.attributes.name + '</span>',
                             layout: 'fit',
                             width: G.conf.window_width,
-                            height: 95,
+                            height: 100,
                             items: [
                                 {
                                     xtype: 'panel',
-                                    bodyStyle: 'padding:8px',
+                                    bodyStyle: 'padding:14px',
                                     items: [
                                         {html: G.i18n.select_new_location_on_map}
                                     ]
@@ -615,35 +610,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                 });
                 scope.featureOptions.menu.showAt([G.vars.mouseMove.x, G.vars.mouseMove.y]);
             }
-            else {
-                if (feature.attributes.hasChildrenWithCoordinates) {
-                    if (G.vars.locateFeatureWindow) {
-                        G.vars.locateFeatureWindow.destroy();
-                    }
-                             
-                    scope.updateValues = true;
-                    scope.isDrillDown = true;
-                    
-                    function organisationUnitLevelCallback() {
-                        var names = this.organisationUnitSelection.setValuesOnDrillDown(feature.attributes.id, feature.attributes.name);
-                        this.form.findField('boundary').setValue(names[0]);
-                        this.form.findField('level').setValue(names[1]);
-                        this.loadGeoJson();
-                    }
-                    
-                    if (G.stores.organisationUnitLevel.isLoaded) {
-                        organisationUnitLevelCallback.call(scope);
-                    }
-                    else {
-                        G.stores.organisationUnitLevel.load({scope: scope, callback: function() {
-                            organisationUnitLevelCallback.call(this);
-                        }});
-                    }
-                }
-                else {
-                    Ext.message.msg(false, G.i18n.no_coordinates_found);
-                }
-            }
         };
         
         this.selectFeatures = new OpenLayers.Control.newSelectFeature(
@@ -703,15 +669,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                 parentOrganisationUnitName: this.organisationUnitSelection.parent.name,
 				organisationUnitLevel: this.organisationUnitSelection.level.level,
                 organisationUnitLevelName: this.organisationUnitSelection.level.name,
-				mapLegendType: this.form.findField('maplegendtype').getValue(),
-				method: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('method').getValue() : null,
-				classes: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('classes').getValue() : null,
-				bounds: this.legend.value == G.conf.map_legendset_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
-				colorLow: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('startcolor').getValue() : null,
-				colorHigh: this.legend.value == G.conf.map_legendset_type_automatic ? this.form.findField('endcolor').getValue() : null,
-                mapLegendSetId: this.legend.value == G.conf.map_legendset_type_predefined ? this.form.findField('maplegendset').getValue() : null,
-				radiusLow: this.form.findField('radiuslow').getValue(),
-				radiusHigh: this.form.findField('radiushigh').getValue(),
 				longitude: G.vars.map.getCenter().lon,
 				latitude: G.vars.map.getCenter().lat,
 				zoom: parseFloat(G.vars.map.getZoom())

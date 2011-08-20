@@ -1138,8 +1138,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
     },
 
     applyValues: function() {
-        Ext.getCmp('viewhistory_b').addItem(this);
-        
 		var options = {
             indicator: 'value',
             method: G.conf.classify_by_equal_intervals
