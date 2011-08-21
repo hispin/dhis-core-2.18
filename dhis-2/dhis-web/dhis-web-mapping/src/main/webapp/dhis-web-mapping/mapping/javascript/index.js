@@ -2239,9 +2239,27 @@
         closeAction: 'hide',
         width: 570,
         height: 478,
+        collapsed: false,
         items: choropleth,
         cmp: {},
         bbar: [
+            {
+                xtype: 'button',
+                text: 'Resize',
+                iconCls: 'icon-resize',
+                scope: choropleth,
+                handler: function() {
+                    if (this.window.collapsed) {
+                        this.window.setWidth(G.conf.window_editlayer_width);
+                        this.window.collapsed = false;
+                        this.window.syncSize();
+                    }
+                    else {
+                        this.window.setWidth(G.conf.window_editlayer_width_collapsed);
+                        this.window.collapsed = true;
+                    }
+                }
+            },
             '->',
             {
                 xtype: 'button',
@@ -2323,6 +2341,23 @@
         items: point,
         cmp: {},
         bbar: [
+            {
+                xtype: 'button',
+                text: 'Resize',
+                iconCls: 'icon-resize',
+                scope: point,
+                handler: function() {
+                    if (this.window.collapsed) {
+                        this.window.setWidth(G.conf.window_editlayer_width);
+                        this.window.collapsed = false;
+                        this.window.syncSize();
+                    }
+                    else {
+                        this.window.setWidth(G.conf.window_editlayer_width_collapsed);
+                        this.window.collapsed = true;
+                    }
+                }
+            },
             '->',
             {
                 xtype: 'button',
@@ -2395,6 +2430,23 @@
         items: symbol,
         cmp: {},
         bbar: [
+            {
+                xtype: 'button',
+                text: 'Resize',
+                iconCls: 'icon-resize',
+                scope: symbol,
+                handler: function() {
+                    if (this.window.collapsed) {
+                        this.window.setWidth(G.conf.window_editlayer_width);
+                        this.window.collapsed = false;
+                        this.window.syncSize();
+                    }
+                    else {
+                        this.window.setWidth(G.conf.window_editlayer_width_collapsed);
+                        this.window.collapsed = true;
+                    }
+                }
+            },
             '->',
             {
                 xtype: 'button',
@@ -2467,6 +2519,23 @@
         items: centroid,
         cmp: {},
         bbar: [
+            {
+                xtype: 'button',
+                text: 'Resize',
+                iconCls: 'icon-resize',
+                scope: centroid,
+                handler: function() {
+                    if (this.window.collapsed) {
+                        this.window.setWidth(G.conf.window_editlayer_width);
+                        this.window.collapsed = false;
+                        this.window.syncSize();
+                    }
+                    else {
+                        this.window.setWidth(G.conf.window_editlayer_width_collapsed);
+                        this.window.collapsed = true;
+                    }
+                }
+            },
             '->',
             {
                 xtype: 'button',

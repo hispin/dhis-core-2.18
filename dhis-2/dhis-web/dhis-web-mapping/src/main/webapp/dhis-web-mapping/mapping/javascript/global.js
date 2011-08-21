@@ -39,6 +39,8 @@ G.conf = {
     window_y_right: 41,
     window_x_left: 70,
     window_y_left: 45,
+    window_editlayer_width: 570,
+    window_editlayer_width_collapsed: 292,    
     adminwindow_collapsed: 54,
     adminwindow_expanded_1: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 121 : 116,
     adminwindow_expanded_2: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 145 : 143,
