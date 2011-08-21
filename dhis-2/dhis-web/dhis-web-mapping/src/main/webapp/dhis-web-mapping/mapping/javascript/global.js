@@ -523,7 +523,7 @@ G.util = {
                         iconCls: 'icon-thematic1',
                         hideLabel: true,
                         handler: function() {
-                            G.util.mapView.prepare.call(choropleth, id);
+                            G.util.mapView.mapView.call(choropleth, id);
                             Ext.getCmp('mapviewlayer_w').destroy();
                         }
                     },
@@ -532,7 +532,7 @@ G.util = {
                         iconCls: 'icon-thematic2',
                         hideLabel: true,
                         handler: function() {
-                            G.util.mapView.prepare.call(point, id);
+                            G.util.mapView.mapView.call(point, id);
                             Ext.getCmp('mapviewlayer_w').destroy();
                         }
                     }
@@ -544,27 +544,27 @@ G.util = {
             w.show();
         },
         
-        prepare: function(id) {
-            
+        mapView: function(id) {
+            var store = G.stores.mapView;
+            if (!store.isLoaded) {
+                store.load({scope: this, callback: function() {
+                    var mapView = store.getAt(store.find('id', id)).data;
+                    G.util.mapView.launch.call(this, mapView);
+                }});
+            }
+            else {
+                var mapView = store.getAt(store.find('id', id)).data;
+                G.util.mapView.launch.call(this, mapView);
+            }
+        },
+        
+        launch: function(mapView) {
             if (!this.window.isShown) {
                 this.window.show();
                 this.window.hide();
             }
-            var store = G.stores.mapView;
-            if (!store.isLoaded) {
-                store.load({scope: this, callback: function() {
-                    G.util.mapView.launch.call(this, id);
-                }});
-            }
-            else {
-                G.util.mapView.launch.call(this, id);
-            }
-        },
-        
-        launch: function(id) {
-            var store = G.stores.mapView;
-            this.mapView = store.getAt(store.find('id', id)).data;
-            this.updateValues = true;
+            this.mapView = mapView;
+            this.updateValues = true;      
             
             this.legend.value = this.mapView.mapLegendType;
             this.legend.method = this.mapView.method || this.legend.method;
@@ -1057,25 +1057,11 @@ G.cls = {
                                                     items[items.length-1].destroy();
                                                 }
                                             },
-                                            'click': function(menu, item, e) {
-                                                var mapView = item.mapView;
-                                                var scope = mapView.widget;                                            
-                                                scope.mapView = mapView;
-                                                scope.updateValues = true;
-                                                
-                                                scope.legend.value = mapView.mapLegendType;
-                                                scope.legend.method = mapView.method || scope.legend.method;
-                                                scope.legend.classes = mapView.classes || scope.legend.classes;
-                                                
-                                                G.vars.map.setCenter(new OpenLayers.LonLat(mapView.longitude, mapView.latitude), mapView.zoom);
-                                                G.system.mapDateType.value = mapView.mapDateType;
-                                                Ext.getCmp('mapdatetype_cb').setValue(G.system.mapDateType.value);
-
-                                                scope.valueType.value = mapView.mapValueType;
-                                                scope.cmp.mapValueType.setValue(scope.valueType.value);
-                                                
-                                                G.util.expandWidget(scope);                        
-                                                scope.setMapView();
+                                            'click': {
+                                                scope: this,
+                                                fn: function(menu, item) {
+                                                    G.util.mapView.launch.call(this.parentMenu.parent.widget, item.mapView);
+                                                }
                                             }
                                         }
                                     });
