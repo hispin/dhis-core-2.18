@@ -341,7 +341,7 @@
     pointLayer.layerType = G.conf.map_layer_type_thematic;
     G.vars.map.addLayer(pointLayer);
     
-    symbolLayer = new OpenLayers.Layer.Vector('Symbol layer', {
+    symbolLayer = new OpenLayers.Layer.Vector(G.conf.symbol_layer, {
         'visibility': false,
         'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -360,7 +360,7 @@
     symbolLayer.layerType = G.conf.map_layer_type_thematic;
     G.vars.map.addLayer(symbolLayer);
     
-    centroidLayer = new OpenLayers.Layer.Vector('Centroid layer', {
+    centroidLayer = new OpenLayers.Layer.Vector(G.conf.centroid_layer, {
         'visibility': false,
         'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -2126,11 +2126,11 @@
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: 'Symbol layer'
+                    layer: G.conf.symbol_layer
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: 'Centroid layer'
+                    layer: G.conf.centroid_layer
                 }
             ]
         },
@@ -2263,7 +2263,7 @@
             '->',
             {
                 xtype: 'button',
-                text: G.i18n.apply,
+                text: G.i18n.update,
                 iconCls: 'icon-assign',
                 disabled: true,
                 scope: choropleth,
@@ -2271,8 +2271,7 @@
                     var node = this.cmp.parent.selectedNode;
                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
                         this.cmp.level.getValue(), this.cmp.level.getRawValue());
-                        
-                    this.window.hide();									
+                    
                     this.loadGeoJson();
                 },
                 listeners: {
@@ -2361,7 +2360,7 @@
             '->',
             {
                 xtype: 'button',
-                text: G.i18n.apply,
+                text: G.i18n.update,
                 iconCls: 'icon-assign',
                 disabled: true,
                 scope: point,
@@ -2369,8 +2368,7 @@
                     var node = this.cmp.parent.selectedNode;
                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
                         this.cmp.level.getValue(), this.cmp.level.getRawValue());
-                        
-                    this.window.hide();									
+                    
                     this.loadGeoJson();
                 },
                 listeners: {
@@ -2421,7 +2419,7 @@
     });
     
     symbol.window = new Ext.Window({
-        title: '<span id="window-symbol-title">Symbol layer</span>',
+        title: '<span id="window-symbol-title">' + G.conf.symbol_layer + '</span>',
         layout: 'fit',
         bodyStyle: 'padding:8px 8px 0px 8px; background-color:#fff',
         closeAction: 'hide',
@@ -2450,7 +2448,7 @@
             '->',
             {
                 xtype: 'button',
-                text: G.i18n.apply,
+                text: G.i18n.update,
                 iconCls: 'icon-assign',
                 disabled: true,
                 scope: symbol,
@@ -2458,8 +2456,7 @@
                     var node = this.cmp.parent.selectedNode;
                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
                         this.cmp.level.getValue(), this.cmp.level.getRawValue());
-                        
-                    this.window.hide();									
+                    
                     this.loadGeoJson();
                 },
                 listeners: {
@@ -2510,7 +2507,7 @@
     });
     
     centroid.window = new Ext.Window({
-        title: '<span id="window-centroid-title">Centroid layer</span>',
+        title: '<span id="window-centroid-title">' + G.conf.centroid_layer + '</span>',
         layout: 'fit',
         bodyStyle: 'padding:8px 8px 0px 8px; background-color:#fff',
         closeAction: 'hide',
@@ -2539,7 +2536,7 @@
             '->',
             {
                 xtype: 'button',
-                text: G.i18n.apply,
+                text: G.i18n.update,
                 iconCls: 'icon-assign',
                 disabled: true,
                 scope: centroid,
@@ -2547,8 +2544,7 @@
                     var node = this.cmp.parent.selectedNode;
                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
                         this.cmp.level.getValue(), this.cmp.level.getRawValue());
-                        
-                    this.window.hide();									
+                    
                     this.loadGeoJson();
                 },
                 listeners: {
@@ -2627,9 +2623,9 @@
     
     var pointButton = new G.cls.vectorLayerButton('icon-thematic2', G.i18n.thematic_layer + ' 2', point);
     
-    var symbolButton = new G.cls.vectorLayerButton('icon-symbol', 'Symbol layer', symbol);
+    var symbolButton = new G.cls.vectorLayerButton('icon-symbol', G.conf.symbol_layer, symbol);
     
-    var centroidButton = new G.cls.vectorLayerButton('icon-centroid', 'Centroid layer', centroid);
+    var centroidButton = new G.cls.vectorLayerButton('icon-centroid', G.conf.centroid_layer, centroid);
 	
 	var favoriteButton = new Ext.Button({
 		iconCls: 'icon-favorite',
@@ -2895,11 +2891,11 @@
                         contentEl: 'pointlegend'
                     },
                     {
-                        title: '<span class="panel-title">Symbol layer legend</span>',
+                        title: '<span class="panel-title">' + G.conf.symbol_layer + ' legend</span>',
                         contentEl: 'symbollegend'
                     },
                     {
-                        title: '<span class="panel-title">Centroid layer legend</span>',
+                        title: '<span class="panel-title">' + G.conf.centroid_layer + ' legend</span>',
                         contentEl: 'centroidlegend'
                     }
                 ]

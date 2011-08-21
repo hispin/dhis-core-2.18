@@ -10,6 +10,8 @@ G.conf = {
 
     thematic_layer_1: 'Thematic layer 1',
     thematic_layer_2: 'Thematic layer 2',
+    symbol_layer: 'Facility layer',
+    centroid_layer: 'Symbol layer',
 	
 //	Help strings
     
