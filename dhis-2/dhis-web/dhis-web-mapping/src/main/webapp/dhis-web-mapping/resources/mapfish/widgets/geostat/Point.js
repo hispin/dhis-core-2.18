@@ -278,7 +278,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 'select': {
                     scope: this,
                     fn: function(cb) {
-                        G.util.mapView.prepare.call(this, cb.getValue());
+                        G.util.mapView.mapView.call(this, cb.getValue());
                     }
                 }
             }
