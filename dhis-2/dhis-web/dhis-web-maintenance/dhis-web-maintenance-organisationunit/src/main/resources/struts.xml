@@ -260,10 +260,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/saveOrganisationUnitLevelForm.vm</param>
       <param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
+	  <param name="requiredAuthorities">F_ORGANISATIONUNITLEVEL_UPDATE</param>
     </action>
 
     <action name="saveOrganisationUnitLevels" class="org.hisp.dhis.oum.action.organisationunitlevel.SaveOrganisationUnitLevelsAction">
       <result name="success" type="redirect">index.action</result>
+	  <param name="requiredAuthorities">F_ORGANISATIONUNITLEVEL_UPDATE</param>
     </action>
 
     <!-- OrganisationUnit Search -->
