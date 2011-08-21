@@ -2929,7 +2929,7 @@
                 helpWindow.setPagePosition(c+((e-c)/2)-(helpWindow.width/2), Ext.getCmp('east').y + 100);
                 
                 if (G.vars.parameter.id) {
-                    G.util.mapView.layer(G.vars.parameter.id);
+                    G.util.mapView.mapView.call(choropleth, G.vars.parameter.id);
                     G.vars.parameter.id = null;
                 }
             }
