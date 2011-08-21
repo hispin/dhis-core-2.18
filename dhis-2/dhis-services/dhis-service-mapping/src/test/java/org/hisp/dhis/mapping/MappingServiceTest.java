@@ -494,10 +494,10 @@ public class MappingServiceTest
         overlayLayers.add( mapLayer2 );
         overlayLayers.add( mapLayer3 );
 
-        int idA = mappingService.addMapLayer( mapLayer1 );
-        int idB = mappingService.addMapLayer( mapLayer2 );
-        int idC = mappingService.addMapLayer( mapLayer3 );
-        int idD = mappingService.addMapLayer( mapLayer4 );
+        mappingService.addMapLayer( mapLayer1 );
+        mappingService.addMapLayer( mapLayer2 );
+        mappingService.addMapLayer( mapLayer3 );
+        mappingService.addMapLayer( mapLayer4 );
 
         assertEquals( baseLayers, mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_BASELAYER ) );
         assertEquals( overlayLayers, mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_OVERLAY ) );
