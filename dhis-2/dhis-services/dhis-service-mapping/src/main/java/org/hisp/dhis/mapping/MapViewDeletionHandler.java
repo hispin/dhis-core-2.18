@@ -27,8 +27,11 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -99,6 +102,42 @@ public class MapViewDeletionHandler
     }
     
     @Override
+    public void deleteDataElementGroup( DataElementGroup dataElementGroup )
+    {
+        for ( MapView mapView : mappingService.getAllMapViews() )
+        {
+            if ( mapView.getDataElementGroup() != null && mapView.getDataElementGroup().equals( dataElementGroup ) )
+            {
+                mappingService.deleteMapView( mapView );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteDataElement( DataElement dataElement )
+    {
+        for ( MapView mapView : mappingService.getAllMapViews() )
+        {
+            if ( mapView.getDataElement() != null && mapView.getDataElement().equals( dataElement ) )
+            {
+                mappingService.deleteMapView( mapView );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        for ( MapView mapView : mappingService.getAllMapViews() )
+        {
+            if ( mapView.getParentOrganisationUnit() != null && mapView.getParentOrganisationUnit().equals( organisationUnit ) )
+            {
+                mappingService.deleteMapView( mapView );
+            }
+        }
+    }
+    
+    @Override
     public void deleteMapLegendSet( MapLegendSet mapLegendSet )
     {
         for ( MapView mapView : mappingService.getAllMapViews() )
@@ -109,4 +148,5 @@ public class MapViewDeletionHandler
             }
         }
     }
+    
 }
