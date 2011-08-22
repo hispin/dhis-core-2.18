@@ -82,7 +82,12 @@ function removeMinMaxLimit()
     		categoryOptionComboId: currentOptionComboId,
     		organisationUnitId: currentOrganisationUnitId
     	},
-    	success: refreshChart,
+    	success: function() {    		
+    		$( '#minLimit' ).css( 'background-color', COLOR_WHITE );
+    		$( '#maxLimit' ).css( 'background-color', COLOR_WHITE );
+    		
+    		refreshChart()
+    	},
     	cache: false
     } );
 }
