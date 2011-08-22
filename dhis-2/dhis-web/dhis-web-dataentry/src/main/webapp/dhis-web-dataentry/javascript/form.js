@@ -548,7 +548,8 @@ function loadDataValues()
 
 function insertDataValues()
 {
-    var dataValueMap = new Array();
+    var dataValueMap = [];
+	currentMinMaxValueMap = []; // Reset
 
     var periodId = $( '#selectedPeriodId' ).val();
     var dataSetId = $( '#selectedDataSetId' ).val();
@@ -604,9 +605,8 @@ function insertDataValues()
 	
 	            var dataValue = dataValueMap[value.id];
 	
-	            if ( dataValue
-	                    && ( ( value.min && new Number( dataValue ) < new Number( value.min ) ) || ( value.max && new Number(
-	                            dataValue ) > new Number( value.max ) ) ) )
+	            if ( dataValue && ( ( value.min && new Number( dataValue ) < new Number( 
+	            	value.min ) ) || ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
 	            {
 	                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
 	            }
