@@ -41,7 +41,8 @@ dhis2.select.getGhost = function( $select )
     var select_ghost_id = $select.attr( 'id' ) + '_ghost';
     var $select_ghost = $( '#' + select_ghost_id );
 
-    if ($select_ghost.size() === 0) {
+    if ( $select_ghost.size() === 0 )
+    {
         $select_ghost = $( '<select id="' + select_ghost_id + '" multiple="multiple"></select>' );
         $select_ghost.hide();
         $select_ghost.appendTo( 'body' );
@@ -66,18 +67,24 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
     $select_ghost = dhis2.select.getGhost( $select );
     caseSensitive = caseSensitive || false;
 
-    if (key.length === 0) {
+    if ( key.length === 0 )
+    {
         dhis2.select.moveSorted( $select, $select_ghost.children() );
-    } else {
+    }
+    else
+    {
         var $select_options = $select.children();
         var $select_ghost_options = $select_ghost.children();
         var $select_ghost_matched;
         var $select_not_matched;
 
-        if(caseSensitive) {
+        if ( caseSensitive )
+        {
             $select_ghost_matched = $select_ghost_options.filter( ':contains(' + key + ')' );
             $select_not_matched = $select_options.filter( ':not( :contains(' + key + ') )' );
-        } else {
+        }
+        else
+        {
             $select_ghost_matched = $select_ghost_options.filter( ':containsNC(' + key + ')' );
             $select_not_matched = $select_options.filter( ':not( :containsNC(' + key + ') )' );
         }
@@ -92,39 +99,48 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
  * sorted fashion. Both the select and array is assumed to be sorted to start
  * with.
  * 
- * @param $select {jQuery}Â A select which acts as the target
- * @param $array {jQuery}Â An array of child elements to move
+ * @param $select {jQuery} A select which acts as the target
+ * @param $array {jQuery} An array of child elements to move
  */
-dhis2.select.moveSorted = function ($select, $array)
+dhis2.select.moveSorted = function( $select, $array )
 {
-    if ($select.children().size() === 0) {
-        $select.append($array);
-    } else {
+    if ( $select.children().size() === 0 )
+    {
+        $select.append( $array );
+    }
+    else
+    {
         var array = $array.get();
         var array_idx = 0;
         var current = array.shift();
         var $children = $select.children();
 
-        while (current !== undefined) {
-            var $current = $(current);
+        while ( current !== undefined )
+        {
+            var $current = $( current );
 
-            if ( dhis2.comparator.htmlNoCaseComparator( $children.eq(array_idx), $current) > 0) {
-                $(current).insertBefore($children.eq(array_idx));
+            if ( dhis2.comparator.htmlNoCaseComparator( $children.eq( array_idx ), $current ) > 0 )
+            {
+                $( current ).insertBefore( $children.eq( array_idx ) );
                 current = array.shift();
-            } else {
+            }
+            else
+            {
                 array_idx++;
             }
 
-            if ($children.size() < array_idx) {
+            if ( $children.size() < array_idx )
+            {
                 break;
             }
         }
 
-        if (current !== undefined) {
-            $select.append(current);
+        if ( current !== undefined )
+        {
+            $select.append( current );
         }
 
-        $select.append(array);
+        $select.append( array );
     }
 };
 
@@ -134,29 +150,29 @@ dhis2.select.moveSorted = function ($select, $array)
  * @param $select {jQuery} Select which acts as the target
  * @param $array An array of child elements to move
  */
-dhis2.select.move = function ($select, $array)
+dhis2.select.move = function( $select, $array )
 {
-    $select.append($array);
+    $select.append( $array );
 };
 
 /**
  * Mark all options in a select as selected.
  * 
- * @param $select {jQuery}Â The select
+ * @param $select {jQuery} The select
  */
-dhis2.select.selectAll = function($select)
+dhis2.select.selectAll = function( $select )
 {
-    $select.children().attr('selected', true);
+    $select.children().attr( 'selected', true );
 };
 
 /**
  * Mark all options as not selected.
  * 
- * @param $select {jQuery}Â The select
+ * @param $select {jQuery} The select
  */
-dhis2.select.selectNone = function($select)
+dhis2.select.selectNone = function( $select )
 {
-    $select.children().attr('selected', false);
+    $select.children().attr( 'selected', false );
 };
 
 /**
@@ -167,11 +183,12 @@ dhis2.select.selectNone = function($select)
  * 
  * @return Sorted array of options
  */
-dhis2.select.sort = function($options)
+dhis2.select.sort = function( $options )
 {
-    return $.makeArray($options).sort(function(a, b) {
-        return dhis2.comparator.htmlComparator( $(a), $(b) );
-    });
+    return $.makeArray( $options ).sort( function( a, b )
+    {
+        return dhis2.comparator.htmlComparator( $( a ), $( b ) );
+    } );
 };
 
 /**
@@ -182,9 +199,10 @@ dhis2.select.sort = function($options)
  * 
  * @return Sorted array of options
  */
-dhis2.select.sortNC = function($options)
+dhis2.select.sortNC = function( $options )
 {
-    return $($.makeArray($options).sort(function(a, b) {
-        return dhis2.comparator.htmlNoCaseComparator( $(a), $(b) );
-    }) );
+    return $( $.makeArray( $options ).sort( function( a, b )
+    {
+        return dhis2.comparator.htmlNoCaseComparator( $( a ), $( b ) );
+    } ) );
 };

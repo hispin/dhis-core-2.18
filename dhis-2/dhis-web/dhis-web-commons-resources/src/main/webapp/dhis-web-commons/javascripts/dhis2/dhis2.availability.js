@@ -49,7 +49,7 @@ dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInt
     {
         $.ajax( {
             url : "../dhis-web-commons-stream/ping.action",
-            cache: false,
+            cache : false,
             success : function( data, textStatus, jqXHR )
             {
                 dhis2.availability._isAvailable = true;
@@ -105,7 +105,7 @@ dhis2.availability.syncCheckAvailability = function()
     $.ajax( {
         url : "../dhis-web-commons-stream/ping.action",
         async : false,
-        cache: false,
+        cache : false,
         success : function( data, textStatus, jqXHR )
         {
             dhis2.availability._isAvailable = true;
@@ -124,6 +124,7 @@ dhis2.availability.syncCheckAvailability = function()
             if ( dhis2.availability._isAvailable )
             {
                 dhis2.availability._isAvailable = false;
+                dhis2.availability._isLoggedIn = -1;
                 $( document ).trigger( "dhis2.offline" );
             }
         }
