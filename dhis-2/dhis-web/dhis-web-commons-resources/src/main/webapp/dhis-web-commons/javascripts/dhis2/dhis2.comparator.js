@@ -37,11 +37,12 @@ dhis2.util.namespace( 'dhis2.comparator' );
  */
 dhis2.comparator.defaultComparator = function( a, b )
 {
-    if( a === b) {
+    if ( a === b )
+    {
         return 0;
     }
 
-    return (a > b) ? 1 : -1;
+    return ( a > b ) ? 1 : -1;
 };
 
 /**
@@ -69,7 +70,7 @@ dhis2.comparator.htmlNoCaseComparator = function( a, b )
 {
     a = !!a ? a.html() : a;
     b = !!b ? b.html() : b;
-    
+
     a = !!a ? a.toLowerCase() : a;
     b = !!b ? b.toLowerCase() : b;
 
