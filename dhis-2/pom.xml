@@ -1,4 +1,5 @@
-<project xmlns = "http://maven.apache.org/POM/4.0.0" xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.hisp.dhis</groupId>
   <artifactId>dhis</artifactId>
@@ -6,7 +7,7 @@
   <packaging>pom</packaging>
   <name>DHIS 2</name>
   <url>http://dhis2.org</url>
-  
+
   <description>
     The District Health Information System deals with registering,
     aggregating and reporting statistical health data. The goal is to allow users to analyze
@@ -42,35 +43,35 @@
 
   <repositories>
     <!--
-    <repository>
-    <id>amplecode_maven2_repo</id>
-    <name>AmpleCode Maven 2 repository</name>
-    <url>http://www.amplecode.org/maven2</url>
-    </repository>
-     -->
+      <repository>
+      <id>amplecode_maven2_repo</id>
+      <name>AmpleCode Maven 2 repository</name>
+      <url>http://www.amplecode.org/maven2</url>
+      </repository>
+    -->
     <repository>
       <id>dhis.uio.no</id>
       <name>Dhis2 External Dependencies Repository</name>
       <url>http://dhis.uio.no/maven/external</url>
-    </repository>   
+    </repository>
     <!--
-    <repository>
+      <repository>
       <id>jboss-public-repository-group</id>
       <name>JBoss Public Repository Group</name>
       <url>http://repository.jboss.org/nexus/content/groups/public/</url>
       <layout>default</layout>
       <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
+      <enabled>true</enabled>
+      <updatePolicy>never</updatePolicy>
       </releases>
       <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
+      <enabled>true</enabled>
+      <updatePolicy>never</updatePolicy>
       </snapshots>
-    </repository>
+      </repository>
     -->
   </repositories>
-  
+
   <issueManagement>
     <system>Trac</system>
     <url>https://launchpad.net/dhis2</url>
@@ -212,7 +213,7 @@
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-excel-reporting</artifactId>
         <version>${project.version}</version>
-      </dependency-->
+        </dependency -->
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-administration</artifactId>
@@ -275,7 +276,7 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-context</artifactId>
         <version>${spring.version}</version>
-      </dependency>	  
+      </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-core</artifactId>
@@ -378,9 +379,9 @@
       </dependency>
       <dependency>
         <groupId>org.apache.poi</groupId>
-	<artifactId>poi</artifactId>		
-	<version>3.7</version>
-     </dependency>	
+        <artifactId>poi</artifactId>
+        <version>3.7</version>
+      </dependency>
       <dependency>
         <groupId>org.amplecode</groupId>
         <artifactId>quick</artifactId>
@@ -413,6 +414,12 @@
         <version>4.8.1</version>
       </dependency>
       <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>1.8.5</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
         <groupId>org.amplecode</groupId>
         <artifactId>cave-process</artifactId>
         <version>1.0.3</version>
@@ -432,7 +439,7 @@
         <groupId>net.fckeditor</groupId>
         <artifactId>java-core</artifactId>
         <version>2.6</version>
-     </dependency>
+      </dependency>
       <!-- Apache Commons -->
       <dependency>
         <groupId>commons-collections</groupId>
@@ -575,7 +582,7 @@
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
           </exclusion>
-        </exclusions>      
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>jfree</groupId>
