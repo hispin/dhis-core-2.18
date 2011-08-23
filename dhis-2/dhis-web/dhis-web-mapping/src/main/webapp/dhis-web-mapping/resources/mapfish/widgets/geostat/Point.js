@@ -832,9 +832,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         });
         
         this.cmp.parent = new Ext.tree.TreePanel({
-            bodyStyle: 'padding-left:2px; background-color:#fff',
-            height: 315,
-            width: 255,
+            cls: 'treepanel-layer-border',
             autoScroll: true,
             lines: false,
             loader: new Ext.tree.TreeLoader({
