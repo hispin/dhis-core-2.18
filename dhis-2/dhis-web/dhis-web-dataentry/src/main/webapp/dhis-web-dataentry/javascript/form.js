@@ -193,8 +193,18 @@ function uploadLocalData()
 
                 if ( array.length < 1 )
                 {
-                    setHeaderDelayMessage( i18n_online_notification );
+                    setHeaderDelayMessage( i18n_sync_success );
                 }
+            },
+            error: function( jqXHR, textStatus, errorThrown )
+            {
+                var message = i18n_sync_failed
+                    + ' <button id="sync_button" type="button">' + i18n_sync_now
+                    + '</button>';
+
+                setHeaderMessage( message );
+
+                $( '#sync_button' ).bind( 'click', uploadLocalData );
             }
         } );
     };
@@ -232,8 +242,18 @@ function uploadLocalData()
                 }
                 else
                 {
-                    setHeaderDelayMessage( i18n_online_notification );
+                    setHeaderDelayMessage( i18n_sync_success );
                 }
+            },
+            error: function( jqXHR, textStatus, errorThrown )
+            {
+                var message = i18n_sync_failed
+                    + ' <button id="sync_button" type="button">' + i18n_sync_now
+                    + '</button>';
+
+                setHeaderMessage( message );
+    
+                $( '#sync_button' ).bind( 'click', uploadLocalData );
             }
         } );
     } )( dataValuesArray );
