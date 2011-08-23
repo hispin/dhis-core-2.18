@@ -94,10 +94,10 @@ function generateExpression( expression )
  */
 function saveVal( dataElementId, optionComboId )
 {
-    var dataElementName = dataElements[dataElementId].name;
+    var dataElementName = getDataElementName( dataElementId );
     var fieldId = '#' + dataElementId + '-' + optionComboId + '-val';
     var value = $( fieldId ).val();
-    var type = dataElements[dataElementId].type;
+    var type = getDataElementType( dataElementId );
 
     $( fieldId ).css( 'background-color', COLOR_YELLOW );
 
