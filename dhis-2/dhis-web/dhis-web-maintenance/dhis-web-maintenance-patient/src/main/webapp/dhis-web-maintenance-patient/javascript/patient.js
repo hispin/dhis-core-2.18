@@ -12,7 +12,7 @@ function organisationUnitSelected( orgUnits )
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
 			
-	$.getJSON( 'organisationUnitHasPatients.action?orgunitId=' + orgUnits[0], {}
+	$.postJSON( 'organisationUnitHasPatients.action', {orgunitId:orgUnits[0]}
 		, function( json ) 
 		{
 			var type = json.response;
