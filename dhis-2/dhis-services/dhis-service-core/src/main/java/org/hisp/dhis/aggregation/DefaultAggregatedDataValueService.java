@@ -98,6 +98,11 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.getAggregatedDataValues( periodIds, organisationUnitIds );
     }
     
+    public Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        return aggregatedDataValueStore.getAggregatedDataValueTotals( periodIds, organisationUnitIds );
+    }
+    
     public Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedDataValues( dataElementId, periodIds, organisationUnitIds );
@@ -106,6 +111,11 @@ public class DefaultAggregatedDataValueService
     public Collection<AggregatedDataValue> getAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
+    }
+
+    public Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        return aggregatedDataValueStore.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds );
     }
     
     public int deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
