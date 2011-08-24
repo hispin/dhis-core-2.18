@@ -332,35 +332,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                     scope: this,
                     fn: function(cb) {
                         this.updateValues = true;
-                        
-                        Ext.Ajax.request({
-                            url: G.conf.path_mapping + 'getMapLegendSetByIndicator' + G.conf.type,
-                            method: 'POST',
-                            params: {indicatorId: cb.getValue()},
-                            scope: this,
-                            success: function(r) {
-                                var mapLegendSet = Ext.util.JSON.decode(r.responseText).mapLegendSet[0];
-                                if (mapLegendSet.id) {
-                                    
-                                    function load() {
-                                        this.cmp.mapLegendSet.setValue(mapLegendSet.id);
-                                        this.applyPredefinedLegend();
-                                    }
-                                    
-                                    if (!G.stores.predefinedMapLegendSet.isLoaded) {
-                                        G.stores.predefinedMapLegendSet.load({scope: this, callback: function() {
-                                            load.call(this);
-                                        }});
-                                    }
-                                    else {
-                                        load.call(this);
-                                    }
-                                }
-                                
-                                this.classify(false, cb.lockPosition);
-                                G.util.setLockPosition(cb);
-                            }
-                        });
                     }
                 }
             }

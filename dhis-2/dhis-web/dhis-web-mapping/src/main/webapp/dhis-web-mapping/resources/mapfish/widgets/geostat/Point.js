@@ -349,9 +349,13 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             triggerAction: 'all',
             selectOnFocus: true,
             width: G.conf.combo_width,
-            store: this.stores.indicatorsByGroup,
             currentValue: null,
             lockPosition: false,
+            reloadStore: function(id) {
+                this.cmp.mapLegendSet.setValue(id);
+                this.applyPredefinedLegend();
+            },
+            store: this.stores.indicatorsByGroup,
             listeners: {
                 'select': {
                     scope: this,
@@ -372,18 +376,13 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                                     this.legend.value = G.conf.map_legendset_type_predefined;
                                     this.prepareMapViewLegend();
                                     
-                                    function load() {
-                                        this.cmp.mapLegendSet.setValue(mapLegendSet.id);
-                                        this.applyPredefinedLegend();
-                                    }
-                                    
-                                    if (!G.stores.predefinedMapLegendSet.isLoaded) {
-                                        G.stores.predefinedMapLegendSet.load({scope: this, callback: function() {
-                                            load.call(this);
+                                    if (!G.stores.predefinedColorMapLegendSet.isLoaded) {
+                                        G.stores.predefinedColorMapLegendSet.load({scope: this, callback: function() {
+                                            cb.reloadStore.call(this, mapLegendSet.id);
                                         }});
                                     }
                                     else {
-                                        load.call(this);
+                                        cb.reloadStore.call(this, mapLegendSet.id);
                                     }
                                 }
                                 else {
