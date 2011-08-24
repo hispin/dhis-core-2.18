@@ -147,7 +147,7 @@ public class DefaultPivotTableService
             {
                 indicators = new ArrayList<DataElement>( dataElementService.getAggregateableDataElements() );
                 
-                aggregatedValues = aggregatedDataValueService.getAggregatedDataValues( 
+                aggregatedValues = aggregatedDataValueService.getAggregatedDataValueTotals( 
                     ConversionUtils.getIdentifiers( Period.class, periods ), 
                     ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
             }
@@ -155,8 +155,8 @@ public class DefaultPivotTableService
             {
                 indicators = new ArrayList<AbstractIdentifiableObject>( dataElementService.getDataElementGroup( groupId ).getMembers() );
                 
-                aggregatedValues = aggregatedDataValueService.getAggregatedDataValues(
-                    ConversionUtils.getIdentifiers( Indicator.class, indicators ),
+                aggregatedValues = aggregatedDataValueService.getAggregatedDataValueTotals(
+                    ConversionUtils.getIdentifiers( DataElement.class, indicators ),
                     ConversionUtils.getIdentifiers( Period.class, periods ), 
                     ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );  
             }
