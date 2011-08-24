@@ -305,7 +305,7 @@ function showListPatientDuplicate( rootElement, validate )
         {
 			sPatient += "<hr style='margin:5px 0px;'><table>";
 			sPatient += "<tr><td><strong>" + i18n_patient_system_id + "</strong></td><td>" + $(patient).find('systemIdentifier').text() + "</td></tr>" ;
-			sPatient += "<tr><td><strong>" + i18n_patient_fullName + "</strong></td><td>" + $(patient).find('fullName').text() + "</td></tr>" ;
+			sPatient += "<tr><td><strong>" + i18n_patient_full_name + "</strong></td><td>" + $(patient).find('fullName').text() + "</td></tr>" ;
 			sPatient += "<tr><td><strong>" + i18n_patient_gender + "</strong></td><td>" + $(patient).find('gender').text() + "</td></tr>" ;
 			sPatient += "<tr><td><strong>" + i18n_patient_date_of_birth + "</strong></td><td>" + $(patient).find('dateOfBirth').text() + "</td></tr>" ;
 			sPatient += "<tr><td><strong>" + i18n_patient_age + "</strong></td><td>" + $(patient).find('age').text() + "</td></tr>" ;
