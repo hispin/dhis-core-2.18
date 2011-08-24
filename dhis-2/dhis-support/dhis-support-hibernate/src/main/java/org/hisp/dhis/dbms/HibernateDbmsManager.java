@@ -131,6 +131,7 @@ public class HibernateDbmsManager
         emptyTable( "categories_categoryoptions" );
 
         emptyTable( "organisationunit" );
+        emptyTable( "version" );
         emptyTable( "mocksource" );
         emptyTable( "source" );
         emptyTable( "period" );
