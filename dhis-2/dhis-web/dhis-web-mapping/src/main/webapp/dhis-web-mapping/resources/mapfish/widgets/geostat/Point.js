@@ -86,6 +86,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
     
     cmp: {},
     
+    requireUpdate: false,
+    
     initComponent: function() {
     
         this.initProperties();
@@ -823,6 +825,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 'select': {
                     scope: this,
                     fn: function() {
+                        this.requireUpdate = true;
                         this.formValidation.validateForm.call(this);
                         
                         this.window.cmp.reset.enable();
@@ -848,22 +851,22 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 expanded: true
             },
             widget: this,
-            isSelected: false,
+            isLoaded: false,
             reset: function() {
                 if (this.getSelectionModel().getSelectedNode()) {
                     this.getSelectionModel().getSelectedNode().unselect();
                 }                
                 this.collapseAll();
                 this.getRootNode().expand();
-                this.isSelected = false;
                 this.widget.window.cmp.apply.disable();
             },
             listeners: {
                 'click': {
                     scope: this,
                     fn: function(n) {
-                        this.cmp.parent.selectedNode = n;
-                        this.cmp.parent.isSelected = true;
+                        var tree = n.getOwnerTree();
+                        tree.selectedNode = n;
+                        this.requireUpdate = true;
                         this.formValidation.validateForm.call(this);
                         
                         this.window.cmp.reset.enable();
@@ -873,7 +876,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         });
     },
     
-    addItems: function() {    
+    addItems: function() {
         
         this.items = [
             {
@@ -1386,6 +1389,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             this.mapView.parentOrganisationUnitLevel, this.mapView.organisationUnitLevel, this.mapView.organisationUnitLevelName);
             
         this.cmp.parent.reset();
+        
         this.cmp.parent.selectedNode = {attributes: {
             id: this.mapView.parentOrganisationUnitId,
             text: this.mapView.parentOrganisationUnitName,
@@ -1437,7 +1441,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
 	},
     
     formValidation: {
-        validateForm: function(exception) {
+        validateForm: function() {
             if (this.cmp.mapValueType.getValue() == G.conf.map_value_type_indicator) {
                 if (!this.cmp.indicator.getValue()) {
                     if (exception) {
@@ -1521,8 +1525,15 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 return false;
             }
             
-            if (this.cmp.parent.isSelected) {
-                this.window.cmp.apply.enable();
+            if (this.requireUpdate) {
+                if (this.window.isUpdate) {
+                    this.window.cmp.apply.disable();
+                    this.requireUpdate = false;
+                    this.window.isUpdate = false;
+                }
+                else {
+                    this.window.cmp.apply.enable();
+                }
             }
             
             return true;

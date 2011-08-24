@@ -95,9 +95,6 @@ mapfish.GeoStat = OpenLayers.Class({
 		this.layer.features = G.util.getTransformedFeatureArray(this.layer.features);
         this.requestSuccess(request);
         
-        if (!G.vars.activeWidget.formValidation.validateForm.call(G.vars.activeWidget)) {
-                G.vars.mask.hide();
-            }
         G.vars.activeWidget.classify();
     },
 

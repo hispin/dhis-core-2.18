@@ -2240,8 +2240,9 @@
         width: 570,
         height: 478,
         collapsed: false,
-        items: choropleth,
+        isUpdate: false,
         cmp: {},
+        items: choropleth,
         bbar: [
             {
                 xtype: 'button',
@@ -2271,7 +2272,7 @@
                     var node = this.cmp.parent.selectedNode;
                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
                         this.cmp.level.getValue(), this.cmp.level.getRawValue());
-                    
+                    this.window.isUpdate = true;                    
                     this.loadGeoJson();
                 },
                 listeners: {
@@ -2337,8 +2338,10 @@
         closeAction: 'hide',
         width: 570,
         height: 478,
-        items: point,
+        collapsed: false,
+        isUpdate: false,
         cmp: {},
+        items: point,
         bbar: [
             {
                 xtype: 'button',
@@ -2368,7 +2371,7 @@
                     var node = this.cmp.parent.selectedNode;
                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
                         this.cmp.level.getValue(), this.cmp.level.getRawValue());
-                    
+                    this.window.isUpdate = true;
                     this.loadGeoJson();
                 },
                 listeners: {
@@ -2398,7 +2401,16 @@
                     }
                 }
             }
-        ]
+        ],
+        listeners: {
+            'show': {
+                scope: point,
+                fn: function() {
+                    this.cmp.parent.isLoaded = true;
+                    this.window.isShown = true;
+                }
+            }
+        }
     });    
     point.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
     
@@ -2425,8 +2437,9 @@
         closeAction: 'hide',
         width: 570,
         height: 478,
-        items: symbol,
+        isUpdate: false,
         cmp: {},
+        items: symbol,
         bbar: [
             {
                 xtype: 'button',
@@ -2456,7 +2469,7 @@
                     var node = this.cmp.parent.selectedNode;
                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
                         this.cmp.level.getValue(), this.cmp.level.getRawValue());
-                    
+                    this.window.isUpdate = true;
                     this.loadGeoJson();
                 },
                 listeners: {
@@ -2513,8 +2526,9 @@
         closeAction: 'hide',
         width: 570,
         height: 478,
-        items: centroid,
+        isUpdate: false,
         cmp: {},
+        items: centroid,
         bbar: [
             {
                 xtype: 'button',
@@ -2544,6 +2558,7 @@
                     var node = this.cmp.parent.selectedNode;
                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
                         this.cmp.level.getValue(), this.cmp.level.getRawValue());
+                    this.window.isUpdate = true;
                     
                     this.loadGeoJson();
                 },

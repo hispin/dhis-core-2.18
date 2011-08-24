@@ -86,6 +86,8 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
     
     cmp: {},
     
+    requireUpdate: false,
+    
     initComponent: function() {
     
         this.initProperties();
@@ -578,7 +580,9 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                 'select': {
                     scope: this,
                     fn: function() {
-                        this.formValidation.validateForm.call(this);                        
+                        this.requireUpdate = true;
+                        this.formValidation.validateForm.call(this);    
+                                            
                         this.window.cmp.reset.enable();
                     }
                 }
@@ -602,22 +606,22 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                 expanded: true
             },
             widget: this,
-            isSelected: false,
+            isLoaded: false,
             reset: function() {
                 if (this.getSelectionModel().getSelectedNode()) {
                     this.getSelectionModel().getSelectedNode().unselect();
                 }                
                 this.collapseAll();
                 this.getRootNode().expand();
-                this.isSelected = false;
                 this.widget.window.cmp.apply.disable();
             },
             listeners: {
                 'click': {
                     scope: this,
                     fn: function(n) {
-                        this.cmp.parent.selectedNode = n;
-                        this.cmp.parent.isSelected = true;
+                        var tree = n.getOwnerTree();
+                        tree.selectedNode = n;
+                        this.requireUpdate = true;
                         this.formValidation.validateForm.call(this);
                         
                         this.window.cmp.reset.enable();
@@ -969,8 +973,15 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                 return false;
             }
             
-            if (this.cmp.parent.isSelected) {
-                this.window.cmp.apply.enable();
+            if (this.requireUpdate) {
+                if (this.window.isUpdate) {
+                    this.window.cmp.apply.disable();
+                    this.requireUpdate = false;
+                    this.window.isUpdate = false;
+                }
+                else {
+                    this.window.cmp.apply.enable();
+                }
             }
             
             return true;
