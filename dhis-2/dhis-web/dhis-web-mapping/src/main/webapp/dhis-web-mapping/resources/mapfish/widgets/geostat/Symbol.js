@@ -266,8 +266,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                             this.cmp.group.removeAll();
                             this.cmp.group.doLayout();
                         }
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -322,8 +320,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                     fn: function() {
                         this.requireUpdate = true;
                         this.formValidation.validateForm.call(this);
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -363,8 +359,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                         tree.selectedNode = n;
                         this.requireUpdate = true;
                         this.formValidation.validateForm.call(this);
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -700,7 +694,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
             this.cmp.parent.reset();
             
             this.window.cmp.apply.disable();
-            this.window.cmp.reset.disable();
             
             if (clearLayer) {            
                 document.getElementById(this.legendDiv).innerHTML = '';                
