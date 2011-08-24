@@ -291,7 +291,7 @@ function addEventListeners()
             viewHist( dataElementId, optionComboId );
         } );
 
-        $( this ).keyup( function()
+        $( this ).keyup( function(event)
         {
             keyPress( event, this );
         } );
