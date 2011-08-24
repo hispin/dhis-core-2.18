@@ -57,7 +57,7 @@ public class DefaultProgramDataEntryService
 
     private static final String NOTAVAILABLE = "not_available";
 
-    private static final String DATA_ELEMENT_DOES_NOT_EXIST = "[ Data element doesn't exist ]";
+    private static final String DATA_ELEMENT_DOES_NOT_EXIST = "[ Data element does not exist ]";
 
     private static final String EMPTY_VALUE_TAG = "value=\"\"";
 
@@ -195,18 +195,23 @@ public class DefaultProgramDataEntryService
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
+                if ( dataElement != null && !dataElement.getDetailedNumberType().equals( DataElement.VALUE_TYPE_STRING ) )
+                {
+                    continue;
+                }
+
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 3 ) );
                 DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
-                String displayValue = (dataElement == null || optionCombo == null) ? "value=\""
-                    + DATA_ELEMENT_DOES_NOT_EXIST + "\"" : "value=\"[ " + dataElement.getName() + " "
+                String displayValue = (dataElement == null || optionCombo == null) ? " value=\""
+                    + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " value=\"[ " + dataElement.getName() + " "
                     + optionCombo.getName() + " ]\"";
                 inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
                     : inputHTML + " " + displayValue;
 
-                String displayTitle = (dataElement == null || optionCombo == null) ? "title=\""
-                    + DATA_ELEMENT_DOES_NOT_EXIST + "\"" : "title=\"" + dataElement.getId() + "."
+                String displayTitle = (dataElement == null || optionCombo == null) ? " title=\""
+                    + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " title=\"" + dataElement.getId() + "."
                     + dataElement.getName() + "-" + optionComboId + "." + optionCombo.getName() + "-"
                     + dataElement.getDetailedNumberType() + "\" ";
                 inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
@@ -230,7 +235,7 @@ public class DefaultProgramDataEntryService
         // ---------------------------------------------------------------------
 
         StringBuffer sb = new StringBuffer();
-
+        
         // ---------------------------------------------------------------------
         // Pattern to match data elements in the HTML code
         // ---------------------------------------------------------------------
@@ -263,13 +268,18 @@ public class DefaultProgramDataEntryService
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                String displayValue = (dataElement == null) ? "value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
-                    : "value=\"[ " + dataElement.getName() + " ]\"";
+                if ( dataElement != null && !dataElement.getDetailedNumberType().equals( DataElement.VALUE_TYPE_STRING ) )
+                {
+                    continue;
+                }
+
+                String displayValue = (dataElement == null) ? " value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" "
+                    : " value=\"[ " + dataElement.getName() + " ]\" ";
                 inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
                     : inputHTML + " " + displayValue;
 
-                String displayTitle = (dataElement == null) ? "title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
-                    : "title=\"" + dataElement.getId() + "." + dataElement.getName() + "-"
+                String displayTitle = (dataElement == null) ? " title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" "
+                    : " title=\"" + dataElement.getId() + "." + dataElement.getName() + "-"
                         + dataElement.getDetailedNumberType() + "\" ";
                 inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
                     : inputHTML + " " + displayTitle;
@@ -326,13 +336,18 @@ public class DefaultProgramDataEntryService
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                String displayValue = (dataElement == null) ? "value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
-                    : "value=\"[ " + dataElement.getName() + " ]\"";
+                if ( dataElement != null && !dataElement.getDetailedNumberType().equals( DataElement.VALUE_TYPE_DATE ) )
+                {
+                    continue;
+                }
+            
+                String displayValue = (dataElement == null) ? " value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
+                    : " value=\"[ " + dataElement.getName() + " ]\"";
                 inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
                     : inputHTML + " " + displayValue;
 
-                String displayTitle = (dataElement == null) ? "title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
-                    : "title=\"" + dataElement.getId() + "." + dataElement.getName() + "-"
+                String displayTitle = (dataElement == null) ? " title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
+                    : " title=\"" + dataElement.getId() + "." + dataElement.getName() + "-"
                         + dataElement.getDetailedNumberType() + "\" ";
                 inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
                     : inputHTML + " " + displayTitle;
@@ -482,25 +497,26 @@ public class DefaultProgramDataEntryService
                 {
                     dataElementCode += "value=\"" + dataElementValue + "\"";
                 }
-                
+
                 // -------------------------------------------------------------
                 // Insert title information - Data element id, name, type, min,
                 // max
                 // -------------------------------------------------------------
-                DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
-                
+                DataElementCategoryOptionCombo optionCombo = categoryService
+                    .getDataElementCategoryOptionCombo( optionComboId );
+
                 if ( dataElementCode.contains( "title=\"\"" ) )
                 {
-                    dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + dataElement.getId()
-                        + "." + dataElement.getName() +"-" 
-                        + optionComboId + optionCombo.getName() + "-" + dataElementType + "\" " );
+                    dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + dataElement.getId() + "."
+                        + dataElement.getName() + "-" + optionComboId + optionCombo.getName() + "-" + dataElementType
+                        + "\" " );
                 }
                 else
                 {
-                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName()
-                        +"-" + optionComboId + optionCombo.getName() + "-" + dataElementType + "\" ";
+                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName() + "-"
+                        + optionComboId + optionCombo.getName() + "-" + dataElementType + "\" ";
                 }
-                
+
                 // -------------------------------------------------------------
                 // Append Javascript code and meta data (type/min/max) for
                 // persisting to output code, and insert value and type for
@@ -512,7 +528,7 @@ public class DefaultProgramDataEntryService
                 appendCode += jsCodeForInputs;
 
                 appendCode += " />";
-                
+
                 // -----------------------------------------------------------
                 // Check if this dataElement is from another programStage then
                 // disable
@@ -693,27 +709,27 @@ public class DefaultProgramDataEntryService
 
                 String appendCode = dataElementCode.replaceFirst( "input", "select" );
                 appendCode = appendCode.replace( "name=\"entryselect\"", jsCodeForBoolean );
-               
+
                 // -------------------------------------------------------------
                 // Add title
                 // -------------------------------------------------------------
 
                 if ( dataElementCode.contains( "title=\"\"" ) )
                 {
-                    appendCode = appendCode.replace( "title=\"\"", "title=\"" + dataElement.getId()
-                        + "." + dataElement.getName() + "-" + dataElementType + "\" " );
+                    appendCode = appendCode.replace( "title=\"\"", "title=\"" + dataElement.getId() + "."
+                        + dataElement.getName() + "-" + dataElementType + "\" " );
                 }
                 else
                 {
-                    appendCode += "title=\"" + dataElement.getId() + "." + dataElement.getName()
-                        + "-" + dataElementType + "\" ";
+                    appendCode += "title=\"" + dataElement.getId() + "." + dataElement.getName() + "-"
+                        + dataElementType + "\" ";
                 }
-                
+
                 appendCode += ">";
                 appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
                 appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
                 appendCode += "<option value=\"false\">" + i18n.getString( "no" ) + "</option>";
-                
+
                 // -------------------------------------------------------------
                 // Insert value of data element in output code
                 // -------------------------------------------------------------
@@ -732,7 +748,7 @@ public class DefaultProgramDataEntryService
                             + i18n.getString( "false" ) + "\" selected>" );
                     }
                 }
-                
+
                 appendCode += "</select>";
 
                 // -----------------------------------------------------------
@@ -751,7 +767,7 @@ public class DefaultProgramDataEntryService
                     // -----------------------------------------------------------
                     // Add ProvidedByOtherFacility checkbox
                     // -----------------------------------------------------------
-                    
+
                     appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
                 }
 
@@ -796,10 +812,9 @@ public class DefaultProgramDataEntryService
         return sb.toString();
     }
 
-    private String populateCustomDataEntryForCombo( String dataEntryFormCode,
-        Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage,
-        ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
-        Map<Integer, Collection<PatientDataValue>> mapDataValue )
+    private String populateCustomDataEntryForCombo( String dataEntryFormCode, Collection<PatientDataValue> dataValues,
+        String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
+        OrganisationUnit organisationUnit, Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
 
         // ---------------------------------------------------------------------
@@ -839,7 +854,7 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
-                
+
                 int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
@@ -912,28 +927,31 @@ public class DefaultProgramDataEntryService
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
 
-                String appendCode = dataElementCode.replaceFirst( "input", "select" );;
+                String appendCode = dataElementCode.replaceFirst( "input", "select" );
+                ;
                 appendCode = appendCode.replace( "name=\"entryselect\"", jsCodeForCombo );
 
                 appendCode += ">";
                 appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
-                for( DataElementCategoryOptionCombo optionCombo : dataElement.getCategoryCombo().getOptionCombos() )
+                for ( DataElementCategoryOptionCombo optionCombo : dataElement.getCategoryCombo().getOptionCombos() )
                 {
-                    appendCode += "<option value=\"" + optionCombo.getId() + "\">" + optionCombo.getName() + "</option>";
+                    appendCode += "<option value=\"" + optionCombo.getId() + "\">" + optionCombo.getName()
+                        + "</option>";
                 }
-                
+
                 // -------------------------------------------------------------
                 // Insert value of data element in output code
                 // -------------------------------------------------------------
 
                 if ( patientDataValue != null )
                 {
-                    appendCode = appendCode.replace(  "<option value=\"" + patientDataValue.getOptionCombo().getId() + "\">",
-                        "<option value=\"" + patientDataValue.getOptionCombo().getId() + "\" selected=\"selected\">" );
+                    appendCode = appendCode.replace( "<option value=\"" + patientDataValue.getOptionCombo().getId()
+                        + "\">", "<option value=\"" + patientDataValue.getOptionCombo().getId()
+                        + "\" selected=\"selected\">" );
                 }
 
                 appendCode += "</select>";
-                
+
                 // -------------------------------------------------------------
                 // Insert title information - Data element id, name, type, min,
                 // max
@@ -941,13 +959,13 @@ public class DefaultProgramDataEntryService
 
                 if ( dataElementCode.contains( "title=\"\"" ) )
                 {
-                    dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + dataElement.getId()
-                        + "." + dataElement.getName() + " (" + dataElementType + ")\" " );
+                    dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + dataElement.getId() + "."
+                        + dataElement.getName() + " (" + dataElementType + ")\" " );
                 }
                 else
                 {
-                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName()
-                        + " (" + dataElementType + ")\" ";
+                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName() + " ("
+                        + dataElementType + ")\" ";
                 }
 
                 // -----------------------------------------------------------
@@ -1022,8 +1040,7 @@ public class DefaultProgramDataEntryService
         // Metadata code to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jQueryCalendar = "<script> "
-            + "datePicker(\"$PROGRAMSTAGEID-$DATAELEMENTID-val\", false)"
+        final String jQueryCalendar = "<script> " + "datePicker(\"$PROGRAMSTAGEID-$DATAELEMENTID-val\", false)"
             + ";</script>";
 
         StringBuffer sb = new StringBuffer();
@@ -1155,15 +1172,15 @@ public class DefaultProgramDataEntryService
 
                 if ( dataElementCode.contains( "title=\"\"" ) )
                 {
-                    dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + dataElement.getId()
-                        + "." + dataElement.getName() + " (" + dataElementType + ")\" " );
+                    dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + dataElement.getId() + "."
+                        + dataElement.getName() + " (" + dataElementType + ")\" " );
                 }
                 else
                 {
-                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName()
-                        + " (" + dataElementType + ")\" ";
+                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName() + " ("
+                        + dataElementType + ")\" ";
                 }
-                
+
                 // -------------------------------------------------------------
                 // Append Javascript code and meta data (type/min/max) for
                 // persisting to output code, and insert value and type for

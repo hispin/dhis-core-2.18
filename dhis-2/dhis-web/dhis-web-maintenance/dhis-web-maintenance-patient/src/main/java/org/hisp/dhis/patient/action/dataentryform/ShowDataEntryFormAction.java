@@ -29,6 +29,7 @@ package org.hisp.dhis.patient.action.dataentryform;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.program.ProgramDataEntryService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,6 +50,13 @@ public class ShowDataEntryFormAction
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
+    }
+
+    private ProgramDataEntryService programDataEntryService;
+
+    public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
+    {
+        this.programDataEntryService = programDataEntryService;
     }
 
     // -------------------------------------------------------------------------
@@ -82,7 +90,7 @@ public class ShowDataEntryFormAction
 
             if ( dataEntryForm != null )
             {
-                dataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() );
+                dataEntryFormCode = programDataEntryService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() );
             }
         }
 
