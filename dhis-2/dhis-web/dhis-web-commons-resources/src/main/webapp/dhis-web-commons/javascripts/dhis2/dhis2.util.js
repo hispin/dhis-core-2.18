@@ -83,3 +83,15 @@ if ( !Object.keys )
         return keys;
     };
 }
+
+/**
+ * If the console object is undefined, just ignore all calls to console.log.
+ * (this is a fix for IE8).
+ */
+if ( !console )
+{
+    console = {};
+    console.log = function( str )
+    {
+    };
+}
