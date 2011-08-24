@@ -45,6 +45,9 @@ function removeProgramValidation( programValidationId, name )
 
 function insertDataElement( element, target, decriptionDiv )
 {
+	if( element.selectedIndex == -1)
+		return;
+	
 	var value = " " + element.options[element.selectedIndex].value + " ";
 	
 	insertTextCommon( target, value );

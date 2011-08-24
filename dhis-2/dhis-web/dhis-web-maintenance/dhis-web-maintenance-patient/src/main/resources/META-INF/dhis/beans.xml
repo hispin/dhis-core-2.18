@@ -754,6 +754,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataEntryFormService">
 			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		</property>
+		<property name="programDataEntryService">
+			<ref bean="org.hisp.dhis.program.ProgramDataEntryService" />
+		</property>
 	</bean>
 
 	<bean
