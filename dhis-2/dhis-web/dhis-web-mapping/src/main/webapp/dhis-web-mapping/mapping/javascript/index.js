@@ -2286,20 +2286,11 @@
             ' ',
             {
                 xtype: 'button',
-                text: 'Reset',
+                text: 'Close',
                 iconCls: 'icon-cancel',
-                disabled: true,
                 scope: choropleth,
                 handler: function() {
-                    this.formValues.clearForm.call(this, false);
-                    this.window.cmp.reset.disable();
-                },
-                listeners: {
-                    'render': {
-                        fn: function(b) {
-                            b.scope.window.cmp.reset = b;
-                        }
-                    }
+                    this.window.hide();
                 }
             }
         ],
@@ -2385,20 +2376,11 @@
             ' ',
             {
                 xtype: 'button',
-                text: 'Reset',
+                text: 'Close',
                 iconCls: 'icon-cancel',
-                disabled: true,
                 scope: point,
                 handler: function() {
-                    this.formValues.clearForm.call(this, false);
-                    this.window.cmp.reset.disable();
-                },
-                listeners: {
-                    'render': {
-                        fn: function(b) {
-                            b.scope.window.cmp.reset = b;
-                        }
-                    }
+                    this.window.hide();
                 }
             }
         ],
@@ -2483,20 +2465,11 @@
             ' ',
             {
                 xtype: 'button',
-                text: 'Reset',
+                text: 'Close',
                 iconCls: 'icon-cancel',
-                disabled: true,
                 scope: symbol,
                 handler: function() {
-                    this.formValues.clearForm.call(this, false);
-                    this.window.cmp.reset.disable();
-                },
-                listeners: {
-                    'render': {
-                        fn: function(b) {
-                            b.scope.window.cmp.reset = b;
-                        }
-                    }
+                    this.window.hide();
                 }
             }
         ]
@@ -2573,20 +2546,11 @@
             ' ',
             {
                 xtype: 'button',
-                text: 'Reset',
+                text: 'Close',
                 iconCls: 'icon-cancel',
-                disabled: true,
                 scope: centroid,
                 handler: function() {
-                    this.formValues.clearForm.call(this, false);
-                    this.window.cmp.reset.disable();
-                },
-                listeners: {
-                    'render': {
-                        fn: function(b) {
-                            b.scope.window.cmp.reset = b;
-                        }
-                    }
+                    this.window.hide();
                 }
             }
         ]

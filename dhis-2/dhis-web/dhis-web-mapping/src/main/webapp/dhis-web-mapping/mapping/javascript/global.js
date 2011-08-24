@@ -582,7 +582,6 @@ G.util = {
             this.cmp.mapValueType.setValue(this.valueType.value);
             
             this.setMapView();
-            this.window.cmp.reset.enable();
         }
     }
 };

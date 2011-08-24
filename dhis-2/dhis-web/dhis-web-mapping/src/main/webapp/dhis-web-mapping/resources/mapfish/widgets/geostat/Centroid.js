@@ -284,8 +284,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                         this.valueType.value = cb.getValue();
                         this.prepareMapViewValueType();
                         this.classify(false, true);
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -310,8 +308,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                         this.cmp.indicator.clearValue();
                         this.stores.indicatorsByGroup.setBaseParam('indicatorGroupId', cb.getValue());
                         this.stores.indicatorsByGroup.load();
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -365,8 +361,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                                 G.util.setLockPosition(cb);
                             }
                         });
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -391,8 +385,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                         this.cmp.dataElement.clearValue();
                         this.stores.dataElementsByGroup.setBaseParam('dataElementGroupId', cb.getValue());
                         this.stores.dataElementsByGroup.load();
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -445,8 +437,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                                 G.util.setLockPosition(cb);
                             }
                         });
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -471,8 +461,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                         this.cmp.period.clearValue();
                         this.stores.periodsByType.setBaseParam('name', cb.getValue());
                         this.stores.periodsByType.load();
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -499,8 +487,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                         
                         this.classify(false, cb.lockPosition);                        
                         G.util.setLockPosition(cb);
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -518,8 +504,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                         this.updateValues = true;
                         this.cmp.endDate.setMinValue(date);
                         this.classify(false, true);
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -537,8 +521,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                         this.updateValues = true;
                         this.cmp.startDate.setMaxValue(date);
                         this.classify(false, true);
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -557,8 +539,7 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                 'select': {
                     scope: this,
                     fn: function() {
-                        this.applyPredefinedLegend();                        
-                        this.window.cmp.reset.enable();
+                        this.applyPredefinedLegend();
                     }
                 }
             }
@@ -581,9 +562,7 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                     scope: this,
                     fn: function() {
                         this.requireUpdate = true;
-                        this.formValidation.validateForm.call(this);    
-                                            
-                        this.window.cmp.reset.enable();
+                        this.formValidation.validateForm.call(this);
                     }
                 }
             }
@@ -623,8 +602,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                         tree.selectedNode = n;
                         this.requireUpdate = true;
                         this.formValidation.validateForm.call(this);
-                        
-                        this.window.cmp.reset.enable();
                     }
                 }
             }
@@ -1055,7 +1032,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
             this.cmp.parent.reset();
             
             this.window.cmp.apply.disable();
-            this.window.cmp.reset.disable();
             
             if (clearLayer) {            
                 document.getElementById(this.legendDiv).innerHTML = '';                
