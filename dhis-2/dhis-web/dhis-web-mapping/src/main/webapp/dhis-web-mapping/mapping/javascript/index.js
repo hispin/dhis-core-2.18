@@ -1566,11 +1566,12 @@
     
 	var helpWindow = new Ext.Window({
         id: 'help_w',
-        title: '<span id="window-help-title">'+G.i18n.help+'</span>',
+        title: '<span id="window-help-title">' + G.i18n.help + '</span>',
+        bodyStyle: 'padding:5px; background-color:#fff',
 		layout: 'fit',
         closeAction: 'hide',
+        height: 300,
 		width: 579,
-		height: 320,
         items: [
             {
                 xtype: 'tabpanel',
@@ -1583,62 +1584,62 @@
                     tabchange: function(panel, tab) {
                         if (tab.id == 'help0') {
 							setHelpText(G.conf.thematicMap, tab);
-                            helpWindow.setHeight(320);
                         }
                         else if (tab.id == 'help1') {
 							setHelpText(G.conf.favorites, tab);
-                            helpWindow.setHeight(320);
                         }
                         else if (tab.id == 'help2') {
                             setHelpText(G.conf.legendSets, tab);
-                            helpWindow.setHeight(320);
                         }
 						if (tab.id == 'help3') { 
                             setHelpText(G.conf.imageExport, tab);
-                            helpWindow.setHeight(320);
                         }
                         else if (tab.id == 'help4') {
                             setHelpText(G.conf.administration, tab);
-                            helpWindow.setHeight(320);
                         }
                         else if (tab.id == 'help5') {
                             setHelpText(G.conf.overlayRegistration, tab);
-                            helpWindow.setHeight(580);
                         }
                         else if (tab.id == 'help6') {
                             setHelpText(G.conf.setup, tab);
-                            helpWindow.setHeight(580);
                         }
                     }
                 },
                 items: [
                     {
                         id: 'help0',
-                        title: '<span class="panel-tab-title">' + G.i18n.thematic_map + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.thematic_map + '</span>',
+                        autoScroll: true
                     },
                     {
                         id: 'help1',
-                        title: '<span class="panel-tab-title">' + G.i18n.favorites + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.favorites + '</span>',
+                        autoScroll: true
                     },
                     {
                         id: 'help2',
-                        title: '<span class="panel-tab-title">' + G.i18n.legendset + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.legendset + '</span>',
+                        autoScroll: true
                     },
                     {
                         id: 'help3',
-                        title: '<span class="panel-tab-title">' + G.i18n.image_export + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.image_export + '</span>',
+                        autoScroll: true
                     },
                     {
                         id: 'help4',
-                        title: '<span class="panel-tab-title">' + G.i18n.administrator + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.administrator + '</span>',
+                        autoScroll: true
                     },
                     {
                         id: 'help5',
-                        title: '<span class="panel-tab-title">' + G.i18n.overlays_ + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.overlays_ + '</span>',
+                        autoScroll: true
                     },
                     {
                         id: 'help6',
-                        title: '<span class="panel-tab-title">' + G.i18n.setup + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.setup + '</span>',
+                        autoScroll: true
                     }
                 ]
             }
