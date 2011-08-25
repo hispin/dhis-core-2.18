@@ -141,11 +141,12 @@ public class DefaultProgramDataEntryService
 
     public String prepareDataEntryFormForEdit( String htmlCode )
     {
-        String result = populateCustomDataEntryForTextBox( htmlCode );
-
-        result = populateCustomDataEntryForDate( result );
+        
+        String result = populateCustomDataEntryForDate( htmlCode );
 
         result = populateCustomDataEntryForOption( result );
+        
+        result = populateCustomDataEntryForTextBox( result );
 
         return result;
     }
@@ -195,11 +196,6 @@ public class DefaultProgramDataEntryService
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                if ( dataElement != null && !dataElement.getDetailedNumberType().equals( DataElement.VALUE_TYPE_STRING ) )
-                {
-                    continue;
-                }
-
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 3 ) );
                 DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
@@ -235,7 +231,7 @@ public class DefaultProgramDataEntryService
         // ---------------------------------------------------------------------
 
         StringBuffer sb = new StringBuffer();
-        
+
         // ---------------------------------------------------------------------
         // Pattern to match data elements in the HTML code
         // ---------------------------------------------------------------------
@@ -268,7 +264,7 @@ public class DefaultProgramDataEntryService
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                if ( dataElement != null && !dataElement.getDetailedNumberType().equals( DataElement.VALUE_TYPE_STRING ) )
+                if ( dataElement != null && !DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() ) )
                 {
                     continue;
                 }
@@ -336,11 +332,11 @@ public class DefaultProgramDataEntryService
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                if ( dataElement != null && !dataElement.getDetailedNumberType().equals( DataElement.VALUE_TYPE_DATE ) )
+                if ( dataElement != null && !DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
                 {
                     continue;
                 }
-            
+
                 String displayValue = (dataElement == null) ? " value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\""
                     : " value=\"[ " + dataElement.getName() + " ]\"";
                 inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
