@@ -14,6 +14,7 @@
 // -----------------------------------------------------------------------------
 // Save
 // -----------------------------------------------------------------------------
+
 var FORMULA_PATTERN = /\[.+?\]/g;
 var SEPARATOR = '.';
 
@@ -23,8 +24,6 @@ var SEPARATOR = '.';
  */
 function updateIndicators()
 {
-//    var entryFieldValues = getEntryFieldValues();
-
     $( 'input[name="indicator"]' ).each( function( index )
     {
         var indicatorId = $( this ).attr( 'indicatorid' );
@@ -39,23 +38,6 @@ function updateIndicators()
 
         $( this ).attr( 'value', value );
     } );
-}
-
-/**
- * Returns an associative array with an entry for each entry input field in the
- * form where the key is the input field id and the value is the input field
- * value.
- */
-function getEntryFieldValues()
-{
-    var entryFieldValues = new Array();
-
-    $( 'input[name="entryfield"]' ).each( function( index )
-    {
-        entryFieldValues[$( this ).attr( 'id' )] = $( this ).attr( 'value' );
-    } );
-
-    return entryFieldValues;
 }
 
 /**
