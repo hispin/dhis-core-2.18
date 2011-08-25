@@ -494,10 +494,6 @@ G.util = {
         }
         return str;
     },
-	
-	getWindowHeight: function(def, s1) {
-		
-	},
     
     mapView: {
         layer: function(id) {
