@@ -232,8 +232,8 @@ public class DefaultDataEntryFormService
         
         int i = 1;
         
-        final String jsCodeForInputFields = " name=\"ef\" ";
-        final String jsCodeForSelectLists = " name=\"es\" ";
+        final String jsCodeForInputFields = " name=\"entryfield\" ";
+        final String jsCodeForSelectLists = " name=\"entryselect\" ";
         
         StringBuffer sb = new StringBuffer();
 
