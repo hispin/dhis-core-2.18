@@ -27,8 +27,13 @@ package org.hisp.dhis.patient.action.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 
@@ -64,11 +69,11 @@ public class DelDataEntryFormAction
     // Getters & setters
     // -------------------------------------------------------------------------
 
-    private Integer associationId;
+    private Integer id;
 
-    public void setAssociationId( int associationId )
+    public void setId( Integer id )
     {
-        this.associationId = associationId;
+        this.id = id;
     }
 
     private String message;
@@ -80,14 +85,16 @@ public class DelDataEntryFormAction
 
     private Integer programStageId;
 
-    public Integer getProgramStageId()
-    {
-        return programStageId;
-    }
-
     public void setProgramStageId( Integer programStageId )
     {
         this.programStageId = programStageId;
+    }
+
+    private Integer programId;
+
+    public Integer getProgramId()
+    {
+        return programId;
     }
 
     // -------------------------------------------------------------------------
@@ -97,13 +104,25 @@ public class DelDataEntryFormAction
     public String execute()
         throws Exception
     {
-        ProgramStage programStage = programStageService.getProgramStage( this.associationId );
+        DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryForm( id );
 
-        DataEntryForm dataEntryForm = programStage.getDataEntryForm();
+        Program currentProgram = programStageService.getProgramStage( programStageId ).getProgram();
 
-        programStage.setDataEntryForm( null );
+        programId = currentProgram.getId();
 
-        programStageService.updateProgramStage( programStage );
+        Set<ProgramStage> programStages = currentProgram.getProgramStages();
+
+        for ( ProgramStage programStage : programStages )
+        {
+            DataEntryForm programEntryForm = programStage.getDataEntryForm();
+
+            if ( programEntryForm != null && programEntryForm.equals( dataEntryForm ) )
+            {
+                programStage.setDataEntryForm( null );
+
+                programStageService.updateProgramStage( programStage );
+            }
+        }
 
         dataEntryFormService.deleteDataEntryForm( dataEntryForm );
 
