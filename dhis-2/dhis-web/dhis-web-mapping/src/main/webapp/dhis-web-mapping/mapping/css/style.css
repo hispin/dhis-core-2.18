@@ -53,6 +53,9 @@
 .x-panel-tbar .x-toolbar {
     padding:0;
 }
+.x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
+	border-top:1px solid #d0d0d0;
+}
 .ux-mselect-item {
 	font:10px lucida sans unicode,arial,ubuntu;
 	padding:1px 1px 1px 3px;
@@ -531,6 +534,8 @@ td.x-grid3-hd-over, td.sort-desc, td.sort-asc, td.x-grid3-hd-menu-open {
     border:1px solid #ccc;
     overflow:auto;
 }
+.window-layer {
+}	
 #east {
     width:200px;
 }

@@ -1029,13 +1029,12 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                         
                         scope.featureOptions.coordinate = new Ext.Window({
                             title: '<span class="window-relocate-title">' + feature.attributes.name + '</span>',
+							bodyStyle: 'padding:8px; background-color:#fff',
                             layout: 'fit',
                             width: G.conf.window_width,
-                            height: 95,
                             items: [
                                 {
                                     xtype: 'panel',
-                                    bodyStyle: 'padding:8px',
                                     items: [
                                         {html: G.i18n.select_new_location_on_map}
                                     ]
@@ -1403,18 +1402,12 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         validateForm: function() {
             if (this.cmp.mapValueType.getValue() == G.conf.map_value_type_indicator) {
                 if (!this.cmp.indicator.getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
                     this.window.cmp.apply.disable();
                     return false;
                 }
             }
             else if (this.cmp.mapValueType.getValue() == G.conf.map_value_type_dataelement) {
                 if (!this.cmp.dataElement.getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
                     this.window.cmp.apply.disable();
                     return false;
                 }
@@ -1422,35 +1415,23 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
 
             if (G.system.mapDateType.isFixed()) {
                 if (!this.cmp.period.getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
                     this.window.cmp.apply.disable();
                     return false;
                 }
             }
             else {
                 if (!this.cmp.startDate.getValue() || !this.cmp.endDate.getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
                     this.window.cmp.apply.disable();
                     return false;
                 }
             }
 
             if (!this.cmp.parent.selectedNode || !this.cmp.level.getValue()) {
-                if (exception) {
-                    Ext.message.msg(false, G.i18n.form_is_not_complete);
-                }
                 this.window.cmp.apply.disable();
                 return false;
             }
             
             if (this.cmp.parent.selectedNode.attributes.level > this.cmp.level.getValue()) {
-                if (exception) {
-                    Ext.message.msg(false, 'Invalid parent organisation unit');
-                }
                 this.window.cmp.apply.disable();
                 return false;
             }
@@ -1458,9 +1439,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             if (this.cmp.mapLegendType.getValue() == G.conf.map_legendset_type_automatic) {
                 if (this.cmp.method.getValue() == G.conf.classify_with_bounds) {
                     if (!this.cmp.bounds.getValue()) {
-                        if (exception) {
-                            Ext.message.msg(false, G.i18n.form_is_not_complete);
-                        }
                         this.window.cmp.apply.disable();
                         return false;
                     }
@@ -1468,18 +1446,12 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             }
             else if (this.cmp.mapLegendType.getValue() == G.conf.map_legendset_type_predefined) {
                 if (!this.cmp.mapLegendSet.getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
                     this.window.cmp.apply.disable();
                     return false;
                 }
             }
             
             if (!this.cmp.radiusLow.getValue() || !this.cmp.radiusHigh.getValue()) {
-                if (exception) {
-                    Ext.message.msg(false, G.i18n.form_is_not_complete);
-                }
                 this.window.cmp.apply.disable();
                 return false;
             }
