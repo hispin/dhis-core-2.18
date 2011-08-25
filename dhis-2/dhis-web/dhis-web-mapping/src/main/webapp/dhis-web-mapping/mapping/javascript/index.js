@@ -251,7 +251,10 @@
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': G.func.storeLoadListener
+            'load': function(s) {
+                this.isLoaded = true;
+                this.filter('name', 'Type');
+            }
         }
     });
     
