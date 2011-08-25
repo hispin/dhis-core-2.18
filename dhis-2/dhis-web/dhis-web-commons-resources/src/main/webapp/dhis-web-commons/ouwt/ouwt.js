@@ -85,7 +85,7 @@ function Selection()
         var version = localStorage[getTagId( "Version" )];
         var should_update = false;
 
-        $.get( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action', {
+        $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action', {
             "versionOnly" : true
         }, function( data, textStatus, jqXHR )
         {
@@ -103,7 +103,7 @@ function Selection()
                 {
                     if ( should_update )
                     {
-                        $.get( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action',
+                        $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action',
                                 function( data, textStatus, jqXHR )
                                 {
                                     localStorage[getTagId( "Roots" )] = JSON.stringify( data.roots );
