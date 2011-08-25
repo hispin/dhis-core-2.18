@@ -27,8 +27,6 @@ package org.hisp.dhis.patient.action.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;

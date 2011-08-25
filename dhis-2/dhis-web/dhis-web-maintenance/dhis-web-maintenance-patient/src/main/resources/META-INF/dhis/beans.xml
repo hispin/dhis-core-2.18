@@ -709,6 +709,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.patient.action.programstage.RemoveProgramStageAction"
 		class="org.hisp.dhis.patient.action.programstage.RemoveProgramStageAction"
 		scope="prototype">
+		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
