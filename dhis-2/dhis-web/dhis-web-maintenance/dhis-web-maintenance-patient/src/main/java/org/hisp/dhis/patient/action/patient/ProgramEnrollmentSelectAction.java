@@ -48,13 +48,6 @@ public class ProgramEnrollmentSelectAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
     private PatientService patientService;
 
     public void setPatientService( PatientService patientService )
@@ -103,7 +96,7 @@ public class ProgramEnrollmentSelectAction
     {
         patient = patientService.getPatient( id );
 
-        programs = programService.getPrograms( selectionManager.getSelectedOrganisationUnit() );
+        programs = programService.getAllPrograms();
 
         return SUCCESS;
     }

@@ -29,9 +29,6 @@ package org.hisp.dhis.patient.action.patient;
 
 import java.util.Collection;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -48,13 +45,6 @@ public class SearchPatientFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
@@ -65,13 +55,6 @@ public class SearchPatientFormAction
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-
-    private Collection<PatientAttribute> patientAttributes;
-
-    public Collection<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
 
     private Collection<Program> programs;
 
@@ -87,9 +70,7 @@ public class SearchPatientFormAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-        
-        programs = programService.getPrograms( organisationUnit );
+        programs = programService.getAllPrograms();
 
         return SUCCESS;
     }
