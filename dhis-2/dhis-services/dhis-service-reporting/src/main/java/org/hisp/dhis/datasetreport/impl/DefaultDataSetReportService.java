@@ -127,122 +127,6 @@ public class DefaultDataSetReportService
     // DataSetReportService implementation
     // -------------------------------------------------------------------------
     
-    public Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format )
-    {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
-        
-        Collection<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements());
-        
-        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-        
-        Map<String, String> map = new TreeMap<String, String>();            
-        
-        for ( DataElement dataElement : dataElements )
-        {
-            for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
-            {
-                String value;
-                
-                if ( selectedUnitOnly )
-                {                                   
-                    DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, categoryOptionCombo );                                  
-                    value = ( dataValue != null ) ? dataValue.getValue() : null;
-                }
-                else
-                {
-                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
-                        aggregationService.getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period.getEndDate(), unit ) :
-                            aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
-                    
-                    value = format.formatValue( aggregatedValue );
-                }                 
-                
-                if ( value != null )
-                {
-                    map.put( dataElement.getId() + SEPARATOR + categoryOptionCombo.getId(), value );
-                }
-            }
-        }
-        
-        return map;
-    }
-    
-    public Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, Period period, I18nFormat format )
-    {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
-        
-        Map<Integer, String> map = new TreeMap<Integer, String>();
-        
-        for ( Indicator indicator : dataSet.getIndicators() )
-        {
-            Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
-                aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit ) :
-                    aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
-            
-            String value = format.formatValue( aggregatedValue );
-            
-            if ( value != null )
-            {
-                map.put( indicator.getId(), value );
-            }
-        }
-        
-        return map;
-    }
-    
-    public String prepareReportContent( DataEntryForm dataEntryForm, Map<String, String> dataValues, Map<Integer, String> indicatorValues )
-    {        
-        StringBuffer buffer = new StringBuffer();
-
-        Matcher inputMatcher = INPUT_PATTERN.matcher( dataEntryForm.getHtmlCode() );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
-        // ---------------------------------------------------------------------
-        
-        while ( inputMatcher.find() )
-        {       
-            // -----------------------------------------------------------------
-            // Get input HTML code
-            // -----------------------------------------------------------------
-            
-            String inputHtml = inputMatcher.group( 1 );
-            
-            Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
-            Matcher indicatorMatcher = INDICATOR_PATTERN.matcher( inputHtml );
-
-            // -----------------------------------------------------------------
-            // Find existing data or indicator value and replace input tag
-            // -----------------------------------------------------------------               
-             
-            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
-            {
-                Integer dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                Integer optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) ); 
-                
-                String dataValue = dataValues.get( dataElementId + SEPARATOR + optionComboId );               
-                
-                dataValue = dataValue != null ? dataValue : NULL_REPLACEMENT;
-                
-                inputMatcher.appendReplacement( buffer, dataValue );
-            }
-            else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
-            {
-                Integer indicatorId = Integer.parseInt( indicatorMatcher.group( 1 ) );
-                
-                String indicatorValue = indicatorValues.get( indicatorId );
-                
-                indicatorValue = indicatorValue != null ? indicatorValue : NULL_REPLACEMENT;
-                
-                inputMatcher.appendReplacement( buffer, indicatorValue );
-            }
-        }
-
-        inputMatcher.appendTail( buffer );
-        
-        return buffer.toString();
-    }
-    
     public String getCustomDataSetReport( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format )
     {
         Map<String, String> aggregatedDataValueMap = getAggregatedValueMap( dataSet, unit, period, selectedUnitOnly, format );
@@ -433,5 +317,154 @@ public class DefaultDataSetReportService
         }
         
         return grid;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Generates a map with aggregated data values or regular data values (depending
+     * on the selectedUnitOnly argument) mapped to a DataElemenet operand identifier.
+     * 
+     * @param dataSet the DataSet.
+     * @param unit the OrganisationUnit.
+     * @param period the Period.
+     * @param selectedUnitOnly whether to include aggregated or regular data in the map.
+     * @param format the I18nFormat.
+     * @return a map.
+     */
+    private Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format )
+    {
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
+        
+        Collection<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements());
+        
+        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
+        
+        Map<String, String> map = new TreeMap<String, String>();            
+        
+        for ( DataElement dataElement : dataElements )
+        {
+            for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
+            {
+                String value;
+                
+                if ( selectedUnitOnly )
+                {                                   
+                    DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, categoryOptionCombo );                                  
+                    value = ( dataValue != null ) ? dataValue.getValue() : null;
+                }
+                else
+                {
+                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                        aggregationService.getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period.getEndDate(), unit ) :
+                            aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
+                    
+                    value = format.formatValue( aggregatedValue );
+                }                 
+                
+                if ( value != null )
+                {
+                    map.put( dataElement.getId() + SEPARATOR + categoryOptionCombo.getId(), value );
+                }
+            }
+        }
+        
+        return map;
+    }
+
+    /**
+     * Generates a map with aggregated indicator values mapped to an Indicator identifier.
+     * 
+     * @param dataSet the DataSet.
+     * @param unit the OrganisationUnit.
+     * @param period the Period.
+     * @param format the I18nFormat.
+     * @return a map.
+     */
+    private Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, Period period, I18nFormat format )
+    {
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
+        
+        Map<Integer, String> map = new TreeMap<Integer, String>();
+        
+        for ( Indicator indicator : dataSet.getIndicators() )
+        {
+            Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit ) :
+                    aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
+            
+            String value = format.formatValue( aggregatedValue );
+            
+            if ( value != null )
+            {
+                map.put( indicator.getId(), value );
+            }
+        }
+        
+        return map;
+    }
+
+    /**
+     * Puts in aggregated datavalues in the custom dataentry form and returns
+     * whole report text.
+     * 
+     * @param dataEntryForm the data entry form.
+     * @param a map with aggregated data values mapped to data element operands.
+     * @return data entry form HTML code populated with aggregated data in the
+     *         input fields.
+     */
+    private String prepareReportContent( DataEntryForm dataEntryForm, Map<String, String> dataValues, Map<Integer, String> indicatorValues )
+    {        
+        StringBuffer buffer = new StringBuffer();
+
+        Matcher inputMatcher = INPUT_PATTERN.matcher( dataEntryForm.getHtmlCode() );
+
+        // ---------------------------------------------------------------------
+        // Iterate through all matching data element fields.
+        // ---------------------------------------------------------------------
+        
+        while ( inputMatcher.find() )
+        {       
+            // -----------------------------------------------------------------
+            // Get input HTML code
+            // -----------------------------------------------------------------
+            
+            String inputHtml = inputMatcher.group( 1 );
+            
+            Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
+            Matcher indicatorMatcher = INDICATOR_PATTERN.matcher( inputHtml );
+
+            // -----------------------------------------------------------------
+            // Find existing data or indicator value and replace input tag
+            // -----------------------------------------------------------------               
+             
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
+            {
+                Integer dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                Integer optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) ); 
+                
+                String dataValue = dataValues.get( dataElementId + SEPARATOR + optionComboId );               
+                
+                dataValue = dataValue != null ? dataValue : NULL_REPLACEMENT;
+                
+                inputMatcher.appendReplacement( buffer, dataValue );
+            }
+            else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
+            {
+                Integer indicatorId = Integer.parseInt( indicatorMatcher.group( 1 ) );
+                
+                String indicatorValue = indicatorValues.get( indicatorId );
+                
+                indicatorValue = indicatorValue != null ? indicatorValue : NULL_REPLACEMENT;
+                
+                inputMatcher.appendReplacement( buffer, indicatorValue );
+            }
+        }
+
+        inputMatcher.appendTail( buffer );
+        
+        return buffer.toString();
     }
 }
