@@ -1029,13 +1029,12 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                         
                         scope.featureOptions.coordinate = new Ext.Window({
                             title: '<span class="window-relocate-title">' + feature.attributes.name + '</span>',
+							bodyStyle: 'padding:8px; background-color:#fff',
                             layout: 'fit',
                             width: G.conf.window_width,
-                            height: 95,
                             items: [
                                 {
                                     xtype: 'panel',
-                                    bodyStyle: 'padding:8px',
                                     items: [
                                         {html: G.i18n.select_new_location_on_map}
                                     ]

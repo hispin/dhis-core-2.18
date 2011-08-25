@@ -537,13 +537,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                         
                         scope.featureOptions.coordinate = new Ext.Window({
                             title: '<span class="window-relocate-title">' + feature.attributes.name + '</span>',
+							bodyStyle: 'padding:8px; background-color:#fff',
                             layout: 'fit',
                             width: G.conf.window_width,
-                            height: 100,
                             items: [
                                 {
                                     xtype: 'panel',
-                                    bodyStyle: 'padding:14px',
                                     items: [
                                         {html: G.i18n.select_new_location_on_map}
                                     ]
@@ -620,28 +619,19 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
     },
     
     formValidation: {
-        validateForm: function(exception) {
+        validateForm: function() {
             
             if (!this.cmp.groupSet.getValue()) {
-                if (exception) {
-                    Ext.message.msg(false, G.i18n.form_is_not_complete);
-                }
                 this.window.cmp.apply.disable();
                 return false;
             }
 
             if (!this.cmp.parent.selectedNode || !this.cmp.level.getValue()) {
-                if (exception) {
-                    Ext.message.msg(false, G.i18n.form_is_not_complete);
-                }
                 this.window.cmp.apply.disable();
                 return false;
             }
             
             if (this.cmp.parent.selectedNode.attributes.level > this.cmp.level.getValue()) {
-                if (exception) {
-                    Ext.message.msg(false, 'Invalid parent organisation unit');
-                }
                 this.window.cmp.apply.disable();
                 return false;
             }

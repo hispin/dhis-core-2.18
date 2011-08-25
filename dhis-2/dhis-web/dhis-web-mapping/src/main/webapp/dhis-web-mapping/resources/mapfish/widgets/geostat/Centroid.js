@@ -863,61 +863,40 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
 	},
     
     formValidation: {
-        validateForm: function(exception) {
+        validateForm: function() {
             if (this.cmp.mapValueType.getValue() == G.conf.map_value_type_indicator) {
                 if (!this.cmp.indicator.getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
                     return false;
                 }
             }
             else if (this.cmp.mapValueType.getValue() == G.conf.map_value_type_dataelement) {
                 if (!this.cmp.dataElement.getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
                     return false;
                 }
             }
 
             if (G.system.mapDateType.isFixed()) {
                 if (!this.cmp.period.getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
                     return false;
                 }
             }
             else {
                 if (!this.cmp.startDate.getValue() || !this.cmp.endDate.getValue()) {
-                    if (exception) {
-                        Ext.message.msg(false, G.i18n.form_is_not_complete);
-                    }
                     return false;
                 }
             }
 
             if (!this.cmp.parent.selectedNode || !this.cmp.level.getValue()) {
-                if (exception) {
-                    Ext.message.msg(false, G.i18n.form_is_not_complete);
-                }
                 this.window.cmp.apply.disable();
                 return false;
             }
             
             if (this.cmp.parent.selectedNode.attributes.level > this.cmp.level.getValue()) {
-                if (exception) {
-                    Ext.message.msg(false, 'Invalid parent organisation unit');
-                }
                 this.window.cmp.apply.disable();
                 return false;
             }
             
             if (!this.cmp.mapLegendSet.getValue()) {
-                if (exception) {
-                    Ext.message.msg(false, G.i18n.form_is_not_complete);
-                }
                 return false;
             }
             

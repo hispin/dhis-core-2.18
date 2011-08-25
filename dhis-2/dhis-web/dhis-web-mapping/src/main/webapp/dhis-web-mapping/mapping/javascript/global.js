@@ -42,15 +42,7 @@ G.conf = {
     window_x_left: 70,
     window_y_left: 45,
     window_editlayer_width: 570,
-    window_editlayer_width_collapsed: 292,    
-    adminwindow_collapsed: 54,
-    adminwindow_expanded_1: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 121 : 116,
-    adminwindow_expanded_2: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 145 : 143,
-    predefinedmaplegendsetwindow_collapsed: 123,
-    predefinedmaplegendsetwindow_expanded_1: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 373 : 371,
-    predefinedmaplegendsetwindow_expanded_2: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 323 : 320,
-    predefinedmaplegendsetwindow_expanded_3: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 242 : 240,
-    predefinedmaplegendsetwindow_expanded_4: Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 240 : 238,
+    window_editlayer_width_collapsed: 292,
     
 //  GUI
 
@@ -457,6 +449,7 @@ G.util = {
                 G.vars.map.zoomToExtent(extended);
             }
         }
+		G.vars.lockPosition = false;
     },
     
     setZIndexByLayerType: function(type, index) {
@@ -501,6 +494,10 @@ G.util = {
         }
         return str;
     },
+	
+	getWindowHeight: function(def, s1) {
+		
+	},
     
     mapView: {
         layer: function(id) {

@@ -3,7 +3,7 @@
 	Ext.layout.FormLayout.prototype.trackLabels = true;
     Ext.QuickTips.init();
 	document.body.oncontextmenu = function(){return false;};
-    
+	
 	G.vars.map = new OpenLayers.Map({
         controls: [new OpenLayers.Control.MouseToolbar()],
         displayProjection: new OpenLayers.Projection('EPSG:4326'),
@@ -460,14 +460,13 @@
 	var favoriteWindow = new Ext.Window({
         id: 'favorite_w',
         title: '<span id="window-favorites-title">' + G.i18n.favorite_map_views + '</span>',
+		bodyStyle: 'padding:8px; background-color:#fff',
 		layout: 'fit',
         closeAction: 'hide',
 		width: G.conf.window_width,
-        height: 230,
         items: [
             {
                 xtype: 'form',
-                bodyStyle: 'padding:8px',
                 labelWidth: G.conf.label_width,
                 items: [
                     {html: '<div class="window-info">Register current map as a favorite</div>'},
@@ -663,14 +662,13 @@
 	var exportImageWindow = new Ext.Window({
         id: 'exportimage_w',
         title: '<span id="window-image-title">Export image</span>',
+		bodyStyle: 'padding:8px; background-color:#fff',
         layout: 'fit',
         closeAction: 'hide',
 		width: G.conf.window_width,
-        height: 194,
         items: [
             {
                 xtype: 'form',
-                bodyStyle: 'padding:8px',
                 labelWidth: G.conf.label_width,
                 items: [
                     {html: '<div class="window-info">Export thematic map to PNG</div>'},
@@ -844,15 +842,18 @@
         title: '<span id="window-predefinedlegendset-title">' + G.i18n.predefined_legend_sets + '</span>',
 		layout: 'accordion',
         closeAction: 'hide',
+		autoHeight: true,
+		height: 'auto',
 		width: G.conf.window_width,
         items: [
             {
-                id: 'newpredefinedmaplegend_p',
                 title: G.i18n.legend,
+				bodyStyle: 'padding:8px; background-color:#fff',
+				autoHeight: true,
+				height: 'auto',
                 items: [
                     {
                         xtype: 'form',
-                        bodyStyle: 'padding: 8px 8px 5px 8px',
                         labelWidth: G.conf.label_width,
                         items: [
                             {html: '<div class="window-info">Register new legend</div>'},
@@ -965,127 +966,119 @@
                                 }
                             }
                         ]
-                    },
-                    {
-                        xtype: 'panel',
-                        layout: 'form',
-                        items: [
-                            {
-                                xtype: 'toolbar',
-                                style: 'padding-top:4px',
-                                items: [
-                                    '->',
-                                    {
-                                        xtype: 'button',
-                                        id: 'newpredefinedmaplegend_b',
-                                        text: G.i18n.register,
-                                        iconCls: 'icon-add',
-                                        handler: function() {
-                                            var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
-                                            var mlsv = parseFloat(Ext.getCmp('predefinedmaplegendstartvalue_nf').getValue());
-                                            var mlev = parseFloat(Ext.getCmp('predefinedmaplegendendvalue_nf').getValue());
-                                            var type = Ext.getCmp('predefinedmaplegendtype_cb').getValue();
-                                            var mlc = type == G.conf.map_legend_symbolizer_color ?
-                                                Ext.getCmp('predefinedmaplegendcolor_cf').getValue() : null;
-                                            var mli = type == G.conf.map_legend_symbolizer_image ?
-                                                Ext.getCmp('predefinedmaplegendimage_cb').getRawValue() : null;
-                                            
-                                            if (!Ext.isNumber(parseFloat(mlsv)) || !Ext.isNumber(mlev)) {
-                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
-                                                return;
-                                            }
-                                            
-                                            if (!mln || (!mlc && !mli)) {
-                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
-                                                return;
-                                            }
-                                            
-                                            if (!G.util.validateInputNameLength(mln)) {
-                                                Ext.message.msg(false, G.i18n.name + ': ' + G.i18n.max + ' 25 ' + G.i18n.characters);
-                                                return;
-                                            }
-                                            
-                                            if (G.stores.predefinedMapLegend.findExact('name', mln) !== -1) {
-                                                Ext.message.msg(false, G.i18n.legend + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.already_exists);
-                                                return;
-                                            }
-                                            
-                                            var params = {};
-                                            params.name = mln;
-                                            params.startValue = mlsv;
-                                            params.endValue = mlev;                                            
-                                            if (type == G.conf.map_legend_symbolizer_color) {
-                                                params.color = mlc;
-                                            }
-                                            else if (type == G.conf.map_legend_symbolizer_image) {
-                                                params.image = mli;
-                                            }
-                                            
-                                            Ext.Ajax.request({
-                                                url: G.conf.path_mapping + 'addOrUpdateMapLegend' + G.conf.type,
-                                                method: 'POST',
-                                                params: params,
-                                                success: function(r) {
-                                                    Ext.message.msg(true, G.i18n.legend + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.was_registered);
-                                                    G.stores.predefinedMapLegend.load();
-                                                    Ext.getCmp('predefinedmaplegendname_tf').reset();
-                                                    Ext.getCmp('predefinedmaplegendstartvalue_nf').reset();
-                                                    Ext.getCmp('predefinedmaplegendendvalue_nf').reset();
-                                                }
-                                            });
-                                        }
-                                    },
-                                    {
-                                        xtype: 'tbseparator',
-                                        cls: 'xtb-sep-panel'
-                                    },
-                                    {
-                                        xtype: 'button',
-                                        id: 'deletepredefinedmaplegend_b',
-                                        text: G.i18n.delete_,
-                                        iconCls: 'icon-remove',
-                                        handler: function() {
-                                            var mlv = Ext.getCmp('predefinedmaplegend_cb').getValue();
-                                            var mlrv = Ext.getCmp('predefinedmaplegend_cb').getRawValue();
-                                            
-                                            if (!mlv) {
-                                                Ext.message.msg(false, G.i18n.please_select_a_legend);
-                                                return;
-                                            }
-                                            
-                                            Ext.Ajax.request({
-                                                url: G.conf.path_mapping + 'deleteMapLegend' + G.conf.type,
-                                                method: 'POST',
-                                                params: {id: mlv},
-                                                success: function(r) {
-                                                    Ext.message.msg(true, G.i18n.legend + ' <span class="x-msg-hl">' + mlrv + '</span> ' + G.i18n.was_deleted);
-                                                    G.stores.predefinedMapLegend.load();
-                                                    Ext.getCmp('predefinedmaplegend_cb').clearValue();
-                                                }
-                                            });
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
                     }
                 ],
+				bbar: [
+					'->',
+					{
+						xtype: 'button',
+						id: 'newpredefinedmaplegend_b',
+						text: G.i18n.register,
+						iconCls: 'icon-add',
+						handler: function() {
+							var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
+							var mlsv = parseFloat(Ext.getCmp('predefinedmaplegendstartvalue_nf').getValue());
+							var mlev = parseFloat(Ext.getCmp('predefinedmaplegendendvalue_nf').getValue());
+							var type = Ext.getCmp('predefinedmaplegendtype_cb').getValue();
+							var mlc = type == G.conf.map_legend_symbolizer_color ?
+								Ext.getCmp('predefinedmaplegendcolor_cf').getValue() : null;
+							var mli = type == G.conf.map_legend_symbolizer_image ?
+								Ext.getCmp('predefinedmaplegendimage_cb').getRawValue() : null;
+							
+							if (!Ext.isNumber(parseFloat(mlsv)) || !Ext.isNumber(mlev)) {
+								Ext.message.msg(false, G.i18n.form_is_not_complete);
+								return;
+							}
+							
+							if (!mln || (!mlc && !mli)) {
+								Ext.message.msg(false, G.i18n.form_is_not_complete);
+								return;
+							}
+							
+							if (!G.util.validateInputNameLength(mln)) {
+								Ext.message.msg(false, G.i18n.name + ': ' + G.i18n.max + ' 25 ' + G.i18n.characters);
+								return;
+							}
+							
+							if (G.stores.predefinedMapLegend.findExact('name', mln) !== -1) {
+								Ext.message.msg(false, G.i18n.legend + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.already_exists);
+								return;
+							}
+							
+							var params = {};
+							params.name = mln;
+							params.startValue = mlsv;
+							params.endValue = mlev;                                            
+							if (type == G.conf.map_legend_symbolizer_color) {
+								params.color = mlc;
+							}
+							else if (type == G.conf.map_legend_symbolizer_image) {
+								params.image = mli;
+							}
+							
+							Ext.Ajax.request({
+								url: G.conf.path_mapping + 'addOrUpdateMapLegend' + G.conf.type,
+								method: 'POST',
+								params: params,
+								success: function(r) {
+									Ext.message.msg(true, G.i18n.legend + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.was_registered);
+									G.stores.predefinedMapLegend.load();
+									Ext.getCmp('predefinedmaplegendname_tf').reset();
+									Ext.getCmp('predefinedmaplegendstartvalue_nf').reset();
+									Ext.getCmp('predefinedmaplegendendvalue_nf').reset();
+								}
+							});
+						}
+					},
+					{
+						xtype: 'tbseparator',
+						cls: 'xtb-sep-panel'
+					},
+					{
+						xtype: 'button',
+						id: 'deletepredefinedmaplegend_b',
+						text: G.i18n.delete_,
+						iconCls: 'icon-remove',
+						handler: function() {
+							var mlv = Ext.getCmp('predefinedmaplegend_cb').getValue();
+							var mlrv = Ext.getCmp('predefinedmaplegend_cb').getRawValue();
+							
+							if (!mlv) {
+								Ext.message.msg(false, G.i18n.please_select_a_legend);
+								return;
+							}
+							
+							Ext.Ajax.request({
+								url: G.conf.path_mapping + 'deleteMapLegend' + G.conf.type,
+								method: 'POST',
+								params: {id: mlv},
+								success: function(r) {
+									Ext.message.msg(true, G.i18n.legend + ' <span class="x-msg-hl">' + mlrv + '</span> ' + G.i18n.was_deleted);
+									G.stores.predefinedMapLegend.load();
+									Ext.getCmp('predefinedmaplegend_cb').clearValue();
+								}
+							});
+						}
+					}
+				],
                 listeners: {
-                    expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_expanded_1);
+                    expand: function(w) {
+                        predefinedMapLegendSetWindow.syncSize();
                     },
-                    collapse: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_collapsed);
-                    }
+                    collapse: function(w) {
+                        predefinedMapLegendSetWindow.syncSize();
+					}
                 }
             },
             
             {
                 title: G.i18n.legendset,
+				bodyStyle: 'padding:8px; background-color:#fff',
+				autoHeight: true,
+				height: 'auto',
                 items: [
                     {
                         xtype: 'form',
-                        bodyStyle: 'padding: 8px 8px 5px 8px',
                         labelWidth: G.conf.label_width,
                         items: [
                             {html: '<div class="window-info">Register new legend set</div>'},
@@ -1161,147 +1154,136 @@
                                 store: G.stores.predefinedMapLegendSet
                             }
                         ]
-                    },
-                    {
-                        xtype: 'form',
-                        items: [
-                            {
-                                xtype: 'toolbar',
-                                style: 'padding-top:4px',
-                                items: [
-                                    '->',
-                                    {
-                                        xtype: 'button',
-                                        id: 'newpredefinedmaplegendset_b',
-                                        text: G.i18n.register,
-                                        iconCls: 'icon-add',
-                                        handler: function() {
-                                            var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
-                                            var mlms = Ext.getCmp('predefinednewmaplegend_ms').getValue();
-                                            var array = [];
-                                            
-                                            if (mlms) {
-                                                array = mlms.split(',');
-                                                if (array.length > 1) {
-                                                    for (var i = 0; i < array.length; i++) {
-                                                        var sv = G.stores.predefinedMapLegend.getById(array[i]).get('startValue');
-                                                        var ev = G.stores.predefinedMapLegend.getById(array[i]).get('endValue');
-                                                        for (var j = 0; j < array.length; j++) {
-                                                            if (j != i) {
-                                                                var temp_sv = G.stores.predefinedMapLegend.getById(array[j]).get('startValue');
-                                                                var temp_ev = G.stores.predefinedMapLegend.getById(array[j]).get('endValue');
-                                                                for (var k = sv+1; k < ev; k++) {
-                                                                    if (k > temp_sv && k < temp_ev) {
-                                                                        Ext.message.msg(false, G.i18n.overlapping_legends_are_not_allowed);
-                                                                        return;
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            else {
-                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
-                                                return;
-                                            }
-                                            
-                                            if (!mlsv) {
-                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
-                                                return;
-                                            }
-                                            
-                                            array = mlms.split(',');
-                                            var params = '?mapLegends=' + array[0];
-                                            if (array.length > 1) {
-                                                for (var l = 1; l < array.length; l++) {
-                                                    array[l] = '&mapLegends=' + array[l];
-                                                    params += array[l];
-                                                }
-                                            }
-                                            
-                                            var symbolizer = Ext.getCmp('predefinedmaplegendsettype_cb').getValue();
-                                            
-                                            Ext.Ajax.request({
-                                                url: G.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
-                                                method: 'POST',
-                                                params: {name: mlsv, type: G.conf.map_legendset_type_predefined, symbolizer: symbolizer},
-                                                success: function(r) {
-                                                    Ext.message.msg(true, G.i18n.new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + G.i18n.was_registered);
-                                                    Ext.getCmp('predefinedmaplegendsetname_tf').reset();
-                                                    Ext.getCmp('predefinednewmaplegend_ms').reset();			
-                                                    G.stores.predefinedMapLegendSet.load();
-                                                    if (symbolizer == G.conf.map_legend_symbolizer_color) {
-                                                        G.stores.predefinedColorMapLegendSet.load();
-                                                    }
-                                                    else if (symbolizer == G.conf.map_legend_symbolizer_image) {
-                                                        G.stores.predefinedImageMapLegendSet.load();
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    },
-                                    {
-                                        xtype: 'tbseparator',
-                                        cls: 'xtb-sep-panel'
-                                    },
-                                    {
-                                        xtype: 'button',
-                                        id: 'deletepredefinedmaplegendset_b',
-                                        text: G.i18n.delete_,
-                                        iconCls: 'icon-remove',
-                                        handler: function() {
-                                            var mlsv = Ext.getCmp('predefinedmaplegendset_cb').getValue();
-                                            var mlsrv = Ext.getCmp('predefinedmaplegendset_cb').getRawValue();
-                                            
-                                            if (!mlsv) {
-                                                Ext.message.msg(false, G.i18n.please_select_a_legend_set);
-                                                return;
-                                            }
-                                            
-                                            Ext.Ajax.request({
-                                                url: G.conf.path_mapping + 'deleteMapLegendSet' + G.conf.type,
-                                                method: 'POST',
-                                                params: {id: mlsv},
-                                                success: function(r) {
-                                                    Ext.message.msg(true, G.i18n.legendset + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + G.i18n.was_deleted);
-                                                    var store = G.stores.predefinedMapLegendSet;
-                                                    var symbolizer = store.getAt(store.find('id', mlsv)).data.symbolizer;
-                                                    
-                                                    G.stores.predefinedMapLegendSet.load();
-                                                    store = symbolizer == G.conf.map_legend_symbolizer_color ?
-                                                        G.stores.predefinedColorMapLegendSet : G.stores.predefinedImageMapLegendSet;
-                                                    store.load();
-                                                    
-                                                    Ext.getCmp('predefinedmaplegendset_cb').clearValue();
-                                                    if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue) {
-                                                        Ext.getCmp('predefinedmaplegendsetindicator_cb').clearValue();
-                                                    }
-                                                    if (mlsv == Ext.getCmp('predefinedmaplegendsetdataelement_cb').getValue) {
-                                                        Ext.getCmp('predefinedmaplegendsetdataelement_cb').clearValue();
-                                                    }
-                                                    if (mlsv == choropleth.cmp.mapLegendSet.getValue()) {
-                                                        choropleth.cmp.mapLegendSet.clearValue();
-                                                    }
-                                                    if (mlsv == point.cmp.mapLegendSet.getValue()) {
-                                                        point.cmp.mapLegendSet.clearValue();
-                                                    }
-                                                    if (mlsv == centroid.cmp.mapLegendSet.getValue()) {
-                                                        centroid.cmp.mapLegendSet.clearValue();
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
                     }
-                ],
+				],
+				bbar: [
+					'->',
+					{
+						xtype: 'button',
+						id: 'newpredefinedmaplegendset_b',
+						text: G.i18n.register,
+						iconCls: 'icon-add',
+						handler: function() {
+							var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
+							var mlms = Ext.getCmp('predefinednewmaplegend_ms').getValue();
+							var array = [];
+							
+							if (mlms) {
+								array = mlms.split(',');
+								if (array.length > 1) {
+									for (var i = 0; i < array.length; i++) {
+										var sv = G.stores.predefinedMapLegend.getById(array[i]).get('startValue');
+										var ev = G.stores.predefinedMapLegend.getById(array[i]).get('endValue');
+										for (var j = 0; j < array.length; j++) {
+											if (j != i) {
+												var temp_sv = G.stores.predefinedMapLegend.getById(array[j]).get('startValue');
+												var temp_ev = G.stores.predefinedMapLegend.getById(array[j]).get('endValue');
+												for (var k = sv+1; k < ev; k++) {
+													if (k > temp_sv && k < temp_ev) {
+														Ext.message.msg(false, G.i18n.overlapping_legends_are_not_allowed);
+														return;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+							else {
+								Ext.message.msg(false, G.i18n.form_is_not_complete);
+								return;
+							}
+							
+							if (!mlsv) {
+								Ext.message.msg(false, G.i18n.form_is_not_complete);
+								return;
+							}
+							
+							array = mlms.split(',');
+							var params = '?mapLegends=' + array[0];
+							if (array.length > 1) {
+								for (var l = 1; l < array.length; l++) {
+									array[l] = '&mapLegends=' + array[l];
+									params += array[l];
+								}
+							}
+							
+							var symbolizer = Ext.getCmp('predefinedmaplegendsettype_cb').getValue();
+							
+							Ext.Ajax.request({
+								url: G.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
+								method: 'POST',
+								params: {name: mlsv, type: G.conf.map_legendset_type_predefined, symbolizer: symbolizer},
+								success: function(r) {
+									Ext.message.msg(true, G.i18n.new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + G.i18n.was_registered);
+									Ext.getCmp('predefinedmaplegendsetname_tf').reset();
+									Ext.getCmp('predefinednewmaplegend_ms').reset();			
+									G.stores.predefinedMapLegendSet.load();
+									if (symbolizer == G.conf.map_legend_symbolizer_color) {
+										G.stores.predefinedColorMapLegendSet.load();
+									}
+									else if (symbolizer == G.conf.map_legend_symbolizer_image) {
+										G.stores.predefinedImageMapLegendSet.load();
+									}
+								}
+							});
+						}
+					},
+					{
+						xtype: 'tbseparator',
+						cls: 'xtb-sep-panel'
+					},
+					{
+						xtype: 'button',
+						id: 'deletepredefinedmaplegendset_b',
+						text: G.i18n.delete_,
+						iconCls: 'icon-remove',
+						handler: function() {
+							var mlsv = Ext.getCmp('predefinedmaplegendset_cb').getValue();
+							var mlsrv = Ext.getCmp('predefinedmaplegendset_cb').getRawValue();
+							
+							if (!mlsv) {
+								Ext.message.msg(false, G.i18n.please_select_a_legend_set);
+								return;
+							}
+							
+							Ext.Ajax.request({
+								url: G.conf.path_mapping + 'deleteMapLegendSet' + G.conf.type,
+								method: 'POST',
+								params: {id: mlsv},
+								success: function(r) {
+									Ext.message.msg(true, G.i18n.legendset + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + G.i18n.was_deleted);
+									var store = G.stores.predefinedMapLegendSet;
+									var symbolizer = store.getAt(store.find('id', mlsv)).data.symbolizer;
+									
+									G.stores.predefinedMapLegendSet.load();
+									store = symbolizer == G.conf.map_legend_symbolizer_color ?
+										G.stores.predefinedColorMapLegendSet : G.stores.predefinedImageMapLegendSet;
+									store.load();
+									
+									Ext.getCmp('predefinedmaplegendset_cb').clearValue();
+									if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue) {
+										Ext.getCmp('predefinedmaplegendsetindicator_cb').clearValue();
+									}
+									if (mlsv == Ext.getCmp('predefinedmaplegendsetdataelement_cb').getValue) {
+										Ext.getCmp('predefinedmaplegendsetdataelement_cb').clearValue();
+									}
+									if (mlsv == choropleth.cmp.mapLegendSet.getValue()) {
+										choropleth.cmp.mapLegendSet.clearValue();
+									}
+									if (mlsv == point.cmp.mapLegendSet.getValue()) {
+										point.cmp.mapLegendSet.clearValue();
+									}
+									if (mlsv == centroid.cmp.mapLegendSet.getValue()) {
+										centroid.cmp.mapLegendSet.clearValue();
+									}
+								}
+							});
+						}
+					}
+				],
                 listeners: {
-                    expand: function() {
-                        predefinedMapLegendSetWindow.setHeight((G.util.getMultiSelectHeight() / 2) + G.conf.predefinedmaplegendsetwindow_expanded_2);
-                        
+                    expand: function() {                        
                         var pmlst = Ext.getCmp('predefinedmaplegendsettype_cb');
                         if (pmlst.getValue()) {
                             G.stores.predefinedMapLegend.filterBy( function(r) {
@@ -1318,20 +1300,24 @@
                             G.stores.predefinedMapLegend.filterBy( function(r, rid) {
                                 return r.data.color;
                             });
-                        }                                                        
+                        }
+						
+						predefinedMapLegendSetWindow.syncSize();
                     },
                     collapse: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_collapsed);
+                        predefinedMapLegendSetWindow.syncSize();
                     }
                 }
             },
             
             {
                 title: G.i18n.indicators,
+				bodyStyle: 'padding:8px; background-color:#fff',
+				autoHeight: true,
+				height: 'auto',
                 items: [
                     {
                         xtype: 'form',
-                        bodyStyle: 'padding: 8px 8px 5px 8px',
                         labelWidth: G.conf.label_width,
                         items: [
                             {html: '<div class="window-info">Assign indicators to legend set</div>'},
@@ -1382,82 +1368,75 @@
                                 store:G.stores.indicator
                             }
                         ]
-                    },
-                    {
-                        xtype: 'form',
-                        items: [
-                            {
-                                xtype: 'toolbar',
-                                style: 'padding-top:4px',
-                                items: [
-                                    '->',
-                                    {
-                                        xtype: 'button',
-                                        id: 'assignpredefinedmaplegendsetindicator_b',
-                                        text: G.i18n.assign,
-                                        iconCls: 'icon-assign',
-                                        handler: function() {
-                                            var ls = Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue();
-                                            var lsrw = Ext.getCmp('predefinedmaplegendsetindicator_cb').getRawValue();
-                                            var lims = Ext.getCmp('predefinedmaplegendsetindicator_ms').getValue();
-                                            
-                                            if (!ls) {
-                                                Ext.message.msg(false, G.i18n.please_select_a_legend_set);
-                                                return;
-                                            }
-                                            
-                                            if (!lims) {
-                                                Ext.message.msg(false, G.i18n.please_select_at_least_one_indicator);
-                                                return;
-                                            }
-                                            
-                                            var array = [];
-                                            array = lims.split(',');
-                                            var params = '?indicators=' + array[0];
-                                            
-                                            if (array.length > 1) {
-                                                for (var i = 1; i < array.length; i++) {
-                                                    array[i] = '&indicators=' + array[i];
-                                                    params += array[i];
-                                                }
-                                            }
-                                            
-                                            Ext.Ajax.request({
-                                                url: G.conf.path_mapping + 'assignIndicatorsToMapLegendSet.action' + params,
-                                                method: 'POST',
-                                                params: {id: ls},
-                                                success: function(r) {
-                                                    Ext.message.msg(true, G.i18n.legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + G.i18n.was_updated);
-                                                    G.stores.predefinedMapLegendSet.load();
-                                                }
-                                            });
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
                     }
-                ],
+				],
+				bbar: [
+					'->',
+					{
+						xtype: 'button',
+						id: 'assignpredefinedmaplegendsetindicator_b',
+						text: G.i18n.assign,
+						iconCls: 'icon-assign',
+						handler: function() {
+							var ls = Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue();
+							var lsrw = Ext.getCmp('predefinedmaplegendsetindicator_cb').getRawValue();
+							var lims = Ext.getCmp('predefinedmaplegendsetindicator_ms').getValue();
+							
+							if (!ls) {
+								Ext.message.msg(false, G.i18n.please_select_a_legend_set);
+								return;
+							}
+							
+							if (!lims) {
+								Ext.message.msg(false, G.i18n.please_select_at_least_one_indicator);
+								return;
+							}
+							
+							var array = [];
+							array = lims.split(',');
+							var params = '?indicators=' + array[0];
+							
+							if (array.length > 1) {
+								for (var i = 1; i < array.length; i++) {
+									array[i] = '&indicators=' + array[i];
+									params += array[i];
+								}
+							}
+							
+							Ext.Ajax.request({
+								url: G.conf.path_mapping + 'assignIndicatorsToMapLegendSet.action' + params,
+								method: 'POST',
+								params: {id: ls},
+								success: function(r) {
+									Ext.message.msg(true, G.i18n.legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + G.i18n.was_updated);
+									G.stores.predefinedMapLegendSet.load();
+								}
+							});
+						}
+					}
+				],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + G.conf.predefinedmaplegendsetwindow_expanded_3);
-                        
                         if (!G.stores.indicator.isLoaded) {
                             G.stores.indicator.load();
                         }
+						
+						predefinedMapLegendSetWindow.syncSize();
                     },
                     collapse: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_collapsed);
+                        predefinedMapLegendSetWindow.syncSize();
                     }
                 }
             },
             
             {
                 title: G.i18n.dataelements,
+				bodyStyle: 'padding:8px; background-color:#fff',
+				autoHeight: true,
+				height: 'auto',
                 items: [
                     {
                         xtype: 'form',
-                        bodyStyle: 'padding: 8px 8px 5px 8px',
                         labelWidth: G.conf.label_width,
                         items: [
                             {html: '<div class="window-info">Assign data elements to legend set</div>'},
@@ -1508,81 +1487,67 @@
                                 store: G.stores.dataElement
                             }
                         ]
-                    },
-                    {
-                        xtype: 'form',
-                        items: [
-                            {
-                                xtype: 'toolbar',
-                                style: 'padding-top:4px',
-                                items: [
-                                    '->',
-                                    {
-                                        xtype: 'button',
-                                        id: 'assignpredefinedmaplegendsetdataelement_b',
-                                        text: G.i18n.assign,
-                                        iconCls: 'icon-assign',
-                                        handler: function() {
-                                            var ls = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getValue();
-                                            var lsrw = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getRawValue();
-                                            var lims = Ext.getCmp('predefinedmaplegendsetdataelement_ms').getValue();
-                                            
-                                            if (!ls) {
-                                                Ext.message.msg(false, G.i18n.please_select_a_legend_set);
-                                                return;
-                                            }
-                                            
-                                            if (!lims) {
-                                                Ext.message.msg(false, G.i18n.please_select_at_least_one_indicator);
-                                                return;
-                                            }
-                                            
-                                            var array = [];
-                                            array = lims.split(',');
-                                            var params = '?dataElements=' + array[0];
-                                            
-                                            if (array.length > 1) {
-                                                for (var i = 1; i < array.length; i++) {
-                                                    array[i] = '&dataElements=' + array[i];
-                                                    params += array[i];
-                                                }
-                                            }
-                                            
-                                            Ext.Ajax.request({
-                                                url: G.conf.path_mapping + 'assignDataElementsToMapLegendSet.action' + params,
-                                                method: 'POST',
-                                                params: {id: ls},
-                                                success: function(r) {
-                                                    Ext.message.msg(true, G.i18n.legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + G.i18n.was_updated);
-                                                    G.stores.predefinedMapLegendSet.load();
-                                                }
-                                            });
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
                     }
-                ],
+				],
+				bbar: [
+					'->',
+					{
+						xtype: 'button',
+						id: 'assignpredefinedmaplegendsetdataelement_b',
+						text: G.i18n.assign,
+						iconCls: 'icon-assign',
+						handler: function() {
+							var ls = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getValue();
+							var lsrw = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getRawValue();
+							var lims = Ext.getCmp('predefinedmaplegendsetdataelement_ms').getValue();
+							
+							if (!ls) {
+								Ext.message.msg(false, G.i18n.please_select_a_legend_set);
+								return;
+							}
+							
+							if (!lims) {
+								Ext.message.msg(false, G.i18n.please_select_at_least_one_indicator);
+								return;
+							}
+							
+							var array = [];
+							array = lims.split(',');
+							var params = '?dataElements=' + array[0];
+							
+							if (array.length > 1) {
+								for (var i = 1; i < array.length; i++) {
+									array[i] = '&dataElements=' + array[i];
+									params += array[i];
+								}
+							}
+							
+							Ext.Ajax.request({
+								url: G.conf.path_mapping + 'assignDataElementsToMapLegendSet.action' + params,
+								method: 'POST',
+								params: {id: ls},
+								success: function(r) {
+									Ext.message.msg(true, G.i18n.legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + G.i18n.was_updated);
+									G.stores.predefinedMapLegendSet.load();
+								}
+							});
+						}
+					}
+				],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + G.conf.predefinedmaplegendsetwindow_expanded_4);
-                        
                         if (!G.stores.dataElement.isLoaded) {
                             G.stores.dataElement.load();
                         }
+						
+						predefinedMapLegendSetWindow.syncSize();
                     },
                     collapse: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_collapsed);
+                        predefinedMapLegendSetWindow.syncSize();
                     }
                 }
             }
-        ],
-        listeners: {
-            afterrender: function() {
-                predefinedMapLegendSetWindow.setHeight(G.conf.predefinedmaplegendsetwindow_expanded_1);
-            }
-        }
+        ]
     });
     predefinedMapLegendSetWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
     
@@ -1605,7 +1570,7 @@
 		layout: 'fit',
         closeAction: 'hide',
 		width: 579,
-		height: 290,
+		height: 320,
         items: [
             {
                 xtype: 'tabpanel',
@@ -1618,31 +1583,31 @@
                     tabchange: function(panel, tab) {
                         if (tab.id == 'help0') {
 							setHelpText(G.conf.thematicMap, tab);
-                            helpWindow.setHeight(290);
+                            helpWindow.setHeight(320);
                         }
                         else if (tab.id == 'help1') {
 							setHelpText(G.conf.favorites, tab);
-                            helpWindow.setHeight(290);
+                            helpWindow.setHeight(320);
                         }
                         else if (tab.id == 'help2') {
                             setHelpText(G.conf.legendSets, tab);
-                            helpWindow.setHeight(290);
+                            helpWindow.setHeight(320);
                         }
 						if (tab.id == 'help3') { 
                             setHelpText(G.conf.imageExport, tab);
-                            helpWindow.setHeight(290);
+                            helpWindow.setHeight(320);
                         }
                         else if (tab.id == 'help4') {
                             setHelpText(G.conf.administration, tab);
-                            helpWindow.setHeight(290);
+                            helpWindow.setHeight(320);
                         }
                         else if (tab.id == 'help5') {
                             setHelpText(G.conf.overlayRegistration, tab);
-                            helpWindow.setHeight(530);
+                            helpWindow.setHeight(580);
                         }
                         else if (tab.id == 'help6') {
                             setHelpText(G.conf.setup, tab);
-                            helpWindow.setHeight(530);
+                            helpWindow.setHeight(580);
                         }
                     }
                 },
@@ -1684,14 +1649,13 @@
 	var baseLayersWindow = new Ext.Window({
         id: 'baselayers_w',
         title: '<span id="window-baselayer-title">WMS ' + G.i18n.overlays + '</span>',
+		bodyStyle: 'padding:8px; background-color:#fff',
 		layout: 'fit',
         closeAction: 'hide',
-        height: 230,
 		width: G.conf.window_width,
         items: [
             {
                 xtype: 'form',
-                bodyStyle: 'padding:8px',
                 labelWidth: G.conf.label_width,
                 items: [
                     {html: '<div class="window-info">' + G.i18n.register_new_wms_overlay + '</div>'},
@@ -1818,14 +1782,13 @@
 	var overlaysWindow = new Ext.Window({
         id: 'overlays_w',
         title: '<span id="window-maplayer-title">Vector ' + G.i18n.overlays + '</span>',
+		bodyStyle: 'padding:8px; background-color:#fff',
 		layout: 'fit',
         closeAction: 'hide',
-        height: 307,
 		width: G.conf.window_width,
         items: [
             {
                 xtype: 'form',
-                bodyStyle: 'padding:8px',
                 labelWidth: G.conf.label_width,
                 items: [
                     {html: '<div class="window-info">' + G.i18n.register_new_vector_overlay + '</div>'},
@@ -2235,10 +2198,9 @@
     choropleth.window = new Ext.Window({
         title: '<span id="window-thematic1-title">Thematic layer 1</span>',
         layout: 'fit',
-        bodyStyle: 'padding:8px 8px 0px 8px; background-color:#fff',
+        bodyStyle: 'padding:8px; background-color:#fff',
         closeAction: 'hide',
         width: 570,
-        height: 478,
         collapsed: false,
         isUpdate: false,
         cmp: {},
@@ -2325,10 +2287,9 @@
     point.window = new Ext.Window({
         title: '<span id="window-thematic2-title">Thematic layer 2</span>',
         layout: 'fit',
-        bodyStyle: 'padding:8px 8px 0px 8px; background-color:#fff',
+        bodyStyle: 'padding:8px; background-color:#fff',
         closeAction: 'hide',
         width: 570,
-        height: 478,
         collapsed: false,
         isUpdate: false,
         cmp: {},
@@ -2415,10 +2376,9 @@
     symbol.window = new Ext.Window({
         title: '<span id="window-symbol-title">' + G.conf.symbol_layer + '</span>',
         layout: 'fit',
-        bodyStyle: 'padding:8px 8px 0px 8px; background-color:#fff',
+        bodyStyle: 'padding:8px; background-color:#fff',
         closeAction: 'hide',
         width: 570,
-        height: 478,
         isUpdate: false,
         cmp: {},
         items: symbol,
@@ -2495,10 +2455,9 @@
     centroid.window = new Ext.Window({
         title: '<span id="window-centroid-title">' + G.conf.centroid_layer + '</span>',
         layout: 'fit',
-        bodyStyle: 'padding:8px 8px 0px 8px; background-color:#fff',
+        bodyStyle: 'padding:8px; background-color:#fff',
         closeAction: 'hide',
         width: 570,
-        height: 478,
         isUpdate: false,
         cmp: {},
         items: centroid,
