@@ -59,6 +59,10 @@ var DEFAULT_NAME = '[unknown]';
  */
 $( document ).ready( function()
 {
+    $.ajaxSetup({
+        type: 'POST'
+    });
+
     selection.setListenerFunction( organisationUnitSelected );
     $( '#loaderSpan' ).show();
 
