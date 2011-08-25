@@ -140,7 +140,7 @@ function searchValidationCompleted( messageElement )
 			});
 			
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			url: 'searchRelationshipPatient.action',
 			data: getParamsForDiv('relationshipSelectForm'),
 			success: function( json ) {
