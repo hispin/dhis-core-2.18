@@ -2082,19 +2082,23 @@
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: G.conf.thematic_layer_1
+                    layer: G.conf.thematic_layer_1,
+                    iconCls: 'treepanel-node-icon-thematic1'
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: G.conf.thematic_layer_2
+                    layer: G.conf.thematic_layer_2,
+                    iconCls: 'treepanel-node-icon-thematic2'
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: G.conf.symbol_layer
+                    layer: G.conf.symbol_layer,
+                    iconCls: 'treepanel-node-icon-symbol'
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: G.conf.centroid_layer
+                    layer: G.conf.centroid_layer,
+                    iconCls: 'treepanel-node-icon-centroid'
                 }
             ]
         },

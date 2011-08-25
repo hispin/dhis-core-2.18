@@ -39,6 +39,18 @@
     background:url('../../resources/ext-ux/theme/gray-extend-ux/leaf.gif') center center;
     padding-right:1px;
 }
+.treepanel-node-icon-thematic1 {
+    background:url('../../../images/thematic1_small.png') center center no-repeat !important;
+}
+.treepanel-node-icon-thematic2 {
+    background:url('../../../images/thematic2_small.png') center center no-repeat !important;
+}
+.treepanel-node-icon-symbol {
+    background:url('../../../images/symbol_small.png') center center no-repeat !important;
+}
+.treepanel-node-icon-centroid {
+    background:url('../../../images/centroid_small.png') center center no-repeat !important;
+}
 .x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
 	background-image:url('../../resources/ext-ux/theme/gray-extend-ux/btn.gif');
 }
