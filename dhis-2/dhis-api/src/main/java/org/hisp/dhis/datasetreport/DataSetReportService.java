@@ -28,10 +28,8 @@ package org.hisp.dhis.datasetreport;
  */
 
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -44,41 +42,6 @@ import org.hisp.dhis.period.Period;
  */
 public interface DataSetReportService
 {
-    /**
-     * Generates a map with aggregated data values or regular data values (depending
-     * on the selectedUnitOnly argument) mapped to a DataElemenet operand identifier.
-     * 
-     * @param dataSet the DataSet.
-     * @param unit the OrganisationUnit.
-     * @param period the Period.
-     * @param selectedUnitOnly whether to include aggregated or regular data in the map.
-     * @param format the I18nFormat.
-     * @return a map.
-     */
-    Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format );
-    
-    /**
-     * Generates a map with aggregated indicator values mapped to an Indicator identifier.
-     * 
-     * @param dataSet the DataSet.
-     * @param unit the OrganisationUnit.
-     * @param period the Period.
-     * @param format the I18nFormat.
-     * @return a map.
-     */
-    Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, Period period, I18nFormat format );
-
-    /**
-     * Puts in aggregated datavalues in the custom dataentry form and returns
-     * whole report text.
-     * 
-     * @param dataEntryForm the data entry form.
-     * @param a map with aggregated data values mapped to data element operands.
-     * @return data entry form HTML code populated with aggregated data in the
-     *         input fields.
-     */
-    String prepareReportContent( DataEntryForm dataEntryForm, Map<String, String> dataValues, Map<Integer, String> indicatorValues );
-    
     /**
      * Generates html code for a custom data set report.
      * 
