@@ -116,4 +116,16 @@ public class TextUtils
     {
         return string != null && string.trim().length() == 0 ? null : string;
     }
+    
+    /**
+     * Checks the two strings for equality.
+     * 
+     * @param s1 string 1.
+     * @param s2 string 2.
+     * @return true if strings are equal, false otherwise.
+     */
+    public static boolean equalsNullSafe( String s1, String s2 )
+    {
+        return s1 == null ? s2 == null : s1.equals( s2 );
+    }
 }

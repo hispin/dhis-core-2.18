@@ -42,6 +42,8 @@ import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
+import static org.hisp.dhis.system.util.TextUtils.equalsNullSafe;
+
 /**
  * @author Kristian
  * @version $Id: UpdateDataSetAction.java 6255 2008-11-10 16:01:24Z larshelg $
@@ -173,17 +175,18 @@ public class UpdateDataSetAction
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
+        if ( !( equalsNullSafe( name, dataSet.getName() ) && periodType.equals( dataSet.getPeriodType() ) && 
+            dataElements.equals( dataSet.getDataElements() ) && indicators.equals( dataSet.getIndicators() ) ) )
+        {
+            dataSet.increaseVersion(); // Check if version must be updated            
+        }
+        
         dataSet.setName( name );
         dataSet.setShortName( shortName );
         dataSet.setCode( code );
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
         dataSet.updateDataElements( dataElements );
         dataSet.setIndicators( indicators );
-
-        if ( dataSet.isMobile() )
-        {
-            dataSet.setVersion( dataSet.getVersion() + 1 ); // TODO hack
-        }
 
         dataSetService.updateDataSet( dataSet );
 

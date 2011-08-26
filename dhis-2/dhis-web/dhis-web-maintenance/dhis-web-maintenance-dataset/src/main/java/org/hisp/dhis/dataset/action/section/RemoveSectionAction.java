@@ -77,11 +77,7 @@ public class RemoveSectionAction
         
         DataSet dataSet = section.getDataSet();
 
-        if ( dataSet.getMobile() != null && dataSet.getMobile() ) //TODO hack
-        {
-            dataSet.setVersion( dataSet.getVersion() + 1 );
-            dataSetService.updateDataSet( dataSet );
-        }
+        dataSetService.updateDataSet( dataSet.increaseVersion() );
         
         sectionService.deleteSection( section );
         

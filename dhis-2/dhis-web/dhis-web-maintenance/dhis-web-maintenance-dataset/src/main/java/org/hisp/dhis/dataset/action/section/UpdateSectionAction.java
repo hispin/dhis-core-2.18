@@ -39,6 +39,8 @@ import org.hisp.dhis.dataset.SectionService;
 
 import com.opensymphony.xwork2.Action;
 
+import static org.hisp.dhis.system.util.TextUtils.equalsNullSafe;
+
 public class UpdateSectionAction
     implements Action
 {
@@ -108,19 +110,21 @@ public class UpdateSectionAction
             DataElement d = dataElementService.getDataElement( Integer.parseInt( id ) );
             dataElements.add( d );
         }
+
+        DataSet dataSet = section.getDataSet();
+
+        if ( dataSet != null ) // Check if version must be updated
+        {
+            if ( !( equalsNullSafe( sectionName, section.getName() ) && dataElements.equals( section.getDataElements() ) ) )
+            {
+                dataSetService.updateDataSet( dataSet.increaseVersion() );
+            }
+        }
         
         section.setDataElements( dataElements );
         section.setName( sectionName );
 
         sectionService.updateSection( section );
-
-        DataSet dataSet = section.getDataSet();
-
-        if ( dataSet.getMobile() != null && dataSet.getMobile() ) // TODO Hack
-        {
-            dataSet.setVersion( dataSet.getVersion() + 1 );
-            dataSetService.updateDataSet( dataSet );
-        }
         
         return SUCCESS;
     }

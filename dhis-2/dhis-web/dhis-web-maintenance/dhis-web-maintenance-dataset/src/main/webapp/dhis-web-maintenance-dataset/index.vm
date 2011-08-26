@@ -9,7 +9,7 @@ jQuery(function() {
 
 <ul id="introList">
     #introListImgItem( "dataSet.action" "dataset" "dataset" )
-    #introListImgItem( "showMobileDataSet.action" "mobile_dataset" "dataset" )
     #introListImgItem( "section.action" "dataset_section" "dataset" )
     #introListImgItem( "displayEditorForm.action" "dataset_assignment_editor" "dataset" )
+    #introListImgItem( "showMobileDataSet.action" "mobile_dataset" "dataset" )
 </ul>
