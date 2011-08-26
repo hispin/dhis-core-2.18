@@ -50,6 +50,7 @@ dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInt
         $.ajax( {
             url : "../dhis-web-commons-stream/ping.action",
             cache : false,
+    		dataType : "json",
             success : function( data, textStatus, jqXHR )
             {
                 dhis2.availability._isAvailable = true;
@@ -69,17 +70,18 @@ dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInt
                     dhis2.availability._isLoggedIn = -1;
                     $( document ).trigger( "dhis2.offline" );
                 }
-            }
-        } ).complete( function()
-        {
-            if ( dhis2.availability._isAvailable )
-            {
-                dhis2.availability._availableTimeoutHandler = setTimeout( _checkAvailability, onlineInterval );
-            }
-            else
-            {
-                dhis2.availability._availableTimeoutHandler = setTimeout( _checkAvailability, offlineInterval );
-            }
+            },
+	        complete : function()
+	        {
+	            if ( dhis2.availability._isAvailable )
+	            {
+	                dhis2.availability._availableTimeoutHandler = setTimeout( _checkAvailability, onlineInterval );
+	            }
+	            else
+	            {
+	                dhis2.availability._availableTimeoutHandler = setTimeout( _checkAvailability, offlineInterval );
+	            }
+	        }
         } );
     }
 
@@ -106,6 +108,7 @@ dhis2.availability.syncCheckAvailability = function()
         url : "../dhis-web-commons-stream/ping.action",
         async : false,
         cache : false,
+    	dataType : "json",
         success : function( data, textStatus, jqXHR )
         {
             dhis2.availability._isAvailable = true;
