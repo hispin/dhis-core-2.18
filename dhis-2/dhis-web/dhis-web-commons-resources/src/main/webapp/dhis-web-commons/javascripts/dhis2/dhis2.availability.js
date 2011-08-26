@@ -50,6 +50,7 @@ dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInt
         $.ajax( {
             url : "../dhis-web-commons-stream/ping.action",
             cache : false,
+            timeout: 5000,
     		dataType : "json",
             success : function( data, textStatus, jqXHR )
             {
@@ -108,6 +109,7 @@ dhis2.availability.syncCheckAvailability = function()
         url : "../dhis-web-commons-stream/ping.action",
         async : false,
         cache : false,
+        timeout: 5000,
     	dataType : "json",
         success : function( data, textStatus, jqXHR )
         {
