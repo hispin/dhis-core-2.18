@@ -304,7 +304,7 @@ function Selection()
                         id : unitId
                     },
                     type: 'POST',
-                    timeout: 5000,
+                    timeout: 10000,
                     complete: this.responseReceived
                 });
 
