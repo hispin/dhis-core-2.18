@@ -199,7 +199,7 @@ function addValidationCompleted( data )
 	}
 	else if( type == 'duplicate' )
 	{
-		showListPatientDuplicate(data, true);
+		showListPatientDuplicate(data, false);
 	}
 }
 
@@ -239,8 +239,7 @@ function updateValidationCompleted( messageElement )
     }
     else if( type == 'duplicate' )
     {
-    	if( !checkedDuplicate )
-    		showListPatientDuplicate(messageElement, true);
+    	showListPatientDuplicate(messageElement, true);
     }
 }
 // get and build a param String of all the identifierType id and its value
@@ -290,10 +289,14 @@ function checkDuplicateCompleted( messageElement, divname )
     }
     else if( type == 'duplicate' )
     {
-    	showListPatientDuplicate( messageElement, false );
+    	showListPatientDuplicate( messageElement, true );
     }
 }
-
+/**
+ * Show list patient duplicate  by jQuery thickbox plugin
+ * @param rootElement : root element of the response xml
+ * @param validate  :  is TRUE if this method is called from validation method  
+ */
 function showListPatientDuplicate( rootElement, validate )
 {
 	var message = $(rootElement).find('message').text();
@@ -341,8 +344,15 @@ function showListPatientDuplicate( rootElement, validate )
         	sPatient += "</table>";
 		});
 		
-		sPatient = i18n_duplicate_warning + "<br>" + sPatient;
-		$('#resultSearchDiv' ).html( sPatient );
+		var result = i18n_duplicate_warning;
+		if( !validate )
+		{
+			result += "<input type='button' value='" + i18n_create_new_patient + "' onClick='removeDisabledIdentifier( );addPatient();/>";
+			result += "<br><hr style='margin:5px 0px;'>";
+		}
+		
+		result += "<br>" + sPatient;
+		$('#resultSearchDiv' ).html( result );
 		$('#resultSearchDiv' ).dialog({
 			title: i18n_duplicated_patient_list,
 			maximize: true, 
@@ -416,6 +426,7 @@ function addPatient()
       success: function(json) {
 		var type = json.response;
 		showProgramEnrollmentSelectForm( json.message );
+		jQuery('#resultSearchDiv').dialog('close');
       }
      });
     return false;

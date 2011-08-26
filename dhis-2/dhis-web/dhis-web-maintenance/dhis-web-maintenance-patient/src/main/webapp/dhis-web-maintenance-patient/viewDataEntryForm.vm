@@ -109,7 +109,7 @@
             <input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:100px"/>
             <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location='programStage.action?id=$!programStage.program.id'">            
 			#if( $!dataEntryForm )
-			<input type="button" name="delete" value="$i18n.getString( 'delete' )" style="width:100px" onclick="deleteDataEntryForm( $programStage.id )" />
+			<input type="button" name="delete" value="$i18n.getString( 'delete' )" style="width:100px" onclick="deleteDataEntryForm( $programStage.dataEntryForm.id, $programStage.id )" />
 			#end
         </td>		
     </tr>
@@ -201,3 +201,8 @@
 	</select>
 	<input type="button" value="$i18n.getString( 'load' )" style="float:left" onclick="loadExistedForm()"/>	
 </div>
+
+<script>
+	var i18n_delete_program_data_entry_confirm = '$encoder.jsEscape( $i18n.getString( "delete_program_data_entry_confirm" ) , "'" )';
+
+</script>
