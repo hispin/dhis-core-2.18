@@ -88,10 +88,10 @@ if ( !Object.keys )
  * Define a window.log object, and output to console.log if it exists.
  * (this is a fix for IE8 and FF 3.6).
  */
-window.log = function()
+window.log = function( str )
 {
     if ( this.console )
     {
-        console.log( Array.prototype.slice.call( arguments ) );
+        console.log( str );
     }
 };
