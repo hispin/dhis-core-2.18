@@ -238,6 +238,12 @@ public class DataSet
         return TYPE_DEFAULT;
     }
     
+    public DataSet increaseVersion()
+    {
+        this.version = this.version + 1;
+        return this;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

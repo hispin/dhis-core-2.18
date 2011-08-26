@@ -118,11 +118,7 @@ public class AddSectionAction
         dataSet.getSections().add( section );
         sectionService.addSection( section );
 
-        if ( dataSet.getMobile() != null && dataSet.getMobile() ) // TODO Hack
-        {
-            dataSet.setVersion( dataSet.getVersion() + 1 );
-            dataSetService.updateDataSet( dataSet );
-        }
+        dataSetService.updateDataSet( dataSet.increaseVersion() );
         
         return SUCCESS;
     }
