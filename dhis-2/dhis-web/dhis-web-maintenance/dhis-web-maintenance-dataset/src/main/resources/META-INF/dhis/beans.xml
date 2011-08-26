@@ -362,19 +362,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.dataset.action.section.DataElementListFilteredByGroupForSection" class="org.hisp.dhis.dataset.action.section.DataElementListFilteredByGroupForSection"
-    scope="prototype">
-    <property name="dataElementService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementService" />
-    </property>
-    <property name="dataSetService">
-      <ref bean="org.hisp.dhis.dataset.DataSetService" />
-    </property>
-    <property name="dataElementCategoryService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    </property>
-  </bean>
-
   <bean id="org.hisp.dhis.dataset.action.editor.ShowedAssociationsEditorAction" class="org.hisp.dhis.dataset.action.editor.ShowedAssociationsEditorAction"
     scope="prototype">
     <property name="dataSetService">
