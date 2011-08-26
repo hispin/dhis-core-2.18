@@ -298,9 +298,15 @@ function Selection()
             {
                 sessionStorage[getTagId( "Selected" )] = unitId;
 
-                $.post( organisationUnitTreePath + "setorgunit.action", {
-                    id : unitId
-                } ).complete( this.responseReceived );
+                $.ajax({
+                    url: organisationUnitTreePath + "setorgunit.action",
+                    data: {
+                        id : unitId
+                    },
+                    type: 'POST',
+                    timeout: 5000,
+                    complete: this.responseReceived
+                });
 
                 $( "#orgUnitTree" ).find( "a" ).removeClass( "selected" );
                 $linkTag.addClass( "selected" );
