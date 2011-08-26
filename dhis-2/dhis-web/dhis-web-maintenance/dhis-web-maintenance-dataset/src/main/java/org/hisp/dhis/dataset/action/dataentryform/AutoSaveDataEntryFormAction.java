@@ -106,7 +106,7 @@ public class AutoSaveDataEntryFormAction
         {
             dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
             int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
-            message = id + "";
+            message = String.valueOf( id );
             
             dataset.setDataEntryForm( dataEntryForm );
             dataSetService.updateDataSet( dataset );
@@ -116,7 +116,7 @@ public class AutoSaveDataEntryFormAction
             dataEntryForm.setName( nameField );
             dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
-            message = dataEntryForm.getId() + "";
+            message = String.valueOf( dataEntryForm.getId() );
         }
 
         return SUCCESS;
