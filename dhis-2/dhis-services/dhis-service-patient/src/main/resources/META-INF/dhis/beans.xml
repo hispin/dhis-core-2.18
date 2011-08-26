@@ -384,6 +384,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   	<bean id="org.hisp.dhis.program.ProgramValidationDeletionHandler" class="org.hisp.dhis.program.ProgramValidationDeletionHandler">
     	<property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
   	</bean>
+  	
+  	<bean id="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" class="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler">
+    	<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
+    	<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+  	</bean>
   
 	<!-- Startup -->
 	
@@ -435,6 +440,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			  <ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"/>
 			  <ref local="org.hisp.dhis.programattributevalue.ProgramAttributeValueDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler"/>
+			  <ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler"/>
 			  
 			  <ref local="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler"/>
 			</list>
@@ -504,6 +510,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		  <aop:before 
 		      pointcut="execution( * org.hisp.dhis.caseaggregation.CaseAggregationConditionService.delete*(..) )" 
 		      method="intercept"/>
+		      
 	    </aop:aspect>
       
   	</aop:config>

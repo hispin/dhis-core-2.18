@@ -136,17 +136,17 @@ public class SaveDataEntryFormAction
         if ( dataEntryForm == null )
         {
             dataEntryForm = new DataEntryForm( name, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
-            programStage.setDataEntryForm( dataEntryForm );
-            programStageService.updateProgramStage( programStage );
+            dataEntryFormService.addDataEntryForm( dataEntryForm );
         }
         else
         {
             dataEntryForm.setName( name );
             dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
-            
-            programStage.setDataEntryForm( dataEntryForm );
-            programStageService.updateProgramStage( programStage );
-        }
+            dataEntryFormService.updateDataEntryForm( dataEntryForm );
+        }            
+        
+        programStage.setDataEntryForm( dataEntryForm );
+        programStageService.updateProgramStage( programStage );
 
         return SUCCESS;
     }

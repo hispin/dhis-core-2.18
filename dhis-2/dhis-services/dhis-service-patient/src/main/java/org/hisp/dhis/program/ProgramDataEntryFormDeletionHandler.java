@@ -25,24 +25,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.programstage;
+package org.hisp.dhis.program;
 
-import org.hisp.dhis.program.ProgramStageService;
+import java.util.Set;
 
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @modified Tran Thanh Tri
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ ProgramDataEntryDeletionHandler.java Aug 25, 2011 3:02:00 PM $
+ * 
  */
-public class RemoveProgramStageAction
-    implements Action
+public class ProgramDataEntryFormDeletionHandler
+    extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
+    private DataEntryFormService dataEntryFormService;
+
+    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
+    {
+        this.dataEntryFormService = dataEntryFormService;
+    }
+
     private ProgramStageService programStageService;
 
     public void setProgramStageService( ProgramStageService programStageService )
@@ -51,25 +60,41 @@ public class RemoveProgramStageAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/Output
+    // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
-    private int id;
-
-    public void setId( int id )
+    @Override
+    public String getClassName()
     {
-        this.id = id;
+        return DataEntryForm.class.getSimpleName();
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
+    @Override
+    public void deleteProgramStage( ProgramStage programStage )
     {
-        programStageService.deleteProgramStage(  programStageService.getProgramStage( id ) );
+        DataEntryForm dataEntryForm = programStage.getDataEntryForm();
 
-        return SUCCESS;
+        if ( dataEntryForm != null )
+        {
+            boolean flag = false;
+            Set<ProgramStage> programStages = programStage.getProgram().getProgramStages();
+            programStages.remove( programStage );
+            for ( ProgramStage stage : programStages )
+            {
+                if ( stage.getDataEntryForm() != null )
+                {
+                    programStage.setDataEntryForm( null );
+                    programStageService.updateProgramStage( programStage );
+                    flag = true;
+                    break;
+                }
+            }
+
+            if ( !flag )
+            {
+                dataEntryFormService.deleteDataEntryForm( dataEntryForm );
+            }
+        }
+
     }
 }

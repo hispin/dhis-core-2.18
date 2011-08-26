@@ -29,7 +29,6 @@ package org.hisp.dhis.patient.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;

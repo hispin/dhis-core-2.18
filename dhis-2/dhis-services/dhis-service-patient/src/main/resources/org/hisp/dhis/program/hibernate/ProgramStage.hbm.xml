@@ -25,7 +25,7 @@
       <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
     </set>
 
-    <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm" cascade="all"
+    <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm"
       foreign-key="fk_programstage_dataentryform" />
 
   </class>
