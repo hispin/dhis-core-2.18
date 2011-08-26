@@ -199,8 +199,7 @@ function addValidationCompleted( data )
 	}
 	else if( type == 'duplicate' )
 	{
-		if( !checkedDuplicate )
-			showListPatientDuplicate(data, true);
+		showListPatientDuplicate(data, true);
 	}
 }
 
