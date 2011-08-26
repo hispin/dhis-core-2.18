@@ -68,7 +68,7 @@ $( document ).ready( function()
 
     $( '#orgUnitTree' ).one( 'ouwtLoaded', function()
     {
-        console.log( 'Ouwt loaded' );
+        log( 'Ouwt loaded' );
         loadMetaData();
     } );
 
@@ -153,7 +153,7 @@ function loadMetaData()
 	
 	        selection.responseReceived(); // Notify that meta data is loaded
 	        $( '#loaderSpan' ).hide();
-	        console.log( 'Meta-data loaded' );
+	        log( 'Meta-data loaded' );
 	
 	        updateForms();
 	    } 
@@ -185,7 +185,7 @@ function uploadLocalData()
         var key = array[0];
         var value = completeDataSets[key];
 
-        console.log( 'Uploaded complete data set: ' + key + ', with value: ' + value );
+        log( 'Uploaded complete data set: ' + key + ', with value: ' + value );
 
         $.ajax( {
             url: 'registerCompleteDataSet.action',
@@ -194,7 +194,7 @@ function uploadLocalData()
             cache: false,
             success: function( data, textStatus, jqXHR )
             {
-                console.log( 'Successfully saved complete dataset with value: ' + value );
+                log( 'Successfully saved complete dataset with value: ' + value );
                 storageManager.clearCompleteDataSet( value );
                 ( array = array.slice( 1 ) ).length && pushCompleteDataSets( array );
 
@@ -230,7 +230,7 @@ function uploadLocalData()
         var key = array[0];
         var value = dataValues[key];
 
-        console.log( 'Uploaded data value: ' + key + ', with value: ' + value );
+        log( 'Uploaded data value: ' + key + ', with value: ' + value );
 
         $.ajax( {
             url: 'saveValue.action',
@@ -240,7 +240,7 @@ function uploadLocalData()
             success: function( data, textStatus, jqXHR )
             {
                 storageManager.clearDataValueJSON( value );
-                console.log( 'Successfully saved data value with value: ' + value );
+                log( 'Successfully saved data value with value: ' + value );
                 ( array = array.slice( 1 ) ).length && pushDataValues( array );
 
                 if ( array.length < 1 && completeDataSetsArray.length > 0 )
@@ -351,7 +351,7 @@ function loadForm( dataSetId )
 {
     if ( storageManager.formExists( dataSetId ) )
     {
-        console.log( 'Loading form locally: ' + dataSetId );
+        log( 'Loading form locally: ' + dataSetId );
 
         var html = storageManager.getForm( dataSetId );
 
@@ -361,7 +361,7 @@ function loadForm( dataSetId )
     }
     else
     {
-        console.log( 'Loading form remotely: ' + dataSetId );
+        log( 'Loading form remotely: ' + dataSetId );
 
         $( '#contentDiv' ).load( 'loadForm.action', {
             dataSetId : dataSetId
@@ -373,10 +373,10 @@ function getDataElementType( dataElementId )
 {
 	if ( dataElements[dataElementId] != null )
 	{
-		return dataElements[dataElementId].type
+		return dataElements[dataElementId].type;
 	}
 	
-	console.log( 'Data element not present in data set, falling back to default type: ' + dataElementId );	
+	log( 'Data element not present in data set, falling back to default type: ' + dataElementId );	
 	return DEFAULT_TYPE;
 }
 
@@ -387,7 +387,7 @@ function getDataElementName( dataElementId )
 		return dataElements[dataElementId].name;
 	}
 	
-	console.log( 'Data element present in data set, falling back to default name: ' + dataElementId );
+	log( 'Data element present in data set, falling back to default name: ' + dataElementId );
 	return DEFAULT_NAME;	
 }
 
@@ -971,11 +971,11 @@ function purgeLocalForms()
         if ( dataSets[localId] == null )
         {
             storageManager.deleteForm( localId );
-            console.log( 'Deleted locally stored form: ' + localId );
+            log( 'Deleted locally stored form: ' + localId );
         }
     }
 
-    console.log( 'Purged local forms' );
+    log( 'Purged local forms' );
 }
 
 function updateExistingLocalForms()
@@ -1102,10 +1102,10 @@ function StorageManager()
         {
             localStorage[id] = html;
 
-            console.log( 'Successfully stored form: ' + dataSetId );
+            log( 'Successfully stored form: ' + dataSetId );
         } catch ( e )
         {
-            console.log( 'Max local storage quota reached, ignored form: ' + dataSetId );
+            log( 'Max local storage quota reached, ignored form: ' + dataSetId );
             return false;
         }
 
@@ -1113,7 +1113,7 @@ function StorageManager()
         {
             this.deleteForm( dataSetId );
 
-            console.log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
+            log( 'Max local storage quota for forms reached, ignored form: ' + dataSetId );
             return false;
         }
 
@@ -1231,10 +1231,10 @@ function StorageManager()
         {
             localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
 
-            console.log( 'Successfully stored form version: ' + dataSetId );
+            log( 'Successfully stored form version: ' + dataSetId );
         } catch ( e )
         {
-            console.log( 'Max local storage quota reached, ignored form version: ' + dataSetId );
+            log( 'Max local storage quota reached, ignored form version: ' + dataSetId );
         }
     };
 
@@ -1285,10 +1285,10 @@ function StorageManager()
         {
             localStorage[KEY_DATAVALUES] = JSON.stringify( dataValues );
 
-            console.log( 'Successfully stored data value' );
+            log( 'Successfully stored data value' );
         } catch ( e )
         {
-            console.log( 'Max local storage quota reached, ignored data value' );
+            log( 'Max local storage quota reached, ignored data value' );
         }
     };
 
