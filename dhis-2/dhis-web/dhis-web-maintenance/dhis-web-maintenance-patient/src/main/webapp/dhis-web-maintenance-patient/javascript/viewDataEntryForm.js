@@ -64,11 +64,11 @@ function loadExistedForm()
 	});
 }
 
-function deleteDataEntryForm( associationId )
+function deleteDataEntryForm( dataEntryFormId, programStageId )
 {
-	if( window.confirm( i18n_delete_confirm ) )
+	if( window.confirm( i18n_delete_program_data_entry_confirm ) )
 	{
-		window.location.href = 'delDataEntryForm.action?associationId=' + associationId;
+		window.location.href = 'delDataEntryForm.action?id=' + dataEntryFormId + "&programStageId=" + programStageId;
 	}
 }
 
