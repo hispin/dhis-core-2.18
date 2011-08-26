@@ -164,23 +164,6 @@
       <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
 
-	<!-- Filter -->
-
-    <action name="filterAvailableDataElementsByDataElementGroup" class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseDataElementGroup.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="filterAvailableIndicatorsByIndicatorGroup" class="org.hisp.dhis.dataset.action.IndicatorListFilteredByGroup">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseIndicatorGroup.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="filterDataElementsByDataElementGroupForSection" class="org.hisp.dhis.dataset.action.section.DataElementListFilteredByGroupForSection">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseDataElementGroup.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
 	<!-- DataSet association -->
 
     <action name="defineDataSetAssociationsForm" class="org.hisp.dhis.dataset.action.GetDataSetAction">
