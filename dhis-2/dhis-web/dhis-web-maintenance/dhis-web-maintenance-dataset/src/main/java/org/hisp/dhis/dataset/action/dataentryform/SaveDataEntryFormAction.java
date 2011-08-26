@@ -93,15 +93,20 @@ public class SaveDataEntryFormAction
     {
         DataSet dataset = dataSetService.getDataSet( dataSetIdField );
 
+        designTextarea = dataEntryFormService.prepareDataEntryFormForSave( designTextarea );
+        
         DataEntryForm dataEntryForm = dataset.getDataEntryForm();
 
+        if ( !( dataEntryForm != null && dataEntryForm.getHtmlCode().equals( designTextarea ) ) )
+        {
+            dataset.increaseVersion(); // Check if version must be updated
+        }
+        
         if ( dataEntryForm == null )
         {
             dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
             dataEntryFormService.addDataEntryForm( dataEntryForm );
-
             dataset.setDataEntryForm( dataEntryForm );
-            dataSetService.updateDataSet( dataset );
         }
         else
         {
@@ -109,6 +114,8 @@ public class SaveDataEntryFormAction
             dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
         }
+        
+        dataSetService.updateDataSet( dataset );
 
         return SUCCESS;
     }

@@ -115,6 +115,7 @@ public class DelDataEntryFormAction
         }
 
         dataSet.setDataEntryForm( null );
+        dataSet.increaseVersion();
         
         dataSetService.updateDataSet( dataSet );
         
