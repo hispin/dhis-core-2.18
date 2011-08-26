@@ -188,26 +188,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup" class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup"
-    scope="prototype">
-    <property name="dataElementService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementService" />
-    </property>
-    <property name="dataSetService">
-      <ref bean="org.hisp.dhis.dataset.DataSetService" />
-    </property>
-  </bean>
-
-  <bean id="org.hisp.dhis.dataset.action.IndicatorListFilteredByGroup" class="org.hisp.dhis.dataset.action.IndicatorListFilteredByGroup"
-    scope="prototype">
-    <property name="indicatorService">
-      <ref bean="org.hisp.dhis.indicator.IndicatorService" />
-    </property>
-    <property name="dataSetService">
-      <ref bean="org.hisp.dhis.dataset.DataSetService" />
-    </property>
-  </bean>
-
   <bean id="org.hisp.dhis.dataset.action.DataElementGroupListAction" class="org.hisp.dhis.dataset.action.DataElementGroupListAction"
     scope="prototype">
     <property name="dataElementService">

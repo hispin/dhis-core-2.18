@@ -55,29 +55,6 @@ function addSectionSubmit()
 	}
 }
 
-function getDataElementByDataSet(dataSetId) {
-	var request = new Request();
-
-	var requestString = 'filterAvailableDataElementsByDataSet.action';
-
-	var params = 'dataSetId=' + dataSetId;
-
-	var selectedList = document.getElementById('selectedList');
-
-	for ( var i = 0; i < selectedList.options.length; ++i) {
-		params += '&selectedDataElements=' + selectedList.options[i].value;
-		// process list.options[i].value / list.options[i].text
-	}
-
-	var availableList = document.getElementById('availableList');
-	availableList.options.length = 0;
-
-	request.setResponseTypeXML('dataElementGroup');
-	request.setCallbackSuccess(filterByDataElementGroupCompleted);
-	request.sendAsPost(params);
-	request.send(requestString);
-}
-
 function toggle(dataElementId, optionComboId) {
 	var elementId = '[' + dataElementId;
 
@@ -152,49 +129,4 @@ function handleHttpError(errorCode) {
 }
 
 function markValue(color) {
-}
-
-// ----------------------------------------------------------------------
-// Filter by DataElementGroup
-// ----------------------------------------------------------------------
-
-function filterByDataElementGroupForSection( groupId )
-{
-	var aSelectedList = new Array();
-	var selectedList = byId( 'selectedList' );
-
-	for ( var i = 0; i < selectedList.options.length; ++i)
-	{
-		aSelectedList.push( selectedList.options[i].value );
-	}
-	
-	$.post("filterDataElementsByDataElementGroupForSection.action",
-		{
-			selectedList: aSelectedList,
-			dataElementGroupId: groupId,
-			dataSetId: getFieldValue( 'dataSetId' ),
-			categoryComboId: getFieldValue( 'categoryComboId' )
-		},
-		function (data)
-		{
-			filterByDataElementGroupForSectionCompleted( data );
-		}, 'xml');
-}
-
-function filterByDataElementGroupForSectionCompleted( dataElementGroup )
-{
-	var dataElements = dataElementGroup.getElementsByTagName( 'dataElements' )[0];
-	var dataElementList = dataElements.getElementsByTagName( 'dataElement' );
-
-	var availableList = byId( 'availableList' );
-	availableList.options.length = 0;
-
-	for ( var i = 0; i < dataElementList.length; i++ )
-	{
-		var dataElement = dataElementList[i];
-		var name = dataElement.firstChild.nodeValue;
-		var id = dataElement.getAttribute( 'id' );
-
-		availableList.add( new Option( name, id ), null );
-	}
 }
