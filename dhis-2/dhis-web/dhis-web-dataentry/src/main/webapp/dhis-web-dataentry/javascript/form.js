@@ -271,8 +271,9 @@ function uploadLocalData()
 }
 
 function addEventListeners()
-{
-	var formType = $( '#dataEntryFormType' ) ? $( '#dataEntryFormType' ).val() : FORMTYPE_DEFAULT;
+{	
+    var dataSetId = $( '#selectedDataSetId' ).val();
+	var formType = dataSets[dataSetId].type;
 	
     $( '[name="entryfield"]' ).each( function( i )
     {
