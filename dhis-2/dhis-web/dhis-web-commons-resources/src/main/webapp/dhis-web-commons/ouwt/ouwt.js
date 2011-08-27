@@ -81,8 +81,31 @@ function Selection()
 
             $( "#ouwt_loader" ).hide();
         }
+        
+        function update_required( remoteVersion, remoteRoots )
+        {
+            var localVersion = localStorage[getTagId( "Version" )] ? localStorage[getTagId( "Version" )] : 0;
+            var localRoots = localStorage[getTagId( "Roots" )] ? localStorage[getTagId( "Roots" )] : [];
 
-        var version = localStorage[getTagId( "Version" )];
+            if ( localVersion != remoteVersion )
+            {
+                return true;
+            }
+
+            localRoots.sort();
+            remoteRoots.sort();
+
+            for ( var i in localRoots )
+            {
+                if ( remoteRoots[i] == null || localRoots[i] != remoteRoots[i] )
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         var should_update = false;
 
         $.post( '../dhis-web-commons-ajax-json/getOrganisationUnitTree.action', {
@@ -92,11 +115,7 @@ function Selection()
             if ( data.indexOf( "<!DOCTYPE" ) != 0 )
             {
                 data = JSON.parse( data );
-
-                if ( version != data.version )
-                {
-                    should_update = true;
-                }
+              	should_update = update_required();
             }
         }, "text" ).complete(
                 function()
