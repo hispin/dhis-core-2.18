@@ -36,6 +36,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
 
@@ -74,6 +76,13 @@ public class SaveSectionGreyStatusAction
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
+    }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -179,6 +188,9 @@ public class SaveSectionGreyStatusAction
         section.setGreyedFields( greyedFields );
         sectionService.updateSection( section );       
 
+        DataSet dataSet = section.getDataSet();
+        dataSetService.updateDataSet( dataSet.increaseVersion() ); // Update version
+        
         return SUCCESS;
     }
 }
