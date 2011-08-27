@@ -51,6 +51,10 @@ var COLOR_GREY = '#cccccc';
 var DEFAULT_TYPE = 'int';
 var DEFAULT_NAME = '[unknown]';
 
+var FORMTYPE_CUSTOM = 'custom';
+var FORMTYPE_SECTION = 'section';
+var FORMTYPE_DEFAULT = 'default';
+
 /**
  * Page init. The order of events is:
  * 
@@ -268,6 +272,8 @@ function uploadLocalData()
 
 function addEventListeners()
 {
+	var formType = $( '#dataEntryFormType' ) ? $( '#dataEntryFormType' ).val() : FORMTYPE_DEFAULT;
+	
     $( '[name="entryfield"]' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
@@ -300,8 +306,11 @@ function addEventListeners()
             keyPress( event, this );
         } );
 
-        $( this ).css( 'width', '100%' );
-        $( this ).css( 'text-align', 'center' );
+		if ( formType != FORMTYPE_CUSTOM )
+		{
+        	$( this ).css( 'width', '100%' );
+        	$( this ).css( 'text-align', 'center' );
+		}
 
         if ( type == 'date' )
         {

@@ -1,3 +1,4 @@
+<input type="hidden" id="dataEntryFormType" value="section"/>
 #set( $marker = 0 )
 #set( $tabIndex = 1 )
 #set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )

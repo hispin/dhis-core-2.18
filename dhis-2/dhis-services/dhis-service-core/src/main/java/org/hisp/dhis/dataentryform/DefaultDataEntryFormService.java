@@ -232,8 +232,8 @@ public class DefaultDataEntryFormService
         
         int i = 1;
         
-        final String jsCodeForInputFields = " name=\"entryfield\" ";
-        final String jsCodeForSelectLists = " name=\"entryselect\" ";
+        final String codeForInputFields = " name=\"entryfield\" ";
+        final String codeForSelectLists = " name=\"entryselect\" ";
         
         StringBuffer sb = new StringBuffer();
 
@@ -289,7 +289,7 @@ public class DefaultDataEntryFormService
 
                 if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) )
                 {
-                    appendCode += jsCodeForSelectLists + "tabindex=\"" + i++ + "\">";
+                    appendCode += codeForSelectLists + "tabindex=\"" + i++ + "\">";
 
                     appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
                     appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
@@ -298,7 +298,7 @@ public class DefaultDataEntryFormService
                 }
                 else
                 {
-                    appendCode += jsCodeForInputFields + "tabindex=\"" + i++ + "\"" + TAG_CLOSE;
+                    appendCode += codeForInputFields + "tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
