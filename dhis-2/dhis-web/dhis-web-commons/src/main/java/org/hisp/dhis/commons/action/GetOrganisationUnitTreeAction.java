@@ -116,40 +116,40 @@ public class GetOrganisationUnitTreeAction
 
     public String execute()
         throws Exception
-    {
-        if ( !versionOnly )
+    {   
+        Collection<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
+
+        User user = currentUserService.getCurrentUser();
+
+        if ( user.getOrganisationUnits() != null && user.getOrganisationUnits().size() > 0 )
         {
-            Collection<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
-
-            User user = currentUserService.getCurrentUser();
-
-            if ( user.getOrganisationUnits() != null && user.getOrganisationUnits().size() > 0 )
+            userOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+            rootOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+        }
+        else
+        {
+            if ( user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
             {
-                userOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
-                rootOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+                userOrganisationUnits = new ArrayList<OrganisationUnit>(
+                    organisationUnitService.getRootOrganisationUnits() );
+                rootOrganisationUnits = new ArrayList<OrganisationUnit>(
+                    organisationUnitService.getRootOrganisationUnits() );
             }
             else
             {
-                if ( user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
-                {
-                    userOrganisationUnits = new ArrayList<OrganisationUnit>(
-                        organisationUnitService.getRootOrganisationUnits() );
-                    rootOrganisationUnits = new ArrayList<OrganisationUnit>(
-                        organisationUnitService.getRootOrganisationUnits() );
-                }
-                else
-                {
-                    userOrganisationUnits = new ArrayList<OrganisationUnit>();
-                    rootOrganisationUnits = new ArrayList<OrganisationUnit>();
-                }
+                userOrganisationUnits = new ArrayList<OrganisationUnit>();
+                rootOrganisationUnits = new ArrayList<OrganisationUnit>();
             }
+        }
 
+        if ( !versionOnly )
+        {
             for ( OrganisationUnit unit : userOrganisationUnits )
             {
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
             }
         }
-
+        
         version = getVersionString();
 
         return SUCCESS;
