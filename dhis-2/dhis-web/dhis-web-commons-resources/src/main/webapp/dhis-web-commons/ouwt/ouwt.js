@@ -353,8 +353,7 @@ function Selection()
     function getTagId( unitId )
     {
         return 'orgUnit' + unitId;
-    }
-    ;
+    };
 
     this.findByCode = function()
     {
@@ -540,8 +539,7 @@ function Subtree()
         var child = $parentTag.find( "ul" ).eq( 0 );
         setVisible( child, false );
         setToggle( $parentTag, false );
-    }
-    ;
+    };
 
     function processExpand( parent )
     {
@@ -557,8 +555,7 @@ function Subtree()
             setVisible( $children.eq( 0 ), true );
             setToggle( $parentTag, true );
         }
-    }
-    ;
+    };
 
     function createChildren( parentTag, parent )
     {
@@ -574,8 +571,7 @@ function Subtree()
         setToggle( parentTag, true );
 
         $( parentTag ).append( $childrenTag );
-    }
-    ;
+    };
 
     function createTreeElementTag( ou )
     {
@@ -605,8 +601,7 @@ function Subtree()
         $childTag.append( $linkTag );
 
         return $childTag;
-    }
-    ;
+    };
 
     function setToggle( unitTag, expanded )
     {
@@ -621,8 +616,7 @@ function Subtree()
         {
             $toggleTag.append( toggleImg );
         }
-    }
-    ;
+    };
 
     function setVisible( tag, visible )
     {
@@ -634,42 +628,35 @@ function Subtree()
         {
             $( tag ).hide();
         }
-    }
-    ;
+    };
 
     function isVisible( tag )
     {
         return $( tag ).is( ":visible" );
-    }
-    ;
+    };
 
     function getTagId( unitId )
     {
         return 'orgUnit' + unitId;
-    }
-    ;
+    };
 
     function getToggleExpand()
     {
         return getToggleImage().attr( "src", "../images/colapse.png" ).attr( "alt", "[+]" );
-    }
-    ;
+    };
 
     function getToggleCollapse()
     {
         return getToggleImage().attr( "src", "../images/expand.png" ).attr( "alt", "[-]" );
-    }
-    ;
+    };
 
     function getToggleBlank()
     {
         return getToggleImage().attr( "src", "../images/transparent.gif" ).removeAttr( "alt" );
-    }
-    ;
+    };
 
     function getToggleImage()
     {
         return $( "<img/>" ).attr( "width", 9 ).attr( "height", 9 );
-    }
-    ;
+    };
 }
