@@ -981,6 +981,7 @@ function purgeLocalForms()
         if ( dataSets[localId] == null )
         {
             storageManager.deleteForm( localId );
+            storageManager.deleteFormVersion( localId );
             log( 'Deleted locally stored form: ' + localId );
         }
     }
@@ -995,14 +996,14 @@ function updateExistingLocalForms()
 
     for ( i in formIds )
     {
-        var dataSetId = formIds[i];
+        var localId = formIds[i];
 
-        var remoteVersion = dataSets[dataSetId].version;
-        var localVersion = formVersions[dataSetId];
+        var remoteVersion = dataSets[localId].version;
+        var localVersion = formVersions[localId];
 
         if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
         {
-            storageManager.downloadForm( dataSetId, remoteVersion );
+            storageManager.downloadForm( localId, remoteVersion );
         }
     }
 }
@@ -1150,7 +1151,9 @@ function StorageManager()
      */
     this.deleteForm = function( dataSetId )
     {
-        localStorage.removeItem( dataSetId );
+    	var id = KEY_FORM_PREFIX + dataSetId;
+    	
+        localStorage.removeItem( id );
     };
 
     /**
@@ -1266,6 +1269,25 @@ function StorageManager()
 
         return null;
     };
+    
+    /**
+     * Deletes the form version of the data set with the given identifier.
+     * 
+     * @param dataSetId the identifier of the data set of the form.
+     */
+    this.deleteFormVersion = function( dataSetId )
+    {
+    	if ( localStorage[KEY_FORM_VERSIONS] != null )
+        {
+            var formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
+
+            if ( formVersions[dataSetId] != null )
+            {
+                delete formVersions[dataSetId];
+                localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
+            }
+        }
+    }
 
     this.getAllFormVersions = function()
     {
