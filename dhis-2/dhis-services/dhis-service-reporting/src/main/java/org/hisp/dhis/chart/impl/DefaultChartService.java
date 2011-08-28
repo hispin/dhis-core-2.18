@@ -338,8 +338,7 @@ public class DefaultChartService
         // Interpolation DataSet
         // ---------------------------------------------------------------------
 
-        if ( x.size() >= 3 ) // minimum 3 data points required for
-        // interpolation
+        if ( x.size() >= 3 ) // minimum 3 points required for interpolation
         {
             periodCount = 0;
 

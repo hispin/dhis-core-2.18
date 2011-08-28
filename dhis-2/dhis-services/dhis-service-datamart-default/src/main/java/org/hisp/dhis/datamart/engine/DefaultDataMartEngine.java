@@ -260,7 +260,7 @@ public class DefaultDataMartEngine
 
             ConcurrentUtils.waitForCompletion( futures );
             
-            clock.logTime( "Exported values for data element operands (" + allOperands.size() + ")" );
+            clock.logTime( "Exported values for data element operands (" + allOperands.size() + "), number of pages: " + periodPages.size() );
         }
 
         // ---------------------------------------------------------------------
@@ -288,7 +288,7 @@ public class DefaultDataMartEngine
 
             ConcurrentUtils.waitForCompletion( futures );
             
-            clock.logTime( "Exported values for indicators (" + indicators.size() + ")" );
+            clock.logTime( "Exported values for indicators (" + indicators.size() + "), number of pages: " + periodPages.size() );
         }
 
         // ---------------------------------------------------------------------
