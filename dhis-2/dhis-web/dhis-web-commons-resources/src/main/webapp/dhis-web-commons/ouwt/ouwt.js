@@ -516,33 +516,17 @@ function Subtree()
         var $treeTag = $( "#orgUnitTree" );
         $treeTag.children().eq( 0 ).remove();
 
-        if ( sessionStorage[getTagId( "Selected" )] == null )
-        {
-            var roots = JSON.parse( localStorage[getTagId( "Roots" )] );
+        var roots = localStorage[getTagId( "Roots" )];
+        var selected = sessionStorage[getTagId( "Selected" )];
 
-            expandTreeAtOrgUnits( roots );
-        }
-        else
-        {
-            var selected = sessionStorage[getTagId( "Selected" )];
+        roots = roots ? JSON.parse( roots ) : [];
+        selected = selected ? JSON.parse( selected ) : [];
+        selected = $.isArray( selected ) ? selected : [ selected ];
 
-            if ( selected != null )
-            {
-                selected = JSON.parse( selected );
+        expandTreeAtOrgUnits( roots );
+        expandTreeAtOrgUnits( selected );
 
-                if ( $.isArray( selected ) )
-                {
-                    expandTreeAtOrgUnits( selected );
-                }
-                else
-                {
-                    expandTreeAtOrgUnit( selected );
-                    selected = [ selected ];
-                }
-
-                selectOrgUnits( selected );
-            }
-        }
+        selectOrgUnits( selected );
     };
 
     // force reload
