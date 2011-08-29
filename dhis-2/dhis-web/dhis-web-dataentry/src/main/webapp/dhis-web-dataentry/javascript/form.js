@@ -25,6 +25,9 @@ var currentMinMaxValueMap = [];
 // Indicates whether any data entry form has been loaded
 var dataEntryFormIsLoaded = false;
 
+// Indicates whether meta data is loaded
+var metaDataIsLoaded = false;
+
 // Currently selected organisation unit identifier
 var currentOrganisationUnitId = null;
 
@@ -155,6 +158,7 @@ function loadMetaData()
 	        dataSetAssociationSets = metaData.dataSetAssociationSets;
 	        organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
 	
+	        metaDataIsLoaded = true;
 	        selection.responseReceived(); // Notify that meta data is loaded
 	        $( '#loaderSpan' ).hide();
 	        log( 'Meta-data loaded' );
@@ -437,6 +441,11 @@ function getSortedDataSetList()
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
+	if ( metaDataIsLoaded == false )
+	{
+	    return false;
+	}
+	
     currentOrganisationUnitId = orgUnits[0];
     var organisationUnitName = orgUnitNames[0];
 
@@ -445,42 +454,39 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
     var dataSetList = getSortedDataSetList();
 
-    if ( dataSetList.length )
-    {
-        $( '#selectedDataSetId' ).removeAttr( 'disabled' );
-        
-        var dataSetId = $( '#selectedDataSetId' ).val();
-        var periodId = $( '#selectedPeriodId' ).val();
+    $( '#selectedDataSetId' ).removeAttr( 'disabled' );
     
-        clearListById( 'selectedDataSetId' );
-        addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
+    var dataSetId = $( '#selectedDataSetId' ).val();
+    var periodId = $( '#selectedPeriodId' ).val();
 
-        var dataSetValid = false;
+    clearListById( 'selectedDataSetId' );
+    addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
 
-        for ( i in dataSetList )
+    var dataSetValid = false;
+
+    for ( i in dataSetList )
+    {
+        addOptionById( 'selectedDataSetId', dataSetList[i].id, dataSetList[i].name );
+
+        if ( dataSetId == dataSetList[i].id )
         {
-            addOptionById( 'selectedDataSetId', dataSetList[i].id, dataSetList[i].name );
-
-            if ( dataSetId == dataSetList[i].id )
-            {
-                dataSetValid = true;
-            }
+            dataSetValid = true;
         }
+    }
 
-        if ( dataSetValid && dataSetId != null )
+    if ( dataSetValid && dataSetId != null )
+    {
+        $( '#selectedDataSetId' ).val( dataSetId );
+
+        if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
         {
-            $( '#selectedDataSetId' ).val( dataSetId );
-
-            if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
-            {
-                showLoader();
-                loadDataValues();
-            }
+            showLoader();
+            loadDataValues();
         }
-        else
-        {
-            clearPeriod();
-        }
+    }
+    else
+    {
+        clearPeriod();
     }
 }
 
