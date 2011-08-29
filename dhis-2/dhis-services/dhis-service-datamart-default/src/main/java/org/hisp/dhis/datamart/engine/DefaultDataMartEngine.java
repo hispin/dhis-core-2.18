@@ -52,9 +52,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.PaginatedList;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -190,6 +192,14 @@ public class DefaultDataMartEngine
 
         clock.logTime( "Filtered data elements, number of operands: " + allOperands.size() );
 
+        // ---------------------------------------------------------------------
+        // Filter out future periods
+        // ---------------------------------------------------------------------
+
+        FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
+        
+        clock.logTime( "Number of periods: " + periods.size() );
+        
         // ---------------------------------------------------------------------
         // Remove operands without data
         // ---------------------------------------------------------------------

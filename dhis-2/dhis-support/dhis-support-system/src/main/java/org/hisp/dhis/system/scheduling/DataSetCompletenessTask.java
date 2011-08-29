@@ -63,7 +63,7 @@ public class DataSetCompletenessTask
         Collection<Integer> dataSetIds = ConversionUtils.getIdentifiers( DataSet.class, dataSetService.getAllDataSets() );
         Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
 
-        RelativePeriods relatives = new RelativePeriods( false, true, true, true, true, true, true );
+        RelativePeriods relatives = new RelativePeriods( false, true, true, true, false, false, false );
         
         completenessService.exportDataSetCompleteness( dataSetIds, relatives, organisationUnitIds );        
     }
