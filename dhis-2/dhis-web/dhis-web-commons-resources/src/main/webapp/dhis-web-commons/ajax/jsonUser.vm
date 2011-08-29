@@ -3,6 +3,7 @@
     "id": ${user.id},
     "surname": "$!encoder.jsonEncode( ${user.surname} )",
     "firstName": "$!encoder.jsonEncode( ${user.firstName} )",
+    "username": "$!encoder.jsonEncode( ${user.username} )",
     "email": "$!encoder.jsonEncode( ${user.email} )",
     "phoneNumber": "$!encoder.jsonEncode( ${user.phoneNumber} )",
     "organisationUnits": "$!encoder.jsonEncode( ${user.organisationUnitsName} )"

@@ -41,6 +41,7 @@ function showSenderInfo( id )
 	$.getJSON( "../dhis-web-commons-ajax-json/getUser.action", { id:id }, function( json ) {
 		$( "#senderName" ).html( json.user.firstName + " " + json.user.surname );
 		$( "#senderEmail" ).html( json.user.email );
+		$( "#senderUsername" ).html( json.user.username );
 		$( "#senderPhoneNumber" ).html( json.user.phoneNumber );
 		$( "#senderOrganisationUnits" ).html( json.user.organisationUnits );
 		

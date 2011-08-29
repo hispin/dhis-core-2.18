@@ -181,6 +181,11 @@ public class User
         return IdentifiableObjectUtils.join( organisationUnits );
     }
     
+    public String getUsername()
+    {
+        return userCredentials != null ? userCredentials.getUsername() : null;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
