@@ -532,7 +532,7 @@ function keyPress( event, field )
     }
    
     if ( key == 13 ) /* CR */
-    { alert(key);
+    { 
         nextField = getNextEntryField( field );
         if ( nextField )
         {
