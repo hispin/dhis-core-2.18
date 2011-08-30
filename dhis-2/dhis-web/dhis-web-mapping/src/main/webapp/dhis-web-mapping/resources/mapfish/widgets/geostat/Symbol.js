@@ -54,8 +54,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
 
     colorInterpolation: false,
 
-    newUrl: false,
-
     legend: false,
 
 	imageLegend: false,
@@ -63,8 +61,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
 	bounds: false,
 
     mapView: false,
-
-    mapData: false,
     
     labels: false,
     

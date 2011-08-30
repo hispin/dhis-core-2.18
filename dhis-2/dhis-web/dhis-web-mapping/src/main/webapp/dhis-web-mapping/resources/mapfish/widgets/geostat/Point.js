@@ -54,15 +54,11 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
 
     colorInterpolation: false,
 
-    newUrl: false,
-
     legend: false,
 
 	bounds: false,
 
     mapView: false,
-
-    mapData: false,
     
     labels: false,
     
@@ -87,6 +83,113 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
     cmp: {},
     
     requireUpdate: false,
+    
+    filtering: {
+        cache: [],
+        options: {
+            gt: null,
+            lt: null
+        },
+        filter: function() {
+            var gt = this.filtering.options.gt;
+            var lt = this.filtering.options.lt;
+            var add = [];
+            for (var i = 0; i < this.filtering.cache.length; i++) {
+                if (gt && lt && this.filtering.cache[i].attributes.value > gt && this.filtering.cache[i].attributes.value < lt) {
+                    add.push(this.filtering.cache[i]);
+                }
+                else {
+                    if (!(gt && lt) && gt && this.filtering.cache[i].attributes.value > gt) {
+                        add.push(this.filtering.cache[i]);
+                    }
+                    else if (!(gt && lt) && lt && this.filtering.cache[i].attributes.value < lt) {
+                        add.push(this.filtering.cache[i]);
+                    }
+                }
+            }
+            this.layer.removeAllFeatures();
+            this.layer.addFeatures(add);
+        },
+        showFilteringWindow: function() {
+            var window = new Ext.Window({
+                title: '<span class="window-filter-title">Organisation unit filter</span>',
+                layout: 'fit',
+                autoHeight: true,
+                height: 'auto',
+                width: G.conf.window_width,
+                items: [
+                    {
+                        xtype: 'form',
+                        bodyStyle:'padding:8px',
+                        autoHeight: true,
+                        height: 'auto',
+                        labelWidth: G.conf.label_width,
+                        items: [
+                            { html: 'Show organisation units where <b>value</b> is..' },
+                            { html: '<div class="window-p"></div>' },
+                            {
+                                xtype: 'numberfield',
+                                fieldLabel: 'Greater than',
+                                width: G.conf.combo_number_width_small,
+                                listeners: {
+                                    'change': {
+                                        scope: this,
+                                        fn: function(nf) {
+                                            this.filtering.options.gt = nf.getValue();
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'numberfield',
+                                fieldLabel: 'Lower than',
+                                width: G.conf.combo_number_width_small,
+                                listeners: {
+                                    'change': {
+                                        scope: this,
+                                        fn: function(nf) {
+                                            this.filtering.options.lt = nf.getValue();
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                bbar: [
+                    '->',
+                    {
+                        xtype: 'button',
+                        text: G.i18n.update,
+                        iconCls: 'icon-assign',
+                        scope: this,
+                        handler: function() {
+                            this.filtering.filter.call(this);
+                        }
+                    }
+                ],
+                listeners: {
+                    'afterrender': {
+                        scope: this,
+                        fn: function() {
+                            this.filtering.cache = this.layer.features.slice(0);
+                        }
+                    },
+                    'close': {
+                        scope: this,
+                        fn: function() {
+                            this.layer.removeAllFeatures();
+                            this.layer.addFeatures(this.filtering.cache);
+                            this.filtering.options.gt = null;
+                            this.filtering.options.lt = null;
+                        }
+                    }
+                }
+            });
+            window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+            window.show();
+        }
+    },
     
     initComponent: function() {
     
