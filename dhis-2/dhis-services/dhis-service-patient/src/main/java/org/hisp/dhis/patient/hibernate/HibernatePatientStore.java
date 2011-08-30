@@ -193,7 +193,7 @@ public class HibernatePatientStore
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit )
     {
-        String hql = "select distinct p from Patient p where p.organisationUnit = :organisationUnit order by p.id";
+        String hql = "select distinct p from Patient p where p.organisationUnit = :organisationUnit order by p.id DESC";
 
         return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).list();
     }
@@ -201,7 +201,7 @@ public class HibernatePatientStore
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, int min, int max )
     {
-        String hql = "select p from Patient p where p.organisationUnit = :organisationUnit order by p.id";
+        String hql = "select p from Patient p where p.organisationUnit = :organisationUnit order by p.id DESC";
 
         return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).setFirstResult( min ).setMaxResults(
             max ).list();
@@ -211,7 +211,7 @@ public class HibernatePatientStore
     public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, int min, int max )
     {
         return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias( "programs",
-            "program" ).add( Restrictions.eq( "program.id", program.getId() ) ).addOrder( Order.asc( "id" ) )
+            "program" ).add( Restrictions.eq( "program.id", program.getId() ) ).addOrder( Order.desc( "id" ) )
             .setFirstResult( min ).setMaxResults( max ).list();
     }
 
@@ -268,7 +268,7 @@ public class HibernatePatientStore
     @SuppressWarnings("unchecked")
     public Collection<Patient> getRepresentatives( Patient patient )
     {
-        String hql = "select distinct p from Patient p where p.representative = :representative order by p.id";
+        String hql = "select distinct p from Patient p where p.representative = :representative order by p.id DESC";
 
         return getQuery( hql ).setEntity( "representative", patient ).list();
     }
