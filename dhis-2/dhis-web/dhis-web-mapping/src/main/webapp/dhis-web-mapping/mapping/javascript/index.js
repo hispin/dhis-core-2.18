@@ -3,7 +3,7 @@
 	Ext.layout.FormLayout.prototype.trackLabels = true;
     Ext.QuickTips.init();
 	document.body.oncontextmenu = function(){return false;};
-	
+    
 	G.vars.map = new OpenLayers.Map({
         controls: [new OpenLayers.Control.MouseToolbar()],
         displayProjection: new OpenLayers.Projection('EPSG:4326'),
@@ -307,6 +307,7 @@
     
 	/* Thematic layers */
     polygonLayer = new OpenLayers.Layer.Vector(G.conf.thematic_layer_1, {
+        strategies: [ new OpenLayers.Strategy.Refresh({force:true}) ],
         'visibility': false,
         'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -727,7 +728,7 @@
                         xtype: 'checkbox',
                         id: 'exportimageincludelegend_chb',
                         fieldLabel: G.i18n.legend,
-                        labelSeparator: '',				
+                        labelSeparator: '',
                         isFormField: true,
                         checked: true
                     }
@@ -2676,7 +2677,7 @@
         handler: function() {
             var control = G.vars.map.getControl('measuredistance');
             
-            if (!control.active) {                
+            if (!control.active) {
                 if (!control.window) {
                     control.window = new Ext.Window({
                         title: '<span id="window-measure-title">' + G.i18n.measure_distance + '</span>',
@@ -2721,7 +2722,7 @@
 		tooltip: 'Administrator settings',
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
-		handler: function() {         
+		handler: function() {
             if (!adminWindow.hidden) {
                 adminWindow.hide();
             }
@@ -2768,7 +2769,7 @@
 			'-',
 			' ',' ',' ',
 			layersLabel,
-			' ',' ',
+			' ',' ', 
             choroplethButton,
             pointButton,
             symbolButton,

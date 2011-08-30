@@ -54,15 +54,11 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
 
     colorInterpolation: false,
 
-    newUrl: false,
-
     legend: false,
 
 	bounds: false,
 
     mapView: false,
-
-    mapData: false,
     
     labels: false,
     

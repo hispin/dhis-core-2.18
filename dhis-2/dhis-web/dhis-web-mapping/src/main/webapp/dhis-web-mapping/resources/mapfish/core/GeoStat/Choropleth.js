@@ -114,7 +114,7 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
 		this.extendStyle(null, {'pointRadius': '${calculateRadius}'}, {'calculateRadius': calculateRadius});
     
         var boundsArray = this.classification.getBoundsArray();
-        var rules = new Array(boundsArray.length-1);
+        var rules = new Array(boundsArray.length-1);        
         for (var i = 0; i < boundsArray.length-1; i++) {
             var rule = new OpenLayers.Rule({
                 symbolizer: {fillColor: this.colorInterpolation[i].toHexString()},
