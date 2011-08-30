@@ -825,26 +825,22 @@ function registerCompleteDataSet( json )
 {
     var params = storageManager.getCurrentCompleteDataSetParams();
 
-    if ( json.response == 'success' )
-    {
-        storageManager.saveCompleteDataSet( params );
+	storageManager.saveCompleteDataSet( params );
 
-        $.ajax( {
-        	url: 'registerCompleteDataSet.action', 
-        	data: params, 
-        	cache: false,
-        	success: function()
-	        {
-	            storageManager.clearCompleteDataSet( params );
-	        }
-        } );
-    }
-    else
-    {
-        disableUndoButton();
-
-        validate();
-    }
+    $.ajax( {
+    	url: 'registerCompleteDataSet.action', 
+    	data: params, 
+    	cache: false,
+    	success: function()
+        {
+            storageManager.clearCompleteDataSet( params );
+            
+            if ( json.response == 'input' )
+            {
+                validate();
+            }
+        }
+    } );
 }
 
 function undoCompleteDataSet()
