@@ -65,14 +65,6 @@
       <artifactId>ibatis2-sqlmap</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.thoughtworks.xstream</groupId>
-      <artifactId>xstream</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>xpp3</groupId>
-      <artifactId>xpp3</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.amplecode</groupId>
       <artifactId>cave-process</artifactId>
     </dependency>
