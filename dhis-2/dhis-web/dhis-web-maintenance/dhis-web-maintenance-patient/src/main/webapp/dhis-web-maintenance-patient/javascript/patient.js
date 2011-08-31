@@ -823,7 +823,7 @@ function addEventForPatientForm( divname )
 		checkDuplicate( divname );
 	});
 	
-	jQuery("#" + divname + " [id=dobType]").click(function() {
+	jQuery("#" + divname + " [id=dobType]").change(function() {
 		dobTypeOnChange( divname );
 	});
 }
