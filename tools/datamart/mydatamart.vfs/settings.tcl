@@ -47,7 +47,8 @@ proc showSettings { parent } {
 	-row $row -column 1 -padx 20 -pady 2 -sticky w
 
     grid [ttk::button $settingsFrame.login -text [mc "Login"] -command {
-	dhisweb::login $::dhis(url) $::dhis(username) $::dhis(password)
+	set ::dhis(status) "Logging in to $::dhis(url)"
+	dhisweb::login $::dhis(url) $::dhis(username) $::dhis(password) $::dhis(login_timeout)
 	persistLocal url $::dhis(url)
 	persistLocal username $::dhis(username)
     } ] -row $row -column 2 
@@ -175,6 +176,14 @@ proc loginreactor {args} {
 	BADHOST {
 	    $::loginImage configure -image img::fail
 	    set ::dhis(status) [mc "Couldn't connect to host - check URL"]
+	}
+	TIMEOUT {
+	    $::loginImage configure -image img::fail
+	    set ::dhis(status) [mc "Timeout trying to login"]
+	}
+	default {
+	    $::loginImage configure -image img::fail
+	    set ::dhis(status) [mc "Login unknown status"]	    
 	}
     }
 }
