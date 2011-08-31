@@ -15,8 +15,6 @@
           <col>
           <col>
           <col>
-          <col>
-          <col>
           <col>  
 		  #if($mapPatientOrgunit.size()!=0)
 			<col/>
@@ -27,15 +25,11 @@
 		  	<td></td>
 		  	<td></td>
 		  	<td></td>
-		  	<td></td>
-		  	<td></td>
 		  	<td></td>  		  	
 		  	<td></td>
 			<td></td>
           <tr>
-            <th>$i18n.getString( "first_name" )</th>
-            <th>$i18n.getString( "middle_name" )</th>
-            <th>$i18n.getString( "last_name" )</th>            
+            <th>$i18n.getString( "full_name" )</th>        
             <th>$i18n.getString( "gender" )</th>
             <th>$i18n.getString( "date_of_birth" )</th>
             <th>$i18n.getString( "age" )</th>   
@@ -51,14 +45,8 @@
           #foreach( $patient in $patients )
           	<tr #alternate( $mark )>
 				<td>			
-					$encoder.htmlEncode( $patient.firstName )
-				</td>
-				<td>			
-					$encoder.htmlEncode( $patient.middleName )
-				</td>
-				<td>			
-					$encoder.htmlEncode( $patient.lastName )
-				</td>				
+					$encoder.htmlEncode( $patient.getFullName() )
+				</td>			
 				<td>			
 					$encoder.htmlEncode( $patient.gender )
 				</td>
