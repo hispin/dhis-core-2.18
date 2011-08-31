@@ -45,8 +45,7 @@
 		<td><label for="dobType">$i18n.getString( "dob_type" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td class="input-column">
 			<select id='dobType' name="dobType" style="width:28.3em" class="{validate:{required:true}}">
-				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-				<option value="V" >$i18n.getString( "verified" )</option>
+				<option value="V" selected="selected">$i18n.getString( "verified" )</option>
 				<option value="D" >$i18n.getString( "declared" )</option>
 				<option value="A" >$i18n.getString( "approximated" )</option>
 			</select>
@@ -54,9 +53,9 @@
 	   <td></td>
 	</tr>
 
-	<tr id='birthdaySpan' style="display:none" >
+	<tr id='birthdaySpan'>
 		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td>			
+		<td class="input-column">			
 			<input type="text" id="birthDate" name="birthDate" style="width:26.5em" />
 		</td>
 		<td></td>
