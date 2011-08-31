@@ -464,19 +464,14 @@ public class DefaultReportTableService
         // Headers
         // ---------------------------------------------------------------------
 
-        for ( String column : reportTable.getIndexColumns() )
+        for ( String column : reportTable.getIndexColumns() ) // Index columns
         {
-            grid
-                .addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) ); // Index
-            // columns
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) ); 
         }
 
-        for ( String column : reportTable.getIndexNameColumns() )
+        for ( String column : reportTable.getIndexNameColumns() ) // Index name columns
         {
-            grid
-                .addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) ); // Index
-            // name
-            // columns
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) ); 
         }
 
         grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( REPORTING_MONTH_COLUMN_NAME ), REPORTING_MONTH_COLUMN_NAME,
@@ -515,23 +510,23 @@ public class DefaultReportTableService
         {
             grid.addRow();
 
-            for ( IdentifiableObject object : row )
+            for ( IdentifiableObject object : row ) // Index columns
             {
-                grid.addValue( object.getId() ); // Index columns
+                grid.addValue( object.getId() ); 
             }
 
-            for ( NameableObject object : row )
+            for ( NameableObject object : row ) // Index name columns
             {
-                grid.addValue( object.getShortName() ); // Index name columns
+                grid.addValue( object.getShortName() ); 
             }
 
             grid.addValue( reportTable.getReportingMonthName() );
             grid.addValue( reportTable.getOrganisationUnitName() );
             grid.addValue( isCurrentParent( row ) ? YES : NO );
 
-            for ( List<NameableObject> column : reportTable.getColumns() )
+            for ( List<NameableObject> column : reportTable.getColumns() ) // Values
             {
-                grid.addValue( map.get( getIdentifier( row, column ) ) ); // Values
+                grid.addValue( map.get( getIdentifier( row, column ) ) ); 
             }
 
             if ( reportTable.doSubTotals() )
@@ -545,18 +540,12 @@ public class DefaultReportTableService
 
             if ( reportTable.doTotal() )
             {
-                grid.addValue( map.get( getIdentifier( row ) ) ); // Only
-                // category
-                // option
-                // combo is
-                // crosstab
-                // when
-                // total,
-                // row
-                // identifier
-                // will
-                // return
-                // total
+                // -------------------------------------------------------------
+                // Only category option combo is crosstab when total, row
+                // identifier will return total
+                // -------------------------------------------------------------
+                
+                grid.addValue( map.get( getIdentifier( row ) ) ); 
             }
         }
 
