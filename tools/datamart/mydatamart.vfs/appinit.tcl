@@ -18,6 +18,9 @@ set ::log [logger::init main]
 set ::dhis(resource) [file join $starkit::topdir resource]
 set ::dhis(createQuery) [file join $::dhis(resource) sql/create.sql]
 
+# set 20s default login timeout
+set ::dhis(login_timeout) 20000
+
 # organize a place for temp stuff ...
 set tmpdir "/tmp"
 if { [info exists ::env(TMP)] } {
