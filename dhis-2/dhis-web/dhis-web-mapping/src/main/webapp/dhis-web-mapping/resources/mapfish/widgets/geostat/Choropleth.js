@@ -90,6 +90,11 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
             gt: null,
             lt: null
         },
+        cmp: {
+            gt: null,
+            lt: null,
+            button: null
+        },
         filter: function() {
             var gt = this.filtering.options.gt;
             var lt = this.filtering.options.lt;
@@ -97,18 +102,30 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
             if (!gt && !lt) {
                 add = this.filtering.cache.slice(0);
             }
-            else {
+            else if (gt && lt) {
                 for (var i = 0; i < this.filtering.cache.length; i++) {
-                    if (gt && lt && this.filtering.cache[i].attributes.value > gt && this.filtering.cache[i].attributes.value < lt) {
+                    if (gt < lt && (this.filtering.cache[i].attributes.value > gt && this.filtering.cache[i].attributes.value < lt)) {
                         add.push(this.filtering.cache[i]);
                     }
-                    else {
-                        if (!(gt && lt) && gt && this.filtering.cache[i].attributes.value > gt) {
-                            add.push(this.filtering.cache[i]);
-                        }
-                        else if (!(gt && lt) && lt && this.filtering.cache[i].attributes.value < lt) {
-                            add.push(this.filtering.cache[i]);
-                        }
+                    else if (gt > lt && (this.filtering.cache[i].attributes.value > gt || this.filtering.cache[i].attributes.value < lt)) {
+                        add.push(this.filtering.cache[i]);
+                    }
+                    else if (gt == lt && this.filtering.cache[i].attributes.value == gt) {
+                        add.push(this.filtering.cache[i]);
+                    }
+                }
+            }
+            else if (gt && !lt) {
+                for (var i = 0; i < this.filtering.cache.length; i++) {
+                    if (this.filtering.cache[i].attributes.value > gt) {
+                        add.push(this.filtering.cache[i]);
+                    }
+                }
+            }
+            else if (!gt && lt) {
+                for (var i = 0; i < this.filtering.cache.length; i++) {
+                    if (this.filtering.cache[i].attributes.value < lt) {
+                        add.push(this.filtering.cache[i]);
                     }
                 }
             }
@@ -137,10 +154,17 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                                 fieldLabel: 'Greater than',
                                 width: G.conf.combo_number_width_small,
                                 listeners: {
+                                    'afterrender': {
+                                        scope: this,
+                                        fn: function(nf) {
+                                            this.filtering.cmp.gt = nf;
+                                        }
+                                    },
                                     'change': {
                                         scope: this,
                                         fn: function(nf) {
                                             this.filtering.options.gt = nf.getValue();
+                                            
                                         }
                                     }
                                 }
@@ -150,10 +174,17 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                                 fieldLabel: 'Lower than',
                                 width: G.conf.combo_number_width_small,
                                 listeners: {
+                                    'afterrender': {
+                                        scope: this,
+                                        fn: function(nf) {
+                                            this.filtering.cmp.lt = nf;
+                                        }
+                                    },
                                     'change': {
                                         scope: this,
                                         fn: function(nf) {
                                             this.filtering.options.lt = nf.getValue();
+                                            
                                         }
                                     }
                                 }
@@ -170,6 +201,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                         scope: this,
                         handler: function() {
                             this.filtering.filter.call(this);
+                        },
+                        listeners: {
+                            'afterrender': {
+                                scope: this,
+                                fn: function(b) {
+                                    this.filtering.cmp.button = b;
+                                }
+                            }
                         }
                     }
                 ],

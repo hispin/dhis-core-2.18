@@ -738,7 +738,6 @@ G.cls = {
                             {
                                 text: 'Filter..',
                                 iconCls: 'menu-layeroptions-filter',
-                                hidden: widget.legendDiv == 'centroidlegend',
                                 scope: this,
                                 handler: function() {
                                     this.widget.filtering.showFilteringWindow.call(this.widget);

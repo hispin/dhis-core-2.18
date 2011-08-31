@@ -675,7 +675,7 @@
                 xtype: 'form',
                 labelWidth: G.conf.label_width,
                 items: [
-                    {html: '<div class="window-info">Export thematic map to PNG</div>'},
+                    {html: '<div class="window-info">Export thematic layer 1 and 2 to PNG</div>'},
                     {
                         xtype: 'textfield',
                         id: 'exportimagetitle_tf',
