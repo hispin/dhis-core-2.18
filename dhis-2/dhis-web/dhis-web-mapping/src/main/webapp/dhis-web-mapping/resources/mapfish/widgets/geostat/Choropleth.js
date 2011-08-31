@@ -94,16 +94,21 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
             var gt = this.filtering.options.gt;
             var lt = this.filtering.options.lt;
             var add = [];
-            for (var i = 0; i < this.filtering.cache.length; i++) {
-                if (gt && lt && this.filtering.cache[i].attributes.value > gt && this.filtering.cache[i].attributes.value < lt) {
-                    add.push(this.filtering.cache[i]);
-                }
-                else {
-                    if (!(gt && lt) && gt && this.filtering.cache[i].attributes.value > gt) {
+            if (!gt && !lt) {
+                add = this.filtering.cache.slice(0);
+            }
+            else {
+                for (var i = 0; i < this.filtering.cache.length; i++) {
+                    if (gt && lt && this.filtering.cache[i].attributes.value > gt && this.filtering.cache[i].attributes.value < lt) {
                         add.push(this.filtering.cache[i]);
                     }
-                    else if (!(gt && lt) && lt && this.filtering.cache[i].attributes.value < lt) {
-                        add.push(this.filtering.cache[i]);
+                    else {
+                        if (!(gt && lt) && gt && this.filtering.cache[i].attributes.value > gt) {
+                            add.push(this.filtering.cache[i]);
+                        }
+                        else if (!(gt && lt) && lt && this.filtering.cache[i].attributes.value < lt) {
+                            add.push(this.filtering.cache[i]);
+                        }
                     }
                 }
             }

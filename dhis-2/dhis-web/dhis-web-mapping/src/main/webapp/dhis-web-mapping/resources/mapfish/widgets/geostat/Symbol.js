@@ -82,6 +82,101 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
     
     requireUpdate: false,
     
+    filtering: {
+        cache: [],
+        options: {
+            type: []
+        },
+        filter: function() {
+            var type = this.filtering.options.type;
+            var add = [];
+            if (!type.length || !type[0]) {
+                add = this.filtering.cache.slice(0);
+            }
+            else {
+                for (var i = 0; i < this.filtering.cache.length; i++) {
+                    for (var j = 0; j < type.length; j++) {
+                        if (this.filtering.cache[i].attributes.type == type[j]) {
+                            add.push(this.filtering.cache[i]);
+                        }
+                    }
+                }
+            }
+            this.layer.removeAllFeatures();
+            this.layer.addFeatures(add);
+        },
+        showFilteringWindow: function() {
+            var window = new Ext.Window({
+                title: '<span class="window-filter-title">Organisation unit filter</span>',
+                layout: 'fit',
+                autoHeight: true,
+                height: 'auto',
+                width: G.conf.window_width,
+                items: [
+                    {
+                        xtype: 'form',
+                        bodyStyle:'padding:8px',
+                        autoHeight: true,
+                        height: 'auto',
+                        labelWidth: G.conf.label_width,
+                        items: [
+                            { html: 'Show organisation units where <b>type</b> is..' },
+                            { html: '<div class="window-p"></div>' },
+                            {
+                                xtype: 'multiselect',
+                                hideLabel: true,
+                                dataFields: ['id', 'name'],
+                                valueField: 'name',
+                                displayField: 'name',
+                                width: G.conf.multiselect_width,
+                                height: G.util.getMultiSelectHeight() / 2,
+                                store: G.stores.groupsByGroupSet,
+                                listeners: {
+                                    'change': {
+                                        scope: this,
+                                        fn: function(ms) {
+                                            this.filtering.options.type = ms.getValue().split(',');
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                bbar: [
+                    '->',
+                    {
+                        xtype: 'button',
+                        text: G.i18n.update,
+                        iconCls: 'icon-assign',
+                        scope: this,
+                        handler: function() {
+                            this.filtering.filter.call(this);
+                        }
+                    }
+                ],
+                listeners: {
+                    'afterrender': {
+                        scope: this,
+                        fn: function() {
+                            this.filtering.cache = this.layer.features.slice(0);
+                        }
+                    },
+                    'close': {
+                        scope: this,
+                        fn: function() {
+                            this.layer.removeAllFeatures();
+                            this.layer.addFeatures(this.filtering.cache);
+                            this.filtering.options.type = [];
+                        }
+                    }
+                }
+            });
+            window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
+            window.show();
+        }
+    },
+    
     initComponent: function() {
         
         this.initProperties();
