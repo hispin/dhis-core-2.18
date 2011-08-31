@@ -34,8 +34,6 @@
           <col/>
           <col/>
           <col/>
-          <col/>
-          <col/>
 		  #if($mapPatientOrgunit.size()!=0)
           <col/>
 		  #end
@@ -47,9 +45,7 @@
 				#foreach( $attribute in $patientAttributes )
 					<th id="patientAttributeName">$attribute.name</th>
 				#end
-				<th>$i18n.getString( "first_name" )</th>
-				<th>$i18n.getString( "middle_name" )</th>
-				<th>$i18n.getString( "last_name" )</th>            
+				<th>$i18n.getString( "full_name" )</th>          
 				<th>$i18n.getString( "gender" )</th>
 				<th>$i18n.getString( "date_of_birth" )</th> 
 				<th class="{sorter: false}">$i18n.getString( "age" )</th>
@@ -75,11 +71,7 @@
 					<td>$mapPatientPatientAttr.get($key)</td>
 				#end
 					
-				<td>$!patient.firstName</td>
-				
-				<td>$!patient.middleName</td>
-				
-				<td>$!patient.lastName</td>	
+				<td>$!patient.getFullName()</td>
 				
 				<td>$!patient.gender</td>
 				
