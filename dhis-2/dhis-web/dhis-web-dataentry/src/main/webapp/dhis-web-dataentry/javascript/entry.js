@@ -85,7 +85,12 @@ function saveVal( dataElementId, optionComboId )
 
     var periodId = $( '#selectedPeriodId' ).val();
 
-    if ( value )
+	if ( value == null )
+	{
+		value = '';
+	}
+
+    if ( value != '' )
     {
         if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
         {
@@ -150,13 +155,13 @@ function saveVal( dataElementId, optionComboId )
                 }
             }
         }
-
-        var valueSaver = new ValueSaver( dataElementId, optionComboId, 
-        	currentOrganisationUnitId, periodId, value, COLOR_GREEN );
-        valueSaver.save();
-
-        updateIndicators(); // Update indicators in case of custom form
     }
+
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, 
+    	currentOrganisationUnitId, periodId, value, COLOR_GREEN );
+    valueSaver.save();
+
+    updateIndicators(); // Update indicators in case of custom form
 }
 
 function saveBoolean( dataElementId, optionComboId )
