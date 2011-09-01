@@ -17,7 +17,7 @@
 	</tr>
 	<tr>
 		<td><label><strong>$i18n.getString('gender') : </strong></label>
-			$patient.gender
+			$i18n.getString($patient.gender)
 		</td>
 	</tr>
 	<tr>

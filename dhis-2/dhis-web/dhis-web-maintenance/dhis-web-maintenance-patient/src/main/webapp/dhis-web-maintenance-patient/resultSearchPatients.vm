@@ -27,7 +27,7 @@
 				</td>
 				<td>$!patient.getFullName()</td>
 				<td>$!patient.getAge()</td>
-				<td>$!patient.gender</td>
+				<td>$i18n.getString( $!patient.gender )</td>
 				<td>$!patient.dobType</td>
 				<td>$format.formatDate($!patient.birthDate)</td>
 				<td>$!patient.organisationUnit.name</td>
