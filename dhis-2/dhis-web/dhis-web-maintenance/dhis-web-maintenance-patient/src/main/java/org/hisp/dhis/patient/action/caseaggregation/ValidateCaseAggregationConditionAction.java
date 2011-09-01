@@ -34,7 +34,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.patient.PatientAttribute;
 
 import com.opensymphony.xwork2.Action;
 

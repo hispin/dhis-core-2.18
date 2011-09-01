@@ -32,8 +32,6 @@ import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeGroupService;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.program.ProgramStage;
 
 import com.opensymphony.xwork2.Action;
 
