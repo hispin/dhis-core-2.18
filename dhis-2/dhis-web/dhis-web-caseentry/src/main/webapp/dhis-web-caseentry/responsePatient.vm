@@ -2,7 +2,7 @@
 <patient>
   <id>$patient.id</id>  
   <fullName>$encoder.xmlEncode( $patient.getFullName() )</fullName>
-  <gender>$encoder.xmlEncode( $patient.gender )</gender>
+  <gender>$encoder.xmlEncode( $i18n.getString($patient.gender ))</gender>
   <dobType>#if($!patient.dobType)$!patient.dobType#else $i18n.getString('none') #end</dobType>
   <dateOfBirth>$format.formatDate( $!patient.birthDate )</dateOfBirth>
   <age>$encoder.xmlEncode( $patient.getAge() )</age>

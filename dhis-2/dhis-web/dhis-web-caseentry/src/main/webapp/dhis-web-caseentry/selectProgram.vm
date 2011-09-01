@@ -19,7 +19,7 @@
             $encoder.htmlEncode( $patient.lastName )
         </td>               
         <td>            
-            $encoder.htmlEncode( $patient.gender )
+            $i18n.getString($patient.gender )
         </td>
         <td>            
             $format.formatDate( $patient.birthDate )

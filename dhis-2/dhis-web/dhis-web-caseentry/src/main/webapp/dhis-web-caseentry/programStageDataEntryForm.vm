@@ -8,7 +8,7 @@ jQuery("#entryFormContainer").ready(function(){
     <tr>            
         <td>
             <strong>$i18n.getString( "full_name" ):</strong>$encoder.htmlEncode( $patient.getFullName() )<br>
-            <strong>$i18n.getString( "gender" ):</strong>$encoder.htmlEncode( $patient.gender )<br>
+            <strong>$i18n.getString( "gender" ):</strong>$i18n.getString( $patient.gender )<br>
             <strong>$i18n.getString( "date_of_birth" ):</strong>
 			$format.formatDate( $patient.birthDate )<br>
             <strong>$i18n.getString( "age" ):</strong>$encoder.htmlEncode( $patient.getAge() )
