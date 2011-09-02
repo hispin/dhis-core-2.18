@@ -133,11 +133,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
      <property name="sessionFactory" ref="sessionFactory"/>
    </bean>
    
-	<bean id="org.hisp.dhis.patient.PatientMobileSettingStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientMobileSettingStore">
-		<property name="clazz" value="org.hisp.dhis.patient.PatientMobileSetting"/>
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-   
 	<!-- Service definitions -->
 	
 	<bean id="org.hisp.dhis.program.ProgramDataEntryService"
@@ -312,10 +307,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.program.ProgramAttributeOptionStore"/>
    </bean>
    
-	<bean id="org.hisp.dhis.patient.PatientMobileSettingService" class="org.hisp.dhis.patient.DefaultPatientMobileSettingService">
-		<property name="patientMobileSettingStore" ref="org.hisp.dhis.patient.PatientMobileSettingStore" />
-	</bean>
-  
 	<!-- Aggregation engine -->
 
 	<bean

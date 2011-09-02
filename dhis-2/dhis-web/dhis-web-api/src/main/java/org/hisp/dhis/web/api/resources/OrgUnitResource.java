@@ -27,60 +27,32 @@ package org.hisp.dhis.web.api.resources;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.importexport.dxf2.model.OrgUnit;
 import org.hisp.dhis.importexport.dxf2.service.OrgUnitMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.api.UrlResourceListener;
-import org.hisp.dhis.web.api.model.ActivityPlan;
-import org.hisp.dhis.web.api.model.ActivityValue;
-import org.hisp.dhis.web.api.model.DataSetList;
-import org.hisp.dhis.web.api.model.DataSetValue;
-import org.hisp.dhis.web.api.model.MobileModel;
-import org.hisp.dhis.web.api.model.MobileOrgUnitLinks;
-import org.hisp.dhis.web.api.model.ModelList;
-import org.hisp.dhis.web.api.service.ActivityReportingService;
-import org.hisp.dhis.web.api.service.ActivityReportingServiceImpl;
-import org.hisp.dhis.web.api.service.FacilityReportingService;
-import org.hisp.dhis.web.api.service.IProgramService;
-import org.hisp.dhis.web.api.service.NotAllowedException;
 import org.springframework.beans.factory.annotation.Required;
 
-@Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
-@Consumes( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+@Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
 @Path( "/orgUnits/{id}" )
 public class OrgUnitResource
 {
     private OrganisationUnitService organisationUnitService;
 
-    private static Log log = LogFactory.getLog( ActivityReportingServiceImpl.class );
-
-    private static final boolean DEBUG = log.isDebugEnabled();
-
-    private IProgramService programService;
-
-    private ActivityReportingService activityReportingService;
-
-    private FacilityReportingService facilityReportingService;
-
-    private I18nService i18nService;
+    private static Log log = LogFactory.getLog( OrgUnitResource.class );
 
     @PathParam( "id" )
     private String id;
@@ -88,23 +60,11 @@ public class OrgUnitResource
     @Context
     UriInfo uriInfo;
 
-    private OrganisationUnit getUnit()
-    {
-        try
-        {
-            return organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) );
-        }
-        catch ( NumberFormatException e )
-        {
-            return organisationUnitService.getOrganisationUnit( id );
-        }
-    }
-
     @GET
     @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
     public OrgUnit getOrgUnit()
     {
-        OrganisationUnit unit = getUnit();
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
 
         if ( unit == null )
             return null;
@@ -114,146 +74,10 @@ public class OrgUnitResource
         return orgUnit;
     }
 
-    /**
-     * Get activity plan, program forms and facility forms wrapped in a
-     * {@link MobileModel}
-     * 
-     * @param locale - localize for the given locale
-     */
-    @GET
-    @Path( "all" )
-    public MobileModel getAllDataForOrgUnit( @HeaderParam( "accept-language" ) String locale )
-    {
-        MobileModel mobileModel = new MobileModel();
-
-        if ( DEBUG )
-            log.debug( "Getting all resources for org unit " + getUnit().getName() );
-
-        mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit(), locale ) );
-        mobileModel.setPrograms( programService.getPrograms( getUnit(), locale ) );
-        mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( getUnit(), locale ) );
-        mobileModel.setServerCurrentDate( new Date() );
-        mobileModel.setLocales( i18nService.getAvailableLocales() );
-        return mobileModel;
-    }
-
-    @POST
-    @Path( "updateDataSets" )
-    public DataSetList checkUpdatedDataSet( DataSetList dataSetList, @HeaderParam( "accept-language" ) String locale )
-    {
-        return facilityReportingService.getUpdatedDataSet( dataSetList, getUnit(), locale );
-    }
-
-    @GET
-    @Path( "changeLanguageDataSet" )
-    public DataSetList changeLanguageDataSet( @HeaderParam( "accept-language" ) String locale )
-    {
-        return facilityReportingService.getDataSetsForLocale( getUnit(), locale );
-    }
-
-    /**
-     * Save a facility report for unit
-     * 
-     * @param dataSetValue - the report to save
-     * @throws NotAllowedException if the {@link DataSetValue} is invalid
-     */
-    @POST
-    @Path( "dataSets" )
-    public void saveDataSetValues( DataSetValue dataSetValue )
-        throws NotAllowedException
-    {
-        facilityReportingService.saveDataSetValues( getUnit(), dataSetValue );
-    }
-
-    /**
-     * Save activity report for unit
-     * 
-     * @param activityValue - the report to save
-     * @throws NotAllowedException if the {@link ActivityValue activity value}
-     *         is invalid
-     */
-    @POST
-    @Path( "activities" )
-    public void saveActivityReport( ActivityValue activityValue )
-        throws NotAllowedException
-    {
-        activityReportingService.saveActivityReport( getUnit(), activityValue );
-    }
-
-    @POST
-    @Path( "activitiyplan" )
-    public MobileModel updatePrograms( @HeaderParam( "accept-language" ) String locale, ModelList programsFromClient )
-    {
-        MobileModel model = new MobileModel();
-        model.setPrograms( programService.updateProgram( programsFromClient, locale, getUnit() ) );
-        model.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit(), locale ) );
-        model.setServerCurrentDate( new Date() );
-        return model;
-    }
-
-    @GET
-    @Path( "search" )
-    public ActivityPlan search( @HeaderParam( "identifier" ) String identifier )
-        throws NotAllowedException
-    {
-        return activityReportingService.getActivitiesByIdentifier( identifier );
-    }
-
-    public static MobileOrgUnitLinks getOrgUnit( OrganisationUnit unit, UriInfo uriInfo )
-    {
-        MobileOrgUnitLinks orgUnit = new MobileOrgUnitLinks();
-
-        orgUnit.setId( unit.getId() );
-        orgUnit.setName( unit.getShortName() );
-
-        orgUnit.setDownloadAllUrl( getOrgUnitUrlBuilder( uriInfo ).path( "all" ).build( unit.getId() ).toString() );
-        orgUnit.setUpdateActivityPlanUrl( getOrgUnitUrlBuilder( uriInfo ).path( "activitiyplan" ).build( unit.getId() )
-            .toString() );
-        orgUnit.setUploadFacilityReportUrl( getOrgUnitUrlBuilder( uriInfo ).path( "dataSets" ).build( unit.getId() )
-            .toString() );
-        orgUnit.setUploadActivityReportUrl( getOrgUnitUrlBuilder( uriInfo ).path( "activities" ).build( unit.getId() )
-            .toString() );
-        orgUnit.setUpdateDataSetUrl( getOrgUnitUrlBuilder( uriInfo ).path( "updateDataSets" ).build( unit.getId() )
-            .toString() );
-        orgUnit.setChangeUpdateDataSetLangUrl( getOrgUnitUrlBuilder( uriInfo ).path( "changeLanguageDataSet" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setSearchUrl( getOrgUnitUrlBuilder( uriInfo ).path( "search" ).build( unit.getId() ).toString() );
-        return orgUnit;
-    }
-
-    private static UriBuilder getOrgUnitUrlBuilder( UriInfo uriInfo )
-    {
-        return uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" );
-    }
-
-    @Required
-    public void setProgramService( IProgramService programService )
-    {
-        this.programService = programService;
-    }
-
-    @Required
-    public void setActivityReportingService( ActivityReportingService activityReportingService )
-    {
-        this.activityReportingService = activityReportingService;
-    }
-
-    @Required
-    public void setFacilityReportingService( FacilityReportingService facilityReportingService )
-    {
-        this.facilityReportingService = facilityReportingService;
-    }
-
     @Required
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    @Required
-    public void setI18nService( I18nService i18nService )
-    {
-        this.i18nService = i18nService;
     }
 
 }

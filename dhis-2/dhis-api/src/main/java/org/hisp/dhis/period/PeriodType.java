@@ -72,9 +72,9 @@ public abstract class PeriodType
         periodTypes.add( new FinancialAprilPeriodType() );
         periodTypes.add( new FinancialJulyPeriodType() );
         periodTypes.add( new FinancialOctoberPeriodType() );
-        //periodTypes.add( new OnChangePeriodType() );
-        //periodTypes.add( new SurveyPeriodType() );
-        
+        // periodTypes.add( new OnChangePeriodType() );
+        // periodTypes.add( new SurveyPeriodType() );
+
         periodTypeMap = new HashMap<String, PeriodType>();
 
         for ( PeriodType periodType : periodTypes )
@@ -104,7 +104,7 @@ public abstract class PeriodType
     {
         return periodTypeMap.get( name );
     }
-    
+
     public static PeriodType getByNameIgnoreCase( String name )
     {
         for ( PeriodType periodType : getAvailablePeriodTypes() )
@@ -116,6 +116,22 @@ public abstract class PeriodType
         }
 
         return null;
+    }
+
+    /** Get period type according to natural order order.
+     * 
+     * @param index the index of the period type with base 1
+     * @return period type according to index order or null if no match
+     * TODO: Consider manual ordering, since relying on natural order might create problems if new periods are introduced.
+     */
+    public static PeriodType getByIndex( int index )
+    {
+        index -= 1;
+        
+        if (index < 0 || index > periodTypes.size() - 1 )
+            return null;
+
+        return periodTypes.get( index );
     }
 
     // -------------------------------------------------------------------------
@@ -161,7 +177,7 @@ public abstract class PeriodType
      * @return the valid Period based on the given date
      */
     public abstract Period createPeriod( Date date );
-    
+
     /**
      * Returns a comparable value for the frequency length of this PeriodType.
      * Shortest is 0.
@@ -241,8 +257,8 @@ public abstract class PeriodType
     
     /**
      * Returns an iso8601 formatted string representation of the period
-     *
-     * @param period the period.
+     * 
+     * @param period
      * @return the period as string
      */
     public abstract String getIsoDate( Period period );
@@ -276,6 +292,7 @@ public abstract class PeriodType
         return periodType.createPeriod( getMediumDate( id[1] ) );
     }
     
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -308,7 +325,7 @@ public abstract class PeriodType
 
         return getName().equals( other.getName() );
     }
-    
+
     @Override
     public String toString()
     {
