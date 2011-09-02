@@ -66,14 +66,11 @@ public class MappedRedirectStrategy
     public void sendRedirect( HttpServletRequest request, HttpServletResponse response, String url )
         throws IOException
     {
-        System.out.println("Default url " + url);
-        
         for ( String key : redirectMap.keySet() )
         {
             if ( url.indexOf( key ) != -1 )
             {
                 url = url.replaceFirst( key, redirectMap.get( key ) );
-                System.out.println("Rewritten url " + url);
             }
         }
 
