@@ -191,6 +191,11 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getByName( name );
     }
 
+    public OrganisationUnit getOrganisationUnitByCode( String code )
+    {
+        return organisationUnitStore.getByCode( code );
+    }
+
     public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
     {
         return organisationUnitStore.getOrganisationUnitByNameIgnoreCase( name );
@@ -680,4 +685,5 @@ public class DefaultOrganisationUnitService
             versionService.updateVersion( orgUnitVersion );
         }
     }
+
 }

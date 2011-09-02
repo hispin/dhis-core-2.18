@@ -101,6 +101,14 @@ public interface OrganisationUnitService
     OrganisationUnit getOrganisationUnit( String uuid );
 
     /**
+     * Returns the OrganisationUnit with the given code.
+     *
+     * @param code the code of the OrganisationUnit to return.
+     * @return the OrganisationUnit with the given code, or null if no match.
+     */
+    OrganisationUnit getOrganisationUnitByCode( String code );
+
+    /**
      * Returns all OrganisationUnits.
      * 
      * @return a collection of all OrganisationUnits, or an empty collection if

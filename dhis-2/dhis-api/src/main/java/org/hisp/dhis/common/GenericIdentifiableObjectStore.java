@@ -46,7 +46,7 @@ public interface GenericIdentifiableObjectStore<T>
     
     /**
      * Retrieves the object with the given name.
-     * 
+     *
      * @param name the name.
      * @return the object with the given name.
      */
