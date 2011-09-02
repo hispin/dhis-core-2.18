@@ -38,9 +38,6 @@
     <sec:intercept-url pattern="/favicon.ico" filters="none" />
     <sec:intercept-url pattern="/**" access="isAuthenticated()" />
 
-    <sec:intercept-url pattern="/api/**" access="isAuthenticated()" />
-    <sec:intercept-url pattern="/api" access="isAuthenticated()" />
-
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
   </sec:http>
 
