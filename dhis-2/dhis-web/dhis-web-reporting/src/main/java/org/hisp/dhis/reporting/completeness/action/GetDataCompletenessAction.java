@@ -28,7 +28,7 @@ package org.hisp.dhis.reporting.completeness.action;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
@@ -36,7 +36,6 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
-import org.hisp.dhis.completeness.comparator.DataSetCompletenessResultComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
@@ -47,6 +46,8 @@ import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
+
+import static org.hisp.dhis.system.util.ConversionUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -159,7 +160,7 @@ public class GetDataCompletenessAction
         }
         else
         {            
-            OrganisationUnit selectedUnit = selectionTreeManager.getSelectedOrganisationUnit();
+            OrganisationUnit selectedUnit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
             
             if ( periodId == null || selectedUnit == null || criteria == null )
             {
@@ -170,26 +171,28 @@ public class GetDataCompletenessAction
                 Integer _periodId = periodService.getPeriodByExternalId( periodId ).getId();
                 
                 DataSet dataSet = null;
-                List<DataSetCompletenessResult> results = null;
+                List<DataSetCompletenessResult> mainResults = new ArrayList<DataSetCompletenessResult>();
+                List<DataSetCompletenessResult> footerResults = new ArrayList<DataSetCompletenessResult>();
     
                 DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
     
                 if ( dataSetId != null && dataSetId != 0 ) // One data set for one organisation unit
                 {
-                    results = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
-                        _periodId, selectedUnit.getId(), dataSetId ) );
+                    mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
+                        _periodId, getIdentifiers( OrganisationUnit.class, selectedUnit.getChildren() ), dataSetId ) );
+                    
+                    footerResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness( 
+                        _periodId, Arrays.asList( selectedUnit.getId() ), dataSetId ) );
     
                     dataSet = dataSetService.getDataSet( dataSetId );
                 }
                 else // All data sets for children of one organisation unit
                 {
-                    results = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
+                    mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
                         _periodId, selectedUnit.getId() ) );
                 }
     
-                Collections.sort( results, new DataSetCompletenessResultComparator() );
-                
-                grid = getGrid( results, selectedUnit, dataSet );
+                grid = getGrid( mainResults, footerResults, selectedUnit, dataSet );
                 
                 SessionUtils.setSessionVar( KEY_DATA_COMPLETENESS, grid );                      
             }
@@ -198,7 +201,7 @@ public class GetDataCompletenessAction
         }        
     }
     
-    private Grid getGrid( List<DataSetCompletenessResult> results, OrganisationUnit unit, DataSet dataSet )
+    private Grid getGrid( List<DataSetCompletenessResult> mainResults, List<DataSetCompletenessResult> footerResults, OrganisationUnit unit, DataSet dataSet )
     {
         String title = i18n.getString( "data_completeness_report" );
         String subtitle = ( unit != null ? unit.getName() : EMPTY ) + SPACE + ( dataSet != null ? dataSet.getName() : EMPTY );
@@ -212,15 +215,9 @@ public class GetDataCompletenessAction
         grid.addHeader( new GridHeader( i18n.getString( "on_time" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "percent" ), false, false ) );
         
-        for ( DataSetCompletenessResult result : results )
+        for ( DataSetCompletenessResult result : mainResults )
         {
-            grid.addRow();
-            grid.addValue( result.getName() );
-            grid.addValue( result.getRegistrations() );
-            grid.addValue( result.getSources() );
-            grid.addValue( result.getPercentage() );
-            grid.addValue( result.getRegistrationsOnTime() );
-            grid.addValue( result.getPercentageOnTime() );
+            addRow( grid, result );
         }
 
         if ( grid.getWidth() >= 4 )
@@ -228,6 +225,22 @@ public class GetDataCompletenessAction
             grid.sortGrid( 4, 1 );
         }
         
+        for ( DataSetCompletenessResult result : footerResults )
+        {
+            addRow( grid, result );
+        }
+        
         return grid;
+    }
+    
+    private void addRow( Grid grid, DataSetCompletenessResult result )
+    {
+        grid.addRow();
+        grid.addValue( result.getName() );
+        grid.addValue( result.getRegistrations() );
+        grid.addValue( result.getSources() );
+        grid.addValue( result.getPercentage() );
+        grid.addValue( result.getRegistrationsOnTime() );
+        grid.addValue( result.getPercentageOnTime() );
     }
 }

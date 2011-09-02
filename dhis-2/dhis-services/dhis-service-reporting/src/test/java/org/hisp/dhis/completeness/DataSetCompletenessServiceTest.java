@@ -78,6 +78,9 @@ public class DataSetCompletenessServiceTest
     private OrganisationUnit unitH;
         
     private int unitIdA;
+    private int unitIdB;
+    private int unitIdC;
+    private Collection<Integer> unitIdsA;
     
     private DataSet dataSetA;
     private DataSet dataSetB;
@@ -144,13 +147,17 @@ public class DataSetCompletenessServiceTest
         unitC.getChildren().add( unitH );
         
         unitIdA = organisationUnitService.addOrganisationUnit( unitA );
-        organisationUnitService.addOrganisationUnit( unitB );
-        organisationUnitService.addOrganisationUnit( unitC );
+        unitIdB = organisationUnitService.addOrganisationUnit( unitB );
+        unitIdC = organisationUnitService.addOrganisationUnit( unitC );
         organisationUnitService.addOrganisationUnit( unitD );
         organisationUnitService.addOrganisationUnit( unitE );
         organisationUnitService.addOrganisationUnit( unitF );
         organisationUnitService.addOrganisationUnit( unitG );
         organisationUnitService.addOrganisationUnit( unitH );
+        
+        unitIdsA = new HashSet<Integer>();
+        unitIdsA.add( unitIdB );
+        unitIdsA.add( unitIdC );
         
         sources.add( unitA );
         sources.add( unitB );
@@ -312,7 +319,7 @@ public class DataSetCompletenessServiceTest
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitF, tooLateA ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, tooLateA ) );
         
-        Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdA, dataSetIdA );
+        Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdsA, dataSetIdA );
         
         DataSetCompletenessResult resultA = new DataSetCompletenessResult( unitB.getName(), 2, 2, 0 );
         DataSetCompletenessResult resultB = new DataSetCompletenessResult( unitC.getName(), 2, 1, 0 );
@@ -336,7 +343,7 @@ public class DataSetCompletenessServiceTest
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, tooLateA ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitH, tooLateA ) );
 
-        Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdA, dataSetIdA );
+        Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdsA, dataSetIdA );
         
         DataSetCompletenessResult resultA = new DataSetCompletenessResult( unitB.getName(), 2, 1, 0 );
         DataSetCompletenessResult resultB = new DataSetCompletenessResult( unitC.getName(), 1, 1, 0 );
@@ -362,7 +369,7 @@ public class DataSetCompletenessServiceTest
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, onTimeA ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitH, tooLateA ) );
 
-        Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdA, dataSetIdA );
+        Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdsA, dataSetIdA );
 
         DataSetCompletenessResult resultA = new DataSetCompletenessResult( unitB.getName(), 2, 2, 1 );
         DataSetCompletenessResult resultB = new DataSetCompletenessResult( unitC.getName(), 2, 2, 1 );

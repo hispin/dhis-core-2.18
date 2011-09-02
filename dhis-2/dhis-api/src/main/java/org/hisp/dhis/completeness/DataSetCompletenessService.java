@@ -84,7 +84,7 @@ public interface DataSetCompletenessService
      * @param dataSetId the identifier of the DataSet.
      * @return a Collection of DataSetCompletenessResults.
      */
-    Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, int parentOrganisationUnitId, int dataSetId );
+    Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, Collection<Integer> organisationUnitIds, int dataSetId );
     
     /**
      * Creates an index on the aggregateddatasetcompleteness table.
