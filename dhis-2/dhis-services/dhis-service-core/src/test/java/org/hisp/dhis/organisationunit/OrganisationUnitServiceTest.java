@@ -178,6 +178,14 @@ public class OrganisationUnitServiceTest
 
         OrganisationUnit unit4 = organisationUnitService.getOrganisationUnitByName( "foo" );
         assertNull( unit4 );
+
+        unit1 = organisationUnitService.getOrganisationUnitByCode( oU1Code );
+        assertEquals( unit1.getName(), oU1Name );
+
+        unit4 = organisationUnitService.getOrganisationUnitByCode( "foo" );
+        assertNull( unit4 );
+
+
     }
 
     @Test
