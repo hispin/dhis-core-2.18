@@ -124,7 +124,7 @@ public class DataValueSetService
 
         DataSet dataSet = getDataSet( dataValueSet );
 
-        OrganisationUnit unit = getOrgUnit( dataValueSet.getOrganisationUnitUuid() );
+        OrganisationUnit unit = getOrgUnit( dataValueSet.getOrganisationUnitIdentifier() );
 
         if ( !dataSet.getSources().contains( unit ) )
         {
@@ -147,7 +147,7 @@ public class DataValueSetService
     {
         DataSet dataSet = null;
 
-        String uuid = dataValueSet.getDataSetUuid();
+        String uuid = dataValueSet.getDataSetIdentifier();
         if ( uuid != null )
         {
             dataSet = dataSetService.getDataSet( uuid );
@@ -176,7 +176,7 @@ public class DataValueSetService
 
         for ( org.hisp.dhis.importexport.dxf2.model.DataValue value : dataValueSet.getDataValues() )
         {
-            DataElement dataElement = getDataElement( value.getDataElementUuid() );
+            DataElement dataElement = getDataElement( value.getDataElementIdentifier() );
             Set<DataSet> dataSets = dataElement.getDataSets();
 
             if ( dataSets == null || dataSets.isEmpty() )
@@ -224,7 +224,7 @@ public class DataValueSetService
     private void saveDataValue( Date timestamp, DataSet dataSet, OrganisationUnit unit, Period period,
         org.hisp.dhis.importexport.dxf2.model.DataValue dxfValue )
     {
-        DataElement dataElement = getDataElement( dxfValue.getDataElementUuid() );
+        DataElement dataElement = getDataElement( dxfValue.getDataElementIdentifier() );
 
         if ( !dataSet.getDataElements().contains( dataElement ) )
         {
@@ -232,7 +232,7 @@ public class DataValueSetService
                 + dataSet.getUuid() );
         }
 
-        DataElementCategoryOptionCombo combo = getOptionCombo( dxfValue.getCategoryOptionComboUuid(), dataElement );
+        DataElementCategoryOptionCombo combo = getOptionCombo( dxfValue.getCategoryOptionComboIdentifier(), dataElement );
 
         DataValue dv = dataValueService.getDataValue( unit, dataElement, period, combo );
 
@@ -240,7 +240,8 @@ public class DataValueSetService
 
         // dataElement.isValidValue(value);
 
-        String storedBy = getStoredBy( dxfValue );
+        String storedBy = currentUserService.getCurrentUsername();
+
 
         if ( dv == null )
         {
@@ -283,17 +284,6 @@ public class DataValueSetService
         {
             registrationService.saveCompleteDataSetRegistration( complete );
         }
-    }
-
-    private String getStoredBy( org.hisp.dhis.importexport.dxf2.model.DataValue dxfValue )
-    {
-        String storedBy = dxfValue.getStoredBy();
-
-        if ( storedBy == null || storedBy.trim().equals( "" ) )
-        {
-            storedBy = currentUserService.getCurrentUsername();
-        }
-        return storedBy;
     }
 
     private CompleteDataSetRegistration getComplete( DataSet dataSet, OrganisationUnit unit, Period period,

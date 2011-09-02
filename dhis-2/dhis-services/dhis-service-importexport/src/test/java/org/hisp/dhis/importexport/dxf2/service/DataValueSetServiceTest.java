@@ -37,10 +37,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -114,14 +117,13 @@ public class DataValueSetServiceTest
         is.close();
 
         dataValueSet = new DataValueSet();
-        dataValueSet.setDataSetUuid( DATA_SET_UUID );
+        dataValueSet.setDataSetIdentifier( DATA_SET_UUID );
         dataValueSet.setPeriodIsoDate( "2011W5" );
-        dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_UUID );
+        dataValueSet.setOrganisationUnitIdentifier( ORGANISATION_UNIT_UUID );
 
         final org.hisp.dhis.importexport.dxf2.model.DataValue dv = new org.hisp.dhis.importexport.dxf2.model.DataValue();
-        dv.setDataElementUuid( DATA_ELEMENT_UUID );
+        dv.setDataElementIdentifier( DATA_ELEMENT_UUID );
         dv.setValue( "11" );
-        dv.setStoredBy( "misterindia" );
 
         dataValueSet.setDataValues( new ArrayList<org.hisp.dhis.importexport.dxf2.model.DataValue>()
         {
@@ -151,19 +153,51 @@ public class DataValueSetServiceTest
         DataValueSet dxfDataValueSet = (DataValueSet) u.unmarshal( is );
         is.close();
 
-        assertEquals( dataValueSet.getDataSetUuid(), dxfDataValueSet.getDataSetUuid() );
+        assertEquals( dataValueSet.getDataSetIdentifier(), dxfDataValueSet.getDataSetIdentifier() );
         assertEquals( dataValueSet.getPeriodIsoDate(), dxfDataValueSet.getPeriodIsoDate() );
-        assertEquals( dataValueSet.getOrganisationUnitUuid(), dxfDataValueSet.getOrganisationUnitUuid() );
+        assertEquals( dataValueSet.getOrganisationUnitIdentifier(), dxfDataValueSet.getOrganisationUnitIdentifier() );
 
         assertEquals( 1, dxfDataValueSet.getDataValues().size() );
 
         org.hisp.dhis.importexport.dxf2.model.DataValue dv = dxfDataValueSet.getDataValues().get( 0 );
         org.hisp.dhis.importexport.dxf2.model.DataValue dataValue = dataValueSet.getDataValues().get( 0 );
 
-        assertEquals( dataValue.getDataElementUuid(), dv.getDataElementUuid() );
-        assertEquals( dataValue.getStoredBy(), dv.getStoredBy() );
+        assertEquals( dataValue.getDataElementIdentifier(), dv.getDataElementIdentifier() );
 
-        assertNull( dv.getCategoryOptionComboUuid() );
+        assertNull( dv.getCategoryOptionComboIdentifier() );
+
+    }
+
+    @Test
+    public void testJaxbDimensions()
+        throws JAXBException, IOException
+    {
+        JAXBContext jc = JAXBContext.newInstance( DataValueSet.class,
+            org.hisp.dhis.importexport.dxf2.model.DataValue.class );
+        Unmarshaller u = jc.createUnmarshaller();
+        InputStream is = classLoader.getResourceAsStream( "dxf2/dataValueSet_dim.xml" );
+
+        DataValueSet dxfDataValueSet = (DataValueSet) u.unmarshal( is );
+        is.close();
+
+        assertEquals( "internal", dxfDataValueSet.getDataElementIdScheme() );
+        assertEquals( "code", dxfDataValueSet.getOrgUnitIdScheme() );
+
+        assertEquals( 1, dxfDataValueSet.getDataValues().size() );
+
+        org.hisp.dhis.importexport.dxf2.model.DataValue dv = dxfDataValueSet.getDataValues().get( 0 );
+
+        Map<QName,Object> dimensions = dv.getDimensions();
+        assertEquals( 2, dimensions.size() );
+
+        QName sex = new QName("sex");
+        QName age = new QName("age");
+
+        assertTrue(dimensions.containsKey( sex ));
+        assertTrue(dimensions.containsKey( age));
+        assertEquals("1", dimensions.get( sex ));
+        assertEquals("2", dimensions.get( age ));
+
     }
 
     @Test
@@ -239,7 +273,7 @@ public class DataValueSetServiceTest
     @Test
     public void dataSetMissing()
     {
-        dataValueSet.setDataSetUuid( null );
+        dataValueSet.setDataSetIdentifier( null );
         setValue( "999" );
         
         testSave( "999" );
@@ -249,7 +283,7 @@ public class DataValueSetServiceTest
     @Test
     public void orgunitMissingOrNotInSet()
     {
-        dataValueSet.setOrganisationUnitUuid( "ladlalad" );
+        dataValueSet.setOrganisationUnitIdentifier( "ladlalad" );
         try
         {
             service.saveDataValueSet( dataValueSet );
@@ -261,7 +295,7 @@ public class DataValueSetServiceTest
             // Expected
         }
 
-        dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_NOT_IN_SET_UUID );
+        dataValueSet.setOrganisationUnitIdentifier( ORGANISATION_UNIT_NOT_IN_SET_UUID );
 
         try
         {
@@ -372,7 +406,7 @@ public class DataValueSetServiceTest
     {
 
         org.hisp.dhis.importexport.dxf2.model.DataValue dv = new org.hisp.dhis.importexport.dxf2.model.DataValue();
-        dv.setDataElementUuid( "ladida" );
+        dv.setDataElementIdentifier( "ladida" );
         dv.setValue( "11" );
         dataValueSet.getDataValues().add( dv );
 
@@ -386,7 +420,7 @@ public class DataValueSetServiceTest
             // Expected
         }
 
-        dv.setDataElementUuid( DATA_ELEMENT_NOT_IN_SET_UUID );
+        dv.setDataElementIdentifier( DATA_ELEMENT_NOT_IN_SET_UUID );
 
         try
         {
@@ -403,11 +437,11 @@ public class DataValueSetServiceTest
     public void optionComboExistsAndInDataElement()
     {
 
-        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboUuid( DEFAULT_COMBO_UUID );
+        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboIdentifier( DEFAULT_COMBO_UUID );
 
         service.saveDataValueSet( dataValueSet );
 
-        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboUuid( "AAB2299E-ECD6-46CF-A61F-817D350" );
+        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboIdentifier( "AAB2299E-ECD6-46CF-A61F-817D350" );
 
         try
         {
@@ -467,7 +501,6 @@ public class DataValueSetServiceTest
         assertEquals( DATA_ELEMENT_UUID, dv.getDataElement().getUuid() );
         assertEquals( ORGANISATION_UNIT_UUID, dv.getSource().getUuid() );
         assertEquals( new WeeklyPeriodType().createPeriod( "2011W5" ), dv.getPeriod() );
-        assertEquals( "misterindia", dv.getStoredBy() );
         assertEquals( value, dv.getValue() );
 
         long time = dv.getTimestamp().getTime();
@@ -475,6 +508,7 @@ public class DataValueSetServiceTest
         assertTrue( time <= after );
 
         assertEquals( defaultCombo, dv.getOptionCombo() );
+
     }
 
     @Override
