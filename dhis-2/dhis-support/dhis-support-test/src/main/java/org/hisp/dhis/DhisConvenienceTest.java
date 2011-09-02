@@ -323,7 +323,7 @@ public abstract class DhisConvenienceTest
         }
         catch ( Exception ex )
         {
-            throw new RuntimeException( "Failed to set dependency on service: " + fieldName, ex );
+            throw new RuntimeException( "Failed to set dependency '" + fieldName + "' on service", ex );
         }
     }
 
