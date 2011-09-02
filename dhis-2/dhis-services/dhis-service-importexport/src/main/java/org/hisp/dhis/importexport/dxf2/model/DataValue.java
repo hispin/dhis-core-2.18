@@ -27,44 +27,62 @@ package org.hisp.dhis.importexport.dxf2.model;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.namespace.QName;
 
 @XmlAccessorType( XmlAccessType.FIELD )
 public class DataValue
 {
 
     @XmlAttribute( name = "dataElement", required = true )
-    private String dataElementUuid;
+    private String dataElementIdentifier;
 
     @XmlAttribute( name = "categoryOptionCombo" )
-    private String categoryOptionComboUuid;
+    private String categoryOptionComboIdentifier;
 
-    @XmlAttribute
-    private String storedBy;
+    @XmlAnyAttribute
+    Map<QName,Object> dimensions;
 
     @XmlAttribute
     private String value;
 
-    public String getDataElementUuid()
+    public String getDataElementIdentifier()
     {
-        return dataElementUuid;
+        return dataElementIdentifier;
     }
 
-    public void setDataElementUuid( String dataElementUuid )
+    public void setDataElementIdentifier( String dataElementId )
     {
-        this.dataElementUuid = dataElementUuid;
+        this.dataElementIdentifier = dataElementId;
     }
 
-    public String getCategoryOptionComboUuid()
+    public String getCategoryOptionComboIdentifier()
     {
-        return categoryOptionComboUuid;
+        return categoryOptionComboIdentifier;
     }
 
-    public void setCategoryOptionComboUuid( String categoryOptionComboUuid )
+    public void setCategoryOptionComboIdentifier( String categoryOptionComboId )
     {
-        this.categoryOptionComboUuid = categoryOptionComboUuid;
+        this.categoryOptionComboIdentifier = categoryOptionComboId;
+    }
+
+    public Map<QName, Object> getDimensions()
+    {
+        if ( dimensions == null )
+        {
+            dimensions = new HashMap<QName,Object>();
+        }
+        return dimensions;
+    }
+
+    public void setDimensions( Map<QName, Object> dimensions )
+    {
+        this.dimensions = dimensions;
     }
 
     public String getValue()
@@ -75,16 +93,6 @@ public class DataValue
     public void setValue( String value )
     {
         this.value = value;
-    }
-
-    public String getStoredBy()
-    {
-        return storedBy;
-    }
-
-    public void setStoredBy( String storedBy )
-    {
-        this.storedBy = storedBy;
     }
 
 }

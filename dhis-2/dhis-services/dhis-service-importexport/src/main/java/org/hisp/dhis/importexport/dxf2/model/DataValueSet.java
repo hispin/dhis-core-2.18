@@ -41,10 +41,10 @@ public class DataValueSet
 {
 
     @XmlAttribute( name = "dataSet" )
-    private String dataSetUuid;
+    private String dataSetIdentifier;
 
     @XmlAttribute( name = "orgUnit", required = true )
-    private String organisationUnitUuid;
+    private String organisationUnitIdentifier;
 
     @XmlAttribute( name = "period", required = true )
     private String periodIsoDate;
@@ -52,28 +52,53 @@ public class DataValueSet
     @XmlAttribute( name = "complete" )
     private String completeDate;
 
+    @XmlAttribute( name = "orgUnitIdScheme" )
+    private String orgUnitIdScheme;
+
+    @XmlAttribute( name = "dataElementIdScheme" )
+    private String dataElementIdScheme;
+
     @XmlElement( name = "dataValue" )
     private List<DataValue> dataValues;
 
+    public String getDataElementIdScheme()
+    {
+        return dataElementIdScheme;
+    }
+
+    public void setDataElementIdScheme( String dataElementIdScheme )
+    {
+        this.dataElementIdScheme = dataElementIdScheme;
+    }
+
+    public String getOrgUnitIdScheme()
+    {
+        return orgUnitIdScheme;
+    }
+
+    public void setOrgUnitIdScheme( String orgUnitIdScheme )
+    {
+        this.orgUnitIdScheme = orgUnitIdScheme;
+    }
     
-    public String getDataSetUuid()
+    public String getDataSetIdentifier()
     {
-        return dataSetUuid;
+        return dataSetIdentifier;
     }
 
-    public void setDataSetUuid( String dataSetUuid )
+    public void setDataSetIdentifier( String dataSetId )
     {
-        this.dataSetUuid = dataSetUuid;
+        this.dataSetIdentifier = dataSetId;
     }
 
-    public String getOrganisationUnitUuid()
+    public String getOrganisationUnitIdentifier()
     {
-        return organisationUnitUuid;
+        return organisationUnitIdentifier;
     }
 
-    public void setOrganisationUnitUuid( String organisationUnitUuid )
+    public void setOrganisationUnitIdentifier( String organisationUnitId )
     {
-        this.organisationUnitUuid = organisationUnitUuid;
+        this.organisationUnitIdentifier = organisationUnitId;
     }
 
     public String getPeriodIsoDate()
