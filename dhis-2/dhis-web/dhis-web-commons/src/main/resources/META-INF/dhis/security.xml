@@ -8,6 +8,23 @@
   <sec:global-method-security jsr250-annotations="disabled" pre-post-annotations="disabled"
     secured-annotations="disabled" />
 
+  <bean id="mappedRedirectStrategy" class="org.hisp.dhis.security.MappedRedirectStrategy">
+    <property name="redirectMap">
+      <map>
+        <entry>
+          <key>
+            <value>/dhis-web-commons-stream/ping.action</value>
+          </key>
+          <value>/</value>
+        </entry>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="defaultAuthenticationSuccessHandler" class="org.hisp.dhis.security.DefaultAuthenticationSuccessHandler">
+    <property name="redirectStrategy" ref="mappedRedirectStrategy" />
+  </bean>
+
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
     <sec:form-login default-target-url="/" always-use-default-target="false"
       login-processing-url="/dhis-web-commons-security/login.action" authentication-failure-url="/dhis-web-commons/security/loginfailed.html"
@@ -26,8 +43,6 @@
 
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
   </sec:http>
-
-  <bean id="defaultAuthenticationSuccessHandler" class="org.hisp.dhis.security.DefaultAuthenticationSuccessHandler" />
 
   <!-- Security : Action -->
   <bean id="restrictOrganisationUnitsAction" class="org.hisp.dhis.security.action.RestrictOrganisationUnitsAction"
