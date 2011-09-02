@@ -1309,29 +1309,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<!-- Patient Mobile Setting -->
-	<bean
-		id="org.hisp.dhis.patient.action.mobilesetting.ShowMobileSettingFormAction"
-		class="org.hisp.dhis.patient.action.mobilesetting.ShowMobileSettingFormAction"
-		scope="prototype">
-		<property name="patientMobileSettingService">
-			<ref bean="org.hisp.dhis.patient.PatientMobileSettingService" />
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.mobilesetting.UpdateMobileSettingAction"
-		class="org.hisp.dhis.patient.action.mobilesetting.UpdateMobileSettingAction"
-		scope="prototype">
-		<property name="patientMobileSettingService">
-			<ref bean="org.hisp.dhis.patient.PatientMobileSettingService" />
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
-		</property>
-	</bean>
-
 </beans>

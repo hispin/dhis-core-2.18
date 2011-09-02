@@ -24,8 +24,6 @@
 
     <property name="groupBy" column="groupby" />
 
-    <many-to-one name="patientMobileSetting" column="patientMobileSettingId" foreign-key="fk_patient_mobile_setting" />
-
     <many-to-one name="patientAttributeGroup" column="patientattributegroupid" class="org.hisp.dhis.patient.PatientAttributeGroup"
       foreign-key="fk_attribute_group" />
 

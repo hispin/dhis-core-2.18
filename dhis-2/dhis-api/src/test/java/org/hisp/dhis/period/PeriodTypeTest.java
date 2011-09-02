@@ -1,7 +1,7 @@
-package org.hisp.dhis.patient.hibernate;
+package org.hisp.dhis.period;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,26 +27,21 @@ package org.hisp.dhis.patient.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.patient.PatientMobileSetting;
-import org.hisp.dhis.patient.PatientMobileSettingStore;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.Test;
 
-@Transactional
-public class HibernatePatientMobileSettingStore
-    extends HibernateGenericStore<PatientMobileSetting>
-    implements PatientMobileSettingStore
+public class PeriodTypeTest
 {
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientMobileSetting> getCurrentSetting()
+
+    @Test
+    public void testGetByIndex()
     {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria( PatientMobileSetting.class );
-        criteria.setCacheable( true );
-        return criteria.list();
+        assertNull( PeriodType.getByIndex( -1 ) );
+        assertEquals( new YearlyPeriodType(), PeriodType.getByIndex( 6 ) );
+        assertNull( PeriodType.getByIndex( 999 ) );
+    
     }
+
 }

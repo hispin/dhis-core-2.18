@@ -5,7 +5,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Resources -->
 
-  <bean id="org.hisp.dhis.web.api.resources.ApiResource" class="org.hisp.dhis.web.api.resources.ApiResource" />
+  <bean id="org.hisp.dhis.web.api.resources.ApiResource" class="org.hisp.dhis.web.api.resources.ApiResource">
+    <property name="velocityManager" ref="org.hisp.dhis.web.api.resources.VelocityManager" />
+  </bean>
 
   <bean id="org.hisp.dhis.web.api.resources.DataSetsResource" class="org.hisp.dhis.web.api.resources.DataSetsResource"
     scope="prototype">
@@ -21,11 +23,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataValueSetService" ref="org.hisp.dhis.importexport.dxf2.service.DataValueSetService" />
   </bean>
 
-  <bean id="org.hisp.dhis.web.api.resources.MobileResource" class="org.hisp.dhis.web.api.resources.MobileResource"
-    scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-  </bean>
-
   <bean id="org.hisp.dhis.web.api.resources.OrgUnitsResource" class="org.hisp.dhis.web.api.resources.OrgUnitsResource"
     scope="prototype">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -33,59 +30,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.web.api.resources.OrgUnitResource" class="org.hisp.dhis.web.api.resources.OrgUnitResource"
     scope="prototype">
-    <property name="facilityReportingService" ref="org.hisp.dhis.web.api.service.FacilityReportingService" />
-    <property name="activityReportingService" ref="org.hisp.dhis.web.api.service.ActivityReportingService" />
-    <property name="programService" ref="org.hisp.dhis.web.api.service.IProgramService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
-
-  <!-- Services -->
-
-  <bean id="org.hisp.dhis.web.api.service.FacilityReportingService" class="org.hisp.dhis.web.api.service.FacilityReportingServiceImpl">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
-    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="modelMapping" ref="org.hisp.dhis.web.api.service.ModelMapping" />
-  </bean>
-
-  <bean id="org.hisp.dhis.web.api.service.ActivityReportingService" class="org.hisp.dhis.web.api.service.ActivityReportingServiceImpl">
-    <property name="patientAttValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-    <property name="patientAttService" ref="org.hisp.dhis.patient.PatientAttributeService" />
-    <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-    <property name="patientMobileSettingService" ref="org.hisp.dhis.patient.PatientMobileSettingService" />
-    <property name="activityPlanService" ref="org.hisp.dhis.activityplan.ActivityPlanService" />
-    <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.web.api.service.IProgramService" class="org.hisp.dhis.web.api.service.DefaultProgramService">
-    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
-    <property name="modelMapping" ref="org.hisp.dhis.web.api.service.ModelMapping" />
-  </bean>
-
-  <!-- Jax-RS providers for (de-)serialization, exception mapping, json configuration -->
-
-  <bean id="org.hisp.dhis.web.api.mapping.DataSerializableProvider" class="org.hisp.dhis.web.api.mapping.DataStreamSerializableProvider"
-    scope="singleton" />
-
-  <bean id="org.hisp.dhis.web.api.mapping.DataSetValueConsumer" class="org.hisp.dhis.web.api.mapping.DataSetValueConsumer"
-    scope="singleton" />
-
-  <bean id="org.hisp.dhis.web.api.mapping.ActivityValueConsumer" class="org.hisp.dhis.web.api.mapping.ActivityValueConsumer"
-    scope="singleton" />
-
-  <bean id="org.hisp.dhis.web.api.mapping.NotAllowedExceptionMapper" class="org.hisp.dhis.web.api.mapping.NotAllowedExceptionMapper"
-    scope="singleton" />
-
-  <bean id="org.hisp.dhis.web.api.mapping.IllegalArgumentExceptionMapper" class="org.hisp.dhis.web.api.mapping.IllegalArgumentExceptionMapper"
-    scope="singleton" />
 
   <bean id="JacksonJaxbJsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider" scope="singleton" />
 
@@ -98,14 +44,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="orgUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
-	
-	<!-- ModelMapping beans -->
-  <bean id="org.hisp.dhis.web.api.service.ModelMapping" class="org.hisp.dhis.web.api.service.ModelMapping">
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-  </bean>
 
-  <!-- bean id="org.hisp.dhis.web.api.mapping.VelocityViewProcessor" class="org.hisp.dhis.web.api.mapping.VelocityViewProcessor" scope="singleton" />	
- -->
+<bean id="org.hisp.dhis.web.api.resources.VelocityManager" class="org.hisp.dhis.web.api.resources.VelocityManager" />
+       
+<!--   <bean id="org.hisp.dhis.web.api.resources.VelocityProcessor" class="org.hisp.dhis.web.api.resources.VelocityProcessor" -->
+<!--     scope="singleton" init-method="init" /> -->
+
 </beans>
 
 

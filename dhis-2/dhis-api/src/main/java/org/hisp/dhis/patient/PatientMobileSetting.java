@@ -33,9 +33,7 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 public class PatientMobileSetting extends AbstractIdentifiableObject
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
+
     private static final long serialVersionUID = -5947521380646718129L;
 
     private Boolean gender, dobtype, birthdate, bloodgroup, registrationdate;
