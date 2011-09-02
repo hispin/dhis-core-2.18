@@ -253,7 +253,7 @@ public abstract class AbstractDataSetCompletenessService
         return results;
     }
     
-    public Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, int parentOrganisationUnitId, int dataSetId )
+    public Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, Collection<Integer> organisationUnitIds, int dataSetId )
     {
         final Period period = periodService.getPeriod( periodId );
 
@@ -262,14 +262,12 @@ public abstract class AbstractDataSetCompletenessService
         
         final DataSet dataSet = dataSetService.getDataSet( dataSetId );
         
-        final OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
-        
-        final Collection<OrganisationUnit> units = parent.getChildren();
-        
         final Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
         
-        for ( final OrganisationUnit unit : units )
+        for ( final Integer unitId : organisationUnitIds )
         {
+            final OrganisationUnit unit = organisationUnitService.getOrganisationUnit( unitId );
+            
             final Collection<Integer> children = organisationUnitService.getOrganisationUnitHierarchy().getChildren( unit.getId() );
             
             final Collection<Integer> relevantSources = getRelevantSources( dataSet, children );
