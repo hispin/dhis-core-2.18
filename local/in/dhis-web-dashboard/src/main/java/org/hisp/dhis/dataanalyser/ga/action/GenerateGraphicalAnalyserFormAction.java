@@ -38,8 +38,9 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -68,14 +69,14 @@ public class GenerateGraphicalAnalyserFormAction
     {
         this.indicatorService = indicatorService;
     }
-
+/*
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-
+*/
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -96,6 +97,13 @@ public class GenerateGraphicalAnalyserFormAction
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
+    private SectionService sectionService;
+    
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
     }
     
     // -------------------------------------------------------------------------
@@ -193,7 +201,13 @@ public class GenerateGraphicalAnalyserFormAction
     {
         return simpleDateFormat;
     }
-
+    
+    private List<Section> sections;
+    
+    public Collection<Section> getSections()
+    {
+        return sections;
+    }
     public String execute()
         throws Exception
     {
@@ -203,10 +217,18 @@ public class GenerateGraphicalAnalyserFormAction
         
         /* DataElements and Groups */
         //dataElements = new ArrayList<DataElement>(dataElementService.getAllDataElements());
-        dataElementGroups = new ArrayList<DataElementGroup>(dataElementService.getAllDataElementGroups());
+        
+        //dataElementGroups = new ArrayList<DataElementGroup>(dataElementService.getAllDataElementGroups());
 
         //Collections.sort(dataElements, new DataElementNameComparator());
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        
+        //Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        
+        // for dataSet Sections
+        sections = new ArrayList<Section>();
+        sections = new ArrayList<Section>( sectionService.getAllSections() );
+        Collections.sort( sections, new SectionOrderComparator() );
+        
         
         /* Indicators and Groups */
         //indicators = new ArrayList<Indicator>(indicatorService.getAllIndicators());

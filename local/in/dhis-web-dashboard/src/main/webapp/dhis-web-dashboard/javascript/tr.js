@@ -28,16 +28,17 @@ function formValidations()
 function getDataElements()
 {
 	var dataElementGroupList = document.getElementById("dataElementGroupId");
-    var dataElementGroupId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
-    
+    //var dataElementGroupId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
+	var dataSetSectionId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
+	
     var deSelectionList = document.getElementById("deSelection");    
     var deOptionValue = deSelectionList.options[ deSelectionList.selectedIndex ].value;
     
-    if ( dataElementGroupId != null )
+    if ( dataSetSectionId != null )
     {
 		$.post("getDataElementsForTA.action",
 		{
-			id:dataElementGroupId,
+			id:dataSetSectionId,
 			deOptionValue:deOptionValue
 		},
 		function (data)
@@ -172,9 +173,3 @@ function formValidationsForDeTarget()
 	
 }    
 // formValidationsForDeTarget Function End
-
-
-
-
-
-

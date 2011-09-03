@@ -34,8 +34,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.hisp.dhis.aggregation.AggregationService;
@@ -53,6 +55,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportService;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 public class DashBoardService
 {
@@ -96,6 +100,7 @@ public class DashBoardService
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -103,7 +108,65 @@ public class DashBoardService
         this.organisationUnitService = organisationUnitService;
     }
     
+    private JdbcTemplate jdbcTemplate;
 
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public Map<Integer, Integer> getTotalEnrolledNumber( String orgUnitIdsByComma )
+    {
+        Map<Integer, Integer> aggDeMap = new HashMap<Integer, Integer>();
+        try
+        {
+            String query = "SELECT programinstance.programid, COUNT(*) FROM programinstance INNER JOIN patient " +
+                                        " ON programinstance.patientid = patient.patientid " +
+                                        " WHERE patient.organisationunitid IN ("+ orgUnitIdsByComma +") GROUP BY programid";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer programId = rs.getInt( 1 );
+                Integer totalCount = rs.getInt( 2 );
+                {
+                    aggDeMap.put( programId, totalCount );
+                }
+            }
+            
+            return aggDeMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+    public Integer getTotalRegisteredCount( String orgUnitIdsByComma )
+    {
+        Integer totalRegCount = 0;
+        try
+        {
+            String query = "SELECT COUNT(*) FROM patient " +
+                               " WHERE organisationunitid IN ("+ orgUnitIdsByComma +")";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            if ( rs != null && rs.next() )
+            {
+                totalRegCount = rs.getInt( 1 );
+            }
+            
+            return totalRegCount;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+    
     public List<Period> getMonthlyPeriods( Date start, Date end )
     {
         PeriodType monthlyPeriodType = PeriodType.getByNameIgnoreCase( "monthly" );

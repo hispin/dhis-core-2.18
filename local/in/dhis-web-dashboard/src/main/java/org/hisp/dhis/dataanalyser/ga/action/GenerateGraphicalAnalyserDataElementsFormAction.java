@@ -28,6 +28,7 @@ package org.hisp.dhis.dataanalyser.ga.action;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -38,6 +39,9 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.DailyPeriodType;
@@ -87,6 +91,30 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
+    
+    private SectionService sectionService;
+    
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
+    }
+    
+    public SectionService getSectionService()
+    {
+        return sectionService;
+    }
+
+    
+    // -------------------------------------------------------------------------
+    // Constants
+    // -------------------------------------------------------------------------
+
+    private final static int ALL = 0;
+    
+    public static int getALL()
+    {
+        return ALL;
+    }
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -104,6 +132,19 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
     {
         return dataElementGroups;
     }
+    
+    private List<Section> sections;
+    
+    public Collection<Section> getSections()
+    {
+        return sections;
+    }
+
+    public void setSections( List<Section> sections )
+    {
+        this.sections = sections;
+    }
+
     
     private List<PeriodType> periodTypes;
 
@@ -188,7 +229,15 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
     {
         return orgUnitGroups;
     }
+    
+    private String financialAprilPeriodType;
+    
+    public String getFinancialAprilPeriodType()
+    {
+        return financialAprilPeriodType;
+    }
 
+    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -196,6 +245,15 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
     public String execute() throws Exception
     {
     
+        
+        sections = new ArrayList<Section>();
+        sections = new ArrayList<Section>( sectionService.getAllSections() );
+        Collections.sort( sections, new SectionOrderComparator() );
+        
+        
+        
+        
+        
         /* DataElements and Groups */
         dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         
@@ -209,7 +267,8 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
                 alldeIterator.remove();
             }
         }
-
+        
+        
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
         
         Collections.sort( dataElements, new DataElementNameComparator() );
@@ -222,8 +281,8 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         while ( ptIterator.hasNext() )
         {
             String pTName = ptIterator.next().getName();
-            if ( pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME )
-                || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
+           // if ( pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
+            if ( pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )    
             {
                 ptIterator.remove();
             }
@@ -235,6 +294,7 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         quarterlyPeriodTypeName = QuarterlyPeriodType.NAME;
         sixMonthPeriodTypeName = SixMonthlyPeriodType.NAME;
         yearlyPeriodTypeName = YearlyPeriodType.NAME;
+        financialAprilPeriodType =  FinancialAprilPeriodType.NAME;
         
         monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         periodNameList = new ArrayList<String>();

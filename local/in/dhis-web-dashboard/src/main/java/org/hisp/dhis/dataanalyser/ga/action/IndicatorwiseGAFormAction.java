@@ -188,7 +188,13 @@ public class IndicatorwiseGAFormAction implements Action
     {
         return orgUnitGroups;
     }
-
+    
+    private String financialAprilPeriodType;
+    
+    public String getFinancialAprilPeriodType()
+    {
+        return financialAprilPeriodType;
+    }
     
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -223,8 +229,8 @@ public class IndicatorwiseGAFormAction implements Action
         while ( ptIterator.hasNext() )
         {
             String pTName = ptIterator.next().getName();
-            if ( pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME )
-                || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
+           // if ( pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
+            if ( pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )    
             {
                 ptIterator.remove();
             }
@@ -241,6 +247,8 @@ public class IndicatorwiseGAFormAction implements Action
         quarterlyPeriodTypeName = QuarterlyPeriodType.NAME;
         sixMonthPeriodTypeName = SixMonthlyPeriodType.NAME;
         yearlyPeriodTypeName = YearlyPeriodType.NAME;
+        financialAprilPeriodType =  FinancialAprilPeriodType.NAME;
+        
 
         yearlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new YearlyPeriodType() ) );
         Iterator<Period> periodIterator = yearlyPeriods.iterator();

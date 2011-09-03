@@ -80,7 +80,7 @@ function riradioSelection(evt)
 {
     
 	//selriRadioButton = evt.toElement.value;
-        var criteria = $( "input[name='riRadio']:checked" ).val();
+  var criteria = $( "input[name='riRadio']:checked" ).val();
   if(criteria == 'dataElementsRadio')
   {
 	  document.ChartGenerationForm.indicatorGroupId.disabled = true;

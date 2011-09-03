@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.SessionFactory;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -18,7 +17,6 @@ import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -39,14 +37,6 @@ public class GenerateDataEntryStatusResultAction implements Action
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-    @SuppressWarnings( "unused" )
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -93,14 +83,6 @@ public class GenerateDataEntryStatusResultAction implements Action
     // Input/Output Parameters
     // ---------------------------------------------------------------
     
-/*   
-    private Map<OrganisationUnit, List<Integer>> ouMapDataEntryStatusResult;
-    
-    public Map<OrganisationUnit, List<Integer>> getOuMapDataEntryStatusResult()
-    {
-        return ouMapDataEntryStatusResult;
-    }
-*/
     private Map<String , Integer> ouMapDataEntryStatusResult;
     
     public Map<String, Integer> getOuMapDataEntryStatusResult()
@@ -115,14 +97,6 @@ public class GenerateDataEntryStatusResultAction implements Action
         return ouMapDataElementCount;
     }
 
-    /*    
-    private Map<OrganisationUnit, List<Integer>> ouMapDataElementCount;
-
-    public Map<OrganisationUnit, List<Integer>> getOuMapDataElementCount()
-    {
-        return ouMapDataElementCount;
-    }
-*/    
     private List<Integer> results;
 
     public List<Integer> getResults()
@@ -186,26 +160,14 @@ public class GenerateDataEntryStatusResultAction implements Action
     {
         return periodNameList;
     }
-/*
-    private String selectedDataSets;
-    
-    public void setSelectedDataSets( String selectedDataSets )
-    {
-        this.selectedDataSets = selectedDataSets;
-    }
-*/
-    private List<String> selectedDataSets;
 
-    public void setSelectedDataSets( List<String> selectedDataSets )
+    private Integer selectedDataSets;
+
+    public void setSelectedDataSets( Integer selectedDataSets )
     {
         this.selectedDataSets = selectedDataSets;
     }
 
-    public List<String> getSelectedDataSets()
-    {
-        return selectedDataSets;
-    }
-    
     private String dataSetName;
     
     public String getDataSetName()
@@ -247,9 +209,6 @@ public class GenerateDataEntryStatusResultAction implements Action
     {
         return minOULevel;
     }
-    
-    String orgUnitInfo;
-    String periodInfo;
     
     List<String> levelNames;
 
@@ -303,7 +262,12 @@ public class GenerateDataEntryStatusResultAction implements Action
     {
         return selectedButton;
     }
-    
+
+    String orgUnitInfo;
+
+    String periodInfo;
+
+    int orgUnitCount;
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -331,19 +295,11 @@ public class GenerateDataEntryStatusResultAction implements Action
 
             facilityLB = "immChildren";
 
-            selectedDataSets = new ArrayList<String>();
-            selectedDataSets.add( dsId );
-
+            selectedDataSets = Integer.parseInt( dsId );
         }
         
-        // DataSet Related Info
-        for ( String ds : selectedDataSets )
-        {
-            DataSet dSet = dataSetService.getDataSet( Integer.parseInt( ds ) );
-            selDataSet =  dSet;
-            dataSetName = selDataSet.getName();
-        }
-
+        selDataSet = dataSetService.getDataSet( selectedDataSets );
+        dataSetName = selDataSet.getName();
         
         Collection<DataElement> dataElements = new ArrayList<DataElement>();
         dataElements = selDataSet.getDataElements();
@@ -367,7 +323,7 @@ public class GenerateDataEntryStatusResultAction implements Action
         Iterator<Period> periodIterator = periodList.iterator();
         Period p;
         periodInfo = "-1";
-        while ( periodIterator.hasNext() )
+        while( periodIterator.hasNext() )
         {
             p = (Period) periodIterator.next();
             periodInfo += "," + p.getId();
@@ -379,22 +335,17 @@ public class GenerateDataEntryStatusResultAction implements Action
         if ( facilityLB.equals( "children" ) )
         {
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
-            orgUnitList = getChildOrgUnitTree( selectedOrgUnit );
+            orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
         }
         else if ( facilityLB.equals( "immChildren" ) )
         {
-            @SuppressWarnings( "unused" )
-            int number;
-
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
-            number = selectedOrgUnit.getChildren().size();
             orgUnitList = new ArrayList<OrganisationUnit>();
 
             Iterator<String> orgUnitIterator = orgUnitListCB.iterator();
             while ( orgUnitIterator.hasNext() )
             {
-                OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
-                    .parseInt( (String) orgUnitIterator.next() ) );
+                OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( (String) orgUnitIterator.next() ) );
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
                 Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
@@ -409,26 +360,42 @@ public class GenerateDataEntryStatusResultAction implements Action
             {
                 o = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitIterator.next() ) );
                 orgUnitList.add( o );
-                Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
-                displayPropertyHandler.handle( orgUnitList );
+            }
+            Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
+            displayPropertyHandler.handle( orgUnitList );
+        }
+        
+        Iterator<OrganisationUnit> ouIt = orgUnitList.iterator();
+        while ( ouIt.hasNext() )
+        {
+            OrganisationUnit ou = ouIt.next();
+
+            if ( !dataSetSources.contains( ou ) )
+            {
+                List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( ou.getId() ) );
+                ouList.retainAll( dataSetSources );
+                
+                if ( ouList == null || ouList.size() <= 0 )
+                {
+                    ouIt.remove();
+                }
             }
         }
-        
-        Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
-        OrganisationUnit o;
+
         orgUnitInfo = "-1";
+        Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
         while ( orgUnitListIterator.hasNext() )
         {
-            o = orgUnitListIterator.next();
-            orgUnitInfo += "," + o.getId();
+            OrganisationUnit ou = orgUnitListIterator.next();
+            orgUnitInfo += "," + ou.getId();
             
-            if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
-                maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
+            if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( ou ) )
+                maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
 
-            if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( o ) )
-                minOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
+            if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( ou ) )
+                minOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
         }
-        
+
         // For Level Names
         String ouLevelNames[] = new String[organisationUnitService.getNumberOfOrganisationalLevels() + 1];
         for ( int i = 0; i < ouLevelNames.length; i++ )
@@ -436,8 +403,7 @@ public class GenerateDataEntryStatusResultAction implements Action
             ouLevelNames[i] = "Level" + i;
         }
 
-        List<OrganisationUnitLevel> ouLevels = new ArrayList<OrganisationUnitLevel>( organisationUnitService
-            .getFilledOrganisationUnitLevels() );
+        List<OrganisationUnitLevel> ouLevels = new ArrayList<OrganisationUnitLevel>( organisationUnitService.getFilledOrganisationUnitLevels() );
         for ( OrganisationUnitLevel ouL : ouLevels )
         {
             ouLevelNames[ouL.getLevel()] = ouL.getName();
@@ -451,7 +417,7 @@ public class GenerateDataEntryStatusResultAction implements Action
             count1++;
         }
         
-        String query ="";
+        String query = "";
         if ( includeZeros == null )
         {
             query = "SELECT organisationunitid, periodid, value FROM dataentrystatus  WHERE datasetid = " + selDataSet.getId() +  " AND organisationunitid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo + ") and includezero ='N' ";
@@ -462,24 +428,17 @@ public class GenerateDataEntryStatusResultAction implements Action
         }
         
         SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
-        //System.out.println( "Query is : " + query  );
         
         double value ;
         while ( rs.next() )
         {                
             Integer orgUnitId = rs.getInt( 1 );
             Integer periodId = rs.getInt( 2 );
-            //Integer value = rs.getInt( 3 );
             String tempValue =  rs.getString( 3 );
-            //Integer value = Integer.parseInt( tempValue );
-            //Double value =  rs.getDouble( 1 );
-            
-           // double value = ((double)  rs.getInt( 3 ));
             
             try
             {
                 value = Double.parseDouble( tempValue );
-
             }
             catch ( Exception e )
             {
@@ -488,7 +447,6 @@ public class GenerateDataEntryStatusResultAction implements Action
             
             String orgIdPeriodId =  orgUnitId + ":" + periodId;
             double dataElementCount = ( value * (double) totalDataElementCount ) / 100;
-            //Integer dataElementCount = Math.round( tempDataElementCount * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
             
             value = Math.round( value * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
             dataElementCount = Math.round( dataElementCount * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
@@ -496,28 +454,9 @@ public class GenerateDataEntryStatusResultAction implements Action
             ouMapDataEntryStatusResult.put( orgIdPeriodId, (int)value );
             ouMapDataElementCount.put( orgIdPeriodId, (int)dataElementCount );
         }
-        System.out.println( "Size of ouMap DataEntry Status Result Map is : " + ouMapDataEntryStatusResult.size() + ", Size of ouMap DataElement Count Map is : " + ouMapDataElementCount.size() );
+
         System.out.println( "Data Entry Status  End Time  : " + new Date() );
+        
         return SUCCESS;
-    }
-    
-    // Returns the OrgUnitTree for which Root is the orgUnit
-    @SuppressWarnings( "unchecked" )
-    public List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
-    {
-        List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>();
-        orgUnitTree.add( orgUnit );
-
-        List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-        Collections.sort( children, new OrganisationUnitNameComparator() );
-
-        Iterator childIterator = children.iterator();
-        OrganisationUnit child;
-        while ( childIterator.hasNext() )
-        {
-            child = (OrganisationUnit) childIterator.next();
-            orgUnitTree.addAll( getChildOrgUnitTree( child ) );
-        }
-        return orgUnitTree;
-    }// getChildOrgUnitTree end
+    }    
 }

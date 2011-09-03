@@ -29,21 +29,25 @@ package org.hisp.dhis.dataanalyser.ta.action;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.FinancialAprilPeriodType;
@@ -60,8 +64,6 @@ import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 
 public class GenerateTabularAnalysisFormAction
     implements Action
@@ -105,7 +107,13 @@ public class GenerateTabularAnalysisFormAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-
+    
+    private SectionService sectionService;
+    
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
+    }
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -116,14 +124,14 @@ public class GenerateTabularAnalysisFormAction
     {
         return dataElements;
     }
-
+/*
     private List<DataElementGroup> dataElementGroups;
 
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
     }
-
+*/
     private List<Indicator> indicators;
 
     public List<Indicator> getIndicators()
@@ -228,7 +236,21 @@ public class GenerateTabularAnalysisFormAction
     {
         return orgUnitGroups;
     }
-
+    
+    private String financialAprilPeriodType;
+    
+    public String getFinancialAprilPeriodType()
+    {
+        return financialAprilPeriodType;
+    }
+    
+    private List<Section> sections;
+    
+    public Collection<Section> getSections()
+    {
+        return sections;
+    }
+    
     public String execute()
         throws Exception
     {
@@ -248,9 +270,16 @@ public class GenerateTabularAnalysisFormAction
         }
         System.out.println(" dataElements size = "+dataElements.size());
         
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        //dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        
+        // for dataSet Sections
+        sections = new ArrayList<Section>();
+        sections = new ArrayList<Section>( sectionService.getAllSections() );
+        Collections.sort( sections, new SectionOrderComparator() );
+        
+        
         Collections.sort( dataElements, new DataElementNameComparator() );
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        //Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
         /* Indicators and Groups */
         indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
@@ -276,8 +305,8 @@ public class GenerateTabularAnalysisFormAction
         while ( ptIterator.hasNext() )
         {
             String pTName = ptIterator.next().getName();
-            if ( pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME )
-                || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
+           // if ( pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
+            if ( pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
             {
                 ptIterator.remove();
             }
@@ -294,6 +323,8 @@ public class GenerateTabularAnalysisFormAction
         quarterlyPeriodTypeName = QuarterlyPeriodType.NAME;
         sixMonthPeriodTypeName = SixMonthlyPeriodType.NAME;
         yearlyPeriodTypeName = YearlyPeriodType.NAME;
+        financialAprilPeriodType =  FinancialAprilPeriodType.NAME;
+        
 
         yearlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new YearlyPeriodType() ) );
         Iterator<Period> periodIterator = yearlyPeriods.iterator();

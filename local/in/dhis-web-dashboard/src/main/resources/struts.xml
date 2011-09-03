@@ -13,6 +13,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/welcome.vm</param>
 			<param name="menu">/dhis-web-dashboard/menu.vm</param>
+			<param name="javascripts">javascript/ext-all.js</param>
+			<param name="stylesheets">css/ext-all.css,example.css</param>
 		</action>
 		
 		<!-- GraphicalAnalyser  DataElements -->
@@ -795,6 +797,16 @@
 		
 		<!-- Ajax requests -->
 		
+		<!-- year list for Financial Year -->
+		<!-- Getting Weekly Period -->
+		<action name="getFinacialYear"
+			class="org.hisp.dhis.dataanalyser.action.GetFinacialYearAction">
+			<result name="success" type="velocity-xml">/dhis-web-dashboard/responseFinacialYear.vm</result>
+			<!--<interceptor-ref name="transactionStack"/>-->
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>		
+		
+				
 		<!-- Getting Weekly Period -->
 		<action name="getWeeklyPeriod"
 			class="org.hisp.dhis.dataanalyser.action.GetWeeklyPeriodAction">
@@ -938,7 +950,7 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
-	<!-- Data Entry Status Validation -->		
+	<!-- Data Entry Status Result -->		
 		<action name="dataEntryStatusResult"
 			class="org.hisp.dhis.dataanalyser.dsMart.action.GenerateDataEntryStatusResultAction">
 			<result name="success" type="velocity">/popup.vm</result>
@@ -946,6 +958,15 @@
 			<param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 		</action>			
-		
+
+	<!-- Data Entry Summary Status Result -->		
+		<action name="dataEntrySummaryStatusResult"
+			class="org.hisp.dhis.dataanalyser.dsMart.action.GenerateDataEntrySummaryStatusResultAction">
+			<result name="success" type="velocity">/popup.vm</result>
+			<param name="page">/dhis-web-dashboard/dataEntrySummaryStatusResult.vm</param>
+			<param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+		</action>					
+				
 	</package>
 </struts>

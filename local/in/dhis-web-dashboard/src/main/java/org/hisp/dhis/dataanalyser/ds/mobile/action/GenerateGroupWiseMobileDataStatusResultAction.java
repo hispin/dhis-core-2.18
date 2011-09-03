@@ -42,9 +42,10 @@ import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -55,7 +56,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserStore;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -146,13 +146,14 @@ implements Action
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
+/*    
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
     }
+*/    
     // ---------------------------------------------------------------
     // Output Parameters
     // ---------------------------------------------------------------
@@ -175,14 +176,22 @@ implements Action
     {
         return orgUnitList;
     }
-    
+/*    
     private Map<DataElementGroup, Integer> deMapGroupCount;
 
     public Map<DataElementGroup, Integer> getDeMapGroupCount()
     {
         return deMapGroupCount;
     }
+*/
+    
+    private Map<Section, Integer> deMapGroupCount;
 
+    public Map<Section, Integer> getDeMapGroupCount()
+    {
+        return deMapGroupCount;
+    }
+    
     private List<DataSet> dataSetList;
 
     public List<DataSet> getDataSetList()
@@ -210,14 +219,14 @@ implements Action
     {
         return dataSetPeriods;
     }
-
+/*
     private List<DataElementGroup> dataElementGroups;
 
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
     }
-
+*/
     private List<DataElementGroup> applicableDataElementGroups;
 
     public List<DataElementGroup> getApplicableDataElementGroups()
@@ -391,6 +400,13 @@ implements Action
     {
         return userPhoneNo;
     }
+    
+    private List<Section> sections;
+    
+    public Collection<Section> getSections()
+    {
+        return sections;
+    }
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -407,8 +423,9 @@ implements Action
         // Intialization
         ouMapDataStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
         ouMapUserPhoneNo = new HashMap<OrganisationUnit,String>();//for User PhoneNo Map
-        deMapGroupCount = new HashMap<DataElementGroup, Integer>(); // dataelement Group Count
+        //deMapGroupCount = new HashMap<DataElementGroup, Integer>(); // dataelement Group Count
         
+        deMapGroupCount = new HashMap<Section, Integer>(); // dataelement Group Count
         
         results = new ArrayList<Integer>();
         maxOULevel = 1;
@@ -518,6 +535,7 @@ implements Action
         dsSize = selDataSet.getDataElements().size(); 
         
         // Data Element Group Related Info
+        /*
         dataElementGroups = new ArrayList<DataElementGroup>();
         
         dataElementGroups.addAll( getApplicableDataElementGroups( selDataSet ) );
@@ -528,7 +546,24 @@ implements Action
             for ( DataElement de : deGroup.getMembers() )
                 deInfo += "," + de.getId();
         }
-
+        
+        */
+        // for dataSet Sections
+        
+        //Collection<Section> sections = selDataSet.getSections();
+        sections = new ArrayList<Section>();
+        //sections = new ArrayList<Section>( sectionService.getAllSections() );
+        sections = new ArrayList<Section>( selDataSet.getSections() );
+        Collections.sort( sections, new SectionOrderComparator() );
+        
+        for ( Section section : sections )
+        {
+            for ( DataElement de : section.getDataElements() )
+                deInfo += "," + de.getId();
+        }
+        
+        System.out.println( "Section Size is: " + sections.size() );
+        
         dataViewName = createDataView( orgUnitInfo, deInfo, periodInfo );
        
         String query = "";
@@ -544,17 +579,24 @@ implements Action
         periodList = periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(),
             endPeriod.getEndDate() );
         dataSetPeriods = new HashMap<DataSet, Collection<Period>>();
-        Iterator<DataElementGroup> dataElementGroupIterator = dataElementGroups.iterator();
+        //Iterator<DataElementGroup> dataElementGroupIterator = dataElementGroups.iterator();
 
+        
         DataSet ds;
-        DataElementGroup deg;
-
-        while ( dataElementGroupIterator.hasNext() )
+        //DataElementGroup deg;
+        
+        Section dataSetSection;
+        Iterator<Section> sectionIterator = sections.iterator();
+        
+        while ( sectionIterator.hasNext() )
         {
             ds = dataSetService.getDataSet( Integer.valueOf( selectedDataSets.get( 0 ) ) );
-            deg = (DataElementGroup) dataElementGroupIterator.next();
-
-            dataElements = deg.getMembers();
+            //deg = (DataElementGroup) dataElementGroupIterator.next();
+            
+            dataSetSection = (Section) sectionIterator.next();
+            //dataElements = deg.getMembers();
+            dataElements = dataSetSection.getDataElements();
+            
             dataElements.retainAll( ds.getDataElements() );
             
            // System.out.println( "dataElementGroup Size  : " + dataElements.size() );
@@ -566,10 +608,12 @@ implements Action
             }
 
             // detaElement Group member Count
-            Integer deGroupMemberCount = dataElements.size();
             
-            deMapGroupCount.put( deg, deGroupMemberCount );
+            //Integer deGroupMemberCount = dataElements.size();
             
+            //deMapGroupCount.put( deg, deGroupMemberCount );
+            
+            deMapGroupCount.put( dataSetSection, deGroupMemberCount1 );
             deInfo = getDEInfo( dataElements );
 
             dataSetPeriodType = ds.getPeriodType();

@@ -361,7 +361,6 @@ public class GenerateDataStatusResultAction
     public String execute()
         throws Exception
     {
-        
         System.out.println( "Data Entry Status  Start Time  : " + new Date() );
         orgUnitCount = 0;
         dataViewName = "";
@@ -373,8 +372,6 @@ public class GenerateDataStatusResultAction
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
         
-        
-        System.out.println( "immChildOption : "  + immChildOption + ", Ou Id is : " + ouId + ", DS id is : " + dsId );
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             System.out.println( "Inside Drill Down" );
@@ -385,21 +382,12 @@ public class GenerateDataStatusResultAction
 
             selectedDataSets = new ArrayList<String>();
             selectedDataSets.add( dsId );
-
         }
 
         // DataSet Related Info
         dataSetList = new ArrayList<DataSet>();
 
         deInfo = "-1";
-        if ( selectedDataSets == null )
-        {
-            System.out.println( "slectedDataSets is empty" );
-        }
-        else
-        {
-            // System.out.println( "slectedDataSets is not empty" );
-        }
         for ( String ds : selectedDataSets )
         {
             DataSet dSet = dataSetService.getDataSet( Integer.parseInt( ds ) );
@@ -526,14 +514,7 @@ public class GenerateDataStatusResultAction
 
             if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( o ) )
                 minOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
-            /*
-             * List<OrganisationUnit> childOrgUnits = new
-             * ArrayList<OrganisationUnit>();
-             * 
-             * if ( !dso.contains( o ) ) { childOrgUnits =
-             * filterChildOrgUnitsByDataSet( o, dso ); } System.out.println(
-             * "Size of Child OrgUnit: " + childOrgUnits.size() );
-             */
+
             periodIterator = periodList.iterator();
 
             Period p;
@@ -544,7 +525,6 @@ public class GenerateDataStatusResultAction
             List<Integer> deCounts = new ArrayList<Integer>();
             while ( periodIterator.hasNext() )
             {
-                System.out.println( "Inside period Iterator Loop" );
                 p = (Period) periodIterator.next();
                 periodInfo = "" + p.getId();
                 dataElementCount = 0;
