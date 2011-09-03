@@ -56,5 +56,5 @@ public interface MobileImportService
     
     public void readAllMessages();
     
-        public void importInteractionMessage( String smsText, String sender, Date sendTime );
+    public void importInteractionMessage( String smsText, String sender, Date sendTime );
 }

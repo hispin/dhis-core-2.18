@@ -54,4 +54,9 @@ public class DefaultSendSMSService implements SendSMSService
     {
         return sendSMSStore.getRowCount();
     }
+    
+    public SendSMS getSendSMS( String senderInfo )
+    {
+        return sendSMSStore.getSendSMS( senderInfo );
+    }
 }

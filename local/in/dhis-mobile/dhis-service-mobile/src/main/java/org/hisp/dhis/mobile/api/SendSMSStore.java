@@ -20,5 +20,7 @@ public interface SendSMSStore
 
     Collection<SendSMS> getAllSendSMS( );
     
+    SendSMS getSendSMS( String senderInfo );
+    
     long getRowCount();
 }
