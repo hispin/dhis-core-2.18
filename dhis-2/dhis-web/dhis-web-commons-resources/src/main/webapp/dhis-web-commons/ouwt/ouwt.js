@@ -85,7 +85,7 @@ function Selection()
         function update_required( remoteVersion, remoteRoots )
         {
             var localVersion = localStorage[getTagId( "Version" )] ? localStorage[getTagId( "Version" )] : 0;
-            var localRoots = localStorage[getTagId( "Roots" )] ? localStorage[getTagId( "Roots" )] : [];
+            var localRoots = localStorage[getTagId( "Roots" )] ? JSON.parse( localStorage[getTagId( "Roots" )] ) : [];
 
             if ( localVersion != remoteVersion )
             {
@@ -115,7 +115,7 @@ function Selection()
             if ( data.indexOf( "<!DOCTYPE" ) != 0 )
             {
                 data = JSON.parse( data );
-              	should_update = update_required();
+              	should_update = update_required( data.version, data.roots );
             }
         }, "text" ).complete(
                 function()
