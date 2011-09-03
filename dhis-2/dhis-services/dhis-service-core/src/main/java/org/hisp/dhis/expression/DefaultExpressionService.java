@@ -426,6 +426,18 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
 
+    public void explodeExpressions( Collection<Indicator> indicators )
+    {
+        if ( indicators != null )
+        {
+            for ( Indicator indicator : indicators )
+            {
+                indicator.setExplodedNumerator( explodeExpression( indicator.getNumerator() ) );
+                indicator.setExplodedDenominator( explodeExpression( indicator.getDenominator() ) );
+            }
+        }
+    }
+    
     public String explodeExpression( String expression )
     {
         StringBuffer buffer = null;

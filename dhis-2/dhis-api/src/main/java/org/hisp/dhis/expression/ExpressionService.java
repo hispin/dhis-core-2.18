@@ -181,6 +181,18 @@ public interface ExpressionService
     String getExpressionDescription( String expression );
 
     /**
+     * Populates the explodedNumerator and explodedDenominator property on all
+     * indicators in the given collection. This method uses
+     * explodeExpression( String ) internally to generate the exploded expressions.
+     * This method will perform compared to calling explodeExpression( String )
+     * multiple times outside a transactional context as the transactional
+     * overhead is avoided.
+     * 
+     * @param indicators the collection of indicators.
+     */
+    void explodeExpressions( Collection<Indicator> indicators );
+    
+    /**
      * Replaces references to data element totals with references to all
      * category option combos in the category combo for that data element.
      * 
