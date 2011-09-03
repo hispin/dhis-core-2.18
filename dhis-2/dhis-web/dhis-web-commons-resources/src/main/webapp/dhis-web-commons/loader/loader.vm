@@ -10,6 +10,7 @@ div#loaderDiv
   height: 230px;
   text-align: center;
   display: none;
+  border-radius: 3px;
 }
 
 </style>

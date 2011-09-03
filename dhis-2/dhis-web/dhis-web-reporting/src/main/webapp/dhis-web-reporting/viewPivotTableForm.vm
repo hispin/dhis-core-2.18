@@ -34,21 +34,7 @@ div#control
   margin-bottom: 15px;
 }
 
-div#criteria
-{
-  position: relative;
-  left: 2px;
-  width: 265px;
-  height: 520px;
-  border: 1px solid #b0b0b0;
-  background-color: #d9ece1;
-  padding-left: 20px;
-  margin-bottom: 6px;
-  border-radius: 3px;
-  -moz-border-radius: 3px; /* Firefox */
-}
-
-div#pivot
+div#pivot222
 {
   position: relative;
   left: 2px;
@@ -100,18 +86,18 @@ div#pivotMenu
 <!-- Control panel -->
 
 <div id="control">
-<input type="button" value='$i18n.getString( "data" )' style="width:80px" onclick="showCriteria()" />
-<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="showPivot()" />&nbsp;
+<input type="button" value='$i18n.getString( "data" )' style="width:120px" onclick="showCriteria()" />
+<input type="button" value='$i18n.getString( "pivot" )' style="width:120px" onclick="showPivot()" />&nbsp;
 <label id="dataLabel" style="color:#606060"></label>
 </div>
 
 <!-- Criteria -->
 
-<div id="criteria">
+<div id="criteria" class="inputCriteria" style="width:302px;height:520px;">
 
 <div class="inputSection">
 <label>$i18n.getString( "data_type" )</label>
-<select id="dataType" style="width:250px" onchange="toggleDataType()">
+<select id="dataType" style="width:280px" onchange="toggleDataType()">
   <option value="0">$i18n.getString( "indicator" )</option>
   <option value="1">$i18n.getString( "data_element" )</option>
 </select>
@@ -119,7 +105,7 @@ div#pivotMenu
 
 <div id="indicatorGroupDiv" class="inputSection">
 <label>$i18n.getString( "indicator_group" )</label>
-<select id="indicatorGroup" style="width:250px">
+<select id="indicatorGroup" style="width:280px">
   <option value="-1">[ All ]</option>
   #foreach( $group in $indicatorGroups )
   <option value="${group.id}">$encoder.htmlEncode( $group.name )</option>
@@ -129,7 +115,7 @@ div#pivotMenu
 
 <div id="dataElementGroupDiv" class="inputSection" style="display:none">
 <label>$i18n.getString( "data_element_group" )</label>
-<select id="dataElementGroup" style="width:250px">
+<select id="dataElementGroup" style="width:280px">
   <option value="-1">[ All ]</option>
   #foreach( $group in $dataElementGroups )
   <option value="${group.id}">$encoder.htmlEncode( $group.name )</option>
@@ -139,35 +125,35 @@ div#pivotMenu
 
 <div class="inputSection">
 <label>$i18n.getString( "start_date" ) ($i18n.getString( "format.date.label" ))</label><br>
-<input type="text" id="startDate" style="width:210px">
+<input type="text" id="startDate" style="width:240px">
 </div>
 
 <div class="inputSection">
 <label>$i18n.getString( "end_date" ) ($i18n.getString( "format.date.label" ))</label><br>
-<input type="text" id="endDate" style="width:210px">
+<input type="text" id="endDate" style="width:240px">
 </div>
 
 <div class="inputSection">
 <label>$i18n.getString( "period_type" )</label>
-<select id="periodType" style="width:250px">
+<select id="periodType" style="width:280px">
   #foreach( $type in $periodTypes )
   <option value="${type.name}" #if( $type.name == "Monthly" )selected="selected"#end>$i18n.getString(  $type.name )</option>
   #end
 </select>
 </div>
 
-<div id="selectionTree" style="width:250px; height:200px"></div>
+<div id="selectionTree" style="width:280px; height:200px"></div>
 
 <div class="inputSection">
-<input type="button" value='$i18n.getString( "get_data" )' style="width:80px" onclick="getData()">
-<input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()">
+<input type="button" value='$i18n.getString( "get_data" )' style="width:120px" onclick="getData()">
+<input type="button" value='$i18n.getString( "cancel" )' style="width:120px" onclick="hideDivs()">
 </div>
 
 </div>
  
 <!-- Pivot -->
 
-<div id="pivot" style="display:none">
+<div id="pivot" class="inputCriteria" style="width:302px;height:137px;display:none;">
 
 <div class="inputSection">
 <table>
@@ -187,8 +173,8 @@ div#pivotMenu
 </div>
 
 <div class="inputSection">
-	<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="pivotData()" />
-	<input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()" />
+	<input type="button" value='$i18n.getString( "pivot" )' style="width:120px" onclick="pivotData()" />
+	<input type="button" value='$i18n.getString( "cancel" )' style="width:120px" onclick="hideDivs()" />
 </div>
 
 </div>

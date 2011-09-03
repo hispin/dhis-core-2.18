@@ -561,6 +561,7 @@ function toggleDataType()
 
 function showCriteria()
 {
+	$( "div#pivot" ).hide();
     $( "div#criteria" ).show( "fast" );
 }
 
@@ -571,6 +572,7 @@ function hideCriteria()
 
 function showPivot()
 {
+	$( "div#criteria" ).hide();
     $( "div#pivot" ).show( "fast" );
 }
 
