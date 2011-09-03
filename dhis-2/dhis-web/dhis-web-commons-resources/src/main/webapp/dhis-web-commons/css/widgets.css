@@ -453,3 +453,23 @@ span.valid
 {
 	padding-bottom:5px;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Criteria                                                                   */
+/*----------------------------------------------------------------------------*/
+
+div.inputCriteria
+{
+  position: relative;
+  left: 2px;
+  width: 400px; /* Override this */
+  height: 400px; /* Override this */
+  border: 1px solid #a4d2a3;
+  background-color: #d5efd5;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  margin-bottom: 15px;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
+}
