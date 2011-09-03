@@ -67,11 +67,6 @@ public class HibernateUserStore
 
     private GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore;
     
-    public GenericIdentifiableObjectStore<UserAuthorityGroup> getUserRoleStore()
-    {
-        return userRoleStore;
-    }
-    
     public void setUserRoleStore( GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore )
     {
         this.userRoleStore = userRoleStore;
@@ -470,7 +465,7 @@ public class HibernateUserStore
 
         for ( User user : users )
         {
-            credentials.add( getUserCredentials( user ) );
+            credentials.add( user.getUserCredentials() );
         }
         
         return credentials;
