@@ -58,10 +58,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
+import org.hisp.dhis.period.FinancialAprilPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.SixMonthlyPeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
@@ -390,7 +390,11 @@ public class GenerateChartDataElementAction
         // ----------------------------------------------------------------------
         String monthOrder[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
         int monthDays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
+        
+        // for financial year 
+        String financialMonthOrder[] = { "04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03" };
+        int financialMonthDays[] = { 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28, 31 };
+        
         String startD = "";
         String endD = "";
         drillDownPeriodStartDate = "";
@@ -425,6 +429,45 @@ public class GenerateChartDataElementAction
                 periodNames.add( periodStr );
                 periodCount++;
             }
+        }
+        // for FinancialAprilPeriodType
+        else if ( periodTypeLB.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) )
+        {
+            for ( String year : yearLB )
+            {
+                int selYear = Integer.parseInt( year.split( "-" )[0] );
+                
+                for ( String periodStr : periodLB )
+                {
+                    int period = Integer.parseInt( periodStr );
+                    
+                    simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
+                    
+                    if ( period >= 9 )
+                    {
+                        startD = "" + (selYear + 1) + "-" + financialMonthOrder[period] + "-01";
+                        endD = "" + (selYear + 1) + "-" + financialMonthOrder[period] + "-" + financialMonthDays[period];
+                        
+                        if ( (((selYear + 1) % 400 == 0) || (((selYear + 1) % 100 != 0 && (selYear + 1) % 4 == 0))) && period == 10 )
+                        {
+                            endD = "" + (selYear + 1) + "-" + financialMonthOrder[period] + "-" + ( financialMonthDays[period] + 1);
+                        }
+                    }
+                    else
+                    {
+                        startD = "" + selYear + "-" + financialMonthOrder[period] + "-01";
+                        endD = "" + selYear + "-" + financialMonthOrder[period] + "-" + financialMonthDays[period];
+                    }
+                    
+                    drillDownPeriodStartDate += startD + ";";
+                    drillDownPeriodEndDate += endD + ";";
+                    drillDownPeriodNames += simpleDateFormat.format( format.parseDate( startD ) ) + ";";
+                    selStartPeriodList.add( format.parseDate( startD ) );
+                    selEndPeriodList.add( format.parseDate( endD ) );
+                    periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
+                }
+            }
+
         }
         else
         {
@@ -827,7 +870,7 @@ public class GenerateChartDataElementAction
                 String tempEndDate = format.formatDate( endDate );
 
                 categories[periodCount] = periodNames.get( periodCount );
-                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                //PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
 
                 String values = orgUnit.getId() + ":" + dataElement.getId() + ":" + decoc.getId() + ":" + periodTypeLB
                     + ":" + tempStartDate + ":" + tempEndDate;

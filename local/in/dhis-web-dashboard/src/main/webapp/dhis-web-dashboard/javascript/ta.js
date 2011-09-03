@@ -243,16 +243,18 @@ function deSelectionChangeFuntion( listId1, listId2 )
 function getDataElements()
 {
     var dataElementGroupList = document.getElementById("dataElementGroupId");
-    var dataElementGroupId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
+    //var dataElementGroupId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
+    
+    var dataSetSectionId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
     
     var deSelectionList = document.getElementById("deSelection");    
     var deOptionValue = deSelectionList.options[ deSelectionList.selectedIndex ].value;
     
-    if ( dataElementGroupId != null )
+    if ( dataSetSectionId != null )
     {
 		$.post("getDataElementsForTA.action",
 		{
-			id:dataElementGroupId,
+			id:dataSetSectionId,
 			deOptionValue:deOptionValue
 		},
 		function (data)
@@ -346,7 +348,9 @@ function getPeriods()
 		
     if( periodTypeId == monthlyPeriodTypeName )
     {
-        for( i= 0; i < monthNames.length; i++ )
+    	getRegularPeriodYear();
+    	
+    	for( i= 0; i < monthNames.length; i++ )
         {
             periodLB.options[i] = new Option(monthNames[i],i,false,false);
         }
@@ -354,6 +358,8 @@ function getPeriods()
     
     else if( periodTypeId == dailyPeriodTypeName )
     {
+    	getRegularPeriodYear();
+    	
     	for( i= 0; i < days.length; i++ )
         {
             periodLB.options[i] = new Option(days[i],days[i],false,false);
@@ -361,26 +367,34 @@ function getPeriods()
     }
     else if( periodTypeId == quarterlyPeriodTypeName )
     {
-        for( i= 0; i < quarterNames.length; i++ )
+    	getRegularPeriodYear();
+    	
+    	for( i= 0; i < quarterNames.length; i++ )
         {
             periodLB.options[i] = new Option(quarterNames[i],i,false,false);
         }
     }
     else if( periodTypeId == sixmonthPeriodTypeName )
     {
-        for( i= 0; i < halfYearNames.length; i++ )
+    	getRegularPeriodYear();
+    	
+    	for( i= 0; i < halfYearNames.length; i++ )
         {
             periodLB.options[i] = new Option(halfYearNames[i],i,false,false);
         }
     }
     else if( periodTypeId == yearlyPeriodTypeName )
     {
-        periodLB.disabled = true;
+    	getRegularPeriodYear();
+    	
+    	periodLB.disabled = true;
     }
     
     else if( periodTypeId == weeklyPeriodTypeName )
     {
-        if( yearLB.selectedIndex < 0 ) 
+    	getRegularPeriodYear();
+    	
+    	if( yearLB.selectedIndex < 0 ) 
         {
             alert("Please select Year(s) First");
             return false;
@@ -390,8 +404,60 @@ function getPeriods()
         	getWeeks();
         }
     }
-
+    else if( periodTypeId == financialAprilPeriodType )
+    {
+    	//getFinacialYear();
+    	getFinacialPeriodYear();
+    	
+		for (i = 0; i < financialMonthNames.length; i++)
+		{
+			periodLB.options[i] = new Option(financialMonthNames[i], i, false, false);
+		}
+    }
 }
+
+
+function getRegularPeriodYear()
+{
+	var yearLB = document.getElementById("yearLB");
+	clearList(yearLB);
+	
+	for (i = 0; i < regularYear.length; i++)
+	{
+	   //yearLB.options[i] = new Option(regularYear[i], i, false, false);
+		
+        var option = document.createElement( "option" );
+        option.value = regularYear[i];
+        option.text = regularYear[i];
+        option.title = regularYear[i];
+        yearLB.add( option, null );
+	}
+	
+}
+
+function getFinacialPeriodYear()
+{
+	var yearLB = document.getElementById("yearLB");
+	clearList(yearLB);
+	
+	for (i = 0; i < financialYear.length; i++)
+	{
+	    //yearLB.options[i] = new Option(regularYear[i], i, false, false);
+		
+        var option = document.createElement( "option" );
+        option.value = financialYear[i];
+        option.text = financialYear[i];
+        option.title = financialYear[i];
+        yearLB.add( option, null );
+	}
+	
+}
+
+
+
+
+
+
 
 //getting weekly Period
 function getWeeklyPeriod()

@@ -7,21 +7,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.action.DashBoardHomePageAction"
 		class="org.hisp.dhis.dataanalyser.action.DashBoardHomePageAction"
 		scope="prototype">
-        <property name="aggregationService">
-            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-        </property>
-        <property name="currentUserService">
-            <ref bean="org.hisp.dhis.user.CurrentUserService"/>
-        </property>
-        <property name="indicatorService">
-            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-        </property>
-        <property name="periodService">
-            <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
-        <property name="organisationUnitService">
-            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-        </property>
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
+        <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
         <property name="statementManager" ref="statementManager"/>
     </bean>
 	
@@ -38,7 +30,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
         </property>
-		
+		<property name="sectionService">
+            <ref bean="org.hisp.dhis.dataset.SectionService"/>
+        </property>		
     </bean>
 <!-- Graphical Analyser DataElements Result -->
     <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataElementAction"
@@ -197,9 +191,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserFormAction"
 		class="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserFormAction"
 		scope="prototype">
-        <property name="dataElementService">
+<!--    <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-        </property>
+        </property>-->
         <property name="indicatorService">
             <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
         </property>
@@ -210,9 +204,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
         <property name="organisationUnitGroupService">
-            <ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
         </property>
+        <property name="sectionService">
+            <ref bean="org.hisp.dhis.dataset.SectionService"/>
+        </property>		
     </bean>
 	
     <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataAction"
@@ -290,6 +286,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
+        <property name="sectionService">
+            <ref bean="org.hisp.dhis.dataset.SectionService"/>
+        </property>		
     </bean>
 	
     <bean id="org.hisp.dhis.dataanalyser.aa.action.GenerateAnnualAnalysisDataAction"
@@ -487,8 +486,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.dataanalyser.tr.action.GenerateTargetAnalysisFormAction"
         scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<!--<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />-->
 		<property name="orgUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		<property name="sectionService" ref="org.hisp.dhis.dataset.SectionService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataanalyser.action.GetOrgUnitNameAction"
@@ -780,8 +780,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore">
-        </property>
+<!--	<property name="userStore" ref="org.hisp.dhis.user.UserStore">
+        </property>-->
     </bean>	
 	
     <!-- for Mobile Last Updated Status -->    	
@@ -840,6 +840,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
+<!--    <property name="sectionService">
+            <ref bean="org.hisp.dhis.dataset.SectionService"/>
+        </property>-->
     </bean>
 	
     <bean id="org.hisp.dhis.dataanalyser.ds.action.ExportToExcelAction"
@@ -1080,7 +1083,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitGroupService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
         </property>
-		
+        <property name="sectionService">
+            <ref bean="org.hisp.dhis.dataset.SectionService"/>
+        </property>		
     </bean>
 	
     <bean
@@ -1104,9 +1109,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="indicatorService">
             <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
         </property>
-        <property name="configurationService">
+<!--   <property name="configurationService">
             <ref bean="org.hisp.dhis.config.ConfigurationService"/>
-        </property>
+        </property>-->
         <property name="dataValueService">
             <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
         </property>
@@ -1126,7 +1131,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
 		</property>
     </bean>
+
+	<!-- Get Financial Year List  -->
 	
+	<bean id="org.hisp.dhis.dataanalyser.action.GetFinacialYearAction"
+        class="org.hisp.dhis.dataanalyser.action.GetFinacialYearAction"
+        scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
+		</property>
+    </bean>		
 	
 	<bean id="org.hisp.dhis.dataanalyser.action.GetDataElementsAction"
 		class="org.hisp.dhis.dataanalyser.action.GetDataElementsAction"
@@ -1137,6 +1150,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataElementCategoryService">
             <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
         </property>
+        <property name="sectionService">
+            <ref bean="org.hisp.dhis.dataset.SectionService"/>
+        </property>		
     </bean>
 
     <bean id="org.hisp.dhis.dataanalyser.action.GetDataElementsForTabularAnalysisAction"
@@ -1148,6 +1164,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataElementCategoryService">
             <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
         </property>
+        <property name="sectionService">
+            <ref bean="org.hisp.dhis.dataset.SectionService"/>
+        </property>		
     </bean>
 	
 		
@@ -1213,19 +1232,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
     <bean id="org.hisp.dhis.dataanalyser.util.DashBoardService"
 		class="org.hisp.dhis.dataanalyser.util.DashBoardService" scope="prototype">
-        <property name="periodService">
-            <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
-		<property name="reportservice" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService">
-		</property>
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
-		</property>
-		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
-		</property>
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
-		</property>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="reportservice" ref="org.hisp.dhis.reports.ReportService" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 	
 	<!-- DashBoard Utilities DataElementChartResult-->
@@ -1314,40 +1327,51 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
 	<!-- Data Entry Status -->
-	
     <bean id="org.hisp.dhis.dataanalyser.ds.action.DataEntryStatusSaveAction"
 		class="org.hisp.dhis.dataanalyser.ds.action.DataEntryStatusSaveAction"
 		scope="prototype">
-        <property name="currentUserService">
-            <ref bean="org.hisp.dhis.user.CurrentUserService"/>
-        </property>
-        <property name="periodService">
-            <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
-        <property name="dataSetService">
-            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
-        </property>
-        <property name="dataEntryStatusService">
-            <ref bean="org.hisp.dhis.dataentrystatus.DataEntryStatusService"/>
-        </property>
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"></ref>
-		</property>
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>		
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="dataEntryStatusService" ref="org.hisp.dhis.dataentrystatus.DataEntryStatusService" />
+		<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
+
 	<!-- Data Entry Status Validation -->
     <bean id="org.hisp.dhis.dataanalyser.dsMart.action.ValidateDataEntryStatusAction"
 		class="org.hisp.dhis.dataanalyser.dsMart.action.ValidateDataEntryStatusAction"
 		scope="prototype">
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"></ref>
-		</property>
+		<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
     </bean>			
 		
-	<!-- Data Entry Status -->
+
+	<!-- Data Entry Status Result-->
 	
+
+	<!-- Data Entry Status -->	
+
     <bean id="org.hisp.dhis.dataanalyser.dsMart.action.GenerateDataEntryStatusResultAction"
 		class="org.hisp.dhis.dataanalyser.dsMart.action.GenerateDataEntryStatusResultAction"
+		scope="prototype">
+        <property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>	
+
+	<!-- Data Entry Summary Status Result-->
+	
+    <bean id="org.hisp.dhis.dataanalyser.dsMart.action.GenerateDataEntrySummaryStatusResultAction"
+		class="org.hisp.dhis.dataanalyser.dsMart.action.GenerateDataEntrySummaryStatusResultAction"
 		scope="prototype">
         <property name="dashBoardService">
             <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
@@ -1361,8 +1385,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
-        <property name="sessionFactory" ref="sessionFactory"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
-	</bean>	
-	
+	</bean>		
+		
 </beans>

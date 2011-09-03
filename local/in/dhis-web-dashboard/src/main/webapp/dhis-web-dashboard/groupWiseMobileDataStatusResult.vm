@@ -66,7 +66,8 @@
                         </table>
                 </div>
                 #set($count2 = 0)
-                    #foreach($dataElementGroup in $dataElementGroups)
+                    ##foreach($dataElementGroup in $dataElementGroups)
+                    #foreach( $dataElementGroup in $sections )	
             <br />
                         #set( $deGroupCount = $deMapGroupCount.get($dataElementGroup) )
                         <div align="left" class="NormalB">$i18n.getString( "ds_dataelement_group_mobile" ) : $dataElementGroup.name ( $!deGroupCount )</div>

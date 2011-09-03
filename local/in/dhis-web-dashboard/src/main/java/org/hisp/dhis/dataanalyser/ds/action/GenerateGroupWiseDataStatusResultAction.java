@@ -16,9 +16,10 @@ import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -108,13 +109,20 @@ public class GenerateGroupWiseDataStatusResultAction
     }
     
     @SuppressWarnings("unused")
-	private DisplayPropertyHandler displayPropertyHandler;
+    private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+/*    
+    private SectionService sectionService;
+    
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
+    }
+*/    
     // ---------------------------------------------------------------
     // Output Parameters
     // ---------------------------------------------------------------
@@ -130,9 +138,9 @@ public class GenerateGroupWiseDataStatusResultAction
         return orgUnitList;
     }
     
-    private Map<DataElementGroup, Integer> deMapGroupCount;
+    private Map<Section, Integer> deMapGroupCount;
 
-    public Map<DataElementGroup, Integer> getDeMapGroupCount()
+    public Map<Section, Integer> getDeMapGroupCount()
     {
         return deMapGroupCount;
     }
@@ -164,14 +172,14 @@ public class GenerateGroupWiseDataStatusResultAction
     {
         return dataSetPeriods;
     }
-
+/*
     private List<DataElementGroup> dataElementGroups;
 
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
     }
-
+*/
     private List<DataElementGroup> applicableDataElementGroups;
 
     public List<DataElementGroup> getApplicableDataElementGroups()
@@ -200,6 +208,12 @@ public class GenerateGroupWiseDataStatusResultAction
         return maxOULevel;
     }
     
+    private List<Section> sections;
+    
+    public Collection<Section> getSections()
+    {
+        return sections;
+    }
     
     // ---------------------------------------------------------------
     // Input Parameters
@@ -360,9 +374,9 @@ public class GenerateGroupWiseDataStatusResultAction
         return dataElementCount;
     }
     
-    private Map<DataElementGroup, Map<OrganisationUnit, List<Integer>>> ouGroupMapDeMapCount;
+    private Map<Section, Map<OrganisationUnit, List<Integer>>> ouGroupMapDeMapCount;
     
-    public Map<DataElementGroup, Map<OrganisationUnit, List<Integer>>> getOuGroupMapDeMapCount()
+    public Map<Section, Map<OrganisationUnit, List<Integer>>> getOuGroupMapDeMapCount()
     {
         return ouGroupMapDeMapCount;
     }
@@ -389,11 +403,13 @@ public class GenerateGroupWiseDataStatusResultAction
 
         // Intialization
         ouMapDataStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
-        deMapGroupCount = new HashMap<DataElementGroup, Integer>(); // dataelement Group Count
+        deMapGroupCount = new HashMap<Section, Integer>(); // dataelement Group Count
         
         results = new ArrayList<Integer>();
         
-        ouGroupMapDeMapCount = new HashMap<DataElementGroup,Map<OrganisationUnit, List<Integer>>>();
+        //ouGroupMapDeMapCount = new HashMap<DataElementGroup,Map<OrganisationUnit, List<Integer>>>();
+        
+        ouGroupMapDeMapCount = new HashMap<Section,Map<OrganisationUnit, List<Integer>>>();
         //dataElementCount = new ArrayList<Integer>();
         
         maxOULevel = 1;
@@ -503,6 +519,8 @@ public class GenerateGroupWiseDataStatusResultAction
         dsSize = selDataSet.getDataElements().size(); 
         
         // Data Element Group Related Info
+        
+        /*
         dataElementGroups = new ArrayList<DataElementGroup>();
         dataElementGroups.addAll( getApplicableDataElementGroups( selDataSet ) );
         
@@ -513,7 +531,21 @@ public class GenerateGroupWiseDataStatusResultAction
             for ( DataElement de : deGroup.getMembers() )
                 deInfo += "," + de.getId();
         }
-
+        */
+        // for dataSet Sections
+        
+        //Collection<Section> sections = selDataSet.getSections();
+        sections = new ArrayList<Section>();
+        //sections = new ArrayList<Section>( sectionService.getAllSections() );
+        sections = new ArrayList<Section>( selDataSet.getSections() );
+        Collections.sort( sections, new SectionOrderComparator() );
+        
+        for ( Section section : sections )
+        {
+            for ( DataElement de : section.getDataElements() )
+                deInfo += "," + de.getId();
+        }
+        
         dataViewName = createDataView( orgUnitInfo, deInfo, periodInfo );
        
         String query = "";
@@ -530,17 +562,20 @@ public class GenerateGroupWiseDataStatusResultAction
             endPeriod.getEndDate() );
 
         dataSetPeriods = new HashMap<DataSet, Collection<Period>>();
-        Iterator<DataElementGroup> dataElementGroupIterator = dataElementGroups.iterator();
-
+        //Iterator<DataElementGroup> dataElementGroupIterator = dataElementGroups.iterator();
+        
+        Iterator<Section> sectionIterator = sections.iterator();
+        
         DataSet ds;
-        DataElementGroup deg;
+        //DataElementGroup deg;
+        Section dataSetSection;
 
-        while ( dataElementGroupIterator.hasNext() )
+        while ( sectionIterator.hasNext() )
         {
             ds = dataSetService.getDataSet( Integer.valueOf( selectedDataSets.get( 0 ) ) );
-            deg = (DataElementGroup) dataElementGroupIterator.next();
+            dataSetSection = (Section) sectionIterator.next();
 
-            dataElements = deg.getMembers();
+            dataElements = dataSetSection.getDataElements();
             dataElements.retainAll( ds.getDataElements() );
 
             int deGroupMemberCount1 = 0;
@@ -552,8 +587,9 @@ public class GenerateGroupWiseDataStatusResultAction
             // detaElement Group member Count
             //Integer deGroupMemberCount = dataElements.size();
             
-            deMapGroupCount.put( deg, deGroupMemberCount1 );
+            //deMapGroupCount.put( deg, deGroupMemberCount1 );
             
+            deMapGroupCount.put( dataSetSection, deGroupMemberCount1 );
             deInfo = getDEInfo( dataElements );
 
             dataSetPeriodType = ds.getPeriodType();
@@ -699,7 +735,8 @@ public class GenerateGroupWiseDataStatusResultAction
                 }
                 ouMapDataElementCount.put( o, deCounts );
             }
-            ouGroupMapDeMapCount.put( deg, ouMapDataElementCount );
+            //ouGroupMapDeMapCount.put( deg, ouMapDataElementCount );dataSetSection
+            ouGroupMapDeMapCount.put( dataSetSection, ouMapDataElementCount );
         }
 
         // For Level Names
@@ -772,7 +809,7 @@ public class GenerateGroupWiseDataStatusResultAction
         try
         {
             @SuppressWarnings("unused")
-			int sqlResult = jdbcTemplate.update( query );
+                        int sqlResult = jdbcTemplate.update( query );
 
             System.out.println( "View " + dataViewName + " dropped Successfully (if exists) " );
 
@@ -811,7 +848,7 @@ public class GenerateGroupWiseDataStatusResultAction
         try
         {
             @SuppressWarnings("unused")
-			int sqlResult = jdbcTemplate.update( query );
+                        int sqlResult = jdbcTemplate.update( query );
             System.out.println( "View " + dataViewName + " dropped Successfully" );
         } // try block end
         catch ( Exception e )

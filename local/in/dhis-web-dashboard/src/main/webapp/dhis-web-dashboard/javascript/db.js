@@ -223,15 +223,17 @@ function getOrgUnitGroupsReceived(xmlObject)
 function getDataElements()
 {
     var dataElementGroupList = document.getElementById("dataElementGroupId");
-    var dataElementGroupId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
+    //var dataElementGroupId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
+    var dataSetSectionId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
     
     var deSelectionList = document.getElementById("deSelection");    
     var deOptionValue = deSelectionList.options[ deSelectionList.selectedIndex ].value;
-    if ( dataElementGroupId != null )
+    if ( dataSetSectionId != null )
     {
 		$.post("getDataElements.action",
 		{
-			id:dataElementGroupId,
+			//id:dataElementGroupId,
+			id:dataSetSectionId,
 			deOptionValue:deOptionValue
 		},
 		function (data)
@@ -244,15 +246,17 @@ function getDataElements()
 function getDataElementsWithOutOptionCombo()
 {
     var dataElementGroupList = document.getElementById("dataElementGroupId");
-    var dataElementGroupId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
+    //var dataElementGroupId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
+    
+    var dataSetSectionId = dataElementGroupList.options[ dataElementGroupList.selectedIndex ].value;
     
     var deSelectionList = document.getElementById("deSelection");   
     
-    if ( dataElementGroupId != null )
+    if ( dataSetSectionId != null )
     {
 		$.post("getDataElements.action",
 		{
-			id:dataElementGroupId
+			id:dataSetSectionId
 		},
 		function (data)
 		{

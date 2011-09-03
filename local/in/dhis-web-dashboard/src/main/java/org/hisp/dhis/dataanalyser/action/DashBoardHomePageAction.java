@@ -27,21 +27,32 @@ package org.hisp.dhis.dataanalyser.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -50,7 +61,7 @@ import com.opensymphony.xwork2.Action;
 public class DashBoardHomePageAction
     implements Action
 {
-    
+
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
@@ -82,7 +93,7 @@ public class DashBoardHomePageAction
     {
         this.aggregationService = aggregationService;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -91,76 +102,212 @@ public class DashBoardHomePageAction
     }
 
     private CurrentUserService currentUserService;
-    
+
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
 
-    
+    private DashBoardService dashBoardService;
+
+    public void setDashBoardService( DashBoardService dashBoardService )
+    {
+        this.dashBoardService = dashBoardService;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     // ---------------------------------------------------------------
     // Input & Output
     // ---------------------------------------------------------------
 
     private String resultString;
-    
+
     public String getResultString()
     {
         return resultString;
     }
 
- 
+    List<OrganisationUnit> immChildrenList;
+
+    public List<OrganisationUnit> getImmChildrenList()
+    {
+        return immChildrenList;
+    }
+
+    Map<String, Integer> totalEnrollCountMap;
+
+    public Map<String, Integer> getTotalEnrollCountMap()
+    {
+        return totalEnrollCountMap;
+    }
+
+    Integer totalRegCount = 0;
+    
+    public Integer getTotalRegCount()
+    {
+        return totalRegCount;
+    }
+
+    List<Integer> totalRegCountList;
+    
+    public List<Integer> getTotalRegCountList()
+    {
+        return totalRegCountList;
+    }
+
+    List<Program> programList;
+
+    public List<Program> getProgramList()
+    {
+        return programList;
+    }
+
+    String rootOrgUnitName;
+
+    public String getRootOrgUnitName()
+    {
+        return rootOrgUnitName;
+    }
+
+    List<Integer> rootOrgUnitEnrollCountList;
+    
+    public List<Integer> getRootOrgUnitEnrollCountList()
+    {
+        return rootOrgUnitEnrollCountList;
+    }
+
+    String drillDownOrgUnitId;
+    
+    public void setDrillDownOrgUnitId( String drillDownOrgUnitId )
+    {
+        this.drillDownOrgUnitId = drillDownOrgUnitId;
+    }
+    
+    String navigationString;
+    
+    public String getNavigationString()
+    {
+        return navigationString;
+    }
+    
+    // ---------------------------------------------------------------
+    // Action Implementation
+    // ---------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
         statementManager.initialise();
-        
-        //clearCache();
+
+        immChildrenList = new ArrayList<OrganisationUnit>();
+        totalEnrollCountMap = new HashMap<String, Integer>();
+        programList = new ArrayList<Program>();
+        rootOrgUnitEnrollCountList = new ArrayList<Integer>();
+        totalRegCountList = new ArrayList<Integer>();
         
         resultString = "";
-        //getIndicatorValues();
+        
+        navigationString = "Tracker Dashboard";
+        
+        // getIndicatorValues();
+
+        programList.addAll( programService.getAllPrograms() );
+
+        if( programList != null && programList.size() > 0 )
+        {
+            List<OrganisationUnit> rootOrgUnitList = new ArrayList<OrganisationUnit>( );
+            if( drillDownOrgUnitId != null )
+            {
+                rootOrgUnitList.add( organisationUnitService.getOrganisationUnit( Integer.parseInt( drillDownOrgUnitId ) ) );
+                List<OrganisationUnit> orgUnitBrach = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitBranch( Integer.parseInt( drillDownOrgUnitId ) ) );
+                int flag = 1;
+                for( OrganisationUnit orgUnit : orgUnitBrach )
+                {
+                    if( currentUserService.getCurrentUser().getOrganisationUnits().contains( orgUnit) )
+                    {
+                        flag = 2;
+                    }
+                    if( flag == 2)
+                    {
+                        navigationString += " -> <a href=\"index.action?drillDownOrgUnitId="+orgUnit.getId()+"\">" + orgUnit.getName() +"</a>";
+                    }
+                }
+            }
+            else
+            {
+                rootOrgUnitList.addAll( currentUserService.getCurrentUser().getOrganisationUnits() );
+            }
+            
+            for( OrganisationUnit orgUnit : rootOrgUnitList )
+            {
+                rootOrgUnitName = orgUnit.getName() + ", ";
+                List<OrganisationUnit> tempOuList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
+                Collections.sort( tempOuList, new OrganisationUnitNameComparator() );
+    
+                immChildrenList.addAll( tempOuList );
+    
+                for( OrganisationUnit ou : tempOuList )
+                {
+                    List<OrganisationUnit> childTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( ou.getId() ) );
+                    String orgUnitIdsByComma = getCommaDelimitedString( getIdentifiers( OrganisationUnit.class, childTree ) );
+    
+                    Map<Integer, Integer> enrollCountMap = dashBoardService.getTotalEnrolledNumber( orgUnitIdsByComma );
+                    if ( enrollCountMap != null )
+                    {
+                        for ( Program program : programList )
+                        {
+                            Integer tempResult = enrollCountMap.get( program.getId() );
+                            if ( tempResult == null )
+                            {
+                                tempResult = 0;
+                            }
+                            totalEnrollCountMap.put( program.getId()+":"+ou.getId(), tempResult );
+                            Integer tempInteger = totalEnrollCountMap.get( rootOrgUnitName+":"+program.getId() );
+                            if( tempInteger != null )
+                            {
+                                totalEnrollCountMap.put( rootOrgUnitName+":"+program.getId(), tempResult+tempInteger );
+                            }
+                            else
+                            {
+                                totalEnrollCountMap.put( rootOrgUnitName+":"+program.getId(), tempResult );
+                            }
+                        }
+                    }
+                    
+                    Integer regCount = dashBoardService.getTotalRegisteredCount( orgUnitIdsByComma );
+                    
+                    totalRegCountList.add( regCount  );
+                    
+                    totalRegCount += regCount;
+                }
+            }
+        }
         
         statementManager.destroy();
-        
+
         return SUCCESS;
     }
-    
-    private void clearCache()
-    {
-        try
-        {
-            String cacheFolderPath = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + "db"+ File.separator + "output";
-   
-            File dir = new File( cacheFolderPath );
-            String[] files = dir.list();        
-            for ( String file : files )
-            {
-                file = cacheFolderPath + File.separator + file;
-                File tempFile = new File(file);
-                tempFile.delete();
-            }
-            //System.out.println("Cache cleared successfully");
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }        
-    }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings( "unused" )
     private void getIndicatorValues()
     {
         // OrgUnit Info
         User curUser = currentUserService.getCurrentUser();
         Collection<OrganisationUnit> ouList = curUser.getOrganisationUnits();
         OrganisationUnit orgUnit;
-        if( ouList == null || ouList.isEmpty() )
+        if ( ouList == null || ouList.isEmpty() )
         {
             ouList = organisationUnitService.getOrganisationUnitsAtLevel( 1 );
-            if( ouList == null || ouList.isEmpty() )
+            if ( ouList == null || ouList.isEmpty() )
             {
-                System.out.println(" There are no OrgUnits ");
-                resultString =  "There are no OrgUnits";
+                System.out.println( " There are no OrgUnits " );
+                resultString = "There are no OrgUnits";
                 return;
             }
             else
@@ -172,47 +319,50 @@ public class DashBoardHomePageAction
         {
             orgUnit = ouList.iterator().next();
         }
-        
-        //Indicator Info
+
+        // Indicator Info
         Collection<Indicator> indicatorList = indicatorService.getAllIndicators();
-        
-        if( indicatorList == null || indicatorList.isEmpty() )
+
+        if ( indicatorList == null || indicatorList.isEmpty() )
         {
-            System.out.println(" There are no Indicators ");
-            resultString =  "There are no Indicators";
+            System.out.println( " There are no Indicators " );
+            resultString = "There are no Indicators";
             return;
         }
-        
-        //Period Info        
+
+        // Period Info
         Date sysDate = new Date();
         Period selPeriod = getPreviousPeriod( sysDate );
-        
-        if( selPeriod == null )
+
+        if ( selPeriod == null )
         {
-            System.out.println(" There are no Period ");
-            resultString =  "There are no Period";
-            return;            
+            System.out.println( " There are no Period " );
+            resultString = "There are no Period";
+            return;
         }
-        
-        for( Indicator ind : indicatorList )
+
+        for ( Indicator ind : indicatorList )
         {
-            double aggVal = aggregationService.getAggregatedIndicatorValue( ind, selPeriod.getStartDate(), selPeriod.getEndDate(), orgUnit );
-            
-            if(aggVal == -1) aggVal = 0.0;
-            
+            double aggVal = aggregationService.getAggregatedIndicatorValue( ind, selPeriod.getStartDate(), selPeriod
+                .getEndDate(), orgUnit );
+
+            if ( aggVal == -1 )
+                aggVal = 0.0;
+
             aggVal = Math.round( aggVal * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
-            
-            if( aggVal > 0 )  resultString += "** " + ind.getName() + " ( " + aggVal + " ) ";
-        }           
-        
-        if(resultString.trim().equals( "" ))
+
+            if ( aggVal > 0 )
+                resultString += "** " + ind.getName() + " ( " + aggVal + " ) ";
+        }
+
+        if ( resultString.trim().equals( "" ) )
             resultString = "NONE";
-        
-        //System.out.println("RESULT : "+ resultString );
-        
+
+        // System.out.println("RESULT : "+ resultString );
+
     }
-    
-    public Period getPreviousPeriod(Date sDate)
+
+    public Period getPreviousPeriod( Date sDate )
     {
         Period period = new Period();
         Calendar tempDate = Calendar.getInstance();
@@ -227,8 +377,7 @@ public class DashBoardHomePageAction
             tempDate.roll( Calendar.MONTH, -1 );
         }
         PeriodType monthlyPeriodType = new MonthlyPeriodType();
-        period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ),
-            monthlyPeriodType );
+        period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), monthlyPeriodType );
 
         return period;
     }
@@ -256,11 +405,11 @@ public class DashBoardHomePageAction
         else if ( periodType.getName().equals( "Yearly" ) )
         {
             cal.set( year, Calendar.DECEMBER, 31 );
-        }        
+        }
         Date lastDay = new Date( cal.getTimeInMillis() );
-        //System.out.println( lastDay.toString() );        
+        // System.out.println( lastDay.toString() );
         Period newPeriod = new Period();
-        newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );      
+        newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
         return newPeriod;
     }
 }

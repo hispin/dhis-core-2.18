@@ -36,10 +36,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -91,7 +92,14 @@ public class GenerateAnnualAnalyserFormAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-
+    
+    private SectionService sectionService;
+    
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
+    }
+    
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -124,14 +132,14 @@ public class GenerateAnnualAnalyserFormAction
     {
         return dataElements;
     }
-
+/*
     private List<DataElementGroup> dataElementGroups;
 
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
     }
-
+*/
     private List<Indicator> indicators;
 
     public List<Indicator> getIndicators()
@@ -180,13 +188,47 @@ public class GenerateAnnualAnalyserFormAction
     {
         return monthNames;
     }
-
+    
+    private List<Section> sections;
+    
+    public Collection<Section> getSections()
+    {
+        return sections;
+    }
+    /*
+    private String ipAddress;
+    
+    public String getIpAddress()
+    {
+        return ipAddress;
+    }
+    
+    private String ipAddressClient;
+    
+    public String getIpAddressClient()
+    {
+        return ipAddressClient;
+    }
+    */
     public String execute()
         throws Exception
     {
         /* OrganisationUnit */
         //organisationUnits = organisationUnitService.getAllOrganisationUnits();
-
+        
+        /*
+        InetAddress ownIP=InetAddress.getLocalHost();
+        ipAddress = ownIP.getHostAddress() + ":" + ownIP.getHostName() ;
+        
+        ActionContext ctx = ActionContext.getContext();
+        HttpServletRequest req = (HttpServletRequest) ctx.get( ServletActionContext.HTTP_REQUEST );
+        
+        ipAddressClient = req.getRemoteAddr() + ":" + req.getRemoteHost()  ;
+        
+        
+        System.out.println(" IP Address is: = "+ ipAddress );
+        System.out.println(" IP Address of Client is: = "+ ipAddressClient );
+        */
         /* DataElements and Groups */
         dataElements = new ArrayList<DataElement>(dataElementService.getAllDataElements());
         
@@ -205,10 +247,19 @@ public class GenerateAnnualAnalyserFormAction
         }
         System.out.println(" dataElements size = "+dataElements.size());
         
-        dataElementGroups = new ArrayList<DataElementGroup>(dataElementService.getAllDataElementGroups());
+       // for dataSet Sections
+        sections = new ArrayList<Section>();
+        sections = new ArrayList<Section>( sectionService.getAllSections() );
+        Collections.sort( sections, new SectionOrderComparator() );
+        
+        
+        
+        //dataElementGroups = new ArrayList<DataElementGroup>(dataElementService.getAllDataElementGroups());
         
         Collections.sort( dataElements, new DataElementNameComparator() );
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        //Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        
+        
 
         /* Indicators and Groups */
         indicators = new ArrayList<Indicator>(indicatorService.getAllIndicators());

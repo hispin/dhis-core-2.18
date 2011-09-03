@@ -10,8 +10,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
@@ -37,7 +38,14 @@ public class GetDataElementsForTabularAnalysisAction implements Action
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
+    
+    private SectionService sectionService;
 
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
+    }
+    
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
@@ -47,6 +55,7 @@ public class GetDataElementsForTabularAnalysisAction implements Action
     {
         this.dataElementComparator = dataElementComparator;
     }
+    
 
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
@@ -114,15 +123,25 @@ public class GetDataElementsForTabularAnalysisAction implements Action
         {
             System.out.println("The id is null");
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+            System.out.println( " DataElements size = "+ dataElements.size() );
         } 
         else
         {
-            DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( id );
-
+            //DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( id );
+            
+            Section section = sectionService.getSection( id );
+            /*
             if ( dataElementGroup != null )
             {
                 dataElements = new ArrayList<DataElement>( dataElementGroup.getMembers() );
-            } else
+            } 
+            */
+            if ( section != null )
+            {
+                dataElements = new ArrayList<DataElement>( section.getDataElements() );
+                System.out.println("section id = "+ id + " dataElements size = "+ dataElements.size());
+            }            
+            else
             {
                 dataElements = new ArrayList<DataElement>();
             }

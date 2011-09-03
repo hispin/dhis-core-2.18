@@ -70,14 +70,29 @@ function facilityChangeFunction(evt)
 function textvalue(summary)
 {
     document.getElementById("selectedButton").value = summary;
-  
+    
+    //var dataEntryStatus = document.getElementById("usingDataEntryStatus").checked;
+    
+    //alert( dataEntryStatus );
     if(formValidationsForDataStatus())
     {
+    	
         if(summary == "SummaryStatus")
         {
-            //document.getElementById("facilityLB").options[1].selected = true;
-            document.ChartGenerationForm.action = "summaryStatusResult.action";
-            document.ChartGenerationForm.submit();
+        	var dataEntryStatus = document.getElementById("usingDataEntryStatus").checked;
+        	if ( dataEntryStatus == true )
+        	{
+        		document.ChartGenerationForm.action = "dataEntrySummaryStatusResult.action";
+                document.ChartGenerationForm.submit();
+        	}
+        	
+        	else
+        	{
+            	//document.getElementById("facilityLB").options[1].selected = true;
+                document.ChartGenerationForm.action = "summaryStatusResult.action";
+                document.ChartGenerationForm.submit();
+        	}
+
         }
        // for Mobile summary data status
         else if(summary == "SummaryMobileStatus")

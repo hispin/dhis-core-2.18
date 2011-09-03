@@ -27,9 +27,14 @@
     var quarterlyPeriodTypeName = '$quarterlyPeriodTypeName';
     var sixmonthPeriodTypeName = '$sixMonthPeriodTypeName';
     var yearlyPeriodTypeName = '$yearlyPeriodTypeName';
+    var financialAprilPeriodType = '$financialAprilPeriodType';
     
     var maxOrgUnitLevels = $maxOrgUnitLevels;
     var selOrgUnitId="NONE";
+    
+    var yearList = '$periodNameList';
+  	var regularYear = new Array();
+  	var financialYear = new Array();
     
     var days = new Array();
     
@@ -39,6 +44,8 @@
     var monthNames = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
     var quarterNames = new Array("Q1","Q2","Q3","Q4");
     var halfYearNames = new Array("HY1","HY2");
+    
+    var financialMonthNames = new Array("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar");
 
     k = 0;
 
@@ -73,6 +80,17 @@
          }
     }
 
+ 
+    #set( $count2 = 0 );
+    #foreach( $year in $periodNameList )
+       regularYear[$count2] = $year;
+       financialYear[$count2] = $year + "-" + ($year+1);
+       #set( $count2 = $count2 + 1 );
+    #end
+ 
+ 
+ 
+ 
     var orgUnitGroupIds = new Array();
     var orgUnitGroupNames = new Array();
 
@@ -103,9 +121,12 @@
             <td class="NormalB">$i18n.getString( "ga_filter_by_degroup" )<br>
                 <select id="dataElementGroupId" name="dataElementGroupId" style="width:350px" onchange="getDataElements()">
                     <option value="0">[ Select DataElementGroup / All ]</option>                                    
-                        #foreach ( $degroup in $dataElementGroups )
-                        <option value="$degroup.id" title="$degroup.name">$degroup.name</option>                    
-                    #end
+                        ##foreach ( $degroup in $dataElementGroups )
+                        	<!--<option value="$degroup.id" title="$degroup.name">$degroup.name</option>-->                 
+                    	##end
+                        #foreach ( $section in $sections )
+                        	<option value="$section.id" title="$section.name">$section.name</option>            
+                    	#end                    
                 </select>
             </td>   
             <td class="NormalB">&nbsp;</td>

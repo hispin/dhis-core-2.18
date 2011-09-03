@@ -60,7 +60,6 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
-import org.hisp.dhis.config.ConfigurationService;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -76,6 +75,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
+import org.hisp.dhis.period.FinancialAprilPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -165,14 +165,14 @@ public class GenerateTabularAnalysisResultAction
     {
         this.aggregationService = aggregationService;
     }
-
+/*
     private ConfigurationService configurationService;
 
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
     }
-
+*/
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
@@ -292,7 +292,7 @@ public class GenerateTabularAnalysisResultAction
 
     List<String> periodNames;
 
-    private Map<OrganisationUnit, Integer> ouChildCountMap;
+    //private Map<OrganisationUnit, Integer> ouChildCountMap;
 
     String dataElementIdsByComma;
     
@@ -321,13 +321,16 @@ public class GenerateTabularAnalysisResultAction
         indicatorList = new ArrayList<Indicator>();
         serviceTypeList = new ArrayList<String>();
         periodMap = new HashMap<Integer, List<Integer>>();
-        ouChildCountMap = new HashMap<OrganisationUnit, Integer>();
-
+       // ouChildCountMap = new HashMap<OrganisationUnit, Integer>();
+        
+        /* Period Info */
         String monthOrder[] = {  "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
         int monthDays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
         
-        /* Period Info */
-
+        // for financial year 
+        String financialMonthOrder[] = { "04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03" };
+        int financialMonthDays[] = { 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28, 31 };
+        
         String startD = "";
         String endD = "";
 
@@ -361,6 +364,54 @@ public class GenerateTabularAnalysisResultAction
                 periodNames.add( periodStr );
             }
         }
+        // for FinancialAprilPeriodType
+        else if ( periodTypeLB.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) )
+        {
+            Integer pCount = 0;
+            for ( String year : yearLB )
+            {
+                int selYear = Integer.parseInt( year.split( "-" )[0] );
+                
+                for ( String periodStr : periodLB )
+                {
+                    int period = Integer.parseInt( periodStr );
+                    
+                    simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
+                    
+                    if ( period >= 9 )
+                    {
+                        startD = "" + (selYear + 1) + "-" + financialMonthOrder[period] + "-01";
+                        endD = "" + (selYear + 1) + "-" + financialMonthOrder[period] + "-" + financialMonthDays[period];
+                        
+                        if ( (((selYear + 1) % 400 == 0) || (((selYear + 1) % 100 != 0 && (selYear + 1) % 4 == 0))) && period == 10 )
+                        {
+                            endD = "" + (selYear + 1) + "-" + financialMonthOrder[period] + "-" + ( financialMonthDays[period] + 1 );
+                        }
+                    }
+                    else
+                    {
+                        startD = "" + selYear + "-" + financialMonthOrder[period] + "-01";
+                        endD = "" + selYear + "-" + financialMonthOrder[period] + "-" + financialMonthDays[period];
+                    }
+                    
+                    Date sDate = format.parseDate( startD );
+                    Date eDate = format.parseDate( endD );
+                    
+                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriods( sDate, eDate ) );
+                    List<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+                    
+                    selStartPeriodList.add( format.parseDate( startD ) );
+                    selEndPeriodList.add( format.parseDate( endD ) );
+                    
+                    periodMap.put( pCount, periodIds );
+                    pCount++;
+                    
+                    periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
+                }
+            }
+
+        }
+        
         else
         {
             Integer pCount = 0;

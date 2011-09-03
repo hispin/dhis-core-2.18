@@ -37,9 +37,12 @@
 				$i18n.getString( "ga_filter_by_degroup" )<br />
                 <select id="dataElementGroupId" name="dataElementGroupId" style="width:325px" onchange="getDataElementsWithOutOptionCombo()" disabled>
 					<option value="$ALL">[ Select DataElementGroup / All ]</option>
-					#foreach ( $group in $dataElementGroups )
-						<option value="$group.id" title="$group.name">$group.name</option>
-					#end
+					##foreach ( $group in $dataElementGroups )
+						<!--<option value="$group.id" title="$group.name">$group.name</option>-->
+					##end
+					#foreach ( $section in $sections )
+						<option value="$section.id" title="$section.name">$section.name</option>
+					#end									
                	</select>
 			</td>
 			<td class="NormalB">&nbsp;</td>

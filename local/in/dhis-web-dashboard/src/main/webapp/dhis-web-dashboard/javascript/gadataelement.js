@@ -49,7 +49,6 @@ function getOUDeatilsForGADataElements( orgUnitIds )
    });
 }
 
-
 // function for getting periods
 function getPeriods()
 {
@@ -63,9 +62,11 @@ function getPeriods()
 	periodLB.disabled = false;
 
 	clearList(periodLB);
+	//clearList(yearLB);
 
 	if (periodTypeId == monthlyPeriodTypeName) 
 	{
+		getRegularPeriodYear();
 		for (i = 0; i < monthNames.length; i++) 
 		{
 			periodLB.options[i] = new Option(monthNames[i], i, false, false);
@@ -73,8 +74,10 @@ function getPeriods()
 	}
     else if( periodTypeId == dailyPeriodTypeName )
     {
-       // alert( monthDays.length );
+    	// alert( monthDays.length );
     	//alert( days.length );
+    	getRegularPeriodYear();
+		
     	for( i= 0; i < days.length; i++ )
         {
             periodLB.options[i] = new Option(days[i],days[i],false,false);
@@ -82,6 +85,8 @@ function getPeriods()
     }
 	else if (periodTypeId == quarterlyPeriodTypeName)
 	{
+		getRegularPeriodYear();
+		
 		for (i = 0; i < quarterNames.length; i++) 
 		{
 			periodLB.options[i] = new Option(quarterNames[i], i, false, false);
@@ -89,6 +94,8 @@ function getPeriods()
 	} 
 	else if (periodTypeId == sixmonthPeriodTypeName) 
 	{
+		getRegularPeriodYear();
+		
 		for (i = 0; i < halfYearNames.length; i++)
 		{
 			periodLB.options[i] = new Option(halfYearNames[i], i, false, false);
@@ -96,10 +103,13 @@ function getPeriods()
 	} 
 	else if (periodTypeId == yearlyPeriodTypeName) 
 	{
+		getRegularPeriodYear();
+		
 		periodLB.disabled = true;
 	}
     else if( periodTypeId == weeklyPeriodTypeName )
     {
+    	getRegularPeriodYear();
     	
         if( yearLB.selectedIndex < 0 ) 
         {
@@ -112,7 +122,56 @@ function getPeriods()
         }
 
     }
+    else if( periodTypeId == financialAprilPeriodType )
+    {
+    	//getFinacialYear();
+    	getFinacialPeriodYear();
+    	
+		for (i = 0; i < financialMonthNames.length; i++)
+		{
+			periodLB.options[i] = new Option(financialMonthNames[i], i, false, false);
+		}
+    }
+	
 }
+
+function getRegularPeriodYear()
+{
+	var yearLB = document.getElementById("yearLB");
+	clearList(yearLB);
+	
+	for (i = 0; i < regularYear.length; i++)
+	{
+		//yearLB.options[i] = new Option(regularYear[i], i, false, false);
+		
+        var option = document.createElement( "option" );
+        option.value = regularYear[i];
+        option.text = regularYear[i];
+        option.title = regularYear[i];
+        yearLB.add( option, null );
+	}
+	
+}
+
+function getFinacialPeriodYear()
+{
+	var yearLB = document.getElementById("yearLB");
+	clearList(yearLB);
+	
+	for (i = 0; i < financialYear.length; i++)
+	{
+	    //yearLB.options[i] = new Option(regularYear[i], i, false, false);
+		
+        var option = document.createElement( "option" );
+        option.value = financialYear[i];
+        option.text = financialYear[i];
+        option.title = financialYear[i];
+        yearLB.add( option, null );
+	}
+	
+}
+
+
 // function for getting periods ends
 
 //getting weekly Period
@@ -127,7 +186,6 @@ function getWeeklyPeriod()
     }
     
 }
-
 //get week period Ajax calling
 function getWeeks()
 {
@@ -160,7 +218,6 @@ function getWeeks()
 				getWeeklyPeriodReceived(data);
 			},'xml');
 }
-
 // week rang received
 function getWeeklyPeriodReceived( xmlObject )
 {	
@@ -181,6 +238,44 @@ function getWeeklyPeriodReceived( xmlObject )
 	        periodList.add( option, null );
 	}
 }	
+
+
+//get Financial Year  calling
+function getFinacialYear()
+{
+	$.post("getFinacialYear.action",
+			{
+			 
+			},
+			function (data)
+			{
+				getFinacialYearReceived(data);
+			},'xml');
+}
+
+//week rang received
+function getFinacialYearReceived( xmlObject )
+{	
+	//var periodList = document.getElementById( "periodLB" );
+	var yearLBList = document.getElementById("yearLB");
+	clearList( yearLBList );
+	
+	var finacialYearList = xmlObject.getElementsByTagName( "finacialYear" );
+	
+	for ( var i = 0; i < finacialYearList.length; i++ )
+	{
+	    var finacialYearName = finacialYearList[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
+		
+	        var option = document.createElement( "option" );
+	        option.value = finacialYearName;
+	        option.text = finacialYearName;
+	        option.title = finacialYearName;
+	        yearLBList.add( option, null );
+	}
+}	
+
+
+
 // OrgUnit GroupSet Change Function
 /*
 function orgUnitGroupSetCB1() {
