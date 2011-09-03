@@ -36,9 +36,7 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.config.Configuration_IN;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -242,7 +240,7 @@ public class GenerateOuWiseProgressReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
@@ -252,7 +250,8 @@ public class GenerateOuWiseProgressReportResultAction
         wCellformat.setAlignment( Alignment.CENTRE );
         wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
         wCellformat.setWrap( true );
-        
+
+        /*
         String dataSetIds = selReportObj.getDataSetIds();
         Collection<Integer> dataElementIdList = new ArrayList<Integer>();
         if( dataSetIds != null && !dataSetIds.trim().equalsIgnoreCase( "" ) )
@@ -268,10 +267,10 @@ public class GenerateOuWiseProgressReportResultAction
         {
             dataElementIdList.addAll( getIdentifiers( DataElement.class, dataElementService.getAggregateableDataElements() ) );
         }
-            
-        String dataElmentIdsByComma = getCommaDelimitedString( dataElementIdList );
-
         
+        String dataElmentIdsByComma = getCommaDelimitedString( dataElementIdList );
+                */
+
         // Period Info
         sDate = format.parseDate( startDate );
         eDate = format.parseDate( endDate );
@@ -284,8 +283,10 @@ public class GenerateOuWiseProgressReportResultAction
         
         // Getting DataValues
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
-        int orgUnitCount = 0;
 
+        String dataElmentIdsByComma = reportService.getDataelementIds( reportDesignList );
+
+        int orgUnitCount = 0;
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
         while ( it.hasNext() )
         {

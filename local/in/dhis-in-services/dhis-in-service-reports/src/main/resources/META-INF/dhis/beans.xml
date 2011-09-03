@@ -29,6 +29,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="surveyService" ref="org.hisp.dhis.survey.SurveyService" />
         <property name="surveyDataValueService" ref="org.hisp.dhis.surveydatavalue.SurveyDataValueService" />
 		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
+		<property name="databaseInfoProvider" ref="databaseInfoProvider" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 	
 	<!-- DeletionHandlers -->

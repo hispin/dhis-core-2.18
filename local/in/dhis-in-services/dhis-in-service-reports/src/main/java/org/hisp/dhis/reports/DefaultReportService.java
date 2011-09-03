@@ -43,6 +43,8 @@ import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyService;
 import org.hisp.dhis.surveydatavalue.SurveyDataValue;
 import org.hisp.dhis.surveydatavalue.SurveyDataValueService;
+import org.hisp.dhis.system.database.DatabaseInfo;
+import org.hisp.dhis.system.database.DatabaseInfoProvider;
 import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -158,6 +160,13 @@ public class DefaultReportService
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
+    }
+
+    private DatabaseInfoProvider databaseInfoProvider;
+
+    public void setDatabaseInfoProvider( DatabaseInfoProvider databaseInfoProvider )
+    {
+        this.databaseInfoProvider = databaseInfoProvider;
     }
 
     // -------------------------------------------------------------------------
@@ -1775,12 +1784,24 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
     public Map<String, String> getResultDataValueFromAggregateTable( Integer orgunitId, String dataElmentIdsByComma, String periodIdsByComma )
     {
         Map<String, String> aggDeMap = new HashMap<String, String>();
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
         try
         {
-            String query = "SELECT dataelementid,categoryoptioncomboid, SUM(value) FROM aggregateddatavalue" +
-                           " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
-                           " organisationunitid = "+ orgunitId +" AND "+
-                           " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid";
+            String query = "";
+            if( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT dataelementid,categoryoptioncomboid, SUM( cast( value as numeric) ) FROM aggregateddatavalue" +
+                            " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                            " organisationunitid = "+ orgunitId +" AND "+
+                            " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid";
+            }
+            else if( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT dataelementid,categoryoptioncomboid, SUM( value ) FROM aggregateddatavalue" +
+                            " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                            " organisationunitid = "+ orgunitId +" AND "+
+                            " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid";
+            }
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             
@@ -1806,14 +1827,27 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
     public Map<String, String> getResultDataValueFromAggregateTableByPeriodAgg( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
     {
         Map<String, String> aggDataMap = new HashMap<String, String>();
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
         try
         {
-            String query = "SELECT organisationunitid, dataelementid,categoryoptioncomboid, SUM(value) FROM aggregateddatavalue" +
+            String query = "";
+            if( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT organisationunitid, dataelementid,categoryoptioncomboid, SUM( cast( value as numeric) ) FROM aggregateddatavalue" +
                            " WHERE dataelementid IN (" + dataElmentIdsByComma + ") AND "+
                            " organisationunitid IN ("+ orgUnitIdsByComma +") AND "+
                            " periodid IN (" + periodIdsByComma +") " +
                            " GROUP BY organisationunitid,dataelementid,categoryoptioncomboid";
-
+            }
+            else if( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT organisationunitid, dataelementid,categoryoptioncomboid, SUM(value) FROM aggregateddatavalue" +
+                            " WHERE dataelementid IN (" + dataElmentIdsByComma + ") AND "+
+                            " organisationunitid IN ("+ orgUnitIdsByComma +") AND "+
+                            " periodid IN (" + periodIdsByComma +") " +
+                            " GROUP BY organisationunitid,dataelementid,categoryoptioncomboid";
+            }
+            
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             
             while ( rs.next() )
@@ -1874,13 +1908,24 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
     public Map<String, String> getAggDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
     {
         Map<String, String> aggDeMap = new HashMap<String, String>();
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
         try
         {
-            String query = "SELECT dataelementid,categoryoptioncomboid, SUM(value) FROM datavalue " +
+            String query = "";
+            if( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT dataelementid,categoryoptioncomboid, SUM( cast( value as numeric) ) FROM datavalue " +
                            " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
                            " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
                            " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid";
-
+            }
+            else if( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT dataelementid,categoryoptioncomboid, SUM(value) FROM datavalue " +
+                            " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                            " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
+                            " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid";                
+            }
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             
             while ( rs.next() )
@@ -1905,12 +1950,24 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
     public Map<String, String> getAggDataFromDataValueTableByDeAndPeriodwise( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
     {
         Map<String, String> aggDataMap = new HashMap<String, String>();
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
         try
         {
-            String query = "SELECT dataelementid,categoryoptioncomboid,periodid,SUM(value) FROM datavalue " +
-                           " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
-                           " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
-                           " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid,periodid";
+            String query = "";
+            if( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT dataelementid,categoryoptioncomboid,periodid,SUM( cast( value as numeric) ) FROM datavalue " +
+                " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
+                " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid,periodid";
+            }
+            else if( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT dataelementid,categoryoptioncomboid,periodid,SUM( value ) FROM datavalue " +
+                " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
+                " periodid IN (" + periodIdsByComma +") GROUP BY dataelementid,categoryoptioncomboid,periodid";
+            }
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             
@@ -1937,13 +1994,25 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
     public Map<String, String> getDataFromDataValueTableByPeriodAgg( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
     {
         Map<String, String> aggDataMap = new HashMap<String, String>();
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
         try
         {
-            String query = "SELECT sourceid,dataelementid,categoryoptioncomboid, SUM(value) FROM datavalue " +
+            String query = "";
+            if( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT sourceid,dataelementid,categoryoptioncomboid, SUM( cast( value as numeric) ) FROM datavalue " +
                            " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
                            " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
                            " periodid IN (" + periodIdsByComma +") GROUP BY sourceid,dataelementid,categoryoptioncomboid";
-
+            }
+            else if( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT sourceid,dataelementid,categoryoptioncomboid, SUM(value) FROM datavalue " +
+                            " WHERE dataelementid IN (" + dataElmentIdsByComma + " ) AND "+
+                            " sourceid IN ("+ orgUnitIdsByComma +" ) AND "+
+                            " periodid IN (" + periodIdsByComma +") GROUP BY sourceid,dataelementid,categoryoptioncomboid";
+            }
+            
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             
             while ( rs.next() )
@@ -2002,6 +2071,9 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
     
     public String getResultDataValueFromAggregateTable( String formula, String periodIdsByComma, Integer orgunitId )
     {
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+        String query = "";
+        
         try
         {
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
@@ -2024,11 +2096,21 @@ public String getIndividualResultIndicatorValue( String formula, Date startDate,
                 int dataElementId = Integer.parseInt( replaceString );
                 int optionComboId = Integer.parseInt( optionComboIdStr );
                 
-                String query = "SELECT SUM(value) FROM aggregateddatavalue WHERE dataelementid = " + dataElementId + 
+                if( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+                {
+                    query = "SELECT SUM( cast( value as numeric) ) FROM aggregateddatavalue WHERE dataelementid = " + dataElementId + 
                                 " AND categoryoptioncomboid = "+optionComboId + 
                                 " AND periodid IN ("+ periodIdsByComma +")"+
                                 " AND organisationunitid = "+  orgunitId;
-
+                }
+                else if( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+                {
+                    query = "SELECT SUM(value) FROM aggregateddatavalue WHERE dataelementid = " + dataElementId + 
+                                " AND categoryoptioncomboid = "+optionComboId + 
+                                " AND periodid IN ("+ periodIdsByComma +")"+
+                                " AND organisationunitid = "+  orgunitId;
+                }
+                    
                 SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
 
                 Double aggregatedValue = null;

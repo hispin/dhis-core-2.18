@@ -117,7 +117,6 @@ public class PortalExcelImportResultAction implements Action
         this.dataSetService = dataSetService;
     }
 
-
     private I18nFormat format;
     
     public void setFormat( I18nFormat format )
