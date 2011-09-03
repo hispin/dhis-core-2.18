@@ -183,10 +183,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="statementManager" ref="statementManager"/>
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
         <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
         <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-        
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean>
     
     <!-- Auto Reports -->

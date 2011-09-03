@@ -209,8 +209,6 @@ public class GenerateRoutineReportAnalyserResultAction
         reportFileNameTB = selReportObj.getExcelTemplateName();
         
         String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
         if( !newdir.exists() )
@@ -218,7 +216,7 @@ public class GenerateRoutineReportAnalyserResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         if( reportModelTB.equalsIgnoreCase( "DYNAMIC-ORGUNIT" ) )
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
@@ -288,9 +286,7 @@ public class GenerateRoutineReportAnalyserResultAction
             else
             {
                 ouList.addAll( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
-
                 excludeOrgUnits.retainAll( ouList );
-                
                 ouList.retainAll( orgGroupMembers );
             }
             

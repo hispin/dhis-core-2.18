@@ -36,9 +36,7 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.config.Configuration_IN;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -272,6 +270,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         }
         
         // To get Aggregation Data
+        /*
         String dataSetIds = selReportObj.getDataSetIds();
         Collection<Integer> dataElementIdList = new ArrayList<Integer>();
         if( dataSetIds != null && !dataSetIds.trim().equalsIgnoreCase( "" ) )
@@ -289,8 +288,11 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         }
             
         String dataElmentIdsByComma = getCommaDelimitedString( dataElementIdList );
+        */
         
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
+
+        String dataElmentIdsByComma = reportService.getDataelementIds( reportDesignList );
 
         int colCount = 0;
         for( Period period : periodList )

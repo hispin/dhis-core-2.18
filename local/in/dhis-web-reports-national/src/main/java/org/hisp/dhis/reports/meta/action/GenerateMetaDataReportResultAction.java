@@ -316,7 +316,8 @@ public class GenerateMetaDataReportResultAction
         // Coding For Printing MetaData
         // ----------------------------------------------------------------------
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
@@ -325,7 +326,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "Summary Report", 0 );
@@ -434,7 +435,8 @@ public class GenerateMetaDataReportResultAction
         List<DataElement> dataElementList = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         Collections.sort( dataElementList, new DataElementNameComparator() );
 
-       // String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
@@ -443,7 +445,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "DataElements", 0 );
@@ -576,7 +578,8 @@ public class GenerateMetaDataReportResultAction
         List<DataElementGroup> dataElementGroupList = new ArrayList<DataElementGroup>( dataElementService
             .getAllDataElementGroups() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
@@ -585,7 +588,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "DataElementsGroupWiseList", 0 );
@@ -744,7 +747,8 @@ public class GenerateMetaDataReportResultAction
     {
         List<OrganisationUnitGroup> orgUnitGroupList = new ArrayList<OrganisationUnitGroup>(
             organisationUnitgroupService.getAllOrganisationUnitGroups() );
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
@@ -753,7 +757,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "OrganisationUnitGroupWiseList", 0 );
@@ -978,7 +982,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "OrganisationUnit", 0 );
@@ -1070,6 +1074,7 @@ public class GenerateMetaDataReportResultAction
         List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( rootOrgUnit.getId() ) );
 
         //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
         if( !newdir.exists() )
@@ -1077,7 +1082,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "OrganisationUnit", 0 );
@@ -1281,8 +1286,6 @@ public class GenerateMetaDataReportResultAction
         List<Indicator> indicatorList = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
         Collections.sort( indicatorList, new IndicatorNameComparator() );
 
-       // String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator  + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-       
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
         if( !newdir.exists() )
@@ -1290,7 +1293,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "Indicators", 0 );
@@ -1309,6 +1312,9 @@ public class GenerateMetaDataReportResultAction
             if ( incID.equalsIgnoreCase( SOURCE ) )
             {
                 sheet0.addCell( new Label( colStart, rowStart, "IndicatorID", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 1, rowStart, "IndicatorName", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 2, rowStart, "IndicatorNumerator", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 3, rowStart, "IndicatorDenominator", getCellFormat1() ) );
             }
             else if ( incID.equalsIgnoreCase( PRINT ) )
             {
@@ -1329,11 +1335,13 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart + 11, rowStart, "IndicatorShortName", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 12, rowStart, "IndicatorUrl", getCellFormat1() ) );
             }
+            else
+            {
+                sheet0.addCell( new Label( colStart + 1, rowStart, "IndicatorName", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 2, rowStart, "IndicatorNumerator", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 3, rowStart, "IndicatorDenominator", getCellFormat1() ) );
+            }
         }
-
-        sheet0.addCell( new Label( colStart + 1, rowStart, "IndicatorName", getCellFormat1() ) );
-        sheet0.addCell( new Label( colStart + 2, rowStart, "IndicatorNumerator", getCellFormat1() ) );
-        sheet0.addCell( new Label( colStart + 3, rowStart, "IndicatorDenominator", getCellFormat1() ) );
 
         rowStart++;
 
@@ -1344,6 +1352,11 @@ public class GenerateMetaDataReportResultAction
                 if ( incID.equalsIgnoreCase( SOURCE ) )
                 {
                     sheet0.addCell( new Number( colStart, rowStart, indicator.getId(), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 1, rowStart, indicator.getName(), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 2, rowStart, expressionService.getExpressionDescription( indicator
+                        .getNumerator() ), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 3, rowStart, expressionService.getExpressionDescription( indicator
+                        .getDenominator() ), wCellformat ) );
                 }
                 else if ( incID.equalsIgnoreCase( PRINT ) )
                 {
@@ -1367,13 +1380,15 @@ public class GenerateMetaDataReportResultAction
                     sheet0.addCell( new Label( colStart + 11, rowStart, indicator.getShortName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 12, rowStart, indicator.getUrl(), wCellformat ) );
                 }
+                else
+                {
+                    sheet0.addCell( new Label( colStart + 1, rowStart, indicator.getName(), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 2, rowStart, expressionService.getExpressionDescription( indicator
+                        .getNumerator() ), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 3, rowStart, expressionService.getExpressionDescription( indicator
+                        .getDenominator() ), wCellformat ) );
+                }
             }
-
-            sheet0.addCell( new Label( colStart + 1, rowStart, indicator.getName(), wCellformat ) );
-            sheet0.addCell( new Label( colStart + 3, rowStart, expressionService.getExpressionDescription( indicator
-                .getNumerator() ), wCellformat ) );
-            sheet0.addCell( new Label( colStart + 2, rowStart, expressionService.getExpressionDescription( indicator
-                .getDenominator() ), wCellformat ) );
 
             rowStart++;
         }
@@ -1398,8 +1413,9 @@ public class GenerateMetaDataReportResultAction
         List<IndicatorGroup> indicatorGroupList = new ArrayList<IndicatorGroup>( indicatorService
             .getAllIndicatorGroups() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator  + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-       
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
         if( !newdir.exists() )
@@ -1407,7 +1423,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "IndicatorGroupWiseList", 0 );
@@ -1537,7 +1553,8 @@ public class GenerateMetaDataReportResultAction
         List<DataSet> datasetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         Collections.sort( datasetList, new DataSetNameComparator() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
@@ -1546,7 +1563,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "DataSets", 0 );
@@ -1626,7 +1643,8 @@ public class GenerateMetaDataReportResultAction
             .getAllValidationRules() );
         Collections.sort( validationRuleList, new ValidationRuleNameComparator() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator  + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
@@ -1635,7 +1653,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "ValidationRule", 0 );
@@ -1735,7 +1753,8 @@ public class GenerateMetaDataReportResultAction
         List<ValidationRuleGroup> validationRuleGroupList = new ArrayList<ValidationRuleGroup>( validationRuleService
             .getAllValidationRuleGroups() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
@@ -1744,7 +1763,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "ValidationRuleGroupWiseList", 0 );
@@ -1867,7 +1886,8 @@ public class GenerateMetaDataReportResultAction
     {
         List<User> userList = new ArrayList<User>( userStore.getAllUsers() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator  + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
@@ -1876,7 +1896,7 @@ public class GenerateMetaDataReportResultAction
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
-        
+
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
 
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "UserInfo", 0 );
