@@ -140,7 +140,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		-->
 		<property name="triggers">
 			<list>
-				<ref bean="cronTriggerForCheckDataStatusJob" />
+				<!--<ref bean="cronTriggerForCheckDataStatusJob" />-->
 				<ref bean="simpleTriggerForSendSMS" />
 			</list>
 		</property>

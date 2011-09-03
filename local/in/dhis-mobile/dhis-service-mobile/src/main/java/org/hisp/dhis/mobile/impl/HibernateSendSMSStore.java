@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.mobile.api.SendSMS;
 import org.hisp.dhis.mobile.api.SendSMSStore;
 
@@ -64,7 +65,6 @@ public class HibernateSendSMSStore implements SendSMSStore
         return session.createQuery( "from SendSMS" ).list();
     }
     
-    @SuppressWarnings( "unchecked" )
     public long getRowCount()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -73,6 +73,16 @@ public class HibernateSendSMSStore implements SendSMSStore
         criteria.setProjection( Projections.rowCount() );
         Long count = (Long) criteria.uniqueResult();
         return count != null ? count.longValue() : (long) 0;
+    }
+    
+    public SendSMS getSendSMS( String senderInfo )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( SendSMS.class );
+        criteria.add( Restrictions.eq( "senderInfo", senderInfo ) );
+
+        return (SendSMS) criteria.uniqueResult();
     }
 
 }

@@ -25,7 +25,6 @@ public class SendSMSJob
         this.mobileImportService = mobileImportService;
     }
 
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -135,7 +134,7 @@ public class SendSMSJob
         
         mobileImportService.importPendingFiles();
 
-        smsService.sendDrafts();
+        //smsService.sendDrafts();
         
         System.out.println("ImportAndSendSMSProcess Job Ended at : "+new Date() );
     }
