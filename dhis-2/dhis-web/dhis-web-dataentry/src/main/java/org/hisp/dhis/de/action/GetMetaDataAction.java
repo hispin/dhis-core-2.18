@@ -147,6 +147,8 @@ public class GetMetaDataAction
         
         indicators = indicatorService.getIndicatorsWithDataSets();
         
+        expressionService.explodeExpressions( indicators );
+        
         OrganisationUnitDataSetAssociationSet organisationUnitSet = organisationUnitService.getOrganisationUnitDataSetAssociationSet();
         
         dataSetAssociationSets = organisationUnitSet.getDataSetAssociationSets();
@@ -155,12 +157,6 @@ public class GetMetaDataAction
         
         dataSets = dataSetService.getDataSets( organisationUnitSet.getDistinctDataSets() );
         
-        for ( Indicator indicator : indicators )
-        {
-            indicator.setExplodedNumerator( expressionService.explodeExpression( indicator.getNumerator() ) );
-            indicator.setExplodedDenominator( expressionService.explodeExpression( indicator.getDenominator() ) );
-        }
-
         return SUCCESS;
     }
 }
