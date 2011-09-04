@@ -2,7 +2,7 @@
 #set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )
 
 #foreach( $categoryCombo in $orderedCategoryCombos )
-<table style="border:1px solid #c0c0c0; padding:10px;" cellspacing="0">
+<table class="formSection" cellspacing="0">
   #set( $colCount = $numberOfTotalColumns.get( $categoryCombo.id )  ) 
   #set( $categories = $orderedCategories.get( $categoryCombo.id )  )
   #set( $optionsMap = $orderedOptionsMap.get( $categoryCombo.id )  )

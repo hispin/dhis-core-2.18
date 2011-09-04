@@ -18,21 +18,19 @@
 div#rightBar
 {
   display:none;
-  background-color: #baffbc;
+  background-color: #d5efd5;
   height: 454px;
   width: 300px;
   float: right;
   position: absolute;
   top: 85px;
   right: 10px;
-  border: 1px solid #12cd17;
+  border: 1px solid #a4d2a3;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 9px;
   padding-bottom: 9px;
   overflow: auto;
-  filter: alpha(opacity=94);
-  opacity: 0.94;
 }
 
 #hideRightBar
@@ -466,7 +464,7 @@ div.inputCriteria
   height: 400px; /* Override this */
   border: 1px solid #a4d2a3;
   background-color: #d5efd5;
-  padding-top: 5px;
+  padding-top: 10px;
   padding-bottom: 5px;
   padding-left: 20px;
   margin-bottom: 15px;
