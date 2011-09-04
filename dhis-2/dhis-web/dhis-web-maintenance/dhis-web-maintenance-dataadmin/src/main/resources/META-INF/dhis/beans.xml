@@ -78,6 +78,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction"
     scope="prototype">
     <property name="statisticsProvider" ref="org.hisp.dhis.statistics.StatisticsProvider" />
+	<property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"

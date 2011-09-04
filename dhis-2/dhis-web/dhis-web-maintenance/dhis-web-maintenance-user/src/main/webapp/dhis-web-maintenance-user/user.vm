@@ -6,7 +6,6 @@
 
 <h3>$i18n.getString( "user_management" ) #openHelp( "users" )</h3>
 
-<form id="userForm" method="POST">
 <table style="width:100%">
 	<tr>
 		<td style="vertical-align:top">
@@ -80,4 +79,3 @@
 		</td>
 	</tr>
 </table>
-</form>

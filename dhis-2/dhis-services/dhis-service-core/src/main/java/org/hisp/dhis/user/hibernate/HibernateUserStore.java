@@ -29,6 +29,7 @@ package org.hisp.dhis.user.hibernate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class HibernateUserStore
     {
         this.sessionFactory = sessionFactory;
     }
-
+    
     private GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore;
     
     public void setUserRoleStore( GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore )
@@ -327,7 +328,7 @@ public class HibernateUserStore
       
         criteria.add( Restrictions.ilike( "username", "%" + name + "%" ) );
         
-        criteria.setProjection( Projections.rowCount() ).uniqueResult();
+        criteria.setProjection( Projections.rowCount() );
 
         Number rs = (Number) criteria.uniqueResult();
         
@@ -418,6 +419,39 @@ public class HibernateUserStore
         return findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ).size();
     }
 
+    @SuppressWarnings("unchecked")
+    public Collection<UserCredentials> getInactiveUsers( Date date, int first, int max )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.lt( "lastLogin", date ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        
+        return criteria.list();
+    }
+    
+    public int getInactiveUsersCount( Date date )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.lt( "lastLogin", date ) );
+        criteria.setProjection( Projections.rowCount() );
+        
+        Number rs = (Number) criteria.uniqueResult();
+        
+        return rs != null ? rs.intValue() : 0;
+    }
+    
+    public int getActiveUsersCount( Date date )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.ge( "lastLogin", date ) );
+        criteria.setProjection( Projections.rowCount() );
+        
+        Number rs = (Number) criteria.uniqueResult();
+        
+        return rs != null ? rs.intValue() : 0;
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -444,19 +478,11 @@ public class HibernateUserStore
 
     private List<UserCredentials> getBlockUser( Collection<UserCredentials> usersList, int startPos, int pageSize )
     {
-        List<UserCredentials> returnList;
         List<UserCredentials> elementList = new ArrayList<UserCredentials>( usersList );
+
+        int toIndex = Math.min( startPos + pageSize, elementList.size() );
         
-        try
-        {
-            returnList = elementList.subList( startPos, startPos + pageSize );
-        }
-        catch ( IndexOutOfBoundsException ex )
-        {
-            returnList = elementList.subList( startPos, elementList.size() );
-        }
-        
-        return returnList;
+        return elementList.subList( startPos, toIndex );
     }
     
     private List<UserCredentials> toUserCredentials( Collection<User> users )

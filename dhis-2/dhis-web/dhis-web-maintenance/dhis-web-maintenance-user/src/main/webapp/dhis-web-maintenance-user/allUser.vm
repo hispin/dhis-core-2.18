@@ -16,9 +16,21 @@
 <table style="width:100%">
 	<tr>
 		<td style="vertical-align:top">
-			<table width='100%'>
+			<table width="100%">
 				<tr>
-					<td>#filterDiv( "alluser" )</td>
+					<td>
+						#filterDiv( "alluser" )
+					</td>
+					<td>						
+						<label>$i18n.getString( "inactive_for" ):</label><br>
+						<select id="months" style="width:85px" onchange="getInactiveUsers()">
+							<option value="0">[ $i18n.getString( "select" ) ]</option>
+							<option value="1"#if( $months && $months == 1 ) selected="selected"#end>1 $i18n.getString( "month" )</option>
+							#foreach( $m in [2..12] )
+							<option value="${m}"#if( $months && $months == $m ) selected="selected"#end>${m} $i18n.getString( "months" )</option>
+							#end
+						</select>
+					</td>
 					<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddUserForm.action'"/></td>
 				</tr>
 			</table>
