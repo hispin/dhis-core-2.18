@@ -28,6 +28,7 @@ package org.hisp.dhis.user;
  */
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
@@ -172,6 +173,12 @@ public interface UserStore
 
     Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
         int first, int max );
+    
+    Collection<UserCredentials> getInactiveUsers( Date date, int first, int max );
+    
+    int getInactiveUsersCount( Date date );
+    
+    int getActiveUsersCount( Date date );
 
     // -------------------------------------------------------------------------
     // UserAuthorityGroup

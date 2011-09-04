@@ -27,11 +27,13 @@ package org.hisp.dhis.dataadmin.action.statistics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.statistics.StatisticsProvider;
 import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.system.util.EnumMapWrapper;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,6 +54,13 @@ public class GetStatisticsAction
     {
         this.statisticsProvider = statisticsProvider;
     }
+    
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -62,6 +71,13 @@ public class GetStatisticsAction
     public EnumMapWrapper<Objects, Integer> getObjects()
     {
         return objects;
+    }
+    
+    private Map<Integer, Integer> activeUsers = new HashMap<Integer, Integer>();
+
+    public Map<Integer, Integer> getActiveUsers()
+    {
+        return activeUsers;
     }
 
     // -------------------------------------------------------------------------
@@ -74,6 +90,11 @@ public class GetStatisticsAction
         Map<Objects, Integer> counts = statisticsProvider.getObjectCounts();
         
         objects = new EnumMapWrapper<Objects, Integer>( Objects.class, counts );
+        
+        activeUsers.put( 0, userService.getActiveUsersCount( 0 ) );
+        activeUsers.put( 1, userService.getActiveUsersCount( 1 ) );
+        activeUsers.put( 7, userService.getActiveUsersCount( 7 ) );
+        activeUsers.put( 30, userService.getActiveUsersCount( 30 ) );
         
         return SUCCESS;
     }

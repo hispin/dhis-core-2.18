@@ -7,15 +7,22 @@ function searchUserName()
 {
 	var key = getFieldValue( 'key' );
     
-    if( key != '' ) 
+    if ( key != '' ) 
     {
-		jQuery( '#userForm' ).load( "searchUser.action", {key:key}, unLockScreen );
+		jQuery( '#userForm' ).load( 'searchUser.action', {key:key}, unLockScreen );
     	lockScreen();
     }
     else 
     {
-    	jQuery("#userForm").submit();
+    	jQuery( '#userForm' ).submit();
     }
+}
+
+function getInactiveUsers()
+{
+	var months = $( '#months' ).val();
+	
+	window.location.href = 'alluser.action?months=' + months;
 }
 
 // -----------------------------------------------------------------------------
@@ -82,5 +89,5 @@ function userGroupReceived( userGroupElement )
 
 function removeUserGroup( userGroupId, userGroupName )
 {
-    removeItem( userGroupId, userGroupName, i18n_confirm_delete, "removeUserGroup.action" );
+    removeItem( userGroupId, userGroupName, i18n_confirm_delete, 'removeUserGroup.action' );
 }

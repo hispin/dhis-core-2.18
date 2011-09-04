@@ -189,7 +189,13 @@ public interface UserService
 
     Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
         int first, int max );
+    
+    Collection<UserCredentials> getInactiveUsers( int months, int first, int max );
+    
+    int getInactiveUsersCount( int months );
 
+    int getActiveUsersCount( int days );
+    
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
     // -------------------------------------------------------------------------
@@ -209,7 +215,7 @@ public interface UserService
      */
     void updateUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup );
 
-    /**
+    /**2
      * Retrieves the UserAuthorityGroup with the given identifier.
      * 
      * @param id the identifier of the UserAuthorityGroup to retrieve.

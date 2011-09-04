@@ -3,7 +3,7 @@
 
 <table>
 	<tr>
-		<th style="width:200px">$i18n.getString( "type" )</th>
+		<th style="width:200px">$i18n.getString( "object_type" )</th>
 		<th style="width:200px">$i18n.getString( "number" )</th>
 	</tr>
 	<tr>
@@ -62,6 +62,32 @@
         <td>$i18n.getString( "aggregated_indicator_values" )</td>
         <td>$objects.getValue( "AGGREGATEDINDICATORVALUE" )</td>
     </tr>
+    <tr>
+    	<td colspan="2" style="height:15px"></td>
+    </tr>
+</table>
+
+<table>
+	<tr>
+		<th style="width:200px">$i18n.getString( "users_logged_in" )</th>
+		<th style="width:200px">$i18n.getString( "number" )</th>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "today" )</td>
+		<td>$activeUsers.get( 0 )</td>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "yesterday" )</td>
+		<td>$activeUsers.get( 1 )</td>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "last_7_days" )</td>
+		<td>$activeUsers.get( 7 )</td>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "last_30_days" )</td>
+		<td>$activeUsers.get( 30 )</td>
+	</tr>
     <tr>
     	<td colspan="2" style="height:15px"></td>
     </tr>
