@@ -44,6 +44,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
+import org.hisp.dhis.importexport.dxf2.model.DataValueSet.IdentificationStrategy;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
@@ -122,9 +123,14 @@ public class DataValueSetService
 
         Date timestamp = new Date();
 
+        IdentificationStrategy idStrategy = dataValueSet.getIdScheme();
+        if (idStrategy != DataValueSet.DEFAULT_STRATEGY) {
+            throw new IllegalArgumentException( "Onlu UUID id strategy supported currently." );
+        }
+
         DataSet dataSet = getDataSet( dataValueSet );
 
-        OrganisationUnit unit = getOrgUnit( dataValueSet.getOrganisationUnitIdentifier() );
+        OrganisationUnit unit = getOrgUnit( dataValueSet.getOrganisationUnitIdentifier());
 
         if ( !dataSet.getSources().contains( unit ) )
         {
@@ -318,24 +324,24 @@ public class DataValueSetService
         return period;
     }
 
-    private OrganisationUnit getOrgUnit( String uuid )
+    private OrganisationUnit getOrgUnit( String id)
     {
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( uuid );
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
 
         if ( unit == null )
         {
-            throw new IllegalArgumentException( "Org unit with UUID " + uuid + " does not exist" );
+            throw new IllegalArgumentException( "Org unit with UUID " + id + " does not exist" );
         }
         return unit;
     }
 
-    private DataElement getDataElement( String uuid )
+    private DataElement getDataElement( String id )
     {
-        DataElement dataElement = dataElementService.getDataElement( uuid );
+        DataElement dataElement = dataElementService.getDataElement( id );
 
         if ( dataElement == null )
         {
-            throw new IllegalArgumentException( "Data element with UUID " + uuid + " does not exist" );
+            throw new IllegalArgumentException( "Data element with UUID " + id + " does not exist" );
         }
 
         return dataElement;
