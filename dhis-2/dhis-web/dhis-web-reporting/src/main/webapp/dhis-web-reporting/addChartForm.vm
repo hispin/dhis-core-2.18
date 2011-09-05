@@ -73,6 +73,8 @@
     			<option value="line3d"#if ( $!chart.type == "line3d" ) selected#end>$i18n.getString( "line3d_chart" )</option>
     			<option value="pie"#if ( $!chart.type == "pie" ) selected#end>$i18n.getString( "pie_chart" )</option>
     			<option value="pie3d"#if ( $!chart.type == "pie3d" ) selected#end>$i18n.getString( "pie3d_chart" )</option>
+    			<option value="stackedBar"#if ( $!chart.type == "stackedBar" ) selected#end>$i18n.getString( "stacked_bar_chart" )</option>
+    			<option value="stackedBar3d"#if ( $!chart.type == "stackedBar3d" ) selected#end>$i18n.getString( "stacked_bar3d_chart" )</option>
 		    </select>
 	    </td>
     </tr>

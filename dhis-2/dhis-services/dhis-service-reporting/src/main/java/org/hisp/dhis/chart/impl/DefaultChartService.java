@@ -40,6 +40,8 @@ import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 import static org.hisp.dhis.chart.Chart.TYPE_LINE3D;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE3D;
+import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
+import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR3D;
 import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
 import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
@@ -602,48 +604,11 @@ public class DefaultChartService
         }
         else if ( chart.isType( TYPE_PIE ) || chart.isType( TYPE_PIE3D ) )
         {
-            JFreeChart multiplePieChart = null;
-
-            if ( chart.isType( TYPE_PIE ) )
-            {
-                multiplePieChart = ChartFactory.createMultiplePieChart( chart.getTitle(), dataSets[0],
-                    TableOrder.BY_ROW, !chart.getHideLegend(), false, false );
-            }
-            else
-            {
-                multiplePieChart = ChartFactory.createMultiplePieChart3D( chart.getTitle(), dataSets[0],
-                    TableOrder.BY_ROW, !chart.getHideLegend(), false, false );
-            }
-
-            multiplePieChart.setBackgroundPaint( Color.WHITE );
-            multiplePieChart.setAntiAlias( true );
-
-            TextTitle title = multiplePieChart.getTitle();
-            title.setFont( titleFont );
-
-            LegendTitle legend = multiplePieChart.getLegend();
-            legend.setItemFont( subTitleFont );
-
-            MultiplePiePlot multiplePiePlot = (MultiplePiePlot) multiplePieChart.getPlot();
-            JFreeChart pieChart = multiplePiePlot.getPieChart();
-            pieChart.getTitle().setFont( subTitleFont );
-
-            PiePlot piePlot = (PiePlot) pieChart.getPlot();
-            piePlot.setBackgroundPaint( Color.WHITE );
-            piePlot.setShadowXOffset( 0 );
-            piePlot.setShadowYOffset( 0 );
-            piePlot.setLabelFont( new Font( "Tahoma", Font.PLAIN, 10 ) );
-            piePlot.setLabelGenerator( new StandardPieSectionLabelGenerator( "{2}" ) );
-            piePlot.setSimpleLabels( true );
-            piePlot.setIgnoreZeroValues( true );
-            piePlot.setIgnoreNullValues( true );
-
-            for ( int i = 0; i < dataSets[0].getColumnCount(); i++ )
-            {
-                piePlot.setSectionPaint( dataSets[0].getColumnKey( i ), colors[(i % colors.length)] );
-            }
-
-            return multiplePieChart;
+            return getMultiplePieChart( chart, dataSets );
+        }
+        else if ( chart.isType( TYPE_STACKED_BAR ) || chart.isType( TYPE_STACKED_BAR3D ))
+        {
+            return getStackedBarChart( chart, dataSets[0] );
         }
 
         if ( chart.isRegression() )
@@ -697,6 +662,82 @@ public class DefaultChartService
         return jFreeChart;
     }
 
+    private JFreeChart getStackedBarChart( Chart chart, CategoryDataset dataSet )
+    {
+        PlotOrientation orientation = chart.isHorizontalPlotOrientation() ? PlotOrientation.HORIZONTAL
+            : PlotOrientation.VERTICAL;
+        
+        JFreeChart stackedBarChart = null;
+        
+        if ( chart.isType( TYPE_STACKED_BAR ) )
+        {
+            stackedBarChart = ChartFactory.createStackedBarChart( chart.getTitle(), 
+                null, null, dataSet, orientation, true, false, false );
+        }
+        else
+        {
+            stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getTitle(), 
+                null, null, dataSet, orientation, true, false, false );
+        }
+        
+        CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
+        plot.setBackgroundPaint( Color.WHITE );
+
+        CategoryAxis xAxis = plot.getDomainAxis();
+        xAxis.setCategoryLabelPositions( chart.isVerticalLabels() ? CategoryLabelPositions.UP_45
+            : CategoryLabelPositions.STANDARD );
+
+        stackedBarChart.setAntiAlias( true );
+        
+        return stackedBarChart;
+    }
+    
+    private JFreeChart getMultiplePieChart( Chart chart, CategoryDataset[] dataSets )
+    {
+        JFreeChart multiplePieChart = null;
+
+        if ( chart.isType( TYPE_PIE ) )
+        {
+            multiplePieChart = ChartFactory.createMultiplePieChart( chart.getTitle(), dataSets[0],
+                TableOrder.BY_ROW, !chart.getHideLegend(), false, false );
+        }
+        else
+        {
+            multiplePieChart = ChartFactory.createMultiplePieChart3D( chart.getTitle(), dataSets[0],
+                TableOrder.BY_ROW, !chart.getHideLegend(), false, false );
+        }
+
+        multiplePieChart.setBackgroundPaint( Color.WHITE );
+        multiplePieChart.setAntiAlias( true );
+
+        TextTitle title = multiplePieChart.getTitle();
+        title.setFont( titleFont );
+
+        LegendTitle legend = multiplePieChart.getLegend();
+        legend.setItemFont( subTitleFont );
+
+        MultiplePiePlot multiplePiePlot = (MultiplePiePlot) multiplePieChart.getPlot();
+        JFreeChart pieChart = multiplePiePlot.getPieChart();
+        pieChart.getTitle().setFont( subTitleFont );
+
+        PiePlot piePlot = (PiePlot) pieChart.getPlot();
+        piePlot.setBackgroundPaint( Color.WHITE );
+        piePlot.setShadowXOffset( 0 );
+        piePlot.setShadowYOffset( 0 );
+        piePlot.setLabelFont( new Font( "Tahoma", Font.PLAIN, 10 ) );
+        piePlot.setLabelGenerator( new StandardPieSectionLabelGenerator( "{2}" ) );
+        piePlot.setSimpleLabels( true );
+        piePlot.setIgnoreZeroValues( true );
+        piePlot.setIgnoreNullValues( true );
+
+        for ( int i = 0; i < dataSets[0].getColumnCount(); i++ )
+        {
+            piePlot.setSectionPaint( dataSets[0].getColumnKey( i ), colors[(i % colors.length)] );
+        }
+
+        return multiplePieChart;
+    }
+    
     /**
      * Returns a DefaultCategoryDataSet based on aggregated data for the chart.
      */
