@@ -65,6 +65,10 @@ public class Chart
 
     public static final String TYPE_BAR3D = "bar3d";
 
+    public static final String TYPE_STACKED_BAR = "stackedBar";
+    
+    public static final String TYPE_STACKED_BAR3D = "stackedBar3d";
+    
     public static final String TYPE_LINE = "line";
 
     public static final String TYPE_LINE3D = "line3d";
@@ -72,7 +76,7 @@ public class Chart
     public static final String TYPE_PIE = "pie";
 
     public static final String TYPE_PIE3D = "pie3d";
-
+    
     public static final String SIZE_NORMAL = "normal";
 
     public static final String SIZE_WIDE = "wide";
