@@ -40,20 +40,34 @@ function showUserDetails( userId )
 function userReceived( userElement )
 {
     setInnerHTML( 'usernameField', getElementValue( userElement, 'username' ) );
-    setInnerHTML( 'surnameField', getElementValue( userElement, 'surname' ) );
-    setInnerHTML( 'firstNameField', getElementValue( userElement, 'firstName' ) );
+	
+	var fullName = getElementValue( userElement, 'firstName' ) + ", " + getElementValue( userElement, 'surname' );
+    setInnerHTML( 'fullNameField', fullName );
 
     var email = getElementValue( userElement, 'email' );
     setInnerHTML( 'emailField', email ? email : '[' + i18n_none + ']' );
 
     var phoneNumber = getElementValue( userElement, 'phoneNumber' );
 	setInnerHTML( 'phoneNumberField', phoneNumber ? phoneNumber : '[' + i18n_none + ']' );
-
-	var numberOrgunit = getElementValue( userElement, 'numberOrgunit' );
-	setInnerHTML( 'numberOrgunitField', numberOrgunit ? numberOrgunit : '[' + i18n_none + ']' );
 	
 	var lastLogin = getElementValue( userElement, 'lastLogin' );;
 	setInnerHTML( 'lastLoginField', lastLogin ? lastLogin : '[' + i18n_none + ']' );
+	
+	var temp = '';
+	var orgunits = userElement.getElementsByTagName( 'orgunit' );
+	for( var i = 0 ; i < orgunits.length ; i ++ )
+	{
+		temp += orgunits[i].firstChild.nodeValue + "<br/>";
+	}
+	setInnerHTML( 'assignedOrgunitField', temp ? temp : '[' + i18n_none + ']' );
+	
+	temp = '';
+	var roles = userElement.getElementsByTagName( 'role' );
+	for( var i = 0 ; i < roles.length ; i ++ )
+	{
+		temp += roles[i].firstChild.nodeValue + "<br/>";
+	}
+	setInnerHTML( 'roleField', temp ? temp : '[' + i18n_none + ']' );
 	
     showDetails();
 }

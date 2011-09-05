@@ -80,12 +80,12 @@
 					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
 				</div>	
 				<p><label>$i18n.getString( "username" ):</label><br/><span id="usernameField"></span></p>
-				<p><label>$i18n.getString( "surname" ):</label><br/><span id="surnameField"></span></p>
-				<p><label>$i18n.getString( "firstName" ):</label><br/><span id="firstNameField"></span></p>
+				<p><label>$i18n.getString( "fullname" ):</label><br/><span id="fullNameField"></span></p>
 				<p><label>$i18n.getString( "email" ):</label><br/><span id="emailField"></span></p>
                 <p><label>$i18n.getString( "phone_number" ):</label><br/><span id="phoneNumberField"></span></p>
-				<p><label>$i18n.getString( "number_of_orgunit" ):</label><br/><span id="numberOrgunitField"></span></p>
 				<p><label>$i18n.getString( "last_login"):</label><br/><span id="lastLoginField"></span></p>
+				<p><label>$i18n.getString( "organisation_units" ):</label><br/><span id="assignedOrgunitField"></span></p>
+				<p><label>$i18n.getString( "roles" ):</label><br/><span id="roleField"></span></p>
 			</div>
 			
 			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
