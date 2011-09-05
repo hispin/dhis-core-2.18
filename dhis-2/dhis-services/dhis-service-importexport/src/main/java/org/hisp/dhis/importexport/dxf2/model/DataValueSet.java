@@ -39,11 +39,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType( XmlAccessType.FIELD )
 public class DataValueSet
 {
+    public enum IdentificationStrategy { INTERNAL, UUID, CODE  };
+
+    /**
+     *  A default strategy to use.
+     */
+    public static final IdentificationStrategy DEFAULT_STRATEGY = IdentificationStrategy.UUID;
 
     @XmlAttribute( name = "dataSet" )
     private String dataSetIdentifier;
 
-    @XmlAttribute( name = "orgUnit", required = true )
+    @XmlAttribute( name = "orgUnit" )
     private String organisationUnitIdentifier;
 
     @XmlAttribute( name = "period", required = true )
@@ -52,35 +58,22 @@ public class DataValueSet
     @XmlAttribute( name = "complete" )
     private String completeDate;
 
-    @XmlAttribute( name = "orgUnitIdScheme" )
-    private String orgUnitIdScheme;
-
-    @XmlAttribute( name = "dataElementIdScheme" )
-    private String dataElementIdScheme;
+    @XmlAttribute( name = "idScheme" )
+    private IdentificationStrategy idScheme;
 
     @XmlElement( name = "dataValue" )
     private List<DataValue> dataValues;
 
-    public String getDataElementIdScheme()
+    public IdentificationStrategy getIdScheme()
     {
-        return dataElementIdScheme;
+        return (idScheme != null) ? idScheme : DEFAULT_STRATEGY;
     }
 
-    public void setDataElementIdScheme( String dataElementIdScheme )
+    public void setIdScheme( IdentificationStrategy idScheme )
     {
-        this.dataElementIdScheme = dataElementIdScheme;
+        this.idScheme = idScheme;
     }
 
-    public String getOrgUnitIdScheme()
-    {
-        return orgUnitIdScheme;
-    }
-
-    public void setOrgUnitIdScheme( String orgUnitIdScheme )
-    {
-        this.orgUnitIdScheme = orgUnitIdScheme;
-    }
-    
     public String getDataSetIdentifier()
     {
         return dataSetIdentifier;

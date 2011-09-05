@@ -42,14 +42,26 @@ public class DataValue
     @XmlAttribute( name = "dataElement", required = true )
     private String dataElementIdentifier;
 
+    @XmlAttribute( name = "value", required = true)
+    private String value;
+
+    /**
+     * optional - defaults to default
+     */
     @XmlAttribute( name = "categoryOptionCombo" )
     private String categoryOptionComboIdentifier;
 
+    /**
+     * optional - defaults to orgUnit id from datavalueset
+     */
+    @XmlAttribute( name = "orgUnit" )
+    private String orgUnitIdentifier;
+
+    /**
+     * Arbitrary attributes identifying dimensions by concept name
+     */
     @XmlAnyAttribute
     Map<QName,Object> dimensions;
-
-    @XmlAttribute
-    private String value;
 
     public String getDataElementIdentifier()
     {
