@@ -37,6 +37,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * The superclass of all PeriodTypes.
@@ -254,7 +255,27 @@ public abstract class PeriodType
             throw new RuntimeException( "Failed to parse medium date", ex );
         }
     }
-    
+
+    /**
+     * Returns a PeriodType corresponding to the provided string
+     * The test is quite rudimentary, testing for string format rather than invalid periods.
+     * Currently only recognizes the basic subset of common period types.
+     *
+     * @param  isoPeriod String formatted period (2011, 201101, 2011W34, 2011Q1 etc
+     * @return the PeriodType or null if unrecognised
+     */
+    public static PeriodType getPeriodTypeFromIsoString(String isoPeriod)
+    {
+        if (isoPeriod.matches("\\b\\d{4}\\b")) return new YearlyPeriodType();
+        if (isoPeriod.matches("\\b\\d{6}\\b")) return new MonthlyPeriodType();
+        if (isoPeriod.matches("\\b\\d{4}W\\d[\\d]?\\b")) return new WeeklyPeriodType();
+        if (isoPeriod.matches("\\b\\d{8}\\b")) return new DailyPeriodType();
+        if (isoPeriod.matches("\\b\\d{4}Q\\d\\b")) return new QuarterlyPeriodType();
+        if (isoPeriod.matches("\\b\\d{4}S\\d\\b")) return new SixMonthlyPeriodType();
+
+        return null;
+    }
+
     /**
      * Returns an iso8601 formatted string representation of the period
      * 

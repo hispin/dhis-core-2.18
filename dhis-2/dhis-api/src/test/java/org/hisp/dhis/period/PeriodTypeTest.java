@@ -44,4 +44,23 @@ public class PeriodTypeTest
     
     }
 
+    @Test
+    public void testGetPeriodTypeFromIsoString()
+    {
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011").getName(),"Yearly");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "201101").getName(),"Monthly");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011W1").getName(),"Weekly");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011W32").getName(),"Weekly");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "20110101").getName(),"Daily");
+        assertEquals( PeriodType.getPeriodTypeFromIsoString( "2011Q3").getName(),"Quarterly");
+
+        assertNull(PeriodType.getPeriodTypeFromIsoString( "201"));
+        assertNull(PeriodType.getPeriodTypeFromIsoString( "20111"));
+        assertNull(PeriodType.getPeriodTypeFromIsoString( "201W2"));
+        assertNull(PeriodType.getPeriodTypeFromIsoString( "2011Q12"));
+        assertNull(PeriodType.getPeriodTypeFromIsoString( "2011W234"));
+        assertNull(PeriodType.getPeriodTypeFromIsoString( "201er2345566"));
+        assertNull(PeriodType.getPeriodTypeFromIsoString( "2011Q10"));
+    }
+
 }
