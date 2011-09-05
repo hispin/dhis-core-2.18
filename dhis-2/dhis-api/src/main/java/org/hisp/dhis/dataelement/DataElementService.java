@@ -92,6 +92,14 @@ public interface DataElementService
     DataElement getDataElement( String uuid );
 
     /**
+     * Returns the DataElement with the given code.
+     *
+     * @param code the code.
+     * @return the DataElement with the given code, or null if no match.
+     */
+    DataElement getDataElementByCode( String code );
+
+    /**
      * Returns a DataElement with a given name.
      * 
      * @param name the name of the DataElement to return.
