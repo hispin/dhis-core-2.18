@@ -113,6 +113,16 @@ public class HibernateDataElementStore
         return (DataElement) criteria.uniqueResult();
     }
 
+    public DataElement getDataElementByCode( String code )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataElement.class );
+        criteria.add( Restrictions.eq( "code", code ) );
+
+        return (DataElement) criteria.uniqueResult();
+    }
+
     public DataElement getDataElementByName( String name )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -150,16 +160,6 @@ public class HibernateDataElementStore
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "shortName", shortName ) );
-
-        return (DataElement) criteria.uniqueResult();
-    }
-
-    public DataElement getDataElementByCode( String code )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "code", code ) );
 
         return (DataElement) criteria.uniqueResult();
     }

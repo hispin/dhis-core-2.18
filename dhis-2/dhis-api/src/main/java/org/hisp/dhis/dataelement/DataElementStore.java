@@ -82,11 +82,19 @@ public interface DataElementStore
 
     /**
      * Returns the DataElement with the given UUID.
-     * 
+     *
      * @param uuid the UUID.
      * @return the DataElement with the given UUID, or null if no match.
      */
     DataElement getDataElement( String uuid );
+
+    /**
+     * Returns the DataElement with the given code.
+     *
+     * @param code the code.
+     * @return the DataElement with the given code, or null if no match.
+     */
+    DataElement getDataElementByCode( String code );
 
     /**
      * Returns a DataElement with a given name.

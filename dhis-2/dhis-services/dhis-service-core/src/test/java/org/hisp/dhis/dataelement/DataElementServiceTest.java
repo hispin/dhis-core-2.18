@@ -173,6 +173,32 @@ public class DataElementServiceTest
     }
 
     @Test
+    public void testGetDataElementByCode()
+        throws Exception
+    {
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
+        dataElementA.setCode( "codeA");
+        dataElementB.setCode( "codeB");
+
+        int idA = dataElementService.addDataElement( dataElementA );
+        int idB = dataElementService.addDataElement( dataElementB );
+
+        dataElementA = dataElementService.getDataElementByCode( "codeA" );
+        assertNotNull( dataElementA );
+        assertEquals( idA, dataElementA.getId() );
+        assertEquals( "DataElementA", dataElementA.getName() );
+
+        dataElementB = dataElementService.getDataElementByCode( "codeB" );
+        assertNotNull( dataElementB );
+        assertEquals( idB, dataElementB.getId() );
+        assertEquals( "DataElementB", dataElementB.getName() );
+
+        DataElement dataElementC = dataElementService.getDataElementByCode( "codeC" );
+        assertNull( dataElementC );
+    }
+
+    @Test
     public void testGetDataElementByName()
         throws Exception
     {
