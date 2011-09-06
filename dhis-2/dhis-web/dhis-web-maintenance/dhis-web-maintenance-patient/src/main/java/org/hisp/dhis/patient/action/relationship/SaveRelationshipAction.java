@@ -29,7 +29,6 @@ package org.hisp.dhis.patient.action.relationship;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -53,13 +52,6 @@ public class SaveRelationshipAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
-    }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
     }
 
     private RelationshipTypeService relationshipTypeService;

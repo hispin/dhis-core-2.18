@@ -25,96 +25,90 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.relationship;
+package org.hisp.dhis.patient.action.patientchart;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.relationship.Relationship;
-import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElementService;
+import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ ShowAddPatientChartFormAction.java Sep 5, 2011 9:24:10 AM $
+ * 
  */
-public class ShowRelationshipListAction
+public class ShowAddPatientChartFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private ProgramService programService;
 
-    public void setPatientService( PatientService patientService )
+    public void setProgramService( ProgramService programService )
     {
-        this.patientService = patientService;
+        this.programService = programService;
     }
 
-    private PatientAttributeValueService patientAttributeValueService;
+    private ProgramStageDataElementService programStageDataElementService;
 
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
     {
-        this.patientAttributeValueService = patientAttributeValueService;
+        this.programStageDataElementService = programStageDataElementService;
     }
 
-    private RelationshipService relationshipService;
-
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
-    }
-    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer programId;
 
-    public void setId( Integer id )
+    public void setProgramId( Integer programId )
     {
-        this.id = id;
+        this.programId = programId;
     }
 
-    private Patient patient;
-
-    public Patient getPatient()
+    public Integer getProgramId()
     {
-        return patient;
-    }
-    
-    Collection<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
-
-    public Collection<PatientAttributeValue> getPatientAttributeValues()
-    {
-        return patientAttributeValues;
+        return programId;
     }
 
-    Collection<Relationship> relationships;
+    private Collection<DataElement> dataElements = new HashSet<DataElement>();
 
-    public Collection<Relationship> getRelationships()
+    public Collection<DataElement> getDataElements()
     {
-        return relationships;
+        return dataElements;
     }
+
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( id );
+        Program program = programService.getProgram( programId );
         
-        patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        Set<ProgramStage> programStages = program.getProgramStages();
+            
+        for( ProgramStage programStage : programStages)
+        {
+            dataElements.addAll( programStageDataElementService.getListDataElement( programStage ) );
+        }
 
-        relationships = relationshipService.getRelationshipsForPatient( patient );
-
+        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
+        
         return SUCCESS;
     }
 }

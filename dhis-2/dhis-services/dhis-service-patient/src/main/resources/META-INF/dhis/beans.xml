@@ -133,6 +133,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
      <property name="sessionFactory" ref="sessionFactory"/>
    </bean>
    
+   <bean id="org.hisp.dhis.patientchart.PatientChartStore" class="org.hisp.dhis.patientchart.hibernate.HibernatePatientChartStore">
+		<property name="clazz" value="org.hisp.dhis.patientchart.PatientChart"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+   </bean>
+	
 	<!-- Service definitions -->
 	
 	<bean id="org.hisp.dhis.program.ProgramDataEntryService"
@@ -307,6 +312,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.program.ProgramAttributeOptionStore"/>
    </bean>
    
+   <bean id="org.hisp.dhis.patientchart.PatientChartService" class="org.hisp.dhis.patientchart.DefaultPatientChartService">
+		<property name="patientChartStore" ref="org.hisp.dhis.patientchart.PatientChartStore"/>
+		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+   </bean>
+	
 	<!-- Aggregation engine -->
 
 	<bean

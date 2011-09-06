@@ -239,5 +239,17 @@
       <param name="page">/dhis-web-caseentry/validationResult.vm</param>
     </action>
 
+	<!-- Patient chart -->
+	
+	<action name="patientChartList" class="org.hisp.dhis.caseentry.action.patientchart.GetPatientChartListAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-caseentry/patientChartList.vm</param>
+      <param name="javascripts">javascript/patientChart.js</param>
+    </action>
+    
+    <action name="generatePatientChart" class="org.hisp.dhis.caseentry.action.patientchart.GeneratePatientChartAction">
+      <result name="success" type="chart"></result>
+    </action>
+    
   </package>
 </struts>

@@ -1132,3 +1132,19 @@ function entryFormContainerOnReady()
         TOGGLE.init();
     }
 }
+
+// -------------------------------------------------------------------------
+// Show Patient chart list
+// -------------------------------------------------------------------------
+
+function patientChartList( patientId )
+{
+    $( '#patientChartListDiv' ).load('patientChartList.action?patientId=' + patientId ).dialog( {
+        autoOpen : true,
+        modal : true,
+        height : 400,
+        width : 500,
+        resizable : false,
+        title : 'Viewing Chart'
+    } );
+}

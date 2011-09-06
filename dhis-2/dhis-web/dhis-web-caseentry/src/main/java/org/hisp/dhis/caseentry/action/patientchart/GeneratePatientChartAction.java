@@ -25,54 +25,42 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.relationship;
+package org.hisp.dhis.caseentry.action.patientchart;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.relationship.Relationship;
-import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.patientchart.PatientChartService;
+import org.jfree.chart.JFreeChart;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ ViewPatientChartAction.java Sep 5, 2011 2:55:44 PM $
+ * 
  */
-public class ShowRelationshipListAction
+public class GeneratePatientChartAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private PatientChartService patientChartService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientChartService( PatientChartService patientChartService )
     {
-        this.patientService = patientService;
+        this.patientChartService = patientChartService;
     }
 
-    private PatientAttributeValueService patientAttributeValueService;
+    private I18nFormat format;
 
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    public void setFormat( I18nFormat format )
     {
-        this.patientAttributeValueService = patientAttributeValueService;
+        this.format = format;
     }
 
-    private RelationshipService relationshipService;
-
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
-    }
-    
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -81,40 +69,43 @@ public class ShowRelationshipListAction
     {
         this.id = id;
     }
-
-    private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
     
-    Collection<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
+    private int width;
 
-    public Collection<PatientAttributeValue> getPatientAttributeValues()
+    public int getWidth()
     {
-        return patientAttributeValues;
+        return width;
     }
 
-    Collection<Relationship> relationships;
+    private int height;
 
-    public Collection<Relationship> getRelationships()
+    public int getHeight()
     {
-        return relationships;
+        return height;
     }
+
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Output
     // -------------------------------------------------------------------------
 
+    private JFreeChart chart;
+
+    public JFreeChart getChart()
+    {
+        return chart;
+    }
+
+    @Override
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( id );
+        width = 500;
+
+        height = 400;
         
-        patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
-
-        relationships = relationshipService.getRelationshipsForPatient( patient );
-
+        chart = patientChartService.getJFreeChart( id, format );
+     
         return SUCCESS;
     }
+
 }

@@ -25,30 +25,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.relationship;
+package org.hisp.dhis.caseentry.action.patientchart;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.relationship.Relationship;
-import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.patientchart.PatientChart;
+import org.hisp.dhis.patientchart.PatientChartService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ GetPatientChartListAction.java Sep 5, 2011 9:11:31 AM $
+ * 
  */
-public class ShowRelationshipListAction
+public class GetPatientChartListAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private PatientChartService patientChartService;
+
+    public void setPatientChartService( PatientChartService patientChartService )
+    {
+        this.patientChartService = patientChartService;
+    }
 
     private PatientService patientService;
 
@@ -57,64 +62,37 @@ public class ShowRelationshipListAction
         this.patientService = patientService;
     }
 
-    private PatientAttributeValueService patientAttributeValueService;
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
-
-    private RelationshipService relationshipService;
-
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
-    }
-    
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer patientId;
 
-    public void setId( Integer id )
+    public void setPatientId( Integer patientId )
     {
-        this.id = id;
+        this.patientId = patientId;
     }
 
-    private Patient patient;
+    private Collection<PatientChart> patientCharts;
 
-    public Patient getPatient()
+    public Collection<PatientChart> getPatientCharts()
     {
-        return patient;
-    }
-    
-    Collection<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
-
-    public Collection<PatientAttributeValue> getPatientAttributeValues()
-    {
-        return patientAttributeValues;
+        return patientCharts;
     }
 
-    Collection<Relationship> relationships;
-
-    public Collection<Relationship> getRelationships()
-    {
-        return relationships;
-    }
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( id );
-        
-        patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        Patient patient = patientService.getPatient( patientId );
 
-        relationships = relationshipService.getRelationshipsForPatient( patient );
+        patientCharts = patientChartService.getPatientCharts( patient.getPrograms() );
 
         return SUCCESS;
     }
+
 }
