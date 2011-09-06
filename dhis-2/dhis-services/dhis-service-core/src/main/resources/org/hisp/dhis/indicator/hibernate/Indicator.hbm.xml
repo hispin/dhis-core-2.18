@@ -68,5 +68,14 @@
       <key column="indicatorid" />
       <many-to-many class="org.hisp.dhis.dataset.DataSet" column="datasetid" />
     </set>
+
+    <!-- Dynamic attribute values -->
+
+    <set name="attributeValues" table="indicatorattributevalues">
+      <cache usage="read-write" />
+      <key column="indicatorid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" />
+    </set>
+
   </class>
 </hibernate-mapping>

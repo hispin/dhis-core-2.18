@@ -73,5 +73,13 @@
 
     <property name="zeroIsSignificant" />
 
+    <!-- Dynamic attribute values -->
+
+    <set name="attributeValues" table="dataelementattributevalues">
+      <cache usage="read-write" />
+      <key column="dataelementid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" />
+    </set>
+
   </class>
 </hibernate-mapping>

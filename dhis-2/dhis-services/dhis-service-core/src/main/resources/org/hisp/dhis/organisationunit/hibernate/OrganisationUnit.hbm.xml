@@ -87,5 +87,13 @@
 
     <property name="hasPatients" />
 
+    <!-- Dynamic attribute values -->
+
+    <set name="attributeValues" table="organisationunitattributevalues">
+      <cache usage="read-write" />
+      <key column="organisationunitid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" />
+    </set>
+
   </class>
 </hibernate-mapping>

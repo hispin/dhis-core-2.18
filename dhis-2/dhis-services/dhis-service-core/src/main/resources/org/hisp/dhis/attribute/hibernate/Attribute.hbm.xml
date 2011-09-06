@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.hisp.dhis.attribute">
+  <class name="Attribute" table="attribute">
+
+    <cache usage="read-write" />
+
+    <id name="id" column="attributeid">
+      <generator class="native" />
+    </id>
+
+    <property name="name" not-null="true" unique="true" />
+
+    <property name="valueType" not-null="true" />
+
+    <property name="mandatory" />
+
+    <property name="dataElement" />
+
+    <property name="indicator" />
+
+    <property name="organisationUnit" />
+
+    <set name="attributeOptions" table="attributeattributeoptions">
+      <key column="attributeid" />
+      <many-to-many column="attributeoptionid" class="AttributeOption" />
+    </set>
+
+    <set name="attributeValues" inverse="true" lazy="true">
+      <cache usage="read-write" />
+      <key column="attributeid" />
+      <one-to-many class="AttributeValue" />
+    </set>
+
+  </class>
+</hibernate-mapping>
