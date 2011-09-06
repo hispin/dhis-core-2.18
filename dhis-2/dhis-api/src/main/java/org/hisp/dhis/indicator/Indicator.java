@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.AbstractNameableObject;
 import org.hisp.dhis.dataset.DataSet;
 
@@ -57,25 +58,30 @@ public class Indicator
     private String numeratorAggregationOperator;
 
     private String explodedNumerator;
-    
+
     private String denominator;
 
     private String denominatorDescription;
 
     private String denominatorAggregationOperator;
-    
+
     private String explodedDenominator;
-    
+
     private Integer sortOrder;
 
     private String url;
 
     private Date lastUpdated;
-    
+
     private Set<IndicatorGroup> groups = new HashSet<IndicatorGroup>();
-    
+
     private Set<DataSet> dataSets = new HashSet<DataSet>();
-    
+
+    /**
+     * Set of the dynamic attributes values that belong to this indicator.
+     */
+    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -85,13 +91,13 @@ public class Indicator
         groups.add( group );
         group.getMembers().add( this );
     }
-    
+
     public void removeIndicatorGroup( IndicatorGroup group )
     {
         groups.remove( group );
         group.getMembers().remove( this );
     }
-    
+
     public void updateIndicatorGroups( Set<IndicatorGroup> updates )
     {
         for ( IndicatorGroup group : new HashSet<IndicatorGroup>( groups ) )
@@ -101,18 +107,18 @@ public class Indicator
                 removeIndicatorGroup( group );
             }
         }
-        
+
         for ( IndicatorGroup group : updates )
         {
             addIndicatorGroup( group );
         }
     }
-    
+
     public boolean isAnnualized()
     {
         return annualized != null && annualized;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -255,7 +261,7 @@ public class Indicator
     {
         this.explodedDenominator = explodedDenominator;
     }
-    
+
     public Integer getSortOrder()
     {
         return sortOrder;
@@ -304,5 +310,15 @@ public class Indicator
     public void setDataSets( Set<DataSet> dataSets )
     {
         this.dataSets = dataSets;
+    }
+
+    public Set<AttributeValue> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
+    public void setAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
     }
 }

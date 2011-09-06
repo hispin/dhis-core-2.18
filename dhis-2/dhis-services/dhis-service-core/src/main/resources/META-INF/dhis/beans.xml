@@ -233,6 +233,21 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="clazz" value="org.hisp.dhis.version.Version" />
   </bean>
 
+  <bean id="org.hisp.dhis.attribute.AttributeStore" class="org.hisp.dhis.attribute.hibernate.HibernateAttributeStore">
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="clazz" value="org.hisp.dhis.attribute.Attribute" />
+  </bean>
+
+  <bean id="org.hisp.dhis.attribute.AttributeOptionStore" class="org.hisp.dhis.attribute.hibernate.HibernateAttributeOptionStore">
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="clazz" value="org.hisp.dhis.attribute.AttributeOption" />
+  </bean>
+
+  <bean id="org.hisp.dhis.attribute.AttributeValueStore" class="org.hisp.dhis.attribute.hibernate.HibernateAttributeValueStore">
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="clazz" value="org.hisp.dhis.attribute.AttributeValue" />
+  </bean>
+
   <!-- Service definitions -->
 
   <bean id="org.hisp.dhis.dataelement.DataElementOperandService" class="org.hisp.dhis.dataelement.DefaultDataElementOperandService">
@@ -444,6 +459,18 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.version.VersionService" class="org.hisp.dhis.version.DefaultVersionService">
     <property name="versionStore" ref="org.hisp.dhis.version.VersionStore" />
+  </bean>
+
+  <bean id="org.hisp.dhis.attribute.AttributeService" class="org.hisp.dhis.attribute.DefaultAttributeService">
+    <property name="attributeStore" ref="org.hisp.dhis.attribute.AttributeStore" />
+  </bean>
+
+  <bean id="org.hisp.dhis.attribute.AttributeOptionService" class="org.hisp.dhis.attribute.DefaultAttributeOptionService">
+    <property name="attributeOptionStore" ref="org.hisp.dhis.attribute.AttributeOptionStore" />
+  </bean>
+
+  <bean id="org.hisp.dhis.attribute.AttributeValueService" class="org.hisp.dhis.attribute.DefaultAttributeValueService">
+    <property name="attributeValueStore" ref="org.hisp.dhis.attribute.AttributeValueStore" />
   </bean>
 
   <!-- I18nService -->
