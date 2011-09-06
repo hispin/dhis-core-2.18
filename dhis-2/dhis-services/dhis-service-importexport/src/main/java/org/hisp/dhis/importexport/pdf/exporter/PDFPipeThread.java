@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
+import org.hisp.dhis.importexport.pdf.converter.UserConverter;
 import org.hisp.dhis.system.process.OpenSessionThread;
 import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.system.util.StreamUtils;
@@ -87,6 +88,14 @@ public class PDFPipeThread
         this.organisationUnitConverter = organisationUnitConverter;
     }
 
+    private PDFConverter userConverter;
+
+    public void setUserConverter( UserConverter userConverter )
+    {
+        this.userConverter = userConverter;
+
+    }
+
     private PDFConverter validationRuleConverter;
 
     public void setValidationRuleConverter( PDFConverter validationRuleConverter )
@@ -116,15 +125,17 @@ public class PDFPipeThread
             document = PDFUtils.openDocument( outputStream );
 
             PDFUtils.printDocumentFrontPage( document, exportParams.getI18n(), exportParams.getFormat() );
-            
+
             dataElementConverter.write( document, exportParams );
-            
+
             indicatorConverter.write( document, exportParams );
 
             organisationUnitHierarchyConverter.write( document, exportParams );
 
             organisationUnitConverter.write( document, exportParams );
             
+            userConverter.write( document, exportParams );
+
             validationRuleConverter.write( document, exportParams );
 
             PDFUtils.closeDocument( document );
@@ -134,4 +145,5 @@ public class PDFPipeThread
             StreamUtils.closeOutputStream( outputStream );
         }
     }
+
 }

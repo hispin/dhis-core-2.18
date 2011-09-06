@@ -44,9 +44,11 @@ import org.hisp.dhis.importexport.pdf.converter.DataElementConverter;
 import org.hisp.dhis.importexport.pdf.converter.IndicatorConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitHierarchyConverter;
+import org.hisp.dhis.importexport.pdf.converter.UserConverter;
 import org.hisp.dhis.importexport.pdf.converter.ValidationRuleConverter;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
@@ -74,6 +76,13 @@ public class ITextPDFExportService
         this.dataElementService = dataElementService;
     }
 
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -88,11 +97,11 @@ public class ITextPDFExportService
         this.organisationUnitService = organisationUnitService;
     }
 
-    private ExpressionService expressionService;
+    private UserService userService;
 
-    public void setExpressionService( ExpressionService expressionService )
+    public void setUserService( UserService userService )
     {
-        this.expressionService = expressionService;
+        this.userService = userService;
     }
 
     private ValidationRuleService validationRuleService;
@@ -134,6 +143,7 @@ public class ITextPDFExportService
             thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter(
                 organisationUnitService ) );
             thread.setOrganisationUnitConverter( new OrganisationUnitConverter( organisationUnitService ) );
+            thread.setUserConverter( new UserConverter( userService ) );
             thread.setValidationRuleConverter( new ValidationRuleConverter( validationRuleService, expressionService ) );
 
             thread.start();

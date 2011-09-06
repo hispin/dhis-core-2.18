@@ -34,6 +34,7 @@ import java.util.HashSet;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -42,71 +43,75 @@ import org.hisp.dhis.i18n.I18nFormat;
 public class ExportParams
 {
     private boolean includeDataValues;
-    
+
     private boolean includeCompleteDataSetRegistrations;
-    
+
     private boolean aggregatedData;
-    
+
     private Date startDate;
-    
+
     private Date endDate;
-    
+
+    private User currentUser;
+
     private Collection<Integer> categories = new ArrayList<Integer>();
-    
+
     private Collection<Integer> categoryOptions = new ArrayList<Integer>();
-    
+
     private Collection<Integer> categoryCombos = new ArrayList<Integer>();
 
     private Collection<Integer> categoryOptionCombos = new ArrayList<Integer>();
 
     private Collection<Integer> dataElements = new ArrayList<Integer>();
-    
+
     private Collection<Integer> dataElementGroups = new ArrayList<Integer>();
-    
+
     private Collection<Integer> dataElementGroupSets = new ArrayList<Integer>();
-    
+
     private Collection<Integer> indicators = new ArrayList<Integer>();
-    
+
     private Collection<Integer> indicatorGroups = new ArrayList<Integer>();
-    
+
     private Collection<Integer> indicatorGroupSets = new ArrayList<Integer>();
-    
+
     private Collection<Integer> indicatorTypes = new ArrayList<Integer>();
-    
+
     private Collection<Integer> dataDictionaries = new ArrayList<Integer>();
-    
+
     private Collection<Integer> dataSets = new ArrayList<Integer>();
-    
+
     private Collection<Integer> periods = new ArrayList<Integer>();
-    
+
     private Collection<Integer> organisationUnits = new ArrayList<Integer>();
-    
+
     private Collection<Integer> organisationUnitGroups = new ArrayList<Integer>();
-    
+
     private Collection<Integer> organisationUnitGroupSets = new ArrayList<Integer>();
-    
+
     private Collection<Integer> organisationUnitLevels = new HashSet<Integer>();
-    
+
+    private Collection<Integer> users = new HashSet<Integer>();
+
     private Collection<Integer> validationRules = new ArrayList<Integer>();
-    
+
     private Collection<Integer> reports = new ArrayList<Integer>();
-    
+
     private Collection<Integer> reportTables = new ArrayList<Integer>();
-    
+
     private Collection<Integer> charts = new ArrayList<Integer>();
-    
+
     private Collection<Integer> olapUrls = new ArrayList<Integer>();
-    
+
     private I18n i18n;
-    
+
     private I18nFormat format;
-    
+
     // -------------------------------------------------------------------------
     // Constructur
     // -------------------------------------------------------------------------
-    
+
     public ExportParams()
-    {   
+    {
     }
 
     // -------------------------------------------------------------------------
@@ -132,7 +137,7 @@ public class ExportParams
     {
         this.includeCompleteDataSetRegistrations = includeCompleteDataSetRegistrations;
     }
-    
+
     public boolean isAggregatedData()
     {
         return aggregatedData;
@@ -162,7 +167,7 @@ public class ExportParams
     {
         this.endDate = endDate;
     }
-    
+
     public I18n getI18n()
     {
         return i18n;
@@ -172,7 +177,7 @@ public class ExportParams
     {
         this.i18n = i18n;
     }
-    
+
     public I18nFormat getFormat()
     {
         return format;
@@ -221,6 +226,19 @@ public class ExportParams
     public void setCategoryOptionCombos( Collection<Integer> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;
+    }
+
+    /**
+     * @return
+     */
+    public User getCurrentUser()
+    {
+        return currentUser;
+    }
+
+    public void setCurrentUser( User currentUser )
+    {
+        this.currentUser = currentUser;
     }
 
     public Collection<Integer> getDataElements()
@@ -371,6 +389,16 @@ public class ExportParams
     public void setValidationRules( Collection<Integer> validationRules )
     {
         this.validationRules = validationRules;
+    }
+
+    public Collection<Integer> getUsers()
+    {
+        return users;
+    }
+
+    public void setUsers( Collection<Integer> users )
+    {
+        this.users = users;
     }
 
     public Collection<Integer> getReports()
