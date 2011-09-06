@@ -39,6 +39,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType( XmlAccessType.FIELD )
 public class DataValueSet
 {
+
+   // ---------------------------------------------------------------------------
+   // Element and attribute names
+   // ---------------------------------------------------------------------------
+
+    public static final String ATTR_COMMENT = "comment";
+
+    public static final String ATTR_DATASET = "dataSet";
+
+    public static final String ATTR_IDSCHEME = "idScheme";
+
+    public static final String ATTR_ORGUNIT = "orgUnit";
+
+    public static final String ATTR_PERIOD = "period";
+
+    public static final String ATTR_COMPLETE = "period";
+
+    public static final String DATAVALUE = "dataValue";
+
+   // ---------------------------------------------------------------------------
+
     public enum IdentificationStrategy { INTERNAL, UUID, CODE  };
 
     /**
@@ -46,22 +67,22 @@ public class DataValueSet
      */
     public static final IdentificationStrategy DEFAULT_STRATEGY = IdentificationStrategy.UUID;
 
-    @XmlAttribute( name = "dataSet" )
+    @XmlAttribute( name = ATTR_DATASET )
     private String dataSetIdentifier;
 
-    @XmlAttribute( name = "orgUnit" )
+    @XmlAttribute( name = ATTR_ORGUNIT )
     private String organisationUnitIdentifier;
 
-    @XmlAttribute( name = "period", required = true )
+    @XmlAttribute( name = ATTR_PERIOD, required = true )
     private String periodIsoDate;
 
-    @XmlAttribute( name = "complete" )
+    @XmlAttribute( name = ATTR_COMPLETE )
     private String completeDate;
 
-    @XmlAttribute( name = "idScheme" )
+    @XmlAttribute( name = ATTR_IDSCHEME )
     private IdentificationStrategy idScheme;
 
-    @XmlElement( name = "dataValue" )
+    @XmlElement( name = DATAVALUE )
     private List<DataValue> dataValues;
 
     public IdentificationStrategy getIdScheme()

@@ -40,12 +40,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Dxf
 {
 
+   // ---------------------------------------------------------------------------
+   // Element and attribute names
+   // ---------------------------------------------------------------------------
+
+    public static final String NAMESPACE_20 = "http://dhis2.org/schema/dxf/2.0";
+
+    public static final String DXFROOT = "dxf";
+
+    public static final String ATTRIBUTE_MINOR_VERSION = "minorVersion";
+
+    public static final String ATTRIBUTE_EXPORTED = "exported";
+
+    public static final String DATAVALUESETS = "dataValueSets";
+
+    public static final String DATAVALUESET = "dataValueSet";
+
+    public static final String MINOR_VERSION_10 = "1.0";
+   // ---------------------------------------------------------------------------
     
     @XmlElementWrapper( name="dataSets" )
     @XmlElement( name="dataSet" )
     private List<DataSet> dataSets;
 
-    @XmlElementWrapper( name="dataValueSets" )
+    @XmlElementWrapper( name=DATAVALUESETS )
     @XmlElement( name="dataValueSet" )
     private List<DataValueSet> dataValueSets;
 
