@@ -1,5 +1,9 @@
 package org.hisp.dhis.common;
 
+
+import java.util.Collection;
+import java.util.Map;
+
 /*
  * Copyright (c) 2011, University of Oslo
  * All rights reserved.
