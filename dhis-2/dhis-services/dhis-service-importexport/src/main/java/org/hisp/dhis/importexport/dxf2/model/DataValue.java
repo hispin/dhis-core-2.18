@@ -38,23 +38,36 @@ import javax.xml.namespace.QName;
 @XmlAccessorType( XmlAccessType.FIELD )
 public class DataValue
 {
+   // ---------------------------------------------------------------------------
+   // Element and attribute names
+   // ---------------------------------------------------------------------------
 
-    @XmlAttribute( name = "dataElement", required = true )
+    public static final String ATTR_DATAELEMENT = "dataElement";
+
+    public static final String ATTR_VALUE = "value";
+
+    public static final String ATTR_CATEGORY_OPTION_COMBO = "categoryOptionCombo";
+
+    public static final String ATTR_ORGUNIT = "orgunit";
+
+   // ---------------------------------------------------------------------------
+
+    @XmlAttribute( name = ATTR_DATAELEMENT, required = true )
     private String dataElementIdentifier;
 
-    @XmlAttribute( name = "value", required = true)
+    @XmlAttribute( name = ATTR_VALUE, required = true)
     private String value;
 
     /**
      * optional - defaults to default
      */
-    @XmlAttribute( name = "categoryOptionCombo" )
+    @XmlAttribute( name = ATTR_CATEGORY_OPTION_COMBO )
     private String categoryOptionComboIdentifier;
 
     /**
      * optional - defaults to orgUnit id from datavalueset
      */
-    @XmlAttribute( name = "orgUnit" )
+    @XmlAttribute( name = ATTR_ORGUNIT )
     private String orgUnitIdentifier;
 
     /**
