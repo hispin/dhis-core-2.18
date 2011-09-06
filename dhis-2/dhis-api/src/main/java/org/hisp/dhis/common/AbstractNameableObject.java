@@ -1,5 +1,12 @@
 package org.hisp.dhis.common;
 
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -26,17 +33,19 @@ package org.hisp.dhis.common;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 /**
  * @author Bob Jolliffe
  */
 public class AbstractNameableObject
     extends AbstractIdentifiableObject implements NameableObject
 {
+
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = 714136796552146362L;
+
+    private final static Log log = LogFactory.getLog( AbstractNameableObject.class );
 
     /**
      * An alternative name of this Object. Optional but unique.
@@ -110,5 +119,33 @@ public class AbstractNameableObject
     public void setDescription( String description )
     {
         this.description = description;
+    }
+
+    /**
+     * Get a map of codes to internal identifiers
+     *
+     * @param objects the NameableObjects to put in the map
+     * @return the map
+     */
+    public static Map<String, Integer> getCodeMap( Collection<NameableObject> objects )
+    {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for ( NameableObject object : objects )
+        {
+            String code = object.getCode();
+            int internalId = object.getId();
+
+            // NOTE: its really not good that duplicate codes are possible
+            // Best we can do here is severe log and remove the item
+            if ( map.containsKey( code ) )
+            {
+                log.warn( object.getClass() + ": Duplicate code " + code );
+                map.remove( code );
+            } else
+            {
+                map.put( code, internalId );
+            }
+        }
+        return map;
     }
 }

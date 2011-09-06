@@ -1,5 +1,10 @@
 package org.hisp.dhis.common;
 
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -95,5 +100,25 @@ public abstract class AbstractIdentifiableObject
     public void setName( String name )
     {
         this.name = name;
+    }
+
+     /**
+     * Get a map of uuids to internal identifiers
+     *
+     * @param objects the IdentifiableObjects to put in the map
+     * @return the map
+     */
+    public static Map<String, Integer> getUUIDMap( Collection<NameableObject> objects )
+    {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for ( NameableObject object : objects )
+        {
+            String uuid = object.getUuid();
+            int internalId = object.getId();
+
+            map.put( uuid, internalId );
+        }
+
+        return map;
     }
 }
