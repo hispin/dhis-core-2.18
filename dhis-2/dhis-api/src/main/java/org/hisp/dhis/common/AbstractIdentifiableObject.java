@@ -108,10 +108,10 @@ public abstract class AbstractIdentifiableObject
      * @param objects the IdentifiableObjects to put in the map
      * @return the map
      */
-    public static Map<String, Integer> getUUIDMap( Collection<NameableObject> objects )
+    public static Map<String, Integer> getUUIDMap( Collection<? extends AbstractIdentifiableObject> objects )
     {
         Map<String, Integer> map = new HashMap<String, Integer>();
-        for ( NameableObject object : objects )
+        for ( IdentifiableObject object : objects )
         {
             String uuid = object.getUuid();
             int internalId = object.getId();

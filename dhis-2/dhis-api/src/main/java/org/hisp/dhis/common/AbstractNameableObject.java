@@ -127,7 +127,7 @@ public class AbstractNameableObject
      * @param objects the NameableObjects to put in the map
      * @return the map
      */
-    public static Map<String, Integer> getCodeMap( Collection<NameableObject> objects )
+    public static Map<String, Integer> getCodeMap( Collection<? extends AbstractNameableObject> objects )
     {
         Map<String, Integer> map = new HashMap<String, Integer>();
         for ( NameableObject object : objects )
