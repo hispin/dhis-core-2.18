@@ -4,10 +4,9 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<include file="dhis-web-commons.xml" />
+  <include file="dhis-web-commons.xml" />
 
-	<package name="dhis-web-maintenance-patient" extends="dhis-web-commons"
-		namespace="/dhis-web-maintenance-patient">
+  <package name="dhis-web-maintenance-patient" extends="dhis-web-commons" namespace="/dhis-web-maintenance-patient">
 
 		<action name="index" class="org.hisp.dhis.patient.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -117,10 +116,11 @@
 		<action name="searchRelationshipPatient"
 			class="org.hisp.dhis.patient.action.relationship.SearchRelationshipPatientAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/responseRelationshipPatients.vm</result>
+				/dhis-web-maintenance-patient/responseRelationshipPatients.vm
+			</result>
 			<param name="requiredAuthorities">F_RELATIONSHIP_ADD</param>
 		</action>
-		
+
 		<action name="saveRelationship"
 			class="org.hisp.dhis.patient.action.relationship.SaveRelationshipAction">
 			<result name="success" type="velocity-xml">
@@ -267,10 +267,11 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
-		
+
 		<!-- Patient -->
 
-		<action name="patient" class="org.hisp.dhis.patient.action.patient.SelectAction">
+		<action name="patient"
+			class="org.hisp.dhis.patient.action.patient.SelectAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/selectPatient.vm</param>
@@ -284,7 +285,7 @@
 				,javascript/relationshipPatient.js
 			</param>
 		</action>
-		
+
 		<action name="organisationUnitHasPatients"
 			class="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction">
 			<result name="success" type="velocity-json">
@@ -292,7 +293,7 @@
 			<result name="input" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		</action>
-		
+
 		<action name="patientform"
 			class="org.hisp.dhis.patient.action.patient.SearchPatientFormAction">
 			<result name="success" type="velocity-json">
@@ -323,7 +324,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/detailsPatient.vm</param>
 		</action>
-		
+
 		<action name="removePatient"
 			class="org.hisp.dhis.patient.action.patient.RemovePatientAction">
 			<result name="success" type="velocity-json">
@@ -362,7 +363,8 @@
 
 		<action name="updatePatient"
 			class="org.hisp.dhis.patient.action.patient.UpdatePatientAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
@@ -383,7 +385,8 @@
 			class="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/underAgeForm.vm</param>
-			<param name="javascripts">javascript/underage.js, ../dhis-web-commons/javascripts/date.js</param>
+			<param name="javascripts">javascript/underage.js,
+				../dhis-web-commons/javascripts/date.js</param>
 			<param name="stylesheets">style/basic.css</param>
 		</action>
 
@@ -404,7 +407,7 @@
 			class="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/resultSearchPatients.vm</param>
-			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>     
+			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="defineOrgunitRegistrationForm"
@@ -458,7 +461,7 @@
 			<param name="page">/dhis-web-maintenance-patient/programUnenrollmentSelectForm.vm</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
-		
+
 		<action name="getProgramInstance"
 			class="org.hisp.dhis.patient.action.patient.GetProgramInstanceAction">
 			<result name="success" type="velocity-json">
@@ -644,7 +647,8 @@
 
 		<action name="defineProgramAssociations"
 			class="org.hisp.dhis.patient.action.program.DefineProgramAssociationsAction">
-			<result name="success" type="redirect">program.action</result>
+			<result name="success" type="redirect">program.action
+			</result>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
@@ -679,7 +683,8 @@
 
 		<action name="addProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.AddProgramStageAction">
-			<result name="success" type="redirect">programStage.action?id=${id}</result>
+			<result name="success" type="redirect">programStage.action?id=${id}
+			</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
 
@@ -694,7 +699,8 @@
 
 		<action name="updateProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageAction">
-			<result name="success" type="redirect">programStage.action?id=${programId}</result>
+			<result name="success" type="redirect">
+				programStage.action?id=${programId}</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_UPDATE</param>
 		</action>
 
@@ -728,7 +734,8 @@
 
 		<action name="saveProgramStageSortOder"
 			class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction">
-			<result name="success" type="redirect">programStage.action?id=${id}</result>
+			<result name="success" type="redirect">programStage.action?id=${id}
+			</result>
 		</action>
 
 		<!-- Data Entry Form -->
@@ -805,7 +812,8 @@
 
 		<action name="addPatientAttributeGroup"
 			class="org.hisp.dhis.patient.action.patientattributegroup.AddPatientAttributeGroupAction">
-			<result name="success" type="redirect">patientAttributeGroup.action</result>
+			<result name="success" type="redirect">patientAttributeGroup.action
+			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
@@ -845,7 +853,7 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="showSortPatientAttributeGroup"
 			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -855,12 +863,13 @@
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
-		
+
 		<action name="savePatientAttributeGroupSortOrder"
 			class="org.hisp.dhis.patient.action.patientattributegroup.SavePatientAttributeGroupSortOrderAction">
-			<result name="success" type="redirect">patientAttributeGroup.action</result>
+			<result name="success" type="redirect">patientAttributeGroup.action
+			</result>
 		</action>
-		
+
 		<!-- Patient Identifier Type -->
 
 		<action name="showAddPatientIdentifierTypeForm" class="org.hisp.dhis.patient.action.NoAction">
@@ -1020,7 +1029,7 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<!-- Validation - PatientValidationCriteria -->
 
 		<action name="validationCriteria"
@@ -1118,7 +1127,7 @@
 			<param name="javascripts">javascript/programValidation.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
-		
+
 		<action name="showAddSingleProgramValidationForm"
 			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -1143,7 +1152,7 @@
 			<param name="javascripts">javascript/programValidation.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
-		
+
 		<action name="showUpdateSingleProgramValidationForm"
 			class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -1207,7 +1216,7 @@
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
-		
+
 		<action name="importPatient"
 			class="org.hisp.dhis.patient.action.patientimport.ImportPatientAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -1217,6 +1226,58 @@
 			<param name="menu">/dhis-web-maintenance-patient/importMenu.vm</param>
 			<param name="javascripts">javascript/import.js</param>
 			<interceptor-ref name="fileUploadStack" />
+		</action>
+
+		<!-- Patient chart -->
+
+		<action name="patientChartList"
+			class="org.hisp.dhis.patient.action.patientchart.GetPatientChartListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/patientChartList.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/patientChart.js</param>
+		</action>
+
+		<action name="showAddPatientChart"
+			class="org.hisp.dhis.patient.action.patientchart.ShowAddPatientChartFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/addPatientChartForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+		</action>
+
+		<action name="addPatientChart"
+			class="org.hisp.dhis.patient.action.patientchart.AddPatientChartAction">
+			<result name="success" type="redirect">
+				patientChartList.action?programId=${programId}</result>
+			<param name="requiredAuthorities">F_PROGRAM_ADD</param>
+		</action>
+
+		<action name="showUpdatePatientChart"
+			class="org.hisp.dhis.patient.action.patientchart.GetPatientChartAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/updatePatientChartForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+		</action>
+
+		<action name="updatePatientChart"
+			class="org.hisp.dhis.patient.action.patientchart.UpdatePatientChartAction">
+			<result name="success" type="redirect">
+				patientChartList.action?programId=${programId}</result>
+			<param name="requiredAuthorities">F_PROGRAM_ADD</param>
+		</action>
+
+		<action name="removePatientChart"
+			class="org.hisp.dhis.patient.action.patientchart.DeletePatientChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_PROGRAM_ADD</param>
+		</action>
+
+		<action name="getPatientChart"
+			class="org.hisp.dhis.patient.action.patientchart.GetPatientChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-patient/responsePatientChart.vm</result>
+			<param name="requiredAuthorities">F_PROGRAM_ADD</param>
 		</action>
 
 	</package>

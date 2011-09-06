@@ -25,96 +25,121 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.relationship;
+package org.hisp.dhis.patient.action.patientchart;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.relationship.Relationship;
-import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.patientchart.PatientChart;
+import org.hisp.dhis.patientchart.PatientChartService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ UpdatePatientChartAction.java Sep 5, 2011 9:13:29 AM $
+ * 
  */
-public class ShowRelationshipListAction
+public class UpdatePatientChartAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private PatientChartService patientChartService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientChartService( PatientChartService patientChartService )
     {
-        this.patientService = patientService;
+        this.patientChartService = patientChartService;
     }
 
-    private PatientAttributeValueService patientAttributeValueService;
+    private DataElementService dataElementService;
 
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.patientAttributeValueService = patientAttributeValueService;
+        this.dataElementService = dataElementService;
     }
 
-    private RelationshipService relationshipService;
-
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
-    }
-    
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
+
+    private String title;
+
+    private String type;
+
+    private String size;
+
+    private boolean regression;
+    
+    private Integer programId;
+
+    private Integer dataElementId;
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+    
+    public void setTitle( String title )
+    {
+        this.title = title;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
+    public void setSize( String size )
+    {
+        this.size = size;
+    }
+
+    public void setRegression( boolean regression )
+    {
+        this.regression = regression;
+    }
+
+    public Integer getProgramId()
+    {
+        return programId;
+    }
+
+    public void setDataElementId( Integer dataElementId )
+    {
+        this.dataElementId = dataElementId;
+    }
 
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
-    
-    Collection<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
-
-    public Collection<PatientAttributeValue> getPatientAttributeValues()
-    {
-        return patientAttributeValues;
-    }
-
-    Collection<Relationship> relationships;
-
-    public Collection<Relationship> getRelationships()
-    {
-        return relationships;
-    }
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( id );
-        
-        patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        PatientChart patientChart = patientChartService.getPatientChart( id );
 
-        relationships = relationshipService.getRelationshipsForPatient( patient );
+        patientChart.setTitle( title );
+        patientChart.setType( type );
+        patientChart.setSize( size );
+        patientChart.setRegression( regression );
+
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+        patientChart.setDataElement( dataElement );
+
+        programId = patientChart.getProgram().getId();
+        
+        patientChartService.updatePatientChart( patientChart );
 
         return SUCCESS;
     }
+
 }

@@ -1,0 +1,62 @@
+<h3>$i18n.getString( "patient_chart_management" )</h3>
+
+<table class="mainPageTable">
+	<tr>
+		<td align="right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddPatientChart.action?programId=$programId'" style="width:70px"></td>
+	</tr>
+  <tr>
+    <td style="vertical-align:top">
+		
+		<table class="listTable" id="listTable">
+			  <col>          
+			  <col width="100">
+			<thead>			  
+			  <tr>            
+				<th>$i18n.getString( "name" )</th>
+				<th class="{sorter: false}">$i18n.getString( "operations" )</th>
+			  </tr>
+			</thead>
+			  <tbody id="list">
+				#foreach( $patientChart in $patientCharts )
+				  <tr id="tr${patientChart.id}">
+				  
+					<td>$encoder.htmlEncode( $patientChart.title )</td>                
+					
+					<td style="text-align:center">
+					  <a href="showUpdatePatientChart.action?id=$patientChart.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+					  <a href="javascript:removePatientChart( '$patientChart.id', '$encoder.jsEncode( $patientChart.title )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+					  <a href="javascript:showPatientChartDetails( $patientChart.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
+					</td>
+					
+				  </tr>
+				#end
+
+			  </tbody>
+        </table>
+		</td>
+		<td style="width:20em; padding-left:2em; vertical-align:top">
+
+			<div id="detailsArea" style="display:none">
+				<div style="float:right">
+					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
+				</div>				
+				<p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
+				<p><label>$i18n.getString( "title" ):</label><br><span id="titleField"></span></p>
+				<p><label>$i18n.getString( "type" ):</label><br><span id="typeField"></span></p>				
+				<p><label>$i18n.getString( "size" ):</label><br><span id="sizeField"></span></p>
+				<p><label>$i18n.getString( "regression" ):</label><br><span id="regressionField"></span></p>
+				<p><label>$i18n.getString( "dataElement" ):</label><br><span id="dataElementField"></span></p>
+			</div>
+
+		</td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_prorgam" ) , "'" )';
+	
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );
+	});
+	
+</script>

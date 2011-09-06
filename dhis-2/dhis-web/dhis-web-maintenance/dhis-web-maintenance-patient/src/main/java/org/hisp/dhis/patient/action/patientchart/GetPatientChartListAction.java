@@ -25,96 +25,83 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.relationship;
+package org.hisp.dhis.patient.action.patientchart;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.relationship.Relationship;
-import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.patientchart.PatientChart;
+import org.hisp.dhis.patientchart.PatientChartService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ GetPatientChartListAction.java Sep 5, 2011 9:08:23 AM $
+ * 
  */
-public class ShowRelationshipListAction
+public class GetPatientChartListAction
     implements Action
 {
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private PatientChartService patientChartService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientChartService( PatientChartService patientChartService )
     {
-        this.patientService = patientService;
+        this.patientChartService = patientChartService;
     }
 
-    private PatientAttributeValueService patientAttributeValueService;
+    private ProgramService programService;
 
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    public void setProgramService( ProgramService programService )
     {
-        this.patientAttributeValueService = patientAttributeValueService;
+        this.programService = programService;
     }
 
-    private RelationshipService relationshipService;
-
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
-    }
-    
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer programId;
 
-    public void setId( Integer id )
+    public void setProgramId( Integer programId )
     {
-        this.id = id;
+        this.programId = programId;
     }
 
-    private Patient patient;
-
-    public Patient getPatient()
+    public Integer getProgramId()
     {
-        return patient;
-    }
-    
-    Collection<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
-
-    public Collection<PatientAttributeValue> getPatientAttributeValues()
-    {
-        return patientAttributeValues;
+        return programId;
     }
 
-    Collection<Relationship> relationships;
+    private Collection<PatientChart> patientCharts;
 
-    public Collection<Relationship> getRelationships()
+    public Collection<PatientChart> getPatientCharts()
     {
-        return relationships;
+        return patientCharts;
     }
+
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( id );
-        
-        patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        Program program = programService.getProgram( programId );
+        Collection<Program> programs = new ArrayList<Program>();
+        programs.add( program );
 
-        relationships = relationshipService.getRelationshipsForPatient( patient );
+        patientCharts = patientChartService.getPatientCharts( programs );
 
         return SUCCESS;
     }
+
 }
