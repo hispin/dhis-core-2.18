@@ -175,6 +175,14 @@ public interface UserService
      */
     void deleteUserCredentials( UserCredentials userCredentials );
 
+    /**
+     * Get the UserCredentials with the corresponding identifiers.
+     * 
+     * @param identifiers the collection of identifiers.
+     * @return a collection of users.
+     */
+    Collection<UserCredentials> getUsers( Collection<Integer> identifiers, User user );
+    
     Collection<UserCredentials> searchUsersByName( String key );
 
     Collection<UserCredentials> getUsersBetween( int first, int max );

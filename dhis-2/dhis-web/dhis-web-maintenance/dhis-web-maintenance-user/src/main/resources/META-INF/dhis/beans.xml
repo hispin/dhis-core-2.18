@@ -135,6 +135,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
+   <!-- PDF -->
+
+  <bean id="org.hisp.dhis.user.action.pdf.ExportToPdfAction" class="org.hisp.dhis.user.action.pdf.ExportToPdfAction"
+    scope="prototype">
+    <property name="serviceProvider">
+      <ref bean="exportServiceProvider" />
+    </property>
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+  </bean>
+  
 	<!-- Role -->
 
   <bean id="org.hisp.dhis.user.action.AddRoleAction" class="org.hisp.dhis.user.action.AddRoleAction" scope="prototype">
