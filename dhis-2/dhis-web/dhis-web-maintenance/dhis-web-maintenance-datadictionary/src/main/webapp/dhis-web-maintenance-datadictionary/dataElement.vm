@@ -46,7 +46,7 @@
 						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPdfByType( 'dataelement' );" style="width:80px"/>
                         <input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortDataElementForm.action'" style="width:80px"/>
                         #if ( $!dataDictionaryMode && $dataDictionaryMode == "extended" )
-							<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddExtendedDataElementForm.action'" style="width:80px">
+							<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddExtendedDataElementForm.action'" style="width:80px"/>
 						#else
 							<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddDataElementForm.action'" style="width:80px"/>
 						#end
@@ -99,6 +99,7 @@
 				<p><label>$i18n.getString( "category_combination" ):</label><br/><span id="categoryComboField"></span></p>
 				<p><label>$i18n.getString( "url" ):</label><br/><span id="urlField"></span></p>
                 <p><label>$i18n.getString( "last_updated" ):</label><br/><span id="lastUpdatedField"></span></p>
+                <p><label>$i18n.getString( "data_sets" ):</label><br/><span id="dataSetsField"></span></p>
 			</div>
 
             <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
