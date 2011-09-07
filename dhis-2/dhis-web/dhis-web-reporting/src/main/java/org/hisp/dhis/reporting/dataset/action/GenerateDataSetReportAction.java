@@ -206,10 +206,17 @@ public class GenerateDataSetReportAction
         }
         
         String dataSetType = selectedDataSet.getDataSetType();
-                
+        
         if ( TYPE_CUSTOM.equals( dataSetType ) )
         {
-            customDataEntryFormCode = dataSetReportService.getCustomDataSetReport( selectedDataSet, selectedOrgunit, selectedPeriod, selectedUnitOnly, format );
+            if ( useLast )
+            {
+                grid = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
+            }
+            else
+            {
+                customDataEntryFormCode = dataSetReportService.getCustomDataSetReport( selectedDataSet, selectedOrgunit, selectedPeriod, selectedUnitOnly, format );
+            }
         }
         else if ( TYPE_SECTION.equals( dataSetType ) )
         {
