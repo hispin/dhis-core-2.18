@@ -1,8 +1,14 @@
+
 // -----------------------------------------------------------------------------
-// Validation
+// Global variables
 // ----------------------------------------------------------------------------
 
 var selectedOrganisationUnitIds = null;
+var currentParams = null;
+
+// -----------------------------------------------------------------------------
+// Validation
+// ----------------------------------------------------------------------------
 
 function setSelectedOrganisationUnitIds( ids )
 {
@@ -46,8 +52,11 @@ function validateDataSetReport()
 	
     var dataSetId = $( "#dataSetId" ).val();
     var periodId = $( "#periodId" ).val();
+    var selectedUnitOnly = $( "#selectedUnitOnly" ).is( ":checked" ); 
     
-    $( '#content' ).load( 'generateDataSetReport.action', { dataSetId: dataSetId, periodId: periodId }, function() {
+    currentParams = { dataSetId: dataSetId, periodId: periodId, selectedUnitOnly: selectedUnitOnly };
+    
+    $( '#content' ).load( 'generateDataSetReport.action', currentParams, function() {
     	hideLoader();
     	showContent();
     	pageInit();
@@ -56,8 +65,16 @@ function validateDataSetReport()
 
 function exportDataSetReport( type )
 {
-    var url = "generateDataSetReport.action?useLast=true&dataSetId=" + $( "#dataSetId" ).val() + "&type=" + type;
-    window.location.href = url;
+	if ( currentParams != null )
+	{
+	    var url = "generateDataSetReport.action?useLast=true" + 
+	    	"&dataSetId=" + currentParams.dataSetId +
+	    	"&periodId=" + currentParams.periodId +
+	    	"&selectedUnitOnly=" + currentParams.selectedUnitOnly +
+	    	"&type=" + type;
+	    
+	    window.location.href = url;
+	}
 }
 
 function showCriteria()
