@@ -29,11 +29,14 @@ package org.hisp.dhis.pivottable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
-import org.hisp.dhis.common.AggregatedValue;
 import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.AggregatedValue;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -43,6 +46,8 @@ import org.hisp.dhis.period.Period;
  */
 public class PivotTable
 {
+    public static final String SEPARATOR = "-";
+    
     private List<? extends AbstractIdentifiableObject> indicators = new ArrayList<AbstractIdentifiableObject>();
     
     private List<Period> periods = new ArrayList<Period>();
@@ -59,6 +64,31 @@ public class PivotTable
     {   
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public Map<String, Double> getValueMap()
+    {
+        Map<String, Double> map = new HashMap<String, Double>();
+        
+        for ( AggregatedValue value : indicatorValues )
+        {
+            String key = value.getElementId() + SEPARATOR + value.getPeriodId() + SEPARATOR + value.getOrganisationUnitId();
+            
+            map.put( key, value.getValue() );
+        }
+        
+        return map;
+    }
+    
+    public static String getKey( IdentifiableObject element, Period period, OrganisationUnit unit )
+    {
+        String key = element.getId() + SEPARATOR + period.getId() + SEPARATOR + unit.getId();
+        
+        return key;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

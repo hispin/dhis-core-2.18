@@ -34,10 +34,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.AggregatedValue;
 import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -52,6 +56,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.pivottable.PivotTable;
 import org.hisp.dhis.pivottable.PivotTableService;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
@@ -179,4 +184,40 @@ public class DefaultPivotTableService
         
         return pivotTable;
     }
+    
+
+    public List<Grid> getGrids( PivotTable pivotTable )
+    {
+        List<Grid> grids = new ArrayList<Grid>();
+        
+        Map<String, Double> valueMap = pivotTable.getValueMap();
+        
+        for ( Period period : pivotTable.getPeriods() )
+        {
+            Grid grid = new ListGrid().setTitle( period.getName() );
+            
+            grid.addHeader( new GridHeader( "Organisation unit", false, true ) );
+            
+            for ( IdentifiableObject element : pivotTable.getIndicators() )
+            {
+                grid.addHeader( new GridHeader( element.getName(), false, false ) );
+            }
+            
+            for ( OrganisationUnit unit : pivotTable.getOrganisationUnits() )
+            {   
+                grid.addRow();
+                
+                grid.addValue( unit.getName() );
+                
+                for ( IdentifiableObject element : pivotTable.getIndicators() )
+                {
+                    grid.addValue( valueMap.get( PivotTable.getKey( element, period, unit ) ) );
+                }
+            }
+            
+            grids.add( grid );
+        }
+        
+        return grids;
+    }    
 }

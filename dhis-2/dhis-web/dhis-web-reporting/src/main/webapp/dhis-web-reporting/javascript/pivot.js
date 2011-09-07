@@ -20,6 +20,8 @@ var currentOrgunit = 0;
 
 var organisationUnitId = -1;
 
+var currentParams = null;
+
 var DATA_TYPE_INDICATOR = 0;
 var DATA_TYPE_DATA_ELEMENT = 1;
 var currentDataType = DATA_TYPE_INDICATOR;
@@ -69,14 +71,16 @@ function getData()
 
         showLoader();
 
-        $.getJSON( url, {
+		currentParams = {
             "dataType" : dataType,
             "groupId" : groupId,
             "periodTypeName" : periodTypeName,
             "startDate" : startDate,
             "endDate" : endDate,
             "organisationUnitId" : organisationUnitId
-        }, function( json )
+        };
+
+        $.getJSON( url, currentParams, function( json )
         {
             var pivot = json.pivotTable;
 
@@ -95,6 +99,22 @@ function getData()
             generateTable();
         } );
     }
+}
+
+function exportXls()
+{
+	if ( currentParams != null )
+	{
+		var url = "getPivotTable.action?dataType=" + currentParams.dataType + 
+			"&groupId=" + currentParams.groupId +
+			"&periodTypeName=" + currentParams.periodTypeName + 
+			"&startDate=" + currentParams.startDate +
+			"&endDate=" + currentParams.endDate +
+			"&organisationUnitId=" + currentParams.organisationUnitId +
+			"&type=xls";
+			
+		window.location.href = url;
+	}
 }
 
 /**
