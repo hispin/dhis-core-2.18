@@ -121,4 +121,23 @@ public abstract class AbstractIdentifiableObject
 
         return map;
     }
+
+    /**
+     * Get a map of uuids to iidentifiable objects
+     *
+     * @param objects the IdentifiableObjects to put in the map
+     * @return the map
+     */
+    public static Map<String, IdentifiableObject> getUUIDMapObjects( Collection<? extends AbstractIdentifiableObject> objects )
+    {
+        Map<String, IdentifiableObject> map = new HashMap<String, IdentifiableObject>();
+        for ( IdentifiableObject object : objects )
+        {
+            String uuid = object.getUuid();
+
+            map.put( uuid, object );
+        }
+
+        return map;
+    }
 }

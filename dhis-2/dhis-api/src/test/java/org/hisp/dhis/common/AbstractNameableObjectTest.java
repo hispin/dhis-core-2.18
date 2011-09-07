@@ -69,4 +69,35 @@ public class AbstractNameableObjectTest {
 
     }
 
+    @Test
+    public void testCodeMappedObjects()
+    {
+
+        List<DataElement> dataElements = new LinkedList<DataElement>();
+        for (int i=0; i<5; ++i)
+        {
+            DataElement de = new DataElement();
+            de.setId( i);
+            de.setUrl( "http://junk.org/"+i);
+            de.setCode("code"+i);
+            dataElements.add( de );
+        }
+
+        Map<String, NameableObject> codeMap = DataElement.getCodeMappedObjects( dataElements );
+        DataElement de = (DataElement) codeMap.get( "code2");
+        int id = de.getId();
+        assertEquals(2, id);
+        assertEquals("http://junk.org/2", de.getUrl());
+
+        DataElement dup = new DataElement();
+        dup.setId(6);
+        dup.setCode("code2");
+        dataElements.add( dup );
+
+        codeMap = DataElement.getCodeMappedObjects( dataElements );
+        DataElement de2 = (DataElement) codeMap.get( "code2");
+        assertNull(de2);
+
+    }
+
 }
