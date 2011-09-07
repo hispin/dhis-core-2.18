@@ -1,5 +1,9 @@
 package org.hisp.dhis.pivottable;
 
+import java.util.List;
+
+import org.hisp.dhis.common.Grid;
+
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -49,4 +53,6 @@ public interface PivotTableService
      * @return a PivotTable object.
      */
     PivotTable getPivotTable( int dataType, int groupId, String periodTypeName, String startDate, String endDate, int level );
+    
+    List<Grid> getGrids( PivotTable pivotTable );
 }

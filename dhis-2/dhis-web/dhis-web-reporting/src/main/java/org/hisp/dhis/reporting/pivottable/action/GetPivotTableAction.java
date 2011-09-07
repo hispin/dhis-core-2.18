@@ -27,6 +27,9 @@ package org.hisp.dhis.reporting.pivottable.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.pivottable.PivotTable;
@@ -41,6 +44,8 @@ import com.opensymphony.xwork2.Action;
 public class GetPivotTableAction
     implements Action
 {
+    private static final String DEFAULT_TYPE = "json";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -105,6 +110,13 @@ public class GetPivotTableAction
         this.organisationUnitId = organisationUnitId;
     }
 
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -114,6 +126,13 @@ public class GetPivotTableAction
     public PivotTable getPivotTable()
     {
         return pivotTable;
+    }
+    
+    private List<Grid> grids;
+
+    public List<Grid> getGrids()
+    {
+        return grids;
     }
 
     // -------------------------------------------------------------------------
@@ -128,7 +147,12 @@ public class GetPivotTableAction
         {
             period.setName( format.formatPeriod( period ) );
         }
-                
-        return SUCCESS;
+        
+        if ( type != null )
+        {
+            grids = pivotTableService.getGrids( pivotTable );
+        }
+        
+        return type != null ? type : DEFAULT_TYPE;
     }
 }
