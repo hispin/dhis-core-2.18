@@ -307,4 +307,10 @@ public interface OrganisationUnitService
     void updateOrganisationUnits( Collection<OrganisationUnit> units );
     
     Collection<OrganisationUnit> getOrganisationUnits( Boolean hasPatients );
+
+    // -------------------------------------------------------------------------
+    // Version
+    // -------------------------------------------------------------------------
+
+    void updateVersion();
 }

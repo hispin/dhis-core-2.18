@@ -51,7 +51,6 @@ import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.version.Version;
 import org.hisp.dhis.version.VersionService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -124,8 +123,6 @@ public class DefaultOrganisationUnitService
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_EDIT,
             OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
-
-        updateVersion();
     }
 
     public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
@@ -656,8 +653,6 @@ public class DefaultOrganisationUnitService
     public void updateOrganisationUnits( Collection<OrganisationUnit> units )
     {
         organisationUnitStore.update( units );
-        
-        updateVersion();
     }
 
     @Override
@@ -666,24 +661,13 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.get( hasPatients );
     }
 
-    private void updateVersion()
+    // -------------------------------------------------------------------------
+    // Version
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void updateVersion()
     {
-        String uuid = UUID.randomUUID().toString();
-        Version orgUnitVersion = versionService.getVersionByKey( VersionService.ORGANISATIONUNIT_VERSION );
-
-        if ( orgUnitVersion == null )
-        {
-            orgUnitVersion = new Version();
-            orgUnitVersion.setKey( VersionService.ORGANISATIONUNIT_VERSION );
-            orgUnitVersion.setValue( uuid );
-
-            versionService.addVersion( orgUnitVersion );
-        }
-        else
-        {
-            orgUnitVersion.setValue( uuid );
-            versionService.updateVersion( orgUnitVersion );
-        }
+        versionService.updateVersion( VersionService.ORGANISATIONUNIT_VERSION, UUID.randomUUID().toString() );
     }
-
 }

@@ -251,8 +251,13 @@ public class UpdateOrganisationUnitAction
         // Update organisation unit
         // ---------------------------------------------------------------------
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id.intValue() );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
 
+        if ( !organisationUnit.getName().equals( name ) )
+        {
+            organisationUnitService.updateVersion();
+        }
+        
         organisationUnit.setName( name );
         organisationUnit.setShortName( shortName );
         organisationUnit.setCode( code );

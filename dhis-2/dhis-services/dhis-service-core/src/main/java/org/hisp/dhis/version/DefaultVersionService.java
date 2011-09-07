@@ -65,11 +65,16 @@ public class DefaultVersionService
     public void updateVersion( String key, String value )
     {
         Version version = getVersionByKey( key );
-
-        if ( version != null )
+        
+        if ( version == null )
+        {
+            version = new Version( key, value );
+            addVersion( version );
+        }
+        else
         {
             version.setValue( value );
-            versionStore.update( version );
+            updateVersion( version );
         }
     }
 
@@ -96,5 +101,4 @@ public class DefaultVersionService
     {
         return versionStore.getAll();
     }
-
 }
