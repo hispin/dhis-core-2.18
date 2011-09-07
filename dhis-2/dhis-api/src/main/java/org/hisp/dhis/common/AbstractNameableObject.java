@@ -148,4 +148,25 @@ public class AbstractNameableObject
         }
         return map;
     }
+
+    public static Map<String, NameableObject> getCodeMappedObjects( Collection<? extends AbstractNameableObject> objects )
+    {
+        Map<String, NameableObject> map = new HashMap<String, NameableObject>();
+        for ( NameableObject object : objects )
+        {
+            String code = object.getCode();
+
+            // NOTE: its really not good that duplicate codes are possible
+            // Best we can do here is severe log and remove the item
+            if ( map.containsKey( code ) )
+            {
+                log.warn( object.getClass() + ": Duplicate code " + code );
+                map.remove( code );
+            } else
+            {
+                map.put( code, object );
+            }
+        }
+        return map;
+    }
 }
