@@ -101,6 +101,8 @@ public class MoveOrganisationUnitAction
         
         organisationUnitService.updateOrganisationUnit( unitToMove );
 
+        organisationUnitService.updateVersion();
+        
         return SUCCESS;
     }
 }

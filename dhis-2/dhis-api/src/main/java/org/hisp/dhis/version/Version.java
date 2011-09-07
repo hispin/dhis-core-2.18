@@ -38,6 +38,24 @@ public class Version
 
     private String value;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public Version()
+    {
+    }
+    
+    public Version( String key, String value )
+    {
+        this.key = key;
+        this.value = value;
+    }
+
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
+
     @Override
     public int hashCode()
     {
