@@ -86,6 +86,10 @@ public class Chart
     private int id;
 
     private String title;
+    
+    private String domainAxixLabel;
+    
+    private String rangeAxisLabel;
 
     private String type;
 
@@ -328,6 +332,26 @@ public class Chart
     public void setTitle( String title )
     {
         this.title = title;
+    }
+
+    public String getDomainAxixLabel()
+    {
+        return domainAxixLabel;
+    }
+
+    public void setDomainAxixLabel( String domainAxixLabel )
+    {
+        this.domainAxixLabel = domainAxixLabel;
+    }
+
+    public String getRangeAxisLabel()
+    {
+        return rangeAxisLabel;
+    }
+
+    public void setRangeAxisLabel( String rangeAxisLabel )
+    {
+        this.rangeAxisLabel = rangeAxisLabel;
     }
 
     public String getType()
