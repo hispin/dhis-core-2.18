@@ -57,12 +57,18 @@
         <td><label for="title">$i18n.getString( "title" )</label></td>
         <td><input type="text" id="title" name="title" style="width:300px" value="$!chart.title"></td>
     </tr>
-
+    <tr>
+        <td><label for="domainAxisLabel">$i18n.getString( "domain_axis_label_x" )</label></td>
+        <td><input type="text" id="domainAxisLabel" name="domainAxisLabel" style="width:300px" value="$!chart.domainAxisLabel"></td>
+    </tr>
+    <tr>
+        <td><label for="rangeAxisLabel">$i18n.getString( "range_axis_label_y" )</label></td>
+        <td><input type="text" id="rangeAxisLabel" name="rangeAxisLabel" style="width:300px" value="$!chart.rangeAxisLabel"></td>
+    </tr>
     <tr>
         <td><label for="hideSubtitle">$i18n.getString( "hide_subtitle" )</label></td>
         <td><input type="checkbox" id="hideSubtitle" name="hideSubtitle" value="true"#if( $!chart.hideSubtitle ) checked#end></td>
     </tr>
-
     <tr>
     	<td><label for="type">$i18n.getString( "chart_type" )</label></td>
     	<td>

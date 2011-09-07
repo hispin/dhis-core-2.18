@@ -105,6 +105,20 @@ public class SaveChartAction
         this.id = id;
     }
 
+    private String domainAxisLabel;
+
+    public void setDomainAxisLabel( String domainAxisLabel )
+    {
+        this.domainAxisLabel = domainAxisLabel;
+    }
+
+    private String rangeAxisLabel;
+    
+    public void setRangeAxisLabel( String rangeAxisLabel )
+    {
+        this.rangeAxisLabel = rangeAxisLabel;
+    }
+
     private String title;
 
     public void setTitle( String title )
@@ -304,6 +318,8 @@ public class SaveChartAction
         Collections.sort( periods, new AscendingPeriodComparator() );
 
         chart.setTitle( title );
+        chart.setDomainAxixLabel( domainAxisLabel );
+        chart.setRangeAxisLabel( rangeAxisLabel );
         chart.setHideSubtitle( hideSubtitle );
         chart.setType( type );
         chart.setSize( size );

@@ -92,6 +92,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.DatasetRenderingOrder;
@@ -651,6 +652,10 @@ public class DefaultChartService
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( chart.isVerticalLabels() ? CategoryLabelPositions.UP_45
             : CategoryLabelPositions.STANDARD );
+        xAxis.setLabel( chart.getDomainAxixLabel() );
+        
+        ValueAxis yAxis = plot.getRangeAxis();
+        yAxis.setLabel( chart.getRangeAxisLabel() );
 
         // ---------------------------------------------------------------------
         // Color & antialias
@@ -672,12 +677,12 @@ public class DefaultChartService
         if ( chart.isType( TYPE_STACKED_BAR ) )
         {
             stackedBarChart = ChartFactory.createStackedBarChart( chart.getTitle(), 
-                null, null, dataSet, orientation, true, false, false );
+                chart.getDomainAxixLabel(), chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
         }
         else
         {
             stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getTitle(), 
-                null, null, dataSet, orientation, true, false, false );
+                chart.getDomainAxixLabel(), chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
         }
         
         CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
