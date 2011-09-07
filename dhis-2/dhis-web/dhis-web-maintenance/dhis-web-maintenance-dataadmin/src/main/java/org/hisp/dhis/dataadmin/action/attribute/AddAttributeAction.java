@@ -1,7 +1,5 @@
-package org.hisp.dhis.dataadmin.action.constant;
-
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,51 +24,31 @@ package org.hisp.dhis.dataadmin.action.constant;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.constant.Constant;
-import org.hisp.dhis.constant.ConstantService;
-import org.hisp.dhis.i18n.I18n;
+
+package org.hisp.dhis.dataadmin.action.attribute;
+
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * @author Dang Duy Hieu
- * @version $Id$
- */
-public class ValidateConstantAction
+public class AddAttributeAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ConstantService constantService;
+    private AttributeService attributeService;
 
-    public void setConstantService( ConstantService constantService )
+    public void setAttributeService( AttributeService attributeService )
     {
-        this.constantService = constantService;
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
-    // I18n
+    // Input & Output
     // -------------------------------------------------------------------------
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
 
     private String name;
 
@@ -79,34 +57,55 @@ public class ValidateConstantAction
         this.name = name;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+    private String valueType;
 
-    private String message;
-
-    public String getMessage()
+    public void setValueType( String valueType )
     {
-        return message;
+        this.valueType = valueType;
+    }
+
+    private Boolean mandatory = false;
+
+    public void setMandatory( Boolean mandatory )
+    {
+        this.mandatory = mandatory;
+    }
+
+    private Boolean dataElement = false;
+
+    public void setDataElement( Boolean dataElement )
+    {
+        this.dataElement = dataElement;
+    }
+
+    private Boolean indicator = false;
+
+    public void setIndicator( Boolean indicator )
+    {
+        this.indicator = indicator;
+    }
+
+    private Boolean organisationUnit = false;
+
+    public void setOrganisationUnit( Boolean organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
-        if ( name != null )
-        {
-            Constant match = constantService.getConstantByName( name );
+        Attribute attribute = new Attribute( name, valueType );
+        attribute.setMandatory( mandatory );
+        attribute.setDataElement( dataElement );
+        attribute.setIndicator( indicator );
+        attribute.setOrganisationUnit( organisationUnit );
 
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "name_in_use" );
-
-                return ERROR;
-            }
-        }
+        attributeService.addAttribute( attribute );
 
         return SUCCESS;
     }

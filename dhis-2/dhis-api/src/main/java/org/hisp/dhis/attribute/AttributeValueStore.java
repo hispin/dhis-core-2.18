@@ -36,4 +36,6 @@ public interface AttributeValueStore
     extends GenericStore<AttributeValue>
 {
     String ID = AttributeValueStore.class.getName();
+    
+    int getCount();
 }

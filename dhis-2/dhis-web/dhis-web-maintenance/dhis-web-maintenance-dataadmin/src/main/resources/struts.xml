@@ -13,8 +13,8 @@
       <param name="page">/dhis-web-maintenance-dataadmin/index.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
     </action>
-		
-		<!-- Locking -->
+
+    <!-- Locking -->
 
     <action name="displayLockingForm" class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -27,7 +27,8 @@
 
     <action name="getDataSetsForPeriodType" class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForPeriodTypeAction">
       <result name="success" type="velocity">
-        /dhis-web-maintenance-dataadmin/responseDataSet.vm</result>
+        /dhis-web-maintenance-dataadmin/responseDataSet.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
 
     </action>
@@ -48,19 +49,22 @@
 
     <action name="getPeriodsForLock" class="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction">
       <result name="success" type="velocity">
-        /dhis-web-commons/ajax/xmlPeriods.vm</result>
+        /dhis-web-commons/ajax/xmlPeriods.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="validateCollectiveDataLocking" class="org.hisp.dhis.dataadmin.action.lock.ValidateCollectiveDataLockingAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="input" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseInput.vm</result>
+        /dhis-web-commons/ajax/jsonResponseInput.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-		
-		<!-- Maintenance -->
+
+    <!-- Maintenance -->
 
     <action name="displayMaintenanceForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -72,11 +76,12 @@
 
     <action name="performMaintenance" class="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction">
       <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+        /dhis-web-maintenance-dataadmin/responseSuccess.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-		
-		<!-- Resource table -->
+
+    <!-- Resource table -->
 
     <action name="displayResourceTableForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -89,8 +94,8 @@
     <action name="generateResourceTable" class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
     </action>
-		
-		<!-- Cache -->
+
+    <!-- Cache -->
 
     <action name="showCache" class="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -102,8 +107,8 @@
     <action name="clearCache" class="org.hisp.dhis.dataadmin.action.cache.ClearCacheAction">
       <result name="success" type="redirect">showCache.action </result>
     </action>
-		
-		<!-- Data integrity -->
+
+    <!-- Data integrity -->
 
     <action name="displayDataIntegrityForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -115,10 +120,11 @@
 
     <action name="getDataIntegrity" class="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction">
       <result name="success" type="velocity-json">
-        /dhis-web-maintenance-dataadmin/responseDataIntegrity.vm</result>
+        /dhis-web-maintenance-dataadmin/responseDataIntegrity.vm
+      </result>
     </action>
-		
-		<!-- Prune Organisation unit -->
+
+    <!-- Prune Organisation unit -->
 
     <action name="displayPruneOrganisationUnitForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -131,12 +137,14 @@
 
     <action name="pruneOrganisationUnit" class="org.hisp.dhis.dataadmin.action.dataprune.PruneOrganisationUnitAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
     </action>
-		
-		<!-- Statistics -->
+
+    <!-- Statistics -->
 
     <action name="viewStatistics" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -151,8 +159,8 @@
         <param name="height">220</param>
       </result>
     </action>
-		
-		<!-- Databrowser -->
+
+    <!-- Databrowser -->
 
     <action name="displayDataBrowserForm" class="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -184,9 +192,9 @@
       <result name="xls" type="gridXlsResult" />
       <result name="pdf" type="gridPdfResult" />
       <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
-    </action> 
-		
-		<!-- Organisation unit merge -->
+    </action>
+
+    <!-- Organisation unit merge -->
 
     <action name="displayOrganisationUnitMergeForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -199,10 +207,11 @@
 
     <action name="mergeOrganisationUnits" class="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction">
       <result name="success" type="redirect">
-        displayOrganisationUnitMergeForm.action</result>
+        displayOrganisationUnitMergeForm.action
+      </result>
     </action>
-		
-		<!-- Duplicate data elimination -->
+
+    <!-- Duplicate data elimination -->
 
     <action name="displayDuplicateDataEliminationForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -215,10 +224,11 @@
 
     <action name="eliminateDuplicateData" class="org.hisp.dhis.dataadmin.action.duplicatedataelimination.EliminateDuplicateDataAction">
       <result name="success" type="redirect">
-        displayDuplicateDataEliminationForm.action</result>
+        displayDuplicateDataEliminationForm.action
+      </result>
     </action>
-		
-		<!-- Data Element Zero Value Storage Management -->
+
+    <!-- Data Element Zero Value Storage Management -->
 
     <action name="zeroValueStorageManagement" class="org.hisp.dhis.dataadmin.action.zerovaluestorage.OpenDataElementsZeroIsSignificantManagerAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -230,8 +240,8 @@
     <action name="updateZeroIsSignificantForDataElements" class="org.hisp.dhis.dataadmin.action.zerovaluestorage.UpdateZeroIsSignificantForDataElementsAction">
       <result name="success" type="redirect">index.action</result>
     </action>
-		
-		<!-- Data archive -->
+
+    <!-- Data archive -->
 
     <action name="displayDataArchiveForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -243,12 +253,14 @@
 
     <action name="archiveData" class="org.hisp.dhis.dataadmin.action.dataarchive.ArchiveDataAction">
       <result name="success" type="velocity-json">
-        /dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+        /dhis-web-maintenance-dataadmin/responseNumber.vm
+      </result>
     </action>
 
     <action name="getNumberOfOverlaps" class="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapsAction">
       <result name="success" type="velocity-json">
-        /dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+        /dhis-web-maintenance-dataadmin/responseNumber.vm
+      </result>
     </action>
 
     <action name="displayPatientDataArchiveForm" class="org.hisp.dhis.dataadmin.action.NoAction">
@@ -261,28 +273,34 @@
 
     <action name="archivePatientData" class="org.hisp.dhis.dataadmin.action.dataarchive.ArchivePatientDataAction">
       <result name="success" type="velocity-json">
-        /dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+        /dhis-web-maintenance-dataadmin/responseNumber.vm
+      </result>
     </action>
 
     <action name="getNumberOfOverlapingPatientValues" class="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapingPatientValuesAction">
       <result name="success" type="velocity-json">
-        /dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+        /dhis-web-maintenance-dataadmin/responseNumber.vm
+      </result>
     </action>
-		
-		<!-- Min/Max validation -->
+
+    <!-- Min/Max validation -->
 
     <action name="generateMinMaxValue" class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction">
       <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+        /dhis-web-maintenance-dataadmin/responseSuccess.vm
+      </result>
       <result name="input" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseError.vm</result>
+        /dhis-web-maintenance-dataadmin/responseError.vm
+      </result>
     </action>
 
     <action name="removeMinMaxValue" class="org.hisp.dhis.dataadmin.action.minmaxvalidation.RemoveMinMaxValueAction">
       <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+        /dhis-web-maintenance-dataadmin/responseSuccess.vm
+      </result>
       <result name="input" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseError.vm</result>
+        /dhis-web-maintenance-dataadmin/responseError.vm
+      </result>
     </action>
 
     <action name="getMinMaxValidationParams" class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetMinMaxValidationParamsAction">
@@ -291,12 +309,13 @@
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="javascripts">javascript/minMaxValidation.js, javascript/minMaxValidationForm.js </param>
     </action>
-			
-		<!-- Sql View -->
+
+    <!-- Sql View -->
 
     <action name="getSqlViewObject" class="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction">
       <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseSqlViewObject.vm</result>
+        /dhis-web-maintenance-dataadmin/responseSqlViewObject.vm
+      </result>
     </action>
 
     <action name="showSqlViewListForm" class="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewListAction">
@@ -318,14 +337,17 @@
 
     <action name="validateAddUpdateSqlView" class="org.hisp.dhis.dataadmin.action.sqlview.ValidateAddUpdateSqlViewAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="input" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseInput.vm</result>
+        /dhis-web-commons/ajax/jsonResponseInput.vm
+      </result>
     </action>
 
     <action name="addSqlView" class="org.hisp.dhis.dataadmin.action.sqlview.AddSqlViewAction">
       <result name="success" type="redirect">
-        showSqlViewListForm.action</result>
+        showSqlViewListForm.action
+      </result>
       <result name="error" type="redirect">index.action</result>
       <param name="requiredAuthorities">F_SQLVIEW_ADD</param>
     </action>
@@ -347,27 +369,33 @@
 
     <action name="removeSqlViewObject" class="org.hisp.dhis.dataadmin.action.sqlview.RemoveSqlViewAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="requiredAuthorities">F_SQLVIEW_DELETE</param>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="executeSqlViewQuery" class="org.hisp.dhis.dataadmin.action.sqlview.ExecuteSqlViewQueryAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="requiredAuthorities">F_SQLVIEW_EXECUTE</param>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="checkViewTableExistence" class="org.hisp.dhis.dataadmin.action.sqlview.CheckViewTableExistenceAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="requiredAuthorities">F_SQLVIEW_MANAGEMENT</param>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -381,13 +409,14 @@
       <param name="requiredAuthorities">F_SQLVIEW_MANAGEMENT</param>
     </action>
 
-	<!-- Constant Name -->
+    <!-- Constant Name -->
 
     <action name="getConstant" class="org.hisp.dhis.dataadmin.action.constant.GetConstantAction">
       <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseConstant.vm</result>
+        /dhis-web-maintenance-dataadmin/responseConstant.vm
+      </result>
     </action>
-	
+
     <action name="constant" class="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
@@ -427,20 +456,136 @@
 
     <action name="validateConstant" class="org.hisp.dhis.dataadmin.action.constant.ValidateConstantAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-	
+
     <action name="removeConstant" class="org.hisp.dhis.dataadmin.action.constant.RemoveConstantAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_CONSTANT_DELETE</param>
     </action>
-	
+
+    <!-- Dynamic Attributes -->
+
+    <action name="attribute" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/attribute.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="attributeOption" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/attributeOption.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="showAddAttributeForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/addAttributeForm.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="showAddAttributeOptionForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/addAttributeOptionForm.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="showUpdateAttributeForm" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/updateAttributeForm.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="showUpdateAttributeOptionForm" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/updateAttributeOptionForm.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="addAttribute" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction">
+      <result name="success" type="redirect">attribute.action</result>
+      <result name="error" type="redirect">index.action</result>
+    </action>
+
+    <action name="addAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction">
+      <result name="success" type="redirect">attributeOption.action</result>
+      <result name="error" type="redirect">index.action</result>
+    </action>
+
+    <action name="updateAttribute" class="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeAction">
+      <result name="success" type="redirect">attribute.action</result>
+      <result name="error" type="redirect">index.action</result>
+    </action>
+
+    <action name="updateAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeOptionAction">
+      <result name="success" type="redirect">attributeOption.action</result>
+      <result name="error" type="redirect">index.action</result>
+    </action>
+
+    <action name="removeAttribute" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="removeAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeOptionAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="getAttribute" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseAttribute.vm</result>
+    </action>
+
+    <action name="getAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseAttributeOption.vm</result>
+    </action>
+
+    <action name="validateAttribute" class="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="validateAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeOptionAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
   </package>
 </struts>

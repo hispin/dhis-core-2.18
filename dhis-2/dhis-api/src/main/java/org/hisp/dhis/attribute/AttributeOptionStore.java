@@ -27,13 +27,13 @@
 
 package org.hisp.dhis.attribute;
 
-import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
 /**
  * @author mortenoh
  */
 public interface AttributeOptionStore
-    extends GenericStore<AttributeOption>
+    extends GenericIdentifiableObjectStore<AttributeOption>
 {
     String ID = AttributeOptionStore.class.getName();
 }
