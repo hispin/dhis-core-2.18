@@ -34,12 +34,12 @@ import org.hisp.dhis.DhisSpringTest;
 public class AttributeOptionServiceTest
     extends DhisSpringTest
 {
-    private AttributeOptionService attributeOptionService;
+    private AttributeService attributeService;
 
     @Override
     protected void setUpTest()
     {
-        attributeOptionService = (AttributeOptionService) getBean( "org.hisp.dhis.attribute.AttributeOptionService" );
+        attributeService = (AttributeService) getBean( "org.hisp.dhis.attribute.AttributeService" );
     }
 
     @Test
@@ -48,11 +48,11 @@ public class AttributeOptionServiceTest
         AttributeOption attributeOption1 = new AttributeOption( "option 1" );
         AttributeOption attributeOption2 = new AttributeOption( "option 2" );
 
-        attributeOptionService.addAttributeOption( attributeOption1 );
-        attributeOptionService.addAttributeOption( attributeOption2 );
+        attributeService.addAttributeOption( attributeOption1 );
+        attributeService.addAttributeOption( attributeOption2 );
 
-        attributeOption1 = attributeOptionService.getAttributeOption( attributeOption1.getId() );
-        attributeOption2 = attributeOptionService.getAttributeOption( attributeOption2.getId() );
+        attributeOption1 = attributeService.getAttributeOption( attributeOption1.getId() );
+        attributeOption2 = attributeService.getAttributeOption( attributeOption2.getId() );
 
         assertNotNull( attributeOption1 );
         assertNotNull( attributeOption2 );
@@ -64,17 +64,17 @@ public class AttributeOptionServiceTest
         AttributeOption attributeOption1 = new AttributeOption( "option 1" );
         AttributeOption attributeOption2 = new AttributeOption( "option 2" );
 
-        attributeOptionService.addAttributeOption( attributeOption1 );
-        attributeOptionService.addAttributeOption( attributeOption2 );
+        attributeService.addAttributeOption( attributeOption1 );
+        attributeService.addAttributeOption( attributeOption2 );
 
         attributeOption1.setValue( "updated option 1" );
         attributeOption2.setValue( "updated option 2" );
 
-        attributeOptionService.updateAttributeOption( attributeOption1 );
-        attributeOptionService.updateAttributeOption( attributeOption2 );
+        attributeService.updateAttributeOption( attributeOption1 );
+        attributeService.updateAttributeOption( attributeOption2 );
 
-        attributeOption1 = attributeOptionService.getAttributeOption( attributeOption1.getId() );
-        attributeOption2 = attributeOptionService.getAttributeOption( attributeOption2.getId() );
+        attributeOption1 = attributeService.getAttributeOption( attributeOption1.getId() );
+        attributeOption2 = attributeService.getAttributeOption( attributeOption2.getId() );
 
         assertNotNull( attributeOption1 );
         assertNotNull( attributeOption2 );
@@ -89,17 +89,17 @@ public class AttributeOptionServiceTest
         AttributeOption attributeOption1 = new AttributeOption( "option 1" );
         AttributeOption attributeOption2 = new AttributeOption( "option 2" );
 
-        attributeOptionService.addAttributeOption( attributeOption1 );
-        attributeOptionService.addAttributeOption( attributeOption2 );
+        attributeService.addAttributeOption( attributeOption1 );
+        attributeService.addAttributeOption( attributeOption2 );
 
         int attributeOptionId1 = attributeOption1.getId();
         int attributeOptionId2 = attributeOption2.getId();
 
-        attributeOptionService.deleteAttributeOption( attributeOption1 );
-        attributeOptionService.deleteAttributeOption( attributeOption2 );
+        attributeService.deleteAttributeOption( attributeOption1 );
+        attributeService.deleteAttributeOption( attributeOption2 );
 
-        assertNull( attributeOptionService.getAttributeOption( attributeOptionId1 ) );
-        assertNull( attributeOptionService.getAttributeOption( attributeOptionId2 ) );
+        assertNull( attributeService.getAttributeOption( attributeOptionId1 ) );
+        assertNull( attributeService.getAttributeOption( attributeOptionId2 ) );
     }
 
     @Test
@@ -108,11 +108,11 @@ public class AttributeOptionServiceTest
         AttributeOption attributeOption1 = new AttributeOption( "option 1" );
         AttributeOption attributeOption2 = new AttributeOption( "option 2" );
 
-        attributeOptionService.addAttributeOption( attributeOption1 );
-        attributeOptionService.addAttributeOption( attributeOption2 );
+        attributeService.addAttributeOption( attributeOption1 );
+        attributeService.addAttributeOption( attributeOption2 );
 
-        attributeOption1 = attributeOptionService.getAttributeOption( attributeOption1.getId() );
-        attributeOption2 = attributeOptionService.getAttributeOption( attributeOption2.getId() );
+        attributeOption1 = attributeService.getAttributeOption( attributeOption1.getId() );
+        attributeOption2 = attributeService.getAttributeOption( attributeOption2.getId() );
 
         assertNotNull( attributeOption1 );
         assertNotNull( attributeOption2 );
@@ -124,9 +124,9 @@ public class AttributeOptionServiceTest
         AttributeOption attributeOption1 = new AttributeOption( "option 1" );
         AttributeOption attributeOption2 = new AttributeOption( "option 2" );
 
-        attributeOptionService.addAttributeOption( attributeOption1 );
-        attributeOptionService.addAttributeOption( attributeOption2 );
+        attributeService.addAttributeOption( attributeOption1 );
+        attributeService.addAttributeOption( attributeOption2 );
 
-        assertEquals( 2, attributeOptionService.getAllAttributeOptions().size() );
+        assertEquals( 2, attributeService.getAllAttributeOptions().size() );
     }
 }

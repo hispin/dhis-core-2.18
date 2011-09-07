@@ -463,13 +463,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.attribute.AttributeService" class="org.hisp.dhis.attribute.DefaultAttributeService">
     <property name="attributeStore" ref="org.hisp.dhis.attribute.AttributeStore" />
-  </bean>
-
-  <bean id="org.hisp.dhis.attribute.AttributeOptionService" class="org.hisp.dhis.attribute.DefaultAttributeOptionService">
     <property name="attributeOptionStore" ref="org.hisp.dhis.attribute.AttributeOptionStore" />
-  </bean>
-
-  <bean id="org.hisp.dhis.attribute.AttributeValueService" class="org.hisp.dhis.attribute.DefaultAttributeValueService">
     <property name="attributeValueStore" ref="org.hisp.dhis.attribute.AttributeValueStore" />
   </bean>
 

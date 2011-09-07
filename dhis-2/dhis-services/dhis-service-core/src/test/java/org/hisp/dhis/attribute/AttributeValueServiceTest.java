@@ -34,12 +34,12 @@ import org.hisp.dhis.DhisSpringTest;
 public class AttributeValueServiceTest
     extends DhisSpringTest
 {
-    private AttributeValueService attributeValueService;
+    private AttributeService attributeService;
 
     @Override
     protected void setUpTest()
     {
-        attributeValueService = (AttributeValueService) getBean( "org.hisp.dhis.attribute.AttributeValueService" );
+        attributeService = (AttributeService) getBean( "org.hisp.dhis.attribute.AttributeService" );
     }
 
     @Test
@@ -48,11 +48,11 @@ public class AttributeValueServiceTest
         AttributeValue attributeValue1 = new AttributeValue( "value 1" );
         AttributeValue attributeValue2 = new AttributeValue( "value 2" );
 
-        attributeValueService.addAttributeValue( attributeValue1 );
-        attributeValueService.addAttributeValue( attributeValue2 );
+        attributeService.addAttributeValue( attributeValue1 );
+        attributeService.addAttributeValue( attributeValue2 );
 
-        attributeValue1 = attributeValueService.getAttributeValue( attributeValue1.getId() );
-        attributeValue2 = attributeValueService.getAttributeValue( attributeValue2.getId() );
+        attributeValue1 = attributeService.getAttributeValue( attributeValue1.getId() );
+        attributeValue2 = attributeService.getAttributeValue( attributeValue2.getId() );
 
         assertNotNull( attributeValue1 );
         assertNotNull( attributeValue2 );
@@ -64,17 +64,17 @@ public class AttributeValueServiceTest
         AttributeValue attributeValue1 = new AttributeValue( "value 1" );
         AttributeValue attributeValue2 = new AttributeValue( "value 2" );
 
-        attributeValueService.addAttributeValue( attributeValue1 );
-        attributeValueService.addAttributeValue( attributeValue2 );
+        attributeService.addAttributeValue( attributeValue1 );
+        attributeService.addAttributeValue( attributeValue2 );
 
         attributeValue1.setValue( "updated value 1" );
         attributeValue2.setValue( "updated value 2" );
 
-        attributeValueService.updateAttributeValue( attributeValue1 );
-        attributeValueService.updateAttributeValue( attributeValue2 );
+        attributeService.updateAttributeValue( attributeValue1 );
+        attributeService.updateAttributeValue( attributeValue2 );
 
-        attributeValue1 = attributeValueService.getAttributeValue( attributeValue1.getId() );
-        attributeValue2 = attributeValueService.getAttributeValue( attributeValue2.getId() );
+        attributeValue1 = attributeService.getAttributeValue( attributeValue1.getId() );
+        attributeValue2 = attributeService.getAttributeValue( attributeValue2.getId() );
 
         assertNotNull( attributeValue1 );
         assertNotNull( attributeValue2 );
@@ -89,17 +89,17 @@ public class AttributeValueServiceTest
         AttributeValue attributeValue1 = new AttributeValue( "value 1" );
         AttributeValue attributeValue2 = new AttributeValue( "value 2" );
 
-        attributeValueService.addAttributeValue( attributeValue1 );
-        attributeValueService.addAttributeValue( attributeValue2 );
+        attributeService.addAttributeValue( attributeValue1 );
+        attributeService.addAttributeValue( attributeValue2 );
 
         int attributeValueId1 = attributeValue1.getId();
         int attributeValueId2 = attributeValue2.getId();
 
-        attributeValueService.deleteAttributeValue( attributeValue1 );
-        attributeValueService.deleteAttributeValue( attributeValue2 );
+        attributeService.deleteAttributeValue( attributeValue1 );
+        attributeService.deleteAttributeValue( attributeValue2 );
 
-        attributeValue1 = attributeValueService.getAttributeValue( attributeValueId1 );
-        attributeValue2 = attributeValueService.getAttributeValue( attributeValueId2 );
+        attributeValue1 = attributeService.getAttributeValue( attributeValueId1 );
+        attributeValue2 = attributeService.getAttributeValue( attributeValueId2 );
 
         assertNull( attributeValue1 );
         assertNull( attributeValue2 );
@@ -111,11 +111,11 @@ public class AttributeValueServiceTest
         AttributeValue attributeValue1 = new AttributeValue( "value 1" );
         AttributeValue attributeValue2 = new AttributeValue( "value 2" );
 
-        attributeValueService.addAttributeValue( attributeValue1 );
-        attributeValueService.addAttributeValue( attributeValue2 );
+        attributeService.addAttributeValue( attributeValue1 );
+        attributeService.addAttributeValue( attributeValue2 );
 
-        attributeValue1 = attributeValueService.getAttributeValue( attributeValue1.getId() );
-        attributeValue2 = attributeValueService.getAttributeValue( attributeValue2.getId() );
+        attributeValue1 = attributeService.getAttributeValue( attributeValue1.getId() );
+        attributeValue2 = attributeService.getAttributeValue( attributeValue2.getId() );
 
         assertNotNull( attributeValue1 );
         assertNotNull( attributeValue2 );
@@ -127,9 +127,9 @@ public class AttributeValueServiceTest
         AttributeValue attributeValue1 = new AttributeValue( "value 1" );
         AttributeValue attributeValue2 = new AttributeValue( "value 2" );
 
-        attributeValueService.addAttributeValue( attributeValue1 );
-        attributeValueService.addAttributeValue( attributeValue2 );
+        attributeService.addAttributeValue( attributeValue1 );
+        attributeService.addAttributeValue( attributeValue2 );
 
-        assertEquals( 2, attributeValueService.getAllAttributeValues().size() );
+        assertEquals( 2, attributeService.getAllAttributeValues().size() );
     }
 }
