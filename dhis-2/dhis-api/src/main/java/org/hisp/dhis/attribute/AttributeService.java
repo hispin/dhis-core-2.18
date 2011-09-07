@@ -45,4 +45,24 @@ public interface AttributeService
     public Attribute getAttribute( int id );
 
     public Set<Attribute> getAllAttributes();
+
+    public void addAttributeOption( AttributeOption attributeOption );
+
+    public void updateAttributeOption( AttributeOption attributeOption );
+
+    public void deleteAttributeOption( AttributeOption attributeOption );
+
+    public AttributeOption getAttributeOption( int id );
+
+    public Set<AttributeOption> getAllAttributeOptions();
+
+    public void addAttributeValue( AttributeValue attributeValue );
+
+    public void updateAttributeValue( AttributeValue attributeValue );
+
+    public void deleteAttributeValue( AttributeValue attributeValue );
+
+    public AttributeValue getAttributeValue( int id );
+
+    public Set<AttributeValue> getAllAttributeValues();
 }

@@ -51,8 +51,32 @@ public class DefaultAttributeService
         this.attributeStore = attributeStore;
     }
 
+    private AttributeOptionStore attributeOptionStore;
+
+    public AttributeOptionStore getAttributeOptionStore()
+    {
+        return attributeOptionStore;
+    }
+
+    public void setAttributeOptionStore( AttributeOptionStore attributeOptionStore )
+    {
+        this.attributeOptionStore = attributeOptionStore;
+    }
+
+    private AttributeValueStore attributeValueStore;
+
+    public AttributeValueStore getAttributeValueStore()
+    {
+        return attributeValueStore;
+    }
+
+    public void setAttributeValueStore( AttributeValueStore attributeValueStore )
+    {
+        this.attributeValueStore = attributeValueStore;
+    }
+
     // -------------------------------------------------------------------------
-    // AttributeService implementation
+    // Attribute implementation
     // -------------------------------------------------------------------------
 
     @Override
@@ -84,4 +108,73 @@ public class DefaultAttributeService
     {
         return new HashSet<Attribute>( attributeStore.getAll() );
     }
+
+    // -------------------------------------------------------------------------
+    // AttributeOption implementation
+    // -------------------------------------------------------------------------
+    
+    @Override
+    public void addAttributeOption( AttributeOption attributeOption )
+    {
+        attributeOptionStore.save( attributeOption );
+    }
+
+    @Override
+    public void updateAttributeOption( AttributeOption attributeOption )
+    {
+        attributeOptionStore.update( attributeOption );
+    }
+
+    @Override
+    public void deleteAttributeOption( AttributeOption attributeOption )
+    {
+        attributeOptionStore.delete( attributeOption );
+    }
+
+    @Override
+    public AttributeOption getAttributeOption( int id )
+    {
+        return attributeOptionStore.get( id );
+    }
+
+    @Override
+    public Set<AttributeOption> getAllAttributeOptions()
+    {
+        return new HashSet<AttributeOption>( attributeOptionStore.getAll() );
+    }
+
+    // -------------------------------------------------------------------------
+    // AttributeValue implementation
+    // -------------------------------------------------------------------------
+    
+    @Override
+    public void addAttributeValue( AttributeValue attributeValue )
+    {
+        attributeValueStore.save( attributeValue );
+    }
+
+    @Override
+    public void updateAttributeValue( AttributeValue attributeValue )
+    {
+        attributeValueStore.update( attributeValue );
+    }
+
+    @Override
+    public void deleteAttributeValue( AttributeValue attributeValue )
+    {
+        attributeValueStore.delete( attributeValue );
+    }
+
+    @Override
+    public AttributeValue getAttributeValue( int id )
+    {
+        return attributeValueStore.get( id );
+    }
+
+    @Override
+    public Set<AttributeValue> getAllAttributeValues()
+    {
+        return new HashSet<AttributeValue>( attributeValueStore.getAll() );
+    }
+
 }
