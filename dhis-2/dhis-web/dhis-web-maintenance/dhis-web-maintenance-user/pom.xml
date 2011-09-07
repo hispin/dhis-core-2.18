@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>dhis-web-maintenance-user</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>DHIS User Maintenance</name>
 
 	<build>
