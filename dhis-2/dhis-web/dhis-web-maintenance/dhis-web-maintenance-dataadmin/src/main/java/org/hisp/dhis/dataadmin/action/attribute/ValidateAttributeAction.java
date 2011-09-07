@@ -25,78 +25,79 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.attribute;
+package org.hisp.dhis.dataadmin.action.attribute;
 
-import java.util.Set;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.i18n.I18n;
 
-/**
- * @author mortenoh
- */
-public interface AttributeService
+import com.opensymphony.xwork2.Action;
+
+public class ValidateAttributeAction
+    implements Action
 {
-    String ID = AttributeService.class.getName();
-
     // -------------------------------------------------------------------------
-    // Attribute
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    public void addAttribute( Attribute attribute );
+    private AttributeService attributeService;
 
-    public void updateAttribute( Attribute attribute );
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
 
-    public void deleteAttribute( Attribute attribute );
+    private I18n i18n;
 
-    public Attribute getAttribute( int id );
-
-    public Attribute getAttributeByName( String name );
-
-    public Set<Attribute> getAllAttributes();
-
-    public int getAttributeCount();
-
-    public int getAttributeCountByName( String name );
-
-    public Set<Attribute> getAttributesBetween( int first, int max );
-
-    public Set<Attribute> getAttributesBetweenByName( String name, int first, int max );
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
     // -------------------------------------------------------------------------
-    // AttributeOption
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    public void addAttributeOption( AttributeOption attributeOption );
+    private Integer id;
 
-    public void updateAttributeOption( AttributeOption attributeOption );
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-    public void deleteAttributeOption( AttributeOption attributeOption );
+    private String name;
 
-    public AttributeOption getAttributeOption( int id );
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-    public AttributeOption getAttributeOptionByName( String name );
+    private String message;
 
-    public Set<AttributeOption> getAllAttributeOptions();
-
-    public int getAttributeOptionCount();
-
-    public int getAttributeOptionCountByName( String name );
-
-    public Set<AttributeOption> getAttributeOptionsBetween( int first, int max );
-
-    public Set<AttributeOption> getAttributeOptionsBetweenByName( String name, int first, int max );
+    public String getMessage()
+    {
+        return message;
+    }
 
     // -------------------------------------------------------------------------
-    // AttributeValue
+    // Action implementation
     // -------------------------------------------------------------------------
 
-    public void addAttributeValue( AttributeValue attributeValue );
+    @Override
+    public String execute()
+    {
+        if ( name != null )
+        {
+            Attribute match = attributeService.getAttributeByName( name );
 
-    public void updateAttributeValue( AttributeValue attributeValue );
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "name_in_use" );
 
-    public void deleteAttributeValue( AttributeValue attributeValue );
+                return ERROR;
+            }
+        }
 
-    public AttributeValue getAttributeValue( int id );
-
-    public Set<AttributeValue> getAllAttributeValues();
-
-    public int getAttributeValueCount();
+        return SUCCESS;
+    }
 }

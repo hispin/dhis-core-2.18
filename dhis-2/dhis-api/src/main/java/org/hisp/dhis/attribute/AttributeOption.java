@@ -27,24 +27,21 @@
 
 package org.hisp.dhis.attribute;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author mortenoh
  */
 public class AttributeOption
-    implements Serializable
+    extends AbstractIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = -2698940415255819380L;
-
-    private int id;
-
-    private String value;
 
     private Set<Attribute> attributes = new HashSet<Attribute>();
 
@@ -53,29 +50,9 @@ public class AttributeOption
 
     }
 
-    public AttributeOption( String value )
+    public AttributeOption( String name )
     {
-        this.value = value;
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
+        this.name = name;
     }
 
     public Set<Attribute> getAttributes()
@@ -87,4 +64,4 @@ public class AttributeOption
     {
         this.attributes = attributes;
     }
- }
+}

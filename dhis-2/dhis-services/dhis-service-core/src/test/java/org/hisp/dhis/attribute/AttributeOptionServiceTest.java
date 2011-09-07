@@ -67,8 +67,8 @@ public class AttributeOptionServiceTest
         attributeService.addAttributeOption( attributeOption1 );
         attributeService.addAttributeOption( attributeOption2 );
 
-        attributeOption1.setValue( "updated option 1" );
-        attributeOption2.setValue( "updated option 2" );
+        attributeOption1.setName( "updated option 1" );
+        attributeOption2.setName( "updated option 2" );
 
         attributeService.updateAttributeOption( attributeOption1 );
         attributeService.updateAttributeOption( attributeOption2 );
@@ -79,8 +79,8 @@ public class AttributeOptionServiceTest
         assertNotNull( attributeOption1 );
         assertNotNull( attributeOption2 );
 
-        assertEquals( "updated option 1", attributeOption1.getValue() );
-        assertEquals( "updated option 2", attributeOption2.getValue() );
+        assertEquals( "updated option 1", attributeOption1.getName() );
+        assertEquals( "updated option 2", attributeOption2.getName() );
     }
 
     @Test

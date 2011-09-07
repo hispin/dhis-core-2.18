@@ -24,3 +24,10 @@
 <ul>
 	<li><a href="showCache.action">$i18n.getString( "cache_statistics" )&nbsp;</a></li>
 </ul>
+
+<h2>$i18n.getString( "dynamic_attributes" )&nbsp;</h2>
+
+<ul>
+	<li><a href="attribute.action">$i18n.getString( "attribute" )&nbsp;</a></li>
+	<li><a href="attributeOption.action">$i18n.getString( "attribute_option" )&nbsp;</a></li>
+</ul>

@@ -57,6 +57,17 @@ public class Attribute
 
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
+    public Attribute()
+    {
+
+    }
+
+    public Attribute( String name, String valueType )
+    {
+        this.name = name;
+        this.valueType = valueType;
+    }
+
     public String getValueType()
     {
         return valueType;

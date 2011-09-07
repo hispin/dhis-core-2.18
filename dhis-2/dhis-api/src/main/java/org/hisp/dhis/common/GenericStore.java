@@ -42,14 +42,14 @@ public interface GenericStore<T>
      * @return the generated identifier.
      */
     int save( T object );
-    
+
     /**
      * Updates the given object instance.
      * 
      * @param object the object instance.
      */
     void update( T object );
-    
+
     /**
      * Saves or updates the given object instance depending on the object's
      * persistent state.
@@ -57,7 +57,7 @@ public interface GenericStore<T>
      * @param object the object instance.
      */
     void saveOrUpdate( T object );
-    
+
     /**
      * Retrieves the object with the given identifier. This method will first
      * look in the current Session, then hit the database if not existing.
@@ -66,30 +66,31 @@ public interface GenericStore<T>
      * @return the object identified by the given identifier.
      */
     T get( int id );
-    
+
     /**
      * Retrieves the object with the given identifier, assuming it exists.
      * 
      * @param id the object identifier.
-     * @return the object identified by the given identifier or a generated proxy.
+     * @return the object identified by the given identifier or a generated
+     *         proxy.
      */
     T load( int id );
-    
+
     /**
-     * Retriveves a Collection of objects where the name is like the given name.
+     * Retrieves a Collection of objects where the name is like the given name.
      * 
-     * @param name hte name.
+     * @param name the name.
      * @return a Collection of objects.
      */
     Collection<T> getLikeName( String name );
-    
+
     /**
      * Retrieves a Collection of all objects.
      * 
      * @return a Collection of all objects.
      */
     Collection<T> getAll();
-    
+
     /**
      * Removes the given object instance.
      * 

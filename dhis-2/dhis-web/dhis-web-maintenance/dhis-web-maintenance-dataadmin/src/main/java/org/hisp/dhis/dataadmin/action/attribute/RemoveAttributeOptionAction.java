@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,78 +25,74 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.attribute;
+package org.hisp.dhis.dataadmin.action.attribute;
 
-import java.util.Set;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.i18n.I18n;
 
-/**
- * @author mortenoh
- */
-public interface AttributeService
+import com.opensymphony.xwork2.Action;
+
+public class RemoveAttributeOptionAction
+    implements Action
 {
-    String ID = AttributeService.class.getName();
-
     // -------------------------------------------------------------------------
-    // Attribute
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    public void addAttribute( Attribute attribute );
+    private AttributeService attributeService;
 
-    public void updateAttribute( Attribute attribute );
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
 
-    public void deleteAttribute( Attribute attribute );
+    private I18n i18n;
 
-    public Attribute getAttribute( int id );
-
-    public Attribute getAttributeByName( String name );
-
-    public Set<Attribute> getAllAttributes();
-
-    public int getAttributeCount();
-
-    public int getAttributeCountByName( String name );
-
-    public Set<Attribute> getAttributesBetween( int first, int max );
-
-    public Set<Attribute> getAttributesBetweenByName( String name, int first, int max );
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
     // -------------------------------------------------------------------------
-    // AttributeOption
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    public void addAttributeOption( AttributeOption attributeOption );
+    private Integer id;
 
-    public void updateAttributeOption( AttributeOption attributeOption );
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-    public void deleteAttributeOption( AttributeOption attributeOption );
+    private String message;
 
-    public AttributeOption getAttributeOption( int id );
-
-    public AttributeOption getAttributeOptionByName( String name );
-
-    public Set<AttributeOption> getAllAttributeOptions();
-
-    public int getAttributeOptionCount();
-
-    public int getAttributeOptionCountByName( String name );
-
-    public Set<AttributeOption> getAttributeOptionsBetween( int first, int max );
-
-    public Set<AttributeOption> getAttributeOptionsBetweenByName( String name, int first, int max );
+    public String getMessage()
+    {
+        return message;
+    }
 
     // -------------------------------------------------------------------------
-    // AttributeValue
+    // Action implementation
     // -------------------------------------------------------------------------
 
-    public void addAttributeValue( AttributeValue attributeValue );
+    @Override
+    public String execute()
+    {
+        try
+        {
+            attributeService.deleteAttributeOption( attributeService.getAttributeOption( id ) );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
 
-    public void updateAttributeValue( AttributeValue attributeValue );
+                return ERROR;
+            }
+        }
 
-    public void deleteAttributeValue( AttributeValue attributeValue );
-
-    public AttributeValue getAttributeValue( int id );
-
-    public Set<AttributeValue> getAllAttributeValues();
-
-    public int getAttributeValueCount();
+        return SUCCESS;
+    }
 }

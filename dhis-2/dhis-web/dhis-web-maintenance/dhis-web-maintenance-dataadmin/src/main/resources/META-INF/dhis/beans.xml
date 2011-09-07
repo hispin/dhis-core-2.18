@@ -3,7 +3,7 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Locking -->
+  <!-- Locking -->
 
   <bean id="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction" class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
     scope="prototype">
@@ -36,7 +36,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
   </bean>
 
-	<!-- Maintenance -->
+  <!-- Maintenance -->
 
   <bean id="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction" class="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
     scope="prototype">
@@ -46,7 +46,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
-	<!-- Resource table -->
+  <!-- Resource table -->
 
   <bean id="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction" class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
     scope="prototype">
@@ -54,7 +54,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
   </bean>
 
-	<!-- Cache -->
+  <!-- Cache -->
 
   <bean id="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction" class="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction"
     scope="prototype">
@@ -66,19 +66,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="cacheManager" ref="cacheManager" />
   </bean>
 
-	<!-- Data integrity -->
+  <!-- Data integrity -->
 
   <bean id="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction" class="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction"
     scope="prototype">
     <property name="dataIntegrityService" ref="org.hisp.dhis.dataintegrity.DataIntegrityService" />
   </bean>
 
-	<!-- Statistics -->
+  <!-- Statistics -->
 
   <bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction"
     scope="prototype">
     <property name="statisticsProvider" ref="org.hisp.dhis.statistics.StatisticsProvider" />
-	<property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"
@@ -87,7 +87,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
 
-	<!-- Databrowser Grid -->
+  <!-- Databrowser Grid -->
 
   <bean id="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction" class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction"
     scope="prototype">
@@ -107,8 +107,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.dataadmin.action.databrowser.ExportResultAction" class="org.hisp.dhis.dataadmin.action.databrowser.ExportResultAction"
     scope="prototype" />
-	
-	<!-- Organisation unit merge -->
+
+  <!-- Organisation unit merge -->
 
   <bean id="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction" class="org.hisp.dhis.dataadmin.action.organisationunitmerge.MergeOrganisationUnitsAction"
     scope="prototype">
@@ -116,7 +116,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-	<!-- Prune Organisation unit -->
+  <!-- Prune Organisation unit -->
 
   <bean id="org.hisp.dhis.dataadmin.action.dataprune.PruneOrganisationUnitAction" class="org.hisp.dhis.dataadmin.action.dataprune.PruneOrganisationUnitAction"
     scope="prototype">
@@ -124,7 +124,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
   </bean>
 
-	<!-- Duplicate data elimination -->
+  <!-- Duplicate data elimination -->
 
   <bean id="org.hisp.dhis.dataadmin.action.duplicatedataelimination.EliminateDuplicateDataAction" class="org.hisp.dhis.dataadmin.action.duplicatedataelimination.EliminateDuplicateDataAction"
     scope="prototype">
@@ -133,7 +133,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
-	<!--  Data Element Zero Value Storage Management -->
+  <!-- Data Element Zero Value Storage Management -->
   <bean id="org.hisp.dhis.dataadmin.action.zerovaluestorage.OpenDataElementsZeroIsSignificantManagerAction" class="org.hisp.dhis.dataadmin.action.zerovaluestorage.OpenDataElementsZeroIsSignificantManagerAction"
     scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
@@ -144,7 +144,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
 
-	<!-- Data archive -->
+  <!-- Data archive -->
 
   <bean id="org.hisp.dhis.dataadmin.action.dataarchive.ArchiveDataAction" class="org.hisp.dhis.dataadmin.action.dataarchive.ArchiveDataAction"
     scope="prototype">
@@ -166,7 +166,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataArchiveService" ref="org.hisp.dhis.dataarchive.DataArchiveService" />
   </bean>
 
-	<!-- Min/Max validation -->
+  <!-- Min/Max validation -->
 
   <bean id="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetMinMaxValidationParamsAction" class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GetMinMaxValidationParamsAction"
     scope="prototype">
@@ -200,8 +200,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.options.SystemSettingManager" />
     </property>
   </bean>
-	
-	<!-- Sql View -->
+
+  <!-- Sql View -->
 
   <bean id="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction" class="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction"
     scope="prototype">
@@ -247,43 +247,99 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
   </bean>
-  
-  	<!-- Constant Name -->
 
-  <bean id="org.hisp.dhis.dataadmin.action.constant.AddConstantAction" 
-	class="org.hisp.dhis.dataadmin.action.constant.AddConstantAction"
+  <!-- Constant Name -->
+
+  <bean id="org.hisp.dhis.dataadmin.action.constant.AddConstantAction" class="org.hisp.dhis.dataadmin.action.constant.AddConstantAction"
     scope="prototype">
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.constant.UpdateConstantAction"
-	class="org.hisp.dhis.dataadmin.action.constant.UpdateConstantAction"
+  <bean id="org.hisp.dhis.dataadmin.action.constant.UpdateConstantAction" class="org.hisp.dhis.dataadmin.action.constant.UpdateConstantAction"
     scope="prototype">
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.constant.ValidateConstantAction"
-	class="org.hisp.dhis.dataadmin.action.constant.ValidateConstantAction"
-    scope="prototype">
-    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataadmin.action.constant.RemoveConstantAction"
-	class="org.hisp.dhis.dataadmin.action.constant.RemoveConstantAction"
+  <bean id="org.hisp.dhis.dataadmin.action.constant.ValidateConstantAction" class="org.hisp.dhis.dataadmin.action.constant.ValidateConstantAction"
     scope="prototype">
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.constant.GetConstantAction"
-	class="org.hisp.dhis.dataadmin.action.constant.GetConstantAction"
+  <bean id="org.hisp.dhis.dataadmin.action.constant.RemoveConstantAction" class="org.hisp.dhis.dataadmin.action.constant.RemoveConstantAction"
     scope="prototype">
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction"
-	class="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction"
+  <bean id="org.hisp.dhis.dataadmin.action.constant.GetConstantAction" class="org.hisp.dhis.dataadmin.action.constant.GetConstantAction"
     scope="prototype">
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction" class="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction"
+    scope="prototype">
+    <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+  </bean>
+
+  <!-- Dynamic Attributes -->
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionListAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionListAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeAction" class="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeOptionAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.AddAttributeAction" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeAction" class="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeOptionAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeAction" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeOptionAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
 </beans>

@@ -25,38 +25,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.attribute;
+package org.hisp.dhis.attribute.comparator;
 
-import java.util.Set;
+import java.util.Comparator;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.attribute.Attribute;
 
-/**
- * @author mortenoh
- */
-public interface AttributeStore
-    extends GenericIdentifiableObjectStore<Attribute>
+public class AttributeNameComparator
+    implements Comparator<Attribute>
 {
-    String ID = AttributeStore.class.getName();
-
-    /**
-     * Get all attributes that are enabled for data elements.
-     * 
-     * @return All attributes with attribute.dataElement = true
-     */
-    public Set<Attribute> getDataElementAttributes();
-
-    /**
-     * Get all attributes that are enabled for indicators.
-     * 
-     * @return All attributes with attribute.indicator = true
-     */
-    public Set<Attribute> getIndicatorAttributes();
-
-    /**
-     * Get all attributes that are enabled for organisation units.
-     * 
-     * @return All attributes with attribute.organisationUnit = true
-     */
-    public Set<Attribute> getOrganisationUnitAttributes();
+    @Override
+    public int compare( Attribute a0, Attribute a1 )
+    {
+        return a0.getName().compareToIgnoreCase( a1.getName() );
+    }
 }

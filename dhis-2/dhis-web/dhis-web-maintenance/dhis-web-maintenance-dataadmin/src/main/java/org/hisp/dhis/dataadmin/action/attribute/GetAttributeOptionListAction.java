@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,78 +25,83 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.attribute;
+package org.hisp.dhis.dataadmin.action.attribute;
 
-import java.util.Set;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.attribute.AttributeOption;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeOptionNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author mortenoh
  */
-public interface AttributeService
+public class GetAttributeOptionListAction
+    extends ActionPagingSupport<AttributeOption>
 {
-    String ID = AttributeService.class.getName();
-
     // -------------------------------------------------------------------------
-    // Attribute
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    public void addAttribute( Attribute attribute );
+    private AttributeService attributeService;
 
-    public void updateAttribute( Attribute attribute );
-
-    public void deleteAttribute( Attribute attribute );
-
-    public Attribute getAttribute( int id );
-
-    public Attribute getAttributeByName( String name );
-
-    public Set<Attribute> getAllAttributes();
-
-    public int getAttributeCount();
-
-    public int getAttributeCountByName( String name );
-
-    public Set<Attribute> getAttributesBetween( int first, int max );
-
-    public Set<Attribute> getAttributesBetweenByName( String name, int first, int max );
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
 
     // -------------------------------------------------------------------------
-    // AttributeOption
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    public void addAttributeOption( AttributeOption attributeOption );
+    private List<AttributeOption> attributeOptions;
 
-    public void updateAttributeOption( AttributeOption attributeOption );
+    public List<AttributeOption> getAttributeOptions()
+    {
+        return attributeOptions;
+    }
 
-    public void deleteAttributeOption( AttributeOption attributeOption );
+    private String key;
 
-    public AttributeOption getAttributeOption( int id );
+    public String getKey()
+    {
+        return key;
+    }
 
-    public AttributeOption getAttributeOptionByName( String name );
-
-    public Set<AttributeOption> getAllAttributeOptions();
-
-    public int getAttributeOptionCount();
-
-    public int getAttributeOptionCountByName( String name );
-
-    public Set<AttributeOption> getAttributeOptionsBetween( int first, int max );
-
-    public Set<AttributeOption> getAttributeOptionsBetweenByName( String name, int first, int max );
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
 
     // -------------------------------------------------------------------------
-    // AttributeValue
+    // Action implementation
     // -------------------------------------------------------------------------
 
-    public void addAttributeValue( AttributeValue attributeValue );
+    @Override
+    public String execute()
+    {
+        if ( isNotBlank( key ) )
+        {
+            this.paging = createPaging( attributeService.getAttributeOptionCountByName( key ) );
 
-    public void updateAttributeValue( AttributeValue attributeValue );
+            attributeOptions = new ArrayList<AttributeOption>( attributeService.getAttributeOptionsBetweenByName( key,
+                paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( attributeService.getAttributeOptionCount() );
 
-    public void deleteAttributeValue( AttributeValue attributeValue );
+            attributeOptions = new ArrayList<AttributeOption>( attributeService.getAttributeOptionsBetween(
+                paging.getStartPos(), paging.getPageSize() ) );
+        }
 
-    public AttributeValue getAttributeValue( int id );
-
-    public Set<AttributeValue> getAllAttributeValues();
-
-    public int getAttributeValueCount();
+        Collections.sort( attributeOptions, new AttributeOptionNameComparator() );
+        
+        return SUCCESS;
+    }
 }
