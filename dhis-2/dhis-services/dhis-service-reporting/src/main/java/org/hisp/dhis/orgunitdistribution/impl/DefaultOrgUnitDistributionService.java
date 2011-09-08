@@ -65,6 +65,7 @@ public class DefaultOrgUnitDistributionService
 
     private static final String TITLE_SEP = " - ";
     private static final String FIRST_COLUMN_TEXT = "Organisation unit";
+    private static final String HEADER_TOTAL = "Total";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -134,6 +135,8 @@ public class DefaultOrgUnitDistributionService
             grid.addHeader( new GridHeader( group.getName(), false, false )  );
         }
         
+        grid.addHeader( new GridHeader( HEADER_TOTAL, false, false ) );
+        
         for ( OrganisationUnit unit : units )
         {            
             grid.addRow();
@@ -147,6 +150,8 @@ public class DefaultOrgUnitDistributionService
                 
                 grid.addValue( result != null ? result.size() : 0 );
             }
+            
+            grid.addValue( subTree != null ? subTree.size() : 0 );
         }
         
         return grid;
