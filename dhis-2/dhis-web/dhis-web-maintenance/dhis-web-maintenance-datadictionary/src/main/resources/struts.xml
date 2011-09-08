@@ -72,16 +72,13 @@
     </action>
 
     <action name="updateDataElement" class="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction">
-      <result name="success" type="redirect">dataElement.action
-      </result>
+      <result name="success" type="redirect">dataElement.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
     <action name="validateDataElement" class="org.hisp.dhis.dd.action.dataelement.ValidateDataElementAction">
-      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -153,8 +150,7 @@
     </action>
 
     <action name="addDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.AddDataElementGroupAction">
-      <result name="success" type="redirect">dataElementGroup.action
-      </result>
+      <result name="success" type="redirect">dataElementGroup.action</result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
     </action>
 
@@ -166,8 +162,7 @@
     </action>
 
     <action name="updateDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
-      <result name="success" type="redirect">dataElementGroup.action
-      </result>
+      <result name="success" type="redirect">dataElementGroup.action</result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
@@ -200,8 +195,7 @@
     </action>
 
     <action name="addDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.AddDataElementGroupSetAction">
-      <result name="success" type="redirect">dataElementGroupSet.action
-      </result>
+      <result name="success" type="redirect">dataElementGroupSet.action</result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_ADD</param>
     </action>
 
@@ -214,8 +208,7 @@
     </action>
 
     <action name="updateDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.UpdateDataElementGroupSetAction">
-      <result name="success" type="redirect">dataElementGroupSet.action
-      </result>
+      <result name="success" type="redirect">dataElementGroupSet.action</result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_UPDATE</param>
     </action>
 
@@ -292,8 +285,7 @@
     </action>
 
     <action name="updateIndicator" class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction">
-      <result name="success" type="redirect">indicator.action
-      </result>
+      <result name="success" type="redirect">indicator.action</result>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
 
@@ -375,8 +367,7 @@
     </action>
 
     <action name="addIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.AddIndicatorGroupAction">
-      <result name="success" type="redirect">indicatorGroup.action
-      </result>
+      <result name="success" type="redirect">indicatorGroup.action</result>
       <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
     </action>
 
@@ -388,16 +379,13 @@
     </action>
 
     <action name="updateIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
-      <result name="success" type="redirect">indicatorGroup.action
-      </result>
+      <result name="success" type="redirect">indicatorGroup.action</result>
       <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
     <action name="validateIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.ValidateIndicatorGroupAction">
-      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -420,8 +408,7 @@
     </action>
 
     <action name="addIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.AddIndicatorGroupSetAction">
-      <result name="success" type="redirect">indicatorGroupSet.action
-      </result>
+      <result name="success" type="redirect">indicatorGroupSet.action</result>
       <param name="requiredAuthorities">F_INDICATORGROUPSET_ADD</param>
     </action>
 
@@ -433,16 +420,13 @@
     </action>
 
     <action name="updateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.UpdateIndicatorGroupSetAction">
-      <result name="success" type="redirect">indicatorGroupSet.action
-      </result>
+      <result name="success" type="redirect">indicatorGroupSet.action</result>
       <param name="requiredAuthorities">F_INDICATORGROUPSET_UPDATE</param>
     </action>
 
     <action name="validateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.ValidateIndicatorGroupSetAction">
-      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -492,8 +476,7 @@
     </action>
 
     <action name="addIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.AddIndicatorTypeAction">
-      <result name="success" type="redirect">indicatorType.action
-      </result>
+      <result name="success" type="redirect">indicatorType.action</result>
       <param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
     </action>
 
@@ -505,24 +488,20 @@
     </action>
 
     <action name="updateIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.UpdateIndicatorTypeAction">
-      <result name="success" type="redirect">indicatorType.action
-      </result>
+      <result name="success" type="redirect">indicatorType.action</result>
       <param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
     </action>
 
     <action name="validateIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.ValidateIndicatorTypeAction">
-      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <!-- DataDictionary -->
 
     <action name="setCurrentDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.SetCurrentDataDictionaryAction">
-      <result name="success" type="redirect">dataElement.action
-      </result>
+      <result name="success" type="redirect">dataElement.action</result>
     </action>
 
     <action name="dataDictionary" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction">
@@ -559,8 +538,7 @@
     </action>
 
     <action name="addDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction">
-      <result name="success" type="redirect">dataDictionary.action
-      </result>
+      <result name="success" type="redirect">dataDictionary.action</result>
       <param name="requiredAuthorities">F_DATADICTIONARY_ADD</param>
     </action>
 
@@ -572,8 +550,7 @@
     </action>
 
     <action name="updateDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction">
-      <result name="success" type="redirect">dataDictionary.action
-      </result>
+      <result name="success" type="redirect">dataDictionary.action</result>
       <param name="requiredAuthorities">F_DATADICTIONARY_UPDATE</param>
     </action>
 
@@ -592,8 +569,7 @@
     </action>
 
     <action name="addDataElementCategory" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction">
-      <result name="success" type="redirect">category.action
-      </result>
+      <result name="success" type="redirect">category.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
 
@@ -622,8 +598,7 @@
     </action>
 
     <action name="updateDataElementCategory" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryAction">
-      <result name="success" type="redirect">category.action
-      </result>
+      <result name="success" type="redirect">category.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
@@ -661,8 +636,7 @@
     </action>
 
     <action name="addDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.AddDataElementCategoryComboAction">
-      <result name="success" type="redirect">categoryCombo.action
-      </result>
+      <result name="success" type="redirect">categoryCombo.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
 
@@ -692,8 +666,7 @@
     </action>
 
     <action name="updateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.UpdateDataElementCategoryComboAction">
-      <result name="success" type="redirect">categoryCombo.action
-      </result>
+      <result name="success" type="redirect">categoryCombo.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
