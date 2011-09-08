@@ -14,7 +14,7 @@
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
     </action>
 
-		<!-- DataElement -->
+    <!-- DataElement -->
 
     <action name="dataElement" class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -30,21 +30,23 @@
     </action>
 
     <action name="saveDataElementSortOrder" class="org.hisp.dhis.dd.action.dataelement.SaveDataElementSortOrderAction">
-      <result name="success" type="redirect">dataElement.action
-			</result>
+      <result name="success" type="redirect">dataElement.action</result>
     </action>
 
     <action name="getDataElementGroupMembers" class="org.hisp.dhis.dd.action.dataelement.GetDataElementGroupMembersAction">
       <result name="success" type="velocity-xml">
-        /dhis-web-commons/ajax/xmlOperands.vm</result>
+        /dhis-web-commons/ajax/xmlOperands.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="removeDataElement" class="org.hisp.dhis.dd.action.dataelement.RemoveDataElementAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
@@ -58,7 +60,7 @@
 
     <action name="addDataElement" class="org.hisp.dhis.dd.action.dataelement.AddDataElementAction">
       <result name="success" type="redirect">dataElement.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
 
@@ -71,19 +73,19 @@
 
     <action name="updateDataElement" class="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction">
       <result name="success" type="redirect">dataElement.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
     <action name="validateDataElement" class="org.hisp.dhis.dd.action.dataelement.ValidateDataElementAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
+      </result>
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
-    </action>		
+    </action>
 
-		<!-- DataElementGroup Editor -->
+    <!-- DataElementGroup Editor -->
 
     <action name="dataElementGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.ShowDataElementGroupEditorAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -110,9 +112,11 @@
 
     <action name="deleteDataElemenGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.RemoveDataElementGroupAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -120,7 +124,7 @@
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
     </action>
 
-		<!-- DataElementGroup -->
+    <!-- DataElementGroup -->
 
     <action name="dataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -132,9 +136,11 @@
 
     <action name="removeDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.RemoveDataElementGroupAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
     </action>
@@ -148,7 +154,7 @@
 
     <action name="addDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.AddDataElementGroupAction">
       <result name="success" type="redirect">dataElementGroup.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
     </action>
 
@@ -161,19 +167,21 @@
 
     <action name="updateDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
       <result name="success" type="redirect">dataElementGroup.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
     <action name="validateDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.ValidateDataElementGroupAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-		<!-- Data Element Group Set -->
+    <!-- Data Element Group Set -->
 
     <action name="dataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.ListDataElementGroupSetAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -193,7 +201,7 @@
 
     <action name="addDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.AddDataElementGroupSetAction">
       <result name="success" type="redirect">dataElementGroupSet.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_ADD</param>
     </action>
 
@@ -207,28 +215,32 @@
 
     <action name="updateDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.UpdateDataElementGroupSetAction">
       <result name="success" type="redirect">dataElementGroupSet.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_UPDATE</param>
     </action>
 
     <action name="validateDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.ValidateDataElementGroupSetAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="deleteDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.DeleteDataElementGroupSetAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_DELETE</param>
     </action>
 
-		<!-- Indicator -->
+    <!-- Indicator -->
 
     <action name="indicator" class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -245,14 +257,16 @@
 
     <action name="saveIndicatorSortOrder" class="org.hisp.dhis.dd.action.indicator.SaveIndicatorSortOrderAction">
       <result name="success" type="redirect">indicator.action
-			</result>
+      </result>
     </action>
 
     <action name="removeIndicator" class="org.hisp.dhis.dd.action.indicator.RemoveIndicatorAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_INDICATOR_DELETE</param>
     </action>
@@ -266,7 +280,7 @@
 
     <action name="addIndicator" class="org.hisp.dhis.dd.action.indicator.AddIndicatorAction">
       <result name="success" type="redirect">indicator.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_INDICATOR_ADD</param>
     </action>
 
@@ -279,19 +293,21 @@
 
     <action name="updateIndicator" class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction">
       <result name="success" type="redirect">indicator.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
 
     <action name="validateIndicator" class="org.hisp.dhis.dd.action.indicator.ValidateIndicatorAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
-    </action>		
+    </action>
 
-		<!-- Indicator Group Editor -->
+    <!-- Indicator Group Editor -->
 
     <action name="indicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.ShowIndicatorGroupEditorAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -318,9 +334,11 @@
 
     <action name="deleteIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.RemoveIndicatorGroupAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -328,7 +346,7 @@
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
     </action>
 
-		<!-- IndicatorGroup -->
+    <!-- IndicatorGroup -->
 
     <action name="indicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -340,9 +358,11 @@
 
     <action name="removeIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.RemoveIndicatorGroupAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
     </action>
@@ -356,7 +376,7 @@
 
     <action name="addIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.AddIndicatorGroupAction">
       <result name="success" type="redirect">indicatorGroup.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
     </action>
 
@@ -369,19 +389,19 @@
 
     <action name="updateIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
       <result name="success" type="redirect">indicatorGroup.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
     <action name="validateIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.ValidateIndicatorGroupAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
+      </result>
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-		<!-- Indicator Group Set -->
+    <!-- Indicator Group Set -->
 
     <action name="indicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.ListIndicatorGroupSetAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -401,7 +421,7 @@
 
     <action name="addIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.AddIndicatorGroupSetAction">
       <result name="success" type="redirect">indicatorGroupSet.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_INDICATORGROUPSET_ADD</param>
     </action>
 
@@ -414,28 +434,30 @@
 
     <action name="updateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.UpdateIndicatorGroupSetAction">
       <result name="success" type="redirect">indicatorGroupSet.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_INDICATORGROUPSET_UPDATE</param>
     </action>
 
     <action name="validateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.ValidateIndicatorGroupSetAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
+      </result>
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="deleteIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.DeleteIndicatorGroupSetAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_INDICATORGROUPSET_DELETE</param>
     </action>
 
-		<!-- IndicatorType -->
+    <!-- IndicatorType -->
 
     <action name="indicatorType" class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -447,15 +469,17 @@
     <action name="getIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeAction">
       <result name="success" type="velocity-xml">
         /dhis-web-maintenance-datadictionary/responseIndicatorType.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="removeIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.RemoveIndicatorTypeAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_INDICATORTYPE_DELETE</param>
     </action>
@@ -469,7 +493,7 @@
 
     <action name="addIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.AddIndicatorTypeAction">
       <result name="success" type="redirect">indicatorType.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
     </action>
 
@@ -482,23 +506,23 @@
 
     <action name="updateIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.UpdateIndicatorTypeAction">
       <result name="success" type="redirect">indicatorType.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
     </action>
 
     <action name="validateIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.ValidateIndicatorTypeAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
+      </result>
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-		<!-- DataDictionary -->
+    <!-- DataDictionary -->
 
     <action name="setCurrentDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.SetCurrentDataDictionaryAction">
       <result name="success" type="redirect">dataElement.action
-			</result>
+      </result>
     </action>
 
     <action name="dataDictionary" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction">
@@ -512,15 +536,17 @@
     <action name="getDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction">
       <result name="success" type="velocity-xml">
         /dhis-web-maintenance-datadictionary/responseDataDictionary.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="removeDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATADICTIONARY_DELETE</param>
     </action>
@@ -534,7 +560,7 @@
 
     <action name="addDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction">
       <result name="success" type="redirect">dataDictionary.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATADICTIONARY_ADD</param>
     </action>
 
@@ -547,7 +573,7 @@
 
     <action name="updateDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction">
       <result name="success" type="redirect">dataDictionary.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATADICTIONARY_UPDATE</param>
     </action>
 
@@ -557,7 +583,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-		<!-- Category -->
+    <!-- Category -->
 
     <action name="showAddDataElementCategoryForm" class="org.hisp.dhis.dd.action.concept.GetConceptListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -567,15 +593,17 @@
 
     <action name="addDataElementCategory" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction">
       <result name="success" type="redirect">category.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
 
     <action name="validateDataElementCategory" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -589,13 +617,13 @@
     <action name="getDataElementCategory" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction">
       <result name="success" type="velocity-xml">
         /dhis-web-maintenance-datadictionary/multidimensional/responseCategory.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="updateDataElementCategory" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryAction">
       <result name="success" type="redirect">category.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
@@ -607,20 +635,23 @@
 
     <action name="removeDataElementCategory" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
 
     <action name="updateDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
-		<!-- CategoryCombo -->
+    <!-- CategoryCombo -->
 
     <action name="showAddDataElementCategoryComboForm" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -631,15 +662,17 @@
 
     <action name="addDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.AddDataElementCategoryComboAction">
       <result name="success" type="redirect">categoryCombo.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
 
     <action name="validateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.ValidateDataElementCategoryComboAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -654,13 +687,13 @@
     <action name="getDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
       <result name="success" type="velocity-xml">
         /dhis-web-maintenance-datadictionary/multidimensional/responseCategoryCombo.vm
-			</result>
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="updateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.UpdateDataElementCategoryComboAction">
       <result name="success" type="redirect">categoryCombo.action
-			</result>
+      </result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
@@ -673,14 +706,16 @@
 
     <action name="removeDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
 
-		<!-- PDF -->
+    <!-- PDF -->
 
     <action name="exportToPdf" class="org.hisp.dhis.dd.action.pdf.ExportToPdfAction">
       <result name="success" type="stream">
@@ -691,21 +726,24 @@
       </result>
     </action>
 
-		<!-- Validate CategoryOption -->
+    <!-- Validate CategoryOption -->
 
     <action name="validateDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-		
-		<!-- Concept Name -->
+
+    <!-- Concept Name -->
 
     <action name="getConcept" class="org.hisp.dhis.dd.action.concept.GetConceptAction">
       <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-datadictionary/multidimensional/responseConcept.vm</result>
+        /dhis-web-maintenance-datadictionary/multidimensional/responseConcept.vm
+      </result>
     </action>
 
     <action name="concept" class="org.hisp.dhis.dd.action.concept.GetConceptListAction">
@@ -738,9 +776,11 @@
 
     <action name="validateAddUpdateConcept" class="org.hisp.dhis.dd.action.concept.ValidateAddUpdateConceptAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -758,9 +798,11 @@
 
     <action name="removeConcept" class="org.hisp.dhis.dd.action.concept.RemoveConceptAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
       <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        /dhis-web-commons/ajax/jsonResponseError.vm
+      </result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_CONCEPT_DELETE</param>
     </action>
