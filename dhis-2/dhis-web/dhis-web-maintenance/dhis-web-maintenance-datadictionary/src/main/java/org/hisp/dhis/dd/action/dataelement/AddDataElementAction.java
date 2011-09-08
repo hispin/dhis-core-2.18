@@ -100,6 +100,13 @@ public class AddDataElementAction
     {
         this.description = description;
     }
+    
+    private String formName;
+
+    public void setFormName( String formName )
+    {
+        this.formName = formName;
+    }
 
     private String domainType;
 
@@ -196,6 +203,7 @@ public class AddDataElementAction
         dataElement.setShortName( shortName );
         dataElement.setCode( code );
         dataElement.setDescription( description );
+        dataElement.setFormName( formName );
         dataElement.setActive( true );
         dataElement.setDomainType( domainType );
         dataElement.setType( valueType );

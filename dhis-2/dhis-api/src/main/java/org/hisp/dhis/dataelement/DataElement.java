@@ -89,6 +89,8 @@ public class DataElement
 
     public static final String AGGREGATION_OPERATOR_COUNT = "count";
 
+    private String formName;
+    
     /**
      * If this DataElement is active or not (enabled or disabled).
      */
@@ -369,10 +371,25 @@ public class DataElement
         result.append( "}" );
         return result.toString();
     }
+    
+    public String getFormNameFallback()
+    {
+        return formName != null && !formName.isEmpty() ? formName : name;
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+
+    public String getFormName()
+    {
+        return formName;
+    }
+
+    public void setFormName( String formName )
+    {
+        this.formName = formName;
+    }
 
     public boolean isActive()
     {

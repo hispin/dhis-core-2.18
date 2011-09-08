@@ -34,6 +34,8 @@
 
     <property name="description" type="text" />
 
+	<property name="formName" length="230" />
+
     <property name="active" not-null="true" />
 
     <property name="type" column="valuetype" length="16" not-null="true" />

@@ -118,6 +118,13 @@ public class UpdateDataElementAction
         this.description = description;
     }
 
+    private String formName;
+
+    public void setFormName( String formName )
+    {
+        this.formName = formName;
+    }
+
     private Boolean active;
 
     public void setActive( Boolean active )
@@ -205,6 +212,11 @@ public class UpdateDataElementAction
         {
             description = null;
         }
+        
+        if ( formName != null && formName.trim().length() == 0 )
+        {
+            formName = null;
+        }
 
         // ---------------------------------------------------------------------
         // Update data element
@@ -220,6 +232,7 @@ public class UpdateDataElementAction
         dataElement.setShortName( shortName );
         dataElement.setCode( code );
         dataElement.setDescription( description );
+        dataElement.setFormName( formName );
         dataElement.setActive( active );
         dataElement.setDomainType( domainType );
         dataElement.setType( valueType );

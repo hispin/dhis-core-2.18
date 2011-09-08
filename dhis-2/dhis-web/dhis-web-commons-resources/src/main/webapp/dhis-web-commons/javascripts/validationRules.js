@@ -214,6 +214,11 @@ var validationRules = {
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : true
         },
+        "formName" : {
+            "rangelength" : [ 2, 150 ],
+            "alphanumericwithbasicpuncspaces" : false,
+            "notOnlyDigits" : false
+        },
         "url" : {
             "url" : true,
             "rangelength" : [ 0, 255 ]
