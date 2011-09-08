@@ -380,22 +380,36 @@ var validationRules = {
     "chartGroup" : {
         "name" : {
             "required" : true,
-			"rangelength" : [ 3, 230 ],
+            "rangelength" : [ 3, 230 ],
             "alphanumericwithbasicpuncspaces" : true
-		}
+        }
     },
     "reportGroup" : {
         "name" : {
             "required" : true,
-			"rangelength" : [ 3, 230 ],
+            "rangelength" : [ 3, 230 ],
             "alphanumericwithbasicpuncspaces" : true
-		}
+        }
     },
     "reportTableGroup" : {
         "name" : {
             "required" : true,
-			"rangelength" : [ 3, 230 ],
+            "rangelength" : [ 3, 230 ],
             "alphanumericwithbasicpuncspaces" : true
-		}
+        }
+    },
+    "attribute" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [ 3, 230 ],
+            "alphanumericwithbasicpuncspaces" : true
+        }
+    },
+    "attributeOption" : {
+        "name" : {
+            "required" : true,
+            "rangelength" : [ 3, 230 ],
+            "alphanumericwithbasicpuncspaces" : true
+        }
     }
 };

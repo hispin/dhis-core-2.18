@@ -27,7 +27,13 @@
 
 package org.hisp.dhis.dataadmin.action.attribute;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeOption;
 import org.hisp.dhis.attribute.AttributeService;
 
 import com.opensymphony.xwork2.Action;
@@ -67,6 +73,48 @@ public class UpdateAttributeAction
         this.name = name;
     }
 
+    private String valueType;
+
+    public void setValueType( String valueType )
+    {
+        this.valueType = valueType;
+    }
+
+    private Boolean mandatory = false;
+
+    public void setMandatory( Boolean mandatory )
+    {
+        this.mandatory = mandatory;
+    }
+
+    private Boolean dataElement = false;
+
+    public void setDataElement( Boolean dataElement )
+    {
+        this.dataElement = dataElement;
+    }
+
+    private Boolean indicator = false;
+
+    public void setIndicator( Boolean indicator )
+    {
+        this.indicator = indicator;
+    }
+
+    private Boolean organisationUnit = false;
+
+    public void setOrganisationUnit( Boolean organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
+    }
+
+    private List<Integer> selectedAttributeOptions = new ArrayList<Integer>();
+
+    public void setSelectedAttributeOptions( List<Integer> selectedAttributeOptions )
+    {
+        this.selectedAttributeOptions = selectedAttributeOptions;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -79,6 +127,23 @@ public class UpdateAttributeAction
         if ( attribute != null )
         {
             attribute.setName( name );
+            attribute.setValueType( valueType );
+            attribute.setMandatory( mandatory );
+            attribute.setDataElement( dataElement );
+            attribute.setIndicator( indicator );
+            attribute.setOrganisationUnit( organisationUnit );
+
+            Set<AttributeOption> attributeOptions = new HashSet<AttributeOption>();
+
+            if ( valueType.compareTo( "multiple_choice" ) == 0 )
+            {
+                for ( Integer id : selectedAttributeOptions )
+                {
+                    attributeOptions.add( attributeService.getAttributeOption( id ) );
+                }
+            }
+
+            attribute.setAttributeOptions( attributeOptions );
 
             attributeService.updateAttribute( attribute );
 

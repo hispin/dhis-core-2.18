@@ -1,1 +1,134 @@
-updateAttribute
+<script type="text/javascript" src="javascript/attribute.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(	function()
+	{
+		validation2( 'updateAttributeForm', function( form ) {
+			$("#selectedAttributeOptions").children().attr("selected", "selected");
+			form.submit();
+		}, {
+			'beforeValidateHandler' : function()
+        	{
+           		listValidator( 'memberValidator', 'selectedAttributeOptions' );
+        	},
+			'rules': getValidationRules("attribute")
+		});
+
+		checkValueIsExist( "name", "validateAttribute.action", {id: $attribute.id} );
+
+		$("#valueType").bind("change", onValueTypeChange);
+		$("#valueType").change();
+
+		jQuery("#availableAttributeOptions").dhisAjaxSelect({
+			source: "../dhis-web-commons-ajax-json/getAttributeOptions.action",
+			iterator: "attributeOptions",
+			connectedTo: 'selectedAttributeOptions',
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			}
+		});
+	});
+</script>
+
+<h3>$i18n.getString( "edit_attribute" )</h3>
+
+<form id="updateAttributeForm" action="updateAttribute.action" method="post" >
+<input type="hidden" id="id" name="id" value="$!attribute.id"/>
+
+<table>
+	<col style="width: 100px"/>
+	<col/>
+
+	<tr>
+		<th colspan="2">$i18n.getString( "details" )</th>
+	</tr>
+
+	<tr>
+		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $!attribute.name )"/></td>
+	</tr>
+
+	<tr>
+		<td><label for="mandatory">$i18n.getString( "mandatory" )</td>
+		<td><input type="checkbox" id="mandatory" name="mandatory" value="true" #if( $attribute.mandatory ) checked="checked" #end /></td>
+	</tr>
+
+	<tr>
+		<td style="vertical-align: text-top;">$i18n.getString( "assigned_to" )</td>
+		<td>
+			<input type="checkbox" id="dataElement" name="dataElement" value="true" #if( $attribute.dataElement ) checked="checked" #end /><label for="dataElement">$i18n.getString( 'data_element' )</label> <br />
+			<input type="checkbox" id="indicator" name="indicator" value="true" #if( $attribute.indicator ) checked="checked" #end /><label for="indicator">$i18n.getString( 'indicator' )</label> <br />
+			<input type="checkbox" id="organisationUnit" name="organisationUnit" value="true" #if( $attribute.organisationUnit ) checked="checked" #end /><label for="organisationUnit">$i18n.getString( 'organisation_unit' )</label> <br />
+		</td>
+	</tr>
+
+	<tr>
+		<td><label for="valueType">$i18n.getString( "value_type" )</td>
+		<td>
+			<select id="valueType" name="valueType" style="width:20em">
+				<option value="string" #if( $attribute.valueType == 'string') selected="selected" #end>$i18n.getString( "text" )</option>
+				<option value="bool" #if( $attribute.valueType == 'bool') selected="selected" #end>$i18n.getString( "yes_no" )</option>
+				<option value="date" #if( $attribute.valueType == 'date') selected="selected" #end>$i18n.getString( "date" )</option>
+				<option value="number" #if( $attribute.valueType == 'number') selected="selected" #end>$i18n.getString( "number" )</option>
+				<option value="int" #if( $attribute.valueType == 'int') selected="selected" #end>$i18n.getString( "int" )</option>
+				<option value="positiveNumber" #if( $attribute.valueType == 'positiveNumber') selected="selected" #end>$i18n.getString( "positiveNumber" )</option>
+				<option value="negativeNumber" #if( $attribute.valueType == 'negativeNumber') selected="selected" #end>$i18n.getString( "negativeNumber" )</option>
+				<option value="multiple_choice" #if( $attribute.valueType == 'multiple_choice') selected="selected" #end>$i18n.getString( "multiple_choice" )</option>
+			</select>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="3" id="multipleChoice" style="display: none;">
+			<br /> 
+			<table>
+
+			<col style="width: 300px"/>
+    		<col/>
+    		<col style="width: 300px"/>
+
+			<tr>
+			<th>$i18n.getString( "available_attribute_options" )</th>
+			<th></th>
+			<th>$i18n.getString( "selected_attribute_options" )
+			    <select id="memberValidator" multiple="multiple" style="display:none"/>
+			</th>
+			</tr>
+
+			<tr>
+			<td>
+		        <select id="availableAttributeOptions" name="availableAttributeOptions" multiple="multiple" style="height: 200px; width: 100%;"></select>
+		    </td>
+		
+		    <td style="text-align:center">
+		    	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableAttributeOptions' );"/><br/>
+		        <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedAttributeOptions' );"/><br/>
+				<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableAttributeOptions' );"/><br/>
+				<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedAttributeOptions' );"/>
+		    </td>
+
+		    <td>
+		        <select id="selectedAttributeOptions" name="selectedAttributeOptions" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
+				#foreach( $attributeOption in $attribute.attributeOptions )
+					<option value="$attributeOption.id">$encoder.htmlEncode( $attributeOption.name )</option>
+				#end
+				</select>
+			</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<br/>
+			<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='attribute.action'" style="width:10em"/>
+		</td>
+	</tr>
+</table>
+
+</form>
