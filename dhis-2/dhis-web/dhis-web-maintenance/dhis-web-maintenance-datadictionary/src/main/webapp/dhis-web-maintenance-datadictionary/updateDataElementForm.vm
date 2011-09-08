@@ -42,6 +42,10 @@
 		<td><textarea id="description" name="description" style="width:20em; height:8em">$!encoder.htmlEncode( $dataElement.description )</textarea></td>
 	</tr>
 	<tr>
+		<td><label for="formName">$i18n.getString( "form_name" )</label></td>
+		<td><input type="text" id="formName" name="formName" value="$!encoder.htmlEncode( $dataElement.formName )" style="width:20em"/></td>
+	</tr>
+	<tr>
 		<td><label for="active">$i18n.getString( "active" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="active" name="active" style="min-width:20em">
