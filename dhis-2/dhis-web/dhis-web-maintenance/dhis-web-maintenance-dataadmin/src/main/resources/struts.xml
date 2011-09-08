@@ -519,7 +519,7 @@
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
-    <action name="addAttribute" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction">
+    <action name="addAttribute" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeAction">
       <result name="success" type="redirect">attribute.action</result>
       <result name="error" type="redirect">index.action</result>
     </action>

@@ -25,18 +25,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataadmin.action.attribute;
+package org.hisp.dhis.commons.action;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.attribute.AttributeOption;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.common.DeleteNotAllowedException;
-import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.attribute.comparator.AttributeOptionNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author mortenoh
  */
-public class RemoveAttributeAction
+public class GetAttributeOptionsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -50,29 +54,15 @@ public class RemoveAttributeAction
         this.attributeService = attributeService;
     }
 
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private List<AttributeOption> attributeOptions;
 
-    public void setId( Integer id )
+    public List<AttributeOption> getAttributeOptions()
     {
-        this.id = id;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
+        return attributeOptions;
     }
 
     // -------------------------------------------------------------------------
@@ -82,19 +72,9 @@ public class RemoveAttributeAction
     @Override
     public String execute()
     {
-        try
-        {
-            attributeService.deleteAttribute( attributeService.getAttribute( id ) );
-        }
-        catch ( DeleteNotAllowedException ex )
-        {
-            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
-            {
-                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+        attributeOptions = new ArrayList<AttributeOption>( attributeService.getAllAttributeOptions() );
 
-                return ERROR;
-            }
-        }
+        Collections.sort( attributeOptions, new AttributeOptionNameComparator() );
 
         return SUCCESS;
     }

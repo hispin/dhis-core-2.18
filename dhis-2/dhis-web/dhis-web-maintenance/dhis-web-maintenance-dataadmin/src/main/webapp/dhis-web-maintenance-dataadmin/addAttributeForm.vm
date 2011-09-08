@@ -1,1 +1,127 @@
-addAttribute
+<script type="text/javascript">
+	function onValueTypeChange(e) {
+		var val = $(this).find(":selected").val();
+
+		if(val == "multiple_choice") {
+			$("#multipleChoice").show();
+		} else {
+			$("#multipleChoice").hide();
+		}
+	}
+
+	jQuery(document).ready(	function()
+	{
+		$("#valueType").bind("change", onValueTypeChange);
+	
+		var rules = getValidationRules("attribute");
+
+		validation2( 'addAttributeForm', function( form ){ form.submit(); },
+		{
+			'rules': rules
+		});
+
+		checkValueIsExist( "name", "validateAttribute.action" );
+
+		jQuery("#availableAttributeOptions").dhisAjaxSelect({
+			source: "../dhis-web-commons-ajax-json/getAttributeOptions.action",
+			iterator: "attributeOptions",
+			connectedTo: 'selectedAttributeOptions',
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			}
+		});
+	});
+</script>
+
+<h3>$i18n.getString( "create_new_attribute" )</h3>
+
+<form id="addAttributeForm" action="addAttribute.action" method="post" >
+
+<table>
+	<col style="width: 100px"/>
+	<col/>
+
+	<tr>
+		<th colspan="2">$i18n.getString( "details" )</th>
+	</tr>
+
+	<tr>
+		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" style="width:20em"/></td>
+	</tr>
+
+	<tr>
+		<td><label for="mandatory">$i18n.getString( "mandatory" )</td>
+		<td><input type="checkbox" id="mandatory" name="mandatory" value="true" /></td>
+	</tr>
+
+	<tr>
+		<td style="vertical-align: text-top;">$i18n.getString( "assigned_to" )</td>
+		<td>
+			<input type="checkbox" id="dataElement" name="dataElement" value="true" /><label for="dataElement">$i18n.getString( 'data_element' )</label> <br />
+			<input type="checkbox" id="indicator" name="indicator" value="true" /><label for="indicator">$i18n.getString( 'indicator' )</label> <br />
+			<input type="checkbox" id="organisationUnit" name="organisationUnit" value="true" /><label for="organisationUnit">$i18n.getString( 'organisation_unit' )</label> <br />
+		</td>
+	</tr>
+
+	<tr>
+		<td><label for="valueType">$i18n.getString( "value_type" )</td>
+		<td>
+			<select id="valueType" name="valueType" style="width:20em">
+				<option value="string">$i18n.getString( "text" )</option>
+				<option value="bool">$i18n.getString( "yes_no" )</option>
+				<option value="multiple_choice">$i18n.getString( "multiple_choice" )</option>
+			</select>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="3" id="multipleChoice" style="display: none;"> 
+			<table>
+
+			<col style="width: 300px"/>
+    		<col/>
+    		<col style="width: 300px"/>
+
+			<tr>
+			<th>$i18n.getString( "available_attribute_options" )</th>
+			<th></th>
+			<th>$i18n.getString( "selected_attribute_options" )
+			    <select id="memberValidator" multiple="multiple" style="display:none"/>
+			</th>
+			</tr>
+
+			<tr>
+			<td>
+		        <select id="availableAttributeOptions" name="availableAttributeOptions" multiple="multiple" style="height: 200px; width: 100%;"></select>
+		    </td>
+		
+		    <td style="text-align:center">
+		    	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableUsersList' );"/><br/>
+		        <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'groupMembersList' );"/><br/>
+				<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableUsersList' );"/><br/>
+				<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'groupMembersList' );"/>
+		    </td>
+		
+		    <td>
+		        <select id="selectedAttributeOptions" name="selectedAttributeOptions" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;"></select>
+			</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<br/>
+			<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='attribute.action'" style="width:10em"/>
+		</td>
+	</tr>
+</table>
+
+</form>
