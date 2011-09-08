@@ -387,7 +387,7 @@ function getDataElementType( dataElementId )
 {
 	if ( dataElements[dataElementId] != null )
 	{
-		return dataElements[dataElementId].type;
+		return dataElements[dataElementId];
 	}
 	
 	log( 'Data element not present in data set, falling back to default type: ' + dataElementId );	
@@ -396,12 +396,27 @@ function getDataElementType( dataElementId )
 
 function getDataElementName( dataElementId )
 {
-	if ( dataElements[dataElementId] != null )
+	var span = $( '#' + dataElementId + '-dataelement' );
+	
+	if ( span != null )
 	{
-		return dataElements[dataElementId].name;
+		return span.text();
 	}
 	
-	log( 'Data element present in data set, falling back to default name: ' + dataElementId );
+	log( 'Data element not present in form, falling back to default name: ' + dataElementId );
+	return DEFAULT_NAME;	
+}
+
+function getOptionComboName( optionComboId )
+{
+	var span = $( '#' + optionComboId + '-optioncombo' );
+	
+	if ( span != null )
+	{
+		return span.text();
+	}
+	
+	log( 'Category option combo not present in form, falling back to default name: ' + optionComboId );
 	return DEFAULT_NAME;	
 }
 
@@ -723,7 +738,7 @@ function valueFocus( e )
     var optionComboId = id.split( '-' )[1];
 
     var dataElementName = getDataElementName( dataElementId );
-    var optionComboName = $( '#' + optionComboId + '-optioncombo' ).text();
+    var optionComboName = getOptionComboName( optionComboId );
 
     $( '#currentDataElement' ).html( dataElementName + ' ' + optionComboName );
 
@@ -935,7 +950,7 @@ function viewHist( dataElementId, optionComboId )
     var periodId = $( '#selectedPeriodId' ).val();
 
     var dataElementName = getDataElementName( dataElementId );
-    var optionComboName = $( '#' + optionComboId + '-optioncombo' ).html();
+    var optionComboName = getOptionComboName( optionComboId );
     var operandName = dataElementName + ' ' + optionComboName;
 
     $( '#historyDiv' ).load( 'viewHistory.action', {

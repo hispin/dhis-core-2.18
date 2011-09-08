@@ -302,6 +302,8 @@ public class DefaultDataEntryFormService
                 }
 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
+                inputHtml += "<span id=\"" + dataElement.getId() + "-dataelement\" style=\"display:none\">" + dataElement.getName() + "</span>";
+                inputHtml += "<span id=\"" + categoryOptionCombo.getId() + "-optioncombo\" style=\"display:none\">" + categoryOptionCombo.getName() + "</span>";
                 
                 inputMatcher.appendReplacement( sb, inputHtml );
             }
