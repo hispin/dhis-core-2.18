@@ -9,8 +9,8 @@ ${dataElement.id}#if( $velocityCount < $size ),#end
 "dataElements": {
 #set( $size = $dataElements.size() )
 #foreach( $dataElement in $dataElements )
-"${dataElement.id}":{"name":"$encoder.jsonEncode( ${dataElement.name} )","type":"$encoder.jsonEncode( ${dataElement.getDetailedNumberType()} )" 
-}#if( $velocityCount < $size ),#end
+"${dataElement.id}":"$encoder.jsonEncode( ${dataElement.getDetailedNumberType()} )" 
+#if( $velocityCount < $size ),#end
 #end },
 
 "indicatorFormulas": {
