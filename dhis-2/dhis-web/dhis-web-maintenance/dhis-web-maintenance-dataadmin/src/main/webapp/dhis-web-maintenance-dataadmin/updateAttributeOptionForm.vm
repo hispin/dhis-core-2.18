@@ -8,7 +8,7 @@
 			'rules': rules
 		});
 
-		checkValueIsExist( "name", "validateAttributeOption.action" );
+		checkValueIsExist( "name", "validateAttributeOption.action", {id: $attributeOption.id} );
 	});
 </script>
 

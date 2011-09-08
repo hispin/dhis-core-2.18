@@ -1,26 +1,22 @@
+<script type="text/javascript" src="javascript/attribute.js"></script>
 <script type="text/javascript">
-	function onValueTypeChange(e) {
-		var val = $(this).find(":selected").val();
-
-		if(val == "multiple_choice") {
-			$("#multipleChoice").show();
-		} else {
-			$("#multipleChoice").hide();
-		}
-	}
-
 	jQuery(document).ready(	function()
 	{
-		$("#valueType").bind("change", onValueTypeChange);
-	
-		var rules = getValidationRules("attribute");
-
-		validation2( 'addAttributeForm', function( form ){ form.submit(); },
-		{
-			'rules': rules
+		validation2( 'addAttributeForm', function( form ) {
+			$("#selectedAttributeOptions").children().attr("selected", "selected");
+			form.submit();
+		}, {
+			'beforeValidateHandler' : function()
+        	{
+        		listValidator( 'memberValidator', 'selectedAttributeOptions' );
+        	},
+			'rules': getValidationRules("attribute")
 		});
 
 		checkValueIsExist( "name", "validateAttribute.action" );
+
+		$("#valueType").bind("change", onValueTypeChange);
+		$("#valueType").change();
 
 		jQuery("#availableAttributeOptions").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getAttributeOptions.action",
@@ -74,13 +70,18 @@
 			<select id="valueType" name="valueType" style="width:20em">
 				<option value="string">$i18n.getString( "text" )</option>
 				<option value="bool">$i18n.getString( "yes_no" )</option>
+				<option value="date">$i18n.getString( "date" )</option>
+				<option value="number">$i18n.getString( "number" )</option>
+				<option value="int" >$i18n.getString( "int" )</option>
+				<option value="positiveNumber">$i18n.getString( "positiveNumber" )</option>
+				<option value="negativeNumber">$i18n.getString( "negativeNumber" )</option>
 				<option value="multiple_choice">$i18n.getString( "multiple_choice" )</option>
 			</select>
 		</td>
 	</tr>
 
-	<tr>
-		<td colspan="3" id="multipleChoice" style="display: none;"> 
+	<tr id="multipleChoice" style="display: none;">
+		<td colspan="3"> 
 			<table>
 
 			<col style="width: 300px"/>
@@ -101,10 +102,10 @@
 		    </td>
 		
 		    <td style="text-align:center">
-		    	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableUsersList' );"/><br/>
-		        <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'groupMembersList' );"/><br/>
-				<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableUsersList' );"/><br/>
-				<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'groupMembersList' );"/>
+		    	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableAttributeOptions' );"/><br/>
+		        <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedAttributeOptions' );"/><br/>
+				<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableAttributeOptions' );"/><br/>
+				<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedAttributeOptions' );"/>
 		    </td>
 		
 		    <td>

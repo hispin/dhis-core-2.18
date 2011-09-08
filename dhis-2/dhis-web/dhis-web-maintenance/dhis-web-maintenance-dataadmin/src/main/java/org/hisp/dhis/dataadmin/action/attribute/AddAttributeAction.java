@@ -120,17 +120,17 @@ public class AddAttributeAction
         attribute.setIndicator( indicator );
         attribute.setOrganisationUnit( organisationUnit );
 
+        Set<AttributeOption> attributeOptions = new HashSet<AttributeOption>();
+
         if ( valueType.compareTo( "multiple_choice" ) == 0 )
         {
-            Set<AttributeOption> attributeOptions = new HashSet<AttributeOption>();
-
             for ( Integer id : selectedAttributeOptions )
             {
                 attributeOptions.add( attributeService.getAttributeOption( id ) );
             }
-
-            attribute.setAttributeOptions( attributeOptions );
         }
+
+        attribute.setAttributeOptions( attributeOptions );
 
         attributeService.addAttribute( attribute );
 
