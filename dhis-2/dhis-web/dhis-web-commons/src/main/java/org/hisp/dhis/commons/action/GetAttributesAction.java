@@ -25,18 +25,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataadmin.action.attribute;
+package org.hisp.dhis.commons.action;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.common.DeleteNotAllowedException;
-import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author mortenoh
  */
-public class RemoveAttributeAction
+public class GetAttributesAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -50,29 +54,15 @@ public class RemoveAttributeAction
         this.attributeService = attributeService;
     }
 
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private List<Attribute> attributes;
 
-    public void setId( Integer id )
+    public List<Attribute> getAttributes()
     {
-        this.id = id;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
+        return attributes;
     }
 
     // -------------------------------------------------------------------------
@@ -82,19 +72,9 @@ public class RemoveAttributeAction
     @Override
     public String execute()
     {
-        try
-        {
-            attributeService.deleteAttribute( attributeService.getAttribute( id ) );
-        }
-        catch ( DeleteNotAllowedException ex )
-        {
-            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
-            {
-                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+        attributes = new ArrayList<Attribute>( attributeService.getAllAttributes() );
 
-                return ERROR;
-            }
-        }
+        Collections.sort( attributes, new AttributeNameComparator() );
 
         return SUCCESS;
     }
