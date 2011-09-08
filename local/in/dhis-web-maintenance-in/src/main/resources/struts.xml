@@ -44,7 +44,23 @@
             <param name="bufferSize">1024</param>
         </result>
     </action>
-
+<!-- Advance MySQL Backup -->
+	<action name="advanceMysqlBackupForm" class="org.hisp.dhis.config.action.AdvanceMySqlBackupFormAction">
+		<result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-in/advanceMysqlBackupForm.vm</param>
+        <param name="menu">/dhis-web-maintenance-in/menu.vm</param>
+        <param name="stylesheets">css/StylesForTags.css</param>
+        <param name="requiredAuthorities">F_CONFIGURE_DOWNLOAD_BACKUP</param>
+    </action>
+	  
+	<action name="advanceMySQLBackupResult" class="org.hisp.dhis.config.action.AdvanceMySqlBackupResultAction">
+		<result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-in/advanceMysqlBackupResult.vm</param>
+        <param name="menu">/dhis-web-maintenance-in/menu.vm</param>
+        <param name="stylesheets">css/StylesForTags.css</param>
+        <param name="requiredAuthorities">F_CONFIGURE_DOWNLOAD_BACKUP</param>
+    </action>	  
+	  
 <!-- Maintenance -->             
     <action name="maintenance" class="org.hisp.dhis.config.action.NoAction">
         <result name="success" type="velocity">/main.vm</result>
