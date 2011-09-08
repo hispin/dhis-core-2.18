@@ -35,6 +35,7 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.util.SessionUtils;
@@ -55,6 +56,13 @@ public class ExportValidationResultAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     private I18nFormat format;
 
@@ -79,6 +87,13 @@ public class ExportValidationResultAction
     public void setType( String type )
     {
         this.type = type;
+    }
+    
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
     }
 
     // -------------------------------------------------------------------------
@@ -112,9 +127,16 @@ public class ExportValidationResultAction
         List<ValidationResult> results = (List<ValidationResult>) SessionUtils.
             getSessionVar( KEY_VALIDATIONRESULT );
         
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        
         Grid grid = new ListGrid();
         
         grid.setTitle( i18n.getString( "data_quality_report" ) );
+        
+        if ( organisationUnit != null )
+        {
+            grid.setSubtitle( organisationUnit.getName() );
+        }
         
         grid.addHeader( new GridHeader( i18n.getString( "source" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "period" ), false, true ) );

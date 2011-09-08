@@ -225,7 +225,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="org.hisp.dhis.validationrule.action.ExportValidationResultAction" class="org.hisp.dhis.validationrule.action.ExportValidationResultAction"
-    scope="prototype" />
+    scope="prototype">
+	<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
   
   <!-- Data analysis -->
 

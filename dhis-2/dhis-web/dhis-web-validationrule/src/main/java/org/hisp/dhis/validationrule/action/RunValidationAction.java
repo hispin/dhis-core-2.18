@@ -185,6 +185,13 @@ public class RunValidationAction
     {
         return maxExceeded;
     }
+    
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
 
     // -------------------------------------------------------------------------
     // Execute
@@ -192,11 +199,11 @@ public class RunValidationAction
 
     public String execute()
     {
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         
         if ( aggregate ) // Aggregate data source
         {
-            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( unit.getChildren() );
+            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnit.getChildren() );
 
             List<Period> periods = new ArrayList<Period>( periodService.namePeriods( 
                 periodService.getPeriodsBetweenDates( format.parseDate( startDate ), format.parseDate( endDate ) ), format ) );
@@ -234,7 +241,7 @@ public class RunValidationAction
         }
         else // Captured data source
         {
-            Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
+            Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
 
             if ( validationRuleGroupId == -1 )
             {

@@ -133,5 +133,8 @@ function showValidationResults()
 
 function exportValidationResult( type )
 {
-    window.location.href = 'exportValidationResult.action?type=' + type;
+    var url = 'exportValidationResult.action?type=' + type + 
+    	"&organisationUnitId=" + $( "#organisationUnitId" ).val();
+    	
+    window.location.href = url;
 }
