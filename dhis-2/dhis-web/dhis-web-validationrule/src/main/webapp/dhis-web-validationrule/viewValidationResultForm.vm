@@ -6,7 +6,9 @@
 	var i18n_analysing_please_wait = '$encoder.jsEscape( $i18n.getString( "analysing_please_wait" ) , "'")';
 </script>
 
-<h3>$encoder.htmlEncode( $i18n.getString( "validation_violations" ) )</h3>
+<input type="hidden" id="organisationUnitId" value="$!{organisationUnit.id}" />
+
+<h3>$encoder.htmlEncode( $i18n.getString( "validation_violations" ) ) - $encoder.htmlEncode( $!{organisationUnit.name} )</h3>
 
 <table>
 	<colgroup>
