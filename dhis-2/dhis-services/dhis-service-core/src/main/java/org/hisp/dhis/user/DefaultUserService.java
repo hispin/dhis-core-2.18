@@ -374,6 +374,14 @@ public class DefaultUserService
         updateUserCredentials( credentials );
     }
 
+    public Collection<UserCredentials> getInactiveUsers( int months )
+    {
+        Calendar cal = PeriodType.createCalendarInstance();
+        cal.add( Calendar.MONTH, (months * -1) );
+        
+        return userStore.getInactiveUsers( cal.getTime() );
+    }
+
     public Collection<UserCredentials> getInactiveUsers( int months, int first, int max )
     {
         Calendar cal = PeriodType.createCalendarInstance();
@@ -426,5 +434,4 @@ public class DefaultUserService
     {
         return userStore.getUserSetting( user, name );
     }
-
 }

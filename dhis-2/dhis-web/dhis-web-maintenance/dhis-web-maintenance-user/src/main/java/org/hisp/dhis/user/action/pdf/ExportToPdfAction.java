@@ -27,8 +27,11 @@ package org.hisp.dhis.user.action.pdf;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -38,7 +41,12 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
+import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.comparator.UsernameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -60,6 +68,13 @@ public class ExportToPdfAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
 
     private CurrentUserService currentUserService;
 
@@ -111,6 +126,20 @@ public class ExportToPdfAction
     // Input
     // -------------------------------------------------------------------------
 
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
+    private Integer months;
+
+    public void setMonths( Integer months )
+    {
+        this.months = months;
+    }
+
     private String type;
 
     public void setType( String type )
@@ -118,12 +147,7 @@ public class ExportToPdfAction
         this.type = type;
     }
 
-    private List<Integer> activeIds = new ArrayList<Integer>();
-
-    public void setActiveIds( List<Integer> activeIds )
-    {
-        this.activeIds = activeIds;
-    }
+    private List<UserCredentials> userCredentialsList = null;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -138,9 +162,27 @@ public class ExportToPdfAction
 
             if ( type.equals( TYPE_USER ) )
             {
-                if ( (activeIds != null) && !activeIds.isEmpty() )
+                if ( isNotBlank( key ) ) // Filter on key only if set
                 {
-                    params.setUsers( activeIds );
+                    userCredentialsList = new ArrayList<UserCredentials>( userService.searchUsersByName( key ) );
+                }
+                else if ( months != null && months != 0 )
+                {
+                    userCredentialsList = new ArrayList<UserCredentials>( userService.getInactiveUsers( months ) );
+                }
+                else
+                {
+                    userCredentialsList = new ArrayList<UserCredentials>( userService.getAllUserCredentials() );
+                }
+
+                FilterUtils.filter( userCredentialsList, new UserCredentialsCanUpdateFilter( currentUserService
+                    .getCurrentUser() ) );
+
+                Collections.sort( userCredentialsList, new UsernameComparator() );
+
+                if ( (userCredentialsList != null) && !userCredentialsList.isEmpty() )
+                {
+                    params.setUsers( userCredentialsList );
                 }
                 else
                 {
@@ -152,7 +194,6 @@ public class ExportToPdfAction
                 log.info( "Exporting to PDF for object type: " + TYPE_USER );
             }
 
-            params.setCurrentUser( currentUserService.getCurrentUser() );
             params.setIncludeDataValues( false );
             params.setI18n( i18n );
             params.setFormat( format );

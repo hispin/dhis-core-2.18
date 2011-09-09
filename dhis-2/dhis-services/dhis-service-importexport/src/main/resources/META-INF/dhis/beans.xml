@@ -272,7 +272,6 @@
 	<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
   </bean>
 

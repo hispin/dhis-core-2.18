@@ -198,6 +198,8 @@ public interface UserService
     Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
         int first, int max );
     
+    Collection<UserCredentials> getInactiveUsers( int months );
+    
     Collection<UserCredentials> getInactiveUsers( int months, int first, int max );
     
     int getInactiveUsersCount( int months );
