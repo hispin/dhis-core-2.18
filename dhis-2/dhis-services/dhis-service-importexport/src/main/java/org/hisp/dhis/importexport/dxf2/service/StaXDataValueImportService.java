@@ -229,7 +229,8 @@ public class StaXDataValueImportService
                     }
                 }
 
-                Period outerPeriod = getPeriodObj( period );
+                int periodId = periodService.addPeriod( getPeriodObj( period ) );
+                Period outerPeriod = periodService.getPeriod( periodId );
 
                 // maps for translating identifiers
                 Map<String, Integer> dataelementMap = null;
