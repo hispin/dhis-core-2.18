@@ -192,13 +192,11 @@ public class DefaultImportService
 
             if (rootNameSpace.equals( DXF2URI )) {
               log.debug( "Sending DXFv2 to converter" );
-              converter.read( dxfReader, params, state );
-            } else if (rootNameSpace.equals( DXF1URI )) {
+              dxf2converter.read( dxfReader, params, state );
+            } else  {
               log.debug( "Sending DXFv1 to converter" );
               converter.read( dxfReader, params, state );
-            } else {
-                throw new ImportException("Unknown dxf version: " + rootNameSpace);
-            }
+            } 
         }
         catch ( IOException ex )
         {
