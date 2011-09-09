@@ -11,11 +11,11 @@
 			{ 'id':attributeId },
 			function( attributeElement ) {
 				setInnerHTML( 'nameField', getElementValue( attributeElement, 'name' ) );
-				setInnerHTML( 'valuetypeField', getElementValue( attributeElement, 'valueType' ) );
 				setInnerHTML( 'mandatoryField', getElementValue( attributeElement, 'mandatory' ) );
 				setInnerHTML( 'dataelementField', getElementValue( attributeElement, 'dataelement' ) );
 				setInnerHTML( 'indicatorField', getElementValue( attributeElement, 'indicator' ) );
 				setInnerHTML( 'organisationunitField', getElementValue( attributeElement, 'organisationunit' ) );
+				setInnerHTML( 'valuetypeField', getElementValue( attributeElement, 'valueType' ) );
 				showDetails();
 		});
 	}
