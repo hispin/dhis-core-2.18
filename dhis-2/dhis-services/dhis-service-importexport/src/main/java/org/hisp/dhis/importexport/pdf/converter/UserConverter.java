@@ -27,18 +27,12 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.comparator.UsernameComparator;
 
 import com.lowagie.text.Document;
 
@@ -50,14 +44,11 @@ public class UserConverter
     extends PDFUtils
     implements PDFConverter
 {
-    private UserService userService;
-
     /**
      * Constructor for write operations.
      */
-    public UserConverter( UserService userService )
+    public UserConverter()
     {
-        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -70,13 +61,8 @@ public class UserConverter
         I18nFormat format = params.getFormat();
 
         PDFUtils.printObjectFrontPage( document, params.getUsers(), i18n, format, "users" );
-
-        List<UserCredentials> userCredentialss = new ArrayList<UserCredentials>( userService.getUsers( params
-            .getUsers(), params.getCurrentUser() ) );
-
-        Collections.sort( userCredentialss, new UsernameComparator() );
-
-        for ( UserCredentials userCredentials : userCredentialss )
+        
+        for ( UserCredentials userCredentials : params.getUsers() )
         {
             addTableToDocument( document, printUser( userCredentials, i18n, format, true, 0.40f, 0.60f ) );
         }

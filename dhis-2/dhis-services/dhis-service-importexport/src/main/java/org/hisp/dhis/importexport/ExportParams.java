@@ -35,6 +35,7 @@ import java.util.HashSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
 
 /**
  * @author Lars Helge Overland
@@ -90,7 +91,7 @@ public class ExportParams
 
     private Collection<Integer> organisationUnitLevels = new HashSet<Integer>();
 
-    private Collection<Integer> users = new HashSet<Integer>();
+    private Collection<UserCredentials> users = new HashSet<UserCredentials>();
 
     private Collection<Integer> validationRules = new ArrayList<Integer>();
 
@@ -391,12 +392,12 @@ public class ExportParams
         this.validationRules = validationRules;
     }
 
-    public Collection<Integer> getUsers()
+    public Collection<UserCredentials> getUsers()
     {
         return users;
     }
 
-    public void setUsers( Collection<Integer> users )
+    public void setUsers( Collection<UserCredentials> users )
     {
         this.users = users;
     }

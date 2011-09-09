@@ -173,11 +173,13 @@ public interface UserStore
 
     Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
         int first, int max );
+
+    Collection<UserCredentials> getInactiveUsers( Date date );
     
     Collection<UserCredentials> getInactiveUsers( Date date, int first, int max );
-    
+
     int getInactiveUsersCount( Date date );
-    
+
     int getActiveUsersCount( Date date );
 
     // -------------------------------------------------------------------------

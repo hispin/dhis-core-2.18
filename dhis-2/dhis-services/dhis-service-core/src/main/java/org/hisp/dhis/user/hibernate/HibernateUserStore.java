@@ -60,14 +60,14 @@ public class HibernateUserStore
     // -------------------------------------------------------------------------
 
     private SessionFactory sessionFactory;
-    
+
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
     }
-    
+
     private GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore;
-    
+
     public void setUserRoleStore( GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore )
     {
         this.userRoleStore = userRoleStore;
@@ -97,7 +97,7 @@ public class HibernateUserStore
 
         return (User) session.get( User.class, id );
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<User> getAllUsers()
     {
@@ -107,40 +107,40 @@ public class HibernateUserStore
     }
 
     public Collection<User> getUsersWithoutOrganisationUnit()
-    {    	
-    	Collection<User> users = getAllUsers();
-        
+    {
+        Collection<User> users = getAllUsers();
+
         Iterator<User> iterator = users.iterator();
-        
-        while( iterator.hasNext() )
+
+        while ( iterator.hasNext() )
         {
-            if( iterator.next().getOrganisationUnits().size() > 0 )
+            if ( iterator.next().getOrganisationUnits().size() > 0 )
             {
-        	iterator.remove();
+                iterator.remove();
             }
         }
-        
+
         return users;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<User> getUsersByPhoneNumber( String phoneNumber )
     {
         String hql = "from User u where u.phoneNumber = :phoneNumber";
-        
+
         Query query = sessionFactory.getCurrentSession().createQuery( hql );
         query.setString( "phoneNumber", phoneNumber );
-        
+
         return query.list();
     }
-    
+
     public void deleteUser( User user )
     {
         Session session = sessionFactory.getCurrentSession();
 
         session.delete( user );
     }
-    
+
     // -------------------------------------------------------------------------
     // UserCredentials
     // -------------------------------------------------------------------------
@@ -184,7 +184,7 @@ public class HibernateUserStore
     public Collection<UserCredentials> getAllUserCredentials()
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         return session.createCriteria( UserCredentials.class ).list();
     }
 
@@ -212,7 +212,7 @@ public class HibernateUserStore
 
         session.update( userAuthorityGroup );
     }
-    
+
     public UserAuthorityGroup getUserAuthorityGroup( int id )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -223,11 +223,11 @@ public class HibernateUserStore
     public UserAuthorityGroup getUserAuthorityGroupByName( String name )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Criteria criteria = session.createCriteria( UserAuthorityGroup.class );
-        
+
         criteria.add( Restrictions.eq( "name", name ) );
-        
+
         return (UserAuthorityGroup) criteria.uniqueResult();
     }
 
@@ -295,26 +295,26 @@ public class HibernateUserStore
 
         session.delete( userSetting );
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<UserCredentials> searchUsersByName( String key )
-    {        
+    {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( UserCredentials.class );
-      
+
         criteria.add( Restrictions.ilike( "username", "%" + key + "%" ) );
         criteria.addOrder( Order.asc( "username" ) );
 
         return criteria.list();
     }
-    
+
     public int getUserCount()
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         Query query = session.createQuery( "select count(*) from User" );
-        
+
         Number rs = (Number) query.uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
@@ -325,31 +325,32 @@ public class HibernateUserStore
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( UserCredentials.class );
-      
+
         criteria.add( Restrictions.ilike( "username", "%" + name + "%" ) );
-        
+
         criteria.setProjection( Projections.rowCount() );
 
         Number rs = (Number) criteria.uniqueResult();
-        
+
         return rs != null ? rs.intValue() : 0;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<UserCredentials> getUsersBetween( int first, int max )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        return session.createQuery( "from UserCredentials order by username" ).setFirstResult( first ).setMaxResults( max ).list();
+        return session.createQuery( "from UserCredentials order by username" ).setFirstResult( first ).setMaxResults(
+            max ).list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( UserCredentials.class );
-      
+
         criteria.add( Restrictions.ilike( "username", "%" + name + "%" ) );
         criteria.addOrder( Order.asc( "username" ) );
         criteria.setFirstResult( first );
@@ -401,7 +402,7 @@ public class HibernateUserStore
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
     {
-        return getBlockUser( toUserCredentials( getUsersWithoutOrganisationUnit()), first, max );
+        return getBlockUser( toUserCredentials( getUsersWithoutOrganisationUnit() ), first, max );
     }
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max )
@@ -419,49 +420,59 @@ public class HibernateUserStore
         return findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ).size();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
+    public Collection<UserCredentials> getInactiveUsers( Date date )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.lt( "lastLogin", date ) );
+
+        return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
     public Collection<UserCredentials> getInactiveUsers( Date date, int first, int max )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
         criteria.add( Restrictions.lt( "lastLogin", date ) );
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
-        
+
         return criteria.list();
     }
-    
+
     public int getInactiveUsersCount( Date date )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
         criteria.add( Restrictions.lt( "lastLogin", date ) );
         criteria.setProjection( Projections.rowCount() );
-        
+
         Number rs = (Number) criteria.uniqueResult();
-        
+
         return rs != null ? rs.intValue() : 0;
     }
-    
+
     public int getActiveUsersCount( Date date )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
         criteria.add( Restrictions.ge( "lastLogin", date ) );
         criteria.setProjection( Projections.rowCount() );
-        
+
         Number rs = (Number) criteria.uniqueResult();
-        
+
         return rs != null ? rs.intValue() : 0;
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
-    // TODO All this user / credentials search stuff is horrible and must be improved
-    
+
+    // TODO All this user / credentials search stuff is horrible and must be
+    // improved
+
     private Collection<UserCredentials> findByName( Collection<UserCredentials> users, String key )
     {
         List<UserCredentials> returnList = new ArrayList<UserCredentials>();
-        
+
         for ( UserCredentials user : users )
         {
             if ( user != null )
@@ -481,10 +492,10 @@ public class HibernateUserStore
         List<UserCredentials> elementList = new ArrayList<UserCredentials>( usersList );
 
         int toIndex = Math.min( startPos + pageSize, elementList.size() );
-        
+
         return elementList.subList( startPos, toIndex );
     }
-    
+
     private List<UserCredentials> toUserCredentials( Collection<User> users )
     {
         List<UserCredentials> credentials = new ArrayList<UserCredentials>();
@@ -493,7 +504,7 @@ public class HibernateUserStore
         {
             credentials.add( user.getUserCredentials() );
         }
-        
+
         return credentials;
     }
 }

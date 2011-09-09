@@ -142,6 +142,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="serviceProvider">
       <ref bean="exportServiceProvider" />
     </property>
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
   

@@ -1334,12 +1334,17 @@ function deleteDivEffect()
 }
 
 /**
- * Used to export PDF file by the given type and the active items in table
+ * Used to export PDF file by the given type and the filter params in page
  */
-function exportPdfByType( type )
-{
-	var activeIds = getArrayIdOfActiveRows();
-	window.location.href = 'exportToPdf.action?type=' + type + activeIds;
+function exportPdfByType( type, params )
+{	
+	if ( jQuery( "table.listTable tbody tr" ).length == 0 )
+	{
+		showWarningMessage( 'no_item_to_export' );
+		return;
+	}
+	
+	window.location.href = 'exportToPdf.action?type=' + type + params;
 }
 
 /**

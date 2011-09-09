@@ -48,7 +48,6 @@ import org.hisp.dhis.importexport.pdf.converter.UserConverter;
 import org.hisp.dhis.importexport.pdf.converter.ValidationRuleConverter;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
@@ -97,13 +96,6 @@ public class ITextPDFExportService
         this.organisationUnitService = organisationUnitService;
     }
 
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
     private ValidationRuleService validationRuleService;
 
     public void setValidationRuleService( ValidationRuleService validationRuleService )
@@ -140,10 +132,9 @@ public class ITextPDFExportService
 
             thread.setDataElementConverter( new DataElementConverter( dataElementService ) );
             thread.setIndicatorConverter( new IndicatorConverter( indicatorService, expressionService ) );
-            thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter(
-                organisationUnitService ) );
+            thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter( organisationUnitService ) );
             thread.setOrganisationUnitConverter( new OrganisationUnitConverter( organisationUnitService ) );
-            thread.setUserConverter( new UserConverter( userService ) );
+            thread.setUserConverter( new UserConverter() );
             thread.setValidationRuleConverter( new ValidationRuleConverter( validationRuleService, expressionService ) );
 
             thread.start();
