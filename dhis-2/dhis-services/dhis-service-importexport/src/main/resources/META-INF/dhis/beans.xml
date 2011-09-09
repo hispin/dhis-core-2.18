@@ -217,12 +217,22 @@
     <property name="cacheManager" ref="cacheManager" />
   </bean>
 
+  <bean id="dxfv2StaXImporter" class="org.hisp.dhis.importexport.dxf2.service.StaXDataValueImportService">
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="batchHandlerFactory" ref="batchHandlerFactory" />
+  </bean>
+
   <bean id="org.hisp.dhis.importexport.ImportService" class="org.hisp.dhis.importexport.DefaultImportService">
     <property name="converter" ref="dxfv1-Converter" />
+    <property name="dxf2converter" ref="dxfv2StaXImporter" />
     <property name="preConverter" ref="preConverter" />
   </bean>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- XSLT based import                                                    -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 

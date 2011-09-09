@@ -48,6 +48,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.importexport.dxf.converter.DXFConverter;
+import org.hisp.dhis.importexport.dxf2.service.StaXDataValueImportService;
 import org.hisp.dhis.importexport.xml.XMLPreConverter;
 import org.hisp.dhis.importexport.zip.ZipAnalyzer;
 import org.hisp.dhis.system.process.OutputHolderState;
@@ -62,6 +63,8 @@ public class DefaultImportService
 
     private final Log log = LogFactory.getLog( DefaultImportService.class );
 
+    static public final String DXF1URI = "http://dhis2.org/schema/dxf/1.0";
+    static public final String DXF2URI = "http://dhis2.org/schema/dxf/2.0";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -78,6 +81,13 @@ public class DefaultImportService
     public void setConverter( DXFConverter converter )
     {
         this.converter = converter;
+    }
+
+    private StaXDataValueImportService dxf2converter;
+
+    public void setDxf2converter( StaXDataValueImportService dxf2converter )
+    {
+        this.dxf2converter = dxf2converter;
     }
 
     // -------------------------------------------------------------------------
@@ -152,7 +162,10 @@ public class DefaultImportService
 
         try
         {
-            if ( documentRootName.getLocalPart().equals( DXFConverter.DXFROOT ) )
+            String rootLocalName = documentRootName.getLocalPart();
+            String rootNameSpace = documentRootName.getNamespaceURI();
+
+            if ( rootLocalName.equals( DXFConverter.DXFROOT ) )
             {                
                 log.info( "Importing DXF native stream" ); // Native DXF stream, no transform required
                 dxfReader = XMLFactory.getXMLReader( xmlDataStream );
@@ -177,8 +190,15 @@ public class DefaultImportService
                 dxfReader = XMLFactory.getXMLReader( dxfInStream );
             }
 
-            log.debug( "Sending DXF to converter" );
-            converter.read( dxfReader, params, state );
+            if (rootNameSpace.equals( DXF2URI )) {
+              log.debug( "Sending DXFv2 to converter" );
+              converter.read( dxfReader, params, state );
+            } else if (rootNameSpace.equals( DXF1URI )) {
+              log.debug( "Sending DXFv1 to converter" );
+              converter.read( dxfReader, params, state );
+            } else {
+                throw new ImportException("Unknown dxf version: " + rootNameSpace);
+            }
         }
         catch ( IOException ex )
         {
