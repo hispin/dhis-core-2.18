@@ -2,7 +2,18 @@
 	jQuery(document).ready(function(){	
 		tableSorter( 'listTable' );	
 	});
-
+	
+	function exportPDF( type )
+	{
+		var params =
+		{
+			type: type,
+			key: jQuery( 'input[type=text][name=key]' ).val()
+		};
+		
+		exportPdfByType( params );
+	}
+	
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_validation_rule" ) , "'")';
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
 	var i18n_equal_to = '$encoder.jsEscape( $i18n.getString( "equal_to" ) , "'")';
@@ -22,7 +33,7 @@
 				<tr>
 					<td>#filterDiv( "showValidationRuleForm" )</td>
 					<td style="text-align:right">
-						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="//exportPdfByType( 'validationrule' );" style="width:80px"/>
+						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'validationrule' );" style="width:80px"/>
 						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddValidationRuleForm.action'">
 					</td>
 				</tr>	

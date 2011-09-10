@@ -1336,7 +1336,7 @@ function deleteDivEffect()
 /**
  * Used to export PDF file by the given type and the filter params in page
  */
-function exportPdfByType( type, params )
+function exportPdfByType( params )
 {	
 	if ( jQuery( "table.listTable tbody tr" ).length == 0 )
 	{
@@ -1344,7 +1344,7 @@ function exportPdfByType( type, params )
 		return;
 	}
 	
-	window.location.href = 'exportToPdf.action?type=' + type + params;
+	jQuery.post( 'exportToPdf.action', params );
 }
 
 /**

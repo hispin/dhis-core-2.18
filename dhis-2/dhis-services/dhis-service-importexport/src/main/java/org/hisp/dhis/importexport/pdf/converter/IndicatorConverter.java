@@ -27,18 +27,12 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
@@ -53,13 +47,10 @@ public class IndicatorConverter
     extends PDFUtils
     implements PDFConverter
 {
-    private IndicatorService indicatorService;
-
     private ExpressionService expressionService;
 
-    public IndicatorConverter( IndicatorService indicatorService, ExpressionService expressionService )
+    public IndicatorConverter( ExpressionService expressionService )
     {
-        this.indicatorService = indicatorService;
         this.expressionService = expressionService;
     }
 
@@ -74,10 +65,7 @@ public class IndicatorConverter
 
         PDFUtils.printObjectFrontPage( document, params.getIndicators(), i18n, format, "indicators" );
 
-        List<Indicator> indicators = new ArrayList<Indicator>( indicatorService.getIndicators( params.getIndicators() ) );
-        Collections.sort( indicators, new IndicatorNameComparator() );
-
-        for ( Indicator indicator : indicators )
+        for ( Indicator indicator : params.getIndicatorObjects() )
         {
             addTableToDocument( document, printIndicator( indicator, i18n, expressionService, true, 0.40f, 0.60f ) );
         }

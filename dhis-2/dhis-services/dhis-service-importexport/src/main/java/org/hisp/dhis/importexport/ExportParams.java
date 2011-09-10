@@ -32,10 +32,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.validation.ValidationRule;
 
 /**
  * @author Lars Helge Overland
@@ -91,7 +94,7 @@ public class ExportParams
 
     private Collection<Integer> organisationUnitLevels = new HashSet<Integer>();
 
-    private Collection<UserCredentials> users = new HashSet<UserCredentials>();
+    private Collection<Integer> users = new HashSet<Integer>();
 
     private Collection<Integer> validationRules = new ArrayList<Integer>();
 
@@ -103,12 +106,20 @@ public class ExportParams
 
     private Collection<Integer> olapUrls = new ArrayList<Integer>();
 
+    private Collection<DataElement> dataElementObjects = new ArrayList<DataElement>();
+
+    private Collection<Indicator> indicatorObjects = new ArrayList<Indicator>();
+
+    private Collection<UserCredentials> userObjects = new ArrayList<UserCredentials>();
+
+    private Collection<ValidationRule> validationRuleObjects = new ArrayList<ValidationRule>();
+
     private I18n i18n;
 
     private I18nFormat format;
 
     // -------------------------------------------------------------------------
-    // Constructur
+    // Constructors
     // -------------------------------------------------------------------------
 
     public ExportParams()
@@ -189,58 +200,9 @@ public class ExportParams
         this.format = format;
     }
 
-    public Collection<Integer> getCategories()
-    {
-        return categories;
-    }
-
-    public void setCategories( Collection<Integer> categories )
-    {
-        this.categories = categories;
-    }
-
-    public Collection<Integer> getCategoryOptions()
-    {
-        return categoryOptions;
-    }
-
-    public void setCategoryOptions( Collection<Integer> categoryOptions )
-    {
-        this.categoryOptions = categoryOptions;
-    }
-
-    public Collection<Integer> getCategoryCombos()
-    {
-        return categoryCombos;
-    }
-
-    public void setCategoryCombos( Collection<Integer> categoryCombos )
-    {
-        this.categoryCombos = categoryCombos;
-    }
-
-    public Collection<Integer> getCategoryOptionCombos()
-    {
-        return categoryOptionCombos;
-    }
-
-    public void setCategoryOptionCombos( Collection<Integer> categoryOptionCombos )
-    {
-        this.categoryOptionCombos = categoryOptionCombos;
-    }
-
-    /**
-     * @return
-     */
-    public User getCurrentUser()
-    {
-        return currentUser;
-    }
-
-    public void setCurrentUser( User currentUser )
-    {
-        this.currentUser = currentUser;
-    }
+    // -------------------------------------------------------------------------
+    // IDs
+    // -------------------------------------------------------------------------
 
     public Collection<Integer> getDataElements()
     {
@@ -332,6 +294,46 @@ public class ExportParams
         this.dataSets = dataSets;
     }
 
+    public Collection<Integer> getCategories()
+    {
+        return categories;
+    }
+
+    public void setCategories( Collection<Integer> categories )
+    {
+        this.categories = categories;
+    }
+
+    public Collection<Integer> getCategoryOptions()
+    {
+        return categoryOptions;
+    }
+
+    public void setCategoryOptions( Collection<Integer> categoryOptions )
+    {
+        this.categoryOptions = categoryOptions;
+    }
+
+    public Collection<Integer> getCategoryCombos()
+    {
+        return categoryCombos;
+    }
+
+    public void setCategoryCombos( Collection<Integer> categoryCombos )
+    {
+        this.categoryCombos = categoryCombos;
+    }
+
+    public Collection<Integer> getCategoryOptionCombos()
+    {
+        return categoryOptionCombos;
+    }
+
+    public void setCategoryOptionCombos( Collection<Integer> categoryOptionCombos )
+    {
+        this.categoryOptionCombos = categoryOptionCombos;
+    }
+
     public Collection<Integer> getPeriods()
     {
         return periods;
@@ -392,12 +394,12 @@ public class ExportParams
         this.validationRules = validationRules;
     }
 
-    public Collection<UserCredentials> getUsers()
+    public Collection<Integer> getUsers()
     {
         return users;
     }
 
-    public void setUsers( Collection<UserCredentials> users )
+    public void setUsers( Collection<Integer> users )
     {
         this.users = users;
     }
@@ -440,5 +442,59 @@ public class ExportParams
     public void setOlapUrls( Collection<Integer> olapUrls )
     {
         this.olapUrls = olapUrls;
+    }
+
+    // -------------------------------------------------------------------------
+    // Object instances
+    // -------------------------------------------------------------------------
+
+    public User getCurrentUser()
+    {
+        return currentUser;
+    }
+
+    public void setCurrentUser( User currentUser )
+    {
+        this.currentUser = currentUser;
+    }
+
+    public Collection<DataElement> getDataElementObjects()
+    {
+        return dataElementObjects;
+    }
+
+    public void setDataElementObjects( Collection<DataElement> dataElementObjects )
+    {
+        this.dataElementObjects = dataElementObjects;
+    }
+
+    public Collection<Indicator> getIndicatorObjects()
+    {
+        return indicatorObjects;
+    }
+
+    public void setIndicatorObjects( Collection<Indicator> indicatorObjects )
+    {
+        this.indicatorObjects = indicatorObjects;
+    }
+
+    public Collection<UserCredentials> getUserObjects()
+    {
+        return userObjects;
+    }
+
+    public void setUserObjects( Collection<UserCredentials> userObjects )
+    {
+        this.userObjects = userObjects;
+    }
+
+    public Collection<ValidationRule> getValidationRuleObjects()
+    {
+        return validationRuleObjects;
+    }
+
+    public void setValidationRuleObjects( Collection<ValidationRule> validationRuleObjects )
+    {
+        this.validationRuleObjects = validationRuleObjects;
     }
 }

@@ -182,7 +182,7 @@ public class ExportToPdfAction
 
                 if ( (userCredentialsList != null) && !userCredentialsList.isEmpty() )
                 {
-                    params.setUsers( userCredentialsList );
+                    params.setUserObjects( userCredentialsList );
                 }
                 else
                 {

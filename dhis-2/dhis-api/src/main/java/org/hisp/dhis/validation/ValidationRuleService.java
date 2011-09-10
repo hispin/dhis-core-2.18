@@ -177,6 +177,14 @@ public interface ValidationRuleService
     ValidationRule getValidationRuleByName( String name );
     
     /**
+     * Get the validation rules which are associated with the given name key.
+     * 
+     * @param name the name key.
+     * @return a collection of validation rules.
+     */
+    Collection<ValidationRule> getValidationRulesByName( String name );
+    
+    /**
      * Get the validation rules which are associated with the given data elements.
      * 
      * @param dataElements the collection of data elements.
