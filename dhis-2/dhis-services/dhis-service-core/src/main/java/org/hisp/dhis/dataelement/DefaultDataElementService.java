@@ -207,8 +207,8 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementByName( name ) );
     }
     
-    public Collection<DataElement> searchDataElementByName( String key ){
-    	return i18n( i18nService, dataElementStore.searchDataElementByName( key ) );
+    public Collection<DataElement> searchDataElementsByName( String key ){
+    	return i18n( i18nService, dataElementStore.searchDataElementsByName( key ) );
     }
 
     public DataElement getDataElementByAlternativeName( String alternativeName )

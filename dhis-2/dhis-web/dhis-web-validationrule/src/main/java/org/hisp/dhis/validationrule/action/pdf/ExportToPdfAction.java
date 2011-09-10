@@ -1,7 +1,7 @@
 package org.hisp.dhis.validationrule.action.pdf;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,11 @@ package org.hisp.dhis.validationrule.action.pdf;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -38,6 +41,9 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
+import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.ValidationRuleService;
+import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -67,6 +73,13 @@ public class ExportToPdfAction
         this.serviceProvider = serviceProvider;
     }
 
+    private ValidationRuleService validationRuleService;
+
+    public void setValidationRuleService( ValidationRuleService validationRuleService )
+    {
+        this.validationRuleService = validationRuleService;
+    }
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -79,6 +92,26 @@ public class ExportToPdfAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
+    private List<ValidationRule> validationRulesList;
+
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -100,24 +133,6 @@ public class ExportToPdfAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private String type;
-
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
-    private List<Integer> activeIds = new ArrayList<Integer>();
-
-    public void setActiveIds( List<Integer> activeIds )
-    {
-        this.activeIds = activeIds;
-    }
-
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
@@ -130,17 +145,28 @@ public class ExportToPdfAction
 
             if ( type.equals( TYPE_VALIDATION_RULE ) )
             {
-                if ( (activeIds != null) && !activeIds.isEmpty() )
+                if ( isNotBlank( key ) ) // Filter on key only if set
                 {
-                    params.setValidationRules( activeIds );
+                    validationRulesList = new ArrayList<ValidationRule>( validationRuleService.getValidationRulesByName( key ) );
                 }
                 else
                 {
-                    params.setValidationRules( null );
+                    validationRulesList = new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() );
+                }
+
+                Collections.sort( validationRulesList, new ValidationRuleNameComparator() );
+
+                if ( (validationRulesList != null) && !validationRulesList.isEmpty() )
+                {
+                    params.setValidationRuleObjects( validationRulesList );
+                }
+                else
+                {
+                    params.setValidationRuleObjects( null );
                 }
 
                 fileName = FILENAME_VALIDATION_RULE;
-                
+
                 log.info( "Exporting to PDF for object type: " + TYPE_VALIDATION_RULE );
             }
 

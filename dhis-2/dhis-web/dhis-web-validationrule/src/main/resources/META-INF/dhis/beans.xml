@@ -276,6 +276,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="serviceProvider">
       <ref bean="exportServiceProvider" />
     </property>
+    <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
   </bean>
 
 </beans>

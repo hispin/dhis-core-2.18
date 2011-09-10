@@ -134,7 +134,7 @@ public class HibernateDataElementStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataElement> searchDataElementByName( String key )
+    public Collection<DataElement> searchDataElementsByName( String key )
     {
         Session session = sessionFactory.getCurrentSession();
 

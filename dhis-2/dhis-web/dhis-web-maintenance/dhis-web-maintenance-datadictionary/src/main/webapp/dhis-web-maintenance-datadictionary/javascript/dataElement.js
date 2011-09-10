@@ -1,3 +1,14 @@
+function exportPDF( type )
+{
+	var params = {
+		type: type,
+		key: jQuery( 'input[type=text][name=key]' ).val(),
+		dataDictionaryId: jQuery( '#dataDictionaryList' ).val()
+	};
+	
+	exportPdfByType( params );
+}
+
 function changeValueType( value )
 {
     if ( value == 'int' )

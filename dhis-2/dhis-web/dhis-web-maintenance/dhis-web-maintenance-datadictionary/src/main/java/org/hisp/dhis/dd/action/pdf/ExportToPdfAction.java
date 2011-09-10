@@ -1,7 +1,7 @@
 package org.hisp.dhis.dd.action.pdf;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,17 +27,27 @@ package org.hisp.dhis.dd.action.pdf;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ServiceProvider;
+import org.hisp.dhis.datadictionary.DataDictionaryService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,14 +63,37 @@ public class ExportToPdfAction
     private static final String EXPORT_FORMAT_PDF = "PDF";
 
     private static final String TYPE_DATAELEMENT = "dataelement";
+
     private static final String TYPE_INDICATOR = "indicator";
 
     private static final String FILENAME_DATAELEMENT = "DataElements.zip";
+
     private static final String FILENAME_INDICATOR = "Indicators.zip";
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private DataDictionaryService dataDictionaryService;
+
+    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
+    {
+        this.dataDictionaryService = dataDictionaryService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
 
     private ServiceProvider<ExportService> serviceProvider;
 
@@ -105,18 +138,25 @@ public class ExportToPdfAction
     // Input
     // -------------------------------------------------------------------------
 
+    private Integer dataDictionaryId;
+
+    public void setDataDictionaryId( Integer dataDictionaryId )
+    {
+        this.dataDictionaryId = dataDictionaryId;
+    }
+
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
     private String type;
 
     public void setType( String type )
     {
         this.type = type;
-    }
-
-    private List<Integer> activeIds = new ArrayList<Integer>();
-
-    public void setActiveIds( List<Integer> activeIds )
-    {
-        this.activeIds = activeIds;
     }
 
     // -------------------------------------------------------------------------
@@ -132,13 +172,30 @@ public class ExportToPdfAction
 
             if ( type.equals( TYPE_DATAELEMENT ) )
             {
-                if ( (activeIds != null) && !activeIds.isEmpty() )
+                List<DataElement> dataElements = null;
+
+                if ( isNotBlank( key ) ) // Filter on key only if set
                 {
-                    params.setDataElements( activeIds );
+                    dataElements = new ArrayList<DataElement>( dataElementService.searchDataElementsByName( key ) );
+                }
+                else if ( dataDictionaryId != null )
+                {
+                    dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId ) );
                 }
                 else
                 {
-                    params.setDataElements( null );
+                    dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+                }
+                
+                Collections.sort( dataElements, new DataElementNameComparator() ); 
+
+                if ( (dataElements != null) && !dataElements.isEmpty() )
+                {
+                    params.setDataElementObjects( dataElements );
+                }
+                else
+                {
+                    params.setDataElementObjects( null );
                 }
 
                 fileName = FILENAME_DATAELEMENT;
@@ -147,13 +204,31 @@ public class ExportToPdfAction
             }
             else if ( type.equals( TYPE_INDICATOR ) )
             {
-                if ( (activeIds != null) && !activeIds.isEmpty() )
+                List<Indicator> indicators = null;
+
+                if ( isNotBlank( key ) ) // Filter on key only if set
                 {
-                    params.setIndicators( activeIds );
+                    indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsLikeName( key ) );
+                }
+                else if ( dataDictionaryId != null )
+                {
+                    indicators = new ArrayList<Indicator>( dataDictionaryService.getDataDictionary( dataDictionaryId )
+                        .getIndicators() );
                 }
                 else
                 {
-                    params.setIndicators( null );
+                    indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+                }
+                
+                Collections.sort( indicators, new IndicatorNameComparator() );
+
+                if ( (indicators != null) && !indicators.isEmpty() )
+                {
+                    params.setIndicatorObjects( indicators );
+                }
+                else
+                {
+                    params.setIndicatorObjects( null );
                 }
 
                 fileName = FILENAME_INDICATOR;

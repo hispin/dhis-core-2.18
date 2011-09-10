@@ -110,7 +110,7 @@ public interface DataElementStore
      * @param key the name of the DataElement to return.
      * @return List of DataElements with a given key, or all dataelements if no match.
      */
-    Collection<DataElement> searchDataElementByName( String key );
+    Collection<DataElement> searchDataElementsByName( String key );
 
     /**
      * Returns a DataElement with a given alternative name.

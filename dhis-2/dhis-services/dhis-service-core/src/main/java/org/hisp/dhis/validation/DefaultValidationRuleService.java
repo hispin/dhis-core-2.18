@@ -76,7 +76,8 @@ public class DefaultValidationRuleService
 
     private GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore;
 
-    public void setValidationRuleGroupStore( GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore )
+    public void setValidationRuleGroupStore(
+        GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore )
     {
         this.validationRuleGroupStore = validationRuleGroupStore;
     }
@@ -94,9 +95,9 @@ public class DefaultValidationRuleService
     {
         this.periodService = periodService;
     }
-    
+
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -113,14 +114,15 @@ public class DefaultValidationRuleService
     // ValidationRule business logic
     // -------------------------------------------------------------------------
 
-    public Grid getAggregateValidationResult( Collection<ValidationResult> results, List<Period> periods, List<OrganisationUnit> sources )
+    public Grid getAggregateValidationResult( Collection<ValidationResult> results, List<Period> periods,
+        List<OrganisationUnit> sources )
     {
         int number = validationRuleStore.getNumberOfValidationRules();
-        
+
         Grid grid = new ListGrid();
-        
+
         CompositeCounter counter = new CompositeCounter();
-        
+
         for ( ValidationResult result : results )
         {
             counter.count( result.getPeriod(), result.getSource() );
@@ -128,72 +130,76 @@ public class DefaultValidationRuleService
 
         grid.addRow();
         grid.addValue( "" );
-        
+
         for ( Period period : periods )
         {
             grid.addValue( period.getName() );
         }
-        
+
         for ( OrganisationUnit source : sources )
         {
             grid.addRow();
             grid.addValue( source.getName() );
-            
+
             for ( Period period : periods )
             {
-                double percentage = (double) ( 100 * counter.getCount( period, source ) ) / number;
-                
+                double percentage = (double) (100 * counter.getCount( period, source )) / number;
+
                 grid.addValue( String.valueOf( getRounded( percentage, DECIMALS ) ) );
             }
         }
-        
+
         return grid;
     }
-    
-    public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<OrganisationUnit> sources )
+
+    public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate,
+        Collection<OrganisationUnit> sources )
     {
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-        
+
         Collection<ValidationRule> validationRules = getAllValidationRules();
 
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
 
-        for ( OrganisationUnit source : sources  )
+        for ( OrganisationUnit source : sources )
         {
             for ( Period period : periods )
             {
-                validationViolations.addAll( validateInternal( period, source, validationRules, true, validationViolations.size() ) );
+                validationViolations.addAll( validateInternal( period, source, validationRules, true,
+                    validationViolations.size() ) );
             }
         }
-        
+
         return validationViolations;
     }
 
-    public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group )
+    public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate,
+        Collection<OrganisationUnit> sources, ValidationRuleGroup group )
     {
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-        
+
         Collection<DataSet> dataSets = dataSetService.getDataSetsBySources( sources );
-        
+
         Collection<DataElement> dataElements = dataElementService.getDataElementsByDataSets( dataSets );
-        
+
         Collection<ValidationRule> validationRules = getValidationRulesByDataElements( dataElements );
 
         validationRules.retainAll( group.getMembers() );
-        
+
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
 
-        for ( OrganisationUnit source : sources  )
+        for ( OrganisationUnit source : sources )
         {
             for ( Period period : periods )
             {
-                validationViolations.addAll( validateInternal( period, source, validationRules, true, validationViolations.size() ) );
+                validationViolations.addAll( validateInternal( period, source, validationRules, true,
+                    validationViolations.size() ) );
             }
         }
-        
+
         return validationViolations;
     }
-    
+
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources )
     {
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
@@ -203,12 +209,13 @@ public class DefaultValidationRuleService
         for ( OrganisationUnit source : sources )
         {
             Collection<ValidationRule> relevantRules = getRelevantValidationRules( source.getDataElementsInDataSets() );
-                
+
             if ( relevantRules != null && relevantRules.size() > 0 )
-            {                    
+            {
                 for ( Period period : relevantPeriods )
                 {
-                    validationViolations.addAll( validateInternal( period, source, relevantRules, false, validationViolations.size() ) );
+                    validationViolations.addAll( validateInternal( period, source, relevantRules, false,
+                        validationViolations.size() ) );
                 }
             }
         }
@@ -227,12 +234,13 @@ public class DefaultValidationRuleService
         {
             Collection<ValidationRule> relevantRules = getRelevantValidationRules( source.getDataElementsInDataSets() );
             relevantRules.retainAll( group.getMembers() );
-            
+
             if ( relevantRules != null && relevantRules.size() > 0 )
             {
                 for ( Period period : relevantPeriods )
                 {
-                    validationViolations.addAll( validateInternal( period, source, relevantRules, false, validationViolations.size() ) );
+                    validationViolations.addAll( validateInternal( period, source, relevantRules, false,
+                        validationViolations.size() ) );
                 }
             }
         }
@@ -245,14 +253,15 @@ public class DefaultValidationRuleService
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
 
         Collection<ValidationRule> relevantRules = getRelevantValidationRules( source.getDataElementsInDataSets() );
-                
+
         Collection<Period> relevantPeriods = periodService.getPeriodsBetweenDates( startDate, endDate );
 
         for ( Period period : relevantPeriods )
         {
-            validationViolations.addAll( validateInternal( period, source, relevantRules, false, validationViolations.size() ) );
+            validationViolations.addAll( validateInternal( period, source, relevantRules, false, validationViolations
+                .size() ) );
         }
-        
+
         return validationViolations;
     }
 
@@ -264,16 +273,16 @@ public class DefaultValidationRuleService
     public Collection<DataElement> getDataElementsInValidationRules()
     {
         Set<DataElement> dataElements = new HashSet<DataElement>();
-        
+
         for ( ValidationRule rule : getAllValidationRules() )
         {
             dataElements.addAll( rule.getLeftSide().getDataElementsInExpression() );
             dataElements.addAll( rule.getRightSide().getDataElementsInExpression() );
         }
-        
+
         return dataElements;
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -290,31 +299,35 @@ public class DefaultValidationRuleService
         final Collection<ValidationRule> validationRules, boolean aggregate, int currentSize )
     {
         final Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
-        
+
         if ( currentSize < MAX_VIOLATIONS )
-        {        
+        {
             Double leftSide = null;
             Double rightSide = null;
-    
+
             boolean violation = false;
-    
+
             for ( final ValidationRule validationRule : validationRules )
             {
-                if ( validationRule.getPeriodType() != null && validationRule.getPeriodType().equals( period.getPeriodType() ) )
+                if ( validationRule.getPeriodType() != null
+                    && validationRule.getPeriodType().equals( period.getPeriodType() ) )
                 {
-                    leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), period, source, true, aggregate, null );
-                    
+                    leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), period, source,
+                        true, aggregate, null );
+
                     if ( leftSide != null )
                     {
-                        rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period, source, true, aggregate, null );
-            
+                        rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period,
+                            source, true, aggregate, null );
+
                         if ( rightSide != null )
                         {
                             violation = !expressionIsTrue( leftSide, validationRule.getOperator(), rightSide );
-            
+
                             if ( violation )
                             {
-                                validationViolations.add( new ValidationResult( period, source, validationRule, getRounded( leftSide, DECIMALS ), getRounded( rightSide, DECIMALS ) ) );
+                                validationViolations.add( new ValidationResult( period, source, validationRule,
+                                    getRounded( leftSide, DECIMALS ), getRounded( rightSide, DECIMALS ) ) );
                             }
                         }
                     }
@@ -337,13 +350,14 @@ public class DefaultValidationRuleService
     {
         final Set<ValidationRule> relevantValidationRules = new HashSet<ValidationRule>();
 
-        //TODO move getDataElementsInExpression out of for-loop
-        
+        // TODO move getDataElementsInExpression out of for-loop
+
         for ( ValidationRule validationRule : getAllValidationRules() )
         {
             for ( DataElement dataElement : dataElements )
             {
-                if ( validationRule.getPeriodType() != null && dataElement.getPeriodType() != null && validationRule.getPeriodType().equals( dataElement.getPeriodType() ) )
+                if ( validationRule.getPeriodType() != null && dataElement.getPeriodType() != null
+                    && validationRule.getPeriodType().equals( dataElement.getPeriodType() ) )
                 {
                     if ( validationRule.getLeftSide().getDataElementsInExpression().contains( dataElement )
                         || validationRule.getRightSide().getDataElementsInExpression().contains( dataElement ) )
@@ -365,25 +379,30 @@ public class DefaultValidationRuleService
     {
         return validationRuleStore.saveValidationRule( validationRule );
     }
-    
+
     public void updateValidationRule( ValidationRule validationRule )
     {
         validationRuleStore.updateValidationRule( validationRule );
     }
-    
+
     public void deleteValidationRule( ValidationRule validationRule )
     {
         validationRuleStore.delete( validationRule );
     }
 
-    public Collection<ValidationRule> getAllValidationRules()
-    {
-        return validationRuleStore.getAll();
-    }
-
     public ValidationRule getValidationRule( int id )
     {
         return validationRuleStore.get( id );
+    }
+
+    public ValidationRule getValidationRuleByName( String name )
+    {
+        return validationRuleStore.getByName( name );
+    }
+
+    public Collection<ValidationRule> getAllValidationRules()
+    {
+        return validationRuleStore.getAll();
     }
 
     public Collection<ValidationRule> getValidationRules( final Collection<Integer> identifiers )
@@ -399,9 +418,9 @@ public class DefaultValidationRuleService
         } );
     }
 
-    public ValidationRule getValidationRuleByName( String name )
-    {
-        return validationRuleStore.getByName( name );
+    public Collection<ValidationRule> getValidationRulesByName( String name )
+    {        
+        return validationRuleStore.getLikeName( name );
     }
     
     public Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements )
@@ -482,5 +501,5 @@ public class DefaultValidationRuleService
     {
         return validationRuleGroupStore.getBetweenByName( name, first, max );
     }
-    
+
 }

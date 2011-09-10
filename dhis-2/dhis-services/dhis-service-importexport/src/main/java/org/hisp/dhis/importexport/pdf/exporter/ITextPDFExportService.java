@@ -36,7 +36,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.hibernate.SessionFactory;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
@@ -46,9 +45,7 @@ import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitHierarchyConverter;
 import org.hisp.dhis.importexport.pdf.converter.UserConverter;
 import org.hisp.dhis.importexport.pdf.converter.ValidationRuleConverter;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
  * @author Lars Helge Overland
@@ -68,13 +65,6 @@ public class ITextPDFExportService
         this.sessionFactory = sessionFactory;
     }
 
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
     private ExpressionService expressionService;
 
     public void setExpressionService( ExpressionService expressionService )
@@ -82,25 +72,11 @@ public class ITextPDFExportService
         this.expressionService = expressionService;
     }
 
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private ValidationRuleService validationRuleService;
-
-    public void setValidationRuleService( ValidationRuleService validationRuleService )
-    {
-        this.validationRuleService = validationRuleService;
     }
 
     // -------------------------------------------------------------------------
@@ -130,12 +106,12 @@ public class ITextPDFExportService
             thread.setOutputStream( zipOut );
             thread.setExportParams( params );
 
-            thread.setDataElementConverter( new DataElementConverter( dataElementService ) );
-            thread.setIndicatorConverter( new IndicatorConverter( indicatorService, expressionService ) );
+            thread.setDataElementConverter( new DataElementConverter() );
+            thread.setIndicatorConverter( new IndicatorConverter( expressionService ) );
             thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter( organisationUnitService ) );
             thread.setOrganisationUnitConverter( new OrganisationUnitConverter( organisationUnitService ) );
             thread.setUserConverter( new UserConverter() );
-            thread.setValidationRuleConverter( new ValidationRuleConverter( validationRuleService, expressionService ) );
+            thread.setValidationRuleConverter( new ValidationRuleConverter( expressionService ) );
 
             thread.start();
 

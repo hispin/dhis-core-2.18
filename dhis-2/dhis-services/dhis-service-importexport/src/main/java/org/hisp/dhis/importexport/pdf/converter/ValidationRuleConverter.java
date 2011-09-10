@@ -1,7 +1,7 @@
 package org.hisp.dhis.importexport.pdf.converter;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,10 +27,6 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -38,8 +34,6 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.validation.ValidationRule;
-import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.lowagie.text.Document;
 
@@ -51,16 +45,13 @@ public class ValidationRuleConverter
     extends PDFUtils
     implements PDFConverter
 {
-    private ValidationRuleService validationRuleService;
-
     private ExpressionService expressionService;
 
     /**
      * Constructor for write operations.
      */
-    public ValidationRuleConverter( ValidationRuleService validationRuleService, ExpressionService expressionService )
+    public ValidationRuleConverter( ExpressionService expressionService )
     {
-        this.validationRuleService = validationRuleService;
         this.expressionService = expressionService;
     }
 
@@ -73,12 +64,9 @@ public class ValidationRuleConverter
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
 
-        PDFUtils.printObjectFrontPage( document, params.getValidationRules(), i18n, format, "validation_rules" );
+        PDFUtils.printObjectFrontPage( document, params.getValidationRuleObjects(), i18n, format, "validation_rules" );
 
-        List<ValidationRule> validationRules = new ArrayList<ValidationRule>( validationRuleService.getValidationRules( params.getValidationRules() ) );
-        Collections.sort( validationRules, new ValidationRuleNameComparator() );
-
-        for ( ValidationRule rule : validationRules )
+        for ( ValidationRule rule : params.getValidationRuleObjects() )
         {
             addTableToDocument( document, printValidationRule( rule, i18n, expressionService, true, 0.40f, 0.60f ) );
         }

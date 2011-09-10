@@ -60,9 +60,9 @@ public class UserConverter
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
 
-        PDFUtils.printObjectFrontPage( document, params.getUsers(), i18n, format, "users" );
+        PDFUtils.printObjectFrontPage( document, params.getUserObjects(), i18n, format, "users" );
         
-        for ( UserCredentials userCredentials : params.getUsers() )
+        for ( UserCredentials userCredentials : params.getUserObjects() )
         {
             addTableToDocument( document, printUser( userCredentials, i18n, format, true, 0.40f, 0.60f ) );
         }
