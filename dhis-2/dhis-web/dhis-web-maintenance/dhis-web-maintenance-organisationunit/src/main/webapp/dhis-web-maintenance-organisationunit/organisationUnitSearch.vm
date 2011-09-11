@@ -112,4 +112,4 @@ type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:120px"
 
 #end
 
-<div id="organisationUnitDetails"></div>
+<div id="organisationUnitDetails" class="page"></div>
