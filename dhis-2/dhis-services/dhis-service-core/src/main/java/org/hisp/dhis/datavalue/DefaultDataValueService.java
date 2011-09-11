@@ -29,6 +29,7 @@ package org.hisp.dhis.datavalue;
 
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Set;
 
@@ -202,5 +203,13 @@ public class DefaultDataValueService
     public Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands )
     {
         return dataValueStore.getOperandsWithDataValues( operands );
+    }
+    
+    public int getDataValueCount( int days )
+    {
+        Calendar cal = PeriodType.createCalendarInstance();
+        cal.add( Calendar.DAY_OF_YEAR, (days * -1) );
+        
+        return dataValueStore.getDataValueCount( cal.getTime() );
     }
 }

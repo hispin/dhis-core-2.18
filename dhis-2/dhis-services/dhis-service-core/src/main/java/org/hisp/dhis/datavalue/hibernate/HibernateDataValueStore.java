@@ -30,6 +30,7 @@ package org.hisp.dhis.datavalue.hibernate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,6 +40,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -400,5 +402,17 @@ public class HibernateDataValueStore
         }
         
         return operandsWithData;
-    }    
+    }
+    
+    public int getDataValueCount( Date date )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( DataValue.class );
+        
+        criteria.add( Restrictions.ge( "timestamp", date ) );
+        criteria.setProjection( Projections.rowCount() );
+
+        Number rs = (Number) criteria.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
 }

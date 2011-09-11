@@ -79,6 +79,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="statisticsProvider" ref="org.hisp.dhis.statistics.StatisticsProvider" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
+	<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
   </bean>
 
   <bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"

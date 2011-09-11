@@ -261,5 +261,13 @@ public interface DataValueService
      * @param operands the data element operands to filter.
      * @return the data element operands with registered data values.
      */
-    Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands );    
+    Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands );
+
+    /**
+     * Gets the number of DataValues persisted since the given number of days.
+     * 
+     * @param days the number of days since now to include in the count.
+     * @return the number of DataValues.
+     */
+    int getDataValueCount( int days );
 }

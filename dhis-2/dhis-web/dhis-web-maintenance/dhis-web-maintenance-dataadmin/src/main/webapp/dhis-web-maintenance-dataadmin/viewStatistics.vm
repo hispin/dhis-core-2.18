@@ -93,4 +93,30 @@
     </tr>
 </table>
 
+<table>
+	<tr>
+		<th style="width:200px">$i18n.getString( "data_values" )</th>
+		<th style="width:200px">$i18n.getString( "number" )</th>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "today" )</td>
+		<td>$dataValueCount.get( 0 )</td>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "yesterday" )</td>
+		<td>$dataValueCount.get( 1 )</td>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "last_7_days" )</td>
+		<td>$dataValueCount.get( 7 )</td>
+	</tr>
+	<tr>
+		<td>$i18n.getString( "last_30_days" )</td>
+		<td>$dataValueCount.get( 30 )</td>
+	</tr>
+    <tr>
+    	<td colspan="2" style="height:15px"></td>
+    </tr>
+</table>
+
 <p><img src="viewStatisticsChart.action" alt="$i18n.getString( 'number_of_objects' )" style="border: 1px solid #d0d0d0; margin-left: 2px"/></p>
