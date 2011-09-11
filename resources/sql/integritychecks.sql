@@ -14,6 +14,13 @@ join sectiondataelements sd on(de.dataelementid=sd.dataelementid)
 join section sc on(sd.sectionid=sc.sectionid)
 where sc.name = 'OPD Diagnoses';
 
+-- Get data elements and number of data values sorted ascending
+
+select distinct d.dataelementid, d.name, count(v.*) as cnt from datavalue v 
+join dataelement d on(v.dataelementid=d.dataelementid) 
+group by d.dataelementid, d.name 
+order by cnt asc;
+
 -- Get dataset memberships for data elements with more than one membership
 
 select de.name, ds.name from dataelement de
