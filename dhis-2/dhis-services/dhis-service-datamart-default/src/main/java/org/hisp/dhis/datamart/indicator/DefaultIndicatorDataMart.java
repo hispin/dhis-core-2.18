@@ -185,6 +185,8 @@ public class DefaultIndicatorDataMart
         
         batchHandler.flush();
         
+        log.info( "Indicator export task done" );
+        
         return null;
     }
     

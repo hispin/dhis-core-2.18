@@ -4,7 +4,6 @@ $( document ).ready( function()
     initOrgUnitDetails();
 
     selection.setListenerFunction( organisationUnitSelected );
-    selection.responseReceived();
 } );
 
 function organisationUnitSelected( orgUnitIds )

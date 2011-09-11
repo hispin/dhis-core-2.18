@@ -203,6 +203,8 @@ public class DefaultDataElementDataMart
         
         cacheHandler.flush();
 
+        log.info( "Data element export task done" );
+        
         return null;
     }
 }
