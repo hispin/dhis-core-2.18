@@ -29,6 +29,7 @@ package org.hisp.dhis.reporttable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +49,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
@@ -69,53 +71,34 @@ public class ReportTable
     private static final long serialVersionUID = 5618655666320890565L;
 
     public static final String DATAELEMENT_ID = "dataelementid";
-
     public static final String DATAELEMENT_NAME = "dataelementname";
-
     public static final String CATEGORYCOMBO_ID = "categoryoptioncomboid";
-
     public static final String CATEGORYCOMBO_NAME = "categoryoptioncomboname";
-
     public static final String CATEGORYOPTION_ID = "categoryoptionid";
-
     public static final String CATEGORYOPTION_NAME = "categoryoptionname";
-
     public static final String INDICATOR_ID = "indicatorid";
-
     public static final String INDICATOR_NAME = "indicatorname";
-
     public static final String DATASET_ID = "datasetid";
-
     public static final String DATASET_NAME = "datasetname";
-
     public static final String PERIOD_ID = "periodid";
-
     public static final String PERIOD_NAME = "periodname";
-
     public static final String ORGANISATIONUNIT_ID = "organisationunitid";
-
     public static final String ORGANISATIONUNIT_NAME = "organisationunitname";
-
     public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
-
     public static final String PARAM_ORGANISATIONUNIT_COLUMN_NAME = "param_organisationunit_name";
-
     public static final String ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME = "organisation_unit_is_parent";
 
     public static final String SEPARATOR = "_";
-
     public static final String SPACE = " ";
+    public static final String KEY_ORGUNIT_GROUPSET = "orgunit_groupset_";
 
     public static final String TOTAL_COLUMN_NAME = "total";
-
     public static final String TOTAL_COLUMN_PRETTY_NAME = "Total";
 
     public static final int ASC = -1;
-
     public static final int DESC = 1;
-
     public static final int NONE = 0;
-
+    
     public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>()
     {
         private static final long serialVersionUID = 4194194769957136714L;
@@ -410,9 +393,7 @@ public class ReportTable
         allPeriods.addAll( relativePeriods );
         allPeriods = removeDuplicates( allPeriods );
 
-        Collections.sort( allPeriods, new AscendingPeriodComparator() ); // Sort
-        // periods
-        // ascending
+        Collections.sort( allPeriods, new AscendingPeriodComparator() );
         setNames( allPeriods ); // Set names on periods
 
         allUnits.addAll( units );
@@ -464,7 +445,35 @@ public class ReportTable
             addReportTableGroup( group );
         }
     }
-
+    
+    /**
+     * Creates a map which contains mappings between the organisation unit
+     * identifier and the name of the group this organisation unit is a member
+     * of in all of the given group sets for all organisation units in this
+     * report table.
+     * 
+     * @param groupSets the collection of organisation unit group sets.
+     * @return a map.
+     */
+    public Map<String, Object> getOrganisationUnitGroupMap( Collection<OrganisationUnitGroupSet> groupSets )
+    {
+        Map<String, Object> organisationUnitGroupMap = new HashMap<String, Object>();
+        
+        for ( OrganisationUnitGroupSet groupSet: groupSets )
+        {
+            Map<Integer, String> map = new HashMap<Integer, String>();
+            
+            for ( OrganisationUnit unit : allUnits )
+            {
+                map.put( unit.getId(), unit.getGroupNameInGroupSet( groupSet ) );
+            }
+            
+            organisationUnitGroupMap.put( columnEncode( KEY_ORGUNIT_GROUPSET + groupSet.getName() ), map );
+        }
+        
+        return organisationUnitGroupMap;
+    }
+        
     /**
      * Indicates whether this ReportTable is multi-dimensional.
      */
@@ -519,14 +528,11 @@ public class ReportTable
         {
             if ( object != null && object instanceof Period )
             {
-                buffer.append( object.getName() + SEPARATOR ); // Relative
-                // periods must
-                // have static
-                // names when
-                // crosstabbed -
-                // which are set
-                // on name
-                // property
+                // -------------------------------------------------------------
+                // Periods need static names when crosstab - set on name prop
+                // -------------------------------------------------------------
+
+                buffer.append( object.getName() + SEPARATOR );
             }
             else
             {
@@ -593,8 +599,7 @@ public class ReportTable
     {
         List<String> ids = Arrays.asList( identifiers );
 
-        Collections.sort( ids ); // Sort to remove the significance of the
-        // order
+        Collections.sort( ids ); // Sort to remove the significance of order
 
         return StringUtils.join( ids, SEPARATOR );
     }
@@ -734,12 +739,11 @@ public class ReportTable
         {
             if ( period.getName() == null ) // Crosstabulated relative periods
             {
-                period.setName( i18nFormat.formatPeriod( period ) ); // Static
-                // periods
-                // +
-                // indexed
-                // relative
-                // periods
+                // -------------------------------------------------------------
+                // Static periods + index relative periods
+                // -------------------------------------------------------------
+
+                period.setName( i18nFormat.formatPeriod( period ) );
                 period.setShortName( i18nFormat.formatPeriod( period ) );
             }
         }

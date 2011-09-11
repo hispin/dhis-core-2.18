@@ -65,9 +65,9 @@ public class GridJasperResult
         this.grid = grid;
     }
     
-    private Map<?, ?> params;
+    private Map<Object, Object> params;
 
-    public void setParams( Map<?, ?> params )
+    public void setParams( Map<Object, Object> params )
     {
         this.params = params;
     }
@@ -77,6 +77,7 @@ public class GridJasperResult
     // -------------------------------------------------------------------------
 
     @Override
+    @SuppressWarnings("unchecked")
     public void execute( ActionInvocation invocation )
         throws Exception
     {
@@ -88,7 +89,7 @@ public class GridJasperResult
         
         grid = _grid != null ? _grid : grid;
         
-        Map<?, ?> _params = (Map<?, ?>) invocation.getStack().findValue( "params" );
+        Map<Object, Object> _params = (Map<Object, Object>) invocation.getStack().findValue( "params" );
 
         params = _params != null ? _params : params;
         
