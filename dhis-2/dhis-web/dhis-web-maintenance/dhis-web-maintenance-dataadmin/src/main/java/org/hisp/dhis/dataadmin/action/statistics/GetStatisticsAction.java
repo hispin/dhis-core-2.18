@@ -32,6 +32,7 @@ import java.util.Map;
 
 import org.hisp.dhis.statistics.StatisticsProvider;
 import org.hisp.dhis.common.Objects;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.system.util.EnumMapWrapper;
 import org.hisp.dhis.user.UserService;
 
@@ -61,6 +62,13 @@ public class GetStatisticsAction
     {
         this.userService = userService;
     }
+    
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -79,6 +87,13 @@ public class GetStatisticsAction
     {
         return activeUsers;
     }
+    
+    private Map<Integer, Integer> dataValueCount = new HashMap<Integer, Integer>();
+
+    public Map<Integer, Integer> getDataValueCount()
+    {
+        return dataValueCount;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -95,6 +110,11 @@ public class GetStatisticsAction
         activeUsers.put( 1, userService.getActiveUsersCount( 1 ) );
         activeUsers.put( 7, userService.getActiveUsersCount( 7 ) );
         activeUsers.put( 30, userService.getActiveUsersCount( 30 ) );
+        
+        dataValueCount.put( 0, dataValueService.getDataValueCount( 0 ) );
+        dataValueCount.put( 1, dataValueService.getDataValueCount( 1 ) );
+        dataValueCount.put( 7, dataValueService.getDataValueCount( 7 ) );
+        dataValueCount.put( 30, dataValueService.getDataValueCount( 30 ) );
         
         return SUCCESS;
     }

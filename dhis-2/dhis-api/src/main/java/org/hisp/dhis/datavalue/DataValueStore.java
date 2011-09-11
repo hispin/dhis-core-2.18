@@ -28,6 +28,7 @@ package org.hisp.dhis.datavalue;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -254,4 +255,12 @@ public interface DataValueStore
      * @return the data element operands with registered data values.
      */
     Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands );
+    
+    /**
+     * Gets the number of DataValues persisted since the given data.
+     * 
+     * @param date the date.
+     * @return the number of DataValues.
+     */
+    int getDataValueCount( Date date );
 }
