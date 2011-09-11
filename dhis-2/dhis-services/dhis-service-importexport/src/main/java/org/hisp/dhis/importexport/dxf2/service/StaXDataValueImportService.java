@@ -38,12 +38,13 @@ import java.util.Map;
 import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 
 import javax.xml.namespace.QName;
-
 import org.amplecode.quick.BatchHandler;
+
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -52,9 +53,11 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ImportException;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.dxf2.model.*;
+import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -94,15 +97,26 @@ public class StaXDataValueImportService
 
     public static final String SUCCESS = "DataValue import complete";
 
+    public static final String COUNTER = "%s DataValues imported";
+
+    // update display frequency
+    public static final int DISPLAYCOUNT = 1000;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private AggregatedDataValueService aggregatedDataValueService;
+
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    {
+        this.aggregatedDataValueService = aggregatedDataValueService;
     }
 
     private DataValueSetService dataValueSetService;
@@ -117,6 +131,13 @@ public class StaXDataValueImportService
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
     }
 
     private DataElementService dataElementService;
@@ -158,8 +179,11 @@ public class StaXDataValueImportService
     {
         String user = currentUserService.getCurrentUsername();
 
-        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler(
+        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler(
             DataValueBatchHandler.class ).init();
+
+        DataValueImporter importer = 
+            new DataValueImporter(batchHandler, aggregatedDataValueService, params);
 
         int cumulativeDataValueCounter = 0;
 
@@ -192,15 +216,24 @@ public class StaXDataValueImportService
             // process datavaluesets until no more datavaluesets
 
             int countDataValueSets = 0;
+            int displayCount = DISPLAYCOUNT;
             do
             {
                 // look for a  DataValue set
-                reader.moveToStartElement( Dxf.DATAVALUESET );
+                try
+                {
+                    reader.moveToStartElement( Dxf.DATAVALUESET );
+                } catch ( java.util.NoSuchElementException ex )
+                {
+                    // we have to reach here eventuallyperiodId
+                    break;
+                }
                 if ( !reader.isStartElement( Dxf.DATAVALUESET ) )
                 {
                     // we have to reach here eventually
                     break;
                 }
+
 
                 // Pick off the attributes
                 String idSchemeStr = reader.getAttributeValue( DataValueSet.ATTR_IDSCHEME );
@@ -229,8 +262,7 @@ public class StaXDataValueImportService
                     }
                 }
 
-                int periodId = periodService.addPeriod( getPeriodObj( period ) );
-                Period outerPeriod = periodService.getPeriod( periodId );
+                Period outerPeriod = getPeriodObj( period );
 
                 // maps for translating identifiers
                 Map<String, Integer> dataelementMap = null;
@@ -259,12 +291,20 @@ public class StaXDataValueImportService
                 do
                 {
                     // look for a  DataValue
-                    reader.moveToStartElement( DataValueSet.DATAVALUE );
+                    try
+                    {
+                        reader.moveToStartElement( DataValueSet.DATAVALUE );
+                    } catch ( java.util.NoSuchElementException ex )
+                    {
+                        break;
+                    }
+
                     if ( !reader.isStartElement( DataValueSet.DATAVALUE ) )
                     {
                         // we have to reach here eventually
                         break;
                     }
+
                     log.debug( "Reading Datavalue" );
 
                     String dataElementId = reader.getAttributeValue(
@@ -285,10 +325,17 @@ public class StaXDataValueImportService
                     dv.setStoredBy( user );
                     dv.setTimestamp( timestamp );
 
-                    // if no outer orgunit defined, use thae map
+                    // if no outer orgunit defined, use the map
                     if ( outerOrgunit == null )
                     {
+                        Integer id = orgunitMap.get( innerOrgUnitId );
+                        if ( id == null )
+                        {
+                            log.info( "Unknown orgunit: " + innerOrgUnitId + " Rejecting value");
+                            continue;
+                        }
                         dv.getSource().setId( orgunitMap.get( innerOrgUnitId ) );
+
                     } else
                     {
                         dv.getSource().setId( outerOrgunitId );
@@ -296,10 +343,14 @@ public class StaXDataValueImportService
 
                     dv.getDataElement().setId( dataelementMap.get( dataElementId ) );
 
-                    batchHandler.addObject( dv );
+                    importer.importObject(dv,params);
 
                     ++countDataValues;
                     ++cumulativeDataValueCounter;
+
+                    if (countDataValues % DISPLAYCOUNT == 0) {
+                        state.setMessage( String.format(COUNTER,cumulativeDataValueCounter));
+                    }
 
                     log.debug( cumulativeDataValueCounter + " DataValues read" );
 
@@ -310,17 +361,17 @@ public class StaXDataValueImportService
 
             } while ( true ); // DataValueSets loop
 
+            log.info( SUCCESS );
+            state.setMessage( SUCCESS );
+
         } catch ( ImportException ex )
         {
-            log.warn( ex.toString());
+            log.warn( ex.toString() );
             state.setMessage( ex.toString() );
         } finally
         {
             batchHandler.flush();
         }
-
-        log.info( SUCCESS );
-        state.setMessage( SUCCESS );
     }
 
     private Period getPeriodObj( String period )
@@ -339,9 +390,23 @@ public class StaXDataValueImportService
         try
         {
             periodObj = pt.createPeriod( period );
+
         } catch ( Exception e )
         {
             throw new ImportException( String.format( INVALID_PERIOD, period ) );
+        }
+
+        Period storedPeriod = periodService.getPeriod( periodObj.getStartDate(), periodObj.getEndDate(), pt );
+
+        if ( storedPeriod == null )
+        {
+            int periodId = periodService.addPeriod( periodObj );
+
+            periodObj.setId( periodId );
+
+        } else
+        {
+            periodObj = storedPeriod;
         }
 
         return periodObj;
@@ -403,6 +468,7 @@ public class StaXDataValueImportService
             default:
                 throw new IllegalArgumentException( "Can't map with :" + idScheme );
         }
+        log.debug( result.size() + " orgunits in map" );
         return result;
     }
 
