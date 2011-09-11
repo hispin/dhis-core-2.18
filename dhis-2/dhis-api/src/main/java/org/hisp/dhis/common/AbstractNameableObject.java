@@ -135,6 +135,8 @@ public class AbstractNameableObject
             String code = object.getCode();
             int internalId = object.getId();
 
+            if (code == null) continue;
+            
             // NOTE: its really not good that duplicate codes are possible
             // Best we can do here is severe log and remove the item
             if ( map.containsKey( code ) )
