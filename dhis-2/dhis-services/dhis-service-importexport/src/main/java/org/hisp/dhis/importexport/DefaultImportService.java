@@ -158,7 +158,7 @@ public class DefaultImportService
 
         XMLReader dxfReader = null;
         File transformOutput = null;
-        FileInputStream dxfInStream = null;
+        BufferedInputStream dxfInStream = null;
 
         try
         {
@@ -186,8 +186,11 @@ public class DefaultImportService
                 transformOutStream.close();
 
                 log.info( "Transform successful" );
-                dxfInStream = new FileInputStream( transformOutput );
+                dxfInStream = 
+                    new BufferedInputStream(new FileInputStream( transformOutput ));
+                rootNameSpace = preConverter.getDocumentRoot( dxfInStream ).getNamespaceURI();
                 dxfReader = XMLFactory.getXMLReader( dxfInStream );
+                
             }
 
             if (rootNameSpace.equals( DXF2URI )) {
