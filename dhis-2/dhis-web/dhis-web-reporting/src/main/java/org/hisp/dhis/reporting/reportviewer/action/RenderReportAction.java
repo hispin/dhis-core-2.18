@@ -31,6 +31,7 @@ import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 
 import java.io.OutputStream;
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -44,6 +45,7 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -87,14 +89,21 @@ public class RenderReportAction
     {
         this.constantService = constantService;
     }
-
+    
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
     }
-    
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -146,8 +155,10 @@ public class RenderReportAction
         
         Report report = reportService.getReport( id );
         
-        Map<String, Double> constantMap = constantService.getConstantParameterMap();
+        Map<Object, Object> params = new HashMap<Object, Object>();
         
+        params.putAll( constantService.getConstantParameterMap() );
+                
         JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
         
         JasperPrint print = null;
@@ -156,9 +167,11 @@ public class RenderReportAction
         {
             ReportTable reportTable = report.getReportTable();
             
+            params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
+            
             Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
             
-            print = JasperFillManager.fillReport( jasperReport, constantMap, grid );
+            print = JasperFillManager.fillReport( jasperReport, params, grid );
         }
         else // Assume SQL report and provide JDBC connection
         {
@@ -166,7 +179,7 @@ public class RenderReportAction
             
             try
             {
-                print = JasperFillManager.fillReport( jasperReport, constantMap, connection );
+                print = JasperFillManager.fillReport( jasperReport, params, connection );
             }
             finally
             {        

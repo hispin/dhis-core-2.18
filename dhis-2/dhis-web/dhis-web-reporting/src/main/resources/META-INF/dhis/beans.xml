@@ -203,6 +203,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
 	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+	<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
   </bean>
 
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction"
@@ -290,6 +291,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
 	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="statementManager" ref="statementManager" />
+	<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
   </bean>
 
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction" class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"

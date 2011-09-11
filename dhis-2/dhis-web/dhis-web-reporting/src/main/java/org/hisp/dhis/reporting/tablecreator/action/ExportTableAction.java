@@ -27,11 +27,14 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.util.SessionUtils;
 
@@ -61,6 +64,13 @@ public class ExportTableAction
     public void setConstantService( ConstantService constantService )
     {
         this.constantService = constantService;
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     private I18nFormat format;
@@ -120,9 +130,9 @@ public class ExportTableAction
         return grid;
     }
 
-    private Map<?, ?> params;
+    private Map<Object, Object> params = new HashMap<Object, Object>();
 
-    public Map<?, ?> getParams()
+    public Map<Object, Object> getParams()
     {
         return params;
     }
@@ -132,21 +142,27 @@ public class ExportTableAction
     // -------------------------------------------------------------------------
 
     @Override
+    @SuppressWarnings("unchecked")
     public String execute()
         throws Exception
     {
         if ( useLast )
         {
             grid = (Grid) SessionUtils.getSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID );
+            params = (Map<Object, Object>) SessionUtils.getSessionVar( SessionUtils.KEY_REPORT_TABLE_PARAMS );
         }
         else
         {
-            grid = reportTableService.getReportTableGrid( id, format, reportingPeriod, organisationUnitId );            
+            ReportTable reportTable = reportTableService.getReportTable( id );
+            
+            grid = reportTableService.getReportTableGrid( id, format, reportingPeriod, organisationUnitId );
+            
+            params.putAll( constantService.getConstantParameterMap() );
+            params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
         }
 
-        params = constantService.getConstantParameterMap();
-        
         SessionUtils.setSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID, grid );
+        SessionUtils.setSessionVar( SessionUtils.KEY_REPORT_TABLE_PARAMS, params );
         
         return type != null ? type : DEFAULT_TYPE;
     }

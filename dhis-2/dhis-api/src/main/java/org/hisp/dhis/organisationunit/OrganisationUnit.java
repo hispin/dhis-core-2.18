@@ -380,7 +380,7 @@ public class OrganisationUnit
 
         return group != null ? group.getName() : null;
     }
-
+    
     public String getAncestorNames()
     {
         StringBuilder builder = new StringBuilder( name );
