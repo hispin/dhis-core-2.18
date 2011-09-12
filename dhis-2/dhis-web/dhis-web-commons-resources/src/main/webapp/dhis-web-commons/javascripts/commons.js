@@ -1344,7 +1344,7 @@ function exportPdfByType( params )
 		return;
 	}
 	
-	jQuery.post( 'exportToPdf.action', params );
+	jQuery.postUTF8( 'exportToPdf.action', params, function(){} );
 }
 
 /**
