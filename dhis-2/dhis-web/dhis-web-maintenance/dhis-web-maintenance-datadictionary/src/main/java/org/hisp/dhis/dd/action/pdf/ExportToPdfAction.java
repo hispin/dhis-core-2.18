@@ -178,7 +178,7 @@ public class ExportToPdfAction
                 {
                     dataElements = new ArrayList<DataElement>( dataElementService.searchDataElementsByName( key ) );
                 }
-                else if ( dataDictionaryId != null )
+                else if ( dataDictionaryId != null && dataDictionaryId != -1 )
                 {
                     dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId ) );
                 }
@@ -210,7 +210,7 @@ public class ExportToPdfAction
                 {
                     indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsLikeName( key ) );
                 }
-                else if ( dataDictionaryId != null )
+                else if ( dataDictionaryId != null && dataDictionaryId != -1 )
                 {
                     indicators = new ArrayList<Indicator>( dataDictionaryService.getDataDictionary( dataDictionaryId )
                         .getIndicators() );
