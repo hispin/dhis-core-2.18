@@ -13,11 +13,9 @@ import com.sun.jersey.spi.resource.Singleton;
 public class IllegalArgumentExceptionMapper
     implements ExceptionMapper<IllegalArgumentException>
 {
-
     @Override
     public Response toResponse( IllegalArgumentException e )
     {
         return Response.status( Status.CONFLICT ).entity( "Problem with input: " + e.getMessage() ).type( MediaType.TEXT_PLAIN ).build();
     }
-
 }

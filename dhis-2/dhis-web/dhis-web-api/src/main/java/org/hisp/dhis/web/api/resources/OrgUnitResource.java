@@ -36,8 +36,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.importexport.dxf2.model.OrgUnit;
 import org.hisp.dhis.importexport.dxf2.service.OrgUnitMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -52,13 +50,11 @@ public class OrgUnitResource
 {
     private OrganisationUnitService organisationUnitService;
 
-    private static Log log = LogFactory.getLog( OrgUnitResource.class );
-
     @PathParam( "id" )
     private String id;
 
     @Context
-    UriInfo uriInfo;
+    private UriInfo uriInfo;
 
     @GET
     @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
@@ -67,7 +63,9 @@ public class OrgUnitResource
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
 
         if ( unit == null )
+        {
             return null;
+        }
 
         OrgUnit orgUnit = new OrgUnitMapper().get( unit );
         new UrlResourceListener( uriInfo ).beforeMarshal( orgUnit );
@@ -79,5 +77,4 @@ public class OrgUnitResource
     {
         this.organisationUnitService = organisationUnitService;
     }
-
 }

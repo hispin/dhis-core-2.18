@@ -53,7 +53,10 @@ import com.opensymphony.xwork2.Action;
 public class ImportDataValueAction
     implements ServletRequestAware, ServletResponseAware, Action
 {
+    // -------------------------------------------------------------------------
     // Dependencies
+    // -------------------------------------------------------------------------
+
     private ProgramStageInstanceService programStageInstanceService;
 
     private PatientDataValueService patientDataValueService;
@@ -68,19 +71,20 @@ public class ImportDataValueAction
 
     private DataElementCategoryService dataElementCategoryService;
 
-    // Setter and Getter
+    // -------------------------------------------------------------------------
+    // Set and get methods
+    // -------------------------------------------------------------------------
+
     @Override
     public void setServletResponse( HttpServletResponse response )
     {
         this.response = response;
-
     }
 
     @Override
     public void setServletRequest( HttpServletRequest request )
     {
         this.request = request;
-
     }
 
     public HttpServletRequest getServletRequest()
@@ -143,7 +147,10 @@ public class ImportDataValueAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
+    // -------------------------------------------------------------------------
     // Output
+    // -------------------------------------------------------------------------
+
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -155,6 +162,10 @@ public class ImportDataValueAction
     {
         this.inputStream = inputStream;
     }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
@@ -182,7 +193,7 @@ public class ImportDataValueAction
             }
             catch ( Exception ex )
             {
-                message = "Upload fail!";
+                message = "Upload failed!";
                 this.setInputStream( new ByteArrayInputStream( message.getBytes() ) );
             }
         }

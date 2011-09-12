@@ -11,7 +11,6 @@ import com.sun.jersey.spi.container.ContainerRequest;
 public class HtmlPromotingUriConnegFilter
     extends UriConnegFilter
 {
-
     private static final String ACCEPT = "Accept";
 
     private static Map<String, MediaType> mediaExtentions;
@@ -72,6 +71,7 @@ public class HtmlPromotingUriConnegFilter
         }
 
         int end = accept.indexOf( ',', i );
+        
         if ( end != -1 )
         {
             if ( result.equals( "" ) )
@@ -90,7 +90,5 @@ public class HtmlPromotingUriConnegFilter
         }
 
         return "text/html," + result;
-
     }
-
 }

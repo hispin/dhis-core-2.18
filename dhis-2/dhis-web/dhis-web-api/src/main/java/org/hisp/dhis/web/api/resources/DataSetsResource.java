@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Required;
 @Path( "dataSets" )
 public class DataSetsResource
 {
-
     private LinkBuilder linkBuilder = new LinkBuilderImpl();
     
     private DataSetService dataSetService;
@@ -30,7 +29,8 @@ public class DataSetsResource
 
     @GET
     @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
-    public DataSetLinks getDataSetLinks() {
+    public DataSetLinks getDataSetLinks() 
+    {
         DataSetLinks dataSetLinks = new DataSetLinks( linkBuilder.getLinks( dataSetService.getAllDataSets() ) );
         new UrlResourceListener( uriInfo ).beforeMarshal( dataSetLinks );
         return dataSetLinks;
@@ -54,14 +54,11 @@ public class DataSetsResource
         t.append( Html.tail() );
 
         return t.toString();
-    }
-
-    
+    }    
     
     @Required
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-
 }

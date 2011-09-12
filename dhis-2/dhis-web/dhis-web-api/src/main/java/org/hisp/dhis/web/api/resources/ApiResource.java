@@ -20,7 +20,6 @@ import com.sun.jersey.api.view.ImplicitProduces;
 @ImplicitProduces( MediaType.TEXT_HTML )
 public class ApiResource
 {
-
     @Context
     UriInfo uriInfo;
 
@@ -31,20 +30,15 @@ public class ApiResource
         this.velocityManager = velocityManager;
     }
 
-
-
     @GET
     @Produces( MediaType.TEXT_HTML )
     public String getDescription()
         throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException, Exception
     {
-
         StringWriter writer = new StringWriter();
 
         velocityManager.render( null, "index", writer );
 
         return writer.toString();
-
     }
-
 }

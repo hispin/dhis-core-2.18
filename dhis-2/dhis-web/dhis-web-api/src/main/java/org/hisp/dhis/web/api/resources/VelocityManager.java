@@ -20,7 +20,6 @@ public class VelocityManager
     public VelocityManager() throws Exception
     {
         velocity = new VelocityEngine();
-
         velocity.setProperty( Velocity.RESOURCE_LOADER, RESOURCE_LOADER_NAME );
         velocity.setProperty( RESOURCE_LOADER_NAME + ".resource.loader.class", ClasspathResourceLoader.class.getName() );
         velocity.init();
@@ -30,10 +29,11 @@ public class VelocityManager
     {
         final VelocityContext context = new VelocityContext();
         
-        if (o != null)
+        if ( o != null )
+        {
             context.put( "object", o );
+        }
         
         velocity.getTemplate( templatePath + template + ".vm").merge( context, writer );
-
     }
 }
