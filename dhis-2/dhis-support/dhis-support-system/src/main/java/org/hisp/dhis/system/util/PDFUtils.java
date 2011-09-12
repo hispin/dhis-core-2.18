@@ -407,11 +407,16 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "active" ) ) );
         table.addCell( getTextCell( i18n.getString( getBoolean().get( element.isActive() ) ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "type" ) ) );
-        table.addCell( getTextCell( i18n.getString( getType().get( element.getType() ) ) ) );
-
-        table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ) ) );
-        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( element.getAggregationOperator() ) ) ) );
+        if ( nullIfEmpty( element.getType() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "value_type" ) ) );
+            table.addCell( getTextCell( i18n.getString( getType().get( element.getType() ) ) ) );
+        }
+        if ( nullIfEmpty( element.getAggregationOperator() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ) ) );
+            table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( element.getAggregationOperator() ) ) ) );
+        }
 
         table.addCell( getEmptyCell( 2, 30 ) );
 
@@ -468,9 +473,11 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "numerator_description" ) ) );
         table.addCell( getTextCell( indicator.getNumeratorDescription() ) );
 
-        table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ) ) );
-        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get(
-            indicator.getNumeratorAggregationOperator() ) ) ) );
+        if ( nullIfEmpty( indicator.getNumeratorAggregationOperator() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ) ) );
+            table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( indicator.getNumeratorAggregationOperator() ) ) ) );
+        }
 
         table.addCell( getItalicCell( i18n.getString( "numerator_formula" ) ) );
         table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getNumerator() ) ) );
@@ -478,9 +485,11 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "denominator_description" ) ) );
         table.addCell( getTextCell( indicator.getDenominatorDescription() ) );
 
-        table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ) ) );
-        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get(
-            indicator.getDenominatorAggregationOperator() ) ) ) );
+        if ( nullIfEmpty( indicator.getDenominatorAggregationOperator() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ) ) );
+            table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( indicator.getDenominatorAggregationOperator() ) ) ) );
+        }
 
         table.addCell( getItalicCell( i18n.getString( "denominator_formula" ) ) );
         table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getDenominator() ) ) );
@@ -522,7 +531,8 @@ public class PDFUtils
         }
 
         table.addCell( getItalicCell( i18n.getString( "opening_date" ) ) );
-        table.addCell( getTextCell( unit.getOpeningDate() != null ? format.formatDate( unit.getOpeningDate() ) : EMPTY ) );
+        table
+            .addCell( getTextCell( unit.getOpeningDate() != null ? format.formatDate( unit.getOpeningDate() ) : EMPTY ) );
 
         if ( unit.getClosedDate() != null )
         {
@@ -689,6 +699,7 @@ public class PDFUtils
         map.put( DataElement.VALUE_TYPE_STRING, "text" );
         map.put( DataElement.VALUE_TYPE_INT, "number" );
         map.put( DataElement.VALUE_TYPE_BOOL, "yes_no" );
+        map.put( DataElement.VALUE_TYPE_DATE, "date" );
         return map;
     }
 
