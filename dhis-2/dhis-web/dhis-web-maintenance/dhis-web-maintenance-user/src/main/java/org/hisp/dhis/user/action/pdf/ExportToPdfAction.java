@@ -186,7 +186,7 @@ public class ExportToPdfAction
                 }
                 else
                 {
-                    params.setUsers( null );
+                    params.setUserObjects( null );
                 }
 
                 fileName = FILENAME_USER;

@@ -1340,7 +1340,7 @@ function exportPdfByType( params )
 {	
 	if ( jQuery( "table.listTable tbody tr" ).length == 0 )
 	{
-		showWarningMessage( 'no_item_to_export' );
+		showWarningMessage( i18n_no_item_to_export );
 		return;
 	}
 	
