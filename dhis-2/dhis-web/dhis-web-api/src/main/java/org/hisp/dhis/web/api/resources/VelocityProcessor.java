@@ -5,6 +5,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -22,6 +24,8 @@ import com.sun.jersey.spi.template.ViewProcessor;
 public class VelocityProcessor
     implements ViewProcessor<Template>
 {
+    private static final Log log = LogFactory.getLog( VelocityProcessor.class );
+    
     private static final String RESOURCE_LOADER_NAME = "class";
 
     private VelocityEngine velocity = new VelocityEngine();
@@ -42,10 +46,11 @@ public class VelocityProcessor
         final VelocityContext context = new VelocityContext();
 
         if ( o != null )
+        {
             context.put( "object", o );
+        }
 
         velocity.getTemplate( templatePrefix + template + ".vm" ).merge( context, writer );
-
     }
 
     @Override
@@ -53,9 +58,9 @@ public class VelocityProcessor
     {
         String templatePath = templatePrefix + name + ".vm";
 
-        if ( !velocity.templateExists( templatePath ) )
+        if ( !velocity.resourceExists( templatePath ) )
         {
-            System.out.println("Couldn't find " + templatePath);
+            log.warn( "Template could not be found: " + templatePath );
             return null;
         }
         try
@@ -64,7 +69,7 @@ public class VelocityProcessor
         }
         catch ( Exception e )
         {
-            // TODO: handle
+            // TODO handle
             return null;
         }
     }
@@ -76,6 +81,7 @@ public class VelocityProcessor
         final VelocityContext context = new VelocityContext();
         
         Object model = viewable.getModel();
+        
         if (model != null)
         {
             context.put( "object", model );

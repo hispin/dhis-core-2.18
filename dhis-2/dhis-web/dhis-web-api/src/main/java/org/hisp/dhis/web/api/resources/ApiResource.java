@@ -6,9 +6,7 @@ import java.io.StringWriter;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -20,9 +18,6 @@ import com.sun.jersey.api.view.ImplicitProduces;
 @ImplicitProduces( MediaType.TEXT_HTML )
 public class ApiResource
 {
-    @Context
-    UriInfo uriInfo;
-
     private VelocityManager velocityManager;
 
     public void setVelocityManager( VelocityManager velocityManager )
