@@ -9,14 +9,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class OrgUnit extends Link
 {
-
     private Link parent;
     
     @XmlElementWrapper(name="children")
     @XmlElement(name="orgUnit")
     private List<Link> children;
 
-    
     @XmlElementWrapper(name="dataSets")
     @XmlElement(name="dataSet")
     private List<Link> dataSets;
@@ -49,7 +47,5 @@ public class OrgUnit extends Link
     public void setParent( Link parent )
     {
         this.parent = parent;
-    }
-
-    
+    }   
 }

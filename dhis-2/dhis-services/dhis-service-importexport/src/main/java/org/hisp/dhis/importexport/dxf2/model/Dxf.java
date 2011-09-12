@@ -39,7 +39,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType( XmlAccessType.FIELD )
 public class Dxf
 {
-
    // ---------------------------------------------------------------------------
    // Element and attribute names
    // ---------------------------------------------------------------------------
@@ -57,7 +56,6 @@ public class Dxf
     public static final String DATAVALUESET = "dataValueSet";
 
     public static final String MINOR_VERSION_10 = "1.0";
-   // ---------------------------------------------------------------------------
     
     @XmlElementWrapper( name="dataSets" )
     @XmlElement( name="dataSet" )
@@ -100,6 +98,4 @@ public class Dxf
     {
         this.orgUnits = orgUnits;
     }
-
-    
 }

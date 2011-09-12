@@ -7,7 +7,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 public class OrgUnitMapper
 {
-
     private LinkBuilder linkBuilder = new LinkBuilderImpl();
 
     public OrgUnit get( OrganisationUnit unit )
@@ -29,5 +28,4 @@ public class OrgUnitMapper
 
         return dxfUnit;
     }
-
 }

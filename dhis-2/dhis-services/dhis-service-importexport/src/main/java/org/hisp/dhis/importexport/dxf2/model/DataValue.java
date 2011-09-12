@@ -50,8 +50,6 @@ public class DataValue
 
     public static final String ATTR_ORGUNIT = "orgunit";
 
-   // ---------------------------------------------------------------------------
-
     @XmlAttribute( name = ATTR_DATAELEMENT, required = true )
     private String dataElementIdentifier;
 
@@ -102,6 +100,7 @@ public class DataValue
         {
             dimensions = new HashMap<QName,Object>();
         }
+        
         return dimensions;
     }
 
@@ -119,5 +118,4 @@ public class DataValue
     {
         this.value = value;
     }
-
 }

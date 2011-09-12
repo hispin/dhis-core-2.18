@@ -4,12 +4,10 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 @XmlRootElement
 public class OrgUnitLinks
 {
-
-    List<Link> orgUnit;
+    private List<Link> orgUnit;
 
     public OrgUnitLinks()
     {
@@ -28,8 +26,5 @@ public class OrgUnitLinks
     public void setOrgUnit( List<Link> orgUnit )
     {
         this.orgUnit = orgUnit;
-    }
-
-    
-    
+    }    
 }
