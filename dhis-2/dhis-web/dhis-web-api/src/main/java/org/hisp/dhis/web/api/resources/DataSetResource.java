@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Required;
 @Path( "dataSets/{uuid}" )
 public class DataSetResource
 {
-
     private DataSetService dataSetService;
 
     @Context
@@ -48,7 +47,6 @@ public class DataSetResource
     @Produces( MediaType.TEXT_HTML )
     public String getDataSet( @PathParam( "uuid" ) String uuid )
     {
-
         DataSet dataSet = dataSetService.getDataSet( uuid );
 
         if ( dataSet == null )
@@ -99,14 +97,10 @@ public class DataSetResource
 
         return t.toString();
     }
-
-
-
     
     @Required
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-
 }

@@ -16,7 +16,6 @@ import org.hisp.dhis.importexport.dxf2.model.OrgUnitLinks;
 public class UrlResourceListener
     extends Listener
 {
-
     private UriInfo uriInfo;
 
     private Map<Class<?>, String> mapping;
@@ -48,7 +47,6 @@ public class UrlResourceListener
             addUrls( unit.getChildren(), OrgUnit.class );
             addUrl( unit.getParent(), OrgUnit.class );
             addUrls( unit.getDataSets(), DataSet.class );
-
         }
         else if ( source instanceof OrgUnitLinks )
         {
@@ -59,19 +57,22 @@ public class UrlResourceListener
     private void addUrls( List<Link> links, Class<?> clazz )
     {
         if ( links == null )
+        {
             return;
+        }
 
         for ( Link link : links )
         {
             addUrl( link, clazz );
         }
-
     }
 
     private void addUrl( Link link, Class<?> clazz )
     {
         if ( link == null )
+        {
             return;
+        }
 
         String id = link.getId();
         String path = mapping.get( clazz );
@@ -79,5 +80,4 @@ public class UrlResourceListener
 
         link.setHref( url );
     }
-
 }

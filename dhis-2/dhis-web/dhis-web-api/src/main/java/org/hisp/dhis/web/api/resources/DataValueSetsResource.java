@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Required;
 @Path( "dataValueSets" )
 public class DataValueSetsResource
 {
-
     private DataValueSetService dataValueSetService;
 
     @Context UriInfo uriInfo;
@@ -49,5 +48,4 @@ public class DataValueSetsResource
     {
         this.dataValueSetService = dataValueSetService;
     }
-
 }

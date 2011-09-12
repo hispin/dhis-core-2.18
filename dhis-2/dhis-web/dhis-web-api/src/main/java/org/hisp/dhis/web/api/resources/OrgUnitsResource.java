@@ -22,7 +22,8 @@ public class OrgUnitsResource
 
     private LinkBuilder linkBuilder = new LinkBuilderImpl();
 
-    @Context UriInfo uriInfo;
+    @Context
+    private UriInfo uriInfo;
     
     @GET
     @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
@@ -37,7 +38,6 @@ public class OrgUnitsResource
     @Produces( MediaType.TEXT_HTML )
     public String getOrgUnitsHtml()
     {
-
         StringBuilder sb = Html.head( "Org units" );
 
         sb.append( "<p>See the <a href=\"orgUnits.xml\">xml version</a></p>\n" );
@@ -58,5 +58,4 @@ public class OrgUnitsResource
     {
         this.organisationUnitService = organisationUnitService;
     }
-
 }

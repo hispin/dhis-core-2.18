@@ -5,8 +5,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import javax.ws.rs.ext.Provider;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -17,7 +15,6 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import com.sun.jersey.api.view.Viewable;
-import com.sun.jersey.spi.resource.Singleton;
 import com.sun.jersey.spi.template.ViewProcessor;
 
 //@Provider
@@ -25,7 +22,6 @@ import com.sun.jersey.spi.template.ViewProcessor;
 public class VelocityProcessor
     implements ViewProcessor<Template>
 {
-
     private static final String RESOURCE_LOADER_NAME = "class";
 
     private VelocityEngine velocity = new VelocityEngine();
@@ -55,8 +51,6 @@ public class VelocityProcessor
     @Override
     public Template resolve( String name )
     {
-        System.out.println("*****HERE WE ARE! " + name);
-
         String templatePath = templatePrefix + name + ".vm";
 
         if ( !velocity.templateExists( templatePath ) )
@@ -79,7 +73,6 @@ public class VelocityProcessor
     public void writeTo( Template t, Viewable viewable, OutputStream out )
         throws IOException
     {
-        System.out.println("*****HERE WE ARE!");
         final VelocityContext context = new VelocityContext();
         
         Object model = viewable.getModel();
@@ -89,7 +82,5 @@ public class VelocityProcessor
         }
 
         t.merge( context, new OutputStreamWriter( out ) );
-
     }
-
 }

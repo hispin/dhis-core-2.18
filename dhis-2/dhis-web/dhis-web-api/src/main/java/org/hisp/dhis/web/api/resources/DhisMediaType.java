@@ -30,5 +30,4 @@ package org.hisp.dhis.web.api.resources;
 public class DhisMediaType
 {
     public static final String DXF = "application/vnd.org.dhis2.dxf";
-
 }

@@ -6,7 +6,6 @@ import javax.ws.rs.core.UriInfo;
 
 public class Html
 {
-
     public static StringBuilder head( String title )
     {
         StringBuilder sb = new StringBuilder(
@@ -55,5 +54,4 @@ public class Html
         t.append( "\n&lt;/dataValueSet&gt;" );
         t.append( "</pre>" );
     }
-
 }
