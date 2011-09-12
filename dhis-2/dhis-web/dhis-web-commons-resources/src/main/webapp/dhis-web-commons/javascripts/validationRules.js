@@ -155,8 +155,7 @@ var validationRules = {
             "required" : true
         },
         "sqlquery" : {
-            "required" : true,
-            "rangelength" : [ 1, 255 ]
+            "required" : true
         }
     },
     "dataLocking" : {
