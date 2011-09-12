@@ -71,7 +71,7 @@ public class DataSetMapper
             dxfCombo.setName( optionCombo.getName() );
             dxfCombos.add( dxfCombo );
         }
+        
         return dxfCombos;
     }
-
 }

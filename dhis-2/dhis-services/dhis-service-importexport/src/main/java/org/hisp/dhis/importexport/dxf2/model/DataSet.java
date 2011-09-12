@@ -105,7 +105,5 @@ public class DataSet extends Link
     public void setOrgUnitLinks( List<Link> orgUnitLinks )
     {
         this.orgUnitLinks = orgUnitLinks;
-    }
-
-    
+    }    
 }

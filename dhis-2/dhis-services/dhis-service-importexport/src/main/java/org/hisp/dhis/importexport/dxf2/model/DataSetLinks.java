@@ -4,12 +4,10 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 @XmlRootElement
 public class DataSetLinks
 {
-
-    List<Link> dataSet;
+    private List<Link> dataSet;
 
     public DataSetLinks()
     {
@@ -29,5 +27,4 @@ public class DataSetLinks
     {
         this.dataSet = dataSet;
     }
-
 }

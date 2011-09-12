@@ -39,7 +39,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType( XmlAccessType.FIELD )
 public class DataValueSet
 {
-
    // ---------------------------------------------------------------------------
    // Element and attribute names
    // ---------------------------------------------------------------------------
@@ -57,8 +56,6 @@ public class DataValueSet
     public static final String ATTR_COMPLETE = "period";
 
     public static final String DATAVALUE = "dataValue";
-
-   // ---------------------------------------------------------------------------
 
     public enum IdentificationStrategy { INTERNAL, UUID, CODE  };
 
@@ -144,5 +141,4 @@ public class DataValueSet
     {
         this.dataValues = dataValues;
     }
-
 }

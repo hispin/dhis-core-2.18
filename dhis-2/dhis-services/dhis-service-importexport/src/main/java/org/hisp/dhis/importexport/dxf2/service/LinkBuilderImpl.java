@@ -29,5 +29,4 @@ public class LinkBuilderImpl implements LinkBuilder
 
         return link;
     }
-
 }

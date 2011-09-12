@@ -8,14 +8,12 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class DataElement extends Link
 {
-
     @XmlAttribute
     private String type;
 
     @XmlElementWrapper(name="categoryOptionCombos")
     @XmlElement(name="categoryOptionCombo")
     private List<CategoryOptionCombo> categoryOptionCombos;
-    
     
     public String getType()
     {
@@ -36,5 +34,4 @@ public class DataElement extends Link
     {
         this.categoryOptionCombos = categoryOptionCombos;
     }
-
 }
