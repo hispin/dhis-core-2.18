@@ -20,11 +20,18 @@ public class DataValueSetsResource
 {
     private DataValueSetService dataValueSetService;
 
-    @Context UriInfo uriInfo;
+    private VelocityManager velocityManager;
+
+    @Context
+    private UriInfo uriInfo;
     
     @GET
     @Produces( MediaType.TEXT_HTML )
-    public String getDescription() {
+    public String getDescription()
+    {
+        URI uri = uriInfo.getBaseUriBuilder().path( DataSetsResource.class ).build( );
+        return velocityManager.render( uri, "dataValueSets" );
+        /*
         StringBuilder sb = Html.head( "Data value sets" );
         URI uri = uriInfo.getBaseUriBuilder().path( DataSetsResource.class ).build( );
         sb.append( "<p>This resource is the place to post data value sets. Take a look at the <a href=\"" );
@@ -33,7 +40,7 @@ public class DataValueSetsResource
         
         sb.append( Html.tail() );
 
-        return sb.toString(); 
+        return sb.toString();*/ 
     }
      
     @POST
@@ -47,5 +54,11 @@ public class DataValueSetsResource
     public void setDataValueSetService( DataValueSetService dataValueSetService )
     {
         this.dataValueSetService = dataValueSetService;
+    }
+
+    @Required
+    public void setVelocityManager( VelocityManager velocityManager )
+    {
+        this.velocityManager = velocityManager;
     }
 }

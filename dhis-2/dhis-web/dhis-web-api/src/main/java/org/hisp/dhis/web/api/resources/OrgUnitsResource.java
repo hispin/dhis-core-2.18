@@ -10,15 +10,16 @@ import javax.ws.rs.core.UriInfo;
 import org.hisp.dhis.importexport.dxf2.model.OrgUnitLinks;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.api.UrlResourceListener;
-import org.springframework.web.util.HtmlUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 @Path( "orgUnits" )
 public class OrgUnitsResource
 {
     private OrganisationUnitService organisationUnitService;
+
+    private VelocityManager velocityManager;
 
     private LinkBuilder linkBuilder = new LinkBuilderImpl();
 
@@ -38,24 +39,20 @@ public class OrgUnitsResource
     @Produces( MediaType.TEXT_HTML )
     public String getOrgUnitsHtml()
     {
-        StringBuilder sb = Html.head( "Org units" );
-
-        sb.append( "<p>See the <a href=\"orgUnits.xml\">xml version</a></p>\n" );
-        sb.append( "<ul>" );
-
-        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
-        {
-            sb.append( "<li><a href=\"orgUnits/" ).append( unit.getId() ).append( "\">" );
-            sb.append( HtmlUtils.htmlEscape( unit.getName() ) ).append( "</a></li>" );
-        }
-
-        sb.append( "</ul></body>\n</html>\n" );
-
-        return sb.toString();
+        OrgUnitLinks orgUnitLinks = new OrgUnitLinks( linkBuilder.getLinks( organisationUnitService.getAllOrganisationUnits() ) );
+        new UrlResourceListener( uriInfo ).beforeMarshal( orgUnitLinks );
+        return velocityManager.render( orgUnitLinks.getOrgUnit(), "orgUnits" );
     }
 
+    @Required
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    @Required
+    public void setVelocityManager( VelocityManager velocityManager )
+    {
+        this.velocityManager = velocityManager;
     }
 }
