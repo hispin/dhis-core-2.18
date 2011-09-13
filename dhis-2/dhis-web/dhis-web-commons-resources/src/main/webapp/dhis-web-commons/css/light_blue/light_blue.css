@@ -381,7 +381,7 @@ div#menuDropDown3
   font-size: 9pt;
 }
 
-.page th, thead tr
+.page th, thead tr, .tabHead
 {
   background-color: #cbddeb;
   background-repeat: repeat-x;
