@@ -41,7 +41,6 @@ import org.hisp.dhis.importexport.dxf2.service.OrgUnitMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.api.UrlResourceListener;
-import org.springframework.beans.factory.annotation.Required;
 
 @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
 @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
@@ -49,6 +48,11 @@ import org.springframework.beans.factory.annotation.Required;
 public class OrgUnitResource
 {
     private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     @PathParam( "id" )
     private String id;
@@ -70,11 +74,5 @@ public class OrgUnitResource
         OrgUnit orgUnit = new OrgUnitMapper().get( unit );
         new UrlResourceListener( uriInfo ).beforeMarshal( orgUnit );
         return orgUnit;
-    }
-
-    @Required
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 }

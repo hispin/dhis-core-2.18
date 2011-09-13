@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
   <head>
     <title>DHIS2 Web API</title>
@@ -20,7 +20,7 @@
     dataSet="dataSet UUID"
     period="periodInIsoFormat"
     orgUnit="unit UUID"&gt;
-  &lt;dataValue dataElement="data element UUID" categoryOptionCombo="UUID, only specify if used" storedBy="string" value="value" /&gt;
-&lt;/dataValueSet&gt;</pre>
+    &lt;dataValue dataElement="data element UUID" categoryOptionCombo="UUID, only specify if used" storedBy="string" value="value" /&gt;
+    &lt;/dataValueSet&gt;</pre>
   </body>
 </html>

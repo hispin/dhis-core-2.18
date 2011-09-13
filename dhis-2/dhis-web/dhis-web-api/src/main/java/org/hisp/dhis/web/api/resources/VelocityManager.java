@@ -1,14 +1,10 @@
 package org.hisp.dhis.web.api.resources;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.io.StringWriter;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.exception.MethodInvocationException;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 public class VelocityManager
@@ -25,15 +21,28 @@ public class VelocityManager
         velocity.init();
     }
 
-    public void render(Object o, String template, Writer writer) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException, Exception
+    public String render( Object object, String template )
     {
-        final VelocityContext context = new VelocityContext();
-        
-        if ( o != null )
+        try
         {
-            context.put( "object", o );
+            StringWriter writer = new StringWriter();
+            
+            VelocityContext context = new VelocityContext();
+            
+            if ( object != null )
+            {
+                context.put( "object", object );
+            }
+            
+            velocity.getTemplate( templatePath + template + ".vm" ).merge( context, writer );
+            
+            return writer.toString();
+            
+            // TODO include encoder in context
         }
-        
-        velocity.getTemplate( templatePath + template + ".vm").merge( context, writer );
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to merge velocity template", ex );
+        }
     }
 }
