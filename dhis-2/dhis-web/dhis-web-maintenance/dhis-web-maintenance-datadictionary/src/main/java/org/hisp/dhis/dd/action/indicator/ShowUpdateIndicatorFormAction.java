@@ -29,8 +29,14 @@ package org.hisp.dhis.dd.action.indicator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -55,6 +61,13 @@ public class ShowUpdateIndicatorFormAction
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -96,6 +109,13 @@ public class ShowUpdateIndicatorFormAction
         return indicatorTypes;
     }
 
+    public Map<Attribute, AttributeValue> attributeMap = new HashMap<Attribute, AttributeValue>();
+
+    public Map<Attribute, AttributeValue> getAttributeMap()
+    {
+        return attributeMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -114,6 +134,28 @@ public class ShowUpdateIndicatorFormAction
         indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() );
 
         Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
+
+        List<AttributeValue> indicatorAttributeValues = new ArrayList<AttributeValue>( indicator.getAttributeValues() );
+
+        List<Attribute> attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
+
+        Collections.sort( attributes, new AttributeNameComparator() );
+
+        // TODO fix this.. quite ugly and slow
+        for ( Attribute key : attributes )
+        {
+            AttributeValue value = null;
+
+            for ( AttributeValue av : indicatorAttributeValues )
+            {
+                if ( value.getAttribute().equals( key ) )
+                {
+                    value = av;
+                }
+            }
+
+            attributeMap.put( key, value );
+        }
 
         return SUCCESS;
     }

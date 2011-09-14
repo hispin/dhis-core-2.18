@@ -29,8 +29,14 @@ package org.hisp.dhis.oum.action.organisationunit;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
@@ -44,8 +50,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z
- *          torgeilo $
  */
 public class GetOrganisationUnitAction
     implements Action
@@ -73,6 +77,13 @@ public class GetOrganisationUnitAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -121,6 +132,13 @@ public class GetOrganisationUnitAction
         return groupSets;
     }
 
+    public Map<Attribute, AttributeValue> attributeMap = new HashMap<Attribute, AttributeValue>();
+
+    public Map<Attribute, AttributeValue> getAttributeMap()
+    {
+        return attributeMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -137,13 +155,34 @@ public class GetOrganisationUnitAction
 
         dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
 
-        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService
-            .getCompulsoryOrganisationUnitGroupSetsWithMembers() );
+        groupSets = new ArrayList<OrganisationUnitGroupSet>(
+            organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
+
+        List<AttributeValue> organisationUnitAttributeValues = new ArrayList<AttributeValue>(
+            organisationUnit.getAttributeValues() );
+
+        List<Attribute> attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitAttributes() );
+
+        Collections.sort( attributes, new AttributeNameComparator() );
+
+        // TODO fix this.. quite ugly and slow
+        for ( Attribute key : attributes )
+        {
+            AttributeValue value = null;
+
+            for ( AttributeValue av : organisationUnitAttributeValues )
+            {
+                if ( value.getAttribute().equals( key ) )
+                {
+                    value = av;
+                }
+            }
+
+            attributeMap.put( key, value );
+        }
 
         Collections.sort( availableDataSets, new DataSetNameComparator() );
-
         Collections.sort( dataSets, new DataSetNameComparator() );
-
         Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
 
         return SUCCESS;
