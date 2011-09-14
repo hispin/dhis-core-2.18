@@ -42,6 +42,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
@@ -56,7 +57,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $ LoadCustomDataEntryAction.java May 7, 2011 2:37:44 PM $
+ * @version $ LoadDataEntryAction.java May 7, 2011 2:37:44 PM $
  * 
  */
 public class LoadDataEntryAction
@@ -100,6 +101,8 @@ public class LoadDataEntryAction
 
     private OrganisationUnit organisationUnit;
 
+    private Program program;
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -107,6 +110,11 @@ public class LoadDataEntryAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+
+    public Program getProgram()
+    {
+        return program;
     }
 
     public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
@@ -191,22 +199,24 @@ public class LoadDataEntryAction
     public String execute()
         throws Exception
     {
+        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+
         // ---------------------------------------------------------------------
         // Get program-stage-instance
         // ---------------------------------------------------------------------
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
-
-        ProgramInstance programInstance = selectedStateManager.getSelectedProgramInstance();
-
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        
+        program = programStage.getProgram();
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
+
+        ProgramInstance programInstance = selectedStateManager.getSelectedProgramInstance();
 
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
-
+        
         if ( programStageInstance != null )
         {
             selectedStateManager.setSelectedProgramStageInstance( programStageInstance );

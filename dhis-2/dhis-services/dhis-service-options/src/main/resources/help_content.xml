@@ -2562,10 +2562,10 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
         <para>6.3. In the Data Element Group combobox, select "BCG DataElement Group".</para>
         <para>6.4. In the Data Element combobox, select "Number of children - BCG (default)"</para>
         <para>6.5. In the Program combobox, select "Child Health Program".</para>
-        <para>6.7. In the Program Stage combobox, select "Birth Details".</para>
-        <para>6.8. In the Data Element list box, double click the "BCG dose give date".</para>
-        <para>6.9. Click the "is not null" operator button.</para>
-        <para>6.10. Click "Add" button.</para>
+        <para>6.6. In the Program Stage combobox, select "Birth Details".</para>
+        <para>6.7. In the Data Element list box, double click the "BCG dose give date". And click the "Is not null" button</para>
+        <para>6.8. Click the "is not null" operator button.</para>
+        <para>6.9. Click "Add" button.</para>
         <para>7. Choose Services->Name-Based Data Records->Data Entry, click the "List All Beneficiaries" button.</para>
         <para>7.1. Select beneficiary with name "Micheal" and open the "Birth Details" stage of "Child Health Program". Enter value "2011-02-18" for "BCG dose give date" data element.</para>
         <para>7.2. Select beneficiary with name "Alice" and open the "Birth Details" stage of "Child Health Program". Enter value "2011-02-18" for "BCG dose give date" data element.</para>

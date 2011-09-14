@@ -1,0 +1,52 @@
+<script>
+	
+	jQuery(document).ready(	function(){
+
+		currentDiv = 'addPatientForm';
+		checkedDuplicate = false;
+
+		jQuery("#addPatientForm").validate({
+				 meta:"validate"
+				,errorElement:"span"
+				,submitHandler: function(form)
+					{
+						validateAddPatient('addPatientForm');
+					}
+				,beforeValidateHandler: function(form)
+					{
+						var dobType = $('#addPatientForm [id=dobType]').val();
+						
+						if( dobType=='V' || dobType=='D' ) 
+						{
+							var birthDate = $('#addPatientForm [id=birthDate]').val();
+							if( birthDate != '' ){
+								$("#addPatientForm [id=memberValidator]").val(birthDate);
+							}
+						}else{
+							var age = $('#addPatientForm [id=age]').val();
+							$("#addPatientForm [id=memberValidator]").val(age);
+						}
+					}
+			});
+		
+		datePickerValid( 'addPatientForm [id=registrationDate]' );
+		datePickerValid( 'addPatientForm [id=birthDate]' );
+		addEventForPatientForm( 'addPatientForm' );
+	});	
+	
+</script>
+
+<h3>$i18n.getString( "add_new_patient" )</h3>	
+<p><input type="button" value="$i18n.getString( 'back_to_search' )" onclick="loadPatientList();" style="width:10em"/></p>
+
+<form id="addPatientForm" name="addPatientForm" method="post" >
+<input type="hidden" id="representativeId" name="representativeId"/> 
+<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
+
+#parse( "/dhis-web-caseentry/patientForm.vm" )
+
+<p style="margin-top:10px">
+	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+</p>
+
+</form>

@@ -1,0 +1,68 @@
+<script>
+	jQuery('#addRelationshipPatientForm').ready(	function(){
+
+		datePickerValid( 'addRelationshipPatientForm [id=birthDate]' );
+		hideById('addRelationshipPatientForm [id=underAgeDiv]');
+		addEventForPatientForm('addRelationshipPatientForm');
+		checkedDuplicate = false;
+		
+		jQuery("#addRelationshipPatientForm").validate({
+			 meta:"validate"
+			,errorElement:"span"
+			,submitHandler: function(form)
+				{
+					validateAddRelationshipPatient();
+				}
+			,beforeValidateHandler: function(form)
+				{
+					var birthDate = $('#addRelationshipPatientForm [id=birthDate]').val();
+					var age = $('#addRelationshipPatientForm [id=age]').val();
+					if(age !=''){
+						$( "#addRelationshipPatientForm [id=memberValidator]").val(age);
+					}else{
+						$( "#addRelationshipPatientForm [id=memberValidator]").val(birthDate);
+					}
+				}
+		});
+	});		
+</script>
+<div>
+    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="showRelationshipList($patient.id);" style="width:10em">
+</div>
+
+<h3>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h3>
+																		
+<form id="addRelationshipPatientForm" action="addRelationshipPatient.action" method="get" >
+<input type="hidden" id="relationshipId"  name="relationshipId" value="$patient.id"/> 
+<table>	
+	<tr>
+		<td style='width:14em'><label for="relationship_type">$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td class="input-column">
+			<select name="relationshipTypeId" id="relationshipTypeId" style="width:28.2em" class="{validate:{required:true}}" >
+				<option value="">[$i18n.getString( "please_select" )]</option>        
+				#foreach ($relationship in $relationshipTypes)
+					<option value="$relationship.id">${relationship.aIsToB} - ${relationship.bIsToA}</option>
+				#end
+			</select>
+		</td>
+	</tr>
+</table>
+
+#parse( "/dhis-web-caseentry/patientForm.vm" )
+
+<p style="margin-top:10px">
+	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+</p>
+
+</form> 	
+	
+<div id="hiddenModalContent" style="display:none">
+<style> 
+div#hiddenModalContent label { font-weight: bold;}  
+div#hiddenModalContent td {padding: 2px 5px}
+</style>
+<span>$i18n.getString( "duplicate_warning" )</span>
+<input type="button" value="$i18n.getString( 'create_new_patient' )"  id="btnCreateNew"/>
+
+<div id="thickboxContainer"></div>
+</div>

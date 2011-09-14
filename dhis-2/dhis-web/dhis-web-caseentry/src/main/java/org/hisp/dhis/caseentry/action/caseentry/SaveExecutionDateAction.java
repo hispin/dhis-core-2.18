@@ -33,8 +33,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -56,6 +63,27 @@ public class SaveExecutionDateAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+
+    private ProgramStageService programStageService;
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
+
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
+    private PatientService patientService;
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
     }
 
     private SelectedStateManager selectedStateManager;
@@ -83,11 +111,11 @@ public class SaveExecutionDateAction
         this.executionDate = executionDate;
     }
 
-    private int statusCode;
+    private Integer programStageId;
 
-    public int getStatusCode()
+    public void setProgramStageId( Integer programStageId )
     {
-        return statusCode;
+        this.programStageId = programStageId;
     }
 
     // -------------------------------------------------------------------------
@@ -97,35 +125,63 @@ public class SaveExecutionDateAction
     public String execute()
         throws Exception
     {
-        ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
+        Date dateValue = format.parseDate( executionDate );
 
-        if ( executionDate != null )
+        if ( dateValue != null )
         {
-            Date dateValue = format.parseDate( executionDate );
+            // Get program-stage-instance of the patient
+            ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
+            
+            // If the program-stage-instance of the patient not exists,
+            // create a program-instance and program-stage-instance for
+            // single-event program
+            if ( programStageInstance == null )
+            {
+                Patient patient = selectedStateManager.getSelectedPatient();
+                ProgramStage programStage = programStageService.getProgramStage( programStageId );
+                Program program = programStage.getProgram();
 
-            if ( dateValue != null )
+                if ( programStage.getProgram().getSingleEvent() )
+                {
+                    // Add a new program-instance
+                    ProgramInstance programInstance = new ProgramInstance();
+                    programInstance.setEnrollmentDate( dateValue );
+                    programInstance.setDateOfIncident( dateValue );
+                    programInstance.setProgram( program );
+                    programInstance.setPatient( patient );
+                    programInstance.setCompleted( false );
+
+                    programInstanceService.addProgramInstance( programInstance );
+
+                    patient.getPrograms().add( program );
+                    patientService.updatePatient( patient );
+
+                    // Add a new program-stage-instance
+                    programStageInstance = new ProgramStageInstance();
+                    programStageInstance.setProgramInstance( programInstance );
+                    programStageInstance.setProgramStage( programStage );
+                    programStageInstance.setStageInProgram( programStage.getStageInProgram() );
+                    programStageInstance.setDueDate( dateValue );
+                    programStageInstance.setExecutionDate( dateValue );
+
+                    programStageInstanceService.addProgramStageInstance( programStageInstance );
+
+                    selectedStateManager.setSelectedProgramInstance( programInstance );
+                    selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
+                }
+            }
+            else
             {
                 programStageInstance.setExecutionDate( dateValue );
 
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
-                LOG.debug( "Updating Execution Date, value added/changed" );
             }
-
-            else
-            {
-                statusCode = 1;
-            }
-        }
-        else
-        {
-            programStageInstance.setExecutionDate( new Date() );
-
-            programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
+            
             LOG.debug( "Updating Execution Date, value added/changed" );
+
+            return SUCCESS;
         }
 
-        return SUCCESS;
+        return INPUT;
     }
 }

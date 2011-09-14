@@ -119,4 +119,19 @@ public class DefaultProgramService
         return programs;
     }
 
+    public Collection<Program> getPrograms( boolean singleEvent )
+    {
+        Set<Program> programs = new HashSet<Program>();
+
+        for ( Program program : getAllPrograms() )
+        {
+            if ( program.getSingleEvent() == singleEvent)
+            {
+                programs.add( program );
+            }
+        }
+
+        return programs;
+    }
+
 }

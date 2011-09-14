@@ -105,6 +105,8 @@ public class TableAlteror
         executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null" );
 
         executeSql( "UPDATE dataset SET version = 1 WHERE version is null" );
+        
+        executeSql( "UPDATE program SET singleevent = false WHERE singleevent is null" );
 
         updateSingleProgramValidation();
 

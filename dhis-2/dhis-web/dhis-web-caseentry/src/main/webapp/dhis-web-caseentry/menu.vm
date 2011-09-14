@@ -1,4 +1,9 @@
 
+<h2>$i18n.getString( "registration" )&nbsp;</h2>
+<ul>
+	<li><a href="patient.action">$i18n.getString( "registration_patient" )</a></li>		
+</ul>
+
 <h2>$i18n.getString( "data_entry" )&nbsp;</h2>
 <ul>
     <li><a href="dataEntrySelect.action">$i18n.getString( "data_entry" )&nbsp;</a></li>
