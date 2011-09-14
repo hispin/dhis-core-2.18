@@ -517,7 +517,7 @@ public class DefaultReportTableService
 
             for ( NameableObject object : row ) // Index name columns
             {
-                grid.addValue( object.getShortName() ); 
+                grid.addValue( object.getName() ); 
             }
 
             grid.addValue( reportTable.getReportingMonthName() );
