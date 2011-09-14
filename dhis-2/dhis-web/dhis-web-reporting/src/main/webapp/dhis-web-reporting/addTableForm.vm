@@ -446,6 +446,8 @@
     	    <label for="paramGrandParentOrganisationUnit">$i18n.getString( "grand_parent_organisation_unit" )</label>
             <input type="checkbox" id="paramGrandParentOrganisationUnit" name="paramGrandParentOrganisationUnit" value="true"#if( $reportTable.reportParams.isParamGrandParentOrganisationUnit() ) checked#end>
         </td>
+    </tr>
+    <tr>
         <td>
     	    <label for="paramParentOrganisationUnit">$i18n.getString( "parent_organisation_unit" )</label>
             <input type="checkbox" id="paramParentOrganisationUnit" name="paramParentOrganisationUnit" value="true"#if( $reportTable.reportParams.isParamParentOrganisationUnit() ) checked#end>&nbsp;
