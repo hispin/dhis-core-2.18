@@ -3,7 +3,7 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Data Element -->
+  <!-- Data Element -->
 
   <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction" class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction"
     scope="prototype">
@@ -57,6 +57,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementAction" class="org.hisp.dhis.dd.action.dataelement.GetDataElementAction"
@@ -119,7 +120,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- Data Element Group -->
+  <!-- Data Element Group -->
 
   <bean id="org.hisp.dhis.dd.action.dataelementgroup.ShowDataElementGroupEditorAction" class="org.hisp.dhis.dd.action.dataelementgroup.ShowDataElementGroupEditorAction"
     scope="prototype">
@@ -191,7 +192,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- Data Element Group Set -->
+  <!-- Data Element Group Set -->
 
   <bean id="org.hisp.dhis.dd.action.dataelementgroupset.AddDataElementGroupSetAction" class="org.hisp.dhis.dd.action.dataelementgroupset.AddDataElementGroupSetAction"
     scope="prototype">
@@ -243,7 +244,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
 
-	<!-- Indicator Group -->
+  <!-- Indicator Group -->
 
   <bean id="org.hisp.dhis.dd.action.indicatorgroup.ShowIndicatorGroupEditorAction" class="org.hisp.dhis.dd.action.indicatorgroup.ShowIndicatorGroupEditorAction"
     scope="prototype">
@@ -315,7 +316,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- Indicator Group Set -->
+  <!-- Indicator Group Set -->
 
   <bean id="org.hisp.dhis.dd.action.indicatorgroupset.AddIndicatorGroupSetAction" class="org.hisp.dhis.dd.action.indicatorgroupset.AddIndicatorGroupSetAction"
     scope="prototype">
@@ -366,7 +367,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- Indicator Type -->
+  <!-- Indicator Type -->
 
   <bean id="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction" class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction"
     scope="prototype">
@@ -410,7 +411,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- Indicator -->
+  <!-- Indicator -->
 
   <bean id="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction" class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction"
     scope="prototype">
@@ -481,7 +482,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- DataDictionary -->
+  <!-- DataDictionary -->
 
   <bean id="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction" class="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction"
     scope="prototype">
@@ -551,7 +552,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- Category -->
+  <!-- Category -->
 
   <bean id="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction"
     scope="prototype">
@@ -617,7 +618,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- CategoryCombo -->
+  <!-- CategoryCombo -->
 
   <bean id="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryListAction" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryListAction"
     scope="prototype">
@@ -668,24 +669,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- PDF -->
+  <!-- PDF -->
 
   <bean id="org.hisp.dhis.dd.action.pdf.ExportToPdfAction" class="org.hisp.dhis.dd.action.pdf.ExportToPdfAction"
     scope="prototype">
     <property name="serviceProvider">
       <ref bean="exportServiceProvider" />
     </property>
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService"/>
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService"/>
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
   </bean>
 
-	<!-- Other -->
+  <!-- Other -->
 
   <bean id="org.hisp.dhis.dd.action.NoAction" class="org.hisp.dhis.dd.action.NoAction" />
 
 
-	<!-- Validate CategoryOption -->
+  <!-- Validate CategoryOption -->
 
   <bean id="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction"
     scope="prototype">
@@ -694,7 +695,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- Concept Name -->
+  <!-- Concept Name -->
 
   <bean id="org.hisp.dhis.dd.action.concept.AddConceptAction" class="org.hisp.dhis.dd.action.concept.AddConceptAction"
     scope="prototype">

@@ -52,6 +52,12 @@ public interface AttributeService
 
     public Set<Attribute> getAllAttributes();
 
+    public Set<Attribute> getDataElementAttributes();
+
+    public Set<Attribute> getIndicatorAttributes();
+
+    public Set<Attribute> getOrganisationUnitAttributes();
+
     public int getAttributeCount();
 
     public int getAttributeCountByName( String name );

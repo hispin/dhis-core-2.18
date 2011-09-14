@@ -31,7 +31,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -52,7 +56,7 @@ public class ShowAddDataElementForm
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -73,55 +77,73 @@ public class ShowAddDataElementForm
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-            
+
     private Collection<DataElementGroup> dataElementGroups;
-    
+
     public Collection<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
     }
-    
+
     private List<DataElementCategoryCombo> dataElementCategoryCombos;
-    
+
     public List<DataElementCategoryCombo> getDataElementCategoryCombos()
     {
         return dataElementCategoryCombos;
     }
 
     private DataElementCategoryCombo defaultCategoryCombo;
-    
+
     public DataElementCategoryCombo getDefaultCategoryCombo()
     {
-    	return defaultCategoryCombo;
+        return defaultCategoryCombo;
     }
-    
+
     private List<OrganisationUnitLevel> organisationUnitLevels;
 
     public List<OrganisationUnitLevel> getOrganisationUnitLevels()
     {
         return organisationUnitLevels;
     }
-    
+
+    private List<Attribute> attributes;
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
-    {    	
-    	defaultCategoryCombo = dataElementCategoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-    	
+    {
+        defaultCategoryCombo = dataElementCategoryService
+            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+
         dataElementGroups = dataElementService.getAllDataElementGroups();
-                
-        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() );
-        
+
+        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>(
+            dataElementCategoryService.getAllDataElementCategoryCombos() );
+
         Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
-        
+
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
-        
+
+        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
+
         return SUCCESS;
     }
 }
