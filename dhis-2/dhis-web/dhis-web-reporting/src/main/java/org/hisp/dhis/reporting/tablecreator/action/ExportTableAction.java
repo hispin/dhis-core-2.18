@@ -130,9 +130,9 @@ public class ExportTableAction
         return grid;
     }
 
-    private Map<Object, Object> params = new HashMap<Object, Object>();
+    private Map<String, Object> params = new HashMap<String, Object>();
 
-    public Map<Object, Object> getParams()
+    public Map<String, Object> getParams()
     {
         return params;
     }
@@ -149,7 +149,7 @@ public class ExportTableAction
         if ( useLast )
         {
             grid = (Grid) SessionUtils.getSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID );
-            params = (Map<Object, Object>) SessionUtils.getSessionVar( SessionUtils.KEY_REPORT_TABLE_PARAMS );
+            params = (Map<String, Object>) SessionUtils.getSessionVar( SessionUtils.KEY_REPORT_TABLE_PARAMS );
         }
         else
         {

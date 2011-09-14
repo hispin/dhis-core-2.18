@@ -155,7 +155,7 @@ public class RenderReportAction
         
         Report report = reportService.getReport( id );
         
-        Map<Object, Object> params = new HashMap<Object, Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
         
         params.putAll( constantService.getConstantParameterMap() );
                 

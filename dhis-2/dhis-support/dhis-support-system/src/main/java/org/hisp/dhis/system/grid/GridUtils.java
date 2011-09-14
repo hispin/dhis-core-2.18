@@ -283,7 +283,7 @@ public class GridUtils
     /**
      * Writes a Jasper Reports representation of the given Grid to the given OutputStream.
      */
-    public static void toJasperReport( Grid grid, Map<?, ?> params, OutputStream out )
+    public static void toJasperReport( Grid grid, Map<String, Object> params, OutputStream out )
         throws Exception
     {
         final StringWriter writer = new StringWriter();
