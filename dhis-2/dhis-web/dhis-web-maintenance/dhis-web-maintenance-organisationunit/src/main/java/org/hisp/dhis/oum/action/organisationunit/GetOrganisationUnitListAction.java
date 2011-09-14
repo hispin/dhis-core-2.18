@@ -37,12 +37,14 @@ import java.util.List;
 
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetOrganisationUnitListAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: GetOrganisationUnitListAction.java 1898 2006-09-22 12:06:56Z
+ *          torgeilo $
  */
 public class GetOrganisationUnitListAction
     extends ActionPagingSupport<OrganisationUnit>
@@ -55,6 +57,13 @@ public class GetOrganisationUnitListAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     private OrganisationUnitSelectionManager selectionManager;
 
@@ -73,7 +82,7 @@ public class GetOrganisationUnitListAction
     {
         this.organisationUnitComparator = organisationUnitComparator;
     }
-    
+
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
@@ -83,8 +92,8 @@ public class GetOrganisationUnitListAction
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
-    }    
-    
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -97,7 +106,7 @@ public class GetOrganisationUnitListAction
     }
 
     private String key;
-    
+
     public String getKey()
     {
         return key;
@@ -128,33 +137,19 @@ public class GetOrganisationUnitListAction
                 organisationUnits.addAll( selectedUnit.getChildren() );
             }
         }
-        
+
         Collections.sort( organisationUnits, organisationUnitComparator );
-        
+
         displayPropertyHandler.handle( organisationUnits );
-        
+
         if ( isNotBlank( key ) )
         {
-            organisationUnits = searchByName( organisationUnits, key );
+            organisationUnitService.searchOrganisationUnitByName( organisationUnits, key );
         }
-        
+
         this.paging = createPaging( organisationUnits.size() );
         organisationUnits = getBlockElement( organisationUnits, paging.getStartPos(), paging.getPageSize() );
 
         return SUCCESS;
-    }
-    
-    private List<OrganisationUnit> searchByName( List<OrganisationUnit> orgUnits, String key )
-    {
-        List<OrganisationUnit> result = new ArrayList<OrganisationUnit>();
-
-        for ( OrganisationUnit each : orgUnits )
-        {
-            if ( each.getName().toLowerCase().contains( key.toLowerCase() ) )
-            {
-                result.add( each );
-            }
-        }
-        return result;
     }
 }

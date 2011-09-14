@@ -36,6 +36,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.validation.ValidationRule;
@@ -109,6 +110,8 @@ public class ExportParams
     private Collection<DataElement> dataElementObjects = new ArrayList<DataElement>();
 
     private Collection<Indicator> indicatorObjects = new ArrayList<Indicator>();
+
+    private Collection<OrganisationUnit> organisationUnitObjects = new ArrayList<OrganisationUnit>();
 
     private Collection<UserCredentials> userObjects = new ArrayList<UserCredentials>();
 
@@ -476,6 +479,16 @@ public class ExportParams
     public void setIndicatorObjects( Collection<Indicator> indicatorObjects )
     {
         this.indicatorObjects = indicatorObjects;
+    }
+
+    public Collection<OrganisationUnit> getOrganisationUnitObjects()
+    {
+        return organisationUnitObjects;
+    }
+
+    public void setOrganisationUnitObjects( Collection<OrganisationUnit> organisationUnitObjects )
+    {
+        this.organisationUnitObjects = organisationUnitObjects;
     }
 
     public Collection<UserCredentials> getUserObjects()

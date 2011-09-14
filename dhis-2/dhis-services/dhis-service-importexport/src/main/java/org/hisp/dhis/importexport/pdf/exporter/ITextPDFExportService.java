@@ -109,7 +109,7 @@ public class ITextPDFExportService
             thread.setDataElementConverter( new DataElementConverter() );
             thread.setIndicatorConverter( new IndicatorConverter( expressionService ) );
             thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter( organisationUnitService ) );
-            thread.setOrganisationUnitConverter( new OrganisationUnitConverter( organisationUnitService ) );
+            thread.setOrganisationUnitConverter( new OrganisationUnitConverter() );
             thread.setUserConverter( new UserConverter() );
             thread.setValidationRuleConverter( new ValidationRuleConverter( expressionService ) );
 

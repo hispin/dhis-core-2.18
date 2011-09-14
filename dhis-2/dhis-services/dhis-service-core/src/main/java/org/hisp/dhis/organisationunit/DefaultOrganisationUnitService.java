@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -165,6 +166,19 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getAll();
     }
 
+    public void searchOrganisationUnitByName( List<OrganisationUnit> orgUnits, String key )
+    {
+        Iterator<OrganisationUnit> iterator = orgUnits.iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            if ( !iterator.next().getName().toLowerCase().contains( key.toLowerCase() ) )
+            {
+                iterator.remove();
+            }
+        }
+    }
+    
     public Collection<OrganisationUnit> getOrganisationUnits( final Collection<Integer> identifiers )
     {
         Collection<OrganisationUnit> objects = getAllOrganisationUnits();
