@@ -217,6 +217,19 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getRootOrganisationUnits();
     }
 
+    public Collection<OrganisationUnit> getLeafOrganisationUnits( int id )
+    {
+        Collection<OrganisationUnit> units = getOrganisationUnitWithChildren( id );
+        
+        return FilterUtils.filter( units, new Filter<OrganisationUnit>()
+        {
+            public boolean retain( OrganisationUnit object )
+            {
+                return object != null && object.getChildren().isEmpty();
+            }            
+        } );
+    }
+    
     public Collection<OrganisationUnit> getOrganisationUnitWithChildren( int id )
     {
         OrganisationUnit organisationUnit = getOrganisationUnit( id );

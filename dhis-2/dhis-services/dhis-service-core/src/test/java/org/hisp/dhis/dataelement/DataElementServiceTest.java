@@ -32,6 +32,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -189,8 +190,8 @@ public class DataElementServiceTest
 
         int idA = dataElementService.addDataElement( dataElementA );
         int idB = dataElementService.addDataElement( dataElementB );
-        int idC1 = dataElementService.addDataElement( dataElementC1 );
-        int idC2 = dataElementService.addDataElement( dataElementC2 );
+        dataElementService.addDataElement( dataElementC1 );
+        dataElementService.addDataElement( dataElementC2 );
 
         dataElementA = dataElementService.getDataElementByCode( "codeA" );
         assertNotNull( dataElementA );
@@ -202,13 +203,17 @@ public class DataElementServiceTest
         assertEquals( idB, dataElementB.getId() );
         assertEquals( "DataElementB", dataElementB.getName() );
 
-        try {
+        try 
+        {
             dataElementService.getDataElementByCode( "codeC" );
-            assertEquals("Should have thrown exception","not thrown");
-        } catch (org.hibernate.NonUniqueResultException e ) {}
+            fail( "Should have thrown exception" );
+        } 
+        catch ( Exception ex )
+        {
+        }
         
         DataElement dataElementE = dataElementService.getDataElementByCode( "codeE" );
-        assertNull(dataElementE);
+        assertNull( dataElementE );
     }
 
     @Test
