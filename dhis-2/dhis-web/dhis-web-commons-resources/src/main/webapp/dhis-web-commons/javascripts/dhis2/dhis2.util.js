@@ -52,7 +52,7 @@ dhis2.util.namespace = function( path )
 };
 
 /**
- * adds ':containsNoCase' to filtering.
+ * adds ':containsNC' to filtering.
  * $(sel).find(':containsNC(key)').doSomething();
  */
 $.expr[":"].containsNC = function( el, i, m )
@@ -61,7 +61,11 @@ $.expr[":"].containsNC = function( el, i, m )
     var search = m[3];
 
     if ( !search )
+    {
         return false;
+    }
+
+    search = dhis2.util.escape( search );
 
     return eval( '/' + search + '/i' ).test( $( el ).text() );
 };
@@ -85,8 +89,8 @@ if ( !Object.keys )
 }
 
 /**
- * Define a window.log object, and output to console.log if it exists.
- * (this is a fix for IE8 and FF 3.6).
+ * Define a window.log object, and output to console.log if it exists. (this is
+ * a fix for IE8 and FF 3.6).
  */
 window.log = function( str )
 {
@@ -94,4 +98,12 @@ window.log = function( str )
     {
         console.log( str );
     }
+};
+
+/**
+ * Escape function for regular expressions.
+ */
+dhis2.util.escape = function( text )
+{
+    return text.replace( /[-[\]{}()*+?.,\/\\^$|#\s]/g, "\\$&" );
 };
