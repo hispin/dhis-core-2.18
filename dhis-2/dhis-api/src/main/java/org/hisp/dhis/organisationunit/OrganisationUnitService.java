@@ -115,7 +115,16 @@ public interface OrganisationUnitService
      *         there are no OrganisationUnits.
      */
     Collection<OrganisationUnit> getAllOrganisationUnits();
-
+    
+    /**
+     * Returns all OrganisationUnits with corresponding name key based on the given list.
+     * 
+     * @param orgUnits the collection of organization unit objects.
+     * @param key the name key.
+     * @return a collection of OrganisationUnits.
+     */
+    void searchOrganisationUnitByName( List<OrganisationUnit> orgUnits, String key );
+    
     /**
      * Returns all OrganisationUnits with corresponding identifiers.
      * 

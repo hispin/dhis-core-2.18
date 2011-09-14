@@ -531,8 +531,7 @@ public class PDFUtils
         }
 
         table.addCell( getItalicCell( i18n.getString( "opening_date" ) ) );
-        table
-            .addCell( getTextCell( unit.getOpeningDate() != null ? format.formatDate( unit.getOpeningDate() ) : EMPTY ) );
+        table.addCell( getTextCell( unit.getOpeningDate() != null ? format.formatDate( unit.getOpeningDate() ) : EMPTY ) );
 
         if ( unit.getClosedDate() != null )
         {

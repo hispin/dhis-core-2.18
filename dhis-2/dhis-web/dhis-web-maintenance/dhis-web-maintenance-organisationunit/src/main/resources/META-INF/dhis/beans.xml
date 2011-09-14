@@ -100,6 +100,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
+    <!-- PDF -->
+
+  <bean id="org.hisp.dhis.oum.action.pdf.ExportToPdfAction" class="org.hisp.dhis.oum.action.pdf.ExportToPdfAction"
+    scope="prototype">
+    <property name="serviceProvider">
+      <ref bean="exportServiceProvider" />
+    </property>
+    <property name="selectionManager">
+	  <ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</property>
+    <property name="organisationUnitService">
+	  <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</property>
+  </bean>
+  
 	<!-- OrganisationUnitGroup -->
 
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupListAction" class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupListAction"
