@@ -15,6 +15,12 @@
   -moz-border-radius: 3px; /* Firefox */
 }
 
+.currentRow
+{
+  background-color: #d5ffc5;
+  padding-right: 50px;
+}
+
 #actions
 {
   float: right;
@@ -25,39 +31,4 @@
 .hidden 
 {
   display: none;
-}
-
-.minmax
-{
-  background-color: #ff6600;
-}
-
-.alt
-{
-  background-color: #e0e0e0;
-  padding-right: 50px;
-}
-
-.reg
-{
-  padding-right: 50px;
-}
-
-.currentRow
-{
-  background-color: #d5ffc5;
-  padding-right: 50px;
-}
-
-.cent
-{
-  text-align: center;
-}
-
-.formSection
-{
-  border:1px solid #c0c0c0; 
-  padding:10px;
-  border-radius: 3px;
-  -moz-border-radius: 3px; /* Firefox */
 }
