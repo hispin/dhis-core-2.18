@@ -9,7 +9,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	showById('searchPatientDiv');
 	
 	enable('searchingAttributeId');
-	enable('searchText');
+	jQuery('#searchText').removeAttr('readonly');
 	enable('searchBtn');	
 	enable('listPatientBtn');
 }
@@ -107,6 +107,7 @@ function loadProgramStages()
 			} 
 			
 			// show history / plan
+			setInnerHTML( 'currentSelection', '' ); 
 			var history = '<h4>' + i18n_program_stages_history_plan + '</h4>';
 			history += '<table>';
 			for ( i in json.programStageInstances ) 
@@ -227,88 +228,20 @@ function searchValidationCompleted( messageElement )
 // View details
 //-----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// View details
+// -----------------------------------------------------------------------------
+
 function showPatientDetails( patientId )
 {
-	$.ajax({
-		url: 'getPatient.action?id=' + patientId,
-		cache: false,
-		dataType: "xml",
-		success: patientReceived
-	});
-}
-
-function patientReceived( patientElement )
-{   
-	// ----------------------------------------------------------------------------
-	// Get common-information
-    // ----------------------------------------------------------------------------
-	
-	var id = jQuery(patientElement).find( "id" ).text();
-	var fullName = jQuery(patientElement).find( "fullName" ).text();
-	var gender = jQuery(patientElement).find( "gender" ).text();
-	var dobType = jQuery(patientElement).find( "dobType" ).text();
-	var birthDate = jQuery(patientElement).find( "dateOfBirth" ).text();
-	var bloodGroup= jQuery(patientElement).find( "bloodGroup" ).text();
-    
-	var commonInfo =  '<strong>'  + i18n_id + ':</strong> ' + id + "<br>" 
-					+ '<strong>' + i18n_full_name + ':</strong> ' + fullName + "<br>" 
-					+ '<strong>' + i18n_gender + ':</strong> ' + gender+ "<br>" 
-					+ '<strong>' + i18n_dob_type + ':</strong> ' + dobType+ "<br>" 
-					+ '<strong>' + i18n_date_of_birth + ':</strong> ' + birthDate+ "<br>" 
-					+ '<strong>' + i18n_blood_group  + ':</strong> ' + bloodGroup;
-
-	setInnerHTML( 'commonInfoField', commonInfo );
-	
-	// ----------------------------------------------------------------------------
-	// Get identifier
-    // ----------------------------------------------------------------------------
-	
-	var identifiers = jQuery(patientElement).find( "identifier" );   
-    var identifierText = '';
-	
-	$( identifiers ).each( function( i, item )
-	{
-		identifierText += $( item ).text() + '<br>';
-	});
-	
-	identifiers = ( identifiers.length == 0 ) ? i18n_none : identifiers;
-	setInnerHTML( 'identifierField', identifierText );
-	
-	// ----------------------------------------------------------------------------
-	// Get attribute
-    // ----------------------------------------------------------------------------
-	
-	var attributes = jQuery(patientElement).find( "attribute" );   
-    var attributeValues = '';
-	
-	$( attributes ).each( function( i, item )
-	{
-		attributeValues += '<strong>' + $(item).find("name").text()+ ':  </strong>' + $(item).find("value").text() + '<br>';
-	});
-	
-	attributeValues = ( attributeValues.length == 0 ) ? i18n_none : attributeValues;
-	setInnerHTML( 'attributeField', attributeValues );
-    
-	// ----------------------------------------------------------------------------
-	// Get programs
-    // ----------------------------------------------------------------------------
-	
-	var programs = jQuery(patientElement).find( "program" );   
-    var programName = '';
-	
-	$( programs ).each( function( i, item )
-	{
-		programName += $(item).text() + '<br>';
-	});
-	
-	programName = ( programName.length == 0 ) ? i18n_none : programName;
-	setInnerHTML( 'programField', programName );
-   
-	// ----------------------------------------------------------------------------
-	// Show details
-    // ----------------------------------------------------------------------------
-	
-    showDetails();
+    $('#detailsArea').load("getPatientDetails.action", 
+		{
+			id:patientId
+		}
+		, function( html ){
+			setInnerHTML( 'detailsArea', html );
+			showDetails();
+		});
 }
 
 //------------------------------------------------------------------------------
@@ -450,13 +383,13 @@ function updateProvidingFacility( dataElementId, checkedBox )
     
 }
 
-function saveExecutionDate( programStageInstanceId, programStageInstanceName )
+function saveExecutionDate( programStageId, executionDateValue )
 {
     var field = document.getElementById( 'executionDate' );
 	
     field.style.backgroundColor = '#ffffcc';
 	
-    var executionDateSaver = new ExecutionDateSaver( programStageInstanceId, field.value, '#ccffcc' );
+    var executionDateSaver = new ExecutionDateSaver( programStageId, executionDateValue, '#ccffcc' );
     executionDateSaver.save();
 	
     if( !jQuery("#entryForm").is(":visible") )
@@ -801,12 +734,12 @@ function FacilitySaver( dataElementId_, providedByAnotherFacility_, resultColor_
     }
 }
 
-function ExecutionDateSaver( programStageInstanceId_, executionDate_, resultColor_ )
+function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
 {
     var SUCCESS = '#ccffcc';
     var ERROR = '#ffcc00';
 	
-    var programStageInstanceId = programStageInstanceId_;
+    var programStageId = programStageId_;
     var executionDate = executionDate_;
     var resultColor = resultColor_;
 
@@ -816,14 +749,18 @@ function ExecutionDateSaver( programStageInstanceId_, executionDate_, resultColo
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
-        request.send( 'saveExecutionDate.action?executionDate=' + executionDate );
+		
+		var params  = "executionDate=" + executionDate;
+			params += "&programStageId=" + programStageId;
+		request.sendAsPost(params);
+		
+        request.send( "saveExecutionDate.action");
     };
 
     function handleResponse( rootElement )
     {
-        var codeElement = rootElement.getElementsByTagName( 'code' )[0];
-        var code = parseInt( codeElement.firstChild.nodeValue );
-        if ( code == 0 )
+        var codeElement = rootElement.getAttribute( 'type' );
+        if ( codeElement == 'success' )
         {
             markValue( resultColor );
 			showById('entryFormContainer');
@@ -853,7 +790,6 @@ function ExecutionDateSaver( programStageInstanceId_, executionDate_, resultColo
 
     function markValue( color )
     {
-   
         var element = document.getElementById( 'executionDate' );
            
         element.style.backgroundColor = color;
@@ -915,7 +851,7 @@ function openChildRegistrationForm()
 {
     var patientId = document.getElementById( "id" ).value;
 	
-    window.location.href = "../dhis-web-maintenance-patient/showAddRelationshipPatient.action?id="+patientId;
+    window.location.href = "../dhis-web-caseentry/showAddRelationshipPatient.action?id="+patientId;
 }
 
 function doComplete()

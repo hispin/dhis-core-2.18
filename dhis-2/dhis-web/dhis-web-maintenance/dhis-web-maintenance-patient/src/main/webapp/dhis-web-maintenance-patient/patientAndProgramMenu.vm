@@ -1,6 +1,5 @@
 <a href="index.action"><h2>$i18n.getString( "paitents_and_programs" )</h2></a>
 <ul>
-	<li><a href="patient.action">$i18n.getString( "patient" )</a></li>		
 	<li><a href="patientAttribute.action">$i18n.getString( "patient_attribute" )</a></li>
 	<li><a href="patientAttributeGroup.action">$i18n.getString( "patient_attribute_group" )</a></li>
 	<li><a href="patientIdentifierType.action">$i18n.getString( "patient_identifier_type" )</a></li>

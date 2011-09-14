@@ -62,159 +62,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 
-	<!-- Relationship -->
-
-	<bean id="org.hisp.dhis.patient.action.relationship.GetPartnerAction"
-		class="org.hisp.dhis.patient.action.relationship.GetPartnerAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.ShowRelationshipListAction"
-		class="org.hisp.dhis.patient.action.relationship.ShowRelationshipListAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="relationshipService"
-			ref="org.hisp.dhis.relationship.RelationshipService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipFormAction"
-		class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipFormAction"
-		scope="prototype">
-		<property name="relationshipTypeService"
-			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.SearchRelationshipPatientAction"
-		class="org.hisp.dhis.patient.action.relationship.SearchRelationshipPatientAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.relationship.ValidateSearchAction"
-		class="org.hisp.dhis.patient.action.relationship.ValidateSearchAction"
-		scope="prototype">
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.SaveRelationshipAction"
-		class="org.hisp.dhis.patient.action.relationship.SaveRelationshipAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="relationshipTypeService"
-			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="relationshipService"
-			ref="org.hisp.dhis.relationship.RelationshipService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.SaveRepresentativeAction"
-		class="org.hisp.dhis.patient.action.relationship.SaveRepresentativeAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.RemoveRepresentativeAction"
-		class="org.hisp.dhis.patient.action.relationship.RemoveRepresentativeAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.RemoveRelationshipAction"
-		class="org.hisp.dhis.patient.action.relationship.RemoveRelationshipAction"
-		scope="prototype">
-		<property name="relationshipService"
-			ref="org.hisp.dhis.relationship.RelationshipService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipPatientAction"
-		class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipPatientAction"
-		scope="prototype">
-		<property name="patientService">
-			<ref bean="org.hisp.dhis.patient.PatientService" />
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
-		</property>
-		<property name="patientAttributeValueService">
-			<ref
-				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		</property>
-		<property name="patientAttributeGroupService"
-			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-		<property name="relationshipTypeService">
-			<ref bean="org.hisp.dhis.relationship.RelationshipTypeService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.AddRelationshipPatientAction"
-		class="org.hisp.dhis.patient.action.relationship.AddRelationshipPatientAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		<property name="patientAttributeOptionService"
-			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
-		<property name="relationshipService"
-			ref="org.hisp.dhis.relationship.RelationshipService" />
-		<property name="relationshipTypeService"
-			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.relationship.ValidateAddRelationshipPatientAction"
-		class="org.hisp.dhis.patient.action.relationship.ValidateAddRelationshipPatientAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService">
-			<ref
-				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		</property>
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="identifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-
 	<!-- PatientAttribute -->
 
 	<bean
@@ -295,177 +142,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 	</bean>
 
-	<!-- Patient -->
-
-	<bean id="org.hisp.dhis.patient.action.patient.SearchPersonAction"
-		class="org.hisp.dhis.patient.action.patient.SearchPersonAction">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.SelectAction"
-		class="org.hisp.dhis.patient.action.patient.SelectAction" scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-	</bean>
+	<!-- Organisation Registration -->
 
 	<bean
-		id="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
-		class="org.hisp.dhis.patient.action.patient.VerifyOrganisationUnitHasParentAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
-		class="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.SearchPatientAction"
-		class="org.hisp.dhis.patient.action.patient.SearchPatientAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.GetPatientAction"
-		class="org.hisp.dhis.patient.action.patient.GetPatientAction" scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
-		</property>
-		<property name="patientAttributeGroupService"
-			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.AddPatientAction"
-		class="org.hisp.dhis.patient.action.patient.AddPatientAction" scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		<property name="patientAttributeOptionService"
-			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.RemovePatientAction"
-		class="org.hisp.dhis.patient.action.patient.RemovePatientAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.UpdatePatientAction"
-		class="org.hisp.dhis.patient.action.patient.UpdatePatientAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
-		</property>
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientAttributeOptionService"
-			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.ShowAddPatientFormAction"
-		class="org.hisp.dhis.patient.action.patient.ShowAddPatientFormAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
-		</property>
-		<property name="patientAttributeGroupService"
-			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.ValidatePatientAction"
-		class="org.hisp.dhis.patient.action.patient.ValidatePatientAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService">
-			<ref
-				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		</property>
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="identifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction"
-		class="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction"
-		scope="prototype">
-		<property name="relationshipTypeService"
-			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.AddRepresentativeAction"
-		class="org.hisp.dhis.patient.action.patient.AddRepresentativeAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction"
-		class="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction"
-		class="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction"
+		id="org.hisp.dhis.patient.action.orgunitregistration.GetPatientOrgnunitRegistrationAction"
+		class="org.hisp.dhis.patient.action.orgunitregistration.GetPatientOrgnunitRegistrationAction"
 		scope="prototype">
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
@@ -474,86 +155,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.patient.action.patient.DefinePatientOrgnunitRegistrationAction"
-		class="org.hisp.dhis.patient.action.patient.DefinePatientOrgnunitRegistrationAction"
+		id="org.hisp.dhis.patient.action.orgunitregistration.DefinePatientOrgnunitRegistrationAction"
+		class="org.hisp.dhis.patient.action.orgunitregistration.DefinePatientOrgnunitRegistrationAction"
 		scope="prototype">
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
-	<!-- Patient-Program Enrollment -->
-
-	<bean
-		id="org.hisp.dhis.patient.action.patient.ProgramEnrollmentSelectAction"
-		class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentSelectAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.ProgramEnrollmentAction"
-		class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patient.SaveProgramEnrollmentAction"
-		class="org.hisp.dhis.patient.action.patient.SaveProgramEnrollmentAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.SaveDueDateAction"
-		class="org.hisp.dhis.patient.action.patient.SaveDueDateAction" scope="prototype">
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction"
-		class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction"
-		scope="prototype">
-		<property name="programAttributeService"
-			ref="org.hisp.dhis.program.ProgramAttributeService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.GetProgramInstanceAction"
-		class="org.hisp.dhis.patient.action.patient.GetProgramInstanceAction"
-		scope="prototype">
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
-		class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="programAttributeService"
-			ref="org.hisp.dhis.program.ProgramAttributeService" />
-		<property name="programAttributeOptionService"
-			ref="org.hisp.dhis.program.ProgramAttributeOptionService" />
-		<property name="programAttributeValueService"
-			ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patient.ValidatePatientProgramEnrollmentAction"
-		class="org.hisp.dhis.patient.action.patient.ValidatePatientProgramEnrollmentAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<!-- Program -->
@@ -561,6 +169,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.patient.action.program.AddProgramAction"
 		class="org.hisp.dhis.patient.action.program.AddProgramAction" scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.GetProgramListAction"
@@ -593,6 +202,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.program.UpdateProgramAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.ValidateProgramAction"

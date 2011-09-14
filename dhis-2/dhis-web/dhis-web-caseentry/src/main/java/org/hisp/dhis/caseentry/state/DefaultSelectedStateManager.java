@@ -62,6 +62,8 @@ public class DefaultSelectedStateManager
     public static final String SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID = "selected_searching_attribute_id";
 
     public static final String SESSION_KEY_SPECIFIED_SEARCH_TEXT = "specified_search_text";
+    
+    public static final String SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID = "selected_sort_attribute_id";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -221,6 +223,25 @@ public class DefaultSelectedStateManager
     public void setSearchingAttributeId( int searchingAttributeId )
     {
         getSession().put( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID, searchingAttributeId );
+    }
+
+    // -------------------------------------------------------------------------
+    // Sort by patient-attribute
+    // -------------------------------------------------------------------------
+
+    public void setSortingAttributeId( int sortAttributeId )
+    {
+        getSession().put( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID, sortAttributeId );
+    }
+
+    public Integer getSortAttributeId()
+    {
+        return (Integer) getSession().get( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID );
+    }
+
+    public void clearSortingAttributeId()
+    {
+        getSession().remove( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID );
     }
 
     // -------------------------------------------------------------------------

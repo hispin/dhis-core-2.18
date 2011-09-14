@@ -1,18 +1,26 @@
 <script>
-jQuery("#entryFormContainer").ready(function(){
-    setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
-	setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
+	jQuery("#entryFormContainer").ready(function(){
 	
-	$('#executionDate').change(function() {
-		saveExecutionDate( $programStageInstance.id, byId('programStageId').text );
+		#if( $programStageInstance )
+			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
+			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
+		#elseif( $program.singleEvent == "true" )
+		{
+			jQuery("#dueDate").val( getCurrentDate() );
+		}
+		#end
+		
+		$('#executionDate').change(function() {
+			saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
+		});
+			
+		entryFormContainerOnReady();
 	});
-	entryFormContainerOnReady();
-});
 </script>
 
 <div id='entryFormContainer'>
 <input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
-<input type='hidden' name='programStageInstanceId' id='programStageInstanceId' value='$programStageInstance.id'>
+<input type='hidden' name='programStageInstanceId' id='programStageInstanceId' value='$!programStageInstance.id'>
 <hr style="clear:both">
 
 <span id="startMsg" style="font-style:italic; color:blue; display: #if($programStageInstance.executionDate) none #else block #end">$i18n.getString( "report_date_warning" )</span>

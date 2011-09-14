@@ -26,13 +26,14 @@
  */
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,14 +54,21 @@ public class DataRecordingSelectAction
     {
         this.patientService = patientService;
     }
-    
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -79,7 +87,7 @@ public class DataRecordingSelectAction
         return patient;
     }
 
-    private Collection<Program> programs = new ArrayList<Program>();
+    private Collection<Program> programs = new HashSet<Program>();
 
     public Collection<Program> getPrograms()
     {
@@ -94,9 +102,13 @@ public class DataRecordingSelectAction
         throws Exception
     {
         patient = patientService.getPatient( patientId );
-        
+
         programs.addAll( patient.getPrograms() );
         
+        programs.addAll( programService.getPrograms( true ) );
+        
+        programs.retainAll( programService.getPrograms( selectedStateManager.getSelectedOrganisationUnit() ) );
+
         selectedStateManager.setSelectedPatient( patient );
 
         return SUCCESS;

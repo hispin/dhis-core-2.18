@@ -55,4 +55,6 @@ public interface ProgramService
     Collection<Program> getPrograms( OrganisationUnit organisationUnit );
     
     Collection<Program> getPrograms( ValidationCriteria validationCriteria );
+    
+    Collection<Program> getPrograms( boolean singleEvent );
 }

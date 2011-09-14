@@ -67,7 +67,6 @@ import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.idgen.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -533,28 +532,28 @@ public class ImportPatientAction
             }
         }
 
-        // -------------------------------------------------------------
-        // Generate system id with this format :
-        // (BirthDate)(Gender)(XXXXXX)(checkdigit)
-        // PatientIdentifierType will be null
-        // -------------------------------------------------------------
-
-        String systemIdentifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient
-            .getGender() );
-
-        PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
-        while ( systemGenerateIdentifier != null )
-        {
-            systemIdentifier = PatientIdentifierGenerator
-                .getNewIdentifier( patient.getBirthDate(), patient.getGender() );
-            systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
-        }
-
-        systemGenerateIdentifier = new PatientIdentifier();
-        systemGenerateIdentifier.setIdentifier( systemIdentifier );
-        systemGenerateIdentifier.setPatient( patient );
-
-        patient.getIdentifiers().add( systemGenerateIdentifier );
+//        // -------------------------------------------------------------
+//        // Generate system id with this format :
+//        // (BirthDate)(Gender)(XXXXXX)(checkdigit)
+//        // PatientIdentifierType will be null
+//        // -------------------------------------------------------------
+//
+//        String systemIdentifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient
+//            .getGender() );
+//
+//        PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
+//        while ( systemGenerateIdentifier != null )
+//        {
+//            systemIdentifier = PatientIdentifierGenerator
+//                .getNewIdentifier( patient.getBirthDate(), patient.getGender() );
+//            systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
+//        }
+//
+//        systemGenerateIdentifier = new PatientIdentifier();
+//        systemGenerateIdentifier.setIdentifier( systemIdentifier );
+//        systemGenerateIdentifier.setPatient( patient );
+//
+//        patient.getIdentifiers().add( systemGenerateIdentifier );
 
         return patient;
     }

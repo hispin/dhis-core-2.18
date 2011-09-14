@@ -29,6 +29,8 @@ package org.hisp.dhis.patient.action.program;
 
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -39,6 +41,7 @@ import com.opensymphony.xwork2.Action;
 public class AddProgramAction
     implements Action
 {
+    private static String SINGLE_EVENT = "Single-Event";
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -48,6 +51,13 @@ public class AddProgramAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    private ProgramStageService programStageService;
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
     }
 
     // -------------------------------------------------------------------------
@@ -81,12 +91,19 @@ public class AddProgramAction
     {
         this.dateOfIncidentDescription = dateOfIncidentDescription;
     }
-    
+
     private Integer maxDaysAllowedInputData;
 
     public void setMaxDaysAllowedInputData( Integer maxDaysAllowedInputData )
     {
         this.maxDaysAllowedInputData = maxDaysAllowedInputData;
+    }
+
+    private Boolean singleEvent;
+
+    public void setSingleEvent( Boolean singleEvent )
+    {
+        this.singleEvent = singleEvent;
     }
 
     // -------------------------------------------------------------------------
@@ -104,9 +121,23 @@ public class AddProgramAction
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
+        program.setSingleEvent( singleEvent );
         
         programService.saveProgram( program );
 
+        if ( singleEvent )
+        {
+            ProgramStage programStage = new ProgramStage();
+
+            programStage.setName( SINGLE_EVENT + " " + name );
+            programStage.setDescription( description );
+            programStage.setStageInProgram( program.getProgramStages().size() + 1 );
+            programStage.setProgram( program );
+            programStage.setMinDaysFromStart( 0 );
+
+            programStageService.saveProgramStage( programStage );
+        }
+        
         return SUCCESS;
     }
 }

@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -115,6 +116,13 @@ public class LoadProgramStagesAction
         return colorMap;
     }
 
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -122,16 +130,26 @@ public class LoadProgramStagesAction
     public String execute()
         throws Exception
     {
-        Patient patient = selectedStateManager.getSelectedPatient( );
-
-        Program program = programService.getProgram( programId );
-
-        programInstance = programInstanceService.getProgramInstances( patient, program, false ).iterator().next();
-        selectedStateManager.setSelectedProgramInstance( programInstance);
+        selectedStateManager.clearSelectedProgramInstance();
+        selectedStateManager.clearSelectedProgramStageInstance();
         
-        colorMap = programStageInstanceService.colorProgramStageInstances( programInstance.getProgramStageInstances() );
+        Patient patient = selectedStateManager.getSelectedPatient();
 
+        program = programService.getProgram( programId );
+        
         programStages = program.getProgramStages();
+
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program, false );
+       
+        if ( programInstances != null && programInstances.size() > 0 )
+        {
+            programInstance = programInstances.iterator().next();
+
+            selectedStateManager.setSelectedProgramInstance( programInstance );
+
+            colorMap = programStageInstanceService.colorProgramStageInstances( programInstance
+                .getProgramStageInstances() );
+        }
 
         return SUCCESS;
     }

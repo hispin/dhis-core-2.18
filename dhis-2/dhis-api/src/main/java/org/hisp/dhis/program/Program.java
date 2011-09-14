@@ -77,6 +77,8 @@ public class Program
 
     private Integer maxDaysAllowedInputData;
     
+    private Boolean singleEvent;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -217,6 +219,16 @@ public class Program
     public void setMaxDaysAllowedInputData( Integer maxDaysAllowedInputData )
     {
         this.maxDaysAllowedInputData = maxDaysAllowedInputData;
+    }
+
+    public Boolean getSingleEvent()
+    {
+        return singleEvent;
+    }
+
+    public void setSingleEvent( Boolean singleEvent )
+    {
+        this.singleEvent = singleEvent;
     }
 
     public String getDateOfIncidentDescription()

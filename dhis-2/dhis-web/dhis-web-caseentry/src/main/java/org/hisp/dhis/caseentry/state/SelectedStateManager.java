@@ -91,4 +91,14 @@ public interface SelectedStateManager
     String getSearchText();
 
     void clearSearchTest();
+
+    // -------------------------------------------------------------------------
+    // for Sorting patients - Sort by patient-attribute
+    // -------------------------------------------------------------------------
+
+    void setSortingAttributeId( int sortAttributeId );
+
+    Integer getSortAttributeId();
+
+    void clearSortingAttributeId();
 }
