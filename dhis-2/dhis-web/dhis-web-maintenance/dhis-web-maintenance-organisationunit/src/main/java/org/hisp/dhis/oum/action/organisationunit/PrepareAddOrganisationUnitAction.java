@@ -32,6 +32,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
@@ -67,6 +70,13 @@ public class PrepareAddOrganisationUnitAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -92,6 +102,13 @@ public class PrepareAddOrganisationUnitAction
         return groupSets;
     }
 
+    private List<Attribute> attributes;
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -102,13 +119,15 @@ public class PrepareAddOrganisationUnitAction
 
         dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
-        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService
-            .getCompulsoryOrganisationUnitGroupSetsWithMembers() );
+        groupSets = new ArrayList<OrganisationUnitGroupSet>(
+            organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
+
+        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
 
         Collections.sort( dataSets, new DataSetNameComparator() );
-
         Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
-
+        Collections.sort( attributes, new AttributeNameComparator() );
+        
         return SUCCESS;
     }
 }

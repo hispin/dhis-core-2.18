@@ -138,21 +138,21 @@ public class UpdateDataElementAction
     {
         this.domainType = domainType;
     }
-    
+
     private String numberType;
 
     public void setNumberType( String numberType )
     {
         this.numberType = numberType;
     }
-    
+
     private String valueType;
 
     public void setValueType( String valueType )
     {
         this.valueType = valueType;
     }
-    
+
     private String aggregationOperator;
 
     public void setAggregationOperator( String aggregationOperator )
@@ -212,7 +212,7 @@ public class UpdateDataElementAction
         {
             description = null;
         }
-        
+
         if ( formName != null && formName.trim().length() == 0 )
         {
             formName = null;
@@ -240,9 +240,10 @@ public class UpdateDataElementAction
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setCategoryCombo( categoryCombo );
-        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils.getIntegerCollection( aggregationLevels ) ) );
+        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
+            .getIntegerCollection( aggregationLevels ) ) );
         dataElement.setZeroIsSignificant( zeroIsSignificant );
-        
+
         Set<DataSet> dataSets = dataElement.getDataSets();
         for ( DataSet dataSet : dataSets )
         {

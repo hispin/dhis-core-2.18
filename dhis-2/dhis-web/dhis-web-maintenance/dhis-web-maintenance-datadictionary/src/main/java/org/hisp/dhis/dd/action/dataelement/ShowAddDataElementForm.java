@@ -36,6 +36,7 @@ import java.util.Map;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -144,6 +145,8 @@ public class ShowAddDataElementForm
 
         attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
 
+        Collections.sort( attributes, new AttributeNameComparator() );
+        
         return SUCCESS;
     }
 }

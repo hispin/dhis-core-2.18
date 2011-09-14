@@ -30,9 +30,14 @@ package org.hisp.dhis.dd.action.dataelement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -74,6 +79,13 @@ public class ShowUpdateDataElementFormAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -129,6 +141,13 @@ public class ShowUpdateDataElementFormAction
         return defaultCategoryCombo;
     }
 
+    public Map<Attribute, AttributeValue> attributeMap = new HashMap<Attribute, AttributeValue>();
+
+    public Map<Attribute, AttributeValue> getAttributeMap()
+    {
+        return attributeMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -138,23 +157,46 @@ public class ShowUpdateDataElementFormAction
         defaultCategoryCombo = dataElementCategoryService
             .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
-        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
-            .getAllDataElementCategoryCombos() );
+        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>(
+            dataElementCategoryService.getAllDataElementCategoryCombos() );
 
         Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
-        
+
         dataElement = dataElementService.getDataElement( id );
 
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
         Map<Integer, OrganisationUnitLevel> levelMap = organisationUnitService.getOrganisationUnitLevelMap();
-        
+
         for ( Integer level : dataElement.getAggregationLevels() )
         {
             aggregationLevels.add( levelMap.get( level ) );
         }
 
         organisationUnitLevels.removeAll( aggregationLevels );
+
+        List<AttributeValue> dataElementAttributeValues = new ArrayList<AttributeValue>(
+            dataElement.getAttributeValues() );
+
+        List<Attribute> attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
+
+        Collections.sort( attributes, new AttributeNameComparator() );
+        
+        // TODO fix this.. quite ugly and slow
+        for ( Attribute key : attributes )
+        {
+            AttributeValue value = null;
+
+            for ( AttributeValue av : dataElementAttributeValues )
+            {
+                if ( value.getAttribute().equals( key ) )
+                {
+                    value = av;
+                }
+            }
+
+            attributeMap.put( key, value );
+        }
 
         return SUCCESS;
     }

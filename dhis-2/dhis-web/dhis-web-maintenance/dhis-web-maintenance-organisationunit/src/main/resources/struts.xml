@@ -57,8 +57,7 @@
     </action>
 
     <action name="assignOrganisationUnitToGroups" class="org.hisp.dhis.oum.action.organisationunit.AssignOrganisationUnitToGroupsAction">
-      <result name="success" type="redirect">getCompulsoryGroupSet.action?organisationUnitId=${organisationUnitId}
-      </result>
+      <result name="success" type="redirect">getCompulsoryGroupSet.action?organisationUnitId=${organisationUnitId}</result>
     </action>
 
     <action name="showUpdateOrganisationUnitForm" class="org.hisp.dhis.oum.action.organisationunit.GetOrganisationUnitAction">
@@ -84,8 +83,8 @@
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_DELETE</param>
     </action>
-	
-	<!-- PDF -->
+
+    <!-- PDF -->
 
     <action name="exportToPdf" class="org.hisp.dhis.oum.action.pdf.ExportToPdfAction">
       <result name="success" type="stream">
@@ -271,12 +270,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/saveOrganisationUnitLevelForm.vm</param>
       <param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
-	  <param name="requiredAuthorities">F_ORGANISATIONUNITLEVEL_UPDATE</param>
+      <param name="requiredAuthorities">F_ORGANISATIONUNITLEVEL_UPDATE</param>
     </action>
 
     <action name="saveOrganisationUnitLevels" class="org.hisp.dhis.oum.action.organisationunitlevel.SaveOrganisationUnitLevelsAction">
       <result name="success" type="redirect">index.action</result>
-	  <param name="requiredAuthorities">F_ORGANISATIONUNITLEVEL_UPDATE</param>
+      <param name="requiredAuthorities">F_ORGANISATIONUNITLEVEL_UPDATE</param>
     </action>
 
     <!-- OrganisationUnit Search -->
