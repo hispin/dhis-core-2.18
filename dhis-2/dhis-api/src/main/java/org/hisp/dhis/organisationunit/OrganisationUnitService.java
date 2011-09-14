@@ -159,6 +159,15 @@ public interface OrganisationUnitService
     Collection<OrganisationUnit> getRootOrganisationUnits();
 
     /**
+     * Returns all OrganisationUnits which are part of the subtree of the
+     * OrganisationUnit with the given identifer and have no children.
+     * 
+     * @param id the identifier of the parent OrganisationUnit.
+     * @return a collection of OrganisationUnits.
+     */
+    Collection<OrganisationUnit> getLeafOrganisationUnits( int id );
+    
+    /**
      * Returns an OrganisationUnit and all its children.
      * 
      * @param id the id of the parent OrganisationUnit in the subtree.

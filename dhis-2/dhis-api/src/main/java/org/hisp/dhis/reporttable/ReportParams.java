@@ -47,6 +47,8 @@ public class ReportParams
 
     private Boolean paramReportingMonth;
 
+    private Boolean paramLeafParentOrganisationUnit;
+    
     private Boolean paramGrandParentOrganisationUnit;
     
     private Boolean paramParentOrganisationUnit;
@@ -61,9 +63,11 @@ public class ReportParams
     {
     }
     
-    public ReportParams( boolean paramReportingMonth, boolean paramGrandParentOrganisationUnit, boolean paramParentOrganisationUnit, boolean paramOrganisationUnit )
+    public ReportParams( boolean paramReportingMonth, boolean paramLeafParentOrganisationUnit,
+        boolean paramGrandParentOrganisationUnit, boolean paramParentOrganisationUnit, boolean paramOrganisationUnit )
     {
         this.paramReportingMonth = paramReportingMonth;
+        this.paramLeafParentOrganisationUnit = paramLeafParentOrganisationUnit;
         this.paramGrandParentOrganisationUnit = paramGrandParentOrganisationUnit;
         this.paramParentOrganisationUnit = paramParentOrganisationUnit;
         this.paramOrganisationUnit = paramOrganisationUnit;
@@ -76,6 +80,11 @@ public class ReportParams
     public boolean isParamReportingMonth()
     {
         return paramReportingMonth != null && paramReportingMonth;
+    }
+    
+    public boolean isParamLeafParentOrganisationUnit()
+    {
+        return paramLeafParentOrganisationUnit != null && paramLeafParentOrganisationUnit;
     }
     
     public boolean isParamGrandParentOrganisationUnit()
@@ -95,9 +104,15 @@ public class ReportParams
     
     public boolean isSet()
     {
-        return isParamReportingMonth() || isParamGrandParentOrganisationUnit() || isParamParentOrganisationUnit() || isParamOrganisationUnit();
+        return isParamReportingMonth() || isOrganisationUnitSet();
     }
 
+    public boolean isOrganisationUnitSet()
+    {
+        return isParamLeafParentOrganisationUnit() || isParamGrandParentOrganisationUnit() || 
+            isParamParentOrganisationUnit() || isParamOrganisationUnit();
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -110,6 +125,16 @@ public class ReportParams
     public void setParamReportingMonth( Boolean paramReportingMonth )
     {
         this.paramReportingMonth = paramReportingMonth;
+    }
+
+    public Boolean getParamLeafParentOrganisationUnit()
+    {
+        return paramLeafParentOrganisationUnit;
+    }
+
+    public void setParamLeafParentOrganisationUnit( Boolean paramLeafParentOrganisationUnit )
+    {
+        this.paramLeafParentOrganisationUnit = paramLeafParentOrganisationUnit;
     }
 
     public Boolean getParamGrandParentOrganisationUnit()

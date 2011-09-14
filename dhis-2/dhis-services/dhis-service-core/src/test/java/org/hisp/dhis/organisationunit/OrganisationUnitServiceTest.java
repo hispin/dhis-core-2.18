@@ -145,7 +145,10 @@ public class OrganisationUnitServiceTest
         organisationUnitService.addOrganisationUnit( unit3 );
         organisationUnitService.addOrganisationUnit( unit4 );
 
-        assertTrue( organisationUnitService.getOrganisationUnitWithChildren( id1 ).size() == 3 );
+        Collection<OrganisationUnit> actual = organisationUnitService.getOrganisationUnitWithChildren( id1 );        
+        assertEquals( 3, actual.size() );
+        assertTrue( actual.contains( unit1 ) );
+        assertTrue( actual.contains( unit2 ) );
     }
 
     @Test
@@ -184,8 +187,6 @@ public class OrganisationUnitServiceTest
 
         unit4 = organisationUnitService.getOrganisationUnitByCode( "foo" );
         assertNull( unit4 );
-
-
     }
 
     @Test

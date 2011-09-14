@@ -58,7 +58,7 @@
     
     <!-- OrganisationUnit -->
     
-    #if ( $!reportParams.isParamGrandParentOrganisationUnit() || $!reportParams.isParamParentOrganisationUnit() || $!reportParams.isParamOrganisationUnit() )
+    #if ( $!reportParams.isOrganisationUnitSet() )
         
 	<tr>
         <th>$i18n.getString( "organisation_unit" )</th>
