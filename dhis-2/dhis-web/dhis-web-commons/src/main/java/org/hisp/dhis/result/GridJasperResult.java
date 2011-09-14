@@ -65,9 +65,9 @@ public class GridJasperResult
         this.grid = grid;
     }
     
-    private Map<Object, Object> params;
+    private Map<String, Object> params;
 
-    public void setParams( Map<Object, Object> params )
+    public void setParams( Map<String, Object> params )
     {
         this.params = params;
     }
@@ -89,7 +89,7 @@ public class GridJasperResult
         
         grid = _grid != null ? _grid : grid;
         
-        Map<Object, Object> _params = (Map<Object, Object>) invocation.getStack().findValue( "params" );
+        Map<String, Object> _params = (Map<String, Object>) invocation.getStack().findValue( "params" );
 
         params = _params != null ? _params : params;
         
