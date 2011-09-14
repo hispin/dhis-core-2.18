@@ -108,11 +108,29 @@ public class DefaultAttributeService
     {
         return attributeStore.getByName( name );
     }
-    
+
     @Override
     public Set<Attribute> getAllAttributes()
     {
         return new HashSet<Attribute>( attributeStore.getAll() );
+    }
+
+    @Override
+    public Set<Attribute> getDataElementAttributes()
+    {
+        return attributeStore.getDataElementAttributes();
+    }
+
+    @Override
+    public Set<Attribute> getIndicatorAttributes()
+    {
+        return attributeStore.getIndicatorAttributes();
+    }
+
+    @Override
+    public Set<Attribute> getOrganisationUnitAttributes()
+    {
+        return attributeStore.getOrganisationUnitAttributes();
     }
 
     @Override
