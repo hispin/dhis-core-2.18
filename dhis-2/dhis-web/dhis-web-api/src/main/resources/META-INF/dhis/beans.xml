@@ -51,7 +51,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.web.api.resources.VelocityManager" class="org.hisp.dhis.web.api.resources.VelocityManager" />
 
+  <!-- JSONP "api/jsonp/*" -->
+  <bean id="org.hisp.dhis.web.api.resources.DataSetsResourceP" class="org.hisp.dhis.web.api.resources.DataSetsResourceP"
+    scope="prototype">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+
 </beans>
-
-
-
