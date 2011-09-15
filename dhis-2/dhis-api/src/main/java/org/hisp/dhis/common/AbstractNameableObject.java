@@ -1,12 +1,5 @@
 package org.hisp.dhis.common;
 
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -45,8 +38,6 @@ public class AbstractNameableObject
      */
     private static final long serialVersionUID = 714136796552146362L;
 
-    private final static Log log = LogFactory.getLog( AbstractNameableObject.class );
-
     /**
      * An alternative name of this Object. Optional but unique.
      */
@@ -56,11 +47,6 @@ public class AbstractNameableObject
      * An short name representing this Object. Optional but unique.
      */
     protected String shortName;
-
-    /**
-     * An code representing this Object. Optional but unique.
-     */
-    protected String code;
 
     /**
      * Description of this Object.
@@ -101,16 +87,6 @@ public class AbstractNameableObject
         this.shortName = shortName;
     }
 
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-
     public String getDescription()
     {
         return description;
@@ -121,54 +97,4 @@ public class AbstractNameableObject
         this.description = description;
     }
 
-    /**
-     * Get a map of codes to internal identifiers
-     *
-     * @param objects the NameableObjects to put in the map
-     * @return the map
-     */
-    public static Map<String, Integer> getCodeMap( Collection<? extends AbstractNameableObject> objects )
-    {
-        Map<String, Integer> map = new HashMap<String, Integer>();
-        for ( NameableObject object : objects )
-        {
-            String code = object.getCode();
-            int internalId = object.getId();
-
-            if (code == null) continue;
-            
-            // NOTE: its really not good that duplicate codes are possible
-            // Best we can do here is severe log and remove the item
-            if ( map.containsKey( code ) )
-            {
-                log.warn( object.getClass() + ": Duplicate code " + code );
-                map.remove( code );
-            } else
-            {
-                map.put( code, internalId );
-            }
-        }
-        return map;
-    }
-
-    public static Map<String, NameableObject> getCodeMappedObjects( Collection<? extends AbstractNameableObject> objects )
-    {
-        Map<String, NameableObject> map = new HashMap<String, NameableObject>();
-        for ( NameableObject object : objects )
-        {
-            String code = object.getCode();
-
-            // NOTE: its really not good that duplicate codes are possible
-            // Best we can do here is severe log and remove the item
-            if ( map.containsKey( code ) )
-            {
-                log.warn( object.getClass() + ": Duplicate code " + code );
-                map.remove( code );
-            } else
-            {
-                map.put( code, object );
-            }
-        }
-        return map;
-    }
 }

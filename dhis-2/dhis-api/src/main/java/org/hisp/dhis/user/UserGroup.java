@@ -118,4 +118,10 @@ public class UserGroup
     {
         throw new NotImplementedException();
     }
+
+    @Override
+    public String getCode()
+    {
+        throw new NotImplementedException();
+    }
 }
