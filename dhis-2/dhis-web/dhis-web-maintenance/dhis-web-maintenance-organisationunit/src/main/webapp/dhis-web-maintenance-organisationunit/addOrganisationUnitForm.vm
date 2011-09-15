@@ -110,7 +110,7 @@
 		<td>
 			<select id="selectedGroups" name="selectedGroups">
 				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>
-				#foreach ( $group in $groupSet.organisationUnitGroups )
+				#foreach ( $group in $groupSet.getSortedGroups() )
 				<option value="$group.id">$group.name</option>
 				#end
 			</select>
