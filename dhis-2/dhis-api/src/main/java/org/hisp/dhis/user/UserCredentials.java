@@ -168,6 +168,18 @@ public class UserCredentials
         return true;
     }
     
+    /**
+     * Return the name of this user credentials. More specifically, if this
+     * credentials has a user it will return the first name and surname of that
+     * user, if not it returns the username of this credentials.
+     * 
+     * @return the name.
+     */
+    public String getName()
+    {
+        return user != null ? user.getName() : username;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

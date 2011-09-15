@@ -30,7 +30,7 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
             <h4>$encoder.htmlEncode( $i18n.getString( "min_max_limits" ) )</h4>
             <table>
                 <tr>
-                    <td style="background-color:#d54a4a; height:26px">&nbsp;</td>
+                    <td style="background-color:#d54a4a; height:26px;">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
                     <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}" class="{validate:{digits:true}}" 
                         #if( !$auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) ) disabled="disabled"#end />
@@ -38,7 +38,7 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 					</td>
                 </tr>
                 <tr>
-                    <td style="background-color:#2e4e83; height:26px">&nbsp;</td>
+                    <td style="background-color:#2e4e83; height:26px;">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
                     <td><input type="text" id="maxLimit" style="width:10em" value="$!{dataElementHistory.maxLimit}" class="{validate:{digits:true}}" 
                     	#if( !$auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) ) disabled="disabled"#end />
@@ -46,18 +46,24 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 					</td>
                 </tr>
                 <tr>
-                    <td style="background-color:#f4f256; height:26px">&nbsp;</td>
+                    <td style="background-color:#f4f256; height:26px;">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "average" ) ) </td>
-                    <td>${average}</td>
-                </tr>
-                <tr>
-                    <td style="background-color:#75e077; height:26px">&nbsp;</td>
-                    <td>$encoder.htmlEncode( $i18n.getString( "interpolation" ) ) </td>
-                    <td></td>
+                    <td>$!{average}</td>
                 </tr>
                 <tr>
                 	<td colspan="3"><input type="button" value="$i18n.getString( 'save' )" onclick="saveMinMaxLimit()" style="width:100px">
                 		<input type="button" value="$i18n.getString( 'remove' )" onclick="removeMinMaxLimit()" style="width:100px"></td>
+                </tr>
+                <tr>
+                	<td colspan="3" style="height:15px"></td>
+                </tr>
+                <tr>
+                	<td colspan="2" style="background-color: #e0e0e0; height:26px;">$i18n.getString( "stored_by" )</td>
+                	<td>$!encoder.htmlEncode( $storedBy )</td>
+                </tr>
+                <tr>
+                	<td colspan="2" style="background-color: #e0e0e0; height:26px;">$i18n.getString( "stored_date" )</td>
+                	<td>$!format.formatDate( $dataValue.timestamp )</td>
                 </tr>
             </table>
         </td>
@@ -65,11 +71,12 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 	<tr>
 		<!-- History chart -->
 		<td colspan="2">
+			#if( $historyInvalid )
+			<h4>$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</h4>	
+			#else
 			<h4>$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</h4>
-			#if( !$isHistoryValid )			    
-			    <h4>$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</h4>  
-			#end			
 			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&categoryOptionComboId=${dataElementHistory.optionCombo.id}&organisationUnitId=${dataElementHistory.organisationUnit.id}&periodId=${periodId}"/>
+			#end
         </td>
     </tr>
     #if( $dataValueAuditSize > 0 )
