@@ -31,16 +31,6 @@ public class DataValueSetsResource
     {
         URI uri = uriInfo.getBaseUriBuilder().path( DataSetsResource.class ).build( );
         return velocityManager.render( uri, "dataValueSets" );
-        /*
-        StringBuilder sb = Html.head( "Data value sets" );
-        URI uri = uriInfo.getBaseUriBuilder().path( DataSetsResource.class ).build( );
-        sb.append( "<p>This resource is the place to post data value sets. Take a look at the <a href=\"" );
-        sb.append( uri ).append( "\">data sets</a> to see what to post.." );
-        Html.xmlTemplate( sb, null );
-        
-        sb.append( Html.tail() );
-
-        return sb.toString();*/ 
     }
      
     @POST
