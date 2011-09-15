@@ -65,7 +65,7 @@
                 <!-- [1] ensures that only the first is returned if there are multiple nodes matching -->
                 <xsl:variable name="group" select="set:intersection($degroups,$groupsetgroups)[1]"/>
                 <xsl:choose>
-                    <xsl:when test="count($group)=1">'<xsl:value-of select="$group/dxf:name"/>',</xsl:when>
+                    <xsl:when test="count($group)=1">'<xsl:value-of select="dhis:dbescape($group/dxf:name)"/>',</xsl:when>
                     <xsl:otherwise>NULL,</xsl:otherwise>
                 </xsl:choose>
             </xsl:for-each>
