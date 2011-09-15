@@ -44,6 +44,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -100,6 +102,13 @@ public class HistoryAction
     {
         this.organisationUnitService = organisationUnitService;
     }
+    
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -149,13 +158,13 @@ public class HistoryAction
         return dataElementHistory;
     }
     
-    private Boolean isHistoryValid = true;
+    private boolean historyInvalid;
     
-    public Boolean getIsHistoryValid()
+    public boolean isHistoryInvalid()
     {
-    	return isHistoryValid;
+        return historyInvalid;
     }
-    
+
     private DataValue dataValue;
 
     public DataValue getDataValue()
@@ -176,7 +185,14 @@ public class HistoryAction
     {
         return dataValueAudits;
     }
-   
+    
+    private String storedBy;
+
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -204,13 +220,16 @@ public class HistoryAction
         
         dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
 
+        if ( dataValue != null )
+        {
+            UserCredentials credentials = userService.getUserCredentialsByUsername( dataValue.getStoredBy() );
+            storedBy = credentials != null ? credentials.getName() : dataValue.getStoredBy();
+        }
+        
         dataElementHistory = historyRetriever.getHistory( dataElement, optionCombo, organisationUnit, period, HISTORY_LENGTH );
         
-        if ( dataElementHistory == null )
-        {
-            isHistoryValid = false;
-        }
-
+        historyInvalid = dataElementHistory == null;
+        
         // ---------------------------------------------------------------------
         // Data Value Audit
         // ---------------------------------------------------------------------
