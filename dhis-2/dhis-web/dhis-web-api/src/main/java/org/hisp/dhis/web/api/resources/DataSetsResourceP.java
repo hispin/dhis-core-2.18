@@ -63,7 +63,7 @@ public class DataSetsResourceP
         for(DataSet dataSet : dataSets)
         {
             Map<String, Object> dataSetMap = new HashMap<String, Object>();
-            dataSetMap.put( "id", dataSet.getId() );
+            dataSetMap.put( "uuid", dataSet.getUuid() );
             dataSetMap.put( "name", dataSet.getName() );
 
             dataSetsArray.add( dataSetMap );
