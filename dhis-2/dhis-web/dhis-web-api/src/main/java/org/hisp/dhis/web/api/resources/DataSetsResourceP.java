@@ -17,8 +17,10 @@ import javax.ws.rs.core.UriInfo;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.importexport.dxf2.service.DataSetMapper;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
+import org.hisp.dhis.web.api.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.jersey.api.json.JSONWithPadding;
@@ -82,10 +84,9 @@ public class DataSetsResourceP
             throw new IllegalArgumentException( "No dataset with uuid " + uuid );
         }
 
-        Map<String, Object> dataSetMap = new HashMap<String, Object>();
-        dataSetMap.put( "id", dataSet.getUuid() );
-        dataSetMap.put( "name", dataSet.getName() );
-
-        return new JSONWithPadding( dataSetMap, callback );
+        org.hisp.dhis.importexport.dxf2.model.DataSet dxfDataSet = new DataSetMapper().convert( dataSet );
+        new UrlResourceListener( uriInfo ).beforeMarshal( dxfDataSet );
+        
+        return new JSONWithPadding( dxfDataSet, callback );
     }
 }
