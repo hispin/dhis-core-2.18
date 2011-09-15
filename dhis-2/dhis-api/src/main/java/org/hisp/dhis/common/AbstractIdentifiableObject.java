@@ -4,6 +4,8 @@ package org.hisp.dhis.common;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -43,6 +45,8 @@ public abstract class AbstractIdentifiableObject
      */
     private static final long serialVersionUID = 5532508099213570673L;
 
+    private final static Log log = LogFactory.getLog( AbstractNameableObject.class );
+
     /**
      * The database internal identifier for this Object.
      */
@@ -52,6 +56,11 @@ public abstract class AbstractIdentifiableObject
      * The Universally Unique Identifer for this Object.
      */
     protected String uuid;
+
+    /**
+     * The unique code for this Object.
+     */
+    protected String code;
 
     /**
      * The name of this Object. Required and unique.
@@ -92,6 +101,17 @@ public abstract class AbstractIdentifiableObject
     }
 
     @Override
+    public String getCode()
+    {
+        return code;
+    }
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
+    @Override
     public String getName()
     {
         return name;
@@ -123,21 +143,33 @@ public abstract class AbstractIdentifiableObject
     }
 
     /**
-     * Get a map of uuids to iidentifiable objects
+     * Get a map of codes to internal identifiers
      *
-     * @param objects the IdentifiableObjects to put in the map
+     * @param objects the NameableObjects to put in the map
      * @return the map
      */
-    public static Map<String, IdentifiableObject> getUUIDMapObjects( Collection<? extends AbstractIdentifiableObject> objects )
+    public static Map<String, Integer> getCodeMap( Collection<? extends AbstractNameableObject> objects )
     {
-        Map<String, IdentifiableObject> map = new HashMap<String, IdentifiableObject>();
-        for ( IdentifiableObject object : objects )
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for ( NameableObject object : objects )
         {
-            String uuid = object.getUuid();
+            String code = object.getCode();
+            int internalId = object.getId();
 
-            map.put( uuid, object );
+            if (code == null) continue;
+
+            // NOTE: its really not good that duplicate codes are possible
+            // Best we can do here is severe log and remove the item
+            if ( map.containsKey( code ) )
+            {
+                log.warn( object.getClass() + ": Duplicate code " + code );
+                map.remove( code );
+            } else
+            {
+                map.put( code, internalId );
+            }
         }
-
         return map;
     }
+
 }

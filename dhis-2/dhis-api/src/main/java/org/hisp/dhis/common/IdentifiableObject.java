@@ -35,4 +35,6 @@ public interface IdentifiableObject
     public abstract String getUuid();
 
     public abstract String getName();
+
+    public abstract String getCode();
 }

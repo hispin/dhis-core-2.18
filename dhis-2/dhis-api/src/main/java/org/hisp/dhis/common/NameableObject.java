@@ -33,7 +33,5 @@ public interface NameableObject extends IdentifiableObject
 
     public String getShortName();
 
-    public String getCode();
-
     public String getDescription();
 }
