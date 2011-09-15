@@ -75,19 +75,19 @@ public class DataSetsResourceP
     }
 
     @GET
-    @Path("dataSets/{id}")
+    @Path("dataSets/{uuid}")
     @Produces( { "application/x-javascript" } )
-    public JSONWithPadding getDataSet( @PathParam("id") Integer id, @QueryParam( "callback" ) @DefaultValue( "callback" ) String callback )
+    public JSONWithPadding getDataSet( @PathParam("uuid") String uuid, @QueryParam( "callback" ) @DefaultValue( "callback" ) String callback )
     {
-        DataSet dataSet = dataSetService.getDataSet( id );
+        DataSet dataSet = dataSetService.getDataSet( uuid );
 
         if ( dataSet == null )
         {
-            throw new IllegalArgumentException( "No dataset with id " + id );
+            throw new IllegalArgumentException( "No dataset with uuid " + uuid );
         }
 
         Map<String, Object> dataSetMap = new HashMap<String, Object>();
-        dataSetMap.put( "id", dataSet.getId() );
+        dataSetMap.put( "uuid", dataSet.getUuid() );
         dataSetMap.put( "name", dataSet.getName() );
 
         return new JSONWithPadding( dataSetMap, callback );
