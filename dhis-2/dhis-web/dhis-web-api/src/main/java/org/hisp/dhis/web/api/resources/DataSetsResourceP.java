@@ -17,11 +17,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.importexport.dxf2.model.DataSetLinks;
-import org.hisp.dhis.importexport.dxf2.service.DataSetMapper;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
-import org.hisp.dhis.web.api.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.jersey.api.json.JSONWithPadding;
@@ -32,8 +29,6 @@ public class DataSetsResourceP
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private LinkBuilder linkBuilder = new LinkBuilderImpl();
 
     private DataSetService dataSetService;
 
@@ -63,7 +58,8 @@ public class DataSetsResourceP
         for(DataSet dataSet : dataSets)
         {
             Map<String, Object> dataSetMap = new HashMap<String, Object>();
-            dataSetMap.put( "uuid", dataSet.getUuid() );
+            dataSetMap.put( "id", dataSet.getUuid() );
+            dataSetMap.put( "href", uriInfo.getAbsolutePath().toASCIIString() + "/" + dataSet.getUuid() );
             dataSetMap.put( "name", dataSet.getName() );
 
             dataSetsArray.add( dataSetMap );
@@ -87,7 +83,7 @@ public class DataSetsResourceP
         }
 
         Map<String, Object> dataSetMap = new HashMap<String, Object>();
-        dataSetMap.put( "uuid", dataSet.getUuid() );
+        dataSetMap.put( "id", dataSet.getUuid() );
         dataSetMap.put( "name", dataSet.getName() );
 
         return new JSONWithPadding( dataSetMap, callback );
