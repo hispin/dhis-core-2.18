@@ -52,6 +52,7 @@ public class ContextUtils
     public static final String CONTENT_TYPE_CSV = "application/csv";
     public static final String CONTENT_TYPE_PNG = "image/png";
     public static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
+    public static final String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
 
     private static final String SEPARATOR = "/";
     private static final String PORT_SEPARATOR = ":";

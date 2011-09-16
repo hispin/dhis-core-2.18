@@ -20,6 +20,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.dxf2.model.DataSetLinks;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
+import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.web.api.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -40,13 +41,13 @@ public class DataSetsResource
         this.dataSetService = dataSetService;
     }
 
+    private VelocityManager velocityManager;
+
     @Required
     public void setVelocityManager( VelocityManager velocityManager )
     {
         this.velocityManager = velocityManager;
     }
-
-    private VelocityManager velocityManager;
 
     private LinkBuilder linkBuilder = new LinkBuilderImpl();
 
@@ -67,7 +68,7 @@ public class DataSetsResource
     }
 
     @GET
-    @Produces( { "application/javascript" } )
+    @Produces( ContextUtils.CONTENT_TYPE_JAVASCRIPT )
     public JSONWithPadding getDataSets( @QueryParam( "callback" ) @DefaultValue( "callback" )
     String callback )
     {
