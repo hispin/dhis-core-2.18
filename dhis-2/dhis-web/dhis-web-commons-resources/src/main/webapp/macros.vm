@@ -207,7 +207,7 @@ jQuery(function() {
 </tr>
 #end
 
-#macro( trMultipleSelectInput $text $name $choices )
+#macro( trMultipleChoiceInput $text $name $choices )
 <tr>
 	<td  style="width: 200px;">$text</td>
 	<td>
@@ -241,7 +241,12 @@ jQuery(function() {
 		#elseif( $attribute.valueType == "negative_integer" )
 			#trNegativeIntegerInput( $attribute.name "negativeIntegerAttribute" )
 		#elseif( $attribute.valueType == "multiple_choice" )
-			#trMultipleSelectInput( $attribute.name "multipleSelectAttribute" [ "One", "Two", "Three" ] )
+			#set( $attributeOptions = [] )
+			#foreach( $attributeOption in $attribute.attributeOptions )
+				#set( $return = $attributeOptions.add( $attributeOption.name ) )
+			#end
+
+			#trMultipleChoiceInput( $attribute.name "multipleChoiceAttribute" $attributeOptions )
 		#end
 	#end
 </table>
