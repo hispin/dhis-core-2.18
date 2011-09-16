@@ -144,6 +144,16 @@
 
 </div>
 
+<table>
+	<tr>
+		<th style="width:450px">Dynamic Attributes</th>
+	</tr>
+	<tr>
+		<td>Text</td>
+		<td><input /></td>
+	</tr>
+</table>
+
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
 	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataElement.action'" style="width:10em"/>
