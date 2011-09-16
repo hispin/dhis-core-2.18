@@ -426,15 +426,21 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
 
-    public void explodeExpressions( Collection<Indicator> indicators )
+    public void explodeAndSubstituteExpressions( Collection<Indicator> indicators, Integer days )
     {
         if ( indicators != null )
-        {
+        {            
             for ( Indicator indicator : indicators )
             {
-                indicator.setExplodedNumerator( explodeExpression( indicator.getNumerator() ) );
-                indicator.setExplodedDenominator( explodeExpression( indicator.getDenominator() ) );
+                indicator.setExplodedNumerator( substituteExpression( indicator.getNumerator(), days ) );
+                indicator.setExplodedDenominator( substituteExpression( indicator.getDenominator(), days ) );
             }
+            
+            for ( Indicator indicator : indicators )
+            {
+                indicator.setExplodedNumerator( explodeExpression( indicator.getExplodedNumerator() ) );
+                indicator.setExplodedDenominator( explodeExpression( indicator.getExplodedDenominator() ) );
+            }     
         }
     }
     
@@ -477,7 +483,40 @@ public class DefaultExpressionService
 
         return buffer != null ? buffer.toString() : null;
     }
+    
+    public String substituteExpression( String expression, Integer days )
+    {
+        StringBuffer buffer = null;
+        
+        if ( expression != null )
+        {
+            buffer = new StringBuffer();
 
+            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
+            while ( matcher.find() )
+            {
+                String match = matcher.group();
+
+                if ( DAYS_EXPRESSION.equals( match ) ) // Days
+                {
+                    match = days != null ? String.valueOf( days ) : NULL_REPLACEMENT;
+                }
+                else if ( match.matches( CONSTANT_EXPRESSION ) ) // Constant
+                {
+                    final Constant constant = constantService.getConstant( Integer.parseInt( stripConstantExpression( match ) ) );
+                    
+                    match = constant != null ? String.valueOf( constant.getValue() ) : NULL_REPLACEMENT; 
+                }
+                
+                matcher.appendReplacement( buffer, match );
+            }
+
+            matcher.appendTail( buffer );
+        }
+
+        return buffer != null ? buffer.toString() : null;
+    }
+    
     public String generateExpression( String expression, Period period, OrganisationUnit source,
         boolean nullIfNoValues, boolean aggregated, Integer days )
     {

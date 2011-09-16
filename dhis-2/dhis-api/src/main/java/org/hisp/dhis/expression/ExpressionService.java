@@ -181,6 +181,9 @@ public interface ExpressionService
     String getExpressionDescription( String expression );
 
     /**
+     * Substitutes potential constant and days in the numerator and denominator
+     * on all indicators in the given collection.
+     *  
      * Populates the explodedNumerator and explodedDenominator property on all
      * indicators in the given collection. This method uses
      * explodeExpression( String ) internally to generate the exploded expressions.
@@ -189,8 +192,9 @@ public interface ExpressionService
      * overhead is avoided.
      * 
      * @param indicators the collection of indicators.
+     * @param 
      */
-    void explodeExpressions( Collection<Indicator> indicators );
+    void explodeAndSubstituteExpressions( Collection<Indicator> indicators, Integer days );
     
     /**
      * Replaces references to data element totals with references to all
@@ -200,6 +204,16 @@ public interface ExpressionService
      * @return the exploded expression string.
      */
     String explodeExpression( String expression );
+    
+    /**
+     * Substitutes potential constants and days in the given expression.
+     * 
+     * @param expression the expression to operate on.
+     * @param days the number of days to substitute for potential days in the
+     *        expression, 0 if null
+     * @return the substituted expression.
+     */
+    String substituteExpression( String expression, Integer days );
     
     /**
      * Converts an expression on the form [34] + [23], where the numbers are 

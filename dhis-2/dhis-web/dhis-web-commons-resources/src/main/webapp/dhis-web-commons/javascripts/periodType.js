@@ -137,6 +137,33 @@ function MonthlyPeriodType( dateFormat )
     };
 }
 
+function BiMonthlyPeriodType( dateFormat )
+{
+    this.generatePeriods = function( offset )
+    {
+        var periods = [];
+        var year = new Date().getFullYear() + offset;
+        var startDate = $.date( year + '-01-01', dateFormat );
+        var i = 0;
+        var j = 0;
+
+        while ( startDate.date().getFullYear() == year )
+        {
+            var period = [];
+            period['startDate'] = startDate.format( dateFormat );
+            period['name'] = monthNames[i] + ' - ' + monthNames[i + 1] + ' ' + year;
+            period['id'] = 'BiMonthly_' + period['startDate'];
+            periods[j] = period;
+
+            startDate.adjust( 'M', +2 );
+            i += 2;
+            j++;
+        }
+
+        return periods;
+    };
+}
+
 function QuarterlyPeriodType( dateFormat )
 {
     this.generatePeriods = function( offset )

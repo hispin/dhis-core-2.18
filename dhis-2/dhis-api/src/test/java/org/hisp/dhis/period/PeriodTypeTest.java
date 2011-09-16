@@ -34,14 +34,12 @@ import org.junit.Test;
 
 public class PeriodTypeTest
 {
-
     @Test
     public void testGetByIndex()
     {
         assertNull( PeriodType.getByIndex( -1 ) );
-        assertEquals( new YearlyPeriodType(), PeriodType.getByIndex( 6 ) );
-        assertNull( PeriodType.getByIndex( 999 ) );
-    
+        assertEquals( new YearlyPeriodType(), PeriodType.getByIndex( 7 ) );
+        assertNull( PeriodType.getByIndex( 999 ) );    
     }
 
     @Test
@@ -62,5 +60,4 @@ public class PeriodTypeTest
         assertNull(PeriodType.getPeriodTypeFromIsoString( "201er2345566"));
         assertNull(PeriodType.getPeriodTypeFromIsoString( "2011Q10"));
     }
-
 }
