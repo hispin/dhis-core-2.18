@@ -171,7 +171,7 @@
 			<select id="periodType" name="periodType" style="min-width:224px" onchange="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '0' )">
 				<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
 				#foreach ( $type in $periodTypes )
-					<option value="$type.name">$type.name</option>
+					<option value="$type.name">$i18n.getString( $type.name )</option>
 				#end
 			</select><br>
 			<select multiple size="6" id="availablePeriods" name="availablePeriods" style="min-width:325px" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )">

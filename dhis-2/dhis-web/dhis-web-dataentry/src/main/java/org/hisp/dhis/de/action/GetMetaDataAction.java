@@ -147,7 +147,7 @@ public class GetMetaDataAction
         
         indicators = indicatorService.getIndicatorsWithDataSets();
         
-        expressionService.explodeExpressions( indicators );
+        expressionService.explodeAndSubstituteExpressions( indicators, null );
         
         OrganisationUnitDataSetAssociationSet organisationUnitSet = organisationUnitService.getOrganisationUnitDataSetAssociationSet();
         

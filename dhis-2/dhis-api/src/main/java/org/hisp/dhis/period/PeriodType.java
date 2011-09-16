@@ -66,6 +66,7 @@ public abstract class PeriodType
         periodTypes.add( new DailyPeriodType() );
         periodTypes.add( new WeeklyPeriodType() );
         periodTypes.add( new MonthlyPeriodType() );
+        periodTypes.add( new BiMonthlyPeriodType() );
         periodTypes.add( new QuarterlyPeriodType() );
         periodTypes.add( new SixMonthlyPeriodType() );
         periodTypes.add( new YearlyPeriodType() );
@@ -128,8 +129,10 @@ public abstract class PeriodType
     {
         index -= 1;
         
-        if (index < 0 || index > periodTypes.size() - 1 )
+        if ( index < 0 || index > periodTypes.size() - 1 )
+        {
             return null;
+        }
 
         return periodTypes.get( index );
     }
@@ -256,43 +259,44 @@ public abstract class PeriodType
     }
 
     /**
-     * Returns a PeriodType corresponding to the provided string
-     * The test is quite rudimentary, testing for string format rather than invalid periods.
+     * Returns a PeriodType corresponding to the provided string The test is
+     * quite rudimentary, testing for string format rather than invalid periods.
      * Currently only recognizes the basic subset of common period types.
-     *
-     * @param  isoPeriod String formatted period (2011, 201101, 2011W34, 2011Q1 etc
-     * @return the PeriodType or null if unrecognised
+     * 
+     * @param isoPeriod String formatted period (2011, 201101, 2011W34, 2011Q1
+     *        etc
+     * @return the PeriodType or null if unrecognized
      */
-    public static PeriodType getPeriodTypeFromIsoString(String isoPeriod)
+    public static PeriodType getPeriodTypeFromIsoString( String isoPeriod )
     {
-        if (isoPeriod.matches("\\b\\d{4}\\b")) return new YearlyPeriodType();
-        if (isoPeriod.matches("\\b\\d{6}\\b")) return new MonthlyPeriodType();
-        if (isoPeriod.matches("\\b\\d{4}W\\d[\\d]?\\b")) return new WeeklyPeriodType();
-        if (isoPeriod.matches("\\b\\d{8}\\b")) return new DailyPeriodType();
-        if (isoPeriod.matches("\\b\\d{4}Q\\d\\b")) return new QuarterlyPeriodType();
-        if (isoPeriod.matches("\\b\\d{4}S\\d\\b")) return new SixMonthlyPeriodType();
+        if ( isoPeriod.matches( "\\b\\d{4}\\b" ) )
+        {
+            return new YearlyPeriodType();
+        }
+        if ( isoPeriod.matches( "\\b\\d{6}\\b" ) )
+        {
+            return new MonthlyPeriodType();
+        }
+        if ( isoPeriod.matches( "\\b\\d{4}W\\d[\\d]?\\b" ) )
+        {
+            return new WeeklyPeriodType();
+        }
+        if ( isoPeriod.matches( "\\b\\d{8}\\b" ) )
+        {
+            return new DailyPeriodType();
+        }
+        if ( isoPeriod.matches( "\\b\\d{4}Q\\d\\b" ) )
+        {
+            return new QuarterlyPeriodType();
+        }
+        if ( isoPeriod.matches( "\\b\\d{4}S\\d\\b" ) )
+        {
+            return new SixMonthlyPeriodType();
+        }
 
         return null;
     }
 
-    /**
-     * Returns an iso8601 formatted string representation of the period
-     * 
-     * @param period
-     * @return the period as string
-     */
-    public abstract String getIsoDate( Period period );
-
-    /**
-     * Generates a period based on the given iso8601 formatted string.
-     * 
-     * @param isoDate the iso8601 string.
-     * @return the period.
-     */
-    public abstract Period createPeriod( String isoDate );
-
-    public abstract String getIsoFormat();
-    
     /**
      * Creates a period based on the given external identifier, which is on the
      * format [PeriodType]_[StartDate]. The start date is on the form yyyy-MM-dd.
@@ -312,7 +316,28 @@ public abstract class PeriodType
         return periodType.createPeriod( getMediumDate( id[1] ) );
     }
     
+    // -------------------------------------------------------------------------
+    // ISO format methods
+    // -------------------------------------------------------------------------
 
+    /**
+     * Returns an iso8601 formatted string representation of the period
+     * 
+     * @param period
+     * @return the period as string
+     */
+    public abstract String getIsoDate( Period period );
+
+    /**
+     * Generates a period based on the given iso8601 formatted string.
+     * 
+     * @param isoDate the iso8601 string.
+     * @return the period.
+     */
+    public abstract Period createPeriod( String isoDate );
+
+    public abstract String getIsoFormat();
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
