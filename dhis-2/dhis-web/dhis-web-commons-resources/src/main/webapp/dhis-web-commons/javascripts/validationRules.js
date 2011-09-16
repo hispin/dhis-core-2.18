@@ -400,14 +400,14 @@ var validationRules = {
     "attribute" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 3, 230 ],
+            "rangelength" : [ 2, 230 ],
             "alphanumericwithbasicpuncspaces" : true
         }
     },
     "attributeOption" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 3, 230 ],
+            "rangelength" : [ 2, 230 ],
             "alphanumericwithbasicpuncspaces" : true
         }
     }
