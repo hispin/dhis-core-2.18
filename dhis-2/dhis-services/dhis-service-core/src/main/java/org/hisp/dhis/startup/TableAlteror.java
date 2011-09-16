@@ -196,7 +196,7 @@ public class TableAlteror
         }
         
         // update periodType field to ValidationRule
-        executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly')" );
+        executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly') WHERE periodtypeid is null" );
 
         // update dataelement.domainTypes of which values is null
         executeSql( "UPDATE dataelement SET domaintype='aggregate' WHERE domaintype is null" );
