@@ -126,3 +126,124 @@ $i18n.getString( "filter_by_name" ):
 	</div>
 </form>
 #end
+
+#* Helpers for building attribute forms. Note that these will have dynamic validation rules applied to them. *#
+
+#macro( trHeader $text )
+<tr>
+	<th colspan="2">$text</th>
+</tr>
+#end
+
+#macro( trTextInput $text $name ) 
+<tr>
+	<td style="width: 200px;">$text</td>
+	<td>
+		<input type="text" id="$name" name="$name" style="width: 240px;" />
+	</td>
+</tr>
+#end
+
+#macro( trBooleanSelectInput $text $name )
+<tr>
+	<td  style="width: 200px;">$text</td>
+	<td>
+		<select style="width: 244px;" id="$name" name="$name">
+			<option>Yes</option>
+			<option>No</option>
+		</select>
+	</td>
+</tr>
+#end
+
+#macro( trDateInput $text $name )
+<script type="text/javascript">
+jQuery(function() {
+	jQuery("#$name").datepicker();
+});
+</script>
+
+<tr>
+	<td  style="width: 200px;">$text</td>
+	<td>
+		<input type="text" id="$name" name="$name" style="width: 240px;" />
+	</td>
+</tr>
+#end
+
+#macro( trDecimalInput $text $name ) 
+<tr>
+	<td style="width: 200px;">$text</td>
+	<td>
+		<input type="text" id="$name" name="$name" style="width: 240px;" />
+	</td>
+</tr>
+#end
+
+#macro( trIntegerInput $text $name ) 
+<tr>
+	<td style="width: 200px;">$text</td>
+	<td>
+		<input type="text" id="$name" name="$name" style="width: 240px;" />
+	</td>
+</tr>
+#end
+
+#macro( trPositiveIntegerInput $text $name ) 
+<tr>
+	<td style="width: 200px;">$text</td>
+	<td>
+		<input type="text" id="$name" name="$name" style="width: 240px;" />
+	</td>
+</tr>
+#end
+
+#macro( trNegativeIntegerInput $text $name ) 
+<tr>
+	<td style="width: 200px;">$text</td>
+	<td>
+		<input type="text" id="$name" name="$name" style="width: 240px;" />
+	</td>
+</tr>
+#end
+
+#macro( trMultipleSelectInput $text $name $choices )
+<tr>
+	<td  style="width: 200px;">$text</td>
+	<td>
+		<select style="width: 244px;" id="$name" name="$name">
+		#foreach( $choice in $choices )
+			<option>$choice</option>
+		#end
+		</select>
+	</td>
+</tr>
+#end
+
+#macro( tblDynamicAttributes $attributes )
+<div id="dynamicAttributesContainer" style="margin-top: 20px;">
+<table>
+	#trHeader( "Dynamic Attributes" )
+
+	#foreach( $attribute in $attributes )
+		#if( $attribute.valueType == "string" )
+			#trTextInput( $attribute.name "text" )
+		#elseif(  $attribute.valueType == "bool" )
+			#trBooleanSelectInput( $attribute.name "booleanAttribute" )	
+		#elseif( $attribute.valueType == "date" )
+			#trDateInput( $attribute.name "dateAttribute" )		
+		#elseif( $attribute.valueType == "decimal" )
+			#trDecimalInput( $attribute.name "decimalAttribute" )
+		#elseif( $attribute.valueType == "integer" )
+			#trIntegerInput( $attribute.name "integerAttribute" )
+		#elseif( $attribute.valueType == "positive_integer" )
+			#trPositiveIntegerInput( $attribute.name "positiveIntegerAttribute" )
+		#elseif( $attribute.valueType == "negative_integer" )
+			#trNegativeIntegerInput( $attribute.name "negativeIntegerAttribute" )
+		#elseif( $attribute.valueType == "multiple_choice" )
+			#trMultipleSelectInput( $attribute.name "multipleSelectAttribute" [ "One", "Two", "Three" ] )
+		#end
+	#end
+</table>
+</div>
+#end

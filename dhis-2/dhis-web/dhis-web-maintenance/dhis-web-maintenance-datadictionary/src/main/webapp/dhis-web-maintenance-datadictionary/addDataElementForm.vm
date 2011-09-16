@@ -144,15 +144,7 @@
 
 </div>
 
-<table>
-	<tr>
-		<th style="width:450px">Dynamic Attributes</th>
-	</tr>
-	<tr>
-		<td>Text</td>
-		<td><input /></td>
-	</tr>
-</table>
+#tblDynamicAttributes( $attributes )
 
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>

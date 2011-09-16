@@ -72,10 +72,10 @@
 				<option value="string" #if( $attribute.valueType == 'string') selected="selected" #end>$i18n.getString( "text" )</option>
 				<option value="bool" #if( $attribute.valueType == 'bool') selected="selected" #end>$i18n.getString( "yes_no" )</option>
 				<option value="date" #if( $attribute.valueType == 'date') selected="selected" #end>$i18n.getString( "date" )</option>
-				<option value="number" #if( $attribute.valueType == 'number') selected="selected" #end>$i18n.getString( "number" )</option>
-				<option value="int" #if( $attribute.valueType == 'int') selected="selected" #end>$i18n.getString( "int" )</option>
-				<option value="positiveNumber" #if( $attribute.valueType == 'positiveNumber') selected="selected" #end>$i18n.getString( "positiveNumber" )</option>
-				<option value="negativeNumber" #if( $attribute.valueType == 'negativeNumber') selected="selected" #end>$i18n.getString( "negativeNumber" )</option>
+				<option value="decimal" #if( $attribute.valueType == 'decimal') selected="selected" #end>$i18n.getString( "decimal" )</option>
+				<option value="integer" #if( $attribute.valueType == 'integer') selected="selected" #end>$i18n.getString( "integer" )</option>
+				<option value="positive_integer" #if( $attribute.valueType == 'positive_integer') selected="selected" #end>$i18n.getString( "positive_integer" )</option>
+				<option value="negative_integer" #if( $attribute.valueType == 'negative_integer') selected="selected" #end>$i18n.getString( "negative_integer" )</option>
 				<option value="multiple_choice" #if( $attribute.valueType == 'multiple_choice') selected="selected" #end>$i18n.getString( "multiple_choice" )</option>
 			</select>
 		</td>
