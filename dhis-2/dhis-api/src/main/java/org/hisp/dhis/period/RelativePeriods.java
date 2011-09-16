@@ -48,6 +48,8 @@ public class RelativePeriods
     private static final long serialVersionUID = 2949655296199662273L;
 
     public static final String REPORTING_MONTH = "reporting_month";
+    public static final String REPORTING_BIMONTH = "reporting_bimonth";
+    public static final String REPORTING_QUARTER = "reporting_quarter";
     public static final String THIS_YEAR = "year";    
     public static final String LAST_YEAR = "last_year";
         
@@ -95,6 +97,10 @@ public class RelativePeriods
     
     private Boolean reportingMonth = false;
     
+    private Boolean reportingBimonth = false;
+    
+    private Boolean reportingQuarter = false;
+    
     private Boolean monthsThisYear = false;
     
     private Boolean quartersThisYear = false;
@@ -117,6 +123,8 @@ public class RelativePeriods
     
     /**
      * @param reportingMonth reporting month
+     * @param reportingBimonth reporting bimonth
+     * @param reportingQuarter reporting quarter
      * @param monthsThisYear months this year
      * @param quartersThisYear quarters this year
      * @param thisYear this year
@@ -124,10 +132,13 @@ public class RelativePeriods
      * @param quartersLastYear quarters last year
      * @param lastYear last year
      */
-    public RelativePeriods( boolean reportingMonth, boolean monthsThisYear, boolean quartersThisYear, boolean thisYear,
+    public RelativePeriods( boolean reportingMonth, boolean reportingBimonth, boolean reportingQuarter,
+        boolean monthsThisYear, boolean quartersThisYear, boolean thisYear,
         boolean monthsLastYear, boolean quartersLastYear, boolean lastYear )
     {
         this.reportingMonth = reportingMonth;
+        this.reportingBimonth = reportingBimonth;
+        this.reportingQuarter = reportingQuarter;
         this.monthsThisYear = monthsThisYear;
         this.quartersThisYear = quartersThisYear;
         this.thisYear = thisYear;
@@ -190,6 +201,16 @@ public class RelativePeriods
         if ( isReportingMonth() )
         {
             periods.add( getRelativePeriod( new MonthlyPeriodType(), REPORTING_MONTH, current, dynamicNames, format ) );
+        }
+        
+        if ( isReportingBimonth() )
+        {
+            periods.add( getRelativePeriod( new BiMonthlyPeriodType(), REPORTING_BIMONTH, current, dynamicNames, format ) );
+        }
+        
+        if ( isReportingQuarter() )
+        {
+            periods.add( getRelativePeriod( new QuarterlyPeriodType(), REPORTING_QUARTER, current, dynamicNames, format ) );
         }
         
         if ( isMonthsThisYear() )
@@ -301,6 +322,16 @@ public class RelativePeriods
         return reportingMonth != null && reportingMonth;
     }
     
+    public boolean isReportingBimonth()
+    {
+        return reportingBimonth != null && reportingBimonth;
+    }
+    
+    public boolean isReportingQuarter()
+    {
+        return reportingQuarter != null && reportingQuarter;
+    }
+    
     public boolean isMonthsThisYear()
     {
         return monthsThisYear != null && monthsThisYear;
@@ -343,6 +374,26 @@ public class RelativePeriods
     public void setReportingMonth( Boolean reportingMonth )
     {
         this.reportingMonth = reportingMonth;
+    }
+
+    public Boolean getReportingBimonth()
+    {
+        return reportingBimonth;
+    }
+
+    public void setReportingBimonth( Boolean reportingBimonth )
+    {
+        this.reportingBimonth = reportingBimonth;
+    }
+
+    public Boolean getReportingQuarter()
+    {
+        return reportingQuarter;
+    }
+
+    public void setReportingQuarter( Boolean reportingQuarter )
+    {
+        this.reportingQuarter = reportingQuarter;
     }
 
     public Boolean getMonthsThisYear()
@@ -417,6 +468,8 @@ public class RelativePeriods
         int result = 1;
 
         result = prime * result + ( ( reportingMonth == null ) ? 0 : reportingMonth.hashCode() );
+        result = prime * result + ( ( reportingBimonth == null ) ? 0 : reportingBimonth.hashCode() );
+        result = prime * result + ( ( reportingQuarter == null ) ? 0 : reportingQuarter.hashCode() );
         result = prime * result + ( ( monthsThisYear == null ) ? 0 : monthsThisYear.hashCode() );
         result = prime * result + ( ( quartersThisYear == null ) ? 0 : quartersThisYear.hashCode() );
         result = prime * result + ( ( thisYear == null ) ? 0 : thisYear.hashCode() );
@@ -455,6 +508,30 @@ public class RelativePeriods
             }
         }
         else if ( !reportingMonth.equals( other.reportingMonth ) )
+        {
+            return false;
+        }
+
+        if ( reportingBimonth == null )
+        {
+            if ( other.reportingBimonth != null )
+            {
+                return false;
+            }
+        }
+        else if ( !reportingBimonth.equals( other.reportingBimonth ) )
+        {
+            return false;
+        }
+
+        if ( reportingQuarter == null )
+        {
+            if ( other.reportingQuarter != null )
+            {
+                return false;
+            }
+        }
+        else if ( !reportingQuarter.equals( other.reportingQuarter ) )
         {
             return false;
         }

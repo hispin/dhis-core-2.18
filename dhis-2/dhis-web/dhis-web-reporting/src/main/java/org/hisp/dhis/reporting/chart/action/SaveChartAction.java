@@ -245,6 +245,20 @@ public class SaveChartAction
         this.reportingMonth = reportingMonth;
     }
 
+    private boolean reportingBimonth;
+    
+    public void setReportingBimonth( boolean reportingBimonth )
+    {
+        this.reportingBimonth = reportingBimonth;
+    }
+    
+    private boolean reportingQuarter;
+
+    public void setReportingQuarter( boolean reportingQuarter )
+    {
+        this.reportingQuarter = reportingQuarter;
+    }
+
     private boolean monthsThisYear;
 
     public void setMonthsThisYear( boolean monthsThisYear )
@@ -337,7 +351,8 @@ public class SaveChartAction
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
 
-        RelativePeriods relatives = new RelativePeriods( reportingMonth, monthsThisYear, quartersThisYear, thisYear,
+        RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
+            monthsThisYear, quartersThisYear, thisYear,
             monthsLastYear, quartersLastYear, lastYear );
 
         chart.setRelatives( relatives );

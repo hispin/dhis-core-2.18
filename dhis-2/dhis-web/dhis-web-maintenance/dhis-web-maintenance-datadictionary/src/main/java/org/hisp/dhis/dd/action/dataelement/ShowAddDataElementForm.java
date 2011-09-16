@@ -31,11 +31,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;

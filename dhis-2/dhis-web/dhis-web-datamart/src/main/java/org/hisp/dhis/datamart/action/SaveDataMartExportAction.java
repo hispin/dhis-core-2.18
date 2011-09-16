@@ -142,6 +142,20 @@ public class SaveDataMartExportAction
         this.reportingMonth = reportingMonth;
     }
 
+    private boolean reportingBimonth;
+    
+    public void setReportingBimonth( boolean reportingBimonth )
+    {
+        this.reportingBimonth = reportingBimonth;
+    }
+    
+    private boolean reportingQuarter;
+
+    public void setReportingQuarter( boolean reportingQuarter )
+    {
+        this.reportingQuarter = reportingQuarter;
+    }
+
     private boolean monthsThisYear;
 
     public void setMonthsThisYear( boolean monthsThisYear )
@@ -192,7 +206,9 @@ public class SaveDataMartExportAction
     {
         DataMartExport export = id == null ? new DataMartExport() : dataMartService.getDataMartExport( id );
 
-        RelativePeriods relatives = new RelativePeriods( reportingMonth, monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear );
+        RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
+            monthsThisYear, quartersThisYear, thisYear, 
+            monthsLastYear, quartersLastYear, lastYear );
           
         export.setName( name );            
         export.setDataElements( getSet( dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) ) );
