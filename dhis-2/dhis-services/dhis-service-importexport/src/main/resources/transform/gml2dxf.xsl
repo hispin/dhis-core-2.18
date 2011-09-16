@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gml="http://www.opengis.net/gml">
 
+<xsl:param name="roundingFactor">10000</xsl:param>
+  
 <xsl:template match="gml:coordinates">
   <coordinatesTuple>
   <xsl:call-template name="coordinates-delimiter">
@@ -16,7 +18,7 @@
   <xsl:variable name="xcoord" select="substring-before($first, ',')"/>
   <xsl:variable name="ycoord" select="substring-after($first, ',')"/>
   <xsl:variable name="remaining" select="substring-after($newlist, ' ')"/>
-  <coord><xsl:value-of select="round(10000*$xcoord) div 10000"/>,<xsl:value-of select="round(10000*$ycoord) div 10000"/></coord>
+  <coord><xsl:value-of select="round($roundingFactor*$xcoord) div $roundingFactor"/>,<xsl:value-of select="round($roundingFactor*$ycoord) div $roundingFactor"/></coord>
   <xsl:if test="$remaining">
     <xsl:call-template name="coordinates-delimiter">
       <xsl:with-param name="coordinates" select="$remaining"/>
