@@ -70,6 +70,8 @@
 
     <component name="relatives">
       <property name="reportingMonth" />
+      <property name="reportingBimonth" />
+      <property name="reportingQuarter" />
       <property name="monthsThisYear" />
       <property name="quartersThisYear" />
       <property name="thisYear" />

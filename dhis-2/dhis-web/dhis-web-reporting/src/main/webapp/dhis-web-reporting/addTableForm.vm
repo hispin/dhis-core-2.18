@@ -409,6 +409,11 @@
 		<td>
 		    <label for="reportingMonth">$i18n.getString( "reporting_month" )</label>
 			<input type="checkbox" id="reportingMonth" name="reportingMonth" value="true"#if( $reportTable.relatives.isReportingMonth() ) checked#end>&nbsp;
+		    <label for="reportingBimonth">$i18n.getString( "reporting_bimonth" )</label>
+			<input type="checkbox" id="reportingBimonth" name="reportingBimonth" value="true"#if( $reportTable.relatives.isReportingBimonth() ) checked#end>&nbsp;
+		    <label for="reportingQuarter">$i18n.getString( "reporting_quarter" )</label>
+			<input type="checkbox" id="reportingQuarter" name="reportingQuarter" value="true"#if( $reportTable.relatives.isReportingQuarter() ) checked#end><br><br>
+		
 			<label for="monthsThisYear">$i18n.getString( "months_this_year" )</label>
 			<input type="checkbox" id="monthsThisYear" name="monthsThisYear" value="true""#if( $reportTable.relatives.isMonthsThisYear() ) checked#end>&nbsp;
 			<label for="quartersThisYear">$i18n.getString( "quarters_this_year" )</label>

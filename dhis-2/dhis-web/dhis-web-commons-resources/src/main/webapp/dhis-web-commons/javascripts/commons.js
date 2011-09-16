@@ -149,7 +149,7 @@ function trim( string )
  */
 function isChecked( checkboxId )
 {
-	return jQuery( "#" + checkboxId ).attr("checked");   
+	return jQuery( "#" + checkboxId ) && jQuery( "#" + checkboxId ).attr("checked");   
 }
 
 /**
@@ -1363,6 +1363,8 @@ function displayDiv( divId, divIds ) {
 function relativePeriodsChecked()
 {
     if ( isChecked( "reportingMonth" ) ||
+         isChecked( "reportingBimonth" ) ||
+         isChecked( "reportingQuarter" ) ||
          isChecked( "monthsThisYear" ) ||
          isChecked( "quartersThisYear" ) ||
          isChecked( "thisYear" ) ||

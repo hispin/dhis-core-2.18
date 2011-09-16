@@ -58,7 +58,7 @@ public class RelativePeriodTest
     @Test
     public void getRelativePeriodsA()
     {        
-        RelativePeriods periods = new RelativePeriods( true, true, true, true, true, true, true );
+        RelativePeriods periods = new RelativePeriods( true, true, true, true, true, true, true, true, true );
         
         Collection<Period> relatives = periods.getRelativePeriods( 1, getDate( 2002, 1, 1 ), i18nFormat, false );
         
@@ -102,6 +102,6 @@ public class RelativePeriodTest
 
         assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 12, 31 ) ) ) );
         
-        assertEquals( 35, relatives.size() );
+        assertEquals( 37, relatives.size() );
     }
 }
