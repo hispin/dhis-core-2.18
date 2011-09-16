@@ -21,6 +21,7 @@ public class HtmlPromotingUriConnegFilter
         mediaExtentions.put( "xml", MediaType.APPLICATION_XML_TYPE );
         mediaExtentions.put( "html", MediaType.TEXT_HTML_TYPE );
         mediaExtentions.put( "json", MediaType.APPLICATION_JSON_TYPE );
+        mediaExtentions.put( "jsonp", new MediaType( "application", "javascript" ) );
     }
 
     public HtmlPromotingUriConnegFilter()
@@ -33,16 +34,16 @@ public class HtmlPromotingUriConnegFilter
     {
         String accept = request.getHeaderValue( ACCEPT );
 
-        if ( accept == null || accept.trim().isEmpty())
+        if ( accept == null || accept.trim().isEmpty() )
         {
             request.getRequestHeaders().putSingle( ACCEPT, MediaType.TEXT_HTML );
         }
-        else 
+        else
         {
-            accept = preferHtml(accept);
+            accept = preferHtml( accept );
             request.getRequestHeaders().putSingle( ACCEPT, accept );
-        } 
-        
+        }
+
         request = super.filter( request );
 
         return request;
@@ -71,7 +72,7 @@ public class HtmlPromotingUriConnegFilter
         }
 
         int end = accept.indexOf( ',', i );
-        
+
         if ( end != -1 )
         {
             if ( result.equals( "" ) )
