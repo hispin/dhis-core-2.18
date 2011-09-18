@@ -214,7 +214,6 @@
 
     <action name="getSelectedDataElements" class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSelDataElementList.vm</result>
-      <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js</param>
     </action>
 
 	<!-- Compulsory data elements -->
