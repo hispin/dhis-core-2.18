@@ -127,6 +127,10 @@ $i18n.getString( "filter_by_name" ):
 </form>
 #end
 
+
+
+
+#*************************************************************************************************************#
 #* Helpers for building attribute forms. Note that these will have dynamic validation rules applied to them. *#
 
 #macro( trHeader $text )
@@ -135,85 +139,208 @@ $i18n.getString( "filter_by_name" ):
 </tr>
 #end
 
-#macro( trTextInput $text $name ) 
+#****************************************************
+	Required args:
+		id			
+		text		
+		mandatory	
+	Optional args:
+		name		Will use id if omitted.
+		value		
+*****************************************************#
+#macro( trTextInput $args )
+#if( "$!args.name" == "" )
+	#set( $name = $!args.id )
+#else
+	#set( $name = $!args.name )
+#end
+
 <tr>
-	<td style="width: 200px;">$text</td>
+	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$name" name="$name" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],alphanumeric:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
 
-#macro( trBooleanSelectInput $text $name )
+#****************************************************
+	Required args:
+		id			
+		text		
+		mandatory	
+	Optional args:
+		name		Will use id if omitted.
+		value		
+*****************************************************#
+#macro( trBooleanSelectInput $args )
+#if( "$!args.name" == "" )
+	#set( $name = $!args.id )
+#else
+	#set( $name = $!args.name )
+#end
+
 <tr>
-	<td  style="width: 200px;">$text</td>
+	<td  style="width: 200px;">$!args.text</td>
 	<td>
-		<select style="width: 244px;" id="$name" name="$name">
-			<option>Yes</option>
-			<option>No</option>
+		<select style="width: 244px;" id="$!args.id" name="$!name" class="{validate:{required:$args.mandatory}}">
+			<option value="" />
+			<option value="true" #if( $!args.value=="true" )selected="selected"#end>Yes</option>
+			<option value="false" #if( $!args.value=="true" )selected="selected"#end>No</option>
 		</select>
 	</td>
 </tr>
 #end
 
-#macro( trDateInput $text $name )
+#****************************************************
+	Required args:
+		id			
+		text		
+		mandatory	
+	Optional args:
+		name		Will use id if omitted.
+		value		
+*****************************************************#
+#macro( trDateInput $args )
+#if( "$!args.name" == "" )
+	#set( $name = $!args.id )
+#else
+	#set( $name = $!args.name )
+#end
+
 <script type="text/javascript">
 jQuery(function() {
-	jQuery("#$name").datepicker();
+	jQuery("#$!args.id").datepicker();
 });
 </script>
 
 <tr>
-	<td  style="width: 200px;">$text</td>
+	<td  style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$name" name="$name" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
 
-#macro( trDecimalInput $text $name ) 
+#****************************************************
+	Required args:
+		id			
+		text		
+		mandatory	
+	Optional args:
+		name		Will use id if omitted.
+		value		
+*****************************************************#
+#macro( trDecimalInput $args )
+#if( "$!args.name" == "" )
+	#set( $name = $!args.id )
+#else
+	#set( $name = $!args.name )
+#end
+
 <tr>
-	<td style="width: 200px;">$text</td>
+	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$name" name="$name" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],number:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
 
-#macro( trIntegerInput $text $name ) 
+#****************************************************
+	Required args:
+		id			
+		text		
+		mandatory	
+	Optional args:
+		name		Will use id if omitted.
+		value		
+*****************************************************#
+#macro( trIntegerInput $args ) 
+#if( "$!args.name" == "" )
+	#set( $name = $!args.id )
+#else
+	#set( $name = $!args.name )
+#end
+
 <tr>
-	<td style="width: 200px;">$text</td>
+	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$name" name="$name" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],digits:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
 
-#macro( trPositiveIntegerInput $text $name ) 
+#****************************************************
+	Required args:
+		id			
+		text		
+		mandatory	
+	Optional args:
+		name		Will use id if omitted.
+		value		
+*****************************************************#
+#macro( trPositiveIntegerInput $args )
+#if( "$!args.name" == "" )
+	#set( $name = $!args.id )
+#else
+	#set( $name = $!args.name )
+#end
+
 <tr>
-	<td style="width: 200px;">$text</td>
+	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$name" name="$name" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],digits:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
 
-#macro( trNegativeIntegerInput $text $name ) 
+#****************************************************
+	Required args:
+		id			
+		text		
+		mandatory	
+	Optional args:
+		name		Will use id if omitted.
+		value		
+*****************************************************#
+#macro( trNegativeIntegerInput $args )
+#if( "$!args.name" == "" )
+	#set( $name = $!args.id )
+#else
+	#set( $name = $!args.name )
+#end
+
 <tr>
-	<td style="width: 200px;">$text</td>
+	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$name" name="$name" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],digits:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
 
-#macro( trMultipleChoiceInput $text $name $choices )
+#****************************************************
+	Required args:
+		id			
+		text
+		mandatory	
+		choices		Array of choices.		
+	Optional args:
+		name		Will use id if omitted.
+		value		
+*****************************************************#
+#macro( trMultipleChoiceInput $args )
+#if( "$!args.name" == "" )
+	#set( $name = $!args.id )
+#else
+	#set( $name = $!args.name )
+#end
+
 <tr>
-	<td  style="width: 200px;">$text</td>
+	<td  style="width: 200px;">$!args.text</td>
 	<td>
-		<select style="width: 244px;" id="$name" name="$name">
-		#foreach( $choice in $choices )
-			<option>$choice</option>
+		<select style="width: 244px;" id="$!args.id" name="$name" class="{validate:{required:$args.mandatory}}">
+		<option value="" />
+		#foreach( $choice in $args.choices )
+			<option value="$choice" #if( $choice == $args.value )selected="selected"#end>$choice</option>
 		#end
 		</select>
 	</td>
@@ -227,26 +354,27 @@ jQuery(function() {
 
 	#foreach( $attribute in $attributes )
 		#if( $attribute.valueType == "string" )
-			#trTextInput( $attribute.name "text" )
+			#trTextInput( { "text": $attribute.name, "id": "textAttribute$attribute.id", "mandatory": $attribute.mandatory } )
 		#elseif(  $attribute.valueType == "bool" )
-			#trBooleanSelectInput( $attribute.name "booleanAttribute" )	
+			#trBooleanSelectInput( { "text": $attribute.name, "id": "booleanAttribute$attribute.id", "mandatory": $attribute.mandatory } )	
 		#elseif( $attribute.valueType == "date" )
-			#trDateInput( $attribute.name "dateAttribute" )		
+			#trDateInput( { "text": $attribute.name, "id": "dateAttribute$attribute.id", "mandatory": $attribute.mandatory } )	
 		#elseif( $attribute.valueType == "decimal" )
-			#trDecimalInput( $attribute.name "decimalAttribute" )
+			#trDecimalInput( { "text": $attribute.name, "id": "decimalAttribute$attribute.id", "mandatory": $attribute.mandatory } )
 		#elseif( $attribute.valueType == "integer" )
-			#trIntegerInput( $attribute.name "integerAttribute" )
+			#trIntegerInput( { "text": $attribute.name, "id": "integerAttribute$attribute.id", "mandatory": $attribute.mandatory } )
 		#elseif( $attribute.valueType == "positive_integer" )
-			#trPositiveIntegerInput( $attribute.name "positiveIntegerAttribute" )
+			#trPositiveIntegerInput( { "text": $attribute.name, "id": "positiveIntegerAttribute$attribute.id", "mandatory": $attribute.mandatory } )
 		#elseif( $attribute.valueType == "negative_integer" )
-			#trNegativeIntegerInput( $attribute.name "negativeIntegerAttribute" )
+			#trNegativeIntegerInput( { "text": $attribute.name, "id": "negativeIntegerAttribute$attribute.id", "mandatory": $attribute.mandatory } )
 		#elseif( $attribute.valueType == "multiple_choice" )
 			#set( $attributeOptions = [] )
+
 			#foreach( $attributeOption in $attribute.attributeOptions )
 				#set( $return = $attributeOptions.add( $attributeOption.name ) )
 			#end
 
-			#trMultipleChoiceInput( $attribute.name "multipleChoiceAttribute" $attributeOptions )
+			#trMultipleChoiceInput( { "text": $attribute.name, "id": "multipleChoiceAttribute$attribute.id", "mandatory": $attribute.mandatory, "choices": $attributeOptions } )
 		#end
 	#end
 </table>
