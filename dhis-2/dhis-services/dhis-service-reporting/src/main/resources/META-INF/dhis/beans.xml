@@ -56,6 +56,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.report.ReportService" class="org.hisp.dhis.report.impl.DefaultReportService">
     <property name="reportStore" ref="org.hisp.dhis.report.ReportStore" />
     <property name="reportGroupStore" ref="org.hisp.dhis.report.ReportGroupStore" />
+	<property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+    <property name="statementManager" ref="statementManager" />
+	<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
   </bean>
     
   <!-- Chart -->

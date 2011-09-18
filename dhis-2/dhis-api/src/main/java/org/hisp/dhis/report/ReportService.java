@@ -27,10 +27,10 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.OutputStream;
 import java.util.Collection;
 
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportGroup;
+import org.hisp.dhis.i18n.I18nFormat;
 
 /**
  * @author Lars Helge Overland
@@ -39,7 +39,13 @@ import org.hisp.dhis.report.ReportGroup;
 public interface ReportService
 {
     final String ID = ReportService.class.getName();
+    
+    final String REPORTTYPE_PDF = "pdf";
+    final String REPORTTYPE_XLS = "xls";
 
+    public void renderReport( OutputStream out, Report report, Integer reportingPeriod, 
+        Integer organisationUnitId, String type, I18nFormat format );
+    
     /**
      * Saves a Report.
      * 

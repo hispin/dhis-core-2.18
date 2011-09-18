@@ -27,15 +27,33 @@ package org.hisp.dhis.report.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.OutputStream;
+import java.sql.Connection;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportGroup;
 import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.system.util.JRExportUtils;
+import org.hisp.dhis.system.util.StreamUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -64,10 +82,86 @@ public class DefaultReportService
         this.reportGroupStore = reportGroupStore;
     }
 
+    private ReportTableService reportTableService;
+    
+    public void setReportTableService( ReportTableService reportTableService )
+    {
+        this.reportTableService = reportTableService;
+    }
+
+    private ConstantService constantService;
+    
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
+
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     // -------------------------------------------------------------------------
-    // Implements
+    // ReportService implementation
     // -------------------------------------------------------------------------
 
+    public void renderReport( OutputStream out, Report report, Integer reportingPeriod, 
+        Integer organisationUnitId, String type, I18nFormat format )
+    {
+        Map<String, Object> params = new HashMap<String, Object>();
+        
+        params.putAll( constantService.getConstantParameterMap() );
+        
+        try
+        {
+            JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
+            
+            JasperPrint print = null;
+    
+            if ( report.hasReportTable() ) // Use JR data source
+            {
+                ReportTable reportTable = report.getReportTable();
+                
+                params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
+                
+                Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
+                
+                print = JasperFillManager.fillReport( jasperReport, params, grid );
+            }
+            else // Assume SQL report and provide JDBC connection
+            {
+                Connection connection = statementManager.getHolder().getConnection();
+                
+                try
+                {
+                    print = JasperFillManager.fillReport( jasperReport, params, connection );
+                }
+                finally
+                {        
+                    connection.close();
+                }
+            }
+            
+            if ( print != null )
+            {
+                JRExportUtils.export( type, out, print );
+            }
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to render report", ex );
+        }
+    }
+    
     public int saveReport( Report report )
     {
         return reportStore.save( report );
