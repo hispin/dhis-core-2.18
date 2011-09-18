@@ -30,30 +30,14 @@ package org.hisp.dhis.reporting.reportviewer.action;
 import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 
 import java.io.OutputStream;
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-
-import org.amplecode.quick.StatementManager;
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.CodecUtils;
-import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.ContextUtils;
-import org.hisp.dhis.util.JRExportUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
 /**
@@ -63,7 +47,7 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class RenderReportAction
     extends StreamActionSupport
 {
-    private static final String DEFAULT_TYPE = "pdf";
+    private static final String DEFAULT_TYPE = ReportService.REPORTTYPE_PDF;
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -74,34 +58,6 @@ public class RenderReportAction
     public void setReportService( ReportService reportService )
     {
         this.reportService = reportService;
-    }
-
-    private ReportTableService reportTableService;
-
-    public void setReportTableService( ReportTableService reportTableService )
-    {
-        this.reportTableService = reportTableService;
-    }
-    
-    private ConstantService constantService;
-    
-    public void setConstantService( ConstantService constantService )
-    {
-        this.constantService = constantService;
-    }
-    
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     private I18nFormat format;
@@ -155,42 +111,7 @@ public class RenderReportAction
         
         Report report = reportService.getReport( id );
         
-        Map<String, Object> params = new HashMap<String, Object>();
-        
-        params.putAll( constantService.getConstantParameterMap() );
-                
-        JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
-        
-        JasperPrint print = null;
-
-        if ( report.hasReportTable() ) // Use JR data source
-        {
-            ReportTable reportTable = report.getReportTable();
-            
-            params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
-            
-            Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
-            
-            print = JasperFillManager.fillReport( jasperReport, params, grid );
-        }
-        else // Assume SQL report and provide JDBC connection
-        {
-            Connection connection = statementManager.getHolder().getConnection();
-            
-            try
-            {
-                print = JasperFillManager.fillReport( jasperReport, params, connection );
-            }
-            finally
-            {        
-                connection.close();
-            }
-        }
-        
-        if ( print != null )
-        {
-            JRExportUtils.export( type, out, print );
-        }
+        reportService.renderReport( out, report, reportingPeriod, organisationUnitId, type, format );
         
         return SUCCESS;
     }

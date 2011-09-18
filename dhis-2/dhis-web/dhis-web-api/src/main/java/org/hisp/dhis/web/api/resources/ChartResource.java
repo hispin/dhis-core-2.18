@@ -8,11 +8,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.i18n.I18nManager;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
+import org.hisp.dhis.web.api.ResponseUtils;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 
@@ -32,22 +36,26 @@ public class ChartResource
     {
         i18nManager = manager;
     }
-    
+
     @GET
     @Produces( ContextUtils.CONTENT_TYPE_PNG )
-    public StreamingOutput getChart( @PathParam("id") Integer id )
+    public Response getChart( @PathParam("id") Integer id )
         throws Exception
     {
-        final JFreeChart chart = chartService.getJFreeChart( id, i18nManager.getI18nFormat() );
+        final JFreeChart jFreeChart = chartService.getJFreeChart( id, i18nManager.getI18nFormat() );
         
-        return new StreamingOutput()
+        final Chart chart = chartService.getChart( id );
+        
+        final String filename = CodecUtils.filenameEncode( chart.getTitle() + ".png" );
+        
+        return ResponseUtils.response( true, filename, false ).entity( new StreamingOutput()
         {
             @Override
             public void write( OutputStream out )
                 throws IOException, WebApplicationException
             {
-                ChartUtilities.writeChartAsPNG( out, chart, 600, 400 );
+                ChartUtilities.writeChartAsPNG( out, jFreeChart, 600, 400 );
             }
-        };
+        } ).build();
     }
 }
