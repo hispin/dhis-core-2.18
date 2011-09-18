@@ -240,7 +240,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],number:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,real_number:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
@@ -264,7 +264,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],digits:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,natural_number:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
@@ -288,7 +288,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],digits:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,positive_natural_number:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
@@ -312,7 +312,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],digits:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,negative_natural_number:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
