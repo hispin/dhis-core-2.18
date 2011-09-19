@@ -38,6 +38,15 @@
 		</td>
 	</tr>
 	<tr>
+		<td><label for="usingOrgUnitGroupSets">$i18n.getString( "include_organisation_unit_group_sets" )</label></td>
+		<td>
+			<select id="usingOrgUnitGroupSets" name="usingOrgUnitGroupSets" style="min-width:325px">
+			<option value="false"#if ( $report && $report.usingOrgUnitGroupSets )selected="selected"#end>$i18n.getString( "no" )</option>
+			<option value="true"#if ( $report && $report.usingOrgUnitGroupSets )selected="selected"#end>$i18n.getString( "yes" )</option>			
+			</select>
+		</td>
+	</tr>
+	<tr>
 		<td></td>
 		<td>
 			<input type="button" value="$i18n.getString( 'save' )" style="width:10em" onclick="addReport()" />
