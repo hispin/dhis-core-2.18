@@ -131,7 +131,10 @@ public class DefaultReportService
             {
                 ReportTable reportTable = report.getReportTable();
                 
-                params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
+                if ( report.isUsingOrganisationUnitGroupSets() )
+                {
+                    params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
+                }
                 
                 Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
                 

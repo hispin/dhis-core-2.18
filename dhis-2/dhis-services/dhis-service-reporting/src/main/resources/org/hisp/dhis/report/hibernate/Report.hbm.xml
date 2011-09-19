@@ -21,12 +21,13 @@
     <many-to-one name="reportTable" class="org.hisp.dhis.reporttable.ReportTable" column="reporttableid"
       foreign-key="fk_report_reporttableid" />
 	  
+	<property name="usingOrgUnitGroupSets"/>
+	  
 	<set name="groups" table="reportgroupmembers" inverse="true">
 	  <cache usage="read-write" />
 	  <key column="reportid" />
 	  <many-to-many class="org.hisp.dhis.report.ReportGroup" column="reportgroupid" />
 	</set>
 	
-
   </class>
 </hibernate-mapping>

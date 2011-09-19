@@ -51,6 +51,8 @@ public class Report
 
     private ReportTable reportTable;
 
+    private Boolean usingOrgUnitGroupSets;
+    
     private Set<ReportGroup> groups = new HashSet<ReportGroup>();
 
     // -------------------------------------------------------------------------
@@ -103,6 +105,11 @@ public class Report
     public boolean hasReportTable()
     {
         return reportTable != null;
+    }
+    
+    public boolean isUsingOrganisationUnitGroupSets()
+    {
+        return usingOrgUnitGroupSets != null && usingOrgUnitGroupSets;
     }
 
     // -------------------------------------------------------------------------
@@ -166,6 +173,16 @@ public class Report
     public void setReportTable( ReportTable reportTable )
     {
         this.reportTable = reportTable;
+    }
+
+    public Boolean getUsingOrgUnitGroupSets()
+    {
+        return usingOrgUnitGroupSets;
+    }
+
+    public void setUsingOrgUnitGroupSets( Boolean usingOrgUnitGroupSets )
+    {
+        this.usingOrgUnitGroupSets = usingOrgUnitGroupSets;
     }
 
     public Set<ReportGroup> getGroups()

@@ -102,6 +102,13 @@ public class AddReportAction
         this.reportTableId = reportTableId;
     }
 
+    private boolean usingOrgUnitGroupSets;
+    
+    public void setUsingOrgUnitGroupSets( boolean usingOrgUnitGroupSets )
+    {
+        this.usingOrgUnitGroupSets = usingOrgUnitGroupSets;
+    }
+
     private File file;
 
     public void setUpload( File file )
@@ -183,6 +190,7 @@ public class AddReportAction
         
         report.setName( name );
         report.setReportTable( reportTableService.getReportTable( reportTableId ) );
+        report.setUsingOrgUnitGroupSets( usingOrgUnitGroupSets );
                 
         log.info( "Upload file name: " + fileName + ", content type: " + contentType );
 
