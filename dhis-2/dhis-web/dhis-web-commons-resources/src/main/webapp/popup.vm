@@ -10,7 +10,7 @@
     	
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery-1.6.1.min.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.ext.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>	
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.min.js"></script>		

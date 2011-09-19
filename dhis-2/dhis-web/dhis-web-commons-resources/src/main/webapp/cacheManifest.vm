@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.4-SNAPSHOT Version 23
+# 2.4-SNAPSHOT Version 24
 NETWORK:
 *
 CACHE:
@@ -13,7 +13,7 @@ css/light_blue/logo_right.png
 css/light_blue/logo_separator.png
 css/widgets.css
 ../dhis-web-dataentry/style/dhis-web-dataentry.css
-javascripts/jQuery/jquery-1.6.1.min.js
+javascripts/jQuery/jquery.min.js
 javascripts/jQuery/jquery.metadata.js
 javascripts/jQuery/jquery.glob.js
 javascripts/jQuery/jquery.date.js
