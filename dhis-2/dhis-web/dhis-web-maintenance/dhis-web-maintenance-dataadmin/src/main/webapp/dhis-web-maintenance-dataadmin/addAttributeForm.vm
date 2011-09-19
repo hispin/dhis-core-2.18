@@ -71,7 +71,7 @@
 				<option value="string">$i18n.getString( "text" )</option>
 				<option value="bool">$i18n.getString( "yes_no" )</option>
 				<option value="date">$i18n.getString( "date" )</option>
-				<option value="decimal">$i18n.getString( "decimal" )</option>
+				<option value="number">$i18n.getString( "number" )</option>
 				<option value="integer" >$i18n.getString( "integer" )</option>
 				<option value="positive_integer">$i18n.getString( "positive_integer" )</option>
 				<option value="negative_integer">$i18n.getString( "negative_integer" )</option>
