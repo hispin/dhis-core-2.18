@@ -338,49 +338,21 @@ jQuery.validator.addMethod("custome_regex", function(value, element, params) {
     return this.optional(element) || params[0].test(value);
 });
 
-jQuery.validator.addMethod("real_number", function(value, element, param) {
-    value = +value;
+jQuery.validator.addMethod("number", function(value, element, param) {
+    return isRealNumber(value);
+});
 
-    if( isNaN( value ) )
-    {
-        return false;
-    }
+jQuery.validator.addMethod("integer", function(value, element, param) {
+    return isInt(value);
+});
 
-    return true;
-}, "Please enter a valid real number.");
+jQuery.validator.addMethod("positive_integer", function(value, element, param) {
+    return isPositiveInt(value);
+});
 
-jQuery.validator.addMethod("natural_number", function(value, element, param) {
-    value = +value;
-
-    if( isNaN( value ) || (""+value).indexOf('.') != -1 )
-    {
-        return false;
-    }
-
-    return true;
-}, "Please enter a valid natural number.");
-
-jQuery.validator.addMethod("positive_natural_number", function(value, element, param) {
-    value = +value;
-
-    if( isNaN( value ) || (""+value).indexOf('.') != -1 )
-    {
-        return false;
-    }
-
-    return value >= 0;
-}, "Please enter a valid positive natural number.");
-
-jQuery.validator.addMethod("negative_natural_number", function(value, element, param) {
-    value = +value;
-
-    if( isNaN( value ) || (""+value).indexOf('.') != -1 )
-    {
-        return false;
-    }
-
-    return value <= 0;
-}, "Please enter a valid negative natural number.");
+jQuery.validator.addMethod("negative_integer", function(value, element, param) {
+    return isNegativeInt(value);
+});
 
 // Support method for date
 //Parse a string and convert it to a Date object.

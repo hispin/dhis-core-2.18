@@ -158,7 +158,7 @@ $i18n.getString( "filter_by_name" ):
 <tr>
 	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230],alphanumeric:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230]}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
@@ -230,7 +230,7 @@ jQuery(function() {
 		name		Will use id if omitted.
 		value		
 *****************************************************#
-#macro( trDecimalInput $args )
+#macro( trNumberInput $args )
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
 #else
@@ -240,7 +240,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,real_number:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,number:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
@@ -264,7 +264,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,natural_number:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,integer:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
@@ -288,7 +288,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,positive_natural_number:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,positive_integer:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
@@ -312,7 +312,7 @@ jQuery(function() {
 <tr>
 	<td style="width: 200px;">$!args.text</td>
 	<td>
-		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,negative_natural_number:true}}" style="width: 240px;" />
+		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,negative_integer:true}}" style="width: 240px;" />
 	</td>
 </tr>
 #end
@@ -359,8 +359,8 @@ jQuery(function() {
 			#trBooleanSelectInput( { "text": $attribute.name, "id": "booleanAttribute$attribute.id", "mandatory": $attribute.mandatory } )	
 		#elseif( $attribute.valueType == "date" )
 			#trDateInput( { "text": $attribute.name, "id": "dateAttribute$attribute.id", "mandatory": $attribute.mandatory } )	
-		#elseif( $attribute.valueType == "decimal" )
-			#trDecimalInput( { "text": $attribute.name, "id": "decimalAttribute$attribute.id", "mandatory": $attribute.mandatory } )
+		#elseif( $attribute.valueType == "number" )
+			#trNumberInput( { "text": $attribute.name, "id": "numberAttribute$attribute.id", "mandatory": $attribute.mandatory } )
 		#elseif( $attribute.valueType == "integer" )
 			#trIntegerInput( { "text": $attribute.name, "id": "integerAttribute$attribute.id", "mandatory": $attribute.mandatory } )
 		#elseif( $attribute.valueType == "positive_integer" )
