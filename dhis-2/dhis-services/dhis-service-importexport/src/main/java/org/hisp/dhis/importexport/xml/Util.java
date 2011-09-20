@@ -2,6 +2,7 @@ package org.hisp.dhis.importexport.xml;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.StringTokenizer;
 
 /*
  * Copyright (c) 2004-2005, University of Oslo
@@ -33,9 +34,18 @@ import java.util.GregorianCalendar;
 /**
  * 
  * @author bobj
+ *
+ * Some static helper functions
+ *
  */
-public class ExcelExtension
+public class Util
 {
+    /**
+     * Compensating for Excel wonky storage for dates
+     *
+     * @param xltimestr the number of days since 1/1/1900 as undertood by excel
+     * @return
+     */
     public static String date( String xltimestr )
     {
         try
@@ -54,5 +64,25 @@ public class ExcelExtension
         {
             return "";
         }
+    }
+
+    /**
+     * Tokenizer to convert coordinates in GML to a sequence of <coord>nnn,nnn</coord>
+     * @param coordinates
+     * @return
+     */
+    public static String gmlToCoords(String coordinates)
+    {
+        StringBuilder sb = new StringBuilder();
+        String[] coords = coordinates.split( "\\s");
+
+        for (String coord : coords)
+        {
+            sb.append( "<coord>");
+            sb.append( coord);
+            sb.append( "</coord>");
+        }
+
+        return sb.toString();
     }
 }
