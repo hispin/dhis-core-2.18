@@ -42,6 +42,7 @@ public class AddProgramAction
     implements Action
 {
     private static String SINGLE_EVENT = "Single-Event";
+
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -113,6 +114,11 @@ public class AddProgramAction
     public String execute()
         throws Exception
     {
+        if ( singleEvent == null )
+        {
+            singleEvent = false;
+        }
+        
         Program program = new Program();
 
         program.setName( name );
@@ -122,7 +128,7 @@ public class AddProgramAction
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         program.setSingleEvent( singleEvent );
-        
+
         programService.saveProgram( program );
 
         if ( singleEvent )
@@ -137,7 +143,7 @@ public class AddProgramAction
 
             programStageService.saveProgramStage( programStage );
         }
-        
+
         return SUCCESS;
     }
 }

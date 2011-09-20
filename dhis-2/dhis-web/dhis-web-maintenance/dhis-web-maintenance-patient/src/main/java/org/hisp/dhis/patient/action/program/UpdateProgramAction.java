@@ -131,6 +131,11 @@ public class UpdateProgramAction
     public String execute()
         throws Exception
     {
+        if ( singleEvent == null )
+        {
+            singleEvent = false;
+        }
+        
         Program program = programService.getProgram( id );
         program.setName( name );
         program.setDescription( description );
