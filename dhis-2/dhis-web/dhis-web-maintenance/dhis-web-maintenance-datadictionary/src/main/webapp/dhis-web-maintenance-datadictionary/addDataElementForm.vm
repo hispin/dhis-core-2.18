@@ -1,5 +1,25 @@
-<script type="text/javascript" src="javascript/addDataElementForm.js"></script>
 <script type="text/javascript">
+	jQuery( document ).ready( function()
+	{
+	    validation2( 'addDataElementForm', function( form )
+	    {
+	        dhis2.select.selectAll( jQuery( '#aggregationLevels' ) );
+	        form.submit();
+	    }, {
+	        'beforeValidateHandler' : function()
+	        {
+	            setFieldValue( 'submitCategoryComboId', getFieldValue( 'selectedCategoryComboId' ) );
+	            setFieldValue( 'submitValueType', getFieldValue( 'valueType' ) );
+				#tblDynamicAttributesJavascript()
+	        },
+	        'rules' : getValidationRules( "dataElement" )
+	    } );
+
+	    checkValueIsExist( "name", "validateDataElement.action" );
+	    checkValueIsExist( "shortName", "validateDataElement.action" );
+	    checkValueIsExist( "alternativeName", "validateDataElement.action" );
+	} );
+
 	var previousName = '';
 </script>
 
@@ -144,7 +164,7 @@
 
 </div>
 
-#tblDynamicAttributes( $attributes )
+#tblDynamicAttributes( { "attributes": $attributes } )
 
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>

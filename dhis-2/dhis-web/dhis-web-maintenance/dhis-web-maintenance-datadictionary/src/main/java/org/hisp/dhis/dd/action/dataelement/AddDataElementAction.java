@@ -29,6 +29,7 @@ package org.hisp.dhis.dd.action.dataelement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -100,7 +101,7 @@ public class AddDataElementAction
     {
         this.description = description;
     }
-    
+
     private String formName;
 
     public void setFormName( String formName )
@@ -164,6 +165,13 @@ public class AddDataElementAction
         this.zeroIsSignificant = zeroIsSignificant;
     }
 
+    private List<String> attributeValues;
+
+    public void setAttributeValues( List<String> attributeValues )
+    {
+        this.attributeValues = attributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -213,10 +221,15 @@ public class AddDataElementAction
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
-        
+
         dataElement.setZeroIsSignificant( zeroIsSignificant );
 
         dataElementService.addDataElement( dataElement );
+
+        for ( String attributeValue : attributeValues )
+        {
+            System.out.println( attributeValue );
+        }
 
         return SUCCESS;
     }

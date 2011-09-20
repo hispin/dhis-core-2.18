@@ -339,19 +339,19 @@ jQuery.validator.addMethod("custome_regex", function(value, element, params) {
 });
 
 jQuery.validator.addMethod("number", function(value, element, param) {
-    return isRealNumber(value);
+    return this.optional(element) || isRealNumber(value);
 });
 
 jQuery.validator.addMethod("integer", function(value, element, param) {
-    return isInt(value);
+    return this.optional(element) || isInt(value);
 });
 
 jQuery.validator.addMethod("positive_integer", function(value, element, param) {
-    return isPositiveInt(value);
+    return this.optional(element) || isPositiveInt(value);
 });
 
 jQuery.validator.addMethod("negative_integer", function(value, element, param) {
-    return isNegativeInt(value);
+    return this.optional(element) || isNegativeInt(value);
 });
 
 // Support method for date
