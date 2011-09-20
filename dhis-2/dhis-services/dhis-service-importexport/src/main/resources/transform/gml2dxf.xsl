@@ -4,7 +4,7 @@
   xmlns:gml="http://www.opengis.net/gml"
 >
 
-<xsl:param name="roundingFactor">100000</xsl:param>
+<xsl:param name="roundingFactor">10000</xsl:param>
   
 <xsl:template match="gml:coordinates">
   <coordinatesTuple>
