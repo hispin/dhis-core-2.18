@@ -347,26 +347,70 @@ jQuery(function() {
 </tr>
 #end
 
-#macro( tblDynamicAttributes $attributes )
+#macro( tblDynamicAttributesJavascript )
+var attributes = jQuery("form").find(":input[name*='attribute_']");
+var jqAttributeValues= jQuery("#attributeValues");
+jqAttributeValues.children().remove();
+
+jQuery.each(attributes, function(i, item) {
+	var jqItem = jQuery(item);
+	var json = {};
+
+	json.id = jqItem.attr("id").split("_")[1];
+
+	if( jqItem.is("input[type='text']") )
+	{
+		json.value = jqItem.val();
+	}
+	else if( jqItem.is("select") )
+	{
+		json.value = jqItem.find(":selected").val();
+	}
+
+	json = JSON.stringify(json);
+
+	jQuery("<option />")
+		.attr("value", json)
+		.attr("selected", "selected")
+		.text(json)
+	.appendTo(jqAttributeValues);
+});
+#end
+
+#****************************************************
+	Required args:
+		attributes	
+	Optional args:
+		attributeValues
+*****************************************************#
+#macro( tblDynamicAttributes $args )
+
+<select multiple="multiple" id="attributeValues" name="attributeValues" style="display: none;"></select>
+
 <div id="dynamicAttributesContainer" style="margin-top: 20px;">
 <table>
 	#trHeader( "Dynamic Attributes" )
 
-	#foreach( $attribute in $attributes )
+	#foreach( $attribute in $args.attributes )
+		#set( $text = $attribute.name )
+		#set( $id = $attribute.id )
+		#set( $mandatory = $attribute.mandatory )
+		#set( $value = $!args.attributeValues.get( $attribute.id ) )
+
 		#if( $attribute.valueType == "string" )
-			#trTextInput( { "text": $attribute.name, "id": "textAttribute$attribute.id", "mandatory": $attribute.mandatory } )
+			#trTextInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
 		#elseif(  $attribute.valueType == "bool" )
-			#trBooleanSelectInput( { "text": $attribute.name, "id": "booleanAttribute$attribute.id", "mandatory": $attribute.mandatory } )	
+			#trBooleanSelectInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )	
 		#elseif( $attribute.valueType == "date" )
-			#trDateInput( { "text": $attribute.name, "id": "dateAttribute$attribute.id", "mandatory": $attribute.mandatory } )	
+			#trDateInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )	
 		#elseif( $attribute.valueType == "number" )
-			#trNumberInput( { "text": $attribute.name, "id": "numberAttribute$attribute.id", "mandatory": $attribute.mandatory } )
+			#trNumberInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
 		#elseif( $attribute.valueType == "integer" )
-			#trIntegerInput( { "text": $attribute.name, "id": "integerAttribute$attribute.id", "mandatory": $attribute.mandatory } )
+			#trIntegerInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
 		#elseif( $attribute.valueType == "positive_integer" )
-			#trPositiveIntegerInput( { "text": $attribute.name, "id": "positiveIntegerAttribute$attribute.id", "mandatory": $attribute.mandatory } )
+			#trPositiveIntegerInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
 		#elseif( $attribute.valueType == "negative_integer" )
-			#trNegativeIntegerInput( { "text": $attribute.name, "id": "negativeIntegerAttribute$attribute.id", "mandatory": $attribute.mandatory } )
+			#trNegativeIntegerInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
 		#elseif( $attribute.valueType == "multiple_choice" )
 			#set( $attributeOptions = [] )
 
@@ -374,7 +418,7 @@ jQuery(function() {
 				#set( $return = $attributeOptions.add( $attributeOption.name ) )
 			#end
 
-			#trMultipleChoiceInput( { "text": $attribute.name, "id": "multipleChoiceAttribute$attribute.id", "mandatory": $attribute.mandatory, "choices": $attributeOptions } )
+			#trMultipleChoiceInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "choices": $attributeOptions, "value": $value } )
 		#end
 	#end
 </table>

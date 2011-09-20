@@ -141,11 +141,18 @@ public class ShowUpdateDataElementFormAction
         return defaultCategoryCombo;
     }
 
-    public Map<Attribute, AttributeValue> attributeMap = new HashMap<Attribute, AttributeValue>();
+    private List<Attribute> attributes;
 
-    public Map<Attribute, AttributeValue> getAttributeMap()
+    public List<Attribute> getAttributes()
     {
-        return attributeMap;
+        return attributes;
+    }
+
+    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -175,27 +182,16 @@ public class ShowUpdateDataElementFormAction
 
         organisationUnitLevels.removeAll( aggregationLevels );
 
+        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
+
+        Collections.sort( attributes, new AttributeNameComparator() );
+
         List<AttributeValue> dataElementAttributeValues = new ArrayList<AttributeValue>(
             dataElement.getAttributeValues() );
 
-        List<Attribute> attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
-
-        Collections.sort( attributes, new AttributeNameComparator() );
-        
-        // TODO fix this.. quite ugly and slow
-        for ( Attribute key : attributes )
+        for ( AttributeValue attributeValue : dataElementAttributeValues )
         {
-            AttributeValue value = null;
-
-            for ( AttributeValue av : dataElementAttributeValues )
-            {
-                if ( value.getAttribute().equals( key ) )
-                {
-                    value = av;
-                }
-            }
-
-            attributeMap.put( key, value );
+            attributeValues.put( attributeValue.getId(), attributeValue.getValue() );
         }
 
         return SUCCESS;

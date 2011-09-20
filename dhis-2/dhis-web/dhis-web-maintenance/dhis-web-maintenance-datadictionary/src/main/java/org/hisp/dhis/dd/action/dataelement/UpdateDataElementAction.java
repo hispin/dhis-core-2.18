@@ -29,6 +29,7 @@ package org.hisp.dhis.dd.action.dataelement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -188,6 +189,13 @@ public class UpdateDataElementAction
         this.zeroIsSignificant = zeroIsSignificant;
     }
 
+    private List<String> attributeValues;
+
+    public void setAttributeValues( List<String> attributeValues )
+    {
+        this.attributeValues = attributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -255,6 +263,11 @@ public class UpdateDataElementAction
         }
 
         dataElementService.updateDataElement( dataElement );
+
+        for ( String attributeValue : attributeValues )
+        {
+            System.out.println( attributeValue );
+        }
 
         return SUCCESS;
     }
