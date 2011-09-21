@@ -5,23 +5,24 @@
 <title>DHIS 2</title>
 
 <meta name="viewport" content="width=device-width, user-scalable=no" />
-
+	
 <style type="text/css">
 html,body
 {
-  background-color: #1d5288;  
-  color: white;
-  font-size: 16px;
+	background-color: #1d5288;  
+	color: white;
+	font-size: 1.1em;
+	font-family: verdana, sans, sans-serif;
 }
 
-p {
-	width: 150px;
+input {
+	font-size: 1em;
+	font-family: verdana, sans, sans-serif;
 }
 </style>
-
 </head>
 
-<body>
+<body align="center">
 
 <div id="wrapper" align="center">
 <p>
@@ -30,27 +31,37 @@ p {
 
 <form id='loginForm' action="../../dhis-web-commons-security/login.action" method="post">
 
-<p>
-	<h3>Username</h3>
-	<input type="text" id="j_username" name="j_username"></td>
-</p>
-
-<p>
-	<h3>Password</h3>
-	<input type="password" id="j_password" name="j_password"></td>
-</p>
-
-<p>
-	<input id='submit' type="submit" value="Login" style="width: 45%;">
-	<input id='reset' type="reset" value="Clear" style="width: 45%;">
-</p>
+<table style="width: 100%">
+	<tr>
+		<td><h3>Username</h3></td>
+	</tr>
+	<tr>
+		<td>
+			<input type="text" id="j_username" name="j_username" style="width: 96%;">
+		</td>
+	</tr>
+	<tr>
+		<td><h3>Password</h3></td>
+	</tr>
+	<tr>
+		<td>
+			<input type="text" id="j_password" name="j_password" style="width: 96%;">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<br />
+			<input id='submit' type="submit" value="Login" style="width: 48%;">
+			<input id='reset' type="reset" value="Clear" style="width: 48%;">
+		</td>
+	</tr>
+</table>
 
 </form>
 
 <p style="color: #eee;">
 	Wrong username or password. Please try again.
 </p>
-</div>
 
 </body>
 
