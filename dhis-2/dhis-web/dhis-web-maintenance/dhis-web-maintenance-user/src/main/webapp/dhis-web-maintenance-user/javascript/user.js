@@ -4,12 +4,9 @@
 // -----------------------------------------------------------------------------
 
 function exportPDF( type )
-{
-	var params = {
-		type: type,
-		key: jQuery( 'input[type=text][id=key]' ).val(),
-		months: jQuery( '#months' ).val()
-	};
+{	
+	var params = "type=" + type;
+	params += "&months=" + jQuery( '#months' ).val();
 
 	exportPdfByType( params );
 }

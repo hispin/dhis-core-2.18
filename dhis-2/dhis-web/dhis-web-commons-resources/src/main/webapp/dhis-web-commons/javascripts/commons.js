@@ -1344,7 +1344,9 @@ function exportPdfByType( params )
 		return;
 	}
 	
-	jQuery.postUTF8( 'exportToPdf.action', params, function(){} );
+	var form = byId( 'filterKeyForm' );
+	form.action = 'exportToPdf.action?' + params;
+	form.submit();
 }
 
 /**
