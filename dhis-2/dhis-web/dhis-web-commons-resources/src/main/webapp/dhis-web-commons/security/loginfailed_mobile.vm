@@ -18,6 +18,11 @@ html,body
 input {
 	font-size: 1em;
 	font-family: verdana, sans, sans-serif;
+	width: 96%;
+}
+
+table {
+	width: 100%;
 }
 </style>
 </head>
@@ -31,13 +36,13 @@ input {
 
 <form id='loginForm' action="../../dhis-web-commons-security/login.action" method="post">
 
-<table style="width: 100%">
+<table>
 	<tr>
 		<td><h3>Username</h3></td>
 	</tr>
 	<tr>
 		<td>
-			<input type="text" id="j_username" name="j_username" style="width: 96%;">
+			<input type="text" id="j_username" name="j_username" size="9">
 		</td>
 	</tr>
 	<tr>
@@ -45,7 +50,7 @@ input {
 	</tr>
 	<tr>
 		<td>
-			<input type="text" id="j_password" name="j_password" style="width: 96%;">
+			<input type="text" id="j_password" name="j_password" size="9">
 		</td>
 	</tr>
 	<tr>
