@@ -82,6 +82,7 @@ import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -233,6 +234,29 @@ public class DefaultChartService
         chart.init();
 
         return getJFreeChart( chart, !chart.getHideSubtitle() );
+    }
+    
+    public JFreeChart getJFreeChart( Indicator indicator, OrganisationUnit unit, I18nFormat format )
+    {
+        RelativePeriods relatives = new RelativePeriods();
+        relatives.setMonthsThisYear( true );
+        List<Period> periods = relatives.getRelativePeriods( 1, format, true );
+        
+        Chart chart = new Chart();
+        
+        chart.setTitle( indicator.getName() );
+        chart.setType( TYPE_LINE3D );
+        chart.setSize( SIZE_NORMAL );
+        chart.setDimension( Chart.DIMENSION_PERIOD_INDICATOR );
+        chart.setVerticalLabels( true );
+        chart.getIndicators().add( indicator );
+        chart.setPeriods( periods );
+        chart.setOrganisationUnit( unit );
+        chart.setFormat( format );
+        
+        chart.init();
+        
+        return getJFreeChart( chart, true );        
     }
 
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<Period> periods,

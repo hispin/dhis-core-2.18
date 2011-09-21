@@ -49,6 +49,8 @@ public interface ChartService
     String ID = ChartService.class.getName();
 
     JFreeChart getJFreeChart( int id, I18nFormat format );
+    
+    JFreeChart getJFreeChart( Indicator indicator, OrganisationUnit unit, I18nFormat format );
 
     JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<Period> periods,
         List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format );
