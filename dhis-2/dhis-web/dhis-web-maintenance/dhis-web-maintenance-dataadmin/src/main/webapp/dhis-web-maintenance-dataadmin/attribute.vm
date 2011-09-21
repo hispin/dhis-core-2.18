@@ -36,6 +36,7 @@
 				<tr>
 					<td>#filterDiv( "attribute" )</td>
 					<td colspan="4" style="text-align:right">
+						<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortAttributeForm.action'" style="width:80px"/>
 						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddAttributeForm.action'" style="width:80px"/>
 					</td>
 				</tr>

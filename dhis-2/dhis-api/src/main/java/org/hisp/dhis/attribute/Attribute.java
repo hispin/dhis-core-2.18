@@ -55,10 +55,12 @@ public class Attribute
 
     private boolean userAttribute;
 
+    private Integer sortOrder;
+
     private Set<AttributeOption> attributeOptions = new HashSet<AttributeOption>();
-
+    
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
-
+    
     public Attribute()
     {
 
@@ -120,6 +122,16 @@ public class Attribute
         this.organisationUnitAttribute = organisationUnitAttribute;
     }
 
+    public void setAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+    
     public boolean isUserAttribute()
     {
         return userAttribute;
@@ -144,12 +156,7 @@ public class Attribute
     {
         return attributeValues;
     }
-
-    public void setAttributeValues( Set<AttributeValue> attributeValues )
-    {
-        this.attributeValues = attributeValues;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
@@ -164,5 +171,10 @@ public class Attribute
     {
         attributeOption.getAttributes().remove( this );
         attributeOptions.remove( attributeOption );
+    }
+
+    public Integer getSortOrder()
+    {
+        return sortOrder;
     }
 }

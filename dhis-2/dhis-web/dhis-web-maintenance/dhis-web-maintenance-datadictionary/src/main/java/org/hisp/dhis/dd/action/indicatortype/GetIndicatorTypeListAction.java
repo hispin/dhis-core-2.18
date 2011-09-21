@@ -36,6 +36,7 @@ import java.util.List;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.indicator.comparator.IndicatorTypeNameComparator;
@@ -125,7 +126,7 @@ public class GetIndicatorTypeListAction
 
         attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
 
-        Collections.sort( attributes, new AttributeNameComparator() );
+        Collections.sort( attributes, new AttributeSortOrderComparator() );
         
         return SUCCESS;
     }
