@@ -18,10 +18,7 @@ function organisationUnitSelected( orgUnitIds )
 
 function exportPDF( type )
 {
-	var params = {
-		type: type,
-		key: jQuery( 'input[type=text][name=key]' ).val()
-	};
+	var params = "type=" + type;
 	
 	exportPdfByType( params );
 }

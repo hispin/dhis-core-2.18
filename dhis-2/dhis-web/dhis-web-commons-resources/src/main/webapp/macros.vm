@@ -116,7 +116,7 @@ Formats a boolean into a readable value
 
 #macro( filterDiv $action )
 $i18n.getString( "filter_by_name" ):
-<form action="${action}.action" method="POST">
+<form id="filterKeyForm" action="${action}.action" method="POST">
 	<div style="inline">
 		#set ($value = $encoder.htmlEncode( ${key} ))
 		<input type="text" id="key" name="key" value="$!value"/>
