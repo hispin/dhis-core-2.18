@@ -235,8 +235,8 @@ public class HibernatePatientAttributeValueStore
             }
 
             hql += " ( SELECT p" + index + " FROM Patient as p" + index + " JOIN p" + index
-                + ".identifiers as identifier" + index + " " + "WHERE  lower(identifier" + index
-                + ".identifier) LIKE lower('%" + searchText + "%') " + "OR (lower(p" + index
+                + ".identifiers as identifier" + index + " " + "WHERE lower(identifier" + index
+                + ".identifier)=lower(" + searchText + ") " + "OR (lower(p" + index
                 + ".firstName) LIKE lower('%" + firstName + "%') " + "AND lower(p" + index + ".middleName) = lower('"
                 + middleName + "') " + "AND lower(p" + index + ".lastName) LIKE lower('%" + lastName + "%')) ";
 
