@@ -74,7 +74,7 @@
     <set name="attributeValues" table="indicatorattributevalues">
       <cache usage="read-write" />
       <key column="indicatorid" />
-      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" unique="true"/>
     </set>
 
   </class>

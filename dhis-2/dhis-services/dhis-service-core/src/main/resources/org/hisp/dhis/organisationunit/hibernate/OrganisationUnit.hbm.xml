@@ -92,7 +92,7 @@
     <set name="attributeValues" table="organisationunitattributevalues">
       <cache usage="read-write" />
       <key column="organisationunitid" />
-      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" unique="true" />
     </set>
 
   </class>
