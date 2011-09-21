@@ -30,11 +30,14 @@ package org.hisp.dhis.user.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.security.PasswordManager;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -45,7 +48,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AddUserAction.java 5556 2008-08-20 11:36:20Z abyot $
  */
 public class AddUserAction
     implements Action
@@ -89,8 +91,15 @@ public class AddUserAction
         this.currentUserService = currentUserService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+    
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private String username;
@@ -154,6 +163,13 @@ public class AddUserAction
         this.selectedList = selectedList;
     }
 
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -204,6 +220,9 @@ public class AddUserAction
         
         user.setUserCredentials( userCredentials );
 
+        AttributeUtils.updateAttributeValuesFromJson( user.getAttributeValues(), jsonAttributeValues,
+            attributeService );
+        
         userService.addUser( user );
         userService.addUserCredentials( userCredentials );
 

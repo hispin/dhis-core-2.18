@@ -272,8 +272,7 @@
     </action>
 
     <action name="addIndicator" class="org.hisp.dhis.dd.action.indicator.AddIndicatorAction">
-      <result name="success" type="redirect">indicator.action
-      </result>
+      <result name="success" type="redirect">indicator.action</result>
       <param name="requiredAuthorities">F_INDICATOR_ADD</param>
     </action>
 

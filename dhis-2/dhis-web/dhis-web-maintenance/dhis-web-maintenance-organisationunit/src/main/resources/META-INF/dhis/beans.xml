@@ -49,6 +49,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionManager">
       <ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.oum.action.organisationunit.GetCompulsoryGroupSetAction" class="org.hisp.dhis.oum.action.organisationunit.GetCompulsoryGroupSetAction"
@@ -82,6 +83,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.oum.action.organisationunit.RemoveOrganisationUnitAction" class="org.hisp.dhis.oum.action.organisationunit.RemoveOrganisationUnitAction"

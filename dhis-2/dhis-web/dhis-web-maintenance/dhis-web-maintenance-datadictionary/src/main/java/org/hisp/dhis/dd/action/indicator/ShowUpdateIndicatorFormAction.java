@@ -41,6 +41,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.indicator.comparator.IndicatorTypeNameComparator;
+import org.hisp.dhis.system.util.AttributeUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -109,11 +110,18 @@ public class ShowUpdateIndicatorFormAction
         return indicatorTypes;
     }
 
-    public Map<Attribute, AttributeValue> attributeMap = new HashMap<Attribute, AttributeValue>();
+    private List<Attribute> attributes;
 
-    public Map<Attribute, AttributeValue> getAttributeMap()
+    public List<Attribute> getAttributes()
     {
-        return attributeMap;
+        return attributes;
+    }
+
+    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -135,27 +143,11 @@ public class ShowUpdateIndicatorFormAction
 
         Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
 
-        List<AttributeValue> indicatorAttributeValues = new ArrayList<AttributeValue>( indicator.getAttributeValues() );
-
-        List<Attribute> attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
+        attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
 
         Collections.sort( attributes, new AttributeNameComparator() );
 
-        // TODO fix this.. quite ugly and slow
-        for ( Attribute key : attributes )
-        {
-            AttributeValue value = null;
-
-            for ( AttributeValue av : indicatorAttributeValues )
-            {
-                if ( value.getAttribute().equals( key ) )
-                {
-                    value = av;
-                }
-            }
-
-            attributeMap.put( key, value );
-        }
+        attributeValues = AttributeUtils.getAttributeValueMap( indicator.getAttributeValues() );
 
         return SUCCESS;
     }

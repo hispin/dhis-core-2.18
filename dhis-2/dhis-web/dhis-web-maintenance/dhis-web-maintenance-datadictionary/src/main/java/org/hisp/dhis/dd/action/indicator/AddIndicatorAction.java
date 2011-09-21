@@ -27,15 +27,18 @@ package org.hisp.dhis.dd.action.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.system.util.AttributeUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AddIndicatorAction.java 5164 2008-05-16 12:23:58Z larshelg $
  */
 public class AddIndicatorAction
     implements Action
@@ -50,7 +53,14 @@ public class AddIndicatorAction
     {
         this.indicatorService = indicatorService;
     }
-        
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -89,7 +99,7 @@ public class AddIndicatorAction
     {
         this.description = description;
     }
-    
+
     private boolean annualized;
 
     public void setAnnualized( boolean annualized )
@@ -103,21 +113,21 @@ public class AddIndicatorAction
     {
         this.indicatorTypeId = indicatorTypeId;
     }
-    
+
     private String url;
 
     public void setUrl( String url )
     {
         this.url = url;
     }
-    
+
     private String numerator;
 
     public void setNumerator( String numerator )
     {
         this.numerator = numerator;
     }
-    
+
     private String numeratorDescription;
 
     public void setNumeratorDescription( String numeratorDescription )
@@ -153,6 +163,13 @@ public class AddIndicatorAction
         this.denominatorAggregationOperator = denominatorAggregationOperator;
     }
 
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -170,14 +187,14 @@ public class AddIndicatorAction
         {
             code = null;
         }
-        
+
         if ( description != null && description.trim().length() == 0 )
         {
             description = null;
         }
-        
+
         Indicator indicator = new Indicator();
-        
+
         indicator.setName( name );
         indicator.setAlternativeName( alternativeName );
         indicator.setShortName( shortName );
@@ -192,7 +209,10 @@ public class AddIndicatorAction
         indicator.setDenominator( denominator );
         indicator.setDenominatorDescription( denominatorDescription );
         indicator.setDenominatorAggregationOperator( denominatorAggregationOperator );
-        
+
+        AttributeUtils.updateAttributeValuesFromJson( indicator.getAttributeValues(), jsonAttributeValues,
+            attributeService );
+
         indicatorService.addIndicator( indicator );
 
         return SUCCESS;

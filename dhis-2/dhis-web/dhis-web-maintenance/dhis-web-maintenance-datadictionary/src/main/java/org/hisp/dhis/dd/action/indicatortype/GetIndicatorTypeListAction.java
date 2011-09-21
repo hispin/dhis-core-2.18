@@ -43,8 +43,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetIndicatorTypeListAction.java 3305 2007-05-14 18:55:52Z
- *          larshelg $
  */
 public class GetIndicatorTypeListAction
     extends ActionPagingSupport<IndicatorType>
@@ -90,20 +88,20 @@ public class GetIndicatorTypeListAction
         return key;
     }
 
-    private List<Attribute> attributes;
-
-    public List<Attribute> getAttributes()
-    {
-        return attributes;
-    }
-
     public void setKey( String key )
     {
         this.key = key;
     }
 
+    private List<Attribute> attributes;
+    
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
     // -------------------------------------------------------------------------
-    // Action implemantation
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
@@ -125,7 +123,7 @@ public class GetIndicatorTypeListAction
 
         Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
+        attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
 
         Collections.sort( attributes, new AttributeNameComparator() );
         

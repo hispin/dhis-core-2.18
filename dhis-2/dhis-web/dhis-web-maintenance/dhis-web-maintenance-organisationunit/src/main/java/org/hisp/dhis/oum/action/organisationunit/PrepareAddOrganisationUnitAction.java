@@ -76,9 +76,9 @@ public class PrepareAddOrganisationUnitAction
     {
         this.attributeService = attributeService;
     }
-
+    
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private Date defaultDate;

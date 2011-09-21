@@ -23,6 +23,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="currentUserService">
       <ref bean="org.hisp.dhis.user.CurrentUserService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.action.DeleteCurrentUserAction" class="org.hisp.dhis.user.action.DeleteCurrentUserAction"
@@ -91,6 +92,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="currentUserService">
       <ref bean="org.hisp.dhis.user.CurrentUserService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.action.ValidateUserAction" class="org.hisp.dhis.user.action.ValidateUserAction"
@@ -113,6 +115,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="currentUserService">
       <ref bean="org.hisp.dhis.user.CurrentUserService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.action.SelectOrganisationUnitGroupMembersAction" class="org.hisp.dhis.user.action.SelectOrganisationUnitGroupMembersAction"

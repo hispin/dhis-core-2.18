@@ -36,7 +36,6 @@ import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -46,6 +45,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.util.AttributeUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -186,13 +186,7 @@ public class ShowUpdateDataElementFormAction
 
         Collections.sort( attributes, new AttributeNameComparator() );
 
-        List<AttributeValue> dataElementAttributeValues = new ArrayList<AttributeValue>(
-            dataElement.getAttributeValues() );
-
-        for ( AttributeValue attributeValue : dataElementAttributeValues )
-        {
-            attributeValues.put( attributeValue.getId(), attributeValue.getValue() );
-        }
+        attributeValues = AttributeUtils.getAttributeValueMap( dataElement.getAttributeValues() );
 
         return SUCCESS;
     }

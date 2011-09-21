@@ -45,7 +45,7 @@ public class HibernateAttributeStore
     {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( Attribute.class );
-        criteria.add( Restrictions.eq( "dataElement", true ) );
+        criteria.add( Restrictions.eq( "dataElementAttribute", true ) );
         criteria.setCacheable( true );
 
         return new HashSet<Attribute>( criteria.list() );
@@ -56,7 +56,7 @@ public class HibernateAttributeStore
     {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( Attribute.class );
-        criteria.add( Restrictions.eq( "indicator", true ) );
+        criteria.add( Restrictions.eq( "indicatorAttribute", true ) );
         criteria.setCacheable( true );
 
         return new HashSet<Attribute>( criteria.list() );
@@ -67,7 +67,18 @@ public class HibernateAttributeStore
     {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( Attribute.class );
-        criteria.add( Restrictions.eq( "organisationUnit", true ) );
+        criteria.add( Restrictions.eq( "organisationUnitAttribute", true ) );
+        criteria.setCacheable( true );
+
+        return new HashSet<Attribute>( criteria.list() );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Set<Attribute> getUserAttributes()
+    {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria( Attribute.class );
+        criteria.add( Restrictions.eq( "userAttribute", true ) );
         criteria.setCacheable( true );
 
         return new HashSet<Attribute>( criteria.list() );
