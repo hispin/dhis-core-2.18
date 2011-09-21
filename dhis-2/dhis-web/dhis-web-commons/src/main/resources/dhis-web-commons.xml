@@ -108,13 +108,15 @@
   <!-- Security -->
   <package name="dhis-web-commons-security" extends="dhis-web-commons" namespace="/dhis-web-commons/security">
 
-    <action name="login" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="velocity">/dhis-web-commons/security/login.vm</result>
+    <action name="login" class="org.hisp.dhis.security.action.LoginAction">
+      <result name="standard" type="velocity">/dhis-web-commons/security/login.vm</result>
+      <result name="mobile" type="velocity">/dhis-web-commons/security/login_mobile.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="loginfailed" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="velocity">/dhis-web-commons/security/loginfailed.vm</result>
+    <action name="loginfailed" class="org.hisp.dhis.security.action.LogoutAction">
+      <result name="standard" type="velocity">/dhis-web-commons/security/loginfailed.vm</result>
+      <result name="mobile" type="velocity">/dhis-web-commons/security/loginfailed_mobile.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 

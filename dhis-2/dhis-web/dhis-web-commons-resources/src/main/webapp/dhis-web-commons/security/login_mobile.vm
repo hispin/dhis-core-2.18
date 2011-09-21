@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>DHIS 2</title>
+
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+	
+<style type="text/css">
+html,body
+{
+  background-color: #1d5288;  
+  color: white;
+  font-size: 16px;
+}
+
+p {
+	width: 150px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="wrapper" align="center">
+<p>
+	<img alt="" src="logo_banner.png">
+</p>
+
+<form id='loginForm' action="../../dhis-web-commons-security/login.action" method="post">
+
+<p>
+	<h3>Username</h3>
+	<input type="text" id="j_username" name="j_username"></td>
+</p>
+
+<p>
+	<h3>Password</h3>
+	<input type="password" id="j_password" name="j_password"></td>
+</p>
+
+<p>
+	<input id='submit' type="submit" value="Login" style="width: 45%;">
+	<input id='reset' type="reset" value="Clear" style="width: 45%;">
+</p>
+
+</form>
+</div>
+
+</body>
+
+</html>

@@ -89,6 +89,16 @@
     </property>
   </bean>
 
+  <bean id="org.springframework.mobile.device.DeviceResolver" class="org.springframework.mobile.device.LiteDeviceResolver" />
+
+  <bean id="org.hisp.dhis.security.action.LoginAction" class="org.hisp.dhis.security.action.LoginAction">
+    <property name="deviceResolver" ref="org.springframework.mobile.device.DeviceResolver" />
+  </bean>
+
+  <bean id="org.hisp.dhis.security.action.LogoutAction" class="org.hisp.dhis.security.action.LogoutAction">
+    <property name="deviceResolver" ref="org.springframework.mobile.device.DeviceResolver" />
+  </bean>
+
   <!-- Organisation Unit Web Tree -->
 
   <bean id="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" class="org.hisp.dhis.ouwt.manager.DefaultOrganisationUnitSelectionManager">
