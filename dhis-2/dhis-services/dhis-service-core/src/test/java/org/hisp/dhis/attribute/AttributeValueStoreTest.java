@@ -40,16 +40,19 @@ public class AttributeValueStoreTest
     @Override
     protected void setUpTest()
     {
+        AttributeStore attributeStore = (AttributeStore) getBean( "org.hisp.dhis.attribute.AttributeStore" );
         attributeValueStore = (AttributeValueStore) getBean( "org.hisp.dhis.attribute.AttributeValueStore" );
 
         Attribute attribute1 = new Attribute();
         attribute1.setName( "attribute_simple" );
         attribute1.setValueType( "string" );
 
-        attributeValue1 = new AttributeValue("value 1");
+        attributeStore.save( attribute1 );
+
+        attributeValue1 = new AttributeValue( "value 1" );
         attributeValue1.setAttribute( attribute1 );
 
-        attributeValue2 = new AttributeValue("value 2");
+        attributeValue2 = new AttributeValue( "value 2" );
         attributeValue2.setAttribute( attribute1 );
 
         attributeValueStore.save( attributeValue1 );
