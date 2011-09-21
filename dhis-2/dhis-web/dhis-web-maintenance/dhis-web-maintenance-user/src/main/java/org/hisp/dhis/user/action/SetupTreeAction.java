@@ -37,6 +37,7 @@ import java.util.Map;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -180,7 +181,7 @@ public class SetupTreeAction
 
         attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
 
-        Collections.sort( attributes, new AttributeNameComparator() );
+        Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         return SUCCESS;
     }

@@ -523,6 +523,11 @@
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
+    <action name="showSortAttributeForm" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListSortOrderAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/sortAttributeForm.vm</param>
+    </action>
+
     <action name="addAttribute" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeAction">
       <result name="success" type="redirect">attribute.action</result>
       <result name="error" type="redirect">index.action</result>
@@ -533,6 +538,11 @@
       <result name="success" type="redirect">attributeOption.action</result>
       <result name="error" type="redirect">index.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+    </action>
+
+    <action name="saveAttributeSortOrder" class="org.hisp.dhis.dataadmin.action.attribute.SaveAttributeSortOrderAction">
+      <result name="success" type="redirect">attribute.action</result>
+      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
     <action name="updateAttribute" class="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeAction">

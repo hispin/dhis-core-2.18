@@ -26,6 +26,8 @@
 
     <property name="userAttribute" />
 
+    <property name="sortOrder" />
+
     <set name="attributeOptions" table="attributeattributeoptions">
       <key column="attributeid" />
       <many-to-many column="attributeoptionid" class="AttributeOption" />

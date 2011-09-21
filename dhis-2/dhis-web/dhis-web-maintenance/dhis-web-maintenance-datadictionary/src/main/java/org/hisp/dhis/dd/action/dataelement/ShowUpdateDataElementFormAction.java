@@ -37,6 +37,7 @@ import java.util.Map;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -184,7 +185,7 @@ public class ShowUpdateDataElementFormAction
 
         attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
 
-        Collections.sort( attributes, new AttributeNameComparator() );
+        Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         attributeValues = AttributeUtils.getAttributeValueMap( dataElement.getAttributeValues() );
 

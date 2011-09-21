@@ -35,6 +35,7 @@ import java.util.List;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
@@ -126,7 +127,7 @@ public class PrepareAddOrganisationUnitAction
 
         Collections.sort( dataSets, new DataSetNameComparator() );
         Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
-        Collections.sort( attributes, new AttributeNameComparator() );
+        Collections.sort( attributes, new AttributeSortOrderComparator() );
         
         return SUCCESS;
     }

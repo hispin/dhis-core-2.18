@@ -1,5 +1,3 @@
-package org.hisp.dhis.dd.action.dataelement;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -27,68 +25,57 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.dataadmin.action.attribute;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author mortenoh
  */
-public class GetDataElementListSortOrderAction
+public class GetAttributeListSortOrderAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementService dataElementService;
+    private AttributeService attributeService;
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setAttributeService( AttributeService attributeService )
     {
-        this.dataElementService = dataElementService;
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private DisplayPropertyHandler displayPropertyHandler;
+    private List<Attribute> attributes;
 
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    public List<Attribute> getAttributes()
     {
-        this.displayPropertyHandler = displayPropertyHandler;
+        return attributes;
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Action Implementation
     // -------------------------------------------------------------------------
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implemantation
-    // -------------------------------------------------------------------------
-
+    @Override
     public String execute()
     {
-        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        attributes = new ArrayList<Attribute>( attributeService.getAllAttributes() );
 
-        Collections.sort( dataElements, new DataElementSortOrderComparator() );
-
-        displayPropertyHandler.handle( dataElements );
+        Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         return SUCCESS;
     }

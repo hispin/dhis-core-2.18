@@ -79,7 +79,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="statisticsProvider" ref="org.hisp.dhis.statistics.StatisticsProvider" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
-	<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"
@@ -288,6 +288,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListSortOrderAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListSortOrderAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
   <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionListAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionListAction"
     scope="prototype">
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
@@ -319,6 +324,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction"
+    scope="prototype">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.attribute.SaveAttributeSortOrderAction" class="org.hisp.dhis.dataadmin.action.attribute.SaveAttributeSortOrderAction"
     scope="prototype">
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
