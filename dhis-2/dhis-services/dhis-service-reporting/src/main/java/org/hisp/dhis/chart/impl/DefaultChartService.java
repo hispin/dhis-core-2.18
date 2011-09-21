@@ -987,11 +987,11 @@ public class DefaultChartService
         {
             subTitle.setText( format.formatPeriod( chart.getAllPeriods().get( 0 ) ) );
         }
-        else if ( chart.isDimension( DIMENSION_DATAELEMENT_PERIOD ) && chart.getIndicators().size() > 0 )
+        else if ( chart.isDimension( DIMENSION_DATAELEMENT_PERIOD ) && chart.getDataElements().size() > 0 )
         {
             subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
         }
-
+        
         return subTitle;
     }
 
