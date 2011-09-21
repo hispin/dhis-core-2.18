@@ -235,15 +235,15 @@ public class DefaultChartService
 
         return getJFreeChart( chart, !chart.getHideSubtitle() );
     }
-    
+
     public JFreeChart getJFreeChart( Indicator indicator, OrganisationUnit unit, I18nFormat format )
     {
         RelativePeriods relatives = new RelativePeriods();
         relatives.setMonthsThisYear( true );
         List<Period> periods = relatives.getRelativePeriods( 1, format, true );
-        
+
         Chart chart = new Chart();
-        
+
         chart.setTitle( indicator.getName() );
         chart.setType( TYPE_LINE3D );
         chart.setSize( SIZE_NORMAL );
@@ -253,10 +253,10 @@ public class DefaultChartService
         chart.setPeriods( periods );
         chart.setOrganisationUnit( unit );
         chart.setFormat( format );
-        
+
         chart.init();
-        
-        return getJFreeChart( chart, true );        
+
+        return getJFreeChart( chart, true );
     }
 
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<Period> periods,
@@ -314,7 +314,7 @@ public class DefaultChartService
         int historyLength, I18nFormat format )
     {
         lastPeriod = periodService.reloadPeriod( lastPeriod );
-        
+
         List<Period> periods = periodService.getPeriods( lastPeriod, historyLength );
 
         MinMaxDataElement minMax = minMaxDataElementService.getMinMaxDataElement( organisationUnit, dataElement,
@@ -631,7 +631,7 @@ public class DefaultChartService
         {
             return getMultiplePieChart( chart, dataSets );
         }
-        else if ( chart.isType( TYPE_STACKED_BAR ) || chart.isType( TYPE_STACKED_BAR3D ))
+        else if ( chart.isType( TYPE_STACKED_BAR ) || chart.isType( TYPE_STACKED_BAR3D ) )
         {
             return getStackedBarChart( chart, dataSets[0] );
         }
@@ -677,7 +677,7 @@ public class DefaultChartService
         xAxis.setCategoryLabelPositions( chart.isVerticalLabels() ? CategoryLabelPositions.UP_45
             : CategoryLabelPositions.STANDARD );
         xAxis.setLabel( chart.getDomainAxixLabel() );
-        
+
         ValueAxis yAxis = plot.getRangeAxis();
         yAxis.setLabel( chart.getRangeAxisLabel() );
 
@@ -695,20 +695,20 @@ public class DefaultChartService
     {
         PlotOrientation orientation = chart.isHorizontalPlotOrientation() ? PlotOrientation.HORIZONTAL
             : PlotOrientation.VERTICAL;
-        
+
         JFreeChart stackedBarChart = null;
-        
+
         if ( chart.isType( TYPE_STACKED_BAR ) )
         {
-            stackedBarChart = ChartFactory.createStackedBarChart( chart.getTitle(), 
-                chart.getDomainAxixLabel(), chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
+            stackedBarChart = ChartFactory.createStackedBarChart( chart.getTitle(), chart.getDomainAxixLabel(),
+                chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
         }
         else
         {
-            stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getTitle(), 
-                chart.getDomainAxixLabel(), chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
+            stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getTitle(), chart.getDomainAxixLabel(),
+                chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
         }
-        
+
         CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
         plot.setBackgroundPaint( Color.WHITE );
 
@@ -717,23 +717,23 @@ public class DefaultChartService
             : CategoryLabelPositions.STANDARD );
 
         stackedBarChart.setAntiAlias( true );
-        
+
         return stackedBarChart;
     }
-    
+
     private JFreeChart getMultiplePieChart( Chart chart, CategoryDataset[] dataSets )
     {
         JFreeChart multiplePieChart = null;
 
         if ( chart.isType( TYPE_PIE ) )
         {
-            multiplePieChart = ChartFactory.createMultiplePieChart( chart.getTitle(), dataSets[0],
-                TableOrder.BY_ROW, !chart.getHideLegend(), false, false );
+            multiplePieChart = ChartFactory.createMultiplePieChart( chart.getTitle(), dataSets[0], TableOrder.BY_ROW,
+                !chart.getHideLegend(), false, false );
         }
         else
         {
-            multiplePieChart = ChartFactory.createMultiplePieChart3D( chart.getTitle(), dataSets[0],
-                TableOrder.BY_ROW, !chart.getHideLegend(), false, false );
+            multiplePieChart = ChartFactory.createMultiplePieChart3D( chart.getTitle(), dataSets[0], TableOrder.BY_ROW,
+                !chart.getHideLegend(), false, false );
         }
 
         multiplePieChart.setBackgroundPaint( Color.WHITE );
@@ -766,7 +766,7 @@ public class DefaultChartService
 
         return multiplePieChart;
     }
-    
+
     /**
      * Returns a DefaultCategoryDataSet based on aggregated data for the chart.
      */
@@ -826,15 +826,15 @@ public class DefaultChartService
                         if ( isIndicatorChart )
                         {
                             value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                                .getAggregatedIndicatorValue( indicators.get( i ), period.getStartDate(), period
-                                    .getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
+                                .getAggregatedIndicatorValue( indicators.get( i ), period.getStartDate(),
+                                    period.getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
                                 .getAggregatedValue( indicators.get( i ), period, selectedOrganisationUnit );
                         }
                         else if ( isDataElementChart )
                         {
                             value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                                .getAggregatedDataValue( dataElements.get( i ), null, period.getStartDate(), period
-                                    .getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
+                                .getAggregatedDataValue( dataElements.get( i ), null, period.getStartDate(),
+                                    period.getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
                                 .getAggregatedValue( dataElements.get( i ), period, selectedOrganisationUnit );
                         }
 
@@ -976,6 +976,18 @@ public class DefaultChartService
             subTitle.setText( format.formatPeriod( chart.getAllPeriods().get( 0 ) ) );
         }
         else if ( chart.isDimension( DIMENSION_INDICATOR_PERIOD ) && chart.getIndicators().size() > 0 )
+        {
+            subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
+        }
+        else if ( chart.isDimension( DIMENSION_PERIOD_DATAELEMENT ) && chart.getAllOrganisationUnits().size() > 0 )
+        {
+            subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
+        }
+        else if ( chart.isDimension( DIMENSION_ORGANISATIONUNIT_DATAELEMENT ) && chart.getAllPeriods().size() > 0 )
+        {
+            subTitle.setText( format.formatPeriod( chart.getAllPeriods().get( 0 ) ) );
+        }
+        else if ( chart.isDimension( DIMENSION_DATAELEMENT_PERIOD ) && chart.getIndicators().size() > 0 )
         {
             subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
         }

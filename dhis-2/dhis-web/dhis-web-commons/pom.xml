@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -7,31 +6,31 @@
     <artifactId>dhis-web</artifactId>
     <version>2.5-SNAPSHOT</version>
   </parent>
-  
+
   <artifactId>dhis-web-commons</artifactId>
   <packaging>jar</packaging>
   <name>DHIS Common Functionality for Web</name>
-  
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-		<version>1.6</version>
+        <version>1.6</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
             <configuration>
               <target>
                 <tstamp>
-                  <format property="now" pattern="yyyy-MM-dd HH:mm:ss"/>
+                  <format property="now" pattern="yyyy-MM-dd HH:mm:ss" />
                 </tstamp>
-                <mkdir dir="${project.build.outputDirectory}"/>
+                <mkdir dir="${project.build.outputDirectory}" />
                 <exec executable="bzr" outputproperty="revision" failifexecutionfails="false">
-                      <arg value="revno"/>
+                  <arg value="revno" />
                 </exec>
                 <echo file="${project.build.outputDirectory}/build.properties"
-                  message="build.version = ${project.version}&#10;build.time = ${now}&#10;build.revision = ${revision}&#10;"/>
+                  message="build.version = ${project.version}&#10;build.time = ${now}&#10;build.revision = ${revision}&#10;" />
               </target>
             </configuration>
             <goals>
@@ -42,11 +41,11 @@
       </plugin>
     </plugins>
   </build>
-  
+
   <dependencies>
-    
+
     <!-- DHIS -->
-    
+
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-api</artifactId>
@@ -79,9 +78,9 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-support-system</artifactId>
     </dependency>
-    
+
     <!-- Web -->
-    
+
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts2-core</artifactId>
@@ -102,9 +101,13 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
-    
+    <dependency>
+      <groupId>org.springframework.mobile</groupId>
+      <artifactId>spring-mobile-device</artifactId>
+    </dependency>
+
     <!-- Other -->
-	
+
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
@@ -137,10 +140,10 @@
       <groupId>jfree</groupId>
       <artifactId>jcommon</artifactId>
     </dependency>
-	<dependency>
-	  <groupId>net.fckeditor</groupId>
-	  <artifactId>java-core</artifactId>
-	</dependency>
+    <dependency>
+      <groupId>net.fckeditor</groupId>
+      <artifactId>java-core</artifactId>
+    </dependency>
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>
