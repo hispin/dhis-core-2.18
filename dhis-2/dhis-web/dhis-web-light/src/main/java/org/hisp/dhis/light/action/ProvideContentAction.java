@@ -22,21 +22,21 @@ public class ProvideContentAction
     // -------------------------------------------------------------------------
 
     private DashboardService dashboardService;
-    
+
     public void setDashboardService( DashboardService dashboardService )
     {
         this.dashboardService = dashboardService;
     }
-    
+
     private DashboardManager dashboardManager;
-    
+
     public void setDashboardManager( DashboardManager dashboardManager )
     {
         this.dashboardManager = dashboardManager;
     }
 
     private CurrentUserService currentUserService;
-    
+
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
@@ -47,7 +47,7 @@ public class ProvideContentAction
     // -------------------------------------------------------------------------
 
     private List<ReportTable> reportTables;
-    
+
     public List<ReportTable> getReportTables()
     {
         return reportTables;
@@ -59,7 +59,7 @@ public class ProvideContentAction
     {
         return documents;
     }
-    
+
     private List<String> charts = new ArrayList<String>();
 
     public List<String> getCharts()
@@ -78,20 +78,20 @@ public class ProvideContentAction
 
         for ( int i = 0; i < 8; i++ )
         {
-            String id = config.getAreaItems().get( DashboardManager.CHART_AREA_PREFIX + ( i + 1 ) );
-            
+            String id = config.getAreaItems().get( DashboardManager.CHART_AREA_PREFIX + (i + 1) );
+
             if ( id != null )
             {
                 charts.add( id );
             }
         }
-        
+
         User user = currentUserService.getCurrentUser();
-        
+
         DashboardContent content = dashboardService.getDashboardContent( user );
-        
+
         reportTables = content.getReportTables();
-        
+
         documents = content.getDocuments();
 
         return SUCCESS;

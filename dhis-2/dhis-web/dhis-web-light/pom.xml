@@ -1,26 +1,25 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-web</artifactId>
     <version>2.5-SNAPSHOT</version>
   </parent>
-  
+
   <artifactId>dhis-web-light</artifactId>
   <packaging>war</packaging>
   <name>DHIS Web Light</name>
-  
+
   <build>
     <finalName>dhis-web-light</finalName>
   </build>
-  
+
   <dependencies>
-    
+
     <!-- DHIS -->
-    
+
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-commons</artifactId>
@@ -38,15 +37,14 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
     </dependency>
-        
+
     <!-- Other -->
-    
     <dependency>
       <groupId>jfree</groupId>
       <artifactId>jfreechart</artifactId>
-    </dependency>    
+    </dependency>
   </dependencies>
-  
+
   <properties>
     <rootDir>../../</rootDir>
   </properties>

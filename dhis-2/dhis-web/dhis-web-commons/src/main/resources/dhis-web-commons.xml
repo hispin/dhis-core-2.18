@@ -105,8 +105,22 @@
 
   </package>
 
-  <!-- Organisation Unit Selection Tree -->
+  <!-- Security -->
+  <package name="dhis-web-commons-security" extends="dhis-web-commons" namespace="/dhis-web-commons/security">
 
+    <action name="login" class="org.hisp.dhis.commons.action.NoAction">
+      <result name="success" type="velocity">/dhis-web-commons/security/login.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="loginfailed" class="org.hisp.dhis.commons.action.NoAction">
+      <result name="success" type="velocity">/dhis-web-commons/security/loginfailed.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+  </package>
+
+  <!-- Organisation Unit Selection Tree -->
   <package name="dhis-web-commons-oust" extends="dhis-web-commons" namespace="/dhis-web-commons/oust">
 
     <action name="expandSubtree" class="org.hisp.dhis.oust.action.ExpandSubtreeAction">

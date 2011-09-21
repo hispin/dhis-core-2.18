@@ -54,6 +54,12 @@
       <name>Dhis2 External Dependencies Repository</name>
       <url>http://dhis.uio.no/maven/external</url>
     </repository>
+    <repository>
+      <id>org.springframework.maven.milestone</id>
+      <name>Spring Maven Milestone Repository</name>
+      <url>http://maven.springframework.org/milestone</url>
+    </repository>
+
     <!--
       <repository>
       <id>jboss-public-repository-group</id>
@@ -219,7 +225,7 @@
         <artifactId>dhis-service-sms</artifactId>
         <version>${project.version}</version>
       </dependency>
-      
+
       <!--dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-excel-reporting</artifactId>
@@ -367,6 +373,12 @@
         <artifactId>spring-security-config</artifactId>
         <version>${spring.security.version}</version>
       </dependency>
+      <!-- Spring Mobile -->
+      <dependency>
+        <groupId>org.springframework.mobile</groupId>
+        <artifactId>spring-mobile-device</artifactId>
+        <version>1.0.0.M3</version>
+      </dependency>
       <!--Other -->
       <dependency>
         <groupId>org.apache.struts</groupId>
@@ -453,9 +465,9 @@
         <groupId>net.sf.json-lib</groupId>
         <artifactId>json-lib</artifactId>
         <version>2.4</version>
-	<classifier>jdk15</classifier>
+        <classifier>jdk15</classifier>
       </dependency>
-	
+
       <!-- Apache Commons -->
       <dependency>
         <groupId>commons-collections</groupId>
