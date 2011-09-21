@@ -34,7 +34,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AbstractAcegiCurrentUserService.java 3109 2007-03-19 17:05:21Z torgeilo $
  */
 public abstract class AbstractSpringSecurityCurrentUserService
     implements CurrentUserService
@@ -46,6 +45,22 @@ public abstract class AbstractSpringSecurityCurrentUserService
         if ( authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() == null )
         {
             return null;
+        }
+
+        /*
+         * If getPrincipal returns a string, it means that the user has been
+         * authenticated anonymous (String == anonymousUser).
+         */
+        if ( authentication.getPrincipal() instanceof String )
+        {
+            String principal = (String) authentication.getPrincipal();
+
+            if ( principal.compareTo( "anonymousUser" ) != 0 )
+            {
+                return null;
+            }
+
+            return principal;
         }
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();

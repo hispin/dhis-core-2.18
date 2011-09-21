@@ -14,7 +14,7 @@ var _loading_circle_html = "<img src='../images/ajax-loader-circle.gif'>";
  */
 function referrerBack( defaultUrl ) {
 	if(document.referrer !== undefined && document.referrer != "") {
-		if(document.referrer.indexOf("login.html") == -1) {
+		if(document.referrer.indexOf("login.action") == -1) {
 			location.href = document.referrer;
 			return;
 		}

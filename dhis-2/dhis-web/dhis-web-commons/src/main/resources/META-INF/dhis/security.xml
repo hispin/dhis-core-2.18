@@ -27,12 +27,12 @@
 
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
     <sec:form-login default-target-url="/" always-use-default-target="false"
-      login-processing-url="/dhis-web-commons-security/login.action" authentication-failure-url="/dhis-web-commons/security/loginfailed.html"
-      login-page="/dhis-web-commons/security/login.html" authentication-success-handler-ref="defaultAuthenticationSuccessHandler" />
+      login-processing-url="/dhis-web-commons-security/login.action" authentication-failure-url="/dhis-web-commons/security/loginfailed.action"
+      login-page="/dhis-web-commons/security/login.action" authentication-success-handler-ref="defaultAuthenticationSuccessHandler" />
     <sec:http-basic />
     <sec:logout logout-url="/dhis-web-commons-security/logout.action" />
 
-    <sec:intercept-url pattern="/dhis-web-commons/security/**" filters="none" />
+    <sec:intercept-url pattern="/dhis-web-commons/security/**" access="permitAll"/>
     <sec:intercept-url pattern="/dhis-web-commons/javascripts/**" filters="none" />
     <sec:intercept-url pattern="/dhis-web-commons/css/**" filters="none" />
     <sec:intercept-url pattern="/favicon.ico" filters="none" />
