@@ -35,7 +35,6 @@ import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -45,6 +44,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
+import org.hisp.dhis.system.util.AttributeUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -87,7 +87,7 @@ public class GetOrganisationUnitAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -132,11 +132,18 @@ public class GetOrganisationUnitAction
         return groupSets;
     }
 
-    public Map<Attribute, AttributeValue> attributeMap = new HashMap<Attribute, AttributeValue>();
+    private List<Attribute> attributes;
 
-    public Map<Attribute, AttributeValue> getAttributeMap()
+    public List<Attribute> getAttributes()
     {
-        return attributeMap;
+        return attributes;
+    }
+
+    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -158,28 +165,11 @@ public class GetOrganisationUnitAction
         groupSets = new ArrayList<OrganisationUnitGroupSet>(
             organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
 
-        List<AttributeValue> organisationUnitAttributeValues = new ArrayList<AttributeValue>(
-            organisationUnit.getAttributeValues() );
-
-        List<Attribute> attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitAttributes() );
+        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
 
         Collections.sort( attributes, new AttributeNameComparator() );
 
-        // TODO fix this.. quite ugly and slow
-        for ( Attribute key : attributes )
-        {
-            AttributeValue value = null;
-
-            for ( AttributeValue av : organisationUnitAttributeValues )
-            {
-                if ( value.getAttribute().equals( key ) )
-                {
-                    value = av;
-                }
-            }
-
-            attributeMap.put( key, value );
-        }
+        attributeValues = AttributeUtils.getAttributeValueMap( organisationUnit.getAttributeValues() );
 
         Collections.sort( availableDataSets, new DataSetNameComparator() );
         Collections.sort( dataSets, new DataSetNameComparator() );

@@ -1,6 +1,27 @@
-<script type="text/javascript" src="javascript/updateUserForm.js"></script>
 <script type="text/javascript">
 	jQuery(function() {
+	    var rules = getValidationRules( "user" );
+	    rules["rawPassword"].required = false;
+	    rules["retypePassword"].required = false;
+	
+	    validation2( 'updateUserForm', function( form )
+	    {
+	        jQuery( "#selectedList" ).children().attr( "selected", true );
+	        form.submit();
+	    }, {
+	        'beforeValidateHandler' : function()
+	        {
+	            listValidator( 'roleValidator', 'selectedList' );
+	            #tblDynamicAttributesJavascript()
+	        },
+	        'rules' : rules
+	    } );
+
+	    jQuery( "#cancel" ).click( function()
+	    {
+	        referrerBack( "alluser.action" );
+	    } );
+
 		jQuery("#availableList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getUserRoles.action",
 			iterator: 'userRoles',
@@ -25,7 +46,7 @@
   </div>
 
 <table>
-    <col style="width: 120px"/>
+    <col style="width: 200px"/>
     <col style="width: 350px"/>
     <col/>
     <col style="width: 350px"/>
@@ -68,13 +89,16 @@
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
         <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" style="width:20em"/></td> 
     </tr>
+</table>
+
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
+
+<table>
+    <col style="width: 450px"/>
+    <col/>
+    <col style="width: 450px"/>
 
 	<tr>
-		<td colspan="4" height="10"></td>
-	</tr>
-
-	<tr>
-		<td></td>
 		<th>$i18n.getString( "available" )</th>
 		<th></th>
 		<th>$i18n.getString( "selected" )
@@ -83,7 +107,6 @@
 	</tr>
 
 	<tr>
-		<td><label>$i18n.getString( "roles" )</label></td>	
         <td>
             <select id="availableList" name="availableList" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
@@ -105,17 +128,15 @@
 	</tr>  
 
 	<tr>
-        <td><label for="selectionTree">$i18n.getString( "organisation_unit" )</label></td>
 		<td colspan="3">
 			#organisationUnitSelectionTree( false, true, true )
 		</td>
 	</tr>
-	<tr>
-		<td></td>
-		<td valign="top">
-			<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
-			<input type="button" id="cancel" value="$i18n.getString( 'cancel' )" style="width:10em"/>
-		</td>
-	</tr>
 </table>
+
+<p>
+	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em" />
+	<input type="button" id="cancel" value="$i18n.getString( 'cancel' )" style="width:10em" />
+</p>
+
 </form>

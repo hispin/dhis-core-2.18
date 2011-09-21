@@ -59,9 +59,10 @@
 	<tr>
 		<td style="vertical-align: text-top;">$i18n.getString( "assigned_to" )</td>
 		<td>
-			<input type="checkbox" id="dataElement" name="dataElement" value="true" #if( $attribute.dataElement ) checked="checked" #end /><label for="dataElement">$i18n.getString( 'data_element' )</label> <br />
-			<input type="checkbox" id="indicator" name="indicator" value="true" #if( $attribute.indicator ) checked="checked" #end /><label for="indicator">$i18n.getString( 'indicator' )</label> <br />
-			<input type="checkbox" id="organisationUnit" name="organisationUnit" value="true" #if( $attribute.organisationUnit ) checked="checked" #end /><label for="organisationUnit">$i18n.getString( 'organisation_unit' )</label> <br />
+			<input type="checkbox" id="dataElementAttribute" name="dataElementAttribute" value="true" #if( $attribute.dataElementAttribute ) checked="checked" #end /><label for="dataElementAttribute">$i18n.getString( 'data_element' )</label> <br />
+			<input type="checkbox" id="indicatorAttribute" name="indicatorAttribute" value="true" #if( $attribute.indicatorAttribute ) checked="checked" #end /><label for="indicatorAttribute">$i18n.getString( 'indicator' )</label> <br />
+			<input type="checkbox" id="organisationUnitAttribute" name="organisationUnitAttribute" value="true" #if( $attribute.organisationUnitAttribute ) checked="checked" #end /><label for="organisationUnitAttribute">$i18n.getString( 'organisation_unit' )</label> <br />
+			<input type="checkbox" id="userAttribute" name="userAttribute" value="true" #if( $attribute.userAttribute ) checked="checked" #end /><label for="userAttribute">$i18n.getString( 'user' )</label> <br />
 		</td>
 	</tr>
 

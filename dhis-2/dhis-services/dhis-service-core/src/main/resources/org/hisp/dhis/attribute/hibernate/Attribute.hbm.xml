@@ -18,11 +18,13 @@
 
     <property name="mandatory" />
 
-    <property name="dataElement" />
+    <property name="dataElementAttribute" />
 
-    <property name="indicator" />
+    <property name="indicatorAttribute" />
 
-    <property name="organisationUnit" />
+    <property name="organisationUnitAttribute" />
+
+    <property name="userAttribute" />
 
     <set name="attributeOptions" table="attributeattributeoptions">
       <key column="attributeid" />

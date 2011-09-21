@@ -29,12 +29,19 @@ package org.hisp.dhis.user.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -83,8 +90,15 @@ public class SetupTreeAction
         this.currentUserService = currentUserService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -93,10 +107,6 @@ public class SetupTreeAction
     {
         this.id = id;
     }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
 
     private UserCredentials userCredentials;
 
@@ -119,6 +129,20 @@ public class SetupTreeAction
         return organisationUnitGroups;
     }
 
+    private List<Attribute> attributes;
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -128,7 +152,8 @@ public class SetupTreeAction
     {
         userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
 
-        FilterUtils.filter( userAuthorityGroups, new UserAuthorityGroupCanIssueFilter( currentUserService.getCurrentUser() ) );
+        FilterUtils.filter( userAuthorityGroups,
+            new UserAuthorityGroupCanIssueFilter( currentUserService.getCurrentUser() ) );
 
         if ( id != null )
         {
@@ -142,6 +167,8 @@ public class SetupTreeAction
             userCredentials = userService.getUserCredentials( userService.getUser( id ) );
 
             userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );
+
+            attributeValues = AttributeUtils.getAttributeValueMap( user.getAttributeValues() );
         }
         else
         {
@@ -150,6 +177,10 @@ public class SetupTreeAction
                 selectionTreeManager.setSelectedOrganisationUnits( selectionManager.getSelectedOrganisationUnits() );
             }
         }
+
+        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
+
+        Collections.sort( attributes, new AttributeNameComparator() );
 
         return SUCCESS;
     }

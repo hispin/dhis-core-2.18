@@ -32,7 +32,9 @@ import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -40,6 +42,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.system.util.AttributeUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -88,8 +91,15 @@ public class AddOrganisationUnitAction
         this.dataSetService = dataSetService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private String name;
@@ -190,15 +200,18 @@ public class AddOrganisationUnitAction
         this.selectedGroups = selectedGroups;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
     private Integer organisationUnitId;
 
     public Integer getOrganisationUnitId()
     {
         return organisationUnitId;
+    }
+
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -235,7 +248,7 @@ public class AddOrganisationUnitAction
 
             parent = selectionManager.getRootOrganisationUnitsParent();
         }
-        
+
         // ---------------------------------------------------------------------
         // Create organisation unit
         // ---------------------------------------------------------------------
@@ -261,17 +274,21 @@ public class AddOrganisationUnitAction
         // updated on both sides (and this side is inverse)
         // ---------------------------------------------------------------------
 
+        AttributeUtils.updateAttributeValuesFromJson( organisationUnit.getAttributeValues(), jsonAttributeValues,
+            attributeService );
+
         organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
 
         for ( String id : dataSets )
         {
             organisationUnit.addDataSet( dataSetService.getDataSet( Integer.parseInt( id ) ) );
         }
-        
+
         for ( String id : selectedGroups )
         {
-            OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( id ) );
-            
+            OrganisationUnitGroup group = organisationUnitGroupService
+                .getOrganisationUnitGroup( Integer.parseInt( id ) );
+
             if ( group != null )
             {
                 group.addOrganisationUnit( organisationUnit );
@@ -280,7 +297,7 @@ public class AddOrganisationUnitAction
         }
 
         organisationUnitService.updateOrganisationUnit( organisationUnit );
-        
+
         return SUCCESS;
     }
 }

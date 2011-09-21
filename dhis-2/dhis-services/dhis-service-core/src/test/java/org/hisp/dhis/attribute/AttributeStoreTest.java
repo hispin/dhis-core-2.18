@@ -45,14 +45,14 @@ public class AttributeStoreTest
         attribute1 = new Attribute();
         attribute1.setName( "attribute_simple" );
         attribute1.setValueType( "string" );
-        attribute1.setIndicator( true );
-        attribute1.setDataElement( true );
+        attribute1.setIndicatorAttribute( true );
+        attribute1.setDataElementAttribute( true );
 
         attribute2 = new Attribute();
         attribute2.setName( "attribute_with_options" );
         attribute2.setValueType( "string" );
-        attribute2.setOrganisationUnit( true );
-        attribute2.setDataElement( true );
+        attribute2.setOrganisationUnitAttribute( true );
+        attribute2.setDataElementAttribute( true );
 
         attribute2.addAttributeOption( new AttributeOption( "option 1" ) );
         attribute2.addAttributeOption( new AttributeOption( "option 2" ) );

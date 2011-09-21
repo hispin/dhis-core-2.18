@@ -30,12 +30,15 @@ package org.hisp.dhis.user.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.security.PasswordManager;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -46,7 +49,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UpdateUserAction.java 5556 2008-08-20 11:36:20Z abyot $
  */
 public class UpdateUserAction
     implements Action
@@ -90,8 +92,15 @@ public class UpdateUserAction
         this.currentUserService = currentUserService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -143,6 +152,13 @@ public class UpdateUserAction
         this.selectedList = selectedList;
     }
 
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -200,6 +216,9 @@ public class UpdateUserAction
             userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getUsername(), rawPassword ) );
         }
 
+        AttributeUtils.updateAttributeValuesFromJson( user.getAttributeValues(), jsonAttributeValues,
+            attributeService );
+
         userService.updateUserCredentials( userCredentials );
         userService.updateUser( user );
         
@@ -208,6 +227,7 @@ public class UpdateUserAction
             selectionManager.setSelectedOrganisationUnits( units );
         }
 
+        
         return SUCCESS;
     }
 }

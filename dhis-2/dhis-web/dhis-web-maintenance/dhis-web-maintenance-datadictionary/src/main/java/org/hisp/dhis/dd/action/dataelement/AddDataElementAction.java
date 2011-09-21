@@ -31,10 +31,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -61,6 +63,13 @@ public class AddDataElementAction
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
+    }
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -165,11 +174,11 @@ public class AddDataElementAction
         this.zeroIsSignificant = zeroIsSignificant;
     }
 
-    private List<String> attributeValues;
+    private List<String> jsonAttributeValues;
 
-    public void setAttributeValues( List<String> attributeValues )
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
     {
-        this.attributeValues = attributeValues;
+        this.jsonAttributeValues = jsonAttributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -224,12 +233,10 @@ public class AddDataElementAction
 
         dataElement.setZeroIsSignificant( zeroIsSignificant );
 
-        dataElementService.addDataElement( dataElement );
+        AttributeUtils.updateAttributeValuesFromJson( dataElement.getAttributeValues(), jsonAttributeValues,
+            attributeService );
 
-        for ( String attributeValue : attributeValues )
-        {
-            System.out.println( attributeValue );
-        }
+        dataElementService.addDataElement( dataElement );
 
         return SUCCESS;
     }

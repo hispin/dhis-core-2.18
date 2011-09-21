@@ -58,9 +58,10 @@
 	<tr>
 		<td style="vertical-align: text-top;">$i18n.getString( "assigned_to" )</td>
 		<td>
-			<input type="checkbox" id="dataElement" name="dataElement" value="true" /><label for="dataElement">$i18n.getString( 'data_element' )</label> <br />
-			<input type="checkbox" id="indicator" name="indicator" value="true" /><label for="indicator">$i18n.getString( 'indicator' )</label> <br />
-			<input type="checkbox" id="organisationUnit" name="organisationUnit" value="true" /><label for="organisationUnit">$i18n.getString( 'organisation_unit' )</label> <br />
+			<input type="checkbox" id="dataElementAttribute" name="dataElementAttribute" value="true" /><label for="dataElementAttribute">$i18n.getString( 'data_element' )</label> <br />
+			<input type="checkbox" id="indicatorAttribute" name="indicatorAttribute" value="true" /><label for="indicatorAttribute">$i18n.getString( 'indicator' )</label> <br />
+			<input type="checkbox" id="organisationUnitAttribute" name="organisationUnitAttribute" value="true" /><label for="organisationUnitAttribute">$i18n.getString( 'organisation_unit' )</label> <br />
+			<input type="checkbox" id="userAttribute" name="userAttribute" value="true" /><label for="userAttribute">$i18n.getString( 'user' )</label> <br />
 		</td>
 	</tr>
 

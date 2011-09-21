@@ -14,5 +14,8 @@
 
     <property name="value" />
 
+    <many-to-one name="attribute" class="org.hisp.dhis.attribute.Attribute" column="attributeid"
+      foreign-key="fk_attributevalue_attributeid" />
+
   </class>
 </hibernate-mapping>

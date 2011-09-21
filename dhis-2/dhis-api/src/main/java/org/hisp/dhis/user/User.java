@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
@@ -72,7 +73,12 @@ public class User
      * TODO This should have been put in UserCredentials
      */
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
- 
+
+    /**
+     * Set of the dynamic attributes values that belong to this dataElement.
+     */
+    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -258,5 +264,15 @@ public class User
     public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
     {
         this.organisationUnits = organisationUnits;
+    }
+
+    public Set<AttributeValue> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
+    public void setAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
     }
 }

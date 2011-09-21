@@ -1,7 +1,17 @@
-<script type="text/javascript" src="javascript/updateOrganisationUnitForm.js"></script>
 <script type="text/javascript">
 	jQuery( document ).ready( function()
 	{
+		validation2('updateOrganisationUnitForm', function(form) {
+			selectAllById("dataSets");
+			form.submit();
+		}, {
+	        'beforeValidateHandler' : function()
+	        {
+				#tblDynamicAttributesJavascript()
+	        },
+			'rules' : getValidationRules("organisationUnit")
+		});
+
 		checkValueIsExist( "name", "validateOrganisationUnit.action", {
 			id : $organisationUnit.id
 		} );
@@ -30,7 +40,7 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $organisationUnit.name )" onchange="nameChanged()" style="width:20em"></td>
 	</tr>
 	<tr>
@@ -105,14 +115,16 @@
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
         <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $organisationUnit.phoneNumber )" style="width:20em"></td>
     </tr>
-	<tr>
-		<td style="height:15px" colspan="2">
-	</tr>
+</table>
+
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
+
+<table>    
     <tr>
 		<th colspan="2">$i18n.getString( "data_sets" )</th>
     </tr>
     <tr>
-    	<td><label for="availableDataSets">$i18n.getString( "available_data_sets" )</label></td>
+    	<td style="width:200px"><label for="availableDataSets">$i18n.getString( "available_data_sets" )</label></td>
     	<td>
 			<select multiple id="availableDataSets" size="5" style="width:20em" ondblclick="moveSelectedById( 'availableDataSets', 'dataSets' )">
 			#foreach( $dataSet in $availableDataSets )
@@ -158,10 +170,11 @@
 		<td><input type="hidden" name="orgUnitGroupSets" value="$groupSet.id"/></td>
     </tr>
 	#end
-	<tr>
-		<td></td>
-		<td><input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='organisationUnit.action'" style="width:10em"/></td>
-	</tr>
 </table>
+
+<p>
+	<input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:10em" />
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='organisationUnit.action'" style="width:10em"/>
+</p>
 
 </form>

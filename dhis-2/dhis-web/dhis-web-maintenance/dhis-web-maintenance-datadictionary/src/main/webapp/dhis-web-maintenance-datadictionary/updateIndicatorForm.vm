@@ -1,4 +1,23 @@
-<script type="text/javascript" src="javascript/updateIndicatorForm.js"></script>
+<script type="text/javascript">
+	jQuery( document ).ready( function()
+	{
+	    validation2( 'updateIndicatorForm', function( form )
+	    {
+	        form.submit();
+	    }, {
+	    	'beforeValidateHandler' : function() {
+				#tblDynamicAttributesJavascript()
+	        },
+	        'rules' : getValidationRules( "indicator" )
+	    } );
+	
+	    checkValueIsExist( "name", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
+	    checkValueIsExist( "shortName", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
+	    checkValueIsExist( "alternativeName", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
+	    checkValueIsExist( "code", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
+	} );
+</script>
+
 
 <h3>$i18n.getString( "edit_indicator" )</h3>
 
@@ -76,15 +95,15 @@
 			<input type="hidden" id="denominatorFormula" name="denominatorFormula" value="$!indicator.denominator"/>
 		</td>
 	</tr>
-	<tr>
-		<td height="20px"></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td></td>
-		<td><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='indicator.action'" style="width:10em"/></td>
-	</tr>
 </table>
+
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
+
+<p>
+	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em" />
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='indicator.action'" style="width:10em"/>
+</p>
+
 </form>
 
 #parse( "/dhis-web-maintenance-datadictionary/indicatorExpressionBuilderForm.vm" )

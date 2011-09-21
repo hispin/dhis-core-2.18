@@ -59,4 +59,11 @@ public interface AttributeStore
      * @return All attributes with attribute.organisationUnit = true
      */
     public Set<Attribute> getOrganisationUnitAttributes();
+
+    /**
+     * Get all attributes that are enabled for users.
+     * 
+     * @return All attributes with attribute.organisationUnit = true
+     */
+    public Set<Attribute> getUserAttributes();
 }

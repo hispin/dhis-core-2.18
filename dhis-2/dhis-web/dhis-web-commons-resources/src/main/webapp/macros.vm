@@ -156,7 +156,7 @@ $i18n.getString( "filter_by_name" ):
 #end
 
 <tr>
-	<td style="width: 200px;">$!args.text</td>
+	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
 		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[2,230]}}" style="width: 240px;" />
 	</td>
@@ -180,12 +180,12 @@ $i18n.getString( "filter_by_name" ):
 #end
 
 <tr>
-	<td  style="width: 200px;">$!args.text</td>
+	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
 		<select style="width: 244px;" id="$!args.id" name="$!name" class="{validate:{required:$args.mandatory}}">
 			<option value="" />
 			<option value="true" #if( $!args.value=="true" )selected="selected"#end>Yes</option>
-			<option value="false" #if( $!args.value=="true" )selected="selected"#end>No</option>
+			<option value="false" #if( $!args.value=="false" )selected="selected"#end>No</option>
 		</select>
 	</td>
 </tr>
@@ -209,12 +209,12 @@ $i18n.getString( "filter_by_name" ):
 
 <script type="text/javascript">
 jQuery(function() {
-	jQuery("#$!args.id").datepicker();
+	jQuery("#$!args.id").datepicker({ "dateFormat": "yy-mm-dd" });
 });
 </script>
 
 <tr>
-	<td  style="width: 200px;">$!args.text</td>
+	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
 		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory}}" style="width: 240px;" />
 	</td>
@@ -238,7 +238,7 @@ jQuery(function() {
 #end
 
 <tr>
-	<td style="width: 200px;">$!args.text</td>
+	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
 		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,number:true}}" style="width: 240px;" />
 	</td>
@@ -262,7 +262,7 @@ jQuery(function() {
 #end
 
 <tr>
-	<td style="width: 200px;">$!args.text</td>
+	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
 		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,integer:true}}" style="width: 240px;" />
 	</td>
@@ -286,7 +286,7 @@ jQuery(function() {
 #end
 
 <tr>
-	<td style="width: 200px;">$!args.text</td>
+	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
 		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,positive_integer:true}}" style="width: 240px;" />
 	</td>
@@ -310,7 +310,7 @@ jQuery(function() {
 #end
 
 <tr>
-	<td style="width: 200px;">$!args.text</td>
+	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
 		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,maxlength:230,negative_integer:true}}" style="width: 240px;" />
 	</td>
@@ -335,12 +335,12 @@ jQuery(function() {
 #end
 
 <tr>
-	<td  style="width: 200px;">$!args.text</td>
+	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
 		<select style="width: 244px;" id="$!args.id" name="$name" class="{validate:{required:$args.mandatory}}">
-		<option value="" />
+		<option value="" #if( $choice == $args.value )selected="selected"#end />
 		#foreach( $choice in $args.choices )
-			<option value="$choice" #if( $choice == $args.value )selected="selected"#end>$choice</option>
+			<option value="$choice" #if( $args.value == $choice )selected="selected"#end>$choice</option>
 		#end
 		</select>
 	</td>
@@ -349,8 +349,8 @@ jQuery(function() {
 
 #macro( tblDynamicAttributesJavascript )
 var attributes = jQuery("form").find(":input[name*='attribute_']");
-var jqAttributeValues= jQuery("#attributeValues");
-jqAttributeValues.children().remove();
+var jqJsonAttributeValues= jQuery("#jsonAttributeValues");
+jqJsonAttributeValues.children().remove();
 
 jQuery.each(attributes, function(i, item) {
 	var jqItem = jQuery(item);
@@ -373,7 +373,7 @@ jQuery.each(attributes, function(i, item) {
 		.attr("value", json)
 		.attr("selected", "selected")
 		.text(json)
-	.appendTo(jqAttributeValues);
+	.appendTo(jqJsonAttributeValues);
 });
 #end
 
@@ -385,9 +385,10 @@ jQuery.each(attributes, function(i, item) {
 *****************************************************#
 #macro( tblDynamicAttributes $args )
 
-<select multiple="multiple" id="attributeValues" name="attributeValues" style="display: none;"></select>
+#if( $args.attributes.size() > 0 )
+<select multiple="multiple" id="jsonAttributeValues" name="jsonAttributeValues" style="display: none;"></select>
 
-<div id="dynamicAttributesContainer" style="margin-top: 20px;">
+<div id="dynamicAttributesContainer" style="margin-top: 10px; margin-bottom: 10px;">
 <table>
 	#trHeader( "Dynamic Attributes" )
 
@@ -423,4 +424,5 @@ jQuery.each(attributes, function(i, item) {
 	#end
 </table>
 </div>
+#end
 #end

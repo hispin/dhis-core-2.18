@@ -79,25 +79,32 @@ public class AddAttributeAction
         this.mandatory = mandatory;
     }
 
-    private Boolean dataElement = false;
+    private Boolean dataElementAttribute = false;
 
-    public void setDataElement( Boolean dataElement )
+    public void setDataElementAttribute( Boolean dataElementAttribute )
     {
-        this.dataElement = dataElement;
+        this.dataElementAttribute = dataElementAttribute;
     }
 
-    private Boolean indicator = false;
+    private Boolean indicatorAttribute = false;
 
-    public void setIndicator( Boolean indicator )
+    public void setIndicatorAttribute( Boolean indicatorAttribute )
     {
-        this.indicator = indicator;
+        this.indicatorAttribute = indicatorAttribute;
     }
 
-    private Boolean organisationUnit = false;
+    private Boolean organisationUnitAttribute = false;
 
-    public void setOrganisationUnit( Boolean organisationUnit )
+    public void setOrganisationUnitAttribute( Boolean organisationUnitAttribute )
     {
-        this.organisationUnit = organisationUnit;
+        this.organisationUnitAttribute = organisationUnitAttribute;
+    }
+
+    private Boolean userAttribute = false;
+
+    public void setUserAttribute( Boolean userAttribute )
+    {
+        this.userAttribute = userAttribute;
     }
 
     private List<Integer> selectedAttributeOptions;
@@ -116,9 +123,10 @@ public class AddAttributeAction
     {
         Attribute attribute = new Attribute( name, valueType );
         attribute.setMandatory( mandatory );
-        attribute.setDataElement( dataElement );
-        attribute.setIndicator( indicator );
-        attribute.setOrganisationUnit( organisationUnit );
+        attribute.setDataElementAttribute( dataElementAttribute );
+        attribute.setIndicatorAttribute( indicatorAttribute );
+        attribute.setOrganisationUnitAttribute( organisationUnitAttribute );
+        attribute.setUserAttribute( userAttribute );
 
         Set<AttributeOption> attributeOptions = new HashSet<AttributeOption>();
 
