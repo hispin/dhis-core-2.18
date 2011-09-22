@@ -50,37 +50,23 @@ public class Chart
     private static final long serialVersionUID = 2570074075484545534L;
 
     public static final String DIMENSION_PERIOD_INDICATOR = "period";
-
     public static final String DIMENSION_ORGANISATIONUNIT_INDICATOR = "organisationUnit";
-
     public static final String DIMENSION_INDICATOR_PERIOD = "indicator";
-
     public static final String DIMENSION_PERIOD_DATAELEMENT = "period_dataElement";
-
     public static final String DIMENSION_ORGANISATIONUNIT_DATAELEMENT = "organisationUnit_dataElement";
-
     public static final String DIMENSION_DATAELEMENT_PERIOD = "dataElement_period";
 
     public static final String TYPE_BAR = "bar";
-
     public static final String TYPE_BAR3D = "bar3d";
-
-    public static final String TYPE_STACKED_BAR = "stackedBar";
-    
-    public static final String TYPE_STACKED_BAR3D = "stackedBar3d";
-    
+    public static final String TYPE_STACKED_BAR = "stackedBar";    
+    public static final String TYPE_STACKED_BAR3D = "stackedBar3d";    
     public static final String TYPE_LINE = "line";
-
     public static final String TYPE_LINE3D = "line3d";
-
     public static final String TYPE_PIE = "pie";
-
     public static final String TYPE_PIE3D = "pie3d";
     
     public static final String SIZE_NORMAL = "normal";
-
     public static final String SIZE_WIDE = "wide";
-
     public static final String SIZE_TALL = "tall";
 
     private int id;

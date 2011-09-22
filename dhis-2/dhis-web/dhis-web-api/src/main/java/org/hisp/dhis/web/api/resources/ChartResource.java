@@ -82,12 +82,12 @@ public class ChartResource
     @GET
     @Path( "/indicator/{indicator}/{orgUnit}" )
     @Produces( ContextUtils.CONTENT_TYPE_PNG )
-    public Response getIndicatorChart( @PathParam("indicator") String id, @PathParam("orgUnit") String orgUnit )
+    public Response getIndicatorChart( @PathParam("indicator") String indicatorUuid, @PathParam("orgUnit") String orgUnitUuid )
         throws Exception
     {
-        final Indicator indicator = indicatorService.getIndicator( id );
+        final Indicator indicator = indicatorService.getIndicator( indicatorUuid );
         
-        final OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnit );
+        final OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitUuid );
         
         if ( indicator == null || unit == null )
         {
