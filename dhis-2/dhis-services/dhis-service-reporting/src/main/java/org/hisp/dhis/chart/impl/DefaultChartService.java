@@ -122,7 +122,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultChartService
     implements ChartService
 {
-    private static final Font titleFont = new Font( "Tahoma", Font.BOLD, 14 );
+    private static final Font titleFont = new Font( "Tahoma", Font.BOLD, 15 );
     private static final Font subTitleFont = new Font( "Tahoma", Font.PLAIN, 12 );
     private static final Font labelFont = new Font( "Tahoma", Font.PLAIN, 10 );
 
@@ -235,7 +235,7 @@ public class DefaultChartService
         return getJFreeChart( chart, !chart.getHideSubtitle() );
     }
 
-    public JFreeChart getJFreeChart( Indicator indicator, OrganisationUnit unit, I18nFormat format )
+    public JFreeChart getPeriodJFreeChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
     {
         RelativePeriods relatives = new RelativePeriods();
         relatives.setMonthsThisYear( true );
@@ -243,8 +243,12 @@ public class DefaultChartService
 
         Chart chart = new Chart();
 
-        chart.setTitle( indicator.getName() );
-        chart.setType( TYPE_BAR );
+        if ( title )
+        {
+            chart.setTitle( indicator.getName() );
+        }
+        
+        chart.setType( TYPE_LINE );
         chart.setSize( SIZE_NORMAL );
         chart.setDimension( DIMENSION_PERIOD_INDICATOR );
         chart.setHideLegend( true );
@@ -256,9 +260,37 @@ public class DefaultChartService
 
         chart.init();
 
-        return getJFreeChart( chart, true );
+        return getJFreeChart( chart, title );
     }
 
+    public JFreeChart getOrganisationUnitJFreeChart( Indicator indicator, OrganisationUnit parent, boolean title, I18nFormat format )
+    {
+        RelativePeriods relatives = new RelativePeriods();
+        relatives.setThisYear( true );
+        List<Period> periods = periodService.reloadPeriods( relatives.getRelativePeriods( 1, format, true ) );
+
+        Chart chart = new Chart();
+
+        if ( title )
+        {
+            chart.setTitle( indicator.getName() );
+        }
+        
+        chart.setType( TYPE_BAR );
+        chart.setSize( SIZE_NORMAL );
+        chart.setDimension( DIMENSION_ORGANISATIONUNIT_INDICATOR );
+        chart.setHideLegend( true );
+        chart.setVerticalLabels( true );
+        chart.getIndicators().add( indicator );
+        chart.setPeriods( periods );
+        chart.setOrganisationUnits( parent.getSortedChildren() );
+        chart.setFormat( format );
+
+        chart.init();
+
+        return getJFreeChart( chart, title );
+    }
+    
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<Period> periods,
         List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format )
     {
