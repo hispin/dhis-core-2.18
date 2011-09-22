@@ -2,10 +2,12 @@ package org.hisp.dhis.hr.hibernate;
 
 
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -51,6 +53,8 @@ public class HibernateAggregateAttributeStore
     	
     	Attribute attribute = new Attribute();
     	
+    	StatementHolder holder = statementManager.getHolder();
+    	
     	//Deal with the criterias first
     	
     	sql = countSql;
@@ -95,14 +99,20 @@ public class HibernateAggregateAttributeStore
     	
     	try
         {
-            ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
+    		Statement statement = holder.getStatement();
+    		
+            ResultSet resultSet = statement.executeQuery( sql );            
 
             resultSet.next();
             return resultSet.getInt( 1 );
         }
         catch ( SQLException ex )
         {
-            throw new RuntimeException( "Failed to get all operands"+sql, ex  );
+            throw new RuntimeException( "Failed to get all operands", ex  );
+        }
+        finally
+        {
+        	holder.close();
         }
     }
 }

@@ -96,9 +96,9 @@ implements Action{
     	AggregateAttribute aggregateAttribute = aggregateAttributeService.getAggregateAttribute( id );
     	
     	OrganisationUnit unit = organisationUnitService.getOrganisationUnit(organisationUnitId);
-    	
+    	    	
 	    aggregateAttributeService.getCountPersonByAggregateAttribute( aggregateAttribute, unit );
-	
+	    	
 	    return SUCCESS;
     	
     }

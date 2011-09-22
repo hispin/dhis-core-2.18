@@ -196,8 +196,7 @@ implements AggregateAttributeService
 		
 		for(DataElementCategoryOptionCombo dataelementCategotyOptionCombo:aggregateAttribute.getDataelement().getCategoryCombo().getOptionCombos()){
 			optionCombo = dataelementCategotyOptionCombo;
-		}
-		
+		}		
 		
 		Period period = periodService.getPeriod(2067);
 		
@@ -207,24 +206,21 @@ implements AggregateAttributeService
 			
 			if( count != 0 ){
 				
-				DataValue dataValue = new DataValue();
-				
-				dataValue.setDataElement(aggregateAttribute.getDataelement());
-				dataValue.setOptionCombo(optionCombo);
-				dataValue.setSource(organisationUnit);
-				dataValue.setPeriod(period);
-				dataValue.setStoredBy(user);
-				dataValue.setTimestamp(new Date());	
-				dataValue.setValue(Integer.toString(count));
-				
-				
-				if(dataValueService.getDataValue(organisationUnit, aggregateAttribute.getDataelement(), period, optionCombo) == null){
-					
-					dataValueService.addDataValue(dataValue);					
-				}else{
-					
-					dataValueService.updateDataValue(dataValue);
-				}
+				DataValue dataValue = dataValueService.getDataValue( organisationUnit, aggregateAttribute.getDataelement(), period, optionCombo );
+
+		        if ( dataValue == null )
+		        {		           
+		                dataValue = new DataValue( aggregateAttribute.getDataelement(), period, organisationUnit, Integer.toString(count), user, new Date(), null, optionCombo );
+		                dataValueService.addDataValue( dataValue );		           
+		        }
+		        else
+		        {
+		            dataValue.setValue( Integer.toString(count) );
+		            dataValue.setTimestamp( new Date() );
+		            dataValue.setStoredBy( user );
+
+		            dataValueService.updateDataValue( dataValue );
+		        }
 			}
 		}
 	}
