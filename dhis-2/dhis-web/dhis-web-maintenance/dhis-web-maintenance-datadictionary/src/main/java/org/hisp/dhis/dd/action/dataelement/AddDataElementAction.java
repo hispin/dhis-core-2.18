@@ -233,8 +233,11 @@ public class AddDataElementAction
 
         dataElement.setZeroIsSignificant( zeroIsSignificant );
 
-        AttributeUtils.updateAttributeValuesFromJson( dataElement.getAttributeValues(), jsonAttributeValues,
-            attributeService );
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( dataElement.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
 
         dataElementService.addDataElement( dataElement );
 

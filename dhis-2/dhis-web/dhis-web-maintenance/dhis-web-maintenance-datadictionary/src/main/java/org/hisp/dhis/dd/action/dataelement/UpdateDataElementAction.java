@@ -272,8 +272,11 @@ public class UpdateDataElementAction
             }
         }
 
-        AttributeUtils.updateAttributeValuesFromJson( dataElement.getAttributeValues(), jsonAttributeValues,
-            attributeService );
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( dataElement.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
 
         dataElementService.updateDataElement( dataElement );
 

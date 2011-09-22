@@ -269,14 +269,17 @@ public class AddOrganisationUnitAction
             parent.getChildren().add( organisationUnit );
         }
 
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( organisationUnit.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
+
         // ---------------------------------------------------------------------
         // Must persist org unit before adding data sets because association are
         // updated on both sides (and this side is inverse)
         // ---------------------------------------------------------------------
-
-        AttributeUtils.updateAttributeValuesFromJson( organisationUnit.getAttributeValues(), jsonAttributeValues,
-            attributeService );
-
+        
         organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
 
         for ( String id : dataSets )

@@ -93,7 +93,7 @@ public class UpdateOrganisationUnitAction
     {
         this.attributeService = attributeService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -235,7 +235,7 @@ public class UpdateOrganisationUnitAction
     {
         this.jsonAttributeValues = jsonAttributeValues;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -273,7 +273,7 @@ public class UpdateOrganisationUnitAction
         {
             organisationUnitService.updateVersion();
         }
-        
+
         organisationUnit.setName( name );
         organisationUnit.setShortName( shortName );
         organisationUnit.setCode( code );
@@ -289,18 +289,21 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setEmail( email );
         organisationUnit.setPhoneNumber( phoneNumber );
 
-        AttributeUtils.updateAttributeValuesFromJson( organisationUnit.getAttributeValues(), jsonAttributeValues,
-            attributeService );
-        
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( organisationUnit.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
+
         Set<DataSet> sets = new HashSet<DataSet>();
-        
+
         for ( String id : dataSets )
         {
             sets.add( dataSetService.getDataSet( Integer.parseInt( id ) ) );
         }
 
         organisationUnit.updateDataSets( sets );
-        
+
         organisationUnitService.updateOrganisationUnit( organisationUnit );
 
         for ( int i = 0; i < orgUnitGroupSets.size(); i++ )

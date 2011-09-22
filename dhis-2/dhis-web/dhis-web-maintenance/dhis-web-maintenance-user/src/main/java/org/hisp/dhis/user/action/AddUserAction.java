@@ -97,7 +97,7 @@ public class AddUserAction
     {
         this.attributeService = attributeService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -169,7 +169,7 @@ public class AddUserAction
     {
         this.jsonAttributeValues = jsonAttributeValues;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -177,8 +177,9 @@ public class AddUserAction
     public String execute()
         throws Exception
     {
-        UserCredentials currentUserCredentials = currentUserService.getCurrentUser() != null ? currentUserService.getCurrentUser().getUserCredentials() : null;
-        
+        UserCredentials currentUserCredentials = currentUserService.getCurrentUser() != null ? currentUserService
+            .getCurrentUser().getUserCredentials() : null;
+
         // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
@@ -211,18 +212,21 @@ public class AddUserAction
         for ( String id : selectedList )
         {
             UserAuthorityGroup group = userService.getUserAuthorityGroup( Integer.parseInt( id ) );
-            
+
             if ( currentUserCredentials != null && currentUserCredentials.canIssue( group ) )
             {
                 userCredentials.getUserAuthorityGroups().add( group );
             }
         }
-        
+
         user.setUserCredentials( userCredentials );
 
-        AttributeUtils.updateAttributeValuesFromJson( user.getAttributeValues(), jsonAttributeValues,
-            attributeService );
-        
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( user.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
+
         userService.addUser( user );
         userService.addUserCredentials( userCredentials );
 
