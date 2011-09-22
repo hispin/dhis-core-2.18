@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <title>DHIS 2</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<link type="text/css" rel="stylesheet" media="screen" href="style/dashboard.css">
+
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/oust/oust.js"></script>
+	<script type="text/javascript" src="../request.js"></script>
+	<script type="text/javascript" src="javascript/dashboard.js"></script>
+
+</head>
+<head>
+<body>
+
+<div class="headerDiv"><span class="header">DHIS 2</span></div>
+
+#parse( $page )
+
+</body>
+</html>
