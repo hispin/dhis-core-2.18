@@ -56,6 +56,18 @@ public class LogoutAction
     // Input & Output
     // -------------------------------------------------------------------------
 
+    private Boolean failed = false;
+
+    public void setFailed( Boolean failed )
+    {
+        this.failed = failed;
+    }
+
+    public Boolean getFailed()
+    {
+        return failed;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

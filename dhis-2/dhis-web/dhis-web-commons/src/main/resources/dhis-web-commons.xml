@@ -114,12 +114,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="loginfailed" class="org.hisp.dhis.security.action.LogoutAction">
-      <result name="standard" type="velocity">/dhis-web-commons/security/loginfailed.vm</result>
-      <result name="mobile" type="velocity">/dhis-web-commons/security/loginfailed_mobile.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
   </package>
 
   <!-- Organisation Unit Selection Tree -->
