@@ -27,6 +27,10 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
@@ -48,6 +52,13 @@ public class OrganisationUnitDeletionHandler
         this.organisationUnitService = organisationUnitService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -57,7 +68,23 @@ public class OrganisationUnitDeletionHandler
     {
         return OrganisationUnit.class.getSimpleName();
     }
-    
+
+    @Override
+    public void deleteOrganisationUnit( OrganisationUnit unit )
+    {
+        // Delete attributeValues
+        Iterator<AttributeValue> iterator = unit.getAttributeValues().iterator();
+
+        while ( iterator.hasNext() )
+        {
+            AttributeValue attributeValue = iterator.next();
+            iterator.remove();
+            attributeService.deleteAttributeValue( attributeValue );
+        }
+
+        organisationUnitService.updateOrganisationUnit( unit );
+    }
+
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
@@ -69,7 +96,7 @@ public class OrganisationUnitDeletionHandler
             }
         }
     }
-    
+
     @Override
     public void deleteUser( User user )
     {
@@ -81,7 +108,7 @@ public class OrganisationUnitDeletionHandler
             }
         }
     }
-    
+
     @Override
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {
