@@ -1,27 +1,86 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
+
 <head>
-  <title>DHIS 2</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
-  <link type="text/css" rel="stylesheet" media="screen" href="style/dhis-web-light.css">
-  
-  <meta name="viewport" content="width=320"/>
-  <meta name="viewport" content="initial-scale=1.0"/>
-  <meta name="viewport" content="user-scalable=yes"/>
-  
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
-  <script type="text/javascript" src="../dhis-web-commons/oust/oust.js"></script>
-  <script type="text/javascript" src="../request.js"></script>
-  <script type="text/javascript" src="javascript/dhis-web-light.js"></script>
-  
+<title>DHIS 2</title>
+<meta name="viewport" content="width=device-width, user-scalable=yes" />
+
+<style type="text/css">
+html,body
+{
+	background-color: #1d5288;  
+	color: white;
+	font-size: 1.1em;
+	width: 100%;
+	font-family: verdana, sans, sans-serif;
+	
+	padding: 0;
+	margin: 0;
+}
+
+.header {
+	border-bottom: 1px solid #eee;
+	font-size: 1.2em;
+	font-weight: bold;
+	background-color: black;
+	color: white;
+	width: 100%;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.header span {
+	padding-left: 5px;
+}
+
+.footer {
+	border-top: 1px solid #eee;
+	font-size: 0.8em;
+	background-color: black;
+	color: white;
+	width: 100%;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-align: right;
+}
+
+.footer a {
+	padding-right: 5px;
+}
+
+input {
+	font-size: 1em;
+	font-family: verdana, sans, sans-serif;
+	width: 96%;
+}
+
+table {
+	width: 100%;
+}
+
+a:link, a:visited, a:active, a:hover {
+	color: white;
+}
+
+ul li {
+	list-style-type: none;
+}
+</style>
+
 </head>
-<head>
+
 <body>
 
-#parse( $page )
+<div class="header">
+	<span>DHIS 2</span>
+</div>
+
+<ul>
+	<li><a href="dashboard.action">Dashboard</a></li>
+</ul>
+
+<div class="footer">
+	<a href="../dhis-web-commons-security/logout.action">Logout</a>
+</div>
 
 </body>
-</html>
+

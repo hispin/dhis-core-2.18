@@ -3,32 +3,35 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
+  <include file="dhis-web-commons.xml" />
 
-  <include file="dhis-web-commons.xml"/>
-  
   <package name="dhis-web-light" extends="dhis-web-commons" namespace="/dhis-web-light">
 
-    <action name="index" class="org.hisp.dhis.light.action.ProvideContentAction">
-	  <result name="success" type="velocity">/dhis-web-light/main.vm</result>
-	  <param name="page">/dhis-web-light/dashboard.vm</param>
+    <action name="index" class="org.hisp.dhis.light.action.NoAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
     </action>
-    
+
+    <action name="dashboard" class="org.hisp.dhis.light.action.ProvideContentAction">
+      <result name="success" type="velocity">/dhis-web-light/dashboard_page.vm</result>
+      <param name="page">/dhis-web-light/dashboard.vm</param>
+    </action>
+
     <action name="getReport" class="org.hisp.dhis.light.action.GetReportAction">
-	  <result name="success" type="velocity">/dhis-web-light/main.vm</result>
-	  <param name="page">/dhis-web-commons/ajax/htmlGrid.vm</param>
+      <result name="success" type="velocity">/dhis-web-light/dashboard_page.vm</result>
+      <param name="page">/dhis-web-commons/ajax/htmlGrid.vm</param>
     </action>
 
     <action name="getReportParams" class="org.hisp.dhis.light.action.GetReportParamsAction">
-	  <result name="success" type="velocity">/dhis-web-light/main.vm</result>
-	  <param name="page">/dhis-web-light/inputReportParamsForm.vm</param>
+      <result name="success" type="velocity">/dhis-web-light/dashboard_page.vm</result>
+      <param name="page">/dhis-web-light/inputReportParamsForm.vm</param>
     </action>
-    
+
     <action name="getChart" class="org.hisp.dhis.light.action.GetChartAction">
       <result name="success" type="chart">
-      <param name="width">480</param>
-      <param name="height">800</param>
+        <param name="width">480</param>
+        <param name="height">800</param>
       </result>
     </action>
-    
+
   </package>
 </struts>
