@@ -76,6 +76,8 @@ public class DefaultCaseAggregationConditionService
 
     private final String IS_NULL = "is null";
 
+    private final String PROPERTY_AGE = "age";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -266,7 +268,6 @@ public class DefaultCaseAggregationConditionService
             if ( programStage == null || dataElement == null || optionCombo == null )
             {
                 return "Invalid condition";
-
             }
 
             matcher.appendReplacement( decription, "[" + programStage.getName() + SEPARATOR_ID + dataElement.getName()
@@ -550,13 +551,24 @@ public class DefaultCaseAggregationConditionService
 
     private String getConditionForPatientProperty( String propertyName, int orgunitId, String startDate, String endDate )
     {
-        return "SELECT distinct(p.patientid) FROM programstageinstance as psi INNER JOIN programstage as ps "
+        String sql = "SELECT distinct(p.patientid) FROM programstageinstance as psi INNER JOIN programstage as ps "
             + "ON psi.programstageid = ps.programstageid INNER JOIN patientdatavalue as pd ON "
             + "psi.programstageinstanceid = pd.programstageinstanceid INNER JOIN programinstance as pi ON "
             + "psi.programinstanceid = pi.programinstanceid INNER JOIN patient as p ON "
             + "p.patientid = pi.patientid WHERE pd.organisationunitid = " + orgunitId + " "
-            + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' AND p."
-            + propertyName + " ";
+            + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate;
+
+        if ( propertyName.equals( PROPERTY_AGE ) )
+        {
+            sql += "' AND ((  12 * ( EXTRACT(YEAR FROM '" + startDate + "' ) - EXTRACT(YEAR FROM birthdate ) ) ) + "
+                + "EXTRACT( MONTH FROM '" + startDate + "' ) - EXTRACT( MONTH FROM birthdate ) )" + " ";
+        }
+        else
+        {
+            sql += "' AND p." + propertyName + " ";
+        }
+
+        return sql;
     }
 
     private String getConditionForProgramProperty( int orgunitId, String startDate, String endDate )

@@ -130,7 +130,8 @@
 				<td>
 					<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" >
 						<option value="[CP:gender]">$i18n.getString( "gender" )</option>
-						<option value="[CP:dobType]">$i18n.getString( "dobType" )</option>
+						<option value="[CP:dobType]">$i18n.getString( "dob_type" )</option>
+						<option value="[CP:age]">$i18n.getString( "age_month" )</option>
 						
 						#foreach( $patientAttribute in $patientAttributes )
 						<option value="[CA:$patientAttribute.id]">$encoder.htmlEncode( $patientAttribute.name )</option>
