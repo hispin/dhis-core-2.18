@@ -388,10 +388,8 @@ jQuery.each(attributes, function(i, item) {
 #if( $args.attributes.size() > 0 )
 <select multiple="multiple" id="jsonAttributeValues" name="jsonAttributeValues" style="display: none;"></select>
 
-<div id="dynamicAttributesContainer" style="margin-top: 10px; margin-bottom: 10px;">
+<div id="dynamicAttributesContainer" style="margin-bottom: 10px;">
 <table>
-	#trHeader( "Dynamic Attributes" )
-
 	#foreach( $attribute in $args.attributes )
 		#set( $text = $attribute.name )
 		#set( $id = $attribute.id )
