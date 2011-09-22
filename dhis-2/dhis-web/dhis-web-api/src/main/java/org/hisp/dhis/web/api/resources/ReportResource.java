@@ -68,7 +68,6 @@ public class ReportResource
         
         return ResponseUtils.response( true, filename, false ).entity( new StreamingOutput()
         {
-            @Override
             public void write( OutputStream out )
                 throws IOException, WebApplicationException
             {
