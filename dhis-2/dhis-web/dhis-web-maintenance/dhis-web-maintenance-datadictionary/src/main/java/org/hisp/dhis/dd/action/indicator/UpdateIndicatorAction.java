@@ -217,8 +217,11 @@ public class UpdateIndicatorAction
         indicator.setDenominatorDescription( denominatorDescription );
         indicator.setDenominatorAggregationOperator( denominatorAggregationOperator );
 
-        AttributeUtils.updateAttributeValuesFromJson( indicator.getAttributeValues(), jsonAttributeValues,
-            attributeService );
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( indicator.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
 
         indicatorService.updateIndicator( indicator );
 
