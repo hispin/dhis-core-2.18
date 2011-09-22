@@ -12,6 +12,8 @@
       <generator class="native" />
     </id>
 
+	<property name="uuid" length="40" />
+
     <property name="title" not-null="true" unique="true" />
 
 	<property name="domainAxixLabel" />
