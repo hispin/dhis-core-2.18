@@ -266,7 +266,7 @@ public class DefaultAggregatedReportService
         // ---------------------------------------------------------------------
 
         CategoryAxis xAxis = plot.getDomainAxis();
-        xAxis.setCategoryLabelPositions( CategoryLabelPositions.STANDARD );
+        xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
 
         // ---------------------------------------------------------------------
         // Color & antialias

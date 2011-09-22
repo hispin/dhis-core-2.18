@@ -194,9 +194,9 @@ function generateReport()
  
  window.location.href = url;
  
- var request = new Request();
- request.setCallbackSuccess( getReportStatus );
- request.send( url );
+ //var request = new Request();
+ //request.setCallbackSuccess( getReportStatus );
+ //request.send( url );
 
 }
 

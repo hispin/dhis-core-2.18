@@ -303,7 +303,7 @@ implements PersonStore{
 	    	
 	    	if(selectedUnitOnly){
 	    		
-	    		sql += " AND person.organisationunitid =" + organisationUnit;
+	    		sql += " AND person.organisationunitid =" + organisationUnit.getId();
 	    		
 	    	}else{
 	    		

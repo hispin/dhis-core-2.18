@@ -27,6 +27,7 @@ package org.hisp.dhis.hr.action.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -129,12 +130,12 @@ public class ShowUpdateAggregateIndicatorAction
     // Action
     // -------------------------------------------------------------------------
 
-    public String execute()
+	public String execute()
         throws Exception
     {
     	aggregateAttribute = aggregateAttributeService.getAggregateAttribute(id);
     	
-    	attributeOptions = new ArrayList<AttributeOptions>( attributeOptionsService.getAllAttributeOptions());
+    	attributeOptions = new ArrayList<AttributeOptions>( attributeOptionsService.getAllAttributeOptions());    	
     	
     	Collection<AttributeOptions> attributeOptionsToExclude = new ArrayList<AttributeOptions>(aggregateAttribute.getAttributeOptions());
     	
