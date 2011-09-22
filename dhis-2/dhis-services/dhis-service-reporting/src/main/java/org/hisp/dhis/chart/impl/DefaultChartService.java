@@ -240,12 +240,12 @@ public class DefaultChartService
     {
         RelativePeriods relatives = new RelativePeriods();
         relatives.setMonthsThisYear( true );
-        List<Period> periods = relatives.getRelativePeriods( 1, format, true );
+        List<Period> periods = periodService.reloadPeriods( relatives.getRelativePeriods( 1, format, true ) );
 
         Chart chart = new Chart();
 
         chart.setTitle( indicator.getName() );
-        chart.setType( TYPE_LINE3D );
+        chart.setType( TYPE_BAR );
         chart.setSize( SIZE_NORMAL );
         chart.setDimension( Chart.DIMENSION_PERIOD_INDICATOR );
         chart.setVerticalLabels( true );
@@ -610,7 +610,7 @@ public class DefaultChartService
         CategoryPlot plot = null;
 
         CategoryDataset[] dataSets = getCategoryDataSet( chart );
-
+        
         if ( chart.isType( TYPE_LINE ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
@@ -711,6 +711,7 @@ public class DefaultChartService
 
         CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
         plot.setBackgroundPaint( Color.WHITE );
+        plot.setOutlinePaint( Color.WHITE );
 
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( chart.isVerticalLabels() ? CategoryLabelPositions.UP_45
@@ -822,7 +823,7 @@ public class DefaultChartService
                     for ( Period period : chart.getAllPeriods() )
                     {
                         Double value = null;
-
+                        
                         if ( isIndicatorChart )
                         {
                             value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
