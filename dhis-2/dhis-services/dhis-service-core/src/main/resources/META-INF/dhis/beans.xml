@@ -1054,6 +1054,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.dataelement.DataElementDeletionHandler" class="org.hisp.dhis.dataelement.DataElementDeletionHandler">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" class="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler">
@@ -1093,6 +1094,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.indicator.IndicatorDeletionHandler" class="org.hisp.dhis.indicator.IndicatorDeletionHandler">
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" class="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler">
@@ -1121,6 +1123,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler" class="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" class="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler">
@@ -1137,6 +1140,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.user.UserDeletionHandler" class="org.hisp.dhis.user.UserDeletionHandler">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" class="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler">
@@ -1239,29 +1243,14 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         method="intercept" />
     </aop:aspect>
 
-    <!--
-      <aop:aspect ref="i18nTranslationInterceptor"> <aop:after-returning
-      pointcut="execution( *
-      org.hisp.dhis.dataelement.DataElementService.get*(..) )"
-      method="intercept" returning="object"/> <aop:after-returning
-      pointcut="execution( *
-      org.hisp.dhis.dataelement.DataElementCategoryService.get*(..) )"
-      method="intercept" returning="object"/> <aop:after-returning
-      pointcut="execution( *
-      org.hisp.dhis.indicator.IndicatorService.get*(..) )"
-      method="intercept" returning="object"/> <aop:after-returning
-      pointcut="execution( *
-      org.hisp.dhis.datadictionary.DataDictionaryService.get*(..) )"
-      method="intercept" returning="object"/> <aop:after-returning
-      pointcut="execution( * org.hisp.dhis.dataset.DataSetService.get*(..)
-      )" method="intercept" returning="object"/> <aop:after-returning
-      pointcut="execution( *
-      org.hisp.dhis.organisationunit.OrganisationUnitService.get*(..) )"
-      method="intercept" returning="object"/> <aop:after-returning
-      pointcut="execution( *
-      org.hisp.dhis.organisationunit.OrganisationUnitGroupService.get*(..)
-      )" method="intercept" returning="object"/> </aop:aspect>
-    -->
+    <!-- <aop:aspect ref="i18nTranslationInterceptor"> <aop:after-returning pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.get*(..) 
+      )" method="intercept" returning="object"/> <aop:after-returning pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryService.get*(..) 
+      )" method="intercept" returning="object"/> <aop:after-returning pointcut="execution( * org.hisp.dhis.indicator.IndicatorService.get*(..) 
+      )" method="intercept" returning="object"/> <aop:after-returning pointcut="execution( * org.hisp.dhis.datadictionary.DataDictionaryService.get*(..) 
+      )" method="intercept" returning="object"/> <aop:after-returning pointcut="execution( * org.hisp.dhis.dataset.DataSetService.get*(..) 
+      )" method="intercept" returning="object"/> <aop:after-returning pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitService.get*(..) 
+      )" method="intercept" returning="object"/> <aop:after-returning pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitGroupService.get*(..) 
+      )" method="intercept" returning="object"/> </aop:aspect> -->
   </aop:config>
 
   <!-- Security import -->
