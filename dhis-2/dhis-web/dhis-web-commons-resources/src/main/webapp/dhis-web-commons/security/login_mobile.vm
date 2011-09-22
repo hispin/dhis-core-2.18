@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 
 <head>
@@ -31,10 +30,10 @@ table {
 
 <div id="wrapper" align="center">
 <p>
-	<img alt="" src="logo_banner.png">
+	<img alt="DHIS2" src="logo_banner.png">
 </p>
 
-<form id='loginForm' action="../../dhis-web-commons-security/login.action" method="post">
+<form id='loginForm' action="../../dhis-web-commons-security/login.action" method="POST">
 
 <table>
 	<tr>
@@ -64,7 +63,7 @@ table {
 
 </form>
 
-#if( $failed )
+#if( $failed == true )
 <p style="color: #eee;">
 	Wrong username or password. Please try again.
 </p>
