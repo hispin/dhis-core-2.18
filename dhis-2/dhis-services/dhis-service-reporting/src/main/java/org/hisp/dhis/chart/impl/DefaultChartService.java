@@ -247,7 +247,8 @@ public class DefaultChartService
         chart.setTitle( indicator.getName() );
         chart.setType( TYPE_BAR );
         chart.setSize( SIZE_NORMAL );
-        chart.setDimension( Chart.DIMENSION_PERIOD_INDICATOR );
+        chart.setDimension( DIMENSION_PERIOD_INDICATOR );
+        chart.setHideLegend( true );
         chart.setVerticalLabels( true );
         chart.getIndicators().add( indicator );
         chart.setPeriods( periods );
