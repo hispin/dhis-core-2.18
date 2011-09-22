@@ -43,7 +43,7 @@
                 </table>
             </form>
             </div>
-            #if( $failed )
+            #if( $failed == true )
             <span class="loginMessage">Wrong username or password. Please try again.</span>
 			#end            
         </div>
