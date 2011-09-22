@@ -107,7 +107,6 @@ import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.category.LineRenderer3D;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -124,8 +123,8 @@ public class DefaultChartService
     implements ChartService
 {
     private static final Font titleFont = new Font( "Tahoma", Font.BOLD, 14 );
-
     private static final Font subTitleFont = new Font( "Tahoma", Font.PLAIN, 12 );
+    private static final Font labelFont = new Font( "Tahoma", Font.PLAIN, 10 );
 
     private static final String TREND_PREFIX = "Trend - ";
 
@@ -709,7 +708,7 @@ public class DefaultChartService
             stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getTitle(), chart.getDomainAxixLabel(),
                 chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
         }
-
+        
         CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
         plot.setBackgroundPaint( Color.WHITE );
         plot.setOutlinePaint( Color.WHITE );
@@ -718,6 +717,8 @@ public class DefaultChartService
         xAxis.setCategoryLabelPositions( chart.isVerticalLabels() ? CategoryLabelPositions.UP_45
             : CategoryLabelPositions.STANDARD );
 
+        stackedBarChart.getTitle().setFont( titleFont );
+        stackedBarChart.addSubtitle( getSubTitle( chart, chart.getFormat() ) );
         stackedBarChart.setAntiAlias( true );
 
         return stackedBarChart;
@@ -738,14 +739,11 @@ public class DefaultChartService
                 !chart.getHideLegend(), false, false );
         }
 
+        multiplePieChart.getTitle().setFont( titleFont );
+        multiplePieChart.addSubtitle( getSubTitle( chart, chart.getFormat() ) );
+        multiplePieChart.getLegend().setItemFont( subTitleFont );
         multiplePieChart.setBackgroundPaint( Color.WHITE );
         multiplePieChart.setAntiAlias( true );
-
-        TextTitle title = multiplePieChart.getTitle();
-        title.setFont( titleFont );
-
-        LegendTitle legend = multiplePieChart.getLegend();
-        legend.setItemFont( subTitleFont );
 
         MultiplePiePlot multiplePiePlot = (MultiplePiePlot) multiplePieChart.getPlot();
         JFreeChart pieChart = multiplePiePlot.getPieChart();
@@ -753,9 +751,7 @@ public class DefaultChartService
 
         PiePlot piePlot = (PiePlot) pieChart.getPlot();
         piePlot.setBackgroundPaint( Color.WHITE );
-        piePlot.setShadowXOffset( 0 );
-        piePlot.setShadowYOffset( 0 );
-        piePlot.setLabelFont( new Font( "Tahoma", Font.PLAIN, 10 ) );
+        piePlot.setLabelFont( labelFont );
         piePlot.setLabelGenerator( new StandardPieSectionLabelGenerator( "{2}" ) );
         piePlot.setSimpleLabels( true );
         piePlot.setIgnoreZeroValues( true );

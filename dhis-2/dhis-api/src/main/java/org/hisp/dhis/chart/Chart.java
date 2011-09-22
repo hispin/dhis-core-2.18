@@ -27,13 +27,12 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.common.ImportableObject;
+import org.hisp.dhis.common.AbstractIdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
@@ -45,7 +44,7 @@ import org.hisp.dhis.period.RelativePeriods;
  * @author Lars Helge Overland
  */
 public class Chart
-    implements Serializable, ImportableObject
+    extends AbstractIdentifiableObject
 {
     private static final long serialVersionUID = 2570074075484545534L;
 
