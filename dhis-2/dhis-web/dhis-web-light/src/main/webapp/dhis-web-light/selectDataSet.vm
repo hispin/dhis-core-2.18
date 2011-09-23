@@ -1,0 +1,11 @@
+
+<h2>Select DataSet</h2>
+<h3>Available DataSets</h3>
+
+<p>
+	<ul>
+		#foreach( $dataSet in $dataSets )
+		<li><a href="selectPeriod.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSet.id">$!encoder.jsonEncode( ${dataSet.name} )</a></li>
+		#end
+	</ul>
+</p>

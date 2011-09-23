@@ -9,6 +9,27 @@
 
     <action name="index" class="org.hisp.dhis.light.action.NoAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/menu.vm</param>
+    </action>
+
+    <action name="selectOrganisationUnit" class="org.hisp.dhis.light.action.GetOrganisationUnitsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/selectOrganisationUnit.vm</param>
+    </action>
+
+    <action name="selectDataSet" class="org.hisp.dhis.light.action.GetDataSetsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/selectDataSet.vm</param>
+    </action>
+
+    <action name="selectPeriod" class="org.hisp.dhis.light.action.GetPeriodsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/selectPeriod.vm</param>
+    </action>
+
+    <action name="dataEntry" class="org.hisp.dhis.light.action.NoAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/dataEntry.vm</param>
     </action>
 
     <action name="dashboard" class="org.hisp.dhis.light.action.ProvideContentAction">

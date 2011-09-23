@@ -1,0 +1,43 @@
+
+<h2>Immunization</h2>
+
+<form>
+
+<div class="header-box">
+	<h3>BCG doses given</h3>
+	<p>
+		<label>Fixed | &lt; 12 mths</label> <input type="text" size="24" /><br />
+		<label>Fixed | 12 to 59 mths</label> <input type="text" size="24" /> <br />
+		<label>Outreach | &lt; 12 mths</label> <input type="text" size="24" /> <br />
+		<label>Outreach | 12 to 59 mths</label> <input type="text" size="24" /> <br />
+	</p>
+</div>
+
+<div class="header-box">
+	<h3>Fully Immunized child</h3>
+	<p>
+		<label>Fixed | &lt; 12 mths</label> <input type="text" size="24" /><br />
+		<label>Fixed | 12 to 59 mths</label> <input type="text" size="24" /> <br />
+		<label>Outreach | &lt; 12 mths</label> <input type="text" size="24" /> <br />
+		<label>Outreach | 12 to 59 mths</label> <input type="text" size="24" /> <br />
+	</p>
+</div>
+
+<div class="header-box">
+	<h3>LLITN given at Penta3</h3>
+	<p>
+		<label>Fixed | &lt; 12 mths</label> <input type="text" size="24" /><br />
+		<label>Fixed | 12 to 59 mths</label> <input type="text" size="24" /> <br />
+		<label>Outreach | &lt; 12 mths</label> <input type="text" size="24" /> <br />
+		<label>Outreach | 12 to 59 mths</label> <input type="text" size="24" /> <br />
+	</p>
+</div>
+
+<div class="header-box">
+	<p>
+		<input type="submit" style="width: 48%" value="Submit"/>
+		<input type="reset" style="width: 48%" value="Reset"/>
+	</p>
+</div>
+
+</form>

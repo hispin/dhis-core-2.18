@@ -1,0 +1,11 @@
+
+<h2>Select OrganisationUnit</h2>
+<h3>Available Organisation Units</h3>
+
+<p>
+	<ul>
+	#foreach( $organisationUnit in $organisationUnits )
+		<li><a href="selectDataSet.action?organisationUnitId=$organisationUnit.id">$!encoder.jsonEncode( ${organisationUnit.name} )</a></li>
+	#end
+	</ul>
+</p>
