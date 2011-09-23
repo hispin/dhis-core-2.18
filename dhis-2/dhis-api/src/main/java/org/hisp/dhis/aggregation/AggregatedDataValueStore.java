@@ -157,6 +157,14 @@ public interface AggregatedDataValueStore
         Collection<Integer> organisationUnitIds );
 
     /**
+     * Deletes AggregatedDataValues registered for the given parameters.
+     * 
+     * @param periodIds a collection of Period identifiers.
+     * @return the number of deleted AggregatedDataValues.
+     */
+    int deleteAggregatedDataValues( Collection<Integer> periodIds );
+    
+    /**
      * Deletes all AggregatedDataValues.
      * 
      * @return the number of deleted AggregatedDataValues.
@@ -257,6 +265,14 @@ public interface AggregatedDataValueStore
      */
     int deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds );
+
+    /**
+     * Deletes AggregatedIndicatorValue registered for the given parameters.
+     * 
+     * @param periodIds a collection of Period identifiers.
+     * @return the number of deleted AggregatedIndicatorValues.
+     */
+    int deleteAggregatedIndicatorValues( Collection<Integer> periodIds );
     
     /**
      * Deletes all AggregatedIndicatorValue.

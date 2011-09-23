@@ -122,6 +122,11 @@ public class DefaultAggregatedDataValueService
     {
         return aggregatedDataValueStore.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
     }
+
+    public int deleteAggregatedDataValues( Collection<Integer> periodIds )
+    {
+        return aggregatedDataValueStore.deleteAggregatedDataValues( periodIds );
+    }
     
     public int deleteAggregatedDataValues()
     {
@@ -187,19 +192,22 @@ public class DefaultAggregatedDataValueService
     {
         return aggregatedDataValueStore.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
     }
+
+    public int deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
+    {
+        return aggregatedDataValueStore.deleteAggregatedIndicatorValues( periodIds );
+    }
     
     public int deleteAggregatedIndicatorValues()
     {
         return aggregatedDataValueStore.deleteAggregatedIndicatorValues();
     }
 
-    @Override
     public StoreIterator<AggregatedIndicatorValue> getAggregateIndicatorValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         return aggregatedDataValueStore.getAggregatedIndicatorValuesAtLevel( orgunit, level, periods );
     }
 
-    @Override
     public int countIndicatorValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         return aggregatedDataValueStore.countIndicatorValuesAtLevel( orgunit, level, periods );

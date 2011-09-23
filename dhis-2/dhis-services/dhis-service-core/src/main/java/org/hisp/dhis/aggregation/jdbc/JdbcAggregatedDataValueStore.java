@@ -290,7 +290,6 @@ public class JdbcAggregatedDataValueStore
         }
     }
 
-    @Override
     public StoreIterator<AggregatedDataValue> getAggregatedDataValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         final StatementHolder holder = statementManager.getHolder();
@@ -329,7 +328,6 @@ public class JdbcAggregatedDataValueStore
         }
     }
 
-    @Override
     public int countDataValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         final String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periods));
@@ -352,6 +350,15 @@ public class JdbcAggregatedDataValueStore
             "WHERE dataelementid IN ( " + getCommaDelimitedString( dataElementIds ) + " ) " +
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
+        
+        return statementManager.getHolder().executeUpdate( sql );        
+    }
+
+    public int deleteAggregatedDataValues( Collection<Integer> periodIds )
+    {
+        final String sql =
+            "DELETE FROM aggregateddatavalue " +
+            "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
         
         return statementManager.getHolder().executeUpdate( sql );        
     }
@@ -535,6 +542,15 @@ public class JdbcAggregatedDataValueStore
             "WHERE indicatorid IN ( " + getCommaDelimitedString( indicatorIds ) + " ) " +
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
+        
+        return statementManager.getHolder().executeUpdate( sql );        
+    }
+
+    public int deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
+    {
+        final String sql =
+            "DELETE FROM aggregatedindicatorvalue " +
+            "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
         
         return statementManager.getHolder().executeUpdate( sql );        
     }
@@ -797,7 +813,7 @@ public class JdbcAggregatedDataValueStore
             
             while ( resultSet.next() )
             {
-                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ), null );
+                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
                 
                 map.put( operand, resultSet.getString( 3 ) );
             }

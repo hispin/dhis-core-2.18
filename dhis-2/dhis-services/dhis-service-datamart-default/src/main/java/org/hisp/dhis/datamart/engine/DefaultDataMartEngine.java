@@ -245,9 +245,16 @@ public class DefaultDataMartEngine
         // Delete existing aggregated data
         // ---------------------------------------------------------------------
 
-        aggregatedDataValueService.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
-
-        aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
+        if ( completeExport )
+        {
+            aggregatedDataValueService.deleteAggregatedDataValues( periodIds );
+            aggregatedDataValueService.deleteAggregatedIndicatorValues( periodIds );
+        }
+        else
+        {
+            aggregatedDataValueService.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
+            aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
+        }
 
         clock.logTime( "Deleted existing aggregated data" );
         
