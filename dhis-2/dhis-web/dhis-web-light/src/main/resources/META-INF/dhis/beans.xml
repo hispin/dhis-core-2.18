@@ -19,7 +19,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="org.hisp.dhis.light.action.GetSectionFormAction" class="org.hisp.dhis.light.action.GetSectionFormAction">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.light.action.SaveSectionFormAction" class="org.hisp.dhis.light.action.SaveSectionFormAction">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
   </bean>
 
   <bean id="org.hisp.dhis.light.action.ProvideContentAction" class="org.hisp.dhis.light.action.ProvideContentAction"

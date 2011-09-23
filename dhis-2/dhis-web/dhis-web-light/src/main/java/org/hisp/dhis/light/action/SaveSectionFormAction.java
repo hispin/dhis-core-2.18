@@ -27,32 +27,44 @@
 
 package org.hisp.dhis.light.action;
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author mortenoh
  */
-public class GetSectionFormAction
+public class SaveSectionFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -61,11 +73,18 @@ public class GetSectionFormAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    private DataSetService dataSetService;
+    private DataElementService dataElementService;
 
-    public void setDataSetService( DataSetService dataSetService )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.dataSetService = dataSetService;
+        this.dataElementService = dataElementService;
+    }
+
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     private DataValueService dataValueService;
@@ -86,47 +105,11 @@ public class GetSectionFormAction
         this.organisationUnitId = organisationUnitId;
     }
 
-    public Integer getOrganisationUnitId()
-    {
-        return organisationUnitId;
-    }
-
-    private Integer dataSetId;
-
-    public void setDataSetId( Integer dataSetId )
-    {
-        this.dataSetId = dataSetId;
-    }
-
-    public Integer getDataSetId()
-    {
-        return dataSetId;
-    }
-
     private String periodId;
 
     public void setPeriodId( String periodId )
     {
         this.periodId = periodId;
-    }
-
-    public String getPeriodId()
-    {
-        return periodId;
-    }
-
-    private DataSet dataSet;
-
-    public DataSet getDataSet()
-    {
-        return dataSet;
-    }
-
-    private Map<String, String> dataValues = new HashMap<String, String>();
-
-    public Map<String, String> getDataValues()
-    {
-        return dataValues;
     }
 
     // -------------------------------------------------------------------------
@@ -140,26 +123,51 @@ public class GetSectionFormAction
 
         Period period = PeriodType.createPeriodExternalId( periodId );
 
-        dataSet = dataSetService.getDataSet( dataSetId );
+        String storedBy = currentUserService.getCurrentUsername();
 
-        for ( Section section : dataSet.getSections() )
+        if ( storedBy == null )
         {
-            for ( DataElement dataElement : section.getDataElements() )
+            storedBy = "[unknown]";
+        }
+
+        HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
+            ServletActionContext.HTTP_REQUEST );
+        Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
+
+        for ( String key : parameterMap.keySet() )
+        {
+            if ( key.startsWith( "DE" ) && key.indexOf( "OC" ) != -1 )
             {
-                for ( DataElementCategoryOptionCombo optionCombo : dataElement.getCategoryCombo().getOptionCombos() )
+                String[] splitKey = key.split( "OC" );
+                Integer dataElementId = Integer.parseInt( splitKey[0].substring( 2 ) );
+                Integer optionComboId = Integer.parseInt( splitKey[1] );
+                String value = parameterMap.get( key );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                DataElementCategoryOptionCombo optionCombo = categoryService
+                    .getDataElementCategoryOptionCombo( optionComboId );
+
+                DataValue dataValue = dataValueService
+                    .getDataValue( organisationUnit, dataElement, period, optionCombo );
+
+                value = value.trim();
+
+                if ( dataValue == null )
                 {
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
-                        optionCombo );
-
-                    String key = String.format( "DE%dOC%d", dataElement.getId(), optionCombo.getId() );
-                    String value = "";
-
-                    if ( dataValue != null )
+                    if ( value.length() != 0 && value != null )
                     {
-                        value = dataValue.getValue();
+                        dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(),
+                            null, optionCombo );
+                        dataValueService.addDataValue( dataValue );
                     }
+                }
+                else
+                {
+                    dataValue.setValue( value );
+                    dataValue.setTimestamp( new Date() );
+                    dataValue.setStoredBy( storedBy );
 
-                    dataValues.put( key, value );
+                    dataValueService.updateDataValue( dataValue );
                 }
             }
         }
