@@ -52,6 +52,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
@@ -168,6 +169,7 @@ public class DefaultDataMartEngine
         Collection<Period> periods = periodService.getPeriods( periodIds );
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
         Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIds );
+        dataElements = FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
 
         // ---------------------------------------------------------------------
         // Explode indicator expressions
