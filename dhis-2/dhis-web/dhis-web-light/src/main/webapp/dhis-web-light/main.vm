@@ -11,7 +11,7 @@
 <div id="wrap">
 
 <div id="header">
-	<img src="../dhis-web-commons/security/logo_banner.png" alt="DHIS2" width="120" height="36">
+	<a href="index.action"><img src="../dhis-web-commons/security/logo_banner.png" alt="DHIS2" width="143" height="60"></a>
 </div>
 
 <div id="content">
