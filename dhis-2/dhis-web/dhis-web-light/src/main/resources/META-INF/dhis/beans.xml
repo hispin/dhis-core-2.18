@@ -16,7 +16,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.light.action.GetPeriodsAction" class="org.hisp.dhis.light.action.GetPeriodsAction">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
   <bean id="org.hisp.dhis.light.action.ProvideContentAction" class="org.hisp.dhis.light.action.ProvideContentAction"
