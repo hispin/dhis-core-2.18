@@ -64,8 +64,6 @@ public class WeightedPaginatedList<T extends Weighted>
         }
         
         weightPageBreak = (int) Math.ceil( (double) totalWeight / pages );
-        
-        System.out.println( "tot " + totalWeight + " break " + weightPageBreak );
     }
     
     /**
