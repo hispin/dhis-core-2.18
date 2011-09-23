@@ -32,13 +32,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.hisp.dhis.common.AbstractNameableObject;
+import org.hisp.dhis.common.Weighted;
 
 /**
  * @author Kristian Nordal
  * @version $Id: Period.java 5277 2008-05-27 15:48:42Z larshelg $
  */
 public class Period
-    extends AbstractNameableObject
+    extends AbstractNameableObject implements Weighted
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -147,6 +148,12 @@ public class Period
     public int frequencyOrder()
     {
         return periodType != null ? periodType.getFrequencyOrder() : YearlyPeriodType.FREQUENCY_ORDER;
+    }
+    
+    @Override
+    public int getWeight()
+    {
+        return frequencyOrder() + 15;
     }
 
     /**
