@@ -442,7 +442,7 @@ body div.box p.box-text {
 }
 
 body div.header-box p {
-	font-size: 0.6em;
+	font-size: 1em;
 	border: 1px solid #D8D8D8;
 	width: 92%;
 	margin: 0 auto 0.6em auto;
@@ -452,7 +452,7 @@ body div.header-box p {
 
 /* 2px border is required to ensure header is flush with the box */
 body div.header-box h3 {
-	font-size: 0.8em;
+	font-size: 1.2em;
 	border: 2px solid #0038E1;
 	width: 92%;
 	margin: 0em auto;

@@ -4,64 +4,39 @@
 <title>DHIS 2</title>
 
 <meta name="viewport" content="width=device-width, user-scalable=no" />
-	
-<style type="text/css">
-html,body
-{
-	background-color: #1d5288;  
-	color: white;
-	font-size: 1.1em;
-	font-family: verdana, sans, sans-serif;
-}
+<link rel="stylesheet" href="../css/login_mobile.css" />
 
-input {
-	font-size: 1em;
-	font-family: verdana, sans, sans-serif;
-	width: 96%;
-}
-
-table {
-	width: 100%;
-}
-</style>
 </head>
 
-<body align="center">
+<body>
 
-<div id="wrapper" align="center">
-<p>
-	<img alt="DHIS2" src="logo_banner.png">
-</p>
+<div id="wrap">
 
+<div id="header">
+	<img src="logo_banner.png" alt="DHIS2" width="120" height="36">
+</div>
+
+<div id="content">
 <form id='loginForm' action="../../dhis-web-commons-security/login.action" method="POST">
 
-<table>
-	<tr>
-		<td><h3>Username</h3></td>
-	</tr>
-	<tr>
-		<td>
-			<input type="text" id="j_username" name="j_username" size="9">
-		</td>
-	</tr>
-	<tr>
-		<td><h3>Password</h3></td>
-	</tr>
-	<tr>
-		<td>
-			<input type="password" id="j_password" name="j_password" size="9">
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<br />
-			<input id='submit' type="submit" value="Login" style="width: 48%;">
-			<input id='reset' type="reset" value="Clear" style="width: 48%;">
-		</td>
-	</tr>
-</table>
+<div class="header-box">
+	<h3>Login</h3>
+	<p>
+		<label>Username</label> <input type="text" id="j_username" name="j_username" size="24"> <br />
+		<label>Password</label> <input type="password" id="j_password" name="j_password" size="24"> <br />
+	</p>
+</div>
+
+<div class="header-box">
+	<p>
+		<input type="submit" style="width: 48%" value="Login"/>
+		<input type="reset" style="width: 48%" value="Reset"/>
+	</p>
+</div>
 
 </form>
+</div>
+</div>
 
 #if( $failed == true )
 <p style="color: #eee;">
@@ -70,5 +45,4 @@ table {
 #end
 
 </body>
-
 </html>
