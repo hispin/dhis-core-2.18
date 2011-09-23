@@ -13,7 +13,7 @@
 <div id="wrap">
 
 <div id="header">
-	<a href="login.action"><img src="logo_banner.png" alt="DHIS2" width="143" height="60"></a>
+	<a href="login.action"><img src="logo_banner.png" alt="DHIS2" width="118" height="40"></a>
 </div>
 
 <div id="content">
