@@ -66,11 +66,6 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class ExportExcelAction
     extends StreamActionSupport
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -2250356459364593446L;
-
     private static final Log log = LogFactory.getLog( ExportExcelAction.class );
     
     // -------------------------------------------------------------------------

@@ -45,11 +45,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetConceptListAction
     extends ActionPagingSupport<Concept>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 8508083790278682228L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

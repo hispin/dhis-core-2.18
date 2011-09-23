@@ -45,11 +45,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetReportGroupListAction
     extends ActionPagingSupport<ReportGroup>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -1L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

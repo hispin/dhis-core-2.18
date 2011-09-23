@@ -51,11 +51,6 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 public class GenerateReportAction
     extends ActionPagingSupport<ProgramInstance>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 3785792832775238394L;
-
     public static final String RED = "#ff0000";
 
     public static final String YELLOW = "#ffff00";

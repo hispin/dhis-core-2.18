@@ -43,11 +43,6 @@ import static org.apache.commons.lang.StringUtils.*;
 public class GetDataElementGroupListAction
     extends ActionPagingSupport<DataElementGroup>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -3245814174208392338L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

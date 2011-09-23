@@ -35,7 +35,6 @@ import java.util.List;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -48,11 +47,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetIndicatorTypeListAction
     extends ActionPagingSupport<IndicatorType>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 6266707412846006610L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

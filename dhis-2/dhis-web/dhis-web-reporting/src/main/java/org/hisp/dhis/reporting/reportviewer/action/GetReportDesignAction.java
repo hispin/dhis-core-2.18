@@ -44,11 +44,6 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class GetReportDesignAction
     extends StreamActionSupport
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 4854712118983643988L;
-
     private static final String EXT_JRXML = ".jrxml";
     
     // -------------------------------------------------------------------------

@@ -41,11 +41,6 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class GetHelpItemsAction
     extends StreamActionSupport
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 856423230079440766L;
-
     private HelpManager helpManager;
     
     public void setHelpManager( HelpManager helpManager )
