@@ -119,7 +119,7 @@ public class SaveValueAction
     {
         this.optionComboId = optionComboId;
     }
-    
+
     private String periodId;
 
     public void setPeriodId( String periodId )
@@ -179,7 +179,8 @@ public class SaveValueAction
         {
             if ( value != null )
             {
-                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null, optionCombo );
+                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null,
+                    optionCombo );
                 dataValueService.addDataValue( dataValue );
             }
         }

@@ -1,20 +1,21 @@
 
 <h2>$dataSet.name</h2>
 
-<form>
+<form action="saveSectionForm.action" method="POST">
+
+<input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnitId" />
+<input type="hidden" id="dataSetId" name="dataSetId" value="$dataSetId" />
+<input type="hidden" id="periodId" name="periodId" value="$periodId" />
 
 #foreach( $section in $dataSet.sections )
 <div class="header-box">
 	<h3>$section.name</h3>
 	<p>
 		#foreach( $dataElement in $section.dataElements)
-			#if( $section.categoryCombo.name == "default" )
-				<label>$dataElement.name</label> <input type="text" size="24" /><br />
-			#else
-				#foreach( $optionCombo in $section.categoryCombo.optionCombos )
-				<label>$dataElement.name $optionCombo.name</label> <input type="text" size="24" /><br />
-				#end
-			#end	
+			#foreach( $optionCombo in $section.categoryCombo.optionCombos )
+			#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
+			<label>$dataElement.name $optionCombo.name</label> <input type="text" size="24" name="$key" value="$dataValues.get($key)" /> <br />
+			#end
 		#end
 	</p>
 </div>
@@ -22,8 +23,8 @@
 
 <div class="header-box">
 	<p>
-		<input type="submit" style="width: 48%" value="Submit"/>
-		<input type="reset" style="width: 48%" value="Reset"/>
+		<input type="submit" style="width: 48%" value="Save"/>
+		<input type="reset" style="width: 48%" value="Clear"/>
 	</p>
 </div>
 
