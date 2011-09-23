@@ -29,93 +29,72 @@ package org.hisp.dhis.system.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+
+import org.hisp.dhis.common.Weighted;
 
 /**
  * @author Lars Helge Overland
  */
-public class PaginatedList<T>
+public class WeightedPaginatedList<T extends Weighted>
     extends ArrayList<T>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 6296545460322554660L;
+    private int pages = 0;
+    private int totalWeight = 0;
+    private int weightPageBreak = 0;
+    private int startIndex = 0;
 
-    public static final int DEFAULT_PAGE_SIZE = 10;
-    
-    private int pageSize;
-
-    private int fromIndex = 0;
-    
-    public PaginatedList( Collection<T> collection )
+    public WeightedPaginatedList( Collection<T> collection, int pages )
     {
         super( collection );
-        this.pageSize = DEFAULT_PAGE_SIZE;
+        this.pages = pages;
+        this.init();
     }
     
-    /**
-     * Sets page size.
-     */
-    public PaginatedList<T> setPageSize( int pageSize )
+    private void init()
     {
-        this.pageSize = pageSize;
+        Iterator<T> iterator = super.iterator();
         
-        return this;
+        while ( iterator.hasNext() )
+        {
+            T element = iterator.next();
+            
+            totalWeight += element != null ? element.getWeight() : 0;
+        }
+        
+        weightPageBreak = (int) Math.ceil( (double) totalWeight / pages );
+        
+        System.out.println( "tot " + totalWeight + " break " + weightPageBreak );
     }
     
     /**
-     * Sets the number of pages. The page size will be calculated and set in
-     * order to provide the appropriate total number of pages.
-     */
-    public PaginatedList<T> setNumberOfPages( int pages )
-    {
-        this.pageSize = (int) Math.ceil( (double) size() / pages );
-        
-        return this;
-    }
-    
-    /**
-     * Returns the next page in the list. The page size is defined by the argument
-     * given in the constructor. If there is no more pages, null is returned. The
-     * returned page is not guaranteed to have the same size as the page size.
+     * Returns the next page in the list. Returns null if there are no more pages.
      */
     public List<T> nextPage()
     {
         int size = size();
         
-        if ( fromIndex >= size )
+        if ( startIndex >= size )
         {
             return null;
         }
         
-        int toIndex = Math.min( ( fromIndex + pageSize ), size );
+        int currentWeight = 0;
+        int currentIndex = startIndex;
         
-        List<T> page = subList( fromIndex, toIndex );
+        while ( currentWeight < weightPageBreak && currentIndex < size )
+        {
+            T element = get( currentIndex++ );
+            
+            currentWeight += element != null ? element.getWeight() : 0;
+        }
         
-        fromIndex = toIndex;
+        List<T> page = super.subList( startIndex, currentIndex );
         
+        startIndex = currentIndex;
+                
         return page;
-    }
-    
-    /**
-     * Sets the current page position to the first page.
-     */
-    public void reset()
-    {
-        fromIndex = 0;
-    }
-    
-    /**
-     * Returns the number of pages in the list.
-     */
-    public int pageCount()
-    {
-        int c = size();        
-        int r = c / pageSize;
-        int m = c % pageSize;
-        
-        return m == 0 ? r : ( r + 1 );
     }
     
     /**
