@@ -3,83 +3,29 @@
 <head>
 <title>DHIS 2</title>
 <meta name="viewport" content="width=device-width, user-scalable=yes" />
-
-<style type="text/css">
-html,body
-{
-	background-color: #1d5288;  
-	color: white;
-	font-size: 1.1em;
-	width: 100%;
-	font-family: verdana, sans, sans-serif;
-	
-	padding: 0;
-	margin: 0;
-}
-
-.header {
-	border-bottom: 1px solid #eee;
-	font-size: 1.2em;
-	font-weight: bold;
-	background-color: black;
-	color: white;
-	width: 100%;
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.header span {
-	padding-left: 5px;
-}
-
-.footer {
-	border-top: 1px solid #eee;
-	font-size: 0.8em;
-	background-color: black;
-	color: white;
-	width: 100%;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	text-align: right;
-}
-
-.footer a {
-	padding-right: 5px;
-}
-
-input {
-	font-size: 1em;
-	font-family: verdana, sans, sans-serif;
-	width: 96%;
-}
-
-table {
-	width: 100%;
-}
-
-a:link, a:visited, a:active, a:hover {
-	color: white;
-}
-
-ul li {
-	list-style-type: none;
-}
-</style>
-
+<link rel="stylesheet" href="style/light.css" />
 </head>
 
 <body>
 
-<div class="header">
+<div id="wrap">
+
+<div id="header">
 	<span>DHIS 2</span>
 </div>
 
-<ul>
-	<li><a href="dashboard.action">Dashboard</a></li>
-</ul>
+<div id="content">
 
-<div class="footer">
-	<a href="../dhis-web-commons-security/logout.action">Logout</a>
+#parse( $page )
+
+</div>
+
+<div id="footer">
+	<ul>
+		<li><a href="../dhis-web-commons-security/logout.action">Logout</a></li>
+	</ul>
+</div>
+
 </div>
 
 </body>

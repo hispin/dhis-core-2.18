@@ -1,0 +1,11 @@
+
+<h2>Select Period</h2>
+<h3>Available Periods</h3>
+
+<p>
+	<ul>
+		#foreach( $period in $periods )
+		<li><a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.jsonEncode( ${period.name} )</a></li>
+		#end
+	</ul>
+</p>
