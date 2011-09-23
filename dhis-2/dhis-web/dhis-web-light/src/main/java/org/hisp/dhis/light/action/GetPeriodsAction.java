@@ -27,7 +27,6 @@
 package org.hisp.dhis.light.action;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,8 +35,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -56,13 +53,6 @@ public class GetPeriodsAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
 
     private I18nFormat format;
