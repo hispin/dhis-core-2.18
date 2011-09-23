@@ -73,7 +73,7 @@ public class JDBCCrossTabStore
         
         for ( DataElementOperand operand : operands )
         {
-            sql.append( operand.getColumnName() ).append( " VARCHAR(30), " );
+            sql.append( operand.getColumnName() ).append( " VARCHAR(20), " );
         }
         
         sql.append( "PRIMARY KEY ( periodid, sourceid ) );" );
