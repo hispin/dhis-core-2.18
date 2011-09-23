@@ -45,11 +45,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetGroupSetListAction
     extends ActionPagingSupport<OrganisationUnitGroupSet>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -4996503815547403053L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

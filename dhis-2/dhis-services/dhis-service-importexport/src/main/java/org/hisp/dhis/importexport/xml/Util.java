@@ -2,7 +2,6 @@ package org.hisp.dhis.importexport.xml;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.StringTokenizer;
 
 /*
  * Copyright (c) 2004-2005, University of Oslo

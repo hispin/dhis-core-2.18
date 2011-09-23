@@ -45,11 +45,6 @@ import org.hisp.dhis.reporttable.comparator.ReportTableGroupNameComparator;
 public class GetReportTableGroupListAction
     extends ActionPagingSupport<ReportTableGroup>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -1L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

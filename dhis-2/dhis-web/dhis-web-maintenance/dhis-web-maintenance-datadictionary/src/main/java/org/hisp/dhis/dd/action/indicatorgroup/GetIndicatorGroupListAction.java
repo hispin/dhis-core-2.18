@@ -45,11 +45,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetIndicatorGroupListAction
     extends ActionPagingSupport<IndicatorGroup>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -1518182947390522061L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

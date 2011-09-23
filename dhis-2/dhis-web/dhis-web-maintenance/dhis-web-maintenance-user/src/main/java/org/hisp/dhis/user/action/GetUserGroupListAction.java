@@ -39,11 +39,6 @@ import org.hisp.dhis.user.UserGroupService;
 public class GetUserGroupListAction
     extends ActionPagingSupport<UserGroup>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -6368907684073119546L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

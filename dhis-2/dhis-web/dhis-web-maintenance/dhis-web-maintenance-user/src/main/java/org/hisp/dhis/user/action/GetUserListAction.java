@@ -49,11 +49,6 @@ import org.hisp.dhis.user.comparator.UsernameComparator;
 public class GetUserListAction
     extends ActionPagingSupport<User>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 4089608846157081457L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

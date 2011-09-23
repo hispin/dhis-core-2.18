@@ -29,9 +29,7 @@ package org.hisp.dhis.light.action;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,20 +45,6 @@ public class GetSectionFormAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     // -------------------------------------------------------------------------

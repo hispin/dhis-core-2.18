@@ -45,11 +45,6 @@ import org.hisp.dhis.report.comparator.ReportComparator;
 public class GetAllReportsAction
     extends ActionPagingSupport<Report>
 {    
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -4304183507305998104L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

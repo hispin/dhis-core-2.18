@@ -45,11 +45,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetDataElementCategoryListAction
     extends ActionPagingSupport<DataElementCategory>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 2687396226111218636L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

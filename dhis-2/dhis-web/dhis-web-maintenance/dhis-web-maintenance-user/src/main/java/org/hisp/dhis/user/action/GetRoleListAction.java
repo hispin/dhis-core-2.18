@@ -43,11 +43,6 @@ import org.hisp.dhis.user.UserService;
 public class GetRoleListAction
     extends ActionPagingSupport<UserAuthorityGroup>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -9049555067079089282L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
