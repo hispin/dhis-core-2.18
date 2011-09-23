@@ -9,7 +9,7 @@
 	<p>
 		#foreach( $dataElement in $section.dataElements)
 			#if( $section.categoryCombo.name == "default" )
-				<label>(default) $dataElement.name</label> <input type="text" size="24" /><br />
+				<label>$dataElement.name</label> <input type="text" size="24" /><br />
 			#else
 				#foreach( $optionCombo in $section.categoryCombo.optionCombos )
 				<label>$dataElement.name $optionCombo.name</label> <input type="text" size="24" /><br />
