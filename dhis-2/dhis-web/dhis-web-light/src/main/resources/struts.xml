@@ -27,7 +27,7 @@
       <param name="page">/dhis-web-light/selectPeriod.vm</param>
     </action>
 
-    <action name="dataEntry" class="org.hisp.dhis.light.action.NoAction">
+    <action name="dataEntry" class="org.hisp.dhis.light.action.GetSectionFormAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/dataEntry.vm</param>
     </action>

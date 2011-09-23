@@ -18,6 +18,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 
+  <bean id="org.hisp.dhis.light.action.GetSectionFormAction" class="org.hisp.dhis.light.action.GetSectionFormAction">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+  </bean>
+
   <bean id="org.hisp.dhis.light.action.ProvideContentAction" class="org.hisp.dhis.light.action.ProvideContentAction"
     scope="prototype">
     <property name="dashboardManager" ref="org.hisp.dhis.dashboard.DashboardManager" />
