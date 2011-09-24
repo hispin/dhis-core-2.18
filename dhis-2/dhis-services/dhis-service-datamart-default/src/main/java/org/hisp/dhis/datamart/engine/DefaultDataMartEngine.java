@@ -169,8 +169,10 @@ public class DefaultDataMartEngine
         Collection<Period> periods = periodService.getPeriods( periodIds );
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
         Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIds );
-        dataElements = FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-
+        
+        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
+        expressionService.filterInvalidIndicators( indicators );
+        
         // ---------------------------------------------------------------------
         // Explode indicator expressions
         // ---------------------------------------------------------------------
