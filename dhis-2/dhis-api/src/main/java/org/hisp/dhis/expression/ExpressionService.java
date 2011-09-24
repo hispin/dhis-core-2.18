@@ -155,6 +155,14 @@ public interface ExpressionService
     String convertExpression( String expression, Map<Object, Integer> dataElementMapping, Map<Object, Integer> categoryOptionComboMapping );
     
     /**
+     * Filters indicators from the given collection where the numerator and /
+     * or the denominator are invalid.
+     *  
+     * @param indicators collection of Indicators.
+     */
+    void filterInvalidIndicators( Collection<Indicator> indicators );
+    
+    /**
      * Tests whether the expression is valid. Returns a positive value if the
      * expression is valid, or a negative value if not.
      * 

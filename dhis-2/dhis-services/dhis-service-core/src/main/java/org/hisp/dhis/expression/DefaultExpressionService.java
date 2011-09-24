@@ -36,6 +36,7 @@ import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -282,6 +283,26 @@ public class DefaultExpressionService
         }
 
         return operandsInExpression;
+    }
+    
+    public void filterInvalidIndicators( Collection<Indicator> indicators )
+    {
+        if ( indicators != null )
+        {
+            Iterator<Indicator> iterator = indicators.iterator();
+            
+            while ( iterator.hasNext() )
+            {
+                Indicator indicator = iterator.next();
+                
+                if ( !expressionIsValid( indicator.getNumerator() ).equals( VALID ) ||
+                    !expressionIsValid( indicator.getDenominator() ).equals( VALID ) )
+                {
+                    iterator.remove();
+                    log.warn( "Indicator is invalid: " + indicator );
+                }
+            }
+        }
     }
 
     public String expressionIsValid( String formula )
