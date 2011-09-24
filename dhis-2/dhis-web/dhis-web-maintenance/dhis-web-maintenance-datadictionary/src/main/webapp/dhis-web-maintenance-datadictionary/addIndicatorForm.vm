@@ -23,14 +23,9 @@
 <h3>$i18n.getString( "create_new_indicator" )</h3>
 
 <form id="addIndicatorForm" action="addIndicator.action" method="post" >
-<div>
-	
-	<input type="hidden" id="numeratorDescription" name="numeratorDescription"/>
-	<input type="hidden" id="numeratorAggregationOperator" name="numeratorAggregationOperator"/>
-	
-	<input type="hidden" id="denominatorDescription" name="denominatorDescription" value=""/>
-	<input type="hidden" id="denominatorAggregationOperator" name="denominatorAggregationOperator" value="sum"/>
-</div>
+
+<input type="hidden" id="numeratorDescription" name="numeratorDescription"/>	
+<input type="hidden" id="denominatorDescription" name="denominatorDescription" value=""/>
 
 <table>
 	<tr>

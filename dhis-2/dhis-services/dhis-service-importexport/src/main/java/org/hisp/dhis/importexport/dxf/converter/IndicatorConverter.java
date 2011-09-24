@@ -66,10 +66,8 @@ public class IndicatorConverter
     private static final String FIELD_INDICATOR_TYPE = "indicatorType";
     private static final String FIELD_NUMERATOR = "numerator";
     private static final String FIELD_NUMERATOR_DESCRIPTION = "numeratorDescription";
-    private static final String FIELD_NUMERATOR_AGGREGATION_OPERATOR = "numeratorAggregationOperator";
     private static final String FIELD_DENOMINATOR = "denominator";
     private static final String FIELD_DENOMINATOR_DESCRIPTION = "denominatorDescription";
-    private static final String FIELD_DENOMINATOR_AGGREGATION_OPERATOR = "denominatorAggregationOperator";
     private static final String FIELD_LAST_UPDATED = "lastUpdated";
     
     // -------------------------------------------------------------------------
@@ -153,10 +151,8 @@ public class IndicatorConverter
                 writer.writeElement( FIELD_INDICATOR_TYPE, String.valueOf( indicator.getIndicatorType().getId() ) );
                 writer.writeElement( FIELD_NUMERATOR, indicator.getNumerator() );
                 writer.writeElement( FIELD_NUMERATOR_DESCRIPTION, indicator.getNumeratorDescription() );
-                writer.writeElement( FIELD_NUMERATOR_AGGREGATION_OPERATOR, indicator.getNumeratorAggregationOperator() );
                 writer.writeElement( FIELD_DENOMINATOR, indicator.getDenominator() );
                 writer.writeElement( FIELD_DENOMINATOR_DESCRIPTION, indicator.getDenominatorDescription() );
-                writer.writeElement( FIELD_DENOMINATOR_AGGREGATION_OPERATOR, indicator.getDenominatorAggregationOperator() );
                 writer.writeElement( FIELD_LAST_UPDATED, DateUtils.getMediumDateString( indicator.getLastUpdated() ), EMPTY );
                             
                 writer.closeElement();
@@ -187,10 +183,8 @@ public class IndicatorConverter
             indicator.getIndicatorType().setId( indicatorTypeMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR_TYPE ) ) ) );
             indicator.setNumerator( expressionService.convertExpression( values.get( FIELD_NUMERATOR ), dataElementMapping, categoryOptionComboMapping ) );
             indicator.setNumeratorDescription( values.get( FIELD_NUMERATOR_DESCRIPTION ) );
-            indicator.setNumeratorAggregationOperator( values.get( FIELD_NUMERATOR_AGGREGATION_OPERATOR ) );
             indicator.setDenominator( expressionService.convertExpression( values.get( FIELD_DENOMINATOR ), dataElementMapping, categoryOptionComboMapping ) );
             indicator.setDenominatorDescription( values.get( FIELD_DENOMINATOR_DESCRIPTION ) );
-            indicator.setDenominatorAggregationOperator( values.get( FIELD_DENOMINATOR_AGGREGATION_OPERATOR ) );
             indicator.setLastUpdated( DateUtils.getMediumDate( values.get( FIELD_LAST_UPDATED ) ) );            
             
             importObject( indicator, params );

@@ -27,9 +27,7 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.convertExpressionFromDhis14;
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.getFirstDataElementId;
 
 import java.util.Map;
 
@@ -39,7 +37,6 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.IndicatorImporter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.system.util.UUIdUtils;
@@ -56,8 +53,6 @@ public class IndicatorRowHandler
     private Map<Object, Integer> indicatorTypeMap;
     
     private Map<Object, Integer> dataElementMap;
-    
-    private Map<Object, String> dataElementAggregationOperatorMap;
     
     private DataElementCategoryOptionCombo categoryOptionCombo;
     
@@ -81,7 +76,6 @@ public class IndicatorRowHandler
         this.indicatorService = indicatorService;
         this.indicatorTypeMap = indicatorTypeMap;
         this.dataElementMap = dataElementMap;
-        this.dataElementAggregationOperatorMap = NameMappingUtil.getDataElementAggregationOperatorMap();
         this.categoryOptionCombo = categoryOptionCombo;
         this.params = params;
         this.importAnalyser = importAnalyser;
@@ -108,12 +102,6 @@ public class IndicatorRowHandler
         }
         
         indicator.getIndicatorType().setId( indicatorTypeMap.get( indicator.getIndicatorType().getId() ) );            
-                
-        final String numeratorAggregationOperator = dataElementAggregationOperatorMap.get( getFirstDataElementId( indicator.getNumerator() ) );
-        final String denominatorAggregationOperator = dataElementAggregationOperatorMap.get( getFirstDataElementId( indicator.getDenominator() ) );
-        
-        indicator.setNumeratorAggregationOperator( numeratorAggregationOperator != null ? numeratorAggregationOperator : AGGREGATION_OPERATOR_SUM );
-        indicator.setDenominatorAggregationOperator( denominatorAggregationOperator != null ? denominatorAggregationOperator : AGGREGATION_OPERATOR_SUM );
         
         indicator.setNumerator( convertExpressionFromDhis14( indicator.getNumerator(), dataElementMap, categoryOptionCombo.getId(), indicator.getName() ) );
         indicator.setDenominator( convertExpressionFromDhis14( indicator.getDenominator(), dataElementMap, categoryOptionCombo.getId(), indicator.getName() ) );

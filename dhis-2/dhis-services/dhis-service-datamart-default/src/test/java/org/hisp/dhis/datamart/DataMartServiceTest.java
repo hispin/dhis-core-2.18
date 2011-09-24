@@ -460,10 +460,8 @@ public class DataMartServiceTest
         String suffix = "." + categoryOptionCombo.getId();
         
         indicatorA.setNumerator( "[" + idC + suffix + "]*[" + idD + suffix + "]" );
-        indicatorA.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         indicatorA.setDenominator( "[" + idE + suffix + "]+[" + idF + suffix + "]" );
-        indicatorA.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
         
         indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
         
@@ -548,10 +546,8 @@ public class DataMartServiceTest
         String suffix = Expression.SEPARATOR + categoryOptionCombo.getId();
         
         indicatorA.setNumerator( "[" + idC + suffix + "]*[" + idD + suffix + "]" );
-        indicatorA.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         indicatorA.setDenominator( "[" + idE + suffix + "]+[" + idF + suffix + "]" );
-        indicatorA.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
         
         indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
         

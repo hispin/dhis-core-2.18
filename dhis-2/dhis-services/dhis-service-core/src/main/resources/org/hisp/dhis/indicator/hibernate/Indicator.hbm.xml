@@ -43,13 +43,9 @@
 
     <property name="numeratorDescription" column="numeratordescription" type="text" />
 
-    <property name="numeratorAggregationOperator" column="numeratoraggregationtype" length="16" />
-
     <property name="denominator" column="denominator" type="text" />
 
     <property name="denominatorDescription" column="denominatordescription" type="text" />
-
-    <property name="denominatorAggregationOperator" column="denominatoraggregationtype" length="16" />
 
     <property name="sortOrder" />
 

@@ -102,10 +102,8 @@ public class IndicatorBatchHandler
         statementBuilder.setColumn( "indicatortypeid" );
         statementBuilder.setColumn( "numerator" );
         statementBuilder.setColumn( "numeratordescription" );
-        statementBuilder.setColumn( "numeratoraggregationtype" );
         statementBuilder.setColumn( "denominator" );
         statementBuilder.setColumn( "denominatordescription" );
-        statementBuilder.setColumn( "denominatoraggregationtype" );
         statementBuilder.setColumn( "sortorder" );
         statementBuilder.setColumn( "lastupdated" );
     }
@@ -122,10 +120,8 @@ public class IndicatorBatchHandler
         statementBuilder.setValue( indicator.getIndicatorType().getId() );
         statementBuilder.setValue( indicator.getNumerator() );
         statementBuilder.setValue( indicator.getNumeratorDescription() );
-        statementBuilder.setValue( indicator.getNumeratorAggregationOperator() );
         statementBuilder.setValue( indicator.getDenominator() );
         statementBuilder.setValue( indicator.getDenominatorDescription() );
-        statementBuilder.setValue( indicator.getDenominatorAggregationOperator() );
         statementBuilder.setValue( indicator.getSortOrder() );
         statementBuilder.setValue( indicator.getLastUpdated() );
     }

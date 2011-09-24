@@ -143,14 +143,10 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, getType().get( indicator.getIndicatorType().getName() ), format ) );
 
         sheet.addCell( new Label( column++, row, indicator.getNumeratorDescription(), format ) );
-        sheet.addCell( new Label( column++, row, i18n.getString( getAggregationOperator().get(
-            indicator.getNumeratorAggregationOperator() ) ), format ) );
         sheet.addCell( new Label( column++, row,
             expressionService.getExpressionDescription( indicator.getNumerator() ), format ) );
 
         sheet.addCell( new Label( column++, row, indicator.getDenominatorDescription(), format ) );
-        sheet.addCell( new Label( column++, row, i18n.getString( getAggregationOperator().get(
-            indicator.getDenominatorAggregationOperator() ) ), format ) );
         sheet.addCell( new Label( column++, row, expressionService
             .getExpressionDescription( indicator.getDenominator() ), format ) );
     }

@@ -484,10 +484,8 @@ public class DataMartServiceMultiDimensionTest
         String suffixB = Expression.SEPARATOR + categoryOptionComboB.getId();
         
         indicatorA.setNumerator( "[" + dataElementA.getId() + suffixA + "]*[" + dataElementA.getId() + suffixB + "]" );
-        indicatorA.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         indicatorA.setDenominator( "1" );
-        indicatorA.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
 
@@ -546,18 +544,14 @@ public class DataMartServiceMultiDimensionTest
         String suffixB = Expression.SEPARATOR + categoryOptionComboB.getId();
         
         indicatorA.setNumerator( "[" + dataElementA.getId() + suffixA + "]+[" + dataElementA.getId() + suffixB + "]" );
-        indicatorA.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         indicatorA.setDenominator( "100" );
-        indicatorA.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
 
         Indicator indicatorB = createIndicator( 'B', indicatorType );
 
         indicatorB.setNumerator( "[" + dataElementA.getId() + "]" );
-        indicatorB.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         indicatorB.setDenominator( "100" );
-        indicatorB.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
 
         indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
         indicatorIds.add( indicatorService.addIndicator( indicatorB ) );
@@ -631,10 +625,8 @@ public class DataMartServiceMultiDimensionTest
         String suffixB = Expression.SEPARATOR + categoryOptionComboB.getId();
         
         indicatorA.setNumerator( "[" + dataElementA.getId() + suffixA + "]*[" + dataElementA.getId() + suffixB + "]" );
-        indicatorA.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         indicatorA.setDenominator( "1" );
-        indicatorA.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
 

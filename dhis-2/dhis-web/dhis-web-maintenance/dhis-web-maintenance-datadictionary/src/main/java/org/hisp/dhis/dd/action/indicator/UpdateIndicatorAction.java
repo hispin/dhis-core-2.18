@@ -142,13 +142,6 @@ public class UpdateIndicatorAction
         this.numeratorDescription = numeratorDescription;
     }
 
-    private String numeratorAggregationOperator;
-
-    public void setNumeratorAggregationOperator( String numeratorAggregationOperator )
-    {
-        this.numeratorAggregationOperator = numeratorAggregationOperator;
-    }
-
     private String denominator;
 
     public void setDenominator( String denominator )
@@ -161,13 +154,6 @@ public class UpdateIndicatorAction
     public void setDenominatorDescription( String denominatorDescription )
     {
         this.denominatorDescription = denominatorDescription;
-    }
-
-    private String denominatorAggregationOperator;
-
-    public void setDenominatorAggregationOperator( String denominatorAggregationOperator )
-    {
-        this.denominatorAggregationOperator = denominatorAggregationOperator;
     }
 
     private List<String> jsonAttributeValues;
@@ -212,10 +198,8 @@ public class UpdateIndicatorAction
         indicator.setUrl( url );
         indicator.setNumerator( numerator );
         indicator.setNumeratorDescription( numeratorDescription );
-        indicator.setNumeratorAggregationOperator( numeratorAggregationOperator );
         indicator.setDenominator( denominator );
         indicator.setDenominatorDescription( denominatorDescription );
-        indicator.setDenominatorAggregationOperator( denominatorAggregationOperator );
 
         if ( jsonAttributeValues != null )
         {
