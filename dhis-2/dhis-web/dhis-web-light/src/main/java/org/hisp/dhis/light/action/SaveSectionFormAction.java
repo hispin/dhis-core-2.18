@@ -154,7 +154,7 @@ public class SaveSectionFormAction
 
                 if ( dataValue == null )
                 {
-                    if ( value.length() != 0 && value != null )
+                    if ( value != null && value.length() != 0 )
                     {
                         dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(),
                             null, optionCombo );

@@ -43,7 +43,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class SaveMinMaxLimitsAction
     implements Action
-{    
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -70,7 +70,7 @@ public class SaveMinMaxLimitsAction
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
@@ -135,20 +135,22 @@ public class SaveMinMaxLimitsAction
     {
         minLimit = minLimit != null ? minLimit : 0;
         maxLimit = maxLimit != null ? maxLimit : 0;
-        
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
-        
-        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
+
+        DataElementCategoryOptionCombo optionCombo = categoryService
+            .getDataElementCategoryOptionCombo( categoryOptionComboId );
 
         MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
             dataElement, optionCombo );
 
         if ( minMaxDataElement == null )
         {
-            minMaxDataElement = new MinMaxDataElement( organisationUnit, dataElement, optionCombo, minLimit, maxLimit, false );
-    
+            minMaxDataElement = new MinMaxDataElement( organisationUnit, dataElement, optionCombo, minLimit, maxLimit,
+                false );
+
             minMaxDataElementService.addMinMaxDataElement( minMaxDataElement );
         }
         else
@@ -159,7 +161,7 @@ public class SaveMinMaxLimitsAction
 
             minMaxDataElementService.updateMinMaxDataElement( minMaxDataElement );
         }
-        
+
         return SUCCESS;
     }
 }
