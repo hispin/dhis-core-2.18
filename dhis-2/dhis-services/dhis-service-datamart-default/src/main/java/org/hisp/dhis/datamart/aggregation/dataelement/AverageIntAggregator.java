@@ -147,10 +147,7 @@ public class AverageIntAggregator
                         }
                         catch ( NumberFormatException ex )
                         {
-                            log.warn( "Value skipped, not numeric: '" + entry.getValue() + 
-                                "', for data element with id: '" + entry.getKey() +
-                                "', for period with id: '" + crossTabValue.getPeriodId() +
-                                "', for source with id: '" + crossTabValue.getSourceId() + "'" );
+                            log.warn( "Value skipped, not numeric: '" + entry.getValue() );
                             continue;
                         }
                         

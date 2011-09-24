@@ -114,50 +114,30 @@ public class AverageIntSingleValueAggregator
 
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
-            final Period period = aggregationCache.getPeriod( crossTabValue.getPeriodId() );
-            
-            final Date currentStartDate = period.getStartDate();
-            final Date currentEndDate = period.getEndDate();
-
             final int dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
             
-            final double duration = getDaysInclusive( currentStartDate, currentEndDate );
-            
-            if ( duration > 0 )
-            {            
-                for ( final Entry<DataElementOperand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
+            for ( final Entry<DataElementOperand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
+            {
+                if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel )  )
                 {
-                    if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel )  )
+                    double value = 0.0;
+                    double relevantDays = getDaysInclusive( startDate, endDate );
+                    
+                    try
                     {
-                        double value = 0.0;
-                        double relevantDays = 0.0;             
-                        
-                        try
-                        {
-                            value = Double.parseDouble( entry.getValue() );
-                        }
-                        catch ( NumberFormatException ex )
-                        {
-                            log.warn( "Value skipped, not numeric: '" + entry.getValue() + 
-                                "', for data element with id: '" + entry.getKey() +
-                                "', for period with id: '" + crossTabValue.getPeriodId() +
-                                "', for source with id: '" + crossTabValue.getSourceId() + "'" );
-                            continue;
-                        }
-    
-                        if ( currentStartDate.compareTo( endDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0 ) // Value is intersecting
-                        {
-                            relevantDays = getDaysInclusive( startDate, endDate );
-                        }
-
-                        final double[] totalSum = totalSums.get( entry.getKey() );
-                        value += totalSum != null ? totalSum[0] : 0;
-                        relevantDays += totalSum != null ? totalSum[1] : 0;
-                        
-                        final double[] values = { value, relevantDays };
-                        
-                        totalSums.put( entry.getKey(), values );
+                        value = Double.parseDouble( entry.getValue() );
                     }
+                    catch ( NumberFormatException ex )
+                    {
+                        log.warn( "Value skipped, not numeric: '" + entry.getValue() );
+                        continue;
+                    }
+
+                    final double[] totalSum = totalSums.get( entry.getKey() );
+                    value += totalSum != null ? totalSum[0] : 0;
+                    relevantDays += totalSum != null ? totalSum[1] : 0;                        
+                    final double[] values = { value, relevantDays };                        
+                    totalSums.put( entry.getKey(), values );
                 }
             }
         }                    
