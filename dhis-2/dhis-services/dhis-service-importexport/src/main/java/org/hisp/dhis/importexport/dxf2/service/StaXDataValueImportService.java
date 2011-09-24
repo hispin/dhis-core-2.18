@@ -27,19 +27,15 @@ package org.hisp.dhis.importexport.dxf2.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- *
- * @author bobj
- * @version created 05-Sep-2011
- */
+import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
-import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 
 import javax.xml.namespace.QName;
-import org.amplecode.quick.BatchHandler;
 
+import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
@@ -53,10 +49,10 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ImportException;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.dxf2.model.*;
+import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
+import org.hisp.dhis.importexport.dxf2.model.Dxf;
 import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -70,17 +66,16 @@ import org.hisp.dhis.user.CurrentUserService;
  * Really basic DXF2 class for reading data
  *
  * @author bobj
- * @version created 5-Sep-2011
  */
 public class StaXDataValueImportService
 {
-
     private static final Log log = LogFactory.getLog( StaXDataValueImportService.class );
 
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Status/Log messages
     // TODO: internationalise these
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    
     public static final String NO_DATAVALUESETS = "There are no datasets in this message";
 
     public static final String IMPORTING_DATAVALUES = "Importing data values";
@@ -99,12 +94,12 @@ public class StaXDataValueImportService
 
     public static final String COUNTER = "%s DataValues imported";
 
-    // update display frequency
     public static final int DISPLAYCOUNT = 1000;
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -119,25 +114,11 @@ public class StaXDataValueImportService
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
 
-    private DataValueSetService dataValueSetService;
-
-    public void setDataValueSetService( DataValueSetService dataValueSetService )
-    {
-        this.dataValueSetService = dataValueSetService;
-    }
-
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
     }
 
     private DataElementService dataElementService;
@@ -179,7 +160,7 @@ public class StaXDataValueImportService
     {
         String user = currentUserService.getCurrentUsername();
 
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler(
+        BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler(
             DataValueBatchHandler.class ).init();
 
         DataValueImporter importer = 
@@ -193,6 +174,7 @@ public class StaXDataValueImportService
             {
                 throw new ImportException( NO_ROOT );
             }
+            
             QName rootName = reader.getElementQName();
 
             params.setNamespace( defaultIfEmpty( rootName.getNamespaceURI(), Dxf.NAMESPACE_20 ) );
@@ -201,8 +183,7 @@ public class StaXDataValueImportService
 
             log.debug( String.format( "Importing %s minor version  %s", rootName.getNamespaceURI(), version ) );
 
-            // move straight to the DataValue sets
-            // we are not looking for metadata
+            // move straight to the DataValue sets, we are not looking for metadata
             reader.moveToStartElement( Dxf.DATAVALUESETS );
 
             Date timestamp = new Date();
@@ -212,18 +193,17 @@ public class StaXDataValueImportService
                 throw new ImportException( NO_DATAVALUESETS );
             }
 
-            // Outer Loop
-            // process datavaluesets until no more datavaluesets
-
+            // Outer loop, process datavaluesets until no more datavaluesets
             int countDataValueSets = 0;
-            int displayCount = DISPLAYCOUNT;
+            
             do
             {
                 // look for a  DataValue set
                 try
                 {
                     reader.moveToStartElement( Dxf.DATAVALUESET );
-                } catch ( java.util.NoSuchElementException ex )
+                } 
+                catch ( java.util.NoSuchElementException ex )
                 {
                     // we have to reach here eventuallyperiodId
                     break;
@@ -233,7 +213,6 @@ public class StaXDataValueImportService
                     // we have to reach here eventually
                     break;
                 }
-
 
                 // Pick off the attributes
                 String idSchemeStr = reader.getAttributeValue( DataValueSet.ATTR_IDSCHEME );
@@ -246,7 +225,6 @@ public class StaXDataValueImportService
                     "Importing datavalueset (%s): period %s : orgunit %s : idscheme : %s",
                     comment, period, outerOrgunit, idSchemeStr ) );
 
-
                 // Determine identifier scheme to use
 
                 DataValueSet.IdentificationStrategy idScheme = DataValueSet.DEFAULT_STRATEGY;
@@ -255,8 +233,9 @@ public class StaXDataValueImportService
                 {
                     try
                     {
-                        idScheme = idScheme.valueOf( idSchemeStr );
-                    } catch ( IllegalArgumentException ex )
+                        idScheme = DataValueSet.IdentificationStrategy.valueOf( idSchemeStr );
+                    } 
+                    catch ( IllegalArgumentException ex )
                     {
                         throw new ImportException( String.format( UNKNOWN_ID_STRATEGY, idSchemeStr ) );
                     }
@@ -288,6 +267,7 @@ public class StaXDataValueImportService
 
                 int countDataValues = 0;
                 // process datavalues - loop until no more datavalues
+                
                 do
                 {
                     // look for a  DataValue
@@ -336,7 +316,8 @@ public class StaXDataValueImportService
                         }
                         dv.getSource().setId( orgunitMap.get( innerOrgUnitId ) );
 
-                    } else
+                    } 
+                    else
                     {
                         dv.getSource().setId( outerOrgunitId );
                     }
@@ -364,11 +345,13 @@ public class StaXDataValueImportService
             log.info( SUCCESS );
             state.setMessage( SUCCESS );
 
-        } catch ( ImportException ex )
+        } 
+        catch ( ImportException ex )
         {
             log.warn( ex.toString() );
             state.setMessage( ex.toString() );
-        } finally
+        } 
+        finally
         {
             batchHandler.flush();
         }
@@ -380,7 +363,6 @@ public class StaXDataValueImportService
         Period periodObj;
 
         PeriodType pt = PeriodType.getPeriodTypeFromIsoString( period );
-
 
         if ( pt == null )
         {
@@ -503,39 +485,6 @@ public class StaXDataValueImportService
             throw new ImportException( String.format( NO_SUCH_ORGUNIT, idScheme, orgunit ) );
         }
         return ou;
-    }
-
-    /**
-     * For a given dataelement identifier and id scheme, returns the dataelement object reference
-     * @param dataelement
-     * @param idScheme
-     * @return
-     * @throws ImportException thrown if no dataelement matches
-     */
-    private DataElement getDataElementByIdentifier( String dataelement, DataValueSet.IdentificationStrategy idScheme )
-        throws ImportException
-    {
-        DataElement de;
-        switch ( idScheme )
-        {
-            case UUID:
-                de = dataElementService.getDataElement( dataelement );
-                break;
-            case CODE:
-                de = dataElementService.getDataElementByCode( dataelement );
-                break;
-            case INTERNAL:
-                de = dataElementService.getDataElement( Integer.parseInt( dataelement ) );
-                break;
-            default:
-                throw new IllegalArgumentException( "Can't map with :" + idScheme );
-        }
-
-        if ( de == null )
-        {
-            throw new ImportException( String.format( NO_SUCH_DATAELEMENT, idScheme, dataelement ) );
-        }
-        return de;
     }
 
     private DataSet getDataSet( String dataSet, DataValueSet.IdentificationStrategy idScheme )

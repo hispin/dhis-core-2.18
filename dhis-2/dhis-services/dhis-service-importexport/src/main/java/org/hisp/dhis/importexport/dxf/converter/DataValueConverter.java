@@ -188,22 +188,14 @@ public class DataValueConverter
             final DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
             value.setOptionCombo( categoryOptionCombo );
             
-            log.debug( "Reading Datavalue");
             value.getDataElement().setId( dataElementMapping.get( Integer.parseInt( values.get( FIELD_DATAELEMENT ) ) ) );
-            log.debug( "id: " + value.getDataElement().getId());
             value.getPeriod().setId( periodMapping.get( Integer.parseInt( values.get( FIELD_PERIOD ) ) ) );
-            log.debug( "period: " + value.getPeriod().getId());
             value.getSource().setId( sourceMapping.get( Integer.parseInt( values.get( FIELD_SOURCE ) ) ) );
-            log.debug( "src: " + value.getSource().getId());
             value.setValue( values.get( FIELD_VALUE ) );
             value.setStoredBy( values.get( FIELD_STOREDBY ) );
             value.setTimestamp( DateUtils.getMediumDate( values.get( FIELD_TIMESTAMP ) ) );
             value.setComment( values.get( FIELD_COMMENT ) );
-            log.debug( "reading optioncombo ...");
             value.getOptionCombo().setId( categoryOptionComboMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY_OPTION_COMBO ) ) ) );
-            log.debug( "optionCombo: " + value.getOptionCombo().getId());
-
-            log.debug( "Datavalue read");
             
             importObject( value, params );
         }
