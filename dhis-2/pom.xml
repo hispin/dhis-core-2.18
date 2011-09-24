@@ -249,7 +249,6 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-
         <artifactId>dhis-support-hibernate</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -754,7 +753,7 @@
     <rootDir></rootDir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.version>3.0.5.RELEASE</spring.version>
-    <spring.security.version>3.0.5.RELEASE</spring.security.version>
+    <spring.security.version>3.0.6.RELEASE</spring.security.version>
     <hibernate.version>3.6.4.Final</hibernate.version>
   </properties>
 </project>
