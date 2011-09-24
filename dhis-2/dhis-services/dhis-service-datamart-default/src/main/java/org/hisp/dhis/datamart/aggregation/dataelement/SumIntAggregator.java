@@ -29,7 +29,6 @@ package org.hisp.dhis.datamart.aggregation.dataelement;
 
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
-import static org.hisp.dhis.system.util.DateUtils.getDaysInclusive;
 
 import java.util.Collection;
 import java.util.Date;
@@ -114,41 +113,28 @@ public class SumIntAggregator
 
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
-            final Period period = aggregationCache.getPeriod( crossTabValue.getPeriodId() );
-            
-            final Date currentStartDate = period.getStartDate();
-            final Date currentEndDate = period.getEndDate();
-            
-            final double duration = getDaysInclusive( currentStartDate, currentEndDate );
-            
             final int dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
             
-            if ( duration > 0 )
+            for ( final Entry<DataElementOperand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
             {
-                for ( final Entry<DataElementOperand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
+                if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel ) )
                 {
-                    if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel ) )
+                    double value = 0.0;
+                    
+                    try
                     {
-                        double value = 0.0;
-                        
-                        try
-                        {
-                            value = Double.parseDouble( entry.getValue() );
-                        }
-                        catch ( NumberFormatException ex )
-                        {
-                            log.warn( "Value skipped, not numeric: '" + entry.getValue() + 
-                                "', for data element with id: '" + entry.getKey() +
-                                "', for period with id: '" + crossTabValue.getPeriodId() +
-                                "', for source with id: '" + crossTabValue.getSourceId() + "'" );
-                            continue;
-                        }
-                        
-                        final double[] totalSum = totalSums.get( entry.getKey() );
-                        value += totalSum != null ? totalSum[0] : 0;                        
-                        final double[] values = { value, 0 };                        
-                        totalSums.put( entry.getKey(), values );
+                        value = Double.parseDouble( entry.getValue() );
                     }
+                    catch ( NumberFormatException ex )
+                    {
+                        log.warn( "Value skipped, not numeric: '" + entry.getValue() );
+                        continue;
+                    }
+                    
+                    final double[] totalSum = totalSums.get( entry.getKey() );
+                    value += totalSum != null ? totalSum[0] : 0;                        
+                    final double[] values = { value, 0 };                        
+                    totalSums.put( entry.getKey(), values );
                 }
             }
         }
