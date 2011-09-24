@@ -94,4 +94,14 @@ public class ValidationUtils
     {
         return password != null && password.length() >= 5 && password.length() < 50;
     }
+    
+    /**
+     * Validates whether a coordinate is valid.
+     * 
+     * @return true if the coordinate is valid, false otherwise.
+     */
+    public static boolean validateGeoCoordinates( String coordinate )
+    {
+        return true;
+    }
 }

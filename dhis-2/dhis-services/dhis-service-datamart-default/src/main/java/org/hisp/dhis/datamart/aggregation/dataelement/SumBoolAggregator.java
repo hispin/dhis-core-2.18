@@ -95,7 +95,7 @@ public class SumBoolAggregator
         
         for ( final Entry<DataElementOperand, double[]> entry : entries.entrySet() )
         {
-            if ( entry.getValue() != null && entry.getValue()[ 1 ] > 0 )
+            if ( entry.getValue() != null )
             {
                 values.put( entry.getKey(), getFloor( entry.getValue()[ 0 ] ) );
             }
@@ -126,46 +126,16 @@ public class SumBoolAggregator
                 {
                     if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel ) )
                     {
-                        double value = 0.0;                        
-                        double relevantDays = 0.0;
-                        double factor = 0.0;
-
-                        if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 ) // Value is within period
-                        {
-                            relevantDays = getDaysInclusive( startDate, endDate );
-                            factor = 1;
-                        }
-                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 ) // Value spans whole period
-                        {
-                            relevantDays = getDaysInclusive( startDate, endDate );
-                            factor = relevantDays / duration;
-                        }
-                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0
-                            && currentEndDate.compareTo( endDate ) <= 0 ) // Value spans period start
-                        {
-                            relevantDays = getDaysInclusive( startDate, currentEndDate );
-                            factor = relevantDays / duration;
-                        }
-                        else if ( currentStartDate.compareTo( startDate ) >= 0 && currentStartDate.compareTo( endDate ) <= 0
-                            && currentEndDate.compareTo( endDate ) >= 0 ) // Value spans period end
-                        {
-                            relevantDays = getDaysInclusive( currentStartDate, endDate );
-                            factor = relevantDays / duration;
-                        }
+                        double value = 0.0;
 
                         if ( entry.getValue().toLowerCase().equals( TRUE ) )
                         {
                             value = 1;
                         }
                         
-                        value = value * factor;
-
                         final double[] totalSum = totalSums.get( entry.getKey() );
-                        value += totalSum != null ? totalSum[0] : 0;
-                        relevantDays += totalSum != null ? totalSum[1] : 0;
-                        
-                        final double[] values = { value, relevantDays };
-                        
+                        value += totalSum != null ? totalSum[0] : 0;                        
+                        final double[] values = { value, 0 };                        
                         totalSums.put( entry.getKey(), values );
                     }
                 }

@@ -40,6 +40,8 @@ public interface AggregationCache
 {
     Collection<Integer> getIntersectingPeriods( Date startDate, Date endDate );
     
+    Collection<Integer> getPeriodsBetweenDates( final Date startDate, final Date endDate );
+    
     Period getPeriod( int id );
     
     int getLevelOfOrganisationUnit( int id );
