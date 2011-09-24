@@ -513,10 +513,8 @@ public abstract class DhisConvenienceTest
         indicator.setIndicatorType( type );
         indicator.setNumerator( "Numerator" );
         indicator.setNumeratorDescription( "NumeratorDescription" );
-        indicator.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         indicator.setDenominator( "Denominator" );
         indicator.setDenominatorDescription( "DenominatorDescription" );
-        indicator.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
 
         return indicator;
     }

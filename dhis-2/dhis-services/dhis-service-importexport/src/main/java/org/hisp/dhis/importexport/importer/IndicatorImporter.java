@@ -80,10 +80,8 @@ public class IndicatorImporter
         match.setIndicatorType( object.getIndicatorType() );
         match.setNumerator( object.getNumerator() );
         match.setNumeratorDescription( object.getNumeratorDescription() );
-        match.setNumeratorAggregationOperator( object.getNumeratorAggregationOperator() );
         match.setDenominator( object.getDenominator() );
         match.setDenominatorDescription( object.getDenominatorDescription() );
-        match.setDenominatorAggregationOperator( object.getDenominatorAggregationOperator() );
         match.setLastUpdated( object.getLastUpdated() );
         
         indicatorService.updateIndicator( match );                
@@ -133,19 +131,11 @@ public class IndicatorImporter
         {
             return false;
         }
-        if ( !isSimiliar( object.getNumeratorAggregationOperator(), existing.getNumeratorAggregationOperator() ) || ( isNotNull( object.getNumeratorAggregationOperator(), existing.getNumeratorAggregationOperator() ) && !object.getNumeratorAggregationOperator().equals( existing.getNumeratorAggregationOperator() ) ) )
-        {
-            return false;
-        }
         if ( !isSimiliar( object.getDenominatorDescription(), existing.getDenominatorDescription() ) || ( isNotNull( object.getDenominatorDescription(), existing.getDenominatorDescription() ) && !object.getDenominatorDescription().equals( existing.getDenominatorDescription() ) ) )
         {
             return false;
         }
-        if ( !isSimiliar( object.getDenominatorAggregationOperator(), existing.getDenominatorAggregationOperator() ) || ( isNotNull( object.getDenominatorAggregationOperator(), existing.getDenominatorAggregationOperator() ) && !object.getDenominatorAggregationOperator().equals( existing.getDenominatorAggregationOperator() ) ) )
-        {
-            return false;
-        }
-
+        
         return true;
     }
 }

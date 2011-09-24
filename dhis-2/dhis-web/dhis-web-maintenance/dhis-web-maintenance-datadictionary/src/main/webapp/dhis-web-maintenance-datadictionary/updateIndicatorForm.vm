@@ -23,15 +23,9 @@
 
 <form id="updateIndicatorForm" action="updateIndicator.action" method="post" >
 
-<div>
-	<input type="hidden" id="id" name="id" value="$indicator.id"/>
-	
-	<input type="hidden" id="numeratorDescription" name="numeratorDescription" value="$!indicator.numeratorDescription"/>
-	<input type="hidden" id="numeratorAggregationOperator" name="numeratorAggregationOperator" value="$!indicator.numeratorAggregationOperator"/>
-	
-	<input type="hidden" id="denominatorDescription" name="denominatorDescription" value="$!indicator.denominatorDescription"/>
-	<input type="hidden" id="denominatorAggregationOperator" name="denominatorAggregationOperator" value="$!indicator.denominatorAggregationOperator"/>
-</div>
+<input type="hidden" id="id" name="id" value="$indicator.id"/>
+<input type="hidden" id="numeratorDescription" name="numeratorDescription" value="$!indicator.numeratorDescription"/>
+<input type="hidden" id="denominatorDescription" name="denominatorDescription" value="$!indicator.denominatorDescription"/>
 
 <table>
 	<tr>

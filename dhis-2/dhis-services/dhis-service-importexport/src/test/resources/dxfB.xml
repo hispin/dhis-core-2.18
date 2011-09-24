@@ -368,10 +368,8 @@
             <indicatorType>65</indicatorType>
             <numerator>Numerator</numerator>
             <numeratorDescription>NumeratorDescription</numeratorDescription>
-            <numeratorAggregationOperator>sum</numeratorAggregationOperator>
             <denominator>Denominator</denominator>
             <denominatorDescription>DenominatorDescription</denominatorDescription>
-            <denominatorAggregationOperator>sum</denominatorAggregationOperator>
         </indicator>
         <indicator>
             <id>66</id>
@@ -402,10 +400,8 @@
             <indicatorType>65</indicatorType>
             <numerator>Numerator</numerator>
             <numeratorDescription>NumeratorDescription</numeratorDescription>
-            <numeratorAggregationOperator>sum</numeratorAggregationOperator>
             <denominator>Denominator</denominator>
             <denominatorDescription>DenominatorDescription</denominatorDescription>
-            <denominatorAggregationOperator>sum</denominatorAggregationOperator>
         </indicator>
         <indicator>
             <id>68</id>
@@ -419,10 +415,8 @@
             <indicatorType>65</indicatorType>
             <numerator>Numerator</numerator>
             <numeratorDescription>NumeratorDescription</numeratorDescription>
-            <numeratorAggregationOperator>sum</numeratorAggregationOperator>
             <denominator>Denominator</denominator>
             <denominatorDescription>DenominatorDescription</denominatorDescription>
-            <denominatorAggregationOperator>sum</denominatorAggregationOperator>
         </indicator>
         <indicator>
             <id>69</id>
@@ -436,10 +430,8 @@
             <indicatorType>65</indicatorType>
             <numerator>Numerator</numerator>
             <numeratorDescription>NumeratorDescription</numeratorDescription>
-            <numeratorAggregationOperator>sum</numeratorAggregationOperator>
             <denominator>Denominator</denominator>
             <denominatorDescription>DenominatorDescription</denominatorDescription>
-            <denominatorAggregationOperator>sum</denominatorAggregationOperator>
         </indicator>
     </indicators>
     <indicatorGroups>

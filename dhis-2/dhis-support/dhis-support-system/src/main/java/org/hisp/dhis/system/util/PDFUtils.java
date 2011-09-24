@@ -473,23 +473,11 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "numerator_description" ) ) );
         table.addCell( getTextCell( indicator.getNumeratorDescription() ) );
 
-        if ( nullIfEmpty( indicator.getNumeratorAggregationOperator() ) != null )
-        {
-            table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ) ) );
-            table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( indicator.getNumeratorAggregationOperator() ) ) ) );
-        }
-
         table.addCell( getItalicCell( i18n.getString( "numerator_formula" ) ) );
         table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getNumerator() ) ) );
 
         table.addCell( getItalicCell( i18n.getString( "denominator_description" ) ) );
         table.addCell( getTextCell( indicator.getDenominatorDescription() ) );
-
-        if ( nullIfEmpty( indicator.getDenominatorAggregationOperator() ) != null )
-        {
-            table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ) ) );
-            table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( indicator.getDenominatorAggregationOperator() ) ) ) );
-        }
 
         table.addCell( getItalicCell( i18n.getString( "denominator_formula" ) ) );
         table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getDenominator() ) ) );

@@ -55,15 +55,11 @@ public class Indicator
 
     private String numeratorDescription;
 
-    private String numeratorAggregationOperator;
-
     private String explodedNumerator;
 
     private String denominator;
 
     private String denominatorDescription;
-
-    private String denominatorAggregationOperator;
 
     private String explodedDenominator;
 
@@ -202,16 +198,6 @@ public class Indicator
         this.numeratorDescription = numeratorDescription;
     }
 
-    public String getNumeratorAggregationOperator()
-    {
-        return numeratorAggregationOperator;
-    }
-
-    public void setNumeratorAggregationOperator( String numeratorAggregationOperator )
-    {
-        this.numeratorAggregationOperator = numeratorAggregationOperator;
-    }
-
     public String getExplodedNumerator()
     {
         return explodedNumerator;
@@ -240,16 +226,6 @@ public class Indicator
     public void setDenominatorDescription( String denominatorDescription )
     {
         this.denominatorDescription = denominatorDescription;
-    }
-
-    public String getDenominatorAggregationOperator()
-    {
-        return denominatorAggregationOperator;
-    }
-
-    public void setDenominatorAggregationOperator( String denominatorAggregationOperator )
-    {
-        this.denominatorAggregationOperator = denominatorAggregationOperator;
     }
 
     public String getExplodedDenominator()
