@@ -29,7 +29,7 @@ package org.hisp.dhis.validationrule.action;
 
 import java.util.List;
 
-import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.i18n.I18n;
