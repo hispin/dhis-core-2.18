@@ -322,7 +322,7 @@ namespace eval dhisweb {
 		if {[info exists metadata(Location)]} {
 		    # ok .. where are we being redirected to
 		    switch -glob $metadata(Location) {
-			*loginfailed* { 
+			*login* { 
 			    set ::dhisweb::loginstatus LFAILED 
 			    ${::dhisweb::log}::debug "login failed"
 			}
