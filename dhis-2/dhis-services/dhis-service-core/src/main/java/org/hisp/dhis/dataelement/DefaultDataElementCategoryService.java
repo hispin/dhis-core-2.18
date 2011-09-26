@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -467,79 +468,27 @@ public class DefaultDataElementCategoryService
     }
 
     public void generateOptionCombos( DataElementCategoryCombo categoryCombo )
-    {
-        int totalOptionCombos = 1;
-
-        for ( DataElementCategory category : categoryCombo.getCategories() )
+    {        
+        CombinationGenerator<DataElementCategoryOption> generator = 
+            new CombinationGenerator<DataElementCategoryOption>( categoryCombo.getCategoryOptionsAsArray() );
+        
+        Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+        
+        while ( generator.hasNext() )
         {
-            totalOptionCombos = totalOptionCombos * category.getCategoryOptions().size();
-        }
-
-        /*
-         * Iterate through the collection of optionsMap every time picking one
-         * option from each collection. Because we have put enough number of
-         * options in each collection, better to remove the picked options so
-         * that we don't get confused how many times to pick an option - pick an
-         * option only once!
-         */
-        Map<Integer, Collection<DataElementCategoryOption>> optionsMap = prepareOptionsForCombination( categoryCombo );
-
-        Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>(
-            totalOptionCombos );
-
-        for ( int i = 0; i < totalOptionCombos; i++ )
-        {
-            List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categoryCombo
-                .getCategories().size() );
-
-            /*
-             * We are going to iterate the list of categories a number of times.
-             * better to create a copy and iterate through the copy. we can stop
-             * iterating when we have create the required option combinations.
-             */
-            Collection<DataElementCategory> copyOfCategories = categoryCombo.getCategories();
-
-            Iterator<DataElementCategory> categoryIterator = copyOfCategories.iterator();
-
-            while ( categoryIterator.hasNext() )
-            {
-                DataElementCategory cat = categoryIterator.next();
-
-                /*
-                 * From each category pick one option
-                 */
-                Iterator<DataElementCategoryOption> optionIterator = optionsMap.get( cat.getId() ).iterator();
-
-                DataElementCategoryOption option = optionIterator.next();
-
-                options.add( option );
-
-                /*
-                 * Once we used the option, better to remove it. because we have
-                 * enough number of options
-                 */
-                optionIterator.remove();
-            }
-
             DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
-
+            optionCombo.setCategoryOptions( generator.getNext() );
             optionCombo.setCategoryCombo( categoryCombo );
-
-            optionCombo.setCategoryOptions( options );
-
+            optionCombos.add( optionCombo );            
             addDataElementCategoryOptionCombo( optionCombo );
-
-            optionCombos.add( optionCombo );
         }
-
-        //TODO update category option -> category option combo association
-        //TODO re-implement using CombinationGenerator
         
         categoryCombo.setOptionCombos( optionCombos );
-
         updateDataElementCategoryCombo( categoryCombo );
+        
+        //TODO update category option -> category option combo association
     }
-
+    
     public List<DataElementCategoryOptionCombo> sortOptionCombos( DataElementCategoryCombo categoryCombo )
     {
         List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(

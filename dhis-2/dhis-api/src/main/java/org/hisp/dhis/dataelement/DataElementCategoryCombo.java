@@ -118,6 +118,21 @@ public class DataElementCategoryCombo
         return categories != null && categories.size() > 1;
     }
     
+    public DataElementCategoryOption[][] getCategoryOptionsAsArray()
+    {
+        DataElementCategoryOption[][] arrays = new DataElementCategoryOption[categories.size()][];
+        
+        int i = 0;
+        
+        for ( DataElementCategory category : categories )
+        {
+            arrays[i++] = new ArrayList<DataElementCategoryOption>( 
+                category.getCategoryOptions() ).toArray( new DataElementCategoryOption[0] );
+        }
+        
+        return arrays;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

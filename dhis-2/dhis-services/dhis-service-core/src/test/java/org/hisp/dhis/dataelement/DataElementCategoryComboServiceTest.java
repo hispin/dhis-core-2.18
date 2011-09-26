@@ -27,14 +27,18 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -43,13 +47,20 @@ import static junit.framework.Assert.*;
 public class DataElementCategoryComboServiceTest
     extends DhisSpringTest
 {
-    private DataElementCategoryCombo categoryComboA;
-    private DataElementCategoryCombo categoryComboB;
-    private DataElementCategoryCombo categoryComboC;
+    private DataElementCategoryOption categoryOptionA;
+    private DataElementCategoryOption categoryOptionB;
+    private DataElementCategoryOption categoryOptionC;
+    private DataElementCategoryOption categoryOptionD;
+    private DataElementCategoryOption categoryOptionE;
+    private DataElementCategoryOption categoryOptionF;
     
     private DataElementCategory categoryA;
     private DataElementCategory categoryB;
     private DataElementCategory categoryC;
+    
+    private DataElementCategoryCombo categoryComboA;
+    private DataElementCategoryCombo categoryComboB;
+    private DataElementCategoryCombo categoryComboC;
     
     private List<DataElementCategory> categories;
 
@@ -64,9 +75,37 @@ public class DataElementCategoryComboServiceTest
         
         categories = new ArrayList<DataElementCategory>();
         
+        categoryOptionA = new DataElementCategoryOption( "OptionA" );
+        categoryOptionB = new DataElementCategoryOption( "OptionB" );
+        categoryOptionC = new DataElementCategoryOption( "OptionC" );
+        categoryOptionD = new DataElementCategoryOption( "OptionD" );
+        categoryOptionE = new DataElementCategoryOption( "OptionE" );
+        categoryOptionF = new DataElementCategoryOption( "OptionF" );
+        
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
+        categoryService.addDataElementCategoryOption( categoryOptionC );
+        categoryService.addDataElementCategoryOption( categoryOptionD );
+        categoryService.addDataElementCategoryOption( categoryOptionE );
+        categoryService.addDataElementCategoryOption( categoryOptionF );
+        
         categoryA = new DataElementCategory( "CategoryA" );
         categoryB = new DataElementCategory( "CategoryB" );
         categoryC = new DataElementCategory( "CategoryC" );
+        
+        categoryA.getCategoryOptions().add( categoryOptionA );
+        categoryA.getCategoryOptions().add( categoryOptionB );
+        categoryB.getCategoryOptions().add( categoryOptionC );
+        categoryB.getCategoryOptions().add( categoryOptionD );
+        categoryC.getCategoryOptions().add( categoryOptionE );
+        categoryC.getCategoryOptions().add( categoryOptionF );
+        
+        categoryOptionA.setCategory( categoryA );
+        categoryOptionB.setCategory( categoryA );
+        categoryOptionC.setCategory( categoryB );
+        categoryOptionD.setCategory( categoryB );
+        categoryOptionE.setCategory( categoryC );
+        categoryOptionF.setCategory( categoryC );
         
         categoryService.addDataElementCategory( categoryA );
         categoryService.addDataElementCategory( categoryB );
@@ -146,5 +185,27 @@ public class DataElementCategoryComboServiceTest
         assertTrue( categoryCombos.contains( categoryComboA ) );
         assertTrue( categoryCombos.contains( categoryComboB ) );
         assertTrue( categoryCombos.contains( categoryComboC ) );        
+    }
+
+    @Test
+    public void testGenerateCategoryOptionCombos()
+    {        
+        categoryComboA = new DataElementCategoryCombo( "CategoryComboA", categories );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
+        
+        categoryService.generateOptionCombos( categoryComboA );
+        
+        Set<DataElementCategoryOptionCombo> optionCombos = categoryComboA.getOptionCombos();
+        
+        assertEquals( 8, optionCombos.size() );
+        
+        assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionC, categoryOptionE ) ) );
+        assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionC, categoryOptionF ) ) );
+        assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionD, categoryOptionE ) ) );
+        assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionD, categoryOptionF ) ) );
+        assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionB, categoryOptionC, categoryOptionE ) ) );
+        assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionB, categoryOptionC, categoryOptionF ) ) );
+        assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionB, categoryOptionD, categoryOptionE ) ) );
+        assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionB, categoryOptionD, categoryOptionF ) ) );
     }
 }
