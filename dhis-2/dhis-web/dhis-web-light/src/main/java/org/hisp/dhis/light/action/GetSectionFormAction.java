@@ -27,20 +27,32 @@
 
 package org.hisp.dhis.light.action;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.minmax.MinMaxDataElement;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
+import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.ListUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,6 +73,13 @@ public class GetSectionFormAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -68,11 +87,46 @@ public class GetSectionFormAction
         this.dataSetService = dataSetService;
     }
 
-    private DataValueService dataValueService;
+    private CompleteDataSetRegistrationService registrationService;
 
-    public void setDataValueService( DataValueService dataValueService )
+    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
     {
-        this.dataValueService = dataValueService;
+        this.registrationService = registrationService;
+    }
+
+    private DataAnalysisService stdDevOutlierAnalysisService;
+
+    public void setStdDevOutlierAnalysisService( DataAnalysisService stdDevOutlierAnalysisService )
+    {
+        this.stdDevOutlierAnalysisService = stdDevOutlierAnalysisService;
+    }
+
+    private DataAnalysisService minMaxOutlierAnalysisService;
+
+    public void setMinMaxOutlierAnalysisService( DataAnalysisService minMaxOutlierAnalysisService )
+    {
+        this.minMaxOutlierAnalysisService = minMaxOutlierAnalysisService;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
+    private MinMaxValuesGenerationService minMaxValuesGenerationService;
+
+    public void setMinMaxValuesGenerationService( MinMaxValuesGenerationService minMaxValuesGenerationService )
+    {
+        this.minMaxValuesGenerationService = minMaxValuesGenerationService;
+    }
+
+    private MinMaxDataElementService minMaxDataElementService;
+
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
+    {
+        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -91,18 +145,6 @@ public class GetSectionFormAction
         return organisationUnitId;
     }
 
-    private Integer dataSetId;
-
-    public void setDataSetId( Integer dataSetId )
-    {
-        this.dataSetId = dataSetId;
-    }
-
-    public Integer getDataSetId()
-    {
-        return dataSetId;
-    }
-
     private String periodId;
 
     public void setPeriodId( String periodId )
@@ -113,6 +155,18 @@ public class GetSectionFormAction
     public String getPeriodId()
     {
         return periodId;
+    }
+
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    public Integer getDataSetId()
+    {
+        return dataSetId;
     }
 
     private DataSet dataSet;
@@ -127,6 +181,32 @@ public class GetSectionFormAction
     public Map<String, String> getDataValues()
     {
         return dataValues;
+    }
+
+    private Map<String, String> validationErrors = new HashMap<String, String>();
+
+    public Map<String, String> getValidationErrors()
+    {
+        return validationErrors;
+    }
+
+    private Boolean complete = false;
+
+    public void setComplete( Boolean complete )
+    {
+        this.complete = complete;
+    }
+
+    public Boolean getComplete()
+    {
+        return complete;
+    }
+
+    private String page;
+
+    public String getPage()
+    {
+        return page;
     }
 
     // -------------------------------------------------------------------------
@@ -157,6 +237,7 @@ public class GetSectionFormAction
                     if ( dataValue != null )
                     {
                         value = dataValue.getValue();
+//                        validateDataElement( organisationUnit, dataElement, optionCombo, period, value );
                     }
 
                     dataValues.put( key, value );
@@ -164,6 +245,54 @@ public class GetSectionFormAction
             }
         }
 
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
+            organisationUnit );
+
+        complete = registration != null ? true : false;
+
         return SUCCESS;
+    }
+
+    public void validateDataElement( OrganisationUnit organisationUnit, DataElement dataElement,
+        DataElementCategoryOptionCombo optionCombo, Period period, String value )
+    {
+        System.err.println( "====[ " + dataElement.getName() + " ]====" );
+
+        Collection<DeflatedDataValue> outliers;
+
+        MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
+            dataElement, optionCombo );
+
+        if ( minMaxDataElement == null )
+        {
+            Double factor = (Double) systemSettingManager.getSystemSetting(
+                SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
+
+            Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse( organisationUnit,
+                ListUtils.getCollection( dataElement ), ListUtils.getCollection( period ), factor );
+
+            Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse( organisationUnit,
+                ListUtils.getCollection( dataElement ), ListUtils.getCollection( period ), null );
+
+            outliers = CollectionUtils.union( stdDevs, minMaxs );
+        }
+        else
+        {
+            System.err.println( "max: " + minMaxDataElement.getMax() );
+            System.err.println( "min: " + minMaxDataElement.getMin() );
+
+            outliers = minMaxValuesGenerationService.findOutliers( organisationUnit, ListUtils.getCollection( period ),
+                ListUtils.getCollection( minMaxDataElement ) );
+        }
+
+        System.out.println( "Found " + outliers.size() + " outliers." );
+
+        for ( DeflatedDataValue deflatedDataValue : outliers )
+        {
+            System.err.println( "max: " + deflatedDataValue.getMax() );
+            System.err.println( "min: " + deflatedDataValue.getMin() );
+        }
+
+        System.err.println( "value: " + value );
     }
 }

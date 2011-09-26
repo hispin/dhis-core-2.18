@@ -28,6 +28,7 @@
 package org.hisp.dhis.light.action;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,11 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -94,6 +100,20 @@ public class SaveSectionFormAction
         this.dataValueService = dataValueService;
     }
 
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    private CompleteDataSetRegistrationService registrationService;
+
+    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
+    {
+        this.registrationService = registrationService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -105,11 +125,71 @@ public class SaveSectionFormAction
         this.organisationUnitId = organisationUnitId;
     }
 
+    public Integer getOrganisationUnitId()
+    {
+        return organisationUnitId;
+    }
+
     private String periodId;
 
     public void setPeriodId( String periodId )
     {
         this.periodId = periodId;
+    }
+
+    public String getPeriodId()
+    {
+        return periodId;
+    }
+
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    public Integer getDataSetId()
+    {
+        return dataSetId;
+    }
+
+    private DataSet dataSet;
+
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
+
+    private Map<String, String> dataValues = new HashMap<String, String>();
+
+    public Map<String, String> getDataValues()
+    {
+        return dataValues;
+    }
+
+    private Boolean complete = false;
+
+    public void setComplete( Boolean complete )
+    {
+        this.complete = complete;
+    }
+
+    public Boolean getComplete()
+    {
+        return complete;
+    }
+
+    private Boolean validated;
+
+    public void setValidated( Boolean validated )
+    {
+        this.validated = validated;
+    }
+
+    public Boolean getValidated()
+    {
+        return validated;
     }
 
     // -------------------------------------------------------------------------
@@ -124,6 +204,8 @@ public class SaveSectionFormAction
         Period period = PeriodType.createPeriodExternalId( periodId );
 
         String storedBy = currentUserService.getCurrentUsername();
+
+        dataSet = dataSetService.getDataSet( dataSetId );
 
         if ( storedBy == null )
         {
@@ -170,6 +252,52 @@ public class SaveSectionFormAction
                     dataValueService.updateDataValue( dataValue );
                 }
             }
+        }
+
+        for ( Section section : dataSet.getSections() )
+        {
+            for ( DataElement dataElement : section.getDataElements() )
+            {
+                for ( DataElementCategoryOptionCombo optionCombo : dataElement.getCategoryCombo().getOptionCombos() )
+                {
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
+                        optionCombo );
+
+                    String key = String.format( "DE%dOC%d", dataElement.getId(), optionCombo.getId() );
+                    String value = "";
+
+                    if ( dataValue != null )
+                    {
+                        value = dataValue.getValue();
+                    }
+
+                    dataValues.put( key, value );
+                }
+            }
+        }
+
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
+            organisationUnit );
+
+        if ( registration == null && complete )
+        {
+            registration = new CompleteDataSetRegistration();
+            registration.setDataSet( dataSet );
+            registration.setPeriod( period );
+            registration.setSource( organisationUnit );
+            registration.setDate( new Date() );
+
+            registrationService.saveCompleteDataSetRegistration( registration );
+        }
+        else if ( registration != null && !complete )
+        {
+            registrationService.deleteCompleteDataSetRegistration( registration );
+        }
+
+        if ( validated == null || !validated )
+        {
+            validated = true;
+            return ERROR;
         }
 
         return SUCCESS;

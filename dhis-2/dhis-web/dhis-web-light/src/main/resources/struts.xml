@@ -33,8 +33,9 @@
     </action>
 
     <action name="saveSectionForm" class="org.hisp.dhis.light.action.SaveSectionFormAction">
-      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
-      <param name="page">/dhis-web-light/saveSuccess.vm</param>
+      <result name="success" type="redirect">/dhis-web-light/index.action</result>
+      <result name="error" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/dataEntry.vm</param>
     </action>
 
     <action name="dashboard" class="org.hisp.dhis.light.action.ProvideContentAction">
