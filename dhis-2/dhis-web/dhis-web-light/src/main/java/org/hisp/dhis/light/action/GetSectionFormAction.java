@@ -29,7 +29,6 @@ package org.hisp.dhis.light.action;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -237,7 +236,8 @@ public class GetSectionFormAction
                     if ( dataValue != null )
                     {
                         value = dataValue.getValue();
-//                        validateDataElement( organisationUnit, dataElement, optionCombo, period, value );
+                        // validateDataElement( organisationUnit, dataElement,
+                        // optionCombo, period, value );
                     }
 
                     dataValues.put( key, value );
@@ -253,11 +253,10 @@ public class GetSectionFormAction
         return SUCCESS;
     }
 
+    @SuppressWarnings( "unchecked" )
     public void validateDataElement( OrganisationUnit organisationUnit, DataElement dataElement,
         DataElementCategoryOptionCombo optionCombo, Period period, String value )
     {
-        System.err.println( "====[ " + dataElement.getName() + " ]====" );
-
         Collection<DeflatedDataValue> outliers;
 
         MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
@@ -278,21 +277,14 @@ public class GetSectionFormAction
         }
         else
         {
-            System.err.println( "max: " + minMaxDataElement.getMax() );
-            System.err.println( "min: " + minMaxDataElement.getMin() );
-
             outliers = minMaxValuesGenerationService.findOutliers( organisationUnit, ListUtils.getCollection( period ),
                 ListUtils.getCollection( minMaxDataElement ) );
         }
-
-        System.out.println( "Found " + outliers.size() + " outliers." );
 
         for ( DeflatedDataValue deflatedDataValue : outliers )
         {
             System.err.println( "max: " + deflatedDataValue.getMax() );
             System.err.println( "min: " + deflatedDataValue.getMin() );
         }
-
-        System.err.println( "value: " + value );
     }
 }

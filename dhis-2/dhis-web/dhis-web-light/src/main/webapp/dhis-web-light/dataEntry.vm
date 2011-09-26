@@ -24,9 +24,6 @@
 
 <div class="header-box">
 	<p>
-		$complete
-		$validated
-
 		<input type="checkbox" id="complete" name="complete" value="true" #if($complete)checked="true"#end style="width: 15px;" />
 		<label for="complete">DataSet is complete</label>
 	</p>
