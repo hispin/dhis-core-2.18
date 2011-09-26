@@ -134,18 +134,27 @@ public class DataElementCategoryCombo
         return arrays;
     }
     
-    public void generateOptionCombos()
+    public List<DataElementCategoryOptionCombo> generateOptionCombosList()
     {
+        List<DataElementCategoryOptionCombo> list = new ArrayList<DataElementCategoryOptionCombo>();
+        
         CombinationGenerator<DataElementCategoryOption> generator = 
-            new CombinationGenerator<DataElementCategoryOption>( this.getCategoryOptionsAsArray() );
+            new CombinationGenerator<DataElementCategoryOption>( getCategoryOptionsAsArray() );
         
         while ( generator.hasNext() )
         {
             DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
             optionCombo.setCategoryOptions( generator.getNext() );
             optionCombo.setCategoryCombo( this );
-            this.optionCombos.add( optionCombo );
+            list.add( optionCombo );
         }
+        
+        return list;
+    }
+    
+    public void generateOptionCombos()
+    {
+        this.optionCombos = new HashSet<DataElementCategoryOptionCombo>( generateOptionCombosList() );
     }
     
     //TODO update category option -> category option combo association
