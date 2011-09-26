@@ -28,7 +28,6 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
@@ -287,15 +286,6 @@ public interface DataElementCategoryService
      * @return a Collection of DataElementCategoryOptionCombos.
      */
     Collection<DataElementCategoryOptionCombo> getAllDataElementCategoryOptionCombos();
-
-    /**
-     * Sorts the DataElementCategoryOptionCombos in the given
-     * DataElementCategoryCombo.
-     * 
-     * @param categoryCombo the DataElementCategoryCombo.
-     * 
-     */
-    List<DataElementCategoryOptionCombo> sortOptionCombos( DataElementCategoryCombo categoryCombo );
 
     /**
      * Generates and persists a default DataElementCategory,

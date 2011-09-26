@@ -164,7 +164,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
     <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
   </bean>
   

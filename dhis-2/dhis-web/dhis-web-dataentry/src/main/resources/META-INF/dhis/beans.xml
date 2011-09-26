@@ -36,7 +36,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
   <bean id="org.hisp.dhis.de.action.SaveValueAction" class="org.hisp.dhis.de.action.SaveValueAction" scope="prototype">

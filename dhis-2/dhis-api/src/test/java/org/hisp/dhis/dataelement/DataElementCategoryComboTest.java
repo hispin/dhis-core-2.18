@@ -27,12 +27,13 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -92,7 +93,7 @@ public class DataElementCategoryComboTest
     }
     
     @Test
-    public void testGenerate()
+    public void testGenerateOptionCombosList()
     {
         List<DataElementCategoryOptionCombo> list = categoryCombo.generateOptionCombosList();
         
@@ -107,6 +108,16 @@ public class DataElementCategoryComboTest
         assertEquals( createCategoryOptionCombo( categoryCombo, categoryOptionB, categoryOptionC, categoryOptionF ), list.get( 5 ) );
         assertEquals( createCategoryOptionCombo( categoryCombo, categoryOptionB, categoryOptionD, categoryOptionE ), list.get( 6 ) );
         assertEquals( createCategoryOptionCombo( categoryCombo, categoryOptionB, categoryOptionD, categoryOptionF ), list.get( 7 ) );
+    }
+    
+    @Test
+    public void test()
+    {
+        List<DataElementCategoryOptionCombo> list = categoryCombo.generateOptionCombosList();
+        
+        categoryCombo.generateOptionCombos();
+        
+        assertEquals( list, categoryCombo.getSortedOptionCombos() );
     }
     
     private static DataElementCategoryOptionCombo createCategoryOptionCombo( DataElementCategoryCombo categoryCombo, DataElementCategoryOption... categoryOptions )
