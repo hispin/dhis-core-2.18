@@ -259,18 +259,18 @@ public class DefaultDataElementService
     {
         Map<DataElementCategoryCombo, List<DataElement>> mappedDataElements = new HashMap<DataElementCategoryCombo, List<DataElement>>();
 
-        for ( DataElement de : dataElements )
+        for ( DataElement dataElement : dataElements )
         {
-            if ( mappedDataElements.containsKey( de.getCategoryCombo() ) )
+            if ( mappedDataElements.containsKey( dataElement.getCategoryCombo() ) )
             {
-                mappedDataElements.get( de.getCategoryCombo() ).add( de );
+                mappedDataElements.get( dataElement.getCategoryCombo() ).add( dataElement );
             }
             else
             {
                 List<DataElement> des = new ArrayList<DataElement>();
-                des.add( de );
+                des.add( dataElement );
 
-                mappedDataElements.put( de.getCategoryCombo(), des );
+                mappedDataElements.put( dataElement.getCategoryCombo(), des );
             }
         }
 
@@ -281,9 +281,9 @@ public class DefaultDataElementService
     {
         Set<DataElementCategoryCombo> setCategoryCombos = new HashSet<DataElementCategoryCombo>();
 
-        for ( DataElement de : dataElements )
+        for ( DataElement dataElement : dataElements )
         {
-            setCategoryCombos.add( de.getCategoryCombo() );
+            setCategoryCombos.add( dataElement.getCategoryCombo() );
         }
 
         List<DataElementCategoryCombo> listCategoryCombos = new ArrayList<DataElementCategoryCombo>( setCategoryCombos );

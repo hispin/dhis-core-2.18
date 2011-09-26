@@ -238,7 +238,7 @@ public class LoadFormAction
 
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
         {
-            Collection<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
+            List<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
 
             orderdCategoryOptionCombos.put( categoryCombo.getId(), optionCombos );
 
