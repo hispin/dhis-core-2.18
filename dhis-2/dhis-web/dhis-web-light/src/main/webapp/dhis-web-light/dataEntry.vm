@@ -6,6 +6,7 @@
 <input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnitId" />
 <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSetId" />
 <input type="hidden" id="periodId" name="periodId" value="$periodId" />
+<input type="hidden" id="validated" name="validated" value="#if($validated)true#{else}false#end" />
 
 #foreach( $section in $dataSet.sections )
 <div class="header-box">
@@ -23,8 +24,17 @@
 
 <div class="header-box">
 	<p>
-		<input type="submit" style="width: 48%" value="Save"/>
-		<input type="reset" style="width: 48%" value="Clear"/>
+		$complete
+		$validated
+
+		<input type="checkbox" id="complete" name="complete" value="true" #if($complete)checked="true"#end style="width: 15px;" />
+		<label for="complete">DataSet is complete</label>
+	</p>
+</div>
+
+<div class="header-box" align="center">
+	<p>
+		<input type="submit" style="width: 100%;" value="Save"/> <br />
 	</p>
 </div>
 
