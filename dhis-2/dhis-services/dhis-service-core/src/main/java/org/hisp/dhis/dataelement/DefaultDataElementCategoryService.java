@@ -29,15 +29,11 @@ package org.hisp.dhis.dataelement;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -479,168 +475,6 @@ public class DefaultDataElementCategoryService
         updateDataElementCategoryCombo( categoryCombo );
     }
     
-    public List<DataElementCategoryOptionCombo> sortOptionCombos( DataElementCategoryCombo categoryCombo )
-    {
-        List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-            categoryCombo.getOptionCombos() );
-
-        int totalColumns = optionCombos.size();
-
-        Map<Integer, Collection<DataElementCategoryOption>> orderedOptions = prepareOptionsForCombination( categoryCombo );
-
-        List<DataElementCategoryOptionCombo> orderdCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
-
-        for ( int i = 0; i < totalColumns; i++ )
-        {
-            List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categoryCombo
-                .getCategories().size() );
-
-            List<DataElementCategory> copyOforderedCategories = categoryCombo.getCategories();
-
-            Iterator<DataElementCategory> categoryIterator = copyOforderedCategories.iterator();
-
-            while ( categoryIterator.hasNext() )
-            {
-                DataElementCategory category = categoryIterator.next();
-                Iterator<DataElementCategoryOption> optionIterator = orderedOptions.get( category.getId() ).iterator();
-                DataElementCategoryOption option = optionIterator.next();
-                options.add( option );
-                optionIterator.remove();
-            }
-
-            for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
-            {
-                if ( optionCombo.getCategoryOptions().containsAll( options ) )
-                {
-                    orderdCategoryOptionCombos.add( optionCombo );
-                    break;
-                }
-            }
-        }
-
-        return orderdCategoryOptionCombos;
-    }
-
-    private Map<Integer, Collection<DataElementCategoryOption>> prepareOptionsForCombination(
-        DataElementCategoryCombo categoryCombo )
-    {
-        // Get categories for a given category
-
-        List<DataElementCategory> categories = new ArrayList<DataElementCategory>( categoryCombo.getCategories() );
-
-        /*
-         * Get the total number of option combinations that will come into
-         * existence when combining categories having their own options
-         * 
-         * Eg. Category SEX with Options MALE and FEMALE Category AGE with
-         * Options <5years, 5-15years, >15years When combining these two
-         * categories we are going to have a total of 6 option combinations
-         * MALE_<5years,MALE_5-15years,MALE_>15years
-         * FEMALE_<5years,FEMALE_5-15years,FEMALE_>15years
-         * 
-         * 6 OptionCombinations = 2(from SEX) * 3(from AGE)
-         * 
-         * generalizing this we can have total option combinations by
-         * multiplying the number of options in each category
-         */
-        int totalOptionCombos = 1;
-
-        for ( DataElementCategory category : categories )
-        {
-            totalOptionCombos = totalOptionCombos * category.getCategoryOptions().size();
-        }
-
-        // ---------------------------------------------------------------------
-        // Determine the number of times each category is going to repeat
-        // ---------------------------------------------------------------------
-
-        /*
-         * Example again Category IPD_OPD, Options I and D Category Sex, Options
-         * F and M Category Age, Options 0-5,5-10,11+
-         * 
-         * Category combination is IPD_OPD+Sex+Age
-         * 
-         * Option combinations ... with the following arrangement in Data Entry
-         * 
-         * I | I | I | I | I | I | O | O | O | O | O | O F | F | F | F | F | F |
-         * M | M | M | M | M | M
-         * 0-5|5-10|11+|0-5|5-10|11+1|0-5|5-10|11+|0-5|5-10|11+1
-         * 
-         * If we rearrange our categories like IPD_OPD+Age+Sex - then we will
-         * have the same option combinations, but with different arrangement.
-         * 
-         * I | I | I | I | I | I | O | O | O | O | O | O 0-5| 0-5|5-10|5-10|
-         * 11+| 11+|0-5| 0-5|5-10|5-10| 11+|11+ F | M | F | M | F | M |F | M | F
-         * | M | F | M
-         * 
-         * If we assume that we will draw a data entry table header, the top a
-         * category is in the order list, then the more ColSpan its options are
-         * going to have
-         */
-        int categoryColSpan = totalOptionCombos;
-
-        Map<Integer, Integer> categoryRepeat = new HashMap<Integer, Integer>();
-
-        for ( DataElementCategory category : categories )
-        {
-            categoryColSpan = categoryColSpan / category.getCategoryOptions().size();
-
-            categoryRepeat.put( category.getId(), categoryColSpan );
-        }
-
-        /*
-         * If we see the above example, any option from AGE appear only twice
-         * while an option from SEX appears three times....generalizing this we
-         * can say set the following formula let
-         * 
-         * appearance = appearance of any option from a given category
-         * category_options = number of options from the category containing the
-         * option and option_combinations = total number of option combinations
-         * 
-         * appearance = option_combinaitions/category_options
-         * 
-         * each option becoming part of the option combinations for 'appearance'
-         * number of times, then totally a category will be represented in the
-         * option combinations option_combinaitions number of times.
-         * 
-         * Then we can prepare list of categories containing collection of its
-         * options where each option is repeated 'appearance' times. By doing
-         * this, we can iterate through these categories every time removing an
-         * option from the category but putting it in the option combinations.
-         */
-        Map<Integer, Collection<DataElementCategoryOption>> optionsMap = new HashMap<Integer, Collection<DataElementCategoryOption>>();
-
-        /*
-         * For each category create a collection of options by repeating each of
-         * its options 'appearance' number of times. The size of the collection
-         * should be equal to total number of options combinations.
-         */
-        for ( DataElementCategory cat : categories )
-        {
-            Collection<DataElementCategoryOption> requiredOptions = new ArrayList<DataElementCategoryOption>();
-            Collection<DataElementCategoryOption> options = cat.getCategoryOptions();
-
-            int count = 0;
-
-            while ( count < totalOptionCombos )
-            {
-                for ( DataElementCategoryOption option : options )
-                {
-                    for ( int i = 0; i < categoryRepeat.get( cat.getId() ); i++ )
-                    {
-                        requiredOptions.add( option );
-
-                        count++;
-                    }
-                }
-            }
-
-            optionsMap.put( cat.getId(), requiredOptions );
-        }
-
-        return optionsMap;
-    }
-
     public int getDataElementCategoryCount()
     {
         return dataElementCategoryStore.getCount();

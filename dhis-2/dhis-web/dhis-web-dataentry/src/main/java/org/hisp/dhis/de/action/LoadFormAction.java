@@ -40,7 +40,6 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
@@ -84,13 +83,6 @@ public class LoadFormAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
     }
 
     private I18n i18n;
@@ -238,7 +230,7 @@ public class LoadFormAction
 
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
         {
-            List<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
+            List<DataElementCategoryOptionCombo> optionCombos = categoryCombo.getSortedOptionCombos();
 
             orderdCategoryOptionCombos.put( categoryCombo.getId(), optionCombos );
 

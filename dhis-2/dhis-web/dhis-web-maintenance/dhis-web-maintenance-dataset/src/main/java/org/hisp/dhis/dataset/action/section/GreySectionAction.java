@@ -133,9 +133,9 @@ public class GreySectionAction
         return colRepeat;
     }
 
-    private Collection<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
-    public Collection<DataElementCategoryOptionCombo> getOptionCombos()
+    public List<DataElementCategoryOptionCombo> getOptionCombos()
     {
         return optionCombos;
     }
@@ -176,7 +176,7 @@ public class GreySectionAction
 
         if ( sectionIsMultiDimensional )
         {
-            optionCombos = categoryService.sortOptionCombos( categoryCombo );
+            optionCombos = categoryCombo.getSortedOptionCombos();
 
             for ( DataElementCategory dec : categoryCombo.getCategories() )
             {

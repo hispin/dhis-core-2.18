@@ -52,7 +52,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryOptionComboNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -109,13 +108,6 @@ public class DefaultDataSetReportService
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
     
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -162,7 +154,7 @@ public class DefaultDataSetReportService
 
             grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) ); // Data element header
 
-            List<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( categoryCombo );
+            List<DataElementCategoryOptionCombo> optionCombos = categoryCombo.getSortedOptionCombos();
 
             for ( DataElementCategoryOptionCombo optionCombo : optionCombos ) // Value headers
             {
