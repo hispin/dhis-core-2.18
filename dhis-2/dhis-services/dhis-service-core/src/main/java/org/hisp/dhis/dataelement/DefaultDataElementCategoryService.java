@@ -469,24 +469,14 @@ public class DefaultDataElementCategoryService
 
     public void generateOptionCombos( DataElementCategoryCombo categoryCombo )
     {        
-        CombinationGenerator<DataElementCategoryOption> generator = 
-            new CombinationGenerator<DataElementCategoryOption>( categoryCombo.getCategoryOptionsAsArray() );
+        categoryCombo.generateOptionCombos();
         
-        Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
-        
-        while ( generator.hasNext() )
+        for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() )
         {
-            DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
-            optionCombo.setCategoryOptions( generator.getNext() );
-            optionCombo.setCategoryCombo( categoryCombo );
-            optionCombos.add( optionCombo );            
             addDataElementCategoryOptionCombo( optionCombo );
         }
         
-        categoryCombo.setOptionCombos( optionCombos );
         updateDataElementCategoryCombo( categoryCombo );
-        
-        //TODO update category option -> category option combo association
     }
     
     public List<DataElementCategoryOptionCombo> sortOptionCombos( DataElementCategoryCombo categoryCombo )

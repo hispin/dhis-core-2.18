@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.CombinationGenerator;
 
 /**
  * @author Abyot Aselefew
@@ -132,6 +133,22 @@ public class DataElementCategoryCombo
         
         return arrays;
     }
+    
+    public void generateOptionCombos()
+    {
+        CombinationGenerator<DataElementCategoryOption> generator = 
+            new CombinationGenerator<DataElementCategoryOption>( this.getCategoryOptionsAsArray() );
+        
+        while ( generator.hasNext() )
+        {
+            DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
+            optionCombo.setCategoryOptions( generator.getNext() );
+            optionCombo.setCategoryCombo( this );
+            this.optionCombos.add( optionCombo );
+        }
+    }
+    
+    //TODO update category option -> category option combo association
     
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
