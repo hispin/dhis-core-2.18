@@ -20,7 +20,7 @@ function exportPDF( type )
 {
 	var params = "type=" + type;
 	
-	exportPdfByType( params );
+	exportPdfByType( type, params );
 }
 
 // -----------------------------------------------------------------------------

@@ -7,7 +7,7 @@
 	{
 		var params = "type=" + type;
 		
-		exportPdfByType( params );
+		exportPdfByType( type, params );
 	}
 	
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_validation_rule" ) , "'")';
@@ -27,9 +27,9 @@
 		<td style="vertical-align:top">
 			<table width="100%">
 				<tr>
-					<td>#filterDiv( "showValidationRuleForm" )</td>
+					<td>#filterDiv( "validationRule" )</td>
 					<td style="text-align:right">
-						<input type="button" id="exportPDF" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'validationrule' );" style="width:80px"/>
+						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'validationRule' );" style="width:80px"/>
 						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddValidationRuleForm.action'">
 					</td>
 				</tr>	

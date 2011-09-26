@@ -61,7 +61,7 @@ public class ExportToPdfAction
 
     private static final String EXPORT_FORMAT_PDF = "PDF";
 
-    private static final String TYPE_USER = "user";
+    private static final String TYPE_USER = "alluser";
 
     private static final String FILENAME_USER = "Users.zip";
 
@@ -126,11 +126,11 @@ public class ExportToPdfAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String key;
+    private String curKey;
 
-    public void setKey( String key )
+    public void setCurKey( String curKey )
     {
-        this.key = key;
+        this.curKey = curKey;
     }
 
     private Integer months;
@@ -162,9 +162,9 @@ public class ExportToPdfAction
 
             if ( type.equals( TYPE_USER ) )
             {
-                if ( isNotBlank( key ) ) // Filter on key only if set
+                if ( isNotBlank( curKey ) ) // Filter on key only if set
                 {
-                    userCredentialsList = new ArrayList<UserCredentials>( userService.searchUsersByName( key ) );
+                    userCredentialsList = new ArrayList<UserCredentials>( userService.searchUsersByName( curKey ) );
                 }
                 else if ( months != null && months != 0 )
                 {

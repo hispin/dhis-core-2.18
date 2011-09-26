@@ -62,7 +62,7 @@ public class ExportToPdfAction
 
     private static final String EXPORT_FORMAT_PDF = "PDF";
 
-    private static final String TYPE_DATAELEMENT = "dataelement";
+    private static final String TYPE_DATAELEMENT = "dataElement";
 
     private static final String TYPE_INDICATOR = "indicator";
 
@@ -145,11 +145,11 @@ public class ExportToPdfAction
         this.dataDictionaryId = dataDictionaryId;
     }
 
-    private String key;
+    private String curKey;
 
-    public void setKey( String key )
+    public void setCurKey( String curKey )
     {
-        this.key = key;
+        this.curKey = curKey;
     }
 
     private String type;
@@ -174,20 +174,21 @@ public class ExportToPdfAction
             {
                 List<DataElement> dataElements = null;
 
-                if ( isNotBlank( key ) ) // Filter on key only if set
+                if ( isNotBlank( curKey ) ) // Filter on key only if set
                 {
-                    dataElements = new ArrayList<DataElement>( dataElementService.searchDataElementsByName( key ) );
+                    dataElements = new ArrayList<DataElement>( dataElementService.searchDataElementsByName( curKey ) );
                 }
                 else if ( dataDictionaryId != null && dataDictionaryId != -1 )
                 {
-                    dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId ) );
+                    dataElements = new ArrayList<DataElement>( dataDictionaryService
+                        .getDataElementsByDictionaryId( dataDictionaryId ) );
                 }
                 else
                 {
                     dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
                 }
-                
-                Collections.sort( dataElements, new DataElementNameComparator() ); 
+
+                Collections.sort( dataElements, new DataElementNameComparator() );
 
                 if ( (dataElements != null) && !dataElements.isEmpty() )
                 {
@@ -206,9 +207,9 @@ public class ExportToPdfAction
             {
                 List<Indicator> indicators = null;
 
-                if ( isNotBlank( key ) ) // Filter on key only if set
+                if ( isNotBlank( curKey ) ) // Filter on key only if set
                 {
-                    indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsLikeName( key ) );
+                    indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsLikeName( curKey ) );
                 }
                 else if ( dataDictionaryId != null && dataDictionaryId != -1 )
                 {
@@ -219,7 +220,7 @@ public class ExportToPdfAction
                 {
                     indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
                 }
-                
+
                 Collections.sort( indicators, new IndicatorNameComparator() );
 
                 if ( (indicators != null) && !indicators.isEmpty() )

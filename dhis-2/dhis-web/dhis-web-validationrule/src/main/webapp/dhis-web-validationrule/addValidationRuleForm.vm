@@ -55,7 +55,7 @@
 		<td></td>
 		<td>
 			<input type="submit" value="$i18n.getString( 'save' )" style="width:10em">
-			<input type="button" value="$i18n.getString( 'cancel' )" id="cancel" name="cancel" onclick="window.location.href='showValidationRuleForm.action'" style="width:10em">
+			<input type="button" value="$i18n.getString( 'cancel' )" id="cancel" name="cancel" onclick="window.location.href='validationRule.action'" style="width:10em">
 		</td>
 	</tr>
 </table>

@@ -1336,7 +1336,7 @@ function deleteDivEffect()
 /**
  * Used to export PDF file by the given type and the filter params in page
  */
-function exportPdfByType( params )
+function exportPdfByType( type, params )
 {	
 	if ( jQuery( "table.listTable tbody tr" ).length == 0 )
 	{
@@ -1347,13 +1347,7 @@ function exportPdfByType( params )
 	var form = byId( 'filterKeyForm' );
 	form.action = 'exportToPdf.action?' + params;
 	form.submit();
-}
-
-function validateExportPDF()
-{
-	var exportButton = jQuery( 'input[type=button][id=exportPDF]' );
-	if ( byId( 'key' ).value != byId( 'oldKey' ).value ) exportButton.attr( 'disabled', true );
-	else exportButton.attr( 'disabled', false );
+	form.action = type + '.action';
 }
 
 /**

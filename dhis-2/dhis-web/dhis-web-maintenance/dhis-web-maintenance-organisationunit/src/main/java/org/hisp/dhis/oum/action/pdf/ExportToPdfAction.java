@@ -60,7 +60,7 @@ public class ExportToPdfAction
 
     private static final String EXPORT_FORMAT_PDF = "PDF";
 
-    private static final String TYPE_ORGANISATIONUNIT = "organisationunit";
+    private static final String TYPE_ORGANISATIONUNIT = "organisationUnit";
 
     private static final String FILENAME_ORGANISATIONUNIT = "Organisationunits.zip";
 
@@ -125,11 +125,11 @@ public class ExportToPdfAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String key;
+    private String curKey;
 
-    public void setKey( String key )
+    public void setCurKey( String curKey )
     {
-        this.key = key;
+        this.curKey = curKey;
     }
 
     private String type;
@@ -168,9 +168,9 @@ public class ExportToPdfAction
                     }
                 }
                 
-                if ( isNotBlank( key ) )
+                if ( isNotBlank( curKey ) )
                 {
-                    organisationUnitService.searchOrganisationUnitByName( organisationUnits, key );
+                    organisationUnitService.searchOrganisationUnitByName( organisationUnits, curKey );
                 }
                 
                 Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
