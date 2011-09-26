@@ -49,69 +49,64 @@ function criteriaChanged()
 
 function showDataElementDetails( dataElementId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'dataElement' );
-    request.setCallbackSuccess( dataElementReceived );
-    request.send( '../dhis-web-commons-ajax/getDataElement.action?id=' + dataElementId );
-}
+	jQuery.get( '../dhis-web-commons-ajax-json/getDataElement.action', 
+		{ "id": dataElementId }, function( json ) {
+		setInnerHTML( 'nameField', json.dataElement.name );
+		setInnerHTML( 'shortNameField', json.dataElement.shortName );
 
-function dataElementReceived( dataElementElement )
-{
-    setInnerHTML( 'nameField', getElementValue( dataElementElement, 'name' ) );
-    setInnerHTML( 'shortNameField', getElementValue( dataElementElement, 'shortName' ) );
+		var alternativeName = json.dataElement.alternativeName;
+		setInnerHTML( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
 
-    var alternativeName = getElementValue( dataElementElement, 'alternativeName' );
-    setInnerHTML( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
+		var description = json.dataElement.description;
+		setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
 
-    var description = getElementValue( dataElementElement, 'description' );
-    setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+		var active = json.dataElement.active;
+		setInnerHTML( 'activeField', active == 'true' ? i18n_yes : i18n_no );
 
-    var active = getElementValue( dataElementElement, 'active' );
-    setInnerHTML( 'activeField', active == 'true' ? i18n_yes : i18n_no );
+		var typeMap = {
+			'int' : i18n_number,
+			'bool' : i18n_yes_no,
+			'string' : i18n_text
+		};
+		var type = json.dataElement.valueType;
+		setInnerHTML( 'typeField', typeMap[type] );
 
-    var typeMap = {
-        'int' : i18n_number,
-        'bool' : i18n_yes_no,
-        'string' : i18n_text
-    };
-    var type = getElementValue( dataElementElement, 'valueType' );
-    setInnerHTML( 'typeField', typeMap[type] );
+		var domainTypeMap = {
+			'aggregate' : i18n_aggregate,
+			'patient' : i18n_patient
+		};
+		var domainType = json.dataElement.domainType;
+		setInnerHTML( 'domainTypeField', domainTypeMap[domainType] );
 
-    var domainTypeMap = {
-        'aggregate' : i18n_aggregate,
-        'patient' : i18n_patient
-    };
-    var domainType = getElementValue( dataElementElement, 'domainType' );
-    setInnerHTML( 'domainTypeField', domainTypeMap[domainType] );
+		var aggregationOperator = json.dataElement.aggregationOperator;
+		var aggregationOperatorText = i18n_none;
+		if ( aggregationOperator == 'sum' )
+		{
+			aggregationOperatorText = i18n_sum;
+		} else if ( aggregationOperator == 'average' )
+		{
+			aggregationOperatorText = i18n_average;
+		}
+		setInnerHTML( 'aggregationOperatorField', aggregationOperatorText );
 
-    var aggregationOperator = getElementValue( dataElementElement, 'aggregationOperator' );
-    var aggregationOperatorText = i18n_none;
-    if ( aggregationOperator == 'sum' )
-    {
-        aggregationOperatorText = i18n_sum;
-    } else if ( aggregationOperator == 'average' )
-    {
-        aggregationOperatorText = i18n_average;
-    }
-    setInnerHTML( 'aggregationOperatorField', aggregationOperatorText );
+		setInnerHTML( 'categoryComboField', json.dataElement.categoryCombo );
 
-    setInnerHTML( 'categoryComboField', getElementValue( dataElementElement, 'categoryCombo' ) );
+		var url = json.dataElement.url;
+		setInnerHTML( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
 
-    var url = getElementValue( dataElementElement, 'url' );
-    setInnerHTML( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
-
-    var lastUpdated = getElementValue( dataElementElement, 'lastUpdated' );
-    setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
-
-	var temp = '';
-	var dataSets = dataElementElement.getElementsByTagName( 'dataSet' );
-	for ( var i = 0 ; i < dataSets.length ; i ++ )
-	{
-		temp += dataSets[i].firstChild.nodeValue + '<br/>';
-	}
-	setInnerHTML( 'dataSetsField', temp ? temp : '[' + i18n_none + ']' );
+		var lastUpdated = json.dataElement.lastUpdated;
+		setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
+		
+		var temp = '';
+		var dataSets = json.dataElement.dataSets;
+		for ( var i = 0 ; i < dataSets.length ; i ++ )
+		{
+			temp += dataSets[i].name + '<br/>';
+		}
+		setInnerHTML( 'dataSetsField', temp ? temp : '[' + i18n_none + ']' );
 	
-    showDetails();
+		showDetails();
+	});
 }
 
 function getDataElements( dataElementGroupId, type, filterCalculated )
