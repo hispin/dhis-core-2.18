@@ -1349,6 +1349,13 @@ function exportPdfByType( params )
 	form.submit();
 }
 
+function validateExportPDF()
+{
+	var exportButton = jQuery( 'input[type=button][id=exportPDF]' );
+	if ( byId( 'key' ).value != byId( 'oldKey' ).value ) exportButton.attr( 'disabled', true );
+	else exportButton.attr( 'disabled', false );
+}
+
 /**
  * Displays the div with the first argument id, and hides the divs with ids in
  * the second array argument, except the id given in the first argument.
