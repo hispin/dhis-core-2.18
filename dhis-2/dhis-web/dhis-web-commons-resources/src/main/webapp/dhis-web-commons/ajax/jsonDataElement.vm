@@ -8,6 +8,20 @@
     "description": "$!encoder.jsonEncode( ${dataElement.description} )",
     "active": "$!{dataElement.active}",
     "type": "$!{dataElement.type}",
-    "aggregationOperator": "$!{dataElement.aggregationOperator}"
+	"valueType": "$!{dataElement.type}",
+	"domainType": "${dataElement.getDomainTypeNullSafe()}",
+    "aggregationOperator": "$!{dataElement.aggregationOperator}",
+	"categoryCombo": "$!encoder.xmlEncode( ${dataElement.categoryCombo.name} )",
+	"url": "$!encoder.xmlEncode( ${dataElement.url} )",
+	"lastUpdated": "$!format.formatDate( ${dataElement.lastUpdated} )",
+	
+	#set( $size = ${dataElement.dataSets.size()} )
+	"dataSets": [
+	#foreach( $ds in ${dataElement.dataSets} )
+	  {
+		"name": "$!encoder.xmlEncode( ${ds.name} )"
+	  }#if( $velocityCount < $size ),#end
+	#end
+	]
   } 
 }
