@@ -8,7 +8,7 @@ jQuery(function() {
 <h3>$i18n.getString( "dhis-web-validationrule" )</h3>
 
 <ul id="introList">
-    #introListImgItem( "showValidationRuleForm.action" "validation_rule" "validationrule" )
+    #introListImgItem( "validationRule.action" "validation_rule" "validationrule" )
     #introListImgItem( "showValidationRuleGroupForm.action" "validation_rule_group" "validationrule" )
     #introListImgItem( "showRunValidationForm.action" "validation_rule_analysis" "validationanalysis" )
     #introListImgItem( "viewAnalysisForm.action?key=stddevoutlier" "stddevoutlier_analysis" "validationanalysis" )

@@ -8,7 +8,7 @@ function exportPDF( type )
 	var params = "type=" + type;
 	params += "&months=" + jQuery( '#months' ).val();
 
-	exportPdfByType( params );
+	exportPdfByType( type, params );
 }
 
 // -----------------------------------------------------------------------------

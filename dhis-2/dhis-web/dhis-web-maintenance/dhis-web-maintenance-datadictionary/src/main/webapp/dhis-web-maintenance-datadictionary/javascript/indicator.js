@@ -3,7 +3,7 @@ function exportPDF( type )
 	var params = "type=" + type;
 	params += "&dataDictionaryId=" + jQuery( '#dataDictionaryList' ).val();
 	
-	exportPdfByType( params );
+	exportPdfByType( type, params );
 }
 
 function indicatorTypeChanged()

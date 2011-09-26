@@ -58,7 +58,7 @@ public class ExportToPdfAction
 
     private static final String EXPORT_FORMAT_PDF = "PDF";
 
-    private static final String TYPE_VALIDATION_RULE = "validationrule";
+    private static final String TYPE_VALIDATION_RULE = "validationRule";
 
     private static final String FILENAME_VALIDATION_RULE = "ValidationRules.zip";
 
@@ -107,11 +107,11 @@ public class ExportToPdfAction
         this.type = type;
     }
 
-    private String key;
+    private String curKey;
 
-    public void setKey( String key )
+    public void setCurKey( String curKey )
     {
-        this.key = key;
+        this.curKey = curKey;
     }
 
     // -------------------------------------------------------------------------
@@ -145,9 +145,9 @@ public class ExportToPdfAction
 
             if ( type.equals( TYPE_VALIDATION_RULE ) )
             {
-                if ( isNotBlank( key ) ) // Filter on key only if set
+                if ( isNotBlank( curKey ) ) // Filter on key only if set
                 {
-                    validationRulesList = new ArrayList<ValidationRule>( validationRuleService.getValidationRulesByName( key ) );
+                    validationRulesList = new ArrayList<ValidationRule>( validationRuleService.getValidationRulesByName( curKey ) );
                 }
                 else
                 {
