@@ -119,7 +119,8 @@ $i18n.getString( "filter_by_name" ):
 <form id="filterKeyForm" action="${action}.action" method="POST">
 	<div style="inline">
 		#set ($value = $encoder.htmlEncode( ${key} ))
-		<input type="text" id="key" name="key" value="$!value"/>
+		<input type="text" id="key" name="key" value="$!value" onchange="validateExportPDF()"/>
+		<input type="hidden" id="oldKey" name="oldKey" value="$!value"/>
 		<input type="submit" value="$i18n.getString( 'filter' )"/>
 		<input type="button" value="$i18n.getString( 'clear' )" 
 		onclick="window.location.href='${action}.action'"/>
