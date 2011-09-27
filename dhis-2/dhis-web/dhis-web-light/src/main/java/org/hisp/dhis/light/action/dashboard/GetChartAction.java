@@ -1,4 +1,4 @@
-package org.hisp.dhis.light.action;
+package org.hisp.dhis.light.action.dashboard;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,48 +27,30 @@ package org.hisp.dhis.light.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
+import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.reporttable.ReportParams;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableService;
+import org.jfree.chart.JFreeChart;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
+ * @version $Id$
  */
-public class GetReportParamsAction
+public class GetChartAction
     implements Action
 {
-    private static final int AVAILABLE_REPORTING_MONTHS = 24;
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ReportTableService reportTableService;
+    private ChartService chartService;
 
-    public void setReportTableService( ReportTableService reportTableService )
+    public void setChartService( ChartService chartService )
     {
-        this.reportTableService = reportTableService;
+        this.chartService = chartService;
     }
     
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -82,74 +64,59 @@ public class GetReportParamsAction
 
     private Integer id;
 
-    public Integer getId()
-    {
-        return id;
-    }
-
     public void setId( Integer id )
     {
         this.id = id;
     }
-        
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private ReportParams reportParams;
+    private JFreeChart chart;
 
-    public ReportParams getReportParams()
+    public JFreeChart getChart()
     {
-        return reportParams;
-    }
-        
-    private SortedMap<Integer, String> reportingPeriods = new TreeMap<Integer, String>();
-
-    public SortedMap<Integer, String> getReportingPeriods()
-    {
-        return reportingPeriods;
+        return chart;
     }
     
-    private Report report;
+    private int height;
 
-    public Report getReport()
+    public int getHeight()
     {
-        return report;
+        return height;
+    }
+
+    public void setHeight( int height )
+    {
+        this.height = height;
+    }
+
+    private int width;
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth( int width )
+    {
+        this.width = width;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action implemenation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        selectionTreeManager.setCurrentUserOrganisationUnitAsSelected();
-        
         if ( id != null )
         {
-            ReportTable reportTable = reportTableService.getReportTable( id, ReportTableService.MODE_REPORT_TABLE );
+            chart = chartService.getJFreeChart( id, format );
             
-            if ( reportTable != null )
-            {
-                reportParams = reportTable.getReportParams();
-                                
-                if ( reportParams.isParamReportingMonth() )
-                {
-                    MonthlyPeriodType periodType = new MonthlyPeriodType();
-                    
-                    Calendar cal = PeriodType.createCalendarInstance();
-                    
-                    for ( int i = 0; i < AVAILABLE_REPORTING_MONTHS; i++ )
-                    {
-                        int month = i + 1;    
-                        cal.add( Calendar.MONTH, -1 );                    
-                        Period period = periodType.createPeriod( cal.getTime() );                    
-                        String periodName = format.formatPeriod( period );
-                        
-                        reportingPeriods.put( month, periodName );
-                    }                
-                }
-            }
+            height = 280;
+            
+            width = 400;
         }
         
         return SUCCESS;
