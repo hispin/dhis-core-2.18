@@ -107,6 +107,19 @@ public class DataElementCategoryOptionComboDeletionHandler
     }
     
     @Override
+    public void deleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
+    {
+        Iterator<DataElementCategoryOptionCombo> iterator = categoryOption.getCategoryOptionCombos().iterator();
+
+        while ( iterator.hasNext() )
+        {
+            DataElementCategoryOptionCombo optionCombo = iterator.next();
+            iterator.remove();
+            categoryService.deleteDataElementCategoryOptionCombo( optionCombo );
+        }
+    }
+    
+    @Override
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         Iterator<DataElementCategoryOptionCombo> iterator = categoryCombo.getOptionCombos().iterator();
