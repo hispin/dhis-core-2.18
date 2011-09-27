@@ -343,6 +343,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroup.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+	  <param name="javascripts">javascript/indicatorGroup.js</param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
@@ -360,6 +361,7 @@
     <action name="showAddIndicatorGroupForm" class="org.hisp.dhis.dd.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupForm.vm</param>
+	  <param name="javascripts">javascript/indicatorGroup.js</param>
       <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
     </action>
 
@@ -371,6 +373,7 @@
     <action name="showUpdateIndicatorGroupForm" class="org.hisp.dhis.dd.action.indicatorgroup.ShowUpdateIndicatorGroupFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupForm.vm</param>
+	  <param name="javascripts">javascript/indicatorGroup.js</param>
       <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
@@ -391,6 +394,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+	  <param name="javascripts">javascript/indicatorGroupSet.js</param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
@@ -398,6 +402,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+	  <param name="javascripts">javascript/indicatorGroupSet.js</param>
       <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
     </action>
 
@@ -410,6 +415,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+	  <param name="javascripts">javascript/indicatorGroupSet.js</param>
     </action>
 
     <action name="updateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.UpdateIndicatorGroupSetAction">
