@@ -53,6 +53,7 @@ public class DataElementCategoryComboServiceTest
     private DataElementCategoryOption categoryOptionD;
     private DataElementCategoryOption categoryOptionE;
     private DataElementCategoryOption categoryOptionF;
+    private DataElementCategoryOption categoryOptionG;
     
     private DataElementCategory categoryA;
     private DataElementCategory categoryB;
@@ -81,6 +82,7 @@ public class DataElementCategoryComboServiceTest
         categoryOptionD = new DataElementCategoryOption( "OptionD" );
         categoryOptionE = new DataElementCategoryOption( "OptionE" );
         categoryOptionF = new DataElementCategoryOption( "OptionF" );
+        categoryOptionG = new DataElementCategoryOption( "OptionG" );
         
         categoryService.addDataElementCategoryOption( categoryOptionA );
         categoryService.addDataElementCategoryOption( categoryOptionB );
@@ -88,6 +90,7 @@ public class DataElementCategoryComboServiceTest
         categoryService.addDataElementCategoryOption( categoryOptionD );
         categoryService.addDataElementCategoryOption( categoryOptionE );
         categoryService.addDataElementCategoryOption( categoryOptionF );
+        categoryService.addDataElementCategoryOption( categoryOptionG );
         
         categoryA = new DataElementCategory( "CategoryA" );
         categoryB = new DataElementCategory( "CategoryB" );
@@ -199,6 +202,86 @@ public class DataElementCategoryComboServiceTest
         
         assertEquals( 8, optionCombos.size() );
         
+        assertOptionCombos( optionCombos );
+    }
+    
+    @Test
+    public void testUpdateCategoryOptionCombosA()
+    {
+        categoryComboA = new DataElementCategoryCombo( "CategoryComboA", categories );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
+        
+        categoryService.generateOptionCombos( categoryComboA );
+        
+        assertNotNull( categoryComboA.getOptionCombos() );
+        assertEquals( 8, categoryComboA.getOptionCombos().size() );
+        assertOptionCombos( categoryComboA.getOptionCombos() );
+        
+        categoryC.getCategoryOptions().add( categoryOptionG );
+        categoryOptionG.setCategory( categoryC );
+        categoryService.updateDataElementCategory( categoryC );
+        
+        categoryService.updateOptionCombos( categoryComboA );
+        
+        assertNotNull( categoryComboA.getOptionCombos() );
+        assertEquals( 12, categoryComboA.getOptionCombos().size() );
+        assertOptionCombos( categoryComboA.getOptionCombos() );
+        
+        assertTrue( categoryComboA.getOptionCombos().contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionC, categoryOptionG ) ) );
+        assertTrue( categoryComboA.getOptionCombos().contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionD, categoryOptionG ) ) );
+        assertTrue( categoryComboA.getOptionCombos().contains( createCategoryOptionCombo( categoryComboA, categoryOptionB, categoryOptionC, categoryOptionG ) ) );
+        assertTrue( categoryComboA.getOptionCombos().contains( createCategoryOptionCombo( categoryComboA, categoryOptionB, categoryOptionD, categoryOptionG ) ) );
+    }
+
+    @Test
+    public void testUpdateCategoryOptionCombosB()
+    {
+        categoryComboA = new DataElementCategoryCombo( "CategoryComboA", categories );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
+        
+        categoryService.generateOptionCombos( categoryComboA );
+        
+        assertNotNull( categoryComboA.getOptionCombos() );
+        assertEquals( 8, categoryComboA.getOptionCombos().size() );
+        assertOptionCombos( categoryComboA.getOptionCombos() );
+
+        categoryService.updateOptionCombos( categoryComboA );
+
+        assertNotNull( categoryComboA.getOptionCombos() );
+        assertEquals( 8, categoryComboA.getOptionCombos().size() );
+        assertOptionCombos( categoryComboA.getOptionCombos() );
+    }
+
+    @Test
+    public void testUpdateCategoryOptionCombosC()
+    {
+        categoryComboA = new DataElementCategoryCombo( "CategoryComboA", categories );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
+        
+        categoryService.generateOptionCombos( categoryComboA );
+        
+        assertNotNull( categoryComboA.getOptionCombos() );
+        assertEquals( 8, categoryComboA.getOptionCombos().size() );
+        assertOptionCombos( categoryComboA.getOptionCombos() );
+        
+        categoryC.getCategoryOptions().add( categoryOptionG );
+        categoryOptionG.setCategory( categoryC );
+        categoryService.updateDataElementCategory( categoryC );
+        
+        categoryService.updateOptionCombos( categoryC );
+        
+        assertNotNull( categoryComboA.getOptionCombos() );
+        assertEquals( 12, categoryComboA.getOptionCombos().size() );
+        assertOptionCombos( categoryComboA.getOptionCombos() );
+        
+        assertTrue( categoryComboA.getOptionCombos().contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionC, categoryOptionG ) ) );
+        assertTrue( categoryComboA.getOptionCombos().contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionD, categoryOptionG ) ) );
+        assertTrue( categoryComboA.getOptionCombos().contains( createCategoryOptionCombo( categoryComboA, categoryOptionB, categoryOptionC, categoryOptionG ) ) );
+        assertTrue( categoryComboA.getOptionCombos().contains( createCategoryOptionCombo( categoryComboA, categoryOptionB, categoryOptionD, categoryOptionG ) ) );
+    }
+  
+    private void assertOptionCombos( Set<DataElementCategoryOptionCombo> optionCombos )
+    {
         assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionC, categoryOptionE ) ) );
         assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionC, categoryOptionF ) ) );
         assertTrue( optionCombos.contains( createCategoryOptionCombo( categoryComboA, categoryOptionA, categoryOptionD, categoryOptionE ) ) );

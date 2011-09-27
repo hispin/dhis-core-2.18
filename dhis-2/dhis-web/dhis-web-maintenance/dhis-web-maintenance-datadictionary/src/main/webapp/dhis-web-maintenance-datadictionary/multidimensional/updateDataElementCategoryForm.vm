@@ -57,7 +57,8 @@
 	 <tr>
       <td></td>
       <td colspan="3">
-      	<input type="button" value="$i18n.getString( 'update_category_option' )" onclick="updateCategoryOption();" style="width:200px"/>
+      	<input type="button" value="$i18n.getString( 'add_category_option' )" onclick="addCategoryOptionToExistingCategory();" style="width:150px"/>
+      	<input type="button" value="$i18n.getString( 'update_category_option' )" onclick="updateCategoryOption();" style="width:150px"/>
       </td>
     </tr>
     <tr>

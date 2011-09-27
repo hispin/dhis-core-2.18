@@ -600,6 +600,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
+  <bean id="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction"
+    scope="prototype">
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    </property>
+  </bean>
+
   <bean id="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryOptionAction"
     scope="prototype">
     <property name="dataElementCategoryService">
@@ -670,11 +677,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
   </bean>
 
-  <!-- Other -->
-
-  <bean id="org.hisp.dhis.dd.action.NoAction" class="org.hisp.dhis.dd.action.NoAction" />
-
-
   <!-- Validate CategoryOption -->
 
   <bean id="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction"
@@ -684,7 +686,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <!-- Concept Name -->
+  <!-- Concept -->
 
   <bean id="org.hisp.dhis.dd.action.concept.AddConceptAction" class="org.hisp.dhis.dd.action.concept.AddConceptAction"
     scope="prototype">
@@ -715,5 +717,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="conceptService" ref="org.hisp.dhis.concept.ConceptService" />
   </bean>
+
+  <!-- Other -->
+
+  <bean id="org.hisp.dhis.dd.action.NoAction" class="org.hisp.dhis.dd.action.NoAction" />
 
 </beans>

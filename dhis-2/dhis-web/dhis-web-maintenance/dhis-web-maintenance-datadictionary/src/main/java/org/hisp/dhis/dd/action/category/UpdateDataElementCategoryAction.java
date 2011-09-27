@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
@@ -107,14 +108,15 @@ public class UpdateDataElementCategoryAction
         // CategoryOptions can only be sorted on update
         // ---------------------------------------------------------------------
 
-        dataElementCategory.getCategoryOptions().clear();
-
+        List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>();
+        
         for ( String id : categoryOptions )
         {
-            dataElementCategory.getCategoryOptions().add(
-                dataElementCategoryService.getDataElementCategoryOption( Integer.parseInt( id ) ) );
+            options.add( dataElementCategoryService.getDataElementCategoryOption( Integer.parseInt( id ) ) );
         }
 
+        dataElementCategory.setCategoryOptions( options );
+        
         dataElementCategoryService.updateDataElementCategory( dataElementCategory );
 
         return SUCCESS;

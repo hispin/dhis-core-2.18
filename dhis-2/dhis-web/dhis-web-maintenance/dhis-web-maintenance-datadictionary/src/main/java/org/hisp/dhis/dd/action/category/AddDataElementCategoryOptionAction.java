@@ -27,10 +27,6 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -38,10 +34,9 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Selamawit
- * @version $Id$
+ * @author Lars Helge Overland
  */
-public class AddDataElementCategoryAction
+public class AddDataElementCategoryOptionAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -55,16 +50,16 @@ public class AddDataElementCategoryAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+
+    private Integer categoryId;
+    
+    public void setCategoryId( Integer categoryId )
+    {
+        this.categoryId = categoryId;
+    }
 
     private String name;
 
@@ -73,18 +68,15 @@ public class AddDataElementCategoryAction
         this.name = name;
     }
 
-    private Integer conceptId;
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
-    public void setConceptId( Integer conceptId )
+    private DataElementCategoryOption dataElementCategoryOption;
+
+    public DataElementCategoryOption getDataElementCategoryOption()
     {
-        this.conceptId = conceptId;
-    }
-
-    private List<String> categoryOptionNames = new ArrayList<String>();
-
-    public void setCategoryOptionNames( List<String> categoryOptionNames )
-    {
-        this.categoryOptionNames = categoryOptionNames;
+        return dataElementCategoryOption;
     }
 
     // -------------------------------------------------------------------------
@@ -93,19 +85,16 @@ public class AddDataElementCategoryAction
 
     public String execute()
     {
-        DataElementCategory dataElementCategory = new DataElementCategory();
-        dataElementCategory.setName( name );
-        dataElementCategory.setConcept( conceptService.getConcept( conceptId ) );
-
-        for ( String categoryOptionName : categoryOptionNames )
-        {
-            DataElementCategoryOption categoryOption = new DataElementCategoryOption( categoryOptionName );
-            dataElementCategoryService.addDataElementCategoryOption( categoryOption );
-            dataElementCategory.getCategoryOptions().add( categoryOption );
-        }
-
-        dataElementCategoryService.addDataElementCategory( dataElementCategory );
-
+        DataElementCategory category = dataElementCategoryService.getDataElementCategory( categoryId );
+        
+        dataElementCategoryOption = new DataElementCategoryOption( name );
+        dataElementCategoryOption.setCategory( category );
+        category.getCategoryOptions().add( dataElementCategoryOption );
+        
+        dataElementCategoryService.addDataElementCategoryOption( dataElementCategoryOption );
+        dataElementCategoryService.updateDataElementCategory( category );
+        dataElementCategoryService.updateOptionCombos( category );
+        
         return SUCCESS;
     }
 }
