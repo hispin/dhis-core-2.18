@@ -20,27 +20,10 @@ function organisationUnitSelected( orgUnits )
 				
 			if( type == 'success' )
 			{
-						
-				$( "#loaderDiv" ).show();
-				jQuery.postJSON( "patientform.action",
-					{
-					}, 
-					function( json ) 
-					{   
-						programComboBox = '<select id="searchText" name="searchText" style="width:20.2em" >';
-						
-						for ( i in json.programs ) 
-						{
-							programComboBox += '<option value=' + json.programs[i].id + '>' + json.programs[i].name + '</option>';
-						} 
-						programComboBox += '</select>';
-						
-						showById('searchPatientDiv');
-						enable('listPatientBtn');
-						setInnerHTML('warnmessage','');
-						
-						$( "#loaderDiv" ).hide();
-					});
+				showById('searchPatientDiv');
+				enable('listPatientBtn');
+				setInnerHTML('warnmessage','');
+				setFieldValue('selectedOrgunitText', json.message );
 			}
 			else if( type == 'input' )
 			{
