@@ -35,7 +35,6 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id$
  */
 public class DataElementCategoryDeletionHandler
     extends DeletionHandler
@@ -104,6 +103,18 @@ public class DataElementCategoryDeletionHandler
                     categoryService.updateDataElementCategory( category );
                 }
             }
+        }
+    }
+
+    @Override
+    public void deleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
+    {
+        DataElementCategory category = categoryOption.getCategory();
+        
+        if ( category != null )
+        {
+            category.getCategoryOptions().remove( categoryOption );
+            categoryService.updateDataElementCategory( category );
         }
     }
 }

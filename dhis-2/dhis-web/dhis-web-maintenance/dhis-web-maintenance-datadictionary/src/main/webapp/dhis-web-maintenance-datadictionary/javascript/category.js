@@ -62,10 +62,21 @@ function addCategoryOptionToExistingCategory()
 	}	
 }
 
+function removeCategoryOption()
+{
+	var id = $( '#categoryOptions :selected' ).val();
+	var name = $( '#categoryOptions :selected' ).text();
+	
+	if ( id != null )
+	{	
+		removeItem( id, name, i18n_confirm_delete, 'removeDataElementCategoryOption.action' );
+	}
+}
+
 function updateCategoryOption()
 {
 	var name = $( '#categoryOptionName' ).val();
-	var id = $( '#categoryOptions :selected' ).val;
+	var id = $( '#categoryOptions :selected' ).val();
 	
 	if ( name.length == 0 )
 	{
@@ -93,8 +104,8 @@ function updateCategoryOption()
 
 function getSelectedCategoryOption()
 {
-	var selected = $( '#categoryOptions :selected' ).text();
-	$( '#categoryOptionName' ).val( selected );
+	var name = $( '#categoryOptions :selected' ).text();
+	$( '#categoryOptionName' ).val( name );
 }
 
 function updateCategoryOptionName()

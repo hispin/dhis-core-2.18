@@ -620,6 +620,8 @@
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
 
+    <!-- CategoryOption -->
+
     <action name="addDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonCategoryOption.vm
@@ -632,6 +634,13 @@
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+    </action>
+
+    <action name="removeDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryOptionAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
 
     <!-- CategoryCombo -->

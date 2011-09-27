@@ -162,9 +162,10 @@ public class DataElementCategoryOptionCombo
 
     /**
      * Tests whether two objects compare on a name basis. The default equals
-     * method becomes unusable in conjunction with persistence frameworks that
-     * put proxys on associated objects and collections, since it tests the
-     * class type which will differ between the proxy and the raw type.
+     * method becomes unusable in the case of detached objects in conjunction 
+     * with persistence frameworks that put proxys on associated objects and 
+     * collections, since it tests the class type which will differ between the 
+     * proxy and the raw type.
      * 
      * @param object the object to test for equality.
      * @return true if objects are equal, false otherwise.
