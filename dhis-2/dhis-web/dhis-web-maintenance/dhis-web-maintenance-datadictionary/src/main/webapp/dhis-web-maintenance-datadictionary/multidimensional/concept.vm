@@ -15,17 +15,10 @@
 
 	function showConceptDetails( conceptId )
 	{
-	    var request = new Request();
-	    request.setResponseTypeXML( 'concept' );
-	    request.setCallbackSuccess( conceptReceived );
-	    request.send( 'getConcept.action?id=' + conceptId );
-	}
-
-	function conceptReceived( conceptElement )
-	{
-	    setInnerHTML( 'nameField', getElementValue( conceptElement, 'name' ) );
-
-	    showDetails();
+	    jQuery.post( 'getConcept.action', { id : conceptId }, function( json ) {
+			setInnerHTML( 'nameField', json.concept.name );
+			showDetails();
+		});
 	}
 
 	// -----------------------------------------------------------------------------

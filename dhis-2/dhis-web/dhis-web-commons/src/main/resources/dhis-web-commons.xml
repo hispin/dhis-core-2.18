@@ -519,7 +519,7 @@
     </action>
 
     <action name="getDataElementGroup" class="org.hisp.dhis.commons.action.GetDataElementGroupAction">
-      <result name="success" type="velocity-xml">
+      <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonDataElementGroup.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
@@ -528,6 +528,13 @@
     <action name="getDataElementGroups" class="org.hisp.dhis.commons.action.GetDataElementGroupsAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonDataElementGroups.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="getDataElementGroupSet" class="org.hisp.dhis.commons.action.GetDataElementGroupSetAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonDataElementGroupSet.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>

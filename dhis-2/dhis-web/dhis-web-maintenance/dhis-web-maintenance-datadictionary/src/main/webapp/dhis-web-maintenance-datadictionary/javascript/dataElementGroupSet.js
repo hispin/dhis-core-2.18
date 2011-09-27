@@ -43,7 +43,6 @@ function validateAddDataElementGroupSetCompleted( message )
 
 function deleteDataElementGroupSet( groupSetId, groupSetName )
 {
-
     removeItem( groupSetId, groupSetName, i18n_confirm_delete, "deleteDataElementGroupSet.action" );
 }
 
@@ -53,18 +52,11 @@ function deleteDataElementGroupSet( groupSetId, groupSetName )
 
 function showDataElementGroupSetDetails( id )
 {
+    jQuery.post( '../dhis-web-commons-ajax-json/getDataElementGroupSet.action', { id: id },
+		function ( json ) {
+			setInnerHTML( 'nameField', json.dataElementGroupSet.name );
+			setInnerHTML( 'memberCountField', json.dataElementGroupSet.memberCount );
 
-    var request = new Request();
-    request.setResponseTypeXML( 'dataElementGroupSet' );
-    request.setCallbackSuccess( showDetailsCompleted );
-    request.send( "../dhis-web-commons-ajax/getDataElementGroupSet.action?id=" + id );
-}
-
-function showDetailsCompleted( dataElementGroupSet )
-{
-
-    setInnerHTML( 'nameField', getElementValue( dataElementGroupSet, 'name' ) );
-    setInnerHTML( 'memberCountField', getElementValue( dataElementGroupSet, 'memberCount' ) );
-
-    showDetails();
+			showDetails();
+	});
 }

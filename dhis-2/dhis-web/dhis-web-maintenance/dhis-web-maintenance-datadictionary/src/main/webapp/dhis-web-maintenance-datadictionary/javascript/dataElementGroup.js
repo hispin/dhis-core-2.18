@@ -16,18 +16,14 @@ function beforeSubmit()
 
 function showDataElementGroupDetails( dataElementGroupId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'dataElementGroup' );
-    request.setCallbackSuccess( dataElementGroupReceived );
-    request.send( '../dhis-web-commons-ajax/getDataElementGroup.action?id=' + dataElementGroupId );
-}
+    jQuery.post( '../dhis-web-commons-ajax-json/getDataElementGroup.action',
+		{ id: dataElementGroupId }, function ( json ) {		
+	
+		setInnerHTML( 'nameField', json.dataElementGroup.name );
+		setInnerHTML( 'memberCountField', json.dataElementGroup.memberCount );
 
-function dataElementGroupReceived( dataElementGroupElement )
-{
-    setInnerHTML( 'nameField', getElementValue( dataElementGroupElement, 'name' ) );
-    setInnerHTML( 'memberCountField', getElementValue( dataElementGroupElement, 'memberCount' ) );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

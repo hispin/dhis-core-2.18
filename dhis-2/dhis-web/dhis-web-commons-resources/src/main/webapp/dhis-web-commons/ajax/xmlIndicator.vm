@@ -11,10 +11,8 @@
     <indicatorTypeName>$!encoder.xmlEncode( $indicator.indicatorType.name )</indicatorTypeName>
     <numerator>$!encoder.xmlEncode( $indicator.numerator )</numerator>
     <numeratorDescription>$!encoder.xmlEncode( $indicator.numeratorDescription )</numeratorDescription>
-    <numeratorAggregationOperator>$!encoder.xmlEncode( $indicator.numeratorAggregationOperator )</numeratorAggregationOperator>
     <denominator>$!encoder.xmlEncode( $indicator.denominator )</denominator>
     <denominatorDescription>$!encoder.xmlEncode( $indicator.denominatorDescription )</denominatorDescription>
-    <denominatorAggregationOperator>$!encoder.xmlEncode( $indicator.denominatorAggregationOperator )</denominatorAggregationOperator>
     <url>$!encoder.xmlEncode( $indicator.url )</url>
 	<lastUpdated>$!format.formatDate( $indicator.lastUpdated )</lastUpdated>
 </indicator>

@@ -3,6 +3,22 @@
 		tableSorter( 'listTable' );
 	});
 
+	function showIndicatorGroupSetDetails( id )
+	{
+		jQuery.post( '../dhis-web-commons-ajax-json/getIndicatorGroupSet.action',
+			{ id: id }, function( json ) {
+			setInnerHTML( 'nameField', json.indicatorGroupSet.name );
+			setInnerHTML( 'memberCountField', json.indicatorGroupSet.memberCount );
+
+			showDetails();
+		});
+	}
+
+	function deleteIndicatorGroupSet( groupSetId, groupSetName )
+	{
+		removeItem( groupSetId, groupSetName, i18n_confirm_delete, "deleteIndicatorGroupSet.action" );
+	}
+
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_group" ) , "'")';
 	var i18n_edit = '$encoder.jsEscape( $i18n.getString( "edit" ) , "'")';
 	var i18n_delete = '$encoder.jsEscape( $i18n.getString( "delete" ) , "'")';	

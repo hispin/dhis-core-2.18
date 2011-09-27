@@ -4,23 +4,18 @@
 
 function showDataDictionaryDetails( dataDictionaryId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'dataDictionary' );
-    request.setCallbackSuccess( dataDictionaryReceived );
-    request.send( 'getDataDictionary.action?id=' + dataDictionaryId );
-}
+	jQuery.post( 'getDataDictionary.action', { id: dataDictionaryId },
+		function ( json ) {
+			setInnerHTML( 'nameField', json.dataDictionary.name );
 
-function dataDictionaryReceived( dataDictionaryElement )
-{
-    setInnerHTML( 'nameField', getElementValue( dataDictionaryElement, 'name' ) );
+			var description = json.dataDictionary.description;
+			setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
 
-    var description = getElementValue( dataDictionaryElement, 'description' );
-    setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+			var region = json.dataDictionary.region;
+			setInnerHTML( 'regionField', region ? region : '[' + i18n_none + ']' );
 
-    var region = getElementValue( dataDictionaryElement, 'region' );
-    setInnerHTML( 'regionField', region ? region : '[' + i18n_none + ']' );
-
-    showDetails();
+			showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------
