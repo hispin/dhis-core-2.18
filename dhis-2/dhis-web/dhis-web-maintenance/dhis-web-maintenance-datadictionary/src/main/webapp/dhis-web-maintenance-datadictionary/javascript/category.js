@@ -70,23 +70,18 @@ function updateCategoryOption()
 
 function getSelectedCategoryOption()
 {
-	var categoryOptions = byId('categoryOptions');
-	byId('categoryOptionName').value=categoryOptions[categoryOptions.selectedIndex].text;
+	var selected = $( '#categoryOptions :selected' ).text();
+	$( '#categoryOptionName' ).val( selected );
 }
 
 function updateCategoryOptionName()
 {
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( updateCategoryOptionNameReceived );
-	var params = "id=" + byId('categoryOptions').value;
-		params += '&name=' + byId('categoryOptionName').value;
-	request.sendAsPost(params);
-	request.send('updateDataElementCategoryOption.action');
-}
-
-function updateCategoryOptionNameReceived(xmlObject){
-	var categoryOptions = byId('categoryOptions');
-	categoryOptions[categoryOptions.selectedIndex].text = byId('categoryOptionName').value;
-	showSuccessMessage( i18n_option_rename_successfully );
+	var id = $( '#categoryOptions :selected' ).val();
+	var name = $( '#categoryOptionName' ).val();
+	
+	var url = 'updateDataElementCategoryOption.action?id=' + id + '&name=' + name;
+	
+	$.postUTF8( url, {}, function() {
+		$( '#categoryOptions :selected' ).text( name );
+	} );
 }
