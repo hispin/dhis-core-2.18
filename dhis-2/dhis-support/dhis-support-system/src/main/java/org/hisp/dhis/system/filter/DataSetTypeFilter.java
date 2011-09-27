@@ -28,11 +28,15 @@
 package org.hisp.dhis.system.filter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.util.Filter;
 
+/**
+ * @author mortenoh
+ */
 public class DataSetTypeFilter
     implements Filter<DataSet>
 {
@@ -40,25 +44,12 @@ public class DataSetTypeFilter
 
     public DataSetTypeFilter( String... types )
     {
-        for ( int i = 0; i < types.length; i++ )
-        {
-            dataSetTypes.add( types[i] );
-        }
+        dataSetTypes = Arrays.asList( types );
     }
 
     @Override
     public boolean retain( DataSet dataSet )
     {
-        String dataSetType = dataSet.getDataSetType();
-
-        for ( String type : dataSetTypes )
-        {
-            if ( type.equals( dataSetType ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return dataSetTypes.contains( dataSet.getDataSetType() );
     }
 }
