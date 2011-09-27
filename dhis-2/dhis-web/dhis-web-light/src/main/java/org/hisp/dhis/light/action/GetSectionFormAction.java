@@ -50,6 +50,7 @@ import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ListUtils;
 
@@ -93,6 +94,13 @@ public class GetSectionFormAction
         this.registrationService = registrationService;
     }
 
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     private DataAnalysisService stdDevOutlierAnalysisService;
 
     public void setStdDevOutlierAnalysisService( DataAnalysisService stdDevOutlierAnalysisService )
@@ -127,7 +135,7 @@ public class GetSectionFormAction
     {
         this.minMaxDataElementService = minMaxDataElementService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -217,8 +225,8 @@ public class GetSectionFormAction
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Period period = PeriodType.createPeriodExternalId( periodId );
-
+        Period period = periodService.reloadPeriod( PeriodType.createPeriodExternalId( periodId ) );
+        
         dataSet = dataSetService.getDataSet( dataSetId );
 
         for ( Section section : dataSet.getSections() )
@@ -236,8 +244,7 @@ public class GetSectionFormAction
                     if ( dataValue != null )
                     {
                         value = dataValue.getValue();
-                        // validateDataElement( organisationUnit, dataElement,
-                        // optionCombo, period, value );
+                        validateDataElement( organisationUnit, dataElement, optionCombo, period, value );
                     }
 
                     dataValues.put( key, value );
