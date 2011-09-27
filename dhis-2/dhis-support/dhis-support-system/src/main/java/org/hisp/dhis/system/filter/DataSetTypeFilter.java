@@ -42,7 +42,6 @@ public class DataSetTypeFilter
     {
         for ( int i = 0; i < types.length; i++ )
         {
-            System.err.println( "Adding filter for type: " + types[i] );
             dataSetTypes.add( types[i] );
         }
     }
