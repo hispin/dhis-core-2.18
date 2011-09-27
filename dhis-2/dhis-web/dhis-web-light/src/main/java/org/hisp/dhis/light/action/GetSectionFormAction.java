@@ -225,8 +225,7 @@ public class GetSectionFormAction
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Period period = PeriodType.createPeriodExternalId( periodId );
-        Period vPeriod = periodService.reloadPeriod( PeriodType.createPeriodExternalId( periodId ) );
+        Period period = periodService.getPeriodByExternalId( periodId );
 
         dataSet = dataSetService.getDataSet( dataSetId );
 
@@ -245,7 +244,7 @@ public class GetSectionFormAction
                     if ( dataValue != null )
                     {
                         value = dataValue.getValue();
-                        validateDataElement( organisationUnit, dataElement, optionCombo, vPeriod, value );
+                        validateDataElement( organisationUnit, dataElement, optionCombo, period, value );
                     }
 
                     dataValues.put( key, value );
