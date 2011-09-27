@@ -265,11 +265,7 @@ public class UpdateDataElementAction
 
         for ( DataSet dataSet : dataSets )
         {
-            if ( dataSet.getMobile() != null && dataSet.getMobile() )
-            {
-                dataSet.setVersion( dataSet.getVersion() + 1 );
-                dataSetService.updateDataSet( dataSet );
-            }
+            dataSetService.updateDataSet( dataSet.increaseVersion() );
         }
 
         if ( jsonAttributeValues != null )
