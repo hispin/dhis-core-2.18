@@ -317,6 +317,7 @@
 				,javascript/commons.js
 				,javascript/patient.js
 				,javascript/relationshipPatient.js
+				,javascript/underage.js
 			</param>
 		</action>
 
@@ -397,7 +398,7 @@
 			<param name="page">/dhis-web-caseentry/underAgeForm.vm</param>
 			<param name="javascripts">javascript/underage.js,
 				../dhis-web-commons/javascripts/date.js</param>
-			<param name="stylesheets">style/basic.css</param>
+			<param name="stylesheets">style/patient.css</param>
 		</action>
 
 		<action name="searchPerson"
