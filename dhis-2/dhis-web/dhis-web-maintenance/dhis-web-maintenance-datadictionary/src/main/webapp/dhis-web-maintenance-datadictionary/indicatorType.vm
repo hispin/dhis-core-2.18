@@ -5,18 +5,13 @@
 
 	function showIndicatorTypeDetails( indicatorTypeId )
 	{
-	    var request = new Request();
-	    request.setResponseTypeXML( 'indicatorType' );
-	    request.setCallbackSuccess( indicatorTypeReceived );
-	    request.send( 'getIndicatorType.action?id=' + indicatorTypeId );
-	}
+	    jQuery.get( 'getIndicatorType.action', { id: indicatorTypeId },
+			function( json ) {				
+				setInnerHTML( 'nameField', json.indicatorType.name );
+				setInnerHTML( 'factorField', json.indicatorType.factor );
 
-	function indicatorTypeReceived( indicatorTypeElement )
-	{
-	    setInnerHTML( 'nameField', getElementValue( indicatorTypeElement, 'name' ) );
-	    setInnerHTML( 'factorField', getElementValue( indicatorTypeElement, 'factor' ) );
-
-	    showDetails();
+				showDetails();
+		});
 	}
 
 	function removeIndicatorType( indicatorTypeId, indicatorTypeName )

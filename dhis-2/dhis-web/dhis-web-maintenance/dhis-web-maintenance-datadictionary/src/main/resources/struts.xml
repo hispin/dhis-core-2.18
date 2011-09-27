@@ -343,7 +343,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroup.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="javascripts">javascript/indicatorGroup.js</param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
@@ -361,7 +360,6 @@
     <action name="showAddIndicatorGroupForm" class="org.hisp.dhis.dd.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupForm.vm</param>
-      <param name="javascripts">javascript/indicatorGroup.js</param>
       <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
     </action>
 
@@ -373,7 +371,6 @@
     <action name="showUpdateIndicatorGroupForm" class="org.hisp.dhis.dd.action.indicatorgroup.ShowUpdateIndicatorGroupFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupForm.vm</param>
-      <param name="javascripts">javascript/indicatorGroup.js</param>
       <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
@@ -394,7 +391,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="javascripts">javascript/indicatorGroupSet.js</param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
@@ -402,7 +398,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="javascripts">javascript/indicatorGroupSet.js</param>
       <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
     </action>
 
@@ -415,7 +410,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="javascripts">javascript/indicatorGroupSet.js</param>
     </action>
 
     <action name="updateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.UpdateIndicatorGroupSetAction">
@@ -450,12 +444,12 @@
     </action>
 
     <action name="getIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-datadictionary/responseIndicatorType.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonIndicatorType.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-
+	
     <action name="removeIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.RemoveIndicatorTypeAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
@@ -512,8 +506,8 @@
     </action>
 
     <action name="getDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-datadictionary/responseDataDictionary.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-maintenance-datadictionary/jsonDataDictionary.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -590,8 +584,8 @@
     </action>
 
     <action name="getDataElementCategory" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-datadictionary/multidimensional/responseCategory.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonDataElementCategory.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -658,8 +652,8 @@
     </action>
 
     <action name="getDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-datadictionary/multidimensional/responseCategoryCombo.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonCategoryCombo.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -713,8 +707,8 @@
     <!-- Concept Name -->
 
     <action name="getConcept" class="org.hisp.dhis.dd.action.concept.GetConceptAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-datadictionary/multidimensional/responseConcept.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonConcept.vm
       </result>
     </action>
 

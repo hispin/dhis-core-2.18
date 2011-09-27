@@ -2,6 +2,6 @@
   {
     "id": $!{indicatorGroupSet.id},
     "name": "$!encoder.jsonEncode( ${indicatorGroupSet.name} )",
-    "memberCount": "$memberCount"
+    "memberCount": "$!indicatorGroupSet.members.size()"
   }
 }

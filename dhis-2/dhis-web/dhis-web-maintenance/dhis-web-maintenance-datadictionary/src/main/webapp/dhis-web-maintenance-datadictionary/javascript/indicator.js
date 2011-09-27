@@ -44,43 +44,38 @@ function criteriaChanged()
 
 function showIndicatorDetails( indicatorId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'indicator' );
-    request.setCallbackSuccess( indicatorReceived );
-    request.send( '../dhis-web-commons-ajax/getIndicator.action?id=' + indicatorId );
-}
+    jQuery.get( '../dhis-web-commons-ajax-json/getIndicator.action',
+		{ id: indicatorId }, function( json ) {
+		
+		setInnerHTML( 'nameField', json.indicator.name );
 
-function indicatorReceived( indicatorElement )
-{
-    setInnerHTML( 'nameField', getElementValue( indicatorElement, 'name' ) );
+		setInnerHTML( 'shortNameField', json.indicator.shortName );
 
-    setInnerHTML( 'shortNameField', getElementValue( indicatorElement, 'shortName' ) );
+		var alternativeName = json.indicator.alternativeName;
+		setInnerHTML( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
 
-    var alternativeName = getElementValue( indicatorElement, 'alternativeName' );
-    setInnerHTML( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
+		var description = json.indicator.description;
+		setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
 
-    var description = getElementValue( indicatorElement, 'description' );
-    setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+		var annualized = json.indicator.annualized;
+		setInnerHTML( 'annualizedField', annualized == "true" ? i18n_yes : i18n_no );
 
-    var annualized = getElementValue( indicatorElement, 'annualized' );
-    setInnerHTML( 'annualizedField', annualized == "true" ? i18n_yes : i18n_no );
+		setInnerHTML( 'indicatorTypeNameField', json.indicator.indicatorTypeName );
 
-    setInnerHTML( 'indicatorTypeNameField', getElementValue( indicatorElement, 'indicatorTypeName' ) );
+		var numeratorDescription = json.indicator.numeratorDescription;
+		setInnerHTML( 'numeratorDescriptionField', numeratorDescription ? numeratorDescription : '[' + i18n_none + ']' );
 
-    var numeratorDescription = getElementValue( indicatorElement, 'numeratorDescription' );
-    setInnerHTML( 'numeratorDescriptionField', numeratorDescription ? numeratorDescription : '[' + i18n_none + ']' );
+		var denominatorDescription = json.indicator.denominatorDescription;
+		setInnerHTML( 'denominatorDescriptionField', denominatorDescription ? denominatorDescription : '[' + i18n_none + ']' );
 
-    var denominatorDescription = getElementValue( indicatorElement, 'denominatorDescription' );
-    setInnerHTML( 'denominatorDescriptionField', denominatorDescription ? denominatorDescription : '[' + i18n_none
-            + ']' );
+		var url = json.indicator.url;
+		setInnerHTML( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
 
-    var url = getElementValue( indicatorElement, 'url' );
-    setInnerHTML( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
+		var lastUpdated = json.indicator.lastUpdated;
+		setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
 
-    var lastUpdated = getElementValue( indicatorElement, 'lastUpdated' );
-    setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

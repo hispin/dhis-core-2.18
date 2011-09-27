@@ -1,18 +1,12 @@
 function showDataElementCategoryComboDetails( categoryComboId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'dataElementCategoryCombo' );
-    request.setCallbackSuccess( dataElementCategoryComboReceived );
-    request.send( 'getDataElementCategoryCombo.action?id=' + categoryComboId );
-}
+    jQuery.post( 'getDataElementCategoryCombo.action', { id: categoryComboId },
+		function ( json) {
+			setInnerHTML( 'nameField', json.dataElementCategoryCombo.name );
+			setInnerHTML( 'dataElementCategoryCountField', json.dataElementCategoryCombo.dataElementCategoryCount );
 
-function dataElementCategoryComboReceived( dataElementCategoryComboElement )
-{
-    setInnerHTML( 'nameField', getElementValue( dataElementCategoryComboElement, 'name' ) );
-    setInnerHTML( 'dataElementCategoryCountField', getElementValue( dataElementCategoryComboElement,
-            'dataElementCategoryCount' ) );
-
-    showDetails();
+			showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

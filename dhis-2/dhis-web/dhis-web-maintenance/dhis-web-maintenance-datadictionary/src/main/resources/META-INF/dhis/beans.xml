@@ -382,9 +382,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeAction" class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeAction"
     scope="prototype">
-    <property name="indicatorService">
-      <ref bean="org.hisp.dhis.indicator.IndicatorService" />
-    </property>
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicatortype.RemoveIndicatorTypeAction" class="org.hisp.dhis.dd.action.indicatortype.RemoveIndicatorTypeAction"
