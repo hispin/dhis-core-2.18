@@ -5,20 +5,15 @@
 
 function showDataSetDetails( dataSetId )
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'dataSet' );
-  request.setCallbackSuccess( dataSetRecieved );
-  request.send( '../dhis-web-commons-ajax/getDataSet.action?id=' + dataSetId );
-}
+	jQuery.post( '../dhis-web-commons-ajax-json/getDataSet.action', 
+		{ id: dataSetId }, function ( json ) {
+		setInnerHTML( 'nameField', json.dataSet.name );
+		setInnerHTML( 'frequencyField', json.dataSet.frequency );
+		setInnerHTML( 'dataElementCountField', json.dataSet.dataElementCount );
+		setInnerHTML( 'dataEntryFormField', json.dataSet.dataentryform );
 
-function dataSetRecieved( dataSetElement )
-{
-  setInnerHTML( 'nameField', getElementValue( dataSetElement, 'name' ) );
-  setInnerHTML( 'frequencyField', getElementValue( dataSetElement, 'frequency' ) );
-  setInnerHTML( 'dataElementCountField', getElementValue( dataSetElement, 'dataElementCount' ) );
-  setInnerHTML( 'dataEntryFormField', getElementValue( dataSetElement, 'dataentryform' ) );
-
-  showDetails();
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

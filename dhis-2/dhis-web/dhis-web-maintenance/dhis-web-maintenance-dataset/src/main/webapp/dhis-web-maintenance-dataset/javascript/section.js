@@ -4,20 +4,14 @@
 
 function showSectionDetails( sectionId )
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'section' );
-  request.setCallbackSuccess( sectionReceived );
-  request.send( 'getSection.action?sectionId=' + sectionId );
-}
-
-function sectionReceived( sectionElement )
-{
-  setInnerHTML( 'nameField', getElementValue( sectionElement, 'name' ) );
-  setInnerHTML( 'dataSetField', getElementValue( sectionElement, 'dataSet' ) );
-  setInnerHTML( 'categoryComboField', getElementValue( sectionElement, 'categoryCombo' ) );
-  setInnerHTML( 'dataElementCountField', getElementValue( sectionElement, 'dataElementCount' ) );  
-
-  showDetails();
+	jQuery.post( 'getSection.action', { sectionId: sectionId }, function ( json ) {
+		setInnerHTML( 'nameField', json.section.name );
+		setInnerHTML( 'dataSetField', json.section.dataSet );
+		setInnerHTML( 'categoryComboField', json.section.categoryCombo );
+		setInnerHTML( 'dataElementCountField', json.section.dataElementCount );  
+		
+		showDetails();
+	});
 }
 
 function sortOrderSubmit() {
