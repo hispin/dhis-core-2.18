@@ -131,10 +131,6 @@ public interface DataSetStore
 
     Collection<DataSet> getDataSetsBySources( Collection<OrganisationUnit> sources );
     
-    Collection<DataSet> getMobileDataSetsFromCategoryOption(int categoryOptionId);
-    
-    Collection<DataSet> getMobileDataSetsFromCategory(int categoryId);
-    
     int getDataSetCountByName( String name );
     
     Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max );
