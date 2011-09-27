@@ -61,10 +61,15 @@ function searchingAttributeOnChange( this_ )
 	var container = jQuery(this_).parent().parent().attr('id');
 	var attributeId = jQuery('#' + container+ ' [id=searchingAttributeId]').val(); 
 	var element = $('#' + container+ ' [id=searchText]');
+	var valueType = jQuery('#' + container+ ' [id=searchingAttributeId] option:selected').attr('valueType');
 	
 	if( attributeId == '0' )
 	{
 		element.replaceWith( programComboBox );
+	}
+	else if ( valueType=='YES/NO' )
+	{
+		element.replaceWith( trueFalseBox );
 	}
 	else
 	{
