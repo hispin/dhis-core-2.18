@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataSet>
-  <id>$section.id</id>
-  <name>$encoder.xmlEncode( $section.name )</name>
-  <!--title>$encoder.xmlEncode( $section.title )</title-->
-  <dataSet>$encoder.xmlEncode( $section.dataSet.name )</dataSet>  
-  <categoryCombo>$encoder.xmlEncode( $categoryCombo.name )</categoryCombo>
-  <dataElementCount>$sectionDataElements.size()</dataElementCount>  
-</dataSet>
