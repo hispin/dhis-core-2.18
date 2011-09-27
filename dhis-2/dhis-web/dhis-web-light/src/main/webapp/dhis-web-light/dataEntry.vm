@@ -15,7 +15,7 @@
 		#foreach( $dataElement in $section.dataElements)
 			#foreach( $optionCombo in $section.categoryCombo.optionCombos )
 			#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
-			<label>$dataElement.name $optionCombo.name</label> <input type="text" size="24" name="$key" value="$dataValues.get($key)" /> <br />
+			<label>$dataElement.name $optionCombo.name</label> <input type="number" size="24" name="$key" value="$dataValues.get($key)" /> <br />
 			#end
 		#end
 	</p>
