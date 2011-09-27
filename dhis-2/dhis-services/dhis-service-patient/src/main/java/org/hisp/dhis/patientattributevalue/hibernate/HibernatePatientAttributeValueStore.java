@@ -155,7 +155,7 @@ public class HibernatePatientAttributeValueStore
     public Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts, int min,
         int max )
     {
-        String hql = "SELECT DISTINCT pav.patient FROM PatientAttributeValue as pav WHERE pav.patient in ";
+        String hql = "SELECT DISTINCT p FROM Patient as p WHERE p in ";
         String end = "";
 
         int index = 0;
@@ -168,7 +168,7 @@ public class HibernatePatientAttributeValueStore
             index++;
         }
 
-        hql += " ORDER BY pav.value ASC";
+        hql += " ORDER BY p.id ASC";
 
         Query query = getQuery( hql + end ).setFirstResult( min ).setMaxResults( max );
 
@@ -177,7 +177,7 @@ public class HibernatePatientAttributeValueStore
 
     public int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts )
     {
-        String hql = "SELECT COUNT( DISTINCT pav.patient ) FROM PatientAttributeValue as pav WHERE pav.patient in ";
+        String hql = "SELECT COUNT( DISTINCT p ) FROM Patient as p WHERE p in ";
         String end = "";
 
         int index = 0;
@@ -236,7 +236,7 @@ public class HibernatePatientAttributeValueStore
 
             hql += " ( SELECT p" + index + " FROM Patient as p" + index + " JOIN p" + index
                 + ".identifiers as identifier" + index + " " + "WHERE lower(identifier" + index
-                + ".identifier)=lower(" + searchText + ") " + "OR (lower(p" + index
+                + ".identifier)=lower('" + searchText + "') " + "OR (lower(p" + index
                 + ".firstName) LIKE lower('%" + firstName + "%') " + "AND lower(p" + index + ".middleName) = lower('"
                 + middleName + "') " + "AND lower(p" + index + ".lastName) LIKE lower('%" + lastName + "%')) ";
 
