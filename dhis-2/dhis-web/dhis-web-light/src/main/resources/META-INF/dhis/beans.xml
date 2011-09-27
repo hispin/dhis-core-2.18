@@ -5,26 +5,28 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.light.action.NoAction" class="org.hisp.dhis.light.action.NoAction" />
 
-  <bean id="org.hisp.dhis.light.action.GetOrganisationUnitsAction" class="org.hisp.dhis.light.action.GetOrganisationUnitsAction">
+  <!-- data entry -->
+
+  <bean id="org.hisp.dhis.light.action.dataentry.GetOrganisationUnitsAction" class="org.hisp.dhis.light.action.dataentry.GetOrganisationUnitsAction">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.GetDataSetsAction" class="org.hisp.dhis.light.action.GetDataSetsAction">
+  <bean id="org.hisp.dhis.light.action.dataentry.GetDataSetsAction" class="org.hisp.dhis.light.action.dataentry.GetDataSetsAction">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.GetPeriodsAction" class="org.hisp.dhis.light.action.GetPeriodsAction">
+  <bean id="org.hisp.dhis.light.action.dataentry.GetPeriodsAction" class="org.hisp.dhis.light.action.dataentry.GetPeriodsAction">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.GetSectionFormAction" class="org.hisp.dhis.light.action.GetSectionFormAction">
+  <bean id="org.hisp.dhis.light.action.dataentry.GetSectionFormAction" class="org.hisp.dhis.light.action.dataentry.GetSectionFormAction">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-	<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 
     <property name="stdDevOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
     <property name="minMaxOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
@@ -33,7 +35,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.SaveSectionFormAction" class="org.hisp.dhis.light.action.SaveSectionFormAction"
+  <bean id="org.hisp.dhis.light.action.dataentry.SaveSectionFormAction" class="org.hisp.dhis.light.action.dataentry.SaveSectionFormAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -44,22 +46,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.ProvideContentAction" class="org.hisp.dhis.light.action.ProvideContentAction"
+  <!-- dashboard -->
+
+  <bean id="org.hisp.dhis.light.action.dashboard.ProvideContentAction" class="org.hisp.dhis.light.action.dashboard.ProvideContentAction"
     scope="prototype">
     <property name="dashboardManager" ref="org.hisp.dhis.dashboard.DashboardManager" />
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.GetReportAction" class="org.hisp.dhis.light.action.GetReportAction" scope="prototype">
+  <bean id="org.hisp.dhis.light.action.dashboard.GetReportAction" class="org.hisp.dhis.light.action.dashboard.GetReportAction"
+    scope="prototype">
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.GetChartAction" class="org.hisp.dhis.light.action.GetChartAction" scope="prototype">
+  <bean id="org.hisp.dhis.light.action.dashboard.GetChartAction" class="org.hisp.dhis.light.action.dashboard.GetChartAction"
+    scope="prototype">
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.GetReportParamsAction" class="org.hisp.dhis.light.action.GetReportParamsAction"
+  <bean id="org.hisp.dhis.light.action.dashboard.GetReportParamsAction" class="org.hisp.dhis.light.action.dashboard.GetReportParamsAction"
     scope="prototype">
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />

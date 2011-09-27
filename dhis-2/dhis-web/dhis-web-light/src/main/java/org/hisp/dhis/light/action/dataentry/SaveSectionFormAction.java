@@ -25,16 +25,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.light.action;
+package org.hisp.dhis.light.action.dataentry;
 
-import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.dataanalysis.DataAnalysisService;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -42,34 +45,52 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementService;
-import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
-import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.util.ListUtils;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author mortenoh
  */
-public class GetSectionFormAction
+public class SaveSectionFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     private DataValueService dataValueService;
@@ -91,48 +112,6 @@ public class GetSectionFormAction
     public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
     {
         this.registrationService = registrationService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    private DataAnalysisService stdDevOutlierAnalysisService;
-
-    public void setStdDevOutlierAnalysisService( DataAnalysisService stdDevOutlierAnalysisService )
-    {
-        this.stdDevOutlierAnalysisService = stdDevOutlierAnalysisService;
-    }
-
-    private DataAnalysisService minMaxOutlierAnalysisService;
-
-    public void setMinMaxOutlierAnalysisService( DataAnalysisService minMaxOutlierAnalysisService )
-    {
-        this.minMaxOutlierAnalysisService = minMaxOutlierAnalysisService;
-    }
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
-    private MinMaxValuesGenerationService minMaxValuesGenerationService;
-
-    public void setMinMaxValuesGenerationService( MinMaxValuesGenerationService minMaxValuesGenerationService )
-    {
-        this.minMaxValuesGenerationService = minMaxValuesGenerationService;
-    }
-
-    private MinMaxDataElementService minMaxDataElementService;
-
-    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
-    {
-        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -189,13 +168,6 @@ public class GetSectionFormAction
         return dataValues;
     }
 
-    private Map<String, String> validationErrors = new HashMap<String, String>();
-
-    public Map<String, String> getValidationErrors()
-    {
-        return validationErrors;
-    }
-
     private Boolean complete = false;
 
     public void setComplete( Boolean complete )
@@ -208,11 +180,16 @@ public class GetSectionFormAction
         return complete;
     }
 
-    private String page;
+    private Boolean validated;
 
-    public String getPage()
+    public void setValidated( Boolean validated )
     {
-        return page;
+        this.validated = validated;
+    }
+
+    public Boolean getValidated()
+    {
+        return validated;
     }
 
     // -------------------------------------------------------------------------
@@ -224,9 +201,58 @@ public class GetSectionFormAction
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Period period = periodService.getPeriodByExternalId( periodId );
+        Period period = PeriodType.createPeriodExternalId( periodId );
+
+        String storedBy = currentUserService.getCurrentUsername();
 
         dataSet = dataSetService.getDataSet( dataSetId );
+
+        if ( storedBy == null )
+        {
+            storedBy = "[unknown]";
+        }
+
+        HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
+            ServletActionContext.HTTP_REQUEST );
+        Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
+
+        for ( String key : parameterMap.keySet() )
+        {
+            if ( key.startsWith( "DE" ) && key.indexOf( "OC" ) != -1 )
+            {
+                String[] splitKey = key.split( "OC" );
+                Integer dataElementId = Integer.parseInt( splitKey[0].substring( 2 ) );
+                Integer optionComboId = Integer.parseInt( splitKey[1] );
+                String value = parameterMap.get( key );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                DataElementCategoryOptionCombo optionCombo = categoryService
+                    .getDataElementCategoryOptionCombo( optionComboId );
+
+                DataValue dataValue = dataValueService
+                    .getDataValue( organisationUnit, dataElement, period, optionCombo );
+
+                value = value.trim();
+
+                if ( dataValue == null )
+                {
+                    if ( value != null && value.length() != 0 )
+                    {
+                        dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(),
+                            null, optionCombo );
+                        dataValueService.addDataValue( dataValue );
+                    }
+                }
+                else
+                {
+                    dataValue.setValue( value );
+                    dataValue.setTimestamp( new Date() );
+                    dataValue.setStoredBy( storedBy );
+
+                    dataValueService.updateDataValue( dataValue );
+                }
+            }
+        }
 
         for ( Section section : dataSet.getSections() )
         {
@@ -243,7 +269,6 @@ public class GetSectionFormAction
                     if ( dataValue != null )
                     {
                         value = dataValue.getValue();
-                        validateDataElement( organisationUnit, dataElement, optionCombo, period, value );
                     }
 
                     dataValues.put( key, value );
@@ -254,43 +279,27 @@ public class GetSectionFormAction
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
             organisationUnit );
 
-        complete = registration != null ? true : false;
+        if ( registration == null && complete )
+        {
+            registration = new CompleteDataSetRegistration();
+            registration.setDataSet( dataSet );
+            registration.setPeriod( period );
+            registration.setSource( organisationUnit );
+            registration.setDate( new Date() );
+
+            registrationService.saveCompleteDataSetRegistration( registration );
+        }
+        else if ( registration != null && !complete )
+        {
+            registrationService.deleteCompleteDataSetRegistration( registration );
+        }
+
+        if ( validated == null || !validated )
+        {
+            validated = true;
+            return ERROR;
+        }
 
         return SUCCESS;
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public void validateDataElement( OrganisationUnit organisationUnit, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, Period period, String value )
-    {
-        Collection<DeflatedDataValue> outliers;
-
-        MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
-            dataElement, optionCombo );
-
-        if ( minMaxDataElement == null )
-        {
-            Double factor = (Double) systemSettingManager.getSystemSetting(
-                SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
-
-            Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse( organisationUnit,
-                ListUtils.getCollection( dataElement ), ListUtils.getCollection( period ), factor );
-
-            Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse( organisationUnit,
-                ListUtils.getCollection( dataElement ), ListUtils.getCollection( period ), null );
-
-            outliers = CollectionUtils.union( stdDevs, minMaxs );
-        }
-        else
-        {
-            outliers = minMaxValuesGenerationService.findOutliers( organisationUnit, ListUtils.getCollection( period ),
-                ListUtils.getCollection( minMaxDataElement ) );
-        }
-
-        for ( DeflatedDataValue deflatedDataValue : outliers )
-        {
-            System.err.println( "max: " + deflatedDataValue.getMax() );
-            System.err.println( "min: " + deflatedDataValue.getMin() );
-        }
     }
 }

@@ -1,5 +1,7 @@
+package org.hisp.dhis.light.action.dashboard;
+
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,62 +27,79 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.light.action;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.reporttable.ReportTableService;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * @author mortenoh
- */
-public class GetOrganisationUnitsAction
+public class GetReportAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+    private ReportTableService reportTableService;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setReportTableService( ReportTableService reportTableService )
     {
-        this.currentUserService = currentUserService;
+        this.reportTableService = reportTableService;
+    }
+    
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+    
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private Integer reportingPeriod;
+
+    public void setReportingPeriod( Integer reportingPeriod )
+    {
+        this.reportingPeriod = reportingPeriod;
+    }
+
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private Grid grid;
+
+    public Grid getGrid()
+    {
+        return grid;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-
-    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-
-    public List<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action Implementation
+    // Result implementation
     // -------------------------------------------------------------------------
 
     @Override
     public String execute()
+        throws Exception
     {
-        User user = currentUserService.getCurrentUser();
-
-        if ( user != null )
-        {
-            organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
-            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
-        }
-
+        grid = reportTableService.getReportTableGrid( id, format, reportingPeriod, organisationUnitId );
+        
         return SUCCESS;
     }
 }
