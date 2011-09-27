@@ -29,9 +29,12 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.Collection;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -60,6 +63,13 @@ public class SelectAction
         this.patientAttributeService = patientAttributeService;
     }
 
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -71,6 +81,27 @@ public class SelectAction
         return patientAttributes;
     }
 
+    private Collection<Program> programs;
+
+    public Collection<Program> getPrograms()
+    {
+        return programs;
+    }
+
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    private int status;
+
+    public int getStatus()
+    {
+        return status;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -78,9 +109,20 @@ public class SelectAction
     public String execute()
         throws Exception
     {
-        selectionManager.clearSelectedOrganisationUnits();
-
         patientAttributes = patientAttributeService.getAllPatientAttributes();
+
+        programs = programService.getAllPrograms();
+
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+
+        if ( organisationUnit == null )
+        {
+            status = 1;
+        }
+        else if ( !organisationUnit.isHasPatients() )
+        {
+            status = 2;
+        }
 
         return SUCCESS;
     }

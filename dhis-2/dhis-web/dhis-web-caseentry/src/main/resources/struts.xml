@@ -328,12 +328,6 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		</action>
 
-		<action name="patientform"
-			class="org.hisp.dhis.caseentry.action.patient.SearchPatientFormAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/responsePrograms.vm</result>
-		</action>
-
 		<action name="searchRegistrationPatient"
 			class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction">
 			<result name="success" type="velocity">/content.vm</result>

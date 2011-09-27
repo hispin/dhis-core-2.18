@@ -85,25 +85,18 @@ public class VerifyOrganisationUnitHasParentAction
     {
         selectedStateManager.clearListAll();
         selectedStateManager.clearSearchingAttributeId();
-//        selectedStateManager.clearSortingAttributeId();
-//        selectedStateManager.clearSearchText();
-//        selectedStateManager.clearSelectedProgram();
-        
-        message = "";
+        // selectedStateManager.clearSortingAttributeId();
+        // selectedStateManager.clearSearchText();
+        // selectedStateManager.clearSelectedProgram();
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgunitId );
 
-        if ( organisationUnit == null )
-        {
-            return INPUT;
-        }
+        message = organisationUnit.getName();
 
         if ( !organisationUnit.isHasPatients() )
         {
             return INPUT;
         }
-
-        message = organisationUnit.getName();
 
         return SUCCESS;
     }
