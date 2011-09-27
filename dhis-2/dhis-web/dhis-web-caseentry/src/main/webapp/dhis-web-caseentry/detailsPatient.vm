@@ -60,7 +60,11 @@
 		#if( $patientAttributeValueMap.get( $attribute.id ) != " " )
 		<tr>
 			<td><label><strong>$attribute.name : </strong></label>
-				$patientAttributeValueMap.get( $attribute.id )
+				#if($attribute.valueType=="YES/NO")
+					$i18n.getString( $patientAttributeValueMap.get( $attribute.id ) )
+				#else
+					$patientAttributeValueMap.get( $attribute.id )
+				#end
 			</td>
 		</tr>
 		#end
