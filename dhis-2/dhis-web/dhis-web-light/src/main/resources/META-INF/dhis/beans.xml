@@ -14,7 +14,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="org.hisp.dhis.light.action.GetPeriodsAction" class="org.hisp.dhis.light.action.GetPeriodsAction">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
   </bean>
 
   <bean id="org.hisp.dhis.light.action.GetSectionFormAction" class="org.hisp.dhis.light.action.GetSectionFormAction">

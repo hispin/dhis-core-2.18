@@ -28,11 +28,17 @@ package org.hisp.dhis.light.action;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
@@ -50,11 +56,25 @@ public class GetPeriodsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private CompleteDataSetRegistrationService registrationService;
+
+    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
+    {
+        this.registrationService = registrationService;
     }
 
     private I18nFormat format;
@@ -92,6 +112,13 @@ public class GetPeriodsAction
         return dataSetId;
     }
 
+    private Map<Period, Boolean> periodCompletedMap = new HashMap<Period, Boolean>();
+
+    public Map<Period, Boolean> getPeriodCompletedMap()
+    {
+        return periodCompletedMap;
+    }
+
     private List<Period> periods = new ArrayList<Period>();
 
     public List<Period> getPeriods()
@@ -108,15 +135,21 @@ public class GetPeriodsAction
     {
         if ( dataSetId != null )
         {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
             CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
             periods = periodType.generatePeriods( new Date() );
             FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
-        }
 
-        for ( Period period : periods )
-        {
-            period.setName( format.formatPeriod( period ) );
+            for ( Period period : periods )
+            {
+                period.setName( format.formatPeriod( period ) );
+
+                CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet,
+                    period, organisationUnit );
+
+                periodCompletedMap.put( period, registration != null ? true : false );
+            }
         }
 
         return SUCCESS;

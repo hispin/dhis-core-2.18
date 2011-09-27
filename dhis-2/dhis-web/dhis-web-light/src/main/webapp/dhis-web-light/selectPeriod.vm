@@ -4,7 +4,10 @@
 <p>
 	<ul>
 		#foreach( $period in $periods )
-		<li><a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.jsonEncode( ${period.name} )</a></li>
+		<li>
+			<a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.jsonEncode( ${period.name} )</a>
+			#if( $periodCompletedMap.get($period) )@#end
+		</li>
 		#end
 	</ul>
 </p>
