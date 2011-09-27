@@ -33,6 +33,8 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.filter.DataSetTypeFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -87,6 +89,7 @@ public class GetDataSetsAction
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
             dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+            FilterUtils.filter( dataSets, new DataSetTypeFilter( DataSet.TYPE_SECTION ) );
         }
 
         return SUCCESS;
