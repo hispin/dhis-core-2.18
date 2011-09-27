@@ -8,31 +8,18 @@
 
 function showOrganisationUnitGroupSetDetails( groupSetId )
 {
-	var request = new Request();
-    request.setResponseTypeXML( 'organisationUnitGroupSet' );
-    request.setCallbackSuccess( organisationUnitGroupSetReceived );
-    request.send( 'getOrganisationUnitGroupSet.action?id=' + groupSetId );
-}
-
-function organisationUnitGroupSetReceived( unitElement )
-{
-	setInnerHTML( 'nameField', getElementValue( unitElement, 'name' ) );
-    setInnerHTML( 'descriptionField', getElementValue( unitElement, 'description' ) );
-    
-    var compulsory = getElementValue( unitElement, 'compulsory' );
-        
-    if ( compulsory == "true" )
-    {
-    	setInnerHTML( 'compulsoryField', i18n_yes );
-    }
-    else
-    {
-    	setInnerHTML( 'compulsoryField', i18n_no );
-    }
-        
-    setInnerHTML( 'memberCountField', getElementValue( unitElement, 'memberCount' ) );
-    
-    showDetails();
+	jQuery.post( 'getOrganisationUnitGroupSet.action', { id: groupSetId },
+		function ( json ) {
+			setInnerHTML( 'nameField', json.organisationUnitGroupSet.name );
+			setInnerHTML( 'descriptionField', json.organisationUnitGroupSet.description );
+			
+			var compulsory = json.organisationUnitGroupSet.compulsory;
+			
+			setInnerHTML( 'compulsoryField', compulsory == "true" ? i18n_yes : i18n_no );
+			setInnerHTML( 'memberCountField', json.organisationUnitGroupSet.memberCount );
+			
+			showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

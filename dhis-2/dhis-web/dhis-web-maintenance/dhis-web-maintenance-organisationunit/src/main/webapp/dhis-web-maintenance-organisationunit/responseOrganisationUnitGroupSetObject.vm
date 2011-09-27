@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<organisationUnitGroupSet>
-	<id>$organisationUnitGroupSet.id</id>
-	<name>$encoder.xmlEncode( $organisationUnitGroupSet.name )</name>
-	<description>$encoder.xmlEncode( $organisationUnitGroupSet.description )</description>
-	<compulsory>$organisationUnitGroupSet.compulsory</compulsory>
-	<memberCount>$memberCount</memberCount>
-</organisationUnitGroupSet>

@@ -106,8 +106,8 @@
     </action>
 
     <action name="getOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-organisationunit/responseOrganisationUnitGroupObject.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonOrganisationUnitGroup.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -166,8 +166,8 @@
     </action>
 
     <action name="getOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-organisationunit/responseOrganisationUnitGroupSetObject.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonOrganisationUnitGroupSet.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>

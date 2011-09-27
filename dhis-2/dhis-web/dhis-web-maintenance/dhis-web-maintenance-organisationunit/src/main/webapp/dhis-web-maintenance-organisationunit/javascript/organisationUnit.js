@@ -29,37 +29,32 @@ function exportPDF( type )
 
 function showOrganisationUnitDetails( unitId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'organisationUnit' );
-    request.setCallbackSuccess( organisationUnitReceived );
-    request.send( '../dhis-web-commons-ajax/getOrganisationUnit.action?id=' + unitId );
-}
+    jQuery.post( '../dhis-web-commons-ajax-json/getOrganisationUnit.action',
+		{ id: unitId }, function ( json ) {
+		setInnerHTML( 'nameField', json.organisationUnit.name );
+		setInnerHTML( 'shortNameField', json.organisationUnit.shortName );
+		setInnerHTML( 'openingDateField', json.organisationUnit.openingDate );
 
-function organisationUnitReceived( unitElement )
-{
-    setInnerHTML( 'nameField', getElementValue( unitElement, 'name' ) );
-    setInnerHTML( 'shortNameField', getElementValue( unitElement, 'shortName' ) );
-    setInnerHTML( 'openingDateField', getElementValue( unitElement, 'openingDate' ) );
+		var orgUnitCode = json.organisationUnit.code;
+		setInnerHTML( 'codeField', orgUnitCode ? orgUnitCode : '[' + none + ']' );
 
-    var orgUnitCode = getElementValue( unitElement, 'code' );
-    setInnerHTML( 'codeField', orgUnitCode ? orgUnitCode : '[' + none + ']' );
+		var closedDate = json.organisationUnit.closedDate;
+		setInnerHTML( 'closedDateField', closedDate ? closedDate : '[' + none + ']' );
 
-    var closedDate = getElementValue( unitElement, 'closedDate' );
-    setInnerHTML( 'closedDateField', closedDate ? closedDate : '[' + none + ']' );
+		var commentValue = json.organisationUnit.comment;
+		setInnerHTML( 'commentField', commentValue ? commentValue.replace( /\n/g, '<br>' ) : '[' + none + ']' );
 
-    var commentValue = getElementValue( unitElement, 'comment' );
-    setInnerHTML( 'commentField', commentValue ? commentValue.replace( /\n/g, '<br>' ) : '[' + none + ']' );
+		var active = json.organisationUnit.active;
+		setInnerHTML( 'activeField', active == 'true' ? yes : no );
 
-    var active = getElementValue( unitElement, 'active' );
-    setInnerHTML( 'activeField', active == 'true' ? yes : no );
+		var url = json.organisationUnit.url;
+		setInnerHTML( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + none + ']' );
 
-    var url = getElementValue( unitElement, 'url' );
-    setInnerHTML( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + none + ']' );
+		var lastUpdated = json.organisationUnit.lastUpdated;
+		setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + none + ']' );
 
-    var lastUpdated = getElementValue( unitElement, 'lastUpdated' );
-    setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + none + ']' );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

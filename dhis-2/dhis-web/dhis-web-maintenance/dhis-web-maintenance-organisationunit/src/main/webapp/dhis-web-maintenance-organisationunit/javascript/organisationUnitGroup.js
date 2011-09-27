@@ -5,18 +5,13 @@
 
 function showOrganisationUnitGroupDetails( unitId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'organisationUnitGroup' );
-    request.setCallbackSuccess( organisationUnitGroupReceived );
-    request.send( 'getOrganisationUnitGroup.action?id=' + unitId );
-}
-
-function organisationUnitGroupReceived( unitGroupElement )
-{
-    setInnerHTML( 'nameField', getElementValue( unitGroupElement, 'name' ) );
-    setInnerHTML( 'memberCountField', getElementValue( unitGroupElement, 'memberCount' ) );
-    
-    showDetails();
+    jQuery.post( 'getOrganisationUnitGroup.action', { id: unitId },
+		function ( json ) {
+			setInnerHTML( 'nameField', json.organisationUnitGroup.name );
+			setInnerHTML( 'memberCountField', json.organisationUnitGroup.memberCount );
+			
+			showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------
