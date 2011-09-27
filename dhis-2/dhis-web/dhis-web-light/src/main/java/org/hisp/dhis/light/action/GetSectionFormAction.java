@@ -135,7 +135,7 @@ public class GetSectionFormAction
     {
         this.minMaxDataElementService = minMaxDataElementService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -225,8 +225,9 @@ public class GetSectionFormAction
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Period period = periodService.reloadPeriod( PeriodType.createPeriodExternalId( periodId ) );
-        
+        Period period = PeriodType.createPeriodExternalId( periodId );
+        Period vPeriod = periodService.reloadPeriod( PeriodType.createPeriodExternalId( periodId ) );
+
         dataSet = dataSetService.getDataSet( dataSetId );
 
         for ( Section section : dataSet.getSections() )
@@ -244,7 +245,7 @@ public class GetSectionFormAction
                     if ( dataValue != null )
                     {
                         value = dataValue.getValue();
-                        validateDataElement( organisationUnit, dataElement, optionCombo, period, value );
+                        validateDataElement( organisationUnit, dataElement, optionCombo, vPeriod, value );
                     }
 
                     dataValues.put( key, value );
