@@ -28,10 +28,11 @@
 package org.hisp.dhis.light.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -54,13 +55,6 @@ public class GetOrganisationUnitsAction
         this.currentUserService = currentUserService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -80,21 +74,13 @@ public class GetOrganisationUnitsAction
     public String execute()
     {
         User user = currentUserService.getCurrentUser();
-        
+
         if ( user != null )
         {
-            List<OrganisationUnit> userOrganisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
-    
-            for ( OrganisationUnit unit : userOrganisationUnits )
-            {
-                organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
-            }
-    
-            // Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
-            
-            organisationUnits = organisationUnits.subList( 0, 50 );
+            organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
         }
-        
+
         return SUCCESS;
     }
 }

@@ -7,7 +7,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.light.action.GetOrganisationUnitsAction" class="org.hisp.dhis.light.action.GetOrganisationUnitsAction">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
   <bean id="org.hisp.dhis.light.action.GetDataSetsAction" class="org.hisp.dhis.light.action.GetDataSetsAction">
