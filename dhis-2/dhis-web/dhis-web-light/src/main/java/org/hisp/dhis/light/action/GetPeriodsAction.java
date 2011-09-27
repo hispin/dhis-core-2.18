@@ -35,6 +35,8 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -109,6 +111,7 @@ public class GetPeriodsAction
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
             CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
             periods = periodType.generatePeriods( new Date() );
+            FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
         }
 
         for ( Period period : periods )
