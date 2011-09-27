@@ -11,31 +11,6 @@
     var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
     var i18n_category_option_name_already_exists = '$encoder.jsEscape( $i18n.getString( "category_option_name_already_exists" ) , "'")';
     var i18n_must_include_category_option = '$encoder.jsEscape( $i18n.getString( "must_include_category_option" ) , "'")';
-	
-	function removeDataElementCategory( categoryId, categoryName )
-	{
-		removeItem( categoryId, categoryName, i18n_confirm_delete, 'removeDataElementCategory.action' );
-	}
-		
-	function addCategoryOption()
-	{
-		var value = getFieldValue( 'categoryOptionName' );
-		if( value.length == 0 ) {
-			markInvalid( 'categoryOptionName', i18n_specify_category_option_name );
-		} else if( listContainsById( 'categoryOptionNames', value ) ) {
-			markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
-		} else {
-			jQuery.postJSON( 'validateDataElementCategoryOption.action', 
-			{name: value }, function(json) {
-				if( json.response == 'success' ){					
-					addOption( 'categoryOptionNames', value, value );
-					setFieldValue( 'categoryOptionName', '' );
-				}else{
-					markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
-				}
-			});
-		}
-	}
 </script>
 
 <h3>$i18n.getString( "create_new_data_element_category" )</h3>
