@@ -81,7 +81,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="clazz" value="org.hisp.dhis.dataset.DataSet" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
-    <property name="statementManager" ref="statementManager" />
     <property name="cacheable" value="true" />
   </bean>
 

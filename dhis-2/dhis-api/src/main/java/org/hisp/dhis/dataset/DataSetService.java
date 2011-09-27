@@ -207,20 +207,6 @@ public interface DataSetService
      */
     Collection<DataSet> getDataSetsForMobile();
     
-    /**
-     * Get list of realted datasets from categoryOption
-     * 
-     * @return A List containing related DataSets.
-     */
-    Collection<DataSet> getMobileDataSetsFromCategoryOption(int categoryOptionId);
-    
-    /**
-     * Get list of realted datasets from category
-     * 
-     * @return A List containing related DataSets.
-     */
-    Collection<DataSet> getMobileDataSetsFromCategory(int categoryOptionId);
-    
     int getDataSetCountByName( String name );
     
     Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max );

@@ -101,7 +101,6 @@ public class GetDataElementCategoryAction
     {
         dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
 
-        // Concept list
         concepts = new ArrayList<Concept>( conceptService.getAllConcepts() );
 
         Collections.sort( concepts, new ConceptNameComparator() );
