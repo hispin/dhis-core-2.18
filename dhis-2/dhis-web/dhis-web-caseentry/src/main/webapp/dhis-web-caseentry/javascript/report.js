@@ -22,7 +22,7 @@ function organisationUnitSelected( orgUnits )
 		}
 		else
 		{
-			addOptionById( 'programId', "", i18n_select );
+			addOptionById( 'programId', "", i18n_please_select_a_program );
 			
 			for ( var i in json.programs ) 
 			{
@@ -89,13 +89,15 @@ function loadGeneratedReport()
 
 function viewRecords( programStageInstanceId ) 
 {
-	var url = 'viewRecords.action?id=' + programStageInstanceId;
-	
-	var width = 800;
-    var height = 500;
-    var left = parseInt( ( screen.availWidth/2 ) - ( width/2 ) );
-    var top = parseInt( ( screen.availHeight/2 ) - ( height/2 ) );
-    var windowFeatures = 'width=' + width + ',height=' + height + ',scrollbars=yes, resizable=yes,left=' + left + ',top=' + top + 'screenX=' + left + ',screenY=' + top;
-    
-    window.open( url, '_blank_', windowFeatures);
+	$('<div id="viewRecordsDiv">' )
+		.load( 'viewRecords.action?id=' + programStageInstanceId )
+		.dialog({
+			title: i18n_reports,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 800,
+			height: 400
+		});
 }
