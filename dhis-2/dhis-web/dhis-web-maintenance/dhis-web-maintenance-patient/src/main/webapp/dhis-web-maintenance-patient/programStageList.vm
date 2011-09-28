@@ -12,9 +12,11 @@
             </select>
 		</td>
 		<td style="text-align:right">
-		   <input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:75px">
-		   <input type="button" value="$i18n.getString( "sort" )" onclick="javascript:showSortProgramStage()" style="width:75px">
-		   <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addProgramStage()" style="width:75px">		  	   
+		    <input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:75px">
+			#if( $program.singleEvent!='true' )
+				<input type="button" value="$i18n.getString( "sort" )" onclick="javascript:showSortProgramStage()" style="width:75px">
+				<input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addProgramStage()" style="width:75px">		  	   
+		    #end
 		</td>
 	</tr>
 	<tr>

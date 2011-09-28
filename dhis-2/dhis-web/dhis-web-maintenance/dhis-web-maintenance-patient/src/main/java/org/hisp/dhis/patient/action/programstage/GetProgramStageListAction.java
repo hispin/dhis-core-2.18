@@ -106,6 +106,13 @@ public class GetProgramStageListAction
         this.programs = programs;
     }
 
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -119,7 +126,7 @@ public class GetProgramStageListAction
 
         if ( id != null )
         {
-            Program program = programService.getProgram( id );
+            program = programService.getProgram( id );
 
             associations = new ArrayList<ProgramStage>( program.getProgramStages() );
 
