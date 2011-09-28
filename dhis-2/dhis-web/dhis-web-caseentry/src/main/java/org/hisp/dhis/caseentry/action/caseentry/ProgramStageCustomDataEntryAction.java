@@ -47,6 +47,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
@@ -92,6 +93,13 @@ public class ProgramStageCustomDataEntryAction
     public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
     {
         this.programDataEntryService = programDataEntryService;
+    }
+
+    private ProgramStageDataElementService programStageDataElementService;
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -263,18 +271,36 @@ public class ProgramStageCustomDataEntryAction
 
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
+        selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
+
+        // ---------------------------------------------------------------------
+        // Get CategoryOptions
+        // ---------------------------------------------------------------------
+
+        Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
+
+        for ( DataElement dataElement : dataElements )
+        {
+            optionMap.put( dataElement.getId(), dataElement.getCategoryCombo().getOptionCombos() );
+        }
+
+        // ---------------------------------------------------------------------
+        // Get data values
+        // ---------------------------------------------------------------------
+
         Collection<PatientDataValue> patientDataValues = patientDataValueService
             .getPatientDataValues( programStageInstance );
 
-        DataEntryForm dataEntryForm = programStage.getDataEntryForm();
-        if ( dataEntryForm == null )
+        patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
+
+        for ( PatientDataValue patientDataValue : patientDataValues )
         {
-            return SUCCESS;
+            patientDataValueMap.put( patientDataValue.getDataElement().getId(), patientDataValue );
         }
 
-        boolean cdeFormExists = (dataEntryForm != null);
+        DataEntryForm dataEntryForm = programStage.getDataEntryForm();
 
-        if ( cdeFormExists )
+        if ( dataEntryForm != null )
         {
             customDataEntryFormExists = true;
 
