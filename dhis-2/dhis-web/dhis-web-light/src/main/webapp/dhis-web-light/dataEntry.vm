@@ -22,7 +22,7 @@
 				<br /><span style="color: red;">Value is out of bounds [ $validationError.min, $validationError.max ]</span>
 				#end
 
-				<input type="number" size="24" name="$key" value="$dataValues.get($key)" /> <br />
+				<input type="number" size="24" name="$key" value="$!dataValues.get($key)" /> <br />
 			#end
 		#end
 	</p>
