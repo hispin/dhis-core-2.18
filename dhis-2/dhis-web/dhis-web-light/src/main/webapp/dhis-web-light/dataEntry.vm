@@ -30,11 +30,11 @@
 #end
 
 #if( $dataSet.sections.size() > 0 )
-#foreach( $section in $dataSet.sections )
-	#createSection( $section.name $section.dataElements )
-#end
+    #foreach( $section in $dataSet.sections )
+        #createSection( $section.name $section.dataElements )
+    #end
 #else
-	#createSection( "Default" $dataSet.dataElements )
+    #createSection( "Default" $dataSet.dataElements )
 #end
 
 <div class="header-box" align="center">
