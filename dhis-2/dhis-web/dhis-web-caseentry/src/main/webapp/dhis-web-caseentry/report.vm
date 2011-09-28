@@ -10,6 +10,7 @@
 		<col/>
         #end       
         <tr>
+			<th>#</th>
             <th style="text-align:center">$i18n.getString( "full_name" )</th>
             #foreach( $programStage in $program.programStages )
                 <th style="text-align:center">$encoder.htmlEncode( $programStage.name )</th>
@@ -20,7 +21,11 @@
             #set( $mark = false )                 
             #foreach( $programInstance in $programInstances )
                 <tr #alternate( $mark )>                
-                    <td><a href="javascript:showPatientDetails( $programInstance.patient.id )" title='$i18n.getString( "show_details" )'>$programInstance.patient.getFullName()</a></td>                    
+                    <td>
+						#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+						$nr
+					</td>
+					<td><a href="javascript:showPatientDetails( $programInstance.patient.id )" title='$i18n.getString( "show_details" )'>$programInstance.patient.getFullName()</a></td>                    
                     #foreach( $programStageInstance in $programInstance.programStageInstances )
                         #if( $programStageInstance.executionDate )
                             <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
@@ -39,7 +44,15 @@
                 #end 
             #end    
         </tbody>
-
+		<tr>
+			#set( $size=$program.programStages.size() + 2 )
+			<td colspan="$size">
+				<p></p>
+				<div class="paging-container">
+					#parse( "/dhis-web-commons/paging/paging.vm" )
+				</div>
+			</td>
+		</tr>
     </table>
     </td>
 </tr>
@@ -47,15 +60,5 @@
 #end
 <p></p>
 
-<div class="paging-container">
-	#parse( "/dhis-web-commons/paging/paging.vm" )
-</div>
-
 <div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px" ondblclick="javascript:hideDetails()">
-    <div style="float:right;" onclick="javascript:hideDetails()">
-        <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
-    </div>              
-    <p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>
-    <p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
-    <p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
 </div>

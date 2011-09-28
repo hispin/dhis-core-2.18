@@ -24,8 +24,11 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/select.vm</param>
 			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,
-				../dhis-web-commons/javascripts/date.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js
+				,javascript/commons.js
+				,javascript/dataEntry.js,
+				../dhis-web-commons/javascripts/date.js
+			</param>
 		</action>
 
 		<action name="validateSearch"
@@ -192,15 +195,6 @@
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
 		</action>
 
-		<action name="reportSelect"
-			class="org.hisp.dhis.caseentry.action.report.ReportSelectAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-caseentry/reportSelect.vm</param>
-			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
-		</action>
-
 		<action name="validateReportParameters"
 			class="org.hisp.dhis.caseentry.action.report.ValidateReportParametersAction">
 			<result name="success" type="velocity-xml">
@@ -216,20 +210,14 @@
 			class="org.hisp.dhis.caseentry.action.report.GenerateReportAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/report.vm</param>
-			<param name="javascripts">javascript/report.js</param>
+			<param name="javascripts">javascript/commons.js,javascript/report.js</param>
 			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="viewRecords"
 			class="org.hisp.dhis.caseentry.action.report.ViewRecordsAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-caseentry/records.vm</param>
-		</action>
-
-		<action name="getPatientDetails"
-			class="org.hisp.dhis.caseentry.action.report.GetPatientDetailsAction">
 			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/detailsPatient.vm</param>
+			<param name="page">/dhis-web-caseentry/records.vm</param>
 		</action>
 
 		<!-- Case Aggregation -->
@@ -584,6 +572,12 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
+		</action>
+		
+		<action name="getPatientDetails"
+			class="org.hisp.dhis.caseentry.action.patient.GetPatientAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/detailsPatient.vm</param>
 		</action>
 		
 	</package>

@@ -62,17 +62,13 @@
 				<td colspan="$size">
 					<p></p>
 					<div class="paging-container">
-							#parse( "/dhis-web-commons/paging/paging.vm" )
+						#parse( "/dhis-web-commons/paging/paging.vm" )
 					</div>
 				</td>
 				<td></td>
 			</tr>
         </table>
         </td>
-		<!-- <td style="vertical-align:top">
-			<div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px">
-			</div>
-		</td> -->
     </tr>
 </table>
 
