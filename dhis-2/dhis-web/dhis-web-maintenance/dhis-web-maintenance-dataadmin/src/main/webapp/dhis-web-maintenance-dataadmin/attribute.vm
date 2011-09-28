@@ -7,15 +7,14 @@
     
     function showAttributeDetails( attributeId )
 	{
-		jQuery.post( 'getAttribute.action',
-			{ 'id':attributeId },
-			function( attributeElement ) {
-				setInnerHTML( 'nameField', getElementValue( attributeElement, 'name' ) );
-				setInnerHTML( 'mandatoryField', getElementValue( attributeElement, 'mandatory' ) );
-				setInnerHTML( 'dataelementField', getElementValue( attributeElement, 'dataelement' ) );
-				setInnerHTML( 'indicatorField', getElementValue( attributeElement, 'indicator' ) );
-				setInnerHTML( 'organisationunitField', getElementValue( attributeElement, 'organisationunit' ) );
-				setInnerHTML( 'valuetypeField', getElementValue( attributeElement, 'valueType' ) );
+		jQuery.post( 'getAttribute.action', { id:attributeId },
+			function( json ) {
+				setInnerHTML( 'nameField', json.attribute.name );
+				setInnerHTML( 'mandatoryField', json.attribute.mandatory );
+				setInnerHTML( 'dataelementField', json.attribute.dataelement );
+				setInnerHTML( 'indicatorField', json.attribute.indicator );
+				setInnerHTML( 'organisationunitField', json.attribute.organisationunit );
+				setInnerHTML( 'valuetypeField', json.attribute.valueType );
 				showDetails();
 		});
 	}

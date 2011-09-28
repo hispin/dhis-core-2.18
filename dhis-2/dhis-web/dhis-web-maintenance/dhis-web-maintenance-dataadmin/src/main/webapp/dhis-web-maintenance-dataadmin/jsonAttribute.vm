@@ -1,0 +1,11 @@
+{ "attribute":
+  {
+	"id": "${attribute.id}",
+	"name": "$!encoder.jsonEncode( ${attribute.name} )",
+	"valueType": "$!encoder.jsonEncode( ${attribute.valueType} )",
+	"mandatory": "$!{attribute.mandatory}",
+	"dataelement": "$!{attribute.dataElement}",
+	"indicator": "$!{attribute.indicator}",
+	"organisationunit": "$!{attribute.organisationUnit}"
+  }
+}
