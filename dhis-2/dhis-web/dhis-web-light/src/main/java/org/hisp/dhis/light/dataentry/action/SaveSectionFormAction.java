@@ -121,7 +121,7 @@ public class SaveSectionFormAction
     {
         this.periodService = periodService;
     }
-    
+
     private SectionFormUtils sectionFormUtils;
 
     public void setSectionFormUtils( SectionFormUtils sectionFormUtils )
@@ -298,7 +298,7 @@ public class SaveSectionFormAction
 
         validationErrors = sectionFormUtils.getValidationErrorMap( organisationUnit, dataSet, period );
 
-        if ( validated == null || !validated )
+        if ( (validated == null || !validated) && validationErrors.size() > 0 )
         {
             validated = true;
             return ERROR;
