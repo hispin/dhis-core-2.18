@@ -1,8 +1,3 @@
-
-<p align="right">
-    <input type="button" value="$i18n.getString( "close" )" onclick="window.close()" style="width:10em"/>
-</p>
-
 <table>
 	<tr>
 	    <td><strong>$i18n.getString( "full_name" ):</strong></td>
