@@ -30,7 +30,7 @@ package org.hisp.dhis.jchart.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.xwork.StringEscapeUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * @author Tran Thanh Tri
