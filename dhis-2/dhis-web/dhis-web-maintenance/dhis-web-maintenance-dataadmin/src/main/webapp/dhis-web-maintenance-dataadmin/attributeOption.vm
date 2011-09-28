@@ -7,10 +7,9 @@
 
     function showAttributeOptionDetails( attributeOptionId )
 	{
-		jQuery.post( 'getAttributeOption.action',
-			{ 'id':attributeOptionId },
-			function( attributeOptionElement ) {
-				setInnerHTML( 'nameField', getElementValue( attributeOptionElement, 'name' ) );
+		jQuery.post( 'getAttributeOption.action', { id:attributeOptionId },
+			function( json ) {
+				setInnerHTML( 'nameField', json.attributeOption.name );
 				showDetails();
 		});
 	}

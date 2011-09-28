@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<constant>
-  <id>$constant.id</id>
-  <name>$encoder.xmlEncode( $constant.name )</name>
-  <value>$constant.value</value>
-</constant>

@@ -313,8 +313,8 @@
     <!-- Sql View -->
 
     <action name="getSqlViewObject" class="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseSqlViewObject.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-maintenance-dataadmin/jsonSqlView.vm
       </result>
     </action>
 
@@ -412,9 +412,9 @@
     <!-- Constant Name -->
 
     <action name="getConstant" class="org.hisp.dhis.dataadmin.action.constant.GetConstantAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseConstant.vm
-      </result>
+      <result name="success" type="velocity-json">
+        /dhis-web-maintenance-dataadmin/jsonConstant.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="constant" class="org.hisp.dhis.dataadmin.action.constant.GetConstantListAction">
@@ -422,8 +422,9 @@
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">
         /dhis-web-maintenance-dataadmin/constant.vm</param>
+	  <param name="javascripts">javascript/constant.js</param>
+	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
       <param name="requiredAuthorities">F_CONSTANT_MANAGEMENT</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="showAddConstantForm" class="org.hisp.dhis.dataadmin.action.NoAction">
@@ -580,11 +581,15 @@
     </action>
 
     <action name="getAttribute" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseAttribute.vm</result>
+      <result name="success" type="velocity-json">
+		/dhis-web-maintenance-dataadmin/jsonAttribute.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="getAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseAttributeOption.vm</result>
+      <result name="success" type="velocity-json">
+		/dhis-web-maintenance-dataadmin/jsonAttributeOption.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="validateAttribute" class="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeAction">

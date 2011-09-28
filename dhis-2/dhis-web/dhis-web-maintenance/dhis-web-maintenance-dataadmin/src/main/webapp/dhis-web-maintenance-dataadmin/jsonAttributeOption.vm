@@ -1,0 +1,6 @@
+{ "attributeOption":
+  {
+    "id": "$!{attributeOption.id}",
+	"name": "$!encoder.jsonEncode( ${attributeOption.name} )"
+  }
+}
