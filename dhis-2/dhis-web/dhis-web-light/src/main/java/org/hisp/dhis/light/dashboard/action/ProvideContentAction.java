@@ -1,4 +1,4 @@
-package org.hisp.dhis.light.action.dashboard;
+package org.hisp.dhis.light.dashboard.action;
 
 import java.util.ArrayList;
 import java.util.List;
