@@ -14,8 +14,15 @@
 	<p>
 		#foreach( $dataElement in $section.dataElements)
 			#foreach( $optionCombo in $section.categoryCombo.optionCombos )
-			#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
-			<label>$dataElement.name $optionCombo.name</label> <input type="number" size="24" name="$key" value="$dataValues.get($key)" /> <br />
+				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
+				<label>$dataElement.name $optionCombo.name</label>
+	
+				#if( $validationErrors.get( $key ) )
+				#set( $validationError = $validationErrors.get( $key ) ) 
+				<br /><span style="color: red;">Value is out of bounds [ $validationError.min, $validationError.max ]</span>
+				#end
+				
+				<input type="number" size="24" name="$key" value="$dataValues.get($key)" /> <br />
 			#end
 		#end
 	</p>
