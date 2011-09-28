@@ -38,6 +38,7 @@
       <result name="success" type="redirect">/dhis-web-light/index.action</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/dataEntry.vm</param>
+      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
     </action>
 
     <!-- dashboard -->
