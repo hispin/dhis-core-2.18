@@ -14,7 +14,7 @@
 	<a href="index.action" tabindex="-1"><img src="../dhis-web-commons/security/logo_mobile.jpg" alt="DHIS2" width="47" height="20"></a>
 </div>
 
-<div id="content">
+<div id="content" align="center" style="text-align: left;">
 
 #parse( $page )
 
