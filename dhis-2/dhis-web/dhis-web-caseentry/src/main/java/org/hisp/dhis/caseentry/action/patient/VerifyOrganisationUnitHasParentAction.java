@@ -51,13 +51,6 @@ public class VerifyOrganisationUnitHasParentAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -83,12 +76,6 @@ public class VerifyOrganisationUnitHasParentAction
     public String execute()
         throws Exception
     {
-        selectedStateManager.clearListAll();
-        selectedStateManager.clearSearchingAttributeId();
-        // selectedStateManager.clearSortingAttributeId();
-        // selectedStateManager.clearSearchText();
-        // selectedStateManager.clearSelectedProgram();
-
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgunitId );
 
         message = organisationUnit.getName();

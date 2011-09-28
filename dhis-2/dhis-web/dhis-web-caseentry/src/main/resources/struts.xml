@@ -317,7 +317,6 @@
 				,javascript/commons.js
 				,javascript/patient.js
 				,javascript/relationshipPatient.js
-				,javascript/underage.js
 			</param>
 		</action>
 
