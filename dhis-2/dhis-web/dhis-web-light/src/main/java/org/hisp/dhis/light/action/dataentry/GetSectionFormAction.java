@@ -27,8 +27,11 @@
 
 package org.hisp.dhis.light.action.dataentry;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -39,7 +42,6 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
@@ -189,9 +191,9 @@ public class GetSectionFormAction
         return dataValues;
     }
 
-    private Map<String, String> validationErrors = new HashMap<String, String>();
+    private Map<String, DeflatedDataValue> validationErrors = new HashMap<String, DeflatedDataValue>();
 
-    public Map<String, String> getValidationErrors()
+    public Map<String, DeflatedDataValue> getValidationErrors()
     {
         return validationErrors;
     }
@@ -219,6 +221,7 @@ public class GetSectionFormAction
     // Action Implementation
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public String execute()
     {
@@ -228,27 +231,49 @@ public class GetSectionFormAction
 
         dataSet = dataSetService.getDataSet( dataSetId );
 
-        for ( Section section : dataSet.getSections() )
+        List<DataValue> values = new ArrayList<DataValue>( dataValueService.getDataValues( organisationUnit, period,
+            dataSet.getDataElements() ) );
+
+        for ( DataValue dataValue : values )
         {
-            for ( DataElement dataElement : section.getDataElements() )
-            {
-                for ( DataElementCategoryOptionCombo optionCombo : dataElement.getCategoryCombo().getOptionCombos() )
-                {
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
-                        optionCombo );
+            DataElement dataElement = dataValue.getDataElement();
+            DataElementCategoryOptionCombo optionCombo = dataValue.getOptionCombo();
 
-                    String key = String.format( "DE%dOC%d", dataElement.getId(), optionCombo.getId() );
-                    String value = "";
+            String key = String.format( "DE%dOC%d", dataElement.getId(), optionCombo.getId() );
+            String value = dataValue.getValue();
 
-                    if ( dataValue != null )
-                    {
-                        value = dataValue.getValue();
-                        validateDataElement( organisationUnit, dataElement, optionCombo, period, value );
-                    }
+            dataValues.put( key, value );
+        }
 
-                    dataValues.put( key, value );
-                }
-            }
+        Collection<MinMaxDataElement> minmaxs = minMaxDataElementService.getMinMaxDataElements( organisationUnit,
+            dataSet.getDataElements() );
+
+        Collection<DeflatedDataValue> deflatedDataValues = new HashSet<DeflatedDataValue>();
+
+        if ( minmaxs == null )
+        {
+            Double factor = (Double) systemSettingManager.getSystemSetting(
+                SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
+
+            Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse( organisationUnit,
+                dataSet.getDataElements(), ListUtils.getCollection( period ), factor );
+
+            Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse( organisationUnit,
+                dataSet.getDataElements(), ListUtils.getCollection( period ), null );
+
+            deflatedDataValues = CollectionUtils.union( stdDevs, minMaxs );
+        }
+        else
+        {
+            deflatedDataValues = minMaxValuesGenerationService.findOutliers( organisationUnit,
+                ListUtils.getCollection( period ), minmaxs );
+        }
+
+        for ( DeflatedDataValue deflatedDataValue : deflatedDataValues )
+        {
+            String key = String.format( "DE%dOC%d", deflatedDataValue.getDataElementId(),
+                deflatedDataValue.getCategoryOptionComboId() );
+            validationErrors.put( key, deflatedDataValue );
         }
 
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
@@ -257,40 +282,5 @@ public class GetSectionFormAction
         complete = registration != null ? true : false;
 
         return SUCCESS;
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public void validateDataElement( OrganisationUnit organisationUnit, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, Period period, String value )
-    {
-        Collection<DeflatedDataValue> outliers;
-
-        MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
-            dataElement, optionCombo );
-
-        if ( minMaxDataElement == null )
-        {
-            Double factor = (Double) systemSettingManager.getSystemSetting(
-                SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
-
-            Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse( organisationUnit,
-                ListUtils.getCollection( dataElement ), ListUtils.getCollection( period ), factor );
-
-            Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse( organisationUnit,
-                ListUtils.getCollection( dataElement ), ListUtils.getCollection( period ), null );
-
-            outliers = CollectionUtils.union( stdDevs, minMaxs );
-        }
-        else
-        {
-            outliers = minMaxValuesGenerationService.findOutliers( organisationUnit, ListUtils.getCollection( period ),
-                ListUtils.getCollection( minMaxDataElement ) );
-        }
-
-        for ( DeflatedDataValue deflatedDataValue : outliers )
-        {
-            System.err.println( "max: " + deflatedDataValue.getMax() );
-            System.err.println( "min: " + deflatedDataValue.getMin() );
-        }
     }
 }
