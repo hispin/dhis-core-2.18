@@ -43,6 +43,12 @@
 		<td></td>
 	</tr>	
 	
+	<tr>
+		<td><label>$i18n.getString( "single_event" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><input type="checkbox" id="singleEvent" name="singleEvent" value='true'></td>
+		<td></td>
+	</tr>
+	
   	<tr>
      	<td colspan="2" style="height:15px"></td>
     </tr>
