@@ -280,8 +280,8 @@ public class DefaultDataEntryFormService
                 // Insert title info
                 // -------------------------------------------------------------
 
-                StringBuilder title = new StringBuilder( "title=\"Name: " ).append( dataElement.getName() ).append( " " ).
-                    append( categoryOptionCombo.getName() ).append( " Type: " ).append( dataElement.getType() ).append( "\"" );
+                StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getName() ).append( " " ).
+                    append( categoryOptionCombo.getName() ).append( "\"" );
                 
                 inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, title ) : inputHtml + " " + title;
 
