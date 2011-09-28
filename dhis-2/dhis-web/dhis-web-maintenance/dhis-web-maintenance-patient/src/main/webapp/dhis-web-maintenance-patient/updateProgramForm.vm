@@ -41,12 +41,12 @@
 		<td></td>
 	  </tr>		
   	  <tr>
-		<td><label>$i18n.getString( "dateOfEnrollmentDescription" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$!program.dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 	  </tr>	
 	  <tr>
-		<td><label>$i18n.getString( "dateOfIncidentDescription" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$!program.dateOfIncidentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 	  </tr>
