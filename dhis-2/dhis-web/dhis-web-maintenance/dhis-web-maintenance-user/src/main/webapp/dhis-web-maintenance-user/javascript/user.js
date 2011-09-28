@@ -43,45 +43,39 @@ function getInactiveUsers()
 
 function showUserDetails( userId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'user' );
-    request.setCallbackSuccess( userReceived );
-    request.send( 'getUser.action?id=' + userId );
-}
+    jQuery.post( 'getUser.action', { id: userId }, function ( json ) {
+		setInnerHTML( 'usernameField', json.user.username );
+		
+		var fullName = json.user.firstName + ", " + json.user.surname;
+		setInnerHTML( 'fullNameField', fullName );
 
-function userReceived( userElement )
-{
-    setInnerHTML( 'usernameField', getElementValue( userElement, 'username' ) );
-	
-	var fullName = getElementValue( userElement, 'firstName' ) + ", " + getElementValue( userElement, 'surname' );
-    setInnerHTML( 'fullNameField', fullName );
+		var email = json.user.email;
+		setInnerHTML( 'emailField', email ? email : '[' + i18n_none + ']' );
 
-    var email = getElementValue( userElement, 'email' );
-    setInnerHTML( 'emailField', email ? email : '[' + i18n_none + ']' );
-
-    var phoneNumber = getElementValue( userElement, 'phoneNumber' );
-	setInnerHTML( 'phoneNumberField', phoneNumber ? phoneNumber : '[' + i18n_none + ']' );
-	
-	var lastLogin = getElementValue( userElement, 'lastLogin' );;
-	setInnerHTML( 'lastLoginField', lastLogin ? lastLogin : '[' + i18n_none + ']' );
-	
-	var temp = '';
-	var orgunits = userElement.getElementsByTagName( 'orgunit' );
-	for( var i = 0 ; i < orgunits.length ; i ++ )
-	{
-		temp += orgunits[i].firstChild.nodeValue + "<br/>";
-	}
-	setInnerHTML( 'assignedOrgunitField', temp ? temp : '[' + i18n_none + ']' );
-	
-	temp = '';
-	var roles = userElement.getElementsByTagName( 'role' );
-	for( var i = 0 ; i < roles.length ; i ++ )
-	{
-		temp += roles[i].firstChild.nodeValue + "<br/>";
-	}
-	setInnerHTML( 'roleField', temp ? temp : '[' + i18n_none + ']' );
-	
-    showDetails();
+		var phoneNumber = json.user.phoneNumber;
+		setInnerHTML( 'phoneNumberField', phoneNumber ? phoneNumber : '[' + i18n_none + ']' );
+		
+		var lastLogin = json.user.lastLogin;
+		setInnerHTML( 'lastLoginField', lastLogin ? lastLogin : '[' + i18n_none + ']' );
+		
+		var temp = '';
+		var orgunits = json.user.orgunits;
+		for( var i = 0 ; i < orgunits.length ; i ++ )
+		{
+			temp += orgunits[i].name + "<br/>";
+		}
+		setInnerHTML( 'assignedOrgunitField', temp ? temp : '[' + i18n_none + ']' );
+		
+		temp = '';
+		var roles = json.user.roles;
+		for( var i = 0 ; i < roles.length ; i ++ )
+		{
+			temp += roles[i].name + "<br/>";
+		}
+		setInnerHTML( 'roleField', temp ? temp : '[' + i18n_none + ']' );
+		
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------
@@ -99,18 +93,13 @@ function removeUser( userId, username )
 
 function showUserGroupDetails( userGroupId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'userGroup' );
-    request.setCallbackSuccess( userGroupReceived );
-    request.send( 'getUserGroup.action?userGroupId=' + userGroupId );
-}
+    jQuery.post( 'getUserGroup.action', { userGroupId: userGroupId },
+		function ( json ) {
+			setInnerHTML( 'nameField', json.userGroup.name );
+			setInnerHTML( 'noOfGroupField', json.userGroup.noOfUsers );
 
-function userGroupReceived( userGroupElement )
-{
-    setInnerHTML( 'nameField', getElementValue( userGroupElement, 'name' ) );
-    setInnerHTML( 'noOfGroupField', getElementValue( userGroupElement, 'noOfUsers' ) );
-
-    showDetails();
+			showDetails();
+	});
 }
 
 function removeUserGroup( userGroupId, userGroupName )

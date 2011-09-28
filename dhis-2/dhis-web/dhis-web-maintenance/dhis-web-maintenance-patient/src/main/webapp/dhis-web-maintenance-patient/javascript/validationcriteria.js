@@ -13,34 +13,26 @@ function removeCriteria( id, name )
 
 function showValidationCriteriaDetails( criteriaId )
 {
-	$.ajax({
-		url: 'getValidationCriteria.action?id=' + criteriaId,
-		cache: false,
-		dataType: "xml",
-		success: validationCriteriaReceived
+	jQuery.post( 'getValidationCriteria.action', { id: criteriaId }, function ( json ) {
+		setInnerHTML( 'nameField', json.validationCriteria.name );
+		setInnerHTML( 'descriptionField', json.validationCriteria.description );
+		
+		var property = json.validationCriteria.property;
+		var operator = json.validationCriteria.operator;
+		var	value = json.validationCriteria.value;
+		
+		// get operator
+		if(operator == 0 ){
+			operator = '=';
+		}else if(operator == -1 ){
+			operator = '<';
+		}else {
+			operator = '>';
+		}
+		
+		setInnerHTML('criteriaField', property + " " + operator + " " + value );
+		showDetails();
 	});
-}
-
-function validationCriteriaReceived( validationCriteria )
-{
-    setInnerHTML( 'nameField', $(validationCriteria).find('name').text() );
-    setInnerHTML( 'descriptionField', $(validationCriteria).find('description' ).text() );
-	
-	var property = $(validationCriteria).find('property').text();
-	var operator = $(validationCriteria).find('operator').text();
-	var	value = $(validationCriteria).find('value').text();
-	
-	// get operator
-	if(operator == 0 ){
-		operator = '=';
-	}else if(operator == -1 ){
-		operator = '<';
-	}else {
-		operator = '>';
-	}
-	
-	setInnerHTML('criteriaField', property + " " + operator + " " + value );
-    showDetails();
 }
 
 // ----------------------------------------------------------------------------------------

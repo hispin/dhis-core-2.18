@@ -1,11 +1,25 @@
 { "user":
   {
-    "id": ${user.id},
-    "surname": "$!encoder.jsonEncode( ${user.surname} )",
-    "firstName": "$!encoder.jsonEncode( ${user.firstName} )",
-    "username": "$!encoder.jsonEncode( ${user.username} )",
-    "email": "$!encoder.jsonEncode( ${user.email} )",
-    "phoneNumber": "$!encoder.jsonEncode( ${user.phoneNumber} )",
-    "organisationUnits": "$!encoder.jsonEncode( ${user.organisationUnitsName} )"
+    "id": ${userCredentials.id},
+    "surname": "$!encoder.jsonEncode( ${userCredentials.user.surname} )",
+    "firstName": "$!encoder.jsonEncode( ${userCredentials.user.firstName} )",
+    "username": "$!encoder.jsonEncode( ${userCredentials.username} )",
+    "email": "$!encoder.jsonEncode( ${userCredentials.email} )",
+    "phoneNumber": "$!encoder.jsonEncode( ${userCredentials.phoneNumber} )",
+    "lastLogin": "$!format.formatDate( ${userCredentials.lastLogin} )",
+	
+	#set( $size = ${userCredentials.user.organisationUnits.size()} )
+	"orgunits": [
+	#foreach( $unit in $userCredentials.user.organisationUnits )
+	  { "name": "$!{unit}" }#if( $velocityCount < $size ),#end
+	#end
+	],
+	
+	#set( $size = ${userCredentials.userAuthorityGroups.size()} )
+	"roles": [
+	#foreach( $role in $userCredentials.userAuthorityGroups )
+	  { "name": "$!{role.name}" }#if( $velocityCount < $size ),#end
+	#end
+	]
   }
 }

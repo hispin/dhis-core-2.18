@@ -11,23 +11,15 @@ jQuery(document).ready(	function(){
 
 function showProgramValidationDetails ( programValidationId )
 {
-    $.ajax({
-		url: 'getProgramValidation.action?validationId=' + programValidationId,
-		cache: false,
-		dataType: "xml",
-		success: programValdiationReceived
+    jQuery.post( 'getProgramValidation.action', { validationId: programValidationId }, function ( json ) {
+		setInnerHTML( 'idField', json.validation.id );
+		setInnerHTML( 'descriptionField', json.validation.description );
+		setInnerHTML( 'leftSideField', json.validation.leftSide );
+		setInnerHTML( 'rightSideField', json.validation.rightSide );
+		setInnerHTML( 'programField', json.validation.program );
+		
+		showDetails();
 	});
-}
-
-function programValdiationReceived( programValidationElement )
-{
-	setInnerHTML( 'idField', $( programValidationElement).find('id').text() );
-	setInnerHTML( 'descriptionField', $( programValidationElement).find('description' ).text() );	
-    setInnerHTML( 'leftSideField', $( programValidationElement).find('leftSide').text() );
-	setInnerHTML( 'rightSideField', $( programValidationElement).find('rightSide').text() );
-	setInnerHTML( 'programField', $( programValidationElement).find('program').text() );
-    
-    showDetails();
 }
 
 // -----------------------------------------------------------------------------

@@ -4,26 +4,18 @@
 
 function showProgramAttributeDetails( programAttributeId )
 {
-	$.ajax({
-		url: 'getProgramAttribute.action?id=' + programAttributeId,
-		cache: false,
-		dataType: "xml",
-		success: programAttributeReceived
+	jQuery.post( 'getProgramAttribute.action', { id: programAttributeId }, function ( json ) {
+		setInnerHTML( 'idField', json.programAttribute.id );
+		setInnerHTML( 'nameField',  json.programAttribute.name );	
+		setInnerHTML( 'descriptionField', json.programAttribute.description );
+		
+		var valueTypeMap = { 'NUMBER':i18n_number, 'BOOL':i18n_yes_no, 'TEXT':i18n_text, 'DATE':i18n_date, 'COMBO':i18n_combo };
+		var valueType =  json.programAttribute.valueType;
+		
+		setInnerHTML( 'valueTypeField', valueTypeMap[valueType] );    
+	   
+		showDetails();
 	});
-}
-
-function programAttributeReceived( programAttributeElement )
-{
-	setInnerHTML( 'idField', $( programAttributeElement).find('id' ).text() );
-	setInnerHTML( 'nameField',  $( programAttributeElement).find('name').text() );	
-    setInnerHTML( 'descriptionField', $( programAttributeElement).find('description').text() );
-    
-    var valueTypeMap = { 'NUMBER':i18n_number, 'BOOL':i18n_yes_no, 'TEXT':i18n_text, 'DATE':i18n_date, 'COMBO':i18n_combo };
-    var valueType =  $( programAttributeElement).find('valueType' ).text();    
-	
-    setInnerHTML( 'valueTypeField', valueTypeMap[valueType] );    
-   
-    showDetails();
 }
 
 // -----------------------------------------------------------------------------

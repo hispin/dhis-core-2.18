@@ -5,19 +5,13 @@
 
 function showRoleDetails( roleId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'role' );
-    request.setCallbackSuccess( roleReceived );
-    request.send( 'getRole.action?id=' + roleId );
-}
+    jQuery.post( 'getRole.action', { id: roleId }, function ( json ) {
+		setInnerHTML( 'nameField', json.userRole.name );
+		setInnerHTML( 'membersField', json.userRole.members );
+		setInnerHTML( 'dataSetsField', json.userRole.dataSets );
 
-function roleReceived( xmlObject )
-{
-    setInnerHTML( 'nameField', getElementValue( xmlObject, 'name' ) );
-    setInnerHTML( 'membersField', getElementValue( xmlObject, 'members' ) );
-    setInnerHTML( 'dataSetsField', getElementValue( xmlObject, 'dataSets' ) );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

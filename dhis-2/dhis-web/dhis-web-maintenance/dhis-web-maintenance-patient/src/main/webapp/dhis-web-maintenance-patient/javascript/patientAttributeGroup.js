@@ -14,21 +14,16 @@ function beforeSubmit()
 
 function showPatientAttributeGroupDetails( patientAttributeGroupId )
 {
-	$.ajax({
-		url: 'getPatientAttributeGroup.action?id=' + patientAttributeGroupId,
-		cache: false,
-		success: patientAttributeGroupReceived
+	jQuery.post( 'getPatientAttributeGroup.action', { id: patientAttributeGroupId },
+		function ( json ) {
+				
+			setInnerHTML( 'idField', json.patientAttributeGroup.id );
+			setInnerHTML( 'nameField', json.patientAttributeGroup.name );	
+			setInnerHTML( 'descriptionField', json.patientAttributeGroup.description );
+			setInnerHTML( 'noAttributeField', json.patientAttributeGroup.noAttribute );
+
+			showDetails();
 	});
-}
-
-function patientAttributeGroupReceived( patientAttributeGroupElement )
-{
-	setInnerHTML( 'idField', getElementValue( patientAttributeGroupElement, 'id' ) );
-	setInnerHTML( 'nameField', getElementValue( patientAttributeGroupElement, 'name' ) );	
-    setInnerHTML( 'descriptionField', getElementValue( patientAttributeGroupElement, 'description' ) );
-	setInnerHTML( 'noAttributeField', getElementValue( patientAttributeGroupElement, 'noAttribute' ) );
-
-    showDetails();
 }
 
 // -----------------------------------------------------------------------------

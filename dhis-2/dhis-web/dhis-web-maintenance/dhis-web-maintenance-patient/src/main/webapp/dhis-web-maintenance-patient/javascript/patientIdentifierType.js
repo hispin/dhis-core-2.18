@@ -4,33 +4,26 @@
 
 function showPatientIdentifierTypeDetails( patientIdentifierTypeId )
 {
-	$.ajax({
-		url: 'getPatientIdentifierType.action?id=' + patientIdentifierTypeId,
-		cache: false,
-		dataType: "xml",
-		success: patientIdentifierTypeReceived
+	jQuery.post( 'getPatientIdentifierType.action', { id: patientIdentifierTypeId },
+		function ( json ) {
+			setInnerHTML( 'idField', json.patientAttributeType.id );
+			setInnerHTML( 'nameField', json.patientAttributeType.name );	
+			setInnerHTML( 'descriptionField', json.patientAttributeType.description );
+			
+			var boolValueMap = { 'true':i18n_yes, 'false':i18n_no };
+			var boolType = json.patientAttributeType.mandatory;
+			setInnerHTML( 'mandatoryField', boolValueMap[boolType] );
+			
+			boolType = json.patientAttributeType.related;
+			setInnerHTML( 'relatedField', boolValueMap[boolType] );
+			setInnerHTML( 'noCharsField', json.patientAttributeType.noChars );
+			
+			var valueTypeMap = { 'text':i18n_string, 'number':i18n_number, 'letter':i18n_alphabet };
+			var valueType = json.patientAttributeType.type;
+			setInnerHTML( 'typeField', valueTypeMap[valueType] );
+			
+			showDetails();
 	});
-}
-
-function patientIdentifierTypeReceived( patientIdentifierTypeElement )
-{
-	setInnerHTML( 'idField', $( patientIdentifierTypeElement).find('id' ).text() );
-	setInnerHTML( 'nameField', $( patientIdentifierTypeElement).find('name' ).text() );	
-    setInnerHTML( 'descriptionField', $( patientIdentifierTypeElement).find('description' ).text() );
-	
-	var boolValueMap = { 'true':i18n_yes, 'false':i18n_no };
-    var boolType = $( patientIdentifierTypeElement ).find('mandatory').text();    
-    setInnerHTML( 'mandatoryField', boolValueMap[boolType] );
-	
-	boolType = $( patientIdentifierTypeElement ).find('related').text(); 
-	setInnerHTML( 'relatedField', boolValueMap[boolType] );
-	setInnerHTML( 'noCharsField', $( patientIdentifierTypeElement).find('noChars' ).text() );
-	
-	var valueTypeMap = { 'text':i18n_string, 'number':i18n_number, 'letter':i18n_alphabet };
-    var valueType = $( patientIdentifierTypeElement ).find('type' ).text();    
-	setInnerHTML( 'typeField', valueTypeMap[valueType] );
-	
-    showDetails();
 }
 
 // -----------------------------------------------------------------------------

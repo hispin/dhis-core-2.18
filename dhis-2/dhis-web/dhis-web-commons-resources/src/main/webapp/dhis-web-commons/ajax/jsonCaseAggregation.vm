@@ -1,0 +1,10 @@
+{ "caseAggregation":
+  {
+    "id": "${caseAggregation.id}",
+	"description": "$!encoder.jsonEncode( ${caseAggregation.description} )",
+	"operator": "${caseAggregation.operator}",
+	"aggregationDataElement": "$!encoder.jsonEncode( ${caseAggregation.aggregationDataElement.name} )",
+	"optionCombo": "$!encoder.jsonEncode( ${caseAggregation.optionCombo.name} )",
+	"aggregationExpression": "$!encoder.jsonEncode( ${caseAggregation.aggregationExpression} )"
+  }
+}

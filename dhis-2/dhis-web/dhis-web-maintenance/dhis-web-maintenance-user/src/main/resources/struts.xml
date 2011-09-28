@@ -34,7 +34,8 @@
     </action>
 
     <action name="getUser" class="org.hisp.dhis.user.action.GetUserAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseUser.vm</result>
+      <result name="success" type="velocity-json">
+		/dhis-web-commons/ajax/jsonUser.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -111,7 +112,8 @@
     </action>
 
     <action name="getRole" class="org.hisp.dhis.user.action.GetRoleAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseRole.vm</result>
+      <result name="success" type="velocity-json">
+		/dhis-web-commons/ajax/jsonUserRole.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_USERROLE_LIST</param>
     </action>
@@ -178,8 +180,8 @@
     </action>
 
     <action name="getUserGroup" class="org.hisp.dhis.user.action.GetUserGroupAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-user/responseUserGroup.vm</result>
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonUserGroup.vm</result>
     </action>
 
     <action name="addUserGroupForm" class="org.hisp.dhis.user.action.NoAction">

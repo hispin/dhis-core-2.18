@@ -146,19 +146,17 @@ function removeCaseAggregation( caseAggregationId, caseAggregationName )
 
 function showCaseAggregationDetails( caseAggregationId )
 {
-    $.post( 'getCaseAggregation.action', { id:caseAggregationId }, caseAggregationReceived );
-}
-
-function caseAggregationReceived( caseAggregationElement )
-{
-	setInnerHTML( 'idField', $( caseAggregationElement).find('id' ).text() );
-	setInnerHTML( 'descriptionField', $( caseAggregationElement).find('description' ).text() );	
-    setInnerHTML( 'operatorField', $( caseAggregationElement).find('operator' ).text() );
-    setInnerHTML( 'aggregationDataElementField', $( caseAggregationElement).find('aggregationDataElement' ).text() );
-	setInnerHTML( 'optionComboField', $( caseAggregationElement).find('optionCombo' ).text() );	
-    setInnerHTML( 'aggregationExpressionField', $( caseAggregationElement).find('aggregationExpression' ).text() );
-    
-    showDetails();
+    jQuery.post( 'getCaseAggregation.action', { id:caseAggregationId }, function ( json )
+	{
+		setInnerHTML( 'idField', json.caseAggregation.id );
+		setInnerHTML( 'descriptionField', json.caseAggregation.description );	
+		setInnerHTML( 'operatorField', json.caseAggregation.operator );
+		setInnerHTML( 'aggregationDataElementField', json.caseAggregation.aggregationDataElement );
+		setInnerHTML( 'optionComboField', json.caseAggregation.optionCombo );	
+		setInnerHTML( 'aggregationExpressionField', json.caseAggregation.aggregationExpression );
+		
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

@@ -26,8 +26,8 @@
 
 		<action name="getRelationshipType"
 			class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseRelationshipType.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonRelationshipType.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -93,8 +93,8 @@
 
 		<action name="getPatientAttribute"
 			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responsePatientAttribute.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPatientAttribute.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -188,7 +188,7 @@
 		<action name="getProgram"
 			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/responseProgram.vm</result>
+				/dhis-web-commons/ajax/jsonProgram.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -254,8 +254,8 @@
 
 		<action name="getProgramAttribute"
 			class="org.hisp.dhis.patient.action.program.GetProgramAttributeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseProgramAttribute.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonProgramAttribute.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -358,8 +358,8 @@
 
 		<action name="getProgramStage"
 			class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseProgramStage.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonProgramStage.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -491,8 +491,8 @@
 
 		<action name="getPatientAttributeGroup"
 			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responsePatientAttributeGroup.vm
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPatientAttributeGroup.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
@@ -607,8 +607,8 @@
 
 		<action name="getPatientIdentifierType"
 			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responsePatientIdentifierType.vm
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPatientIdentifierType.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
@@ -703,8 +703,8 @@
 
 		<action name="getCaseAggregation"
 			class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseCaseAggregation.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonCaseAggregation.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -760,8 +760,8 @@
 
 		<action name="getValidationCriteria"
 			class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseValidationCriteria.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonValidationCriteria.vm</result>
 		</action>
 
 		<action name="updateValidationCriteria"
@@ -872,8 +872,8 @@
 
 		<action name="getProgramValidation"
 			class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseProgramValidation.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonProgramValidation.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 

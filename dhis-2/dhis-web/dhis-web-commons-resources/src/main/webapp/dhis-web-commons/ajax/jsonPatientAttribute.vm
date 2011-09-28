@@ -1,0 +1,8 @@
+{ "patientAttribute":
+  {
+    "id": "${patientAttribute.id}",
+	"name": "$!encoder.jsonEncode( ${patientAttribute.name} )",
+	"description": "$!encoder.jsonEncode( ${patientAttribute.description} )",
+	"valueType": "$!encoder.jsonEncode( ${patientAttribute.valueType} )"
+  }
+}

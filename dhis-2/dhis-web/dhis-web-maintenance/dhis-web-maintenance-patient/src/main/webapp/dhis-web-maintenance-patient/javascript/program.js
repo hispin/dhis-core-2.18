@@ -4,14 +4,14 @@
 
 function showProgramDetails( programId )
 {
-	jQuery.postJSON( "getProgram.action", {
+	jQuery.post( "getProgram.action", {
 		id:programId
 	}, function(json){
-		setInnerHTML( 'idField', json.id );
-		setInnerHTML( 'nameField', json.name );	
-		setInnerHTML( 'descriptionField', json.description );    
-		setInnerHTML( 'programStageCountField',  json.programStageCount );
-		setInnerHTML( 'maxDaysFromStartField',  json.maxDay );
+		setInnerHTML( 'idField', json.program.id );
+		setInnerHTML( 'nameField', json.program.name );
+		setInnerHTML( 'descriptionField', json.program.description );    
+		setInnerHTML( 'programStageCountField',  json.program.programStageCount );
+		setInnerHTML( 'maxDaysFromStartField',  json.program.maxDay );
    
 		showDetails();
 	});   

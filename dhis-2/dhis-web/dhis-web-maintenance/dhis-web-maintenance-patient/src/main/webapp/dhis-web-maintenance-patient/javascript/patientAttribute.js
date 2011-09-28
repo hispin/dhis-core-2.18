@@ -4,26 +4,19 @@
 
 function showPatientAttributeDetails( patientAttributeId )
 {
-	$.ajax({
-		url: 'getPatientAttribute.action?id=' + patientAttributeId,
-		cache: false,
-		dataType: "xml",
-		success: patientAttributeReceived
+	jQuery.post( 'getPatientAttribute.action', { id: patientAttributeId },
+		function ( json ) {
+			setInnerHTML( 'idField', json.patientAttribute.id );
+			setInnerHTML( 'nameField', json.patientAttribute.name );	
+			setInnerHTML( 'descriptionField', json.patientAttribute.description );
+			
+			var valueTypeMap = { 'NUMBER':i18n_number, 'BOOL':i18n_yes_no, 'TEXT':i18n_text, 'DATE':i18n_date, 'COMBO':i18n_combo };
+			var valueType = json.patientAttribute.valueType;    
+			
+			setInnerHTML( 'valueTypeField', valueTypeMap[valueType] );    
+	   
+			showDetails();
 	});
-}
-
-function patientAttributeReceived( patientAttributeElement )
-{
-	setInnerHTML( 'idField', $( patientAttributeElement).find('id' ).text() );
-	setInnerHTML( 'nameField', $( patientAttributeElement).find('name' ).text() );	
-    setInnerHTML( 'descriptionField', $( patientAttributeElement).find('description' ).text() );
-    
-    var valueTypeMap = { 'NUMBER':i18n_number, 'BOOL':i18n_yes_no, 'TEXT':i18n_text, 'DATE':i18n_date, 'COMBO':i18n_combo };
-    var valueType = $( patientAttributeElement ).find('valueType' ).text();    
-    
-    setInnerHTML( 'valueTypeField', valueTypeMap[valueType] );    
-   
-    showDetails();
 }
 
 // -----------------------------------------------------------------------------
