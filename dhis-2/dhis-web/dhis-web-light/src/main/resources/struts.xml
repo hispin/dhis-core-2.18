@@ -14,27 +14,27 @@
 
     <!-- data entry -->
 
-    <action name="selectOrganisationUnit" class="org.hisp.dhis.light.action.dataentry.GetOrganisationUnitsAction">
+    <action name="selectOrganisationUnit" class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/selectOrganisationUnit.vm</param>
     </action>
 
-    <action name="selectDataSet" class="org.hisp.dhis.light.action.dataentry.GetDataSetsAction">
+    <action name="selectDataSet" class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/selectDataSet.vm</param>
     </action>
 
-    <action name="selectPeriod" class="org.hisp.dhis.light.action.dataentry.GetPeriodsAction">
+    <action name="selectPeriod" class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/selectPeriod.vm</param>
     </action>
 
-    <action name="dataEntry" class="org.hisp.dhis.light.action.dataentry.GetSectionFormAction">
+    <action name="dataEntry" class="org.hisp.dhis.light.dataentry.action.GetSectionFormAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/dataEntry.vm</param>
     </action>
 
-    <action name="saveSectionForm" class="org.hisp.dhis.light.action.dataentry.SaveSectionFormAction">
+    <action name="saveSectionForm" class="org.hisp.dhis.light.dataentry.action.SaveSectionFormAction">
       <result name="success" type="redirect">/dhis-web-light/index.action</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/dataEntry.vm</param>
@@ -42,22 +42,22 @@
 
     <!-- dashboard -->
 
-    <action name="dashboard" class="org.hisp.dhis.light.action.dashboard.ProvideContentAction">
+    <action name="dashboard" class="org.hisp.dhis.light.dashboard.action.ProvideContentAction">
       <result name="success" type="velocity">/dhis-web-light/dashboard_page.vm</result>
       <param name="page">/dhis-web-light/dashboard.vm</param>
     </action>
 
-    <action name="getReport" class="org.hisp.dhis.light.action.dashboard.GetReportAction">
+    <action name="getReport" class="org.hisp.dhis.light.dashboard.action.GetReportAction">
       <result name="success" type="velocity">/dhis-web-light/dashboard_page.vm</result>
       <param name="page">/dhis-web-commons/ajax/htmlGrid.vm</param>
     </action>
 
-    <action name="getReportParams" class="org.hisp.dhis.light.action.dashboard.GetReportParamsAction">
+    <action name="getReportParams" class="org.hisp.dhis.light.dashboard.action.GetReportParamsAction">
       <result name="success" type="velocity">/dhis-web-light/dashboard_page.vm</result>
       <param name="page">/dhis-web-light/inputReportParamsForm.vm</param>
     </action>
 
-    <action name="getChart" class="org.hisp.dhis.light.action.dashboard.GetChartAction">
+    <action name="getChart" class="org.hisp.dhis.light.dashboard.action.GetChartAction">
       <result name="success" type="chart">
         <param name="width">480</param>
         <param name="height">800</param>

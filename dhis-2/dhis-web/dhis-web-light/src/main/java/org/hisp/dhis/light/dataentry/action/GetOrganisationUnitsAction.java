@@ -1,7 +1,5 @@
-package org.hisp.dhis.light.action.dashboard;
-
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,98 +25,62 @@ package org.hisp.dhis.light.action.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.jfree.chart.JFreeChart;
+package org.hisp.dhis.light.dataentry.action;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author mortenoh
  */
-public class GetChartAction
+public class GetOrganisationUnitsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ChartService chartService;
+    private CurrentUserService currentUserService;
 
-    public void setChartService( ChartService chartService )
+    public void setCurrentUserService( CurrentUserService currentUserService )
     {
-        this.chartService = chartService;
-    }
-    
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
-    public void setId( Integer id )
+    public List<OrganisationUnit> getOrganisationUnits()
     {
-        this.id = id;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private JFreeChart chart;
-
-    public JFreeChart getChart()
-    {
-        return chart;
-    }
-    
-    private int height;
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public void setHeight( int height )
-    {
-        this.height = height;
-    }
-
-    private int width;
-
-    public int getWidth()
-    {
-        return width;
-    }
-
-    public void setWidth( int width )
-    {
-        this.width = width;
+        return organisationUnits;
     }
 
     // -------------------------------------------------------------------------
-    // Action implemenation
+    // Action Implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
     {
-        if ( id != null )
+        User user = currentUserService.getCurrentUser();
+
+        if ( user != null )
         {
-            chart = chartService.getJFreeChart( id, format );
-            
-            height = 280;
-            
-            width = 400;
+            organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
         }
-        
+
         return SUCCESS;
     }
 }

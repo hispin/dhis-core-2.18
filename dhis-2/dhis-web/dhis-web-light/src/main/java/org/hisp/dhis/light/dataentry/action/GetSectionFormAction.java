@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,32 +24,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.light.action.dataentry;
 
-import java.util.ArrayList;
-import java.util.Date;
+package org.hisp.dhis.light.dataentry.action;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.light.dataentry.utils.SectionFormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
-import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author mortenoh
  */
-public class GetPeriodsAction
+public class GetSectionFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -77,11 +74,18 @@ public class GetPeriodsAction
         this.registrationService = registrationService;
     }
 
-    private I18nFormat format;
+    private PeriodService periodService;
 
-    public void setFormat( I18nFormat format )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.format = format;
+        this.periodService = periodService;
+    }
+
+    private SectionFormUtils sectionFormUtils;
+
+    public void setSectionFormUtils( SectionFormUtils sectionFormUtils )
+    {
+        this.sectionFormUtils = sectionFormUtils;
     }
 
     // -------------------------------------------------------------------------
@@ -100,6 +104,18 @@ public class GetPeriodsAction
         return organisationUnitId;
     }
 
+    private String periodId;
+
+    public void setPeriodId( String periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    public String getPeriodId()
+    {
+        return periodId;
+    }
+
     private Integer dataSetId;
 
     public void setDataSetId( Integer dataSetId )
@@ -112,18 +128,44 @@ public class GetPeriodsAction
         return dataSetId;
     }
 
-    private Map<Period, Boolean> periodCompletedMap = new HashMap<Period, Boolean>();
+    private DataSet dataSet;
 
-    public Map<Period, Boolean> getPeriodCompletedMap()
+    public DataSet getDataSet()
     {
-        return periodCompletedMap;
+        return dataSet;
     }
 
-    private List<Period> periods = new ArrayList<Period>();
+    private Map<String, String> dataValues = new HashMap<String, String>();
 
-    public List<Period> getPeriods()
+    public Map<String, String> getDataValues()
     {
-        return periods;
+        return dataValues;
+    }
+
+    private Map<String, DeflatedDataValue> validationErrors = new HashMap<String, DeflatedDataValue>();
+
+    public Map<String, DeflatedDataValue> getValidationErrors()
+    {
+        return validationErrors;
+    }
+
+    private Boolean complete = false;
+
+    public void setComplete( Boolean complete )
+    {
+        this.complete = complete;
+    }
+
+    public Boolean getComplete()
+    {
+        return complete;
+    }
+
+    private String page;
+
+    public String getPage()
+    {
+        return page;
     }
 
     // -------------------------------------------------------------------------
@@ -133,24 +175,20 @@ public class GetPeriodsAction
     @Override
     public String execute()
     {
-        if ( dataSetId != null )
-        {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-            DataSet dataSet = dataSetService.getDataSet( dataSetId );
-            CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
-            periods = periodType.generatePeriods( new Date() );
-            FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-            for ( Period period : periods )
-            {
-                period.setName( format.formatPeriod( period ) );
+        Period period = periodService.getPeriodByExternalId( periodId );
 
-                CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet,
-                    period, organisationUnit );
+        dataSet = dataSetService.getDataSet( dataSetId );
 
-                periodCompletedMap.put( period, registration != null ? true : false );
-            }
-        }
+        dataValues = sectionFormUtils.getDataValueMap( organisationUnit, dataSet, period );
+
+        validationErrors = sectionFormUtils.getValidationErrorMap( organisationUnit, dataSet, period );
+
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
+            organisationUnit );
+
+        complete = registration != null ? true : false;
 
         return SUCCESS;
     }

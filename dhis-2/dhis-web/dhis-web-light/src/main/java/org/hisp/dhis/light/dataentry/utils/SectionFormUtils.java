@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.light.action.dataentry;
+package org.hisp.dhis.light.dataentry.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,10 +38,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
-import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
@@ -50,56 +47,23 @@ import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ListUtils;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author mortenoh
  */
-public class GetSectionFormAction
-    implements Action
+public class SectionFormUtils
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
 
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    private CompleteDataSetRegistrationService registrationService;
-
-    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
-    {
-        this.registrationService = registrationService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
 
     private DataAnalysisService stdDevOutlierAnalysisService;
@@ -138,112 +102,14 @@ public class GetSectionFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-
-    private Integer organisationUnitId;
-
-    public void setOrganisationUnitId( Integer organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
-
-    public Integer getOrganisationUnitId()
-    {
-        return organisationUnitId;
-    }
-
-    private String periodId;
-
-    public void setPeriodId( String periodId )
-    {
-        this.periodId = periodId;
-    }
-
-    public String getPeriodId()
-    {
-        return periodId;
-    }
-
-    private Integer dataSetId;
-
-    public void setDataSetId( Integer dataSetId )
-    {
-        this.dataSetId = dataSetId;
-    }
-
-    public Integer getDataSetId()
-    {
-        return dataSetId;
-    }
-
-    private DataSet dataSet;
-
-    public DataSet getDataSet()
-    {
-        return dataSet;
-    }
-
-    private Map<String, String> dataValues = new HashMap<String, String>();
-
-    public Map<String, String> getDataValues()
-    {
-        return dataValues;
-    }
-
-    private Map<String, DeflatedDataValue> validationErrors = new HashMap<String, DeflatedDataValue>();
-
-    public Map<String, DeflatedDataValue> getValidationErrors()
-    {
-        return validationErrors;
-    }
-
-    private Boolean complete = false;
-
-    public void setComplete( Boolean complete )
-    {
-        this.complete = complete;
-    }
-
-    public Boolean getComplete()
-    {
-        return complete;
-    }
-
-    private String page;
-
-    public String getPage()
-    {
-        return page;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action Implementation
+    // Utils
     // -------------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
-    @Override
-    public String execute()
+    public Map<String, DeflatedDataValue> getValidationErrorMap( OrganisationUnit organisationUnit, DataSet dataSet,
+        Period period )
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
-        Period period = periodService.getPeriodByExternalId( periodId );
-
-        dataSet = dataSetService.getDataSet( dataSetId );
-
-        List<DataValue> values = new ArrayList<DataValue>( dataValueService.getDataValues( organisationUnit, period,
-            dataSet.getDataElements() ) );
-
-        for ( DataValue dataValue : values )
-        {
-            DataElement dataElement = dataValue.getDataElement();
-            DataElementCategoryOptionCombo optionCombo = dataValue.getOptionCombo();
-
-            String key = String.format( "DE%dOC%d", dataElement.getId(), optionCombo.getId() );
-            String value = dataValue.getValue();
-
-            dataValues.put( key, value );
-        }
+        Map<String, DeflatedDataValue> validationErrorMap = new HashMap<String, DeflatedDataValue>();
 
         Collection<MinMaxDataElement> minmaxs = minMaxDataElementService.getMinMaxDataElements( organisationUnit,
             dataSet.getDataElements() );
@@ -273,14 +139,29 @@ public class GetSectionFormAction
         {
             String key = String.format( "DE%dOC%d", deflatedDataValue.getDataElementId(),
                 deflatedDataValue.getCategoryOptionComboId() );
-            validationErrors.put( key, deflatedDataValue );
+            validationErrorMap.put( key, deflatedDataValue );
         }
 
-        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
-            organisationUnit );
+        return validationErrorMap;
+    }
 
-        complete = registration != null ? true : false;
+    public Map<String, String> getDataValueMap( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    {
+        Map<String, String> dataValueMap = new HashMap<String, String>();
+        List<DataValue> values = new ArrayList<DataValue>( dataValueService.getDataValues( organisationUnit, period,
+            dataSet.getDataElements() ) );
 
-        return SUCCESS;
+        for ( DataValue dataValue : values )
+        {
+            DataElement dataElement = dataValue.getDataElement();
+            DataElementCategoryOptionCombo optionCombo = dataValue.getOptionCombo();
+
+            String key = String.format( "DE%dOC%d", dataElement.getId(), optionCombo.getId() );
+            String value = dataValue.getValue();
+
+            dataValueMap.put( key, value );
+        }
+
+        return dataValueMap;
     }
 }

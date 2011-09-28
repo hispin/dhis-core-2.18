@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.light.action.dataentry;
+package org.hisp.dhis.light.dataentry.action;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -42,13 +42,14 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.light.dataentry.utils.SectionFormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.util.ContextUtils;
 
@@ -114,6 +115,20 @@ public class SaveSectionFormAction
         this.registrationService = registrationService;
     }
 
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+    
+    private SectionFormUtils sectionFormUtils;
+
+    public void setSectionFormUtils( SectionFormUtils sectionFormUtils )
+    {
+        this.sectionFormUtils = sectionFormUtils;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -168,6 +183,13 @@ public class SaveSectionFormAction
         return dataValues;
     }
 
+    private Map<String, DeflatedDataValue> validationErrors = new HashMap<String, DeflatedDataValue>();
+
+    public Map<String, DeflatedDataValue> getValidationErrors()
+    {
+        return validationErrors;
+    }
+
     private Boolean complete = false;
 
     public void setComplete( Boolean complete )
@@ -201,7 +223,7 @@ public class SaveSectionFormAction
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Period period = PeriodType.createPeriodExternalId( periodId );
+        Period period = periodService.getPeriodByExternalId( periodId );
 
         String storedBy = currentUserService.getCurrentUsername();
 
@@ -254,28 +276,6 @@ public class SaveSectionFormAction
             }
         }
 
-        for ( Section section : dataSet.getSections() )
-        {
-            for ( DataElement dataElement : section.getDataElements() )
-            {
-                for ( DataElementCategoryOptionCombo optionCombo : dataElement.getCategoryCombo().getOptionCombos() )
-                {
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
-                        optionCombo );
-
-                    String key = String.format( "DE%dOC%d", dataElement.getId(), optionCombo.getId() );
-                    String value = "";
-
-                    if ( dataValue != null )
-                    {
-                        value = dataValue.getValue();
-                    }
-
-                    dataValues.put( key, value );
-                }
-            }
-        }
-
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
             organisationUnit );
 
@@ -293,6 +293,10 @@ public class SaveSectionFormAction
         {
             registrationService.deleteCompleteDataSetRegistration( registration );
         }
+
+        dataValues = sectionFormUtils.getDataValueMap( organisationUnit, dataSet, period );
+
+        validationErrors = sectionFormUtils.getValidationErrorMap( organisationUnit, dataSet, period );
 
         if ( validated == null || !validated )
         {
