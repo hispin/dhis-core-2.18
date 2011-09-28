@@ -371,7 +371,6 @@ public class DefaultActivityPlanService
 
         for ( ProgramInstance programInstance : programInstances )
         {
-
             Program program = programInstance.getProgram();
 
             ProgramStage nextStage = program.getProgramStageByStage( visitsByProgramInstances.get( programInstance

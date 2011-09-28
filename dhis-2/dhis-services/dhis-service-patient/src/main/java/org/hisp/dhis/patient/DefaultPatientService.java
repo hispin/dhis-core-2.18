@@ -330,7 +330,7 @@ public class DefaultPatientService
     @Override
     public Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute )
     {
-        List<PatientAttributeValue> patientsSortedByAttribute = new ArrayList<PatientAttributeValue>();
+//        List<PatientAttributeValue> patientsSortedByAttribute = new ArrayList<PatientAttributeValue>();
 
         Collection<Patient> sortedPatients = new ArrayList<Patient>();
 
@@ -341,14 +341,15 @@ public class DefaultPatientService
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
             .getPatientAttributeValues( patients );
-
+        
         if ( patientAttributeValues != null )
-        {        
+        {
             for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
             {
                 if ( patientAttribute == patientAttributeValue.getPatientAttribute() )
                 {
-                    patientsSortedByAttribute.add(  patientAttributeValue );
+                    sortedPatients.add( patientAttributeValue.getPatient() );
+                    patients.remove( patientAttributeValue.getPatient() );
                 }
             }
         }
@@ -357,16 +358,9 @@ public class DefaultPatientService
         // Make sure all patients are in the sorted list - because all
         // patients might not have the sorting attribute/value
         // ---------------------------------------------------------------------
-        
-        for( PatientAttributeValue patientAttributeValue : patientsSortedByAttribute )
-        {
-            sortedPatients.add( patientAttributeValue.getPatient() );
-        }
-        
-        patients.removeAll( patientsSortedByAttribute );
-        
-        sortedPatients.addAll( patients );
 
+        sortedPatients.addAll( patients );
+        
         return sortedPatients;
     }
 
@@ -469,7 +463,7 @@ public class DefaultPatientService
     {
         return patientStore.countGetPatientsByOrgUnitProgram( organisationUnit, program );
     }
-    
+
     @Override
     public Object getObjectValue( String property, String value, I18nFormat format )
     {

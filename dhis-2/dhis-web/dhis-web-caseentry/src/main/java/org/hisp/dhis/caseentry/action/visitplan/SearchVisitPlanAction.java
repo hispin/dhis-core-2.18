@@ -213,10 +213,7 @@ public class SearchVisitPlanAction
             if ( sortingAttributeId != null )
             {
                 sortingAttribute = patientAttributeService.getPatientAttribute( sortingAttributeId );
-            }
-
-            if ( sortingAttribute != null )
-            {
+          
                 sortedPatients = patientService.sortPatientsByAttribute( patientsToBeVisited, sortingAttribute );
             }
             else
