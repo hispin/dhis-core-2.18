@@ -89,7 +89,7 @@ public class GetDataSetsAction
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
             dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
-            FilterUtils.filter( dataSets, new DataSetTypeFilter( DataSet.TYPE_SECTION ) );
+            FilterUtils.filter( dataSets, new DataSetTypeFilter( DataSet.TYPE_DEFAULT, DataSet.TYPE_SECTION ) );
         }
 
         return SUCCESS;
