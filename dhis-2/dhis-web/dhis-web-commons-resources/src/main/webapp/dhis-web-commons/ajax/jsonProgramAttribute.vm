@@ -1,0 +1,8 @@
+{ "programAttribute":
+  {
+    "id": "${programAttribute.id}",
+	"name": "$!encoder.jsonEncode( ${programAttribute.name} )",
+	"description": "$!encoder.jsonEncode( ${programAttribute.description} )",
+	"valueType": "$!encoder.jsonEncode( ${programAttribute.valueType} )"
+  }
+}

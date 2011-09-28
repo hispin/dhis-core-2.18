@@ -38,24 +38,16 @@ function showSortProgramStage()
 
 function showProgramStageDetails( programStageId )
 {
-	$.ajax({
-		url: 'getProgramStage.action?id=' + programStageId,
-		cache: false,
-		dataType: "xml",
-		success: programStageReceived
+	jQuery.post( 'getProgramStage.action', { id: programStageId }, function ( json ) {
+		setInnerHTML( 'idField', json.programStage.id );
+		setInnerHTML( 'nameField', json.programStage.name );	
+		setInnerHTML( 'descriptionField', json.programStage.description );
+		setInnerHTML( 'stageInProgramField', json.programStage.stageInProgram );   
+		setInnerHTML( 'minDaysFromStartField', json.programStage.minDaysFromStart );    
+		setInnerHTML( 'dataElementCountField', json.programStage.dataElementCount );   
+	   
+		showDetails();
 	});
-}
-
-function programStageReceived( programStageElement )
-{
-	setInnerHTML( 'idField', getElementValue( programStageElement, 'id' ) );
-	setInnerHTML( 'nameField', getElementValue( programStageElement, 'name' ) );	
-    setInnerHTML( 'descriptionField', getElementValue( programStageElement, 'description' ) );
-    setInnerHTML( 'stageInProgramField', getElementValue( programStageElement, 'stageInProgram' ) );   
-    setInnerHTML( 'minDaysFromStartField', getElementValue( programStageElement, 'minDaysFromStart' ) );    
-    setInnerHTML( 'dataElementCountField', getElementValue( programStageElement, 'dataElementCount' ) );   
-   
-    showDetails();
 }
 
 // -----------------------------------------------------------------------------

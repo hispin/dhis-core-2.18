@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<role>
-	<name>$encoder.xmlEncode( $userAuthorityGroup.name )</name>
-	<members>$userAuthorityGroup.members.size()</members>
-	<dataSets>$userAuthorityGroup.dataSets.size()</dataSets>
-	<reports>$userAuthorityGroup.reports.size()</reports>
-</role>
