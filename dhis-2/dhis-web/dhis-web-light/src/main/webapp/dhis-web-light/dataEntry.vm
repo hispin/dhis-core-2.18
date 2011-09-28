@@ -8,12 +8,12 @@
 <input type="hidden" id="periodId" name="periodId" value="$periodId" />
 <input type="hidden" id="validated" name="validated" value="#if($validated)true#{else}false#end" />
 
-#foreach( $section in $dataSet.sections )
+#macro( createSection $sectionName $dataElements )
 <div class="header-box">
-	<h3>$section.name</h3>
+	<h3>$sectionName</h3>
 	<p>
-		#foreach( $dataElement in $section.dataElements)
-			#foreach( $optionCombo in $section.categoryCombo.optionCombos )
+		#foreach( $dataElement in $dataElements)
+			#foreach( $optionCombo in $dataElement.categoryCombo.optionCombos )
 				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
 				<label>$dataElement.name $optionCombo.name</label>
 	
@@ -21,12 +21,20 @@
 				#set( $validationError = $validationErrors.get( $key ) ) 
 				<br /><span style="color: red;">Value is out of bounds [ $validationError.min, $validationError.max ]</span>
 				#end
-				
+
 				<input type="number" size="24" name="$key" value="$dataValues.get($key)" /> <br />
 			#end
 		#end
 	</p>
 </div>
+#end
+
+#if( $dataSet.sections.size() > 0 )
+#foreach( $section in $dataSet.sections )
+	#createSection( $section.name $section.dataElements )
+#end
+#else
+	#createSection( "Default" $dataSet.dataElements )
 #end
 
 <div class="header-box">
