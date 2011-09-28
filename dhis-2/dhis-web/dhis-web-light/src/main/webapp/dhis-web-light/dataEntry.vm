@@ -9,14 +9,14 @@
 <input type="hidden" id="validated" name="validated" value="#if($validated)true#{else}false#end" />
 
 #macro( createSection $sectionName $dataElements )
-<div class="header-box">
-	<h3>$sectionName</h3>
-	<p>
+<div class="header-box" align="center">
+	<h3 style="text-align: left;">$sectionName</h3>
+	<p style="text-align: left;">
 		#foreach( $dataElement in $dataElements)
 			#foreach( $optionCombo in $dataElement.categoryCombo.optionCombos )
 				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
 				<label>$dataElement.name $optionCombo.name</label>
-	
+
 				#if( $validationErrors.get( $key ) )
 				#set( $validationError = $validationErrors.get( $key ) ) 
 				<br /><span style="color: red;">Value is out of bounds [ $validationError.min, $validationError.max ]</span>
@@ -37,16 +37,16 @@
 	#createSection( "Default" $dataSet.dataElements )
 #end
 
-<div class="header-box">
-	<p>
-		<input type="checkbox" id="complete" name="complete" value="true" #if($complete)checked="true"#end style="width: 15px;" />
-		<label for="complete">DataSet is complete</label>
+<div class="header-box" align="center">
+	<p style="text-align: left;">
+		<input type="checkbox" id="complete" name="complete" value="true" #if($complete)checked="true"#end style="width: 15px; height: 15px; vertical-align: middle;" />
+        <label for="complete" style="vertical-align: middle; width: auto;">DataSet is complete</label>
 	</p>
 </div>
 
 <div class="header-box" align="center">
 	<p>
-		<input type="submit" style="width: 100%;" value="Save"/> <br />
+		<input type="submit" style="width: 100%;" value="Save"/>
 	</p>
 </div>
 

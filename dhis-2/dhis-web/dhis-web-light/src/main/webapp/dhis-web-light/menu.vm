@@ -1,7 +1,9 @@
 
 <h2>Menu</h2>
 
-<ul>
-	<li><a href="dashboard.action">Dashboard</a></li>
-	<li><a href="selectOrganisationUnit.action">Data Entry</a></li>
-</ul>
+<p>
+    <ul>
+        <li><a href="dashboard.action">Dashboard</a></li>
+        <li><a href="selectOrganisationUnit.action">Data Entry</a></li>
+    </ul>
+</p>
