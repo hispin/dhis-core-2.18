@@ -70,6 +70,7 @@ function removeCategoryOption()
 	if ( id != null )
 	{	
 		removeItem( id, name, i18n_confirm_delete, 'removeDataElementCategoryOption.action' );
+		removeSelectedOption( 'categoryOptions' );
 	}
 }
 
