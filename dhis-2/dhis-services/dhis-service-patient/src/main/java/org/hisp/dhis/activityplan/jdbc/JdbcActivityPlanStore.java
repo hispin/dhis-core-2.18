@@ -138,8 +138,7 @@ public class JdbcActivityPlanStore
                                 "INNER JOIN program_organisationunits po1 " +
                                     "ON po1.programid=pi1.programid " +
                                 "WHERE pi1.completed = FALSE  " +
-                                    "AND po1.organisationunitid = " + orgunitId + " AND psi1.completed = FALSE ) " +
-                         "ORDER BY ps.stageinprogram";
+                                    "AND po1.organisationunitid = " + orgunitId + " AND psi1.completed = FALSE ) ";
 
             ResultSet resultSet = statement.executeQuery( sql );
             if(resultSet.next())
