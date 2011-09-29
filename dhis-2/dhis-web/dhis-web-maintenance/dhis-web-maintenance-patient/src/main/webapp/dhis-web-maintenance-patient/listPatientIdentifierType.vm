@@ -63,8 +63,6 @@
 
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patientIdentifierType" ) , "'" )';
-	var i18n_adding_program_failed = '$encoder.jsEscape( $i18n.getString( "adding_patientIdentifierType_failed" ), "'")';
-	var i18n_updating_program_failed = '$encoder.jsEscape( $i18n.getString( "updating_patientIdentifierType_failed" ), "'")';	
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ), "'")';
 	var i18n_string = '$encoder.jsEscape( $i18n.getString( "string" ), "'")';
 	var i18n_number = '$encoder.jsEscape( $i18n.getString( "number" ), "'")';

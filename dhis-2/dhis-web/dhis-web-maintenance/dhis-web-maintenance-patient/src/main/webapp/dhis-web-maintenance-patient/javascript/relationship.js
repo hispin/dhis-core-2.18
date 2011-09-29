@@ -38,7 +38,7 @@ function validateAddRelationshipType()
     	    	}
     	    	else if ( json.response == "error" )
     	    	{
-    	    		setHeaderMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
+    	    		setHeaderMessage( json.message );
     	    	}
     	    }
     	);
@@ -69,7 +69,7 @@ function validateUpdateRelationshipType()
     	    	}
     	    	else if ( json.response == "error" )
     	    	{
-    	    		setHeaderMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
+    	    		setHeaderMessage( json.message );
     	    	}
     	    }
     	);

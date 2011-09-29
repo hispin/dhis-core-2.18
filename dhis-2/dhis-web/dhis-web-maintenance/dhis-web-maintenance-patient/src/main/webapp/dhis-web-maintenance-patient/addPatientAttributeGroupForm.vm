@@ -16,13 +16,13 @@
 	});		
 </script>
 	
-<h3>$i18n.getString( "add_new_patient_attribute_group" )</h3>
+<h3>$i18n.getString( "create_new_patient_attribute_group" )</h3>
 <div id="tooltip"></div>																				
 <form id="addPatientAttributeGroupForm" action="addPatientAttributeGroup.action" method="post" >
 
 <table>
     <tr>
-      <th colspan="4">$i18n.getString( "attribute_group_deltails" ) </th>
+      <th colspan="4">$i18n.getString( "patient_attribute_group_deltails" ) </th>
     </tr>
     <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>

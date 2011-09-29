@@ -10,7 +10,7 @@
 	});		
 </script>
 
-<h3>$i18n.getString( "update_relationship_type" )</h3>
+<h3>$i18n.getString( "edit_relationship_type" )</h3>
 
 <form id="updateRelationshipTypeForm" name="updateRelationshipTypeForm" action="updateRelationshipType.action" method="post">
 

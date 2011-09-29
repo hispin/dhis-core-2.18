@@ -9,26 +9,33 @@
 	});		
 </script>
 
-<h3>$i18n.getString( "add_new_relationship_type" )</h3>
+<h3>$i18n.getString( "create_new_relationship_type" )</h3>
 																					
 <form id="addRelationshipTypeForm" name="addRelationshipTypeForm" action="addRelationshipType.action" method="post">
 
 <table> 
-    <tr>
-        <td><label>$i18n.getString( "a_is_to_b" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="aIsToB" name="aIsToB"  maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
-    </tr>   
+	 <thead>
+      <tr>
+        <th colspan="4">$i18n.getString( "relationship_type_details" ) </th>
+      </tr>
+    </thead>
     
-    <tr>
-        <td><label>$i18n.getString( "b_is_to_a" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="bIsToA" name="bIsToA"  maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
-    </tr>   
-    
-    <tr>
-        <td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
-    </tr>   
-        
+	<tbody>
+		<tr>
+			<td><label>$i18n.getString( "a_is_to_b" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><input type="text" id="aIsToB" name="aIsToB"  maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+		</tr>   
+		
+		<tr>
+			<td><label>$i18n.getString( "b_is_to_a" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><input type="text" id="bIsToA" name="bIsToA"  maxlength="30" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+		</tr>   
+		
+		<tr>
+			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+		</tr>   
+    </tbody>
 </table>
 
 <p>

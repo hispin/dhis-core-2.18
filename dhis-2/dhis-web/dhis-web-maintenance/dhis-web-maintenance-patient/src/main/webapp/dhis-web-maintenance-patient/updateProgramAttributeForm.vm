@@ -24,7 +24,7 @@
 </script>
 
 																		
-<h3>$i18n.getString( "update_new_program_attribute" )</h3>
+<h3>$i18n.getString( "edit_program_attribute" )</h3>
 <form id="updateProgramAttributeForm" action="updateProgramAttribute.action" method="post" >
 <input type="hidden" id="id" name='id' value='$programAttribute.id'/>
 <table id="attrTable"> 

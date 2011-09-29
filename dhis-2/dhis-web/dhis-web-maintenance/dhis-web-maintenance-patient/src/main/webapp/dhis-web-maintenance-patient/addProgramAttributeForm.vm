@@ -27,7 +27,7 @@
 </script>
 
 																		
-<h3>$i18n.getString( "add_new_program_attribute" )</h3>
+<h3>$i18n.getString( "create_new_program_attribute" )</h3>
 <form id="addProgramAttributeForm" action="addProgramAttribute.action" method="post" >
 
 <table id="attrTable"> 
