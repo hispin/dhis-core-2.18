@@ -28,7 +28,6 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 
 import com.opensymphony.xwork2.Action;
 

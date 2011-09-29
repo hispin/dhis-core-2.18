@@ -94,15 +94,17 @@ import org.hisp.dhis.validation.ValidationRuleGroup;
  * will affect the current object in any way. Eg. a DeletionHandler for
  * DataElementGroup should override the deleteDataElement(..) method which
  * should remove the DataElement from all DataElementGroups. Also, it should
- * override the allowDeleteDataElement() method and return false if there exists
- * objects that are dependent on the DataElement and are considered not be
- * deleted.
+ * override the allowDeleteDataElement() method and return a non-null String value
+ * if there exists objects that are dependent on the DataElement and are 
+ * considered not be deleted. The return value could be a hint for which object
+ * is denying the delete, like the name.
  * 
  * @author Lars Helge Overland
- * @version $Id$
  */
 public abstract class DeletionHandler
 {
+    protected final String ERROR = "";
+    
     // -------------------------------------------------------------------------
     // Abstract methods
     // -------------------------------------------------------------------------
@@ -117,546 +119,548 @@ public abstract class DeletionHandler
     {
     }
 
-    public boolean allowDeleteChart( Chart chart )
+    public String allowDeleteChart( Chart chart )
     {
-        return true;
+        return null;
     }
 
     public void deleteChartGroup( ChartGroup group )
     {
     }
 
-    public boolean allowDeleteChartGroup( ChartGroup group )
+    public String allowDeleteChartGroup( ChartGroup group )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataDictionary( DataDictionary dataDictionary )
     {
     }
 
-    public boolean allowDeleteDataDictionary( DataDictionary dataDictionary )
+    public String allowDeleteDataDictionary( DataDictionary dataDictionary )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataElement( DataElement dataElement )
     {
     }
 
-    public boolean allowDeleteDataElement( DataElement dataElement )
+    public String allowDeleteDataElement( DataElement dataElement )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataElementGroup( DataElementGroup dataElementGroup )
     {
     }
 
-    public boolean allowDeleteDataElementGroup( DataElementGroup dataElementGroup )
+    public String allowDeleteDataElementGroup( DataElementGroup dataElementGroup )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataElementGroupSet( DataElementGroupSet dataElementGroupSet )
     {
     }
 
-    public boolean allowDeleteDataElementGroupSet( DataElementGroupSet dataElementGroupSet )
+    public String allowDeleteDataElementGroupSet( DataElementGroupSet dataElementGroupSet )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataElementCategory( DataElementCategory category )
     {
     }
 
-    public boolean allowDeleteDataElementCategory( DataElementCategory category )
+    public String allowDeleteDataElementCategory( DataElementCategory category )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
     {
     }
 
-    public boolean allowDeleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
+    public String allowDeleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
     }
 
-    public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
+    public String allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
     }
 
-    public boolean allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
+    public String allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataSet( DataSet dataSet )
     {
     }
 
-    public boolean allowDeleteDataSet( DataSet dataSet )
+    public String allowDeleteDataSet( DataSet dataSet )
     {
-        return true;
+        return null;
     }
 
     public void deleteSection( Section section )
     {
     }
 
-    public boolean allowDeleteSection( Section section )
+    public String allowDeleteSection( Section section )
     {
-        return true;
+        return null;
     }
 
     public void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
     }
 
-    public boolean allowDeleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
+    public String allowDeleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataValue( DataValue dataValue )
     {
     }
 
-    public boolean allowDeleteDataValue( DataValue dataValue )
+    public String allowDeleteDataValue( DataValue dataValue )
     {
-        return true;
+        return null;
     }
 
     public void deleteExpression( Expression expression )
     {
     }
 
-    public boolean allowDeleteExpression( Expression expression )
+    public String allowDeleteExpression( Expression expression )
     {
-        return true;
+        return null;
     }
 
     public void deleteMinMaxDataElement( MinMaxDataElement minMaxDataElement )
     {
     }
 
-    public boolean allowDeleteMinMaxDataElement( MinMaxDataElement minMaxDataElement )
+    public String allowDeleteMinMaxDataElement( MinMaxDataElement minMaxDataElement )
     {
-        return true;
+        return null;
     }
 
     public void deleteIndicator( Indicator indicator )
     {
     }
 
-    public boolean allowDeleteIndicator( Indicator indicator )
+    public String allowDeleteIndicator( Indicator indicator )
     {
-        return true;
+        return null;
     }
 
     public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
     }
 
-    public boolean allowDeleteIndicatorGroup( IndicatorGroup indicatorGroup )
+    public String allowDeleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        return true;
+        return null;
     }
 
     public void deleteIndicatorType( IndicatorType indicatorType )
     {
     }
 
-    public boolean allowDeleteIndicatorType( IndicatorType indicatorType )
+    public String allowDeleteIndicatorType( IndicatorType indicatorType )
     {
-        return true;
+        return null;
     }
 
     public void deleteIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet )
     {
     }
 
-    public boolean allowDeleteIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet )
+    public String allowDeleteIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet )
     {
-        return true;
+        return null;
     }
 
     public void deletePeriod( Period period )
     {
     }
 
-    public boolean allowDeletePeriod( Period period )
+    public String allowDeletePeriod( Period period )
     {
-        return true;
+        return null;
     }
 
     public void deleteValidationRule( ValidationRule validationRule )
     {
     }
 
-    public boolean allowDeleteValidationRule( ValidationRule validationRule )
+    public String allowDeleteValidationRule( ValidationRule validationRule )
     {
-        return true;
+        return null;
     }
 
     public void deleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
     }
 
-    public boolean allowDeleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
+    public String allowDeleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataEntryForm( DataEntryForm form )
     {
     }
 
-    public boolean allowDeleteDataEntryForm( DataEntryForm form )
+    public String allowDeleteDataEntryForm( DataEntryForm form )
     {
-        return true;
+        return null;
     }
 
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
     }
 
-    public boolean allowDeleteOrganisationUnit( OrganisationUnit unit )
+    public String allowDeleteOrganisationUnit( OrganisationUnit unit )
     {
-        return true;
+        return null;
     }
 
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {
     }
 
-    public boolean allowDeleteOrganisationUnitGroup( OrganisationUnitGroup group )
+    public String allowDeleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {
-        return true;
+        return null;
     }
 
     public void deleteOrganisationUnitGroupSet( OrganisationUnitGroupSet groupSet )
     {
     }
 
-    public boolean allowDeleteOrganisationUnitGroupSet( OrganisationUnitGroupSet groupSet )
+    public String allowDeleteOrganisationUnitGroupSet( OrganisationUnitGroupSet groupSet )
     {
-        return true;
+        return null;
     }
 
     public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )
     {
     }
 
-    public boolean allowDeleteOrganisationUnitLevel( OrganisationUnitLevel level )
+    public String allowDeleteOrganisationUnitLevel( OrganisationUnitLevel level )
     {
-        return true;
+        return null;
     }
 
     public void deleteReport( Report report )
     {
     }
 
-    public boolean allowDeleteReport( Report report )
+    public String allowDeleteReport( Report report )
     {
-        return true;
+        return null;
     }
 
     public void deleteReportGroup( ReportGroup group )
     {
     }
 
-    public boolean allowDeleteReportGroup( ReportGroup group )
+    public String allowDeleteReportGroup( ReportGroup group )
     {
-        return true;
+        return null;
     }
 
     public void deleteReportTable( ReportTable reportTable )
     {
     }
 
-    public boolean allowDeleteReportTable( ReportTable reportTable )
+    public String allowDeleteReportTable( ReportTable reportTable )
     {
-        return true;
+        return null;
     }
 
     public void deleteReportTableGroup( ReportTableGroup group )
     {
     }
 
-    public boolean allowDeleteReportTableGroup( ReportTableGroup group )
+    public String allowDeleteReportTableGroup( ReportTableGroup group )
     {
-        return true;
+        return null;
     }
 
     public void deleteUser( User user )
     {
     }
 
-    public boolean allowDeleteUser( User user )
+    public String allowDeleteUser( User user )
     {
-        return true;
+        return null;
     }
 
     public void deleteUserCredentials( UserCredentials credentials )
     {
     }
 
-    public boolean allowDeleteUserCredentials( UserCredentials credentials )
+    public String allowDeleteUserCredentials( UserCredentials credentials )
     {
-        return true;
+        return null;
     }
 
     public void deleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
     {
     }
 
-    public boolean allowDeleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
+    public String allowDeleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
     {
-        return true;
+        return null;
     }
 
     public void deleteUserSetting( UserSetting userSetting )
     {
     }
 
-    public boolean allowDeleteUserSetting( UserSetting userSetting )
+    public String allowDeleteUserSetting( UserSetting userSetting )
     {
-        return true;
+        return null;
     }
 
     public void deleteDataMartExport( DataMartExport dataMartExport )
     {
     }
 
-    public boolean allowDeleteDataMartExport( DataMartExport dataMartExport )
+    public String allowDeleteDataMartExport( DataMartExport dataMartExport )
     {
-        return true;
+        return null;
     }
 
     public void deleteDocument( Document document )
     {
     }
 
-    public boolean allowDeleteDocument( Document document )
+    public String allowDeleteDocument( Document document )
     {
-        return true;
+        return null;
     }
 
     public void deleteMapLegend( MapLegend mapLegend )
     {
     }
 
-    public boolean allowDeleteMapLegend( MapLegend mapLegend )
+    public String allowDeleteMapLegend( MapLegend mapLegend )
     {
-        return true;
+        return null;
     }
 
     public void deleteMapLegendSet( MapLegendSet mapLegendSet )
     {
     }
 
-    public boolean allowDeleteMapLegendSet( MapLegendSet mapLegendSet )
+    public String allowDeleteMapLegendSet( MapLegendSet mapLegendSet )
     {
-        return true;
+        return null;
     }
 
     public void deleteMapView( MapView mapView )
     {
     }
 
-    public boolean allowDeleteMapView( MapView mapView )
+    public String allowDeleteMapView( MapView mapView )
     {
-        return true;
+        return null;
     }
-
-    public boolean allowDeleteLegend( Legend legend )
+    
+    public void deleteLegend( Legend legend )
     {
-        return true;
+    }
+    
+    public String allowDeleteLegend( Legend legend )
+    {
+        return null;
     }
 
     public void deleteConcept( Concept concept )
     {
     }
 
-    public boolean allowDeleteConcept( Concept concept )
+    public String allowDeleteConcept( Concept concept )
     {
-        return true;
-    }
-
-    public boolean allowDeletePatient( Patient patient )
-    {
-        return true;
+        return null;
     }
 
     public void deletePatient( Patient patient )
     {
     }
 
-    public boolean allowDeletePatientAttribute( PatientAttribute patientAttribute )
+    public String allowDeletePatient( Patient patient )
     {
-        return true;
+        return null;
+    }
+
+    public String allowDeletePatientAttribute( PatientAttribute patientAttribute )
+    {
+        return null;
     }
 
     public void deletePatientAttribute( PatientAttribute patientAttribute )
     {
-
     }
 
-    public boolean allowDeletePatientAttributeValue( PatientAttributeValue patientAttributeValue )
+    public String allowDeletePatientAttributeValue( PatientAttributeValue patientAttributeValue )
     {
-        return true;
+        return null;
     }
 
     public void deletePatientAttributeValue( PatientAttributeValue patientAttributeValue )
     {
     }
 
-    public boolean allowDeletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
+    public String allowDeletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
     {
-        return true;
+        return null;
     }
 
     public void deletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
     {
     }
 
-    public boolean allowDeletePatientIdentifier( PatientIdentifier patientIdentifier )
+    public String allowDeletePatientIdentifier( PatientIdentifier patientIdentifier )
     {
-        return true;
+        return null;
     }
 
     public void deletePatientIdentifier( PatientIdentifier patientIdentifier )
     {
     }
 
-    public boolean allowDeletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
+    public String allowDeletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
     {
-        return true;
+        return null;
     }
 
     public void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
     {
     }
 
-    public boolean allowDeleteRelationship( Relationship relationship )
+    public String allowDeleteRelationship( Relationship relationship )
     {
-        return true;
+        return null;
     }
 
     public void deleteRelationship( Relationship relationship )
     {
     }
 
-    public boolean allowDeleteRelationshipType( RelationshipType relationshipType )
+    public String allowDeleteRelationshipType( RelationshipType relationshipType )
     {
-        return true;
+        return null;
     }
 
     public void deleteRelationshipType( RelationshipType relationshipType )
     {
     }
 
-    public boolean allowDeleteProgram( Program program )
+    public String allowDeleteProgram( Program program )
     {
-        return true;
+        return null;
     }
 
     public void deleteProgram( Program program )
     {
     }
 
-    public boolean allowDeleteProgramInstance( ProgramInstance programInstance )
+    public String allowDeleteProgramInstance( ProgramInstance programInstance )
     {
-        return true;
+        return null;
     }
 
     public void deleteProgramInstance( ProgramInstance programInstance )
     {
     }
 
-    public boolean allowDeleteProgramStage( ProgramStage programStage )
+    public String allowDeleteProgramStage( ProgramStage programStage )
     {
-        return true;
+        return null;
     }
 
     public void deleteProgramStage( ProgramStage programStage )
     {
     }
 
-    public boolean allowDeleteProgramStageInstance( ProgramStageInstance programStageInstance )
+    public String allowDeleteProgramStageInstance( ProgramStageInstance programStageInstance )
     {
-        return true;
+        return null;
     }
 
     public void deleteProgramStageInstance( ProgramStageInstance programStageInstance )
     {
     }
 
-    public boolean allowDeleteProgramStageDataElement( ProgramStageDataElement programStageDataElement )
+    public String allowDeleteProgramStageDataElement( ProgramStageDataElement programStageDataElement )
     {
-        return true;
+        return null;
     }
 
     public void deleteProgramStageDataElement( ProgramStageDataElement programStageDataElement )
     {
     }
 
-    public boolean allowDeletePatientDataValue( PatientDataValue patientDataValue )
+    public String allowDeletePatientDataValue( PatientDataValue patientDataValue )
     {
-        return true;
+        return null;
     }
 
     public void deletePatientDataValue( PatientDataValue patientDataValue )
     {
     }
 
-    public boolean allowDeleteValidationCriteria( ValidationCriteria validationCriteria )
+    public String allowDeleteValidationCriteria( ValidationCriteria validationCriteria )
     {
-        return true;
+        return null;
     }
 
     public void deleteValidationCriteria( ValidationCriteria validationCriteria )
     {
     }
 
-    public boolean allowDeleteProgramAttributeValue( ProgramAttributeValue programAttributeValue )
+    public String allowDeleteProgramAttributeValue( ProgramAttributeValue programAttributeValue )
     {
-        return true;
+        return null;
     }
 
     public void deleteProgramAttributeValue( ProgramAttributeValue programAttributeValue )
     {
     }
 
-    public boolean allowDeleteConstant( Constant constant )
+    public String allowDeleteConstant( Constant constant )
     {
-        return true;
+        return null;
     }
 
     public void deleteConstant( Constant constant )
     {
     }
 
-    public boolean allowDeleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
+    public String allowDeleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
     {
-        return true;
+        return null;
     }
 
     public void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
     {
     }
-
 }

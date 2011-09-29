@@ -72,7 +72,6 @@ public class UserDeletionHandler
     @Override
     public void deleteUser( User user )
     {
-        // Delete attributeValues
         Iterator<AttributeValue> iterator = user.getAttributeValues().iterator();
 
         while ( iterator.hasNext() )
@@ -98,7 +97,7 @@ public class UserDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
+    public String allowDeleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
     {
         for ( UserCredentials credentials : userService.getAllUserCredentials() )
         {
@@ -108,12 +107,12 @@ public class UserDeletionHandler
                 {
                     if ( role.equals( authorityGroup ) )
                     {
-                        return false;
+                        return credentials.getName();
                     }
                 }
             }
         }
 
-        return true;
+        return null;
     }
 }

@@ -61,7 +61,7 @@ public class PatientDeletionHandler
     {
         Collection<Patient> representatives = patientService.getRepresentatives(patient);
         
-        for(Patient representative : representatives )
+        for ( Patient representative : representatives )
         {
             representative.setRepresentative( null );
             representative.setUnderAge( false );

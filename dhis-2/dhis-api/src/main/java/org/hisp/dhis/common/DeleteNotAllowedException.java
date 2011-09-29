@@ -40,23 +40,12 @@ public class DeleteNotAllowedException
 
     public static final String ERROR_ASSOCIATED_BY_OTHER_OBJECTS = "Object associated by other objects";
     
-    private static final String SEPARATOR = "-";
-    
     private String errorCode;
     
-    private String className;
-    
-    public DeleteNotAllowedException( String errorCode, String className )
+    public DeleteNotAllowedException( String errorCode, String message )
     {
-        super( errorCode + SEPARATOR + className );
-        
+        super( message );        
         this.errorCode = errorCode;
-        this.className = className;
-    }
-
-    public String getClassName()
-    {
-        return className;
     }
 
     public String getErrorCode()

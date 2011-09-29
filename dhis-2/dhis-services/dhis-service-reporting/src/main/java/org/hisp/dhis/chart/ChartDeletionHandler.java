@@ -61,31 +61,31 @@ public class ChartDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteIndicator( Indicator indicator )
+    public String allowDeleteIndicator( Indicator indicator )
     {
         for ( Chart chart : chartService.getAllCharts() )
         {
             if ( chart.getIndicators().contains( indicator ) )
             {
-                return false;
+                return chart.getName();
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override
-    public boolean allowDeletePeriod( Period period )
+    public String allowDeletePeriod( Period period )
     {
         for ( Chart chart : chartService.getAllCharts() )
         {
             if ( chart.getPeriods().contains( period ) )
             {
-                return false;
+                return chart.getName();
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override

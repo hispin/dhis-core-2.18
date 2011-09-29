@@ -87,11 +87,15 @@ public class DefaultDeletionManager
             {   
                 currentHandler = handler.getClass().getSimpleName();
 
-                boolean allow = (Boolean) allowMethod.invoke( handler, object );
+                Object allow = allowMethod.invoke( handler, object );
                 
-                if ( !allow )
+                if ( allow != null )
                 {
-                    throw new DeleteNotAllowedException( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS, handler.getClassName() );
+                    String hint = String.valueOf( allow );
+                    
+                    String message = handler.getClassName() + ( hint.isEmpty() ? "" : ( " (" + hint + ")" ) );
+                    
+                    throw new DeleteNotAllowedException( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS, message );
                 }
             }
         }

@@ -65,14 +65,14 @@ public class CaseAggregationConditionDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteDataElement( DataElement dataElement )
+    public String allowDeleteDataElement( DataElement dataElement )
     {
         Collection<CaseAggregationCondition> conditions = aggregationConditionService
             .getCaseAggregationCondition( dataElement );
 
         if ( conditions != null && conditions.size() > 0 )
         {
-            return false;
+            return ERROR;
         }
 
         conditions = aggregationConditionService.getAllCaseAggregationCondition();
@@ -84,23 +84,23 @@ public class CaseAggregationConditionDeletionHandler
 
             if ( dataElements != null && dataElements.contains( dataElement ) )
             {
-                return false;
+                return ERROR;
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override
-    public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
+    public String allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         Collection<CaseAggregationCondition> conditions = aggregationConditionService.getAllCaseAggregationCondition();
 
         for ( CaseAggregationCondition condition : conditions )
         {
-            if( categoryCombo.getOptionCombos().contains( condition.getOptionCombo() ) )
+            if ( categoryCombo.getOptionCombos().contains( condition.getOptionCombo() ) )
             {
-                return false;
+                return ERROR;
             }
             
             Collection<DataElementCategoryOptionCombo> optionCombos = aggregationConditionService
@@ -110,11 +110,11 @@ public class CaseAggregationConditionDeletionHandler
 
             if ( optionCombos != null && optionCombos.size() > 0 )
             {
-                return false;
+                return ERROR;
             }
         }
 
-        return true;
+        return null;
     }
 
 }
