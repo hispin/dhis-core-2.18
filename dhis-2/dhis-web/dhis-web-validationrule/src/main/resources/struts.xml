@@ -25,7 +25,8 @@
     </action>
 
     <action name="getValidationRule" class="org.hisp.dhis.validationrule.action.GetValidationRuleAction">
-      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseValidationRule.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-validationrule/jsonValidationRule.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="showAddValidationRuleForm" class="org.hisp.dhis.validationrule.action.GetPeriodTypesAction">
@@ -88,7 +89,8 @@
     </action>
 
     <action name="getValidationRuleGroup" class="org.hisp.dhis.validationrule.action.validationrulegroup.GetValidationRuleGroupAction">
-      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseValidationRuleGroup.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-validationrule/jsonValidationRuleGroup.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="removeValidationRuleGroup" class="org.hisp.dhis.validationrule.action.validationrulegroup.RemoveValidationRuleGroupAction">

@@ -65,12 +65,15 @@
     <!-- Ajax requests -->
 
     <action name="getDataMartExport" class="org.hisp.dhis.datamart.action.GetDataMartExportAction">
-      <result name="success" type="velocity-xml">/dhis-web-datamart/responseDataMartExport.vm</result>
+      <result name="success" type="velocity-json">
+		/dhis-web-datamart/jsonDataMartExport.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="validateDataMartExport" class="org.hisp.dhis.datamart.action.ValidateDataMartExportAction">
-      <result name="success" type="velocity-xml">../dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-      <result name="input" type="velocity-xml">../dhis-web-commons/ajax/xmlResponseInput.vm</result>
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">../dhis-web-commons/ajax/jsonResponseInput.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
   </package>

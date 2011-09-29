@@ -148,23 +148,17 @@ function bothOrganisationUnitReportParamsChecked()
 
 function showTableDetails( tableId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'reportTable' );
-    request.setCallbackSuccess( tableReceived );
-    request.send( 'getTable.action?id=' + tableId );
-}
+    jQuery.post( 'getTable.action', { id: tableId }, function ( json ) {
+		setInnerHTML( 'nameField', json.table.name );
+		setInnerHTML( 'indicatorsField', json.table.indicators );
+		setInnerHTML( 'periodsField', json.table.periods );
+		setInnerHTML( 'unitsField', json.table.units );
+		setInnerHTML( 'doIndicatorsField', parseBool( json.table.doIndicators ) );
+		setInnerHTML( 'doPeriodsField', parseBool( json.table.doPeriods ) );
+		setInnerHTML( 'doUnitsField', parseBool( json.table.doUnits ) );
 
-function tableReceived( xmlObject )
-{
-    setInnerHTML( 'nameField', getElementValue( xmlObject, 'name' ) );
-    setInnerHTML( 'indicatorsField', getElementValue( xmlObject, 'indicators' ) );
-    setInnerHTML( 'periodsField', getElementValue( xmlObject, 'periods' ) );
-    setInnerHTML( 'unitsField', getElementValue( xmlObject, 'units' ) );
-    setInnerHTML( 'doIndicatorsField', parseBool( getElementValue( xmlObject, 'doIndicators' ) ) );
-    setInnerHTML( 'doPeriodsField', parseBool( getElementValue( xmlObject, 'doPeriods' ) ) );
-    setInnerHTML( 'doUnitsField', parseBool( getElementValue( xmlObject, 'doUnits' ) ) );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 function parseBool( bool )

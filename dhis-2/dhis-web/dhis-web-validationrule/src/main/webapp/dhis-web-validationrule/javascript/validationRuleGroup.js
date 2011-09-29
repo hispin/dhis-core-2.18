@@ -4,19 +4,13 @@
 
 function showValidationRuleGroupDetails( id )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'validationRuleGroup' );
-    request.setCallbackSuccess( validationRuleGroupReceived );
-    request.send( 'getValidationRuleGroup.action?id=' + id );
-}
+	jQuery.post( 'getValidationRuleGroup.action', { 'id': id }, function ( json ) {
+		setInnerHTML( 'nameField', json.validationRuleGroup.name );
+		setInnerHTML( 'descriptionField', json.validationRuleGroup.description );
+		setInnerHTML( 'memberCountField', json.validationRuleGroup.memberCount );
 
-function validationRuleGroupReceived( xmlObject )
-{
-    setInnerHTML( 'nameField', getElementValue( xmlObject, 'name' ) );
-    setInnerHTML( 'descriptionField', getElementValue( xmlObject, 'description' ) );
-    setInnerHTML( 'memberCountField', getElementValue( xmlObject, 'memberCount' ) );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------
