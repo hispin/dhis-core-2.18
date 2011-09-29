@@ -1,7 +1,4 @@
 
-<div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px; padding-left:2em; vertical-align:top;margin-left:10em">
-</div>
-
 <table class="mainPageTable">
     <tr>
         <td style="vertical-align:top">    
@@ -72,6 +69,8 @@
     </tr>
 </table>
 
+<div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px;">
+</div>
 
 <script>
 	jQuery(document).ready(function(){	

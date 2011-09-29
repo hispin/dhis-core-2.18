@@ -126,7 +126,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/multiDataEntrySelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,
 				javascript/dataEntry.js</param>
 		</action>
 
