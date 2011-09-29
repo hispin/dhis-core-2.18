@@ -726,6 +726,7 @@ function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
         if ( codeElement == 'success' )
         {
             markValue( resultColor );
+			setFieldValue('programStageInstanceId',rootElement.firstChild.nodeValue);
 			showById('entryFormContainer');
 			showById('dataEntryFormDiv');
 			showById('entryForm');

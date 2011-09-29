@@ -20,7 +20,7 @@
 
 <div id='entryFormContainer'>
 <input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
-<input type='hidden' name='programStageInstanceId' id='programStageInstanceId' value='$!programStageInstance.id'>
+<input type='text' name='programStageInstanceId' id='programStageInstanceId' value='$!programStageInstance.id'>
 <hr style="clear:both">
 
 <span id="startMsg" style="font-style:italic; color:blue; display: #if($!programStageInstance.executionDate!='') none #else block #end;">$i18n.getString( "report_date_warning" )</span>
