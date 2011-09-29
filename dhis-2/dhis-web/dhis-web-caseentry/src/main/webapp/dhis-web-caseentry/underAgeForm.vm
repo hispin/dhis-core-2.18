@@ -116,8 +116,8 @@
 		</form>
 	</div>
 
-		<!-- Add Person form TAB -->
-		<div id="tab-2">
+	<!-- Add Person form TAB -->
+	<div id="tab-2">
 		<form id="addRepresentativeForm" name="addRepresentativeForm" action="addRepresentative.action" method="post">
 			<table id="formContainer">
 				<tr>
@@ -133,12 +133,13 @@
 				</tr>
 				
 				#parse( "/dhis-web-caseentry/patientForm.vm" )
-
-			</table>
-			
-			<p style="margin-top:10px">
-				<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
-			</p>
+				
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
+					</td>
+				</tr>
 			</table>
 		</form>
 

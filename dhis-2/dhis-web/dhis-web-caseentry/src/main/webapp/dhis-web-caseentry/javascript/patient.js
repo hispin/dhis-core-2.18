@@ -352,7 +352,7 @@ function toggleUnderAge(this_)
 			modal:true,
 			overlay:{background:'#000000', opacity:0.1},
 			width: 800,
-			height: 400
+			height: 450
 		});
 	}else
 	{
