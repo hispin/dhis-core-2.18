@@ -232,6 +232,8 @@ public class SaveSectionFormAction
 
         String storedBy = currentUserService.getCurrentUsername();
 
+        boolean needsValidation = false;
+
         dataSet = dataSetService.getDataSet( dataSetId );
 
         if ( storedBy == null )
@@ -261,10 +263,12 @@ public class SaveSectionFormAction
 
                 value = value.trim();
 
-                if ( dataValue == null )
+                if( dataValue == null )
                 {
-                    if ( value != null && value.length() != 0 )
+                    if( value != null && value.length() > 0 )
                     {
+                        needsValidation = true;
+
                         dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(),
                             null, optionCombo );
                         dataValueService.addDataValue( dataValue );
@@ -272,11 +276,16 @@ public class SaveSectionFormAction
                 }
                 else
                 {
-                    dataValue.setValue( value );
-                    dataValue.setTimestamp( new Date() );
-                    dataValue.setStoredBy( storedBy );
+                    if( !dataValue.getValue().equals( value ) )
+                    {
+                        needsValidation = true;
 
-                    dataValueService.updateDataValue( dataValue );
+                        dataValue.setValue( value );
+                        dataValue.setTimestamp( new Date() );
+                        dataValue.setStoredBy( storedBy );
+
+                        dataValueService.updateDataValue( dataValue );
+                    }
                 }
             }
         }
@@ -303,9 +312,8 @@ public class SaveSectionFormAction
 
         validationErrors = sectionFormUtils.getValidationErrorMap( organisationUnit, dataSet, period );
 
-        if ( (validated == null || !validated) && validationErrors.size() > 0 )
+        if ( needsValidation )
         {
-            validated = true;
             return ERROR;
         }
 
