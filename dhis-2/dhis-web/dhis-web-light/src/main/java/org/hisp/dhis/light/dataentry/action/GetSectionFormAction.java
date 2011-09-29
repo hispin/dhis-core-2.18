@@ -88,6 +88,11 @@ public class GetSectionFormAction
         this.sectionFormUtils = sectionFormUtils;
     }
 
+    public SectionFormUtils getSectionFormUtils()
+    {
+        return sectionFormUtils;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------

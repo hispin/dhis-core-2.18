@@ -1,4 +1,6 @@
 
+#set( $Integer = 0 )
+
 <h2>$dataSet.name</h2>
 
 <form action="saveSectionForm.action" method="POST">
@@ -18,9 +20,17 @@
 				<label>$dataElement.name $optionCombo.name</label>
 
 				#if( $validationErrors.get( $key ) )
-				#set( $validationError = $validationErrors.get( $key ) ) 
-				<br /><span style="color: red;">Value is out of bounds [ $validationError.min, $validationError.max ]</span>
-				#end
+				#set( $validationError = $validationErrors.get( $key ) )
+
+                #if( $sectionFormUtils.valueHigher( $validationError.value, $validationError.max ) )
+                    <br /><span style="color: red;">Too high (max $validationError.max)</span>
+                #elseif( $sectionFormUtils.valueLower( $validationError.value, $validationError.min ) )
+                    <br /><span style="color: red;">Too low (min $validationError.min)</span>
+                #else
+                    <br /><span style="color: red;">Not a number</span>
+                #end
+
+                #end
 
 				<input type="number" size="24" name="$key" value="$!dataValues.get($key)" /> <br />
 			#end

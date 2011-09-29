@@ -164,4 +164,44 @@ public class SectionFormUtils
 
         return dataValueMap;
     }
+
+    // -------------------------------------------------------------------------
+    // Static Utils
+    // -------------------------------------------------------------------------
+
+    public static boolean valueHigher( String value, int max )
+    {
+        int integerValue;
+
+        try
+        {
+            integerValue = Integer.parseInt( value );
+
+            if(integerValue > max)
+            {
+                return true;
+            }
+        } catch ( NumberFormatException e )
+        { }
+
+        return false;
+    }
+
+    public static boolean valueLower( String value, int min )
+    {
+        int integerValue;
+
+        try
+        {
+            integerValue = Integer.parseInt( value );
+
+            if(integerValue < min)
+            {
+                return true;
+            }
+        } catch ( NumberFormatException e )
+        { }
+
+        return false;
+    }
 }
