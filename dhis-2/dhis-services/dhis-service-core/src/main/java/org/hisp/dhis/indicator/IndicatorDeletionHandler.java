@@ -98,17 +98,17 @@ public class IndicatorDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteIndicatorType( IndicatorType indicatorType )
+    public String allowDeleteIndicatorType( IndicatorType indicatorType )
     {
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
             if ( indicator.getIndicatorType().equals( indicatorType ) )
             {
-                return false;
+                return indicator.getName();
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override
@@ -148,7 +148,7 @@ public class IndicatorDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteDataElement( DataElement dataElement )
+    public String allowDeleteDataElement( DataElement dataElement )
     {
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
@@ -156,22 +156,22 @@ public class IndicatorDeletionHandler
 
             if ( daels != null && daels.contains( dataElement ) )
             {
-                return false;
+                return indicator.getName();
             }
 
             daels = expressionService.getDataElementsInExpression( indicator.getDenominator() );
 
             if ( daels != null && daels.contains( dataElement ) )
             {
-                return false;
+                return indicator.getName();
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override
-    public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
+    public String allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
@@ -181,7 +181,7 @@ public class IndicatorDeletionHandler
 
             if ( optionCombos != null && optionCombos.size() > 0 )
             {
-                return false;
+                return indicator.getName();
             }
 
             optionCombos = expressionService.getOptionCombosInExpression( indicator.getDenominator() );
@@ -189,10 +189,10 @@ public class IndicatorDeletionHandler
 
             if ( optionCombos != null && optionCombos.size() > 0 )
             {
-                return false;
+                return indicator.getName();
             }
         }
 
-        return true;
+        return null;
     }
 }

@@ -58,16 +58,16 @@ public class ReportDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteReportTable( ReportTable reportTable )
+    public String allowDeleteReportTable( ReportTable reportTable )
     {
         for ( Report report : reportService.getAllReports() )
         {
             if ( report.getReportTable() != null && report.getReportTable().equals( report ) )
             {
-                return false;
+                return report.getName();
             }
         }
         
-        return true;
+        return null;
     }
 }

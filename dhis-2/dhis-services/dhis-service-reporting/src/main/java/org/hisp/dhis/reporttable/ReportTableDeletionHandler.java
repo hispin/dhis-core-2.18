@@ -64,59 +64,59 @@ public class ReportTableDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteDataElement( DataElement dataElement )
+    public String allowDeleteDataElement( DataElement dataElement )
     {
         for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
             if ( reportTable.getDataElements().contains( dataElement ) )
             {
-                return false;
+                return reportTable.getName();
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override
-    public boolean allowDeleteIndicator( Indicator indicator )
+    public String allowDeleteIndicator( Indicator indicator )
     {
         for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
             if ( reportTable.getIndicators().contains( indicator ) )
             {
-                return false;
+                return reportTable.getName();
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override
-    public boolean allowDeleteDataSet( DataSet dataSet )
+    public String allowDeleteDataSet( DataSet dataSet )
     {
         for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
             if ( reportTable.getDataSets().contains( dataSet ) )
             {
-                return false;
+                return reportTable.getName();
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override
-    public boolean allowDeletePeriod( Period period )
+    public String allowDeletePeriod( Period period )
     {
         for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
             if ( reportTable.getPeriods().contains( period ) )
             {
-                return false;
+                return reportTable.getName();
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override
@@ -132,7 +132,7 @@ public class ReportTableDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
+    public String allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         for ( ReportTable reportTable : reportTableService.getAllReportTables() )
         {
@@ -140,10 +140,10 @@ public class ReportTableDeletionHandler
 
             if ( eachCatCombo != null && eachCatCombo.equals( categoryCombo ) )
             {
-                return false;
+                return reportTable.getName();
             }
         }
 
-        return true;
+        return null;
     }
 }

@@ -64,19 +64,19 @@ public class MapViewDeletionHandler
     }
     
     @Override
-    public boolean allowDeletePeriod( Period period )
+    public String allowDeletePeriod( Period period )
     {
         for ( MapView mapView : mappingService.getAllMapViews() )
         {
             if ( mapView.getPeriod().equals( period ) )
             {
-                return false;
+                return mapView.getName();
             }
         }
         
-        return true;
+        return null;
     }
-        
+    
     @Override
     public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {

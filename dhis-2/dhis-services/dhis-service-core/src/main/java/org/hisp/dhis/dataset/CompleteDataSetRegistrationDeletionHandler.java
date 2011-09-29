@@ -75,11 +75,11 @@ public class CompleteDataSetRegistrationDeletionHandler
     }
 
     @Override
-    public boolean allowDeletePeriod( Period period )
+    public String allowDeletePeriod( Period period )
     {
         String sql = "SELECT COUNT(*) FROM completedatasetregistration where periodid=" + period.getId();
 
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
 
     @Override

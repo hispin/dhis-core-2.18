@@ -63,34 +63,34 @@ public class DataValueDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteDataElement( DataElement dataElement )
+    public String allowDeleteDataElement( DataElement dataElement )
     {
         String sql = "SELECT COUNT(*) FROM datavalue where dataelementid=" + dataElement.getId();
         
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
     
     @Override
-    public boolean allowDeletePeriod( Period period )
+    public String allowDeletePeriod( Period period )
     {
         String sql = "SELECT COUNT(*) FROM datavalue where periodid=" + period.getId();
         
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
     
     @Override
-    public boolean allowDeleteOrganisationUnit( OrganisationUnit unit )
+    public String allowDeleteOrganisationUnit( OrganisationUnit unit )
     {
         String sql = "SELECT COUNT(*) FROM datavalue where sourceid=" + unit.getId();
         
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
     
     @Override
-    public boolean allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo combo )
+    public String allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo combo )
     {
         String sql = "SELECT COUNT(*) FROM datavalue where categoryoptioncomboid=" + combo.getId();
         
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
 }

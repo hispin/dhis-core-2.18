@@ -58,16 +58,16 @@ public class DataElementCategoryComboDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteDataElementCategory( DataElementCategory category )
+    public String allowDeleteDataElementCategory( DataElementCategory category )
     {
         for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryService.getAllDataElementCategoryOptionCombos() )
         {
             if ( categoryOptionCombo.getCategoryCombo().getCategories().contains( category ) )
             {
-                return false;
+                return categoryOptionCombo.getCategoryCombo().getName();
             }
         }
         
-        return true;
+        return null;
     }
 }

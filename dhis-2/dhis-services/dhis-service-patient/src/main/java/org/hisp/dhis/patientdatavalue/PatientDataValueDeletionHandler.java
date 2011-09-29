@@ -61,10 +61,10 @@ public class PatientDataValueDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteDataElement( DataElement dataElement )
+    public String allowDeleteDataElement( DataElement dataElement )
     {
         String sql = "SELECT COUNT(*) FROM patientdatavalue where dataelementid=" + dataElement.getId();
         
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
 }

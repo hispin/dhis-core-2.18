@@ -104,19 +104,24 @@ public class ProgramStageDataElementDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteDataElement ( DataElement dataElement )
+    public String allowDeleteDataElement ( DataElement dataElement )
     {
-        Collection<ProgramStageDataElement> psDataElements = programStageDEService.getAllProgramStageDataElements();
-        for ( ProgramStageDataElement psDataElement :  psDataElements )
+        if ( dataElement != null && DataElement.DOMAIN_TYPE_PATIENT.equals( dataElement.getDomainType() ) )
         {
-            Collection<DataElement> dataElements = programStageDEService.getListDataElement( psDataElement.getProgramStage() );
-
-            if ( dataElements.contains( dataElement ) )
+            //TODO use a query which will be more efficient
+            
+            Collection<ProgramStageDataElement> psDataElements = programStageDEService.getAllProgramStageDataElements();
+            for ( ProgramStageDataElement psDataElement :  psDataElements )
             {
-                return false;
+                Collection<DataElement> dataElements = programStageDEService.getListDataElement( psDataElement.getProgramStage() );
+    
+                if ( dataElements.contains( dataElement ) )
+                {
+                    return ERROR;
+                }
             }
         }
         
-        return true;
+        return null;
     }
 }

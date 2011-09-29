@@ -100,7 +100,7 @@ public class RemoveIndicatorGroupAction
         {
             if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
             {
-                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
 
                 return ERROR;
             }

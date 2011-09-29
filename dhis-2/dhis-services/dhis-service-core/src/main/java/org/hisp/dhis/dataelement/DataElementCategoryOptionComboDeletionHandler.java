@@ -70,7 +70,7 @@ public class DataElementCategoryOptionComboDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
+    public String allowDeleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
     {
         final String sql =
             "select count(*) from datavalue dv " +
@@ -78,11 +78,11 @@ public class DataElementCategoryOptionComboDeletionHandler
                 "select cc.categoryoptioncomboid from categoryoptioncombos_categoryoptions cc " +
                 "where cc.categoryoptionid = " + categoryOption.getId() + " );";
         
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
     
     @Override
-    public boolean allowDeleteDataElementCategory( DataElementCategory category )
+    public String allowDeleteDataElementCategory( DataElementCategory category )
     {
         final String sql =
             "select count(*) from datavalue dv " +
@@ -91,11 +91,11 @@ public class DataElementCategoryOptionComboDeletionHandler
               "where cc.categoryoptionid = co.categoryoptionid " +
               "and co.categoryid=" + category.getId() + " );";        
 
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
     
     @Override
-    public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
+    public String allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         final String sql =
             "select count(*) from datavalue dv " +
@@ -103,7 +103,7 @@ public class DataElementCategoryOptionComboDeletionHandler
               "select co.categoryoptioncomboid from categorycombos_optioncombos co " +
               "where co.categorycomboid=" + categoryCombo.getId() + " );";
         
-        return jdbcTemplate.queryForInt( sql ) == 0;
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
     
     @Override

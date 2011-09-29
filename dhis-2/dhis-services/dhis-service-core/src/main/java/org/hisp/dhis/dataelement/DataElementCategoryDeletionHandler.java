@@ -68,7 +68,7 @@ public class DataElementCategoryDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteConcept( Concept concept )
+    public String allowDeleteConcept( Concept concept )
     {
         for ( DataElementCategory category : categoryService.getAllDataElementCategories() )
         {
@@ -78,12 +78,12 @@ public class DataElementCategoryDeletionHandler
             {
                 if ( categoryConcept.equals( concept ) )
                 {
-                    return false;
+                    return category.getName();
                 }
             }
         }
 
-        return true;
+        return null;
     }
 
     @Override
