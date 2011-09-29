@@ -118,6 +118,13 @@ public class SaveExecutionDateAction
         this.programStageId = programStageId;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -131,7 +138,7 @@ public class SaveExecutionDateAction
         {
             // Get program-stage-instance of the patient
             ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
-            
+
             // If the program-stage-instance of the patient not exists,
             // create a program-instance and program-stage-instance for
             // single-event program
@@ -176,9 +183,11 @@ public class SaveExecutionDateAction
 
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
             }
-            
+
             LOG.debug( "Updating Execution Date, value added/changed" );
 
+            message = programStageInstance.getId() + "";
+            
             return SUCCESS;
         }
 
