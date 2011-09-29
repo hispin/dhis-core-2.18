@@ -7,7 +7,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- data entry -->
 
-  <bean name="org.hisp.dhis.light.dataentry.utils.SectionFormUtils" class="org.hisp.dhis.light.dataentry.utils.SectionFormUtils">
+  <bean id="org.hisp.dhis.light.dataentry.utils.SectionFormUtils" class="org.hisp.dhis.light.dataentry.utils.SectionFormUtils">
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="stdDevOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
     <property name="minMaxOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
