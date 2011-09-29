@@ -9,8 +9,7 @@ function addDocumentToDashboard( id )
 
     if ( dialog )
     {
-        var request = new Request();
-        request.send( "addDocumentToDashboard.action?id=" + id );
+        $.get( "addDocumentToDashboard.action?id=" + id );
     }
 }
 

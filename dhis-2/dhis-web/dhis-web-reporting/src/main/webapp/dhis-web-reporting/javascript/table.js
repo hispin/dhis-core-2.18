@@ -207,7 +207,6 @@ function addReportTableToDashboard( id )
 
     if ( dialog )
     {
-        var request = new Request();
-        request.send( "addReportTableToDashboard.action?id=" + id );
+        $.get( "addReportTableToDashboard.action?id=" + id );
     }
 }
