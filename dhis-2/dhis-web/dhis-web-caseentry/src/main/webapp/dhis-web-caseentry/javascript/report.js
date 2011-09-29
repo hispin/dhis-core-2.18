@@ -77,14 +77,19 @@ function reportValidationCompleted( messageElement )
 
 function loadGeneratedReport()
 {
-	lockScreen();
+	showLoader();
 
 	jQuery( "#contentDiv" ).load( "generateReport.action",
 	{
 		programId: getFieldValue( 'programId' ),
 		startDate: getFieldValue( 'startDate' ),
 		endDate: getFieldValue( 'endDate' )
-	}, function() { unLockScreen();hideById( 'message' );showById( 'contentDiv' );});
+	}, function() 
+	{ 
+		hideLoader();
+		hideById( 'message' );
+		showById( 'contentDiv' );
+	});
 }
 
 function viewRecords( programStageInstanceId ) 
