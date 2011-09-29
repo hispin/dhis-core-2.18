@@ -312,7 +312,7 @@ public class SaveSectionFormAction
 
         validationErrors = sectionFormUtils.getValidationErrorMap( organisationUnit, dataSet, period );
 
-        if ( needsValidation )
+        if ( needsValidation && validationErrors.size() > 0 )
         {
             return ERROR;
         }
