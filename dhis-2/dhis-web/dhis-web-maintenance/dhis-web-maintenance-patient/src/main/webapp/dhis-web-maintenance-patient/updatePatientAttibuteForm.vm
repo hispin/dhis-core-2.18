@@ -28,7 +28,7 @@
 </script>
 
 
-<h3>$i18n.getString( "update_patient_attribute" )</h3>
+<h3>$i18n.getString( "edit_patient_attribute" )</h3>
 
 <form id="updatePatientAttributeForm" name="updatePatientAttributeForm" action="updatePatientAttribute.action" method="post" >
 

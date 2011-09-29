@@ -11,10 +11,10 @@
 	);	
 </script>																
 
-<h3>$i18n.getString( "add_validation_criteria" )</h3>
+<h3>$i18n.getString( "create_validation_criteria" )</h3>
 <form id="validationCriteriaForm" action="addValidationCriteria.action" method="post" >
 <table>
-	<tr><th colspan="3">$i18n.getString('details')</th></tr>
+	<tr><th colspan="3">$i18n.getString('validation_criteria_details')</th></tr>
     <tr>
 		<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="2"><input type='text' id='name' name='name' style='width: 40em' class="{validate:{required:true,rangelength:[2,160]}}"/></td>

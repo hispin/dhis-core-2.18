@@ -15,7 +15,7 @@
 			checkValueIsExist( "name", "validatePatientAttributeGroup.action", {id:getFieldValue('id')});
 	});		
 </script>
-<h3>$i18n.getString( "update_patient_attribute_group" )</h3>
+<h3>$i18n.getString( "edit_patient_attribute_group" )</h3>
 <form id="updatePatientAttributeGroupForm" name="updatePatientAttributeGroupForm" action="updatePatientAttributeGroup.action" method="post" >
 
 <div style="display:inline">
@@ -25,7 +25,7 @@
   <table id="detailsList">
     <thead>
       <tr>
-        <th colspan="4">$i18n.getString( "attribute_group_deltails" ) </th>
+        <th colspan="4">$i18n.getString( "patient_attribute_group_deltails" ) </th>
       </tr>
     </thead>
     <tbody>

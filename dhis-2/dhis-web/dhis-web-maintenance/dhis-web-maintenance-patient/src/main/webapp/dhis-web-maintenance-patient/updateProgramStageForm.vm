@@ -35,7 +35,7 @@ tr.selected{
 }
 </style>
 
-<h3>$i18n.getString( "update_program_stage" )</h3>
+<h3>$i18n.getString( "edit_program_stage" )</h3>
 
 <form id="updateProgramStageForm" name="updateProgramStageForm" action="updateProgramStage.action" method="post">
 

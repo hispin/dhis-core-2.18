@@ -8,50 +8,58 @@
 	});		
 </script>
 
-<h3>$i18n.getString( "add_new_program" )</h3>
+<h3>$i18n.getString( "create_new_program" )</h3>
 									
 <form id="addProgramForm" name="addProgramForm" action="addProgram.action" method="post" >
 
-<table>	
-	<tr>
-		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
-		<td></td>
-	</tr>	
-	
-	<tr>
-		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
-		<td></td>
-	</tr>	
-	
-	<tr>
-		<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
-		<td></td>
-	</tr>	
-	
-	<tr>
-		<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
-		<td></td>
-	</tr>	
-	
-	<tr>
-		<td><label>$i18n.getString( "no_max_days_allowed_input_data" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" style="width:30em" class="{validate:{required:true,number:true}}"></td>
-		<td></td>
-	</tr>	
-	
-	<tr>
-		<td><label>$i18n.getString( "single_event" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="checkbox" id="singleEvent" name="singleEvent" value='true'></td>
-		<td></td>
-	</tr>
-	
-  	<tr>
-     	<td colspan="2" style="height:15px"></td>
-    </tr>
+<table>	 
+	<thead>
+      <tr>
+        <th colspan="2">$i18n.getString( "program_details" )</th>
+      </tr>
+    </thead>
+    
+	<tbody>
+		<tr>
+			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><input type="text" id="name" name="name" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+			<td></td>
+		</tr>	
+		
+		<tr>
+			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+			<td></td>
+		</tr>	
+		
+		<tr>
+			<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+			<td></td>
+		</tr>	
+		
+		<tr>
+			<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+			<td></td>
+		</tr>	
+		
+		<tr>
+			<td><label>$i18n.getString( "no_max_days_allowed_input_data" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" style="width:30em" class="{validate:{required:true,number:true}}"></td>
+			<td></td>
+		</tr>	
+		
+		<tr>
+			<td><label>$i18n.getString( "single_event" )</label></td>
+			<td><input type="checkbox" id="singleEvent" name="singleEvent" value='true'></td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td colspan="2" style="height:15px"></td>
+		</tr>
+	</tbody>
 </table>
 
 <p>

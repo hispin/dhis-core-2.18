@@ -9,8 +9,8 @@
 			  <tr>
 				<td></td>
 				<td>
-					<input type="button" value="$i18n.getString( "add_new_single_validation" )" onclick="window.location.href='showAddSingleProgramValidationForm.action?id=$programId'" style="width:200px">
-					<input type="button" value="$i18n.getString( "add_new_multi_validation" )" onclick="window.location.href='showAddMultiProgramValidationForm.action?id=$programId'" style="width:200px">
+					<input type="button" value="$i18n.getString( "create_new_single_validation" )" onclick="window.location.href='showAddSingleProgramValidationForm.action?id=$programId'" style="width:200px">
+					<input type="button" value="$i18n.getString( "create_new_multi_validation" )" onclick="window.location.href='showAddMultiProgramValidationForm.action?id=$programId'" style="width:200px">
 					<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='program.action'" style="width:200px">
 				</td>
 			  </tr>
@@ -60,8 +60,6 @@
 
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patient_attribute" ) , "'" )';
-	var i18n_adding_patient_atttibute_failed = '$encoder.jsEscape( $i18n.getString( "adding_patient_attribute_failed" ), "'")';
-	var i18n_updating_house_hold_failed = '$encoder.jsEscape( $i18n.getString( "updating_patient_attribute_failed" ), "'")';	
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ), "'")';	
     var i18n_yes = '$encoder.jsEscape( $i18n.getString( "yes" ) , "'")';
     var i18n_no = '$encoder.jsEscape( $i18n.getString( "no" ) , "'")';
