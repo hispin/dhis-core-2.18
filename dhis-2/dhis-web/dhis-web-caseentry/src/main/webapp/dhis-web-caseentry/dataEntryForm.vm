@@ -23,23 +23,19 @@
 <input type='hidden' name='programStageInstanceId' id='programStageInstanceId' value='$!programStageInstance.id'>
 <hr style="clear:both">
 
-<span id="startMsg" style="font-style:italic; color:blue; display: #if($programStageInstance.executionDate) none #else block #end">$i18n.getString( "report_date_warning" )</span>
+<span id="startMsg" style="font-style:italic; color:blue; display: #if($!programStageInstance.executionDate!='') none #else block #end;">$i18n.getString( "report_date_warning" )</span>
 
-<div id='entryForm' style="display: #if($programStageInstance.executionDate) block #else none #end;">
-	#if( !$useDefaultForm)
+<div id='entryForm' style="display: #if($!programStageInstance.executionDate) block #else none #end;">
+	#if( !$useDefaultForm && $customDataEntryFormCode )
 		<div id="customEntryScreenContainer">
-			#if( $customDataEntryFormCode ) 
-				<div id="dragDiv">
-					<table id="listInfo">
-						<tr><td style="text-align:left"><strong>$i18n.getString("org_unit_name") :</strong></td> <td id="orgUnitNameField" style="text-align:right"></td></tr>
-						<tr><td style="text-align:left"><strong>$i18n.getString("program_stage_name") :</strong></td> <td  id="programStageName" style="text-align:right">$programStageInstance.programStage.name</td></tr>
-						<tr><td style="text-align:left"><strong>$i18n.getString("datae_element_name") :</strong></td> <td id="dataelementName" style="text-align:right"></td></tr>
-					</table>
-				</div>
-			   $customDataEntryFormCode
-			#else 
-				<span style="font-style:italic; color:blue"> $i18n.getString( "no_custom_data_entry_exist" )</span>
-			#end
+			<div id="dragDiv">
+				<table id="listInfo">
+					<tr><td style="text-align:left"><strong>$i18n.getString("org_unit_name") :</strong></td> <td id="orgUnitNameField" style="text-align:right"></td></tr>
+					<tr><td style="text-align:left"><strong>$i18n.getString("program_stage_name") :</strong></td> <td  id="programStageName" style="text-align:right">$programStageInstance.programStage.name</td></tr>
+					<tr><td style="text-align:left"><strong>$i18n.getString("datae_element_name") :</strong></td> <td id="dataelementName" style="text-align:right"></td></tr>
+				</table>
+			</div>
+		   $customDataEntryFormCode
 
 			<script type="text/javascript"> 
 				initCustomCheckboxes();
@@ -139,3 +135,11 @@
 </div>
 
 </div>
+
+<script>
+	#if (!$useDefaultForm && $!customDataEntryFormCode )
+		showById('useDefaultTD');
+	#else
+		hideById('useDefaultTD');
+	#end
+</script>
