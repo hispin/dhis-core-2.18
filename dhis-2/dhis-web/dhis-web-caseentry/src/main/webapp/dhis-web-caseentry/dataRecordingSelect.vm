@@ -55,13 +55,4 @@
 		<td></td>
 	</tr>
 	
-	<tr>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td id='useDefaultTD'>
-			<input type="radio" id="useDefaultForm" name="useDefaultForm" value="true" onclick="loadDataEntry();" /><label>$i18n.getString( "use_default_form" )</label><br>	
-			<input type="radio" id="useDefaultForm" name="useDefaultForm" value="false" onclick="loadDataEntry();" checked /><label>$i18n.getString( "use_custom_form" )</label>
-		</td>
-	</tr>
 </table>
