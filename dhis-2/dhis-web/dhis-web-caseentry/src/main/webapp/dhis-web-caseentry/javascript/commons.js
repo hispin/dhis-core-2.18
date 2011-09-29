@@ -101,13 +101,12 @@ function getParamsForDiv( patientDiv)
 function showPatientDetails( patientId )
 {
     $('#detailsArea').load("getPatientDetails.action", 
-		{
-			id:patientId
-		}
-		, function( html ){
-			setInnerHTML( 'detailsArea', html );
-			showDetails();
-		});
+	{
+		id:patientId
+	}
+	, function(){
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------
