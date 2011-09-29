@@ -168,14 +168,12 @@ function LeftBar()
 
     function setMenuVisible()
     {
-        var request = new Request();
-        request.send( '../dhis-web-commons/menu/setMenuVisible.action' );        
+        $.get( '../dhis-web-commons/menu/setMenuVisible.action' );        
     }
     
     function setMenuHidden()
     {        
-        var request = new Request();
-        request.send( '../dhis-web-commons/menu/setMenuHidden.action' );        
+        $.get( '../dhis-web-commons/menu/setMenuHidden.action' );        
     }    
     
     this.openHelpForm = function( id )
