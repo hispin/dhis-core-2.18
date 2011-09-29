@@ -26,7 +26,7 @@
 <span id="startMsg" style="font-style:italic; color:blue; display: #if($!programStageInstance.executionDate!='') none #else block #end;">$i18n.getString( "report_date_warning" )</span>
 
 <div id='entryForm' style="display: #if($!programStageInstance.executionDate) block #else none #end;">
-	#if( !$useDefaultForm && $customDataEntryFormCode )
+	#if( $customDataEntryFormCode )
 		<div id="customEntryScreenContainer">
 			<div id="dragDiv">
 				<table id="listInfo">
@@ -135,11 +135,3 @@
 </div>
 
 </div>
-
-<script>
-	#if (!$useDefaultForm && $!customDataEntryFormCode )
-		showById('useDefaultTD');
-	#else
-		hideById('useDefaultTD');
-	#end
-</script>

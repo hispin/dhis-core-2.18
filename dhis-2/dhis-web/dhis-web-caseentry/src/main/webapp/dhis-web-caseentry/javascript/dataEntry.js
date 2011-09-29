@@ -16,20 +16,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
 selection.setListenerFunction( organisationUnitSelected );
 
-function selectDefaultForm()
-{
-    if( byId('useDefaultForm').checked  )
-	{
-		hideById('customEntryScreenContainer');
-		showById('defaultEntryScreenContainer');
-	}
-	else
-	{
-		hideById('defaultEntryScreenContainer');
-		showById('customEntryScreenContainer');
-	}
-}
-
 //--------------------------------------------------------------------------------------------
 // Show search-form
 //--------------------------------------------------------------------------------------------
@@ -146,17 +132,14 @@ function loadDataEntry()
 	}
 	
 	showLoader();
-	var useDefaultForm = jQuery("input[id='useDefaultForm']:checked").val();
 	
 	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
 		{ 
-			programStageId:getFieldValue('programStageId'), 
-			useDefaultForm:useDefaultForm
+			programStageId:getFieldValue('programStageId')
 		},function( )
 		{
 			enable('validationBtn');
 			enable('completeBtn');
-			enable('useDefaultForm');
 			
 			hideLoader();
 			hideById('contentDiv'); 
@@ -990,11 +973,9 @@ function loadProgramStageRecords( programStageInstanceId )
 {
 	setInnerHTML('dataEntryFormDiv', '');
 	showLoader();
-	var useDefaultForm = jQuery("#useDefaultForm").attr('checked') ? true : false;
     $('#dataEntryFormDiv' ).load("loadProgramStageRecords.action",
 		{
-			programStageInstanceId: programStageInstanceId,
-			useDefaultForm:useDefaultForm
+			programStageInstanceId: programStageInstanceId
 		}, function() {
 			hideLoader();
 		});

@@ -218,18 +218,6 @@ public class ProgramStageCustomDataEntryAction
         this.customDataEntryFormExists = customDataEntryFormExists;
     }
 
-    private String useDefaultForm;
-
-    public String getUseDefaultForm()
-    {
-        return useDefaultForm;
-    }
-
-    public void setUseDefaultForm( String useDefaultForm )
-    {
-        this.useDefaultForm = useDefaultForm;
-    }
-
     public ProgramStageInstance programStageInstance;
 
     public int getProgramStageInstanceId()

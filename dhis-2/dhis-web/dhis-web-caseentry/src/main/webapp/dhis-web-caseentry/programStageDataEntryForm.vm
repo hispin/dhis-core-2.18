@@ -38,7 +38,7 @@ jQuery("#entryFormContainer").ready(function(){
         </td>        
         #if( $programStageInstance )
             <td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-            <td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" >
+            <td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, getFieldValue('executionDate') )" >
                 <script type="text/javascript">
                    datePickerValid( 'executionDate', false );
                 </script>                
@@ -53,15 +53,6 @@ jQuery("#entryFormContainer").ready(function(){
 		<td></td>
     </tr>
 	
-	<tr>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>
-			<input type="radio" id="useDefaultForm" name="useDefaultForm" value="true" onclick="loadProgramStageRecords($programStageInstance.id);" /><label>$i18n.getString( "use_default_form" )</label><br>	
-			<input type="radio" id="useDefaultForm" name="useDefaultForm" value="false" onclick="loadProgramStageRecords($programStageInstance.id);" checked='true' /><label>$i18n.getString( "use_custom_form" )</label>
-		</td>
-	</tr>
 </table>
 
 </form>
@@ -86,14 +77,12 @@ jQuery("#entryFormContainer").ready(function(){
 
 <div id="entryFormContainer" #if( $programStageInstance.executionDate ) #else style='display:none;' #end>
 
+#if( $customDataEntryFormCode ) 
 	<div id="customEntryScreenContainer">
-			#if( $customDataEntryFormCode ) 
-			   $customDataEntryFormCode
-			#else <span style="font-style:italic; color:blue"> $i18n.getString( "no_custom_data_entry_exist" )</span>
-			#end
+		$customDataEntryFormCode
 	</div>
-
-	<div id='defaultEntryScreenContainer' style='display:none;'>
+#else 
+	<div id='defaultEntryScreenContainer'>
 		<table class="mainPageTable">
 			<col id="noCol">
 			<col id="deCol">    
@@ -177,6 +166,7 @@ jQuery("#entryFormContainer").ready(function(){
 		#end
 		</table>
 	</div>
+#end
 </div>
 
 	<div id="completeDataEntryFormContainer">
@@ -208,3 +198,4 @@ jQuery("#entryFormContainer").ready(function(){
     var i18n_error_required_field = '$encoder.jsEscape( $i18n.getString( "error_required_field" ) , "'")';
 	var i18n_violate_validation = '$encoder.jsEscape( $i18n.getString( "violate_validation" ) , "'")';
 	var i18n_date_is_greater_then_or_equals_due_date = '$encoder.jsEscape( $i18n.getString( "date_is_greater_then_or_equals_due_date" ) , "'")';</script>
+</script>

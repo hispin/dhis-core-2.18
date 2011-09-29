@@ -85,8 +85,6 @@ public class LoadDataEntryAction
 
     private Integer programStageId;
 
-    private boolean useDefaultForm;
-
     private ProgramStageInstance programStageInstance;
 
     private String customDataEntryFormCode;
@@ -147,11 +145,6 @@ public class LoadDataEntryAction
         return optionMap;
     }
 
-    public boolean isUseDefaultForm()
-    {
-        return useDefaultForm;
-    }
-
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -160,11 +153,6 @@ public class LoadDataEntryAction
     public ProgramStageInstance getProgramStageInstance()
     {
         return programStageInstance;
-    }
-
-    public void setUseDefaultForm( boolean useDefaultForm )
-    {
-        this.useDefaultForm = useDefaultForm;
     }
 
     public void setI18n( I18n i18n )
@@ -206,7 +194,7 @@ public class LoadDataEntryAction
         // ---------------------------------------------------------------------
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
-        
+
         program = programStage.getProgram();
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
@@ -216,7 +204,7 @@ public class LoadDataEntryAction
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
-        
+
         if ( programStageInstance != null )
         {
             selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
@@ -250,17 +238,14 @@ public class LoadDataEntryAction
             // Get data-entry-form
             // ---------------------------------------------------------------------
 
-            if ( !useDefaultForm )
-            {
-                DataEntryForm dataEntryForm = programStage.getDataEntryForm();
+            DataEntryForm dataEntryForm = programStage.getDataEntryForm();
 
-                if ( dataEntryForm != null )
-                {
-                    customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
-                        .getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance,
-                        organisationUnit );
-                }
+            if ( dataEntryForm != null )
+            {
+                customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
+                    .getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance, organisationUnit );
             }
+
         }
 
         return SUCCESS;
