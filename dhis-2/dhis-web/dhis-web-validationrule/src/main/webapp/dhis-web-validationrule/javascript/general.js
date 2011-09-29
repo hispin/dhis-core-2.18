@@ -1,29 +1,23 @@
 
 function showValidationRuleDetails( validationId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'validationRule' );
-    request.setCallbackSuccess( validationRuleReceived );
-    request.send( 'getValidationRule.action?id=' + validationId );
-}
+    jQuery.post( 'getValidationRule.action', { id: validationId }, function ( json ) {
+		setInnerHTML( 'nameField', json.validationRule.name );
+		
+		var description = json.validationRule.description;
+		setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+		
+		var leftSideDescription = json.validationRule.leftSideDescription;
+		setInnerHTML( 'leftSideDescriptionField', leftSideDescription ? leftSideDescription : '[' + i18n_none + ']' );
+		
+		var operator = json.validationRule.operator;
+		setInnerHTML( 'operatorField', i18nalizeOperator( operator ) );
+		
+		var rightSideDescription = json.validationRule.rightSideDescription;
+		setInnerHTML( 'rightSideDescriptionField', rightSideDescription ? rightSideDescription : '[' + i18n_none + ']' );
 
-function validationRuleReceived( validationElement )
-{
-    setInnerHTML( 'nameField', getElementValue( validationElement, 'name' ) );
-    
-    var description = getElementValue( validationElement, 'description' );
-    setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
-    
-    var leftSideDescription = getElementValue( validationElement, 'leftSideDescription' );
-    setInnerHTML( 'leftSideDescriptionField', leftSideDescription ? leftSideDescription : '[' + i18n_none + ']' );
-    
-    var operator = getElementValue( validationElement, 'operator' );
-    setInnerHTML( 'operatorField', i18nalizeOperator( operator ) );
-	
-    var rightSideDescription = getElementValue( validationElement, 'rightSideDescription' );
-    setInnerHTML( 'rightSideDescriptionField', rightSideDescription ? rightSideDescription : '[' + i18n_none + ']' );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 function i18nalizeOperator( operator )

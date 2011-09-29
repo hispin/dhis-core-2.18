@@ -1,0 +1,11 @@
+{ "chart":
+  {
+	"id": "$!{chart.id}",
+	"title": "$!encoder.jsonEncode( ${chart.title} )",
+	"dimension": "$!encoder.jsonEncode( ${chart.dimension} )",
+	"indicators": "$!{chart.indicators.size()}",
+	"dataElements": "$!{chart.dataElements.size()}",
+	"periods": "$!{chart.periods.size()}",
+	"organisationUnits": "$!{chart.organisationUnits.size()}"
+  }
+}

@@ -1,17 +1,12 @@
 function showReportTableGroupDetails( reportTableGroupId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'reportTableGroup' );
-    request.setCallbackSuccess( reportTableGroupReceived );
-    request.send( 'getReportTableGroup.action?id=' + reportTableGroupId );
-}
+    jQuery.post( 'getReportTableGroup.action', { id: reportTableGroupId },
+		function ( json ) {
+			setInnerHTML( 'nameField', json.reportTableGroup.name );
+			setInnerHTML( 'memberCountField', json.reportTableGroup.memberCount );
 
-function reportTableGroupReceived( reportTableGroupElement )
-{
-    setInnerHTML( 'nameField', getElementValue( reportTableGroupElement, 'name' ) );
-    setInnerHTML( 'memberCountField', getElementValue( reportTableGroupElement, 'memberCount' ) );
-
-    showDetails();
+			showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

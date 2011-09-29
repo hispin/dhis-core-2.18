@@ -1,17 +1,11 @@
 function showReportGroupDetails( reportGroupId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'reportGroup' );
-    request.setCallbackSuccess( reportGroupReceived );
-    request.send( 'getReportGroup.action?id=' + reportGroupId );
-}
+    jQuery.post( 'getReportGroup.action', { id: reportGroupId }, function ( json ) {
+		setInnerHTML( 'nameField', json.reportGroup.name );
+		setInnerHTML( 'memberCountField', json.reportGroup.memberCount );
 
-function reportGroupReceived( reportGroupElement )
-{
-    setInnerHTML( 'nameField', getElementValue( reportGroupElement, 'name' ) );
-    setInnerHTML( 'memberCountField', getElementValue( reportGroupElement, 'memberCount' ) );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

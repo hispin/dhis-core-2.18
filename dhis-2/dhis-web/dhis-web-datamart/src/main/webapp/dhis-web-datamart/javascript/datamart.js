@@ -167,21 +167,15 @@ function getOrganisationUnitChildrenReceived( xmlObject )
 
 function showDataMartExportDetails( id )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'dataMartExport' );
-    request.setCallbackSuccess( dataMartExportReceived );
-    request.send( 'getDataMartExport.action?id=' + id );
-}
-
-function dataMartExportReceived( xmlObject )
-{
-    setInnerHTML( "nameField", getElementValue( xmlObject, "name" ) );
-    setInnerHTML( "dataElementField", getElementValue( xmlObject, "dataElements" ) );
-    setInnerHTML( "indicatorField", getElementValue( xmlObject, "indicators" ) );
-    setInnerHTML( "organisationUnitField", getElementValue( xmlObject, "organisationUnits" ) );
-    setInnerHTML( "periodField", getElementValue( xmlObject, "periods" ) );
-    
-    showDetails();
+    jQuery.post( 'getDataMartExport.action', { id: id }, function ( json ) {
+		setInnerHTML( "nameField", json.dataMartExport.name );
+		setInnerHTML( "dataElementField", json.dataMartExport.dataElements );
+		setInnerHTML( "indicatorField", json.dataMartExport.indicators );
+		setInnerHTML( "organisationUnitField", json.dataMartExport.organisationUnits );
+		setInnerHTML( "periodField", json.dataMartExport.periods );
+		
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------
@@ -192,34 +186,25 @@ function saveExport()
 {
     if ( validateCollections() )
     {
-        var url = "validateDataMartExport.action?id=" + 
-            getFieldValue( "id" ) + "&name=" + getFieldValue( "name" );
-        
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( saveExportReceived );
-        request.send( url );
-    }
-}
-
-function saveExportReceived( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == "input" )
-    {
-        setMessage( message );
-    }
-    else if ( type == "success" )
-    {
-    	selectAllById( "selectedDataElements" );
-    	selectAllById( "selectedIndicators" );
-    	selectAllById( "selectedOrganisationUnits" );
-    	selectAllById( "selectedPeriods" );
-    	
-    	document.getElementById( "exportForm" ).submit();
-    }
+		jQuery.postJSON( 'validateDataMartExport.action', {
+			id: getFieldValue( "id" ),
+			name: getFieldValue( "name" )
+		}, function ( json ) {
+			if ( json.response == "input" )
+			{
+				setMessage( json.message );
+			}
+			else if ( json.response == "success" )
+			{
+				selectAllById( "selectedDataElements" );
+				selectAllById( "selectedIndicators" );
+				selectAllById( "selectedOrganisationUnits" );
+				selectAllById( "selectedPeriods" );
+				
+				byId( "exportForm" ).submit();
+			}
+		});
+	}
 }
 
 // -----------------------------------------------------------------------------

@@ -1,17 +1,11 @@
 function showChartGroupDetails( chartGroupId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'chartGroup' );
-    request.setCallbackSuccess( chartGroupReceived );
-    request.send( 'getChartGroup.action?id=' + chartGroupId );
-}
+    jQuery.post( 'getChartGroup.action', { id: chartGroupId }, function ( json ) {
+		setInnerHTML( 'nameField', json.chartGroup.name );
+		setInnerHTML( 'memberCountField', json.chartGroup.memberCount );
 
-function chartGroupReceived( chartGroupElement )
-{
-    setInnerHTML( 'nameField', getElementValue( chartGroupElement, 'name' ) );
-    setInnerHTML( 'memberCountField', getElementValue( chartGroupElement, 'memberCount' ) );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------

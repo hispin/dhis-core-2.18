@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<reportGroup>
-	<id>$reportGroup.id</id>
-    <name>$!encoder.xmlEncode( $reportGroup.name )</name>
-    <memberCount>$reportGroup.getMembers().size()</memberCount>
-</reportGroup>

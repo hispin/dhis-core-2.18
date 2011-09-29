@@ -33,38 +33,32 @@ function removeChart( chartId, chartTitle )
 
 function showChartDetails( chartId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'chart' );
-    request.setCallbackSuccess( chartReceived );
-    request.send( 'getChart.action?id=' + chartId );
-}
+    jQuery.post( 'getChart.action', { id: chartId }, function ( json ) {
+		var indicators = parseInt( json.chart.indicators );
+		var dataElements = parseInt( json.chart.dataElements );
 
-function chartReceived( xmlObject )
-{
-    var indicators = parseInt( getElementValue( xmlObject, 'indicators' ) );
-    var dataElements = parseInt( getElementValue( xmlObject, 'dataElements' ) );
+		setInnerHTML( 'titleField', json.chart.title );
+		setInnerHTML( 'dimensionField', json.chart.dimension );
 
-    setInnerHTML( 'titleField', getElementValue( xmlObject, 'title' ) );
-    setInnerHTML( 'dimensionField', getElementValue( xmlObject, 'dimension' ) );
+		if ( dataElements === 0 )
+		{
+			$( '#dataElementsView' ).hide();
+			$( '#indicatorsView' ).show();
 
-    if ( dataElements === 0 )
-    {
-        $( '#dataElementsView' ).hide();
-        $( '#indicatorsView' ).show();
+			$( '#indicatorsField' ).text( indicators );
+		} else
+		{
+			$( '#dataElementsView' ).show();
+			$( '#indicatorsView' ).hide();
 
-        $( '#indicatorsField' ).text( indicators );
-    } else
-    {
-        $( '#dataElementsView' ).show();
-        $( '#indicatorsView' ).hide();
+			$( '#dataElementsField' ).text( dataElements );
+		}
 
-        $( '#dataElementsField' ).text( dataElements );
-    }
+		setInnerHTML( 'periodsField', json.chart.periods );
+		setInnerHTML( 'organisationUnitsField', json.chart.organisationUnits );
 
-    setInnerHTML( 'periodsField', getElementValue( xmlObject, 'periods' ) );
-    setInnerHTML( 'organisationUnitsField', getElementValue( xmlObject, 'organisationUnits' ) );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 // -----------------------------------------------------------------------------
