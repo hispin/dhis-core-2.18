@@ -27,18 +27,20 @@ package org.hisp.dhis.settings.action.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.options.UserSettingManager;
+import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
+
+import static org.hisp.dhis.user.UserSettingService.*;
 
 public class SetCurrentChartsInDashboardAction
     implements Action
 {
-    private UserSettingManager userSettingManager;
+    private UserSettingService userSettingService;
 
-    public void setUserSettingManager( UserSettingManager userSettingManager )
+    public void setUserSettingService( UserSettingService userSettingService )
     {
-        this.userSettingManager = userSettingManager;
+        this.userSettingService = userSettingService;
     }
 
     private Integer chartsInDashboard;
@@ -52,7 +54,7 @@ public class SetCurrentChartsInDashboardAction
     public String execute()
         throws Exception
     {
-        userSettingManager.saveUserSetting( UserSettingManager.KEY_CHARTS_IN_DASHBOARD, chartsInDashboard );
+        userSettingService.saveUserSetting( KEY_CHARTS_IN_DASHBOARD, chartsInDashboard );
 
         return SUCCESS;
     }

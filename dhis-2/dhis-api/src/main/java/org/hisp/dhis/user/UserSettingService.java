@@ -45,11 +45,10 @@ public interface UserSettingService
 
     final String AUTO_SAVE_DATA_ENTRY_FORM = "autoSaveDataEntryForm";
     final String KEY_CHARTS_IN_DASHBOARD = "keyChartsInDashboard";
+    final String KEY_CURRENT_DATADICTIONARY = "currentDataDictionary";
 
     final int DEFAULT_CHARTS_IN_DASHBOARD = 4;
     final List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );
-
-    public static final String KEY_DASHBOARD_CHARTS_TO_DISPLAY = "keyDashboardChartsToDisplay";
 
     /**
      * Saves the name/value pair as a user setting connected to the currently
