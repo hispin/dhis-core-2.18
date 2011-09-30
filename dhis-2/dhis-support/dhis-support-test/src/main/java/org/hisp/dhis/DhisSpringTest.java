@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @version $Id: DhisSpringTest.java 6335 2008-11-20 11:11:26Z larshelg $
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath*:/META-INF/dhis/beans.xml"})
+@ContextConfiguration(locations={"classpath*:/META-INF/dhis/beans.xml","classpath*:/META-INF/dhis/beans-test.xml"})
 @Transactional
 public abstract class DhisSpringTest
     extends DhisConvenienceTest implements ApplicationContextAware
@@ -52,7 +52,7 @@ public abstract class DhisSpringTest
     // ApplicationContextAware implementation
     // -------------------------------------------------------------------------
 
-    private ApplicationContext context;
+    protected ApplicationContext context;
 
     public void setApplicationContext( ApplicationContext context )
     {

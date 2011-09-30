@@ -145,6 +145,18 @@ public class MessageConversation
         }
     }
     
+    public Set<User> getUsers()
+    {
+        Set<User> users = new HashSet<User>();
+        
+        for ( UserMessage userMessage : userMessages )
+        {
+            users.add( userMessage.getUser() );
+        }
+        
+        return users;
+    }
+    
     public String getLastSenderName()
     {
         return lastSenderFirstname + " " + lastSenderSurname;

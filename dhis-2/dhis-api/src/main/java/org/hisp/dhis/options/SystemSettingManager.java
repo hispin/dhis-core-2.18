@@ -57,6 +57,9 @@ public interface SystemSettingManager
     final String KEY_PATIENT_EXCEL_TEMPLATE_FILE_NAME = "patientExcelTemplateFileName";
     final String KEY_DATAMART_TASK = "keyDataMartTask";
     final String KEY_DATASETCOMPLETENESS_TASK = "keyDataSetCompletenessTask";
+    final String KEY_EMAIL_HOST_NAME = "keyEmailHostName";
+    final String KEY_EMAIL_USERNAME = "keyEmailUsername";
+    final String KEY_EMAIL_PASSWORD = "keyEmailPassword";
     
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
