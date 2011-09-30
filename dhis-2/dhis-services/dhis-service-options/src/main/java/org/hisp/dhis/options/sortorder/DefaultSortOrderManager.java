@@ -54,7 +54,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitCodeComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
-import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
 
 /**
@@ -119,13 +118,7 @@ public class DefaultSortOrderManager
 
     public void setCurrentSortOrder( String sortOrder )
     {
-        try
-        {
-            userSettingService.saveUserSetting( SETTING_NAME_SORT_ORDER, sortOrder );
-        }
-        catch ( NoCurrentUserException e )
-        {
-        }
+        userSettingService.saveUserSetting( SETTING_NAME_SORT_ORDER, sortOrder );
     }
 
     public String getCurrentSortOrder()

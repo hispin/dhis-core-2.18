@@ -33,7 +33,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.options.UserSettingManager;
-import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
 
 public class DefaultUserSettingManager
@@ -58,28 +57,12 @@ public class DefaultUserSettingManager
 
     public Serializable getUserSetting( String key )
     {
-        try
-        {
-            return userSettingService.getUserSetting( key );
-        }
-        catch ( NoCurrentUserException e )
-        {
-            log.warn( "No current user, could not get user setting for key " + key );
-        }
-
-        return null;
+        return userSettingService.getUserSetting( key );
     }
     
     public void saveUserSetting( String key, Serializable value )
     {
-        try
-        {
-            userSettingService.saveUserSetting( key, value );
-        }
-        catch ( NoCurrentUserException e )
-        {
-            log.warn( "No current user, could not save user setting for key " + key );
-        }
+        userSettingService.saveUserSetting( key, value );
     }
 
     // -------------------------------------------------------------------------

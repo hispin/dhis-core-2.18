@@ -35,7 +35,6 @@ import java.util.Set;
 import org.hisp.dhis.dashboard.DashboardConfiguration;
 import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.dashboard.provider.ContentProvider;
-import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
 
 /**
@@ -115,16 +114,9 @@ public class DefaultDashboardManager
 
     public DashboardConfiguration getConfiguration()
     {
-        try
-        {
-            DashboardConfiguration config = (DashboardConfiguration) userSettingService.getUserSetting( KEY_USERSETTING );
-            
-            return config != null ? config : new DashboardConfiguration();
-        }
-        catch ( NoCurrentUserException ex )
-        {
-            throw new RuntimeException( "Could not get configuration because no current user exists", ex );
-        }
+        DashboardConfiguration config = (DashboardConfiguration) userSettingService.getUserSetting( KEY_USERSETTING );
+        
+        return config != null ? config : new DashboardConfiguration();
     }
 
     // -------------------------------------------------------------------------
@@ -133,13 +125,6 @@ public class DefaultDashboardManager
 
     private void setConfiguration( DashboardConfiguration config )
     {
-        try
-        {
-            userSettingService.saveUserSetting( KEY_USERSETTING, config );
-        }
-        catch ( NoCurrentUserException ex )
-        {
-            throw new RuntimeException( "Could not save configuration because no current user exists", ex );
-        }
+        userSettingService.saveUserSetting( KEY_USERSETTING, config );
     }
 }

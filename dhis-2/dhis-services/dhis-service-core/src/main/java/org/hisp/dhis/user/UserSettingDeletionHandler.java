@@ -63,22 +63,15 @@ public class UserSettingDeletionHandler
     @Override
     public void deleteDataDictionary( DataDictionary dataDictionary )
     {
-        try
+        for ( UserSetting setting : userSettingService.getAllUserSettings() )
         {
-            for ( UserSetting setting : userSettingService.getAllUserSettings() )
+            if ( setting.getName().equals( SETTING_NAME_DATADICTIONARY ) )
             {
-                if ( setting.getName().equals( SETTING_NAME_DATADICTIONARY ) )
+                if ( setting.getValue() != null && (Integer) setting.getValue() == dataDictionary.getId() )
                 {
-                    if ( setting.getValue() != null && (Integer) setting.getValue() == dataDictionary.getId() )
-                    {
-                        userSettingService.deleteUserSetting( SETTING_NAME_DATADICTIONARY );
-                    }
+                    userSettingService.deleteUserSetting( SETTING_NAME_DATADICTIONARY );
                 }
             }
-        }
-        catch ( NoCurrentUserException ex )
-        {
-            // Do nothing
         }
     }
 }

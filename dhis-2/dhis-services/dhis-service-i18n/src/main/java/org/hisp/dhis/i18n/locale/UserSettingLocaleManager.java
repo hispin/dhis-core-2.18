@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
 
 /**
@@ -89,14 +88,7 @@ public class UserSettingLocaleManager
 
     public void setCurrentLocale( Locale locale )
     {
-        try
-        {
-            userSettingService.saveUserSetting( userSettingKey, locale );
-        }
-        catch ( NoCurrentUserException e )
-        {
-            // Just ignore for now. No change compared to previous behaviour.
-        }
+        userSettingService.saveUserSetting( userSettingKey, locale );
     }
 
     public List<Locale> getLocalesOrderedByPriority()
