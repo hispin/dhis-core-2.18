@@ -108,7 +108,19 @@ function loadProgramStages()
                 history += '</tr>';
 			}
 			history += '</table>';
-			setInnerHTML( 'currentSelection', history ); 
+			setInnerHTML( 'currentSelection', history );
+			
+			var singleEvent = jQuery('#programId option:selected').attr('singleevent');
+			if(singleEvent=='true')
+			{
+				byId('programStageId').selectedIndex = 1;
+				disable('programStageId');
+				loadDataEntry();
+			}
+			else
+			{
+				enable('programStageId');
+			}
 	});
 }
 

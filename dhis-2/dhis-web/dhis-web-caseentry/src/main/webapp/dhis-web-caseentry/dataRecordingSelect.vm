@@ -25,7 +25,7 @@
             <select id="programId" name="programId" style="min-width:350px" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
                 <option value="0">[$i18n.getString( "select" )]</option>
                 #foreach( $program in $programs )
-                    <option value="$program.id" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
+                    <option value="$program.id" singleevent="$program.singleEvent" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
                 #end
             </select>
         </td>
