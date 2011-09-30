@@ -30,8 +30,8 @@ package org.hisp.dhis.options.setting;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.SortedMap;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.options.SystemSetting;
@@ -57,9 +57,9 @@ public class DefaultSystemSettingManager
         this.systemSettingStore = systemSettingStore;
     }
     
-    private SortedMap<String, String> flags;
+    private List<String> flags;
 
-    public void setFlags( SortedMap<String, String> flags )
+    public void setFlags( List<String> flags )
     {
         this.flags = flags;
     }
@@ -122,8 +122,9 @@ public class DefaultSystemSettingManager
     // Specific methods
     // -------------------------------------------------------------------------
     
-    public SortedMap<String, String> getFlags()
+    public List<String> getFlags()
     {
+        Collections.sort( flags );        
         return flags;
     }
     
@@ -135,5 +136,12 @@ public class DefaultSystemSettingManager
     public String getSystemIdentifier()
     {
         return (String) getSystemSetting( KEY_SYSTEM_IDENTIFIER );
+    }
+    
+    public String getFlagImage()
+    {
+        String flag = (String) getSystemSetting( KEY_FLAG );
+        
+        return flag != null ? flag + ".png" : null;
     }
 }
