@@ -28,8 +28,6 @@ package org.hisp.dhis.options;
  */
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author mortenoh
@@ -38,18 +36,9 @@ public interface UserSettingManager
 {
     final String ID = UserSettingManager.class.getName();
 
-    final String KEY_CHARTS_IN_DASHBOARD = "keyChartsInDashboard";
     final String KEY_CURRENT_DATADICTIONARY = "currentDataDictionary";
-
-    final int DEFAULT_CHARTS_IN_DASHBOARD = 4;
-
-    final List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );
 
     public Serializable getUserSetting( String key );
 
     public void saveUserSetting( String key, Serializable value );
-
-    public List<Integer> getChartsInDashboardOptions();
-
-    public Integer getChartsInDashboard();
 }

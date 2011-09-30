@@ -28,18 +28,13 @@ package org.hisp.dhis.options.setting;
  */
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.options.UserSettingManager;
 import org.hisp.dhis.user.UserSettingService;
 
 public class DefaultUserSettingManager
     implements UserSettingManager
 {
-    private static final Log log = LogFactory.getLog( DefaultUserSettingManager.class );
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -63,20 +58,5 @@ public class DefaultUserSettingManager
     public void saveUserSetting( String key, Serializable value )
     {
         userSettingService.saveUserSetting( key, value );
-    }
-
-    // -------------------------------------------------------------------------
-    // Specific methods
-    // -------------------------------------------------------------------------
-
-    public List<Integer> getChartsInDashboardOptions()
-    {
-        return DASHBOARD_CHARTS_TO_DISPLAY;
-    }
-
-    public Integer getChartsInDashboard()
-    {
-        return (Integer) userSettingService.getUserSetting( UserSettingManager.KEY_CHARTS_IN_DASHBOARD,
-            UserSettingManager.DEFAULT_CHARTS_IN_DASHBOARD );
     }
 }

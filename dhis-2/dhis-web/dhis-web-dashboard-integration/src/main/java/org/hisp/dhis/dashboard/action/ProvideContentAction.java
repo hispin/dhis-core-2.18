@@ -27,6 +27,9 @@ package org.hisp.dhis.dashboard.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.user.UserSettingService.DEFAULT_CHARTS_IN_DASHBOARD;
+import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,7 +41,7 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.comparator.ChartTitleComparator;
 import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.options.UserSettingManager;
+import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -68,11 +71,11 @@ public class ProvideContentAction
         this.chartService = chartService;
     }
 
-    private UserSettingManager userSettingManager;
+    private UserSettingService userSettingService;
 
-    public void setUserSettingManager( UserSettingManager userSettingManager )
+    public void setUserSettingService( UserSettingService userSettingService )
     {
-        this.userSettingManager = userSettingManager;
+        this.userSettingService = userSettingService;
     }
 
     private MessageService messageService;
@@ -130,7 +133,7 @@ public class ProvideContentAction
 
         Collections.sort( charts, new ChartTitleComparator() );
 
-        int chartsInDashboardCount = userSettingManager.getChartsInDashboard();
+        int chartsInDashboardCount = (Integer) userSettingService.getUserSetting( KEY_CHARTS_IN_DASHBOARD, DEFAULT_CHARTS_IN_DASHBOARD );
 
         for ( int i = 1; i <= chartsInDashboardCount; i++ )
         {

@@ -28,7 +28,9 @@ package org.hisp.dhis.user;
  */
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The main interface for working with user settings. Implementation need to get
@@ -42,6 +44,10 @@ public interface UserSettingService
     String ID = UserSettingService.class.getName();
 
     final String AUTO_SAVE_DATA_ENTRY_FORM = "autoSaveDataEntryForm";
+    final String KEY_CHARTS_IN_DASHBOARD = "keyChartsInDashboard";
+
+    final int DEFAULT_CHARTS_IN_DASHBOARD = 4;
+    final List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );
 
     public static final String KEY_DASHBOARD_CHARTS_TO_DISPLAY = "keyDashboardChartsToDisplay";
 
