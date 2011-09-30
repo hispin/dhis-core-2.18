@@ -39,6 +39,7 @@ public interface UserSettingManager
     final String ID = UserSettingManager.class.getName();
 
     final String KEY_CHARTS_IN_DASHBOARD = "keyChartsInDashboard";
+    final String KEY_CURRENT_DATADICTIONARY = "currentDataDictionary";
 
     final int DEFAULT_CHARTS_IN_DASHBOARD = 4;
 
