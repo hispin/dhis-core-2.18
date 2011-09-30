@@ -27,10 +27,13 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.user.UserSettingService.DEFAULT_CHARTS_IN_DASHBOARD;
+import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.options.UserSettingManager;
+import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
@@ -45,18 +48,16 @@ public class UserSettingInterceptor
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserSettingManager userSettingManager;
+    private UserSettingService userSettingService;
 
-    public void setUserSettingManager( UserSettingManager userSettingManager )
+    public void setUserSettingService( UserSettingService userSettingService )
     {
-        this.userSettingManager = userSettingManager;
+        this.userSettingService = userSettingService;
     }
 
     // -------------------------------------------------------------------------
     // UserSettingInterceptor implementation
     // -------------------------------------------------------------------------
-
-    private static final long serialVersionUID = -3123337448714959530L;
 
     public void destroy()
     {
@@ -71,7 +72,7 @@ public class UserSettingInterceptor
     {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        map.put( UserSettingManager.KEY_CHARTS_IN_DASHBOARD, userSettingManager.getChartsInDashboard() );
+        map.put( KEY_CHARTS_IN_DASHBOARD, userSettingService.getUserSetting( KEY_CHARTS_IN_DASHBOARD, DEFAULT_CHARTS_IN_DASHBOARD ) );
 
         invocation.getStack().push( map );
 
