@@ -30,7 +30,6 @@ package org.hisp.dhis.options.style;
 
 import java.io.File;
 
-import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
 
 /**
@@ -64,25 +63,12 @@ public class DefaultUserStyleManager
 
     public void setCurrentStyle( String file )
     {
-        try
-        {
-            userSettingService.saveUserSetting( SETTING_NAME_STYLE, file );
-        }
-        catch ( NoCurrentUserException ex )
-        {
-        }
+        userSettingService.saveUserSetting( SETTING_NAME_STYLE, file );
     }
 
     public String getCurrentStyle()
     {
-        try
-        {
-            return (String) userSettingService.getUserSetting( SETTING_NAME_STYLE );
-        }
-        catch ( NoCurrentUserException ex )
-        {
-            return null;
-        }
+        return (String) userSettingService.getUserSetting( SETTING_NAME_STYLE );
     }
 
     public String getCurrentStyleDirectory()

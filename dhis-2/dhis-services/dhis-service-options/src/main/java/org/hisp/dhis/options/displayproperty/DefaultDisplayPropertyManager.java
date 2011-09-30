@@ -30,7 +30,6 @@ package org.hisp.dhis.options.displayproperty;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
 
 /**
@@ -59,13 +58,7 @@ public class DefaultDisplayPropertyManager
 
     public void setCurrentDisplayProperty( String displayProperty )
     {
-        try
-        {
-            userSettingService.saveUserSetting( SETTING_NAME_DISPLAY_PROPERTY, displayProperty );
-        }
-        catch ( NoCurrentUserException e )
-        {
-        }
+        userSettingService.saveUserSetting( SETTING_NAME_DISPLAY_PROPERTY, displayProperty );
     }
 
     public String getCurrentDisplayProperty()

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
 
 /**
@@ -67,14 +66,7 @@ public class DatabaseLocaleManager
     @Override
     public void setCurrentLocale( Locale locale )
     {
-        try
-        {
-            userSettingService.saveUserSetting( KEY_USER_SETTING, locale );
-        }
-        catch ( NoCurrentUserException e )
-        {
-            // Just ignore for now. No change compared to previous behaviour.
-        }
+        userSettingService.saveUserSetting( KEY_USER_SETTING, locale );
     }
 
     @Override
