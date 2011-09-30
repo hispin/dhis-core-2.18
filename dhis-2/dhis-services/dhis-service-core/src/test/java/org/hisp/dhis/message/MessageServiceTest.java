@@ -37,6 +37,7 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -50,16 +51,16 @@ public class MessageServiceTest
     private User userB;
 
     private Set<User> users;
-
+    
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
 
-    @Override
+    @Before
     public void setUpTest()
     {
-        userService = (UserService) getBean( UserService.ID );
         messageService = (MessageService) getBean( MessageService.ID );
+        userService = (UserService) getBean( UserService.ID );
         
         sender = createUser( 'S' );
         userA = createUser( 'A' );

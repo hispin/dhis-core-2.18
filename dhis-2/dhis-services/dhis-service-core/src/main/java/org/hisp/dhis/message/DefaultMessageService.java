@@ -68,7 +68,14 @@ public class DefaultMessageService
     {
         this.configurationService = configurationService;
     }
+    
+    private List<MessageSender> messageSenders;
 
+    public void setMessageSenders( List<MessageSender> messageSenders )
+    {
+        this.messageSenders = messageSenders;
+    }
+    
     // -------------------------------------------------------------------------
     // MessageService implementation
     // -------------------------------------------------------------------------
@@ -101,7 +108,11 @@ public class DefaultMessageService
             conversation.addUserMessage( new UserMessage( user ) );        
         }
         
-        return saveMessageConversation( conversation );
+        int id = saveMessageConversation( conversation );
+        
+        invokeMessageSenders( subject, text, users );
+        
+        return id;
     }
 
     public int sendFeedback( String subject, String text )
@@ -117,7 +128,9 @@ public class DefaultMessageService
         
         conversation.markReplied( sender, message );
         
-        updateMessageConversation( conversation );        
+        updateMessageConversation( conversation );
+        
+        invokeMessageSenders( conversation.getSubject(), text, conversation.getUsers() );
     }
         
     public int saveMessageConversation( MessageConversation conversation )
@@ -148,5 +161,17 @@ public class DefaultMessageService
     public List<MessageConversation> getMessageConversations( int first, int max )
     {
         return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), first, max );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void invokeMessageSenders( String subject, String text, Set<User> users )
+    {
+        for ( MessageSender sender : messageSenders )
+        {
+            sender.sendMessage( subject, text, users );
+        }
     }
 }
