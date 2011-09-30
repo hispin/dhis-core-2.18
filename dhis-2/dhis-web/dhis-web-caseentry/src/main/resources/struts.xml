@@ -273,7 +273,7 @@
 
 		<action name="validateProgram"
 			class="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction">
-			<result name="success" type="velocity">/popup.vm</result>
+			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/validationResult.vm</param>
 		</action>
 

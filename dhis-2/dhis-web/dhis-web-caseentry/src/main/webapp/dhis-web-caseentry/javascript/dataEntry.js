@@ -903,7 +903,15 @@ TOGGLE = {
 
 function runValidation()
 {
-	window.open( 'validateProgram.action' );
+	$('<div id="validateProgramDiv">' ).load( 'validateProgram.action' ).dialog({
+			title: i18n_violate_validation,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 800,
+			height: 450
+		});
 }
 
 //------------------------------------------------------
