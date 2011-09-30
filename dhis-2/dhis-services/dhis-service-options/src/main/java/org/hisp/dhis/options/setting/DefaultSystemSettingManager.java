@@ -41,7 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Stian Strandli
  * @author Lars Helge Overland
- * @version $Id: DefaultSystemSettingManager.java 4910 2008-04-15 17:55:02Z larshelg $
  */
 @Transactional
 public class DefaultSystemSettingManager
@@ -69,10 +68,6 @@ public class DefaultSystemSettingManager
     // SystemSettingManager implementation
     // -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Generic methods
-    // -------------------------------------------------------------------------
-    
     public void saveSystemSetting( String name, Serializable value )
     {
         SystemSetting setting = systemSettingStore.getByName( name );

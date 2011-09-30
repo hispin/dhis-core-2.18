@@ -37,9 +37,13 @@ public interface StyleManager
 {
     String ID = StyleManager.class.getName();
     
-    void setCurrentStyle( String file );
+    void setSystemStyle( String file );
+    
+    void setUserStyle( String style );
     
     String getCurrentStyle();
+    
+    String getSystemStyle();
     
     String getCurrentStyleDirectory();
         

@@ -31,6 +31,7 @@ import java.io.File;
 import java.util.SortedMap;
 
 import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.user.UserSettingService;
 
 /**
  * @author Lars Helge Overland
@@ -55,6 +56,13 @@ public class DefaultStyleManager
     {
         this.systemSettingManager = systemSettingManager;
     }
+    
+    private UserSettingService userSettingService;
+
+    public void setUserSettingService( UserSettingService userSettingService )
+    {
+        this.userSettingService = userSettingService;
+    }
 
     private String defaultStyle;
 
@@ -74,12 +82,29 @@ public class DefaultStyleManager
     // StyleManager implementation
     // -------------------------------------------------------------------------
 
-    public void setCurrentStyle( String file )
+    public void setSystemStyle( String style )
     {
-         systemSettingManager.saveSystemSetting( SETTING_NAME_STYLE, file );
+         systemSettingManager.saveSystemSetting( SETTING_NAME_STYLE, style );
+    }
+    
+    public void setUserStyle( String style )
+    {
+        userSettingService.saveUserSetting( SETTING_NAME_STYLE, style );
     }
 
     public String getCurrentStyle()
+    {
+        String style = (String) userSettingService.getUserSetting( SETTING_NAME_STYLE );
+        
+        if ( style != null )
+        {
+            return style;
+        }
+        
+        return getSystemStyle();
+    }
+    
+    public String getSystemStyle()
     {
         return (String) systemSettingManager.getSystemSetting( SETTING_NAME_STYLE, styles.get( defaultStyle ) );
     }

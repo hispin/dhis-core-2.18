@@ -51,9 +51,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="styleManager">
       <ref bean="org.hisp.dhis.options.style.StyleManager" />
     </property>
-    <property name="userStyleManager">
-      <ref bean="org.hisp.dhis.options.style.UserStyleManager" />
-    </property>
   </bean>
 
   <bean id="org.hisp.dhis.settings.action.user.SetCurrentLocaleAction" class="org.hisp.dhis.settings.action.user.SetCurrentLocaleAction"
@@ -100,8 +97,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.settings.action.user.SetCurrentStyleAction" class="org.hisp.dhis.settings.action.user.SetCurrentStyleAction"
     scope="prototype">
-    <property name="userStyleManager">
-      <ref bean="org.hisp.dhis.options.style.UserStyleManager" />
+    <property name="styleManager">
+      <ref bean="org.hisp.dhis.options.style.StyleManager" />
     </property>
   </bean>
 

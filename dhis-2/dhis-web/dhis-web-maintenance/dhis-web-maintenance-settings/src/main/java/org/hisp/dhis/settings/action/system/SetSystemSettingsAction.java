@@ -219,12 +219,10 @@ public class SetSystemSettingsAction
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
-        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART,
-            omitIndicatorsZeroNumeratorDataMart );
-        systemSettingManager
-            .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
+        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
+        systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
-        styleManager.setCurrentStyle( currentStyle );
+        styleManager.setSystemStyle( currentStyle );
         systemSettingManager.saveSystemSetting( KEY_AGGREGATION_STRATEGY, aggregationStrategy );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
 
