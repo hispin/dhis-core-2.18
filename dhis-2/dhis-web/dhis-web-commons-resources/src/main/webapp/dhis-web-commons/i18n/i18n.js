@@ -1,106 +1,61 @@
-//----------------------------------------------------------
-// Regular Expression using for checking shortname' value
-//----------------------------------------------------------
-
-regexShortName = /^[\w][\w\d]+$/;
-
-//----------------------------------------------------------
-
-
-function updateTranslation()
+function getTranslation()
 {
-    var id = document.getElementById("objectId").value;
+	/* Clear fields */
+	for ( var i = 0; i < propNames.length; i++ )
+	{
+		byId( propNames[i] ).value = "";
+	}
 
-    var className = document.getElementById("className").value;
+    var loc = getFieldValue( 'loc' );
+	
+	if ( loc != "heading" )
+	{
+		jQuery.postJSON( 'getTranslations.action', {
+			id: getFieldValue( 'objectId' ),
+			className: getFieldValue( 'className' ),
+			loc: loc
+		}, function ( json ) {
+			
+			var translations = json.translations;
 
-    var box = document.getElementById("loc");
-    var loc = box.options[box.selectedIndex].value;
+			for ( var i = 0; i < translations.length; i++ )
+			{
+				var field = byId( translations[i].key );
 
-    var url = "getTranslations.action?id=" + id + "&className=" + className + "&loc=" + loc ;
+				if ( field != null ) field.value = translations[i].value;
+			}
+		});
+	}
+}
 
-    var request = new Request();
-
-    request.setResponseTypeXML('translation');
-
-    request.setCallbackSuccess(updateTranslationReceived);
-
+function getReference()
+{
     /* Clear fields */
     for ( var i = 0; i < propNames.length; i++ )
     {
-        document.getElementById(propNames[i]).value = "";
+        byId( propNames[i] + " Ref" ).innerHTML = "";
     }
+
+    var loc = getFieldValue( 'referenceLoc' );
 
     if ( loc != "heading" )
     {
-        request.send(url);
-    }
-}
+		jQuery.postJSON( 'getTranslations.action', {
+			id: getFieldValue ( 'objectId' ),
+			className: getFieldValue ( 'className' ),
+			loc: loc
+		}, function ( json )
+		{
+			var translations = json.translations;
 
-function updateTranslationReceived( xmlObject )
-{
-    var translations = xmlObject.getElementsByTagName("translation");
+			for ( var i = 0; i < translations.length; i++ )
+			{
+				var field = document.getElementById( translations[i].key + ' Ref' );
 
-    for ( var i = 0; i < translations.length; i++ )
-    {
-        var key = translations[ i ].getElementsByTagName("key")[0].firstChild.nodeValue;
-
-        var value = translations[ i ].getElementsByTagName("value")[0].firstChild.nodeValue;
-
-        var field = document.getElementById(key);
-
-        if ( field != null )
-        {
-            field.value = value;
-        }
-    }
-}
-
-function updateReference()
-{
-    var id = document.getElementById("objectId").value;
-
-    var className = document.getElementById("className").value;
-
-    var box = document.getElementById("referenceLoc");
-    var loc = box.options[box.selectedIndex].value;
-
-    var url = "getTranslations.action?id=" + id + "&className=" + className + "&loc=" + loc ;
-
-    var request = new Request();
-
-    request.setResponseTypeXML('translation');
-
-    request.setCallbackSuccess(updateReferenceReceived);
-
-    /* Clear fields */
-    for ( var i = 0; i < propNames.length; i++ )
-    {
-        document.getElementById(propNames[i] + " Ref").innerHTML = "";
-    }
-
-    if ( loc != "heading" )
-    {
-        request.send(url);
-    }
-}
-
-function updateReferenceReceived( xmlObject )
-{
-    var translations = xmlObject.getElementsByTagName("translation");
-
-    for ( var i = 0; i < translations.length; i++ )
-    {
-        var key = translations[ i ].getElementsByTagName("key")[0].firstChild.nodeValue;
-
-        var value = translations[ i ].getElementsByTagName("value")[0].firstChild.nodeValue;
-
-        var field = document.getElementById(key + " Ref");
-
-        if ( field != null )
-        {
-            field.innerHTML = value;
-        }
-    }
+				if ( field != null ) field.innerHTML = translations[i].value;
+			}
+		});
+	}
 }
 
 function addLocale()

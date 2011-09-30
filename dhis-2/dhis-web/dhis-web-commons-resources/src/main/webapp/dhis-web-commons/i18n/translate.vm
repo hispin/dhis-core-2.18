@@ -28,7 +28,7 @@
 	<tr>
 	<td style="width:12em"></td>
 	<td style="width:20em">
-        <select id="loc" name="loc" onchange="updateTranslation()" style="min-width:20em">
+        <select id="loc" name="loc" onchange="getTranslation()" style="min-width:20em">
             <option value="heading">$i18n.getString( "translation_select_locale" )</option>
 			#foreach ($locale in $availableLocales )
 				<option value="$locale" #if( $currentLocale == $locale ) selected="selected" #end>$locale.displayName</option>
@@ -36,7 +36,7 @@
 		</select>
     </td>
     <td style="width:20em">
-        <select id="referenceLoc" name="referenceLocal" onchange="updateReference()" style="min-width:20em">
+        <select id="referenceLoc" name="referenceLocal" onchange="getReference()" style="min-width:20em">
             <option value="heading">$i18n.getString( "translation_select_ref" )</option>
 			#foreach ($locale in $availableLocales )
 			    <option value="$locale" #if( $currentRefLocale == $locale ) selected="selected" #end>$locale.displayName</option>
