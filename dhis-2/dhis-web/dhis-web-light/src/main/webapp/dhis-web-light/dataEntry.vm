@@ -3,6 +3,17 @@
 
 <h2>$dataSet.name</h2>
 
+#if( $validationRuleViolations.size() > 0 )
+<div class="header-box" align="center">
+	<h3 style="text-align: left; background-color: #990000; color: white;">Validation Rule Violations</h3>
+	<p style="text-align: left;">
+	#foreach( $validationRuleViolation in $validationRuleViolations )
+		$validationRuleViolation <br />
+	#end
+	</p>
+</div>
+#end
+
 <form action="saveSectionForm.action" method="POST">
 
 <input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnitId" />
@@ -19,13 +30,13 @@
 				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
 				<label>$dataElement.name $optionCombo.name</label>
 
-				#if( $validationErrors.get( $key ) )
-				#set( $validationError = $validationErrors.get( $key ) )
+				#if( $validationViolations.get( $key ) )
+				#set( $validationViolation = $validationViolations.get( $key ) )
 
-                #if( $sectionFormUtils.valueHigher( $validationError.value, $validationError.max ) )
-                    <br /><span style="color: red;">Too high (max $validationError.max)</span>
-                #elseif( $sectionFormUtils.valueLower( $validationError.value, $validationError.min ) )
-                    <br /><span style="color: red;">Too low (min $validationError.min)</span>
+                #if( $sectionFormUtils.valueHigher( $validationViolation.value, $validationViolation.max ) )
+                    <br /><span style="color: #990000;">Too high (max $validationViolation.max)</span>
+                #elseif( $sectionFormUtils.valueLower( $validationViolation.value, $validationViolation.min ) )
+                    <br /><span style="color: red;">Too low (min $validationViolation.min)</span>
                 #else
                     <br /><span style="color: red;">Not a number</span>
                 #end

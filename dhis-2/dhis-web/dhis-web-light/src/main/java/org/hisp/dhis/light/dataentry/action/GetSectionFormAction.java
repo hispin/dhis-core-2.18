@@ -27,7 +27,9 @@
 
 package org.hisp.dhis.light.dataentry.action;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
@@ -147,11 +149,18 @@ public class GetSectionFormAction
         return dataValues;
     }
 
-    private Map<String, DeflatedDataValue> validationErrors = new HashMap<String, DeflatedDataValue>();
+    private Map<String, DeflatedDataValue> validationViolations = new HashMap<String, DeflatedDataValue>();
 
-    public Map<String, DeflatedDataValue> getValidationErrors()
+    public Map<String, DeflatedDataValue> getValidationViolations()
     {
-        return validationErrors;
+        return validationViolations;
+    }
+
+    private List<String> validationRuleViolations = new ArrayList<String>();
+
+    public List<String> getValidationRuleViolations()
+    {
+        return validationRuleViolations;
     }
 
     private Boolean complete = false;
@@ -188,7 +197,9 @@ public class GetSectionFormAction
 
         dataValues = sectionFormUtils.getDataValueMap( organisationUnit, dataSet, period );
 
-        validationErrors = sectionFormUtils.getValidationErrorMap( organisationUnit, dataSet, period );
+        validationViolations = sectionFormUtils.getValidationErrorMap( organisationUnit, dataSet, period );
+
+        validationRuleViolations = sectionFormUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
 
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
             organisationUnit );
