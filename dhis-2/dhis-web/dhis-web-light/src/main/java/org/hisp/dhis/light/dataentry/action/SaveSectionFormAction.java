@@ -27,8 +27,10 @@
 
 package org.hisp.dhis.light.dataentry.action;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -188,11 +190,18 @@ public class SaveSectionFormAction
         return dataValues;
     }
 
-    private Map<String, DeflatedDataValue> validationErrors = new HashMap<String, DeflatedDataValue>();
+    private Map<String, DeflatedDataValue> validationViolations = new HashMap<String, DeflatedDataValue>();
 
-    public Map<String, DeflatedDataValue> getValidationErrors()
+    public Map<String, DeflatedDataValue> getValidationViolations()
     {
-        return validationErrors;
+        return validationViolations;
+    }
+
+    private List<String> validationRuleViolations = new ArrayList<String>();
+
+    public List<String> getValidationRuleViolations()
+    {
+        return validationRuleViolations;
     }
 
     private Boolean complete = false;
@@ -263,9 +272,9 @@ public class SaveSectionFormAction
 
                 value = value.trim();
 
-                if( dataValue == null )
+                if ( dataValue == null )
                 {
-                    if( value != null && value.length() > 0 )
+                    if ( value != null && value.length() > 0 )
                     {
                         needsValidation = true;
 
@@ -276,7 +285,7 @@ public class SaveSectionFormAction
                 }
                 else
                 {
-                    if( !dataValue.getValue().equals( value ) )
+                    if ( !dataValue.getValue().equals( value ) )
                     {
                         needsValidation = true;
 
@@ -310,9 +319,11 @@ public class SaveSectionFormAction
 
         dataValues = sectionFormUtils.getDataValueMap( organisationUnit, dataSet, period );
 
-        validationErrors = sectionFormUtils.getValidationErrorMap( organisationUnit, dataSet, period );
+        validationViolations = sectionFormUtils.getValidationErrorMap( organisationUnit, dataSet, period );
 
-        if ( needsValidation && validationErrors.size() > 0 )
+        validationRuleViolations = sectionFormUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
+
+        if ( needsValidation && validationViolations.size() > 0 )
         {
             return ERROR;
         }

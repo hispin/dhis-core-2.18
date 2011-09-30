@@ -42,6 +42,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
@@ -49,6 +50,9 @@ import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.ListUtils;
+import org.hisp.dhis.validation.ValidationResult;
+import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
  * @author mortenoh
@@ -101,6 +105,20 @@ public class SectionFormUtils
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
+    private ValidationRuleService validationRuleService;
+
+    public void setValidationRuleService( ValidationRuleService validationRuleService )
+    {
+        this.validationRuleService = validationRuleService;
+    }
+
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+
     // -------------------------------------------------------------------------
     // Utils
     // -------------------------------------------------------------------------
@@ -145,6 +163,28 @@ public class SectionFormUtils
         return validationErrorMap;
     }
 
+    public List<String> getValidationRuleViolations( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    {
+        List<ValidationResult> validationRuleResults = new ArrayList<ValidationResult>( validationRuleService.validate(
+            dataSet, period, organisationUnit ) );
+
+        List<String> validationRuleViolations = new ArrayList<String>( validationRuleResults.size() );
+
+        for ( ValidationResult result : validationRuleResults )
+        {
+            ValidationRule rule = result.getValidationRule();
+
+            StringBuffer sb = new StringBuffer();
+            sb.append( expressionService.getExpressionDescription( rule.getLeftSide().getExpression() ) );
+            sb.append( " " + rule.getOperator().getMathematicalOperator() + " " );
+            sb.append( expressionService.getExpressionDescription( rule.getRightSide().getExpression() ) );
+
+            validationRuleViolations.add( sb.toString() );
+        }
+
+        return validationRuleViolations;
+    }
+
     public Map<String, String> getDataValueMap( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
         Map<String, String> dataValueMap = new HashMap<String, String>();
@@ -177,12 +217,14 @@ public class SectionFormUtils
         {
             integerValue = Integer.parseInt( value );
 
-            if(integerValue > max)
+            if ( integerValue > max )
             {
                 return true;
             }
-        } catch ( NumberFormatException e )
-        { }
+        }
+        catch ( NumberFormatException e )
+        {
+        }
 
         return false;
     }
@@ -195,12 +237,14 @@ public class SectionFormUtils
         {
             integerValue = Integer.parseInt( value );
 
-            if(integerValue < min)
+            if ( integerValue < min )
             {
                 return true;
             }
-        } catch ( NumberFormatException e )
-        { }
+        }
+        catch ( NumberFormatException e )
+        {
+        }
 
         return false;
     }

@@ -14,6 +14,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="minMaxValuesGenerationService" ref="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService" />
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
+    <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
   </bean>
 
   <bean id="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction" class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction">
