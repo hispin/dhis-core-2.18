@@ -3,7 +3,7 @@
 <table class="mainPageTable">
 	<tr>
 		<td>
-			<label><b>$i18n.getString( "select_program" )</b></label><br>
+			<label class="bold">$i18n.getString( "select_program" )</label><br>
             <select id="id" name="id" style="min-width:20em" onchange="getStageByProgram( this.value )">
                 <option value="" selected="selected" >[ $i18n.getString( "all" ) ]</option>
                 #foreach ( $program in $programs )

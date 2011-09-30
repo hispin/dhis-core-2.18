@@ -288,33 +288,33 @@ div#hiddenModalContent td {padding: 2px 5px}
 <div id="representativeInfo" style="display:none">
 <table>
 	<tr>
-		<td><strong>$i18n.getString("full_name"):</strong></td>
+		<td class="bold">$i18n.getString("full_name"):</td>
 		<td>$!representative.getFullName()</td>
 	</tr>
 	<tr>
-		<td><strong>$i18n.getString("gender"):</strong></td>
+		<td class="bold">$i18n.getString("gender"):</td>
 		<td> $!representative.gender</td>
 	</tr>
 	<tr>
-		<td><strong>$i18n.getString("date_of_birth"):</strong></td>
+		<td class="bold">$i18n.getString("date_of_birth"):</td>
 		<td>$!format.formatDate( $!representative.birthDate )</td>
 	</tr>
 	<tr>
-		<td><strong>$i18n.getString("age"):</strong></td>
+		<td class="bold">$i18n.getString("age"):</td>
 		<td> $!representative.getAge() </td>
 	</tr>
 	<tr>
-		<td><strong>$i18n.getString("blood_group"):</strong></td>
+		<td class="bold">$i18n.getString("blood_group"):</td>
 		<td>$!representative.getBloodGroup()</td>
 	</tr>
 	#foreach( $patientIdentifier in $representative.identifiers )
 	  <tr>  
-	  	<td><strong>#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.name: #else $i18n.getString("system_identifier"): #end</strong></td>      
+	  	<td class="bold">#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.name: #else $i18n.getString("system_identifier"): #end</td>      
 	      <td> $!patientIdentifier.identifier </td>
 	   </tr>
 	#end
 	<tr>
-		<td><strong>$i18n.getString("programs"):</strong></td>
+		<td class="bold">$i18n.getString("programs"):</td>
 		<td>  
 			 #foreach( $program in $representative.programs )
 			 	#if( $velocityCount == 1 )

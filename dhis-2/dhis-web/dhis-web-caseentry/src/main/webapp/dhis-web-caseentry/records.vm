@@ -1,18 +1,18 @@
 <table>
 	<tr>
-	    <td><strong>$i18n.getString( "full_name" ):</strong></td>
+	    <td class="bold">$i18n.getString( "full_name" ):</td>
 	    <td>$encoder.htmlEncode( $patient.getFullName() )</td>
 	</tr>
 	<tr>
-	    <td><strong>$i18n.getString( "gender" ):</strong></td>
+	    <td class="bold">$i18n.getString( "gender" ):</td>
 	    <td>$i18n.getString( $patient.gender )</td>
 	</tr>    
 	<tr>
-	    <td><strong>$i18n.getString( "date_of_birth" ):</strong></td>
+	    <td class="bold">$i18n.getString( "date_of_birth" ):</td>
 	    <td>$format.formatDate( $patient.birthDate )</td>
 	</tr>
 	<tr>
-	    <td><strong>$i18n.getString( "age" ):</strong></td>
+	    <td class="bold">$i18n.getString( "age" ):</td>
 	    <td>$encoder.htmlEncode( $patient.getAge() )</td>
 	</tr>    
 </table>
