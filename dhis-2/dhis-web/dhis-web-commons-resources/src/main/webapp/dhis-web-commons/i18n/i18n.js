@@ -1,10 +1,6 @@
 function getTranslation()
 {
-	/* Clear fields */
-	for ( var i = 0; i < propNames.length; i++ )
-	{
-		byId( propNames[i] ).value = "";
-	}
+	clearFields();
 
     var loc = getFieldValue( 'loc' );
 	
@@ -30,11 +26,7 @@ function getTranslation()
 
 function getReference()
 {
-    /* Clear fields */
-    for ( var i = 0; i < propNames.length; i++ )
-    {
-        byId( propNames[i] + " Ref" ).innerHTML = "";
-    }
+	clearFields( ' Ref' );
 
     var loc = getFieldValue( 'referenceLoc' );
 
@@ -56,6 +48,16 @@ function getReference()
 			}
 		});
 	}
+}
+
+function clearFields( prefix )
+{
+	prefix = prefix ? prefix : '';
+	
+    for ( var i = 0; i < propNames.length; i++ )
+    {
+        byId( propNames[i] + prefix ).innerHTML = "";
+    }
 }
 
 function addLocale()
