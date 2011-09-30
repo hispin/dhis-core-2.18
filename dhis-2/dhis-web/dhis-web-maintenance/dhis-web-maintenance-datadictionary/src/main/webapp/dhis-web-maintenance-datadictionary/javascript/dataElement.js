@@ -66,7 +66,8 @@ function showDataElementDetails( dataElementId )
 		var typeMap = {
 			'int' : i18n_number,
 			'bool' : i18n_yes_no,
-			'string' : i18n_text
+			'string' : i18n_text,
+			'date' : i18n_date
 		};
 		var type = json.dataElement.valueType;
 		setInnerHTML( 'typeField', typeMap[type] );
