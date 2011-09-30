@@ -203,7 +203,7 @@ public class GetSystemSettingsAction
 
         styles = styleManager.getStyles();
 
-        currentStyle = styleManager.getCurrentStyle();
+        currentStyle = styleManager.getSystemStyle();
 
         aggregationStrategies = systemSettingManager.getAggregationStrategies();
 

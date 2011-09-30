@@ -587,11 +587,6 @@
     <property name="sortOrderManager" ref="org.hisp.dhis.options.sortorder.SortOrderManager" />
   </bean>
 
-  <bean id="org.hisp.dhis.interceptor.StyleInterceptor" class="org.hisp.dhis.interceptor.StyleInterceptor">
-    <property name="systemStyleManager" ref="org.hisp.dhis.options.style.StyleManager" />
-    <property name="userStyleManager" ref="org.hisp.dhis.options.style.UserStyleManager" />
-  </bean>
-
   <bean id="org.hisp.dhis.interceptor.SystemSettingInterceptor" class="org.hisp.dhis.interceptor.SystemSettingInterceptor">
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
   </bean>
@@ -602,6 +597,7 @@
 
   <bean id="org.hisp.dhis.interceptor.UserSettingInterceptor" class="org.hisp.dhis.interceptor.UserSettingInterceptor">
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+    <property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
   </bean>
 
   <bean id="org.hisp.dhis.useraccount.action.GetCurrentUserAction" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction"

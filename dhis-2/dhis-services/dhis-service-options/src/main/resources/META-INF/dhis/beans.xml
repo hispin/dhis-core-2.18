@@ -280,6 +280,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.options.style.StyleManager" class="org.hisp.dhis.options.style.DefaultStyleManager">
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
     <property name="defaultStyle" value="light_blue" />
     <property name="styles">
       <map>
@@ -315,10 +316,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </entry>
       </map>
     </property>
-  </bean>
-
-  <bean id="org.hisp.dhis.options.style.UserStyleManager" class="org.hisp.dhis.options.style.DefaultUserStyleManager">
-    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
   </bean>
 
   <bean id="org.hisp.dhis.options.help.HelpManager" class="org.hisp.dhis.options.help.DefaultHelpManager" />

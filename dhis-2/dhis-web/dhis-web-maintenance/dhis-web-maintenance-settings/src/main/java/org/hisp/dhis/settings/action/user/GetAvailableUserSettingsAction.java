@@ -27,6 +27,9 @@
 
 package org.hisp.dhis.settings.action.user;
 
+import static org.hisp.dhis.user.UserSettingService.DEFAULT_CHARTS_IN_DASHBOARD;
+import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,12 +43,9 @@ import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyManager;
 import org.hisp.dhis.options.sortorder.SortOrderManager;
 import org.hisp.dhis.options.style.StyleManager;
-import org.hisp.dhis.options.style.UserStyleManager;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
-
-import static org.hisp.dhis.user.UserSettingService.*;
 
 /**
  * @author Chau Thu Tran
@@ -100,14 +100,7 @@ public class GetAvailableUserSettingsAction
     {
         this.styleManager = styleManager;
     }
-
-    private UserStyleManager userStyleManager;
-
-    public void setUserStyleManager( UserStyleManager userStyleManager )
-    {
-        this.userStyleManager = userStyleManager;
-    }
-
+    
     private DisplayPropertyManager displayPropertyManager;
 
     public void setDisplayPropertyManager( DisplayPropertyManager displayPropertyManager )
@@ -290,7 +283,7 @@ public class GetAvailableUserSettingsAction
 
         styles = styleManager.getStyles();
 
-        currentStyle = userStyleManager.getCurrentStyle();
+        currentStyle = styleManager.getCurrentStyle();
 
         return SUCCESS;
     }

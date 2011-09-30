@@ -27,7 +27,7 @@ package org.hisp.dhis.settings.action.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.options.style.UserStyleManager;
+import org.hisp.dhis.options.style.StyleManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,13 +42,13 @@ public class SetCurrentStyleAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStyleManager userStyleManager;
+    private StyleManager styleManager;
 
-    public void setUserStyleManager( UserStyleManager userStyleManager )
+    public void setStyleManager( StyleManager styleManager )
     {
-        this.userStyleManager = userStyleManager;
+        this.styleManager = styleManager;
     }
-
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -66,7 +66,7 @@ public class SetCurrentStyleAction
 
     public String execute()
     {
-        userStyleManager.setCurrentStyle( currentStyle );
+        styleManager.setUserStyle( currentStyle );
 
         return SUCCESS;
     }
