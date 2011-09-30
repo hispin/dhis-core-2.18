@@ -10,8 +10,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService" />
     </property>
-    <property name="userSettingManager">
-      <ref bean="org.hisp.dhis.options.UserSettingManager" />
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
     </property>
     <property name="dataDictionaryService">
       <ref bean="org.hisp.dhis.datadictionary.DataDictionaryService" />
@@ -420,8 +420,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService" />
     </property>
-    <property name="userSettingManager">
-      <ref bean="org.hisp.dhis.options.UserSettingManager" />
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
     </property>
     <property name="dataDictionaryService">
       <ref bean="org.hisp.dhis.datadictionary.DataDictionaryService" />
@@ -542,8 +542,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.dd.action.datadictionary.SetCurrentDataDictionaryAction" class="org.hisp.dhis.dd.action.datadictionary.SetCurrentDataDictionaryAction"
     scope="prototype">
-    <property name="userSettingManager">
-      <ref bean="org.hisp.dhis.options.UserSettingManager" />
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
     </property>
   </bean>
 

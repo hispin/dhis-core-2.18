@@ -34,9 +34,7 @@ import org.hisp.dhis.user.UserSettingService;
 
 /**
  * @author Chau Thu Tran
- * @version DefaultUserStyleManager.java 2010-10-26 20:08:27Z $
  */
-
 public class DefaultUserStyleManager
     implements UserStyleManager
 {

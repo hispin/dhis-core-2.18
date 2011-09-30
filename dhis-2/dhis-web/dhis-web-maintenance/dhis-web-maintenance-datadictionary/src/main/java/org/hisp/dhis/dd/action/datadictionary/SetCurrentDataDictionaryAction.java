@@ -27,7 +27,7 @@ package org.hisp.dhis.dd.action.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.options.UserSettingManager;
+import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,11 +42,11 @@ public class SetCurrentDataDictionaryAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserSettingManager userSettingManager;
+    private UserSettingService userSettingService;
 
-    public void setUserSettingManager( UserSettingManager userSettingManager )
+    public void setUserSettingService( UserSettingService userSettingService )
     {
-        this.userSettingManager = userSettingManager;
+        this.userSettingService = userSettingService;
     }
 
     // -------------------------------------------------------------------------
@@ -66,7 +66,7 @@ public class SetCurrentDataDictionaryAction
 
     public String execute()
     {
-        userSettingManager.saveUserSetting( UserSettingManager.KEY_CURRENT_DATADICTIONARY, id );
+        userSettingService.saveUserSetting( UserSettingService.KEY_CURRENT_DATADICTIONARY, id );
         
         return SUCCESS;
     }
