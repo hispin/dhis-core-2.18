@@ -124,7 +124,7 @@ public class SectionFormUtils
     // -------------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
-    public Map<String, DeflatedDataValue> getValidationErrorMap( OrganisationUnit organisationUnit, DataSet dataSet,
+    public Map<String, DeflatedDataValue> getValidationViolations( OrganisationUnit organisationUnit, DataSet dataSet,
         Period period )
     {
         Map<String, DeflatedDataValue> validationErrorMap = new HashMap<String, DeflatedDataValue>();
