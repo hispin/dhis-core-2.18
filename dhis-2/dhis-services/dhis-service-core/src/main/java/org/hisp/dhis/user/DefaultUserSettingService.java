@@ -29,6 +29,7 @@ package org.hisp.dhis.user;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -134,7 +135,7 @@ public class DefaultUserSettingService
 
         if ( currentUser == null )
         {
-            return null;
+            return Collections.emptySet();
         }
 
         return userService.getAllUserSettings( currentUser );
@@ -144,11 +145,9 @@ public class DefaultUserSettingService
     {
         User currentUser = currentUserService.getCurrentUser();
 
-        if ( currentUser == null )
+        if ( currentUser != null )
         {
-            return;
-        }
-
-        userService.deleteUserSetting( userService.getUserSetting( currentUser, name ) );
+            userService.deleteUserSetting( userService.getUserSetting( currentUser, name ) );
+        }        
     }
 }
