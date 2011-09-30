@@ -12,10 +12,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
   </bean>
 
-  <bean id="org.hisp.dhis.options.datadictionary.DataDictionaryModeManager" class="org.hisp.dhis.options.datadictionary.DefaultDataDictionaryModeManager">
-    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-  </bean>
-
   <bean id="org.hisp.dhis.options.SystemSettingStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.options.SystemSetting" />
     <property name="sessionFactory" ref="sessionFactory" />
