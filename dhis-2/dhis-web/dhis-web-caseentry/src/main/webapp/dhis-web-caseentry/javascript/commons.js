@@ -101,12 +101,12 @@ function getParamsForDiv( patientDiv)
 function showPatientDetails( patientId )
 {
     $('#detailsArea').load("getPatientDetails.action", 
-	{
-		id:patientId
-	}
-	, function(){
-		showDetails();
-	});
+		{
+			id:patientId
+		}
+		, function( ){
+			showDetails();
+		});
 }
 
 // -----------------------------------------------------------------------------

@@ -121,7 +121,7 @@
 	<table>
 		<tr>
 			<td>
-				<b>$i18n.getString( "dataelement" )</b><br>
+				<span class="bold">$i18n.getString( "dataelement" )</span><br>
 				<input type="text" style="min-width:290px" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
 				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" onchange="getOptionCombos( this.value, '#dataElementSelection #optionComboIds' )" class="{validate:{required:true}}">
 					#foreach( $de in $dataElements)
@@ -135,18 +135,12 @@
 				</select>
 			</td>
 			<td>
-				<b>$i18n.getString( "optioncombo" )</b><br>
+				<span class="bold">$i18n.getString( "optioncombo" )</span><br>
 				<select id="optionComboIds" name="optionComboIds" style="min-width:300px" size="10" class="{validate:{required:true}}"/>					
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<!-- <b>$i18n.getString( "view_as" )</b><br>
-				<select name="viewBySelector" id="viewBySelector" style="width:150px">		
-					<option value="deid">$i18n.getString( "id" )</option>
-					<option value="dename">$i18n.getString( "name" )</option>
-					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
-				</select> -->
 				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#dataElementSelection', '$programStage.id')"/>
 			</td>
 			<td>
@@ -160,7 +154,7 @@
 	<table>
 		<tr>
 			<td>
-				<b>$i18n.getString( "program_stage" )</b><br>
+				<span class="bold">$i18n.getString( "program_stage" )</span><br>
 				<select id="programStageIds" style="min-width:300px" onchange="getProgramStageDataElements( this.value )" >
 					<option value=''>$i18n.getString( "select" )</option>
 					#foreach( $p in $programStages)
@@ -171,13 +165,13 @@
 		</tr>
 		<tr>
 			<td>
-				<b>$i18n.getString( "dataelement" )</b><br>
+				<span class="bold">$i18n.getString( "dataelement" )</span><br>
 				<input type="text" style="min-width:290px" onkeyup="filterDataElements( this.value, '#otherProgramStageDataElements', '#dataElementIds')"/>
 				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" onchange="getOptionCombos( this.value, '#otherProgramStageDataElements #optionComboIds' )" class="{validate:{required:true}}"/>
 				<select id="dataElementIdsStore" style="min-width:300px;display:none" multiple="multiple" size="10"/>
 			</td>
 			<td>
-				<b>$i18n.getString( "optioncombo" )</b><br>
+				<span class="bold">$i18n.getString( "optioncombo" )</span><br>
 				<select id="optionComboIds" name="optionComboIds" style="min-width:300px" size="10" class="{validate:{required:true}}"/>					
 			</td>
 		</tr>

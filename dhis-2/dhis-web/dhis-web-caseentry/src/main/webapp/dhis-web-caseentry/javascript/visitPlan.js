@@ -11,7 +11,7 @@ function sortByAttribute( sortingAttributeId )
 {
 	var url = "visitplanSortByAttribute.action";
 	
-	lockScreen();
+	showLoader();
 	
 	if ( url.length > 0 )
 	{
@@ -24,7 +24,7 @@ function sortByAttribute( sortingAttributeId )
 				jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
 				jQuery( "table.listTable tbody" ).trigger( "update" );
 
-				unLockScreen();
+				hideLoader();
 			}
 		);
 	}

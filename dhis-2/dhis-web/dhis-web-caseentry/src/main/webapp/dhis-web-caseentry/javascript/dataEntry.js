@@ -100,7 +100,7 @@ function loadProgramStages()
 			{
 				history += '<tr>';
                 history += '<td>';
-                history += '<strong>' + json.programStageInstances[i].name + '</strong>';
+                history += '<span class="bold">' + json.programStageInstances[i].name + '</span>';
 				history += '</td>';
                 history += '<td style="text-align:center" bgcolor=' + json.programStageInstances[i].colorMap + '>';
                 history += json.programStageInstances[i].infor;

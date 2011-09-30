@@ -1,4 +1,4 @@
-<span><strong>$i18n.getString( "total_result" ): $!total $i18n.getString('patients')</strong></span>
+<span class="bold">$i18n.getString( "total_result" ): $!total $i18n.getString('patients')</span>
 <p></p>
 <table width='100%' id='searchTable' name='searchTable'>
 #if($!patients)
@@ -46,7 +46,7 @@
   </tr>
 #else
 	<tr>
-		<td colspan='6'><strong>i18n_no_patients_found</strong></td>
+		<td colspan='6' class="bold">i18n_no_patients_found</td>
 	</tr>
 #end
 </table>

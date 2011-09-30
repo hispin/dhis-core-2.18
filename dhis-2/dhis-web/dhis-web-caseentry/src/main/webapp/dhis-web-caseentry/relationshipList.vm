@@ -9,15 +9,15 @@
     <table class="mainPageTable">                           
         <tr>              
             <td>
-                <strong>$i18n.getString( "full_name" ):</strong>$encoder.htmlEncode( $patient.getFullName() )<br>
-                <strong>$i18n.getString( "gender" ):</strong>$i18n.getString( $patient.gender )<br>
-                <strong>$i18n.getString( "date_of_birth" ):</strong>$format.formatDate( $patient.birthDate )<br>
-                <strong>$i18n.getString( "age" ):</strong>$encoder.htmlEncode( $patient.getAge() )
+                <span class="bold">$i18n.getString( "full_name" ):</span>$encoder.htmlEncode( $patient.getFullName() )<br>
+                <span class="bold">$i18n.getString( "gender" ):</span>$i18n.getString( $patient.gender )<br>
+                <span class="bold">$i18n.getString( "date_of_birth" ):</span>$format.formatDate( $patient.birthDate )<br>
+                <span class="bold">$i18n.getString( "age" ):</span>$encoder.htmlEncode( $patient.getAge() )
             </td>               
             <td style="vertical-align:top">
                 <div style="float:right">
                     #foreach( $patientAttributeValue in $patientAttributeValues )
-                        <strong>$encoder.htmlEncode( $patientAttributeValue.patientAttribute.name ):</strong>$encoder.htmlEncode( $patientAttributeValue.value )<br>
+                        <span class="bold">$encoder.htmlEncode( $patientAttributeValue.patientAttribute.name ):</span>$encoder.htmlEncode( $patientAttributeValue.value )<br>
                     #end                         
                 </div>
             </td>   
@@ -95,14 +95,14 @@
 				</div>	                     
 			</td>
 			<td>
-                <strong>$i18n.getString( "full_name" ):</strong><span id="fullNameField"></span><br>
-                <strong>$i18n.getString( "gender" ):</strong><span id="genderField"></span><br>
-                <strong>$i18n.getString( "date_of_birth" ):</strong><span id="dateOfBirthField"></span><br>
-                <strong>$i18n.getString( "age" ):</strong><span id="ageField"></span>
+                <span class="bold">$i18n.getString( "full_name" ):</span><span id="fullNameField"></span><br>
+                <span class="bold">$i18n.getString( "gender" ):</span><span id="genderField"></span><br>
+                <span class="bold">$i18n.getString( "date_of_birth" ):</span><span id="dateOfBirthField"></span><br>
+                <span class="bold">$i18n.getString( "age" ):</span><span id="ageField"></span>
             </td>   
             <td style="vertical-align:top">
                 <div style="float:right">                              
-                    <p><strong>$i18n.getString( "attributes" ):</strong><br><span id="attributeField"></span></p>                                         
+                    <p><span class="bold">$i18n.getString( "attributes" ):</span><br><span id="attributeField"></span></p>                                         
                 </div>
             </td>    
         </tr>

@@ -100,18 +100,18 @@ function showPersons( divContainer, xmlElement )
 	$( patients ).each( function( i, patient )
     {
 		sPatient += "<hr style='margin:5px 0px;'><table>";
-		sPatient += "<tr><td><strong>" + i18n_patient_system_id + "</strong></td><td>" + $( patient ).find('systemIdentifier').text() + "</td></tr>" ;
-		sPatient += "<tr><td><strong>" + i18n_patient_full_name + "</strong></td><td>" + $( patient ).find('fullName').text() + "</td></tr>" ;
-		sPatient += "<tr><td><strong>" + i18n_patient_gender + "</strong></td><td>" + $( patient ).find('gender').text() + "</td></tr>" ;
-		sPatient += "<tr><td><strong>" + i18n_patient_date_of_birth + "</strong></td><td>" + $( patient ).find('dateOfBirth').text() + "</td></tr>" ;
-		sPatient += "<tr><td><strong>" + i18n_patient_age + "</strong></td><td>" + $( patient ).find('age').text() + "</td></tr>" ;
-		sPatient += "<tr><td><strong>" + i18n_patient_blood_group + "</strong></td><td>" + $( patient ).find('bloodGroup').text() + "</td></tr>";
+		sPatient += "<tr><td class='bold'>" + i18n_patient_system_id + "</td><td>" + $( patient ).find('systemIdentifier').text() + "</td></tr>" ;
+		sPatient += "<tr><td class='bold'>" + i18n_patient_full_name + "</td><td>" + $( patient ).find('fullName').text() + "</td></tr>" ;
+		sPatient += "<tr><td class='bold'>" + i18n_patient_gender + "</td><td>" + $( patient ).find('gender').text() + "</td></tr>" ;
+		sPatient += "<tr><td class='bold'>" + i18n_patient_date_of_birth + "</td><td>" + $( patient ).find('dateOfBirth').text() + "</td></tr>" ;
+		sPatient += "<tr><td class='bold'>" + i18n_patient_age + "</td><td>" + $( patient ).find('age').text() + "</td></tr>" ;
+		sPatient += "<tr><td class='bold'>" + i18n_patient_blood_group + "</td><td>" + $( patient ).find('bloodGroup').text() + "</td></tr>";
 		
 		var identifiers =  $( patient ).find('identifier');
 		$( identifiers ).each( function( i, identifier )
 		{
 			sPatient +="<tr class='identifierRow" + $(identifier).find('id').text() + "' id='iden" + $(identifier).find('id' ).text() + "'>"
-				+"<td><strong>" + $(identifier).find('name').text() + "</strong></td>"
+				+"<td class='bold'>" + $(identifier).find('name').text() + "</td>"
 				+"<td class='value'>" + $(identifier).find('value').text() + "</td>	"	
 				+"</tr>";
 		});
@@ -120,7 +120,7 @@ function showPersons( divContainer, xmlElement )
 		$( attributes ).each( function( i, attribute )
 		{
 				sPatient += "<tr class='attributeRow'>"
-					+ "<td><strong>" + $(attribute).find('name').text() + "</strong></td>"
+					+ "<td class='bold'>" + $(attribute).find('name').text() + "</td>"
 					+ "<td>" + $(attribute).find('value').text() + "</td>	"	
 					+ "</tr>";
 		});
@@ -135,7 +135,7 @@ function showPersons( divContainer, xmlElement )
 // Will be call after save new person successfully
 function autoChoosePerson( xmlElement )
 {
-	jQuery("#tab-2").html("<center><strong>" + i18n_add_person_successfully + "</strong></center>");
+	jQuery("#tab-2").html("<center><span class='bold'>" + i18n_add_person_successfully + "</span></center>");
 	var root = jQuery(xmlElement);
 	jQuery("#addPatientForm [id=representativeId]").val( root.find("id").text() );
 	jQuery("#addPatientForm [id=relationshipTypeId]").val( root.find("relationshipTypeId").text() );

@@ -278,22 +278,22 @@ function showListPatientDuplicate( rootElement, validate )
 	$( patients ).each( function( i, patient )
         {
 			sPatient += "<hr style='margin:5px 0px;'><table>";
-			sPatient += "<tr><td><strong>" + i18n_patient_system_id + "</strong></td><td>" + $(patient).find('systemIdentifier').text() + "</td></tr>" ;
-			sPatient += "<tr><td><strong>" + i18n_patient_full_name + "</strong></td><td>" + $(patient).find('fullName').text() + "</td></tr>" ;
-			sPatient += "<tr><td><strong>" + i18n_patient_gender + "</strong></td><td>" + $(patient).find('gender').text() + "</td></tr>" ;
-			sPatient += "<tr><td><strong>" + i18n_patient_date_of_birth + "</strong></td><td>" + $(patient).find('dateOfBirth').text() + "</td></tr>" ;
-			sPatient += "<tr><td><strong>" + i18n_patient_age + "</strong></td><td>" + $(patient).find('age').text() + "</td></tr>" ;
-			sPatient += "<tr><td><strong>" + i18n_patient_blood_group + "</strong></td><td>" + $(patient).find('bloodGroup').text() + "</td></tr>";
+			sPatient += "<tr><td class='bold'>" + i18n_patient_system_id + "</td><td>" + $(patient).find('systemIdentifier').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_full_name + "</td><td>" + $(patient).find('fullName').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_gender + "</td><td>" + $(patient).find('gender').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_date_of_birth + "</td><td>" + $(patient).find('dateOfBirth').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_age + "</td><td>" + $(patient).find('age').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_blood_group + "</td><td>" + $(patient).find('bloodGroup').text() + "</td></tr>";
         	
 			var identifiers = $(patient).find('identifier');
         	if( identifiers.length > 0 )
         	{
-        		sPatient += "<tr><td colspan='2'><strong>" + i18n_patient_identifiers + "</strong></td></tr>";
+        		sPatient += "<tr><td colspan='2' class='bold'>" + i18n_patient_identifiers + "</td></tr>";
 
         		$( identifiers ).each( function( i, identifier )
 				{
         			sPatient +="<tr class='identifierRow'>"
-        				+"<td><strong>" + $(identifier).find('name').text() + "</strong></td>"
+        				+"<td class='bold'>" + $(identifier).find('name').text() + "</td>"
         				+"<td>" + $(identifier).find('value').text() + "</td>	"	
         				+"</tr>";
         		});
@@ -302,12 +302,12 @@ function showListPatientDuplicate( rootElement, validate )
         	var attributes = $(patient).find('attribute');
         	if( attributes.length > 0 )
         	{
-        		sPatient += "<tr><td colspan='2'><strong>" + i18n_patient_attributes + "</strong></td></tr>";
+        		sPatient += "<tr><td colspan='2' class='bold'>" + i18n_patient_attributes + "</td></tr>";
 
         		$( attributes ).each( function( i, attribute )
 				{
         			sPatient +="<tr class='attributeRow'>"
-        				+"<td><strong>" + $(attribute).find('name').text() + "</strong></td>"
+        				+"<td class='bold'>" + $(attribute).find('name').text() + "</td>"
         				+"<td>" + $(attribute).find('value').text() + "</td>	"	
         				+"</tr>";
         		});

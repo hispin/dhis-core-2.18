@@ -164,7 +164,7 @@ function insertDataElement( source, associationId )
 
 	if( dataElement == null )
 	{
-		jQuery( source + " #message_").html( "<b>" + i18n_specify_dataelememt + "</b>" );
+		jQuery( source + " #message_").html( "<span class='bold'>" + i18n_specify_dataelememt + "</span>" );
 		return;
 	} else {
 		jQuery( source + " #message_").html( "" );
@@ -225,7 +225,7 @@ function insertDataElement( source, associationId )
 	
 	if( checkExisted( id ) )
 	{		
-		jQuery( source + " #message_").html( "<b>" + i18n_dataelement_is_inserted + "</b>" );
+		jQuery( source + " #message_").html( "<span class='bold'>" + i18n_dataelement_is_inserted + "</span>" );
 		return;
 	}else{
 		jQuery( source + " #message_").html("");
