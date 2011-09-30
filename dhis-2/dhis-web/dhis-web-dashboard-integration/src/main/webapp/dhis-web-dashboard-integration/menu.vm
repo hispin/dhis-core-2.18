@@ -1,6 +1,6 @@
 
-#if ( $flag )
-<img src="../dhis-web-commons/flags/$flag" style="margin-top: 16px; margin-left: 16px; border: 1px solid #D0D0D0;">
+#if ( $keyFlag )
+<img src="../dhis-web-commons/flags/${keyFlagImage}" style="margin-top: 16px; margin-left: 16px; border: 1px solid #D0D0D0;">
 #end
 
 <h2>$i18n.getString( "dashboard" )&nbsp;</h2>

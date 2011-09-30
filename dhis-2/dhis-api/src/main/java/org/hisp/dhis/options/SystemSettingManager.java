@@ -30,7 +30,6 @@ package org.hisp.dhis.options;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.SortedMap;
 
 /**
  * @author Stian Strandli
@@ -42,7 +41,8 @@ public interface SystemSettingManager
     
     final String KEY_SYSTEM_IDENTIFIER = "keySystemIdentifier";
     final String KEY_APPLICATION_TITLE = "applicationTitle";
-    final String KEY_FLAG = "flag";
+    final String KEY_FLAG = "keyFlag";
+    final String KEY_FLAG_IMAGE = "keyFlagImage";
     final String KEY_START_MODULE = "startModule";
     final String KEY_FORUM_INTEGRATION = "forumIntegration";
     final String KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART = "omitIndicatorsZeroNumeratorDataMart";
@@ -78,9 +78,11 @@ public interface SystemSettingManager
 
     void deleteSystemSetting( String name );
     
-    SortedMap<String, String> getFlags();
+    List<String> getFlags();
     
     List<String> getAggregationStrategies();
     
     String getSystemIdentifier();
+    
+    String getFlagImage();
 }

@@ -38,8 +38,8 @@
 <p>
 <select name="flag" style="width:30em">
 	<option value="NO_FLAG">$i18n.getString( "no_flag" )</option>
-	#foreach ( $f in $flags.entrySet() )
-	<option value="$f.value" #if( $f.value == $flag )selected="selected"#end>$i18n.getString( $f.key )</option>
+	#foreach ( $flag in $flags )
+	<option value="$flag" #if( $flag == $keyFlag )selected="selected"#end>$i18n.getString( $flag )</option>
     #end
 </select>
 </p>

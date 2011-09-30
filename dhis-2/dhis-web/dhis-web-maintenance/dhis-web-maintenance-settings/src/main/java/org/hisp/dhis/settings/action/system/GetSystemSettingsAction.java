@@ -119,9 +119,9 @@ public class GetSystemSettingsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private SortedMap<String, String> flags;
+    private List<String> flags;
 
-    public SortedMap<String, String> getFlags()
+    public List<String> getFlags()
     {
         return flags;
     }
