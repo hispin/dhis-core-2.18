@@ -23,8 +23,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.datamart.action.GetOptionsAction" class="org.hisp.dhis.datamart.action.GetOptionsAction"
     scope="prototype">
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />

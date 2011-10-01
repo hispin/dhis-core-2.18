@@ -410,5 +410,10 @@ var validationRules = {
             "rangelength" : [ 2, 230 ],
             "alphanumericwithbasicpuncspaces" : true
         }
-    }
+    },
+	"dataMart" : {
+		"name" : {
+			"required": true
+		}
+	}
 };
