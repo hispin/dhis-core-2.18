@@ -33,7 +33,7 @@
     </action>
 
     <action name="getExportStatus" class="org.hisp.dhis.datamart.action.GetExportStatusAction">
-      <result name="success" type="velocity-xml">/dhis-web-datamart/responseExportStatus.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-datamart/jsonExportStatus.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -45,8 +45,9 @@
     <!-- DataMartExports -->
 
     <action name="removeDataMartExport" class="org.hisp.dhis.datamart.action.RemoveDataMartExportAction">
-      <result name="success" type="redirect">getDataMartExports.action</result>
-      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
+      <result name="success" type="velocity-json">
+		../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="getDataMartExports" class="org.hisp.dhis.datamart.action.GetAllDataMartExportsAction">

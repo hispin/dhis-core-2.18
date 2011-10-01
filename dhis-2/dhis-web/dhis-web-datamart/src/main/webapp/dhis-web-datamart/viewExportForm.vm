@@ -29,7 +29,7 @@
                 </thead>
                 <tbody id="list">
                 #foreach( $export in $exports )
-                <tr>
+                <tr id="tr${export.id}">
                     <td onclick="showDataMartExportDetails( $export.id )">$encoder.htmlEncode( $export.name )</td>
                     <td style="text-align:center">
 						<a href="exportDataMartExport.action?id=$export.id" title="$i18n.getString( 'export' )"><img src="../images/start_process.png" alt="$i18n.getString( 'export' )"/></a>

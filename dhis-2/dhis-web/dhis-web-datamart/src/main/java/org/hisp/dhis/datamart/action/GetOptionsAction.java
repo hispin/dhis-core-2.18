@@ -35,15 +35,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -53,7 +47,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
-import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
@@ -69,20 +62,6 @@ public class GetOptionsAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-    
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
 
     private PeriodService periodService;
 
@@ -149,34 +128,6 @@ public class GetOptionsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
-    private List<DataElement> dataElements;
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    private List<DataElementGroup> dataElementGroups;
-
-    public List<DataElementGroup> getDataElementGroups()
-    {
-        return dataElementGroups;
-    }
-
-    private List<Indicator> indicators;
-
-    public List<Indicator> getIndicators()
-    {
-        return indicators;
-    }
-
-    private List<IndicatorGroup> indicatorGroups;
-
-    public List<IndicatorGroup> getIndicatorGroups()
-    {
-        return indicatorGroups;
-    }
 
     private List<OrganisationUnit> organisationUnits;
 
@@ -284,53 +235,6 @@ public class GetOptionsAction
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Data element
-        // ---------------------------------------------------------------------
-
-        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-
-        Collections.sort( dataElements, dataElementComparator );
-
-        displayPropertyHandler.handle( dataElements );
-        
-        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-        
-        // ---------------------------------------------------------------------
-        // Data element group
-        // ---------------------------------------------------------------------
-
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-        
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-        
-        // ---------------------------------------------------------------------
-        // Indicator
-        // ---------------------------------------------------------------------
-
-        indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-
-        Collections.sort( indicators, indicatorComparator );
-
-        displayPropertyHandler.handle( indicators );
-
-        // ---------------------------------------------------------------------
-        // Indicator group
-        // ---------------------------------------------------------------------
-
-        indicatorGroups = new ArrayList<IndicatorGroup>(indicatorService.getAllIndicatorGroups());
-        
-        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
-
-        // ---------------------------------------------------------------------
-        // Organisation unit
-        // ---------------------------------------------------------------------
-
-        organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
-
-        Collections.sort( organisationUnits, organisationUnitComparator );
-        
-        displayPropertyHandler.handle( organisationUnits );
         
         // ---------------------------------------------------------------------
         // Level
@@ -364,7 +268,6 @@ public class GetOptionsAction
             selectedDataElements = new ArrayList<DataElement>( export.getDataElements() );
             displayPropertyHandler.handle( selectedDataElements );
             Collections.sort( selectedDataElements, dataElementComparator );
-            dataElements.removeAll( selectedDataElements );
             
             // ---------------------------------------------------------------------
             // Indicator
@@ -373,7 +276,6 @@ public class GetOptionsAction
             selectedIndicators = new ArrayList<Indicator>( export.getIndicators() );
             displayPropertyHandler.handle( selectedIndicators );
             Collections.sort( selectedIndicators, indicatorComparator );
-            indicators.removeAll( selectedIndicators );
             
             // ---------------------------------------------------------------------
             // Organisation unit
@@ -382,7 +284,6 @@ public class GetOptionsAction
             selectedOrganisationUnits = new ArrayList<OrganisationUnit>( export.getOrganisationUnits() );
             displayPropertyHandler.handle( selectedOrganisationUnits );
             Collections.sort( selectedOrganisationUnits, organisationUnitComparator );
-            organisationUnits.removeAll( selectedOrganisationUnits );
             
             // ---------------------------------------------------------------------
             // Period

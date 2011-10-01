@@ -1,4 +1,5 @@
-<script type="text/javascript">
+<script type="text/javascript" src="javascript/addUpdateDatamart.js"></script>	
+<script type="text/javascript">	
     var i18n_select_min_datatype = '$encoder.jsEscape( $i18n.getString( "select_min_datatype" ), "'" )';
     var i18n_select_min_level = '$encoder.jsEscape( $i18n.getString( "select_min_level" ), "'" )';
     var i18n_select_min_period = '$encoder.jsEscape( $i18n.getString( "select_min_period" ), "'" )';
@@ -15,14 +16,14 @@
 
 <form id="exportForm" name="exportForm" method="post" action="saveDataMartExport.action">
 
-<input type="hidden" id="id" name="id" value="$!id">
+<input type="hidden" id="id" name="id" value="$!id"/>
 
 <table width="730">
 	
 	<colgroup>
-  		<col style="width:325px">
-  		<col style="width:80px">
- 		<col style="width:325px">
+  		<col style="width:325px"/>
+  		<col style="width:80px"/>
+ 		<col style="width:325px"/>
   	</colgroup>
 
     <!-- Name -->
@@ -32,7 +33,7 @@
         <td colspan="2"></td>
     </tr>
     <tr>
-    	<td><input type="text" id="name" name="name" style="min-width:325px" value="$!export.name"></td>
+    	<td><input type="text" id="name" name="name" style="min-width:325px" value="$!export.name"/></td>
     	<td colspan="2"></td>
     </tr>
 	<tr>
@@ -44,27 +45,19 @@
 	<tr>
 		<th>$i18n.getString( "available_dataelements" )</th>
 		<td></td>
-		<th>$i18n.getString( "selected_dataelements" )</th>
+		<th>$i18n.getString( "selected_dataelements" )
+			<select id="dataelementsValidator" class="{validate:{required:true}}" style="display:none"/>
+		</th>
 	</tr>	
 	<tr>
 		<td>
-			<select id="dataElementGroupId" name="dataElementGroupId" style="min-width:325px" onchange="getDataElements()">
-				<option value="$ALL">[ $i18n.getString( "select_dataelementgroup_all" ) ]</option>
-				#foreach ( $group in $dataElementGroups )
-					<option value="$group.id">$group.name</option>
-				#end
-			</select><br>
-			<select multiple size="6" id="availableDataElements" name="availableDataElements" style="min-width:325px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">				
-				#foreach ( $element in $dataElements )
-					<option value="$element.id">$element.name</option>
-				#end                
-			</select>
+			<select multiple size="6" id="availableDataElements" name="availableDataElements" style="min-width:325px"></select>
 		</td>
 		<td align="center">
-            <input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:40px" onclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )"><br>
-            <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:40px" onclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )"><br>		
-            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:40px" onclick="moveAllById( 'availableDataElements', 'selectedDataElements' )"><br>
-            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="moveAllById( 'selectedDataElements', 'availableDataElements' )">
+            <input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:40px" onclick="dhisAjaxSelect_moveAllSelected( 'availableDataElements', 'selectedDataElements' )"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:40px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedDataElements', 'availableDataElements' )"/><br/>
+            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'availableDataElements', 'selectedDataElements' )"/><br/>
+            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'selectedDataElements', 'availableDataElements' )"/>
 		</td>
 		<td>
 		    <select multiple id="selectedDataElements" name="selectedDataElements" style="min-width:325px; height:96px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
@@ -83,27 +76,19 @@
 	<tr>
 		<th>$i18n.getString( "available_indicators" )</th>
 		<td></td>
-		<th>$i18n.getString( "selected_indicators" )</th>
+		<th>$i18n.getString( "selected_indicators" )
+			<select id="indicatorsValidator" class="{validate:{required:true}}" style="display:none"/>
+		</th>
 	</tr>
 	<tr>
 		<td>			
-			<select id="indicatorGroupId" name="indicatorGroupId" style="min-width:325px" onchange="getIndicators()">
-				<option value="$ALL">[ $i18n.getString( "select_indicatorgroup_all" ) ]</option>
-				#foreach ( $group in $indicatorGroups )
-					<option value="$group.id">$group.name</option>
-				#end
-			</select><br>
-			<select multiple size="6" id="availableIndicators" name="availableIndicators" style="min-width:325px" ondblclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )">				
-				#foreach ( $indicator in $indicators )
-					<option value="$indicator.id">$indicator.name</option>
-				#end
-			</select>
+			<select multiple size="6" id="availableIndicators" name="availableIndicators" style="min-width:325px"></select>
 		</td>
 		<td align="center">
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:40px" onclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )"><br>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:40px" onclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )"><br>		
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:40px" onclick="moveAllById( 'availableIndicators', 'selectedIndicators' )"><br>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="moveAllById( 'selectedIndicators', 'availableIndicators' )">
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:40px" onclick="dhisAjaxSelect_moveAllSelected( 'availableIndicators', 'selectedIndicators' )"/><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:40px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedIndicators', 'availableIndicators' )"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'availableIndicators', 'selectedIndicators' )"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'selectedIndicators', 'availableIndicators' )"/>
 		</td>
 		<td>
 			<select multiple id="selectedIndicators" name="selectedIndicators" style="min-width:325px; height:96px" ondblclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )">
@@ -122,7 +107,9 @@
 	<tr>
 		<th>$i18n.getString( "available_organisationunits" )</th>
 		<td></td>
-		<th>$i18n.getString( "selected_organisationunits" )</th>
+		<th>$i18n.getString( "selected_organisationunits" )
+			<select id="organisationunitsValidator" class="{validate:{required:true}}" style="display:none"/>
+		</th>
 	</tr>
 	<tr>
 		<td>
@@ -131,19 +118,15 @@
 				#foreach ( $level in $levels )
 					<option value="$level.level">$level.name</option>
 				#end
-			</select><br>
-			<select multiple size="6" id="availableOrganisationUnits" name="availableOrganisationUnits" style="min-width:325px" ondblclick="moveSelectedById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )">
-				#foreach ( $unit in $organisationUnits )
-					<option value="$unit.id">$encoder.htmlEncode( $unit.name )</option>
-				#end
-			</select>
+			</select><br/>
+			<select multiple size="6" id="availableOrganisationUnits" name="availableOrganisationUnits" style="min-width:325px"></select>
 		</td>
 		<td align="center">
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:40px" onclick="moveSelectedById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )"><br>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:40px" onclick="moveSelectedById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )"><br>		
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:40px" onclick="moveAllById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )"><br>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="moveAllById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )"><br>
-			<input type="button" value="&gt;&gt;&gt;" title="$i18n.getString('move_children')" style="width:40px" onclick="getOrganisationUnitChildren()">
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:40px" onclick="dhisAjaxSelect_moveAllSelected( 'availableOrganisationUnits', 'selectedOrganisationUnits' )"/><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:40px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedOrganisationUnits', 'availableOrganisationUnits' )"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'availableOrganisationUnits', 'selectedOrganisationUnits' )"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'selectedOrganisationUnits', 'availableOrganisationUnits' )"/><br/>
+			<input type="button" value="&gt;&gt;&gt;" title="$i18n.getString('move_children')" style="width:40px" onclick="getOrganisationUnitChildren()"/>
 		</td>
 		<td>
 			<select multiple id="selectedOrganisationUnits" name="selectedOrganisationUnits" style="min-width:325px; height:96px" ondblclick="moveSelectedById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )">				
@@ -162,18 +145,20 @@
 	<tr>
 		<th>$i18n.getString( "available_periods" )</th>
 		<td></td>
-		<th>$i18n.getString( "selected_periods" )</th>
+		<th>$i18n.getString( "selected_periods" )
+			<select id="periodsValidator" class="{validate:{required:true}}" style="display:none"/>
+		</th>
 	</tr>	
 	<tr>
 		<td>
-			<input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '-1' )"><input
-				   type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '1' )">
+			<input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '-1' )"/><input
+				   type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '1' )"/>
 			<select id="periodType" name="periodType" style="min-width:224px" onchange="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '0' )">
 				<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
 				#foreach ( $type in $periodTypes )
 					<option value="$type.name">$i18n.getString( $type.name )</option>
 				#end
-			</select><br>
+			</select><br/>
 			<select multiple size="6" id="availablePeriods" name="availablePeriods" style="min-width:325px" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )">
 				#foreach ( $period in $periods )
 					<option value="$period.externalId">$format.formatPeriod( $period )</option>
@@ -181,10 +166,10 @@
 			</select>
 		</td>
 		<td align="center">
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:40px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"><br>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:40px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )"><br>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:40px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )"><br>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="moveAllById( 'selectedPeriods', 'availablePeriods' )">
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:40px" onclick="dhisAjaxSelect_moveAllSelected( 'availablePeriods', 'selectedPeriods' )"/><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:40px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedPeriods', 'availablePeriods' )"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'availablePeriods', 'selectedPeriods' )"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'selectedPeriods', 'availablePeriods' )"/>
 		</td>
 		<td>
 			<select multiple id="selectedPeriods" name="selectedPeriods" style="min-width:325px; height:96px" ondblclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )">				
@@ -206,20 +191,20 @@
 	<tr>
 		<td colspan="3">
 		    <label for="reportingMonth">$i18n.getString( "reporting_month" )</label>
-			<input type="checkbox" id="reportingMonth" name="reportingMonth" value="true"#if( $!export.relatives.isReportingMonth() ) checked#end>&nbsp;
+			<input type="checkbox" id="reportingMonth" name="reportingMonth" value="true"#if( $!export.relatives.isReportingMonth() ) checked#end/>&nbsp;
 			<label for="monthsThisYear">$i18n.getString( "months_this_year" )</label>
-			<input type="checkbox" id="monthsThisYear" name="monthsThisYear" value="true""#if( $!export.relatives.isMonthsThisYear() ) checked#end>&nbsp;
+			<input type="checkbox" id="monthsThisYear" name="monthsThisYear" value="true"#if( $!export.relatives.isMonthsThisYear() ) checked#end/>&nbsp;
 			<label for="quartersThisYear">$i18n.getString( "quarters_this_year" )</label>
-			<input type="checkbox" id="quartersThisYear" name="quartersThisYear" value="true"#if( $!export.relatives.isQuartersThisYear() ) checked#end>&nbsp;
+			<input type="checkbox" id="quartersThisYear" name="quartersThisYear" value="true"#if( $!export.relatives.isQuartersThisYear() ) checked#end/>&nbsp;
 			<label for="thisYear">$i18n.getString( "this_year" )</label>
-			<input type="checkbox" id="thisYear" name="thisYear" value="true"#if( $!export.relatives.isThisYear() ) checked#end><br><br>
+			<input type="checkbox" id="thisYear" name="thisYear" value="true"#if( $!export.relatives.isThisYear() ) checked#end/><br/><br/>
 			
 			<label for="monthsLastYear">$i18n.getString( "months_last_year" )</label>
-			<input type="checkbox" id="monthsLastYear" name="monthsLastYear" value="true""#if( $!export.relatives.isMonthsLastYear() ) checked#end>&nbsp;
+			<input type="checkbox" id="monthsLastYear" name="monthsLastYear" value="true"#if( $!export.relatives.isMonthsLastYear() ) checked#end/>&nbsp;
 			<label for="quartersLastYear">$i18n.getString( "quarters_last_year" )</label>
-			<input type="checkbox" id="quartersLastYear" name="quartersLastYear" value="true"#if( $!export.relatives.isQuartersLastYear() ) checked#end>&nbsp;
+			<input type="checkbox" id="quartersLastYear" name="quartersLastYear" value="true"#if( $!export.relatives.isQuartersLastYear() ) checked#end/>&nbsp;
 			<label for="lastYear">$i18n.getString( "last_year" )</label>
-			<input type="checkbox" id="lastYear" name="lastYear" value="true"#if( $!export.relatives.isLastYear() ) checked#end>         
+			<input type="checkbox" id="lastYear" name="lastYear" value="true"#if( $!export.relatives.isLastYear() ) checked#end/>
         </td>
     </tr>
     <tr>
@@ -229,8 +214,8 @@
     <!-- Submit -->
     
 	<tr>		
-		<td><input type="button" value='$i18n.getString( "save" )' onclick="saveExport()" style="width:120px"><input
-                   type="button" value='$i18n.getString( "back" )' onclick="javascript:window.location.href='getDataMartExports.action'" style="width:120px"></ttd>
+		<td><input type="submit" value='$i18n.getString( "save" )' style="width:120px"/><input
+			type="button" value='$i18n.getString( "back" )' onclick="javascript:window.location.href='getDataMartExports.action'" style="width:120px"/></td>
 		<td></td>
 		<td></td>
 	</tr>
