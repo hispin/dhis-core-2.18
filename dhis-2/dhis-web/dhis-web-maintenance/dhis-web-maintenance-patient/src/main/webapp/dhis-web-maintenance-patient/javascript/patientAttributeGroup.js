@@ -1,13 +1,3 @@
-function beforeSubmit()
-{
-	memberValidator = jQuery( "#memberValidator");
-	memberValidator.children().remove();
-	
-	jQuery.each( jQuery( "#selectedAttributes" ).children(), function(i, item){
-		item.selected = 'selected';
-		memberValidator.append( '<option value="' + item.value + '" selected="selected">' + item.value + '</option>');
-	});
-}
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
