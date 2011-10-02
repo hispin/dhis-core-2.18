@@ -415,5 +415,15 @@ var validationRules = {
 		"name" : {
 			"required": true
 		}
+	},
+	"patientAttributeGroup" : {
+		"name" : {
+			"required" : true,
+			"rangelength" : [ 2,160 ]
+		},
+		"description" : {
+			"required" : true,
+			"rangelength" : [ 2, 255 ]
+		}
 	}
 };

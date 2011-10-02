@@ -38,9 +38,9 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  *
- * @version GetPatientAttributesWithdoutGroupAction.java Sep 27, 2010 4:55:01 PM
+ * @version GetPatientAttributesWithoutGroupAction.java Sep 27, 2010 4:55:01 PM
  */
-public class GetPatientAttributesWithdoutGroupAction 
+public class GetPatientAttributesWithoutGroupAction 
     implements Action
 {   
     // -------------------------------------------------------------------------

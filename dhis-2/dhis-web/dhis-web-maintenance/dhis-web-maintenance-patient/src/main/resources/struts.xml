@@ -98,6 +98,20 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="getPatientAttributes"
+			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeListAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPatientAttributes.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="getProgramAttributeWithoutGroup"
+			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributesWithoutGroupAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPatientAttributes.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<action name="removePatientAttribute"
 			class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeAction">
 			<result name="success" type="velocity-json">
@@ -513,7 +527,7 @@
 		</action>
 
 		<action name="showAddPatientAttributeGroupForm"
-			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributesWithdoutGroupAction">
+			class="org.hisp.dhis.patient.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addPatientAttributeGroupForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
