@@ -448,6 +448,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="emailMessageSender" class="org.hisp.dhis.message.EmailMessageSender">
 	<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	<property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <bean id="org.hisp.dhis.concept.ConceptService" class="org.hisp.dhis.concept.DefaultConceptService">

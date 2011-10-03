@@ -1,6 +1,8 @@
 package org.hisp.dhis.user;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -316,5 +318,15 @@ public interface UserService
      * 
      * @param userSetting the UserSetting to delete.
      */
-    void deleteUserSetting( UserSetting userSetting );    
+    void deleteUserSetting( UserSetting userSetting );
+
+    /**
+     * Returns a Map with an entry for all UserSettings with the given name where
+     * the key is the user and the value is the value of the user setting.
+     * 
+     * @param name the name of the UserSetting.
+     * @param defaultValue the value to return if the UserSetting value is null.  
+     * @return a Map.
+     */
+    Map<User,Serializable> getUserSettings( String name, Serializable defaultValue );
 }

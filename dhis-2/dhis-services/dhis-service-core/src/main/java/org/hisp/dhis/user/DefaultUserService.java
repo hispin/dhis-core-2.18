@@ -1,8 +1,11 @@
 package org.hisp.dhis.user;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -441,5 +444,17 @@ public class DefaultUserService
     public UserSetting getUserSetting( User user, String name )
     {
         return userStore.getUserSetting( user, name );
+    }
+    
+    public Map<User,Serializable> getUserSettings( String name, Serializable defaultValue )
+    {
+        Map<User,Serializable> map = new HashMap<User, Serializable>();
+        
+        for ( UserSetting setting : userStore.getUserSettings( name ) )
+        {
+            map.put( setting.getUser(), setting.getValue() != null ? setting.getValue() : defaultValue );
+        }
+        
+        return map;
     }
 }

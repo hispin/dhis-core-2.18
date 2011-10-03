@@ -273,4 +273,12 @@ public interface UserStore
      * @param userSetting the UserSetting to delete.
      */
     void deleteUserSetting( UserSetting userSetting );
+    
+    /**
+     * Returns all UserSettings with the given name.
+     * 
+     * @param name the name.
+     * @return a Collection of UserSettings.
+     */
+    Collection<UserSetting> getUserSettings( String name );
 }
