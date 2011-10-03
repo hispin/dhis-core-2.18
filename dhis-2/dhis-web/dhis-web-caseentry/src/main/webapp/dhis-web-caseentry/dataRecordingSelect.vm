@@ -3,17 +3,30 @@
 </div>
    
 <table class="mainPageTable"> 
-    <tr>            
-        <td>
-            <span class="bold">$i18n.getString( "full_name" ):</span>$encoder.htmlEncode( $patient.getFullName() )<br>
-            <span class="bold">$i18n.getString( "gender" ):</span>$i18n.getString( $patient.gender )<br>
-            <span class="bold">$i18n.getString( "date_of_birth" ):</span>$format.formatDate( $patient.birthDate )<br>
-            <span class="bold">$i18n.getString( "age" ):</span>$encoder.htmlEncode( $patient.getAge() )
-        </td>
-        <td style="vertical-align:top">
+	<tr>
+		<td>
+	<table>
+		<tr>            
+			<td class="bold">$i18n.getString( "full_name" ):</td>
+			<td>$encoder.htmlEncode( $patient.getFullName() )<td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString( "gender" ):</td>
+			<td>$i18n.getString( $patient.gender )</td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString( "date_of_birth" ):</td>
+			<td>$format.formatDate( $patient.birthDate )<td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString( "age" ):</td>
+			<td>$encoder.htmlEncode( $patient.getAge() )</td>
+		</tr>
+		</table>
+		<td style="vertical-align:top" rowspan='5'>
 			<div id="currentSelection" style="float:right"></div>
-        </td>
-    </tr>                    
+		</td>
+	</tr>
 </table>
 
 <hr style="clear:both">
@@ -50,7 +63,7 @@
 		<td></td>
 		<td>
 			<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" style="width:12em" disabled="disabled" >
-			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();", '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );" style="width:12em " disabled="disabled" >
+			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();" style="width:12em " disabled="disabled" >
 		</td>
 		<td></td>
 	</tr>

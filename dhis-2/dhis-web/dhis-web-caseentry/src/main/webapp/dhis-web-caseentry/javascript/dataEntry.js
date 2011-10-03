@@ -903,7 +903,7 @@ TOGGLE = {
 
 function runValidation()
 {
-	$('<div id="validateProgramDiv">' ).load( 'validateProgram.action' ).dialog({
+	$('#validateProgramDiv' ).load( 'validateProgram.action' ).dialog({
 			title: i18n_violate_validation,
 			maximize: true, 
 			closable: true,
