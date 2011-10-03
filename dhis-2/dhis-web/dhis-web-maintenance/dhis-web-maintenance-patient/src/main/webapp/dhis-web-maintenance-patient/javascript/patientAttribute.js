@@ -9,11 +9,7 @@ function showPatientAttributeDetails( patientAttributeId )
 			setInnerHTML( 'idField', json.patientAttribute.id );
 			setInnerHTML( 'nameField', json.patientAttribute.name );	
 			setInnerHTML( 'descriptionField', json.patientAttribute.description );
-			
-			var valueTypeMap = { 'NUMBER':i18n_number, 'BOOL':i18n_yes_no, 'TEXT':i18n_text, 'DATE':i18n_date, 'COMBO':i18n_combo };
-			var valueType = json.patientAttribute.valueType;    
-			
-			setInnerHTML( 'valueTypeField', valueTypeMap[valueType] );    
+			setInnerHTML( 'valueTypeField', json.patientAttribute.valueType );    
 	   
 			showDetails();
 	});

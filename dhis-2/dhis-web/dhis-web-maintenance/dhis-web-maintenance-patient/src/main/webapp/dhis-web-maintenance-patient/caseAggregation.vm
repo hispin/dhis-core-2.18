@@ -49,12 +49,12 @@
 				<div style="float:right">
 					<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
 				</div>				
-				<p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
-                <p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
-                <p><label>$i18n.getString( "operator" ):</label><br><span id="operatorField"></span></p>
-                <p><label>$i18n.getString( "aggregation_data_element" ):</label><br><span id="aggregationDataElementField"></span></p>
-				<p><label>$i18n.getString( "option_combo" ):</label><br><span id="optionComboField"></span></p>
-                <p><label>$i18n.getString( "aggregation_expression" ):</label><br><span id="aggregationExpressionField"></span></p>
+				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
+                <p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
+                <p><label class="bold">$i18n.getString( "operator" ):</label><br><span id="operatorField"></span></p>
+                <p><label class="bold">$i18n.getString( "aggregation_data_element" ):</label><br><span id="aggregationDataElementField"></span></p>
+				<p><label class="bold">$i18n.getString( "option_combo" ):</label><br><span id="optionComboField"></span></p>
+                <p><label class="bold">$i18n.getString( "aggregation_expression" ):</label><br><span id="aggregationExpressionField"></span></p>
 			</div>
 
 		</td>

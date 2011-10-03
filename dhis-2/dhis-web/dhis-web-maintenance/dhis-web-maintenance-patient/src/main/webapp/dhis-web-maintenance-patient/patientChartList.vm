@@ -40,12 +40,12 @@
 				<div style="float:right">
 					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
 				</div>				
-				<p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
-				<p><label>$i18n.getString( "title" ):</label><br><span id="titleField"></span></p>
-				<p><label>$i18n.getString( "type" ):</label><br><span id="typeField"></span></p>				
-				<p><label>$i18n.getString( "size" ):</label><br><span id="sizeField"></span></p>
-				<p><label>$i18n.getString( "regression" ):</label><br><span id="regressionField"></span></p>
-				<p><label>$i18n.getString( "dataElement" ):</label><br><span id="dataElementField"></span></p>
+				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
+				<p><label class="bold">$i18n.getString( "title" ):</label><br><span id="titleField"></span></p>
+				<p><label class="bold">$i18n.getString( "type" ):</label><br><span id="typeField"></span></p>				
+				<p><label class="bold">$i18n.getString( "size" ):</label><br><span id="sizeField"></span></p>
+				<p><label class="bold">$i18n.getString( "regression" ):</label><br><span id="regressionField"></span></p>
+				<p><label class="bold">$i18n.getString( "dataElement" ):</label><br><span id="dataElementField"></span></p>
 			</div>
 
 		</td>
