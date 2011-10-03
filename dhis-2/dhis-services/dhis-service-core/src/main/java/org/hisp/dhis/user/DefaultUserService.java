@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
@@ -56,18 +57,25 @@ public class DefaultUserService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
+    }
+
+    private GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore;
+
+    public void setUserRoleStore( GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore )
+    {
+        this.userRoleStore = userRoleStore;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -273,22 +281,22 @@ public class DefaultUserService
 
     public Collection<UserAuthorityGroup> getUserRolesBetween( int first, int max )
     {
-        return userStore.getUserRolesBetween( first, max );
+        return userRoleStore.getBetween( first, max );
     }
 
     public Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max )
     {
-        return userStore.getUserRolesBetweenByName( name, first, max );
+        return userRoleStore.getBetweenByName( name, first, max );
     }
 
     public int getUserRoleCount()
     {
-        return userStore.getUserRoleCount();
+        return userRoleStore.getCount();
     }
 
     public int getUserRoleCountByName( String name )
     {
-        return userStore.getUserRoleCountByName( name );
+        return userRoleStore.getCountByName( name );
     }
 
     public void assignDataSetToUserRole( DataSet dataSet )

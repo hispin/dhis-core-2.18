@@ -231,20 +231,6 @@ public interface UserStore
      */
     Collection<UserAuthorityGroup> getAllUserAuthorityGroups();
 
-    /**
-     * Retrieves all UserAuthorityGroups.
-     * 
-     * @return a Collectio of UserAuthorityGroups.
-     */
-    Collection<UserAuthorityGroup> getUserRolesBetween( int first, int max );
-
-    /**
-     * Retrieves all UserAuthorityGroups.
-     * 
-     * @return a Collectio of UserAuthorityGroups.
-     */
-    Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max );
-
     // -------------------------------------------------------------------------
     // UserSettings
     // -------------------------------------------------------------------------
@@ -287,13 +273,4 @@ public interface UserStore
      * @param userSetting the UserSetting to delete.
      */
     void deleteUserSetting( UserSetting userSetting );
-
-    // -------------------------------------------------------------------------
-    // UserRole
-    // -------------------------------------------------------------------------
-
-    int getUserRoleCount();
-
-    int getUserRoleCountByName( String name );
-
 }
