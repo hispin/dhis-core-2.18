@@ -743,7 +743,7 @@ Ext.onReady( function() {
                                         width: DV.conf.layout.west_cmp_width,
                                         valueField: 'id',
                                         displayField: 'name',
-                                        fieldLabel: 'Indicator group',
+                                        fieldLabel: 'Select group',
                                         labelStyle: 'padding-left:7px;',
                                         labelWidth: 110,
                                         editable: false,
@@ -885,7 +885,7 @@ Ext.onReady( function() {
                                         width: DV.conf.layout.west_cmp_width,
                                         valueField: 'id',
                                         displayField: 'name',
-                                        fieldLabel: 'Data element group',
+                                        fieldLabel: 'Select group',
                                         labelStyle: 'padding-left:7px;',
                                         labelWidth: 110,
                                         editable: false,
@@ -1060,7 +1060,8 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'monthsLastYear',
-                                                        boxLabel: 'Months last year'
+                                                        boxLabel: 'Months last year',
+                                                        checked: true
                                                     }
                                                 ]
                                             },
@@ -1172,6 +1173,8 @@ Ext.onReady( function() {
                                             }
                                         }),
                                         listeners: {
+                                            //afterrender: function(tp) {
+                                                //tp.getRootNode()
                                             itemcontextmenu: function(a,b,c,d,e) {
                                                 console.log(e);
                                             }
@@ -1219,9 +1222,12 @@ Ext.onReady( function() {
                             }
                         }
                     },
+                    ' ',
                     {
                         xtype: 'button',
                         text: 'Update',
+                        cls: 'x-btn-text-icon',
+                        icon: 'images/refresh.png',
                         handler: function() {
                             DV.state.getState(true);
                         }
