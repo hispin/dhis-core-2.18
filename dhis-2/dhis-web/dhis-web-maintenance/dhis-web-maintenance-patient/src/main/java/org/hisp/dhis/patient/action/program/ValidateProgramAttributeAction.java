@@ -96,7 +96,7 @@ public class ValidateProgramAttributeAction
 
         ProgramAttribute match = programAttributeService.getProgramAttributeByName( name );
 
-        if ( match != null && (id == null || match.getId() != id.intValue() )) )
+        if ( match != null && (id == null || match.getId() != id.intValue() ) )
         {
             message = i18n.getString( "duplicate_names" );
 
