@@ -11,14 +11,6 @@
 				option.attr( "value", item.id );
 
 				return option;
-			},
-			filter: {
-				source: "../dhis-web-commons-ajax-json/getIndicatorGroups.action",
-				iterator: "indicatorGroups",
-				label: 'indicator group',
-				handler: function(item) {
-					return "<option data-key='id' data-value='" + item.id + "'>" + item.name + "</option>";
-				}
 			}
 		});
 
