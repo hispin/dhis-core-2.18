@@ -19,5 +19,3 @@
 		#end
 	</table>
 #end
-
-<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( "close" ) )" style="width:10em" onclick="window.close();"></p>
