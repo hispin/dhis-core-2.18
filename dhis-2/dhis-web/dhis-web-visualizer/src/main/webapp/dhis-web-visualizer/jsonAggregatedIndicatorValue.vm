@@ -1,0 +1,9 @@
+#set( $size = $object.size() )
+{ "aggregatedIndicatorValues": [
+#foreach( $value in $object )
+  {
+    "id": "$!{indicator.id}",
+    "shortName": "$!encoder.jsonEncode( ${indicator.shortName} )"
+  }#if( $velocityCount < $size ),#end
+#end
+] }

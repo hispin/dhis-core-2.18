@@ -151,6 +151,20 @@ public class RelativePeriods
     // Logic
     // -------------------------------------------------------------------------
     
+    public RelativePeriods clear()
+    {
+        this.reportingMonth = false;
+        this.reportingBimonth = false;
+        this.reportingQuarter = false;
+        this.monthsThisYear = false;
+        this.quartersThisYear = false;
+        this.thisYear = false;
+        this.monthsLastYear = false;
+        this.quartersLastYear = false;
+        this.lastYear = false;
+        return this;
+    }
+    
     /**
      * Returns the name of the reporting month.
      * 

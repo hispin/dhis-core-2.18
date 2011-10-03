@@ -299,9 +299,9 @@
 
     <action name="validateAddDuplicatedTranslation" class="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction">
       <result name="success" type="velocity-json">
-		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="input" type="velocity-json">
-		/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+        /dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -529,6 +529,13 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <action name="getDataElementGroupsMinified" class="org.hisp.dhis.commons.action.GetDataElementGroupsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonminDataElementGroups.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <action name="getDataElementGroupSet" class="org.hisp.dhis.commons.action.GetDataElementGroupSetAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonDataElementGroupSet.vm
@@ -560,6 +567,13 @@
     <action name="getDataElements" class="org.hisp.dhis.commons.action.GetDataElementsAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonDataElements.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="getDataElementsMinified" class="org.hisp.dhis.commons.action.GetDataElementsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonminDataElements.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
@@ -613,6 +627,13 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <action name="getIndicatorGroupsMinified" class="org.hisp.dhis.commons.action.GetIndicatorGroupsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonminIndicatorGroups.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <action name="getIndicatorGroupSet" class="org.hisp.dhis.commons.action.GetIndicatorGroupSetAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonIndicatorGroupSet.vm
@@ -630,6 +651,13 @@
     <action name="getIndicators" class="org.hisp.dhis.commons.action.GetIndicatorsAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonIndicators.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="getIndicatorsMinified" class="org.hisp.dhis.commons.action.GetIndicatorsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonminIndicators.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>

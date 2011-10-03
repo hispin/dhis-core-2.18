@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<include file="dhis-web-commons.xml" />
+
+	<package name="dhis-web-visualizer" extends="dhis-web-commons"
+		namespace="/dhis-web-visualizer">
+
+		<!-- Default -->
+
+		<action name="index" class="org.hisp.dhis.visualizer.action.NoAction">
+			<result name="success" type="redirect">app/index.html</result>
+		</action>
+
+		<!-- Initialize -->
+
+        <action name="initialize"
+            class="org.hisp.dhis.visualizer.action.InitializeAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-visualizer/jsonInitialize.vm</result>
+        </action>
+
+        <!-- Indicator -->
+
+        <action name="getIndicatorTreeNodes"
+            class="org.hisp.dhis.visualizer.action.GetIndicatorTreeNodesAction">
+            <result name="groups" type="velocity-json">
+                /dhis-web-visualizer/jsonminTreeGroups.vm</result>
+            <result name="members" type="velocity-json">
+                /dhis-web-visualizer/jsonminTreeGroupMembers.vm</result>
+			<result name="none" type="velocity-json">
+                /dhis-web-visualizer/void.vm</result>
+        </action>
+
+        <!-- DataElement -->
+
+        <action name="getDataElementTreeNodes"
+            class="org.hisp.dhis.visualizer.action.GetDataElementTreeNodesAction">
+            <result name="groups" type="velocity-json">
+                /dhis-web-visualizer/jsonminTreeGroups.vm</result>
+            <result name="members" type="velocity-json">
+                /dhis-web-visualizer/jsonminTreeGroupMembers.vm</result>
+            <result name="none" type="velocity-json">
+                /dhis-web-visualizer/void.vm</result>
+        </action>
+
+        <!-- Period -->
+
+        <action name="getPeriodTreeNodes"
+            class="org.hisp.dhis.visualizer.action.GetPeriodTreeNodesAction">
+            <result name="groups" type="velocity-json">
+                /dhis-web-visualizer/jsonminTreeGroups.vm</result>
+            <result name="members" type="velocity-json">
+                /dhis-web-visualizer/jsonminTreeGroupMembers.vm</result>
+            <result name="none" type="velocity-json">
+                /dhis-web-visualizer/void.vm</result>
+        </action>
+
+        <!-- OrganisationUnit -->
+
+		<action name="getOrganisationUnitChildren"
+			class="org.hisp.dhis.visualizer.action.GetOrganisationUnitChildrenAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-visualizer/jsonOrganisationUnitChildren.vm</result>
+		</action>
+
+        <!-- AggregatedIndicatorValue -->
+
+        <action name="getAggregatedIndicatorValues"
+            class="org.hisp.dhis.visualizer.action.GetAggregatedIndicatorValuesAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-visualizer/jsonminAggregatedIndicatorValues.vm</result>
+        </action>
+
+        <!-- AggregatedDataValue -->
+
+        <action name="getAggregatedDataValues"
+            class="org.hisp.dhis.visualizer.action.GetAggregatedDataValuesAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-visualizer/jsonminAggregatedDataValues.vm</result>
+            <result name="none" type="velocity-json">
+                /dhis-web-visualizer/void.vm</result>
+        </action>
+		
+	</package>
+</struts>

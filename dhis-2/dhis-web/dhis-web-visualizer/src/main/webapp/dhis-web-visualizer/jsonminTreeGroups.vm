@@ -1,0 +1,2 @@
+#set( $size = $groups.size() )
+[#foreach( $group in $groups ){"id":"$!{group.id}","text":"$!encoder.jsonEncode(${group.name})"}#if( $velocityCount < $size ),#end#end]
