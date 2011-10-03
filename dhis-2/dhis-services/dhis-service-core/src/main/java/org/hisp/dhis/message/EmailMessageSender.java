@@ -30,16 +30,22 @@ package org.hisp.dhis.message;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_HOST_NAME;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_PASSWORD;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_USERNAME;
+import static org.hisp.dhis.user.UserSettingService.*;
 
+import java.io.Serializable;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 
 /**
  * @author Lars Helge Overland
@@ -47,6 +53,8 @@ import org.hisp.dhis.user.User;
 public class EmailMessageSender
     implements MessageSender
 {
+    private static final Log log = LogFactory.getLog( EmailMessageSender.class );
+    
     private static final int SMTP_PORT = 587;
     private static final String FROM_ADDRESS = "noreply@dhis2.org";
 
@@ -61,6 +69,13 @@ public class EmailMessageSender
         this.systemSettingManager = systemSettingManager;
     }
     
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
     // -------------------------------------------------------------------------
     // MessageSender implementation
     // -------------------------------------------------------------------------
@@ -77,24 +92,26 @@ public class EmailMessageSender
             return;
         }
         
+        Map<User,Serializable> settings = userService.getUserSettings( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
+        
         for ( User user : users )
         {
-            try
+            if ( (Boolean) settings.get( user ) == new Boolean( true ) && user.getEmail() != null && !user.getEmail().isEmpty() )
             {
-                String toAddress = StringUtils.trimToNull( user.getEmail() );
-                
-                if ( user.getEmail() != null )
+                try
                 {
+                    String toAddress = StringUtils.trimToNull( user.getEmail() );
+                    
                     Email email = getEmail( hostName, username, password );
                     email.setSubject( subject );
                     email.setMsg( text );
                     email.addTo( toAddress );
                     email.send();
                 }
-            }
-            catch ( EmailException ex )
-            {
-                throw new RuntimeException( ex );
+                catch ( EmailException ex )
+                {
+                    log.warn( "Could not send email to user: " + user + " with email address: " + user.getEmail() );
+                }
             }
         }
     }

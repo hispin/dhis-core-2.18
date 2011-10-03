@@ -419,10 +419,18 @@ public class HibernateUserStore
     public Collection<UserSetting> getAllUserSettings( User user )
     {
         Session session = sessionFactory.getCurrentSession();
-
         Query query = session.createQuery( "from UserSetting us where us.user = :user" );
-
         query.setEntity( "user", user );
+
+        return query.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<UserSetting> getUserSettings( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery( "from UserSetting us where us.name = :name" );
+        query.setEntity( "name", name );
 
         return query.list();
     }
