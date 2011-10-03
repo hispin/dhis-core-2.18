@@ -49,9 +49,11 @@ public interface PatientChartService
     void updatePatientChart( PatientChart patientChart );
 
     PatientChart getPatientChart( int id );
-    
-    Collection<PatientChart> getPatientCharts ( Collection<Program> programs );
-    
+
+    PatientChart getPatientChartByTitle( String title );
+
+    Collection<PatientChart> getPatientCharts( Collection<Program> programs );
+
     Collection<PatientChart> getAllPatientCharts();
 
     JFreeChart getJFreeChart( int id, I18nFormat format );

@@ -96,7 +96,7 @@ public class ValidateDataEntryFormAction
     {
         DataEntryForm match = dataEntryFormService.getDataEntryFormByName( name );
 
-        if ( match != null && (dataEntryFormId == null || match.getId() != dataEntryFormId) )
+        if ( match != null && (dataEntryFormId == null || match.getId() != dataEntryFormId.intValue()) )
         {
             message = i18n.getString( "duplicate_names" );
 

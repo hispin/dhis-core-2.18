@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,20 +25,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.patientattribute;
+package org.hisp.dhis.patient.action.patientchart;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patientchart.PatientChart;
+import org.hisp.dhis.patientchart.PatientChartService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version $Id: ValidatePatientChartAction.java Oct 3, 2011 2:52:13 PM $
  */
-
-public class ValidatePatientAttributeAction
+public class ValidatePatientChartAction
     implements Action
 {
 
@@ -46,11 +48,11 @@ public class ValidatePatientAttributeAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private PatientAttributeService patientAttributeService;
+    private PatientChartService patientChartService;
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public void setPatientChartService( PatientChartService patientChartService )
     {
-        this.patientAttributeService = patientAttributeService;
+        this.patientChartService = patientChartService;
     }
 
     // -------------------------------------------------------------------------
@@ -64,11 +66,11 @@ public class ValidatePatientAttributeAction
         this.id = id;
     }
 
-    private String name;
+    private String title;
 
-    public void setName( String name )
+    public void setTitle( String title )
     {
-        this.name = name;
+        this.title = title;
     }
 
     private String message;
@@ -92,9 +94,9 @@ public class ValidatePatientAttributeAction
     public String execute()
         throws Exception
     {
-        name = name.trim();
+        title = title.trim();
 
-        PatientAttribute match = patientAttributeService.getPatientAttributeByName( name );
+        PatientChart match = patientChartService.getPatientChartByTitle( title );
 
         if ( match != null && (id == null || match.getId() != id.intValue()) )
         {
@@ -107,4 +109,5 @@ public class ValidatePatientAttributeAction
 
         return SUCCESS;
     }
+
 }
