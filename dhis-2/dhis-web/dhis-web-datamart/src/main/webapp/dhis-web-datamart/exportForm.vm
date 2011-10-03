@@ -60,7 +60,7 @@
             <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'selectedDataElements', 'availableDataElements' )"/>
 		</td>
 		<td>
-		    <select multiple id="selectedDataElements" name="selectedDataElements" style="min-width:325px; height:96px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
+		    <select multiple id="selectedDataElements" name="selectedDataElements" style="min-width:325px;height:115px;margin-top:27px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
 			    #foreach( $element in $selectedDataElements )
 				    <option value="$element.id">$element.name</option>
 			    #end
@@ -91,7 +91,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'selectedIndicators', 'availableIndicators' )"/>
 		</td>
 		<td>
-			<select multiple id="selectedIndicators" name="selectedIndicators" style="min-width:325px; height:96px" ondblclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )">
+			<select multiple id="selectedIndicators" name="selectedIndicators" style="min-width:325px;height:115px;margin-top:27px" ondblclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )">
 			    #foreach ( $indicator in $selectedIndicators )
                     <option value="$indicator.id">$indicator.name</option>
                 #end
@@ -129,7 +129,7 @@
 			<input type="button" value="&gt;&gt;&gt;" title="$i18n.getString('move_children')" style="width:40px" onclick="getOrganisationUnitChildren()"/>
 		</td>
 		<td>
-			<select multiple id="selectedOrganisationUnits" name="selectedOrganisationUnits" style="min-width:325px; height:96px" ondblclick="moveSelectedById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )">				
+			<select multiple id="selectedOrganisationUnits" name="selectedOrganisationUnits" style="min-width:325px;height:125px;margin-top:9px" ondblclick="moveSelectedById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )">				
 			    #foreach ( $unit in $selectedOrganisationUnits )
                     <option value="$unit.id">$unit.name</option>
                 #end
@@ -159,7 +159,7 @@
 					<option value="$type.name">$i18n.getString( $type.name )</option>
 				#end
 			</select><br/>
-			<select multiple size="6" id="availablePeriods" name="availablePeriods" style="min-width:325px" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )">
+			<select multiple size="6" id="availablePeriods" name="availablePeriods" style="min-width:325px;height:120px" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )">
 				#foreach ( $period in $periods )
 					<option value="$period.externalId">$format.formatPeriod( $period )</option>
 				#end
@@ -172,7 +172,7 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="dhisAjaxSelect_moveAll( 'selectedPeriods', 'availablePeriods' )"/>
 		</td>
 		<td>
-			<select multiple id="selectedPeriods" name="selectedPeriods" style="min-width:325px; height:96px" ondblclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )">				
+			<select multiple id="selectedPeriods" name="selectedPeriods" style="min-width:325px;height:115px;margin-top:27px" ondblclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )">				
 			    #foreach ( $period in $selectedPeriods )
                     <option value="$period.externalId">$format.formatPeriod( $period )</option>
                 #end
