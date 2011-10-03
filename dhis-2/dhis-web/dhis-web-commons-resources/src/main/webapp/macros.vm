@@ -411,14 +411,6 @@ jQuery.each(attributes, function(i, item) {
 			#trPositiveIntegerInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
 		#elseif( $attribute.valueType == "negative_integer" )
 			#trNegativeIntegerInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
-		#elseif( $attribute.valueType == "multiple_choice" )
-			#set( $attributeOptions = [] )
-
-			#foreach( $attributeOption in $attribute.attributeOptions )
-				#set( $return = $attributeOptions.add( $attributeOption.name ) )
-			#end
-
-			#trMultipleChoiceInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "choices": $attributeOptions, "value": $value } )
 		#end
 	#end
 </table>

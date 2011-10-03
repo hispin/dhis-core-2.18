@@ -628,8 +628,4 @@
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
-  <bean id="org.hisp.dhis.commons.action.GetAttributeOptionsAction" class="org.hisp.dhis.commons.action.GetAttributeOptionsAction">
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-  </bean>
-
 </beans>

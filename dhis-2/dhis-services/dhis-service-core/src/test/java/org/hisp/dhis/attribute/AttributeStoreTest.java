@@ -54,9 +54,6 @@ public class AttributeStoreTest
         attribute2.setOrganisationUnitAttribute( true );
         attribute2.setDataElementAttribute( true );
 
-        attribute2.addAttributeOption( new AttributeOption( "option 1" ) );
-        attribute2.addAttributeOption( new AttributeOption( "option 2" ) );
-
         attributeStore.save( attribute1 );
         attributeStore.save( attribute2 );
     }
@@ -77,13 +74,5 @@ public class AttributeStoreTest
     public void testGetOrganisationUnitAttributes()
     {
         assertEquals( 1, attributeStore.getOrganisationUnitAttributes().size() );
-    }
-
-    @Test
-    public void testGetAttributeOptions()
-    {
-        Attribute attr = attributeStore.get( attribute2.getId() );
-        assertNotNull( attr );
-        assertEquals( 2, attr.getAttributeOptions().size() );
     }
 }

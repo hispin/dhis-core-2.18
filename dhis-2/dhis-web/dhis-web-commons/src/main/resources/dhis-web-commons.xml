@@ -711,13 +711,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="getAttributeOptions" class="org.hisp.dhis.commons.action.GetAttributeOptionsAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonAttributeOptions.vm
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <action name="getPeriod" class="org.hisp.dhis.commons.action.GetPeriodAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonPeriod.vm

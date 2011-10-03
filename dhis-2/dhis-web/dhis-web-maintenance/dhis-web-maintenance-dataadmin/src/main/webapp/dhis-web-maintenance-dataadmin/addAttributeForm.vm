@@ -3,12 +3,10 @@
 	jQuery(document).ready(	function()
 	{
 		validation2( 'addAttributeForm', function( form ) {
-			$("#selectedAttributeOptions").children().attr("selected", "selected");
 			form.submit();
 		}, {
 			'beforeValidateHandler' : function()
         	{
-        		listValidator( 'memberValidator', 'selectedAttributeOptions' );
         	},
 			'rules': getValidationRules("attribute")
 		});
@@ -17,19 +15,6 @@
 
 		$("#valueType").bind("change", onValueTypeChange);
 		$("#valueType").change();
-
-		jQuery("#availableAttributeOptions").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getAttributeOptions.action",
-			iterator: "attributeOptions",
-			connectedTo: 'selectedAttributeOptions',
-			handler: function(item) {
-				var option = jQuery("<option />");
-				option.text( item.name );
-				option.attr( "value", item.id );
-
-				return option;
-			}
-		});
 	});
 </script>
 
@@ -76,44 +61,7 @@
 				<option value="integer" >$i18n.getString( "integer" )</option>
 				<option value="positive_integer">$i18n.getString( "positive_integer" )</option>
 				<option value="negative_integer">$i18n.getString( "negative_integer" )</option>
-				<option value="multiple_choice">$i18n.getString( "multiple_choice" )</option>
 			</select>
-		</td>
-	</tr>
-
-	<tr id="multipleChoice" style="display: none;">
-		<td colspan="3"> 
-			<table>
-
-			<col style="width: 300px"/>
-    		<col/>
-    		<col style="width: 300px"/>
-
-			<tr>
-			<th>$i18n.getString( "available_attribute_options" )</th>
-			<th></th>
-			<th>$i18n.getString( "selected_attribute_options" )
-			    <select id="memberValidator" multiple="multiple" style="display:none"/>
-			</th>
-			</tr>
-
-			<tr>
-			<td>
-		        <select id="availableAttributeOptions" name="availableAttributeOptions" multiple="multiple" style="height: 200px; width: 100%;"></select>
-		    </td>
-		
-		    <td style="text-align:center">
-		    	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableAttributeOptions' );"/><br/>
-		        <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedAttributeOptions' );"/><br/>
-				<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableAttributeOptions' );"/><br/>
-				<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedAttributeOptions' );"/>
-		    </td>
-		
-		    <td>
-		        <select id="selectedAttributeOptions" name="selectedAttributeOptions" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;"></select>
-			</td>
-			</tr>
-			</table>
 		</td>
 	</tr>
 

@@ -485,13 +485,6 @@
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
-    <action name="attributeOption" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="page">/dhis-web-maintenance-dataadmin/attributeOption.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-    </action>
-
     <action name="showAddAttributeForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
@@ -500,26 +493,10 @@
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
 
-    <action name="showAddAttributeOptionForm" class="org.hisp.dhis.dataadmin.action.NoAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="page">/dhis-web-maintenance-dataadmin/addAttributeOptionForm.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
-    </action>
-
     <action name="showUpdateAttributeForm" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/updateAttributeForm.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
-    </action>
-
-    <action name="showUpdateAttributeOptionForm" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="page">/dhis-web-maintenance-dataadmin/updateAttributeOptionForm.vm</param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
@@ -535,12 +512,6 @@
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
 
-    <action name="addAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction">
-      <result name="success" type="redirect">attributeOption.action</result>
-      <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
-    </action>
-
     <action name="saveAttributeSortOrder" class="org.hisp.dhis.dataadmin.action.attribute.SaveAttributeSortOrderAction">
       <result name="success" type="redirect">attribute.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
@@ -552,24 +523,7 @@
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
-    <action name="updateAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeOptionAction">
-      <result name="success" type="redirect">attributeOption.action</result>
-      <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
-    </action>
-
     <action name="removeAttribute" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
-    </action>
-
-    <action name="removeAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeOptionAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
@@ -586,23 +540,7 @@
 	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="getAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionAction">
-      <result name="success" type="velocity-json">
-		/dhis-web-maintenance-dataadmin/jsonAttributeOption.vm</result>
-	  <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <action name="validateAttribute" class="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="validateAttributeOption" class="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeOptionAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>

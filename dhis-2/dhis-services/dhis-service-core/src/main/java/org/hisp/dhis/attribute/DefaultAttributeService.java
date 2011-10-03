@@ -51,18 +51,6 @@ public class DefaultAttributeService
         this.attributeStore = attributeStore;
     }
 
-    private AttributeOptionStore attributeOptionStore;
-
-    public AttributeOptionStore getAttributeOptionStore()
-    {
-        return attributeOptionStore;
-    }
-
-    public void setAttributeOptionStore( AttributeOptionStore attributeOptionStore )
-    {
-        this.attributeOptionStore = attributeOptionStore;
-    }
-
     private AttributeValueStore attributeValueStore;
 
     public AttributeValueStore getAttributeValueStore()
@@ -155,70 +143,6 @@ public class DefaultAttributeService
     public Set<Attribute> getAttributesBetweenByName( String name, int first, int max )
     {
         return new HashSet<Attribute>( attributeStore.getBetweenByName( name, first, max ) );
-    }
-
-    // -------------------------------------------------------------------------
-    // AttributeOption implementation
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void addAttributeOption( AttributeOption attributeOption )
-    {
-        attributeOptionStore.save( attributeOption );
-    }
-
-    @Override
-    public void updateAttributeOption( AttributeOption attributeOption )
-    {
-        attributeOptionStore.update( attributeOption );
-    }
-
-    @Override
-    public void deleteAttributeOption( AttributeOption attributeOption )
-    {
-        attributeOptionStore.delete( attributeOption );
-    }
-
-    @Override
-    public AttributeOption getAttributeOption( int id )
-    {
-        return attributeOptionStore.get( id );
-    }
-
-    @Override
-    public AttributeOption getAttributeOptionByName( String name )
-    {
-        return attributeOptionStore.getByName( name );
-    }
-
-    @Override
-    public Set<AttributeOption> getAllAttributeOptions()
-    {
-        return new HashSet<AttributeOption>( attributeOptionStore.getAll() );
-    }
-
-    @Override
-    public int getAttributeOptionCount()
-    {
-        return attributeOptionStore.getCount();
-    }
-
-    @Override
-    public int getAttributeOptionCountByName( String name )
-    {
-        return attributeOptionStore.getCountByName( name );
-    }
-
-    @Override
-    public Set<AttributeOption> getAttributeOptionsBetween( int first, int max )
-    {
-        return new HashSet<AttributeOption>( attributeOptionStore.getBetween( first, max ) );
-    }
-
-    @Override
-    public Set<AttributeOption> getAttributeOptionsBetweenByName( String name, int first, int max )
-    {
-        return new HashSet<AttributeOption>( attributeOptionStore.getBetweenByName( name, first, max ) );
     }
 
     // -------------------------------------------------------------------------

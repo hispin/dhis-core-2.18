@@ -27,13 +27,7 @@
 
 package org.hisp.dhis.dataadmin.action.attribute;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.attribute.AttributeOption;
 import org.hisp.dhis.attribute.AttributeService;
 
 import com.opensymphony.xwork2.Action;
@@ -115,13 +109,6 @@ public class UpdateAttributeAction
         this.userAttribute = userAttribute;
     }
     
-    private List<Integer> selectedAttributeOptions = new ArrayList<Integer>();
-
-    public void setSelectedAttributeOptions( List<Integer> selectedAttributeOptions )
-    {
-        this.selectedAttributeOptions = selectedAttributeOptions;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -140,18 +127,6 @@ public class UpdateAttributeAction
             attribute.setIndicatorAttribute( indicatorAttribute );
             attribute.setOrganisationUnitAttribute( organisationUnitAttribute );
             attribute.setUserAttribute( userAttribute );
-
-            Set<AttributeOption> attributeOptions = new HashSet<AttributeOption>();
-
-            if ( valueType.compareTo( "multiple_choice" ) == 0 )
-            {
-                for ( Integer id : selectedAttributeOptions )
-                {
-                    attributeOptions.add( attributeService.getAttributeOption( id ) );
-                }
-            }
-
-            attribute.setAttributeOptions( attributeOptions );
 
             attributeService.updateAttribute( attribute );
 

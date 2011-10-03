@@ -28,11 +28,6 @@
 
     <property name="sortOrder" />
 
-    <set name="attributeOptions" table="attributeattributeoptions">
-      <key column="attributeid" />
-      <many-to-many column="attributeoptionid" class="AttributeOption" />
-    </set>
-
     <set name="attributeValues" inverse="true" lazy="true">
       <cache usage="read-write" />
       <key column="attributeid" />

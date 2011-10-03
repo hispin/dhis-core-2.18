@@ -57,8 +57,6 @@ public class Attribute
 
     private Integer sortOrder;
 
-    private Set<AttributeOption> attributeOptions = new HashSet<AttributeOption>();
-    
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
     
     public Attribute()
@@ -142,37 +140,11 @@ public class Attribute
         this.userAttribute = userAttribute;
     }
 
-    public Set<AttributeOption> getAttributeOptions()
-    {
-        return attributeOptions;
-    }
-
-    public void setAttributeOptions( Set<AttributeOption> attributeOptions )
-    {
-        this.attributeOptions = attributeOptions;
-    }
-
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
     }
     
-    // -------------------------------------------------------------------------
-    // Helpers
-    // -------------------------------------------------------------------------
-
-    public void addAttributeOption( AttributeOption attributeOption )
-    {
-        attributeOptions.add( attributeOption );
-        attributeOption.getAttributes().add( this );
-    }
-
-    public void removeAttributeOption( AttributeOption attributeOption )
-    {
-        attributeOption.getAttributes().remove( this );
-        attributeOptions.remove( attributeOption );
-    }
-
     public Integer getSortOrder()
     {
         return sortOrder;
