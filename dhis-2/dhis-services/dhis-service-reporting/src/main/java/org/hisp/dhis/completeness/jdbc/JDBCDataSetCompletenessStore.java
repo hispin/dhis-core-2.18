@@ -146,9 +146,11 @@ public class JDBCDataSetCompletenessStore
         final String sql = 
             "SELECT COUNT(completed) FROM ( " +
                 "SELECT sourceid, COUNT(sourceid) AS sources " +
-                "FROM datavalue " +
-                "JOIN dataelementoperand USING (dataelementid, categoryoptioncomboid) " +
-                "JOIN datasetoperands USING (dataelementoperandid) " +
+                "FROM datavalue dv " +
+                "JOIN dataelementoperand deo " +
+                "ON dv.dataelementid=deo.dataelementid AND dv.categoryoptioncomboid=deo.categoryoptioncomboid " +
+                "JOIN datasetoperands dso " +
+                "ON deo.dataelementoperandid=dso.dataelementoperandid " +
                 "WHERE periodid = " + period.getId() + " " + deadlineCriteria +
                 "AND sourceid IN (" + childrenIds + ") " +
                 "AND datasetid = " + dataSet.getId() + " GROUP BY sourceid) AS completed " +
@@ -163,10 +165,10 @@ public class JDBCDataSetCompletenessStore
         final String deadlineCriteria = deadline != null ? "AND lastupdated < '" + DateUtils.getMediumDateString( deadline ) + "' " : "";
         
         final String sql =
-            "SELECT count(*) FROM datavalue " +
-            "JOIN datasetmembers USING (dataelementid) " +
-            "JOIN dataset USING (datasetid) " +
-            "WHERE datasetid = " + dataSet.getId() + " " + deadlineCriteria +
+            "SELECT count(*) FROM datavalue dv " +
+            "JOIN datasetmembers dsm ON dv.dataelementid=dsm.dataelementid " +
+            "JOIN dataset ds ON dsm.datasetid=ds.datasetid " +
+            "WHERE ds.datasetid = " + dataSet.getId() + " " + deadlineCriteria +
             "AND periodid = " + period.getId() + " " +
             "AND sourceid IN (" + childrenIds + ")";
 
