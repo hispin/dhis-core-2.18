@@ -94,7 +94,7 @@ public class GetAttributeListAction
         }
         else
         {
-            this.paging = createPaging( attributeService.getAttributeOptionCount() );
+            this.paging = createPaging( attributeService.getAttributeCount() );
 
             attributes = new ArrayList<Attribute>( attributeService.getAttributesBetween( paging.getStartPos(),
                 paging.getPageSize() ) );

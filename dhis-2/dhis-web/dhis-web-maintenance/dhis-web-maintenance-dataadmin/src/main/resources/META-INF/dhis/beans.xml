@@ -293,17 +293,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionListAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionListAction"
-    scope="prototype">
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-  </bean>
-
   <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction"
-    scope="prototype">
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeOptionAction"
     scope="prototype">
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
@@ -313,17 +303,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.ValidateAttributeOptionAction"
-    scope="prototype">
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-  </bean>
-
   <bean id="org.hisp.dhis.dataadmin.action.attribute.AddAttributeAction" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeAction"
-    scope="prototype">
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeOptionAction"
     scope="prototype">
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
@@ -338,17 +318,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeOptionAction"
-    scope="prototype">
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-  </bean>
-
   <bean id="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeAction" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeAction"
-    scope="prototype">
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeOptionAction" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeOptionAction"
     scope="prototype">
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>

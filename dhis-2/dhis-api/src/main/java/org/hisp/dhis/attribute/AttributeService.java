@@ -67,30 +67,6 @@ public interface AttributeService
     public Set<Attribute> getAttributesBetweenByName( String name, int first, int max );
 
     // -------------------------------------------------------------------------
-    // AttributeOption
-    // -------------------------------------------------------------------------
-
-    public void addAttributeOption( AttributeOption attributeOption );
-
-    public void updateAttributeOption( AttributeOption attributeOption );
-
-    public void deleteAttributeOption( AttributeOption attributeOption );
-
-    public AttributeOption getAttributeOption( int id );
-
-    public AttributeOption getAttributeOptionByName( String name );
-
-    public Set<AttributeOption> getAllAttributeOptions();
-
-    public int getAttributeOptionCount();
-
-    public int getAttributeOptionCountByName( String name );
-
-    public Set<AttributeOption> getAttributeOptionsBetween( int first, int max );
-
-    public Set<AttributeOption> getAttributeOptionsBetweenByName( String name, int first, int max );
-
-    // -------------------------------------------------------------------------
     // AttributeValue
     // -------------------------------------------------------------------------
 
