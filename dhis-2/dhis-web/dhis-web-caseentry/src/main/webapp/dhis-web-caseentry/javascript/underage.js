@@ -128,7 +128,7 @@ function showPersons( divContainer, xmlElement )
 		sPatient += "<tr><td colspan='2'><input type='button' id='" + $(patient).find('id' ).first().text() +"' value='" + i18n_choose_this_person + "' onclick='choosePerson(this)'/></td></tr>";
 		sPatient += "</table>";
 		
-		container.append(sPatient);
+		container.append(i18n_duplicate_warning + "<br>" + sPatient);
 	 } );
 }
 
