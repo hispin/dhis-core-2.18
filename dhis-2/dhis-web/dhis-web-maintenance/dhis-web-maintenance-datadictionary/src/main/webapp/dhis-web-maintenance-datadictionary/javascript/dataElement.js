@@ -110,56 +110,6 @@ function showDataElementDetails( dataElementId )
 	});
 }
 
-function getDataElements( dataElementGroupId, type, filterCalculated )
-{
-    var url = "getDataElementGroupMembers.action?";
-
-    if ( dataElementGroupId == '[select]' )
-    {
-        return;
-    }
-
-    if ( dataElementGroupId != null )
-    {
-        url += "dataElementGroupId=" + dataElementGroupId;
-    }
-
-    if ( type != null )
-    {
-        url += "&type=" + type;
-    }
-
-    if ( filterCalculated )
-    {
-        url += "&filterCalculated=on";
-    }
-
-    var request = new Request();
-    request.setResponseTypeXML( 'operand' );
-    request.setCallbackSuccess( getDataElementsReceived );
-    request.send( url );
-}
-
-function getDataElementsReceived( xmlObject )
-{
-    var availableDataElements = document.getElementById( "availableDataElements" );
-
-    clearList( availableDataElements );
-
-    var operands = xmlObject.getElementsByTagName( "operand" );
-
-    for ( var i = 0; i < operands.length; i++ )
-    {
-        var id = operands[i].getElementsByTagName( "operandId" )[0].firstChild.nodeValue;
-        var dataElementName = operands[i].getElementsByTagName( "operandName" )[0].firstChild.nodeValue;
-
-        var option = document.createElement( "option" );
-        option.value = id;
-        option.text = dataElementName;
-        option.title = dataElementName;
-        availableDataElements.add( option, null );
-    }
-}
 // -----------------------------------------------------------------------------
 // Remove data element
 // -----------------------------------------------------------------------------

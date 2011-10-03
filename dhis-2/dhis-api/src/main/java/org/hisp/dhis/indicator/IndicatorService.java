@@ -60,6 +60,8 @@ public interface IndicatorService
     Indicator getIndicatorByShortName( String shortName );
 
     Indicator getIndicatorByAlternativeName( String alternativeName );
+    
+    Indicator getIndicatorByCode( String code );
 
     Collection<Indicator> getIndicatorsWithGroupSets();
     

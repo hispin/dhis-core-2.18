@@ -165,6 +165,11 @@ public class DefaultIndicatorService
     {
         return i18n( i18nService, indicatorStore.getIndicatorByAlternativeName( alternativeName ) );
     }
+
+    public Indicator getIndicatorByCode( String code )
+    {
+        return i18n( i18nService, indicatorStore.getIndicatorByCode( code ) );
+    }
     
     public Collection<Indicator> getIndicatorsWithGroupSets()
     {

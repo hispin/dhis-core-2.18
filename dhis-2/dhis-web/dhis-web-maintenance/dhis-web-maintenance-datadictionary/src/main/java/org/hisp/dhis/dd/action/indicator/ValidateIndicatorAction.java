@@ -35,8 +35,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: ValidateIndicatorAction.java 4015 2007-11-15 14:46:04Z larshelg
- *          $
  */
 public class ValidateIndicatorAction
     implements Action
@@ -90,7 +88,14 @@ public class ValidateIndicatorAction
     {
         this.alternativeName = alternativeName;
     }   
-   
+
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -132,7 +137,7 @@ public class ValidateIndicatorAction
             }
         }
 
-        if ( alternativeName != null )
+        if ( alternativeName != null && !alternativeName.trim().isEmpty() )
         {
             Indicator match = indicatorService.getIndicatorByAlternativeName( alternativeName );
 
@@ -142,11 +147,22 @@ public class ValidateIndicatorAction
 
                 return ERROR;
             }
-        }       
+        }
+        
+        if ( code != null && !code.trim().isEmpty() )
+        {
+            Indicator match = indicatorService.getIndicatorByCode( code );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "code_in_use" );
+
+                return ERROR;
+            }
+        }
 
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
     }
-
 }

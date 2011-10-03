@@ -18,6 +18,7 @@
 	    checkValueIsExist( "name", "validateDataElement.action" );
 	    checkValueIsExist( "shortName", "validateDataElement.action" );
 	    checkValueIsExist( "alternativeName", "validateDataElement.action" );
+	    checkValueIsExist( "code", "validateDataElement.action" );
 	} );
 
 	var previousName = '';

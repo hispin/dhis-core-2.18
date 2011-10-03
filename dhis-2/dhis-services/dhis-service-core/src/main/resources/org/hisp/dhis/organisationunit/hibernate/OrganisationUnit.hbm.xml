@@ -12,13 +12,9 @@
       <generator class="native" />
     </id>
 
-    <property name="uuid">
-      <column name="uuid" length="40" />
-    </property>
+    <property name="uuid" column="uuid" length="40" />
 
-    <property name="name">
-      <column name="name" not-null="true" unique="true" length="230" />
-    </property>
+    <property name="name" column="name" not-null="true" unique="true" length="230" />
 
     <set name="children" inverse="true">
       <cache usage="read-write" />
@@ -29,13 +25,9 @@
     <many-to-one name="parent" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="parentid"
       foreign-key="fk_parentid" index="in_parentid" />
 
-    <property name="shortName">
-      <column name="shortname" not-null="true" unique="false" length="50" />
-    </property>
+    <property name="shortName" column="shortname" not-null="true" unique="false" length="50" />
 
-    <property name="code">
-      <column name="code" not-null="false" unique="false" length="50" />
-    </property>
+    <property name="code" column="code" not-null="false" unique="true" length="50" />
 
     <property name="openingDate" column="openingdate" type="date" />
 
