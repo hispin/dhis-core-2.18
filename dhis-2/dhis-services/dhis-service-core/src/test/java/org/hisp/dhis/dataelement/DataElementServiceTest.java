@@ -32,7 +32,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -179,19 +178,15 @@ public class DataElementServiceTest
     {
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
-        DataElement dataElementC1 = createDataElement( 'C' );
-        DataElement dataElementC2 = createDataElement( 'D' );
+        DataElement dataElementC = createDataElement( 'C' );
 
         dataElementA.setCode( "codeA");
         dataElementB.setCode( "codeB");
-        dataElementC1.setCode( "codeC");
-        dataElementC2.setCode( "codeC");
-
+        dataElementC.setCode( "codeC");
 
         int idA = dataElementService.addDataElement( dataElementA );
         int idB = dataElementService.addDataElement( dataElementB );
-        dataElementService.addDataElement( dataElementC1 );
-        dataElementService.addDataElement( dataElementC2 );
+        dataElementService.addDataElement( dataElementC );
 
         dataElementA = dataElementService.getDataElementByCode( "codeA" );
         assertNotNull( dataElementA );
@@ -202,15 +197,6 @@ public class DataElementServiceTest
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
         assertEquals( "DataElementB", dataElementB.getName() );
-
-        try 
-        {
-            dataElementService.getDataElementByCode( "codeC" );
-            fail( "Should have thrown exception" );
-        } 
-        catch ( Exception ex )
-        {
-        }
         
         DataElement dataElementE = dataElementService.getDataElementByCode( "codeE" );
         assertNull( dataElementE );

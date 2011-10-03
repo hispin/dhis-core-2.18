@@ -12,25 +12,15 @@
       <generator class="native" />
     </id>
 
-    <property name="uuid">
-      <column name="uuid" length="40" />
-    </property>
+    <property name="uuid" column="uuid" length="40" />
 
-    <property name="name">
-      <column name="name" not-null="true" unique="true" length="230" />
-    </property>
+    <property name="name" column="name" not-null="true" unique="true" length="230" />
 
-    <property name="alternativeName">
-      <column name="alternativename" not-null="false" unique="true" length="230" />
-    </property>
+    <property name="alternativeName" column="alternativename" not-null="false" unique="true" length="230" />
 
-    <property name="shortName">
-      <column name="shortname" not-null="true" unique="true" length="50" />
-    </property>
+    <property name="shortName" column="shortname" not-null="true" unique="true" length="50" />
 
-    <property name="code">
-      <column name="code" not-null="false" unique="false" length="50" />
-    </property>
+    <property name="code" column="code" not-null="false" unique="true" length="50" />
 
     <property name="description" type="text" />
 

@@ -17,6 +17,7 @@
 		checkValueIsExist( "name", "validateDataElement.action", {id:getFieldValue('id')});
 		checkValueIsExist( "shortName", "validateDataElement.action", {id:getFieldValue('id')});
 		checkValueIsExist( "alternativeName", "validateDataElement.action", {id:getFieldValue('id')});
+		checkValueIsExist( "code", "validateDataElement.action", {id:getFieldValue('id')});
 
 		updateAggreationOperation( getFieldValue('valueType') );
 	});

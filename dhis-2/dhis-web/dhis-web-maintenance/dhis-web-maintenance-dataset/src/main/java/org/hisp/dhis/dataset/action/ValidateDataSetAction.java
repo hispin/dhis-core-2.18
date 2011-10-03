@@ -113,8 +113,7 @@ public class ValidateDataSetAction
         // ---------------------------------------------------------------------
 
         if ( name != null )
-        {          
-            
+        {   
             DataSet match = dataSetService.getDataSetByName( name );
 
             if ( match != null && (dataSetId == null || match.getId() != dataSetId) )
@@ -128,7 +127,6 @@ public class ValidateDataSetAction
         // ---------------------------------------------------------------------
         // Short name
         // ---------------------------------------------------------------------
-
       
         if ( shortName != null )
         {
@@ -146,7 +144,7 @@ public class ValidateDataSetAction
         // Code
         // ---------------------------------------------------------------------
 
-        if ( code != null && code.trim().length() != 0 )
+        if ( code != null && !code.trim().isEmpty() )
         {
             DataSet match = dataSetService.getDataSetByCode( code );
 

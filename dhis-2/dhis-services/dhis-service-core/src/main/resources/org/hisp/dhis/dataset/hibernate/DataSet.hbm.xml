@@ -20,7 +20,7 @@
 
     <property name="shortName" unique="true" length="50" />
 
-    <property name="code" unique="true" length="50" />
+    <property name="code" not-null="false" unique="true" length="50" />
 
     <many-to-one name="periodType" lazy="false" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
       not-null="true" foreign-key="fk_dataset_periodtypeid" />

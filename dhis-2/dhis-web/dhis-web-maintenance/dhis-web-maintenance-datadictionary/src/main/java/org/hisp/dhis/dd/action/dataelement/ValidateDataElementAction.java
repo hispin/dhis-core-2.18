@@ -35,9 +35,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @author Hans S. Toemmerholt
- * @version $Id: ValidateDataElementAction.java 2869 2007-02-20 14:26:09Z
- *          andegje $
  */
 public class ValidateDataElementAction
     implements Action
@@ -90,7 +87,14 @@ public class ValidateDataElementAction
     public void setShortName( String shortName )
     {
         this.shortName = shortName;
-    }  
+    }
+
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -115,7 +119,6 @@ public class ValidateDataElementAction
 
         if ( name != null )
         {
-
             DataElement match = dataElementService.getDataElementByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
@@ -128,7 +131,6 @@ public class ValidateDataElementAction
 
         if ( shortName != null )
         {
-
             DataElement match = dataElementService.getDataElementByShortName( shortName );
 
             if ( match != null && (id == null || match.getId() != id) )
@@ -139,7 +141,7 @@ public class ValidateDataElementAction
             }
         }
 
-        if ( alternativeName != null && alternativeName.trim().length() != 0 )
+        if ( alternativeName != null && !alternativeName.trim().isEmpty() )
         {
             DataElement match = dataElementService.getDataElementByAlternativeName( alternativeName );
 
@@ -149,8 +151,19 @@ public class ValidateDataElementAction
 
                 return ERROR;
             }
-        }      
-   
+        }
+        
+        if ( code != null && !code.trim().isEmpty() )
+        {
+            DataElement match = dataElementService.getDataElementByCode( code );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "code_in_use" );
+
+                return ERROR;
+            }
+        }
 
         // ---------------------------------------------------------------------
         // Validation success

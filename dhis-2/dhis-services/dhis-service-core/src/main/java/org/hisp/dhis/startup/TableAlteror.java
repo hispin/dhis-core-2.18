@@ -185,11 +185,6 @@ public class TableAlteror
         // minmaxdataelement query index
         executeSql( "CREATE INDEX index_minmaxdataelement ON minmaxdataelement( sourceid, dataelementid, categoryoptioncomboid )" );
 
-        // drop code unique constraints
-        executeSql( "ALTER TABLE dataelement DROP CONSTRAINT dataelement_code_key" );
-        executeSql( "ALTER TABLE indicator DROP CONSTRAINT indicator_code_key" );
-        executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_code_key" );
-
         // add mandatory boolean field to patientattribute
         executeSql( "ALTER TABLE patientattribute ADD mandatory bool" );
         
@@ -290,6 +285,12 @@ public class TableAlteror
         executeSql( "ALTER TABLE message DROP COLUMN messagesubject" );
         executeSql( "ALTER TABLE usermessage DROP COLUMN messagedate" );
         executeSql( "DROP TABLE message_usermessages" );
+
+        // create code unique constraints
+        
+        executeSql( "ALTER TABLE dataelement ADD CONSTRAINT dataelement_code_key UNIQUE(code)" );
+        executeSql( "ALTER TABLE indicator ADD CONSTRAINT indicator_code_key UNIQUE(code)" );
+        executeSql( "ALTER TABLE organisationunit ADD CONSTRAINT organisationunit_code_key UNIQUE(code)" );
         
         log.info( "Tables updated" );
     }
