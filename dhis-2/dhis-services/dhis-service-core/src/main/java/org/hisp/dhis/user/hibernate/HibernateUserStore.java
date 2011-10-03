@@ -40,7 +40,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -64,13 +63,6 @@ public class HibernateUserStore
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
-    }
-
-    private GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore;
-
-    public void setUserRoleStore( GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore )
-    {
-        this.userRoleStore = userRoleStore;
     }
 
     // -------------------------------------------------------------------------
@@ -195,6 +187,152 @@ public class HibernateUserStore
         session.delete( userCredentials );
     }
 
+    public int getUserCount()
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery( "select count(*) from UserCredentials" );
+
+        Number rs = (Number) query.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<UserCredentials> searchUsersByName( String key )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( UserCredentials.class );
+
+        criteria.add( Restrictions.ilike( "username", "%" + key + "%" ) );
+        criteria.addOrder( Order.asc( "username" ) );
+
+        return criteria.list();
+    }
+
+    public int getUserCountByName( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( UserCredentials.class );
+
+        criteria.add( Restrictions.ilike( "username", "%" + name + "%" ) );
+
+        criteria.setProjection( Projections.rowCount() );
+
+        Number rs = (Number) criteria.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<UserCredentials> getUsersBetween( int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery( "from UserCredentials order by username" ).setFirstResult( first ).setMaxResults(
+            max ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( UserCredentials.class );
+
+        criteria.add( Restrictions.ilike( "username", "%" + name + "%" ) );
+        criteria.addOrder( Order.asc( "username" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+
+        return criteria.list();
+    }
+
+    public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max )
+    {
+        return getBlockUser( toUserCredentials( orgUnit.getUsers() ), first, max );
+    }
+
+    public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
+        int first, int max )
+    {
+        return getBlockUser( findByName( toUserCredentials( orgUnit.getUsers() ), name ), first, max );
+    }
+
+    public int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit )
+    {
+        return orgUnit.getUsers().size();
+    }
+
+    public int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name )
+    {
+        return findByName( toUserCredentials( orgUnit.getUsers() ), name ).size();
+    }
+
+    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
+    {
+        return getBlockUser( toUserCredentials( getUsersWithoutOrganisationUnit() ), first, max );
+    }
+
+    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max )
+    {
+        return getBlockUser( findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ), first, max );
+    }
+
+    public int getUsersWithoutOrganisationUnitCount()
+    {
+        return getUsersWithoutOrganisationUnit().size();
+    }
+
+    public int getUsersWithoutOrganisationUnitCountByName( String name )
+    {
+        return findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ).size();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<UserCredentials> getInactiveUsers( Date date )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.lt( "lastLogin", date ) );
+
+        return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<UserCredentials> getInactiveUsers( Date date, int first, int max )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.lt( "lastLogin", date ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+
+        return criteria.list();
+    }
+
+    public int getInactiveUsersCount( Date date )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.lt( "lastLogin", date ) );
+        criteria.setProjection( Projections.rowCount() );
+
+        Number rs = (Number) criteria.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+
+    public int getActiveUsersCount( Date date )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.ge( "lastLogin", date ) );
+        criteria.setProjection( Projections.rowCount() );
+
+        Number rs = (Number) criteria.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+    
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
     // -------------------------------------------------------------------------
@@ -296,178 +434,9 @@ public class HibernateUserStore
         session.delete( userSetting );
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<UserCredentials> searchUsersByName( String key )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( UserCredentials.class );
-
-        criteria.add( Restrictions.ilike( "username", "%" + key + "%" ) );
-        criteria.addOrder( Order.asc( "username" ) );
-
-        return criteria.list();
-    }
-
-    public int getUserCount()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "select count(*) from User" );
-
-        Number rs = (Number) query.uniqueResult();
-
-        return rs != null ? rs.intValue() : 0;
-    }
-
-    public int getUserCountByName( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( UserCredentials.class );
-
-        criteria.add( Restrictions.ilike( "username", "%" + name + "%" ) );
-
-        criteria.setProjection( Projections.rowCount() );
-
-        Number rs = (Number) criteria.uniqueResult();
-
-        return rs != null ? rs.intValue() : 0;
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<UserCredentials> getUsersBetween( int first, int max )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.createQuery( "from UserCredentials order by username" ).setFirstResult( first ).setMaxResults(
-            max ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( UserCredentials.class );
-
-        criteria.add( Restrictions.ilike( "username", "%" + name + "%" ) );
-        criteria.addOrder( Order.asc( "username" ) );
-        criteria.setFirstResult( first );
-        criteria.setMaxResults( max );
-
-        return criteria.list();
-    }
-
-    public int getUserRoleCount()
-    {
-        return userRoleStore.getCount();
-    }
-
-    public int getUserRoleCountByName( String name )
-    {
-        return userRoleStore.getCountByName( name );
-    }
-
-    public Collection<UserAuthorityGroup> getUserRolesBetween( int first, int max )
-    {
-        return userRoleStore.getBetween( first, max );
-    }
-
-    public Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max )
-    {
-        return userRoleStore.getBetweenByName( name, first, max );
-    }
-
-    public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max )
-    {
-        return getBlockUser( toUserCredentials( orgUnit.getUsers() ), first, max );
-    }
-
-    public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
-        int first, int max )
-    {
-        return getBlockUser( findByName( toUserCredentials( orgUnit.getUsers() ), name ), first, max );
-    }
-
-    public int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit )
-    {
-        return orgUnit.getUsers().size();
-    }
-
-    public int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name )
-    {
-        return findByName( toUserCredentials( orgUnit.getUsers() ), name ).size();
-    }
-
-    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
-    {
-        return getBlockUser( toUserCredentials( getUsersWithoutOrganisationUnit() ), first, max );
-    }
-
-    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max )
-    {
-        return getBlockUser( findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ), first, max );
-    }
-
-    public int getUsersWithoutOrganisationUnitCount()
-    {
-        return getUsersWithoutOrganisationUnit().size();
-    }
-
-    public int getUsersWithoutOrganisationUnitCountByName( String name )
-    {
-        return findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ).size();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<UserCredentials> getInactiveUsers( Date date )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
-        criteria.add( Restrictions.lt( "lastLogin", date ) );
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<UserCredentials> getInactiveUsers( Date date, int first, int max )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
-        criteria.add( Restrictions.lt( "lastLogin", date ) );
-        criteria.setFirstResult( first );
-        criteria.setMaxResults( max );
-
-        return criteria.list();
-    }
-
-    public int getInactiveUsersCount( Date date )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
-        criteria.add( Restrictions.lt( "lastLogin", date ) );
-        criteria.setProjection( Projections.rowCount() );
-
-        Number rs = (Number) criteria.uniqueResult();
-
-        return rs != null ? rs.intValue() : 0;
-    }
-
-    public int getActiveUsersCount( Date date )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
-        criteria.add( Restrictions.ge( "lastLogin", date ) );
-        criteria.setProjection( Projections.rowCount() );
-
-        Number rs = (Number) criteria.uniqueResult();
-
-        return rs != null ? rs.intValue() : 0;
-    }
-
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    // TODO All this user / credentials search stuff is horrible and must be
-    // improved
 
     private Collection<UserCredentials> findByName( Collection<UserCredentials> users, String key )
     {
