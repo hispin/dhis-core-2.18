@@ -170,22 +170,9 @@ li {
     border-top-right-radius: 3px;
 }
 
-/* Button icon */
-.visualizer-chart-button-icon {
-    background: transparent url('../images/column.png') no-repeat center center;
-    width: 38px;
-    height: 38px;
+.dv-fieldset-title-link {
+    color:#000;
+    text-decoration:none;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 

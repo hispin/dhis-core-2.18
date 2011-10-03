@@ -119,6 +119,18 @@ Ext.onReady( function() {
                         DV.util.getCmp('fieldset[name="' + DV.conf.finals.dimension[p].value + '"]').collapse();
                     }
                 }
+            },
+            toggleIndicator: function() {
+                DV.util.getCmp('fieldset[name="' + DV.conf.finals.dimension.indicator.value + '"]').toggle();
+            },
+            toggleDataElement: function() {
+                DV.util.getCmp('fieldset[name="' + DV.conf.finals.dimension.dataelement.value + '"]').toggle();
+            },
+            togglePeriod: function() {
+                DV.util.getCmp('fieldset[name="' + DV.conf.finals.dimension.period.value + '"]').toggle();
+            },
+            toggleOrganisationUnit: function() {
+                DV.util.getCmp('fieldset[name="' + DV.conf.finals.dimension.organisationunit.value + '"]').toggle();
             }
         },
         button: {
@@ -722,7 +734,7 @@ Ext.onReady( function() {
                             {
                                 xtype: 'fieldset',
                                 name: DV.conf.finals.dimension.indicator.value,
-                                title: 'Indicators',
+                                title: '<a href="javascript:DV.util.fieldset.toggleIndicator();" class="dv-fieldset-title-link">Indicators</a>',
                                 collapsible: true,
                                 items: [
                                     {
@@ -863,7 +875,7 @@ Ext.onReady( function() {
                             {
                                 xtype: 'fieldset',
                                 name: DV.conf.finals.dimension.dataelement.value,
-                                title: 'Data elements',
+                                title: '<a href="javascript:DV.util.fieldset.toggleDataElement();" class="dv-fieldset-title-link">Data elements</a>',
                                 collapsed: true,
                                 collapsible: true,
                                 items: [
@@ -1005,7 +1017,7 @@ Ext.onReady( function() {
                             {
                                 xtype: 'fieldset',
                                 name: DV.conf.finals.dimension.period.value,
-                                title: 'Periods',
+                                title: '<a href="javascript:DV.util.fieldset.togglePeriod();" class="dv-fieldset-title-link">Periods</a>',
                                 collapsed: true,
                                 collapsible: true,
                                 cmp: [],
@@ -1138,7 +1150,7 @@ Ext.onReady( function() {
                             {
                                 xtype: 'fieldset',
                                 name: DV.conf.finals.dimension.organisationunit.value,
-                                title: 'Organisation units',
+                                title: '<a href="javascript:DV.util.fieldset.toggleOrganisationUnit();" class="dv-fieldset-title-link">Organisation units</a>',
                                 collapsed: true,
                                 collapsible: true,
                                 items: [
