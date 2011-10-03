@@ -114,6 +114,12 @@ public class DefaultPatientChartService
     }
 
     @Override
+    public PatientChart getPatientChartByTitle( String title )
+    {
+        return patientChartStore.getByTitle( title );
+    }
+    
+    @Override
     public Collection<PatientChart> getPatientCharts( Collection<Program> programs )
     {
         return patientChartStore.getPatientCharts( programs );

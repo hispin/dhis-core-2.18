@@ -988,6 +988,15 @@
 				/dhis-web-maintenance-patient/responsePatientChart.vm</result>
 			<param name="requiredAuthorities">F_PROGRAM_ADD</param>
 		</action>
+		
+		<action name="validatePatientChart"
+			class="org.hisp.dhis.patient.action.patientchart.ValidatePatientChartAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
 
 	</package>
 </struts>

@@ -54,4 +54,10 @@ public class HibernatePatientChartStore
         criteria.add( Restrictions.in( "program", programs ) );
         return criteria.list();
     }
+    
+    @Override
+    public PatientChart getByTitle( String title )
+    {
+        return getObject( Restrictions.eq( "title", title ) );
+    }
 }

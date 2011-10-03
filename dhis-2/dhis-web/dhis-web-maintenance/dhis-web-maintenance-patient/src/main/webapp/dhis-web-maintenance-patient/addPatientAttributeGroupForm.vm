@@ -75,7 +75,7 @@
 			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'selectedAttributes', 'availableAttributes' )"/>
 		</td>
 		<td>
-			<select multiple id="selectedAttributes" name="selectedAttributes" size="15" style="width:100%;margin-top:23px"></select>
+			<select multiple id="selectedAttributes" name="selectedAttributes" size="15" style="width:100%"></select>
 		</td>
 		<td>
 			<a href="javascript:moveUpSelectedOption( 'selectedAttributes')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>

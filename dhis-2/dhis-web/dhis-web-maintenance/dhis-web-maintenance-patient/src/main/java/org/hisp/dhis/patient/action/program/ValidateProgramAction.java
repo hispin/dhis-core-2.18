@@ -70,7 +70,7 @@ public class ValidateProgramAction
     {
         this.name = name;
     }
-    
+
     private String message;
 
     public String getMessage()
@@ -96,7 +96,7 @@ public class ValidateProgramAction
 
         Program match = programService.getProgramByName( name );
 
-        if ( match != null && (id == null || match.getId() != id) )
+        if ( match != null && (id == null || match.getId() != id.intValue()) )
         {
             message = i18n.getString( "duplicate_names" );
 

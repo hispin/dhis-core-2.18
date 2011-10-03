@@ -94,7 +94,7 @@ public class ValidateProgramStageAction
     {
         ProgramStage match = programStageService.getProgramStageByName( name );
 
-        if ( match != null && (id == null || match.getId() != id) )
+        if ( match != null && (id == null || match.getId() != id.intValue()) )
         {
             message = i18n.getString( "duplicate_names" );
 

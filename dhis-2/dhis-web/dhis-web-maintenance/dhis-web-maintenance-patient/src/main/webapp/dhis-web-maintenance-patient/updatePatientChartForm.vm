@@ -2,9 +2,9 @@
 	jQuery(document).ready(	function(){
 		validation( 'updatePatientChartForm', function( form ){			
 			form.submit();
-		});				
-		
-		//checkValueIsExist( "name", "validateProgram.action");
+		});			
+	
+		checkValueIsExist( "title", "validatePatientChart.action", {id:'$patientChart.id'});	
 	});		
 
     var i18n_must_select_one_dataelement = '$encoder.jsEscape( $i18n.getString( "must_select_one_dataelement" ), "'")';
@@ -12,7 +12,7 @@
 
 <h3>$i18n.getString( "edit_patient_chart" )</h3>
 
-<form id="updatePatientChartForm" name="addPatientChartForm" method="post" action="updatePatientChart.action">
+<form id="updatePatientChartForm" name="updatePatientChartForm" method="post" action="updatePatientChart.action">
 <input type='hidden' id='id' name='id' value='$patientChart.id'>
 
 <table>

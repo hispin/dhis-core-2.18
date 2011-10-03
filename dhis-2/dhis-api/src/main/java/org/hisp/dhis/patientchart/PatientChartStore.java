@@ -29,7 +29,7 @@ package org.hisp.dhis.patientchart;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.program.Program;
 
 /**
@@ -37,9 +37,12 @@ import org.hisp.dhis.program.Program;
  * @version $ PatientChartStore.java Sep 5, 2011 8:06:43 AM $
  * 
  */
-public interface PatientChartStore extends GenericStore<PatientChart>
+public interface PatientChartStore
+    extends GenericIdentifiableObjectStore<PatientChart>
 {
     String ID = PatientChartStore.class.getName();
-    
-    Collection<PatientChart> getPatientCharts ( Collection<Program> programs );
+
+    Collection<PatientChart> getPatientCharts( Collection<Program> programs );
+
+    PatientChart getByTitle( String title );
 }

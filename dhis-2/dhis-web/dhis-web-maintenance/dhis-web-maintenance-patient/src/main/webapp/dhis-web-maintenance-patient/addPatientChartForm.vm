@@ -2,9 +2,8 @@
 	jQuery(document).ready(	function(){
 		validation( 'addPatientChartForm', function( form ){			
 			form.submit();
-		});				
-		
-		//checkValueIsExist( "name", "validateProgram.action");
+		});	
+		checkValueIsExist( "title", "validatePatientChart.action");
 	});		
 
     var i18n_must_select_one_dataelement = '$encoder.jsEscape( $i18n.getString( "must_select_one_dataelement" ), "'")';
