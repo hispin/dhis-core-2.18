@@ -1,0 +1,191 @@
+/****************
+ ExtJS overrides
+ ****************/
+
+/* Combobox empty text */
+.x-form-empty-field, textarea.x-form-empty-field {
+    font-size: 10px;
+    color: #777;
+}
+
+/* Combobox text position*/
+.x-webkit .x-form-empty-field {
+    line-height: 14px;
+}
+
+/* Combobox font size */
+.x-form-text, textarea.x-form-field {
+    font-size: 10px;
+}
+
+/* Combobox field label font */
+.x-form-item-label {
+    font: 11px arial;
+    color: #222;
+}
+
+/* Splitter column */
+.x-splitter {
+    display: none;
+}
+
+/* Fieldset border */
+.x-fieldset {
+    border: 1px solid #ddd;
+    border-radius: 2px 2px 2px 2px;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    padding-bottom: 4px;
+}
+
+.x-fieldset-header {
+    font-size: 11px/15px;
+    font-weight: bold;
+    color: #000;
+    padding: 0 7px 0 5px;
+}
+
+.x-fieldset-header .x-fieldset-header-text {
+    padding-left: 3px;
+}
+
+/* Fieldset trigger icons */
+.x-tool img {
+    background-image: url('../images/tool-sprites.gif');
+    width: 25px;
+}
+
+    /* Untoggeled */
+.x-tool-over .x-tool-toggle {
+    background-position: -25px -60px;
+}
+
+.x-panel-collapsed .x-tool-over .x-tool-toggle, .x-fieldset-collapsed .x-tool-over .x-tool-toggle {
+    background-position: -25px -75px;
+}
+    /* Toggeled */
+.x-tool-down {
+    background-position: 0 -75px;
+}
+
+.x-tool-over .x-tool-down {
+    background-position: -25px -75px;
+}
+
+.x-tool-up {
+    background-position: 0 -60px;
+}
+
+.x-tool-over .x-tool-up {
+    background-position: -25px -60px;
+}
+
+/* Tree panel font */
+.x-grid-row .x-grid-cell {
+    font: 10px arial;
+    color: #222;
+}
+
+/* Tree panel node height */
+.x-tree-panel .x-grid-row .x-grid-cell-inner {
+    height: 17px;
+}
+
+/* (Tree)Panel border */
+.x-panel .x-grid-body {
+    border-style: none;
+}
+
+/* Multiselect inner border */
+.x-fit-item {
+    border-style: none;
+}
+
+/* Multiselect (custom) transparent row hover */
+.multiselect .x-boundlist-item-over {
+    background-color: transparent;
+    border-color: #fff;
+}
+.multiselect .x-boundlist-selected {
+    background-color: #d3d3d3;
+    border-color: #b3abaa;
+}
+
+/* List (combo, multiselect etc) style */
+.x-boundlist-item {
+    color:#333;
+    padding: 2px 2px 2px 4px;
+}
+
+/* Checkbox box label */
+.x-form-cb-label-after {
+    padding-left: 3px;
+    font: 11px arial, ubuntu;
+}
+
+/* Button chart image */
+.x-btn-default-toolbar-small-icon button {
+    width: 32px !important;
+}
+
+/****************
+ Data Visualizer
+ ***************/
+
+body {
+    font: normal 10px arial;
+}
+
+li {
+   font-size: 10px;
+   color: #000;
+}
+
+#chartsettings_tb {
+    background: #eee;
+}
+
+/* Multiselect dock border radius */
+#availableIndicators .x-docked-top {
+    -webkit-border-top-left-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    border-top-left-radius: 3px;
+}
+
+#availableDataElements .x-docked-top {
+    -webkit-border-top-left-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    border-top-left-radius: 3px;
+}
+
+#selectedIndicators .x-docked-top {
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-right-radius: 3px;
+}
+
+#selectedDataElements .x-docked-top {
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-right-radius: 3px;
+}
+
+/* Button icon */
+.visualizer-chart-button-icon {
+    background: transparent url('../images/column.png') no-repeat center center;
+    width: 38px;
+    height: 38px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

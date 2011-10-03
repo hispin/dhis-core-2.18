@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<!-- No -->
+	
+	<bean id="org.hisp.dhis.visualizer.action.NoAction"
+		class="org.hisp.dhis.visualizer.action.NoAction" scope="prototype" />
+    
+    <!-- Initialize -->
+
+    <bean id="org.hisp.dhis.visualizer.action.InitializeAction"
+        class="org.hisp.dhis.visualizer.action.InitializeAction"
+        scope="prototype">
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+    
+    <!-- Indicator -->
+
+    <bean id="org.hisp.dhis.visualizer.action.GetIndicatorTreeNodesAction"
+        class="org.hisp.dhis.visualizer.action.GetIndicatorTreeNodesAction"
+        scope="prototype">
+        <property name="indicatorService"
+            ref="org.hisp.dhis.indicator.IndicatorService" />
+    </bean>
+    
+    <!-- DataElement -->
+
+    <bean id="org.hisp.dhis.visualizer.action.GetDataElementTreeNodesAction"
+        class="org.hisp.dhis.visualizer.action.GetDataElementTreeNodesAction"
+        scope="prototype">
+        <property name="dataElementService"
+            ref="org.hisp.dhis.dataelement.DataElementService" />
+    </bean>
+    
+    <!-- Period -->
+
+    <bean id="org.hisp.dhis.visualizer.action.GetPeriodTreeNodesAction"
+        class="org.hisp.dhis.visualizer.action.GetPeriodTreeNodesAction"
+        scope="prototype">
+        <property name="periodStore"
+            ref="org.hisp.dhis.period.PeriodStore" />
+        <property name="periodService"
+            ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+    
+    <!-- OrganisationUnit -->
+
+	<bean id="org.hisp.dhis.visualizer.action.GetOrganisationUnitChildrenAction"
+		class="org.hisp.dhis.visualizer.action.GetOrganisationUnitChildrenAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+    
+    <!-- AggregatedIndicatorValue -->
+
+	<bean id="org.hisp.dhis.visualizer.action.GetAggregatedIndicatorValuesAction"
+		class="org.hisp.dhis.visualizer.action.GetAggregatedIndicatorValuesAction"
+		scope="prototype">
+		<property name="aggregatedDataValueService"
+			ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
+        <property name="periodService"
+            ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+    
+    <!-- AggregatedDataValue -->
+
+    <bean id="org.hisp.dhis.visualizer.action.GetAggregatedDataValuesAction"
+        class="org.hisp.dhis.visualizer.action.GetAggregatedDataValuesAction"
+        scope="prototype">
+        <property name="aggregatedDataValueService"
+            ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
+        <property name="periodService"
+            ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+	
+</beans>
