@@ -95,7 +95,7 @@ public class ProgramEnrollmentSelectAction
     {
         patient = patientService.getPatient( id );
 
-        programs = programService.getPrograms( false );
+        programs = programService.getAllPrograms();
 
         return SUCCESS;
     }

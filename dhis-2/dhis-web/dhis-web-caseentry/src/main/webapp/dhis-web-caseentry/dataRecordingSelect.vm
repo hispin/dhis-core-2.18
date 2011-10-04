@@ -1,5 +1,5 @@
 <div>
-    <input type="button" value="$i18n.getString( 'back_to_search' )" onclick="javascript:showSearchForm();" style="width:10em">
+    <input type="button" value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" style="width:10em">
 </div>
    
 <table class="mainPageTable"> 

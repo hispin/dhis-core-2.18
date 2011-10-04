@@ -1,9 +1,4 @@
-<div>
-    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="loadPatientList();" style="width:10em">
-</div>
-
-
-<h3>$i18n.getString( "program_enrollment" )</h3>
+<h3>$i18n.getString( "patient_registered" )</h3>
 
 <div id='programEnrollmentSelectDiv'>
 
@@ -33,30 +28,29 @@
 
 	<hr style="clear:both">
 
-	<table>    
+	<table width='100%'>    
 		<tr>
 			<td style="width:180px"><label for="programId">$i18n.getString( "program" )</label></td>
 			<td>
-				<select id="programId" name="programId" style='width:20.3em' onchange="showProgramEnrollmentForm('$patient.id', this.value);" style="min-width:200px" #if( $programs.size() == 0 ) disabled="disabled"#end>
+				<select id="programId" name="programId" style='width:30.3em' onchange="showProgramEnrollmentForm('$patient.id', this.value);" style="min-width:200px" #if( $programs.size() == 0 ) disabled="disabled"#end>
 					<option value="0">[$i18n.getString( "select" )]</option>
 					#foreach( $program in $programs )
-						<option value="$program.id">$encoder.htmlEncode( $program.name )</option>
+						<option value="$program.id" singleevent='$program.singleEvent'>$encoder.htmlEncode( $program.name )</option>
 					#end
 				</select>
 			</td>
+			<td></td>
+			</td></td>
 		</tr>   
 			
-	</table>
-
-	<table width="100%">
 		<tr>
-			<td style="width:180px"><label for="enrollmentDate">$i18n.getString( "date_of_enrollment" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="enrollmentDate" name="enrollmentDate" style='width:20em'> <i>( <span id='enrollmentDateDescription'></span> )</i></td>
-		</tr>
+			<td><label for="enrollmentDate">$i18n.getString( "date_of_enrollment" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td colspan='2' align='left'><input type="text" id="enrollmentDate" name="enrollmentDate" style='width:30em'> <i>( <span id='enrollmentDateDescription'></span> )</i></td>
+			</tr>
 		
 		<tr>
-			<td style="width:180px"><label for="dateOfIncident">$i18n.getString( "date_of_incident" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="dateOfIncident" name="dateOfIncident" style='width:20em'><i>( <span id='dateOfIncidentDescription'></span> )</i></td>
+			<td><label for="dateOfIncident">$i18n.getString( "date_of_incident" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td colspan='2'><input type="text" id="dateOfIncident" name="dateOfIncident" style='width:30em'><i>( <span id='dateOfIncidentDescription'></span> )</i></td>
 		</tr>
 		<tr>
 			<td></td>
@@ -64,12 +58,12 @@
 			<td></td>                             
 		</tr>
 		
-	</table>
-
-	<table>
 		<tr>
-			<td style="width:180px">
-				<input type="button" id='enrollBtn' name='enrollBtn' value="$i18n.getString( 'enroll' )" onclick='validateProgramEnrollment();' disabled="disabled" />
+			<td></td>
+			<td style="width:180px" colspan='2'>
+				<input type="button" id='enrollBtn' name='enrollBtn' value="$i18n.getString( 'enroll' )" onclick='validateProgramEnrollment();' disabled="disabled" style='width:10em'/>
+				<input type="button" id='registerEventBtn' value="$i18n.getString( 'register_event' )" onclick="showSelectedDataRecoding('$patient.id')" disabled="disabled" style='width:10em'/>
+				<input type="button" value="$i18n.getString( "back_to_search" )" onclick="loadPatientList();" style="width:10em">
 			</td>                                        
 		</tr>
 	</table>
