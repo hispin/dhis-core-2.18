@@ -51,7 +51,7 @@ Ext.onReady( function() {
     document.body.oncontextmenu = function(){return false;};
     Ext.QuickTips.init();
     Ext.override(Ext.form.FieldSet,{setExpanded:function(a){var b=this,c=b.checkboxCmp,d=b.toggleCmp,e;a=!!a;if(c){c.setValue(a)}if(d){d.setType(a?"up":"down")}if(a){e="expand";b.removeCls(b.baseCls+"-collapsed")}else{e="collapse";b.addCls(b.baseCls+"-collapsed")}b.collapsed=!a;b.doComponentLayout();b.fireEvent(e,b);return b}});
-    
+
     Ext.Ajax.request({
         url: DV.conf.finals.ajax.url_visualizer + 'initialize.action',
         success: function(r) {
@@ -1222,8 +1222,7 @@ Ext.onReady( function() {
                         xtype: 'button',
                         name: 'resize',
                         text: '<span style="font-weight:bold"><<<</span>',
-                        style: 'color:red',
-                        tooltip: 'Show/hide panel',
+                        tooltip: 'Show/hide panel',                            
                         handler: function() {
                             var p = DV.util.getCmp('panel[region="west"]');
                             if (p.collapsed) {
