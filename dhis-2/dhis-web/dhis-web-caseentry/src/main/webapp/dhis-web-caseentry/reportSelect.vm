@@ -27,7 +27,7 @@
         <td>
             <input type="text" id="startDate" name="startDate" disabled class="{validate:{required:true}}" />
 			<script type="text/javascript">
-				datePickerValid('startDate');
+				datePicker('startDate');
             </script>  	
         </td>
     </tr>
@@ -37,7 +37,7 @@
         <td>
             <input type="text" id="endDate" name="endDate" disabled class="{validate:{required:true}}" />
             <script type="text/javascript">
-				datePickerValid('endDate');
+				datePicker('endDate');
             </script> 				
         </td>      
     </tr>    	                		
