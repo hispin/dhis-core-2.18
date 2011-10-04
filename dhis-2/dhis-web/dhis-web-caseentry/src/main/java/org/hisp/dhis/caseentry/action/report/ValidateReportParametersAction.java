@@ -27,8 +27,6 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
-import java.util.Date;
-
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 
@@ -95,65 +93,6 @@ public class ValidateReportParametersAction
     public String execute()
         throws Exception
     {
-        if ( startDate == null )
-        {
-            message = i18n.getString( "please_choose_a_valid_start_date" );
-
-            return INPUT;
-        }
-        else
-        {
-            startDate = startDate.trim();
-
-            if ( startDate.length() != 0 )
-            {
-                Date start = format.parseDate( startDate );
-
-                if ( start == null || start.after( new Date() ) )
-                {
-                    message = i18n.getString( "please_choose_a_valid_start_date" );
-
-                    return INPUT;
-                }
-            }
-            else
-            {
-                message = i18n.getString( "please_choose_a_valid_start_date" );
-
-                return INPUT;
-            }
-        }
-
-        if ( endDate == null )
-        {
-            message = i18n.getString( "please_choose_a_valid_end_date" );
-
-            return INPUT;
-        }
-
-        else
-        {
-            endDate = endDate.trim();
-
-            if ( endDate.length() != 0 )
-            {
-                Date end = format.parseDate( endDate );
-
-                if ( end == null || end.after( new Date() ) )
-                {
-                    message = i18n.getString( "please_choose_a_valid_end_date" );
-
-                    return INPUT;
-                }
-            }
-            else
-            {
-                message = i18n.getString( "please_choose_a_valid_end_date" );
-
-                return INPUT;
-            }
-        }
-
         if ( format.parseDate( endDate ).before( format.parseDate( startDate ) ) )
         {
             message = i18n.getString( "please_choose_a_valid_start_end_date" );
