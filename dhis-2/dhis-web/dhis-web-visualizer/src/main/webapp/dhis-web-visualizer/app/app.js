@@ -139,6 +139,14 @@ Ext.onReady( function() {
             }
         },
         button: {
+            cmp: [],
+            getValue: function() {
+                for (var i = 0; i < this.cmp.length; i++) {
+                    if (this.cmp[i].pressed) {
+                        return this.cmp[i].name;
+                    }
+                }
+            },
             toggleHandler: function(b) {
                 if (!b.pressed) {
                     b.toggle();
@@ -321,6 +329,9 @@ Ext.onReady( function() {
         },        
         chart: null,        
         getChartStore: function(exe) {
+            this[DV.state.type](exe);
+        },
+        column: function(exe) {
             var properties = Ext.Object.getKeys(DV.data.data[0]);
             this.chart = Ext.create('Ext.data.Store', {
                 fields: properties,
@@ -334,7 +345,23 @@ Ext.onReady( function() {
             }
             else {
                 return DV.store.chart;
+            }            
+        },
+        bar: function(exe) {
+            var properties = Ext.Object.getKeys(DV.data.data[0]);
+            this.chart = Ext.create('Ext.data.Store', {
+                fields: properties,
+                data: DV.data.data
+            });            
+            this.chart.left = properties.slice(0, 1);
+            this.chart.bottom = properties.slice(1, properties.length);
+            
+            if (exe) {
+                DV.chart.getChart(true);
             }
+            else {
+                return DV.store.chart;
+            }            
         }
     };
     
@@ -360,6 +387,8 @@ Ext.onReady( function() {
         },        
         getState: function(exe) {
             this.resetState();
+            
+            this.type = DV.util.button.getValue();
             
             this.series.dimension = this.series.cmp.getValue();
             this.category.dimension = this.category.cmp.getValue();
@@ -533,7 +562,45 @@ Ext.onReady( function() {
                     }
                 ]
             });
-        },        
+        },
+        bar: function() {
+            this.chart = Ext.create('Ext.chart.Chart', {
+                width: DV.util.viewport.getSize().x,
+                height: DV.util.viewport.getSize().y,
+                animate: true,
+                store: DV.store.chart,
+                legend: {
+                    position: 'top'
+                },
+                axes: [
+                    {
+                        title: DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
+                        type: 'Category',
+                        position: 'left',
+                        fields: DV.store.chart.left
+                    },
+                    {
+                        title: 'Value',
+                        type: 'Numeric',
+                        position: 'bottom',
+                        minimum: 0,
+                        grid: true,
+                        fields: DV.store.chart.bottom,
+                        label: {
+                            renderer: Ext.util.Format.numberRenderer('0,0')
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        type: 'bar',
+                        axis: 'bottom',
+                        xField: DV.store.chart.left,
+                        yField: DV.store.chart.bottom
+                    }
+                ]
+            });
+        },
         reload: function() {
             var c = DV.util.getCmp('panel[region="center"]');
             c.removeAll(true);
@@ -559,10 +626,18 @@ Ext.onReady( function() {
                         height: 44,
                         style: 'padding-top:2px; border-style:none',
                         defaults: {
+                            xtype: 'button',
                             width: 40,
                             height: 40,
                             toggleGroup: 'chartsettings',
-                            handler: DV.util.button.toggleHandler
+                            handler: DV.util.button.toggleHandler,
+                            listeners: {
+                                afterrender: function(b) {
+                                    if (b.xtype === 'button') {
+                                        DV.util.button.cmp.push(b);
+                                    }
+                                }
+                            }
                         },
                         items: [
                             {
@@ -572,29 +647,14 @@ Ext.onReady( function() {
                             },
                             {
                                 icon: 'images/column.png',
+                                name: DV.conf.finals.chart.column,
                                 tooltip: 'Column chart',
-                                pressed: true,
-                                listeners: {
-                                    click: function() {
-                                        DV.state.type = DV.conf.finals.chart.column;
-                                    }
-                                }
+                                pressed: true
                             },
                             {
-                                icon: 'images/column.png',
-                                disabled: true
-                            },
-                            {
-                                icon: 'images/column.png',
-                                disabled: true
-                            },
-                            {
-                                icon: 'images/column.png',
-                                disabled: true
-                            },
-                            {
-                                icon: 'images/column.png',
-                                disabled: true
+                                icon: 'images/bar.png',
+                                name: DV.conf.finals.chart.bar,
+                                tooltip: 'Bar chart'
                             }
                         ]
                     },                    
