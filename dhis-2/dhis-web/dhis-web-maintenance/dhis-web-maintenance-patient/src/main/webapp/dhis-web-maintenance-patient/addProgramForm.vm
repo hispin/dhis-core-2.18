@@ -1,6 +1,7 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'addProgramForm', function( form ){			
+		validation( 'addProgramForm', function( form ){		
+			enable('dateOfEnrollmentDescription');
 			form.submit();
 		});				
 		
