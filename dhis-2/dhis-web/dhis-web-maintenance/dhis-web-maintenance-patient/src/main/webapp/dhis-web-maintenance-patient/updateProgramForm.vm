@@ -1,7 +1,8 @@
 <script>
 	jQuery(document).ready(	function(){
 		
-		validation( 'updateProgramForm', function( form ){ 			
+		validation( 'updateProgramForm', function( form ){ 
+			enable('dateOfEnrollmentDescription');
 			form.submit();			
 		});	
 		
@@ -49,7 +50,7 @@
 	  </tr>		
   	  <tr>
 		<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$!program.dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$!program.dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}" #if( $program.singleEvent=='true' ) disabled #end></td>
 		<td></td>
 	  </tr>	
 	  <tr>
