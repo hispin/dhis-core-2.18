@@ -35,6 +35,13 @@
 		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $program.description )" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 	  </tr>
+	  
+      <tr>
+		<td><label>$i18n.getString( "single_event" )</td>
+		<td><input type="checkbox" id="singleEvent" name="singleEvent" #if( $program.singleEvent=='true' ) checked #end onchange="singleEventOnChange();"></td>
+		<td></td>
+	 </tr>
+	 
 	  <tr>
 		<td><label>$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="version" name="version" value="$program.version" style="width:30em" class="{validate:{required:true,number:true}}"></td>
@@ -56,12 +63,6 @@
 		<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" value="$!program.maxDaysAllowedInputData" style="width:30em" class="{validate:{required:true,number:true}}"></td>
 		<td></td>
 	  </tr>	
-
-      <tr>
-		<td><label>$i18n.getString( "single_event" )</td>
-		<td><input type="checkbox" id="singleEvent" name="singleEvent" #if( $program.singleEvent=='true' ) checked #end></td>
-		<td></td>
-	 </tr>
 		  
       <tr>
       	<td colspan="2" style="height:15px"></td>
