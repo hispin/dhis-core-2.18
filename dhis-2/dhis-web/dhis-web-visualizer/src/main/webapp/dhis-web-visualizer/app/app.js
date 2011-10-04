@@ -227,6 +227,7 @@ Ext.onReady( function() {
                         selection = treepanel.getSelectionModel().getSelection();
                     if (!selection.length) {
                         selection = [treepanel.getRootNode()];
+                        treepanel.selectRoot();
                     }
                     Ext.Array.each(selection, function(r) {
                         a.push('organisationUnitIds=' + r.data.id);
@@ -239,6 +240,7 @@ Ext.onReady( function() {
                         selection = treepanel.getSelectionModel().getSelection();
                     if (!selection.length) {
                         selection = [treepanel.getRootNode()];
+                        treepanel.selectRoot();
                     }
                     Ext.Array.each(selection, function(r) {
                         a.push(r.data.text);
@@ -1271,9 +1273,12 @@ Ext.onReady( function() {
                                         width: DV.conf.layout.west_cmp_width,
                                         autoScroll: true,
                                         multiSelect: true,
+                                        isRendered: false,
                                         selectRoot: function() {
-                                            if (!this.getSelectionModel().getSelection().length) {
-                                                this.getSelectionModel().select(this.getRootNode());
+                                            if (this.isRendered) {
+                                                if (!this.getSelectionModel().getSelection().length) {
+                                                    this.getSelectionModel().select(this.getRootNode());
+                                                }
                                             }
                                         },
                                         store: Ext.create('Ext.data.TreeStore', {
@@ -1297,7 +1302,9 @@ Ext.onReady( function() {
                                 listeners: {
                                     expand: function(fs) {
                                         DV.util.fieldset.collapseOthers(this.name);
-                                        fs.down('treepanel').selectRoot();
+                                        var tp = fs.down('treepanel');
+                                        tp.isRendered = true;
+                                        tp.selectRoot();
                                     }
                                 }
                             }
