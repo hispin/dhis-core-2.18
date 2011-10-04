@@ -210,7 +210,11 @@ Ext.onReady( function() {
             organisationunit: {
                 getUrl: function(isFilter) {
                     var a = [],
-                        selection = DV.util.getCmp('treepanel').getSelectionModel().getSelection();
+                        treepanel = DV.util.getCmp('treepanel'),
+                        selection = treepanel.getSelectionModel().getSelection();
+                    if (!selection.length) {
+                        selection = [treepanel.getRootNode()];
+                    }
                     Ext.Array.each(selection, function(r) {
                         a.push('organisationUnitIds=' + r.data.id);
                     });
@@ -218,7 +222,11 @@ Ext.onReady( function() {
                 },
                 getNames: function() {
                     var a = [],
-                        selection = DV.util.getCmp('treepanel').getSelectionModel().getSelection();
+                        treepanel = DV.util.getCmp('treepanel'),
+                        selection = treepanel.getSelectionModel().getSelection();
+                    if (!selection.length) {
+                        selection = [treepanel.getRootNode()];
+                    }
                     Ext.Array.each(selection, function(r) {
                         a.push(r.data.text);
                     });
@@ -1161,6 +1169,11 @@ Ext.onReady( function() {
                                         width: DV.conf.layout.west_cmp_width,
                                         autoScroll: true,
                                         multiSelect: true,
+                                        selectRoot: function() {
+                                            if (!this.getSelectionModel().getSelection().length) {
+                                                this.getSelectionModel().select(this.getRootNode());
+                                            }
+                                        },
                                         store: Ext.create('Ext.data.TreeStore', {
                                             proxy: {
                                                 type: 'ajax',
@@ -1173,17 +1186,16 @@ Ext.onReady( function() {
                                             }
                                         }),
                                         listeners: {
-                                            //afterrender: function(tp) {
-                                                //tp.getRootNode()
                                             itemcontextmenu: function(a,b,c,d,e) {
-                                                console.log(e);
+                                                //console.log(e);
                                             }
                                         }
                                     }
                                 ],
                                 listeners: {
-                                    expand: function() {
+                                    expand: function(fs) {
                                         DV.util.fieldset.collapseOthers(this.name);
+                                        fs.down('treepanel').selectRoot();
                                     }
                                 }
                             }
