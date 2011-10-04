@@ -53,6 +53,7 @@
 <hr style="clear:both">
 
 <div id="contentDiv"></div>
+<div id='patientDetailsArea' style='display:none;'></div>
 
 <span id="message"></span>
 

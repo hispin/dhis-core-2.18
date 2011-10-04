@@ -109,7 +109,11 @@ function viewRecords( programStageInstanceId )
 
 function patientDetails( patientId )
 {
-	$('<div id="patientDetailsArea">' ).load( 'getPatientDetails.action?id=' + patientId ).dialog({
+	jQuery('#patientDetailsArea' ).load( 'getPatientDetails.action?id=' + patientId 
+		,function(){
+			hideById('closeBtn');
+			$( "#loaderDiv" ).hide();
+		}).dialog({
 			title: i18n_patient_profile,
 			maximize: true, 
 			closable: true,
