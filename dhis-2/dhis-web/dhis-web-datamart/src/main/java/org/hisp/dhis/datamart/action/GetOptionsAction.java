@@ -129,13 +129,6 @@ public class GetOptionsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> organisationUnits;
-
-    public List<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
     private List<OrganisationUnitLevel> levels;
 
     public List<OrganisationUnitLevel> getLevels()

@@ -69,7 +69,7 @@ jQuery( document ).ready( function() {
 	
 	/* Loads the available organisation units */
 	jQuery("#availableOrganisationUnits").dhisAjaxSelect({
-		source: "../dhis-web-commons-ajax-json/getOrganisationUnits.action",
+		source: "../dhis-web-commons-ajax-json/getOrganisationUnits.action?level=1",
 		iterator: "organisationUnits",
 		connectedTo: "selectedOrganisationUnits",
 		handler: function(item) {
@@ -86,7 +86,7 @@ jQuery( document ).ready( function() {
 // Data retrieval methods
 // -----------------------------------------------------------------------------
 
-function getOrganisationUnits()
+function getOrganisationUnitsAtLevel()
 {
 	var organisationUnitLevel = getFieldValue( 'organisationUnitLevel' );
 	var filterInput = jQuery( "#availableOrganisationUnits_filter_input" );
