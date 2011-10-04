@@ -29,6 +29,8 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -56,6 +58,8 @@ public class ProgramEnrollmentAction
 
     private ProgramInstanceService programInstanceService;
 
+    private OrganisationUnitSelectionManager selectionManager;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -67,8 +71,10 @@ public class ProgramEnrollmentAction
     private Patient patient;
 
     private Program program;
-    
+
     private ProgramInstance programInstance;
+
+    private Boolean registerEvent;
 
     private Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
@@ -89,6 +95,11 @@ public class ProgramEnrollmentAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
+    }
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
     }
 
     public void setPatientId( Integer patientId )
@@ -121,6 +132,11 @@ public class ProgramEnrollmentAction
         return programStageInstances;
     }
 
+    public Boolean getRegisterEvent()
+    {
+        return registerEvent;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -145,6 +161,10 @@ public class ProgramEnrollmentAction
 
             programStageInstances = programInstance.getProgramStageInstances();
         }
+
+        OrganisationUnit selectedOrgunit = selectionManager.getSelectedOrganisationUnit();
+      
+        registerEvent = program.getOrganisationUnits().contains( selectedOrgunit );
 
         return SUCCESS;
     }

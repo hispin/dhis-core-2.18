@@ -26,8 +26,9 @@
 			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js
 				,javascript/commons.js
-				,javascript/dataEntry.js,
-				../dhis-web-commons/javascripts/date.js
+				,javascript/form.js
+				,javascript/entry.js
+				,../dhis-web-commons/javascripts/date.js
 			</param>
 		</action>
 
@@ -127,7 +128,7 @@
 			<param name="page">/dhis-web-caseentry/multiDataEntrySelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,
-				javascript/dataEntry.js</param>
+				javascript/form.js</param>
 		</action>
 
 		<action name="getPrograms"
@@ -149,14 +150,14 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
-			<param name="javascripts">javascript/dataEntry.js,../dhis-web-commons/javascripts/date.js</param>
+			<param name="javascripts">javascript/form.js,../dhis-web-commons/javascripts/date.js</param>
 		</action>
 
 		<action name="loadProgramStageRecords"
 			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
-			<param name="javascripts">javascript/dataEntry.js,../dhis-web-commons/javascripts/date.js</param>
+			<param name="javascripts">javascript/form.js,../dhis-web-commons/javascripts/date.js</param>
 		</action>
 
 		<action name="completeProgramStageDataEntry"
@@ -304,8 +305,17 @@
 				../dhis-web-commons/ouwt/ouwt.js
 				,javascript/commons.js
 				,javascript/patient.js
+				,javascript/entry.js
 				,javascript/relationshipPatient.js
 			</param>
+		</action>
+		
+		<action name="selectDataRecordingFromRegistration"
+			class="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/dataRecordingSelect.vm</param>
+			<param name="javascripts">javascript/entry.js</param>
+			<param name="stylesheets">style/patient.css</param>
 		</action>
 
 		<action name="organisationUnitHasPatients"
