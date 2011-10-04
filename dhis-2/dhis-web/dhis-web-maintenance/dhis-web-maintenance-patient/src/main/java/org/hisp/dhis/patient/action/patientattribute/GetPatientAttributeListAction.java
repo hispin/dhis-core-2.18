@@ -28,10 +28,12 @@
 package org.hisp.dhis.patient.action.patientattribute;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,9 +59,9 @@ public class GetPatientAttributeListAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
+    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public List<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
     }
@@ -71,7 +73,9 @@ public class GetPatientAttributeListAction
     public String execute()
         throws Exception
     {
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
+        patientAttributes = new ArrayList<PatientAttribute>(patientAttributeService.getAllPatientAttributes());
+        
+        Collections.sort( patientAttributes, new PatientAttributeComparator() );
 
         return SUCCESS;
     }
