@@ -209,6 +209,20 @@ public class SectionFormUtils
     // Static Utils
     // -------------------------------------------------------------------------
 
+    public static boolean isInteger( String value )
+    {
+        try
+        {
+            Integer.parseInt( value );
+        }
+        catch ( NumberFormatException e )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public static boolean valueHigher( String value, int max )
     {
         int integerValue;

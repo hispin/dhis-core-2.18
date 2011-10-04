@@ -272,16 +272,23 @@ public class SaveSectionFormAction
 
                 value = value.trim();
 
+                if ( value == null || value.length() == 0 || !SectionFormUtils.isInteger( value ) )
+                {
+                    if ( dataValue != null )
+                    {
+                        dataValueService.deleteDataValue( dataValue );
+                    }
+
+                    continue;
+                }
+
                 if ( dataValue == null )
                 {
-                    if ( value != null && value.length() > 0 )
-                    {
-                        needsValidation = true;
+                    needsValidation = true;
 
-                        dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(),
-                            null, optionCombo );
-                        dataValueService.addDataValue( dataValue );
-                    }
+                    dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(),
+                        null, optionCombo );
+                    dataValueService.addDataValue( dataValue );
                 }
                 else
                 {
