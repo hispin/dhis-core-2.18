@@ -66,3 +66,17 @@ function getDataElementsFromStageReceived(xmlObject){
     }
 }
 
+function singleEventOnChange()
+{
+	var checked = byId('singleEvent').checked;
+	
+	if(checked)
+	{
+		disable('dateOfEnrollmentDescription');
+	}
+	else
+	{
+		enable('dateOfEnrollmentDescription');
+	}
+}
+
