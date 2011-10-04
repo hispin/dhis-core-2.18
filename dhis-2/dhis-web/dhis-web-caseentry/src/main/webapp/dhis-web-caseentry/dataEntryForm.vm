@@ -6,7 +6,7 @@
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
 		#elseif( $program.singleEvent == "true" )
 		{
-			jQuery("#dueDate").val( getCurrentDate() );
+			disable("dueDate");
 		}
 		#end
 		
