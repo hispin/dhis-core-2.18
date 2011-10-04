@@ -15,7 +15,17 @@ function showProgramValidationDetails ( programValidationId )
 		setInnerHTML( 'idField', json.validation.id );
 		setInnerHTML( 'descriptionField', json.validation.description );
 		setInnerHTML( 'leftSideField', json.validation.leftSide );
-		setInnerHTML( 'rightSideField', json.validation.rightSide );
+		if( json.validation.rightSide != '1==1')
+		{
+			setInnerHTML( 'leftSideTitle', i18n_left_side );
+			setInnerHTML( 'rightSideField', json.validation.rightSide );
+			showById('rightSideDiv');
+		}
+		else
+		{
+			setInnerHTML( 'leftSideTitle', i18n_condition );
+			hideById('rightSideDiv');
+		}
 		setInnerHTML( 'programField', json.validation.program );
 		
 		showDetails();
