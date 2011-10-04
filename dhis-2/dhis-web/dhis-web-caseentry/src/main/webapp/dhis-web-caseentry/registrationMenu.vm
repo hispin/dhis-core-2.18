@@ -2,7 +2,7 @@
 <a href="index.action"><h2>$i18n.getString( "registration" )&nbsp;</h2></a>
 
 <ul>
-	<li><a href="patient.action">$i18n.getString( "registration_patient" )</a></li>
+	<li><a href="patient.action">$i18n.getString( "patient_registration" )</a></li>
 </ul>
 
 <br>
