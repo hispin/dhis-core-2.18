@@ -39,7 +39,7 @@
 		<tr>
 			<td><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
-				<select id="mandatory" name="mandatory" style="min-width:20em">
+				<select id="mandatory" name="mandatory" style="min-width:30.2em">
 					<option value="true" #if( $patientIdentifierType.mandatory ) selected="selected" #end>$i18n.getString( "yes" )</option>
 					<option value="false" #if( !$patientIdentifierType.mandatory ) selected="selected" #end>$i18n.getString( "no" )</option>
 				</select>
@@ -50,7 +50,7 @@
 		<tr>
 			<td><label for="related">$i18n.getString( "related" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
-				<select id="related" name="related" style="min-width:20em" class="{validate:{required:true}}">
+				<select id="related" name="related" style="min-width:30.2em" class="{validate:{required:true}}">
 					<option value="true" #if( $patientIdentifierType.related ) selected="selected" #end>$i18n.getString( "yes" )</option>
 					<option value="false" #if( !$patientIdentifierType.related ) selected="selected" #end>$i18n.getString( "no" )</option>
 				</select>

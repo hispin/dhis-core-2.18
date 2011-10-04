@@ -3,6 +3,9 @@
     "id": "$program.id",
 	"name": "$!encoder.jsEncode( ${program.name} )",
 	"description": "$!encoder.jsEncode( ${program.description} )",
+	"singleEvent": "$!program.singleEvent",
+	"dateOfEnrollmentDescription": "$!encoder.jsEncode( ${program.dateOfEnrollmentDescription} )",
+	"dateOfIncidentDescription": "$!encoder.jsEncode( ${program.dateOfIncidentDescription} )",
 	"programStageCount": "${program.programStages.size()}",
 	"maxDay": "${program.maxDaysAllowedInputData}"
   }

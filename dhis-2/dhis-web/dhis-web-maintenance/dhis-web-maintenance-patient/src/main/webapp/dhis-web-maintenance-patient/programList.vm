@@ -24,7 +24,7 @@
 					
 					<td style="text-align:center">
 					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"></a>
-					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'define_program_validation' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'define_program_validation' )"></a>
+					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'program_validation_management' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'define_program_validation' )"></a>
 					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 					  <a href="programStage.action?id=$program.id" title="$i18n.getString( 'view_program_stages' )"><img src="../images/add_section.png" alt="$i18n.getString( 'view_stage_management' )"></a>
 					  <a href="patientChartList.action?programId=$program.id" title="$i18n.getString( 'patient_chart_management' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'remove' )"></a>
@@ -47,6 +47,9 @@
 				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
 				<p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
 				<p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>				
+				<p><label class="bold">$i18n.getString( "single_event" ):</label><br><span id="singleEventField"></span></p>				
+				<p><label class="bold">$i18n.getString( "date_of_enrollment_description" ):</label><br><span id="dateOfEnrollmentDescriptionField"></span></p>				
+				<p><label class="bold">$i18n.getString( "date_of_incident_description" ):</label><br><span id="dateOfIncidentDescriptionField"></span></p>				
 				<p><label class="bold">$i18n.getString( "stage_in_program" ):</label><br><span id="programStageCountField"></span></p>
 				<p><label class="bold">$i18n.getString( "max_days_from_start" ):</label><br><span id="maxDaysFromStartField"></span></p>
 			</div>
@@ -58,7 +61,9 @@
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_prorgam" ) , "'" )';
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ), "'")';	
-	
+	var i18n_yes = '$encoder.jsEscape( $i18n.getString( "yes" ) , "'")';
+    var i18n_no = '$encoder.jsEscape( $i18n.getString( "no" ) , "'")';
+   
 	jQuery(document).ready(function(){	
 		tableSorter( 'listTable' );
 	});
