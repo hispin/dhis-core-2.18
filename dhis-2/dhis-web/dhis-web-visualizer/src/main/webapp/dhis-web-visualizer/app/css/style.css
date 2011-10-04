@@ -21,7 +21,7 @@
 /* Combobox field label font */
 .x-form-item-label {
     font: 11px arial;
-    color: #222;
+    color: #111;
 }
 
 /* Splitter column */
@@ -104,12 +104,12 @@
     border-style: none;
 }
 
-/* Multiselect (custom) transparent row hover */
-.multiselect .x-boundlist-item-over {
+/* Multiselect /*(custom) transparent row hover */
+.dv-multiselect .x-boundlist-item-over {
     background-color: transparent;
     border-color: #fff;
 }
-.multiselect .x-boundlist-selected {
+.dv-multiselect .x-boundlist-selected {
     background-color: #d3d3d3;
     border-color: #b3abaa;
 }
@@ -167,7 +167,7 @@
  ***************/
 
 body {
-    font: normal 11px arial;
+    font: normal 11px arial,ubuntu;
 }
 
 li {
@@ -220,4 +220,8 @@ li {
 .dv-fieldset-title-link {
     color:#000;
     text-decoration:none;
+}
+
+.dv-multiselect {
+    color: #111;
 }

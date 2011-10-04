@@ -4,7 +4,9 @@ DV.conf = {
         ajax: {
             url_visualizer: '../',
             url_commons: '../../dhis-web-commons-ajax-json/',
-            url_portal: '../../dhis-web-portal/'
+            url_portal: '../../dhis-web-portal/',
+            url_indicator: 'getAggregatedIndicatorValues',
+            url_dataelement: 'getAggregatedDataValues'
         },        
         dimension: {
             indicator: {
@@ -29,17 +31,19 @@ DV.conf = {
             category: 'category',
             filter: 'filter',
             column: 'column',
+            bar: 'bar',
             line: 'line',
             pie: 'pie'
         }
     },
     style: {
         label: {
-            period: 'font:bold 11px arial,ubuntu; color:#444; line-height:20px',
+            period: 'font:bold 11px arial; color:#444; line-height:20px',
         }
     },
     layout: {
-        west_cmp_width: 380
+        west_cmp_width: 380,
+        west_width: 424
     }
 };
 
@@ -48,14 +52,15 @@ Ext.Loader.setPath('Ext.ux', 'lib/ext-ux');
 Ext.require('Ext.ux.form.MultiSelect');
 
 Ext.onReady( function() {
-    document.body.oncontextmenu = function(){return false;};
-    Ext.QuickTips.init();
     Ext.override(Ext.form.FieldSet,{setExpanded:function(a){var b=this,c=b.checkboxCmp,d=b.toggleCmp,e;a=!!a;if(c){c.setValue(a)}if(d){d.setType(a?"up":"down")}if(a){e="expand";b.removeCls(b.baseCls+"-collapsed")}else{e="collapse";b.addCls(b.baseCls+"-collapsed")}b.collapsed=!a;b.doComponentLayout();b.fireEvent(e,b);return b}});
+    Ext.QuickTips.init();
+    document.body.oncontextmenu = function(){return false;};
 
     Ext.Ajax.request({
         url: DV.conf.finals.ajax.url_visualizer + 'initialize.action',
         success: function(r) {
-            DV.init = Ext.JSON.decode(r.responseText);
+            
+    DV.init = Ext.JSON.decode(r.responseText);
         
     DV.util = {
         getCmp: function(q) {
@@ -64,7 +69,7 @@ Ext.onReady( function() {
         viewport: {
             getSize: function() {
                 var c = DV.util.getCmp('panel[region="center"]');
-                return { x: c.getWidth(), y: c.getHeight() };
+                return {x: c.getWidth(), y: c.getHeight()};
             }
         },
         multiselect: {
@@ -241,10 +246,10 @@ Ext.onReady( function() {
             return Ext.create('Ext.data.Store', {
                 fields: ['id', 'name'],
                 data: [
-                    { id: DV.conf.finals.dimension.indicator.value, name: DV.conf.finals.dimension.indicator.rawvalue },
-                    { id: DV.conf.finals.dimension.dataelement.value, name: DV.conf.finals.dimension.dataelement.rawvalue },
-                    { id: DV.conf.finals.dimension.period.value, name: DV.conf.finals.dimension.period.rawvalue },
-                    { id: DV.conf.finals.dimension.organisationunit.value, name: DV.conf.finals.dimension.organisationunit.rawvalue }
+                    {id: DV.conf.finals.dimension.indicator.value, name: DV.conf.finals.dimension.indicator.rawvalue},
+                    {id: DV.conf.finals.dimension.dataelement.value, name: DV.conf.finals.dimension.dataelement.rawvalue},
+                    {id: DV.conf.finals.dimension.period.value, name: DV.conf.finals.dimension.period.rawvalue},
+                    {id: DV.conf.finals.dimension.organisationunit.value, name: DV.conf.finals.dimension.organisationunit.rawvalue}
                 ]
             });
         },        
@@ -253,7 +258,6 @@ Ext.onReady( function() {
                 fields: ['id', 'name', 'shortName'],
                 proxy: {
                     type: 'ajax',
-                    baseUrl: DV.conf.finals.ajax.url_commons + 'getIndicatorsMinified.action',
                     url: DV.conf.finals.ajax.url_commons + 'getIndicatorsMinified.action',
                     reader: {
                         type: 'json',
@@ -287,7 +291,6 @@ Ext.onReady( function() {
                 fields: ['id', 'name', 'shortName'],
                 proxy: {
                     type: 'ajax',
-                    baseUrl: DV.conf.finals.ajax.url_commons + 'getDataElementsMinified.action',
                     url: DV.conf.finals.ajax.url_commons + 'getDataElementsMinified.action',
                     reader: {
                         type: 'json',
@@ -319,12 +322,10 @@ Ext.onReady( function() {
         chart: null,        
         getChartStore: function(exe) {
             var properties = Ext.Object.getKeys(DV.data.data[0]);
-
             this.chart = Ext.create('Ext.data.Store', {
                 fields: properties,
                 data: DV.data.data
-            });
-            
+            });            
             this.chart.bottom = properties.slice(0, 1);
             this.chart.left = properties.slice(1, properties.length);
             
@@ -337,42 +338,48 @@ Ext.onReady( function() {
         }
     };
     
-    DV.state = {        
+    DV.state = {
+        type: DV.conf.finals.chart.column,
         indiment: [],        
         period: [],        
         organisationunit: [],        
         series: {
+            cmp: null,
             dimension: DV.conf.finals.dimension.indicator.value,
             data: []
         },        
         category: {
+            cmp: null,
             dimension: DV.conf.finals.dimension.period.value,
             data: []
         },        
         filter: {
+            cmp: null,
             dimension: DV.conf.finals.dimension.organisationunit.value,
             data: []
         },        
         getState: function(exe) {
             this.resetState();
             
-            var indicator = DV.conf.finals.dimension.indicator.value,
-                indiment = (this.series.dimension === indicator || this.category.dimension === indicator || this.filter.dimension === indicator) ?
-                    DV.conf.finals.dimension.indicator.value : DV.conf.finals.dimension.dataelement.value,
-                period = DV.conf.finals.dimension.period.value,
-                organisationunit = DV.conf.finals.dimension.organisationunit.value;
+            this.series.dimension = this.series.cmp.getValue();
+            this.category.dimension = this.category.cmp.getValue();
+            this.filter.dimension = this.filter.cmp.getValue();
             
-            this.indiment = DV.util.dimension[indiment].getNames();
-            this.period = DV.util.dimension[period].getNames();
-            this.organisationunit = DV.util.dimension[organisationunit].getNames();
+            var i = this.getIndiment().value,
+                p = DV.conf.finals.dimension.period.value,
+                o = DV.conf.finals.dimension.organisationunit.value;
+            
+            this.indiment = DV.util.dimension[i].getNames();
+            this.period = DV.util.dimension[p].getNames();
+            this.organisationunit = DV.util.dimension[o].getNames();
             
             if (!this.indiment.length || !this.period.length || !this.organisationunit.length) {
-                alert("form is not complete");
+                alert('form is not complete');
                 return;
             }
     
-            DV.state.indicator = DV.state.indiment;
-            DV.state.dataelement = DV.state.indiment;
+            this.indicator = this.indiment;
+            this.dataelement = this.indiment;
             
             this.series.data = this[this.series.dimension];
             this.category.data = this[this.category.dimension];
@@ -381,13 +388,25 @@ Ext.onReady( function() {
             if (exe) {
                 DV.data.getValues(true);
             }
-        },        
+        },
+        getIndiment: function() {
+            var i = DV.conf.finals.dimension.indicator.value;
+            return (this.series.dimension === i || this.category.dimension === i || this.filter.dimension === i) ?
+                DV.conf.finals.dimension.indicator : DV.conf.finals.dimension.dataelement;
+        },
+        isIndicator: function() {
+            var i = DV.conf.finals.dimension.indicator.value;
+            return (this.series.dimension === i || this.category.dimension === i || this.filter.dimension === i);
+        },
         resetState: function() {
             this.indiment = null;
             this.period = null;
             this.organisationunit = null;
+            this.series.dimension = null;
             this.series.data = null;
+            this.category.dimension = null;
             this.category.data = null;
+            this.filter.dimension = null;
             this.filter.data = null;
         }
     };
@@ -401,14 +420,14 @@ Ext.onReady( function() {
                 series = DV.state.series.dimension,
                 category = DV.state.category.dimension,
                 filter = DV.state.filter.dimension,
-                indiment = (series === indicator || category === indicator || filter === indicator) ? indicator : dataelement,
-                url = (series === indicator || category === indicator || filter === indicator) ? 'Indicator' : 'Data';
-            
+                indiment = DV.state.getIndiment().value,
+                url = DV.state.isIndicator() ? DV.conf.finals.ajax.url_indicator : DV.conf.finals.ajax.url_dataelement;
+                
             params = params.concat(DV.util.dimension[series].getUrl());
             params = params.concat(DV.util.dimension[category].getUrl());
             params = params.concat(DV.util.dimension[filter].getUrl(true));
             
-            var baseUrl = DV.conf.finals.ajax.url_visualizer + 'getAggregated' + url + 'Values.action';
+            var baseUrl = DV.conf.finals.ajax.url_visualizer + url + '.action';
             for (var i = 0; i < params.length; i++) {
                 baseUrl = Ext.String.urlAppend(baseUrl, params[i]);
             }
@@ -417,6 +436,12 @@ Ext.onReady( function() {
                 url: baseUrl,
                 success: function(r) {
                     DV.data.values = Ext.JSON.decode(r.responseText).values;
+                    
+                    if (!DV.data.values.length) {
+                        alert('no data values');
+                        return;
+                    }
+                    
                     Ext.Array.each(DV.data.values, function(item) {
                         item[indiment] = DV.store[indiment].available.storage[item.i].name;
                         item[DV.conf.finals.dimension.period.value] = DV.util.dimension.period.getNameById(item.p);
@@ -441,9 +466,12 @@ Ext.onReady( function() {
             });
             
             Ext.Array.each(DV.data.data, function(item) {
-                for (var i = 0; i < DV.data.values.length; i++) {
-                    if (DV.data.values[i][DV.state.category.dimension] === item.x) {
-                        item[DV.data.values[i][DV.state.series.dimension]] = DV.data.values[i].v;
+                for (var i = 0; i < DV.state.series.data.length; i++) {
+                    for (var j = 0; i < DV.data.values.length; j++) {
+                        if (DV.data.values[j][DV.state.category.dimension] === item.x && DV.data.values[j][DV.state.series.dimension] === DV.state.series.data[i]) {
+                            item[DV.data.values[j][DV.state.series.dimension]] = DV.data.values[j].v;
+                            break;
+                        }
                     }
                 }
             });
@@ -458,9 +486,17 @@ Ext.onReady( function() {
     };
     
     DV.chart = {
-        type: DV.conf.finals.chart.category,        
         chart: null,        
         getChart: function(exe) {
+            this[DV.state.type]();
+            if (exe) {
+                this.reload();
+            }
+            else {
+                return this.chart;
+            }
+        },
+        column: function() {
             this.chart = Ext.create('Ext.chart.Chart', {
                 width: DV.util.viewport.getSize().x,
                 height: DV.util.viewport.getSize().y,
@@ -497,13 +533,6 @@ Ext.onReady( function() {
                     }
                 ]
             });
-            
-            if (exe) {
-                DV.chart.reload();
-            }
-            else {
-                return DV.chart.chart;
-            }
         },        
         reload: function() {
             var c = DV.util.getCmp('panel[region="center"]');
@@ -544,7 +573,12 @@ Ext.onReady( function() {
                             {
                                 icon: 'images/column.png',
                                 tooltip: 'Column chart',
-                                pressed: true
+                                pressed: true,
+                                listeners: {
+                                    click: function() {
+                                        DV.state.type = DV.conf.finals.chart.column;
+                                    }
+                                }
                             },
                             {
                                 icon: 'images/column.png',
@@ -629,9 +663,11 @@ Ext.onReady( function() {
                                             fn(f);
                                         },
                                         listeners: {
+                                            afterrender: function(cb) {
+                                                DV.state[cb.name].cmp = cb;
+                                            },
                                             select: function(cb) {
                                                 cb.filter(cb, DV.viewport);
-                                                DV.state.series.dimension = cb.getValue();
                                             }
                                         }
                                     }
@@ -694,6 +730,9 @@ Ext.onReady( function() {
                                             }
                                         },
                                         listeners: {
+                                            afterrender: function(cb) {
+                                                DV.state[cb.name].cmp = cb;
+                                            },
                                             select: function(cb) {
                                                 cb.filter(cb, DV.viewport);
                                                 DV.state.category.dimension = cb.getValue();
@@ -726,6 +765,9 @@ Ext.onReady( function() {
                                         store: DV.store.dimension(),
                                         value: DV.conf.finals.dimension.organisationunit.value,
                                         listeners: {
+                                            afterrender: function(cb) {
+                                                DV.state[cb.name].cmp = cb;
+                                            },
                                             select: function(cb) {                     
                                                 DV.state.filter.dimension = cb.getValue();
                                             }
@@ -1236,7 +1278,7 @@ Ext.onReady( function() {
                     ' ',
                     {
                         xtype: 'button',
-                        text: 'Update',
+                        text: 'Update..',
                         cls: 'x-btn-text-icon',
                         icon: 'images/refresh.png',
                         handler: function() {
@@ -1252,6 +1294,8 @@ Ext.onReady( function() {
                     {
                         xtype: 'button',
                         text: 'Exit..',
+                        cls: 'x-btn-text-icon',
+                        icon: 'images/exit.png',
                         handler: function() {
                             window.location.href = DV.conf.finals.ajax.url_portal + 'redirect.action';
                         }
@@ -1267,7 +1311,7 @@ Ext.onReady( function() {
                 c.filter(c, vp);
             },
             resize: function() {
-                this.query('panel[region="west"]')[0].setWidth(424);
+                this.query('panel[region="west"]')[0].setWidth(DV.conf.layout.west_width);
             }
         }
     });
