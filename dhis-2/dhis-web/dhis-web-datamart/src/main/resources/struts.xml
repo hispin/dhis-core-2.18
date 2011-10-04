@@ -20,7 +20,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-datamart/exportForm.vm</param>
       <param name="menu">/dhis-web-datamart/menu.vm</param>
-      <param name="javascripts">javascript/datamart.js</param>
+      <param name="javascripts">javascript/addUpdateDatamart.js</param>
       <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
 	
