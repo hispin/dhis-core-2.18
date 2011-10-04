@@ -1,4 +1,4 @@
-<script>
+ <script>
 	jQuery(document).ready(	function(){
 		validation( 'addProgramForm', function( form ){			
 			form.submit();
@@ -28,7 +28,10 @@
 		
 		<tr>
 			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+			<td>
+				<input type="text" id="description" name="description" style="width:23em" class="{validate:{required:true,minlength:4}}">
+				<label>$i18n.getString( "single_event" )</label><input type="checkbox" id="singleEvent" name="singleEvent" value='true'>
+			</td>
 			<td></td>
 		</tr>	
 		
@@ -49,12 +52,6 @@
 			<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" style="width:30em" class="{validate:{required:true,number:true}}"></td>
 			<td></td>
 		</tr>	
-		
-		<tr>
-			<td><label>$i18n.getString( "single_event" )</label></td>
-			<td><input type="checkbox" id="singleEvent" name="singleEvent" value='true'></td>
-			<td></td>
-		</tr>
 		
 		<tr>
 			<td colspan="2" style="height:15px"></td>
