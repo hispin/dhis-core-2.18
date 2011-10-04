@@ -9,6 +9,13 @@ function showPatientAttributeDetails( patientAttributeId )
 			setInnerHTML( 'idField', json.patientAttribute.id );
 			setInnerHTML( 'nameField', json.patientAttribute.name );	
 			setInnerHTML( 'descriptionField', json.patientAttribute.description );
+			
+			var mandatory = ( json.patientAttribute.mandatory == 'true') ? i18n_yes : i18n_no;
+			setInnerHTML( 'mandatoryField', mandatory );
+			
+			var inheritable = ( json.patientAttribute.inheritable == 'true') ? i18n_yes : i18n_no;
+			setInnerHTML( 'inheritableField', inheritable );
+			
 			setInnerHTML( 'valueTypeField', json.patientAttribute.valueType );    
 	   
 			showDetails();
