@@ -36,6 +36,7 @@ import java.util.List;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.indicator.comparator.IndicatorTypeNameComparator;
@@ -88,8 +89,15 @@ public class GetIndicatorTypeListAction
         this.key = key;
     }
 
+    private List<IndicatorGroupSet> groupSets;
+
+    public List<IndicatorGroupSet> getGroupSets()
+    {
+        return groupSets;
+    }
+
     private List<Attribute> attributes;
-    
+
     public List<Attribute> getAttributes()
     {
         return attributes;
@@ -116,12 +124,13 @@ public class GetIndicatorTypeListAction
                 paging.getStartPos(), paging.getPageSize() ) );
         }
 
-        Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
+        groupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getCompulsoryIndicatorGroupSetsWithMembers() );
 
         attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
 
+        Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
-        
+
         return SUCCESS;
     }
 }

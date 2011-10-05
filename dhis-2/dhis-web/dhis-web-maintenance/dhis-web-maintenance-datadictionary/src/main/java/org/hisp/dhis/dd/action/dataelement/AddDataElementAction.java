@@ -29,12 +29,14 @@ package org.hisp.dhis.dd.action.dataelement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -181,6 +183,13 @@ public class AddDataElementAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
+    private Collection<String> selectedGroups = new HashSet<String>();
+
+    public void setSelectedGroups( Collection<String> selectedGroups )
+    {
+        this.selectedGroups = selectedGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -238,9 +247,22 @@ public class AddDataElementAction
             AttributeUtils.updateAttributeValuesFromJson( dataElement.getAttributeValues(), jsonAttributeValues,
                 attributeService );
         }
-
+        
         dataElementService.addDataElement( dataElement );
+        
+        for ( String id : selectedGroups )
+        {
+            DataElementGroup group = dataElementService.getDataElementGroup( Integer.parseInt( id ) );
 
+            if ( group != null )
+            {
+                group.addDataElement( dataElement );
+                dataElementService.updateDataElementGroup( group );
+            }
+        }
+
+        dataElementService.updateDataElement( dataElement );
+        
         return SUCCESS;
     }
 }

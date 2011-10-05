@@ -93,6 +93,37 @@
 
 #tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 
+#if( $groupSets.size() > 0 )
+<table>
+	<col width="200px" />
+	<col width="240px" />
+
+	<tr>
+		<td style="height:15px" colspan="2">
+	</tr>
+	<tr>
+		<th colspan="2">$i18n.getString( "indicator_groups" )</th>
+    </tr>
+
+	#foreach ( $groupSet in $groupSets )
+    <tr>
+		<td>$encoder.htmlEncode( $groupSet.name )</td>
+		<td>
+			<select id="indicatorGroups" name="indicatorGroups" style="min-width: 244px;">
+				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>
+				#foreach ( $group in $groupSet.getSortedGroups() )
+				<option value="$group.id" #if( $group.members.contains( $indicator ) ) selected="selected" #end>$group.name</option>
+				#end
+			</select>
+		</td>
+		<td>
+			<input type="hidden" name="indicatorGroupSets" value="$groupSet.id" />
+		</td>
+    </tr>
+	#end
+</table>
+#end
+
 <p>
 	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em" />
 	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='indicator.action'" style="width:10em"/>

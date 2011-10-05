@@ -36,6 +36,8 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -198,6 +200,20 @@ public class UpdateDataElementAction
         this.zeroIsSignificant = zeroIsSignificant;
     }
 
+    private List<String> dataElementGroupSets = new ArrayList<String>();
+
+    public void setDataElementGroupSets( List<String> dataElementGroupSets )
+    {
+        this.dataElementGroupSets = dataElementGroupSets;
+    }
+
+    private List<String> dataElementGroups = new ArrayList<String>();
+
+    public void setDataElementGroups( List<String> dataElementGroups )
+    {
+        this.dataElementGroups = dataElementGroups;
+    }
+
     private List<String> jsonAttributeValues;
 
     public void setJsonAttributeValues( List<String> jsonAttributeValues )
@@ -266,6 +282,28 @@ public class UpdateDataElementAction
         for ( DataSet dataSet : dataSets )
         {
             dataSetService.updateDataSet( dataSet.increaseVersion() );
+        }
+
+        for ( int i = 0; i < dataElementGroupSets.size(); i++ )
+        {
+            DataElementGroupSet groupSet = dataElementService.getDataElementGroupSet( Integer
+                .parseInt( dataElementGroupSets.get( i ) ) );
+
+            DataElementGroup oldGroup = groupSet.getGroup( dataElement );
+            DataElementGroup newGroup = dataElementService.getDataElementGroup( Integer.parseInt( dataElementGroups
+                .get( i ) ) );
+
+            if ( oldGroup != null && oldGroup.getMembers().remove( dataElement ) )
+            {
+                oldGroup.removeDataElement( dataElement );
+                dataElementService.updateDataElementGroup( oldGroup );
+            }
+
+            if ( newGroup != null && newGroup.getMembers().add( dataElement ) )
+            {
+                newGroup.addDataElement( dataElement );
+                dataElementService.updateDataElementGroup( newGroup );
+            }
         }
 
         if ( jsonAttributeValues != null )
