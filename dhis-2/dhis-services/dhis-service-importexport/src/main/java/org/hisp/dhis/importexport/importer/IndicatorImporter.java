@@ -100,6 +100,10 @@ public class IndicatorImporter
         {
             match = indicatorService.getIndicatorByShortName( object.getShortName() );
         }
+        if ( match == null )
+        {
+            match = indicatorService.getIndicatorByCode( object.getCode() );
+        }
         
         return match;
     }
