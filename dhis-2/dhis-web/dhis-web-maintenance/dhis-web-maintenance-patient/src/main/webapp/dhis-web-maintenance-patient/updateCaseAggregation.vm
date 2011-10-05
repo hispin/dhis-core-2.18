@@ -36,6 +36,7 @@
 				#foreach( $dataElementGroup in $dataElementGroups)
 					<option value="$dataElementGroup.id" >$dataElementGroup.name</option>
 				#end
+				<option value="0">$i18n.getString('others')</option>
 			</select>
 		</td>				
 	</tr>
