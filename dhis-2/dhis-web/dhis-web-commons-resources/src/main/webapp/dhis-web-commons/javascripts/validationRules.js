@@ -436,15 +436,13 @@ var validationRules = {
 	},
 	"emailSettings" : {
 		"smtpHostName" : {
-			"required" : true,
-			"url" : true
+			"required" : true
 		},
 		"smtpUsername" : {
 			"required" : true
 		},
 		"smtpPassword" : {
-			"required" : true,
-			"password" : true
+			"required" : true
 		}
 	}
 };
