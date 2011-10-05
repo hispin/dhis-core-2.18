@@ -471,7 +471,8 @@ function showProgramEnrollmentForm( patientId, programId )
 	if( programId == 0 )
 	{
 		disable('enrollBtn');
-		disable('registerEventBtn');
+		disable('enrollmentDate');
+		disable('dateOfIncident');
 		return;
 	}
 		
@@ -483,16 +484,6 @@ function showProgramEnrollmentForm( patientId, programId )
 		}, function()
 		{
 			showById('programEnrollmentDiv');
-			
-			var registerEvent = getFieldValue('registerEvent');
-			if(registerEvent == 'true')
-			{
-				enable('registerEventBtn');
-			}
-			else
-			{
-				disable('registerEventBtn');
-			}
 			
 			var singleEvent = jQuery('#programId option:selected').attr('singleevent');
 			if(singleEvent=='true')
@@ -858,16 +849,41 @@ function showSelectedDataRecoding( patientId )
 		},
 		function()
 		{
-			hideById('enrollmentDiv');
+			setInnerHTML('enrollmentDiv', "");
 			showById('dataRecordingSelectDiv');
 			
-			var selectedProgramId = jQuery('#programEnrollmentSelectDiv select[name=programId]').val();
-			jQuery('#dataRecordingSelectDiv select[name=programId] option[value=' + selectedProgramId + ']').attr('selected', 'selected');
-			loadProgramStages();
-			showById('dataRecordingSelectDiv');
+			jQuery('#dataRecordingSelectDiv select[name=programId] option').each(function()
+			{
+				var singleEvent = jQuery(this).attr('singleevent');
+				if( singleEvent == 'false')
+				{
+					jQuery(this).remove();
+				}
+			});
+			
 			jQuery("#backBtnFromEntry").click(function() {
 					loadPatientList();
 			});
 			hideLoader();
 		});
+}
+
+function enableEnrollmentField()
+{
+	var status = jQuery('#programId').attr('disabled');
+	
+	if( status )
+	{
+		jQuery('#enrollBtn').attr('value',i18n_enroll);
+		jQuery("#enrollBtn").click(function() {
+			validateProgramEnrollment();
+		});
+		enable('programId');
+		enable('enrollmentDate');
+		enable('dateOfIncident');
+	}
+	else
+	{
+		jQuery('#enrollBtn').attr('value',i18n_update);
+	}
 }
