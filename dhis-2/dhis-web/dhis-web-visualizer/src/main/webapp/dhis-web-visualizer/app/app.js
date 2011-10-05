@@ -153,6 +153,34 @@ Ext.onReady( function() {
                 }
             }
         },
+        store: {
+            addToStorage: function(s) {
+                s.each( function(r) {
+                    if (!s.storage[r.data.id]) {
+                        s.storage[r.data.id] = {id: r.data.id, shortName: r.data.shortName, name: r.data.shortName, parent: s.parent};
+                    }
+                });
+            },
+            loadFromStorage: function(s) {
+                var items = [];
+                s.removeAll();
+                for (var obj in s.storage) {
+                    if (s.storage[obj].parent === s.parent) {
+                        items.push(s.storage[obj]);
+                    }
+                }
+                items = Ext.Array.sort(items);
+                s.add(items);
+            },
+            containsParent: function(s) {
+                for (var obj in s.storage) {
+                    if (s.storage[obj].parent === s.parent) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        },
         dimension: {
             indicator: {
                 getUrl: function(isFilter) {
@@ -275,27 +303,19 @@ Ext.onReady( function() {
                     }
                 },
                 storage: {},
-                addToStorage: function() {
-                    st = this.storage;
-                    this.each( function(r) {
-                        if (!st[r.data.id]) {
-                            st[r.data.id] = {name: r.data.shortName, parent: this.param};
-                        }
-                    });
-                },
                 listeners: {
                     load: function(s) {
-                        s.addToStorage(s);
+                        DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.util.getCmp('multiselect[name="availableIndicators"]'),
                             DV.util.getCmp('multiselect[name="selectedIndicators"]'));
                     }
                 }
-            }),            
+            }),
             selected: Ext.create('Ext.data.Store', {
                 fields: ['id', 'shortName'],
                 data: []
             })
-        },        
+        },
         dataelement: {
             available: Ext.create('Ext.data.Store', {
                 fields: ['id', 'name', 'shortName'],
@@ -308,28 +328,20 @@ Ext.onReady( function() {
                     }
                 },
                 storage: {},
-                addToStorage: function() {
-                    st = this.storage;
-                    this.each( function(r) {
-                        if (!st[r.data.id]) {
-                            st[r.data.id] = {name: r.data.shortName, parent: this.param};
-                        }
-                    });
-                },
                 listeners: {
                     load: function(s) {
-                        s.addToStorage(s);
+                        DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.util.getCmp('multiselect[name="availableDataElements"]'),
                             DV.util.getCmp('multiselect[name="selectedDataElements"]'));
                     }
                 }
-            }),            
+            }),
             selected: Ext.create('Ext.data.Store', {
                 fields: ['id', 'shortName'],
                 data: []
             })
-        },        
-        chart: null,        
+        },
+        chart: null,
         getChartStore: function(exe) {
             this[DV.state.type](exe);
         },
@@ -338,7 +350,7 @@ Ext.onReady( function() {
             this.chart = Ext.create('Ext.data.Store', {
                 fields: properties,
                 data: DV.data.data
-            });            
+            });
             this.chart.bottom = properties.slice(0, 1);
             this.chart.left = properties.slice(1, properties.length);
             
@@ -347,14 +359,14 @@ Ext.onReady( function() {
             }
             else {
                 return DV.store.chart;
-            }            
+            }
         },
         bar: function(exe) {
             var properties = Ext.Object.getKeys(DV.data.data[0]);
             this.chart = Ext.create('Ext.data.Store', {
                 fields: properties,
                 data: DV.data.data
-            });            
+            });
             this.chart.left = properties.slice(0, 1);
             this.chart.bottom = properties.slice(1, properties.length);
             
@@ -363,30 +375,30 @@ Ext.onReady( function() {
             }
             else {
                 return DV.store.chart;
-            }            
+            }
         }
     };
     
     DV.state = {
         type: DV.conf.finals.chart.column,
-        indiment: [],        
-        period: [],        
-        organisationunit: [],        
+        indiment: [],
+        period: [],
+        organisationunit: [],
         series: {
             cmp: null,
             dimension: DV.conf.finals.dimension.indicator.value,
             data: []
-        },        
+        },
         category: {
             cmp: null,
             dimension: DV.conf.finals.dimension.period.value,
             data: []
-        },        
+        },
         filter: {
             cmp: null,
             dimension: DV.conf.finals.dimension.organisationunit.value,
             data: []
-        },        
+        },
         getState: function(exe) {
             this.resetState();
             
@@ -880,8 +892,14 @@ Ext.onReady( function() {
                                         listeners: {
                                             select: function(cb) {
                                                 var store = DV.store.indicator.available;
-                                                store.param = cb.getValue();
-                                                store.load({params: {id: cb.getValue()}});
+                                                store.parent = cb.getValue();
+                                                
+                                                if (DV.util.store.containsParent(store)) {
+                                                    DV.util.store.loadFromStorage(store);
+                                                }
+                                                else {
+                                                    store.load({params: {id: cb.getValue()}});
+                                                }
                                             }
                                         }
                                     },                                    
@@ -1022,8 +1040,14 @@ Ext.onReady( function() {
                                         listeners: {
                                             select: function(cb) {
                                                 var store = DV.store.dataelement.available;
-                                                store.param = cb.getValue();
-                                                store.load({params: {id: cb.getValue()}});
+                                                store.parent = cb.getValue();
+                                                
+                                                if (DV.util.store.containsParent(store)) {
+                                                    DV.util.store.loadFromStorage(store);
+                                                }
+                                                else {
+                                                    store.load({params: {id: cb.getValue()}});
+                                                }
                                             }
                                         }
                                     },                                    
