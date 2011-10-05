@@ -1,2 +1,0 @@
-#set( $size = $members.size() )
-[#foreach( $member in $members ){"id":"$!{member.id}","text":"$!encoder.jsonEncode(${member.name})","leaf":true}#if( $velocityCount < $size ),#end#end]

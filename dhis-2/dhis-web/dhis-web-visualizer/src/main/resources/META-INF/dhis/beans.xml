@@ -18,35 +18,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     </bean>
     
-    <!-- Indicator -->
-
-    <bean id="org.hisp.dhis.visualizer.action.GetIndicatorTreeNodesAction"
-        class="org.hisp.dhis.visualizer.action.GetIndicatorTreeNodesAction"
-        scope="prototype">
-        <property name="indicatorService"
-            ref="org.hisp.dhis.indicator.IndicatorService" />
-    </bean>
-    
-    <!-- DataElement -->
-
-    <bean id="org.hisp.dhis.visualizer.action.GetDataElementTreeNodesAction"
-        class="org.hisp.dhis.visualizer.action.GetDataElementTreeNodesAction"
-        scope="prototype">
-        <property name="dataElementService"
-            ref="org.hisp.dhis.dataelement.DataElementService" />
-    </bean>
-    
-    <!-- Period -->
-
-    <bean id="org.hisp.dhis.visualizer.action.GetPeriodTreeNodesAction"
-        class="org.hisp.dhis.visualizer.action.GetPeriodTreeNodesAction"
-        scope="prototype">
-        <property name="periodStore"
-            ref="org.hisp.dhis.period.PeriodStore" />
-        <property name="periodService"
-            ref="org.hisp.dhis.period.PeriodService" />
-    </bean>
-    
     <!-- OrganisationUnit -->
 
 	<bean id="org.hisp.dhis.visualizer.action.GetOrganisationUnitChildrenAction"
