@@ -2,21 +2,26 @@
 <table class="mainPageTable">
 	<tr>
 		<td style="vertical-align:top">
-			<table class="listTable">
-			  <col>          
-			  <col width="20">
-			  <col width="20">
-			  <col width="20">     
+			<table width="100%">
 			  <tr>
-				<td></td>
+				<td>
+					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+				</td>
 				<td colspan="4" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddProgramAttributeForm.action'" style="width:70px"></td>
 			  </tr>
-			  <tr>            
-				<th>$i18n.getString( "name" )</th>
-				<th colspan="4">$i18n.getString( "operations" )</th>
-			  </tr>
-
-			  <tbody id="list">
+			</table>
+			 <table class="listTable">
+				<col>          
+				<col width="20">
+				<col width="20">
+				<col width="20"> 
+				<thead>	
+					<tr>            
+						<th>$i18n.getString( "name" )</th>
+						<th colspan="4">$i18n.getString( "operations" )</th>
+					</tr>
+				</thead>	
+				<tbody id="list">
 				#foreach( $programAttribute in $programAttributes )
 				  <tr id="tr${programAttribute.id}">
 				  
