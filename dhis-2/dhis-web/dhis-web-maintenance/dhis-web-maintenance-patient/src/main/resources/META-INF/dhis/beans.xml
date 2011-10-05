@@ -703,6 +703,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.TestCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.TestCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+
 	<!-- Validation - PatientValidationCriteria -->
 
 	<bean
