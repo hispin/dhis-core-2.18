@@ -24,47 +24,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.hisp.dhis.patient.action.caseaggregation;
 
+import java.util.Date;
+
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_COUNT;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $ID : GetAggConditionDescriptionAction.java Jan 11, 2011 9:14:19 PM
+ * 
+ * @version $Id: TestCaseAggregationConditionAction.java Oct 5, 2011 3:45:20 PM
  *          $
  */
-public class GetAggConditionDescriptionAction
+public class TestCaseAggregationConditionAction
     implements Action
 {
+
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
     private CaseAggregationConditionService aggregationConditionService;
 
-    // -------------------------------------------------------------------------
-    // Input && Output
-    // -------------------------------------------------------------------------
-
-    private String condition;
-
-    private String description;
-
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
     public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
     {
         this.aggregationConditionService = aggregationConditionService;
     }
 
-    public String getDescription()
-    {
-        return description;
-    }
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
+    private String condition;
 
     public void setCondition( String condition )
     {
@@ -79,8 +77,24 @@ public class GetAggConditionDescriptionAction
     public String execute()
         throws Exception
     {
-        description = aggregationConditionService.getConditionDescription( condition );
+        CaseAggregationCondition aggCondition = new CaseAggregationCondition( "", AGGRERATION_COUNT, condition, null,
+            null );
+
+        OrganisationUnit orgunit = new OrganisationUnit();
+        orgunit.setId( 1 );
+
+        Period period = new Period();
+        period.setStartDate( new Date() );
+        period.setEndDate( new Date() );
+
+        Double value = aggregationConditionService.parseConditition( aggCondition, orgunit, period );
+
+        if ( value == null )
+        {
+            return INPUT;
+        }
 
         return SUCCESS;
     }
+
 }

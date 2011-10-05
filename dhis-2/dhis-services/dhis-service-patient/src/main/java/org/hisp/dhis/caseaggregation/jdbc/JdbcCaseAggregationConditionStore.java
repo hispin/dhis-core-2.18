@@ -94,7 +94,6 @@ public class JdbcCaseAggregationConditionStore
         }
         catch ( Exception ex )
         {
-            ex.printStackTrace();
             return null;
         }
         finally

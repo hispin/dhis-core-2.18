@@ -197,12 +197,17 @@ public class DefaultCaseAggregationConditionService
     }
 
     @Override
-    public double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
+    public Double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period )
     {
         String sql = createSQL( aggregationCondition, orgunit, period );
 
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
+
+        if ( patientIds == null )
+        {
+            return null;
+        }
 
         return calValue( patientIds, aggregationCondition.getOperator() );
     }
@@ -292,9 +297,9 @@ public class DefaultCaseAggregationConditionService
             else
             {
                 String[] ids = info[1].split( SEPARATOR_ID );
-                
-                int objectId = Integer.parseInt(ids[0]);
-                
+
+                int objectId = Integer.parseInt( ids[0] );
+
                 if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
                 {
                     PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( objectId );
@@ -304,7 +309,8 @@ public class DefaultCaseAggregationConditionService
                         return INVALID_CONDITION;
                     }
 
-                    matcher.appendReplacement( description, "[" + OBJECT_PATIENT_ATTRIBUTE + SEPARATOR_OBJECT + patientAttribute.getName() + "]" );
+                    matcher.appendReplacement( description, "[" + OBJECT_PATIENT_ATTRIBUTE + SEPARATOR_OBJECT
+                        + patientAttribute.getName() + "]" );
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM ) )
                 {
@@ -315,7 +321,8 @@ public class DefaultCaseAggregationConditionService
                         return INVALID_CONDITION;
                     }
 
-                    matcher.appendReplacement( description, "[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + program.getName() + "]" );
+                    matcher.appendReplacement( description, "[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + program.getName()
+                        + "]" );
                 }
             }
 
@@ -663,13 +670,8 @@ public class DefaultCaseAggregationConditionService
         return sql;
     }
 
-    public double calValue( Collection<Integer> patientIds, String operator )
+    public Double calValue( Collection<Integer> patientIds, String operator )
     {
-        if ( patientIds == null )
-        {
-            return 0.0;
-        }
-
-        return patientIds.size();
+        return new Double( patientIds.size() );
     }
 }

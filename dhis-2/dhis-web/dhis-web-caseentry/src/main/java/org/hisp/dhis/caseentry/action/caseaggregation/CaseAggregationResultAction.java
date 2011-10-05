@@ -236,13 +236,13 @@ public class CaseAggregationResultAction
                         {
                             String message = i18n.getString( "in" ) + " " + format.formatPeriod( period );
 
-                            double resultValue = aggregationConditionService.parseConditition( condition, orgUnit,
+                            Double resultValue = aggregationConditionService.parseConditition( condition, orgUnit,
                                 period );
 
                             DataValue dataValue = dataValueService
                                 .getDataValue( orgUnit, dElement, period, optionCombo );
 
-                            if ( resultValue != 0 )
+                            if ( resultValue != null && resultValue != 0.0 )
                             {
                                 if ( dataValue == null )
                                 {
