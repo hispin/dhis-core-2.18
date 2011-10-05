@@ -29,6 +29,8 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -61,6 +63,13 @@ public class ProgramEnrollmentSelectAction
         this.programService = programService;
     }
 
+    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -86,6 +95,13 @@ public class ProgramEnrollmentSelectAction
         return programs;
     }
 
+    private Boolean registerEvent;
+
+    public Boolean getRegisterEvent()
+    {
+        return registerEvent;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -95,7 +111,19 @@ public class ProgramEnrollmentSelectAction
     {
         patient = patientService.getPatient( id );
 
-        programs = programService.getAllPrograms();
+        OrganisationUnit selectedOrgunit = selectionManager.getSelectedOrganisationUnit();
+
+        // Get none single-event programs
+        programs = programService.getPrograms( false );
+
+        // Check the selected orgunit has any single-event program or not
+        Collection<Program> programsbyOrgunit = programService.getPrograms( selectedOrgunit );
+
+        Collection<Program> singleEventPrograms = programService.getPrograms( true );
+
+        singleEventPrograms.retainAll( programsbyOrgunit );
+
+        registerEvent = (singleEventPrograms.size() > 0);
 
         return SUCCESS;
     }
