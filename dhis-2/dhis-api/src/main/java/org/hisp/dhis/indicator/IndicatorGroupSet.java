@@ -29,9 +29,11 @@ package org.hisp.dhis.indicator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 
 /**
  * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,
@@ -128,6 +130,15 @@ public class IndicatorGroupSet
         return members != null && members.size() > 0;
     }
 
+    public List<IndicatorGroup> getSortedGroups()
+    {
+        List<IndicatorGroup> sortedGroups = new ArrayList<IndicatorGroup>( members );
+
+        Collections.sort( sortedGroups, new IndicatorGroupNameComparator() );
+
+        return sortedGroups;
+    }
+
     // -------------------------------------------------------------------------
     // equals and hashCode
     // -------------------------------------------------------------------------
@@ -183,6 +194,11 @@ public class IndicatorGroupSet
 
     public Boolean isCompulsory()
     {
+        if ( compulsory == null )
+        {
+            return false;
+        }
+
         return compulsory;
     }
 

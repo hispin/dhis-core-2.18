@@ -27,10 +27,13 @@ package org.hisp.dhis.dd.action.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.system.util.AttributeUtils;
@@ -156,6 +159,13 @@ public class AddIndicatorAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
+    private Collection<String> selectedGroups = new HashSet<String>();
+
+    public void setSelectedGroups( Collection<String> selectedGroups )
+    {
+        this.selectedGroups = selectedGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -199,8 +209,21 @@ public class AddIndicatorAction
             AttributeUtils.updateAttributeValuesFromJson( indicator.getAttributeValues(), jsonAttributeValues,
                 attributeService );
         }
-
+        
         indicatorService.addIndicator( indicator );
+
+        for ( String id : selectedGroups )
+        {
+            IndicatorGroup group = indicatorService.getIndicatorGroup( Integer.parseInt( id ) );
+
+            if ( group != null )
+            {
+                group.addIndicator( indicator );
+                indicatorService.updateIndicatorGroup( group );
+            }
+        }
+
+        indicatorService.updateIndicator( indicator );
 
         return SUCCESS;
     }

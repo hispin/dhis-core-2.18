@@ -27,10 +27,13 @@ package org.hisp.dhis.dd.action.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.system.util.AttributeUtils;
@@ -156,6 +159,20 @@ public class UpdateIndicatorAction
         this.denominatorDescription = denominatorDescription;
     }
 
+    private List<String> indicatorGroupSets = new ArrayList<String>();
+
+    public void setIndicatorGroupSets( List<String> indicatorGroupSets )
+    {
+        this.indicatorGroupSets = indicatorGroupSets;
+    }
+
+    private List<String> indicatorGroups = new ArrayList<String>();
+
+    public void setIndicatorGroups( List<String> indicatorGroups )
+    {
+        this.indicatorGroups = indicatorGroups;
+    }
+
     private List<String> jsonAttributeValues;
 
     public void setJsonAttributeValues( List<String> jsonAttributeValues )
@@ -200,6 +217,27 @@ public class UpdateIndicatorAction
         indicator.setNumeratorDescription( numeratorDescription );
         indicator.setDenominator( denominator );
         indicator.setDenominatorDescription( denominatorDescription );
+
+        for ( int i = 0; i < indicatorGroupSets.size(); i++ )
+        {
+            IndicatorGroupSet groupSet = indicatorService.getIndicatorGroupSet( Integer.parseInt( indicatorGroupSets
+                .get( i ) ) );
+
+            IndicatorGroup oldGroup = groupSet.getGroup( indicator );
+            IndicatorGroup newGroup = indicatorService.getIndicatorGroup( Integer.parseInt( indicatorGroups.get( i ) ) );
+
+            if ( oldGroup != null && oldGroup.getMembers().remove( indicator ) )
+            {
+                oldGroup.removeIndicator( indicator );
+                indicatorService.updateIndicatorGroup( oldGroup );
+            }
+
+            if ( newGroup != null && newGroup.getMembers().add( indicator ) )
+            {
+                newGroup.addIndicator( indicator );
+                indicatorService.updateIndicatorGroup( newGroup );
+            }
+        }
 
         if ( jsonAttributeValues != null )
         {

@@ -29,9 +29,11 @@ package org.hisp.dhis.dataelement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 
 /**
  * DataElementGroupSet is a set of DataElementGroups. It is by default
@@ -128,6 +130,15 @@ public class DataElementGroupSet
         return members != null && members.size() > 0;
     }
 
+    public List<DataElementGroup> getSortedGroups()
+    {
+        List<DataElementGroup> sortedGroups = new ArrayList<DataElementGroup>( members );
+
+        Collections.sort( sortedGroups, new DataElementGroupNameComparator() );
+
+        return sortedGroups;
+    }
+
     // -------------------------------------------------------------------------
     // equals and hashCode
     // -------------------------------------------------------------------------
@@ -183,6 +194,11 @@ public class DataElementGroupSet
 
     public Boolean isCompulsory()
     {
+        if ( compulsory == null )
+        {
+            return false;
+        }
+
         return compulsory;
     }
 

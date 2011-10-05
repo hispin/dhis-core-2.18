@@ -167,13 +167,12 @@ public class GetOrganisationUnitAction
 
         attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
 
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
-
         attributeValues = AttributeUtils.getAttributeValueMap( organisationUnit.getAttributeValues() );
 
         Collections.sort( availableDataSets, new DataSetNameComparator() );
         Collections.sort( dataSets, new DataSetNameComparator() );
         Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+        Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         return SUCCESS;
     }

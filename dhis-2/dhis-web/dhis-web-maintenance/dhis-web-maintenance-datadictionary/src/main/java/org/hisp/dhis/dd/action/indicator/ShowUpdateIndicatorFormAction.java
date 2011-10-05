@@ -37,8 +37,10 @@ import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.indicator.comparator.IndicatorGroupSetNameComparator;
 import org.hisp.dhis.indicator.comparator.IndicatorTypeNameComparator;
 import org.hisp.dhis.system.util.AttributeUtils;
 
@@ -109,6 +111,13 @@ public class ShowUpdateIndicatorFormAction
         return indicatorTypes;
     }
 
+    private List<IndicatorGroupSet> groupSets;
+
+    public List<IndicatorGroupSet> getGroupSets()
+    {
+        return groupSets;
+    }
+
     private List<Attribute> attributes;
 
     public List<Attribute> getAttributes()
@@ -140,13 +149,15 @@ public class ShowUpdateIndicatorFormAction
 
         indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() );
 
-        Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
+        groupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getCompulsoryIndicatorGroupSetsWithMembers() );
 
         attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
 
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
-
         attributeValues = AttributeUtils.getAttributeValueMap( indicator.getAttributeValues() );
+
+        Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
+        Collections.sort( groupSets, new IndicatorGroupSetNameComparator() );
+        Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         return SUCCESS;
     }

@@ -38,8 +38,10 @@ import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -116,6 +118,13 @@ public class ShowAddDataElementForm
         return organisationUnitLevels;
     }
 
+    private List<DataElementGroupSet> groupSets;
+
+    public List<DataElementGroupSet> getGroupSets()
+    {
+        return groupSets;
+    }
+
     private List<Attribute> attributes;
 
     public List<Attribute> getAttributes()
@@ -137,14 +146,17 @@ public class ShowAddDataElementForm
         dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>(
             dataElementCategoryService.getAllDataElementCategoryCombos() );
 
-        Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
-
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
+
+        groupSets = new ArrayList<DataElementGroupSet>(
+            dataElementService.getCompulsoryDataElementGroupSetsWithMembers() );
 
         attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
 
+        Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
+        Collections.sort( groupSets, new DataElementGroupSetNameComparator() );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
-        
+
         return SUCCESS;
     }
 }
