@@ -73,6 +73,20 @@ public class UpdateIndicatorGroupSetAction
         this.name = name;
     }
 
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    private boolean compulsory;
+
+    public void setCompulsory( boolean compulsory )
+    {
+        this.compulsory = compulsory;
+    }
+    
     private List<String> groupMembers = new ArrayList<String>();
 
     public void setGroupMembers( List<String> groupMembers )
@@ -91,7 +105,9 @@ public class UpdateIndicatorGroupSetAction
         IndicatorGroupSet indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
 
         indicatorGroupSet.setName( name.trim() );
-
+        indicatorGroupSet.setDescription( description );
+        indicatorGroupSet.setCompulsory( compulsory );
+        
         indicatorGroupSet.getMembers().clear();
 
         for ( String id : groupMembers )

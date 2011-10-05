@@ -20,6 +20,10 @@
       <column name="name" not-null="true" unique="true" length="230" />
     </property>
 
+    <property name="description" />
+
+    <property name="compulsory" />
+
     <list name="members" table="indicatorgroupsetmembers">
       <cache usage="read-write" />
       <key column="indicatorgroupsetid" foreign-key="fk_indicatorgroupsetmembers_indicatorgroupsetid" />

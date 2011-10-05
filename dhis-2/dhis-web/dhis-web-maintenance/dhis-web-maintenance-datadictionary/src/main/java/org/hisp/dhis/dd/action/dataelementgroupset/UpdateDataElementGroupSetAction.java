@@ -72,6 +72,20 @@ public class UpdateDataElementGroupSetAction
         this.name = name;
     }
 
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    private boolean compulsory;
+
+    public void setCompulsory( boolean compulsory )
+    {
+        this.compulsory = compulsory;
+    }
+
     private List<String> groupMembers = new ArrayList<String>();
 
     public void setGroupMembers( List<String> groupMembers )
@@ -89,12 +103,14 @@ public class UpdateDataElementGroupSetAction
         DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( id );
 
         dataElementGroupSet.setName( name );
+        dataElementGroupSet.setDescription( description );
+        dataElementGroupSet.setCompulsory( compulsory );
 
         dataElementGroupSet.getMembers().clear();
 
         for ( String id : groupMembers )
         {
-            DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( Integer.parseInt( id ) );           
+            DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( Integer.parseInt( id ) );
 
             dataElementGroupSet.getMembers().add( dataElementGroup );
         }

@@ -256,6 +256,10 @@ var validationRules = {
         "name" : {
             "required" : true,
             "rangelength" : [ 2, 230 ]
+        },
+        "description" : {
+            "required" : true,
+            "rangelength" : [ 2, 255 ]
         }
     },
     "dataDictionary" : {
@@ -323,6 +327,10 @@ var validationRules = {
         "name" : {
             "required" : true,
             "rangelength" : [ 2, 230 ]
+        },
+        "description" : {
+            "required" : true,
+            "rangelength" : [ 2, 255 ]
         }
     },
     "indicatorType" : {
