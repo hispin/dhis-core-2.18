@@ -36,7 +36,7 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
 /**
  * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,
  * in the sense that an Indicator can only be a member of one or zero of the
- * IndicatorGroups in a IndicatorGroupSet. 
+ * IndicatorGroups in a IndicatorGroupSet.
  * 
  * @author Lars Helge Overland
  */
@@ -48,6 +48,10 @@ public class IndicatorGroupSet
      */
     private static final long serialVersionUID = 3051446168246358150L;
 
+    private String description;
+
+    private Boolean compulsory = false;
+
     private List<IndicatorGroup> members = new ArrayList<IndicatorGroup>();
 
     // -------------------------------------------------------------------------
@@ -55,12 +59,26 @@ public class IndicatorGroupSet
     // -------------------------------------------------------------------------
 
     public IndicatorGroupSet()
-    {   
+    {
     }
 
     public IndicatorGroupSet( String name )
     {
         this.name = name;
+        this.compulsory = false;
+    }
+
+    public IndicatorGroupSet( String name, Boolean compulsory )
+    {
+        this.name = name;
+        this.compulsory = compulsory;
+    }
+
+    public IndicatorGroupSet( String name, String description, Boolean compulsory )
+    {
+        this.name = name;
+        this.description = description;
+        this.compulsory = compulsory;
     }
 
     // -------------------------------------------------------------------------
@@ -70,15 +88,15 @@ public class IndicatorGroupSet
     public Collection<Indicator> getIndicators()
     {
         List<Indicator> indicators = new ArrayList<Indicator>();
-        
+
         for ( IndicatorGroup group : members )
         {
             indicators.addAll( group.getMembers() );
         }
-        
+
         return indicators;
     }
-    
+
     public IndicatorGroup getGroup( Indicator indicator )
     {
         for ( IndicatorGroup group : members )
@@ -88,10 +106,28 @@ public class IndicatorGroupSet
                 return group;
             }
         }
-        
+
         return null;
     }
-    
+
+    public Boolean isMemberOfIndicatorGroups( Indicator indicator )
+    {
+        for ( IndicatorGroup group : members )
+        {
+            if ( group.getMembers().contains( indicator ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Boolean hasIndicatorGroups()
+    {
+        return members != null && members.size() > 0;
+    }
+
     // -------------------------------------------------------------------------
     // equals and hashCode
     // -------------------------------------------------------------------------
@@ -115,7 +151,7 @@ public class IndicatorGroupSet
             return false;
         }
 
-        if ( !( o instanceof IndicatorGroupSet ) )
+        if ( !(o instanceof IndicatorGroupSet) )
         {
             return false;
         }
@@ -135,6 +171,26 @@ public class IndicatorGroupSet
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    public Boolean isCompulsory()
+    {
+        return compulsory;
+    }
+
+    public void setCompulsory( Boolean compulsory )
+    {
+        this.compulsory = compulsory;
+    }
+
     public List<IndicatorGroup> getMembers()
     {
         return members;
@@ -143,5 +199,5 @@ public class IndicatorGroupSet
     public void setMembers( List<IndicatorGroup> members )
     {
         this.members = members;
-    }    
+    }
 }

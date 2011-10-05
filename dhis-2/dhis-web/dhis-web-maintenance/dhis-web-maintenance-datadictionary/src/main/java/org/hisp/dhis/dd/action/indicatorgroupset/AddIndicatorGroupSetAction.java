@@ -66,6 +66,20 @@ public class AddIndicatorGroupSetAction
         this.name = name;
     }
 
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    private boolean compulsory;
+
+    public void setCompulsory( boolean compulsory )
+    {
+        this.compulsory = compulsory;
+    }
+
     private List<String> groupMembers = new ArrayList<String>();
 
     public void setGroupMembers( List<String> groupMembers )
@@ -79,7 +93,7 @@ public class AddIndicatorGroupSetAction
 
     public String execute()
     {
-        IndicatorGroupSet indicatorGroupSet = new IndicatorGroupSet( name );
+        IndicatorGroupSet indicatorGroupSet = new IndicatorGroupSet( name, description, compulsory );
 
         indicatorGroupSet.setUuid( UUIdUtils.getUUId() );
 

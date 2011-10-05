@@ -93,7 +93,7 @@ public interface DataElementService
 
     /**
      * Returns the DataElement with the given code.
-     *
+     * 
      * @param code the code.
      * @return the DataElement with the given code, or null if no match.
      */
@@ -115,14 +115,16 @@ public interface DataElementService
      *         match.
      */
     DataElement getDataElementByAlternativeName( String alternativeName );
-    
+
     /**
      * Returns List of DataElements with a given key.
      * 
      * @param key the name of the DataElement to return.
-     * @return List of DataElements with a given key, or all dataelements if no match.
+     * @return List of DataElements with a given key, or all dataelements if no
+     *         match.
      */
     Collection<DataElement> searchDataElementsByName( String key );
+
     /**
      * Returns a DataElement with a given short name.
      * 
@@ -199,7 +201,7 @@ public interface DataElementService
      * @return a Collection of DataElements.
      */
     Collection<DataElement> getDataElementsByPeriodType( PeriodType periodType );
-    
+
     /**
      * Returns all DataElements with the given category combo.
      * 
@@ -243,7 +245,7 @@ public interface DataElementService
      * @return all DataElements which are not member of any DataElementGroups.
      */
     Collection<DataElement> getDataElementsWithoutGroups();
-    
+
     /**
      * Returns all DataElements which are not assigned to any DataSets.
      * 
@@ -257,7 +259,7 @@ public interface DataElementService
      * @return all DataElements which are assigned to at least one DataSet.
      */
     Collection<DataElement> getDataElementsWithDataSets();
-    
+
     /**
      * Checks whether a DataElement with the given identifier exists.
      * 
@@ -267,7 +269,8 @@ public interface DataElementService
     boolean dataElementExists( int id );
 
     /**
-     * Checks whether a DataElementCategoryOptionCombo with the given identifier exists.
+     * Checks whether a DataElementCategoryOptionCombo with the given identifier
+     * exists.
      * 
      * @param id the DataElementCategoryOptionCombo identifier.
      * @return true or false.
@@ -275,17 +278,17 @@ public interface DataElementService
     boolean dataElementCategoryOptionComboExists( int id );
 
     Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets );
-    
+
     Collection<DataElement> getDataElementsLikeName( String name );
-    
+
     Collection<DataElement> getDataElementsBetween( int first, int max );
-    
+
     Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max );
-    
+
     int getDataElementCount();
-    
+
     int getDataElementCountByName( String name );
-    
+
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------
@@ -362,7 +365,6 @@ public interface DataElementService
      */
     Collection<DataElementGroup> getGroupsContainingDataElement( DataElement dataElement );
 
-    
     /**
      * Returns data elements with identifier in the given id.
      * 
@@ -372,10 +374,11 @@ public interface DataElementService
     Collection<DataElement> getDataElementsByGroupId( int groupId );
 
     /**
-     * Defines the given data elements as zero is significant. All other data elements
-     * are defined as zero is in-significant.
+     * Defines the given data elements as zero is significant. All other data
+     * elements are defined as zero is in-significant.
      * 
-     * @param dataElementIds identifiers of data elements where zero is significant.
+     * @param dataElementIds identifiers of data elements where zero is
+     *        significant.
      */
     void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds );
 
@@ -394,16 +397,17 @@ public interface DataElementService
      * @param dataElementGroup is group contain data elements
      * @return a collection of all DataElement
      */
-    Collection<DataElement> getDataElementsByZeroIsSignificantAndGroup( boolean zeroIsSignificant, DataElementGroup dataElementGroup );
+    Collection<DataElement> getDataElementsByZeroIsSignificantAndGroup( boolean zeroIsSignificant,
+        DataElementGroup dataElementGroup );
 
     Collection<DataElementGroup> getDataElementGroupsBetween( int first, int max );
-    
+
     Collection<DataElementGroup> getDataElementGroupsBetweenByName( String name, int first, int max );
-    
+
     int getDataElementGroupCount();
-    
+
     int getDataElementGroupCountByName( String name );
-    
+
     // -------------------------------------------------------------------------
     // DataElementGroupSet
     // -------------------------------------------------------------------------
@@ -418,16 +422,22 @@ public interface DataElementService
 
     DataElementGroupSet getDataElementGroupSetByName( String name );
 
+    Collection<DataElementGroupSet> getCompulsoryDataElementGroupSets();
+
+    Collection<DataElementGroupSet> getCompulsoryDataElementGroupSetsWithMembers();
+
+    Collection<DataElementGroupSet> getCompulsoryDataElementGroupSetsNotAssignedTo( DataElement dataElement );
+
     Collection<DataElementGroupSet> getAllDataElementGroupSets();
 
     Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
-    
+
     Collection<DataElementGroupSet> getDataElementGroupSetsBetween( int first, int max );
-    
+
     Collection<DataElementGroupSet> getDataElementGroupSetsBetweenByName( String name, int first, int max );
-    
+
     int getDataElementGroupSetCount();
-    
+
     int getDataElementGroupSetCountByName( String name );
 
     // -------------------------------------------------------------------------
@@ -443,12 +453,13 @@ public interface DataElementService
     Collection<DataElementOperand> getAllGeneratedOperands();
 
     /**
-     * Returns all generated permutations of Operands for the given collection of
-     * DataElements. Requires the categoryoptioncomboname resource table to be populated.
+     * Returns all generated permutations of Operands for the given collection
+     * of DataElements. Requires the categoryoptioncomboname resource table to
+     * be populated.
      * 
      * @param dataElements the DataElements.
      * @return a collection of all Operands.
      */
     Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements );
-    
+
 }

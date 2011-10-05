@@ -31,8 +31,24 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $indicatorGroupSet.name )"/></td>
+		<td><input type="text" id="name" name="name" style="width:250px" value="$encoder.htmlEncode( $indicatorGroupSet.name )"/></td>
 	</tr>
+
+	<tr>
+		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><input type="text" id="description" name="description" value="#if( $indicatorGroupSet.description)$encoder.htmlEncode( $indicatorGroupSet.description )#end" style="width:250px"></td>
+	</tr>
+
+	<tr>
+		<td><label for="compulsory">$i18n.getString( "compulsory" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td>
+			<select id="compulsory" name="compulsory" style="width:254px" onchange="changeCompulsory( this.value )">
+				<option value="true" #if( $indicatorGroupSet.compulsory ) selected="selected" #end>$i18n.getString( "yes" )</option>
+				<option value="false" #if( !$indicatorGroupSet.compulsory ) selected="selected" #end>$i18n.getString( "no" )</option>
+			</select>
+		</td>
+	</tr>
+
 	<tr>
 		<td colspan="2" height="15px"></td>
 	</tr>

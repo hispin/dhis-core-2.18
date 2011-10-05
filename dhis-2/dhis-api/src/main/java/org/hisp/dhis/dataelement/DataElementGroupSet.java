@@ -34,9 +34,9 @@ import java.util.List;
 import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
- * DataElementGroupSet is a set of DataElementGroups. It is by default exclusive,
- * in the sense that a DataElement can only be a member of one or zero of the 
- * DataElementGroups in a DataElementGroupSet.
+ * DataElementGroupSet is a set of DataElementGroups. It is by default
+ * exclusive, in the sense that a DataElement can only be a member of one or
+ * zero of the DataElementGroups in a DataElementGroupSet.
  * 
  * @author Lars Helge Overland
  */
@@ -48,6 +48,10 @@ public class DataElementGroupSet
      */
     private static final long serialVersionUID = -2118690320625221749L;
 
+    private String description;
+
+    private Boolean compulsory = false;
+
     private List<DataElementGroup> members = new ArrayList<DataElementGroup>();
 
     // -------------------------------------------------------------------------
@@ -55,12 +59,26 @@ public class DataElementGroupSet
     // -------------------------------------------------------------------------
 
     public DataElementGroupSet()
-    {   
+    {
     }
-    
+
     public DataElementGroupSet( String name )
     {
         this.name = name;
+        this.compulsory = false;
+    }
+
+    public DataElementGroupSet( String name, Boolean compulsory )
+    {
+        this.name = name;
+        this.compulsory = compulsory;
+    }
+
+    public DataElementGroupSet( String name, String description, Boolean compulsory )
+    {
+        this.name = name;
+        this.description = description;
+        this.compulsory = compulsory;
     }
 
     // -------------------------------------------------------------------------
@@ -70,15 +88,15 @@ public class DataElementGroupSet
     public Collection<DataElement> getDataElements()
     {
         List<DataElement> dataElements = new ArrayList<DataElement>();
-        
+
         for ( DataElementGroup group : members )
         {
             dataElements.addAll( group.getMembers() );
         }
-        
+
         return dataElements;
     }
-    
+
     public DataElementGroup getGroup( DataElement dataElement )
     {
         for ( DataElementGroup group : members )
@@ -88,10 +106,28 @@ public class DataElementGroupSet
                 return group;
             }
         }
-        
+
         return null;
     }
-    
+
+    public Boolean isMemberOfDataElementGroups( DataElement dataElement )
+    {
+        for ( DataElementGroup group : members )
+        {
+            if ( group.getMembers().contains( dataElement ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Boolean hasDataElementGroups()
+    {
+        return members != null && members.size() > 0;
+    }
+
     // -------------------------------------------------------------------------
     // equals and hashCode
     // -------------------------------------------------------------------------
@@ -115,7 +151,7 @@ public class DataElementGroupSet
             return false;
         }
 
-        if ( !( o instanceof DataElementGroupSet ) )
+        if ( !(o instanceof DataElementGroupSet) )
         {
             return false;
         }
@@ -135,6 +171,26 @@ public class DataElementGroupSet
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    public Boolean isCompulsory()
+    {
+        return compulsory;
+    }
+
+    public void setCompulsory( Boolean compulsory )
+    {
+        this.compulsory = compulsory;
+    }
+
     public List<DataElementGroup> getMembers()
     {
         return members;
@@ -143,5 +199,5 @@ public class DataElementGroupSet
     public void setMembers( List<DataElementGroup> members )
     {
         this.members = members;
-    }    
+    }
 }

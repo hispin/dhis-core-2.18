@@ -67,6 +67,20 @@ public class AddDataElementGroupSetAction
         this.name = name;
     }
 
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    private boolean compulsory;
+
+    public void setCompulsory( boolean compulsory )
+    {
+        this.compulsory = compulsory;
+    }
+
     private List<String> groupMembers = new ArrayList<String>();
 
     public void setGroupMembers( List<String> groupMembers )
@@ -81,8 +95,8 @@ public class AddDataElementGroupSetAction
     public String execute()
         throws Exception
     {
-        DataElementGroupSet dataElementGroupSet = new DataElementGroupSet( name );
-        
+        DataElementGroupSet dataElementGroupSet = new DataElementGroupSet( name, description, compulsory );
+
         dataElementGroupSet.setUuid( UUIdUtils.getUUId() );
 
         List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();

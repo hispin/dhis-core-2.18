@@ -206,9 +206,10 @@ public class DefaultDataElementService
     {
         return i18n( i18nService, dataElementStore.getDataElementByName( name ) );
     }
-    
-    public Collection<DataElement> searchDataElementsByName( String key ){
-    	return i18n( i18nService, dataElementStore.searchDataElementsByName( key ) );
+
+    public Collection<DataElement> searchDataElementsByName( String key )
+    {
+        return i18n( i18nService, dataElementStore.searchDataElementsByName( key ) );
     }
 
     public DataElement getDataElementByAlternativeName( String alternativeName )
@@ -307,7 +308,7 @@ public class DefaultDataElementService
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithoutDataSets() );
     }
-    
+
     public Collection<DataElement> getDataElementsWithDataSets()
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithDataSets() );
@@ -322,7 +323,7 @@ public class DefaultDataElementService
     {
         return dataElementStore.dataElementCategoryOptionComboExists( id );
     }
-    
+
     public Collection<DataElement> getDataElementsLikeName( String name )
     {
         return dataElementStore.getDataElementsLikeName( name );
@@ -332,7 +333,7 @@ public class DefaultDataElementService
     {
         return dataElementStore.getDataElementsBetween( first, max );
     }
-    
+
     public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
     {
         return dataElementStore.getDataElementsBetweenByName( name, first, max );
@@ -342,17 +343,17 @@ public class DefaultDataElementService
     {
         return dataElementStore.getDataElementCount();
     }
-    
+
     public int getDataElementCountByName( String name )
     {
         return dataElementStore.getDataElementCountByName( name );
     }
-    
+
     public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )
     {
         return i18n( i18nService, dataElementStore.getDataElementsByDataSets( dataSets ) );
     }
-    
+
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------
@@ -444,7 +445,7 @@ public class DefaultDataElementService
     {
         return dataElementGroupStore.getBetween( first, max );
     }
-    
+
     public Collection<DataElementGroup> getDataElementGroupsBetweenByName( String name, int first, int max )
     {
         return dataElementGroupStore.getBetweenByName( name, first, max );
@@ -454,12 +455,12 @@ public class DefaultDataElementService
     {
         return dataElementGroupStore.getCount();
     }
-    
+
     public int getDataElementGroupCountByName( String name )
     {
         return dataElementGroupStore.getCountByName( name );
     }
-    
+
     // -------------------------------------------------------------------------
     // DataElementGroupSet
     // -------------------------------------------------------------------------
@@ -495,6 +496,50 @@ public class DefaultDataElementService
     public DataElementGroupSet getDataElementGroupSetByName( String name )
     {
         return i18n( i18nService, dataElementGroupSetStore.getByName( name ) );
+    }
+
+    @Override
+    public Collection<DataElementGroupSet> getCompulsoryDataElementGroupSets()
+    {
+        Collection<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
+
+        for ( DataElementGroupSet groupSet : getAllDataElementGroupSets() )
+        {
+            if ( groupSet.isCompulsory() )
+            {
+                groupSets.add( groupSet );
+            }
+        }
+
+        return groupSets;
+    }
+
+    @Override
+    public Collection<DataElementGroupSet> getCompulsoryDataElementGroupSetsWithMembers()
+    {
+        return FilterUtils.filter( getAllDataElementGroupSets(), new Filter<DataElementGroupSet>()
+        {
+            public boolean retain( DataElementGroupSet object )
+            {
+                return object.isCompulsory() && object.hasDataElementGroups();
+            }
+        } );
+    }
+
+    @Override
+    public Collection<DataElementGroupSet> getCompulsoryDataElementGroupSetsNotAssignedTo( DataElement dataElement )
+    {
+        Collection<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
+
+        for ( DataElementGroupSet groupSet : getCompulsoryDataElementGroupSets() )
+        {
+            if ( !groupSet.isMemberOfDataElementGroups( dataElement ) && groupSet.hasDataElementGroups() )
+            {
+                groupSets.add( groupSet );
+            }
+        }
+
+        return groupSets;
     }
 
     public Collection<DataElementGroupSet> getAllDataElementGroupSets()
@@ -534,6 +579,7 @@ public class DefaultDataElementService
     {
         return dataElementGroupSetStore.getBetweenByName( name, first, max );
     }
+
     // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------
@@ -547,6 +593,5 @@ public class DefaultDataElementService
     {
         return dataElementStore.getAllGeneratedOperands( dataElements );
     }
-
 
 }
