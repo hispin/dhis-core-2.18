@@ -95,9 +95,15 @@ public class GetAggDataElementsAction
 
         optionComboIds = new ArrayList<String>();
 
-        dataElementList = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId )
-            .getMembers() );
-
+        if ( dataElementGroupId == 0 )
+        {
+            dataElementList = new ArrayList<DataElement>( dataElementService.getDataElementsWithoutGroups() );
+        }
+        else
+        {
+            dataElementList = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId )
+                .getMembers() );
+        }
         Iterator<DataElement> deIterator = dataElementList.iterator();
 
         while ( deIterator.hasNext() )
