@@ -99,6 +99,10 @@ public class DataElementImporter
         {
             match = dataElementService.getDataElementByShortName( object.getShortName() );
         }
+        if ( match == null )
+        {
+            match = dataElementService.getDataElementByCode( object.getCode() );
+        }
         
         return match;
     }

@@ -92,7 +92,14 @@ public class OrganisationUnitImporter
     @Override
     protected OrganisationUnit getMatching( OrganisationUnit object )
     {
-        return organisationUnitService.getOrganisationUnitByName( object.getName() );
+        OrganisationUnit match = organisationUnitService.getOrganisationUnitByName( object.getName() );
+        
+        if ( match == null )
+        {
+            match = organisationUnitService.getOrganisationUnitByCode( object.getCode() );
+        }
+        
+        return match;
     }
 
     @Override
