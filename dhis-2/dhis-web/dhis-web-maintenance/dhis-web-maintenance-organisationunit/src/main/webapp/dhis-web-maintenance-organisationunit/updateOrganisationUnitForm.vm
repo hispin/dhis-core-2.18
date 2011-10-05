@@ -93,14 +93,20 @@
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em"></td>
     </tr>    
+</table>
+
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
+
+<table>
 	<tr>
 		<td style="height:15px" colspan="2">
 	</tr>
+
 	<tr>
 		<th colspan="2">$i18n.getString( "contact_details" )</th>
     </tr>
 	<tr>
-		<td><label for="contactPerson">$i18n.getString( "contact_person" ) </label></td>
+		<td style="width:200px"><label for="contactPerson">$i18n.getString( "contact_person" ) </label></td>
 		<td><input type="text" id="contactPerson" name="contactPerson" value="$!encoder.htmlEncode( $organisationUnit.contactPerson )" style="width:20em"></td>
 	</tr>
 	<tr>
@@ -115,9 +121,11 @@
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
         <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $organisationUnit.phoneNumber )" style="width:20em"></td>
     </tr>
-</table>
 
-#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
+	<tr>
+		<td style="height:15px" colspan="2">
+	</tr>
+</table>
 
 <table>    
     <tr>
