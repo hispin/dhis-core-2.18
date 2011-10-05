@@ -1317,8 +1317,25 @@ Ext.onReady( function() {
                                             }
                                         }),
                                         listeners: {
-                                            itemcontextmenu: function(a,b,c,d,e) {
-                                                //console.log(e);
+                                            itemcontextmenu: function(v, r, h, i, e) {
+                                                var menu = Ext.create('Ext.menu.Menu');
+                                                if (!r.data.leaf) {
+                                                    menu.add({
+                                                        text: 'Select all children',
+                                                        icon: 'images/node-select-child.png',
+                                                        handler: function() {
+                                                            r.expand(false, function() {
+                                                                v.getSelectionModel().select(r.childNodes, true);
+                                                                v.getSelectionModel().deselect(r);
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    return;
+                                                }
+                                                
+                                                menu.showAt(e.xy);
                                             }
                                         }
                                     }
@@ -1327,8 +1344,11 @@ Ext.onReady( function() {
                                     expand: function(fs) {
                                         DV.util.fieldset.collapseOthers(this.name);
                                         var tp = fs.down('treepanel');
-                                        tp.isRendered = true;
-                                        tp.selectRoot();
+                                        if (!tp.isRendered) {
+                                            tp.isRendered = true;
+                                            tp.getRootNode().expand();
+                                            tp.selectRoot();
+                                        }
                                     }
                                 }
                             }
