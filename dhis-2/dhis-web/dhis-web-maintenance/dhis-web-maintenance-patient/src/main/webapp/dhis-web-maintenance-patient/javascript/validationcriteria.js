@@ -14,6 +14,7 @@ function removeCriteria( id, name )
 function showValidationCriteriaDetails( criteriaId )
 {
 	jQuery.post( 'getValidationCriteria.action', { id: criteriaId }, function ( json ) {
+		setInnerHTML( 'idField', json.validationCriteria.id );
 		setInnerHTML( 'nameField', json.validationCriteria.name );
 		setInnerHTML( 'descriptionField', json.validationCriteria.description );
 		
