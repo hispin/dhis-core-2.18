@@ -9,6 +9,8 @@ jQuery(function() {
 
 <ul id="introList">
     #introListImgItem( "userSettings.action" "user_settings" "usersettings" )
-    #introListImgItem( "systemSettings.action" "system_settings" "systemsettings" )
+    #introListImgItem( "generalSettings.action" "general_settings" "systemsettings" )
+    #introListImgItem( "appearanceSettings.action" "appearance_settings" "systemsettings" )
+    #introListImgItem( "emailSettings.action" "smtp_settings" "systemsettings" )
 </ul>
     

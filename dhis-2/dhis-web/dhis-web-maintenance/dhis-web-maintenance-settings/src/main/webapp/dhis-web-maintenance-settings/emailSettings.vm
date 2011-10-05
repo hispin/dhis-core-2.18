@@ -1,0 +1,30 @@
+<script>
+	jQuery(document).ready(function() {
+		validation2( 'emailSettingForm', function( form ) {
+			form.submit();
+		}, {
+			"rules" : getValidationRules( "emailSettings" )
+		});
+	});
+</script>
+
+
+<h3>$i18n.getString( "smtp_settings" )</h3>
+
+<form id="emailSettingForm" method="post" action="setEmailSettings.action">
+
+<h4>$i18n.getString( "host_name" )</h4>
+
+<p><input type="text" id="smtpHostName" name="smtpHostName" style="width:20em" value="$!smtpHostName"/></p>
+
+<h4>$i18n.getString( "username" )</h4>
+
+<p><input type="text" id="smtpUsername" name="smtpUsername" value="$!smtpUsername" style="width:20em" autocomplete="off"/></p>
+
+<h4>$i18n.getString( "password" )</h4>
+
+<p><input type="password" id="smtpPassword" name="smtpPassword" value="$!smtpPassword" style="width:20em" autocomplete="off"/></p>
+
+<p><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/></p>
+
+</form>

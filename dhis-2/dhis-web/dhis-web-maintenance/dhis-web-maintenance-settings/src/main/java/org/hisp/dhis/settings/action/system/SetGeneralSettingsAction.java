@@ -1,7 +1,7 @@
 package org.hisp.dhis.settings.action.system;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,21 +28,15 @@ package org.hisp.dhis.settings.action.system;
  */
 
 import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_SYSTEM_IDENTIFIER;
 
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.options.SystemSettingManager;
-import org.hisp.dhis.options.style.StyleManager;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroupService;
@@ -53,7 +47,7 @@ import com.opensymphony.xwork2.Action;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class SetSystemSettingsAction
+public class SetGeneralSettingsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -65,13 +59,6 @@ public class SetSystemSettingsAction
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
-    }
-
-    private StyleManager styleManager;
-
-    public void setStyleManager( StyleManager styleManager )
-    {
-        this.styleManager = styleManager;
     }
 
     private UserGroupService userGroupService;
@@ -106,32 +93,11 @@ public class SetSystemSettingsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private String systemIdentifier;
+    private String aggregationStrategy;
 
-    public void setSystemIdentifier( String systemIdentifier )
+    public void setAggregationStrategy( String aggregationStrategy )
     {
-        this.systemIdentifier = systemIdentifier;
-    }
-
-    private String applicationTitle;
-
-    public void setApplicationTitle( String applicationTitle )
-    {
-        this.applicationTitle = applicationTitle;
-    }
-
-    private String flag;
-
-    public void setFlag( String flag )
-    {
-        this.flag = flag;
-    }
-
-    private String startModule;
-
-    public void setStartModule( String startModule )
-    {
-        this.startModule = startModule;
+        this.aggregationStrategy = aggregationStrategy;
     }
 
     private Integer infrastructuralDataElements;
@@ -169,20 +135,6 @@ public class SetSystemSettingsAction
         this.factorDeviation = factorDeviation;
     }
 
-    private String currentStyle;
-
-    public void setCurrentStyle( String style )
-    {
-        this.currentStyle = style;
-    }
-
-    private String aggregationStrategy;
-
-    public void setAggregationStrategy( String aggregationStrategy )
-    {
-        this.aggregationStrategy = aggregationStrategy;
-    }
-
     private Integer feedbackRecipients;
 
     public void setFeedbackRecipients( Integer feedbackRecipients )
@@ -203,27 +155,12 @@ public class SetSystemSettingsAction
 
     public String execute()
     {
-        applicationTitle = StringUtils.trimToNull( applicationTitle );
-
-        if ( flag != null && flag.equals( "NO_FLAG" ) )
-        {
-            flag = null;
-        }
-
-        if ( startModule != null && startModule.equals( "NO_START_PAGE" ) )
-        {
-            startModule = null;
-        }
-
-        systemSettingManager.saveSystemSetting( KEY_SYSTEM_IDENTIFIER, systemIdentifier );
-        systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
-        systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
-        systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
-        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
-        systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
-        systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
-        styleManager.setSystemStyle( currentStyle );
         systemSettingManager.saveSystemSetting( KEY_AGGREGATION_STRATEGY, aggregationStrategy );
+        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART,
+            omitIndicatorsZeroNumeratorDataMart );
+        systemSettingManager
+            .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
+        systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
 
         Configuration configuration = configurationService.getConfiguration();
