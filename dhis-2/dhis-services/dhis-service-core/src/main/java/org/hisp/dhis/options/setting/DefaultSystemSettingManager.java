@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.options.SystemSetting;
 import org.hisp.dhis.options.SystemSettingManager;
@@ -56,14 +57,14 @@ public class DefaultSystemSettingManager
     {
         this.systemSettingStore = systemSettingStore;
     }
-    
+
     private List<String> flags;
 
     public void setFlags( List<String> flags )
     {
         this.flags = flags;
     }
-    
+
     // -------------------------------------------------------------------------
     // SystemSettingManager implementation
     // -------------------------------------------------------------------------
@@ -71,20 +72,20 @@ public class DefaultSystemSettingManager
     public void saveSystemSetting( String name, Serializable value )
     {
         SystemSetting setting = systemSettingStore.getByName( name );
-        
+
         if ( setting == null )
         {
             setting = new SystemSetting();
-            
+
             setting.setName( name );
             setting.setValue( value );
-            
+
             systemSettingStore.save( setting );
         }
         else
         {
             setting.setValue( value );
-            
+
             systemSettingStore.update( setting );
         }
     }
@@ -92,14 +93,14 @@ public class DefaultSystemSettingManager
     public Serializable getSystemSetting( String name )
     {
         SystemSetting setting = systemSettingStore.getByName( name );
-        
+
         return setting != null && setting.hasValue() ? setting.getValue() : null;
-    }   
-    
+    }
+
     public Serializable getSystemSetting( String name, Serializable defaultValue )
     {
         SystemSetting setting = systemSettingStore.getByName( name );
-        
+
         return setting != null && setting.hasValue() ? setting.getValue() : defaultValue;
     }
 
@@ -111,7 +112,7 @@ public class DefaultSystemSettingManager
     public void deleteSystemSetting( String name )
     {
         SystemSetting setting = systemSettingStore.getByName( name );
-        
+
         if ( setting != null )
         {
             systemSettingStore.delete( setting );
@@ -121,27 +122,42 @@ public class DefaultSystemSettingManager
     // -------------------------------------------------------------------------
     // Specific methods
     // -------------------------------------------------------------------------
-    
+
     public List<String> getFlags()
     {
-        Collections.sort( flags );        
+        Collections.sort( flags );
         return flags;
     }
-    
+
     public List<String> getAggregationStrategies()
     {
         return Arrays.asList( AGGREGATION_STRATEGY_REAL_TIME, AGGREGATION_STRATEGY_BATCH );
     }
-    
+
     public String getSystemIdentifier()
     {
         return (String) getSystemSetting( KEY_SYSTEM_IDENTIFIER );
     }
-    
+
     public String getFlagImage()
     {
         String flag = (String) getSystemSetting( KEY_FLAG );
-        
+
         return flag != null ? flag + ".png" : null;
+    }
+
+    public String getEmailHostName()
+    {
+        return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_HOST_NAME ) );
+    }
+
+    public String getEmailPassword()
+    {
+        return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_PASSWORD ) );
+    }
+
+    public String getEmailUsername()
+    {
+        return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_USERNAME ) );
     }
 }

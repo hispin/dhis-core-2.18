@@ -425,5 +425,18 @@ var validationRules = {
 			"required" : true,
 			"rangelength" : [ 2, 255 ]
 		}
+	},
+	"emailSettings" : {
+		"smtpHostName" : {
+			"required" : true,
+			"url" : true
+		},
+		"smtpUsername" : {
+			"required" : true
+		},
+		"smtpPassword" : {
+			"required" : true,
+			"password" : true
+		}
 	}
 };

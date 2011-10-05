@@ -1,7 +1,7 @@
 package org.hisp.dhis.options;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -88,4 +88,10 @@ public interface SystemSettingManager
     String getSystemIdentifier();
     
     String getFlagImage();
+    
+    String getEmailHostName();
+    
+    String getEmailUsername();
+    
+    String getEmailPassword();
 }

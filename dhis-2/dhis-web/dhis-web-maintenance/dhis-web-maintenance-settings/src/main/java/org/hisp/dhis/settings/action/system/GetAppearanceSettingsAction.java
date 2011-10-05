@@ -1,7 +1,7 @@
 package org.hisp.dhis.settings.action.system;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,26 +27,13 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 
-import org.hisp.dhis.configuration.Configuration;
-import org.hisp.dhis.configuration.ConfigurationService;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.style.StyleManager;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.comparator.UserGroupComparator;
 import org.hisp.dhis.webportal.module.Module;
 import org.hisp.dhis.webportal.module.ModuleManager;
 import org.hisp.dhis.webportal.module.StartableModuleFilter;
@@ -57,7 +44,7 @@ import com.opensymphony.xwork2.Action;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class GetSystemSettingsAction
+public class GetAppearanceSettingsAction
     implements Action
 {
     private static final Filter<Module> startableFilter = new StartableModuleFilter();
@@ -85,34 +72,6 @@ public class GetSystemSettingsAction
     public void setStyleManager( StyleManager styleManager )
     {
         this.styleManager = styleManager;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    private UserGroupService userGroupService;
-
-    public void setUserGroupService( UserGroupService userGroupService )
-    {
-        this.userGroupService = userGroupService;
-    }
-
-    private ConfigurationService configurationService;
-
-    public void setConfigurationService( ConfigurationService configurationService )
-    {
-        this.configurationService = configurationService;
     }
 
     // -------------------------------------------------------------------------
@@ -147,79 +106,21 @@ public class GetSystemSettingsAction
         return currentStyle;
     }
 
-    private List<UserGroup> userGroups;
-
-    public List<UserGroup> getUserGroups()
-    {
-        return userGroups;
-    }
-
-    private UserGroup feedbackRecipients;
-
-    public UserGroup getFeedbackRecipients()
-    {
-        return feedbackRecipients;
-    }
-
-    private Collection<String> aggregationStrategies;
-
-    public Collection<String> getAggregationStrategies()
-    {
-        return aggregationStrategies;
-    }
-
-    private Configuration configuration;
-
-    public Configuration getConfiguration()
-    {
-        return configuration;
-    }
-
-    private List<DataElementGroup> dataElementGroups;
-
-    public List<DataElementGroup> getDataElementGroups()
-    {
-        return dataElementGroups;
-    }
-
-    private List<PeriodType> periodTypes;
-
-    public List<PeriodType> getPeriodTypes()
-    {
-        return periodTypes;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
+        styles = styleManager.getStyles();
+        
+        currentStyle = styleManager.getSystemStyle();
+        
         flags = systemSettingManager.getFlags();
 
         modules = moduleManager.getMenuModules();
 
         FilterUtils.filter( modules, startableFilter );
-
-        styles = styleManager.getStyles();
-
-        currentStyle = styleManager.getSystemStyle();
-
-        aggregationStrategies = systemSettingManager.getAggregationStrategies();
-
-        configuration = configurationService.getConfiguration();
-
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-        
-        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
-
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-
-        Collections.sort( userGroups, new UserGroupComparator() );
-
-        feedbackRecipients = configurationService.getConfiguration().getFeedbackRecipients();
 
         return SUCCESS;
     }

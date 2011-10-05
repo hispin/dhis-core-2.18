@@ -1,5 +1,11 @@
-<h2>$i18n.getString( "settings" )&nbsp;</h2>
+<h2>$i18n.getString( "user_settings" )&nbsp;</h2>
 <ul>
 	<li><a href="userSettings.action">$i18n.getString( "user_settings" )&nbsp;</a></li>
-	<li><a href="systemSettings.action">$i18n.getString( "system_settings" )&nbsp;</a></li>
+</ul>
+
+<h2>$i18n.getString( "system_settings" )&nbsp;</h2>
+<ul>
+	<li><a href="generalSettings.action">$i18n.getString( "general_settings" )&nbsp;</a></li>
+	<li><a href="appearanceSettings.action">$i18n.getString( "appearance_settings" )&nbsp;</a></li>
+	<li><a href="emailSettings.action">$i18n.getString( "smtp_settings" )&nbsp;</a></li>
 </ul>
