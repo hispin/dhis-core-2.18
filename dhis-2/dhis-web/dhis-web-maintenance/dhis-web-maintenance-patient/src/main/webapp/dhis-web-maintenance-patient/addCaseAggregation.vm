@@ -29,10 +29,11 @@
 		<td width="20em"><label for="dataElementGroup">$i18n.getString( "dataelement_group" )</label></td>
 		<td>
 			<select id="dataElementGroup" name="dataElementGroup" style="min-width:30.5em" onchange="getAggDataElements();">
-				<option value="0">[$i18n.getString('please_select')]</option>
+				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $dataElementGroup in $dataElementGroups)
 					<option value="$dataElementGroup.id" >$dataElementGroup.name</option>
 				#end
+				<option value="0">$i18n.getString('others')</option>
 			</select>
 		</td>				
 	</tr>
