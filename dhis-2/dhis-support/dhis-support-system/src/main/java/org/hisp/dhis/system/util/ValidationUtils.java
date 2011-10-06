@@ -28,6 +28,7 @@ package org.hisp.dhis.system.util;
  */
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.apache.commons.validator.DateValidator;
 import org.apache.commons.validator.EmailValidator;
@@ -39,6 +40,8 @@ import org.apache.commons.validator.UrlValidator;
  */
 public class ValidationUtils
 {
+    private static Pattern REGEX_PATTERN = Pattern.compile( "\\[[\\+\\-]*\\d+\\.*\\d*,[\\+\\-]*\\d+\\.*\\d*\\]" );
+    
     /**
      * Validates whether an email string is valid.
      * 
@@ -100,8 +103,8 @@ public class ValidationUtils
      * 
      * @return true if the coordinate is valid, false otherwise.
      */
-    public static boolean validateGeoCoordinates( String coordinate )
+    public static boolean coordinateIsValid( String coordinate )
     {
-        return true;
+        return coordinate != null ? REGEX_PATTERN.matcher( coordinate ).matches() : false;
     }
 }
