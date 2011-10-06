@@ -52,8 +52,7 @@
 </div>
 
 <div id='listPatientDiv'></div> <!-- List searching patients -->
-<div id='addPatientDiv'></div> <!-- Add Patient Form -->
-<div id='updatePatientDiv'></div> <!-- Update Patient Form -->
+<div id='editPatientDiv'></div> <!-- Add Patient Form -->
 <div id='resultSearchDiv' style='font-size:13px'></div> <!-- List searching patients -->
 <div id='enrollmentDiv'></div> <!-- Program Enrollment Form -->
 <div id='listRelationshipDiv'></div> <!-- List relationship -->
