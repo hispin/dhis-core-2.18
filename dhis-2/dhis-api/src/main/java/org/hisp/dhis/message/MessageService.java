@@ -38,12 +38,13 @@ import org.hisp.dhis.user.User;
 public interface MessageService
 {
     final String ID = MessageService.class.getName();
+    final String META_USER_AGENT = "User-agent: ";
     
-    int sendMessage( String subject, String text, Set<User> users );
+    int sendMessage( String subject, String text, String metaData, Set<User> users );
     
-    int sendFeedback( String subject, String text );
+    int sendFeedback( String subject, String text, String metaData );
     
-    void sendReply( MessageConversation conversation, String text );
+    void sendReply( MessageConversation conversation, String text, String metaData );
     
     int saveMessageConversation( MessageConversation conversation );
     

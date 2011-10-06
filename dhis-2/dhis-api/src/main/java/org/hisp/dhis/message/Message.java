@@ -51,6 +51,11 @@ public class Message
      * The message text.
      */
     private String text;
+    
+    /**
+     * The message meta data, like user agent and OS of sender.
+     */
+    private String metaData;
 
     /**
      * The message sender.
@@ -68,10 +73,11 @@ public class Message
         this.sentDate = new Date();
     }
     
-    public Message( String text, User sender )
+    public Message( String text, String metaData, User sender )
     {
         this.key = UUID.randomUUID().toString();
         this.text = text;
+        this.metaData = metaData;
         this.sender = sender;
         this.sentDate = new Date();
     }
@@ -104,6 +110,16 @@ public class Message
     public void setText( String text )
     {
         this.text = text;
+    }
+
+    public String getMetaData()
+    {
+        return metaData;
+    }
+
+    public void setMetaData( String metaData )
+    {
+        this.metaData = metaData;
     }
 
     public User getSender()

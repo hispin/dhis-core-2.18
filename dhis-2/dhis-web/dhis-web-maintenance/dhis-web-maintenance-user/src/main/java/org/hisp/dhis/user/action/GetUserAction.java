@@ -32,7 +32,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
@@ -66,11 +65,11 @@ public class GetUserAction
         this.id = id;
     }
 
-    private UserCredentials userCredentials;
+    private User user;
 
-    public UserCredentials getUserCredentials()
+    public User getUser()
     {
-        return userCredentials;
+        return user;
     }
 
     private Collection<UserAuthorityGroup> userAuthorityGroups;
@@ -87,13 +86,14 @@ public class GetUserAction
     public String execute()
         throws Exception
     {
-        User user = userService.getUser( id );
-
-        userCredentials = userService.getUserCredentials( user );
+        user = userService.getUser( id );
 
         userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
 
-        userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );        
+        if ( user != null )
+        {
+            userAuthorityGroups.removeAll( user.getUserCredentials().getUserAuthorityGroups() );
+        }
         
         return SUCCESS;
     }

@@ -80,7 +80,7 @@ public class DefaultMessageService
     // MessageService implementation
     // -------------------------------------------------------------------------
 
-    public int sendMessage( String subject, String text, Set<User> users )
+    public int sendMessage( String subject, String text, String metaData, Set<User> users )
     {
         // ---------------------------------------------------------------------
         // Add feedback recipients to users if they are not there
@@ -101,7 +101,7 @@ public class DefaultMessageService
         
         MessageConversation conversation = new MessageConversation( subject, sender );
         
-        conversation.addMessage( new Message( text, sender ) );
+        conversation.addMessage( new Message( text, metaData, sender ) );
         
         for ( User user : users )
         {
@@ -115,16 +115,16 @@ public class DefaultMessageService
         return id;
     }
 
-    public int sendFeedback( String subject, String text )
+    public int sendFeedback( String subject, String text, String metaData )
     {
-        return sendMessage( subject, text, new HashSet<User>() );
+        return sendMessage( subject, text, metaData, new HashSet<User>() );
     }
     
-    public void sendReply( MessageConversation conversation, String text )
+    public void sendReply( MessageConversation conversation, String text, String metaData )
     {
         User sender = currentUserService.getCurrentUser();
         
-        Message message = new Message( text, sender );
+        Message message = new Message( text, metaData, sender );
         
         conversation.markReplied( sender, message );
         

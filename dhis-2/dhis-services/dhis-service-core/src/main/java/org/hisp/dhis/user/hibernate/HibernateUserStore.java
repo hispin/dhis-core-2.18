@@ -430,7 +430,7 @@ public class HibernateUserStore
     {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery( "from UserSetting us where us.name = :name" );
-        query.setEntity( "name", name );
+        query.setString( "name", name );
 
         return query.list();
     }

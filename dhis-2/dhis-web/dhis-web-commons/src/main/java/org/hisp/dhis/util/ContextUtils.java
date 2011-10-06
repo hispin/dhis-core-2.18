@@ -54,10 +54,12 @@ public class ContextUtils
     public static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
     public static final String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
 
+    public static final String HEADER_USER_AGENT = "User-Agent";
+
     private static final String SEPARATOR = "/";
     private static final String PORT_SEPARATOR = ":";
     private static final String PROTOCOL = "http://";
-
+    
     private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() {
         /**
          * Determines if a de-serialized file is compatible with this class.

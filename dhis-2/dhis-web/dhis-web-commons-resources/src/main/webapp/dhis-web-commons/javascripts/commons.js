@@ -37,6 +37,27 @@ function translate( className, objectId )
 }
 
 /**
+ * Joins the names of the given array of objects and returns it as a single string.
+ */
+function joinNameableObjects( objects )
+{
+	var string = "";
+	var size = objects.length;
+	
+	for ( var i in objects )
+	{
+		string += objects[i].name;
+		
+		if ( i < ( size - 1 ) )
+		{
+			string += ", ";
+		}
+	}
+	
+	return string;
+}
+
+/**
  * Gets help content for the given id. Opens the right bar and puts the content
  * inside. Reads data from an underlying docbook file.
  * 

@@ -105,8 +105,8 @@ public class MessageServiceTest
         conversation.addUserMessage( userMessageA );
         conversation.addUserMessage( userMessageB );
         
-        Message contentA = new Message( "TextA", sender );
-        Message contentB = new Message( "TextB", sender );
+        Message contentA = new Message( "TextA", "MetaA", sender );
+        Message contentB = new Message( "TextB", "MetaB", sender );
         
         conversation.addMessage( contentA );
         conversation.addMessage( contentB );
@@ -128,7 +128,7 @@ public class MessageServiceTest
     @Test
     public void testSendMessage()
     {
-        int id = messageService.sendMessage( "Subject", "Text", users );
+        int id = messageService.sendMessage( "Subject", "Text", "Meta", users );
         
         MessageConversation conversation = messageService.getMessageConversation( id );
         
@@ -142,7 +142,7 @@ public class MessageServiceTest
     @Test
     public void testSendFeedback()
     {
-        int id = messageService.sendFeedback( "Subject", "Text" );
+        int id = messageService.sendFeedback( "Subject", "Text", "Meta" );
         
         MessageConversation conversation = messageService.getMessageConversation( id );
         
@@ -156,10 +156,10 @@ public class MessageServiceTest
     public void testSendReply()
     {
         MessageConversation message = new MessageConversation( "Subject", sender );
-        message.addMessage( new Message( "TextA", sender ) );
+        message.addMessage( new Message( "TextA", "MetaA", sender ) );
         int id = messageService.saveMessageConversation( message );
         
-        messageService.sendReply( message, "TextB" );
+        messageService.sendReply( message, "TextB", "MetaB" );
         
         message = messageService.getMessageConversation( id );
         
