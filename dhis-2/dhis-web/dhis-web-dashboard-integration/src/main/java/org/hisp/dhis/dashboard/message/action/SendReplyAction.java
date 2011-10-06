@@ -27,8 +27,10 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
+import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -73,9 +75,12 @@ public class SendReplyAction
 
     public String execute()
     {
+        String metaData = MessageService.META_USER_AGENT + 
+            ServletActionContext.getRequest().getHeader( ContextUtils.HEADER_USER_AGENT );
+
         MessageConversation conversation = messageService.getMessageConversation( id );
         
-        messageService.sendReply( conversation, text );
+        messageService.sendReply( conversation, text, metaData );
         
         return SUCCESS;
     }

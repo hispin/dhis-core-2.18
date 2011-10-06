@@ -43,6 +43,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.system.database.DatabaseInfo;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -213,7 +214,7 @@ public class AboutAction
         // User agent
         // ---------------------------------------------------------------------
 
-        userAgent = request.getHeader( "user-agent" );
+        userAgent = request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
         // ---------------------------------------------------------------------
         // External directory

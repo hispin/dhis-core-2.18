@@ -58,21 +58,11 @@ function showUserDetails( userId )
 		var lastLogin = json.user.lastLogin;
 		setInnerHTML( 'lastLoginField', lastLogin ? lastLogin : '[' + i18n_none + ']' );
 		
-		var temp = '';
-		var orgunits = json.user.orgunits;
-		for( var i = 0 ; i < orgunits.length ; i ++ )
-		{
-			temp += orgunits[i].name + "<br/>";
-		}
-		setInnerHTML( 'assignedOrgunitField', temp ? temp : '[' + i18n_none + ']' );
+		var organisationUnits = joinNameableObjects( json.user.organisationUnits );
+		setInnerHTML( 'assignedOrgunitField', organisationUnits ? organisationUnits : '[' + i18n_none + ']' );
 		
-		temp = '';
-		var roles = json.user.roles;
-		for( var i = 0 ; i < roles.length ; i ++ )
-		{
-			temp += roles[i].name + "<br/>";
-		}
-		setInnerHTML( 'roleField', temp ? temp : '[' + i18n_none + ']' );
+		var roles = joinNameableObjects( json.user.roles );
+		setInnerHTML( 'roleField', roles ? roles : '[' + i18n_none + ']' );
 		
 		showDetails();
 	});

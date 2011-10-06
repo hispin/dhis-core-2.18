@@ -30,10 +30,12 @@ package org.hisp.dhis.dashboard.message.action;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -85,6 +87,9 @@ public class SendMessageAction
 
     public String execute()
     {
+        String metaData = MessageService.META_USER_AGENT + 
+            ServletActionContext.getRequest().getHeader( ContextUtils.HEADER_USER_AGENT );
+
         Set<User> users = new HashSet<User>();
         
         for ( OrganisationUnit unit : selectionTreeManager.getReloadedSelectedOrganisationUnits() )
@@ -92,7 +97,7 @@ public class SendMessageAction
             users.addAll( unit.getUsers() );
         }
         
-        messageService.sendMessage( subject, text, users );
+        messageService.sendMessage( subject, text, metaData, users );
         
         return SUCCESS;
     }

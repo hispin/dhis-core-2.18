@@ -36,19 +36,23 @@ function validateMessage()
 	return true;
 }
 
-function showSenderInfo( id )
+function showSenderInfo( messageId, senderId )
 {
-	$.getJSON( "../dhis-web-commons-ajax-json/getUser.action", { id:id }, function( json ) {
+	var metaData = $( "#metaData" + messageId ).html();
+	
+	$.getJSON( "../dhis-web-commons-ajax-json/getUser.action", { id:senderId }, function( json ) {
 		$( "#senderName" ).html( json.user.firstName + " " + json.user.surname );
 		$( "#senderEmail" ).html( json.user.email );
 		$( "#senderUsername" ).html( json.user.username );
 		$( "#senderPhoneNumber" ).html( json.user.phoneNumber );
-		$( "#senderOrganisationUnits" ).html( json.user.organisationUnits );
-		
+		$( "#senderOrganisationUnits" ).html( joinNameableObjects( json.user.organisationUnits ) );
+		$( "#senderUserRoles" ).html( joinNameableObjects( json.user.roles ) );		
+		$( "#messageMetaData" ).html( metaData );	
+				
 		$( "#senderInfo" ).dialog( {
 	        modal : true,
-	        width : 300,
-	        height : 250,
+	        width : 350,
+	        height : 350,
 	        title : "Sender"
 	    } );
 	} );
