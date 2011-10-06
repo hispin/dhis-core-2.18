@@ -2,36 +2,36 @@
 	
 	jQuery(document).ready(	function(){
 
-		currentDiv = 'addPatientForm';
+		currentDiv = 'patientForm';
 		checkedDuplicate = false;
 
-		jQuery("#addPatientForm").validate({
+		jQuery("#patientForm").validate({
 				 meta:"validate"
 				,errorElement:"span"
 				,submitHandler: function(form)
 					{
-						validateAddPatient('addPatientForm');
+						validateAddPatient();
 					}
 				,beforeValidateHandler: function(form)
 					{
-						var dobType = $('#addPatientForm [id=dobType]').val();
+						var dobType = $('#patientForm [id=dobType]').val();
 						
 						if( dobType=='V' || dobType=='D' ) 
 						{
-							var birthDate = $('#addPatientForm [id=birthDate]').val();
+							var birthDate = $('#patientForm [id=birthDate]').val();
 							if( birthDate != '' ){
-								$("#addPatientForm [id=memberValidator]").val(birthDate);
+								$("#patientForm [id=memberValidator]").val(birthDate);
 							}
 						}else{
-							var age = $('#addPatientForm [id=age]').val();
-							$("#addPatientForm [id=memberValidator]").val(age);
+							var age = $('#patientForm [id=age]').val();
+							$("#patientForm [id=memberValidator]").val(age);
 						}
 					}
 			});
 		
-		datePickerValid( 'addPatientForm [id=registrationDate]' );
-		datePickerValid( 'addPatientForm [id=birthDate]' );
-		addEventForPatientForm( 'addPatientForm' );
+		datePickerValid( 'patientForm [id=registrationDate]' );
+		datePickerValid( 'patientForm [id=birthDate]' );
+		addEventForPatientForm( 'patientForm' );
 	});	
 	
 </script>
@@ -39,7 +39,7 @@
 <h3>$i18n.getString( "add_new_patient" )</h3>	
 <p><input type="button" value="$i18n.getString( 'back_to_search' )" onclick="loadPatientList();" style="width:10em"/></p>
 
-<form id="addPatientForm" name="addPatientForm" method="post" >
+<form id="patientForm" name="patientForm" method="post" >
 <input type="hidden" id="representativeId" name="representativeId"/> 
 <input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 
