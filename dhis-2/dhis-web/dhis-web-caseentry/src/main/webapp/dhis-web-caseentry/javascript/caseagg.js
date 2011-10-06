@@ -110,9 +110,8 @@ function viewResultDetails( orgunitId, periodId, aggregationConditionId )
 		url+= '&periodId=' + periodId;
 		url+= '&aggregationConditionId=' + aggregationConditionId;
 		
-	$('#contentDetails').dialog('destroy').remove();
-    $('<div id="contentDetails">' ).load(url).dialog({
-        title: '',
+	$('#contentDetails' ).load(url).dialog({
+        title: i18n_aggregate_details,
 		maximize: true, 
 		closable: true,
 		modal:true,

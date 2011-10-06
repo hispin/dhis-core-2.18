@@ -23,13 +23,15 @@
 	#set ( $keys = $mapDataValues.keySet() )
 	#set ($index = 1)
 	<tbody>
+		#set( $mark = false )
 		#foreach( $key in $keys)
-			<tr id="tr${key.dataElement.id}" style="cursor: pointer" onclick="viewResultDetails($key.source.id,$key.period.id,$mapCaseAggCondition.get($key).id)">
+			<tr #alternate( $mark ) style="cursor: pointer" title="$i18n.getString('show_details')" onclick="viewResultDetails($key.source.id,$key.period.id,$mapCaseAggCondition.get($key).id)">
 				<td>$index</td>
 				<td>$key.dataElement.getName()</td>
 				<td>$key.getValue()</td>
 				<td>$mapDataValues.get($key)</td>
 			</tr>
+			#set( $mark = !$mark  )
 			#set ($index = $index + 1)
 		#end
 	</tbody>
@@ -37,5 +39,10 @@
 #else
 	$i18n.getString('no_value_added_or_update')
 #end
-
 </div>
+
+<div id='contentDetails'></div>
+
+<script>
+	var i18n_aggregate_details = '$encoder.jsEscape( $i18n.getString( "aggregate_details" ) , "'")';
+</script>
