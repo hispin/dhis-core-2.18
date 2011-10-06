@@ -75,15 +75,20 @@
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url" style="width:240px"/></td>
     </tr>
+</table>
+
+#tblDynamicAttributes( { "attributes": $attributes } )
+
+<table>
 	<tr>
-		<td></td>
+		<td style="width:200px"></td>
 		<td>
 			<input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="indicatorNumeratorForm()" style="width:240px"/>
 			<input type="hidden" id="numerator" name="numerator"/>
 		</td>	
 	</tr>
 	<tr>
-		<td></td>
+		<td style="width:200px"></td>
 		<td>
 			<input type="button" id="denominatorButton" name="denominatorButton" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:240px"/>
 			<input type="hidden" id="denominator" name="denominator" class="{validate:{required:true}}"/>
@@ -91,7 +96,6 @@
 	</tr>
 </table>
 
-#tblDynamicAttributes( { "attributes": $attributes } )
 
 #if( $groupSets.size() > 0 )
 <table>

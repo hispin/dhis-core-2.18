@@ -147,9 +147,6 @@
 		</td>
 	</tr>
     <tr>
-        <td style="height:10px" colspan="2"></td>
-    </tr>
-    <tr>
         <td style="width:200px">$i18n.getString( "aggregation_levels" )</td>
         <td><input type="checkbox" #if ( $dataElement.hasAggregationLevels() )checked="checked"#end onclick="toggleById( 'aggregationLevelsContainer' )"/></td>
     </tr>
