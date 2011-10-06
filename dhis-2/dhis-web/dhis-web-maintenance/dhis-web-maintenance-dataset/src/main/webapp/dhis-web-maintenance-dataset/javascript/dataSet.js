@@ -1,19 +1,20 @@
-
 // -----------------------------------------------------------------------------
 // DataSet details form
 // -----------------------------------------------------------------------------
 
 function showDataSetDetails( dataSetId )
 {
-	jQuery.post( '../dhis-web-commons-ajax-json/getDataSet.action', 
-		{ id: dataSetId }, function ( json ) {
-		setInnerHTML( 'nameField', json.dataSet.name );
-		setInnerHTML( 'frequencyField', json.dataSet.frequency );
-		setInnerHTML( 'dataElementCountField', json.dataSet.dataElementCount );
-		setInnerHTML( 'dataEntryFormField', json.dataSet.dataentryform );
+    jQuery.post( '../dhis-web-commons-ajax-json/getDataSet.action', {
+        id : dataSetId
+    }, function( json )
+    {
+        setInnerHTML( 'nameField', json.dataSet.name );
+        setInnerHTML( 'frequencyField', json.dataSet.frequency );
+        setInnerHTML( 'dataElementCountField', json.dataSet.dataElementCount );
+        setInnerHTML( 'dataEntryFormField', json.dataSet.dataentryform );
 
-		showDetails();
-	});
+        showDetails();
+    } );
 }
 
 // -----------------------------------------------------------------------------
@@ -26,7 +27,7 @@ var tmpSource;
 
 function removeDataSet( dataSetId, dataSetName )
 {
-  removeItem( dataSetId, dataSetName, i18n_confirm_delete, 'delDataSet.action' );
+    removeItem( dataSetId, dataSetName, i18n_confirm_delete, 'delDataSet.action' );
 }
 
 // ----------------------------------------------------------------------
@@ -35,5 +36,5 @@ function removeDataSet( dataSetId, dataSetName )
 
 function viewDataEntryForm( dataSetId )
 {
-	window.location.href = 'viewDataEntryForm.action?dataSetId=' + dataSetId;
+    window.location.href = 'viewDataEntryForm.action?dataSetId=' + dataSetId;
 }

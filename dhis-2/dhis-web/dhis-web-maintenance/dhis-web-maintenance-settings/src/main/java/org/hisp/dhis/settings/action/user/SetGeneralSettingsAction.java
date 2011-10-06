@@ -27,6 +27,7 @@ package org.hisp.dhis.settings.action.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.user.UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM;
 import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
 
 import java.util.Locale;
@@ -164,8 +165,8 @@ public class SetGeneralSettingsAction
 
         userSettingService.saveUserSetting( KEY_CHARTS_IN_DASHBOARD, chartsInDashboard );
 
-        userSettingService.saveUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, autoSave );
-
+        userSettingService.saveUserSetting( AUTO_SAVE_DATA_ENTRY_FORM, autoSave );
+        
         return SUCCESS;
     }
 

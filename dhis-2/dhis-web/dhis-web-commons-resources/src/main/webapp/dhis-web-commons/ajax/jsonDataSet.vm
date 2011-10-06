@@ -5,7 +5,7 @@
     "shortName": "$!encoder.jsonEncode( ${dataSet.shortName} )",
     "periodTypeId": "$!{dataSet.periodTypeId}",
 	"frequency": "$i18n.getString( $!{dataSet.periodType.name} )",
-    "dataElementCount": "$!{dataSet.dataElements.size()}",
-    "dataentryform": #if( $!{dataSet.dataEntryForm} )"$!encoder.jsonEncode( ${dataSet.dataEntryForm.name} )"#end
+    "dataElementCount": "$!{dataSet.dataElements.size()}"
+    #if( $!{dataSet.dataEntryForm} ),"dataentryform": "$!encoder.jsonEncode( ${dataSet.dataEntryForm.name} )"#end
   }
 }
