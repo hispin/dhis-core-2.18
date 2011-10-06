@@ -168,7 +168,7 @@
     <tr>
 		<td>$encoder.htmlEncode( $groupSet.name )</td>
 		<td>
-			<select id="orgUnitGroups" name="orgUnitGroups">
+			<select id="orgUnitGroups" name="orgUnitGroups" style="min-width: 244px;">
 				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>
 				#foreach ( $group in $groupSet.getSortedGroups() )
 				<option value="$group.id" #if( $group.members.contains( $organisationUnit ) ) selected="selected" #end>$group.name</option>

@@ -138,7 +138,7 @@
     <tr>
 		<td>$encoder.htmlEncode( $groupSet.name )</td>			
 		<td>
-			<select id="selectedGroups" name="selectedGroups">
+			<select id="selectedGroups" name="selectedGroups" style="min-width: 244px;">
 				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>
 				#foreach ( $group in $groupSet.getSortedGroups() )
 				<option value="$group.id">$group.name</option>
