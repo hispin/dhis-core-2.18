@@ -473,6 +473,9 @@ function showProgramEnrollmentForm( patientId, programId )
 		disable('enrollBtn');
 		disable('enrollmentDate');
 		disable('dateOfIncident');
+		jQuery('#enrollBtn').attr('value',i18n_enroll_to_program);
+		setFieldValue( 'enrollmentDate', '' );
+		setFieldValue( 'dateOfIncident', '' );
 		return;
 	}
 		
@@ -849,9 +852,6 @@ function showSelectedDataRecoding( patientId )
 		},
 		function()
 		{
-			setInnerHTML('enrollmentDiv', "");
-			showById('dataRecordingSelectDiv');
-			
 			jQuery('#dataRecordingSelectDiv select[name=programId] option').each(function()
 			{
 				var singleEvent = jQuery(this).attr('singleevent');
@@ -861,29 +861,9 @@ function showSelectedDataRecoding( patientId )
 				}
 			});
 			
-			jQuery("#backBtnFromEntry").click(function() {
-					loadPatientList();
-			});
+			hideById('patientInfoDiv');
+			showById('dataRecordingSelectDiv');
+			
 			hideLoader();
 		});
-}
-
-function enableEnrollmentField()
-{
-	var status = jQuery('#programId').attr('disabled');
-	
-	if( status )
-	{
-		jQuery('#enrollBtn').attr('value',i18n_enroll);
-		jQuery("#enrollBtn").click(function() {
-			validateProgramEnrollment();
-		});
-		enable('programId');
-		enable('enrollmentDate');
-		enable('dateOfIncident');
-	}
-	else
-	{
-		jQuery('#enrollBtn').attr('value',i18n_update);
-	}
 }

@@ -1,8 +1,10 @@
-<div>
-    <input type="button" value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" style="width:10em">
-</div>
-   
-<table class="mainPageTable"> 
+   	
+<table class="mainPageTable" id='patientInfoDiv'> 
+	<tr>
+		<td>
+			<input type="button" value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" style="width:10em">
+		</td>
+	</tr>
 	<tr>
 		<td>
 	<table>
@@ -27,9 +29,10 @@
 			<div id="currentSelection" style="float:right"></div>
 		</td>
 	</tr>
+	<tr>
+		<td colspan='2'><hr style="clear:both"></td>
+	</tr>
 </table>
-
-<hr style="clear:both">
 
 <table width='100%'> 
    <tr>

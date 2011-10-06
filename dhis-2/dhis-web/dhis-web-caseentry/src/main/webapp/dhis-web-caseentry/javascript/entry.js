@@ -7,14 +7,15 @@ function loadProgramStages()
 {
 	hideById('dataEntryFormDiv');
 	clearListById('programStageId');
-		
-	if ( getFieldValue('programId') == 0 )
+	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
+	
+	if ( programId == 0 )
 	{
 		return;
 	}
 	jQuery.postJSON( "loadProgramStages.action",
 		{
-			programId: getFieldValue('programId')
+			programId: programId
 		}, 
 		function( json ) 
 		{    
@@ -41,8 +42,8 @@ function loadProgramStages()
 			}
 			history += '</table>';
 			setInnerHTML( 'currentSelection', history );
-			
-			var singleEvent = jQuery('#programId option:selected').attr('singleevent');
+			jQuery('#dataRecordingSelectDiv select[name=programId] option')
+			var singleEvent = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('singleevent');
 			if(singleEvent=='true')
 			{
 				byId('programStageId').selectedIndex = 1;
