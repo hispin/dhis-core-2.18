@@ -56,7 +56,7 @@
 	setFieldValue('dateOfIncident', "$!format.formatDate( $programInstance.dateOfIncident )");
 	
 	if ( getFieldValue('enrollmentDate' ) == ''){	
-		jQuery('#enrollBtn').attr( 'value',i18n_enroll );
+		jQuery('#enrollBtn').attr( 'value',i18n_enroll_to_program );
 	}else{
 		jQuery('#enrollBtn').attr( 'value',i18n_update );
 	}	
