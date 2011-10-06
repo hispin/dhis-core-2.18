@@ -30,10 +30,6 @@ package org.hisp.dhis.settings.action.user;
 
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.SortedMap;
-
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
