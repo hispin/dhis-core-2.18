@@ -75,20 +75,16 @@
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
 		<td><textarea id="comment" name="comment" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.comment )</textarea></td>
 	</tr>
-    <tr>
-        <td><label for="coordinates">$i18n.getString( "coordinates_longitude_latitude" )</label></td>
-        <!-- onkeyup="setFeatureType(document.updateOrganisationUnitForm.featureType, this.value)" -->
-        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.coordinates )</textarea></td>
-    </tr>
-    <tr>
-        <td><label for="featureType">$i18n.getString( "feature_type" )</label></td>
-        <td>
-            <select id="featureType" name="featureType" style="min-width:20em">
-                <option value="Polygon" #if( $organisationUnit.featureType == $i18n.getString( "polygon" ) || $organisationUnit.featureType == $i18n.getString( "multipolygon" ) ) selected="selected" #end>$i18n.getString( "polygon" )</option>
-                <option value="Point" #if( $organisationUnit.featureType == $i18n.getString( "point" ) ) selected="selected" #end>$i18n.getString( "point" )</option>
-            </select>
-        </td>
-    </tr>
+	#if( $point )
+	<tr>
+		<td><label for="latitude">$i18n.getString( "latitude_optional" )</label></td>
+		<td><input type="text" id="latitude" name="latitude" value="$!{latitude}" style="width:20em"/></td>
+	</tr>
+	<tr>
+		<td><label for="longitude">$i18n.getString( "longitude_optional" )</label></td>
+		<td><input type="text" id="longitude" name="longitude" value="$!{longitude}" style="width:20em"/></td>
+	</tr>
+	#end
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em"></td>

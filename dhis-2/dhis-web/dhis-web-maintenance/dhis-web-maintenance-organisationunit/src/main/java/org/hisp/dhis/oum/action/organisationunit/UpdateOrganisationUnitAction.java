@@ -46,6 +46,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.AttributeUtils;
+import org.hisp.dhis.system.util.ValidationUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -159,18 +160,18 @@ public class UpdateOrganisationUnitAction
         this.comment = comment;
     }
 
-    private String coordinates;
+    private String latitude;
 
-    public void setCoordinates( String coordinates )
+    public void setLatitude( String latitude )
     {
-        this.coordinates = coordinates;
+        this.latitude = latitude;
     }
 
-    private String featureType;
+    private String longitude;
 
-    public void setFeatureType( String featureType )
+    public void setLongitude( String longitude )
     {
-        this.featureType = featureType;
+        this.longitude = longitude;
     }
 
     private String url;
@@ -245,8 +246,8 @@ public class UpdateOrganisationUnitAction
     {
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
-        coordinates = nullIfEmpty( coordinates );
-        featureType = nullIfEmpty( featureType );
+        latitude = nullIfEmpty( latitude );
+        longitude = nullIfEmpty( longitude );
         url = nullIfEmpty( url );
 
         contactPerson = nullIfEmpty( contactPerson );
@@ -263,6 +264,9 @@ public class UpdateOrganisationUnitAction
             cDate = format.parseDate( closedDate );
         }
 
+        String coordinates = latitude != null && longitude != null ?
+            ValidationUtils.getCoordinate( latitude, longitude ) : null;
+        
         // ---------------------------------------------------------------------
         // Update organisation unit
         // ---------------------------------------------------------------------
@@ -277,13 +281,12 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setName( name );
         organisationUnit.setShortName( shortName );
         organisationUnit.setCode( code );
-        organisationUnit.setActive( active.booleanValue() );
+        organisationUnit.setActive( active );
         organisationUnit.setOpeningDate( oDate );
         organisationUnit.setClosedDate( cDate );
         organisationUnit.setComment( comment );
         organisationUnit.setCoordinates( coordinates );
         organisationUnit.setUrl( url );
-        organisationUnit.setFeatureType( featureType );
         organisationUnit.setContactPerson( contactPerson );
         organisationUnit.setAddress( address );
         organisationUnit.setEmail( email );
