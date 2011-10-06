@@ -32,6 +32,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.style.StyleManager;
 
@@ -94,6 +95,20 @@ public class SetAppearanceSettingsAction
         this.currentStyle = style;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -111,11 +126,13 @@ public class SetAppearanceSettingsAction
         {
             startModule = null;
         }
-        
+
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
         styleManager.setSystemStyle( currentStyle );
+
+        message = i18n.getString( "settings_updated" );
 
         return SUCCESS;
     }

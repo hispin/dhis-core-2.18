@@ -30,6 +30,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_HOST_NAME;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_PASSWORD;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_USERNAME;
 
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.options.SystemSettingManager;
 
 import com.opensymphony.xwork2.Action;
@@ -44,7 +45,7 @@ public class SetSMTPSettingsAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -77,6 +78,20 @@ public class SetSMTPSettingsAction
         this.smtpPassword = password;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -84,12 +99,13 @@ public class SetSMTPSettingsAction
     public String execute()
     {
         systemSettingManager.saveSystemSetting( KEY_EMAIL_HOST_NAME, smtpHostName );
-        
+
         systemSettingManager.saveSystemSetting( KEY_EMAIL_PASSWORD, smtpPassword );
-        
+
         systemSettingManager.saveSystemSetting( KEY_EMAIL_USERNAME, smtpUsername );
+
+        message = i18n.getString( "settings_updated" );
 
         return SUCCESS;
     }
-
 }

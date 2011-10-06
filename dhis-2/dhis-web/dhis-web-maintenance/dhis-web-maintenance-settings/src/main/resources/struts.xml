@@ -16,41 +16,47 @@
     
     <!-- General settings -->
 
-    <action name="generalSettings" class="org.hisp.dhis.settings.action.system.GetGeneralSettingsAction">
+    <action name="systemGeneralSettings" class="org.hisp.dhis.settings.action.system.GetGeneralSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-settings/generalSettings.vm</param>
+      <param name="page">/dhis-web-maintenance-settings/systemGeneralSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 
-    <action name="setGeneralSettings" class="org.hisp.dhis.settings.action.system.SetGeneralSettingsAction">
-      <result name="success" type="redirect">generalSettings.action</result>
+    <action name="setSystemGeneralSettings" class="org.hisp.dhis.settings.action.system.SetGeneralSettingsAction">
+      <result name="success" type="velocity-json">
+		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 	
     <!-- Appearance settings -->
 
-    <action name="appearanceSettings" class="org.hisp.dhis.settings.action.system.GetAppearanceSettingsAction">
+    <action name="systemAppearanceSettings" class="org.hisp.dhis.settings.action.system.GetAppearanceSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-settings/appearanceSettings.vm</param>
+      <param name="page">/dhis-web-maintenance-settings/systemAppearanceSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 
-    <action name="setAppearanceSettings" class="org.hisp.dhis.settings.action.system.SetAppearanceSettingsAction">
-      <result name="success" type="redirect">appearanceSettings.action</result>
+    <action name="setSystemAppearanceSettings" class="org.hisp.dhis.settings.action.system.SetAppearanceSettingsAction">
+      <result name="success" type="velocity-json">
+		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 	
     <!-- Email settings -->
 
-    <action name="emailSettings" class="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction">
+    <action name="systemEmailSettings" class="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-settings/emailSettings.vm</param>
+      <param name="page">/dhis-web-maintenance-settings/systemEmailSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 
-    <action name="setEmailSettings" class="org.hisp.dhis.settings.action.system.SetSMTPSettingsAction">
-      <result name="success" type="redirect">emailSettings.action</result>
+    <action name="setSystemEmailSettings" class="org.hisp.dhis.settings.action.system.SetSMTPSettingsAction">
+      <result name="success" type="velocity-json">
+		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <!-- User settings -->

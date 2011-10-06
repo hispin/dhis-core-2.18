@@ -36,6 +36,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZER
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -149,6 +150,20 @@ public class SetGeneralSettingsAction
         this.completenessOffset = completenessOffset;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -184,6 +199,8 @@ public class SetGeneralSettingsAction
 
         configurationService.setConfiguration( configuration );
 
+        message = i18n.getString( "settings_updated" );
+        
         return SUCCESS;
     }
 }
